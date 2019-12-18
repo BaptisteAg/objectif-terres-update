@@ -1,1 +1,8 @@
-//
+//import framework bulma
+@import '~bulma/bulma';
+
+
+// custom scss
+.container-custom {
+    padding: 0.5rem 2rem;
+}
