@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8e4d68bc-692f-40d3-87bb-68f22f69bbc0" name="Default Changelist" comment="" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution>
       <executable />
@@ -16,6 +15,9 @@
   </component>
   <component name="FavoritesManager">
     <favorites_list name="objectif-terres" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
@@ -108,21 +110,34 @@
     </include_path>
   </component>
   <component name="ProjectId" id="1V6Zcm8JUVViIfVRM9bQ3RQeFWm" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
+  <component name="RunManager">
+    <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+      <TestRunner scope="XML" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
       <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
       </list>
     </option>
   </component>
@@ -137,10 +152,32 @@
       <option name="presentableId" value="Default" />
       <updated>1576575589289</updated>
       <workItem from="1576575598579" duration="14145000" />
+      <workItem from="1576599124226" duration="1547000" />
+      <workItem from="1576658867214" duration="21373000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="442" y="141" key="#Notifications" timestamp="1576676454542">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="442" y="141" key="#Notifications/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1576676454542" />
+    <state x="2472" y="178" key="#Notifications/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1576663288700" />
+    <state x="2631" y="322" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1576662686737">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2631" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1576662686737" />
+    <state x="369" y="109" key="SettingsEditor" timestamp="1576676496269">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="369" y="109" key="SettingsEditor/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1576676496269" />
+    <state x="2381" y="162" key="SettingsEditor/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1576675352719" />
+    <state x="2472" y="252" key="Vcs.Push.Dialog.v2" timestamp="1576674640969">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2472" y="252" key="Vcs.Push.Dialog.v2/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1576674640969" />
   </component>
 </project>
