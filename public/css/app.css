@@ -12438,4 +12438,13 @@ label.panel-block:hover {
 .container-custom {
   padding: 0.5rem 2rem;
 }
+#my_osm_widget_map {
+  /* use the same name as <div id=""> */
+  width: 100vw;
+  /* important! if you need full width display */
+  height: 400px;
+  margin: 0;
+  border-radius: 5px;
+  /* ... */
+}
 
