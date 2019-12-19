@@ -1,4 +1,4 @@
-<div class="section">
+<section class="section">
     <div class="container has-text-centered">
         <h1 class="title is-1 ">Questions fréquentes</h1>
         <p class="subtitle is-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi, consectetur debitis delectus eaque est fugit hic ipsum laborum, laudantium nulla odit, omnis quasi repellat voluptatibus! Error fugiat reprehenderit suscipit.</p>
@@ -60,7 +60,7 @@
             </article>
         </section>
     </div>
-</div>
+</section>
 
 
 

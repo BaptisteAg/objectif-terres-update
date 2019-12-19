@@ -1,4 +1,4 @@
-<div class="section has-background-grey-lighter">
+<section class="section has-background-grey-lighter">
     <div class="container ">
         <div class="columns">
             <div class="column is-5">
@@ -11,4 +11,4 @@
             </div>
         </div>
     </div>
-</div>
+</section>

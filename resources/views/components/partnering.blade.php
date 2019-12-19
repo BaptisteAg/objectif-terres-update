@@ -1,4 +1,4 @@
-<div class="section">
+<section class="section">
     <div class="container">
         <h2 class="title is-2 has-text-centered">Nos partenaires</h2>
         <div class="section">
@@ -22,4 +22,4 @@
             </div>
         </div>
     </div>
-</div>
+</section>

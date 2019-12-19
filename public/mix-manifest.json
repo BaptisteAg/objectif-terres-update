@@ -1,5 +1,6 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/js/bulma-accordion.js": "/js/bulma-accordion.js"
+    "/js/bulma-accordion.js": "/js/bulma-accordion.js",
+    "/js/bulma-carousel.js": "/js/bulma-carousel.js"
 }
