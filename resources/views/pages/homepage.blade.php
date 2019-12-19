@@ -105,11 +105,9 @@
 			</div>
 		</div>
 	</section>
-
+ 
 	@include('components.card_video')
-
-
-
+ 
 	<section class="section">
 			<div class="container has-text-centered ">
 				<h2 class="title is-2 ">Ils ont réussi avec nous ! </h2>
@@ -234,7 +232,10 @@
 			</div>
 		</div>
 	</section>
-
+    
+    @include('components.faq-accordion')
+    @include('components.study')
+    @include('components.partnering')
 	@include('components.support_terre_liens')
 
 @endsection
@@ -268,4 +269,7 @@
         L.marker([46.290552, 2.771017]).addTo(mymap); /* set your location's GPS Coordinates : [LAT,LON] */
 		
 	</script>
+ 
+    <script src="{{ asset('js/bulma-accordion.js') }}"></script>
+    <script>var accordions = bulmaAccordion.attach();</script>
 @endsection
