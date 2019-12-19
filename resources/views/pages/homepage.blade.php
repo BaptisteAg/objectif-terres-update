@@ -12,9 +12,7 @@
 
 
 @section('main-content')
-		<div id="my_osm_widget_map"></div>
-
-
+	<div id="my_osm_widget_map"></div>
 	<section class="section is-medium">
 		<div class="has-text-centered">
 			<h2 class="title is-1">Dernières annonces foncières publiées</h2>
@@ -108,11 +106,9 @@
 			</div>
 		</div>
 	</section>
-
-
+	@include('components.support_terre_liens')
 @endsection
 
-@include('components.support_terre_liens')
 
 @section('script')
 
