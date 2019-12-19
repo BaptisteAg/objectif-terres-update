@@ -1,7 +1,7 @@
 @extends('default')
 
-
 @section('title', 'Bienvenue sur Objectif Terres')
+
 @section('head-script')
 	<!-- Import Leaflet CSS Style Sheet -->
 	<link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css" />
@@ -14,7 +14,7 @@
 @section('main-content')
 	<div id="my_osm_widget_map"></div>
 	<section class="section is-medium">
-		<div class="has-text-centered">
+		<div class="has-text-centered ">
 			<h2 class="title is-1">Dernières annonces foncières publiées</h2>
 			<p>ASTUCE : Créez votre compte gratuit pour visualiser directement les annonces de votre région !</p>
 		</div>
@@ -80,11 +80,11 @@
 		<div class="container">
 			<div class="columns">
 				<div class="column is-one-third">
-					<h3 class="title is-3 is-spaced">Mon projet agricole</h3>
-					<p class="subtitle is-5 is-spaced">Donec ullamcorper nulla non metus auctor
+					<h3 class="title is-3 ">Mon projet agricole</h3>
+					<p class="subtitle is-5 ">Donec ullamcorper nulla non metus auctor
 						fringilla. Maecenas sed diam eget risus varius
 						blandit sit amet non magna.</p>
-					<p class="subtitle is-spaced"><strong>Pour aller plus loin :</strong> Terre de Liens vous met à
+					<p class="subtitle "><strong>Pour aller plus loin :</strong> Terre de Liens vous met à
 						dispostion un Centre de Ressources donec
 						ullamcorper nulla non metus auctor fringilla.</p>
 				</div>
@@ -106,11 +106,152 @@
 			</div>
 		</div>
 	</section>
+
+	@include('components.card_video')
+
+
+
+	<section class="section">
+			<div class="container has-text-centered ">
+				<h2 class="title is-2 ">Ils ont réussi avec nous ! </h2>
+			</div>
+		<div class="container ">
+			<div id="post_images" class="carousel " >
+				<div class="column is-12 ">
+					<div class="card">
+						<div class="card-content">
+							<div class="media">
+								<div class="media-left">
+									<figure class="image is-48x48">
+										<img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+									</figure>
+								</div>
+								<div class="media-content">
+									<p class="title is-4">Jean-Pierre Delatoite</p>
+									<p class="subtitle is-6">Paysan dans la Drôme</p>
+								</div>
+							</div>
+							<div class="content">
+								Avec Objectif Terre j'ai réussi à trouver
+								la terre dont j'avais besoin pour aboutir
+								ma reconversion dans l'agriculture bio et
+								paysanne.
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="column is-12">
+					<div class="card">
+						<div class="card-content">
+							<div class="media">
+								<div class="media-left">
+									<figure class="image is-48x48">
+										<img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+									</figure>
+								</div>
+								<div class="media-content">
+									<p class="title is-4">Jean-Pierre Delatoite</p>
+									<p class="subtitle is-6">Paysan dans la Drôme</p>
+								</div>
+							</div>
+							<div class="content">
+								Avec Objectif Terre j'ai réussi à trouver
+								la terre dont j'avais besoin pour aboutir
+								ma reconversion dans l'agriculture bio et
+								paysanne.
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="column is-12">
+					<div class="card">
+						<div class="card-content">
+							<div class="media">
+								<div class="media-left">
+									<figure class="image is-48x48">
+										<img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+									</figure>
+								</div>
+								<div class="media-content">
+									<p class="title is-4">Jean-Pierre Delatoite</p>
+									<p class="subtitle is-6">Paysan dans la Drôme</p>
+								</div>
+							</div>
+							<div class="content">
+								Avec Objectif Terre j'ai réussi à trouver
+								la terre dont j'avais besoin pour aboutir
+								ma reconversion dans l'agriculture bio et
+								paysanne.
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="column is-12">
+					<div class="card">
+						<div class="card-content">
+							<div class="media">
+								<div class="media-left">
+									<figure class="image is-48x48">
+										<img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+									</figure>
+								</div>
+								<div class="media-content">
+									<p class="title is-4">Jean-Pierre Delatoite</p>
+									<p class="subtitle is-6">Paysan dans la Drôme</p>
+								</div>
+							</div>
+							<div class="content">
+								Avec Objectif Terre j'ai réussi à trouver
+								la terre dont j'avais besoin pour aboutir
+								ma reconversion dans l'agriculture bio et
+								paysanne.
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="column is-12">
+					<div class="card">
+						<div class="card-content">
+							<div class="media">
+								<div class="media-left">
+									<figure class="image is-48x48">
+										<img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+									</figure>
+								</div>
+								<div class="media-content">
+									<p class="title is-4">Jean-Pierre Delatoite</p>
+									<p class="subtitle is-6">Paysan dans la Drôme</p>
+								</div>
+							</div>
+							<div class="content">
+								Avec Objectif Terre j'ai réussi à trouver
+								la terre dont j'avais besoin pour aboutir
+								ma reconversion dans l'agriculture bio et
+								paysanne.
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
 	@include('components.support_terre_liens')
+
 @endsection
 
 
 @section('script')
+	<script src="{{asset('js/bulma-carousel.js')}}"></script>
+	<script>
+		bulmaCarousel.attach('#post_images', {
+            slidesToScroll: 1,
+            slidesToShow: 2,
+            loop: true,
+            navigation : true,
+
+        });
+	</script>
 
 	<script>
 		let mymap = L.map('my_osm_widget_map', { /* use the same name as your <div id=""> */
@@ -126,7 +267,6 @@
         }).addTo(mymap);
 
         L.marker([46.290552, 2.771017]).addTo(mymap); /* set your location's GPS Coordinates : [LAT,LON] */
-
-
+		
 	</script>
 @endsection
