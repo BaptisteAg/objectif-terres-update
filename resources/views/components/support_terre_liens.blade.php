@@ -1,4 +1,4 @@
-
+<section class="section">
     <div class="container">
         <div class="columns">
             <div class="column is-6">
@@ -30,4 +30,4 @@
             </div>
         </div>
     </div>
-
+</section>

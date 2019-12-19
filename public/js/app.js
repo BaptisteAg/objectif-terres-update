@@ -19287,8 +19287,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-    __webpack_require__(/*! /home/marie/devilbox/data/www/terre_de_liens/objectif-terres/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/marie/devilbox/data/www/terre_de_liens/objectif-terres/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\Laragon\objectif-terres\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\Laragon\objectif-terres\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
