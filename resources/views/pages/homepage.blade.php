@@ -106,6 +106,9 @@
 			</div>
 		</div>
 	</section>
+    @include('components.faq-accordion')
+    @include('components.study')
+    @include('components.partnering')
 	@include('components.support_terre_liens')
 @endsection
 
@@ -129,4 +132,7 @@
 
 
 	</script>
+ 
+    <script src="{{ asset('js/bulma-accordion.js') }}"></script>
+    <script>var accordions = bulmaAccordion.attach();</script>
 @endsection
