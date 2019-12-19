@@ -19,8 +19,8 @@
                 <div>Notre force c'est vous : soutenez Terre de Liens et participez au changement !</div>
             </div>
             <div class="column">
-                <figure class="image">
-                    <img src="https://via.placeholder.com/230x100.png" alt="">
+                <figure class="image is-3by2">
+                    <img src="https://picsum.photos/300/250" alt="">
                 </figure>
                 <div>
                     <a href="" class="button is-bordered is-uppercase has-background-grey">Je fais un don !</a>
