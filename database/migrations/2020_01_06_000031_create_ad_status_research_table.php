@@ -1,0 +1,50 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateAdStatusResearchTable extends Migration
+{
+    /**
+     * Schema table name to migrate
+     * @var string
+     */
+    public $tableName = 'ad_status_research';
+
+    /**
+     * Run the migrations.
+     * @table ad_status_research
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create($this->tableName, function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->unsignedInteger('ad_status_id');
+            $table->unsignedInteger('research_id');
+
+            $table->index(["ad_status_id"], 'fk_ads_status_research_1_idx');
+
+            $table->index(["research_id"], 'fk_ads_status_research_2_idx');
+            $table->timestamps();
+
+
+            $table->foreign('ad_status_id', 'fk_ads_status_research_1_idx')
+                ->references('id')->on('ad_statuses')
+                ->onDelete('restrict')
+                ->onUpdate('restrict');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+     public function down()
+     {
+       Schema::dropIfExists($this->tableName);
+     }
+}
