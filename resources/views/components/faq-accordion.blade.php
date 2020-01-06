@@ -1,7 +1,7 @@
 <section class="section">
     <div class="container has-text-centered">
-        <h1 class="title is-1 ">Questions fréquentes</h1>
-        <p class="subtitle is-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi, consectetur debitis delectus eaque est fugit hic ipsum laborum, laudantium nulla odit, omnis quasi repellat voluptatibus! Error fugiat reprehenderit suscipit.</p>
+        <h1 class="title is-1 is-spaced">Questions fréquentes</h1>
+        <h5 class="subtitle is-6">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi, consectetur debitis delectus eaque est fugit hic ipsum laborum, laudantium nulla odit, omnis quasi repellat voluptatibus! Error fugiat reprehenderit suscipit.</h5>
         <section class="accordions">
             <article class="accordion">
                 <div class="accordion-header toggle">

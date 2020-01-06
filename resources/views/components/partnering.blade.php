@@ -5,7 +5,7 @@
             <div class="columns has-text-centered">
                 <div class="column">
                     <figure class="image is-64x64 is-inline-block"><img src="https://picsum.photos/250?grayscale" alt=""></figure>
-                    <sapn>Labore</sapn>
+                    <span>Labore</span>
                 </div>
                 <div class="column">
                     <figure class="image is-64x64 is-inline-block"><img src="https://picsum.photos/250?grayscale" alt=""></figure>

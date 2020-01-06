@@ -13,7 +13,7 @@
 @section('main-content')
 	<div id="my_osm_widget_map"></div>
 	<section class="section is-medium">
-		<div class="has-text-centered ">
+		<div class="has-text-centered">
 			<h2 class="title is-1">Dernières annonces foncières publiées</h2>
 			<p>ASTUCE : <a href="{{url('/')}}">Créez votre compte gratuit</a> pour visualiser directement les annonces de votre région !</p>
 		</div>
@@ -44,7 +44,7 @@
 		</div>
 			<div class="columns is-centered">
 				<div class="column is-half has-text-centered">
-					<button class="button is-link">Toutes les annonces foncières</button>
+					<button class="button is-link is-medium">Toutes les annonces foncières</button>
 				</div>
 			</div>
 	</section>
