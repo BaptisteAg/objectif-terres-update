@@ -15,7 +15,7 @@
 	<section class="section is-medium">
 		<div class="has-text-centered ">
 			<h2 class="title is-1">Dernières annonces foncières publiées</h2>
-			<p>ASTUCE : Créez votre compte gratuit pour visualiser directement les annonces de votre région !</p>
+			<p>ASTUCE : <a href="{{url('/')}}">Créez votre compte gratuit</a> pour visualiser directement les annonces de votre région !</p>
 		</div>
 		<div class="columns">
 			@for ($i = 0; $i < 2; $i++)
