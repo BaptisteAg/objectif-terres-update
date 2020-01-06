@@ -25,7 +25,7 @@ class CreateBuildingsTable extends Migration
             $table->increments('id');
             $table->integer('number')->nullable();
             $table->string('surface')->nullable();
-            $table->string('price')->nullable();
+            $table->integer('price')->nullable();
             $table->timestamps();
         });
     }

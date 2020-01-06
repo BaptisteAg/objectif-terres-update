@@ -24,7 +24,7 @@ class CreateLandsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('area');
-            $table->float('price')->nullable();
+            $table->integer('price')->nullable();
             $table->timestamp('land_availability')->nullable();
             $table->timestamp('land_transfer_deadline')->nullable();
             $table->timestamps();

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string $sf_admin_id
  * @property boolean $is_draft
  * @property string $about_content
+ * @property string $about_project_content
  * @property AttributionAd $attributionAd
  * @property Project $project
  * @property AdMessage[] $adMessages
@@ -32,7 +33,7 @@ class Ad extends Model
      * @var array
      */
     protected $fillable = [
-        'attribution_ad_id', 'project_id', 'sf_pp_id', 'sf_admin_id', 'is_draft', 'about_content'
+        'attribution_ad_id', 'project_id', 'sf_pp_id', 'sf_admin_id', 'is_draft', 'about_content', 'about_project_content'
     ];
 
     /**

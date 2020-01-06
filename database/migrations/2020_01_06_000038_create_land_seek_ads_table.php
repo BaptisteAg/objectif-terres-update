@@ -26,12 +26,11 @@ class CreateLandSeekAdsTable extends Migration
             $table->string('title')->nullable();
             $table->boolean('is_bio')->nullable();
             $table->string('production_type_add')->nullable();
-            $table->text('about_project_content')->nullable();
             $table->boolean('has_farm_buildings')->nullable();
             $table->boolean('has_houses')->nullable();
             $table->text('experience_farming')->nullable();
-            $table->float('rent_min')->nullable();
-            $table->float('rent_max')->nullable();
+            $table->integer('rent_min')->nullable();
+            $table->integer('rent_max')->nullable();
             $table->unsignedInteger('ad_id');
             $table->unsignedInteger('installation_type_id')->nullable();
             $table->unsignedInteger('offer_genre_id')->nullable();

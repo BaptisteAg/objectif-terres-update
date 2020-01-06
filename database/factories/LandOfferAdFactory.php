@@ -19,10 +19,9 @@ $factory->define(LandOfferAd::class, function (Faker $faker) {
         'is_activity_transfer' => $faker->boolean,
         'water_access' => $faker->text(100),
         'altitude' => $faker->randomNumber(4),
-        'about_project_content' => $faker->text(800),
-        'ad_id' => Ad::all()->random()->id,
-        'building_id' => Building::all()->random()->id,
-        'house_id' => House::all()->random()->id,
-        'land_id' => Land::all()->random()->id,
+        'ad_id' => factory(Ad::class),
+        'building_id' => factory(Building::class),
+        'house_id' => factory(House::class),
+        'land_id' => factory(Land::class),
     ];
 });

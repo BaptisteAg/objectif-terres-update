@@ -40,7 +40,7 @@ class DocumentsTest extends TestCase
 //
 //        $research->bioCertifications()->save($productionGenre);
 
-        $cities = City::all()->random();
+        $cities = City::all()->random()->id;
         $research->cities()->save($cities);
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $cities->researches);
     }
