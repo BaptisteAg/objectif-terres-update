@@ -25,8 +25,8 @@ class CreateResearchesTable extends Migration
             $table->increments('id');
             $table->string('sf_id');
             $table->string('name')->nullable();
-            $table->integer('surface_min')->nullable();
-            $table->integer('surface_max')->nullable();
+            $table->string('surface_min')->nullable();
+            $table->string('surface_max')->nullable();
             $table->boolean('has_pics')->nullable();
             $table->boolean('has_house')->nullable();
             $table->integer('price_min')->nullable();

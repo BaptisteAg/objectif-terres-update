@@ -33,7 +33,6 @@ class CreateLocationableResearchesTable extends Migration
             $table->index(["locationable_research_id"], 'ix_locationable_research_1');
 
             $table->index(["research_id"], 'fk_locationable_researches_1');
-
             $table->timestamps();
 
             $table->foreign('research_id', 'fk_locationable_researches_1')

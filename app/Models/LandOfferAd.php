@@ -22,7 +22,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property boolean $is_activity_transfert
  * @property string $water_access
  * @property int $altitude
- * @property string $about_project_content
  * @property Ad $ad
  * @property Building $building
  * @property House $house
@@ -38,7 +37,7 @@ class LandOfferAd extends Model
      * @var array
      */
     protected $fillable = [
-        'ad_id', 'building_id', 'house_id', 'land_id', 'is_beneficiary', 'accept_use_zip_code', 'is_call_for_application_community', 'is_call_for_application_terre_de_liens', 'is_call_for_application_test_area', 'is_activity_transfert', 'water_access', 'altitude', 'about_project_content'
+        'ad_id', 'building_id', 'house_id', 'land_id', 'is_beneficiary', 'accept_use_zip_code', 'is_call_for_application_community', 'is_call_for_application_terre_de_liens', 'is_call_for_application_test_area', 'is_activity_transfert', 'water_access', 'altitude'
     ];
 
     /**

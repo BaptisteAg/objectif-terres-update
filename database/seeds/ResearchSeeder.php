@@ -25,6 +25,7 @@ class ResearchSeeder extends Seeder
             $research->offerGenres()->save(factory(OfferGenre::class)->make());
             $research->bioCertifications()->save(factory(BioCertification::class)->make());
             $research->productionGenres()->save(factory(ProductionGenre::class)->make());
+            $research->departments()->save(\App\Models\Department::all()->random())->make();
         });
     }
 }

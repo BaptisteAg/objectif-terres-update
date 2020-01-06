@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string $title
  * @property boolean $is_bio
  * @property string $production_type_add
- * @property string $about_project_content
  * @property boolean $has_farm_buildings
  * @property boolean $has_houses
  * @property string $experience_farming
@@ -36,7 +35,7 @@ class LandSeekAd extends Model
      * @var array
      */
     protected $fillable = [
-        'ad_id', 'installation_type_id', 'offer_type_id', 'title', 'is_bio', 'production_type_add', 'about_project_content', 'has_farm_buildings', 'has_houses', 'experience_farming', 'rent_min', 'rent_max'
+        'ad_id', 'installation_type_id', 'offer_type_id', 'title', 'is_bio', 'production_type_add', 'has_farm_buildings', 'has_houses', 'experience_farming', 'rent_min', 'rent_max'
     ];
 
     /**

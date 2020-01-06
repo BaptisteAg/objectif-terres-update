@@ -8,7 +8,7 @@ use Faker\Generator as Faker;
 $factory->define(AdMessage::class, function (Faker $faker) {
     return [
         'content' => $faker->text(250),
-        'sf_user_id' => $faker->regexify('[A-Za-z0-9]{20}'),
-        'ad_id' => \App\Models\Ad::all()->random()->id,
+        'sf_sender_id' => $faker->regexify('[A-Za-z0-9]{20}'),
+        'ad_id' => factory(\App\Models\Ad::class),
     ];
 });

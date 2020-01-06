@@ -28,10 +28,9 @@ class CreateLandOfferAdsTable extends Migration
             $table->boolean('is_call_for_application_community')->nullable();
             $table->boolean('is_call_for_application_terre_de_liens')->nullable();
             $table->boolean('is_call_for_application_test_area')->nullable();
-            $table->boolean('is_activity_transfert')->nullable();
+            $table->boolean('is_activity_transfer')->nullable();
             $table->string('water_access')->nullable();
             $table->integer('altitude')->nullable();
-            $table->string('about_project_content')->nullable();
             $table->unsignedInteger('ad_id');
             $table->unsignedInteger('building_id')->nullable();
             $table->unsignedInteger('house_id')->nullable();
