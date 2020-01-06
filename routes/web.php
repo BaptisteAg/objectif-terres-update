@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('pages.homepage');
 });
+//Route::get('new', function () {
+//	return view('pages.ads.new');
+//});
+Route::get('new', 'Ads\AdsController@create');
+Route::post('new', 'Ads\AdsController@store');
