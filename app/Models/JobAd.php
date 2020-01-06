@@ -25,7 +25,7 @@ class JobAd extends Model
      * @var array
      */
     protected $fillable = [
-        'ad_id', 'education_level_id', 'job_status_id', 'title', 'is_offer', 'is_beneficiary', 'experience_farming', 'about_project_content'
+        'ad_id', 'education_level_id', 'job_status_id', 'title', 'is_offer', 'is_beneficiary', 'experience_farming'
     ];
 
     /**

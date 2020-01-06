@@ -27,7 +27,6 @@ class CreateJobAdsTable extends Migration
             $table->boolean('is_offer')->nullable();
             $table->boolean('is_beneficiary')->nullable();
             $table->integer('experience_farming')->nullable();
-            $table->string('about_project_content')->nullable();
             $table->unsignedInteger('ad_id');
             $table->unsignedInteger('education_level_id')->nullable();
             $table->unsignedInteger('job_status_id')->nullable();
