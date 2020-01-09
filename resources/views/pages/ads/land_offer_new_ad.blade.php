@@ -246,12 +246,4 @@
             Je certifie que mon projet correspond à la <a href="/">charte de Terre de Liens</a>
         </label>
     </div>
-    <div class="field is-grouped">
-        <div class="control">
-            {!! Form::submit('Envoyer',['class'=>'button is-link', ':disabled'=>'land_offer_ads.is_input_disabled']) !!}
-        </div>
-        <div class="control">
-            <button class="button is-link is-light">Annuler</button>
-        </div>
-    </div>
 </div>

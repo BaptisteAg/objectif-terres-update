@@ -25,17 +25,35 @@
                         <div class="field">
                             {!! Form::label('ad_type', 'Type d\'annonce', ['class' => 'label']); !!}
                             <div class="select">
-                                {{ Form::select('ad_type', ['land_seek' => 'Recherche de foncier', 'land_offer'=>'Offre de foncier', 'job_offer'=>'Opportunité professionnelle'], null, ['v-model'=>'ad_type_selected', 'placeholder' => 'Choisir un type d\'annonce...', 'required']) }}
+                                {{ Form::select('ad_type',
+									['land_seek' => 'Recherche de foncier',
+									 'land_offer'=>'Offre de foncier',
+									 'job_offer'=>'Opportunité professionnelle'],
+									 old('ad_type'),
+									 ['v-model'=>'ad_type_selected',
+									  'placeholder' => 'Choisir un type d\'annonce...',
+									  'required']) }}
                             </div>
                         </div>
                         <div v-show="ad_type_selected === 'land_seek'">
-                            @include('components.forms.land_seek_new_ad')
+                            @include('pages.ads.land_seek_new_ad')
                         </div>
                         <div v-show="ad_type_selected === 'land_offer'">
-                            @include('components.forms.land_offer_new_ad')
+                            @include('pages.ads.land_offer_new_ad')
                         </div>
                         <div v-show="ad_type_selected === 'job_offer'">
-                            @include('components.forms.job_ad_new_add')
+                            @include('pages.ads.job_ad_new_add')
+                        </div>
+                        <div class="field is-grouped" v-show="ad_type_selected">
+                            <div class="control">
+                                {!! Form::submit('Envoyer',['class'=>'button is-link']) !!}
+                            </div>
+                            <div class="control">
+                                <button class="button is-light">Sauvergder</button>
+                            </div>
+                            <div class="control">
+                                <button class="button is-link is-light">Annuler</button>
+                            </div>
                         </div>
                     </div>
 
@@ -59,5 +77,6 @@
             return confirmationMessage;              // Gecko, WebKit, Chrome <34
         });
     </script>
+
 @endsection
 
