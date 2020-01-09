@@ -5,6 +5,13 @@ use App\Models\Ad;
 
 class AdRepository implements AdRepositoryInterface
 {
+    /** @var LandSeekdAdRepository  */
+    protected $landSeekdAdRepository;
+
+    public function __construct(LandSeekdAdRepository $landSeekdAdRepository)
+    {
+        $this->landSeekdAdRepository = $landSeekdAdRepository;
+    }
 
     /**
      * Gets an ad by its ID
@@ -55,6 +62,15 @@ class AdRepository implements AdRepositoryInterface
      */
     public function create(array $data): Ad
     {
-        // TODO: Implement create() method.
+        $ad = new Ad();
+
+        if($data["ad_type"] === "land_seek") {
+            $landSeekdAd = $this->landSeekdAdRepository->create($data);
+            $ad->landSeekAd = $landSeekdAd;
+        }
+
+        $ad->save();
+
+        return $ad;
     }
 }

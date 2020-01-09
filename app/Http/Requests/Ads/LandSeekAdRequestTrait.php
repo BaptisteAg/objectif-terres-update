@@ -2,16 +2,14 @@
 
 namespace App\Http\Requests\Ads;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class LandSeekAdRequest extends FormRequest
+trait LandSeekAdRequestTrait
 {
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function landSeekRules()
+    public function getLandSeekRules()
     {
         return [
             'installation_type' => 'required',

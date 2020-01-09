@@ -19,9 +19,9 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property Project $project
  * @property AdMessage[] $adMessages
  * @property AdNote[] $adNotes
- * @property JobAd $jobAds
- * @property LandOfferAd $landOfferAds
- * @property LandSeekAd $landSeekAds
+ * @property JobAd $jobAd
+ * @property LandOfferAd $landOfferAd
+ * @property LandSeekAd $landSeekAd
  * @property PpToUserMessage[] $ppToUserMessages
  */
 class Ad extends Model
@@ -79,7 +79,7 @@ class Ad extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function jobAds()
+    public function jobAd()
     {
         return $this->hasOne('App\Models\JobAd');
     }
@@ -87,7 +87,7 @@ class Ad extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\hasOne
      */
-    public function landOfferAds()
+    public function landOfferAd()
     {
         return $this->hasOne('App\Models\LandOfferAd');
     }
@@ -95,7 +95,7 @@ class Ad extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\hasOne
      */
-    public function landSeekAds()
+    public function landSeekAd()
     {
         return $this->hasOne('App\Models\LandSeekAd');
     }

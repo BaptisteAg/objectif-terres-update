@@ -1,34 +1,38 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
 //import framework bulma
 @import '~bulma/bulma';
-@import '~bulma-carousel/src/sass/index';
 @import '~bulma-accordion/dist/css/bulma-accordion';
-
 
 // custom scss
 .container-custom {
-    padding: 0.5rem 2rem;
+  padding: 0.5rem 2rem;
 }
 
 #my_osm_widget_map { /* use the same name as <div id=""> */
-    width: 100vw; /* important! if you need full width display */
-    height: 400px;
-    margin: 0;
-    border-radius: 5px;
-    z-index: 1;
-    /* ... */
+  width: 100vw; /* important! if you need full width display */
+  height: 400px;
+  margin: 0;
+  border-radius: 5px;
+  z-index: 1;
+  /* ... */
 }
 
 p {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .slider-pagination {
-   bottom: -40px;
-    .slider-page {
-        box-shadow: 0 2px 5px #808080;
-    }
+  bottom: -40px;
+  .slider-page {
+    box-shadow: 0 2px 5px #808080;
+  }
 }
 
 .some-buttons {
-    margin-top: 20px;
+  margin-top: 20px;
 }
