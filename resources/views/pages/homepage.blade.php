@@ -7,7 +7,6 @@
 	<link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css" />
 	<!-- Import Leaflet JS Library -->
 	<script src="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
 @endsection
 
 
@@ -16,7 +15,7 @@
 	<section class="section is-medium">
 		<div class="has-text-centered">
 			<h2 class="title is-1">Dernières annonces foncières publiées</h2>
-			<p>ASTUCE : Créez votre compte gratuit pour visualiser directement les annonces de votre région !</p>
+			<p>ASTUCE : <a href="{{url('/')}}">Créez votre compte gratuit</a> pour visualiser directement les annonces de votre région !</p>
 		</div>
 		<div class="columns">
 			@for ($i = 0; $i < 2; $i++)
