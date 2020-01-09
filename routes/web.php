@@ -11,6 +11,14 @@
 |
 */
 
+use Omniphx\Forrest\Providers\Laravel\Facades\Forrest;
+
 Route::get('/', function () {
     return view('pages.homepage');
+});
+
+Route::get('/authenticate', 'SalesForceAuthController@register');
+
+Route::get('/researches', function() {
+    return view('pages.researches');
 });
