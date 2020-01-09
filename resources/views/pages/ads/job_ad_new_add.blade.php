@@ -30,24 +30,34 @@
         <div class="column is-half">
             <div class="field">
                 {!! Form::label('zipCode', 'Code postal', ['class' => 'label']); !!}
-                {!! Form::number('zipCode', null, ['min'=>1, 'class' => 'input',  ':disabled'=>'job_ads.is_input_disabled'] ) !!}
+                {!! Form::number('zipCode',
+                 null,
+                 ['min'=>1,
+                  'class' => 'input',
+                  ':disabled'=>'job_ads.is_input_disabled']
+                  );old('zipCode') !!}
 
             </div>
         </div>
         <div class="column">
             <div class="field">
                 {!! Form::label('city', 'Commune', ['class' => 'label']); !!}
-                {!! Form::text('city', null, ['class' => 'input', ':required'=>'job_ads.is_job_opportunity', ':disabled'=>'job_ads.is_input_disabled'] ) !!}
+                {!! Form::text('city',
+                     null,
+                     ['class' => 'input',
+                     ':required'=>'job_ads.is_job_opportunity',
+                      ':disabled'=>'job_ads.is_input_disabled']
+                     ); old('city')!!}
             </div>
         </div>
     </div>
     <div class="field">
         {!! Form::label('agricultural_activity', 'Activités agricoles', ['class' => 'label']); !!}
-        {!! Form::checkbox('agricultural_activity', 'option 1', false, [':disabled'=>'job_ads.is_input_disabled']) !!}
+        {!! Form::checkbox('agricultural_activity', 'option 1', false, [':disabled'=>'job_ads.is_input_disabled']); old('agricultural_activity') !!}
         Activité 1
-        {!! Form::checkbox('agricultural_activity', 'option 2', false, [':disabled'=>'job_ads.is_input_disabled']) !!}
+        {!! Form::checkbox('agricultural_activity', 'option 2', false, [':disabled'=>'job_ads.is_input_disabled']); old('agricultural_activity') !!}
         Activité 2
-        {!! Form::checkbox('agricultural_activity', 'option 3', false, [':disabled'=>'job_ads.is_input_disabled']) !!}
+        {!! Form::checkbox('agricultural_activity', 'option 3', false, [':disabled'=>'job_ads.is_input_disabled']); old('agricultural_activity') !!}
         Activité 3
 
     </div>

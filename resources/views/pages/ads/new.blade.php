@@ -29,13 +29,13 @@
 						</div>
 					</div>
 						<div v-show="ad_type_selected === 'land_seek'">
-							@include('components.forms.land_seek_new_ad')
+							@include('pages.ads.land_seek_new_ad')
 						</div>
 						<div v-show="ad_type_selected === 'land_offer'">
-							@include('components.forms.land_offer_new_ad')
+							@include('pages.ads.land_offer_new_ad')
 						</div>
 						<div v-show="ad_type_selected === 'job_offer'">
-							@include('components.forms.job_ad_new_add')
+							@include('pages.ads.job_ad_new_add')
 						</div>
 					</div>
 
