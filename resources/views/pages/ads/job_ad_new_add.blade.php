@@ -5,11 +5,11 @@
             {!! Form::select('is_beneficiary',
                 ['true' => 'En mon nom',
                 'false' => 'Pour le compte d\'une autre personne'],
-                 null,
+                 old('is_beneficiary'),
                  ['placeholder' => 'Veuillez séléctionner...',
                  'required',
                  ':disabled'=>'job_ads.is_input_disabled']);
-                 old('is_beneficiary');!!}
+                 ;!!}
         </div>
     </div>
     <div class="field">
@@ -18,12 +18,12 @@
             {!! Form::select('is_offer',
                 ['true' => 'Je propose une opportunité professionnelle',
                 'false' => 'Je cherche une opportunité professionnelle'],
-                null,
+                old('is_offer'),
                 ['placeholder' => 'Veuillez séléctionner...',
                 'required',
                 ':disabled'=>'job_ads.is_input_disabled',
                 'v-model'=>'job_ads.is_job_opportunity']
-                ); old('is_offer')!!}
+                ); !!}
         </div>
     </div>
     <div class="columns">
@@ -31,11 +31,11 @@
             <div class="field">
                 {!! Form::label('zipCode', 'Code postal', ['class' => 'label']); !!}
                 {!! Form::number('zipCode',
-                 null,
+                 old('zipCode'),
                  ['min'=>1,
                   'class' => 'input',
                   ':disabled'=>'job_ads.is_input_disabled']
-                  );old('zipCode') !!}
+                  ); !!}
 
             </div>
         </div>
@@ -43,21 +43,21 @@
             <div class="field">
                 {!! Form::label('city', 'Commune', ['class' => 'label']); !!}
                 {!! Form::text('city',
-                     null,
+                     old('city'),
                      ['class' => 'input',
                      ':required'=>'job_ads.is_job_opportunity',
                       ':disabled'=>'job_ads.is_input_disabled']
-                     ); old('city')!!}
+                     );!!}
             </div>
         </div>
     </div>
     <div class="field">
         {!! Form::label('agricultural_activity', 'Activités agricoles', ['class' => 'label']); !!}
-        {!! Form::checkbox('agricultural_activity', 'option 1', false, [':disabled'=>'job_ads.is_input_disabled']); old('agricultural_activity') !!}
+        {!! Form::checkbox('agricultural_activity', 'option 1',  old('agricultural_activity'), [':disabled'=>'job_ads.is_input_disabled']); !!}
         Activité 1
-        {!! Form::checkbox('agricultural_activity', 'option 2', false, [':disabled'=>'job_ads.is_input_disabled']); old('agricultural_activity') !!}
+        {!! Form::checkbox('agricultural_activity', 'option 2',  old('agricultural_activity'), [':disabled'=>'job_ads.is_input_disabled']);!!}
         Activité 2
-        {!! Form::checkbox('agricultural_activity', 'option 3', false, [':disabled'=>'job_ads.is_input_disabled']); old('agricultural_activity') !!}
+        {!! Form::checkbox('agricultural_activity', 'option 3',  old('agricultural_activity'), [':disabled'=>'job_ads.is_input_disabled']); !!}
         Activité 3
 
     </div>
@@ -70,38 +70,67 @@
                 'Associé' => 'Associé',
                 'Salariat' => 'Salariat',
                 'Salariat' => 'Membre d\'un collectif'
-                ],null,
+                ],
+                old('job_status'),
                  ['placeholder' => 'Veuillez séléctionner...',
                  'required',
                  ':disabled'=>'job_ads.is_input_disabled',
                  ':required'=>'job_ads.is_job_opportunity'
                  ]
 	          );
-            old('job_status') !!}
+            !!}
         </div>
     </div>
     <div class="field">
         {!! Form::label('experience_farming', 'Expérience dnas le milieu agricole (en années)', ['class' => 'label']); !!}
-        {!! Form::number('experience_farming', null, ['min'=>0, 'class' => 'input', ':disabled'=>'job_ads.is_input_disabled'] ) !!}
+        {!! Form::number('experience_farming',
+                 old('experience_farming'),
+                 ['min'=>0,
+                  'class' => 'input',
+                  ':disabled'=>'job_ads.is_input_disabled'])
+                   !!}
     </div>
     <div class="field">
         {!! Form::label('is_offer', 'Niveau de formation agricole ', ['class' => 'label']); !!}
         <div class="select">
-            {!! Form::select('is_offer', ['sans_diplome' => 'Sans diplôme','cap_agricole'=>'CAP Agricole','brevet_professionnelle_agricole' => 'Brevet professionnelle agricole', 'ingenieur_agricole'=>'Ingénieur agricole', 'bac+2'=>'Bac + 2','bac+3'=>'Bac + 3','bac+4'=>'Bac + 4','master'=>'Master','doctorat'=>'Doctorat', ], null, ['placeholder' => 'Veuillez séléctionner...','required', ':disabled'=>'job_ads.is_input_disabled']); !!}
+            {!! Form::select('is_offer',
+                    ['sans_diplome' => 'Sans diplôme',
+                     'cap_agricole'=>'CAP Agricole',
+                     'brevet_professionnelle_agricole' => 'Brevet professionnelle agricole',
+                     'ingenieur_agricole'=>'Ingénieur agricole'],
+                      old('is_offer'),
+                      ['placeholder' => 'Veuillez séléctionner...',
+                       'required',
+                       ':disabled'=>'job_ads.is_input_disabled']);
+                    !!}
         </div>
     </div>
 
     <div class="field">
         {!! Form::label('about_project', 'Et si vous nous en disiez un peu plus sur votre projet ?', ['class' => 'label']); !!}
-        {!! Form::textarea('about_project', null, ['class' => 'textarea',':required'=>'job_ads.is_job_opportunity', ':disabled'=>'job_ads.is_input_disabled', 'maxlength'=>1000, 'placeholder'=>'Limite de 1000 caractères'] ) !!}
+        {!! Form::textarea('about_project',
+                     old('about_project'),
+                    ['class' => 'textarea',
+                     ':required'=>'job_ads.is_job_opportunity',
+                     ':disabled'=>'job_ads.is_input_disabled',
+                     'maxlength'=>1000,
+                     'placeholder'=>'Limite de 1000 caractères'])
+                      !!}
     </div>
     <div class="field">
         {!! Form::label('about_content', 'Et si vous nous en disiez un peu plus sur vous ?', ['class' => 'label']); !!}
-        {!! Form::textarea('about_content', null, ['class' => 'textarea','required', ':disabled'=>'job_ads.is_input_disabled', 'maxlength'=>1000, 'placeholder'=>'Limite de 1000 caractères'] ) !!}
+        {!! Form::textarea('about_content',
+             old('about_content'),
+            ['class' => 'textarea',
+            'required',
+            ':disabled'=>'job_ads.is_input_disabled',
+             'maxlength'=>1000,
+              'placeholder'=>'Limite de 1000 caractères'])
+            !!}
     </div>
     <div class="field">
         {!! Form::label('title', 'Titre de votre annonce', ['class' => 'label']); !!}
-        {!! Form::text('title', null, ['class' => 'input', 'required', ':disabled'=>'job_ads.is_input_disabled'] ) !!}
+        {!! Form::text('title', old('title'), ['class' => 'input', 'required', ':disabled'=>'job_ads.is_input_disabled'] ) !!}
     </div>
     <div class="field">
         <span>Augmentez votre chance d'être vu! Une photo augmente vos chances d’être recontactés !</span>
@@ -117,17 +146,6 @@
                     </span>
                 </span>
             </label>
-        </div>
-    </div>
-    <div class="field is-grouped">
-        <div class="control">
-            {!! Form::submit('Envoyer',['class'=>'button is-link', ':disabled'=>'job_ads.is_input_disabled']) !!}
-        </div>
-        <div class="control">
-            <button class="button is-light">Sauvergder</button>
-        </div>
-        <div class="control">
-            <button class="button is-link is-light">Annuler</button>
         </div>
     </div>
 </div>
