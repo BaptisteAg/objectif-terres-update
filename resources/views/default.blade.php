@@ -10,8 +10,10 @@
 </head>
 <body>
 @include('layouts.header')
+<div id="app">
+    @yield('main-content')
+</div>
 
-@yield('main-content')
 
 
 @include('layouts.footer')

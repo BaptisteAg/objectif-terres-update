@@ -28,7 +28,6 @@ class AdsTableSeeder extends Seeder
      */
     public function run()
     {
-
         $this->call([
             ResearchSeeder::class,
             ResponseTypeSeeder::class,

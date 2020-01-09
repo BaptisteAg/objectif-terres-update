@@ -42,30 +42,30 @@
 				</div>
 			@endfor
 		</div>
-			<div class="columns is-centered">
-				<div class="column is-half has-text-centered">
-					<button class="button is-link is-medium">Toutes les annonces foncières</button>
-				</div>
+		<div class="columns is-centered">
+			<div class="column is-half has-text-centered">
+				<button class="button is-link is-medium">Toutes les annonces foncières</button>
 			</div>
+		</div>
 	</section>
 	<section class="section">
 		<div class="has-text-centered">
 			<h2 class="title is-1">Offres d'emploi les plus consultés</h2>
 			<div class="columns is-centered">
 				@for ($i = 0; $i < 3; $i++)
-				<div class="column is-one-quarter">
-					<div class="card">
-						<div class="card-image">
-							<figure class="image is-4by3">
-								<img src="https://picsum.photos/200/300" alt="Placeholder image">
-							</figure>
-						</div>
-						<div class="card-content">
-							<p class="title is-4">Titre annonce travail</p>
-							<p class="subtitle is-6">Département ou région</p>
+					<div class="column is-one-quarter">
+						<div class="card">
+							<div class="card-image">
+								<figure class="image is-4by3">
+									<img src="https://picsum.photos/200/300" alt="Placeholder image">
+								</figure>
+							</div>
+							<div class="card-content">
+								<p class="title is-4">Titre annonce travail</p>
+								<p class="subtitle is-6">Département ou région</p>
+							</div>
 						</div>
 					</div>
-				</div>
 				@endfor
 			</div>
 			<div class="columns is-centered">
@@ -87,31 +87,31 @@
 						dispostion un Centre de Ressources donec
 						ullamcorper nulla non metus auctor fringilla.</p>
 				</div>
-					@for ($i = 0; $i < 3; $i++)
-						<div class="column has-text-centered">
-							<div class="card">
-								<div class="card-image">
-									<figure class="image is-4by3">
-										<img src="https://picsum.photos/200/300" alt="Placeholder image">
-									</figure>
-								</div>
-								<div class="card-content">
-									<p class="title is-4">Titre de la card</p>
-									<p class="subtitle is-6">Département ou région</p>
-								</div>
+				@for ($i = 0; $i < 3; $i++)
+					<div class="column has-text-centered">
+						<div class="card">
+							<div class="card-image">
+								<figure class="image is-4by3">
+									<img src="https://picsum.photos/200/300" alt="Placeholder image">
+								</figure>
+							</div>
+							<div class="card-content">
+								<p class="title is-4">Titre de la card</p>
+								<p class="subtitle is-6">Département ou région</p>
 							</div>
 						</div>
-					@endfor
+					</div>
+				@endfor
 			</div>
 		</div>
 	</section>
- 
+
 	@include('components.card_video')
- 
+
 	<section class="section">
-			<div class="container has-text-centered ">
-				<h2 class="title is-2 ">Ils ont réussi avec nous ! </h2>
-			</div>
+		<div class="container has-text-centered ">
+			<h2 class="title is-2 ">Ils ont réussi avec nous ! </h2>
+		</div>
 		<div class="container ">
 			<div id="post_images" class="carousel " >
 				<div class="column is-12 ">
@@ -232,10 +232,10 @@
 			</div>
 		</div>
 	</section>
-    
-    @include('components.faq-accordion')
-    @include('components.study')
-    @include('components.partnering')
+
+	@include('components.faq-accordion')
+	@include('components.study')
+	@include('components.partnering')
 	@include('components.support_terre_liens')
 
 @endsection
@@ -244,7 +244,7 @@
 @section('script')
 	<script src="{{asset('js/bulma-carousel.js')}}"></script>
 	<script>
-		bulmaCarousel.attach('#post_images', {
+        bulmaCarousel.attach('#post_images', {
             slidesToScroll: 1,
             slidesToShow: 2,
             loop: true,
@@ -254,8 +254,8 @@
 	</script>
 
 	<script>
-		let mymap = L.map('my_osm_widget_map', { /* use the same name as your <div id=""> */
-			center: [46.290552, 2.771017], /* set GPS Coordinates */
+        let mymap = L.map('my_osm_widget_map', { /* use the same name as your <div id=""> */
+            center: [46.290552, 2.771017], /* set GPS Coordinates */
             zoom: 5, /* define the zoom level */
             zoomControl: false, /* false = no zoom control buttons displayed */
             scrollWheelZoom: false /* false = scrolling zoom on the map is locked */
@@ -267,9 +267,9 @@
         }).addTo(mymap);
 
         L.marker([46.290552, 2.771017]).addTo(mymap); /* set your location's GPS Coordinates : [LAT,LON] */
-		
+
 	</script>
- 
-    <script src="{{ asset('js/bulma-accordion.js') }}"></script>
-    <script>var accordions = bulmaAccordion.attach();</script>
+
+	<script src="{{ asset('js/bulma-accordion.js') }}"></script>
+	<script>var accordions = bulmaAccordion.attach();</script>
 @endsection
