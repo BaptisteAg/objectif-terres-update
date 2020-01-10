@@ -37,7 +37,7 @@
         </div>
         <div class="column">
             <div class="field">
-                {!! Form::label('region', 'Région', ['class' => 'label']); !!}
+                {!! Form::label('regions', 'Région', ['class' => 'label']); !!}
                 <div class="select">
                     {!! Form::select('region',
                              ['rhones-alpes' => 'Rhônes-Alpes',

@@ -8,6 +8,7 @@ use App\Models\AttributionAd;
 use App\Models\BioCertification;
 use App\Models\Document;
 use App\Models\FavoriteAd;
+use App\Models\InstallationType;
 use App\Models\JobAd;
 use App\Models\LandOfferAd;
 use App\Models\LandSeekAd;
@@ -29,8 +30,14 @@ class AdsTableSeeder extends Seeder
     public function run()
     {
         $this->call([
-            ResearchSeeder::class,
             ResponseTypeSeeder::class,
+            SurfaceRangeSeeder::class,
+            PriceRangeSeeder::class,
+            InstallationTypeSeeder::class,
+            BioCertificationSeeder::class,
+            JobStatusSeeder::class,
+            OfferGenreSeeder::class,
+            ResearchSeeder::class,
             UserToUserMessageSeeder::class,
         ]);
 
@@ -43,12 +50,12 @@ class AdsTableSeeder extends Seeder
             $ad->regions()->save(Region::all()->random())->make();
         });
         factory(LandOfferAd::class, 10)->create()->each(function (LandOfferAd $landOfferAd) {
-            $landOfferAd->bioCertifications()->save(factory(BioCertification::class)->make());
+            $landOfferAd->bioCertifications()->save(BioCertification::all()->random())->make();
             $landOfferAd->productionGenres()->save(factory(ProductionGenre::class)->make());
         });
         factory(LandSeekAd::class, 10)->create()->each(function (LandSeekAd $landSeekAd) {
-            $landSeekAd->surfaceRanges()->save(factory(SurfaceRange::class)->make());
-            $landSeekAd->priceRanges()->save(Factory(PriceRange::class)->make());
+            $landSeekAd->surfaceRanges()->save(SurfaceRange::all()->random())->make();
+            $landSeekAd->priceRanges()->save(PriceRange::all()->random())->make();
         });
         factory(JobAd::class, 10)->create()->each(function (JobAd $jobAd) {
             $jobAd->agriculturalActivity()->save(factory(AgriculturalActivity::class)->make());
