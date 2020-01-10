@@ -31,17 +31,16 @@ class AdsTableSeeder extends Seeder
     {
 
         $this->call([
-//            ResponseTypeSeeder::class,
-//            SurfaceRangeSeeder::class,
-//            PriceRangeSeeder::class,
-//            InstallationTypeSeeder::class,
-//            BioCertificationSeeder::class,
-//            JobStatusSeeder::class,
-//            OfferGenreSeeder::class,
+            ResponseTypeSeeder::class,
+            SurfaceRangeSeeder::class,
+            PriceRangeSeeder::class,
+            InstallationTypeSeeder::class,
+            BioCertificationSeeder::class,
+            JobStatusSeeder::class,
+            OfferGenreSeeder::class,
             ResearchSeeder::class,
             UserToUserMessageSeeder::class,
         ]);
-
 
         factory(Ad::class, 10)->create()->each(function (Ad $ad) {
             $ad->adNotes()->save(factory(AdNote::class)->make());
