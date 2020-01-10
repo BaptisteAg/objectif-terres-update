@@ -1,6 +1,7 @@
 <div id="land_seek_form">
+    <p class="is-size-7">Les champs marqués d'un astérisque (*) sont obligatoires</p>
     <div class="field">
-        {!! Form::label('installation_type', 'Type d\'installation', ['class' => 'label']); !!}
+        {!! Form::label('installation_type', 'Type d\'installation*', ['class' => 'label']); !!}
         <div class="select">
             {!! Form::select('installation_type',
                  ['solo' => 'Individuelle',
@@ -16,7 +17,7 @@
     <div class="columns">
         <div class=" column is-one-quarter">
             <div class="field">
-                {!! Form::label('city', 'Commune ou Code postal', ['class' => 'label']); !!}
+                {!! Form::label('city', 'Commune ou Code postal*', ['class' => 'label']); !!}
                 {!! Form::text('city',
                         old('city'),
                         ['class' => 'input',
@@ -24,15 +25,15 @@
                          ':disabled' => 'land_seek_ads.is_input_disabled']) !!}
             </div>
         </div>
-        <div class="column">
+        <div class="column ">
             <p class="label">Dans un rayon de </p>
-            {!! Form::checkbox('city_range', '5', old('city_range'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+            {!! Form::checkbox('city_range[]', '5', old('city_range[]'), [':disabled'=>'land_seek_ads.is_input_disabled', 'required']) !!}
             5 km
-            {!! Form::checkbox('city_range', '10', old('city_range'),[':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+            {!! Form::checkbox('city_range[]', '10', old('city_range[]'),[':disabled'=>'land_seek_ads.is_input_disabled', 'required']) !!}
             10km
-            {!! Form::checkbox('city_range', '20', old('city_range'),[':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+            {!! Form::checkbox('city_range[]', '20', old('city_range[]'),[':disabled'=>'land_seek_ads.is_input_disabled', 'required']) !!}
             15km
-            {!! Form::checkbox('city_range', '50', old('city_range'),[':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+            {!! Form::checkbox('city_range[]', '50', old('city_range[]'),[':disabled'=>'land_seek_ads.is_input_disabled', 'required']) !!}
             20km
         </div>
         <div class="column">
@@ -66,45 +67,45 @@
         non
     </div>
     <div class="field">
-        {!! Form::label('surface_range', 'Surface recherchée(en ha)', ['class' => 'label']); !!}
-        {!! Form::checkbox('surface_range', '0-5', old('surface_rang'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+        {!! Form::label('surface_range[]', 'Surface recherchée(en ha)', ['class' => 'label']); !!}
+        {!! Form::checkbox('surface_range[]', '0-5', old('surface_rang[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
         0-5
-        {!! Form::checkbox('surface_range', '5-10', old('surface_rang'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+        {!! Form::checkbox('surface_range[]', '5-10', old('surface_rang[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
         5-10
-        {!! Form::checkbox('surface_range', '10-20', old('surface_rang'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+        {!! Form::checkbox('surface_range[]', '10-20', old('surface_rang[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
         10-20
-        {!! Form::checkbox('surface_range', '20-50', old('surface_rang'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+        {!! Form::checkbox('surface_range[]', '20-50', old('surface_rang[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
         20-50
-        {!! Form::checkbox('surface_range', '50-100', old('surface_rang'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+        {!! Form::checkbox('surface_range[]', '50-100', old('surface_rang[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
         50-100
-        {!! Form::checkbox('surface_range', '>100', old('surface_rang'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+        {!! Form::checkbox('surface_range[]', '>100', old('surface_rang[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
         >100
     </div>
     <div class="field">
-        {!! Form::label('production_type', 'Production(s) envisagée(s)', ['class' => 'label']); !!}
-        {!! Form::checkbox('production_type', 'production_type_1', old('production_type'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+        {!! Form::label('production_genre[]', 'Production(s) envisagée(s)', ['class' => 'label']); !!}
+        {!! Form::checkbox('production_genre[]', 'production_genre_1', old('production_genre[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
         Production 1
-        {!! Form::checkbox('production_type', 'production_type_2', old('production_type'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+        {!! Form::checkbox('production_genre[]', 'production_genre_2', old('production_genre[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
         Production 2
-        {!! Form::checkbox('production_type',
+        {!! Form::checkbox('production_genre[]',
                 'other',
-                old('production_type'),
-                ['v-model'=>'land_seek_ads.is_production_type_other',
+                old('production_genre'),
+                ['v-model'=>'land_seek_ads.is_production_genre_other',
                 ':disabled'=>'land_seek_ads.is_input_disabled']) !!}
         Autre
     </div>
-    <div class="field" v-show="land_seek_ads.is_production_type_other">
-        {!! Form::label('other_production_type', 'Veuillez préciser', ['class' => 'label']); !!}
-        {!! Form::text('other_production_type',
-                 old('other_production_type'),
+    <div class="field" v-show="land_seek_ads.is_production_genre_other">
+        {!! Form::label('other_production_genre', 'Veuillez préciser', ['class' => 'label']); !!}
+        {!! Form::text('other_production_genre',
+                 old('other_production_genre'),
                   ['class' => 'input',
                   ':disabled'=>'land_seek_ads.is_input_disabled']) !!}
     </div>
     <div class="field">
-        {!! Form::label('building', 'Habitation(s) et bâti(s)', ['class' => 'label']); !!}
-        {!! Form::checkbox('building', 'has_houses', false, [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+        {!! Form::label('building[]', 'Habitation(s) et bâti(s)', ['class' => 'label']); !!}
+        {!! Form::checkbox('building[]', 'has_houses', old('building[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
         Avec une maison d'habitation existante
-        {!! Form::checkbox('building', 'has_farm_building', false, [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+        {!! Form::checkbox('building[]', 'has_farm_building', old('building[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
         Avec des bâtis agricoles existants
     </div>
     <div class="field">
@@ -113,23 +114,23 @@
             {!! Form::select('offer_genre',
                      ['location' => 'Location',
                      'acquisition' => 'Acquisition',
-                     'undefined' => 'Indifférent'],
+                     '' => 'Indifférent'],
                      old('offer_genre'),
                       ['placeholder' => 'Veuillez choisir...',
-                       'v-model'=>'land_seek_ads.offer_genre']);!!}
+                       'v-model' => 'land_seek_ads.offer_genre']);!!}
         </div>
     </div>
     <div class="field" v-show="land_seek_ads.offer_genre === 'acquisition'">
-        {!! Form::label('price', 'Prix (en €)', ['class' => 'label']); !!}
-        {!! Form::checkbox('price', '< 500000', old('price'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+        {!! Form::label('price[]', 'Prix (en €)', ['class' => 'label']); !!}
+        {!! Form::checkbox('price[]', '<500000', old('price[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
         Moins de 50 000
-        {!! Form::checkbox('price', '50-10000', old('price'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+        {!! Form::checkbox('price[]', '50000-100000', old('price[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
         De 50 à 100 000
-        {!! Form::checkbox('price', '100-200000', old('price'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+        {!! Form::checkbox('price[]', '100000-200000', old('price[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
         De 100 à 200 000
-        {!! Form::checkbox('price', '200-300000', old('price'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+        {!! Form::checkbox('price[]', '200000-300000', old('price[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
         De 200 à 300 000
-        {!! Form::checkbox('price', '>300000', old('price'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
+        {!! Form::checkbox('price[]', '>300000', old('price[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
         Plus de 300 000
     </div>
     <div class="columns">
@@ -151,12 +152,12 @@
         {!! Form::textarea('experience_farming',
                      old('experience_farming'),
                       ['class' => 'textarea',
-                       ':disabled'=>'land_seek_ads.is_input_disabled',
-                       'maxlength'=>1000,
-                       'placeholder'=>'Limite de 1000 caractères']) !!}
+                       ':disabled' => 'land_seek_ads.is_input_disabled',
+                       'maxlength' => 1000,
+                       'placeholder' => 'Limite de 1000 caractères']) !!}
     </div>
     <div class="field">
-        {!! Form::label('about_project', 'Et si vous nous en disiez un peu plus sur votre projet ?', ['class' => 'label']); !!}
+        {!! Form::label('about_project', 'Et si vous nous en disiez un peu plus sur votre projet ?*', ['class' => 'label']); !!}
         {!! Form::textarea('about_project',
                  old('about_projet'),
                   ['class' => 'textarea',
@@ -166,7 +167,7 @@
                    'placeholder'=>'Limite de 1000 caractères']) !!}
     </div>
     <div class="field">
-        {!! Form::label('about_content', 'Et si vous nous en disiez un peu plus sur vous ?', ['class' => 'label']); !!}
+        {!! Form::label('about_content', 'Et si vous nous en disiez un peu plus sur vous ?*', ['class' => 'label']); !!}
         {!! Form::textarea('about_content',
                  old('about_content'),
                  ['class' => 'textarea',
@@ -176,7 +177,7 @@
                  'placeholder'=>'Limite de 1000 caractères']) !!}
     </div>
     <div class="field">
-        {!! Form::label('title', 'Titre de votre annonce', ['class' => 'label']); !!}
+        {!! Form::label('title', 'Titre de votre annonce*', ['class' => 'label']); !!}
         {!! Form::text('title',
                  old('title'),
                  ['class' => 'input',
