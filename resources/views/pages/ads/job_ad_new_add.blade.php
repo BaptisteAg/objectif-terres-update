@@ -38,7 +38,6 @@
 						  'required',
 						  ':disabled'=>'job_ads.is_input_disabled']
 						  ); !!}
-
 			</div>
 		</div>
 		<div class="column">
@@ -73,12 +72,7 @@
 		{!! Form::label('job_status', 'Statut ', ['class' => 'label']); !!}
 		<div class="select">
 			{!! Form::select('job_status',
-					['Espace test' => 'Espace test',
-					'Stage' => 'Stage',
-					'Associé' => 'Associé',
-					'Salariat' => 'Salariat',
-					'Salariat' => 'Membre d\'un collectif'
-					],
+					$jobStatus->pluck('name'),
 					old('job_status'),
 					 ['placeholder' => 'Veuillez séléctionner...',
 					 'required',
