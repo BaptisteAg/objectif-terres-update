@@ -11,6 +11,12 @@ class JobStatusSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\JobStatus::class, 10)->create();
+        \App\Models\JobStatus::insert([
+            ['name' => 'Espace-test', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+            ['name' => 'Stage', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+            ['name' => 'Associé', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+            ['name' => 'Salariat', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+            ['name' => "Membre d'un collectif", "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+        ]);
     }
 }

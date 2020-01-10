@@ -4,7 +4,7 @@
 
 @section('main-content')
 
-   
+
     <section class="section">
         <div class="container">
             <nav class="level">
@@ -20,7 +20,7 @@
                     </div>
                 </div>
             </nav>
-    
+
             <nav class="level">
                 <div class="level-left">
                     <div class="">
@@ -50,9 +50,9 @@
                     </div>
                 </div>
             </nav>
-            
+
             <div class="section">
-    
+
                 <div class="columns is-gapless">
                     <div class="column is-two-fifths">
                         <figure><img src="https://picsum.photos/500/300" alt="Placeholder image"></figure>
@@ -61,10 +61,8 @@
                         <div><span>Partenaire Objectif Terre</span></div>
                     </div>
                 </div>
-            
+
             </div>
         </div>
-        
     </section>
-
 @endsection

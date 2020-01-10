@@ -19,7 +19,7 @@ $factory->define(LandSeekAd::class, function (Faker $faker) {
         'rent_min' => $faker->randomFloat(4),
         'rent_max' => $faker->randomFloat(4),
         'ad_id' => factory(Ad::class),
-        'installation_type_id' => factory(InstallationType::class),
-        'offer_genre_id' => factory(OfferGenre::class),
+        'installation_type_id' => InstallationType::all()->random(),
+        'offer_genre_id' => OfferGenre::all()->random(),
     ];
 });
