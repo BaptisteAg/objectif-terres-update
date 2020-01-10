@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\InstallationType;
 use Illuminate\Database\Seeder;
 
 class InstallationTypeSeeder extends Seeder
@@ -11,6 +12,11 @@ class InstallationTypeSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\InstallationType::class, 10)->create();
+        InstallationType::insert([
+            ['name' => 'Individuelle', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+            ['name' => 'En couple', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+            ['name' => 'Collective', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+            ['name' => 'Ne sait pas encore', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+        ]);
     }
 }

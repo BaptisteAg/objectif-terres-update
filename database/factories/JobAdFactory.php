@@ -16,6 +16,6 @@ $factory->define(JobAd::class, function (Faker $faker) {
         'experience_farming' => $faker->numberBetween(0, 50),
         'ad_id' => factory(Ad::class),
         'education_level_id' => factory(EducationLevel::class),
-        'job_status_id' => factory(JobStatus::class),
+        'job_status_id' => JobStatus::all()->random(),
     ];
 });
