@@ -11,16 +11,8 @@
 |
 */
 
-use Omniphx\Forrest\Providers\Laravel\Facades\Forrest;
-
-Route::get('/', function () {
-    return view('pages.homepage');
-});
-
-
 Route::get('new', 'Ads\AdsController@create');
 Route::post('new', 'Ads\AdsController@store');
-Route::post('new-land-seek-ad', 'Ads\AdsController@storeLandSeekAd');
 
 Route::get('/authenticate', 'SalesForceAuthController@register');
 

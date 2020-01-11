@@ -5,18 +5,19 @@ const formHandling = new Vue({
         land_seek_ads: {
             is_input_disabled: true,
             offer_genre: '',
-            is_production_type_other: false,
+            is_production_genre_other: false,
         },
         land_offer_ads: {
             is_input_disabled: true,
-            offer_genre: '',
             is_activity_transfer: false,
-            is_production_type_other: false,
-            is_production_type_wanted_other: false,
+            is_production_genre_other: false,
+            is_production_genre_wanted_other: false,
+            is_input_required : false
         },
         job_ads: {
             is_input_disabled: true,
             is_job_opportunity: false,
+            is_input_required : false
         }
     },
     watch: {
@@ -40,6 +41,13 @@ const formHandling = new Vue({
             }
 
         },
+        'job_ads.is_job_opportunity': function () {
+            if (this.job_ads.is_job_opportunity === "1") {
+                this.job_ads.is_input_required = true
+            } else if (this.job_ads.is_job_opportunity === '0') {
+                this.job_ads.is_input_required = false
+            }
+        }
     }
 
 })
