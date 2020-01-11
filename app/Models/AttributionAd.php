@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * App\Models\AttributionAd
+ *
  * @property int $id
  * @property int $ad_status_id
  * @property int $lead_type_id
@@ -18,6 +20,24 @@ use Illuminate\Database\Eloquent\Model;
  * @property PpType $ppType
  * @property RefusalType $refusalType
  * @property Ad $ads
+ * @property int|null $pp_type_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereAdStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereArchivedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd wherePpTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereRefusalTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereSfAdminId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereSfOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereShortDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereToCallBack($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class AttributionAd extends Model
 {

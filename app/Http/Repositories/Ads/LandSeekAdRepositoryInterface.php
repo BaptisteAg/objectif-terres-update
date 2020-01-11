@@ -9,7 +9,7 @@ interface LandSeekAdRepositoryInterface
      *
      * @param int
      */
-    public function get($id) : ?LandSeekAd;
+    public function find($id) : ?LandSeekAd;
 
     /**
      * Gets all ads.
@@ -30,14 +30,16 @@ interface LandSeekAdRepositoryInterface
      *
      * @param int
      * @param array
+     * @return LandSeekAd
      */
-    public function update($id, array $data) : LandSeekAd;
+    public function update($id, array $data);
 
     /**
      * Creates an ad.
      *
      * @param int
      * @param array
+     * @return LandSeekAd
      */
-    public function create(array $data) : LandSeekAd;
+    public function create(array $data);
 }

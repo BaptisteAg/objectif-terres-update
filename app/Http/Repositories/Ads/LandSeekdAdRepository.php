@@ -1,53 +1,15 @@
 <?php namespace App\Http\Repositories\Ads;
 
 use App\Htttp\Repositories\LandSeekAdRepositoryInterface;
+use App\Models\InstallationType;
 use App\Models\LandSeekAd;
+use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
-class LandSeekdAdRepository implements LandSeekAdRepositoryInterface
+class LandSeekdAdRepository extends AbstractRepository implements LandSeekAdRepositoryInterface
 {
-    public function __construct()
+    public function entity()
     {
-    }
-
-    /**
-     * Gets an ad by its ID
-     *
-     * @param int
-     */
-    public function get($id): ?LandSeekAd
-    {
-        // TODO: Implement get() method.
-    }
-
-    /**
-     * Gets all ads.
-     *
-     * @return LandSeekAd[]
-     */
-    public function all(): array
-    {
-        // TODO: Implement all() method.
-    }
-
-    /**
-     * Deletes an ad.
-     *
-     * @param int
-     */
-    public function delete($id)
-    {
-        // TODO: Implement delete() method.
-    }
-
-    /**
-     * Updates an ad.
-     *
-     * @param int
-     * @param array
-     */
-    public function update($id, array $data): LandSeekAd
-    {
-        // TODO: Implement update() method.
+        return LandSeekAd::class;
     }
 
     /**
@@ -58,6 +20,14 @@ class LandSeekdAdRepository implements LandSeekAdRepositoryInterface
      */
     public function create(array $data): LandSeekAd
     {
+        $ad = new LandSeekAd();
 
+        $ad->fill($data);
+
+        dd($ad->getAttributes());
+
+        $ad->save();
+
+        return $ad;
     }
 }

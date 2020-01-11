@@ -2,56 +2,23 @@
 
 use App\Htttp\Repositories\AdRepositoryInterface;
 use App\Models\Ad;
+use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
-class AdRepository implements AdRepositoryInterface
+class AdRepository extends AbstractRepository implements AdRepositoryInterface
 {
     /** @var LandSeekdAdRepository  */
-    protected $landSeekdAdRepository;
+    protected $landSeekAdRepository;
 
-    public function __construct(LandSeekdAdRepository $landSeekdAdRepository)
+    public function __construct(LandSeekdAdRepository $landSeekAdRepository)
     {
-        $this->landSeekdAdRepository = $landSeekdAdRepository;
+        parent::__construct();
+
+        $this->landSeekAdRepository = $landSeekAdRepository;
     }
 
-    /**
-     * Gets an ad by its ID
-     *
-     * @param int
-     */
-    public function get($id): ?Ad
+    public function entity()
     {
-        // TODO: Implement get() method.
-    }
-
-    /**
-     * Gets all ads.
-     *
-     * @return Ad[]
-     */
-    public function all(): array
-    {
-        // TODO: Implement all() method.
-    }
-
-    /**
-     * Deletes an ad.
-     *
-     * @param int
-     */
-    public function delete($id)
-    {
-        // TODO: Implement delete() method.
-    }
-
-    /**
-     * Updates an ad.
-     *
-     * @param int
-     * @param array
-     */
-    public function update($id, array $data): Ad
-    {
-        // TODO: Implement update() method.
+        return Ad::class;
     }
 
     /**
@@ -59,13 +26,18 @@ class AdRepository implements AdRepositoryInterface
      *
      * @param int
      * @param array
+     * @throws \Throwable
      */
     public function create(array $data): Ad
     {
         $ad = new Ad();
 
+        dd($data);
+
+        $ad->fill($data);
+
         if($data["ad_type"] === "land_seek") {
-            $landSeekdAd = $this->landSeekdAdRepository->create($data);
+            $landSeekdAd = $this->landSeekAdRepository->create($data);
             $ad->landSeekAd = $landSeekdAd;
         }
 

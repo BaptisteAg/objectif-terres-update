@@ -9,7 +9,7 @@ interface AdRepositoryInterface
      *
      * @param int
      */
-    public function get($id) : ?Ad;
+    public function find($id) : ?Ad;
 
     /**
      * Gets all ads.
@@ -30,8 +30,9 @@ interface AdRepositoryInterface
      *
      * @param int
      * @param array
+     * @return Ad
      */
-    public function update($id, array $data) : Ad;
+    public function update($id, array $properties);
 
     /**
      * Creates an ad.

@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use App\Traits\Documentable;
+use App\Models\Traits\Documentable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
+ * App\Models\Ad
+ *
  * @property int $id
  * @property int $attribution_ad_id
  * @property int $project_id
@@ -23,6 +25,35 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property LandOfferAd $landOfferAd
  * @property LandSeekAd $landSeekAd
  * @property PpToUserMessage[] $ppToUserMessages
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read int|null $ad_messages_count
+ * @property-read int|null $ad_notes_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\City[] $cities
+ * @property-read int|null $cities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Department[] $departments
+ * @property-read int|null $departments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Document[] $documents
+ * @property-read int|null $documents_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\FavoriteAd[] $favoriteAd
+ * @property-read int|null $favorite_ad_count
+ * @property-read int|null $pp_to_user_messages_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
+ * @property-read int|null $regions_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAboutContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAboutProjectContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAttributionAdId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereIsDraft($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereProjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereSfAdminId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereSfPpId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Ad extends Model
 {

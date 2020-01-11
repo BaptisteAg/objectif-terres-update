@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests\Ads;
 
+use App\Http\Requests\Ads\Rulesets\LandSeekRuleset;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AdRequest extends FormRequest
 {
-    use LandSeekAdRequestTrait;
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -25,14 +24,19 @@ class AdRequest extends FormRequest
      */
     public function rules()
     {
-        dd($this->all());
-
         $rules = [
             'ad_type' => "required"
         ];
 
-        if($this->get('ad_type') === "land_seek") {
-            $rules = array_merge($rules, $this->getLandSeekRules());
+        $rulesetsByAdType = [
+            'land_seek' => LandSeekRuleset::class,
+        ];
+
+        foreach($rulesetsByAdType as $adType => $ruleset) {
+            if($this->get('ad_type') === $adType) {
+                $rules = array_merge($rules, app($ruleset));
+                break;
+            }
         }
 
         return $rules;

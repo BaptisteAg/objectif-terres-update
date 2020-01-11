@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use App\Traits\Locationable;
+use App\Models\Traits\Locationable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * App\Models\City
+ *
  * @property int $id
  * @property string $department_code
  * @property string $insee_code
@@ -15,6 +17,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $gps_lat
  * @property float $gps_lng
  * @property Department $department
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $ads
+ * @property-read int|null $ads_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $researches
+ * @property-read int|null $researches_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City query()
+ * @mixin \Eloquent
  */
 class City extends Model
 {
