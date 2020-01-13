@@ -35,24 +35,26 @@
 
 							</div>
 						</div>
-						<div v-if="adTypeSelected === 'land_seek'">
+						<div v-show="adTypeSelected === 'land_seek'">
 							@include('pages.ads.partials.land_seek_new_ad')
 						</div>
-						<div v-if="adTypeSelected === 'land_offer'">
+						<div v-show="adTypeSelected === 'land_offer'">
 							@include('pages.ads.partials.land_offer_new_ad')
 						</div>
-						<div v-if="adTypeSelected === 'job_offer'">
+						<div v-show="adTypeSelected === 'job_offer'">
 							@include('pages.ads.partials.job_ad_new_ad')
 						</div>
-						<div class="field is-grouped" v-show="adTypeSelected != ''">
-							<div class="control">
-								{!! Form::submit('Envoyer',['class'=>'button is-link']) !!}
-							</div>
-							<div class="control">
-								<button class="button is-light">Sauvergder</button>
-							</div>
-							<div class="control">
-								<button class="button is-link is-light">Annuler</button>
+						<div class="section">
+							<div class="field is-grouped" v-show="adTypeSelected != ''">
+								<div class="control">
+									{!! Form::submit('Envoyer',['class'=>'button is-link']) !!}
+								</div>
+								<div class="control">
+									<button class="button is-light">Sauvergder</button>
+								</div>
+								<div class="control">
+									<button class="button is-link is-light">Annuler</button>
+								</div>
 							</div>
 						</div>
 					</div>

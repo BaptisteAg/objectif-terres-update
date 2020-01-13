@@ -5,6 +5,8 @@
  */
 require('./bootstrap');
 window.Vue = require('vue');
+import Vuelidate from 'vuelidate';
+Vue.use(Vuelidate);
 
 require ('./pages/ads/new');
 /**

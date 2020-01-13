@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Ads;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\Ads\AdRepository;
 use App\Http\Requests\Ads\AdRequest;
+use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
+use App\Models\City;
+use App\Models\Department;
+use App\Models\EducationLevel;
 use App\Models\InstallationType;
 use App\Models\JobStatus;
 use App\Models\OfferGenre;
@@ -36,6 +40,8 @@ class AdsController extends Controller
 		$regions = Region::all();
 		$cityRanges = [5, 10, 20, 50];
 		$productionGenres = ProductionGenre::all();
+		$agriculturalActivities = AgriculturalActivity::all();
+		$educationLevels = EducationLevel::all();
 
 		return view('pages.ads.new', compact('installationTypes',
 			'surfaceRanges',
@@ -51,7 +57,9 @@ class AdsController extends Controller
 			'offerGenresBuilding',
 			'offerGenresLand',
 			'cityRanges',
-			'productionGenres'));
+			'productionGenres',
+			'agriculturalActivities',
+			'educationLevels'));
 	}
 
     /**

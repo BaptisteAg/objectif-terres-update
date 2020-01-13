@@ -35,16 +35,16 @@
 	<div data-required="true" class="field">
 		{!! Form::label('land_offer[surface_range][]', 'Surface du foncier agricole(en ha)*', ['class' => 'label']); !!}
 
-		@foreach ($surfaceRanges->pluck('surface') as $surface)
+		@foreach ($surfaceRanges->pluck('surface', 'id') as $surface)
 			{!! Form::checkbox('land_offer[surface_range][]', $surface,  old('land_offer[surface_range[]]'), [':disabled'=>'landOfferAd.isInputDisabled']) !!}
 			{{$surface}}
 		@endforeach
 	</div>
 	<div class="field">
 		{!! Form::label('land_offer[lands_offer_genre][]', 'Type de cession du foncier', ['class' => 'label']); !!}
-		@foreach ($offerGenresLand->pluck('name') as $landOffer)
-		{!! Form::checkbox('land_offer[lands_offer_genre][]', $landOffer,  old('land_offer[lands_offer_genre[]]'), [':disabled'=>'landOfferAd.isInputDisabled']) !!}
-		{{$landOffer}}
+		@foreach ($offerGenresLand->pluck('name', 'id') as $landOffer)
+			{!! Form::checkbox('land_offer[lands_offer_genre][]', $landOffer,  old('land_offer[lands_offer_genre[]]'), [':disabled'=>'landOfferAd.isInputDisabled']) !!}
+			{{$landOffer}}
 		@endforeach
 	</div>
 	<p class="has-text-centered is-size-4">Bâti agricole</p>
@@ -68,10 +68,9 @@
 		<div class="column ">
 			<div class="field">
 				{!! Form::label('land_offer[building_offer_genre][]', 'Type de cession', ['class' => 'label']); !!}
-
-				@foreach ($offerGenresBuilding->pluck('name') as $buildingOffer)
-				{!! Form::checkbox('land_offer[building_offer_genre][]', $buildingOffer, old('land_offer[building_offer_genre[]]'), [':disabled'=>'landOfferAd.isInputDisabled']) !!}
-				{{$buildingOffer}}
+				@foreach ($offerGenresBuilding->pluck('name', 'id') as $buildingOffer)
+					{!! Form::checkbox('land_offer[building_offer_genre][]', $buildingOffer, old('land_offer[building_offer_genre[]]'), [':disabled'=>'landOfferAd.isInputDisabled']) !!}
+					{{$buildingOffer}}
 				@endforeach
 			</div>
 		</div>
@@ -93,9 +92,9 @@
 		<div class="column ">
 			<div class="field">
 				{!! Form::label('land_offer[house_offer_genre][]', 'Type de cession', ['class' => 'label']); !!}
-				@foreach ($offerGenresHouse->pluck('name') as $houseOffer)
-				{!! Form::checkbox('land_offer[house_offer_genre][]', $houseOffer, old('land_offer[house_offer_genre[]]'), [':disabled' => 'landOfferAd.isInputDisabled']) !!}
-				{{$houseOffer}}
+				@foreach ($offerGenresHouse->pluck('name', 'id') as $houseOffer)
+					{!! Form::checkbox('land_offer[house_offer_genre][]', $houseOffer, old('land_offer[house_offer_genre[]]'), [':disabled' => 'landOfferAd.isInputDisabled']) !!}
+					{{$houseOffer}}
 				@endforeach
 			</div>
 		</div>
@@ -144,21 +143,24 @@
 		</div>
 		<div class="column" v-show="landOfferAd.is_activity_transfer === '1'">
 			{!! Form::label('land_offer[land_transfert_deadline]', 'Avant quelle date souhaitez-vous transmettre votre ferme ?', ['class' => 'label']); !!}
-			{!! Form::date('land_offer[land_transfert_deadline]', \Carbon\Carbon::now(), [ ':disabled' => 'landOfferAd.isInputDisabled'] ) !!}
+			{!! Form::date('land_offer[land_transfert_deadline]', old('land_offer[land_availability]'), [ ':disabled' => 'landOfferAd.isInputDisabled'] ) !!}
 		</div>
 	</div>
 	<div class="field" v-show="landOfferAd.is_activity_transfer === '1'">
 		{!! Form::label('land_offer[production_genre][]', 'Système de production en place*', ['class' => 'label']); !!}
-		{!! Form::checkbox('land_offer[production_genre][]',
-		'production_genre_1',
-		old('land_offer[production_genre[]]'),
-		[':disabled' => 'landOfferAd.isInputDisabled']) !!}
-		Production 1
-		{!! Form::checkbox('land_offer[production_genre][]',
-		'production_genre_2',
-		old('land_offer[production_genre[]]'),
-		[':disabled' => 'landOfferAd.isInputDisabled']) !!}
-		Production 2
+
+		@foreach ($productionGenres->pluck('name', 'id') as $id => $productionGenre)
+		{!! Form::checkbox(
+		'land_offer[production_genre][]',
+		$id,
+		in_array($id, old('land_offer[production_genre][]', [])),
+		[
+		':disabled' => 'landOfferAd.isInputDisabled'
+		]
+		) !!}
+		{{$productionGenre}}
+		@endforeach
+
 		{!! Form::checkbox('land_offer[production_genre][]',
 		'autre',
 		old('land_offer[production_genre[]]'),
@@ -178,16 +180,17 @@
 			{!! Form::label('land_offer[production_genre_wanted][]', 'Production envisageables', ['class' => 'label']); !!}
 		</div>
 		{!! Form::label('land_offer[production_genre_wanted][]', 'Production envisageables*', ['class' => 'label']); !!}
-		{!! Form::checkbox('land_offer[production_genre_wanted][]',
-				'production_genre_1',
-				old('land_offer[production_genre_wanted[]]'),
-				[':disabled' => 'landOfferAd.isInputDisabled']) !!}
-		Production 1
-		{!! Form::checkbox('land_offer[production_genre_wanted][]',
-				'production_genre_2',
-				old('land_offer[production_genre_wanted[]]'),
-				[':disabled' => 'landOfferAd.isInputDisabled']) !!}
-		Production 2
+		@foreach ($productionGenres->pluck('name', 'id') as $id => $productionGenre)
+			{!! Form::checkbox(
+			'land_offer[production_genre_wanted][]',
+			$id,
+			in_array($id, old('land_offer[production_genre_wanted][]', [])),
+			[
+			':disabled' => 'landOfferAd.isInputDisabled'
+			]
+			) !!}
+			{{$productionGenre}}
+		@endforeach
 		{!! Form::checkbox('land_offer[production_genre_wanted][]',
 				'autre',
 				old('land_offer[production_genre_wanted[]]'),
@@ -239,12 +242,12 @@
 	</div>
 	<div class="field">
 		{!! Form::label('land_offer[bio_certification][]', 'Certification bio des terres*', ['class' => 'label']); !!}
-		@foreach ($bioCertifications->pluck('name') as $bioCertification)
-		{!! Form::checkbox('land_offer[bio_certification][]',
-		$bioCertification,
-		old('land_offer[bio_certification[]]'),
-		[':disabled' => 'landOfferAd.isInputDisabled']) !!}
-		{{$bioCertification}}
+		@foreach ($bioCertifications->pluck('name', 'id') as $bioCertification)
+			{!! Form::checkbox('land_offer[bio_certification][]',
+			$bioCertification,
+			old('land_offer[bio_certification[]]'),
+			[':disabled' => 'landOfferAd.isInputDisabled']) !!}
+			{{$bioCertification}}
 		@endforeach
 	</div>
 	<p class="has-text-centered is-size-4">Prix de vente ou loyer mensuel (en €)</p>

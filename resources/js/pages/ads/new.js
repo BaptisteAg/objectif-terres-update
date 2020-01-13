@@ -1,3 +1,4 @@
+import { required, minLength, between } from 'vuelidate/lib/validators'
 const NewAd = new Vue({
     el: '#form-new-ad',
     data: {
@@ -6,10 +7,14 @@ const NewAd = new Vue({
             isInputDisabled: true,
             offerGenre: '',
             isProductionGenreOther: false,
+            zipCode : "",
+            regions:"",
+            departments:""
+
         },
         landOfferAd: {
             isInputDisabled: true,
-            is_activity_transfer: false,
+            isActivityTransfer: false,
             isProductionGenreOther: false,
             isProductionGenreWantedOther: false,
             isInputRequired : false
@@ -30,5 +35,20 @@ const NewAd = new Vue({
         'jobAd.isJobOpportunity': function () {
             this.jobAd.isInputRequired = this.jobAd.isJobOpportunity === "1";
         }
-    }
+    },
+    validations : {
+        landSeekAd : {
+            installationType : {
+                required,
+            },
+            zipCode : {
+                minLength : minLength(5),
+                required,
+            },
+
+
+        },
+        validationGroup : ['landSeekAd.installationType', 'landSeekAd.zipCode', ]
+    },
+
 });

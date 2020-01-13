@@ -26,6 +26,7 @@
     "dependencies": {
         "bulma": "^0.8.0",
         "bulma-accordion": "^2.0.1",
-        "bulma-carousel": "^4.0.4"
+        "bulma-carousel": "^4.0.4",
+        "vuelidate": "^0.7.4"
     }
 }
