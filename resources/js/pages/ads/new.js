@@ -1,54 +1,28 @@
-import { required, minLength, between } from 'vuelidate/lib/validators'
-const NewAd = new Vue({
-    el: '#form-new-ad',
-    data: {
-        adTypeSelected: '',
-        landSeekAd: {
-            isInputDisabled: true,
-            offerGenre: '',
-            isProductionGenreOther: false,
-            zipCode : "",
-            regions:"",
-            departments:""
+import LandSeekNewAd from './components/land-seek-new-ad'
+import LandOfferNewAd from './components/land-offer-new-ad'
+import JobOfferNewAd from './components/job-offer-new-ad'
 
-        },
-        landOfferAd: {
-            isInputDisabled: true,
-            isActivityTransfer: false,
-            isProductionGenreOther: false,
-            isProductionGenreWantedOther: false,
-            isInputRequired : false
-        },
-        jobAd: {
-            isInputDisabled: true,
-            isJobOpportunity: false,
-            isInputRequired : false
+const NewAd = Vue.component('new-ad', {
+    components: {
+        'new-land-seek-ad' : LandSeekNewAd,
+        'new-land-offer-ad' : LandOfferNewAd,
+        'new-job-offer-ad' : JobOfferNewAd
+    },
+    props: {
+        oldAdTypeSelected: String
+    },
+    data() {
+        return {
+            adTypeSelected: this.oldAdTypeSelected,
         }
+    },
+    mounted() {
+
+    },
+    methods: {
+
     },
     watch: {
-        adTypeSelected: function () {
-            this.landSeekAd.isInputDisabled = this.adTypeSelected !== 'land_seek';
-            this.landOfferAd.isInputDisabled = this.adTypeSelected !== 'land_offer';
-            this.jobAd.isInputDisabled = this.adTypeSelected !== 'job_offer';
-
-        },
-        'jobAd.isJobOpportunity': function () {
-            this.jobAd.isInputRequired = this.jobAd.isJobOpportunity === "1";
-        }
-    },
-    validations : {
-        landSeekAd : {
-            installationType : {
-                required,
-            },
-            zipCode : {
-                minLength : minLength(5),
-                required,
-            },
-
-
-        },
-        validationGroup : ['landSeekAd.installationType', 'landSeekAd.zipCode', ]
-    },
+    }
 
 });

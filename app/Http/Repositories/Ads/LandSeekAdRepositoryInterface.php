@@ -8,15 +8,16 @@ interface LandSeekAdRepositoryInterface
      * Gets an ad by its ID
      *
      * @param int
+     * @return LandSeekAd
      */
-    public function find($id) : ?LandSeekAd;
+    public function find($id);
 
     /**
      * Gets all ads.
      *
      * @return LandSeekAd[]
      */
-    public function all() : array;
+    public function all($paginate = null);
 
     /**
      * Deletes an ad.
