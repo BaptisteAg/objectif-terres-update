@@ -48,7 +48,7 @@
                 <p>Une initiative Terre de Liens</p>
             </div>
             <div class="column is-2">
-                {!! Form::open(['url' => '']) !!}
+                {!! Form::open(['url' => 'search']) !!}
                 <p>Je cherche</p>
                 <div class="select">
                     <label for="select"></label>
@@ -57,14 +57,12 @@
             </div>
             <div class="column is-2">
                 <div class="control">
-                    <label class="radio is-block">
-                        {{ Form::radio('land', 'de terres/ferme') }}
-{{--                        <input type="radio" name="land">--}}
+                    <label class="radio is-block" for="land">
+                        <input id="land" type="radio" name="ad_category" value="land">
                         de terres/ferme
                     </label>
                     <label class="radio is-block is-marginless" for="job">
-                        {{ Form::radio('job', 'd\'emploi') }}
-{{--                        <input type="radio" name="job">--}}
+                        <input id="job" type="radio" name="ad_category" value="job">
                         d'emploi
                     </label>
                 </div>
@@ -73,6 +71,7 @@
                 <p>Où</p>
                 <div class="select">
                     {{ Form::select('research_location', array_merge(['all' => 'Toutes les régions'], $regions_array)) }}
+                    {{ Form::select('research_location', ['all' => 'Toutes les régions', $regions_array]) }}
                 </div>
                 {!! Form::submit('Rechercher', ['class' => 'button']) !!}
 {{--                <button class="button">Rechercher</button>--}}

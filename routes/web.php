@@ -19,3 +19,5 @@ Route::get('/authenticate', 'SalesForceAuthController@register');
 Route::get('/researches', function() {
     return view('pages.researches');
 });
+
+Route::post('/search', 'Researches\ResearchesController@index');
