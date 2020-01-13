@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use App\Traits\ProductionableGenre;
+use App\Models\Traits\ProductionableGenre;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\belongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
+ * App\Models\LandSeekAd
+ *
  * @property int $id
  * @property int $ad_id
  * @property int $installation_type_id
@@ -26,6 +28,31 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property OfferGenre $offerGenre
  * @property PriceRange[] $priceRanges
  * @property SurfaceRange[] $surfaceRanges
+ * @property int|null $offer_genre_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read int|null $price_ranges_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenres
+ * @property-read int|null $production_genres_count
+ * @property-read int|null $surface_ranges_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereAdId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereExperienceFarming($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereHasFarmBuildings($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereHasHouses($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereInstallationTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereIsBio($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereOfferGenreId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereProductionTypeAdd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereRentMax($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereRentMin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class LandSeekAd extends Model
 {

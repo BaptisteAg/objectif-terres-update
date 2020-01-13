@@ -1,6 +1,6 @@
-<section class="section">
+<section class="section has-background-grey-lighter">
     <div class="container">
-        <div class="columns">
+        <div class="columns ">
             <div class="column is-6">
                 <h2 class="title is-3">Soutenir Terre de Liens c'est préserver notre avenir</h2>
                 <div class="columns">

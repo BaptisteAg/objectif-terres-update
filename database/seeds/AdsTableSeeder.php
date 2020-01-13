@@ -29,7 +29,6 @@ class AdsTableSeeder extends Seeder
      */
     public function run()
     {
-
         $this->call([
             ResponseTypeSeeder::class,
             SurfaceRangeSeeder::class,
