@@ -48,23 +48,23 @@
                 <p>Une initiative Terre de Liens</p>
             </div>
             <div class="column is-2">
+                {!! Form::open(['url' => '']) !!}
                 <p>Je cherche</p>
                 <div class="select">
                     <label for="select"></label>
-                    <select id="select">
-                        <option>Des offres</option>
-                        <option>Des propositions</option>
-                    </select>
+                    {{ Form::select('ad_type', ['offer' => 'Des offres', 'seek' => 'Des demandes']) }}
                 </div>
             </div>
             <div class="column is-2">
                 <div class="control">
                     <label class="radio is-block">
-                        <input type="radio" name="answer">
+                        {{ Form::radio('land', 'de terres/ferme') }}
+{{--                        <input type="radio" name="land">--}}
                         de terres/ferme
                     </label>
-                    <label class="radio is-block is-marginless">
-                        <input type="radio" name="answer">
+                    <label class="radio is-block is-marginless" for="job">
+                        {{ Form::radio('job', 'd\'emploi') }}
+{{--                        <input type="radio" name="job">--}}
                         d'emploi
                     </label>
                 </div>
@@ -72,17 +72,16 @@
             <div class="column is-3">
                 <p>Où</p>
                 <div class="select">
-                    <label for="select"></label>
-                    <select id="select">
-                        <option>Toutes les régions</option>
-                        <option>Auvergne Rhône Alpes</option>
-                    </select>
+                    {{ Form::select('research_location', array_merge(['all' => 'Toutes les régions'], $regions_array)) }}
                 </div>
-                <button class="button">Rechercher</button>
+                {!! Form::submit('Rechercher', ['class' => 'button']) !!}
+{{--                <button class="button">Rechercher</button>--}}
             </div>
             <div class="column is-2">
                 <a href="/">Plus de critère</a>
+                {!! Form::close() !!}
             </div>
+
         </div>
     </div>
     <div class="container is-fluid">
@@ -127,7 +126,7 @@
             </div>
         </nav>
     </div>
-    
+
 </header>
 
 
