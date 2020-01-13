@@ -12,8 +12,10 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.2",
         "laravel/tinker": "^1.0",
+        "laravel/ui": "^1.1",
         "laravelcollective/html": "^6.0",
-        "omniphx/forrest": "^2.5"
+        "omniphx/forrest": "^2.5",
+        "ozankurt/repoist": "^3.2"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",

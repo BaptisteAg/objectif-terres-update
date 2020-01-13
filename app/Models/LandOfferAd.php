@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use App\Traits\BioCertifiable;
-use App\Traits\ProductionableGenre;
+use App\Models\Traits\BioCertifiable;
+use App\Models\Traits\ProductionableGenre;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
+ * App\Models\LandOfferAd
+ *
  * @property int $id
  * @property int $ad_id
  * @property int $building_id
@@ -26,6 +28,32 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property Building $building
  * @property House $house
  * @property Land $land
+ * @property int|null $is_activity_transfer
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BioCertification[] $bioCertifications
+ * @property-read int|null $bio_certifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenres
+ * @property-read int|null $production_genres_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereAcceptUseZipCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereAdId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereAltitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereBuildingId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereHouseId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereIsActivityTransfer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereIsBeneficiary($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereIsCallForApplicationCommunity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereIsCallForApplicationTerreDeLiens($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereIsCallForApplicationTestArea($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereLandId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereWaterAccess($value)
+ * @mixin \Eloquent
  */
 class LandOfferAd extends Model
 {
