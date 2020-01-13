@@ -22,6 +22,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region query()
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereSlug($value)
  */
 class Region extends Model
 {

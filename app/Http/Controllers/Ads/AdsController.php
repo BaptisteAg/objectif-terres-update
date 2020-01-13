@@ -3,16 +3,17 @@
 namespace App\Http\Controllers\Ads;
 
 use App\Http\Controllers\Controller;
-use App\Http\Repositories\Ads\AdRepository;
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\BioCertification;
+use App\Models\City;
+use App\Models\Department;
 use App\Models\InstallationType;
 use App\Models\JobStatus;
 use App\Models\OfferGenre;
 use App\Models\PriceRange;
+use App\Models\Region;
 use App\Models\SurfaceRange;
 use App\Services\Ads\AdService;
-use Illuminate\Support\Collection;
 
 
 class AdsController extends Controller
@@ -29,12 +30,9 @@ class AdsController extends Controller
         $offerGenresHouse = OfferGenre::where('offer_genre_model', 'House')->get();
         $offerGenresBuilding = OfferGenre::where('offer_genre_model', 'Building')->get();
         $offerGenresLand = OfferGenre::where('offer_genre_model', 'Land')->get();
-        //$cities = City::all();
-        //$departments = Department::all();
-        //$regions = Region::all();
-        $cities = new Collection();
-        $departments = new Collection();
-        $regions = new Collection();
+        $cities = City::all();
+        $departments = Department::all();
+        $regions = Region::all();
 
         return view('pages.ads.new', compact(
             'installationTypes',
@@ -62,8 +60,6 @@ class AdsController extends Controller
     public function store(AdRequest $request, AdService $adService)
     {
         $data = $request->validated();
-
-        dd($data);
 
         $ad = $adService->create($data);
 

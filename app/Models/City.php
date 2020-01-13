@@ -25,6 +25,14 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City query()
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereDepartmentCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereGpsLat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereGpsLng($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereInseeCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereZipCode($value)
  */
 class City extends Model
 {
