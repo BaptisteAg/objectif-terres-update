@@ -5,6 +5,7 @@ const formHandling = new Vue({
         land_seek_ads: {
             is_input_disabled: true,
             offer_genre: '',
+            production_genre_selected : [],
             is_production_genre_other: false,
         },
         land_offer_ads: {

@@ -35,14 +35,14 @@
 	<div data-required="true" class="field">
 		{!! Form::label('surface_range[]', 'Surface du foncier agricole(en ha)*', ['class' => 'label']); !!}
 
-		@foreach ($surfaceRanges->pluck('surface') as $surface)
+		@foreach ($surfaceRanges->pluck('surface', 'id') as $surface)
 			{!! Form::checkbox('surface_range[]', $surface,  old('surface_range[]'), [':disabled'=>'land_offer_ads.is_input_disabled']) !!}
 			{{$surface}}
 		@endforeach
 	</div>
 	<div class="field">
 		{!! Form::label('lands_offer_genre[]', 'Type de cession du foncier', ['class' => 'label']); !!}
-		@foreach ($offerGenresLand->pluck('name') as $landOffer)
+		@foreach ($offerGenresLand->pluck('name', 'id') as $landOffer)
 		{!! Form::checkbox('lands_offer_genre[]', $landOffer,  old('lands_offer_genre[]'), [':disabled'=>'land_offer_ads.is_input_disabled']) !!}
 		{{$landOffer}}
 		@endforeach
@@ -69,7 +69,7 @@
 			<div class="field">
 				{!! Form::label('building_offer_genre[]', 'Type de cession', ['class' => 'label']); !!}
 
-				@foreach ($offerGenresBuilding->pluck('name') as $buildingOffer)
+				@foreach ($offerGenresBuilding->pluck('name', 'id') as $buildingOffer)
 				{!! Form::checkbox('building_offer_genre[]', $buildingOffer, old('building_offer_genre[]'), [':disabled'=>'land_offer_ads.is_input_disabled']) !!}
 				{{$buildingOffer}}
 				@endforeach
@@ -93,7 +93,7 @@
 		<div class="column ">
 			<div class="field">
 				{!! Form::label('house_offer_genre[]', 'Type de cession', ['class' => 'label']); !!}
-				@foreach ($offerGenresHouse->pluck('name') as $houseOffer)
+				@foreach ($offerGenresHouse->pluck('name', 'id') as $houseOffer)
 				{!! Form::checkbox('house_offer_genre[]', $houseOffer, old('house_offer_genre[]'), [':disabled' => 'land_offer_ads.is_input_disabled']) !!}
 				{{$houseOffer}}
 				@endforeach
@@ -239,7 +239,7 @@
 	</div>
 	<div class="field">
 		{!! Form::label('bio_certification[]', 'Certification bio des terres*', ['class' => 'label']); !!}
-		@foreach ($bioCertifications->pluck('name') as $bioCertification)
+		@foreach ($bioCertifications->pluck('name', 'id') as $bioCertification)
 		{!! Form::checkbox('bio_certification[]',
 		$bioCertification,
 		old('bio_certification[]'),

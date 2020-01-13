@@ -30,13 +30,13 @@ class AdsTableSeeder extends Seeder
     public function run()
     {
         $this->call([
-            ResponseTypeSeeder::class,
+       /*     ResponseTypeSeeder::class,
             SurfaceRangeSeeder::class,
             PriceRangeSeeder::class,
             InstallationTypeSeeder::class,
             BioCertificationSeeder::class,
             JobStatusSeeder::class,
-            OfferGenreSeeder::class,
+            OfferGenreSeeder::class,*/
             ResearchSeeder::class,
             UserToUserMessageSeeder::class,
         ]);
@@ -51,7 +51,7 @@ class AdsTableSeeder extends Seeder
         });
         factory(LandOfferAd::class, 10)->create()->each(function (LandOfferAd $landOfferAd) {
             $landOfferAd->bioCertifications()->save(BioCertification::all()->random())->make();
-            $landOfferAd->productionGenres()->save(factory(ProductionGenre::class)->make());
+            $landOfferAd->productionGenres()->save(ProductionGenre::all()->random())->make();
         });
         factory(LandSeekAd::class, 10)->create()->each(function (LandSeekAd $landSeekAd) {
             $landSeekAd->surfaceRanges()->save(SurfaceRange::all()->random())->make();

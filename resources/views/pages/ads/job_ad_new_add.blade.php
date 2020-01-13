@@ -72,7 +72,7 @@
 		{!! Form::label('job_status', 'Statut ', ['class' => 'label']); !!}
 		<div class="select">
 			{!! Form::select('job_status',
-					$jobStatus->pluck('name'),
+					$jobStatus->pluck('name', 'id'),
 					old('job_status'),
 					 ['placeholder' => 'Veuillez séléctionner...',
 					 'required',

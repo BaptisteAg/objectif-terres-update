@@ -4,7 +4,7 @@
 		{!! Form::label('installation_type', 'Type d\'installation*', ['class' => 'label']); !!}
 		<div class="select">
 			{!! Form::select('installation_type',
- 				$installationTypes->pluck('name'),
+ 				$installationTypes->pluck('name', 'id'),
 				 old('installation_type'),
 				 ['placeholder' => 'Choisir un type d\'installation...',
 				 'required',
@@ -24,21 +24,17 @@
 		</div>
 		<div class="column ">
 			<p class="label">Dans un rayon de </p>
-			{!! Form::checkbox('city_range[]', '5', old('city_range[]'), [':disabled'=>'land_seek_ads.is_input_disabled', 'required']) !!}
-			5 km
-			{!! Form::checkbox('city_range[]', '10', old('city_range[]'),[':disabled'=>'land_seek_ads.is_input_disabled', 'required']) !!}
-			10km
-			{!! Form::checkbox('city_range[]', '20', old('city_range[]'),[':disabled'=>'land_seek_ads.is_input_disabled', 'required']) !!}
-			15km
-			{!! Form::checkbox('city_range[]', '50', old('city_range[]'),[':disabled'=>'land_seek_ads.is_input_disabled', 'required']) !!}
-			20km
+			@foreach($cityRanges as $cityRange)
+				{!! Form::checkbox('city_range[]', $cityRange, old('city_range[]'), [':disabled'=>'land_seek_ads.is_input_disabled', 'required']) !!}
+				{{$cityRange}} km
+			@endforeach
 		</div>
 		<div class="column">
 			<div class="field">
 				{!! Form::label('region', 'Région', ['class' => 'label']); !!}
 				<div class="select">
 					{!! Form::select('region',
-							 $regions->pluck('name'),
+							 $regions->pluck('name', 'id'),
 							 old('region'),
 							 ['placeholder' => 'Veuillez choisir...',
 							  ':disabled'=>'land_seek_ads.is_input_disabled']); !!}
@@ -64,23 +60,22 @@
 	</div>
 	<div class="field">
 		{!! Form::label('surface_range[]', 'Surface recherchée(en ha)', ['class' => 'label']); !!}
-		@foreach ($surfaceRanges->pluck('surface') as $surface)
+		@foreach ($surfaceRanges->pluck('surface', 'id') as $surface)
 			{!! Form::checkbox('surface_range[]', $surface, old('surface_rang[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
 			{{$surface}}
 		@endforeach
 	</div>
 	<div class="field">
 		{!! Form::label('production_genre[]', 'Production(s) envisagée(s)', ['class' => 'label']); !!}
-		{!! Form::checkbox('production_genre[]', 'production_genre_1', old('production_genre[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
-		Production 1
-		{!! Form::checkbox('production_genre[]', 'production_genre_2', old('production_genre[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
-		Production 2
+		@foreach ($productionGenres->pluck('name') as $productionGenre)
 		{!! Form::checkbox('production_genre[]',
-		'other',
-		old('production_genre'),
-		['v-model'=>'land_seek_ads.is_production_genre_other',
-		':disabled'=>'land_seek_ads.is_input_disabled']) !!}
-		Autre
+				$productionGenre,
+				 old('production_genre[]'),
+				 [':disabled'=>'land_seek_ads.is_input_disabled',
+				  'v-model'=>'land_seek_ads.production_genre_selected']) !!}
+		{{$productionGenre}}
+		@endforeach
+
 	</div>
 	<div class="field" v-show="land_seek_ads.is_production_genre_other">
 		{!! Form::label('other_production_genre', 'Veuillez préciser', ['class' => 'label']); !!}
@@ -100,7 +95,7 @@
 		{!! Form::label('offer_genre', 'Accès au foncier souhaité', ['class' => 'label']); !!}
 		<div class="select">
 			{!! Form::select('offer_genre',
-					 $offerGenresLandSeek->pluck('name'),
+					 $offerGenresLandSeek->pluck('name', 'id'),
 					 old('offer_genre'),
 					  ['placeholder' => 'Veuillez choisir...',
 					   'v-model' => 'land_seek_ads.offer_genre']);!!}
@@ -108,7 +103,7 @@
 	</div>
 	<div class="field" v-show="land_seek_ads.offer_genre === '1'">
 		{!! Form::label('price[]', 'Prix (en €)', ['class' => 'label']); !!}
-		@foreach ($priceRanges->pluck('price') as $price)
+		@foreach ($priceRanges->pluck('price', 'id') as $price)
 			{!! Form::checkbox('price[]', $price, old('price[]'), [':disabled'=>'land_seek_ads.is_input_disabled']) !!}
 			{{$price}}
 		@endforeach
