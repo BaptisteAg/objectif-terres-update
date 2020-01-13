@@ -24,6 +24,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department query()
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereRegionCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereSlug($value)
  */
 class Department extends Model
 {
