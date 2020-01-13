@@ -1,6 +1,6 @@
 <?php namespace App\Http\Requests\Rulesets;
 
-interface Ruleset
+interface RulesetInterface
 {
     public function get() : array;
 }

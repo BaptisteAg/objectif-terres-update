@@ -1,8 +1,8 @@
 <?php namespace App\Http\Requests\Ads\Rulesets;
 
-use App\Http\Requests\Rulesets\Ruleset;
+use App\Http\Requests\Rulesets\RulesetInterface;
 
-class LandSeekRuleset implements Ruleset
+class LandSeekRuleset implements RulesetInterface
 {
     public function get(): array
     {

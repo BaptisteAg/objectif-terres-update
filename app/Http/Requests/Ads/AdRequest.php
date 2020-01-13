@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Ads;
 
 use App\Http\Requests\Ads\Rulesets\LandSeekRuleset;
+use App\Http\Requests\Rulesets\RulesetInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AdRequest extends FormRequest
@@ -32,9 +33,11 @@ class AdRequest extends FormRequest
             'land_seek' => LandSeekRuleset::class,
         ];
 
-        foreach($rulesetsByAdType as $adType => $ruleset) {
+        foreach($rulesetsByAdType as $adType => $rulesetClass) {
             if($this->get('ad_type') === $adType) {
-                $rules = array_merge($rules, app($ruleset));
+                /** @var RulesetInterface $ruleset */
+                $ruleset = app($rulesetClass);
+                $rules = array_merge($rules, $ruleset->get());
                 break;
             }
         }
