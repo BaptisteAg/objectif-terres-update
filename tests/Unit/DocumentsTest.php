@@ -28,7 +28,7 @@ class DocumentsTest extends TestCase
     public function test()
     {
 //        $document = factory(Document::class)->create();
-//        $ad = factory(Ad::class)->create();
+//        $ad = factory(AdRequest::class)->create();
 //        $adNote = factory(AdNote::class)->create();
 //
 //        $ad->documents()->save($document);

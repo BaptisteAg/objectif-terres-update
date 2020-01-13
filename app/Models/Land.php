@@ -2,16 +2,33 @@
 
 namespace App\Models;
 
-use App\Traits\OfferableGenre;
+use App\Models\Traits\OfferableGenre;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * App\Models\Land
+ *
  * @property int $id
  * @property float $area
  * @property float $price
  * @property string $land_availability
  * @property string $land_transfer_deadline
  * @property LandOfferAd $landOfferAds
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OfferGenre[] $offerGenres
+ * @property-read int|null $offer_genres_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land whereArea($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land whereLandAvailability($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land whereLandTransferDeadline($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Land extends Model
 {

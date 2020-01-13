@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use App\Traits\Locationable;
+use App\Models\Traits\Locationable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * App\Models\Department
+ *
  * @property int $id
  * @property string $region_code
  * @property string $code
@@ -13,6 +15,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $slug
  * @property Region $region
  * @property City[] $cities
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $ads
+ * @property-read int|null $ads_count
+ * @property-read int|null $cities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $researches
+ * @property-read int|null $researches_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department query()
+ * @mixin \Eloquent
  */
 class Department extends Model
 {

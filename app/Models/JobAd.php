@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * App\Models\JobAd
+ *
  * @property int $id
  * @property int $ad_id
  * @property int $education_level_id
@@ -18,6 +20,23 @@ use Illuminate\Database\Eloquent\Model;
  * @property EducationLevel $educationLevel
  * @property JobStatus $jobStatus
  * @property AgriculturalActivity[] $agriculturalActivity
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read int|null $agricultural_activity_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereAdId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereEducationLevelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereExperienceFarming($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereIsBeneficiary($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereIsOffer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereJobStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class JobAd extends Model
 {

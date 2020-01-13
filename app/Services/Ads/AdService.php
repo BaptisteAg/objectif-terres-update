@@ -1,0 +1,32 @@
+<?php namespace App\Services\Ads;
+
+use App\Http\Repositories\Ads\AdRepository;
+use Illuminate\Support\Facades\DB;
+
+class AdService
+{
+    /**
+     * @var AdRepository
+     */
+    protected $repository;
+
+    public function __construct(AdRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    /**
+     * @param $data
+     * @throws \Throwable
+     */
+    public function create($data)
+    {
+        $ad =  DB::transaction(function() use($data) {
+            $ad = $this->repository->create($data);
+
+            return $ad;
+        });
+
+        return $ad;
+    }
+}

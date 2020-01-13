@@ -29,21 +29,22 @@
 									 'land_offer'=>'Offre de foncier',
 									 'job_offer'=>'Opportunité professionnelle'],
 									 old('ad_type'),
-									 ['v-model'=>'ad_type_selected',
+									 ['v-model'=>'adTypeSelected',
 									  'placeholder' => 'Choisir un type d\'annonce...',
 									  'required']) }}
+
 							</div>
 						</div>
-						<div v-show="ad_type_selected === 'land_seek'">
-							@include('pages.ads.land_seek_new_ad')
+						<div v-if="adTypeSelected === 'land_seek'">
+							@include('pages.ads.partials.land_seek_new_ad')
 						</div>
-						<div v-show="ad_type_selected === 'land_offer'">
-							@include('pages.ads.land_offer_new_ad')
+						<div v-if="adTypeSelected === 'land_offer'">
+							@include('pages.ads.partials.land_offer_new_ad')
 						</div>
-						<div v-show="ad_type_selected === 'job_offer'">
-							@include('pages.ads.job_ad_new_add')
+						<div v-if="adTypeSelected === 'job_offer'">
+							@include('pages.ads.partials.job_ad_new_ad')
 						</div>
-						<div class="field is-grouped" v-show="ad_type_selected != ''">
+						<div class="field is-grouped" v-show="adTypeSelected != ''">
 							<div class="control">
 								{!! Form::submit('Envoyer',['class'=>'button is-link']) !!}
 							</div>
@@ -55,7 +56,6 @@
 							</div>
 						</div>
 					</div>
-
 					<div class="column"></div>
 					{!! Form::close() !!}
 				</div>
