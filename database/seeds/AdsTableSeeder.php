@@ -62,6 +62,5 @@ class AdsTableSeeder extends Seeder
             $jobAd->agriculturalActivity()->save(factory(AgriculturalActivity::class)->make());
         });
 
-
     }
 }
