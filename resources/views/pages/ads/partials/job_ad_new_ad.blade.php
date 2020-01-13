@@ -12,7 +12,7 @@
                 [
                      'placeholder' => 'Veuillez séléctionner...',
                      'required',
-                     ':disabled'=>'jobAd.isInputDisabled'
+                     ':disabled'=>'isInputDisabled'
                 ]
              ) !!}
         </div>
@@ -29,8 +29,8 @@
                 [
                     'placeholder' => 'Veuillez séléctionner...',
                     'required',
-                    ':disabled'=>'jobAd.isInputDisabled',
-                    'v-model'=>'jobAd.isJobOpportunity',
+                    ':disabled'=>'isInputDisabled',
+                    'v-model'=>'isJobOpportunity',
                 ]
             ) !!}
         </div>
@@ -44,37 +44,37 @@
                          ['min'=>1,
                           'class' => 'input',
                           'required',
-                          ':disabled'=>'jobAd.isInputDisabled']
+                          ':disabled'=>'isInputDisabled']
                           ); !!}
             </div>
         </div>
         <div class="column">
             <div class="field">
-                <div v-show="jobAd.isInputRequired === true">
+                <div v-show="isInputRequired === true">
                     {!! Form::label('job_ad[city]', 'Commune*', ['class' => 'label']); !!}
                 </div>
                 {!! Form::label('job_ad[city]', 'Commune', ['class' => 'label']); !!}
                 {!! Form::text('job_ad[city]',
                          old('job_ad[city]'),
                          ['class' => 'input',
-                         ':required'=>'jobAd.isInputRequired',
-                          ':disabled'=>'jobAd.isInputDisabled']
+                         ':required'=>'isInputRequired',
+                          ':disabled'=>'isInputDisabled']
                          );!!}
             </div>
         </div>
     </div>
     <div class="field">
         {!! Form::label('job_ad[agricultural_activity][]', 'Activités agricoles*', ['class' => 'label']); !!}
-        {!! Form::checkbox('job_ad[agricultural_activity][]', 'option 1',  old('job_ad[agricultural_activity[]]'), [':disabled'=>'jobAd.isInputDisabled']); !!}
+        {!! Form::checkbox('job_ad[agricultural_activity][]', 'option 1',  old('job_ad[agricultural_activity[]]'), [':disabled'=>'isInputDisabled']); !!}
         Activité 1
-        {!! Form::checkbox('job_ad[agricultural_activity][]', 'option 2',  old('job_ad[agricultural_activity[]]'), [':disabled'=>'jobAd.isInputDisabled']);!!}
+        {!! Form::checkbox('job_ad[agricultural_activity][]', 'option 2',  old('job_ad[agricultural_activity[]]'), [':disabled'=>'isInputDisabled']);!!}
         Activité 2
-        {!! Form::checkbox('job_ad[agricultural_activity][]', 'option 3',  old('job_ad[agricultural_activity[]]'), [':disabled'=>'jobAd.isInputDisabled']); !!}
+        {!! Form::checkbox('job_ad[agricultural_activity][]', 'option 3',  old('job_ad[agricultural_activity[]]'), [':disabled'=>'isInputDisabled']); !!}
         Activité 3
 
     </div>
     <div class="field">
-        <div v-show="jobAd.isInputRequired === true">
+        <div v-show="isInputRequired === true">
             {!! Form::label('job_ad[job_status]', 'Statut* ', ['class' => 'label']); !!}
         </div>
         {!! Form::label('job_ad[job_status]', 'Statut ', ['class' => 'label']); !!}
@@ -84,8 +84,8 @@
                     old('job_ad[job_status]'),
                      ['placeholder' => 'Veuillez séléctionner...',
                      'required',
-                     ':disabled'=>'jobAd.isInputDisabled',
-                     ':required'=>'jobAd.isInputRequired']);!!}
+                     ':disabled'=>'isInputDisabled',
+                     ':required'=>'isInputRequired']);!!}
         </div>
     </div>
     <div class="field">
@@ -94,7 +94,7 @@
                  old('job_ad[experience_farming]'),
                  ['min'=>0,
                   'class' => 'input',
-                  ':disabled'=>'jobAd.isInputDisabled'])
+                  ':disabled'=>'isInputDisabled'])
                    !!}
     </div>
     <div class="field">
@@ -108,11 +108,11 @@
                       old('job_ad[is_offer]'),
                       ['placeholder' => 'Veuillez séléctionner...',
                        'required',
-                       ':disabled'=>'jobAd.isInputDisabled']);
+                       ':disabled'=>'isInputDisabled']);
                     !!}
         </div>
     </div>
-    <div v-show="jobAd.isInputRequired === true">
+    <div v-show="isInputRequired === true">
         {!! Form::label('job_ad[about_project]', 'Et si vous nous en disiez un peu plus sur votre projet ?*', ['class' => 'label']); !!}
     </div>
     <div class="field">
@@ -120,8 +120,8 @@
         {!! Form::textarea('job_ad[about_project]',
                  old('job_ad[about_project]'),
                 ['class' => 'textarea',
-                 ':required'=>'jobAd.isInputRequired',
-                 ':disabled'=>'jobAd.isInputDisabled',
+                 ':required'=>'isInputRequired',
+                 ':disabled'=>'isInputDisabled',
                  'maxlength'=>1000,
                  'placeholder'=>'Limite de 1000 caractères'])
                   !!}
@@ -132,7 +132,7 @@
                 old('job_ad[about_content]'),
                 ['class' => 'textarea',
                 'required',
-                ':disabled'=>'jobAd.isInputDisabled',
+                ':disabled'=>'isInputDisabled',
                  'maxlength'=>1000,
                   'placeholder'=>'Limite de 1000 caractères'])
                 !!}
@@ -143,13 +143,13 @@
                  old('job_ad[title]'),
                   ['class' => 'input',
                    'required',
-                    ':disabled'=>'jobAd.isInputDisabled'] ) !!}
+                    ':disabled'=>'isInputDisabled'] ) !!}
     </div>
     <div class="field">
         <span>Augmentez votre chance d'être vu! Une photo augmente vos chances d’être recontactés !</span>
         <div class="file">
             <label class="file-label">
-                {!! Form::file('job_ad[image]', ['class' => 'file-input', ':disabled'=>'jobAd.isInputDisabled'] ) !!}
+                {!! Form::file('job_ad[image]', ['class' => 'file-input', ':disabled'=>'isInputDisabled'] ) !!}
                 <span class="file-cta">
                     <span class="file-icon">
                         <i class="fas fa-upload"></i>

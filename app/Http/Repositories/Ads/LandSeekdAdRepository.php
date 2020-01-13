@@ -1,7 +1,6 @@
 <?php namespace App\Http\Repositories\Ads;
 
 use App\Htttp\Repositories\LandSeekAdRepositoryInterface;
-use App\Models\InstallationType;
 use App\Models\LandSeekAd;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 

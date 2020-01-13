@@ -9,14 +9,14 @@ interface AdRepositoryInterface
      *
      * @param int
      */
-    public function find($id) : ?Ad;
+    public function find($id);
 
     /**
      * Gets all ads.
      *
      * @return Ad[]
      */
-    public function all() : array;
+    public function all($paginate = null);
 
     /**
      * Deletes an ad.

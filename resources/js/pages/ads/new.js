@@ -1,34 +1,28 @@
-const NewAd = new Vue({
-    el: '#form-new-ad',
-    data: {
-        adTypeSelected: '',
-        landSeekAd: {
-            isInputDisabled: true,
-            offerGenre: '',
-            isProductionGenreOther: false,
-        },
-        landOfferAd: {
-            isInputDisabled: true,
-            is_activity_transfer: false,
-            isProductionGenreOther: false,
-            isProductionGenreWantedOther: false,
-            isInputRequired : false
-        },
-        jobAd: {
-            isInputDisabled: true,
-            isJobOpportunity: false,
-            isInputRequired : false
+import LandSeekNewAd from './components/land-seek-new-ad'
+import LandOfferNewAd from './components/land-offer-new-ad'
+import JobOfferNewAd from './components/job-offer-new-ad'
+
+const NewAd = Vue.component('new-ad', {
+    components: {
+        'new-land-seek-ad' : LandSeekNewAd,
+        'new-land-offer-ad' : LandOfferNewAd,
+        'new-job-offer-ad' : JobOfferNewAd
+    },
+    props: {
+        oldAdTypeSelected: String
+    },
+    data() {
+        return {
+            adTypeSelected: this.oldAdTypeSelected,
         }
     },
-    watch: {
-        adTypeSelected: function () {
-            this.landSeekAd.isInputDisabled = this.adTypeSelected !== 'land_seek';
-            this.landOfferAd.isInputDisabled = this.adTypeSelected !== 'land_offer';
-            this.jobAd.isInputDisabled = this.adTypeSelected !== 'job_offer';
+    mounted() {
 
-        },
-        'jobAd.isJobOpportunity': function () {
-            this.jobAd.isInputRequired = this.jobAd.isJobOpportunity === "1";
-        }
+    },
+    methods: {
+
+    },
+    watch: {
+
     }
 });
