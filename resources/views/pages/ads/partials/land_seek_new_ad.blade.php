@@ -5,21 +5,27 @@
         <div class="select">
             {!! Form::select('land_seek[installation_type_id]',
                  $installationTypes->pluck('name', 'id'),
-                 old('land_seek[installation_type]'),
-                 ['placeholder' => 'Choisir un type d\'installation...',
-                 'required',
-                 ':disabled' => 'isInputDisabled']); !!}
+                 old('land_seek[installation_type_id]'),
+                 [
+                     'placeholder' => 'Choisir un type d\'installation...',
+                     'required',
+                     ':disabled' => 'isInputDisabled'
+                 ]); !!}
         </div>
     </div>
     <div class="columns">
         <div class=" column is-one-quarter">
             <div class="field">
-                {!! Form::label('land_seek[city]', 'Commune ou Code postal*', ['class' => 'label']); !!}
-                {!! Form::text('land_seek[city]',
-                        old('land_seek[city]'),
-                        ['class' => 'input',
-                         'required',
-                         ':disabled' => 'isInputDisabled']) !!}
+                {!! Form::label('land_seek[cities]', 'Commune ou Code postal*', ['class' => 'label']); !!}
+                <autocomplete
+                    name="land_seek[cities]"
+                    src="/json/cities"
+                    old="{{json_encode(old('land_seek[cities]'))}}"
+                    class="input"
+                    required
+                    :disabled="isInputDisabled"
+                >
+                </autocomplete>
             </div>
         </div>
         <div class="column ">
@@ -39,7 +45,7 @@
                 <div class="select">
                     {!! Form::select('land_seek[regions][]',
                              $regions->pluck('name', 'id'),
-                             old('land_seek[region]'),
+                             old('land_seek[regions]'),
                              ['placeholder' => 'Veuillez choisir...',
                               ':disabled' => 'isInputDisabled']); !!}
                 </div>
@@ -48,10 +54,15 @@
         <div class="column">
             <div class="field">
                 {!! Form::label('land_seek[departments][]', 'Départements', ['class' => 'label']); !!}
-                {!! Form::text('land_seek[departments][]',
+                {!! Form::select('land_seek[departments][]',
+                     $departments->pluck('name', 'id'),
                      old('land_seek[departments]'),
-                    ['class' => 'input',
-                    ':disabled' => 'isInputDisabled']) !!}
+                    [
+                        'multiple' => true,
+                        'class' => 'input',
+                        ':disabled' => 'isInputDisabled'
+                    ])
+                !!}
             </div>
         </div>
     </div>
@@ -188,7 +199,8 @@
     </div>
     <div class="field">
         <label class="checkbox">
-            <input type="checkbox" required>
+            <input type="checkbox" name="confirm_project_follows_chart" :disabled="isInputDisabled"
+                   {{ old('confirm_project_follows_chart') ? 'checked' : '' }} required>
             Je certifie que mon projet correspond à la <a href="/">charte de Terre de Liens</a>
         </label>
     </div>

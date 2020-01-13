@@ -104,7 +104,7 @@
 	<div class="field">
 		{!! Form::checkbox('land_offer[is_call_for_application_community]',
 		'true',
-		old('land_offer[is_call_for_application_community[]]'),
+		old('land_offer[is_call_for_application_community]'),
 		[':disabled' => 'isInputDisabled']) !!}
 		Il s'agit d’un appel à candidatures dans le cadre d'un projet soutenu par une collectivité
 	</div>
@@ -285,7 +285,7 @@
 	</div>
 	<div class="field">
 		<label class="checkbox">
-			<input type="checkbox" required>
+			<input type="checkbox" name="confirm_price_fermage" :disabled="isInputDisabled" required>
 			Je certifie que le prix est conforme à l’<a>indice des fermages de mon département</a>
 		</label>
 	</div>
@@ -348,7 +348,7 @@
 	</div>
 	<div class="field">
 		<label class="checkbox">
-			<input type="checkbox" name="certification_charte" required>
+			<input type="checkbox" name="certification_charte" :disabled="isInputDisabled" required>
 			Je certifie que mon projet correspond à la <a href="/">charte de Terre de Liens</a>
 		</label>
 	</div>
