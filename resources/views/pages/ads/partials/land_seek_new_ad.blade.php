@@ -19,11 +19,11 @@
                 {!! Form::label('land_seek[cities]', 'Commune ou Code postal*', ['class' => 'label']); !!}
                 <autocomplete
                     name="land_seek[cities]"
-                    src="/json/cities"
-                    old="{{json_encode(old('land_seek[cities]'))}}"
                     class="input"
                     required
                     :disabled="isInputDisabled"
+                    :src="/json/cities"
+                    :selected="{{json_encode(old('land_seek[cities]', []))}}"
                 >
                 </autocomplete>
             </div>

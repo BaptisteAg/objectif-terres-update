@@ -19,3 +19,9 @@ Route::get('/authenticate', 'SalesForceAuthController@register');
 Route::get('/researches', function() {
     return view('pages.researches');
 });
+
+Route::prefix('json')->group(function () {
+   Route::get('cities', 'Json\LocationableController@cities');
+   Route::get('regions', 'Json\LocationableController@regions');
+   Route::get('departments', 'Json\LocationableController@departments');
+});
