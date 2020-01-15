@@ -70,8 +70,8 @@
                             required
                             :disabled="isInputDisabled"
                             src="/json/locationables"
-                            :on-select="onZoneSelect"
                             :on-data-render="onZoneDataRender"
+                            v-on:autocomplete-select="onZoneSelect"
                     >
                     </autocomplete>
                 </div>

@@ -14,6 +14,10 @@ class LocationableController extends Controller
 {
     public function locationables(Request $request)
     {
+        if (!$request->get('q')) {
+            return response()->json(['error' => 'La requête est vide.']);
+        }
+
         return response()->json(array_merge(
             $this->searchRegions($request->get('q')),
             $this->searchDepartments($request->get('q')),
@@ -73,10 +77,6 @@ class LocationableController extends Controller
      */
     protected function search(string $type, string $q, $eloquentQuery, array $columns, \Closure $renderer)
     {
-        if (!$q) {
-            return response()->json(['error' => 'La requête est vide.']);
-        }
-
         $q = strtolower($q);
 
         foreach ($columns as $column) {

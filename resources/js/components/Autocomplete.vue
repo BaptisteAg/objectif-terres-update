@@ -1,5 +1,5 @@
 <template>
-    <input type="text" class="autocomplete-input" ref="input" v-model="value" v-on:click="onClick">
+    <input type="text" class="autocomplete-input" ref="input" v-model="value" v-on:click="onClick" v-on:awesomplete-select="onSelect">
 </template>
 
 <style lang="scss">
@@ -26,10 +26,6 @@
             onDataRender: {
                 type : Function
             },
-            onSelect: {
-                type: Function,
-                required: true
-            },
             onResultsLoaded: {
                 type: Function,
                 default: _ => {}
@@ -37,7 +33,6 @@
         },
         data() {
             return {
-                id: 'awesomplete_' + Math.random().toString(36).substr(2, 9),
                 value: '',
                 timeout: null,
                 isFetching: false,
@@ -54,9 +49,7 @@
 
             input.addEventListener('awesomplete-select', e => {
                 e.preventDefault();
-                this.onSelect({
-                    ...e.text
-                });
+                this.onSelect(e.text);
                 this.$awesomplete.close();
                 input.value = '';
             })
@@ -67,6 +60,12 @@
             }
         },
         methods: {
+            onSelect(e) {
+                e.preventDefault();
+                this.$emit('autocomplete-select', e.text);
+                this.$awesomplete.close();
+                input.value = '';
+            },
             update(cooldown) {
                 const query = this.value;
 
