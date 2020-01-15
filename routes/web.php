@@ -20,11 +20,11 @@ Route::post('new', 'Ads\AdsController@store');
 
 Route::get('/authenticate', 'SalesForceAuthController@register');
 
-Route::get('/researches', function() {
-    return view('pages.researches');
-});
+//Route::get('/researches', function() {
+//    return view('pages.researches');
+//});
 
-Route::post('/search', 'Researches\ResearchesController@index');
+Route::post('/recherches', 'Researches\ResearchesController@index');
 
 Route::prefix('json')->group(function () {
    Route::get('cities', 'Json\LocationableController@cities');

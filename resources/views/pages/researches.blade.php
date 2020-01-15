@@ -68,7 +68,11 @@
                         <div>
                             {{ implode(", ", $regionName[$ad->id]) }}
                         </div>
-                        <div><span>{{ $land[$ad->id]->price }}</span> € | <span>{{ $land[$ad->id]->area }}</span> ha</div>
+                        @if($typeAd === 'landOfferAd')
+                            <div><span>{{ $land[$ad->id]->price }}</span> € | <span>{{ $land[$ad->id]->area }}</span> ha</div>
+                        @else
+                            <div><span></span></div>
+                        @endif
                     </div>
                     <div class="column">
                         <nav class="level">
@@ -79,7 +83,11 @@
                             </div>
                             <div class="level-right">
                                 <div class="level-item">
-                                    <span>Publié aujourd'hui</span>
+                                    @if($ad->created_at->isToday())
+                                        <span>Publié aujourd'hui</span>
+                                    @else
+                                        <span>Publié {{ $ad->created_at->diffForHumans() }}</span>
+                                    @endif
                                 </div>
                             </div>
                         </nav>

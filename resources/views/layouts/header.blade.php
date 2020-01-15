@@ -48,7 +48,7 @@
                 <p>Une initiative Terre de Liens</p>
             </div>
             <div class="column is-2">
-                {!! Form::open(['url' => 'search']) !!}
+                {!! Form::open(['url' => 'recherches']) !!}
                 <p>Je cherche</p>
                 <div class="select">
                     <label for="select"></label>

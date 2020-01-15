@@ -23,9 +23,13 @@ class ResearchesController extends Controller
 
         $ads = [];
         $adsType = [];
+        $regionName = [];
 
         if($ad_category === 'land') {
             $typeAd = ($ad_type === 'offer_ads') ? 'landOfferAd' : 'landSeekAd';
+            $building = [];
+            $land = [];
+            $house = [];
 
             if (!in_array('0', $idRegions)) {
                 $regions = Region::whereIn('id', $idRegions)->get();
@@ -46,11 +50,11 @@ class ResearchesController extends Controller
                 $regions = Region::all();
                 foreach ($regions as $region) {
                     $ads_in_regions = Region::where('id', '=', $region->id)->first()->ads;
-                    $regionName[0] = 'France entière';
                     foreach ($ads_in_regions as $key => $ad) {
                         if ($ad->$typeAd) {
                             $ads[$ad->id] = $ad;
                             $adsType[$ad->id] = $ad->$typeAd;
+                            $regionName[$ad->id][$key] = $region->name;
                             $building[$ad->id] = Building::where('id','=', $ad->$typeAd->building_id)->first();
                             $land[$ad->id] = Land::where('id', $ad->$typeAd->land_id)->first();
                             $house[$ad->id] = House::where('id', $ad->$typeAd->house_id)->first();
@@ -58,6 +62,7 @@ class ResearchesController extends Controller
                     }
                 }
             }
+
             return view('pages.researches', compact('ads', 'typeAd', 'adsType', 'regionName', 'building', 'land', 'house'));
 
         } else {
@@ -91,10 +96,5 @@ class ResearchesController extends Controller
 
             return view('pages.researches', compact('ads', 'typeAd', 'adsType', 'regionName'));
         }
-
-
-
-
-
     }
 }
