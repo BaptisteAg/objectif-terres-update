@@ -2,6 +2,8 @@ import LandSeekNewAd from './components/land-seek-new-ad'
 import LandOfferNewAd from './components/land-offer-new-ad'
 import JobOfferNewAd from './components/job-offer-new-ad'
 
+import Vue from 'vue'
+
 const NewAd = Vue.component('new-ad', {
     components: {
         'new-land-seek-ad' : LandSeekNewAd,
@@ -23,6 +25,6 @@ const NewAd = Vue.component('new-ad', {
 
     },
     watch: {
-
     }
+
 });
