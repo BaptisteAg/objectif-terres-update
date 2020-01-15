@@ -25,12 +25,9 @@
 		</div>
 		<div class="column ">
 			<p class="label">Dans un rayon de </p>
-
-			@foreach ($cityRanges as $cityRange)
-				{!! Form::checkbox('land_seek[city_range][]', $cityRange,  old('land_seek[city_range][]'), [':disabled'=>'isInputDisabled']) !!}
-				{{$cityRange}}
-			@endforeach
-
+			<vue-slider
+					:data="[5,10,20,50]"
+			></vue-slider>
 		</div>
 		<div class="column">
 			<div class="field">

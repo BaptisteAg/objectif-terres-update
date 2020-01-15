@@ -37,7 +37,6 @@ class AdsController extends Controller
         $cities = City::all();
         $departments = Department::all();
         $regions = Region::all();
-        $cityRanges = [5,10,20,50];
         $productionGenres = ProductionGenre::all();
         $agriculturalActivities = AgriculturalActivity::all();
         $educationLevels = EducationLevel::all();
@@ -56,11 +55,9 @@ class AdsController extends Controller
 			'offerGenresHouse',
 			'offerGenresBuilding',
 			'offerGenresLand',
-			'cityRanges',
 			'productionGenres',
 			'agriculturalActivities',
 			'educationLevels',
-			'cityRanges',
 			'productionGenres',
 			'agriculturalActivities',
 			'educationLevels'));
