@@ -13,7 +13,7 @@
 		<p class="help is-danger" v-show="!$v.formInput.installationType.required">Ce champs est requis.</p>
 	</div>
 	<div class="columns">
-		<div class=" column is-one-quarter">
+		<div class=" column is-half">
 			<div class="field">
 				{!! Form::label('land_seek[city]', 'Commune ou Code postal*', ['class' => 'label']); !!}
 				{!! Form::text('land_seek[city]',
@@ -26,10 +26,12 @@
 		<div class="column ">
 			<p class="label">Dans un rayon de </p>
 			<vue-slider
-					:data="[5,10,20,50]"
+					:data="[0,5,10,20,50]"
 			></vue-slider>
 		</div>
-		<div class="column">
+	</div>
+	<div class="columns">
+		<div class="column is-half">
 			<div class="field">
 				{!! Form::label('land_seek[regions][]', 'Régions', ['class' => 'label']); !!}
 				<div class="select">
@@ -143,6 +145,16 @@
 	</div>
 	<div class="field">
 		<label class="label">Expérience dans le domaine agricole</label>
+		<button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left" data-tooltip="Pour certains cédants, l’expérience est
+				un plus. N’hésitez pas à détailler ici de
+				précédentes expériences
+				professionnelles dans le domaine
+				agricole, de stages ou de bénévolat sur
+				des fermes ou encore si vous êtes
+				titulaires de diplômes agricoles.">
+			<i class="fas fa-info-circle"></i>
+		</button>
+
 		<text-area-counter
 				id="land_seek[experience_farming]"
 				:max-length=1000
@@ -153,7 +165,12 @@
 	</div>
 	<div class="field">
 		<label class="label">Et si vous nous en disiez un peu plus sur votre projet ?*</label>
-
+		<button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left" data-tooltip="Quel est le projet que vous portez ?
+			Qu’est-ce qui motive votre projet ?
+			Quelles sont les valeurs que vous
+			défendez ? etc.">
+			<i class="fas fa-info-circle"></i>
+		</button>
 		<text-area-counter
 				id="land_seek[about_project]"
 				:max-length=1000
@@ -165,6 +182,9 @@
 	</div>
 	<div class="field">
 		<label class="label">Et si vous nous en disiez un peu plus sur vous ?*</label>
+		<button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left" data-tooltip="Qui êtes-vous en quelques mots ?">
+			<i class="fas fa-info-circle"></i>
+		</button>
 
 		<text-area-counter
 				id="land_seek[about_content]"
@@ -176,6 +196,15 @@
 	</div>
 	<div class="field">
 		{!! Form::label('land_seek[title]', 'Titre de votre annonce*', ['class' => 'label']); !!}
+
+		<button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left" data-tooltip="Le titre de l’annonce est primordial ! Il
+				s’agit de votre carte de visite sur la
+				plateforme. Un titre clair et bien
+				formulé augmentera vos chances de
+				contacts !">
+			<i class="fas fa-info-circle"></i>
+			</button>
+
 		{!! Form::text('land_seek[title]',
 				 old('land_seek[title]'),
 				 ['class' => 'input',

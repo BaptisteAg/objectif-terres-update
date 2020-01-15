@@ -147,6 +147,13 @@
 
 	<div class="field">
 		<label class="label">Et si vous nous en disiez un peu plus sur vous ?*</label>
+		<button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left" data-tooltip="Dans le cas où vous êtes une personne
+				morale dans le cadre d’un appel à
+				candidatures, présentez votre structure
+				et vos missions principales en quelques
+				lignes.">
+			<i class="fas fa-info-circle"></i>
+		</button>
 		<text-area-counter
 				id="job_ad[about_content]"
 				:max-length=1000
@@ -157,6 +164,13 @@
 	</div>
 	<div class="field">
 		{!! Form::label('job_ad[title]', 'Titre de votre annonce*', ['class' => 'label']); !!}
+		<button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left" data-tooltip="Le titre de l’annonce est primordial ! Il
+				s’agit de votre carte de visite sur la
+				plateforme. Un titre clair et bien
+				formulé augmentera vos chances de
+				contacts !">
+			<i class="fas fa-info-circle"></i>
+		</button>
 		{!! Form::text('job_ad[title]',
 				 old('job_ad[title]'),
 				  ['class' => 'input',

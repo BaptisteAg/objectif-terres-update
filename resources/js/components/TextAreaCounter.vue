@@ -38,7 +38,6 @@
         },
         methods: {
             countdown: function () {
-
                 this.remainingCount = this.maxCount - this.message.length;
                 this.hasError = this.remainingCount < 0;
             },

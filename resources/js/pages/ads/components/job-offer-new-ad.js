@@ -1,6 +1,6 @@
 import FormNewAdMixin from "./mixins/form-new-ad-mixin";
 import FormValidationMixin from '../components/mixins/form-new-ad-validation-mixin';
-import {required, maxLength, numeric, minLength} from 'vuelidate/lib/validators'
+import {required, maxLength, numeric, minLength, requiredIf} from 'vuelidate/lib/validators'
 import TextAreaCounter from "../../../components/TextAreaCounter";
 
 export default {
@@ -37,7 +37,10 @@ export default {
             zipCode : {
                 numeric,
                 minLength : minLength(5),
-                maxLength : maxLength(5)
+                maxLength : maxLength(5),
+                required : requiredIf(function(){
+                    return !this.isInputRequired
+                })
             },
             experienceFarming : {numeric},
             title : {
