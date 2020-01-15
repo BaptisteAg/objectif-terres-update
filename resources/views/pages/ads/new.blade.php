@@ -37,21 +37,21 @@
                             </div>
 
                             <new-land-seek-ad inline-template
-                                              v-if="adTypeSelected === 'land_seek'"
+                                              v-show="adTypeSelected === 'land_seek'"
                                               :is-input-disabled="adTypeSelected !== 'land_seek'"
                                               :old-values="{{json_encode(old('land_seek', new stdClass))}}">
                                 @include('pages.ads.partials.land_seek_new_ad')
                             </new-land-seek-ad>
 
                             <new-land-offer-ad inline-template
-                                               v-if="adTypeSelected === 'land_offer'"
+                                               v-show="adTypeSelected === 'land_offer'"
                                                :is-input-disabled="adTypeSelected !== 'land_offer'"
                                                :old-values="{{json_encode(old('land_offer', new stdClass))}}">
                                 @include('pages.ads.partials.land_offer_new_ad')
                             </new-land-offer-ad>
 
                             <new-job-offer-ad inline-template
-                                              v-if="adTypeSelected === 'job_offer'"
+                                              v-show="adTypeSelected === 'job_offer'"
                                               :is-input-disabled="adTypeSelected !== 'job_offer'"
                                               :old-values="{{json_encode(old('job_offer', new stdClass))}}">
                                 @include('pages.ads.partials.job_ad_new_ad')

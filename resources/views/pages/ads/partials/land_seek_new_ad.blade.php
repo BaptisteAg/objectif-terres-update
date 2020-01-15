@@ -31,26 +31,63 @@
 		</div>
 	</div>
 	<div class="columns">
-		<div class="column is-half">
-			<div class="field">
-				{!! Form::label('land_seek[regions][]', 'Régions', ['class' => 'label']); !!}
-				<div class="select">
-					{!! Form::select('land_seek[regions][]',
-							 $regions->pluck('name', 'id'),
-							 old('land_seek[region]'),
-							 ['placeholder' => 'Veuillez choisir...',
-							  ':disabled' => 'isInputDisabled']); !!}
+{{--		<div class="column is-half">--}}
+{{--			<div class="field">--}}
+{{--				{!! Form::label('land_seek[regions][]', 'Régions', ['class' => 'label']); !!}--}}
+{{--				<div class="select">--}}
+{{--					{!! Form::select('land_seek[regions][]',--}}
+{{--							 $regions->pluck('name', 'id'),--}}
+{{--							 old('land_seek[region]'),--}}
+{{--							 ['placeholder' => 'Veuillez choisir...',--}}
+{{--							  ':disabled' => 'isInputDisabled']); !!}--}}
+{{--				</div>--}}
+{{--			</div>--}}
+{{--		</div>--}}
+{{--		<div class="column">--}}
+{{--			<div class="field">--}}
+{{--				{!! Form::label('land_seek[departments][]', 'Départements', ['class' => 'label']); !!}--}}
+{{--				{!! Form::text('land_seek[departments][]',--}}
+{{--					 old('land_seek[departments]'),--}}
+{{--					['class' => 'input',--}}
+{{--					':disabled' => 'isInputDisabled']) !!}--}}
+{{--			</div>--}}
+{{--		</div>--}}
+		<div class="selected-zones card">
+			<header class="card-header">
+				<p class="card-header-title">
+					Zones de recherche
+				</p>
+			</header>
+			<div class="card-content">
+				<div class="content">
+					<div class="field">
+						{!! Form::label('zone-autocomplete', 'Code postal, commune, département ou région*', ['class' => 'label']); !!}
+						<autocomplete
+								id="zone-autocomplete"
+								class="input"
+								placeholder="Ajoutez une zone en saisissant les premières lettres"
+								required
+								:disabled="isInputDisabled"
+								src="/json/locationables"
+								:on-select="onZoneSelect"
+								:on-data-render="onZoneDataRender"
+						>
+						</autocomplete>
+					</div>
+
+					<h4 v-if="selectedZones.length">Vous avez sélectionné :</h4>
+					<h4 v-else>Vous n'avez encore sélectionné aucune zone.</h4>
+
+					<div class="selected-zone" v-for="(zone,i) in selectedZones">
+                    <span v-on:click="_ => selectedZones.splice(i, 1)">
+                        <i class="fa fa-trash-alt" style="cursor:pointer;"></i>
+                    </span>
+						<b>@{{labelsByZoneType[zone.value.type]}}</b> : @{{zone.value.originalLabel}}
+						<input type="hidden" :name="'land_seek['+zone.value.type+'][]'" :value="zone.value.id">
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="column">
-			<div class="field">
-				{!! Form::label('land_seek[departments][]', 'Départements', ['class' => 'label']); !!}
-				{!! Form::text('land_seek[departments][]',
-					 old('land_seek[departments]'),
-					['class' => 'input',
-					':disabled' => 'isInputDisabled']) !!}
-			</div>
+			<input type="hidden" name="land_seek[selected_zones]" :value="JSON.stringify(selectedZones)">
 		</div>
 	</div>
 	<div class="field">
@@ -228,13 +265,15 @@
                         Importer une photo
                     </span>
                 </span>
-			</label>
-		</div>
-	</div>
-	<div class="field">
-		<label class="checkbox">
-			<input type="checkbox" required>
-			Je certifie que mon projet correspond à la <a href="/">charte de Terre de Liens</a>
-		</label>
-	</div>
+            </label>
+        </div>
+    </div>
+    <div class="field">
+        <label class="checkbox">
+            <input type="checkbox" name="confirm_project_follows_chart" :disabled="isInputDisabled"
+                   {{ old('confirm_project_follows_chart') ? 'checked' : '' }} required>
+            Je certifie que mon projet correspond à la <a href="/">charte de Terre de Liens</a>
+        </label>
+    </div>
 </div>
+

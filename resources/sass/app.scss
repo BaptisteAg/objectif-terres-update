@@ -8,8 +8,13 @@
 @import '~bulma/bulma';
 @import '~bulma-accordion/dist/css/bulma-accordion';
 
+
 //import  bulma tooltip
 @import '~bulma-tooltip/dist/css/bulma-tooltip.min.css';
+
+//import Awesomplete
+@import '~awesomplete/awesomplete.css';
+
 
 // custom scss
 .container-custom {
@@ -25,9 +30,13 @@
   /* ... */
 }
 
+/*
+Gael : Je ne pense pas que ce soit une bonne idée de mettre cette règle.
+Cela pète la mise en forme du composant card ( et j'imagine d'autre )
+
 p {
   margin-bottom: 1rem;
-}
+}*/
 
 .slider-pagination {
   bottom: -40px;
