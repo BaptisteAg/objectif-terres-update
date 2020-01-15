@@ -1,18 +1,25 @@
 <template>
-    <input type="text" class="autocomplete-input" ref="input" v-model="value" v-on:click="onClick" v-on:awesomplete-select="onSelect">
+    <input type="text"
+           class="autocomplete-input"
+           ref="input"
+           v-model="value"
+           v-on:click="onClick"
+           v-on:awesomplete-select="onSelect">
 </template>
 
 <style lang="scss">
     .content .awesomplete > ul {
-        list-style:none;
+        list-style: none;
         z-index: 10;
-        margin:0;
+        margin: 0;
     }
+
     .awesomplete {
-        width:100%;
+        width: 100%;
     }
+
     .autocomplete-input {
-        width:100%;
+        width: 100%;
     }
 </style>
 
@@ -24,11 +31,12 @@
                 required: true
             },
             onDataRender: {
-                type : Function
+                type: Function
             },
             onResultsLoaded: {
                 type: Function,
-                default: _ => {}
+                default: _ => {
+                }
             }
         },
         data() {
@@ -46,13 +54,6 @@
                 data: this.onDataRender,
                 maxItems: 20
             });
-
-            input.addEventListener('awesomplete-select', e => {
-                e.preventDefault();
-                this.onSelect(e.text);
-                this.$awesomplete.close();
-                input.value = '';
-            })
         },
         watch: {
             value() {
@@ -64,7 +65,7 @@
                 e.preventDefault();
                 this.$emit('autocomplete-select', e.text);
                 this.$awesomplete.close();
-                input.value = '';
+                e.target.value = '';
             },
             update(cooldown) {
                 const query = this.value;
@@ -74,8 +75,8 @@
                     fetch(this.src + '?q=' + query)
                         .then(response => response.json())
                         .then(results => {
-                            if(!results.length) {
-                                results.push("Pas de résultat pour "+query+" :(")
+                            if (!results.length) {
+                                results.push("Pas de résultat pour " + query + " :(")
                             }
 
                             this.onResultsLoaded(results);
@@ -98,7 +99,7 @@
                 }
             },
             onClick() {
-                if(this.value) {
+                if (this.value) {
                     this.$awesomplete.open();
                 }
             }
