@@ -84,6 +84,11 @@
 
 @section('script')
     <script>
+        const vuePage = new Vue({
+            el: '#vue-render'
+        });
+
+
         window.addEventListener("beforeunload", function (e) {
             var confirmationMessage = "\o/";
 

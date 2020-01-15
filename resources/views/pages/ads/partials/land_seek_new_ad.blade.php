@@ -14,21 +14,7 @@
         </div>
     </div>
     <div class="columns">
-        <div class=" column is-one-quarter">
-            <div class="field">
-                {!! Form::label('land_seek[cities]', 'Commune ou Code postal*', ['class' => 'label']); !!}
-                <autocomplete
-                    name="land_seek[cities]"
-                    class="input"
-                    required
-                    :disabled="isInputDisabled"
-                    :src="/json/cities"
-                    :selected="{{json_encode(old('land_seek[cities]', []))}}"
-                >
-                </autocomplete>
-            </div>
-        </div>
-        <div class="column ">
+        <div class="column">
             <p class="label">Dans un rayon de </p>
             {!! Form::checkbox('land_seek[city_range][]', '5', [':disabled' => 'isInputDisabled']) !!}
             5 km
@@ -39,7 +25,7 @@
             {!! Form::checkbox('land_seek[city_range][]', '50',[':disabled' => 'isInputDisabled']) !!}
             20km
         </div>
-        <div class="column">
+        {{--<div class="column">
             <div class="field">
                 {!! Form::label('land_seek[regions][]', 'Régions', ['class' => 'label']); !!}
                 <div class="select">
@@ -64,8 +50,47 @@
                     ])
                 !!}
             </div>
-        </div>
+        </div>--}}
     </div>
+
+    <div class="selected-zones card">
+        <header class="card-header">
+            <p class="card-header-title">
+                Zones de recherche
+            </p>
+        </header>
+        <div class="card-content">
+            <div class="content">
+                <div class="field">
+                    {!! Form::label('zone-autocomplete', 'Code postal, commune, département ou région*', ['class' => 'label']); !!}
+                    <autocomplete
+                            id="zone-autocomplete"
+                            class="input"
+                            placeholder="Ajoutez une zone en saisissant les premières lettres"
+                            required
+                            :disabled="isInputDisabled"
+                            src="/json/locationables"
+                            :on-select="onZoneSelect"
+                            :on-data-render="onZoneDataRender"
+                    >
+                    </autocomplete>
+                </div>
+
+                <h4 v-if="selectedZones.length">Vous avez sélectionné :</h4>
+                <h4 v-else>Vous n'avez encore sélectionné aucune zone.</h4>
+
+                <div class="selected-zone" v-for="(zone,i) in selectedZones">
+                    <span v-on:click="_ => selectedZones.splice(i, 1)">
+                        <i class="fa fa-trash-alt" style="cursor:pointer;"></i>
+                    </span>
+                    <b>@{{labelsByZoneType[zone.value.type]}}</b> : @{{zone.value.originalLabel}}
+                    <input type="hidden" :name="'land_seek['+zone.value.type+'][]'" :value="zone.value.id">
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="land_seek[selected_zones]" :value="JSON.stringify(selectedZones)">
+    </div>
+
     <div class="field">
         {!! Form::label('land_seek[is_bio]', 'Je souhaite m\'installer en bio', ['class' => 'label']) !!}
         {!! Form::radio('land_seek[is_bio]', 'true',old('land_seek[is_bio]'), [':disabled' => 'isInputDisabled']) !!}

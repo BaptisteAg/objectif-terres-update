@@ -7,5 +7,7 @@
 
 window.Vue = require('vue');
 
+require('awesomplete/awesomplete.min');
+
 require ('./pages/ads/new');
 
