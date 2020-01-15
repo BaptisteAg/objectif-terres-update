@@ -11,6 +11,6 @@ $factory->define(PpToUserMessage::class, function (Faker $faker) {
         'sf_sender_id' => $faker->regexify('[A-Za-z0-9]{20}'),
         'sf_receiver_id' => $faker->regexify('[A-Za-z0-9]{20}'),
         'content' => $faker->text,
-        'ad_id' => factory(Ad::class),
+        'ad_id' => Ad::all()->random(),
     ];
 });

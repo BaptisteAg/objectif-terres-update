@@ -8,7 +8,7 @@ use Faker\Generator as Faker;
 
 $factory->define(FavoriteAd::class, function (Faker $faker) {
     return [
-        'ad_id' => factory(Ad::class),
+        'ad_id' => Ad::all()->random(),
         'sf_id' => $faker->regexify('[A-Za-z0-9]{20}')
     ];
 });

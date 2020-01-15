@@ -4,18 +4,15 @@ use App\Models\Ad;
 use App\Models\AdMessage;
 use App\Models\AdNote;
 use App\Models\AgriculturalActivity;
-use App\Models\AttributionAd;
 use App\Models\BioCertification;
 use App\Models\Document;
 use App\Models\FavoriteAd;
-use App\Models\InstallationType;
 use App\Models\JobAd;
 use App\Models\LandOfferAd;
 use App\Models\LandSeekAd;
 use App\Models\PpToUserMessage;
 use App\Models\PriceRange;
 use App\Models\ProductionGenre;
-use App\Models\Project;
 use App\Models\Region;
 use App\Models\SurfaceRange;
 use Illuminate\Database\Seeder;
@@ -41,7 +38,7 @@ class AdsTableSeeder extends Seeder
             UserToUserMessageSeeder::class,
         ]);
 
-        factory(Ad::class, 10)->create()->each(function (Ad $ad) {
+        factory(Ad::class, 25)->create()->each(function (Ad $ad) {
             $ad->adNotes()->save(factory(AdNote::class)->make());
             $ad->adMessages()->save(factory(AdMessage::class)->make());
             $ad->ppToUserMessages()->save(factory(PpToUserMessage::class)->make());
@@ -60,7 +57,6 @@ class AdsTableSeeder extends Seeder
         factory(JobAd::class, 10)->create()->each(function (JobAd $jobAd) {
             $jobAd->agriculturalActivity()->save(factory(AgriculturalActivity::class)->make());
         });
-
 
     }
 }
