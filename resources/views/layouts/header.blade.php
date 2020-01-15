@@ -48,23 +48,21 @@
                 <p>Une initiative Terre de Liens</p>
             </div>
             <div class="column is-2">
+                {!! Form::open(['url' => 'recherches']) !!}
                 <p>Je cherche</p>
                 <div class="select">
                     <label for="select"></label>
-                    <select id="select">
-                        <option>Des offres</option>
-                        <option>Des propositions</option>
-                    </select>
+                    {{ Form::select('ad_type', ['offer_ads' => 'Des offres', 'seek_ads' => 'Des demandes']) }}
                 </div>
             </div>
             <div class="column is-2">
                 <div class="control">
-                    <label class="radio is-block">
-                        <input type="radio" name="answer">
+                    <label class="radio is-block" for="land">
+                        <input id="land" type="radio" name="ad_category" value="land" checked>
                         de terres/ferme
                     </label>
-                    <label class="radio is-block is-marginless">
-                        <input type="radio" name="answer">
+                    <label class="radio is-block is-marginless" for="job">
+                        <input id="job" type="radio" name="ad_category" value="job">
                         d'emploi
                     </label>
                 </div>
@@ -72,17 +70,22 @@
             <div class="column is-3">
                 <p>Où</p>
                 <div class="select">
-                    <label for="select"></label>
-                    <select id="select">
-                        <option>Toutes les régions</option>
-                        <option>Auvergne Rhône Alpes</option>
+                    <label for="research_location"></label>
+                    <select id="research_location" name="research_location[]" multiple size="3">
+                        <option value="0">Toutes les régions</option>
+                        @foreach($regions as $region)
+                            <option value="{{ $region->id }}">{{ $region->name }}</option>
+                        @endforeach
                     </select>
                 </div>
-                <button class="button">Rechercher</button>
+                {!! Form::submit('Rechercher', ['class' => 'button']) !!}
+{{--                <button class="button">Rechercher</button>--}}
             </div>
             <div class="column is-2">
                 <a href="/">Plus de critère</a>
+                {!! Form::close() !!}
             </div>
+
         </div>
     </div>
     <div class="container is-fluid">
@@ -127,7 +130,7 @@
             </div>
         </nav>
     </div>
-    
+
 </header>
 
 

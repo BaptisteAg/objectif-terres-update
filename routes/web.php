@@ -11,14 +11,20 @@
 |
 */
 
+Route::get('/', function () {
+    return view('pages.homepage');
+});
+
 Route::get('new', 'Ads\AdsController@create');
 Route::post('new', 'Ads\AdsController@store');
 
 Route::get('/authenticate', 'SalesForceAuthController@register');
 
-Route::get('/researches', function() {
-    return view('pages.researches');
-});
+//Route::get('/researches', function() {
+//    return view('pages.researches');
+//});
+
+Route::post('/recherches', 'Researches\ResearchesController@index');
 
 Route::prefix('json')->group(function () {
    Route::get('cities', 'Json\LocationableController@cities');
@@ -26,3 +32,4 @@ Route::prefix('json')->group(function () {
    Route::get('departments', 'Json\LocationableController@departments');
    Route::get('locationables', 'Json\LocationableController@locationables');
 });
+

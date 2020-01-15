@@ -11,6 +11,7 @@ use Faker\Generator as Faker;
 
 $factory->define(LandOfferAd::class, function (Faker $faker) {
     return [
+        'title' => $faker->text(25),
         'is_beneficiary' => $faker->boolean,
         'accept_use_zip_code' => $faker->boolean,
         'is_call_for_application_community' => $faker->boolean,
@@ -19,7 +20,7 @@ $factory->define(LandOfferAd::class, function (Faker $faker) {
         'is_activity_transfer' => $faker->boolean,
         'water_access' => $faker->text(100),
         'altitude' => $faker->randomNumber(4),
-        'ad_id' => factory(Ad::class),
+        'ad_id' => Ad::all()->random()->id,
         'building_id' => factory(Building::class),
         'house_id' => factory(House::class),
         'land_id' => factory(Land::class),

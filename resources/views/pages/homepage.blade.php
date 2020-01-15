@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css" />
 	<!-- Import Leaflet JS Library -->
 	<script src="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
 @endsection
 
 
@@ -113,7 +114,7 @@
 			<h2 class="title is-2 ">Ils ont réussi avec nous ! </h2>
 		</div>
 		<div class="container ">
-			<div id="post_images" class="carousel " >
+			<div id="post_images" class="carousel" >
 				<div class="column is-12 ">
 					<div class="card">
 						<div class="card-content">

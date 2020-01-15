@@ -4,13 +4,17 @@ namespace App\Http\Controllers\Ads;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Ads\AdRequest;
+use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
 use App\Models\City;
 use App\Models\Department;
+
+use App\Models\EducationLevel;
 use App\Models\InstallationType;
 use App\Models\JobStatus;
 use App\Models\OfferGenre;
 use App\Models\PriceRange;
+use App\Models\ProductionGenre;
 use App\Models\Region;
 use App\Models\SurfaceRange;
 use App\Services\Ads\AdService;
@@ -33,23 +37,31 @@ class AdsController extends Controller
         $cities = City::all();
         $departments = Department::all();
         $regions = Region::all();
+        $productionGenres = ProductionGenre::all();
+        $agriculturalActivities = AgriculturalActivity::all();
+        $educationLevels = EducationLevel::all();
 
-        return view('pages.ads.new', compact(
-            'installationTypes',
-            'surfaceRanges',
-            'priceRanges',
-            'bioCertifications',
-            'jobStatus',
-            'offerGenres',
-            'cities',
-            'departments',
-            'regions',
-            'offerGenresLandSeek',
-            'offerGenresHouse',
-            'offerGenresBuilding',
-            'offerGenresLand'
-        ));
-    }
+
+		return view('pages.ads.new', compact('installationTypes',
+			'surfaceRanges',
+			'priceRanges',
+			'bioCertifications',
+			'jobStatus',
+			'offerGenres',
+			'cities',
+			'departments',
+			'regions',
+			'offerGenresLandSeek',
+			'offerGenresHouse',
+			'offerGenresBuilding',
+			'offerGenresLand',
+			'productionGenres',
+			'agriculturalActivities',
+			'educationLevels',
+			'productionGenres',
+			'agriculturalActivities',
+			'educationLevels'));
+	}
 
     /**
      * @param AdRequest $request

@@ -21,7 +21,6 @@
                     <div id="vue-render">
                         <new-ad inline-template
                                 :old-ad-type-selected="'{{old('ad_type')}}'">
-
                             {!! Form::open(['files' => true]) !!}
                             <div class="field">
                                 {!! Form::label('ad_type', 'Type d\'annonce', ['class' => 'label']); !!}
@@ -60,7 +59,7 @@
 
                             <div class="field is-grouped" v-show="adTypeSelected != ''">
                                 <div class="control">
-                                    {!! Form::submit('Envoyer',['class'=>'button is-link']) !!}
+                                    {!! Form::submit('Envoyer',['class'=>'button is-link', 'onclick' => 'setFormSubmitting()']) !!}
                                 </div>
                                 <div class="control">
                                     <button class="button is-light">Sauvergder</button>
@@ -88,13 +87,22 @@
             el: '#vue-render'
         });
 
+        let formSubmitting = false;
+        let setFormSubmitting = function() { formSubmitting = true; };
 
-        window.addEventListener("beforeunload", function (e) {
-            var confirmationMessage = "\o/";
+        window.onload = function() {
+            window.addEventListener("beforeunload", function (e) {
+                if (formSubmitting) {
+                    return confirm('Êtes-vous sûre de la saisie de votre annonce?');
+                }
 
-            e.returnValue = confirmationMessage;     // Gecko, Trident, Chrome 34+
-            return confirmationMessage;              // Gecko, WebKit, Chrome <34
-        });
+                let confirmationMessage = 'It looks like you have been editing something. '
+                        + 'If you leave before saving, your changes will be lost.';
+
+                (e || window).returnValue = confirmationMessage; //Gecko + IE
+                return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+            });
+        };
     </script>
 
 
