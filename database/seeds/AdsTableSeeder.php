@@ -30,13 +30,13 @@ class AdsTableSeeder extends Seeder
     public function run()
     {
         $this->call([
-       /*     ResponseTypeSeeder::class,
+           ResponseTypeSeeder::class,
             SurfaceRangeSeeder::class,
             PriceRangeSeeder::class,
             InstallationTypeSeeder::class,
             BioCertificationSeeder::class,
             JobStatusSeeder::class,
-            OfferGenreSeeder::class,*/
+            OfferGenreSeeder::class,
             ResearchSeeder::class,
             UserToUserMessageSeeder::class,
         ]);
