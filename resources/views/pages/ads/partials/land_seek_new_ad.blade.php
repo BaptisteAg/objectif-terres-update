@@ -5,24 +5,16 @@
         <div class="select">
             {!! Form::select('land_seek[installation_type_id]',
                  $installationTypes->pluck('name', 'id'),
-                 old('land_seek[installation_type]'),
-                 ['placeholder' => 'Choisir un type d\'installation...',
-                 'required',
-                 ':disabled' => 'isInputDisabled']); !!}
+                 old('land_seek[installation_type_id]'),
+                 [
+                     'placeholder' => 'Choisir un type d\'installation...',
+                     'required',
+                     ':disabled' => 'isInputDisabled'
+                 ]); !!}
         </div>
     </div>
     <div class="columns">
-        <div class=" column is-one-quarter">
-            <div class="field">
-                {!! Form::label('land_seek[city]', 'Commune ou Code postal*', ['class' => 'label']); !!}
-                {!! Form::text('land_seek[city]',
-                        old('land_seek[city]'),
-                        ['class' => 'input',
-                         'required',
-                         ':disabled' => 'isInputDisabled']) !!}
-            </div>
-        </div>
-        <div class="column ">
+        <div class="column">
             <p class="label">Dans un rayon de </p>
             {!! Form::checkbox('land_seek[city_range][]', '5', [':disabled' => 'isInputDisabled']) !!}
             5 km
@@ -33,13 +25,13 @@
             {!! Form::checkbox('land_seek[city_range][]', '50',[':disabled' => 'isInputDisabled']) !!}
             20km
         </div>
-        <div class="column">
+        {{--<div class="column">
             <div class="field">
                 {!! Form::label('land_seek[regions][]', 'Régions', ['class' => 'label']); !!}
                 <div class="select">
                     {!! Form::select('land_seek[regions][]',
                              $regions->pluck('name', 'id'),
-                             old('land_seek[region]'),
+                             old('land_seek[regions]'),
                              ['placeholder' => 'Veuillez choisir...',
                               ':disabled' => 'isInputDisabled']); !!}
                 </div>
@@ -48,13 +40,57 @@
         <div class="column">
             <div class="field">
                 {!! Form::label('land_seek[departments][]', 'Départements', ['class' => 'label']); !!}
-                {!! Form::text('land_seek[departments][]',
+                {!! Form::select('land_seek[departments][]',
+                     $departments->pluck('name', 'id'),
                      old('land_seek[departments]'),
-                    ['class' => 'input',
-                    ':disabled' => 'isInputDisabled']) !!}
+                    [
+                        'multiple' => true,
+                        'class' => 'input',
+                        ':disabled' => 'isInputDisabled'
+                    ])
+                !!}
+            </div>
+        </div>--}}
+    </div>
+
+    <div class="selected-zones card">
+        <header class="card-header">
+            <p class="card-header-title">
+                Zones de recherche
+            </p>
+        </header>
+        <div class="card-content">
+            <div class="content">
+                <div class="field">
+                    {!! Form::label('zone-autocomplete', 'Code postal, commune, département ou région*', ['class' => 'label']); !!}
+                    <autocomplete
+                            id="zone-autocomplete"
+                            class="input"
+                            placeholder="Ajoutez une zone en saisissant les premières lettres"
+                            required
+                            :disabled="isInputDisabled"
+                            src="/json/locationables"
+                            :on-select="onZoneSelect"
+                            :on-data-render="onZoneDataRender"
+                    >
+                    </autocomplete>
+                </div>
+
+                <h4 v-if="selectedZones.length">Vous avez sélectionné :</h4>
+                <h4 v-else>Vous n'avez encore sélectionné aucune zone.</h4>
+
+                <div class="selected-zone" v-for="(zone,i) in selectedZones">
+                    <span v-on:click="_ => selectedZones.splice(i, 1)">
+                        <i class="fa fa-trash-alt" style="cursor:pointer;"></i>
+                    </span>
+                    <b>@{{labelsByZoneType[zone.value.type]}}</b> : @{{zone.value.originalLabel}}
+                    <input type="hidden" :name="'land_seek['+zone.value.type+'][]'" :value="zone.value.id">
+                </div>
             </div>
         </div>
+        <input type="hidden" name="land_seek[selected_zones]" :value="JSON.stringify(selectedZones)">
     </div>
+
     <div class="field">
         {!! Form::label('land_seek[is_bio]', 'Je souhaite m\'installer en bio', ['class' => 'label']) !!}
         {!! Form::radio('land_seek[is_bio]', 'true',old('land_seek[is_bio]'), [':disabled' => 'isInputDisabled']) !!}
@@ -188,7 +224,8 @@
     </div>
     <div class="field">
         <label class="checkbox">
-            <input type="checkbox" required>
+            <input type="checkbox" name="confirm_project_follows_chart" :disabled="isInputDisabled"
+                   {{ old('confirm_project_follows_chart') ? 'checked' : '' }} required>
             Je certifie que mon projet correspond à la <a href="/">charte de Terre de Liens</a>
         </label>
     </div>
