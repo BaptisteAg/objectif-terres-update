@@ -24,8 +24,10 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "awesomplete": "^1.1.5",
         "bulma": "^0.8.0",
         "bulma-accordion": "^2.0.1",
-        "bulma-carousel": "^4.0.4"
+        "bulma-carousel": "^4.0.4",
+        "vue-plugin-load-script": "^1.2.0"
     }
 }

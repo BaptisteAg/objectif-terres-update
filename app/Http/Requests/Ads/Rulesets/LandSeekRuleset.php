@@ -7,10 +7,10 @@ class LandSeekRuleset implements RulesetInterface
     public function get(): array
     {
         return [
-            'land_seek[installation_type_id]' => 'required',
-            'land_seek[city]' => 'required_without_all: regions, departments',
-            'land_seek[regions]' => 'required_without_all: city, departments',
-            'land_seek[departments]' => 'required_without_all: city, regions',
+            'land_seek.installation_type_id' => 'required',
+            'land_seek.cities' => 'required_without_all: regions, departments',
+            'land_seek.regions' => 'required_without_all: cities, departments',
+            'land_seek.departments' => 'required_without_all: cities, regions',
         ];
     }
 }

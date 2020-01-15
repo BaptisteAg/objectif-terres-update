@@ -8,6 +8,9 @@
 @import '~bulma/bulma';
 @import '~bulma-accordion/dist/css/bulma-accordion';
 
+//import Awesomplete
+@import '~awesomplete/awesomplete.css';
+
 // custom scss
 .container-custom {
   padding: 0.5rem 2rem;
@@ -22,9 +25,13 @@
   /* ... */
 }
 
+/*
+Gael : Je ne pense pas que ce soit une bonne idée de mettre cette règle.
+Cela pète la mise en forme du composant card ( et j'imagine d'autre )
+
 p {
   margin-bottom: 1rem;
-}
+}*/
 
 .slider-pagination {
   bottom: -40px;
