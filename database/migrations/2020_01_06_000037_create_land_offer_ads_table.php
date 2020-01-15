@@ -23,6 +23,7 @@ class CreateLandOfferAdsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            $table->string('title')->nullable();
             $table->boolean('is_beneficiary')->nullable();
             $table->boolean('accept_use_zip_code')->nullable();
             $table->boolean('is_call_for_application_community')->nullable();

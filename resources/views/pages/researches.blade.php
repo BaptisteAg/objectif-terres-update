@@ -24,8 +24,16 @@
             <nav class="level">
                 <div class="level-left">
                     <div class="">
-                        <h1 class="title">Offres Foncières</h1>
-                        <h2 class="subtitle">147 annonces trouvées.</h2>
+                        @if ($typeAd === 'landOfferAd')
+                            <h1 class="title">Offres foncières</h1>
+                        @elseif($typeAd === 'landSeekAd')
+                            <h1 class="title">Demandes de fonciers</h1>
+                        @elseif($typeAd === 'landSeekAd')
+                            <h1 class="title">Offres d'emploi</h1>
+                        @else
+                            <h1 class="title">Demandes d'emploi</h1>
+                        @endif
+                        <h2 class="subtitle">{{ count($ads) }} annonces trouvées.</h2>
                     </div>
                 </div>
                 <div class="level-right">
@@ -51,12 +59,16 @@
                 </div>
             </nav>
 
+
             <section class="section">
+                @foreach($ads as $ad)
                 <div class="columns is-gapless">
                     <div class="column is-two-fifths">
                         <figure><img src="https://picsum.photos/500/300" alt="Placeholder image"></figure>
-                        <div>Région</div>
-                        <div><span>350 000</span>€ | <span>25</span> ha</div>
+                        <div>
+                            {{ implode(", ", $regionName[$ad->id]) }}
+                        </div>
+                        <div><span>{{ $land[$ad->id]->price }}</span> € | <span>{{ $land[$ad->id]->area }}</span> ha</div>
                     </div>
                     <div class="column">
                         <nav class="level">
@@ -72,61 +84,12 @@
                             </div>
                         </nav>
                         <div></div>
-                        <h1 class="title">JE susi un titre</h1>
-                        <div class="descritption">Je suis une discritpion</div>
+                        <h1 class="title">{{ $adsType[$ad->id]->title }}</h1>
+                        <div class="descritption">Je suis une discritpion {{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</div>
                         <a href="#">Voir</a>
                     </div>
                 </div>
-                <div class="columns is-gapless">
-                    <div class="column is-two-fifths">
-                        <figure><img src="https://picsum.photos/500/300" alt="Placeholder image"></figure>
-                        <div>Région</div>
-                        <div><span>350 000</span>€ | <span>25</span> ha</div>
-                    </div>
-                    <div class="column">
-                        <nav class="level">
-                            <div class="level-left">
-                                <div class="level-item">
-                                    <span>Partenaire Objectif Terre</span>
-                                </div>
-                            </div>
-                            <div class="level-right">
-                                <div class="level-item">
-                                    <span>Publié aujourd'hui</span>
-                                </div>
-                            </div>
-                        </nav>
-                        <div></div>
-                        <h1 class="title">JE susi un titre</h1>
-                        <div class="descritption">Je suis une discritpion</div>
-                        <a href="#">Voir</a>
-                    </div>
-                </div>
-                <div class="columns is-gapless">
-                    <div class="column is-two-fifths">
-                        <figure><img src="https://picsum.photos/500/300" alt="Placeholder image"></figure>
-                        <div>Région</div>
-                        <div><span>350 000</span>€ | <span>25</span> ha</div>
-                    </div>
-                    <div class="column">
-                        <nav class="level">
-                            <div class="level-left">
-                                <div class="level-item">
-                                    <span>Partenaire Objectif Terre</span>
-                                </div>
-                            </div>
-                            <div class="level-right">
-                                <div class="level-item">
-                                    <span>Publié aujourd'hui</span>
-                                </div>
-                            </div>
-                        </nav>
-                        <div></div>
-                        <h1 class="title">JE susi un titre</h1>
-                        <div class="descritption">Je suis une discritpion</div>
-                        <a href="#">Voir</a>
-                    </div>
-                </div>
+                @endforeach
             </section>
 
             <section class="section">
@@ -143,44 +106,47 @@
                 </nav>
             </section>
 
-            <section class="section">
-                <div class="columns">
-                    <div class="column">
-                        <h1 class="title is-1">Orientation & Accompagnement</h1>
-                        <div><p>Objectif Terre est là pour vous aider à réaliser votre projet agricole ! Avec un suivi sur mesure et notre expérience secteur, n ous sommes en mesure de vous apporter une vraie plus value,  de l'idée initiale au projet déjà défini. <u>Rencontrons-nous !</u></p></div>
-                        <div>
-                            <p><i class="far fa-check-circle"></i> Un suivi sur mesure</p>
-                            <p><i class="far fa-check-circle"></i> Des experts du secteur foncier</p>
-                            <p><i class="far fa-check-circle"></i> Des ressources</p>
-                            <p><i class="far fa-check-circle"></i> Des formations adaptées</p>
+            @if($typeAd === 'landOfferAd' || $typeAd === 'landSeekAd')
+                <section class="section">
+                    <div class="columns">
+                        <div class="column">
+                            <h1 class="title is-1">Avez-vous un projet agricole ?</h1>
+                            <div><p>Objectif Terre est là pour vous aider à le réaliser ! Avec un suivi sur mesure et notre expérience du secteur, nous sommes en mesure de vous apporter une vraie plus value, de l'idée initiale au projet déjà défini. <u>Rencontrons-nous !</u></p></div>
+                            <div>
+                                <p><i class="far fa-check-circle"></i> Un suivi sur mesure</p>
+                                <p><i class="far fa-check-circle"></i> Des experts du secteur foncier</p>
+                                <p><i class="far fa-check-circle"></i> Des ressources</p>
+                                <p><i class="far fa-check-circle"></i> Des formations adaptées</p>
+                            </div>
+                            <a href="/" class="button is-dark is-uppercase is-medium">Contactez-nous</a>
                         </div>
-                        <a href="/" class="button is-dark is-uppercase is-medium">Contactez-nous</a>
-                    </div>
-                    <div class="column">
-                        <figure><img src="https://picsum.photos/600/350" alt="Placeholder image"></figure>
-                        <div><p>En 2018, plus de xx fermiers ont pu s'installer ou céder leurs terres avec succès, grâce à la platerforme Objectif Terre et au travail mené sur le terrain par l'association Terre de Liens</p></div>
-                    </div>
-                </div>
-            </section>
-            <section class="section">
-                <div class="columns">
-                    <div class="column">
-                        <h1 class="title is-1">Avez-vous un projet agricole ?</h1>
-                        <div><p>Objectif Terre est là pour vous aider à le réaliser ! Avec un suivi sur mesure et notre expérience du secteur, nous sommes en mesure de vous apporter une vraie plus value, de l'idée initiale au projet déjà défini. <u>Rencontrons-nous !</u></p></div>
-                        <div>
-                            <p><i class="far fa-check-circle"></i> Un suivi sur mesure</p>
-                            <p><i class="far fa-check-circle"></i> Des experts du secteur foncier</p>
-                            <p><i class="far fa-check-circle"></i> Des ressources</p>
-                            <p><i class="far fa-check-circle"></i> Des formations adaptées</p>
+                        <div class="column">
+                            <figure><img src="https://picsum.photos/600/350" alt="Placeholder image"></figure>
+                            <div><p>En 2018, plus de xx fermiers ont pu s'installer ou céder leurs terres avec succès, grâce à la platerforme Objectif Terre et au travail mené sur le terrain par l'association Terre de Liens</p></div>
                         </div>
-                        <a href="/" class="button is-dark is-uppercase is-medium">Contactez-nous</a>
                     </div>
-                    <div class="column">
-                        <figure><img src="https://picsum.photos/600/350" alt="Placeholder image"></figure>
-                        <div><p>En 2018, plus de xx fermiers ont pu s'installer ou céder leurs terres avec succès, grâce à la platerforme Objectif Terre et au travail mené sur le terrain par l'association Terre de Liens</p></div>
+                </section>
+            @else
+                <section class="section">
+                    <div class="columns">
+                        <div class="column">
+                            <h1 class="title is-1">Orientation & Accompagnement</h1>
+                            <div><p>Objectif Terre est là pour vous aider à réaliser votre projet agricole ! Avec un suivi sur mesure et notre expérience secteur, nous sommes en mesure de vous apporter une vraie plus value,  de l'idée initiale au projet déjà défini. <u>Rencontrons-nous !</u></p></div>
+                            <div>
+                                <p><i class="far fa-check-circle"></i> Un suivi sur mesure</p>
+                                <p><i class="far fa-check-circle"></i> Des experts du secteur foncier</p>
+                                <p><i class="far fa-check-circle"></i> Des ressources</p>
+                                <p><i class="far fa-check-circle"></i> Des formations adaptées</p>
+                            </div>
+                            <a href="/" class="button is-dark is-uppercase is-medium">Contactez-nous</a>
+                        </div>
+                        <div class="column">
+                            <figure><img src="https://picsum.photos/600/350" alt="Placeholder image"></figure>
+                            <div><p>En 2018, plus de xx fermiers ont pu s'installer ou céder leurs terres avec succès, grâce à la platerforme Objectif Terre et au travail mené sur le terrain par l'association Terre de Liens</p></div>
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            @endif
 
 
             @include('components.partnering')

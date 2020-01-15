@@ -52,13 +52,13 @@
                 <p>Je cherche</p>
                 <div class="select">
                     <label for="select"></label>
-                    {{ Form::select('ad_type', ['offer' => 'Des offres', 'seek' => 'Des demandes']) }}
+                    {{ Form::select('ad_type', ['offer_ads' => 'Des offres', 'seek_ads' => 'Des demandes']) }}
                 </div>
             </div>
             <div class="column is-2">
                 <div class="control">
                     <label class="radio is-block" for="land">
-                        <input id="land" type="radio" name="ad_category" value="land">
+                        <input id="land" type="radio" name="ad_category" value="land" checked>
                         de terres/ferme
                     </label>
                     <label class="radio is-block is-marginless" for="job">
@@ -70,8 +70,13 @@
             <div class="column is-3">
                 <p>Où</p>
                 <div class="select">
-                    {{ Form::select('research_location', array_merge(['all' => 'Toutes les régions'], $regions_array)) }}
-                    {{ Form::select('research_location', ['all' => 'Toutes les régions', $regions_array]) }}
+                    <label for="research_location"></label>
+                    <select id="research_location" name="research_location[]" multiple size="3">
+                        <option value="0">Toutes les régions</option>
+                        @foreach($regions as $region)
+                            <option value="{{ $region->id }}">{{ $region->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 {!! Form::submit('Rechercher', ['class' => 'button']) !!}
 {{--                <button class="button">Rechercher</button>--}}

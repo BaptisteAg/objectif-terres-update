@@ -11,6 +11,6 @@ $factory->define(AdNote::class, function (Faker $faker) {
         'content' => $faker->text(500),
         'sf_user_id' => $faker->regexify('[A-Za-z0-9]{20}'),
         'contact_name' => $faker->name,
-        'ad_id' => factory(Ad::class)
+        'ad_id' => Ad::all()->random()
     ];
 });

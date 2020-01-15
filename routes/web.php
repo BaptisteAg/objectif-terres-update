@@ -11,6 +11,10 @@
 |
 */
 
+Route::get('/', function () {
+    return view('pages.homepage');
+});
+
 Route::get('new', 'Ads\AdsController@create');
 Route::post('new', 'Ads\AdsController@store');
 

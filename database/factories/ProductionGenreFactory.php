@@ -7,6 +7,6 @@ use Faker\Generator as Faker;
 
 $factory->define(ProductionGenre::class, function (Faker $faker) {
     return [
-        'name' => $faker->title
+        'name' => $faker->word
     ];
 });

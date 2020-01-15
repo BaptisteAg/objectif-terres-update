@@ -38,7 +38,7 @@ class AdsTableSeeder extends Seeder
             UserToUserMessageSeeder::class,
         ]);
 
-        factory(Ad::class, 10)->create()->each(function (Ad $ad) {
+        factory(Ad::class, 25)->create()->each(function (Ad $ad) {
             $ad->adNotes()->save(factory(AdNote::class)->make());
             $ad->adMessages()->save(factory(AdMessage::class)->make());
             $ad->ppToUserMessages()->save(factory(PpToUserMessage::class)->make());

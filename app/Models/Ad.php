@@ -115,6 +115,16 @@ class Ad extends Model
         return $this->hasOne('App\Models\JobAd');
     }
 
+    public function jobOfferAd()
+    {
+        return $this->hasOne('App\Models\JobAd')->where('is_offer', '=', true);
+    }
+
+    public function jobSeekAd()
+    {
+        return $this->hasOne('App\Models\JobAd')->where('is_offer', '=', false);
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\hasOne
      */
