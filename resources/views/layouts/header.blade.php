@@ -73,7 +73,7 @@
                     <label for="research_location"></label>
                     <select id="research_location" name="research_location[]" multiple size="3">
                         <option value="0">Toutes les régions</option>
-                        @foreach($regions as $region)
+                        @foreach($errors as $region)
                             <option value="{{ $region->id }}">{{ $region->name }}</option>
                         @endforeach
                     </select>

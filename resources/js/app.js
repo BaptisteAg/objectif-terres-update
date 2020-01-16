@@ -3,13 +3,13 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
 require('./bootstrap');
 window.Vue = require('vue');
 import Vuelidate from 'vuelidate';
 Vue.use(Vuelidate);
-
+require('awesomplete/awesomplete.min');
 require ('./pages/ads/new');
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -20,12 +20,6 @@ require ('./pages/ads/new');
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-//require('./bootstrap');
 
 
-window.Vue = require('vue');
-
-require('awesomplete/awesomplete.min');
-
-require ('./pages/ads/new');
 
