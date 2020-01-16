@@ -30,13 +30,8 @@
                 type: String,
                 required: true
             },
-            onDataRender: {
+            dataRenderer: {
                 type: Function
-            },
-            onResultsLoaded: {
-                type: Function,
-                default: _ => {
-                }
             }
         },
         data() {
@@ -51,7 +46,7 @@
 
             this.$awesomplete = new Awesomplete(input, {
                 sort: false,
-                data: this.onDataRender,
+                data: this.dataRenderer,
                 maxItems: 20
             });
         },
@@ -78,8 +73,6 @@
                             if (!results.length) {
                                 results.push("Pas de résultat pour " + query + " :(")
                             }
-
-                            this.onResultsLoaded(results);
 
                             this.$awesomplete.list = results;
                             this.$awesomplete.evaluate();

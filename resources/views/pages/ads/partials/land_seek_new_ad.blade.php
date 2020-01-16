@@ -26,20 +26,20 @@
                             id="zone-autocomplete"
                             class="input"
                             placeholder="Ajoutez une zone en saisissant les premières lettres"
-                            required
                             :disabled="isInputDisabled"
                             src="/json/locationables"
-                            :on-data-render="onZoneDataRender"
+                            :data-renderer="renderZoneItemData"
                             v-on:autocomplete-select="onZoneSelect"
                     >
                     </autocomplete>
+                    <p class="help is-danger" v-show="!$v.selectedZones.hasZone">Vous devez sélectionner au minimum une zone géographique.</p>
                 </div>
 
                 <h4 v-if="selectedZones.length">Vous avez sélectionné :</h4>
                 <h4 v-else>Vous n'avez encore sélectionné aucune zone.</h4>
 
                 <div class="selected-zone" v-for="(zone,i) in selectedZones">
-                    <span v-on:click="_ => selectedZones.splice(i, 1)">
+                    <span @click="_ => selectedZones.splice(i, 1)">
                         <i class="fa fa-trash-alt" style="cursor:pointer;"></i>
                     </span>
                     <b>@{{labelsByZoneType[zone.value.type]}}</b> : @{{zone.value.originalLabel}}
@@ -240,10 +240,21 @@
     </div>
     <div class="field">
         <label class="checkbox">
-            <input type="checkbox" name="confirm_project_follows_chart" :disabled="isInputDisabled"
-                   {{ old('confirm_project_follows_chart') ? 'checked' : '' }} required>
+            <input type="checkbox"
+                   name="confirm_project_follows_chart"
+                   :disabled="isInputDisabled"
+                   {{ old('confirm_project_follows_chart') ? 'checked' : '' }}
+                   required>
             Je certifie que mon projet correspond à la <a href="/">charte de Terre de Liens</a>
         </label>
     </div>
+    <article class="message is-danger" v-if="$v.$invalid">
+        <div class="message-header">
+            <p>Veuillez revoir votre formulaire</p>
+        </div>
+        <div class="message-body">
+            Des erreurs empêchent l'envoi du formulaire. Avez-vous tout vérifié ?
+        </div>
+    </article>
 </div>
 

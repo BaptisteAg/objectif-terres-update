@@ -18,13 +18,13 @@ const NewAd = Vue.component('new-ad', {
             adTypeSelected: this.oldAdTypeSelected,
         }
     },
-    mounted() {
-
-    },
     methods: {
-
-    },
-    watch: {
+        submit() {
+            this.$children.forEach(children => {
+                if(!children.isInputDisabled) {
+                    children.$v.touch()
+                }
+            })
+        }
     }
-
 });

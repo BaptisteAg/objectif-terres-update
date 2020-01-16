@@ -15,13 +15,17 @@
                 </div>
                 <br>
                 <div>
-                    <p class="has-text-grey">Pour nous permettre de vous valider votre annonce, veuillez nous en dire en peu plus…</p>
+                    <p class="has-text-grey">Pour nous permettre de vous valider votre annonce, veuillez nous en dire en
+                        peu plus…</p>
                 </div>
                 <div class="section">
                     <div id="vue-render">
                         <new-ad inline-template
                                 :old-ad-type-selected="'{{old('ad_type')}}'">
-                            {!! Form::open(['files' => true]) !!}
+                            {!! Form::open([
+                                'files' => true,
+                                '@submit.prevent' => 'submit'
+                            ]) !!}
                             <div class="field">
                                 {!! Form::label('ad_type', 'Type d\'annonce', ['class' => 'label']); !!}
                                 <div class="select">
@@ -88,16 +92,18 @@
         });
 
         let formSubmitting = false;
-        let setFormSubmitting = function() { formSubmitting = true; };
+        let setFormSubmitting = function () {
+            formSubmitting = true;
+        };
 
-        window.onload = function() {
+        window.onload = function () {
             window.addEventListener("beforeunload", function (e) {
                 if (formSubmitting) {
                     return confirm('Êtes-vous sûre de la saisie de votre annonce?');
                 }
 
                 let confirmationMessage = 'It looks like you have been editing something. '
-                        + 'If you leave before saving, your changes will be lost.';
+                    + 'If you leave before saving, your changes will be lost.';
 
                 (e || window).returnValue = confirmationMessage; //Gecko + IE
                 return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
