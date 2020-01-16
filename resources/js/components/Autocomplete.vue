@@ -1,18 +1,25 @@
 <template>
-    <input type="text" class="autocomplete-input" ref="input" v-model="value" v-on:click="onClick">
+    <input type="text"
+           class="autocomplete-input"
+           ref="input"
+           v-model="value"
+           v-on:click="onClick"
+           v-on:awesomplete-select="onSelect">
 </template>
 
 <style lang="scss">
     .content .awesomplete > ul {
-        list-style:none;
+        list-style: none;
         z-index: 10;
-        margin:0;
+        margin: 0;
     }
+
     .awesomplete {
-        width:100%;
+        width: 100%;
     }
+
     .autocomplete-input {
-        width:100%;
+        width: 100%;
     }
 </style>
 
@@ -23,21 +30,12 @@
                 type: String,
                 required: true
             },
-            onDataRender: {
-                type : Function
-            },
-            onSelect: {
-                type: Function,
-                required: true
-            },
-            onResultsLoaded: {
-                type: Function,
-                default: _ => {}
+            dataRenderer: {
+                type: Function
             }
         },
         data() {
             return {
-                id: 'awesomplete_' + Math.random().toString(36).substr(2, 9),
                 value: '',
                 timeout: null,
                 isFetching: false,
@@ -48,18 +46,9 @@
 
             this.$awesomplete = new Awesomplete(input, {
                 sort: false,
-                data: this.onDataRender,
+                data: this.dataRenderer,
                 maxItems: 20
             });
-
-            input.addEventListener('awesomplete-select', e => {
-                e.preventDefault();
-                this.onSelect({
-                    ...e.text
-                });
-                this.$awesomplete.close();
-                input.value = '';
-            })
         },
         watch: {
             value() {
@@ -67,6 +56,12 @@
             }
         },
         methods: {
+            onSelect(e) {
+                e.preventDefault();
+                this.$emit('autocomplete-select', e.text);
+                this.$awesomplete.close();
+                e.target.value = '';
+            },
             update(cooldown) {
                 const query = this.value;
 
@@ -75,11 +70,9 @@
                     fetch(this.src + '?q=' + query)
                         .then(response => response.json())
                         .then(results => {
-                            if(!results.length) {
-                                results.push("Pas de résultat pour "+query+" :(")
+                            if (!results.length) {
+                                results.push("Pas de résultat pour " + query + " :(")
                             }
-
-                            this.onResultsLoaded(results);
 
                             this.$awesomplete.list = results;
                             this.$awesomplete.evaluate();
@@ -99,7 +92,7 @@
                 }
             },
             onClick() {
-                if(this.value) {
+                if (this.value) {
                     this.$awesomplete.open();
                 }
             }

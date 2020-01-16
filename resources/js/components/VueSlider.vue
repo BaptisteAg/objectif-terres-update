@@ -18,7 +18,7 @@
             VueSlider
         },
         props:{
-            data : [],
+            data : Array,
         },
         data: function () {
             return {
