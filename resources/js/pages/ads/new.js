@@ -4,7 +4,7 @@ import JobOfferNewAd from './components/job-offer-new-ad'
 
 import Vue from 'vue'
 
-const NewAd = Vue.component('new-ad', {
+Vue.component('new-ad', {
     components: {
         'new-land-seek-ad' : LandSeekNewAd,
         'new-land-offer-ad' : LandOfferNewAd,
@@ -18,13 +18,36 @@ const NewAd = Vue.component('new-ad', {
             adTypeSelected: this.oldAdTypeSelected,
         }
     },
+    computed: {
+        enabledFormIsInvalid() {
+            return this.enabledForm && this.enabledForm.$v.$invalid
+        },
+        enabledForm() {
+            return this.$children.find(children => !children.isInputDisabled);
+        }
+    },
     mounted() {
+        window.addEventListener("beforeunload",  (e) => {
+            if(this.isSubmitting) {
+                return true;
+            }
 
+            const confirmationMessage = `
+                    Êtes vous sûr de vouloir quitter cette page ?
+                    Les données saisies seront perdues si elles n'ont pas été enregistrées.
+                `;
+
+            (e || window).returnValue = confirmationMessage; //Gecko + IE
+            return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+        });
     },
     methods: {
-
-    },
-    watch: {
+        submit(e) {
+            this.isSubmitting = true;
+            if(this.enabledForm.$v.$invalid || !confirm('Êtes-vous sûr de la saisie de votre annonce?')) {
+                this.isSubmitting = false;
+                e.preventDefault();
+            }
+        },
     }
-
 });
