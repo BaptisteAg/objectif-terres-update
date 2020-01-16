@@ -238,7 +238,7 @@
         {!! Form::text('land_seek[title]',
                  old('land_seek[title]'),
                  ['class' => 'input',
-                  "required",
+                  'placeholder'=> 'Saisissez votre titre...',
                   ':disabled' => 'isInputDisabled',
                   'v-model.trim.lazy' => 'formInput.title',
                   'ref' => 'title',
@@ -266,12 +266,16 @@
     <div class="field">
         <label class="checkbox">
             <input type="checkbox"
-                   name="confirm_project_follows_chart"
+                   id="land_seek[chart_confirmation]"
+                   name="certification_charte"
                    :disabled="isInputDisabled"
-                   {{ old('confirm_project_follows_chart') ? 'checked' : '' }}
-                   required>
+                   v-model.trim.lazy = "formInput.chartConfirmation"
+                   ref = 'chartConfirmation'
+                   aria-describedby= 'chartConfirmationError'>
+
             Je certifie que mon projet correspond à la <a href="/">charte de Terre de Liens</a>
         </label>
+        <p class="help is-danger" id="chartConfirmationError" v-if="$v.formInput.chartConfirmation.$error">Ce champs est requis.</p>
     </div>
 </div>
 

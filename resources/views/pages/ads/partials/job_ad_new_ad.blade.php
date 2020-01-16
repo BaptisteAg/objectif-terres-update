@@ -11,11 +11,12 @@
 				old('job_ad[is_beneficiary]'),
 				[
 					 'placeholder' => 'Veuillez séléctionner...',
-					 'required',
 					 ':disabled'=>'isInputDisabled',
-					 'v-model.trim.lazy' => 'formInput.beneficiary']) !!}
+					 'v-model.trim.lazy' => 'formInput.beneficiary',
+					 'ref' => 'beneficiary',
+                   	'aria-describedby'=>'beneficiaryError']) !!}
 		</div>
-		<p class="help is-danger" v-show="!$v.formInput.beneficiary.required">Ce champs est requis.</p>
+		<p class="help is-danger" id="beneficiaryError" v-if="$v.formInput.beneficiary.$error">Ce champs est requis.</p>
 	</div>
 	<div class="field">
 		{!! Form::label('job_ad[is_offer]', 'Offre ou recherche* ', ['class' => 'label']); !!}
@@ -28,12 +29,13 @@
 				old('job_ad[is_offer]'),
 				[
 					'placeholder' => 'Veuillez séléctionner...',
-					'required',
 					':disabled'=>'isInputDisabled',
 					'v-model'=>'isJobOpportunity',
-					'v-model.trim.lazy' => 'formInput.jobOpportunity']) !!}
+					'v-model.trim.lazy' => 'formInput.jobOpportunity',
+					'ref' => 'jobOpportunity',
+                    'aria-describedby'=>'jobOpportunityError']) !!}
 		</div>
-		<p class="help is-danger" v-show="!$v.formInput.jobOpportunity.required">Ce champs est requis.</p>
+		<p class="help is-danger" id="jobOpportunityError" v-if="$v.formInput.jobOpportunity.$error">Ce champs est requis.</p>
 	</div>
 	<div class="columns">
 		<div class="column is-half">
@@ -48,11 +50,11 @@
 						 old('job_ad[zipCode]'),
 						 ['min'=>1,
 						  'class' => 'input',
-						  ':required'=>'isInputRequired',
 						   'v-model.trim.lazy'=>'formInput.zipCode',
 						  ':disabled'=>'isInputDisabled']
 						  ); !!}
 			</div>
+			<p class="help is-danger" v-if="!$v.formInput.zipCode.required">Ce champs est obligatoire.</p>
 			<p class="help is-danger" v-if="!$v.formInput.zipCode.numeric">Veuillez saisir des chiffres.</p>
 			<p class="help is-danger" v-if="!$v.formInput.zipCode.minLength || !$v.formInput.zipCode.maxLength">
 				Veuillez saisir les 5 numéros d'un code postal valide.</p>
@@ -85,7 +87,7 @@
 		@foreach ($agriculturalActivities->pluck('name', 'id') as $id => $agriculturalActivity)
 			{!! Form::checkbox('job_ad[agricultural_activity][]',
 					$id,
-					old('job_ad[agricultural_activity][]'),
+					null,
 					[':disabled'=>'isInputDisabled']) !!}
 			{{$agriculturalActivity}}
 		@endforeach
@@ -102,7 +104,6 @@
 					$jobStatus->pluck('name'),
 					old('job_ad[job_status]'),
 					 ['placeholder' => 'Veuillez séléctionner...',
-					 'required',
 					 ':disabled'=>'isInputDisabled',
 					 ':required'=>'isInputRequired']);!!}
 		</div>
@@ -174,11 +175,12 @@
 		{!! Form::text('job_ad[title]',
 				 old('job_ad[title]'),
 				  ['class' => 'input',
-				   'required',
 					':disabled'=>'isInputDisabled',
-					'v-model.trim.lazy' => 'formInput.title'] ) !!}
+					'v-model.trim.lazy' => 'formInput.title',
+					'ref' => 'title',
+                    'aria-describedby'=>'titleError'] ) !!}
 
-		<p class="help is-danger" v-show="!$v.formInput.title.required">Ce champs est requis.</p>
+		<p class="help is-danger" id="titleError" v-show="$v.formInput.title.$error">Ce champs est requis.</p>
 		<p class="help is-danger" v-show="!$v.formInput.title.minLength">Le titre de votre annonce doit faire au minimum
 			@{{$v.formInput.title.$params.minLength.min}} caractères .</p>
 	</div>

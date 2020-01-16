@@ -6,6 +6,7 @@
                   v-on:keyup="countdown()"
                   v-model="message"
                   :maxlength="maxCount"
+                  placeholder="Saisissez votre texte(maximum 1000 caractères)..."
                  ></textarea>
         <p class="is-size-6 has-text-grey"> {{ remainingCount }}/ {{ maxLength}}</p>
         <p class="help is-danger" v-show="!$v.message.minLength">Le contenu doit faire au minimum

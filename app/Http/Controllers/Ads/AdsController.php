@@ -77,4 +77,8 @@ class AdsController extends Controller
 
         return redirect('/annonces/' . $ad->id);
     }
+
+    public function show (){
+    	return view('pages.ads.show');
+	}
 }

@@ -1,6 +1,6 @@
 import FormNewAdMixin from './mixins/form-new-ad-mixin'
 import FormValidationMixin from '../components/mixins/form-new-ad-validation-mixin';
-import {minLength, required, numeric} from 'vuelidate/lib/validators'
+import {minLength, required, numeric, sameAs} from 'vuelidate/lib/validators'
 import TextAreaCounter from "../../../components/TextAreaCounter";
 import VueSlider from "../../../components/VueSlider";
 import Autocomplete from '../../../components/Autocomplete'
@@ -20,13 +20,14 @@ export default Vue.extend({
 
         return {
             offerGenre: hasOld ? v.offer_genre : '',
-            isProductionGenreOther: hasOld ? v.production_genre.includes('other') : false,
+            isProductionGenreOther: hasOld ? v.is_production_genre : false,
             formInput: {
                 installationTypeId: hasOld ? v.installation_type_id : '',
                 productionGenre: hasOld ? v.production_genre : [],
                 title: hasOld ? v.title : '',
                 minRent :  hasOld ? v.rent_min : '',
                 maxRent :  hasOld ? v.rent_max : '',
+                chartConfirmation : hasOld ? v.chart_confirmation : false ,
             },
             selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
             labelsByZoneType: {
@@ -57,6 +58,9 @@ export default Vue.extend({
             productionGenre: {required},
             minRent : {numeric},
             maxRent : {numeric},
+            chartConfirmation : {
+                required,
+                sameAs: sameAs( () => true ) },
             title: {
                 required,
                 minLength: minLength(5),
