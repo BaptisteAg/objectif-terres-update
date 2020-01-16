@@ -7,7 +7,7 @@
                  $installationTypes->pluck('name', 'id'),
                  old('land_seek[installation_type]'),
                  ['placeholder' => 'Choisir un type d\'installation...',
-                 "v-model.trim.lazy"=>"formInput.installationType",
+                 "v-model.trim.lazy"=>"formInput.installationTypeId",
                  ':disabled' => 'isInputDisabled']); !!}
         </div>
         <p class="help is-danger" v-show="!$v.formInput.installationType.required">Ce champs est requis.</p>
@@ -83,14 +83,14 @@
         {!! Form::label('land_seek[production_genre][]', 'Production(s) envisagée(s)*', ['class' => 'label']); !!}
 
         @foreach ($productionGenres->pluck('name', 'id') as $id => $productionGenre)
-            {!! Form::checkbox(
-            'land_seek[production_genre][]',
-            $id,
-            old('land_seek[production_genre][]'),
-            [
-            ':disabled' => 'isInputDisabled',
-            'v-model'=>'formInput.productionGenre',
-            ]) !!}
+            {!! Form::checkbox('land_seek[production_genre][]',
+                $id,
+                null,
+                [
+                    ':disabled' => 'isInputDisabled',
+                    'v-model'=>'formInput.productionGenre',
+                ])
+            !!}
             {{$productionGenre}}
         @endforeach
         {!! Form::checkbox('land_seek[production_genre][]',
@@ -248,13 +248,5 @@
             Je certifie que mon projet correspond à la <a href="/">charte de Terre de Liens</a>
         </label>
     </div>
-    <article class="message is-danger" v-if="$v.$invalid">
-        <div class="message-header">
-            <p>Veuillez revoir votre formulaire</p>
-        </div>
-        <div class="message-body">
-            Des erreurs empêchent l'envoi du formulaire. Avez-vous tout vérifié ?
-        </div>
-    </article>
 </div>
 

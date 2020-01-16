@@ -1,4 +1,5 @@
 import FormNewAdMixin from './mixins/form-new-ad-mixin'
+import FormValidationMixin from '../components/mixins/form-new-ad-validation-mixin';
 import {minLength, required} from 'vuelidate/lib/validators'
 import TextAreaCounter from "../../../components/TextAreaCounter";
 import VueSlider from "../../../components/VueSlider";
@@ -6,7 +7,7 @@ import Autocomplete from '../../../components/Autocomplete'
 
 
 export default Vue.extend({
-    mixins: [FormNewAdMixin],
+    mixins: [FormNewAdMixin, FormValidationMixin],
     props: {},
     components: {
         TextAreaCounter,
@@ -14,16 +15,19 @@ export default Vue.extend({
         Autocomplete,
     },
     data() {
+        const v = this.oldValues;
+        const hasOld = Object.keys(v).length;
+
         return {
-            offerGenre: this.oldValues.offer_genre,
-            isProductionGenreOther: false,
+            offerGenre: hasOld ? v.offer_genre : '',
+            isProductionGenreOther: hasOld ? v.production_genre.includes('other') : false,
             formInput: {
-                installationType: '',
-                productionGenre: [],
-                title: '',
+                installationTypeId: hasOld ? v.installation_type_id : '',
+                productionGenre: hasOld ? v.production_genre : [],
+                title: hasOld ? v.title : '',
             },
-            selectedZones : this.oldValues.selected_zones ? JSON.parse(this.oldValues.selected_zones) : [],
-            labelsByZoneType : {
+            selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
+            labelsByZoneType: {
                 cities: 'Commune',
                 departments: 'Département',
                 regions: 'Région'
@@ -36,7 +40,7 @@ export default Vue.extend({
         },
         renderZoneItemData(item) {
             return {
-                label: '<b>'+this.labelsByZoneType[item.value.type] + '</b>: ' + item.label,
+                label: '<b>' + this.labelsByZoneType[item.value.type] + '</b>: ' + item.label,
                 value: {
                     ...item.value,
                     originalLabel: item.label,

@@ -24,7 +24,7 @@
                                 :old-ad-type-selected="'{{old('ad_type')}}'">
                             {!! Form::open([
                                 'files' => true,
-                                '@submit.prevent' => 'submit'
+                                '@submit' => 'submit'
                             ]) !!}
                             <div class="field">
                                 {!! Form::label('ad_type', 'Type d\'annonce', ['class' => 'label']); !!}
@@ -34,9 +34,10 @@
                                          'land_offer'=>'Offre de foncier',
                                          'job_offer'=>'Opportunité professionnelle'],
                                          null,
-                                         ['v-model'=>'adTypeSelected',
-                                          'placeholder' => 'Choisir un type d\'annonce...',
-                                          'required']) }}
+                                         [
+                                            'v-model'=>'adTypeSelected',
+                                            'placeholder' => 'Choisir un type d\'annonce...'
+                                        ]) }}
                                 </div>
                             </div>
 
@@ -61,17 +62,28 @@
                                 @include('pages.ads.partials.job_ad_new_ad')
                             </new-job-offer-ad>
 
-                            <div class="field is-grouped" v-show="adTypeSelected != ''">
-                                <div class="control">
-                                    {!! Form::submit('Envoyer',['class'=>'button is-link', 'onclick' => 'setFormSubmitting()']) !!}
+                            <template v-if="adTypeSelected !== ''">
+                                <article class="message is-danger" v-if="enabledFormIsInvalid">
+                                    <div class="message-header">
+                                        <p>Veuillez revoir votre formulaire</p>
+                                    </div>
+                                    <div class="message-body">
+                                        Des erreurs empêchent l'envoi du formulaire. Avez-vous tout vérifié ?
+                                    </div>
+                                </article>
+
+                                <div class="field is-grouped">
+                                    <div class="control">
+                                        {!! Form::submit('Envoyer',['class'=>'button is-link']) !!}
+                                    </div>
+                                    <div class="control">
+                                        <button class="button is-light">Sauvergder</button>
+                                    </div>
+                                    <div class="control">
+                                        <button class="button is-link is-light">Annuler</button>
+                                    </div>
                                 </div>
-                                <div class="control">
-                                    <button class="button is-light">Sauvergder</button>
-                                </div>
-                                <div class="control">
-                                    <button class="button is-link is-light">Annuler</button>
-                                </div>
-                            </div>
+                            </template>
                         </new-ad>
                     </div>
                     <div class="column"></div>
@@ -90,27 +102,6 @@
         const vuePage = new Vue({
             el: '#vue-render'
         });
-
-        let formSubmitting = false;
-        let setFormSubmitting = function () {
-            formSubmitting = true;
-        };
-
-        window.onload = function () {
-            window.addEventListener("beforeunload", function (e) {
-                if (formSubmitting) {
-                    return confirm('Êtes-vous sûre de la saisie de votre annonce?');
-                }
-
-                let confirmationMessage = 'It looks like you have been editing something. '
-                    + 'If you leave before saving, your changes will be lost.';
-
-                (e || window).returnValue = confirmationMessage; //Gecko + IE
-                return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-            });
-        };
     </script>
-
-
 @endsection
 

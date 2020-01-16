@@ -12,4 +12,3 @@ Vue.use(Vuelidate);
 require('awesomplete/awesomplete.min');
 
 require ('./pages/ads/new');
-
