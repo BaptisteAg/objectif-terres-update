@@ -7,10 +7,13 @@
                  $installationTypes->pluck('name', 'id'),
                  old('land_seek[installation_type]'),
                  ['placeholder' => 'Choisir un type d\'installation...',
-                 "v-model.trim.lazy"=>"formInput.installationTypeId",
-                 ':disabled' => 'isInputDisabled']); !!}
+                 "v-model.trim"=>"formInput.installationTypeId",
+                 ':disabled' => 'isInputDisabled',
+                 'ref' => 'installationTypeId',
+                 'aria-describedby'=>'installationTypeIdError']); !!}
         </div>
-        <p class="help is-danger" v-show="!$v.formInput.installationType.required">Ce champs est requis.</p>
+        <p class="help is-danger" id="installationTypeIdError" v-if="$v.formInput.installationTypeId.$error">Ce champs
+            est requis.</p>
     </div>
     <div class="selected-zones card">
         <header class="card-header">
@@ -32,7 +35,8 @@
                             v-on:autocomplete-select="onZoneSelect"
                     >
                     </autocomplete>
-                    <p class="help is-danger" v-show="!$v.selectedZones.hasZone">Vous devez sélectionner au minimum une zone géographique.</p>
+                    <p class="help is-danger" v-show="!$v.selectedZones.hasZone">Vous devez sélectionner au minimum une
+                        zone géographique.</p>
                 </div>
 
                 <h4 v-if="selectedZones.length">Vous avez sélectionné :</h4>
@@ -72,6 +76,7 @@
             {!! Form::checkbox(
                 'land_seek[surface_range][]',
                 $id,
+                null,
                 [
                     ':disabled' => 'isInputDisabled'
                 ]
@@ -89,6 +94,8 @@
                 [
                     ':disabled' => 'isInputDisabled',
                     'v-model'=>'formInput.productionGenre',
+                    'ref' => 'productionGenre',
+                    'aria-describedby'=>'productionGenreError'
                 ])
             !!}
             {{$productionGenre}}
@@ -98,9 +105,12 @@
         old('land_seek[production_genre]'),
         [':disabled' => 'isInputDisabled',
         'v-model'=>'isProductionGenreOther',
-        'v-model.trim.lazy'=>'formInput.productionGenre']) !!}
+        'v-model.trim'=>'formInput.productionGenre',
+        'ref' => 'productionGenre',
+        'aria-describedby'=>'productionGenreError']) !!}
         Autre
-        <p class="help is-danger" v-show="!$v.formInput.productionGenre.required">Ce champs est requis.</p>
+        <p class="help is-danger" id="productionGenreError" v-if="$v.formInput.productionGenre.$error">Ce champs est
+            requis.</p>
     </div>
 
     <div class="field" v-show="isProductionGenreOther">
@@ -139,13 +149,25 @@
         <div class="column is-half">
             <div class="field" v-show="offerGenre === '2'">
                 {!! Form::label('land_seek[rent_min]', 'Loyer minimum (en €)', ['class' => 'label']); !!}
-                {!! Form::number('land_seek[land_seek_rent_min]', old('land_seek[rent_min]'), ['min'=>0,'class' => 'input', ':disabled' => 'isInputDisabled'] ) !!}
+                {!! Form::text('land_seek[rent_min]',
+                         old('land_seek[rent_min]'),
+                          ['min'=>0,
+                          'class' => 'input',
+                           'v-model.trim'=> 'formInput.minRent',
+                           ':disabled' => 'isInputDisabled'] ) !!}
+                <p class="help is-danger" v-if="!$v.formInput.minRent.numeric">Veuillez saisir des chiffres.</p>
             </div>
         </div>
         <div class="column">
             <div class="field" v-show="offerGenre === '2'">
-                {!! Form::label('land_seek[rent_max]', 'Loyer maximum', ['class' => 'label']); !!}
-                {!! Form::number('land_seek[land_seek_rent_max]', old('land_seek[rent_max]'), ['min'=>1,'class' => 'input', ':disabled' => 'isInputDisabled'] ) !!}
+                {!! Form::label('land_seek[rent_max]', 'Loyer maximum (en €)', ['class' => 'label']); !!}
+                {!! Form::text('land_seek[rent_max]',
+                         old('land_seek[rent_max]'),
+                          ['min'=>1,
+                          'class' => 'input',
+                          'v-model.trim' => 'formInput.maxRent',
+                          ':disabled' => 'isInputDisabled'] ) !!}
+                <p class="help is-danger" v-if="!$v.formInput.maxRent.numeric">Veuillez saisir des chiffres.</p>
             </div>
         </div>
     </div>
@@ -162,7 +184,8 @@
         </button>
 
         <text-area-counter
-                id="land_seek[experience_farming]"
+                input-id="land_seek[experience_farming]"
+                error-input-id = 'ExperienceFarmingError'
                 :max-length=1000
                 :disabled="isInputDisabled"
                 :input-required=false
@@ -178,7 +201,7 @@
             <i class="fas fa-info-circle"></i>
         </button>
         <text-area-counter
-                id="land_seek[about_project]"
+                input-id="land_seek[about_project]"
                 :max-length=1000
                 :disabled="isInputDisabled"
                 :input-required=true
@@ -194,7 +217,7 @@
         </button>
 
         <text-area-counter
-                id="land_seek[about_content]"
+                input-id="land_seek[about_content]"
                 :max-length=1000
                 :disabled="isInputDisabled"
                 :input-required=true
@@ -217,8 +240,10 @@
                  ['class' => 'input',
                   "required",
                   ':disabled' => 'isInputDisabled',
-                  'v-model.trim.lazy' => 'formInput.title']) !!}
-        <p class="help is-danger" v-show="!$v.formInput.title.required">Ce champs est requis.</p>
+                  'v-model.trim.lazy' => 'formInput.title',
+                  'ref' => 'title',
+                  'aria-describedby'=>'titleError']) !!}
+        <p class="help is-danger" id="titleError" v-if="$v.formInput.title.$error">Ce champs est requis.</p>
         <p class="help is-danger" v-show="!$v.formInput.title.minLength">Le titre de votre annonce doit faire au minimum
             @{{$v.formInput.title.$params.minLength.min}} caractères .</p>
     </div>

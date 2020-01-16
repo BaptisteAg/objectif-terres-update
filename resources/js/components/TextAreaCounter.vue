@@ -1,6 +1,7 @@
 <template>
     <div>
         <textarea class="textarea"
+                  :id = "textAreaId"
                   :disabled="disabled"
                   v-on:keyup="countdown()"
                   v-model="message"
@@ -26,7 +27,9 @@
         props: {
             maxLength: Number,
             disabled: Boolean,
-            inputRequired : Boolean
+            inputRequired : Boolean,
+            inputId :'',
+            errorInputId : '',
         },
         data() {
             return {
@@ -34,6 +37,8 @@
                 message: '',
                 hasError: false,
                 remainingCount: this.maxLength,
+                textAreaId : this.inputId,
+                describedbyId : this.errorInputId,
             }
         },
         methods: {

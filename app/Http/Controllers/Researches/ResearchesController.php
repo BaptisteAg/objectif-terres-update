@@ -62,7 +62,6 @@ class ResearchesController extends Controller
                     }
                 }
             }
-
             return view('pages.researches', compact('ads', 'typeAd', 'adsType', 'regionName', 'building', 'land', 'house'));
 
         } else {
