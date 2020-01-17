@@ -66,10 +66,11 @@
                     <div class="column is-two-fifths">
                         <figure><img src="https://picsum.photos/500/300" alt="Placeholder image"></figure>
                         <div>
-                            {{ implode(", ", $regionName[$ad->id]) }}
+
+                            {{ implode(", ", $ad->regions->toArray()) }}
                         </div>
                         @if($adType === 'landOfferAd')
-                            <div><span>{{ $land[$ad->id]->price }}</span> € | <span>{{ $land[$ad->id]->area }}</span> ha</div>
+                            <div><span>{{ $ad->$adType->price }}</span> € | <span>{{ $ad->$adType->area }}</span> ha</div>
                         @else
                             <div><span></span></div>
                         @endif
@@ -92,7 +93,7 @@
                             </div>
                         </nav>
                         <div></div>
-                        <h1 class="title">{{ $adsType[$ad->id]->title }}</h1>
+                        <h1 class="title">{{ $ad->$adType->title }}</h1>
                         <div class="descritption">Je suis une discritpion {{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</div>
                         <a href="#">Voir</a>
                     </div>

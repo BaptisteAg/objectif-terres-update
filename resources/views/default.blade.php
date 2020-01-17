@@ -10,29 +10,21 @@
 </head>
 <body>
 
-<div>
-    <label class="typo__label">Simple select / dropdown</label>
-    <multiselect v-model="value" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Pick some" label="name" track-by="name" :preselect-first="true">
-    </multiselect>
-    <pre class="language-json"><code>@{{ value  }}</code></pre>
-</div>
+@include('layouts.header')
 
+@foreach($errors->all() as $message)
+    <article class="message is-danger">
+        <div class="message-header">
+            <p>Erreur !</p>
+            <button class="delete" aria-label="delete"></button>
+        </div>
+        <div class="message-body">
+            {{ $message }}
+        </div>
+    </article>
+@endforeach
 
 <div id="app">
-    @include('layouts.header')
-
-    @foreach($errors->all() as $message)
-        <article class="message is-danger">
-            <div class="message-header">
-                <p>Erreur !</p>
-                <button class="delete" aria-label="delete"></button>
-            </div>
-            <div class="message-body">
-                {{ $message }}
-            </div>
-        </article>
-    @endforeach
-
     @yield('main-content')
 </div>
 
@@ -63,8 +55,7 @@
             }
         });
     </script>
-<script>
-</script>
+
 
 @yield('script')
 

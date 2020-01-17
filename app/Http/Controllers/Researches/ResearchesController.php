@@ -20,83 +20,40 @@ class ResearchesController extends Controller
 {
     public function index(Request $request)
     {
+//        dd($request->all());
+
         $adType = $request->input('ad_type');
         $adCategory = $request->input('ad_category');
-        $idRegions = $request->input('research_location');
-
-//        $adType = ($adCategory === 'job' && $adType === "offer_ads") ? 'jobOfferAd' : (($adCategory === 'job' && $adType === "seek_ads") ? 'jobSeekAd' : (($adCategory === 'land' && $adType === "offer_ads") ? 'landOfferAd' : 'landSeekAd'));
-//        $typeJob = ($adCategory === 'job') ? true : (($adType === 'offer_ads') ? 'jobOfferAd' : 'jobSeekAd');
-//        $typeLand = ($adCategory === 'land') ? true : (($adType === 'offer_ads') ? 'landOfferAd' : 'landSeekAd');
+        $idRegions = $request->input('research_locations');
 
         $ads = collect();
-        $adsType = [];
-        $regionName = [];
-
 
         if ($adCategory === 'land') {
             $adType = ($adType === 'offer_ads') ? 'landOfferAd' : 'landSeekAd';
-            $building = [];
-            $land = [];
-            $house = [];
-
-            if (!in_array('0', $idRegions)) {
-                $regions = Region::with('ads')->whereIn('id', $idRegions)->get();
-
-            } else {
-                $regions = Region::all();
-            }
-
-            foreach ($regions as $region) {
-                $regionAds = $region->ads;
-                foreach ($regionAds as $key => $ad) {
-                    if ($ad->$adType) {
-                        $ads[$ad->id] = $ad;
-                        $adsType[$ad->id] = $ad->$adType;
-                        $regionName[$ad->id][$key] = $region->name;
-                        $building[$ad->id] = Building::where('id', '=', $ad->$adType->building_id)->first();
-                        $land[$ad->id] = Land::where('id', $ad->$adType->land_id)->first();
-                        $house[$ad->id] = House::where('id', $ad->$adType->house_id)->first();
-                    }
-                }
-            }
-
-//            $ads = $this->paginate($ads);
-
-
-            return view('pages.researches', compact('ads', 'adType', 'adsType', 'regionName', 'building', 'land', 'house'));
-
         } else {
             $adType = ($adType === 'offer_ads') ? 'jobOfferAd' : 'jobSeekAd';
+        }
 
-            if (!in_array('0', $idRegions)) {
-                $regions = Region::whereIn('id', $idRegions)->get();
-                foreach ($regions as $region) {
-                    $regionAds = $region->ads;
-                    foreach ($regionAds as $key => $ad) {
-                        if ($ad->$adType) {
-                            $ads[$ad->id] = $ad;
-                            $adsType[$ad->id] = $ad->$adType;
-                            $regionName[$ad->id][$key] = $region->name;
-                        }
-                    }
-                }
-            } else {
-                $regions = Region::all();
-                foreach ($regions as $region) {
-                    $regionAds = Region::where('id', '=', $region->id)->first()->ads;
+        if ($idRegions && !in_array('0', $idRegions)) {
+            $regions = Region::with('ads')->whereIn('id', $idRegions)->get();
+        } else {
+            $regions = Region::all();
+        }
 
-                    foreach ($regionAds as $key => $ad) {
-                        if ($ad->$adType) {
-                            $ads[$ad->id] = $ad;
-                            $adsType[$ad->id] = $ad->$adType;
-                            $regionName[$ad->id][$key] = $region->name;
-                        }
-                    }
+        foreach ($regions as $region) {
+            $regionAds = $region->ads;
+            foreach ($regionAds as $key => $ad) {
+                if ($ad->$adType) {
+                    $ads[$ad->id] = $ad;
+                    $adsType[$ad->id] = $ad->$adType;
+                    $regionName[$ad->id][$key] = $region->name;
                 }
             }
-
-            return view('pages.researches', compact('ads', 'typeAd', 'adsType', 'regionName'));
         }
+
+//        dd($ads);
+        //            $ads = $this->paginate($ads);
+        return view('pages.researches', compact('ads', 'adType'));
     }
 
     public function paginate($ads, $perPage = 5, $page = null)

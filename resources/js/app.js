@@ -4,6 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+
 window.Vue = require('vue');
 
 import Vuelidate from 'vuelidate';
@@ -17,5 +18,4 @@ require ('./pages/ads/new');
 // require('./pages/researches/researches');
 
 
-// require('./pages/header');
-
+require('./pages/header');
