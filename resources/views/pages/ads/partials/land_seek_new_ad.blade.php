@@ -10,7 +10,7 @@
                  "v-model.trim.lazy"=>"formInput.installationTypeId",
                  ':disabled' => 'isInputDisabled']); !!}
         </div>
-        <p class="help is-danger" v-show="!$v.formInput.installationType.required">Ce champs est requis.</p>
+        <p class="help is-danger" v-show="!$v.formInput.installationTypeId.required">Ce champs est requis.</p>
     </div>
     <div class="selected-zones card">
         <header class="card-header">

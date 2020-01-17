@@ -51,7 +51,7 @@ export default Vue.extend({
     },
     validations: {
         formInput: {
-            installationType: {required},
+            installationTypeId: {required},
             productionGenre: {required},
             title: {
                 required,

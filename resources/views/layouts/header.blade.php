@@ -48,7 +48,7 @@
                 <p>Une initiative Terre de Liens</p>
             </div>
             <div class="column is-2">
-                {!! Form::open(['url' => 'recherches']) !!}
+                {!! Form::open(['action' => 'Researches\ResearchesController@index']) !!}
                 <p>Je cherche</p>
                 <div class="select">
                     <label for="select"></label>
@@ -69,15 +69,16 @@
             </div>
             <div class="column is-3">
                 <p>Où</p>
-                <div class="select">
-                    <label for="research_location"></label>
-                    <select id="research_location" name="research_location[]" multiple size="3">
-                        <option value="0">Toutes les régions</option>
-                        @foreach($regions as $region)
-                            <option value="{{ $region->id }}">{{ $region->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
+{{--                <div class="select">--}}
+{{--                    <label for="research_location"></label>--}}
+{{--                    <select id="research_location" name="research_location[]" multiple size="3">--}}
+{{--                        <option selected value="0">Toutes les régions</option>--}}
+{{--                        @foreach($regions as $region)--}}
+{{--                            <option value="{{ $region->id }}">{{ $region->name }}</option>--}}
+{{--                        @endforeach--}}
+{{--                    </select>--}}
+
+{{--                </div>--}}
                 {!! Form::submit('Rechercher', ['class' => 'button']) !!}
 {{--                <button class="button">Rechercher</button>--}}
             </div>
@@ -130,33 +131,6 @@
             </div>
         </nav>
     </div>
-
 </header>
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-
-        // Get all "navbar-burger" elements
-        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-
-        // Check if there are any navbar burgers
-        if ($navbarBurgers.length > 0) {
-
-            // Add a click event on each of them
-            $navbarBurgers.forEach( el => {
-                el.addEventListener('click', () => {
-
-                    // Get the target from the "data-target" attribute
-                    const target = el.dataset.target;
-                    const $target = document.getElementById(target);
-
-                    // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-                    el.classList.toggle('is-active');
-                    $target.classList.toggle('is-active');
-
-                });
-            });
-        }
-    });
-</script>

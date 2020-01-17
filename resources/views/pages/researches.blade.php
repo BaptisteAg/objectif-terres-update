@@ -24,11 +24,11 @@
             <nav class="level">
                 <div class="level-left">
                     <div class="">
-                        @if ($typeAd === 'landOfferAd')
+                        @if ($adType === 'landOfferAd')
                             <h1 class="title">Offres foncières</h1>
-                        @elseif($typeAd === 'landSeekAd')
+                        @elseif($adType === 'landSeekAd')
                             <h1 class="title">Demandes de fonciers</h1>
-                        @elseif($typeAd === 'landSeekAd')
+                        @elseif($adType === 'landSeekAd')
                             <h1 class="title">Offres d'emploi</h1>
                         @else
                             <h1 class="title">Demandes d'emploi</h1>
@@ -68,7 +68,7 @@
                         <div>
                             {{ implode(", ", $regionName[$ad->id]) }}
                         </div>
-                        @if($typeAd === 'landOfferAd')
+                        @if($adType === 'landOfferAd')
                             <div><span>{{ $land[$ad->id]->price }}</span> € | <span>{{ $land[$ad->id]->area }}</span> ha</div>
                         @else
                             <div><span></span></div>
@@ -101,20 +101,31 @@
             </section>
 
             <section class="section">
-                <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-                    <ul class="pagination-list">
-                        <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
-                        <li><span class="pagination-ellipsis">&hellip;</span></li>
-                        <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
-                        <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
-                        <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
-                        <li><span class="pagination-ellipsis">&hellip;</span></li>
-                        <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
-                    </ul>
-                </nav>
+{{--                @if($ads->lastPage() > 1)--}}
+{{--                    <nav class="pagination is-centered" role="navigation" aria-label="pagination">--}}
+{{--                        <ul class="pagination-list">--}}
+{{--                            <li class="{{ $ads->currentPage() === 1 ? 'disabled' : '' }}">--}}
+{{--                                <a href="{{ $ads->url(1) }}" class="pagination-link" aria-label="Goto page 1">1</a>--}}
+{{--                            </li>--}}
+{{--                            <li class="{{ $ads->lastPage() > 6 }}"><span class="pagination-ellipsis">&hellip;</span></li>--}}
+{{--                            @if($ads->lastPage() >= 3)--}}
+{{--                                @for($i = 1; $i <= $ads->lastPage(); $i++)--}}
+{{--                                    <li class="{{ ($ads->currentPage() == $i) ? ' active' : '' }}">--}}
+{{--                                        <a href="{{ $ads->url($i) }}" class="pagination-link" aria-label="Goto page {{ $i }}">{{ $i }}</a>--}}
+{{--                                    </li>--}}
+{{--                                @endfor--}}
+{{--                            @endif--}}
+{{--                            <li><span class="pagination-ellipsis">&hellip;</span></li>--}}
+{{--                            <li class="{{ ($ads->currentPage() == $ads->lastPage()) ? ' disabled' : '' }}">--}}
+{{--                                <a href="{{ '/recherches' . $ads->url($ads->currentPage()+1) }}" class="pagination-link" aria-label="Goto page {{ $ads->lastPage() }}">{{ $ads->lastPage() }}</a>--}}
+{{--                            </li>--}}
+{{--                        </ul>--}}
+{{--                    </nav>--}}
+{{--                @endif--}}
+                <pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
             </section>
 
-            @if($typeAd === 'landOfferAd' || $typeAd === 'landSeekAd')
+            @if($adType === 'landOfferAd' || $adType === 'landSeekAd')
                 <section class="section">
                     <div class="columns">
                         <div class="column">
