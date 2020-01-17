@@ -1,17 +1,19 @@
 <template>
     <div>
-        <textarea class="textarea"
+        <textarea :id="name"
+                  :name="name"
+                  class="textarea"
                   :disabled="disabled"
                   v-on:keyup="countdown()"
-                  v-model="message"
+                  v-model="value"
                   :maxlength="maxCount"
                  ></textarea>
         <p class="is-size-6 has-text-grey"> {{ remainingCount }}/ {{ maxLength}}</p>
-        <p class="help is-danger" v-show="!$v.message.minLength">Le contenu doit faire au minimum
-            {{$v.message.$params.minLength.min}} caractères.</p>
-        <p class="help is-danger" v-if="!$v.message.maxLength">Vous avez dépassé la limite de
-            {{$v.message.$params.maxLength.max}} caractères.</p>
-        <p class="help is-danger" v-show="!$v.message.required">Ce champs est requis.</p>
+        <p class="help is-danger" v-show="!$v.value.minLength">Le contenu doit faire au minimum
+            {{$v.value.$params.minLength.min}} caractères.</p>
+        <p class="help is-danger" v-if="!$v.value.maxLength">Vous avez dépassé la limite de
+            {{$v.value.$params.maxLength.max}} caractères.</p>
+        <p class="help is-danger" v-show="!$v.value.required">Ce champs est requis.</p>
     </div>
 
 </template>
@@ -24,6 +26,8 @@
     export default {
         mixins: [FormValidationMixin],
         props: {
+            name: String,
+            old: String,
             maxLength: Number,
             disabled: Boolean,
             inputRequired : Boolean
@@ -31,19 +35,17 @@
         data() {
             return {
                 maxCount: this.maxLength,
-                message: '',
-                hasError: false,
+                value: this.old,
                 remainingCount: this.maxLength,
             }
         },
         methods: {
             countdown: function () {
-                this.remainingCount = this.maxCount - this.message.length;
-                this.hasError = this.remainingCount < 0;
+                this.remainingCount = this.maxCount - this.value.length;
             },
         },
         validations : {
-            message : {
+            value : {
                 minLength: minLength(5),
                 maxLength: maxLength(1000),
                 required : requiredIf(function () {

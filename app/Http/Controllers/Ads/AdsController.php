@@ -8,7 +8,6 @@ use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
 use App\Models\City;
 use App\Models\Department;
-
 use App\Models\EducationLevel;
 use App\Models\InstallationType;
 use App\Models\JobStatus;
@@ -42,26 +41,28 @@ class AdsController extends Controller
         $educationLevels = EducationLevel::all();
 
 
-		return view('pages.ads.new', compact('installationTypes',
-			'surfaceRanges',
-			'priceRanges',
-			'bioCertifications',
-			'jobStatus',
-			'offerGenres',
-			'cities',
-			'departments',
-			'regions',
-			'offerGenresLandSeek',
-			'offerGenresHouse',
-			'offerGenresBuilding',
-			'offerGenresLand',
-			'productionGenres',
-			'agriculturalActivities',
-			'educationLevels',
-			'productionGenres',
-			'agriculturalActivities',
-			'educationLevels'));
-	}
+        return view('pages.ads.new', compact(
+            'installationTypes',
+            'surfaceRanges',
+            'priceRanges',
+            'bioCertifications',
+            'jobStatus',
+            'offerGenres',
+            'cities',
+            'departments',
+            'regions',
+            'offerGenresLandSeek',
+            'offerGenresHouse',
+            'offerGenresBuilding',
+            'offerGenresLand',
+            'productionGenres',
+            'agriculturalActivities',
+            'educationLevels',
+            'productionGenres',
+            'agriculturalActivities',
+            'educationLevels'
+        ));
+    }
 
     /**
      * @param AdRequest $request

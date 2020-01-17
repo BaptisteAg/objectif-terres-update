@@ -10,7 +10,7 @@
                  "v-model.trim.lazy"=>"formInput.installationTypeId",
                  ':disabled' => 'isInputDisabled']); !!}
         </div>
-        <p class="help is-danger" v-show="!$v.formInput.installationType.required">Ce champs est requis.</p>
+        <p class="help is-danger" v-show="!$v.formInput.installationTypeId.required">Ce champs est requis.</p>
     </div>
     <div class="selected-zones card">
         <header class="card-header">
@@ -43,7 +43,7 @@
                         <i class="fa fa-trash-alt" style="cursor:pointer;"></i>
                     </span>
                     <b>@{{labelsByZoneType[zone.value.type]}}</b> : @{{zone.value.originalLabel}}
-                    <input type="hidden" :name="'land_seek['+zone.value.type+'][]'" :value="zone.value.id">
+                    <input type="hidden" :name="'land_seek[locationable]['+zone.value.type+'][]'" :value="zone.value.id">
                 </div>
             </div>
         </div>
@@ -53,6 +53,7 @@
                 <div class="column">
                     <p class="label">Dans un rayon de </p>
                     <vue-slider
+                            name="land_seek[locationable_radius]"
                             :data="['0km','5km','10km','20km','50km']"
                     ></vue-slider>
                 </div>
@@ -61,9 +62,9 @@
     </div>
     <div class="field">
         {!! Form::label('land_seek[is_bio]', 'Je souhaite m\'installer en bio', ['class' => 'label']) !!}
-        {!! Form::radio('land_seek[is_bio]', 'true',old('land_seek[is_bio]'), [':disabled' => 'isInputDisabled']) !!}
+        {!! Form::radio('land_seek[is_bio]', '1',old('land_seek[is_bio]'), [':disabled' => 'isInputDisabled']) !!}
         oui
-        {!! Form::radio('land_seek[is_bio]', 'false', old('land_seek[is_bio]'), [':disabled' => 'isInputDisabled']) !!}
+        {!! Form::radio('land_seek[is_bio]', '0', old('land_seek[is_bio]'), [':disabled' => 'isInputDisabled']) !!}
         non
     </div>
     <div class="field">
@@ -93,28 +94,27 @@
             !!}
             {{$productionGenre}}
         @endforeach
-        {!! Form::checkbox('land_seek[production_genre][]',
-        'other',
-        old('land_seek[production_genre]'),
+        {!! Form::checkbox('land_seek[production_genre_other]',
+        '1',
+        old('land_seek[production_genre_other]'),
         [':disabled' => 'isInputDisabled',
-        'v-model'=>'isProductionGenreOther',
         'v-model.trim.lazy'=>'formInput.productionGenre']) !!}
         Autre
         <p class="help is-danger" v-show="!$v.formInput.productionGenre.required">Ce champs est requis.</p>
     </div>
 
     <div class="field" v-show="isProductionGenreOther">
-        {!! Form::label('land_seek[other_production_genre]', 'Veuillez préciser', ['class' => 'label']); !!}
-        {!! Form::text('land_seek[other_production_genre]',
-                 old('land_seek[other_production_genre]'),
+        {!! Form::label('land_seek[production_type_add]', 'Veuillez préciser', ['class' => 'label']); !!}
+        {!! Form::text('land_seek[production_type_add]',
+                 old('land_seek[production_type_add]'),
                   ['class' => 'input',
                   ':disabled' => 'isInputDisabled']) !!}
     </div>
     <div class="field">
-        {!! Form::label('land_seek[land_seek_building][]', 'Habitation(s) et bâti(s)', ['class' => 'label']); !!}
-        {!! Form::checkbox('land_seek[building][]', 'has_houses', old('land_seek[building[]]'), [':disabled' => 'isInputDisabled']) !!}
+        {!! Form::label('land_seek_has_farms_or_buildings', 'Habitation(s) et bâti(s)', ['class' => 'label']); !!}
+        {!! Form::checkbox('land_seek[has_farm_buildings]', '1', old('land_seek[has_farm_buildings]'), [':disabled' => 'isInputDisabled']) !!}
         Avec une maison d'habitation existante
-        {!! Form::checkbox('land_seek[building][]', 'has_farm_building', old('land_seek[building[]]'), [':disabled' => 'isInputDisabled']) !!}
+        {!! Form::checkbox('land_seek[has_houses]', '1', old('land_seek[has_houses]'), [':disabled' => 'isInputDisabled']) !!}
         Avec des bâtis agricoles existants
     </div>
     <div class="field">
@@ -125,27 +125,27 @@
                      null,
                       ['placeholder' => 'Veuillez choisir...',
                        ':disabled' => 'isInputDisabled',
-                       'v-model'=> 'offerGenre']);!!}
+                       'v-model'=> 'formInput.offerGenre']);!!}
         </div>
     </div>
-    <div class="field" v-show="offerGenre === '1'">
-        {!! Form::label('land_seek[price][]', 'Prix (en €)', ['class' => 'label']); !!}
-        @foreach ($priceRanges->pluck('price', "id") as $k => $price)
-            {!! Form::checkbox('land_seek[price][]', $price, old('price[]', ["id" => 'price'.$k]), [':disabled' => 'isInputDisabled']) !!}
+    <div class="field" v-show="formInput.offerGenre === '1'">
+        {!! Form::label('land_seek[price_range][]', 'Prix (en €)', ['class' => 'label']); !!}
+        @foreach ($priceRanges->pluck('price', "id") as $priceId => $price)
+            {!! Form::checkbox('land_seek[price_range][]', $priceId, in_array($priceId, old('land_seek[price_range]', [])), [':disabled' => 'isInputDisabled']) !!}
             {{$price}}
         @endforeach
     </div>
     <div class="columns">
         <div class="column is-half">
-            <div class="field" v-show="offerGenre === '2'">
+            <div class="field" v-show="formInput.offerGenre === '2'">
                 {!! Form::label('land_seek[rent_min]', 'Loyer minimum (en €)', ['class' => 'label']); !!}
-                {!! Form::number('land_seek[land_seek_rent_min]', old('land_seek[rent_min]'), ['min'=>0,'class' => 'input', ':disabled' => 'isInputDisabled'] ) !!}
+                {!! Form::number('land_seek[rent_min]', old('land_seek[rent_min]'), ['min'=>0,'class' => 'input', ':disabled' => 'isInputDisabled'] ) !!}
             </div>
         </div>
         <div class="column">
-            <div class="field" v-show="offerGenre === '2'">
+            <div class="field" v-show="formInput.offerGenre === '2'">
                 {!! Form::label('land_seek[rent_max]', 'Loyer maximum', ['class' => 'label']); !!}
-                {!! Form::number('land_seek[land_seek_rent_max]', old('land_seek[rent_max]'), ['min'=>1,'class' => 'input', ':disabled' => 'isInputDisabled'] ) !!}
+                {!! Form::number('land_seek[rent_max]', old('land_seek[rent_max]'), ['min'=>1,'class' => 'input', ':disabled' => 'isInputDisabled'] ) !!}
             </div>
         </div>
     </div>
@@ -162,7 +162,8 @@
         </button>
 
         <text-area-counter
-                id="land_seek[experience_farming]"
+                name="land_seek[experience_farming]"
+                old="{{ old('land_seek[experience_farming]') }}"
                 :max-length=1000
                 :disabled="isInputDisabled"
                 :input-required=false
@@ -178,7 +179,8 @@
             <i class="fas fa-info-circle"></i>
         </button>
         <text-area-counter
-                id="land_seek[about_project]"
+                name="land_seek[about_project]"
+                old="{{ old('land_seek[about_project]') }}"
                 :max-length=1000
                 :disabled="isInputDisabled"
                 :input-required=true
@@ -194,7 +196,8 @@
         </button>
 
         <text-area-counter
-                id="land_seek[about_content]"
+                name="land_seek[about_content]"
+                old="{{ old('land_seek[about_content]') }}"
                 :max-length=1000
                 :disabled="isInputDisabled"
                 :input-required=true

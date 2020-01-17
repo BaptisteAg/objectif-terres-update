@@ -19,12 +19,11 @@ export default Vue.extend({
         const hasOld = Object.keys(v).length;
 
         return {
-            offerGenre: hasOld ? v.offer_genre : '',
-            isProductionGenreOther: hasOld ? v.production_genre.includes('other') : false,
             formInput: {
                 installationTypeId: hasOld ? v.installation_type_id : '',
                 productionGenre: hasOld ? v.production_genre : [],
                 title: hasOld ? v.title : '',
+                offerGenre: hasOld ? v.offer_genre : '',
             },
             selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
             labelsByZoneType: {
@@ -32,6 +31,11 @@ export default Vue.extend({
                 departments: 'Département',
                 regions: 'Région'
             }
+        }
+    },
+    computed: {
+        isProductionGenreOther() {
+            return this.formInput.productionGenre.includes('other');
         }
     },
     methods: {
@@ -51,7 +55,7 @@ export default Vue.extend({
     },
     validations: {
         formInput: {
-            installationType: {required},
+            installationTypeId: {required},
             productionGenre: {required},
             title: {
                 required,
