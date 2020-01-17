@@ -19,6 +19,7 @@ export default Vue.extend({
         const hasOld = Object.keys(v).length;
 
         return {
+
             offerGenre: hasOld ? v.offer_genre : '',
             isProductionGenreOther: hasOld ? v.is_production_genre : false,
             formInput: {
@@ -28,6 +29,7 @@ export default Vue.extend({
                 minRent :  hasOld ? v.rent_min : '',
                 maxRent :  hasOld ? v.rent_max : '',
                 chartConfirmation : hasOld ? v.chart_confirmation : false ,
+                offerGenre: hasOld ? v.offer_genre : '',
             },
             selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
             labelsByZoneType: {
@@ -35,6 +37,11 @@ export default Vue.extend({
                 departments: 'Département',
                 regions: 'Région'
             }
+        }
+    },
+    computed: {
+        isProductionGenreOther() {
+            return this.formInput.productionGenre.includes('other');
         }
     },
     methods: {

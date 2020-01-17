@@ -49,6 +49,8 @@
                 data: this.dataRenderer,
                 maxItems: 20
             });
+
+            input.setAttribute('autocomplete', 'no'+Date.now());
         },
         watch: {
             value() {

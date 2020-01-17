@@ -26,7 +26,8 @@ class AdRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'ad_type' => "required"
+            'ad_type' => "required",
+            'land_seek' => "array",
         ];
 
         $rulesetsByAdType = [
