@@ -1,0 +1,1 @@
+<h1 class="title has-text-link">Offre  foncière</h1>

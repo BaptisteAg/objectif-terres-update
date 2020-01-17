@@ -31,7 +31,6 @@ Vue.component('new-ad', {
             if(this.isSubmitting) {
                 return true;
             }
-
             const confirmationMessage = `
                     Êtes vous sûr de vouloir quitter cette page ?
                     Les données saisies seront perdues si elles n'ont pas été enregistrées.
@@ -43,10 +42,26 @@ Vue.component('new-ad', {
     },
     methods: {
         submit(e) {
-            this.isSubmitting = true;
-            if(this.enabledForm.$v.$invalid || !confirm('Êtes-vous sûr de la saisie de votre annonce?')) {
-                this.isSubmitting = false;
+            this.enabledForm.$v.$touch();
+            if (this.enabledFormIsInvalid) {
                 e.preventDefault();
+                for (let key in Object.keys(this.enabledForm.$v.formInput)) {
+                    const input = Object.keys(this.enabledForm.$v.formInput)[key];
+                    if (input.includes("$")) return false;
+                    if (this.enabledForm.$v.formInput[input].$error) {
+                        this.enabledForm.$refs[input].focus();
+                        break;
+                    }
+                }
+                this.isSubmitting = false;
+            }
+            else {
+                if(!confirm('Êtes-vous sûr de la saisie de votre annonce?')) {
+                    this.isSubmitting = false;
+                    e.preventDefault();
+                } else {
+                    this.isSubmitting = true;
+                }
             }
         },
     }

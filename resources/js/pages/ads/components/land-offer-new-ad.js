@@ -1,6 +1,6 @@
 import FormNewAdMixin from "./mixins/form-new-ad-mixin";
 import FormValidationMixin from '../components/mixins/form-new-ad-validation-mixin';
-import {required, maxLength, numeric, minLength} from 'vuelidate/lib/validators'
+import {required, maxLength, numeric, minLength, sameAs} from 'vuelidate/lib/validators'
 import TextAreaCounter from "../../../components/TextAreaCounter";
 export default {
     components: {
@@ -10,18 +10,23 @@ export default {
     props: {
     },
     data() {
+        const v = this.oldValues;
+        const hasOld = Object.keys(v).length;
+
         return {
-            isActivityTransfer: '',
-            isProductionGenreOther: false,
-            isProductionGenreWantedOther: false,
+            isActivityTransfer: hasOld ? v.is_activity_transfer : false,
+            isProductionGenreOther: hasOld ? v.other_production_genre :  false,
+            isProductionGenreWantedOther: hasOld ? v.production_genre_wanted : false,
             isInputRequired: false,
             formInput : {
-                beneficiary : '',
-                zipCode : '',
-                surfaceRange : [],
+                isBeneficiary : hasOld ? v.is_beneficiary : '',
+                zipCode :  hasOld ? v.zipCode : '',
+                surfaceRange :hasOld ? v.surface_range : [],
                 productionGenreWanted: [],
-                altitude : '',
-                bioCertification : [],
+                altitude : hasOld ? v.altitude : '',
+                bioCertification : hasOld ? v.bioCertification: [],
+                confirmPriceFermage : hasOld ? v.confirm_price_fermage : false,
+                chartConfirmation : hasOld ? v.chart_confirmation : false ,
                 title : '',
 
             }
@@ -30,7 +35,7 @@ export default {
     validations : {
         isActivityTransfer : {required},
         formInput : {
-            beneficiary : {required},
+            isBeneficiary : {required},
             zipCode : {
                 required,
                 numeric,
@@ -42,6 +47,12 @@ export default {
                 required,
                 numeric},
             bioCertification: {required},
+            confirmPriceFermage : {
+                required,
+                sameAs: sameAs( () => true ) },
+            chartConfirmation : {
+                required,
+                sameAs: sameAs( () => true ) },
             title : {
                 required,
                 minLength: minLength(5)

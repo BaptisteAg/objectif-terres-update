@@ -24,6 +24,7 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
         View::composer('layouts.header', 'App\Http\Composers\ResearchComposer');
     }
 }

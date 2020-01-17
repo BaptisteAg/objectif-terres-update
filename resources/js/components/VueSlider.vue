@@ -1,12 +1,12 @@
 <template>
     <div>
         <vue-slider
-                v-model="localisationRange"
+                v-model="value"
                 :adsorb="true"
                 :data="ranges"
                 :marks="true"
         ></vue-slider>
-        <input id="land_seek[city_range]" name="prodId" type="hidden" :value="localisationRange">
+        <input type="hidden" :id="name" :name="name" :value="value">
     </div>
 </template>
 
@@ -19,10 +19,11 @@
         },
         props:{
             data : Array,
+            name: String
         },
         data: function () {
             return {
-                localisationRange: 0,
+                value: 0,
                 ranges: this.data
             }
         }

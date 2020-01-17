@@ -23,7 +23,7 @@ class LandSeekdAdRepository extends AbstractRepository implements LandSeekAdRepo
 
         $ad->fill($data);
 
-        //
+        dd($ad);
 
         $ad->save();
 

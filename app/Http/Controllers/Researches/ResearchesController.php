@@ -28,6 +28,7 @@ class ResearchesController extends Controller
 
         $ads = collect();
 
+
         if ($adCategory === 'land') {
             $adType = ($adType === 'offer_ads') ? 'landOfferAd' : 'landSeekAd';
         } else {

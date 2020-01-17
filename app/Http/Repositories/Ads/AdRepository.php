@@ -34,6 +34,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
         $ad->fill($data);
 
+        dd($data);
         if($data["ad_type"] === "land_seek") {
             $landSeekdAd = $this->landSeekAdRepository->create($data["land_seek"]);
             $ad->landSeekAd = $landSeekdAd;
