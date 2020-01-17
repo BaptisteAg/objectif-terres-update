@@ -20,7 +20,7 @@
 
 <script>
 
-    import {required, minLength, between, maxLength, requiredIf} from 'vuelidate/lib/validators'
+    import {minLength, maxLength, requiredIf} from 'vuelidate/lib/validators'
     import FormValidationMixin from "../pages/ads/components/mixins/form-new-ad-validation-mixin";
 
     export default {
@@ -51,7 +51,7 @@
         validations : {
             message : {
                 minLength: minLength(5),
-                maxLength: maxLength(1000),
+                maxLength: maxLength(10),
                 required : requiredIf(function () {
                     return this.inputRequired
                 })

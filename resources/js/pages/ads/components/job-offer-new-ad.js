@@ -19,6 +19,9 @@ export default {
             formInput: {
                 beneficiary: hasOld ? v.is_beneficiary : '',
                 zipCode: hasOld ? v.zipCode : '',
+                city: hasOld ? v.city : '',
+                agriculturalActivity: hasOld ? v.agricultural_activity : [],
+                jobStatus: hasOld ? v.job_status : '',
                 jobOpportunity: hasOld ? v.is_offer : '',
                 experienceFarming: hasOld ? v.experience_farming : '',
                 aboutProject: hasOld ? v.about_project : '',
@@ -40,10 +43,24 @@ export default {
                 numeric,
                 minLength: minLength(5),
                 maxLength: maxLength(5),
-                required : requiredIf(function () {
+                required: requiredIf(function () {
                     return this.isInputRequired
                 })
-
+            },
+            city: {
+                required: requiredIf(function () {
+                    return this.isInputRequired
+                })
+            },
+            agriculturalActivity: {
+                required: requiredIf(function () {
+                    return this.isInputRequired
+                })
+            },
+            jobStatus: {
+                required: requiredIf(function () {
+                    return this.isInputRequired
+                })
             },
             experienceFarming: {numeric},
             title: {

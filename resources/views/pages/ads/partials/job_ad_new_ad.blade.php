@@ -35,7 +35,8 @@
 					'ref' => 'jobOpportunity',
                     'aria-describedby'=>'jobOpportunityError']) !!}
 		</div>
-		<p class="help is-danger" id="jobOpportunityError" v-if="$v.formInput.jobOpportunity.$error">Ce champs est requis.</p>
+		<p class="help is-danger" id="jobOpportunityError" v-if="$v.formInput.jobOpportunity.$error">Ce champs est
+			requis.</p>
 	</div>
 	<div class="columns">
 		<div class="column is-half">
@@ -51,10 +52,13 @@
 						 ['min'=>1,
 						  'class' => 'input',
 						   'v-model.trim.lazy'=>'formInput.zipCode',
-						  ':disabled'=>'isInputDisabled']
+						  ':disabled'=>'isInputDisabled',
+						   'ref' => 'zipCode',
+                   			'aria-describedby'=>'zipCodeError']
 						  ); !!}
 			</div>
-			<p class="help is-danger" v-if="!$v.formInput.zipCode.required">Ce champs est obligatoire.</p>
+			<p class="help is-danger" id="zipCodeError" v-if="$v.formInput.zipCode.$error">Ce champs est
+				obligatoire.</p>
 			<p class="help is-danger" v-if="!$v.formInput.zipCode.numeric">Veuillez saisir des chiffres.</p>
 			<p class="help is-danger" v-if="!$v.formInput.zipCode.minLength || !$v.formInput.zipCode.maxLength">
 				Veuillez saisir les 5 numéros d'un code postal valide.</p>
@@ -70,10 +74,13 @@
 				{!! Form::text('job_ad[city]',
 						 old('job_ad[city]'),
 						 ['class' => 'input',
-						 ':required'=>'isInputRequired',
-						  ':disabled'=>'isInputDisabled']
+						  'v-model.trim.lazy'=>'formInput.city',
+						  ':disabled'=>'isInputDisabled',
+						  'ref' => 'city',
+						  'aria-describedby'=>'cityError']
 						 );!!}
 			</div>
+			<p class="help is-danger" id="cityError" v-if="$v.formInput.city.$error">Ce champs est obligatoire.</p>
 		</div>
 	</div>
 	<div class="field">
@@ -85,12 +92,19 @@
 			{!! Form::label('job_ad[agricultural_activity][]', 'Activités agricoles', ['class' => 'label']); !!}
 		</div>
 		@foreach ($agriculturalActivities->pluck('name', 'id') as $id => $agriculturalActivity)
-			{!! Form::checkbox('job_ad[agricultural_activity][]',
+			{!! Form::checkbox(
+					'job_ad[agricultural_activity][]',
 					$id,
 					null,
-					[':disabled'=>'isInputDisabled']) !!}
+					[':disabled'=>'isInputDisabled',
+					  'v-model'=>'formInput.agriculturalActivity',
+					  'ref' => 'agriculturalActivity',
+					  'aria-describedby'=>'agriculturalActivityError'
+					]) !!}
 			{{$agriculturalActivity}}
 		@endforeach
+		<p class="help is-danger" id="agriculturalActivityError" v-if="$v.formInput.agriculturalActivity.$error">Ce
+			champs est obligatoire.</p>
 	</div>
 	<div class="field">
 		<div v-if="isInputRequired === true">
@@ -105,8 +119,12 @@
 					old('job_ad[job_status]'),
 					 ['placeholder' => 'Veuillez séléctionner...',
 					 ':disabled'=>'isInputDisabled',
-					 ':required'=>'isInputRequired']);!!}
+					 'v-model.trim.lazy'=>'formInput.jobStatus',
+					  'ref' => 'jobStatus',
+					  'aria-describedby'=>'jobStatusError']);!!}
 		</div>
+		<p class="help is-danger" id="jobStatusError" v-if="$v.formInput.jobStatus.$error">Ce champs est
+			obligatoire.</p>
 	</div>
 	<div class="field">
 		{!! Form::label('job_ad[experience_farming]', 'Expérience dans le milieu agricole (en années)', ['class' => 'label']); !!}

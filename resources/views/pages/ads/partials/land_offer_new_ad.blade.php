@@ -354,6 +354,7 @@
                 :max-length=1000
                 :disabled="isInputDisabled"
                 :input-required=true
+
         >
         </text-area-counter>
 
