@@ -115,121 +115,31 @@
 		</div>
 		<div class="container ">
 			<div id="post_images" class="carousel" >
-				<div class="column is-12 ">
-					<div class="card">
-						<div class="card-content">
-							<div class="media">
-								<div class="media-left">
-									<figure class="image is-48x48">
-										<img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-									</figure>
+				@for ($i = 0; $i < 4; $i++)
+					<div class="column is-12 ">
+						<div class="card">
+							<div class="card-content">
+								<div class="media">
+									<div class="media-left">
+										<figure class="image is-48x48">
+											<img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+										</figure>
+									</div>
+									<div class="media-content">
+										<p class="title is-4">Jean-Pierre Delatoite</p>
+										<p class="subtitle is-6">Paysan dans la Drôme</p>
+									</div>
 								</div>
-								<div class="media-content">
-									<p class="title is-4">Jean-Pierre Delatoite</p>
-									<p class="subtitle is-6">Paysan dans la Drôme</p>
+								<div class="content">
+									Avec Objectif Terre j'ai réussi à trouver
+									la terre dont j'avais besoin pour aboutir
+									ma reconversion dans l'agriculture bio et
+									paysanne.
 								</div>
-							</div>
-							<div class="content">
-								Avec Objectif Terre j'ai réussi à trouver
-								la terre dont j'avais besoin pour aboutir
-								ma reconversion dans l'agriculture bio et
-								paysanne.
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="column is-12">
-					<div class="card">
-						<div class="card-content">
-							<div class="media">
-								<div class="media-left">
-									<figure class="image is-48x48">
-										<img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-									</figure>
-								</div>
-								<div class="media-content">
-									<p class="title is-4">Jean-Pierre Delatoite</p>
-									<p class="subtitle is-6">Paysan dans la Drôme</p>
-								</div>
-							</div>
-							<div class="content">
-								Avec Objectif Terre j'ai réussi à trouver
-								la terre dont j'avais besoin pour aboutir
-								ma reconversion dans l'agriculture bio et
-								paysanne.
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="column is-12">
-					<div class="card">
-						<div class="card-content">
-							<div class="media">
-								<div class="media-left">
-									<figure class="image is-48x48">
-										<img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-									</figure>
-								</div>
-								<div class="media-content">
-									<p class="title is-4">Jean-Pierre Delatoite</p>
-									<p class="subtitle is-6">Paysan dans la Drôme</p>
-								</div>
-							</div>
-							<div class="content">
-								Avec Objectif Terre j'ai réussi à trouver
-								la terre dont j'avais besoin pour aboutir
-								ma reconversion dans l'agriculture bio et
-								paysanne.
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="column is-12">
-					<div class="card">
-						<div class="card-content">
-							<div class="media">
-								<div class="media-left">
-									<figure class="image is-48x48">
-										<img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-									</figure>
-								</div>
-								<div class="media-content">
-									<p class="title is-4">Jean-Pierre Delatoite</p>
-									<p class="subtitle is-6">Paysan dans la Drôme</p>
-								</div>
-							</div>
-							<div class="content">
-								Avec Objectif Terre j'ai réussi à trouver
-								la terre dont j'avais besoin pour aboutir
-								ma reconversion dans l'agriculture bio et
-								paysanne.
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="column is-12">
-					<div class="card">
-						<div class="card-content">
-							<div class="media">
-								<div class="media-left">
-									<figure class="image is-48x48">
-										<img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-									</figure>
-								</div>
-								<div class="media-content">
-									<p class="title is-4">Jean-Pierre Delatoite</p>
-									<p class="subtitle is-6">Paysan dans la Drôme</p>
-								</div>
-							</div>
-							<div class="content">
-								Avec Objectif Terre j'ai réussi à trouver
-								la terre dont j'avais besoin pour aboutir
-								ma reconversion dans l'agriculture bio et
-								paysanne.
-							</div>
-						</div>
-					</div>
-				</div>
+				@endfor
 			</div>
 		</div>
 	</section>

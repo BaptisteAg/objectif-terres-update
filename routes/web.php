@@ -31,4 +31,4 @@ Route::prefix('json')->group(function () {
 });
 
 
-Route::get('/annonce', 'Ads\AdsController@show');
+Route::get('/annonce/{id}', 'Ads\AdsController@show');

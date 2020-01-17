@@ -172,8 +172,8 @@
         </div>
     </div>
     <div class="field">
-        <label class="label">Expérience dans le domaine agricole</label>
-        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left" data-tooltip="Pour certains cédants, l’expérience est
+        <label class="label is-inline-block">Expérience dans le domaine agricole</label>
+        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-right " data-tooltip="Pour certains cédants, l’expérience est
 				un plus. N’hésitez pas à détailler ici de
 				précédentes expériences
 				professionnelles dans le domaine
@@ -193,8 +193,8 @@
         </text-area-counter>
     </div>
     <div class="field">
-        <label class="label">Et si vous nous en disiez un peu plus sur votre projet ?*</label>
-        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left" data-tooltip="Quel est le projet que vous portez ?
+        <label class="label is-inline-block">Et si vous nous en disiez un peu plus sur votre projet ?*</label>
+        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-right" data-tooltip="Quel est le projet que vous portez ?
 			Qu’est-ce qui motive votre projet ?
 			Quelles sont les valeurs que vous
 			défendez ? etc.">
@@ -210,8 +210,8 @@
 
     </div>
     <div class="field">
-        <label class="label">Et si vous nous en disiez un peu plus sur vous ?*</label>
-        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left"
+        <label class="label is-inline-block">Et si vous nous en disiez un peu plus sur vous ?*</label>
+        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-right"
                 data-tooltip="Qui êtes-vous en quelques mots ?">
             <i class="fas fa-info-circle"></i>
         </button>
@@ -225,9 +225,9 @@
         </text-area-counter>
     </div>
     <div class="field">
-        {!! Form::label('land_seek[title]', 'Titre de votre annonce*', ['class' => 'label']); !!}
+        {!! Form::label('land_seek[title]', 'Titre de votre annonce*', ['class' => 'label is-inline-block']); !!}
 
-        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left" data-tooltip="Le titre de l’annonce est primordial ! Il
+        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-right" data-tooltip="Le titre de l’annonce est primordial ! Il
 				s’agit de votre carte de visite sur la
 				plateforme. Un titre clair et bien
 				formulé augmentera vos chances de

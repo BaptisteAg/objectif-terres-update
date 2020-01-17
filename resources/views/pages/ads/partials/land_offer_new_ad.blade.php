@@ -335,8 +335,8 @@
         <p class="help is-danger" id="confirmPriceFermageError" v-if="$v.formInput.confirmPriceFermage.$error">Ce champs est requis.</p>
     </div>
     <div class="field">
-        <label class="label">Et si vous nous en disiez un peu plus sur votre projet ?*</label>
-        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left" data-tooltip="Parce qu’il y a derrière chaque
+        <label class="label is-inline-block">Et si vous nous en disiez un peu plus sur votre projet ?*</label>
+        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-right" data-tooltip="Parce qu’il y a derrière chaque
 				projet et chaque lieu des personnes
 				et des histoires, nous vous invitons
 				ici à en dire un peu plus sur vous et
@@ -361,8 +361,8 @@
     </div>
     <div class="field">
 
-        <label class="label">Et si vous nous en disiez un peu plus sur vous ?*</label>
-        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left" data-tooltip="Parce qu’il y a derrière chaque
+        <label class="label is-inline-block">Et si vous nous en disiez un peu plus sur vous ?*</label>
+        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-right" data-tooltip="Parce qu’il y a derrière chaque
 				projet et chaque lieu des personnes
 				et des histoires, nous vous invitons
 				ici à en dire un peu plus sur vous et
@@ -385,8 +385,8 @@
 
     </div>
     <div class="field">
-        {!! Form::label('land_offer[title]', 'Titre de votre annonce*', ['class' => 'label']); !!}
-        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left" data-tooltip="Le titre de l’annonce est primordial !
+        {!! Form::label('land_offer[title]', 'Titre de votre annonce*', ['class' => 'label is-inline-block']); !!}
+        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-right" data-tooltip="Le titre de l’annonce est primordial !
 				Il s’agit de votre carte de visite sur la
 				plateforme. Un titre clair et bien
 				formulé augmentera vos chances de
@@ -406,8 +406,8 @@
             @{{$v.formInput.title.$params.minLength.min}} caractères .</p>
     </div>
     <div class="field">
-        <span>Des photos ? Chaque photo augmente vos chances d’être recontactés !</span>
-        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left"
+        <span >Des photos ? Chaque photo augmente vos chances d’être recontactés !</span>
+        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-right"
                 data-tooltip="5 photos maximum">
             <i class="fas fa-info-circle"></i>
         </button>
