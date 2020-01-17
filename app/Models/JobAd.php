@@ -47,12 +47,12 @@ class JobAd extends Model
         'ad_id', 'education_level_id', 'job_status_id', 'title', 'is_offer', 'is_beneficiary', 'experience_farming'
     ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\hasOne
-     */
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
     public function ad()
     {
-        return $this->hasOne('App\Models\Ad');
+        return $this->belongsTo('App\Models\Ad');
     }
 
     /**

@@ -4,11 +4,14 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+
 window.Vue = require('vue');
 
 import Vuelidate from 'vuelidate';
 Vue.use(Vuelidate);
 
+
 require('awesomplete/awesomplete.min');
 
 require ('./pages/ads/new');
+

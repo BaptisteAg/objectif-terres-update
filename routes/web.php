@@ -30,3 +30,5 @@ Route::prefix('json')->group(function () {
    Route::get('locationables', 'Json\LocationableController@locationables');
 });
 
+
+Route::get('/annonce/{id}', 'Ads\AdsController@show');

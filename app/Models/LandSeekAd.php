@@ -86,7 +86,7 @@ class LandSeekAd extends Model
      */
     public function offerGenre()
     {
-        return $this->belongsTo('App\Models\OfferGenre', 'offer_type_id');
+        return $this->belongsTo('App\Models\OfferGenre', 'offer_genre_id');
     }
 
     /**
