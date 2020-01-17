@@ -19,7 +19,6 @@ export default Vue.extend({
         const hasOld = Object.keys(v).length;
 
         return {
-
             offerGenre: hasOld ? v.offer_genre : '',
             isProductionGenreOther: hasOld ? v.is_production_genre : false,
             formInput: {
