@@ -6,7 +6,7 @@ use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 class AdRepository extends AbstractRepository implements AdRepositoryInterface
 {
-    /** @var LandSeekdAdRepository  */
+    /** @var LandSeekdAdRepository */
     protected $landSeekAdRepository;
 
     public function __construct(LandSeekdAdRepository $landSeekAdRepository)
@@ -32,15 +32,26 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     {
         $ad = new Ad();
 
-        $ad->fill($data);
+        $adData = $data[$data["ad_type"]];
 
-        dd($data);
-        if($data["ad_type"] === "land_seek") {
-            $landSeekdAd = $this->landSeekAdRepository->create($data["land_seek"]);
-            $ad->landSeekAd = $landSeekdAd;
-        }
+        $ad->fill($adData);
+
+        $ad->sf_pp_id = 999;
+        $ad->is_draft = false;
 
         $ad->save();
+
+        foreach (["cities", "departments", "regions"] as $locationableType) {
+            $locationables = $adData["locationable"][$locationableType] ?? [];
+            if (count($locationables)) {
+                $ad->$locationableType()->attach($locationables, ["radius" => $adData["locationable_radius"]]);
+            }
+        }
+
+        if ($data["ad_type"] === "land_seek") {
+            $adData["ad_id"] = $ad->id;
+            $landSeekAd = $this->landSeekAdRepository->create($adData);
+        }
 
         return $ad;
     }

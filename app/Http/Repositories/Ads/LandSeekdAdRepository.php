@@ -1,6 +1,7 @@
 <?php namespace App\Http\Repositories\Ads;
 
 use App\Htttp\Repositories\LandSeekAdRepositoryInterface;
+use App\Models\Ad;
 use App\Models\LandSeekAd;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
@@ -19,14 +20,27 @@ class LandSeekdAdRepository extends AbstractRepository implements LandSeekAdRepo
      */
     public function create(array $data): LandSeekAd
     {
-        $ad = new LandSeekAd();
+        $landSeekAd = new LandSeekAd();
 
-        $ad->fill($data);
+        $landSeekAd->fill($data);
 
-        dd($ad);
+        $landSeekAd->save();
 
-        $ad->save();
+        $surfaceRanges = $data["surface_range"] ?? [];
+        if (count($surfaceRanges)) {
+            $landSeekAd->surfaceRanges()->attach($surfaceRanges);
+        }
 
-        return $ad;
+        $priceRanges = $data["price_range"] ?? [];
+        if (count($priceRanges)) {
+            $landSeekAd->priceRanges()->attach($priceRanges);
+        }
+
+        $productionGenres = $data["production_genre"] ?? [];
+        if (count($productionGenres)) {
+            $landSeekAd->productionGenres()->attach($productionGenres);
+        }
+
+        return $landSeekAd;
     }
 }

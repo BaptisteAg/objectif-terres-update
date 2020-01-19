@@ -27,6 +27,8 @@ class AdService
             return $ad;
         });
 
+        dd($ad);
+
         return $ad;
     }
 }
