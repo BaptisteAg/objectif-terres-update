@@ -23,18 +23,18 @@
 		<div class="select">
 			{!! Form::select('job_ad[is_offer]',
 				[
-					true => 'Je propose une opportunité professionnelle',
-					false => 'Je cherche une opportunité professionnelle'
+					1 => 'Je propose une opportunité professionnelle',
+					0 => 'Je cherche une opportunité professionnelle'
 				],
 				null,
 				[
 					'placeholder' => 'Veuillez séléctionner...',
 					':disabled'=>'isInputDisabled',
-					'v-model.trim.lazy' => 'formInput.jobOpportunity',
-					'ref' => 'jobOpportunity',
-                    'aria-describedby'=>'jobOpportunityError']) !!}
+					'v-model' => 'formInput.isJobOpportunity',
+					'ref' => 'isJobOpportunity',
+                    'aria-describedby'=>'isJobOpportunityError']) !!}
 		</div>
-		<p class="help is-danger" id="jobOpportunityError" v-if="$v.formInput.jobOpportunity.$error">Ce champ est
+		<p class="help is-danger" id="isJobOpportunityError" v-if="$v.formInput.isJobOpportunity.$error">Ce champ est
 			requis.</p>
 	</div>
 	<div class="columns">

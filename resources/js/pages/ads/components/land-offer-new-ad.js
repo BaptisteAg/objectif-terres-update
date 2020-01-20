@@ -18,7 +18,7 @@ export default {
                 isBeneficiary: hasOld ? v.is_beneficiary : '',
                 zipCode: hasOld ? v.zipCode : '',
                 surfaceRange: hasOld ? v.surface_range : [],
-                isActivityTransfer: hasOld ? !!v.is_activity_transfer : false,
+                isActivityTransfer: hasOld ? !!v.is_activity_transfer : '',
                 productionGenre: hasOld ? v.production_genre : [],
                 productionGenreWanted: hasOld ? v.production_genre_wanter : [],
                 altitude: hasOld ? v.altitude : '',
