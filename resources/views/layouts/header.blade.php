@@ -48,7 +48,6 @@
                     <h4 class="subtitle">Réalisez votre projet agricole.</h4>
                     <p>Une initiative Terre de Liens</p>
                 </div>
-
                 <div class="column is-2">
                     <p>Je cherche</p>
                     <div class="select">

@@ -45,9 +45,9 @@
 						</div>
 						<div class="content">
 							<span class="is-size-5 is-capitalized has-text-black">Localisation(s) : </span>
-							<p><span class="subtitle">{{$ad->cities->pluck('name')->implode(', ') }}</span></p>
-							<p><span class="subtitle">{{$ad->departments->pluck('name')->implode(', ') }}</span></p>
-							<p><span class="subtitle">{{$ad->regions->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="is-size-6 is-italic">Commune(s) :</span><span class="subtitle">{{$ad->cities->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="is-size-6 is-italic">Département(s) :</span><span class="subtitle">{{$ad->departments->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="is-size-6 is-italic">Région(s) :</span><span class="subtitle">{{$ad->regions->pluck('name')->implode(', ') }}</span></p>
 						</div>
 						<div class="content">
 							<p><span class="is-size-4  has-text-black">Statut :</span>

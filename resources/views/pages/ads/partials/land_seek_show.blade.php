@@ -12,7 +12,7 @@
 		<div class="columns">
 			<div class=" column is-two-thirds ">
 				<div id="ad_images" class="carousel">
-					@foreach($landOfferAd->documents as $document)
+					@foreach($ad->documents as $document)
 						<div class="card">
 							<div class="card-image">
 								<figure class="image is-2by1">
@@ -45,19 +45,11 @@
 							<p><span class="subtitle">{{$ad->cities->pluck('name')->implode(', ') }}</span></p>
 							<p><span class="subtitle">{{$ad->departments->pluck('name')->implode(', ') }}</span></p>
 							<p><span class="subtitle">{{$ad->regions->pluck('name')->implode(', ') }}</span></p>
-<<
+
 						</div>
 						<div class="content">
 							<p><span class="is-size-4  has-text-black">Prix recherché : </span>
 								<span class="subtitle has-text-black">{{$ad->landSeekAd->priceRanges->pluck('price')->implode(', ') }}</span>
-=======
-{{--							<p><span class="is-size-5 is-capitalized has-text-black">Région(s) : </span>--}}
-{{--								@foreach ($ad->locationable as $adRegion)--}}
-{{--									<span class="subtitle">--}}
-{{--										{{$adRegion->name}}--}}
-{{--									</span>--}}
-{{--								@endforeach--}}
-{{--							</p>--}}
 						</div>
 					</div>
 					<footer class="card-footer">
@@ -107,12 +99,7 @@
 
 			<div class="column is-one-quarter ">
 				<p class="has-text-link is-size-5 has-text-centered"> Surface(s) recherchée(s)(en ha)</p>
-<<<<<<< HEAD
-
-				@foreach($ad->landSeekAd->surfaceRanges as $surfaceRangeSeek)
-=======
 				@foreach ($ad->landSeekAd->surfaceRanges as $surfaceRangeSeek)
->>>>>>> origin/develop
 					@if($surfaceRangeSeek->surface !== '')
 						<p class="has-text-centered">{{$ad->landSeekAd->surfaceRanges->pluck('surface')->implode(', ') }}</p>
 					@else
@@ -189,6 +176,7 @@
 		</div>
 	</div>
 </section>
+
 
 	@include('components.partnering')
 	@include('components.support_terre_liens')
