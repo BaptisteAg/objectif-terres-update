@@ -176,7 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
 
-        Omniphx\Forrest\Providers\Laravel\ForrestServiceProvider::class,
+        Omniphx\Forrest\Providers\Laravel\ForrestServiceProvider::class
     ],
 
     /*

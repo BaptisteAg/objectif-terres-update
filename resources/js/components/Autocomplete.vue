@@ -2,7 +2,7 @@
     <input type="text"
            class="autocomplete-input"
            ref="input"
-           v-model="value"
+           v-model="autocompleteValue"
            v-on:click="onClick"
            v-on:awesomplete-select="onSelect">
 </template>
@@ -26,6 +26,10 @@
 <script>
     export default {
         props: {
+            value: {
+                type: Array,
+                default: []
+            },
             src: {
                 type: String,
                 required: true
@@ -36,7 +40,7 @@
         },
         data() {
             return {
-                value: '',
+                autocompleteValue: '',
                 timeout: null,
                 isFetching: false,
             }
@@ -53,19 +57,19 @@
             input.setAttribute('autocomplete', 'no'+Date.now());
         },
         watch: {
-            value() {
+            autocompleteValue() {
                 this.update(300)
             }
         },
         methods: {
             onSelect(e) {
                 e.preventDefault();
-                this.$emit('autocomplete-select', e.text);
+                this.value.push(e.text);
                 this.$awesomplete.close();
                 e.target.value = '';
             },
             update(cooldown) {
-                const query = this.value;
+                const query = this.autocompleteValue;
 
                 if (!cooldown && !this.isFetching) {
                     this.isFetching = true;
@@ -94,7 +98,7 @@
                 }
             },
             onClick() {
-                if (this.value) {
+                if (this.autocompleteValue) {
                     this.$awesomplete.open();
                 }
             }

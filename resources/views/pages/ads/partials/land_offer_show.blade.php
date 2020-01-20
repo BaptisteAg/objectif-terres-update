@@ -1,4 +1,4 @@
-@section('title', $landOfferAd->landOfferAd->title)
+@section('title', $ad->landOfferAd->title)
 <section class="section is-medium ">
 	<div class="container ">
 		<nav class="breadcrumb" aria-label="breadcrumbs">
@@ -7,11 +7,11 @@
 				<li><a href="#">Offres foncières</a></li>
 			</ul>
 		</nav>
-		<h1 class="title has-text-link">{{$landOfferAd->landOfferAd->title}}</h1>
+		<h1 class="title has-text-link">{{$ad->landOfferAd->title}}</h1>
 		<div class="columns">
 			<div class=" column is-two-thirds ">
 				<div id="ad_images" class="carousel">
-					@foreach($landOfferAd->documents as $document)
+					@foreach($ad->documents as $document)
 						<div class="card">
 							<div class="card-image">
 								<figure class="image is-2by1">
@@ -31,7 +31,7 @@
 					<div class="card-content">
 						<div class="content">
 							<p><span class="is-size-5 is-capitalized has-text-black ">Publié le  : </span><span
-										class="subtitle">{{ \Carbon\Carbon::parse($landOfferAd->created_at)->format('d/m/Y')}}</span>
+										class="subtitle">{{ \Carbon\Carbon::parse($ad->created_at)->format('d/m/Y')}}</span>
 							</p>
 						</div>
 						<div class="content">
@@ -40,23 +40,23 @@
 						</div>
 						<div class="content">
 							<span class="is-size-5 is-capitalized has-text-black">Localisation : </span>
-							<p><span class="subtitle">{{$landOfferAd->cities->pluck('name')->implode(', ') }}</span></p>
-							<p><span class="subtitle">{{$landOfferAd->departments->pluck('name')->implode(', ') }}</span></p>
-							<p><span class="subtitle">{{$landOfferAd->regions->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="subtitle">{{$ad->cities->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="subtitle">{{$ad->departments->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="subtitle">{{$ad->regions->pluck('name')->implode(', ') }}</span></p>
 						</div>
 						<div class="content">
-							@if($landOfferAd->landOfferAd->land->price)
+							@if($ad->landOfferAd->land->price)
 								<p><span class="is-size-5  has-text-black">Prix ou loyer mensuel du foncier : </span>
-									<span class="subtitle has-text-black">{{ number_format($landOfferAd->landOfferAd->land->price, 0, ",", " " )}} €</span>
+									<span class="subtitle has-text-black">{{ number_format($ad->landOfferAd->land->price, 0, ",", " " )}} €</span>
 								</p>
-							@elseif($landOfferAd->landOfferAd->building->price)
+							@elseif($ad->landOfferAd->building->price)
 								<p>
 									<span class="is-size-5  has-text-black">Prix ou loyer mensuel du bâti : </span>
-									<span class="subtitle has-text-black">{{number_format($landOfferAd->landOfferAd->building->price, 0, ",", " " )}}</span>
+									<span class="subtitle has-text-black">{{number_format($ad->landOfferAd->building->price, 0, ",", " " )}}</span>
 								</p>
-							@elseif($landOfferAd->landOfferAd->house->price)
+							@elseif($ad->landOfferAd->house->price)
 								<p><span class="is-size-5  has-text-black">Prix ou loyer mensuel de l'habitation : </span>
-									<span class="subtitle has-text-black">{{number_format($landOfferAd->landOfferAd->house->price, 0, ",", " " )}}</span>
+									<span class="subtitle has-text-black">{{number_format($ad->landOfferAd->house->price, 0, ",", " " )}}</span>
 								</p>
 							@endif
 						</div>
@@ -85,7 +85,7 @@
 			<div class="column is-one-quarter ">
 				<p class="has-text-link is-size-5 has-text-centered"> Transmission d’activité (ferme
 					toujours en fonctionnement)</p>
-				@if($landOfferAd->landOfferAd->is_activity_transfer === 1)
+				@if($ad->landOfferAd->is_activity_transfer === 1)
 					<p class="has-text-centered">Oui</p>
 				@else
 					<p class="has-text-centered">Non</p>
@@ -94,15 +94,15 @@
 
 
 			<div class="column is-one-quarter ">
-				@if($landOfferAd->landOfferAd->is_activity_transfer === 1)
+				@if($ad->landOfferAd->is_activity_transfer === 1)
 					<p class="has-text-link is-size-5 has-text-centered"> Système(s) de production en place </p>
 					<p class="has-text-centered">
-						<span>{{$landOfferAd->landOfferAd->productionGenres->pluck('name')->implode(', ') }}</span>
+						<span>{{$ad->landOfferAd->productionGenres->pluck('name')->implode(', ') }}</span>
 					</p>
 				@else
 					<p class="has-text-link is-size-5 has-text-centered"> Production(s) envisageable(s) </p>
 					<p class="has-text-centered">
-							<span>{{$landOfferAd->landOfferAd->productionGenres->pluck('name')->implode(', ') }}</span>
+							<span>{{$ad->landOfferAd->productionGenres->pluck('name')->implode(', ') }}</span>
 					</p>
 				@endif
 			</div>
@@ -110,20 +110,20 @@
 			<div class="column is-one-quarter ">
 				<p class="has-text-link is-size-5 has-text-centered"> Certification bio des terres</p>
 				<p class="has-text-centered">
-						<span>{{$landOfferAd->landOfferAd->bioCertifications->pluck('name')->implode(', ') }}</span>
+						<span>{{$ad->landOfferAd->bioCertifications->pluck('name')->implode(', ') }}</span>
 				</p>
 			</div>
 
 			<div class="column is-one-quarter ">
 				<p class="has-text-link is-size-5 has-text-centered"> Type d'appel à candidature(s)</p>
 				<p class="has-text-centered">
-					@if($landOfferAd->landOfferAd->is_call_for_application_community === 1)
+					@if($ad->landOfferAd->is_call_for_application_community === 1)
 						<span>Projet
 						soutenu par une collectivité</span>
-					@elseif($landOfferAd->landOfferAd->is_call_for_application_terre_de_liens === 1)
+					@elseif($ad->landOfferAd->is_call_for_application_terre_de_liens === 1)
 						<span>Projet
 						pour une ferme Terre de Liens</span>
-					@elseif($landOfferAd->landOfferAd->is_call_for_application_test_area === 1)
+					@elseif($ad->landOfferAd->is_call_for_application_test_area === 1)
 						<span>Projet Espace test agricole</span>
 					@else
 						<span>Le projet ne répond pas à un apple de candidature</span>
@@ -132,11 +132,11 @@
 			</div>
 			<div class="column is-one-quarter ">
 				<p class="has-text-link is-size-5 has-text-centered"> Altitude (en m)</p>
-				<p class="has-text-centered">{{$landOfferAd->landOfferAd->altitude}}</p>
+				<p class="has-text-centered">{{$ad->landOfferAd->altitude}}</p>
 			</div>
 			<div class="column is-one-quarter ">
 				<p class="has-text-link is-size-5 has-text-centered"> Accès à l'eau</p>
-				<p class="has-text-centered">{{$landOfferAd->landOfferAd->water_access}}</p>
+				<p class="has-text-centered">{{$ad->landOfferAd->water_access}}</p>
 			</div>
 		</div>
 
@@ -144,81 +144,81 @@
 		<div class="content">
 			<h3 class="title is-3 has-text-centered">Caractéristique du foncier</h3>
 			<div class="columns is-multiline is-mobile is-centered">
-				@if($landOfferAd->landOfferAd->building)
+				@if($ad->landOfferAd->building)
 					<div class=" column is-one-thirds ">
 						<h3 class="title is-5 has-text-centered">Bâti agricole</h3>
-						@if($landOfferAd->landOfferAd->building->number)
+						@if($ad->landOfferAd->building->number)
 							<p class="has-text-black">Nombre :
-								<span>{{$landOfferAd->landOfferAd->building->number}}</span>
+								<span>{{$ad->landOfferAd->building->number}}</span>
 							</p>
 						@endif
-						@if($landOfferAd->landOfferAd->building->surface)
+						@if($ad->landOfferAd->building->surface)
 							<p class="has-text-black">Surface (en m²) :
-								<span>{{$landOfferAd->landOfferAd->building->surface}}</span>
+								<span>{{$ad->landOfferAd->building->surface}}</span>
 							</p>
 						@endif
-						@if($landOfferAd->landOfferAd->building->buildings)
+						@if($ad->landOfferAd->building->buildings)
 							<p class="has-text-black">Type de cession :
-								<span>{{$landOfferAd->landOfferAd->building->buildings->pluck('name')->implode(', ') }}</span>
+								<span>{{$ad->landOfferAd->building->buildings->pluck('name')->implode(', ') }}</span>
 							</p>
 						@endif
-						@if($landOfferAd->landOfferAd->building->price)
+						@if($ad->landOfferAd->building->price)
 							<p class="has-text-black">Prix :
-								<span class="has-text-weight-bold">{{number_format($landOfferAd->landOfferAd->building->price , 0, ",", " " )}} €</span>
+								<span class="has-text-weight-bold">{{number_format($ad->landOfferAd->building->price , 0, ",", " " )}} €</span>
 							</p>
 						@endif
 					</div>
 				@endif
-				@if($landOfferAd->landOfferAd->house)
+				@if($ad->landOfferAd->house)
 					<div class=" column is-one-thirds ">
 						<h3 class="title is-5 has-text-centered">Habitation</h3>
-						@if($landOfferAd->landOfferAd->house->number)
+						@if($ad->landOfferAd->house->number)
 							<p class="has-text-black">Nombre :
-								<span>{{$landOfferAd->landOfferAd->house->number}}</span>
+								<span>{{$ad->landOfferAd->house->number}}</span>
 							</p>
 						@endif
-						@if($landOfferAd->landOfferAd->house->surface)
+						@if($ad->landOfferAd->house->surface)
 							<p class="has-text-black">Surface (en m²) :
-								<span>{{$landOfferAd->landOfferAd->house->surface}}</span>
+								<span>{{$ad->landOfferAd->house->surface}}</span>
 							</p>
 						@endif
-						@if($landOfferAd->landOfferAd->house->houses)
+						@if($ad->landOfferAd->house->houses)
 							<p class="has-text-black">Type de cession :
-								<span>{{$landOfferAd->landOfferAd->house->houses->pluck('name')->implode(', ') }}</span>
+								<span>{{$ad->landOfferAd->house->houses->pluck('name')->implode(', ') }}</span>
 							</p>
 						@endif
-						@if($landOfferAd->landOfferAd->house->price)
+						@if($ad->landOfferAd->house->price)
 							<p class="has-text-black">Prix :
-								<span class="has-text-weight-bold">{{number_format($landOfferAd->landOfferAd->house->price, 0, ",", " " )}} €</span>
+								<span class="has-text-weight-bold">{{number_format($ad->landOfferAd->house->price, 0, ",", " " )}} €</span>
 							</p>
 						@endif
 					</div>
 				@endif
-				@if($landOfferAd->landOfferAd->land)
+				@if($ad->landOfferAd->land)
 					<div class=" column is-one-thirds ">
 						<h3 class="title is-5 has-text-centered">Foncier agricole</h3>
-						@if($landOfferAd->landOfferAd->land->area)
+						@if($ad->landOfferAd->land->area)
 							<p class="has-text-black">Surface (en ha) :
-								<span>{{$landOfferAd->landOfferAd->land->area}}</span>
+								<span>{{$ad->landOfferAd->land->area}}</span>
 							</p>
 						@endif
-						@if($landOfferAd->landOfferAd->land->lands)
+						@if($ad->landOfferAd->land->lands)
 							<p class="has-text-black">Type de cession :
-								<span>{{$landOfferAd->landOfferAd->land->lands->pluck('name')->implode(', ') }}</span>
+								<span>{{$ad->landOfferAd->land->lands->pluck('name')->implode(', ') }}</span>
 							</p>
 						@endif
-						@if($landOfferAd->landOfferAd->is_activity_transfer === 1 and  $landOfferAd->landOfferAd->land->land_availability)
+						@if($ad->landOfferAd->is_activity_transfer === 1 and  $ad->landOfferAd->land->land_availability)
 							<p class="has-text-black">Disponibilité des terres à partir du :
-								<span>{{ \Carbon\Carbon::parse($landOfferAd->landOfferAd->land->land_availibility)->format('d/m/Y')}}</span>
+								<span>{{ \Carbon\Carbon::parse($ad->landOfferAd->land->land_availibility)->format('d/m/Y')}}</span>
 							</p>
-						@elseif ($landOfferAd->landOfferAd->is_activity_transfer === 0 and  $landOfferAd->landOfferAd->land->land_transfer_deadline)
+						@elseif ($ad->landOfferAd->is_activity_transfer === 0 and  $ad->landOfferAd->land->land_transfer_deadline)
 							<p class="has-text-black">Disponibilité des terres à partir du :
-								<span>{{ \Carbon\Carbon::parse($landOfferAd->landOfferAd->land->land_availibility)->format('d/m/Y')}}</span>
+								<span>{{ \Carbon\Carbon::parse($ad->landOfferAd->land->land_availibility)->format('d/m/Y')}}</span>
 							</p>
 						@endif
-						@if($landOfferAd->landOfferAd->land->price)
+						@if($ad->landOfferAd->land->price)
 							<p class="has-text-black">Prix :
-								<span class="has-text-weight-bold">{{number_format($landOfferAd->landOfferAd->land->price, 0, ",", " " )}} €</span>
+								<span class="has-text-weight-bold">{{number_format($ad->landOfferAd->land->price, 0, ",", " " )}} €</span>
 							</p>
 						@endif
 					</div>
@@ -227,12 +227,12 @@
 		</div>
 		<div class="content">
 			<h3 class="title is-3">Description du projet</h3>
-			<p> {{$landOfferAd->about_project_content}}</p>
+			<p> {{$ad->about_project_content}}</p>
 		</div>
 
 		<div class="content">
 			<h3 class="title is-3">A propos du porteur de projet</h3>
-			<p> {{$landOfferAd->about_content}}</p>
+			<p> {{$ad->about_content}}</p>
 		</div>
 
 		<div class="content">

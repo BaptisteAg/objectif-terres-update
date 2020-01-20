@@ -1,4 +1,4 @@
-@section('title', $jobAd->jobAd->title)
+@section('title', $ad->jobAd->title)
 <section class="section is-medium ">
 	<div class="container ">
 		<nav class="breadcrumb" aria-label="breadcrumbs">
@@ -7,11 +7,11 @@
 				<li><a href="#">Opportunités professionnelles</a></li>
 			</ul>
 		</nav>
-		<h1 class="title has-text-link">{{$jobAd->jobAd->title}}</h1>
+		<h1 class="title has-text-link">{{$ad->jobAd->title}}</h1>
 		<div class="columns">
 			<div class=" column is-two-thirds ">
 				<div id="ad_images" class="carousel">
-					@foreach($jobAd->documents as $document)
+					@foreach($ad->documents as $document)
 						<div class="card">
 							<div class="card-image">
 								<figure class="image is-2by1">
@@ -31,12 +31,12 @@
 					<div class="card-content">
 						<div class="content">
 							<p><span class="is-size-5 is-capitalized has-text-black ">Publié le  : </span><span
-										class="subtitle">{{ \Carbon\Carbon::parse($jobAd->created_at)->format('d/m/Y')}}</span>
+										class="subtitle">{{ \Carbon\Carbon::parse($ad->created_at)->format('d/m/Y')}}</span>
 							</p>
 						</div>
 						<div class="content">
 							<p><span class="is-size-5 is-capitalized has-text-black">Catégorie : </span>
-								@if($jobAd->jobAd->is_offer === 1)
+								@if($ad->jobAd->is_offer === 1)
 									<span class="subtitle">Proposition opportunité professionnelle</span>
 								@else
 									<span class="subtitle">Recherche opportunité professionnelle</span>
@@ -45,14 +45,14 @@
 						</div>
 						<div class="content">
 							<span class="is-size-5 is-capitalized has-text-black">Localisation(s) : </span>
-							<p><span class="subtitle">{{$jobAd->cities->pluck('name')->implode(', ') }}</span></p>
-							<p><span class="subtitle">{{$jobAd->departments->pluck('name')->implode(', ') }}</span></p>
-							<p><span class="subtitle">{{$jobAd->regions->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="subtitle">{{$ad->cities->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="subtitle">{{$ad->departments->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="subtitle">{{$ad->regions->pluck('name')->implode(', ') }}</span></p>
 						</div>
 						<div class="content">
 							<p><span class="is-size-4  has-text-black">Statut :</span>
-								@if ($jobAd->jobAd->jobStatus)
-									<span class="subtitle has-text-black">{{$jobAd->jobAd->jobStatus->name}}</span>
+								@if ($ad->jobAd->jobStatus)
+									<span class="subtitle has-text-black">{{$ad->jobAd->jobStatus->name}}</span>
 								@else
 									<span class="subtitle has-text-black">Non précisé</span>
 								@endif
@@ -83,22 +83,22 @@
 			<div class="column is-one-quarter ">
 				<p class="has-text-link is-size-5 has-text-centered"> Activité(s) agricole(s)</p>
 				<p class="has-text-centered">
-					<span>{{$jobAd->jobAd->agriculturalActivity->pluck('name')->implode(', ') }}</span>
+					<span>{{$ad->jobAd->agriculturalActivity->pluck('name')->implode(', ') }}</span>
 				</p>
 			</div>
 
-			@if($jobAd->jobAd->educationLevel)
+			@if($ad->jobAd->educationLevel)
 				<div class="column is-one-quarter ">
 					<p class="has-text-link is-size-5 has-text-centered"> Niveau de formation agricole</p>
-					<p class="has-text-centered">{{$jobAd->jobAd->educationLevel->name}}</p>
+					<p class="has-text-centered">{{$ad->jobAd->educationLevel->name}}</p>
 				</div>
 			@endif
 
-			@if($jobAd->jobAd->experience_farming)
+			@if($ad->jobAd->experience_farming)
 				<div class="column is-one-quarter ">
 					<p class="has-text-link is-size-5 has-text-centered"> Expérience dans le monde agricole (en
 						année)</p>
-					<p class="has-text-centered">{{$jobAd->jobAd->experience_farming}}</p>
+					<p class="has-text-centered">{{$ad->jobAd->experience_farming}}</p>
 				</div>
 			@endif
 
@@ -107,12 +107,12 @@
 		<hr class="navbar-divider">
 		<div class="content">
 			<h3 class="title is-3">Description du projet</h3>
-			<p> {{$jobAd->about_project_content}}</p>
+			<p> {{$ad->about_project_content}}</p>
 		</div>
 
 		<div class="content">
 			<h3 class="title is-3">A propos du porteur de projet</h3>
-			<p> {{$jobAd->about_content}}</p>
+			<p> {{$ad->about_content}}</p>
 		</div>
 		<div class="content">
 			<div class="columns is-mobile is-centered">

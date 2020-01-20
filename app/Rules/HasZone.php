@@ -16,9 +16,9 @@ class HasZone implements Rule
     public function passes($attribute, $locationable)
     {
         return is_array($locationable) && count($locationable) > 0 && (
-            count($locationable['cities']) ||
-            count($locationable['departments']) ||
-            count($locationable['regions'])
+            count($locationable['cities'] ?? []) ||
+            count($locationable['departments'] ?? []) ||
+            count($locationable['regions'] ?? [])
         );
     }
 

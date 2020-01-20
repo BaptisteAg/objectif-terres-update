@@ -8,7 +8,7 @@
 					'true' => 'En mon nom',
 					'false' => 'Pour le compte d\'une autre personne'
 				],
-				old('job_ad[is_beneficiary]'),
+				null,
 				[
 					 'placeholder' => 'Veuillez séléctionner...',
 					 ':disabled'=>'isInputDisabled',
@@ -16,7 +16,7 @@
 					 'ref' => 'beneficiary',
                    	'aria-describedby'=>'beneficiaryError']) !!}
 		</div>
-		<p class="help is-danger" id="beneficiaryError" v-if="$v.formInput.beneficiary.$error">Ce champs est requis.</p>
+		<p class="help is-danger" id="beneficiaryError" v-if="$v.formInput.beneficiary.$error">Ce champ est requis.</p>
 	</div>
 	<div class="field">
 		{!! Form::label('job_ad[is_offer]', 'Offre ou recherche* ', ['class' => 'label']); !!}
@@ -26,16 +26,15 @@
 					true => 'Je propose une opportunité professionnelle',
 					false => 'Je cherche une opportunité professionnelle'
 				],
-				old('job_ad[is_offer]'),
+				null,
 				[
 					'placeholder' => 'Veuillez séléctionner...',
 					':disabled'=>'isInputDisabled',
-					'v-model'=>'isJobOpportunity',
 					'v-model.trim.lazy' => 'formInput.jobOpportunity',
 					'ref' => 'jobOpportunity',
                     'aria-describedby'=>'jobOpportunityError']) !!}
 		</div>
-		<p class="help is-danger" id="jobOpportunityError" v-if="$v.formInput.jobOpportunity.$error">Ce champs est
+		<p class="help is-danger" id="jobOpportunityError" v-if="$v.formInput.jobOpportunity.$error">Ce champ est
 			requis.</p>
 	</div>
 	<div class="columns">
@@ -57,7 +56,7 @@
                    			'aria-describedby'=>'zipCodeError']
 						  ); !!}
 			</div>
-			<p class="help is-danger" id="zipCodeError" v-if="$v.formInput.zipCode.$error">Ce champs est
+			<p class="help is-danger" id="zipCodeError" v-if="$v.formInput.zipCode.$error">Ce champ est
 				obligatoire.</p>
 			<p class="help is-danger" v-if="!$v.formInput.zipCode.numeric">Veuillez saisir des chiffres.</p>
 			<p class="help is-danger" v-if="!$v.formInput.zipCode.minLength || !$v.formInput.zipCode.maxLength">
@@ -80,7 +79,7 @@
 						  'aria-describedby'=>'cityError']
 						 );!!}
 			</div>
-			<p class="help is-danger" id="cityError" v-if="$v.formInput.city.$error">Ce champs est obligatoire.</p>
+			<p class="help is-danger" id="cityError" v-if="$v.formInput.city.$error">Ce champ est obligatoire.</p>
 		</div>
 	</div>
 	<div class="field">
@@ -123,7 +122,7 @@
 					  'ref' => 'jobStatus',
 					  'aria-describedby'=>'jobStatusError']);!!}
 		</div>
-		<p class="help is-danger" id="jobStatusError" v-if="$v.formInput.jobStatus.$error">Ce champs est
+		<p class="help is-danger" id="jobStatusError" v-if="$v.formInput.jobStatus.$error">Ce champ est
 			obligatoire.</p>
 	</div>
 	<div class="field">
@@ -156,11 +155,11 @@
 	<div class="field">
 
 		<text-area-counter
-				id="job_ad[about_project]"
+				name="job_ad[about_project_content]"
 				:max-length=1000
 				:disabled="isInputDisabled"
-				:input-required="isInputRequired"
-		>
+				v-model="formInput.aboutProject"
+				:vuelidate="$v.formInput.aboutProject">
 		</text-area-counter>
 	</div>
 
@@ -174,11 +173,11 @@
 			<i class="fas fa-info-circle"></i>
 		</button>
 		<text-area-counter
-				id="job_ad[about_content]"
+				name="job_ad[about_content]"
 				:max-length=1000
 				:disabled="isInputDisabled"
-				:input-required=true
-		>
+				v-model="formInput.aboutContent"
+				:vuelidate="$v.formInput.aboutContent">
 		</text-area-counter>
 	</div>
 	<div class="field">
@@ -198,7 +197,7 @@
 					'ref' => 'title',
                     'aria-describedby'=>'titleError'] ) !!}
 
-		<p class="help is-danger" id="titleError" v-show="$v.formInput.title.$error">Ce champs est requis.</p>
+		<p class="help is-danger" id="titleError" v-show="$v.formInput.title.$error">Ce champ est requis.</p>
 		<p class="help is-danger" v-show="!$v.formInput.title.minLength">Le titre de votre annonce doit faire au minimum
 			@{{$v.formInput.title.$params.minLength.min}} caractères .</p>
 	</div>

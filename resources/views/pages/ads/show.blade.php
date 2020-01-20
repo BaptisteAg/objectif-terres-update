@@ -6,16 +6,15 @@
 
 
 @section('main-content')
-
-	@isset($landSeekAd)
+	@if($ad->ad_type === 'land_seek')
 		@include('pages.ads.partials.land_seek_show')
-	@endisset
-	@isset($landOfferAd)
+	@endif
+	@if($ad->ad_type === 'land_offer')
 		@include('pages.ads.partials.land_offer_show')
-	@endisset
-	@isset($jobAd)
+	@endif
+	@if($ad->ad_type === 'job_ad')
 		@include('pages.ads.partials.job_ad_show')
-	@endisset
+	@endif
 
 @endsection
 
@@ -31,4 +30,5 @@
 
         });
 	</script>
+
 @endsection

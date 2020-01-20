@@ -44,26 +44,29 @@
                             <new-land-seek-ad inline-template
                                               v-show="adTypeSelected === 'land_seek'"
                                               :is-input-disabled="adTypeSelected !== 'land_seek'"
-                                              :old-values="{{json_encode(old('land_seek', new stdClass))}}">
+                                              :old-values="{{json_encode(old('land_seek', new stdClass))}}"
+                                              @input-enabled="setEnabledForm">
                                 @include('pages.ads.partials.land_seek_new_ad')
                             </new-land-seek-ad>
 
                             <new-land-offer-ad inline-template
                                                v-show="adTypeSelected === 'land_offer'"
                                                :is-input-disabled="adTypeSelected !== 'land_offer'"
-                                               :old-values="{{json_encode(old('land_offer', new stdClass))}}">
+                                               :old-values="{{json_encode(old('land_offer', new stdClass))}}"
+                                               @input-enabled="setEnabledForm">
                                 @include('pages.ads.partials.land_offer_new_ad')
                             </new-land-offer-ad>
 
                             <new-job-offer-ad inline-template
                                               v-show="adTypeSelected === 'job_offer'"
                                               :is-input-disabled="adTypeSelected !== 'job_offer'"
-                                              :old-values="{{json_encode(old('job_offer', new stdClass))}}">
+                                              :old-values="{{json_encode(old('job_offer', new stdClass))}}"
+                                              @input-enabled="setEnabledForm">
                                 @include('pages.ads.partials.job_ad_new_ad')
                             </new-job-offer-ad>
 
                             <template v-if="adTypeSelected !== ''">
-                                <article class="message is-danger" v-if="enabledFormIsInvalid">
+                                <article class="message is-warning" v-if="enabledFormHasErrors()">
                                     <div class="message-header">
                                         <p>Veuillez revoir votre formulaire</p>
                                     </div>
@@ -77,7 +80,7 @@
                                         {!! Form::submit('Envoyer',['class'=>'button is-link']) !!}
                                     </div>
                                     <div class="control">
-                                        <button class="button is-light">Sauvergder</button>
+                                        <button class="button is-light">Sauvegarder</button>
                                     </div>
                                     <div class="control">
                                         <button class="button is-link is-light">Annuler</button>
