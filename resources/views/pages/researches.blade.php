@@ -66,8 +66,7 @@
                     <div class="column is-two-fifths">
                         <figure><img src="https://picsum.photos/500/300" alt="Placeholder image"></figure>
                         <div>
-
-                            {{ implode(", ", $ad->regions->toArray()) }}
+                            {{$ad->regions->pluck('name')->implode(', ') }}
                         </div>
                         @if($adType === 'landOfferAd')
                             <div><span>{{ $ad->$adType->price }}</span> € | <span>{{ $ad->$adType->area }}</span> ha</div>
@@ -95,7 +94,7 @@
                         <div></div>
                         <h1 class="title">{{ $ad->$adType->title }}</h1>
                         <div class="descritption">Je suis une discritpion {{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</div>
-                        <a href="#">Voir</a>
+                        <a href="{{url("/annonce", $ad->id)}}">Voir</a>
                     </div>
                 </div>
                 @endforeach
