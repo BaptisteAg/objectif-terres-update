@@ -10,7 +10,7 @@ class ResearchComposer
 
     public function compose(View $view)
     {
-        $regions = Region::all();
+        $regions = Region::orderBy('name')->get();
         $view->with('regions', $regions);
     }
 }

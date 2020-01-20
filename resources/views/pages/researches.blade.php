@@ -24,11 +24,11 @@
             <nav class="level">
                 <div class="level-left">
                     <div class="">
-                        @if ($typeAd === 'landOfferAd')
+                        @if ($adType === 'landOfferAd')
                             <h1 class="title">Offres foncières</h1>
-                        @elseif($typeAd === 'landSeekAd')
+                        @elseif($adType === 'landSeekAd')
                             <h1 class="title">Demandes de fonciers</h1>
-                        @elseif($typeAd === 'landSeekAd')
+                        @elseif($adType === 'landSeekAd')
                             <h1 class="title">Offres d'emploi</h1>
                         @else
                             <h1 class="title">Demandes d'emploi</h1>
@@ -66,10 +66,11 @@
                     <div class="column is-two-fifths">
                         <figure><img src="https://picsum.photos/500/300" alt="Placeholder image"></figure>
                         <div>
-                            {{ implode(", ", $regionName[$ad->id]) }}
+
+                            {{ implode(", ", $ad->regions->toArray()) }}
                         </div>
-                        @if($typeAd === 'landOfferAd')
-                            <div><span>{{ $land[$ad->id]->price }}</span> € | <span>{{ $land[$ad->id]->area }}</span> ha</div>
+                        @if($adType === 'landOfferAd')
+                            <div><span>{{ $ad->$adType->price }}</span> € | <span>{{ $ad->$adType->area }}</span> ha</div>
                         @else
                             <div><span></span></div>
                         @endif
@@ -92,7 +93,7 @@
                             </div>
                         </nav>
                         <div></div>
-                        <h1 class="title">{{ $adsType[$ad->id]->title }}</h1>
+                        <h1 class="title">{{ $ad->$adType->title }}</h1>
                         <div class="descritption">Je suis une discritpion {{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</div>
                         <a href="#">Voir</a>
                     </div>
@@ -101,20 +102,31 @@
             </section>
 
             <section class="section">
-                <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-                    <ul class="pagination-list">
-                        <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
-                        <li><span class="pagination-ellipsis">&hellip;</span></li>
-                        <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
-                        <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
-                        <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
-                        <li><span class="pagination-ellipsis">&hellip;</span></li>
-                        <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
-                    </ul>
-                </nav>
+{{--                @if($ads->lastPage() > 1)--}}
+{{--                    <nav class="pagination is-centered" role="navigation" aria-label="pagination">--}}
+{{--                        <ul class="pagination-list">--}}
+{{--                            <li class="{{ $ads->currentPage() === 1 ? 'disabled' : '' }}">--}}
+{{--                                <a href="{{ $ads->url(1) }}" class="pagination-link" aria-label="Goto page 1">1</a>--}}
+{{--                            </li>--}}
+{{--                            <li class="{{ $ads->lastPage() > 6 }}"><span class="pagination-ellipsis">&hellip;</span></li>--}}
+{{--                            @if($ads->lastPage() >= 3)--}}
+{{--                                @for($i = 1; $i <= $ads->lastPage(); $i++)--}}
+{{--                                    <li class="{{ ($ads->currentPage() == $i) ? ' active' : '' }}">--}}
+{{--                                        <a href="{{ $ads->url($i) }}" class="pagination-link" aria-label="Goto page {{ $i }}">{{ $i }}</a>--}}
+{{--                                    </li>--}}
+{{--                                @endfor--}}
+{{--                            @endif--}}
+{{--                            <li><span class="pagination-ellipsis">&hellip;</span></li>--}}
+{{--                            <li class="{{ ($ads->currentPage() == $ads->lastPage()) ? ' disabled' : '' }}">--}}
+{{--                                <a href="{{ '/recherches' . $ads->url($ads->currentPage()+1) }}" class="pagination-link" aria-label="Goto page {{ $ads->lastPage() }}">{{ $ads->lastPage() }}</a>--}}
+{{--                            </li>--}}
+{{--                        </ul>--}}
+{{--                    </nav>--}}
+{{--                @endif--}}
+                <pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
             </section>
 
-            @if($typeAd === 'landOfferAd' || $typeAd === 'landSeekAd')
+            @if($adType === 'landOfferAd' || $adType === 'landSeekAd')
                 <section class="section">
                     <div class="columns">
                         <div class="column">

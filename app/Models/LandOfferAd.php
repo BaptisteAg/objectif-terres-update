@@ -68,36 +68,26 @@ class LandOfferAd extends Model
         'ad_id', 'building_id', 'house_id', 'land_id', 'is_beneficiary', 'accept_use_zip_code', 'is_call_for_application_community', 'is_call_for_application_terre_de_liens', 'is_call_for_application_test_area', 'is_activity_transfert', 'water_access', 'altitude'
     ];
 
-    /**
-     * @return HasOne
-     */
+
     public function ad()
     {
-        return $this->HasOne('App\Models\Ad');
+        return $this->belongsTo('App\Models\Ad');
     }
 
-    /**
-     * @return HasOne
-     */
+
     public function building()
     {
-        return $this->HasOne('App\Models\Building');
+        return $this->belongsTo('App\Models\Building');
     }
 
-    /**
-     * @return HasOne
-     */
     public function house()
     {
-        return $this->HasOne('App\Models\House');
+        return $this->belongsTo('App\Models\House');
     }
 
-    /**
-     * @return HasOne
-     */
     public function land()
     {
-        return $this->HasOne('App\Models\Land');
+        return $this->belongsTo('App\Models\Land');
     }
 
 }

@@ -12,9 +12,9 @@
                  'ref' => 'installationTypeId',
                  'aria-describedby'=>'installationTypeIdError']); !!}
         </div>
+
         <p class="help is-danger" id="installationTypeIdError" v-if="$v.formInput.installationTypeId.$error">Ce champ
             est requis.</p>
-
     </div>
     <div class="selected-zones card">
         <header class="card-header">
