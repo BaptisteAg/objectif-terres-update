@@ -1,4 +1,4 @@
-<h1 class="title has-text-link">Offre  foncière</h1>
+<h1 class="title has-text-link">Offre foncière</h1>
 <section class="section is-medium ">
 	<div class="container ">
 		<nav class="breadcrumb" aria-label="breadcrumbs">
@@ -28,7 +28,7 @@
 						</div>
 						<div class="content">
 							<p><span class="is-size-5 is-capitalized has-text-black">Catégorie : </span><span
-										class="subtitle">Recherche de foncier</span></p>
+										class="subtitle">Offre de foncier</span></p>
 
 						</div>
 						<div class="content">
@@ -41,15 +41,38 @@
 							</p>
 						</div>
 						<div class="content">
-							<p><span class="is-size-4 is-capitalized has-text-black">Prix recherché : </span>
-								@foreach($landOfferAd->landOfferAd->priceRanges as $priceRange)
-									<span class="subtitle has-text-black">{{$priceRange->price}}</span>
-								@endforeach
-							</p>
+							{{dd($landOfferAd->landOfferAd->building->price)}}
+
+
+							@if($landOfferAd->landOfferAd->land->price)
+								<p><span class="is-size-4 is-capitalized has-text-black">Prix ou loyer mensuel du foncier : </span>
+									<span class="subtitle has-text-black">{{$landOfferAd->landOfferAd->land->price}} €</span>
+								</p>
+							@elseif($landOfferAd->landOfferAd->building->price)
+								<p>
+									<span class="is-size-4 is-capitalized has-text-black">Prix ou loyer mensuel du bâti : </span>
+									<span class="subtitle has-text-black">{{$landOfferAd->landOfferAd->building->price}}</span>
+								</p>
+							@elseif($landOfferAd->landOfferAd->house->price)
+								<p><span class="is-size-4 is-capitalized has-text-black">Prix ou loyer mensuel de l'habitation : </span>
+									<span class="subtitle has-text-black">{{$landOfferAd->landOfferAd->house->price}}</span>
+								</p>
+							@endif
 						</div>
 					</div>
 					<footer class="card-footer">
-						<button class="card-footer-item button is-link">Répondre à l'annonce</button>
+						<button class="card-footer-item button is-link">
+								 <span class="icon is-small">
+								<i class="fas fa-reply"></i>
+								</span>
+							<span> Répondre à l'annonce</span>
+						</button>
+						<button class="card-footer-item button is-link is-light">
+							 <span class="icon is-small">
+									<i class="fas fa-save"></i>
+								</span>
+							<span> Sauvegarder l'annonce</span>
+						</button>
 					</footer>
 				</div>
 			</div>

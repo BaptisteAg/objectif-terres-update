@@ -48,7 +48,18 @@
 						</div>
 					</div>
 					<footer class="card-footer">
-						<button class="card-footer-item button is-link">Répondre à l'annonce</button>
+						<button class="card-footer-item button is-link">
+								 <span class="icon is-small">
+								<i class="fas fa-reply"></i>
+								</span>
+							<span> Répondre à l'annonce</span>
+						</button>
+						<button class="card-footer-item button is-link is-light">
+							 <span class="icon is-small">
+									<i class="fas fa-save"></i>
+								</span>
+							<span> Sauvegarder l'annonce</span>
+						</button>
 					</footer>
 				</div>
 			</div>
@@ -143,7 +154,12 @@
 								<div class="content has-text-centered ">
 									<p class="has-text-centered is-size-4">Vous souhaitez répondre à cette annonce
 										?</p>
-									<button class="button is-link  is-large">Répondre à l'annonce</button>
+									<button class="button is-link  is-large">
+									 	<span class="icon is-small">
+											<i class="fas fa-reply"></i>
+										</span>
+										<span> Répondre à l'annonce</span>
+									</button>
 								</div>
 
 							</div>
