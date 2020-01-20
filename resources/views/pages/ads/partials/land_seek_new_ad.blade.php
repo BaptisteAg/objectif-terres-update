@@ -106,7 +106,7 @@
         @endforeach
         {!! Form::checkbox('land_seek[production_genre][]',
         'other',
-        in_array('other', old('land_seek[production_genre]', [])),
+        null,
         [':disabled' => 'isInputDisabled',
         'v-model.trim.lazy'=>'formInput.productionGenre',
         'ref' => 'productionGenre',
@@ -119,9 +119,13 @@
     <div class="field" v-show="isProductionGenreOther">
         {!! Form::label('land_seek[production_type_add]', 'Veuillez préciser', ['class' => 'label']); !!}
         {!! Form::text('land_seek[production_type_add]',
-                 old('land_seek[production_type_add]'),
-                  ['class' => 'input',
-                  ':disabled' => 'isInputDisabled']) !!}
+             null,
+             [
+                'class' => 'input',
+                ':disabled' => 'isInputDisabled',
+                'v-model' => 'formInput.productionTypeAdd'
+             ]
+         ) !!}
     </div>
     <div class="field">
         {!! Form::label('land_seek_has_farms_or_buildings', 'Habitation(s) et bâti(s)', ['class' => 'label']); !!}

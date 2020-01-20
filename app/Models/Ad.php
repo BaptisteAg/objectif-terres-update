@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Models\Traits\Documentable;
+use App\Presenters\AdPresenter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use McCool\LaravelAutoPresenter\HasPresenter;
 
 /**
  * App\Models\Ad
@@ -55,9 +57,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Ad extends Model
+class Ad extends Model implements HasPresenter
 {
-
     use Documentable;
 
     /**
@@ -174,5 +175,15 @@ class Ad extends Model
     public function regions()
     {
         return $this->morphedbyMany('App\Models\Region', 'locationable_ad');
+    }
+
+    /**
+     * Get the presenter class.
+     *
+     * @return string
+     */
+    public function getPresenterClass()
+    {
+        return AdPresenter::class;
     }
 }

@@ -27,7 +27,12 @@ class AdService
             return $ad;
         });
 
-        dd($ad);
+        return $ad;
+    }
+
+    public function find(int $id)
+    {
+        $ad = $this->repository->find($id);
 
         return $ad;
     }

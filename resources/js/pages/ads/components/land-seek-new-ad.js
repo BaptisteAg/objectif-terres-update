@@ -30,6 +30,7 @@ export default Vue.extend({
             formInput: {
                 installationTypeId: hasOld ? v.installation_type_id : '',
                 productionGenre: hasOld ? v.production_genre : [],
+                productionTypeAdd: hasOld ? v.production_type_add : '',
                 title: hasOld ? v.title : '',
                 minRent: hasOld ? v.rent_min : '',
                 maxRent: hasOld ? v.rent_max : '',
@@ -45,6 +46,13 @@ export default Vue.extend({
     computed: {
         isProductionGenreOther() {
             return this.formInput.productionGenre.includes('other');
+        }
+    },
+    watch: {
+        'formInput.productionGenre': function(productionGenre) {
+            if(!productionGenre.includes('other')) {
+                this.formInput.productionTypeAdd = '';
+            }
         }
     },
     methods: {

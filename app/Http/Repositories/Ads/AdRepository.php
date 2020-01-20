@@ -2,8 +2,14 @@
 
 use App\Htttp\Repositories\AdRepositoryInterface;
 use App\Models\Ad;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
+/**
+ * Class AdRepository
+ * @package App\Http\Repositories\Ads
+ * @property Ad $entity
+ */
 class AdRepository extends AbstractRepository implements AdRepositoryInterface
 {
     /** @var LandSeekdAdRepository */
@@ -19,6 +25,27 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     public function entity()
     {
         return Ad::class;
+    }
+
+    /**
+     * @param $id
+     * @return Ad
+     */
+    public function find($id)
+    {
+        $model = $this->entity
+            ->where(["id" => $id])
+            ->with(['landSeekAd', 'landOfferAd', 'jobAd'])
+            ->firstOrFail();
+
+        if (!$model) {
+            throw (new ModelNotFoundException)->setModel(
+                get_class($this->entity->getModel()),
+                $id
+            );
+        }
+
+        return $model;
     }
 
     /**
