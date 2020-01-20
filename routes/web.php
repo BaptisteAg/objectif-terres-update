@@ -15,14 +15,13 @@ Route::get('/', function () {
     return view('pages.homepage');
 });
 
-Route::get('new', 'Ads\AdsController@create');
-Route::post('new', 'Ads\AdsController@store');
+Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
+    Route::get('creer', 'AdsController@create')->name('create');
+    Route::post('creer', 'AdsController@store')->name('store');
+    Route::get('{id}', 'AdsController@show')->name('show');
+});
 
 Route::get('/authenticate', 'SalesForceAuthController@register');
-
-//Route::get('/researches', function() {
-//    return view('pages.researches');
-//});
 
 Route::post('/recherches', 'Researches\ResearchesController@index');
 
@@ -32,4 +31,3 @@ Route::prefix('json')->group(function () {
 });
 
 
-Route::get('/annonce/{id}', 'Ads\AdsController@show');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Ads;
 
 use App\Http\Controllers\Controller;
+use App\Http\Repositories\Ads\AdRepository;
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
 use App\Models\AgriculturalActivity;
@@ -22,7 +23,17 @@ use App\Services\Ads\AdService;
 
 class AdsController extends Controller
 {
-	public function create()
+    /**
+     * @var AdService
+     */
+    protected $adService;
+
+    public function __construct(AdService $adService)
+    {
+        $this->adService = $adService;
+    }
+
+    public function create()
 	{
 		$surfaceRanges = SurfaceRange::all();
 		$priceRanges = PriceRange::all();
@@ -71,28 +82,19 @@ class AdsController extends Controller
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
 	 * @throws \Throwable
 	 */
-	public function store(AdRequest $request, AdService $adService)
+	public function store(AdRequest $request)
 	{
 		$data = $request->validated();
 
-		$ad = $adService->create($data);
+		$ad = $this->adService->create($data);
 
-		return redirect('/annonces/' . $ad->id);
+		return redirect()->route('ads.show', [$ad->id]);
 	}
 
-	public function show($id)
+	public function show(int $adId)
 	{
-		$ad = Ad::where('id', $id)->first();
+        $ad = $this->adService->find($adId);
 
-		if ($ad->jobAd()->exists()){
-			$jobAd  = $ad;
-			return view('pages.ads.show', compact('jobAd'));
-		} else if ($ad->landSeekAd()->exists()) {
-			$landSeekAd  = $ad;
-			return view('pages.ads.show', compact('landSeekAd'));
-		} else if ($ad->landOfferAd()->exists()){
-			$landOfferAd  = $ad;
-			return view('pages.ads.show', compact('landOfferAd'));
-		}
+        return view('pages.ads.show', compact('ad'));
 	}
 }
