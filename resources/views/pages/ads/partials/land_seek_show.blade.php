@@ -1,3 +1,5 @@
+@section('title', $landSeekAd->landSeekAd->title)
+
 <section class="section is-medium ">
 	<div class="container ">
 		<nav class="breadcrumb" aria-label="breadcrumbs">
@@ -9,12 +11,20 @@
 		<h1 class="title has-text-link">{{$landSeekAd->landSeekAd->title}}</h1>
 		<div class="columns">
 			<div class=" column is-two-thirds ">
-				<div class="card">
-					<div class="card-image">
-						<figure class="image is-2by1">
-							<img src="https://picsum.photos/480/320" alt="Placeholder image">
-						</figure>
-					</div>
+				<div id="ad_images" class="carousel">
+					@foreach($landOfferAd->documents as $document)
+						<div class="card">
+							<div class="card-image">
+								<figure class="image is-2by1">
+									@if($document->path === "0")
+										<img src="https://picsum.photos/480/320" alt="picsum">
+									@else
+										<img src="{{$document->path}}" alt="Placeholder image">
+									@endif
+								</figure>
+							</div>
+						</div>
+					@endforeach
 				</div>
 			</div>
 			<div class="column">
@@ -31,19 +41,15 @@
 
 						</div>
 						<div class="content">
-							<p><span class="is-size-5 is-capitalized has-text-black">Région(s) : </span>
-								@foreach ($landSeekAd->regions as $adRegion)
-									<span class="subtitle">
-										{{$adRegion->name}}
-									</span>
-								@endforeach
-							</p>
+							<span class="is-size-5 is-capitalized has-text-black">Localisation(s) : </span>
+							<p><span class="subtitle">{{$landSeekAd->cities->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="subtitle">{{$landSeekAd->departments->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="subtitle">{{$landSeekAd->regions->pluck('name')->implode(', ') }}</span></p>
+
 						</div>
 						<div class="content">
-							<p><span class="is-size-4 is-capitalized has-text-black">Prix recherché : </span>
-								@foreach($landSeekAd->landSeekAd->priceRanges as $priceRange)
-									<span class="subtitle has-text-black">{{$priceRange->price}}</span>
-								@endforeach
+							<p><span class="is-size-4  has-text-black">Prix recherché : </span>
+								<span class="subtitle has-text-black">{{$landSeekAd->landSeekAd->priceRanges->pluck('price')->implode(', ') }}</span>
 							</p>
 						</div>
 					</div>
@@ -92,9 +98,10 @@
 
 			<div class="column is-one-quarter ">
 				<p class="has-text-link is-size-5 has-text-centered"> Surface(s) recherchée(s)(en ha)</p>
-				@foreach ($landSeekAd->landSeekAd->surfaceRanges as $surfaceRangeSeek)
+
+				@foreach($landSeekAd->landSeekAd->surfaceRanges as $surfaceRangeSeek)
 					@if($surfaceRangeSeek->surface !== '')
-						<p class="has-text-centered">{{$surfaceRangeSeek->surface}}</p>
+						<p class="has-text-centered">{{$landSeekAd->landSeekAd->surfaceRanges->pluck('surface')->implode(', ') }}</p>
 					@else
 						<p class="has-text-centered">Non renseigné</p>
 					@endif
@@ -156,12 +163,11 @@
 										?</p>
 									<button class="button is-link  is-large">
 									 	<span class="icon is-small">
-											<i class="fas fa-reply"></i>
+										<i class="fas fa-reply"></i>
 										</span>
 										<span> Répondre à l'annonce</span>
 									</button>
 								</div>
-
 							</div>
 						</article>
 					</div>
@@ -169,9 +175,8 @@
 			</div>
 		</div>
 	</div>
-
+</section>
 
 	@include('components.partnering')
 	@include('components.support_terre_liens')
 
-</section>
