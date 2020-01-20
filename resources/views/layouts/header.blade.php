@@ -122,7 +122,7 @@
                         <div class="buttons">
                             <a class="navbar-item">Ressources utiles</a>
                             <a class="navbar-item">Témoignages & chiffres clés</a>
-                            <a href="{{ url('new') }}" class="button is-bordered">Déposer une annonce</a>
+                            <a href="{{ route('ads.create') }}" class="button is-bordered">Déposer une annonce</a>
                         </div>
                     </div>
                 </div>

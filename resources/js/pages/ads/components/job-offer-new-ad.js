@@ -21,7 +21,7 @@ export default {
                 city: hasOld ? v.city : '',
                 agriculturalActivity: hasOld ? v.agricultural_activity : [],
                 jobStatus: hasOld ? v.job_status : '',
-                jobOpportunity: hasOld ? v.is_offer : '',
+                isJobOpportunity: hasOld ? v.is_offer : '',
                 experienceFarming: hasOld ? v.experience_farming : '',
                 aboutProject: hasOld ? v.about_project_content : '',
                 aboutContent: hasOld ? v.about_content : '',
@@ -30,14 +30,15 @@ export default {
         }
     },
     watch: {
-        jobOpportunity: function () {
-            this.isInputRequired = this.isJobOpportunity === "1";
-        }
+        'formInput.isJobOpportunity': function () {
+                this.isInputRequired = this.isJobOpportunity === "1";
+            },
+
     },
     validations: {
         formInput: {
             beneficiary: {required},
-            jobOpportunity: {required},
+            isJobOpportunity: {required},
             zipCode: {
                 numeric,
                 minLength: minLength(5),
@@ -65,7 +66,10 @@ export default {
             aboutProject: {
                 minLength: minLength(5),
                 maxLength: maxLength(1000),
-                required
+                required: requiredIf(function () {
+                    return this.isInputRequired
+                })
+
             },
             aboutContent: {
                 minLength: minLength(5),

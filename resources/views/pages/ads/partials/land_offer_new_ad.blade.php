@@ -153,7 +153,7 @@
         Oui
         {!! Form::radio('land_offer[is_activity_transfer]',
         0,
-        null,
+        old('land_offer[is_activity_transfer]'),
         [':disabled' => 'isInputDisabled',
         'v-model' => 'formInput.isActivityTransfer',
 		'ref' => 'formInput.isActivityTransfer',
@@ -294,10 +294,11 @@
             requis.</p>
     </div>
     <p class="has-text-centered is-size-4">Prix de vente ou loyer mensuel (en €)</p>
+
     <div class="columns">
         <div class="column is-one-third">
             <div class="field">
-                {!! Form::label('land_offer[land_price]', 'Foncier*', ['class' => 'label']); !!}
+                {!! Form::label('land_offer[land_price]', 'Foncier', ['class' => 'label']); !!}
                 {!! Form::number('land_offer[land_price]',
                          old('land_offer[land_price]'),
                           ['min' => 0,
@@ -308,7 +309,7 @@
         </div>
         <div class="column">
             <div class="field">
-                {!! Form::label('land_offer[house_price]', 'Habitation*', ['class' => 'label']); !!}
+                {!! Form::label('land_offer[house_price]', 'Habitation', ['class' => 'label']); !!}
                 {!! Form::number('land_offer[house_price]',
                          old('land_offer[house_price]'),
                           ['min' => 0,
@@ -319,7 +320,7 @@
         </div>
         <div class="column ">
             <div class="field">
-                {!! Form::label('land_offer[building_price]', 'Bâti*', ['class' => 'label']); !!}
+                {!! Form::label('land_offer[building_price]', 'Bâti', ['class' => 'label']); !!}
                 {!! Form::number('land_offer[building_price]',
                          old('land_offer[building_price]'),
                           ['min'=> 0,
@@ -340,7 +341,7 @@
 
             Je certifie que le prix est conforme à l’<a>indice des fermages de mon département</a>
         </label>
-        <p class="help is-danger" id="confirmPriceFermageError" v-if="$v.formInput.confirmPriceFermage.$invalid">Ce champ
+        <p class="help is-danger" id="confirmPriceFermageError" v-if="$v.formInput.confirmPriceFermage.$error">Ce champ
             est requis.</p>
     </div>
     <div class="field">
