@@ -25,6 +25,17 @@ class LocationableController extends Controller
         ));
     }
 
+    public function cities(Request $request)
+    {
+        if (!$request->get('q')) {
+            return response()->json(['error' => 'La requête est vide.']);
+        }
+
+        return response()->json(
+            $this->searchCities($request->get('q'))
+        );
+    }
+
     protected function searchCities(string $q)
     {
         return $this->search(

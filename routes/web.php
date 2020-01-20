@@ -28,6 +28,7 @@ Route::post('/recherches', 'Researches\ResearchesController@index');
 
 Route::prefix('json')->group(function () {
    Route::get('locationables', 'Json\LocationableController@locationables');
+   Route::get('cities', 'Json\LocationableController@cities');
 });
 
 

@@ -2,25 +2,26 @@
 <template>
     <div>
         <label class="typo__label"></label>
-        <multiselect v-model="values"
+        <multiselect v-model="selectedValues"
                      :options="options"
-                     :multiple="true"
+                     :multiple="multiple"
                      :close-on-select="false"
                      :clear-on-select="false"
                      :preserve-search="true"
                      :placeholder=placeholder
                      label="name"
                      track-by="name" >
-            <template slot="selection" slot-scope="{ values, search, isOpen }">
-                <span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} {{ selectedCountText }}</span>
+            <template slot="selection" slot-scope="{ selectedValues, search, isOpen }">
+                <span class="multiselect__single" v-if="selectedValues.length &amp;&amp; !isOpen">{{ selectedValues.length }} {{ selectedCountText }}</span>
             </template>
         </multiselect>
-        <input type="hidden" v-for="value in values" :value="value.id" :name="name">
+        <input type="hidden" v-for="value in selectedValues" :value="value.id" :name="name">
     </div>
 </template>
 
 <script>
-    import Multiselect from 'vue-multiselect'
+    import Multiselect from 'vue-multiselect';
+    import { ajaxFindCountry } from './countriesApi'
 
     export default {
         components: {
@@ -31,22 +32,37 @@
             name: String,
             selectedCountText: String,
             placeholder: String,
+            multiple: Boolean,
         },
         data () {
             return {
-                values: [],
-                options: [{
-                    'id': '0',
-                    'name': 'Toutes les régions'
-                },...this.data]
+                selectedValues: [],
+                options: this.data,
+                multiple: this.multiple,
+                isLoading: false
             }
         },
         watch: {
-            values(newValues) {
+            selectedValues(newValues) {
                 console.log(newValues);
                 this.$emit('multiselect-select', newValues)
             }
 
+        },
+        methods: {
+            limitText (count) {
+                return `and ${count} other countries`
+            },
+            asyncFind (query) {
+                this.isLoading = true
+                ajaxFindCountry(query).then(response => {
+                    this.countries = response
+                    this.isLoading = false
+                })
+            },
+            clearAll () {
+                this.selectedCountries = []
+            }
         }
     }
 
