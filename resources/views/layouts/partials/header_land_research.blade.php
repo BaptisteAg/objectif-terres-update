@@ -14,13 +14,13 @@
     <div class="column">
         <div>
             {!! Form::label('departments', 'Choisissez une ville', ['class' => 'label']); !!}
-            <multi-select
-                :data="{{ json_encode($cities) }}"
-                :multiple="false"
-                name="research_city"
-                selected-count-text="ville sélectionnée"
-                placeholder="Choississez un département">
-            </multi-select>
+{{--            <multi-select--}}
+{{--                :data="test"--}}
+{{--                :multiple="false"--}}
+{{--                name="research_city"--}}
+{{--                selected-count-text="ville sélectionnée"--}}
+{{--                placeholder="Choississez un département">--}}
+{{--            </multi-select>--}}
             <div class="section">
                 <p class="label">Dans un rayon de </p>
                 <vue-slider

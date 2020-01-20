@@ -74,9 +74,8 @@
                 <div class="column is-3">
                     <p>Où</p>
                     <div>
-{{--{{ dd(json_encode(array_merge(['0' => 'Toutes les régions'], $regions->toArray()))) }}--}}
                         <multi-select
-                            :data="{{ json_encode(array_merge([['0' => 'Toutes les régions']], $regions->toArray())) }}"
+                            :data="{{ json_encode(array_merge([(object)['id' => '0','name' => 'Toutes les régions']], json_decode($regions))) }}"
                             :multiple="true"
                             name="research_locations[]"
                             selected-count-text="région(s) sélectionnée(s)"
@@ -137,7 +136,7 @@
                         <div class="buttons">
                             <a class="navbar-item">Ressources utiles</a>
                             <a class="navbar-item">Témoignages & chiffres clés</a>
-                            <a href="{{ url('new') }}" class="button is-bordered">Déposer une annonce</a>
+                            <a href="{{ route('ads.create') }}" class="button is-bordered">Déposer une annonce</a>
                         </div>
                     </div>
                 </div>

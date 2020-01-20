@@ -17,11 +17,11 @@ class ResearchComposer
     {
         $regions = Region::orderBy('name')->get();
         $departments = Department::orderBy('name')->get();
-        $cities = City::orderBy('name')->get();
+//        $cities = City::orderBy('name')->get();
 
         $jobStatuses = JobStatus::orderBy('name')->get();
         $surfaces = SurfaceRange::all();
 
-        $view->with(compact('regions','departments', 'cities', 'jobStatuses', 'surfaces'));
+        $view->with(compact('regions','departments', 'jobStatuses', 'surfaces'));
     }
 }

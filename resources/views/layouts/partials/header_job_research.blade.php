@@ -14,13 +14,21 @@
     <div class="column">
         <div>
             {!! Form::label('departments', 'Choisissez une ville', ['class' => 'label']); !!}
-            <multi-select
-                :data="{{ json_encode($cities) }}"
+            <ajax-multi-select
                 :multiple="false"
                 name="research_city"
                 selected-count-text="ville sélectionnée"
-                placeholder="Choississez un département">
-            </multi-select>
+                placeholder="Choississez un département"
+                :nameOption="villes"
+                src="/json/cities">
+            </ajax-multi-select>
+{{--            <multi-select--}}
+{{--                :data="{{ json_encode($cities) }}"--}}
+{{--                :multiple="false"--}}
+{{--                name="research_city"--}}
+{{--                selected-count-text="ville sélectionnée"--}}
+{{--                placeholder="Choississez un département">--}}
+{{--            </multi-select>--}}
             <div class="section">
                 <p class="label">Dans un rayon de </p>
                 <vue-slider
@@ -38,3 +46,9 @@
     </div>
 </div>
 
+{{--<script>--}}
+{{--    import AjaxMultiSelect from "../../../js/components/AjaxMultiSelect";--}}
+{{--    export default {--}}
+{{--        components: {AjaxMultiSelect}--}}
+{{--    }--}}
+{{--</script>--}}
