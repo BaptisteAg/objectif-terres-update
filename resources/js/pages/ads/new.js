@@ -6,9 +6,9 @@ import Vue from 'vue'
 
 Vue.component('new-ad', {
     components: {
-        'new-land-seek-ad' : LandSeekNewAd,
-        'new-land-offer-ad' : LandOfferNewAd,
-        'new-job-offer-ad' : JobOfferNewAd
+        'new-land-seek-ad': LandSeekNewAd,
+        'new-land-offer-ad': LandOfferNewAd,
+        'new-job-offer-ad': JobOfferNewAd
     },
     props: {
         oldAdTypeSelected: String
@@ -16,19 +16,13 @@ Vue.component('new-ad', {
     data() {
         return {
             adTypeSelected: this.oldAdTypeSelected,
+            enabledForm: null
         }
-    },
-    computed: {
-        enabledFormIsInvalid() {
-            return this.enabledForm && this.enabledForm.$v.$invalid
-        },
-        enabledForm() {
-            return this.$children.find(children => !children.isInputDisabled);
-        }
+
     },
     mounted() {
-        window.addEventListener("beforeunload",  (e) => {
-            if(this.isSubmitting) {
+        window.addEventListener("beforeunload", (e) => {
+            if (this.isSubmitting) {
                 return true;
             }
             const confirmationMessage = `
@@ -42,21 +36,14 @@ Vue.component('new-ad', {
     },
     methods: {
         submit(e) {
+            console.log("submit");
             this.enabledForm.$v.$touch();
-            if (this.enabledFormIsInvalid) {
+            if (this.enabledFormHasErrors()) {
                 e.preventDefault();
-                for (let key in Object.keys(this.enabledForm.$v.formInput)) {
-                    const input = Object.keys(this.enabledForm.$v.formInput)[key];
-                    if (input.includes("$")) return false;
-                    if (this.enabledForm.$v.formInput[input].$error) {
-                        this.enabledForm.$refs[input].focus();
-                        break;
-                    }
-                }
+                this.focusOnFirstError(this.enabledForm);
                 this.isSubmitting = false;
-            }
-            else {
-                if(!confirm('Êtes-vous sûr de la saisie de votre annonce?')) {
+            } else {
+                if (!confirm('Êtes-vous sûr de la saisie de votre annonce?')) {
                     this.isSubmitting = false;
                     e.preventDefault();
                 } else {
@@ -64,5 +51,39 @@ Vue.component('new-ad', {
                 }
             }
         },
+        enabledFormHasErrors() {
+            console.log("enabledFormHasErrors");
+            return this.enabledForm && this.enabledForm.$v.$error
+        },
+        setEnabledForm(form) {
+            console.log("setEnabledForm");
+            this.enabledForm = form;
+        },
+        focusOnFirstError(vueForm) {
+            for (let key in Object.keys(vueForm.$v.formInput)) {
+                const inputName = Object.keys(vueForm.$v.formInput)[key];
+                if (inputName.includes("$")) return false;
+                if (vueForm.$v.formInput[inputName].$error) {
+                    let input = vueForm.$refs[inputName];
+
+                    if (input instanceof Vue) {
+                        input = vueForm.$refs[inputName].$el
+                    }
+                    if (input instanceof Element) {
+                        const tagNames = ['input', 'textarea', 'select'];
+
+                        if (!tagNames.includes(input.tagName.toLowerCase())) {
+                            input = input.querySelector(tagNames.join(','));
+                        }
+                    }
+                    try {
+                        input.focus();
+                    } catch (error) {
+                        console.log(error)
+                    }
+                    return true;
+                }
+            }
+        }
     }
 });

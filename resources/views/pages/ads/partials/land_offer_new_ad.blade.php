@@ -13,7 +13,7 @@
                       'ref' => 'isBeneficiary',
                         'aria-describedby'=>'isBeneficiaryError']);!!}
         </div>
-        <p class="help is-danger" id="isBeneficiaryError" v-if="$v.formInput.isBeneficiary.$error">Ce champs est
+        <p class="help is-danger" id="isBeneficiaryError" v-if="$v.formInput.isBeneficiary.$error">Ce champ est
             requis.</p>
     </div>
     <div class="columns">
@@ -30,7 +30,7 @@
                               'ref' => 'zipCode',
 								'aria-describedby'=>'zipCodeError']) !!}
                 </div>
-                <p class="help is-danger" if="zipCodeError" v-if="$v.formInput.zipCode.$error">Ce champs est
+                <p class="help is-danger" if="zipCodeError" v-if="$v.formInput.zipCode.$error">Ce champ est
                     requis.</p>
                 <p class="help is-danger" v-if="!$v.formInput.zipCode.numeric">Veuillez saisir des chiffres.</p>
                 <p class="help is-danger" v-if="!$v.formInput.zipCode.minLength || !$v.formInput.zipCode.maxLength">
@@ -57,7 +57,8 @@
                     ]) !!}
             {{$surface}}
         @endforeach
-        <p class="help is-danger" id="surfaceRangeError" v-if="$v.formInput.surfaceRange.$error">Ce champs est requis.</p>
+        <p class="help is-danger" id="surfaceRangeError" v-if="$v.formInput.surfaceRange.$error">Ce champ est
+            requis.</p>
     </div>
     <div class="field">
         {!! Form::label('land_offer[lands_offer_genre][]', 'Type de cession du foncier', ['class' => 'label']); !!}
@@ -146,60 +147,63 @@
         1,
         old('land_offer[is_activity_transfer]'),
         [':disabled' => 'isInputDisabled',
-        'v-model' => 'isActivityTransfer',
-		'ref' => 'isActivityTransfer',
+        'v-model' => 'formInput.isActivityTransfer',
+		'ref' => 'formInput.isActivityTransfer',
 		'aria-describedby'=>'isActivityTransferError']) !!}
         Oui
         {!! Form::radio('land_offer[is_activity_transfer]',
         0,
-        old('land_offer[is_activity_transfer]'),
+        null,
         [':disabled' => 'isInputDisabled',
-        'v-model' => 'isActivityTransfer',
-		'ref' => 'isActivityTransfer',
+        'v-model' => 'formInput.isActivityTransfer',
+		'ref' => 'formInput.isActivityTransfer',
 		'aria-describedby'=>'isActivityTransferError']) !!}
         Non
     </div>
-    <p class="help is-danger" id="isActivityTransfertError" v-show="$v.isActivityTransfer.$error">Ce champs est requis.</p>
+    <p class="help is-danger" id="isActivityTransferError" v-show="$v.formInput.isActivityTransfer.$error">Ce champ est
+        requis.</p>
 
     <div class="columns">
-        <div class="column is-half" v-show="isActivityTransfer === '0'">
+        <div class="column is-half" v-show="formInput.isActivityTransfer === '0'">
             {!! Form::label('land_offer[land_availability]', 'A partir de quand votre terre est-elle disponible ?', ['class' => 'label']); !!}
             {!! Form::date('land_offer[land_availability]', old('land_offer[land_availability]'), [ ':disabled' => 'isInputDisabled'] ) !!}
         </div>
-        <div class="column" v-show="isActivityTransfer === '1' ">
+        <div class="column" v-show="formInput.isActivityTransfer === '1' ">
             {!! Form::label('land_offer[land_transfert_deadline]', 'Avant quelle date souhaitez-vous transmettre votre ferme ?', ['class' => 'label']); !!}
             {!! Form::date('land_offer[land_transfert_deadline]', old('land_offer[land_availability]'), [ ':disabled' => 'isInputDisabled'] ) !!}
         </div>
     </div>
-    <div class="field" v-show="isActivityTransfer === '1' ">
+    <div class="field" v-show="formInput.isActivityTransfer === '1' ">
         {!! Form::label('land_offer[production_genre][]', 'Système de production en place*', ['class' => 'label']); !!}
         @foreach ($productionGenres->pluck('name', 'id') as $id => $productionGenre)
-        {!! Form::checkbox(
-        'land_offer[production_genre][]',
-        $id,
-        in_array($id, old('land_offer[production_genre][]', [])),
-        [
-        ':disabled' => 'isInputDisabled'
-        ]
-        ) !!}
-        {{$productionGenre}}
+            {!! Form::checkbox(
+            'land_offer[production_genre][]',
+            $id,
+            in_array($id, old('land_offer[production_genre][]', [])),
+            [
+                ':disabled' => 'isInputDisabled',
+                'v-model'=>'formInput.productionGenre',
+                'ref' => 'productionGenre',
+            ]
+            ) !!}
+            {{$productionGenre}}
         @endforeach
         {!! Form::checkbox('land_offer[production_genre][]',
-        'autre',
-        old('land_offer[production_genre[]]'),
-        ['v-model' => 'isProductionGenreOther',
+        'other',
+        null,
+        ['v-model' => 'formInput.productionGenre',
         ':disabled' => 'isInputDisabled' ]) !!}
         Autre
     </div>
     <div class="field" v-show="isProductionGenreOther">
         {!! Form::label('land_offer[other_production_genre]', 'Veuillez préciser', ['class' => 'label']); !!}
         {!! Form::text('land_offer[other_production_genre]',
-                 null,
+                 in_array('other', old('land_offer[production_genre][]', [])),
                  ['class' => 'input',
                  ':disabled' => 'isInputDisabled']) !!}
     </div>
     <div class="field">
-        <div v-if="isActivityTransfer === '0'">
+        <div v-if="formInput.isActivityTransfer === '0'">
             {!! Form::label('land_offer[production_genre_wanted][]', 'Production envisageables*', ['class' => 'label']); !!}
         </div>
         <div v-else>
@@ -214,15 +218,17 @@
             $id,
             in_array($id, old('land_offer[production_genre_wanted][]', [])),
             [
-            ':disabled' => 'isInputDisabled'
+                ':disabled' => 'isInputDisabled',
+                'v-model'=>'formInput.isProductionGenreWanted',
+                'ref' => 'productionGenre',
             ]
             ) !!}
             {{$productionGenre}}
         @endforeach
         {!! Form::checkbox('land_offer[production_genre_wanted][]',
-                'autre',
-                old('land_offer[production_genre_wanted][]'),
-                ['v-model' => 'isProductionGenreWantedOther',
+                'other',
+                null,
+                ['v-model' => 'formInput.isProductionGenreWanted',
                 ':disabled' => 'isInputDisabled' ]) !!}
         Autre
         {!! Form::checkbox('land_offer[production_genre_wanted][]',
@@ -258,7 +264,7 @@
                 {!! Form::label('land_offer[altitude]', 'Altitude (en m)*', ['class' => 'label']); !!}
                 <div class="control">
                     {!! Form::text('land_offer[altitude]',
-                             old('land_offer[altitude]'),
+                             null,
                              ['min'=> 0,
                               'class' => 'input',
                               ':disabled' => 'isInputDisabled',
@@ -266,7 +272,8 @@
                               'ref' => 'altitude',
                               'aria-describedby'=>'altitudeError']) !!}
                 </div>
-                <p class="help is-danger" id="altitudeError" v-if="$v.formInput.altitude.$error">Ce champs est requis.</p>
+                <p class="help is-danger" id="altitudeError" v-if="$v.formInput.altitude.$error">Ce champ est
+                    requis.</p>
                 <p class="help is-danger" v-if="!$v.formInput.altitude.numeric">Veuillez saisir des chiffres.</p>
             </div>
         </div>
@@ -283,7 +290,8 @@
             'aria-describedby'=>'bioCertificationError']) !!}
             {{$bioCertification}}
         @endforeach
-        <p class="help is-danger" id="bioCertificationError" v-if="$v.formInput.bioCertification.$error">Ce champs est requis.</p>
+        <p class="help is-danger" id="bioCertificationError" v-if="$v.formInput.bioCertification.$error">Ce champ est
+            requis.</p>
     </div>
     <p class="has-text-centered is-size-4">Prix de vente ou loyer mensuel (en €)</p>
     <div class="columns">
@@ -326,13 +334,14 @@
                    id="land_offer[confirm_price_fermage]"
                    name="confirm_price_fermage"
                    :disabled="isInputDisabled"
-                   v-model.trim.lazy = "formInput.confirmPriceFermage"
-                   ref = 'confirmPriceFermage'
-                   aria-describedby= 'confirmPriceFermageError'>
+                   v-model.trim.lazy="formInput.confirmPriceFermage"
+                   ref='confirmPriceFermage'
+                   aria-describedby='confirmPriceFermageError'>
 
             Je certifie que le prix est conforme à l’<a>indice des fermages de mon département</a>
         </label>
-        <p class="help is-danger" id="confirmPriceFermageError" v-if="$v.formInput.confirmPriceFermage.$error">Ce champs est requis.</p>
+        <p class="help is-danger" id="confirmPriceFermageError" v-if="$v.formInput.confirmPriceFermage.$invalid">Ce champ
+            est requis.</p>
     </div>
     <div class="field">
         <label class="label is-inline-block">Et si vous nous en disiez un peu plus sur votre projet ?*</label>
@@ -350,12 +359,11 @@
             <i class="fas fa-info-circle"></i>
         </button>
         <text-area-counter
-                id="land_offer[about_project]"
+                name="land_offer[about_project_content]"
                 :max-length=1000
                 :disabled="isInputDisabled"
-                :input-required=true
-
-        >
+                v-model="formInput.aboutProject"
+                :vuelidate="$v.formInput.aboutProject">
         </text-area-counter>
 
     </div>
@@ -376,10 +384,12 @@
             <i class="fas fa-info-circle"></i>
         </button>
         <text-area-counter
-                id="land_offer[about_content]"
+                name="land_offer[about_content]"
                 :max-length=1000
                 :disabled="isInputDisabled"
                 :input-required=true
+                v-model="formInput.aboutContent"
+                :vuelidate="$v.formInput.aboutContent"
         >
         </text-area-counter>
 
@@ -401,12 +411,12 @@
                   'aria-describedby'=>'titleError',
                   'placeholder'=>'Saisissez votre titre'
                   ] ) !!}
-        <p class="help is-danger" id="titleError" v-if="$v.formInput.title.$error">Ce champs est requis.</p>
+        <p class="help is-danger" id="titleError" v-if="$v.formInput.title.$error">Ce champ est requis.</p>
         <p class="help is-danger" v-show="!$v.formInput.title.minLength">Le titre de votre annonce doit faire au minimum
             @{{$v.formInput.title.$params.minLength.min}} caractères .</p>
     </div>
     <div class="field">
-        <span >Des photos ? Chaque photo augmente vos chances d’être recontactés !</span>
+        <span>Des photos ? Chaque photo augmente vos chances d’être recontactés !</span>
         <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-right"
                 data-tooltip="5 photos maximum">
             <i class="fas fa-info-circle"></i>
@@ -445,12 +455,13 @@
                    id="land_offer[chart_confirmation]"
                    name="certification_charte"
                    :disabled="isInputDisabled"
-                   v-model.trim.lazy = "formInput.chartConfirmation"
-                   ref = 'chartConfirmation'
-                   aria-describedby= 'chartConfirmationError'>
+                   v-model.trim.lazy="formInput.chartConfirmation"
+                   ref='chartConfirmation'
+                   aria-describedby='chartConfirmationError'>
 
             Je certifie que mon projet correspond à la <a href="/">charte de Terre de Liens</a>
         </label>
-        <p class="help is-danger" id="chartConfirmationError" v-if="$v.formInput.chartConfirmation.$error">Ce champs est requis.</p>
+        <p class="help is-danger" id="chartConfirmationError" v-if="$v.formInput.chartConfirmation.$error">Ce champ est
+            requis.</p>
     </div>
 </div>

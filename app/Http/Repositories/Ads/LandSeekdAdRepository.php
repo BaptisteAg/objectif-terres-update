@@ -1,7 +1,9 @@
 <?php namespace App\Http\Repositories\Ads;
 
 use App\Htttp\Repositories\LandSeekAdRepositoryInterface;
+use App\Models\Ad;
 use App\Models\LandSeekAd;
+use Illuminate\Support\Arr;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 class LandSeekdAdRepository extends AbstractRepository implements LandSeekAdRepositoryInterface
@@ -19,14 +21,31 @@ class LandSeekdAdRepository extends AbstractRepository implements LandSeekAdRepo
      */
     public function create(array $data): LandSeekAd
     {
-        $ad = new LandSeekAd();
+        $landSeekAd = new LandSeekAd();
 
-        $ad->fill($data);
+        $productionGenres = $data["production_genre"] ?? [];
+        $surfaceRanges = $data["surface_range"] ?? [];
+        $priceRanges = $data["price_range"] ?? [];
 
-        dd($ad);
+        if(in_array('other', $productionGenres)) {
+            $data["production_type_add"] = "";
+            $productionGenres = Arr::where($productionGenres, function($productionGenre) {return $productionGenre !== 'other';});
+        }
 
-        $ad->save();
+        $landSeekAd->fill($data);
 
-        return $ad;
+        $landSeekAd->save();
+
+        if (count($surfaceRanges)) {
+            $landSeekAd->surfaceRanges()->attach($surfaceRanges);
+        }
+        if (count($priceRanges)) {
+            $landSeekAd->priceRanges()->attach($priceRanges);
+        }
+        if (count($productionGenres)) {
+            $landSeekAd->productionGenres()->attach($productionGenres);
+        }
+
+        return $landSeekAd;
     }
 }

@@ -14,7 +14,6 @@ export default {
         const hasOld = Object.keys(v).length;
 
         return {
-            isJobOpportunity: hasOld ? v.is_offer : false,
             isInputRequired: false,
             formInput: {
                 beneficiary: hasOld ? v.is_beneficiary : '',
@@ -24,14 +23,14 @@ export default {
                 jobStatus: hasOld ? v.job_status : '',
                 jobOpportunity: hasOld ? v.is_offer : '',
                 experienceFarming: hasOld ? v.experience_farming : '',
-                aboutProject: hasOld ? v.about_project : '',
+                aboutProject: hasOld ? v.about_project_content : '',
                 aboutContent: hasOld ? v.about_content : '',
                 title: hasOld ? v.title : '',
             }
         }
     },
     watch: {
-        isJobOpportunity: function () {
+        jobOpportunity: function () {
             this.isInputRequired = this.isJobOpportunity === "1";
         }
     },
@@ -63,11 +62,20 @@ export default {
                 })
             },
             experienceFarming: {numeric},
+            aboutProject: {
+                minLength: minLength(5),
+                maxLength: maxLength(1000),
+                required
+            },
+            aboutContent: {
+                minLength: minLength(5),
+                maxLength: maxLength(1000),
+                required
+            },
             title: {
                 required,
                 minLength: minLength(5)
-            }
-
+            },
         }
     }
 

@@ -1,59 +1,77 @@
 import FormNewAdMixin from "./mixins/form-new-ad-mixin";
 import FormValidationMixin from '../components/mixins/form-new-ad-validation-mixin';
-import {required, maxLength, numeric, minLength, sameAs} from 'vuelidate/lib/validators'
+import {maxLength, minLength, numeric, required, sameAs} from 'vuelidate/lib/validators'
 import TextAreaCounter from "../../../components/TextAreaCounter";
+
 export default {
     components: {
         TextAreaCounter
     },
     mixins: [FormNewAdMixin, FormValidationMixin],
-    props: {
-    },
+    props: {},
     data() {
         const v = this.oldValues;
         const hasOld = Object.keys(v).length;
 
         return {
-            isActivityTransfer: hasOld ? v.is_activity_transfer : false,
-            isProductionGenreOther: hasOld ? v.other_production_genre :  false,
-            isProductionGenreWantedOther: hasOld ? v.production_genre_wanted : false,
-            isInputRequired: false,
-            formInput : {
-                isBeneficiary : hasOld ? v.is_beneficiary : '',
-                zipCode :  hasOld ? v.zipCode : '',
-                surfaceRange :hasOld ? v.surface_range : [],
-                productionGenreWanted: [],
-                altitude : hasOld ? v.altitude : '',
-                bioCertification : hasOld ? v.bioCertification: [],
-                confirmPriceFermage : hasOld ? v.confirm_price_fermage : false,
-                chartConfirmation : hasOld ? v.chart_confirmation : false ,
-                title : '',
-
+            formInput: {
+                isBeneficiary: hasOld ? v.is_beneficiary : '',
+                zipCode: hasOld ? v.zipCode : '',
+                surfaceRange: hasOld ? v.surface_range : [],
+                isActivityTransfer: hasOld ? !!v.is_activity_transfer : false,
+                productionGenre: hasOld ? v.production_genre : [],
+                productionGenreWanted: hasOld ? v.production_genre_wanter : [],
+                altitude: hasOld ? v.altitude : '',
+                bioCertification: hasOld ? v.bioCertification : [],
+                confirmPriceFermage: hasOld ? !!v.confirm_price_fermage : false,
+                aboutProject: hasOld ? v.about_project_content : '',
+                aboutContent: hasOld ? v.about_content : '',
+                title: '',
+                chartConfirmation: false,
             }
         }
     },
-    validations : {
-        isActivityTransfer : {required},
-        formInput : {
-            isBeneficiary : {required},
-            zipCode : {
+    computed: {
+        isProductionGenreOther() {
+            return this.formInput.productionGenre.includes('other');
+        },
+        isProductionGenreWantedOther() {
+            return this.formInput.productionGenreWanted.includes('other');
+        }
+    },
+    validations: {
+        formInput: {
+            isBeneficiary: {required},
+            zipCode: {
                 required,
                 numeric,
-                minLength : minLength(5),
-                maxLength : maxLength(5)
+                minLength: minLength(5),
+                maxLength: maxLength(5)
             },
             surfaceRange: {required},
-            altitude:{
+            isActivityTransfer: {required},
+            altitude: {
                 required,
-                numeric},
+                numeric
+            },
             bioCertification: {required},
-            confirmPriceFermage : {
-                required,
-                sameAs: sameAs( () => true ) },
-            chartConfirmation : {
-                required,
-                sameAs: sameAs( () => true ) },
-            title : {
+            confirmPriceFermage: {
+                checked(v) {return !!v}
+            },
+            aboutProject: {
+                minLength: minLength(5),
+                maxLength: maxLength(1000),
+                required
+            },
+            aboutContent: {
+                minLength: minLength(5),
+                maxLength: maxLength(1000),
+                required
+            },
+            chartConfirmation: {
+                checked(v) {return !!v}
+            },
+            title: {
                 required,
                 minLength: minLength(5)
             }
