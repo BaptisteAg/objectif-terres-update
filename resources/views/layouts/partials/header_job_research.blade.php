@@ -19,7 +19,7 @@
                 name="research_city"
                 selected-count-text="ville sélectionnée"
                 placeholder="Choississez un département"
-                :nameOption="villes"
+                nameOption="villes"
                 src="/json/cities">
             </ajax-multi-select>
 {{--            <multi-select--}}

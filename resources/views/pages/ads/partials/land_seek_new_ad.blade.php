@@ -262,7 +262,7 @@
         <span>Une photo de vous ? Une synthèse de votre projet ? Les photos sont importantes pour donner envie de consulter votre annonce.</span>
         <div class="file">
             <label class="file-label">
-                {!! Form::file('land_seek[image]', ['class' => 'file-input', ':disabled' => 'isInputDisabled'] ) !!}
+                {!! Form::file('land_seek[images][]', ['class' => 'file-input', ':disabled' => 'isInputDisabled', 'multiple' => true] ) !!}
                 <span class="file-cta">
                     <span class="file-icon">
                         <i class="fas fa-upload"></i>

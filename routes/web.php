@@ -24,8 +24,11 @@ Route::get('/authenticate', 'SalesForceAuthController@register');
 Route::post('/recherches', 'Researches\ResearchesController@index');
 
 Route::prefix('json')->group(function () {
-   Route::get('locationables', 'Json\LocationableController@locationables');
-   Route::get('cities', 'Json\LocationableController@cities');
+    Route::get('locationables', 'Json\LocationableController@locationables');
+    Route::get('cities', 'Json\LocationableController@cities');
+    Route::prefix('polygon')->group(function () {
+        Route::post('regions', 'Json\LocationableController@regionsPolygon');
+    });
 });
 
 

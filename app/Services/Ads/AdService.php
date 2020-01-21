@@ -1,6 +1,6 @@
 <?php namespace App\Services\Ads;
 
-use App\Http\Repositories\Ads\AdRepository;
+use App\Repositories\Ads\AdRepository;
 use Illuminate\Support\Facades\DB;
 
 class AdService
@@ -35,5 +35,12 @@ class AdService
         $ad = $this->repository->find($id);
 
         return $ad;
+    }
+
+    public function findAll()
+    {
+        $ads = $this->repository->all();
+
+        return $ads;
     }
 }

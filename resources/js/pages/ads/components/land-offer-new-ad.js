@@ -16,8 +16,8 @@ export default {
         return {
             formInput: {
                 isBeneficiary: hasOld ? v.is_beneficiary : '',
-                zipCode: hasOld ? v.zipCode : '',
-                surfaceRange: hasOld ? v.surface_range : [],
+                zipCode: hasOld ? v.zip_code : '',
+                surface: hasOld ? v.surface : '',
                 isActivityTransfer: hasOld ? !!v.is_activity_transfer : '',
                 productionGenre: hasOld ? v.production_genre : [],
                 productionGenreWanted: hasOld ? v.production_genre_wanter : [],
@@ -48,7 +48,10 @@ export default {
                 minLength: minLength(5),
                 maxLength: maxLength(5)
             },
-            surfaceRange: {required},
+            surface: {
+                required,
+                numeric
+            },
             isActivityTransfer: {required},
             altitude: {
                 required,

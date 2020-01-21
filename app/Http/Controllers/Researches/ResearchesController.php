@@ -21,8 +21,6 @@ class ResearchesController extends Controller
     public function index(Request $request)
     {
 
-        dd($request->all());
-
         $adType = $request->input('ad_type');
         $adCategory = $request->input('ad_category');
         $idRegions = $request->input('research_locations');

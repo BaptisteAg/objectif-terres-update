@@ -179,7 +179,7 @@
         let map = L.map('my_osm_widget_map', { /* use the same name as your <div id=""> */
             center: [46.290552, 2.771017], /* set GPS Coordinates */
             zoom: 5, /* define the zoom level */
-            zoomControl: false, /* false = no zoom control buttons displayed */
+            zoomControl: true, /* false = no zoom control buttons displayed */
             scrollWheelZoom: false /* false = scrolling zoom on the map is locked */
         });
 
@@ -190,10 +190,33 @@
 
         //L.marker([46.290552, 2.771017]).addTo(mymap); /* set your location's GPS Coordinates : [LAT,LON] */
 
-		fetch('/json/geo-polygon/'+1)
+		let formData = new FormData;
+		@foreach($adsCountByRegionId as $regionId => $adCount)
+			formData.append('ads_count_by_region_id[{{$regionId}}]','{{$adCount}}');
+		@endforeach
+		formData.append('_token', "{{ csrf_token() }}");
+
+		fetch('/json/polygon/regions', {
+			method: 'POST',
+			body: formData
+		})
 				.then(response => response.json())
-				.then(json => {
-					L.geoJSON().addTo(map)
+				.then(polygonsData => {
+					polygonsData.forEach(polygonData => {
+						const polygon = L.geoJSON(polygonData.geojson, {
+							smoothFactor: 2
+						});
+
+						polygon.addTo(map);
+
+						polygon.bindTooltip(polygonData.ads_count,
+								{permanent: true, direction:"center"}
+						).openTooltip();
+
+						polygon.addEventListener('click',_ => {
+							console.log("polygon click");
+						});
+					})
 				})
 	</script>
 

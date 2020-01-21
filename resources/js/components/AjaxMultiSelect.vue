@@ -61,7 +61,6 @@
                 selectedCountries: [],
                 countries: [],
                 isLoading: false,
-                nameOption: this.nameOption,
                 timeout: null,
             }
         },
