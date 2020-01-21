@@ -19,15 +19,15 @@
     <div class="columns">
         <div class="column is-half">
             <div class="field">
-                {!! Form::label('land_offer[zipCode]', 'Code postal*', ['class' => 'label']); !!}
+                {!! Form::label('land_offer[zip_code]', 'Code postal*', ['class' => 'label']); !!}
                 <div class="control">
-                    {!! Form::text('land_offer[zipCode]',
-                             old('land_offer[zipCode]'),
+                    {!! Form::text('land_offer[zip_code]',
+                             old('land_offer[zip_code]'),
                              ['min' => 1,
                               'class' => 'input',
                               'v-model.trim'=>'formInput.zipCode',
                               ':disabled' => 'isInputDisabled',
-                              'ref' => 'zipCode',
+                              'ref' => 'zip_code',
 								'aria-describedby'=>'zipCodeError']) !!}
                 </div>
                 <p class="help is-danger" if="zipCodeError" v-if="$v.formInput.zipCode.$error">Ce champ est
@@ -44,20 +44,9 @@
         J'accepte que le code postal soit utilisé pour localiser l'annonce(recommandé)
     </div>
     <div class="field">
-        {!! Form::label('land_offer[surface_range][]', 'Surface du foncier agricole(en ha)*', ['class' => 'label']); !!}
-
-        @foreach ($surfaceRanges->pluck('surface', 'id') as $surface)
-            {!! Form::checkbox('land_offer[surface_range][]',
-                    $surface,
-                    old('land_offer[surface_range[]]'),
-                    [':disabled'=>'isInputDisabled',
-                    'v-model'=>'formInput.surfaceRange',
-                    'ref' => 'surfaceRange',
-					'aria-describedby'=>'surfaceRangeError'
-                    ]) !!}
-            {{$surface}}
-        @endforeach
-        <p class="help is-danger" id="surfaceRangeError" v-if="$v.formInput.surfaceRange.$error">Ce champ est
+        {!! Form::label('land_offer[surface]', 'Surface du foncier agricole(en ha)*', ['class' => 'label']); !!}
+        {!! Form::number('land_offer[surface]', null, ['min'=>0, 'class' => 'input', ':disabled'=>'isInputDisabled', 'v-model' => 'formInput.surface'] ) !!}
+        <p class="help is-danger" id="surfaceError" v-if="$v.formInput.surface.$error">Ce champ est
             requis.</p>
     </div>
     <div class="field">
@@ -169,8 +158,8 @@
             {!! Form::date('land_offer[land_availability]', old('land_offer[land_availability]'), [ ':disabled' => 'isInputDisabled'] ) !!}
         </div>
         <div class="column" v-show="formInput.isActivityTransfer === '1' ">
-            {!! Form::label('land_offer[land_transfert_deadline]', 'Avant quelle date souhaitez-vous transmettre votre ferme ?', ['class' => 'label']); !!}
-            {!! Form::date('land_offer[land_transfert_deadline]', old('land_offer[land_availability]'), [ ':disabled' => 'isInputDisabled'] ) !!}
+            {!! Form::label('land_offer[land_transfer_deadline]', 'Avant quelle date souhaitez-vous transmettre votre ferme ?', ['class' => 'label']); !!}
+            {!! Form::date('land_offer[land_transfer_deadline]', old('land_offer[land_availability]'), [ ':disabled' => 'isInputDisabled'] ) !!}
         </div>
     </div>
     <div class="field" v-show="formInput.isActivityTransfer === '1' ">
@@ -210,7 +199,6 @@
             {!! Form::label('land_offer[production_genre_wanted][]', 'Production envisageables', ['class' => 'label']); !!}
 
         </div>
-
 
         @foreach ($productionGenres->pluck('name', 'id') as $id => $productionGenre)
             {!! Form::checkbox(

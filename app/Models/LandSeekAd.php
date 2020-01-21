@@ -104,5 +104,4 @@ class LandSeekAd extends Model
     {
         return $this->belongsToMany('App\Models\SurfaceRange')->withTimestamps();
     }
-
 }

@@ -20,14 +20,10 @@ class ResearchesController extends Controller
 {
     public function index(Request $request)
     {
-//        dd($request->all());
 
         $adType = $request->input('ad_type');
         $adCategory = $request->input('ad_category');
         $idRegions = $request->input('research_locations');
-
-        $ads = collect();
-
 
         if ($adCategory === 'land') {
             $adType = ($adType === 'offer_ads') ? 'landOfferAd' : 'landSeekAd';
@@ -41,6 +37,8 @@ class ResearchesController extends Controller
             $regions = Region::all();
         }
 
+        $ads = collect();
+
         foreach ($regions as $region) {
             $regionAds = $region->ads;
             foreach ($regionAds as $key => $ad) {
@@ -52,7 +50,6 @@ class ResearchesController extends Controller
             }
         }
 
-//        dd($ads);
         //            $ads = $this->paginate($ads);
         return view('pages.researches', compact('ads', 'adType'));
     }

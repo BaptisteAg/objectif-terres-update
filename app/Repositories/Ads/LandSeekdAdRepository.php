@@ -1,4 +1,4 @@
-<?php namespace App\Http\Repositories\Ads;
+<?php namespace App\Repositories\Ads;
 
 use App\Htttp\Repositories\LandSeekAdRepositoryInterface;
 use App\Models\Ad;

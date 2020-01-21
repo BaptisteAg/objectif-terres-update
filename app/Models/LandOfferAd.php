@@ -57,7 +57,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  */
 class LandOfferAd extends Model
 {
-
     use BioCertifiable;
     use ProductionableGenre;
 
@@ -65,7 +64,23 @@ class LandOfferAd extends Model
      * @var array
      */
     protected $fillable = [
-        'ad_id', 'building_id', 'house_id', 'land_id', 'is_beneficiary', 'accept_use_zip_code', 'is_call_for_application_community', 'is_call_for_application_terre_de_liens', 'is_call_for_application_test_area', 'is_activity_transfert', 'water_access', 'altitude'
+        'ad_id',
+        'building_id',
+        'house_id',
+        'land_id',
+        'is_beneficiary',
+        'accept_use_zip_code',
+        'is_call_for_application_community',
+        'is_call_for_application_terre_de_liens',
+        'is_call_for_application_test_area',
+        'is_activity_transfert',
+        'water_access',
+        'altitude',
+        'zip_code',
+        'land_price',
+        'house_price',
+        'building_price',
+        'confirm_price_fermage',
     ];
 
 

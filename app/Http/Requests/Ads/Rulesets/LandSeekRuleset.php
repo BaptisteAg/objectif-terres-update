@@ -26,8 +26,7 @@ class LandSeekRuleset implements RulesetInterface
             'land_seek.experience_farming'       => ['string', 'max:1000'],
             'land_seek.about_content'            => ['required', 'string', 'max:1000'],
             'land_seek.about_project_content'    => ['required', 'string', 'max:1000'],
-            'land_seek.title'                    => ['required', 'string'],
-            'land_seek.image'                    => ['file'],
+            'land_seek.title'                    => ['required', 'string']
         ];
     }
 }

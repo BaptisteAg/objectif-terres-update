@@ -1,14 +1,15 @@
-<?php namespace App\Http\Repositories\Ads;
+<?php namespace App\Repositories\Ads;
 
 use App\Htttp\Repositories\AdRepositoryInterface;
 use App\Models\Ad;
+use App\Models\Document;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Cache;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 /**
  * Class AdRepository
- * @package App\Http\Repositories\Ads
+ * @package App\Repositories\Ads
  * @property Ad $entity
  */
 class AdRepository extends AbstractRepository implements AdRepositoryInterface
@@ -28,6 +29,13 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         return Ad::class;
     }
 
+    public function all($paginate = null)
+    {
+        return $this->entity
+            ->with($this->getEagerLoading())
+            ->get();
+    }
+
     /**
      * @param $id
      * @return Ad
@@ -36,14 +44,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     {
         $model = $this->entity
             ->where(["id" => $id])
-            ->with([
-            	'landSeekAd',
-				'landOfferAd',
-				'jobAd',
-				'cities',
-				'regions',
-				'departments'
-			])
+            ->with($this->getEagerLoading())
             ->firstOrFail();
 
         if (!$model) {
@@ -83,11 +84,43 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             }
         }
 
+        if($adData["images"]) {
+            foreach($adData["images"] as $image) {
+                $imageName = time().'.'.$image->getClientOriginalExtension();
+                $image->move(public_path('images'), $imageName);
+                $document = new Document();
+                $document->path = $imageName;
+                $document->type_document = 'image';
+                $document->save();
+
+                $ad->documents()->attach($document->id);
+            }
+        }
+
         if ($data["ad_type"] === "land_seek") {
+            $adData["ad_id"] = $ad->id;
+            $landSeekAd = $this->landSeekAdRepository->create($adData);
+        }
+        else if ($data["ad_type"] === "land_offer") {
             $adData["ad_id"] = $ad->id;
             $landSeekAd = $this->landSeekAdRepository->create($adData);
         }
 
         return $ad;
+    }
+
+    private function getEagerLoading()
+    {
+        return [
+            'landSeekAd',
+            'landOfferAd',
+            'jobAd',
+            'cities',
+            'cities.department',
+            'cities.department.region',
+            'departments',
+            'departments.region',
+            'regions',
+        ];
     }
 }

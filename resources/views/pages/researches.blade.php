@@ -66,10 +66,10 @@
                     <div class="column is-two-fifths">
                         <figure><img src="https://picsum.photos/500/300" alt="Placeholder image"></figure>
                         <div>
-                            {{$ad->regions->pluck('name')->implode(', ') }}
+                            {{ $ad->regions->pluck('name')->implode(', ') }}
                         </div>
                         @if($adType === 'landOfferAd')
-                            <div><span>{{ $ad->$adType->price }}</span> € | <span>{{ $ad->$adType->area }}</span> ha</div>
+                            <div><span>{{ $ad->$adType->land->price }}</span> € | <span>{{ $ad->$adType->land->area }}</span> ha</div>
                         @else
                             <div><span></span></div>
                         @endif

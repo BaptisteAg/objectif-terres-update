@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Ads;
 
 use App\Http\Controllers\Controller;
-use App\Http\Repositories\Ads\AdRepository;
+use App\Repositories\Ads\AdRepository;
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
 use App\Models\AgriculturalActivity;

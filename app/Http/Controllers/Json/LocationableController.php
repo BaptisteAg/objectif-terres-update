@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Department;
 use App\Models\Region;
+use GuzzleHttp\Client;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 
 class LocationableController extends Controller
 {
@@ -23,6 +25,53 @@ class LocationableController extends Controller
             $this->searchDepartments($request->get('q')),
             $this->searchCities($request->get('q')),
         ));
+    }
+
+    public function cities(Request $request)
+    {
+        if (!$request->get('q')) {
+            return response()->json(['error' => 'La requête est vide.']);
+        }
+
+        return response()->json(
+            $this->searchCities($request->get('q'))
+        );
+    }
+
+    public function regionsPolygon(Request $request)
+    {
+        $adsCountByRegionId = $request->get('ads_count_by_region_id');
+        /** @var Region[] $regions */
+        $regions = Region::whereIn('id', array_keys($adsCountByRegionId))->get();
+
+        $json = [];
+
+        foreach($regions as $region) {
+            $geoPolygon = $this->getLocationGeoPolygon($region->name);
+            $geoPolygon->id = $region->id;
+            $geoPolygon->ads_count = $adsCountByRegionId[$region->id];
+            $json[] = $geoPolygon;
+        }
+
+        return response()->json($json);
+    }
+
+    protected function getLocationGeoPolygon($q)
+    {
+        $cacheKey = 'geopolygon-'.$q;
+
+        if(!Cache::has($cacheKey)) {
+            Cache::remember($cacheKey, now()->addDays(365), function() use ($q) {
+                $client = new Client();
+                $res = $client->request('GET', 'https://nominatim.openstreetmap.org/search.php?q='.urlencode($q.', France').'&polygon_geojson=1&format=json');
+
+                $results = json_decode($res->getBody());
+
+                return $results[0];
+            });
+        }
+
+        return Cache::get($cacheKey);
     }
 
     protected function searchCities(string $q)
