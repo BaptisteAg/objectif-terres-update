@@ -153,6 +153,7 @@
 
 
 @section('script')
+	<script src="{{ asset('js/bulma-accordion.js') }}"></script>
 	<script src="{{asset('js/bulma-carousel.js')}}"></script>
 	<script>
         bulmaCarousel.attach('#post_images', {
@@ -162,10 +163,11 @@
             navigation : true,
 
         });
+		var accordions = bulmaAccordion.attach();
 	</script>
 
 	<script>
-        let mymap = L.map('my_osm_widget_map', { /* use the same name as your <div id=""> */
+        let map = L.map('my_osm_widget_map', { /* use the same name as your <div id=""> */
             center: [46.290552, 2.771017], /* set GPS Coordinates */
             zoom: 5, /* define the zoom level */
             zoomControl: false, /* false = no zoom control buttons displayed */
@@ -175,12 +177,15 @@
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWlja2l3YXkiLCJhIjoiY2s0YmE0NHZqMDZrejNrcGlxeWJmNHRtdCJ9.In4xuZz8wYnXmDX5jrrhCg', { /* set your personal MapBox Access Token */
             maxZoom: 20, /* zoom limit of the map */
             id: 'mapbox.light' /* mapbox.light / dark / streets / outdoors / satellite */
-        }).addTo(mymap);
+        }).addTo(map);
 
-        L.marker([46.290552, 2.771017]).addTo(mymap); /* set your location's GPS Coordinates : [LAT,LON] */
+        //L.marker([46.290552, 2.771017]).addTo(mymap); /* set your location's GPS Coordinates : [LAT,LON] */
 
+		fetch('/json/geo-polygon/'+1)
+				.then(response => response.json())
+				.then(json => {
+					L.geoJSON().addTo(map)
+				})
 	</script>
 
-	<script src="{{ asset('js/bulma-accordion.js') }}"></script>
-	<script>var accordions = bulmaAccordion.attach();</script>
 @endsection

@@ -32,7 +32,7 @@
 						</div>
 						<div class="content">
 							<p><span class="is-size-5 is-capitalized has-text-black">Région(s) : </span>
-								@foreach ($ad->locationable as $adRegion)
+								@foreach ($ad->regions as $adRegion)
 									<span class="subtitle">
 										{{$adRegion->name}}
 									</span>
