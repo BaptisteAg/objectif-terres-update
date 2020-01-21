@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property boolean $has_house
  * @property int $price_min
  * @property int $price_max
+ * @property string $ad_type
  * @property JobStatus[] $jobStatuses
  * @property ProjectStatus[] $projectStatuses
  * @property AdStatus[] $adStatuses
@@ -67,7 +68,7 @@ class Research extends Model
      * @var array
      */
     protected $fillable = [
-        'sf_id', 'name', 'surface_min', 'surface_max', 'has_pics', 'has_house', 'price_min', 'price_max'
+        'sf_id', 'name', 'surface_min', 'surface_max', 'has_pics', 'has_house', 'price_min', 'price_max', 'ad_type'
     ];
 
     /**

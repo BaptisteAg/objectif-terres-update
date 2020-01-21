@@ -21,6 +21,7 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
 
 Route::get('/authenticate', 'SalesForceAuthController@register');
 
+
 Route::post('/recherches', 'Researches\ResearchesController@index');
 
 Route::prefix('json')->group(function () {
@@ -31,4 +32,4 @@ Route::prefix('json')->group(function () {
     });
 });
 
-
+Route::get('/recherches/liste', 'Researches\ResearchesController@show');

@@ -3,27 +3,27 @@
 namespace App\Http\Controllers\Researches;
 
 use App\Http\Controllers\Controller;
-use App\Models\Ad;
-use App\Models\Building;
-use App\Models\House;
-use App\Models\Land;
-use App\Models\Region;
+use App\Services\Researches\ResearchService;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\DB;
+use App\Models\Region;
+
 
 class ResearchesController extends Controller
 {
+	public function __construct(ResearchService $researchService)
+	{
+		$this->researchService = $researchService;
+	}
     public function index(Request $request)
     {
 
         $adType = $request->input('ad_type');
         $adCategory = $request->input('ad_category');
         $idRegions = $request->input('research_locations');
+
 
         if ($adCategory === 'land') {
             $adType = ($adType === 'offer_ads') ? 'landOfferAd' : 'landSeekAd';
@@ -49,7 +49,6 @@ class ResearchesController extends Controller
                 }
             }
         }
-
         //            $ads = $this->paginate($ads);
         return view('pages.researches', compact('ads', 'adType'));
     }
@@ -60,4 +59,10 @@ class ResearchesController extends Controller
         $ads = $ads instanceof Collection ? $ads : Collection::make($ads);
         return new LengthAwarePaginator($ads->forPage($page, $perPage), $ads->count(), $perPage, $page);
     }
+
+    public function show(){
+
+		$researches = $this->researchService->findAll();
+    	return view('pages.savedResearches.listSavedResearches', compact('researches'));
+	}
 }
