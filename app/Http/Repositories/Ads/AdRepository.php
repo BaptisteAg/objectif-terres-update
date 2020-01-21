@@ -3,6 +3,7 @@
 use App\Htttp\Repositories\AdRepositoryInterface;
 use App\Models\Ad;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Cache;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 /**
@@ -35,7 +36,14 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     {
         $model = $this->entity
             ->where(["id" => $id])
-            ->with(['landSeekAd', 'landOfferAd', 'jobAd'])
+            ->with([
+            	'landSeekAd',
+				'landOfferAd',
+				'jobAd',
+				'cities',
+				'regions',
+				'departments'
+			])
             ->firstOrFail();
 
         if (!$model) {

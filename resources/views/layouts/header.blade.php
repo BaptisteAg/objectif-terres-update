@@ -48,7 +48,6 @@
                     <h4 class="subtitle">Réalisez votre projet agricole.</h4>
                     <p>Une initiative Terre de Liens</p>
                 </div>
-
                 <div class="column is-2">
                     <p>Je cherche</p>
                     <div class="select">
@@ -123,7 +122,7 @@
                         <div class="buttons">
                             <a class="navbar-item">Ressources utiles</a>
                             <a class="navbar-item">Témoignages & chiffres clés</a>
-                            <a href="{{ url('new') }}" class="button is-bordered">Déposer une annonce</a>
+                            <a href="{{ route('ads.create') }}" class="button is-bordered">Déposer une annonce</a>
                         </div>
                     </div>
                 </div>

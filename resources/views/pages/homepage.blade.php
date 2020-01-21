@@ -19,7 +19,7 @@
 			<p>ASTUCE : <a href="{{url('/')}}">Créez votre compte gratuit</a> pour visualiser directement les annonces de votre région !</p>
 		</div>
 		<div class="columns">
-			@for ($i = 0; $i < 2; $i++)
+			@foreach ($ads as $ad)
 				<div class="column is-half ">
 					<div class="card">
 						<div class="card-image">
@@ -30,18 +30,27 @@
 						<div class="card-content has-text-centered">
 							<div class="media">
 								<div class="media-content has-text-centered">
-									<p class="title is-4">Titre annonce #{{$i+1}}</p>
+
+									@if($ad->landSeekAd)
+										<p class="title is-4">{{$ad->landSeekAd->title}}</p>
+									@endif
+									@if($ad->landOfferAd)
+											<p class="title is-4">{{$ad->landOfferAd->title}}</p>
+									@endif
+									@if($ad->jobAd)
+											<p class="title is-4">{{$ad->jobAd->title}}</p>
+									@endif
+
 								</div>
 							</div>
 							<div class="content">
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Phasellus nec iaculis mauris.
+								{{ \Illuminate\Support\Str::limit($ad->about_project_content, 200, $end='...') }}
 							</div>
-							<button class="button is-link">Voir l'annonce</button>
+							<a href="{{url("/annonces", $ad->id)}}"><button class="button is-link">Voir l'annonce</button></a>
 						</div>
 					</div>
 				</div>
-			@endfor
+			@endforeach
 		</div>
 		<div class="columns is-centered">
 			<div class="column is-half has-text-centered">

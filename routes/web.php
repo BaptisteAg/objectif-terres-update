@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('pages.homepage');
-});
+Route::get('/', 'HomePage\HomePageController@show');
 
 Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
     Route::get('creer', 'AdsController@create')->name('create');
