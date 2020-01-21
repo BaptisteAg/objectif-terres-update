@@ -56,21 +56,13 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 	public function create(array $data): Research
 	{
 		$research = new Research();
-
 		$researchData = $data;
-
 		$research->fill($researchData);
-
-		$research->sf_pp_id = 999;
-
+		$research->sf_id = 999;
 		$research->save();
 
-		foreach (["cities", "departments", "regions"] as $locationableType) {
-			$locationables = $researchData["locationable"][$locationableType] ?? [];
-			if (count($locationables)) {
-				$research->$locationableType()->attach($locationables, ["radius" => $researchData["locationable_radius"]]);
-			}
-		}
+		$research->regions()->attach($data['regions']);
+
 		return $research;
 	}
 

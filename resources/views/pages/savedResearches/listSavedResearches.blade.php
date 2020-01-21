@@ -25,13 +25,11 @@
 									<span class="has-text-black">Offres d'emplois</span>
 								@elseif($research->ad_type === 'jobSeekAd')
 									<span class="has-text-black">Recherche d'emplois</span>
-								@elseif($research->ad_type === 'landSeekAd')
+								@elseif($research->ad_type === 'landOfferAd')
 									<span class="has-text-black">Offres de foncier</span>
 								@elseif($research->ad_type === 'landSeekAd')
 									<span class="has-text-black">Recherche de foncier</span>
 								@endif
-
-
 							</p>
 							<p><span class="has-text-grey-dark">Localisations :</span>
 								<span class="has-text-black">{{ $research->regions->pluck('name')->implode(', ') }}</span>
@@ -63,9 +61,11 @@
 									</button>
 								</a>
 							</div>
+							{{Form::open(['route' => 'researches.destroy'])}}
 							<div class="buttons">
+								<input type="hidden" value="{{$research->id}}" name="research">
 								<a>
-									<button class="button is-danger is-normal is-light">
+									<button type="submit" class="button is-danger is-normal is-light">
 												<span class="icon has-text-danger">
 												  <i class="fas fa-ban"></i>
 												</span>
@@ -73,6 +73,7 @@
 									</button>
 								</a>
 							</div>
+							{{Form::close()}}
 						</div>
 					</div>
 					<hr class="navbar-divider">

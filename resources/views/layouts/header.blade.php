@@ -35,7 +35,7 @@
             </div>
         </nav>
     </div>
-    {!! Form::open(['action' => 'Researches\ResearchesController@index']) !!}
+    {!! Form::open(['route' => 'researches.index']) !!}
         <div class="container-custom has-background-grey-lighter">
             <div class="columns">
                 <div class="column is-1">
