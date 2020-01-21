@@ -1,4 +1,4 @@
-<header>
+<header id="vue-header">
     <div class="container-custom">
         <nav class="level">
             <div class="level-left">
@@ -52,40 +52,53 @@
                     <p>Je cherche</p>
                     <div class="select">
                         <label for="select"></label>
-                        {{ Form::select('ad_type', ['offer_ads' => 'Des offres', 'seek_ads' => 'Des demandes']) }}
+                        {{ Form::select('ad_type',
+                                        ['offer_ads' => 'Des offres', 'seek_ads' => 'Des demandes'],
+                                        null,
+                                        ['v-model' => 'adTypeSelected']) }}
                     </div>
                 </div>
                 <div class="column is-2">
                     <div class="control">
                         <label class="radio is-block" for="land">
-                            <input id="land" type="radio" name="ad_category" value="land" checked>
+                            <input id="land" type="radio" name="ad_category" value="land" checked v-model="adCategorySelected">
                             de terres/ferme
                         </label>
                         <label class="radio is-block is-marginless" for="job">
-                            <input id="job" type="radio" name="ad_category" value="job">
+                            <input id="job" type="radio" name="ad_category" value="job" v-model="adCategorySelected">
                             d'emploi
                         </label>
                     </div>
                 </div>
                 <div class="column is-3">
                     <p>Où</p>
-                    <div id="multi-select-header">
-{{--                        {{ dump(json_encode($regions)) }}--}}
+                    <div>
                         <multi-select
-                            :data="{{ json_encode($regions) }}"
+                            :data="{{ json_encode(array_merge([(object)['id' => '0','name' => 'Toutes les régions']], json_decode($regions))) }}"
+                            :multiple="true"
                             name="research_locations[]"
-                            selected-count-text="régions sélectionnées"
-                            placeholder="Choississez une région" >
+                            selected-count-text="région(s) sélectionnée(s)"
+                            placeholder="Choississez une/des région(s)" >
                         </multi-select>
                     </div>
                     {!! Form::submit('Rechercher', ['class' => 'button']) !!}
                 </div>
                 <div class="column is-2">
-                    <a href="/">Plus de critère</a>
+                    <a href="#" @click="more_criteria">Plus de critère</a>
                 </div>
+
             </div>
         </div>
+
+    <div class="container-custom" v-show="adTypeChosen === 'job'">
+        @include('layouts.partials.header_job_research')
+    </div>
+    <div class="container-custom" v-show="adTypeChosen === 'land'">
+        @include('layouts.partials.header_land_research')
+    </div>
     {!! Form::close() !!}
+
+
     <div class="container is-fluid">
         <nav class="navbar is-boxed">
             <div class="navbar-brand">
@@ -131,7 +144,3 @@
     </div>
 </header>
 
-
-<script>
-    let regions_from_php = {!! json_encode($regions) !!} ;
-</script>

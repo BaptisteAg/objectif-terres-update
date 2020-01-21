@@ -4,7 +4,7 @@
         <label class="typo__label"></label>
         <multiselect v-model="values"
                      :options="options"
-                     :multiple="true"
+                     :multiple="multiple"
                      :close-on-select="false"
                      :clear-on-select="false"
                      :preserve-search="true"
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import Multiselect from 'vue-multiselect'
+    import Multiselect from 'vue-multiselect';
 
     export default {
         components: {
@@ -31,14 +31,12 @@
             name: String,
             selectedCountText: String,
             placeholder: String,
+            multiple: Boolean,
         },
         data () {
             return {
                 values: [],
-                options: [{
-                    'id': '0',
-                    'name': 'Toutes les régions'
-                },...this.data]
+                options: this.data,
             }
         },
         watch: {
