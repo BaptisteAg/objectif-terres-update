@@ -36,7 +36,6 @@ Vue.component('new-ad', {
     },
     methods: {
         submit(e) {
-            console.log("submit");
             this.enabledForm.$v.$touch();
             if (this.enabledFormHasErrors()) {
                 e.preventDefault();
@@ -52,11 +51,9 @@ Vue.component('new-ad', {
             }
         },
         enabledFormHasErrors() {
-            console.log("enabledFormHasErrors");
             return this.enabledForm && this.enabledForm.$v.$error
         },
         setEnabledForm(form) {
-            console.log("setEnabledForm");
             this.enabledForm = form;
         },
         focusOnFirstError(vueForm) {
