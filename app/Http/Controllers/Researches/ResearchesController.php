@@ -13,6 +13,8 @@ use Illuminate\Pagination\Paginator;
 class ResearchesController extends Controller
 {
 
+    private $researchService;
+
 	public function __construct(ResearchService $researchService)
 	{
 		$this->researchService = $researchService;

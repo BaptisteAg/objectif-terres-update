@@ -4,14 +4,14 @@
         <multi-select
             :data="{{ json_encode($departments) }}"
             :multiple="true"
-            name="research_location_department[]"
+            name="departments_location_researches[]"
             selected-count-text="département(s) sélectionné(s)"
             placeholder="Choississez un/des département(s)">
         </multi-select>
     </div>
     <p class="has-text-centered">ou</p>
     <div class="section">
-        {!! Form::label('departments', 'Choisissez une ville', ['class' => 'label']); !!}
+        {!! Form::label('cities', 'Choisissez une ville', ['class' => 'label']); !!}
         <ajax-multi-select
             :multiple="true"
             selected-count-text="ville sélectionnée"

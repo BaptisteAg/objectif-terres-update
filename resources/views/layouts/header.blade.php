@@ -76,7 +76,7 @@
                         <multi-select
                             :data="{{ json_encode(array_merge([(object)['id' => '0','name' => 'Toutes les régions']], json_decode($regions))) }}"
                             :multiple="true"
-                            name="research_locations[]"
+                            name="region_location_researches[]"
                             selected-count-text="région(s) sélectionnée(s)"
                             placeholder="Choississez une/des région(s)" >
                         </multi-select>

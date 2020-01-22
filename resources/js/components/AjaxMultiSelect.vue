@@ -1,12 +1,12 @@
 <template>
     <div>
-        <multiselect v-model="selectedCountries"
+        <multiselect v-model="selectedData"
                      id="ajax"
                      label="name"
                      track-by="code"
                      placeholder="Ecrivez pour rechercher"
                      open-direction="bottom"
-                     :options="countries"
+                     :options="data"
                      :multiple="multiple"
                      :searchable="true"
                      :loading="isLoading"
@@ -27,12 +27,12 @@
                 </span>
             </template>
             <template slot="clear" slot-scope="props">
-                <div class="multiselect__clear" v-if="selectedCountries.length"
+                <div class="multiselect__clear" v-if="selectedData.length"
                      @mousedown.prevent.stop="clearAll(props.search)"></div>
             </template>
             <span slot="noResult">Oups! Pas de {{ nameOptionLabel }} trouvé. Essayer de changer votre recherche.</span>
         </multiselect>
-        <input type="hidden" v-for="selectedCountrie in selectedCountries" :value="selectedCountrie.value.id" :name="cities">
+        <input type="hidden" v-for="selected in selectedData" :value="selected.value.id" :name="name">
     </div>
 </template>
 
@@ -53,11 +53,14 @@
                 type: Boolean,
                 default: false
             },
+            name: {
+                type: String
+            }
         },
         data() {
             return {
-                selectedCountries: [],
-                countries: [],
+                selectedData: [],
+                data: [],
                 isLoading: false,
                 timeout: null,
             }
@@ -67,7 +70,6 @@
                 return `et ${count} autres ` + nameOptionLabel;
             },
             asyncFind(query, cooldown) {
-                console.log(cooldown);
                 if (!cooldown && !this.isFetching) {
                     this.isLoading = true;
 
@@ -75,19 +77,22 @@
                         .then(response => response.json())
                         .then(results => {
                             if (!results.length) {
-                                results.push("Pas de résultat pour " + query + " :(")
+                                results =  [{
+                                    label: "Pas de résultat pour " + query + " :("
+                                }];
+                            }
+                            else {
+                                results.map(result => {
+                                    return {
+                                        ...result,
+                                        id: result.value.id
+                                    }
+                                });
                             }
 
-                            console.log(results);
 
-                            results.map(result => {
-                                return {
-                                    ...result,
-                                    id: result.value.id
-                                }
-                            });
-
-                            this.countries = results;
+                            this.data = results;
+                            console.log("nouvelle valeur data", this.data);
                             this.isLoading = false;
                         })
                         .catch(error => {
@@ -105,7 +110,7 @@
 
             },
             clearAll() {
-                this.selectedCountries = []
+                this.selectedData = []
             },
             customLabel(result) {
                 return `${result.label}`
