@@ -43,22 +43,18 @@
 						<div class="column ">
 							<div class="buttons">
 								<a class="">
-									<button class="button is-link is-normal ">
+									{!! Form::open(['route' => 'researches.index', 'method' => 'get']) !!}
+									<input type="hidden" name="ad_type" value="{{$research->ad_type}}">
+									@foreach ($research->regions->pluck('id') as $region)
+										<input type="hidden" name="research_locations[]" value="{{ $region }}">
+									@endforeach
+									<button type="submit" class="button is-link is-normal ">
 											<span class="icon is-small">
 											 <i class="fas fa-eye"></i>
 											</span>
 										<span>Voir les annonces</span>
 									</button>
-								</a>
-							</div>
-							<div class="buttons ">
-								<a>
-									<button class="button is-link is-light is-normal">
-												<span class="icon is-small">
-											 <i class="fas fa-pencil-ruler"></i>
-											</span>
-										<span>Modifier la recherche</span>
-									</button>
+									{{Form::close()}}
 								</a>
 							</div>
 							{{Form::open(['route' => 'researches.destroy'])}}
