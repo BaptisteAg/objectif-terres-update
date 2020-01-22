@@ -81,8 +81,8 @@ class ResearchService
 					$adsType[$ad->id] = $ad->$adType;
 					$regionName[$ad->id][$key] = $region->name;
 				}
-			}
-		}
+	}
+}
 
 		return [$ads, $adType, $regions];
 	}
