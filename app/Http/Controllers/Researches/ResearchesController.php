@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Researches;
 
 use App\Http\Controllers\Controller;
-use App\Models\Region;
 use App\Services\Researches\ResearchService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -12,6 +11,7 @@ use Illuminate\Pagination\Paginator;
 
 class ResearchesController extends Controller
 {
+	private $researchService;
 
 	public function __construct(ResearchService $researchService)
 	{
@@ -20,37 +20,8 @@ class ResearchesController extends Controller
 
 	public function index(Request $request)
 	{
+		list($ads, $adType, $regions) = $this->researchService->index($request);
 
-		$adType = $request->input('ad_type');
-		$adCategory = $request->input('ad_category');
-		$idRegions = $request->input('research_locations');
-
-
-		if ($adCategory === 'land') {
-			$adType = ($adType === 'offer_ads') ? 'landOfferAd' : 'landSeekAd';
-		} else {
-			$adType = ($adType === 'offer_ads') ? 'jobOfferAd' : 'jobSeekAd';
-		}
-
-		if ($idRegions && !in_array('0', $idRegions)) {
-			$regions = Region::with('ads')->whereIn('id', $idRegions)->get();
-		} else {
-			$regions = Region::all();
-		}
-
-		$ads = collect();
-
-		foreach ($regions as $region) {
-			$regionAds = $region->ads;
-			foreach ($regionAds as $key => $ad) {
-				if ($ad->$adType) {
-					$ads[$ad->id] = $ad;
-					$adsType[$ad->id] = $ad->$adType;
-					$regionName[$ad->id][$key] = $region->name;
-				}
-			}
-		}
-		//            $ads = $this->paginate($ads);
 		return view('pages.researches', compact('ads', 'adType', 'regions'));
 	}
 
@@ -58,22 +29,13 @@ class ResearchesController extends Controller
 	{
 		$page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
 		$ads = $ads instanceof Collection ? $ads : Collection::make($ads);
+
 		return new LengthAwarePaginator($ads->forPage($page, $perPage), $ads->count(), $perPage, $page);
 	}
 
 	public function store(Request $request)
 	{
-
-		$adType = $request->input('ad_type');
-		$regions = $request->input('regions');
-		$name = $request->input('name');
-
-
-		$data['ad_type'] = $adType;
-		$data['regions'] = $regions;
-		$data['name'] = $name;
-
-		$research = $this->researchService->create($data);
+		$research = $this->researchService->create($request);
 
 		return redirect()->route('researches.show');
 
@@ -83,17 +45,15 @@ class ResearchesController extends Controller
 	{
 
 		$researches = $this->researchService->findAll();
+
 		return view('pages.savedResearches.listSavedResearches', compact('researches'));
 	}
 
 	public function destroy(Request $request)
 	{
-
-		$researchId =  $request->input('research');
-		$research = $this->researchService->find($researchId);
-		$research->delete();
-
+		$this->researchService->destroy($request);
 		$researches = $this->researchService->findAll();
+
 		return view('pages.savedResearches.listSavedResearches', compact('researches'));
 
 	}
