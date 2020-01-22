@@ -3,11 +3,11 @@
     <div class="column">
         <div class="field">
             <label class="checkbox">
-                <input type="checkbox" name="offer_genre_ad[]" value="rental">
+                <input type="checkbox" name="offer_genres[]" value="rental">
                 location
             </label>
             <label class="checkbox">
-                <input type="checkbox" name="offer_genre_ad[]" value="sale">
+                <input type="checkbox" name="offer_genres[]" value="sale">
                 vente
             </label>
         </div>
@@ -15,7 +15,7 @@
             <div class="section">
                 <p class="label">Surface (ha)</p>
                 <vue-slider
-                    name="surface"
+                    name="surfaces_research"
                     :data="['0','5','10','20','50', '>100']"
                     :values="['0', '>100']"></vue-slider>
             </div>
@@ -34,13 +34,13 @@
         <div class="column">
             <div class="">
                 <label class="checkbox">
-                    <input type="checkbox" name="seek_ad_pics" value="true">
+                    <input type="checkbox" name="has_pics" value="true">
                     Avec photos
                 </label>
             </div>
             <div>
                 <label class="checkbox">
-                    <input type="checkbox" name="seek_ad_builbing" value="true">
+                    <input type="checkbox" name="has_buildings" value="true">
                     Habitation
                 </label>
             </div>
@@ -49,7 +49,7 @@
                 <multi-select
                     :data="{{ json_encode($productionGenres) }}"
                     :multiple="true"
-                    name="production_genre[]"
+                    name="production_genres[]"
                     selected-count-text="production(s) sélectionné(s)"
                     placeholder="Choississez">
                 </multi-select>
@@ -59,7 +59,7 @@
                 <multi-select
                     :data="{{ json_encode($bioCertifications) }}"
                     :multiple="true"
-                    name="bio_certification[]"
+                    name="bio_certifications[]"
                     selected-count-text="production(s) bio sélectionné(s)"
                     placeholder="Choississez">
                 </multi-select>
