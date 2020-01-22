@@ -54,7 +54,8 @@ class ResearchesController extends Controller
 		$this->researchService->destroy($request);
 		$researches = $this->researchService->findAll();
 
-		return view('pages.savedResearches.listSavedResearches', compact('researches'));
+		return redirect()->route('researches.show', compact('researches'));
+
 
 	}
 }

@@ -21,14 +21,10 @@ class ResearchService
 
 	public function create(Request $request)
 	{
-		$adType = $request->input('ad_type');
-		$regions = $request->input('regions');
-		$name = $request->input('name');
-
-
-		$data['ad_type'] = $adType;
-		$data['regions'] = $regions;
-		$data['name'] = $name;
+		$data = [];
+		foreach ($request->input() as $item => $value){
+			$data[$item] = $value;
+		}
 
 		$research = DB::transaction(function () use ($data) {
 			$research = $this->repository->create($data);
