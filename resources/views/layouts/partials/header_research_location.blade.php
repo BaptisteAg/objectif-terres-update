@@ -17,12 +17,13 @@
             selected-count-text="ville sélectionnée"
             placeholder="Choississez un département"
             name-option-label="villes"
-            src="/json/cities">
+            src="/json/cities"
+            name="cities_location_researches[]">
         </ajax-multi-select>
         <div class="section">
             <p class="label">Dans un rayon de </p>
             <vue-slider
-                name="research_radius[locationable_radius]"
+                name="radius_research"
                 :data="['0km','5km','10km','20km','50km']"
             ></vue-slider>
         </div>

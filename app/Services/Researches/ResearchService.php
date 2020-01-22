@@ -1,6 +1,7 @@
 <?php namespace App\Services\Researches;
 
 
+use App\Models\Ad;
 use App\Models\Region;
 use App\Repositories\Researches\ResearchRepository;
 use Illuminate\Http\Request;
@@ -55,9 +56,21 @@ class ResearchService
 
 	public function index(Request $request)
 	{
+
 		$adTypeInput = $request->input('ad_type');
 		$adCategory = $request->input('ad_category');
-		$idRegions = $request->input('research_locations');
+        $idRegions = $request->input('regions_location_researches');
+        $idDepartments = $request->input('departments_location_researches');
+        $idCities = $request->input('cites_location_researches');
+        $radius = $request->input('radius_research');
+        $offer_genres = $request->input('offer_genres');
+        $surfaces = $request->input('surfaces_research');
+        $priceMin = $request->input('price_min');
+        $priceMax = $request->input('price_max');
+        $has_pics = $request->input('has_pics');
+        $has_building = $request->input('has_buildings');
+        $productionGenres = $request->input('production_genres');
+        $bioCertifications = $request->input('bio_certifications');
 
 
 		if ($adCategory === 'land') {
@@ -81,9 +94,8 @@ class ResearchService
 			$regionAds = $region->ads;
 			foreach ($regionAds as $key => $ad) {
 				if ($ad->$adType) {
+				    dd($ad->$adType->where('building_id', '=', '1'));
 					$ads[$ad->id] = $ad;
-					$adsType[$ad->id] = $ad->$adType;
-					$regionName[$ad->id][$key] = $region->name;
 				}
 			}
 		}

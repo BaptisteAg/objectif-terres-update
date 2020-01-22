@@ -13,8 +13,6 @@ class ResearchesController extends Controller
 {
 	private $researchService;
 
-    private $researchService;
-
 	public function __construct(ResearchService $researchService)
 	{
 		$this->researchService = $researchService;
