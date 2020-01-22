@@ -1,15 +1,12 @@
 import MultiSelect from "../components/MultiSelect";
 import AjaxMultiSelect from "../components/AjaxMultiSelect";
 import VueSlider from "../components/VueSlider";
-import Autocomplete from "../components/Autocomplete";
 
-let dataUrl = 'http'
 new Vue({
     name: "HeaderPage",
     components : {
         MultiSelect,
         VueSlider,
-        Autocomplete,
         AjaxMultiSelect,
     },
     el: '#vue-header',

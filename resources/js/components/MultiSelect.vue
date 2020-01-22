@@ -1,7 +1,6 @@
 <!-- Vue component -->
 <template>
     <div>
-        <label class="typo__label"></label>
         <multiselect v-model="values"
                      :options="options"
                      :multiple="multiple"
@@ -10,7 +9,8 @@
                      :preserve-search="true"
                      :placeholder=placeholder
                      label="name"
-                     track-by="name" >
+                     :track-by=trackBy
+                     :custom-label="customLabel" >
             <template slot="selection" slot-scope="{ values, search, isOpen }">
                 <span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} {{ selectedCountText }}</span>
             </template>
@@ -32,6 +32,10 @@
             selectedCountText: String,
             placeholder: String,
             multiple: Boolean,
+            trackBy: {
+                type: String,
+                default: 'name'
+            },
         },
         data () {
             return {
@@ -45,6 +49,11 @@
                 this.$emit('multiselect-select', newValues)
             }
 
+        },
+        methods: {
+            customLabel(result) {
+                return `${result[this.trackBy]}`
+            }
         }
     }
 

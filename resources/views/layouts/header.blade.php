@@ -35,7 +35,7 @@
             </div>
         </nav>
     </div>
-    {!! Form::open(['action' => 'Researches\ResearchesController@index']) !!}
+    {!! Form::open(['route' => 'researches.index']) !!}
         <div class="container-custom has-background-grey-lighter">
             <div class="columns">
                 <div class="column is-1">
@@ -90,10 +90,10 @@
             </div>
         </div>
 
-    <div class="container-custom" v-show="adTypeChosen === 'job'">
+    <div class="container-custom" v-if="adTypeChosen === 'job'">
         @include('layouts.partials.header_job_research')
     </div>
-    <div class="container-custom" v-show="adTypeChosen === 'land'">
+    <div class="container-custom" v-if="adTypeChosen === 'land'">
         @include('layouts.partials.header_land_research')
     </div>
     {!! Form::close() !!}

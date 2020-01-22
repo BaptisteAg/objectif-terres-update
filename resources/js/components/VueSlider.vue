@@ -1,12 +1,12 @@
 <template>
     <div>
         <vue-slider
-                v-model="value"
+                v-model="sliderValue"
                 :adsorb="true"
                 :data="ranges"
                 :marks="true"
         ></vue-slider>
-        <input type="hidden" :id="name" :name="name" :value="value">
+        <input type="hidden" :id="name" :name="name" :value="sliderValue">
     </div>
 </template>
 
@@ -19,11 +19,15 @@
         },
         props:{
             data : Array,
-            name: String
+            name: String,
+            values: {
+                type: Array,
+                required: false
+            }
         },
         data: function () {
             return {
-                value: 0,
+                sliderValue: this.values,
                 ranges: this.data
             }
         }

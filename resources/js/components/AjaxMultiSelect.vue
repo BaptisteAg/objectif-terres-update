@@ -22,8 +22,7 @@
                      @search-change=" query => asyncFind(query, 300)"
                      :custom-label="customLabel">
             <template slot="tag" slot-scope="{ option, remove }">
-                <span class="custom__tag">
-                    <span>{{ option.name }}</span>
+                <span class="custom__tag"><span>{{ option.label }}{{ option.name }}</span>
                     <span class="custom__remove" @click="remove(option)">❌</span>
                 </span>
             </template>
@@ -31,22 +30,21 @@
                 <div class="multiselect__clear" v-if="selectedCountries.length"
                      @mousedown.prevent.stop="clearAll(props.search)"></div>
             </template>
-            <span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
+            <span slot="noResult">Oups! Pas de {{ nameOptionLabel }} trouvé. Essayer de changer votre recherche.</span>
         </multiselect>
-        <pre class="language-json"><code>{{ selectedCountries  }}</code></pre>
+        <input type="hidden" v-for="selectedCountrie in selectedCountries" :value="selectedCountrie.value.id" :name="cities">
     </div>
 </template>
 
 <script>
     import Multiselect from 'vue-multiselect'
-    // import { ajaxFindCountry } from './countriesApi'
 
     export default {
         components: {
             Multiselect
         },
         props: {
-            nameOption: String,
+            nameOptionLabel: String,
             src: {
                 type: String,
                 required: true
@@ -54,7 +52,7 @@
             multiple: {
                 type: Boolean,
                 default: false
-            }
+            },
         },
         data() {
             return {
@@ -66,9 +64,10 @@
         },
         methods: {
             limitText(count) {
-                return `et ${count} autres ` + nameOption;
+                return `et ${count} autres ` + nameOptionLabel;
             },
             asyncFind(query, cooldown) {
+                console.log(cooldown);
                 if (!cooldown && !this.isFetching) {
                     this.isLoading = true;
 
@@ -109,11 +108,10 @@
                 this.selectedCountries = []
             },
             customLabel(result) {
-                return `${result.value.type} – ${result.label}`
+                return `${result.label}`
             }
         }
     }
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"/>
-cus
