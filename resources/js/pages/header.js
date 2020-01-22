@@ -14,12 +14,14 @@ new Vue({
         return {
             adTypeSelected: 'offer_ads',
             adCategorySelected: 'land',
-            adTypeChosen: ''
+            isFormOpen : false
         }
     },
     methods: {
         more_criteria() {
-            this.adTypeChosen = (this.adCategorySelected === 'land') ? 'land' : 'job';
+            this.isFormOpen = (this.isFormOpen === true) ? false : true;
+
         }
+
     }
 });

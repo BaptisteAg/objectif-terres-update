@@ -84,18 +84,23 @@
                     {!! Form::submit('Rechercher', ['class' => 'button']) !!}
                 </div>
                 <div class="column is-2">
-                    <a href="#" @click="more_criteria">Plus de critère</a>
+                    <a href="#" @click="more_criteria()">Plus de critère</a>
                 </div>
 
             </div>
         </div>
+    <div v-if="isFormOpen">
+        <div class="container-custom" v-show="adCategorySelected === 'job'">
+            @include('layouts.partials.header_job_research')
+        </div>
+        <div class="container-custom" v-show="adCategorySelected === 'land'">
+            @include('layouts.partials.header_land_research')
+        </div>
+    </div>
 
-    <div class="container-custom" v-if="adTypeChosen === 'job'">
-        @include('layouts.partials.header_job_research')
-    </div>
-    <div class="container-custom" v-if="adTypeChosen === 'land'">
-        @include('layouts.partials.header_land_research')
-    </div>
+
+
+
     {!! Form::close() !!}
 
 
