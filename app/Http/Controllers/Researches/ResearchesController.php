@@ -3,18 +3,11 @@
 namespace App\Http\Controllers\Researches;
 
 use App\Http\Controllers\Controller;
-use App\Models\Ad;
-use App\Models\Building;
-use App\Models\House;
-use App\Models\Land;
 use App\Models\Region;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\DB;
 
 class ResearchesController extends Controller
 {
@@ -39,9 +32,11 @@ class ResearchesController extends Controller
 
         $ads = collect();
 
+
         foreach ($regions as $region) {
             $regionAds = $region->ads;
             foreach ($regionAds as $key => $ad) {
+                dd($ad);
                 if ($ad->$adType) {
                     $ads[$ad->id] = $ad;
                     $adsType[$ad->id] = $ad->$adType;

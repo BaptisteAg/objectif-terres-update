@@ -1,54 +1,70 @@
 <div class="columns">
+    @include('layouts.partials.header_research_location')
     <div class="column">
-        <div>
-            {!! Form::label('departments', 'Choisissez un département', ['class' => 'label']); !!}
-            <multi-select
-                :data="{{ json_encode($departments) }}"
-                :multiple="true"
-                name="research_location_department[]"
-                selected-count-text="département(s) sélectionné(s)"
-                placeholder="Choississez un/des département(s)">
-            </multi-select>
-        </div>
-    </div>
-    <div class="column">
-        <div>
-            {!! Form::label('departments', 'Choisissez une ville', ['class' => 'label']); !!}
-{{--            <multi-select--}}
-{{--                :data="test"--}}
-{{--                :multiple="false"--}}
-{{--                name="research_city"--}}
-{{--                selected-count-text="ville sélectionnée"--}}
-{{--                placeholder="Choississez un département">--}}
-{{--            </multi-select>--}}
-            <div class="section">
-                <p class="label">Dans un rayon de </p>
-                <vue-slider
-                    name="land_seek[locationable_radius]"
-                    :data="['0km','5km','10km','20km','50km']"
-                ></vue-slider>
-            </div>
-        </div>
-    </div>
-    <div class="column">
-        <div class="control">
-            <label class="radio is-block" for="land">
-                <input id="land" type="radio" name="offer_genre_ad" value="rental" checked v-model="adCategorySelected">
+        <div class="field">
+            <label class="checkbox">
+                <input type="checkbox" name="offer_genre_ad[]" value="rental">
                 location
             </label>
-            <label class="radio is-block is-marginless" for="job">
-                <input id="job" type="radio" name="offer_genre_ad" value="sale" v-model="adCategorySelected">
+            <label class="checkbox">
+                <input type="checkbox" name="offer_genre_ad[]" value="sale">
                 vente
             </label>
         </div>
-        <div class="section">
-            <p class="label">Dans un rayon de </p>
-            <vue-slider
-                name="land_seek[locationable_radius]"
-                :data="{{ json_encode($surfaces->pluck('name')) }}"
-            ></vue-slider>
+        <div>
+            <div class="section">
+                <p class="label">Surface (ha)</p>
+                <vue-slider
+                    name="surface"
+                    :data="['0','5','10','20','50', '>100']"
+                    :values="['0', '>100']"></vue-slider>
+            </div>
+            <div class="section">
+                <div class="field">
+                    {{ form::label('price_min', 'Prix minimum', ['class' => 'label']) }}
+                    {{ form::number('price_min', '', ['min' => '0', 'pattern' => "([0-9]{1,3}).([0-9]{1,3})", 'class'=>'input']) }}
+                    {{ form::label('price_max', 'Prix maximum', ['class' => 'label']) }}
+                    {{ form::number('price_max', '', ['min' => '0', 'class' => 'input',]) }}
+                </div>
+            </div>
         </div>
     </div>
-    <div class="column"></div>
-    <div class="column"></div>
+
+    <div v-if="adTypeSelected === 'offer_ads'" class="column">
+        <div class="column">
+            <div class="">
+                <label class="checkbox">
+                    <input type="checkbox" name="seek_ad_pics" value="true">
+                    Avec photos
+                </label>
+            </div>
+            <div>
+                <label class="checkbox">
+                    <input type="checkbox" name="seek_ad_builbing" value="true">
+                    Habitation
+                </label>
+            </div>
+            <div class="section">
+                {!! Form::label('production_genre', 'Choisissez des types de production', ['class' => 'label']); !!}
+                <multi-select
+                    :data="{{ json_encode($productionGenres) }}"
+                    :multiple="true"
+                    name="production_genre[]"
+                    selected-count-text="production(s) sélectionné(s)"
+                    placeholder="Choississez">
+                </multi-select>
+            </div>
+            <div class="section">
+                {!! Form::label('bio_certification', 'Choisissez des systèmes de production bio ou aucun', ['class' => 'label']); !!}
+                <multi-select
+                    :data="{{ json_encode($bioCertifications) }}"
+                    :multiple="true"
+                    name="bio_certification[]"
+                    selected-count-text="production(s) bio sélectionné(s)"
+                    placeholder="Choississez">
+                </multi-select>
+            </div>
+        </div>
+    </div>
 </div>
+

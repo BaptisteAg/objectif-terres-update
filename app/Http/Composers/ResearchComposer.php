@@ -2,12 +2,11 @@
 
 namespace App\Http\Composers;
 
-use App\Models\City;
+use App\Models\BioCertification;
 use App\Models\Department;
 use App\Models\JobStatus;
-use App\Models\ProjectStatus;
+use App\Models\ProductionGenre;
 use App\Models\Region;
-use App\Models\SurfaceRange;
 use Illuminate\View\View;
 
 class ResearchComposer
@@ -20,8 +19,10 @@ class ResearchComposer
 //        $cities = City::orderBy('name')->get();
 
         $jobStatuses = JobStatus::orderBy('name')->get();
-        $surfaces = SurfaceRange::all();
+//        $surfaces = SurfaceRange::all()->pluck('surface');
+        $productionGenres = ProductionGenre::orderBy('name')->get();
+        $bioCertifications = BioCertification::orderBy('name')->get();
 
-        $view->with(compact('regions','departments', 'jobStatuses', 'surfaces'));
+        $view->with(compact('regions','departments', 'jobStatuses', 'productionGenres', 'bioCertifications'));
     }
 }
