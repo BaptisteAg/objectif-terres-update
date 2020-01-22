@@ -34,7 +34,8 @@
                             :disabled="isInputDisabled"
                             src="/json/locationables"
                             :data-renderer="renderZoneItemData"
-                            v-model="formInput.selectedZones">
+                            v-model="formInput.selectedZones"
+                            :multiple="true">
                     </autocomplete>
                     <div v-show="$v.formInput.selectedZones.$error">
                         <p class="help is-danger" v-show="!$v.formInput.selectedZones.hasZone">Vous devez sélectionner au minimum une

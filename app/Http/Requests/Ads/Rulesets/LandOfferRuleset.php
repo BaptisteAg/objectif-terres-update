@@ -11,7 +11,7 @@ class LandOfferRuleset implements RulesetInterface
         //dd(request()->all());
         return [
             'land_seek.is_beneficiary'                          => ['required', 'boolean'],
-            'land_seek.zip_code'                                => ['required', 'string', 'max:5'],
+            'land_seek.zip_code'                                => ['required', 'integer'],
             'land_seek.accept_use_zip_code'                     => ['boolean'],
             'land_seek.surface_range'                           => ['required', 'array'],
             'land_seek.lands_offer_genre'                       => ['array'],
