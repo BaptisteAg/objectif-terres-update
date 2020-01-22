@@ -35,6 +35,7 @@ class CreateAdStatusResearchTable extends Migration
                 ->references('id')->on('ad_statuses')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
+
         });
     }
 

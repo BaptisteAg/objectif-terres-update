@@ -21,7 +21,15 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
 
 Route::get('/authenticate', 'SalesForceAuthController@register');
 
-Route::post('/recherches', 'Researches\ResearchesController@index');
+
+Route::prefix('recherches')->name('researches.')->namespace('Researches')->group(function () {
+	Route::post('recherche', 'ResearchesController@index')->name('index');
+	Route::post('sauvegarde', 'ResearchesController@store')->name('store');
+	Route::get('liste', 'ResearchesController@show')->name('show');
+	Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
+});
+
+
 
 Route::prefix('json')->group(function () {
     Route::get('locationables', 'Json\LocationableController@locationables');
@@ -30,5 +38,4 @@ Route::prefix('json')->group(function () {
         Route::post('regions', 'Json\LocationableController@regionsPolygon');
     });
 });
-
 
