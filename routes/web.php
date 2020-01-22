@@ -23,7 +23,7 @@ Route::get('/authenticate', 'SalesForceAuthController@register');
 
 
 Route::prefix('recherches')->name('researches.')->namespace('Researches')->group(function () {
-	Route::post('recherche', 'ResearchesController@index')->name('index');
+	Route::get('recherche', 'ResearchesController@index')->name('index');
 	Route::post('sauvegarde', 'ResearchesController@store')->name('store');
 	Route::get('liste', 'ResearchesController@show')->name('show');
 	Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
