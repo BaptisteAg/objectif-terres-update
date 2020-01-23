@@ -15,6 +15,17 @@
 					</div>
 				</div>
 			</nav>
+			@if ($message = Session::get('success'))
+				<article class="message is-success">
+					<div class="message-header">
+						<p>Succès</p>
+						<button class="delete" aria-label="delete"></button>
+					</div>
+					<div class="message-body">
+						Une alerte a bien été créée. Un email de confirmation vous a été envoyé !
+					</div>
+				</article>
+			@endif
 			<section class="section">
 				@foreach ($researches as $research)
 					<div class="columns ">
@@ -46,15 +57,15 @@
 							@endif
 							@if($research->surface_max)
 								<p><span class="has-text-grey-dark">Surface maximum : </span><span
-										class="has-text-black">{{ $research->surface_max }}</span></p>
+											class="has-text-black">{{ $research->surface_max }}</span></p>
 							@endif
 							@if($research->price_min)
 								<p><span class="has-text-grey-dark">Prix minimum : </span><span
-										class="has-text-black">{{ $research->price_min }}</span></p>
+											class="has-text-black">{{ $research->price_min }}</span></p>
 							@endif
 							@if($research->price_max)
 								<p><span class="has-text-grey-dark">Prix maximum : </span><span
-										class="has-text-black">{{ $research->price_max }}</span></p>
+											class="has-text-black">{{ $research->price_max }}</span></p>
 							@endif
 							@if($research->has_pics === '1')
 								<p><span class="has-text-grey-dark">Annonces avec photos </span></p>
@@ -64,27 +75,33 @@
 							@endif
 							@if($research->adStatuses )
 								<p><span class="has-text-grey-dark">Statut(s) des annonces : </span><span
-										class="has-text-black">{{ $research->adStatuses->pluck('name')->implode(', ') }}</span></p>
+											class="has-text-black">{{ $research->adStatuses->pluck('name')->implode(', ') }}</span>
+								</p>
 							@endif
 							@if($research->jobStatuses )
 								<p><span class="has-text-grey-dark">Statut(s) des opportunités professionnels  : </span><span
-										class="has-text-black">{{ $research->jobStatuses->pluck('name')->implode(', ') }}</span></p>
+											class="has-text-black">{{ $research->jobStatuses->pluck('name')->implode(', ') }}</span>
+								</p>
 							@endif
 							@if($research->projectStatuses )
 								<p><span class="has-text-grey-dark">Statut(s) des projets  : </span><span
-										class="has-text-black">{{ $research->jobStatuses->pluck('name')->implode(', ') }}</span></p>
+											class="has-text-black">{{ $research->jobStatuses->pluck('name')->implode(', ') }}</span>
+								</p>
 							@endif
 							@if($research->offerGenres )
 								<p><span class="has-text-grey-dark">Type(s) d'offre(s)  : </span><span
-										class="has-text-black">{{ $research->offerGenres->pluck('name')->implode(', ') }}</span></p>
+											class="has-text-black">{{ $research->offerGenres->pluck('name')->implode(', ') }}</span>
+								</p>
 							@endif
 							@if($research->bioCertifications )
 								<p><span class="has-text-grey-dark">Système(s) de production bio  : </span><span
-										class="has-text-black">{{ $research->bioCertifications->pluck('name')->implode(', ') }}</span></p>
+											class="has-text-black">{{ $research->bioCertifications->pluck('name')->implode(', ') }}</span>
+								</p>
 							@endif
 							@if($research->productionGenres )
 								<p><span class="has-text-grey-dark">Type(s) de productions recherché(s)  : </span><span
-										class="has-text-black">{{ $research->productionGenres->pluck('name')->implode(', ') }}</span></p>
+											class="has-text-black">{{ $research->productionGenres->pluck('name')->implode(', ') }}</span>
+								</p>
 							@endif
 						</div>
 						<div class="column ">
@@ -142,17 +159,24 @@
 									{{Form::close()}}
 								</a>
 							</div>
+							<div class="buttons">
+								{{Form::open(['route' => 'researches.notification', 'method' => 'get'])}}
+								<input type="hidden" value="{{$research->id}}" name="research">
+								<button type="submit" class="button is-link is-light"><span class="icon is-small"><i
+												class="fas fa-bell"></i></span>
+									<span>Créer une alerte</span>
+								</button>
+								{{Form::close()}}
+							</div>
 							{{Form::open(['route' => 'researches.destroy'])}}
 							<div class="buttons">
 								<input type="hidden" value="{{$research->id}}" name="research">
-								<a>
-									<button type="submit" class="button is-danger is-normal is-light">
+								<button type="submit" class="button is-danger is-normal is-light">
 												<span class="icon has-text-danger">
 												  <i class="fas fa-ban"></i>
 												</span>
-										<span>Supprimer la recherche</span>
-									</button>
-								</a>
+									<span>Supprimer la recherche</span>
+								</button>
 							</div>
 							{{Form::close()}}
 						</div>

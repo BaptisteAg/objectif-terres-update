@@ -22,6 +22,7 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 	{
 		return $this->entity
 			->with($this->getEagerLoading())
+			->orderByDesc('created_at')
 			->get();
 	}
 

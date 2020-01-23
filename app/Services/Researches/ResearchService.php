@@ -24,10 +24,14 @@ class ResearchService
 
 	public function create(Request $request)
 	{
+		$url = (url()->previous());
+		$urlGet = substr($url, strpos($url, "?"));
+
 		$data = [];
 		foreach ($request->input() as $item => $value) {
 			$data[$item] = $value;
 		}
+		$data['url'] = $urlGet;
 
 		$research = DB::transaction(function () use ($data) {
 			$research = $this->repository->create($data);

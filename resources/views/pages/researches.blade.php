@@ -17,6 +17,7 @@
 					<div class="level-item">
 						{!! Form::open(['route' => 'researches.store']) !!}
 						<input type="hidden" name="ad_type" value="{{$adType}}">
+						<input
 
 						@foreach ($regions->pluck('id') as $region)
 						<input type="hidden" name="regions[]" value="{{ $region }}">

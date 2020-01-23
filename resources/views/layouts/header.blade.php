@@ -89,7 +89,7 @@
 
             </div>
         </div>
-    <div v-if="isFormOpen">
+    <div v-if="isFormOpen" class="has-ba">
         <div class="container-custom" v-show="adCategorySelected === 'job'">
             @include('layouts.partials.header_job_research')
         </div>
@@ -97,13 +97,7 @@
             @include('layouts.partials.header_land_research')
         </div>
     </div>
-
-
-
-
     {!! Form::close() !!}
-
-
     <div class="container is-fluid">
         <nav class="navbar is-boxed">
             <div class="navbar-brand">

@@ -27,6 +27,7 @@ Route::prefix('recherches')->name('researches.')->namespace('Researches')->group
 	Route::post('sauvegarde', 'ResearchesController@store')->name('store');
 	Route::get('liste', 'ResearchesController@show')->name('show');
 	Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
+	Route::get('notification', 'ResearchesController@notification')->name('notification');
 });
 
 
