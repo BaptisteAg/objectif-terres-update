@@ -1,11 +1,13 @@
 import FormNewAdMixin from "./mixins/form-new-ad-mixin";
 import FormValidationMixin from '../components/mixins/form-new-ad-validation-mixin';
-import {maxLength, minLength, numeric, required, sameAs} from 'vuelidate/lib/validators'
+import {maxLength, minLength, numeric, required, requiredIf} from 'vuelidate/lib/validators'
 import TextAreaCounter from "../../../components/TextAreaCounter";
+import Autocomplete from '../../../components/Autocomplete'
 
 export default {
     components: {
-        TextAreaCounter
+        TextAreaCounter,
+        Autocomplete
     },
     mixins: [FormNewAdMixin, FormValidationMixin],
     props: {},
@@ -16,7 +18,7 @@ export default {
         return {
             formInput: {
                 isBeneficiary: hasOld ? v.is_beneficiary : '',
-                zipCode: hasOld ? v.zip_code : '',
+                selectedZones: hasOld ? v.selected_zones : [],
                 surface: hasOld ? v.surface : '',
                 isActivityTransfer: hasOld ? !!v.is_activity_transfer : '',
                 productionGenre: hasOld ? v.production_genre : [],
@@ -39,28 +41,41 @@ export default {
             return this.formInput.productionGenreWanted.includes('other');
         }
     },
+    methods: {
+
+    },
     validations: {
         formInput: {
             isBeneficiary: {required},
-            zipCode: {
-                required,
-                numeric,
-                minLength: minLength(5),
-                maxLength: maxLength(5)
+            selectedZones: {
+                hasZone() { return this.formInput.selectedZones.length; }
             },
             surface: {
                 required,
                 numeric
             },
             isActivityTransfer: {required},
+            productionGenre: {
+                required() {
+                    if(!this.formInput.isActivityTransfer) {
+                        return true;
+                    }
+                    return this.formInput.productionGenre.length
+                }
+            },
+            productionGenreWanted: {
+                required() {
+                    if(this.formInput.isActivityTransfer) {
+                        return true;
+                    }
+                    return this.formInput.productionGenreWanted.length
+                }
+            },
             altitude: {
                 required,
                 numeric
             },
             bioCertification: {required},
-            confirmPriceFermage: {
-                checked(v) {return !!v}
-            },
             aboutProject: {
                 minLength: minLength(5),
                 maxLength: maxLength(1000),

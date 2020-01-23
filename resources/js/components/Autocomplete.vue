@@ -28,14 +28,23 @@
         props: {
             value: {
                 type: Array,
-                default: []
+                default() {
+                    return []
+                }
             },
             src: {
                 type: String,
                 required: true
             },
             dataRenderer: {
-                type: Function
+                type: Function,
+                default(item) {
+                    return item
+                }
+            },
+            multiple: {
+                type: Boolean,
+                default: false
             }
         },
         data() {
@@ -54,7 +63,7 @@
                 maxItems: 20
             });
 
-            input.setAttribute('autocomplete', 'no'+Date.now());
+            input.setAttribute('autocomplete', 'no' + Date.now());
         },
         watch: {
             autocompleteValue() {
@@ -64,7 +73,12 @@
         methods: {
             onSelect(e) {
                 e.preventDefault();
+
+                if(!this.multiple) {
+                    this.value.splice(0,1)
+                }
                 this.value.push(e.text);
+
                 this.$awesomplete.close();
                 e.target.value = '';
             },

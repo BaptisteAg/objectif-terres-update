@@ -5,15 +5,6 @@ import TextAreaCounter from "../../../components/TextAreaCounter";
 import VueSlider from "../../../components/VueSlider";
 import Autocomplete from '../../../components/Autocomplete'
 
-
-const LABELS = {
-    ZONE_TYPES: {
-        cities: 'Commune',
-        departments: 'Département',
-        regions: 'Région'
-    }
-};
-
 export default Vue.extend({
     mixins: [FormNewAdMixin, FormValidationMixin],
     props: {},
@@ -56,21 +47,15 @@ export default Vue.extend({
         }
     },
     methods: {
-        getLabels() {
-            return LABELS;
-        },
-        onZoneSelect(selectedZone) {
-            this.formInput.selectedZones.push(selectedZone);
-        },
         renderZoneItemData(item) {
             return {
-                label: '<b>' + LABELS.ZONE_TYPES[item.value.type] + '</b>: ' + item.label,
+                label: '<b>' + this.getLabels().ZONE_TYPES[item.value.type] + '</b>: ' + item.label,
                 value: {
                     ...item.value,
                     originalLabel: item.label
                 },
             }
-        }
+        },
     },
     validations: {
         formInput: {
