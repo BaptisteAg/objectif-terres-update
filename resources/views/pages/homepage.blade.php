@@ -163,19 +163,8 @@
 
 @section('script')
 	<script src="{{ asset('js/bulma-accordion.js') }}"></script>
-	<script src="{{asset('js/bulma-carousel.js')}}"></script>
-	<script>
-        bulmaCarousel.attach('#post_images', {
-            slidesToScroll: 1,
-            slidesToShow: 2,
-            loop: true,
-            navigation : true,
 
-        });
-		var accordions = bulmaAccordion.attach();
-	</script>
-
-	<script>
+    <script>
         let map = L.map('my_osm_widget_map', { /* use the same name as your <div id=""> */
             center: [46.290552, 2.771017], /* set GPS Coordinates */
             zoom: 5, /* define the zoom level */

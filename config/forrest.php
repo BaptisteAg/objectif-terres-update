@@ -7,7 +7,7 @@ return [
     /*
      * Options include WebServer, UserPassword, and UserPasswordSoap
      */
-    'authentication' => 'WebServer',
+    'authentication' => 'UserPasswordSoap',
 
     /*
      * Enter your credentials
@@ -24,7 +24,7 @@ return [
         // Only required for UserPassword authentication:
         'username'       => env('USERNAME'),
         // Security token might need to be ammended to password unless IP Address is whitelisted
-        'password'       => env('PASSWORD'),
+        'password'       => env('PASSWORD').env('SF_TOKEN'),
     ],
 
     /*
