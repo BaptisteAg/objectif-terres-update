@@ -40,3 +40,4 @@ Route::prefix('json')->group(function () {
     });
 });
 
+Route::get('test', 'Salesforces\SalesForceAuthController@register');
