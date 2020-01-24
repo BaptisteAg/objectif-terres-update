@@ -3,19 +3,24 @@
 namespace App\Http\Controllers\Researches;
 
 use App\Http\Controllers\Controller;
+use App\Listeners\SendResearchNotification;
+use App\Notifications\ResearchNotification;
 use App\Services\Researches\ResearchService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Notification;
 
 class ResearchesController extends Controller
 {
 	private $researchService;
+	private $researchNotification;
 
-	public function __construct(ResearchService $researchService)
+	public function __construct(ResearchService $researchService, SendResearchNotification $researchNotification)
 	{
 		$this->researchService = $researchService;
+		$this->researchNotification = $researchNotification;
 	}
 
 	public function index(Request $request)
@@ -35,6 +40,7 @@ class ResearchesController extends Controller
 
 	public function store(Request $request)
 	{
+
 		$research = $this->researchService->create($request);
 
 		return redirect()->route('researches.show');
@@ -43,7 +49,6 @@ class ResearchesController extends Controller
 
 	public function show()
 	{
-
 		$researches = $this->researchService->findAll();
 
 		return view('pages.savedResearches.listSavedResearches', compact('researches'));
@@ -54,7 +59,14 @@ class ResearchesController extends Controller
 		$this->researchService->destroy($request);
 		$researches = $this->researchService->findAll();
 
-		return view('pages.savedResearches.listSavedResearches', compact('researches'));
+		return redirect()->route('researches.show', compact('researches'));
 
 	}
+
+	public function notificationCreateAlert(Request $request)
+	{
+		$this->researchNotification->newAlertResearch($request->input('research'));
+		return back()->with('success', 'message');
+	}
+
 }

@@ -76,7 +76,7 @@
                         <multi-select
                             :data="{{ json_encode(array_merge([(object)['id' => '0','name' => 'Toutes les régions']], json_decode($regions))) }}"
                             :multiple="true"
-                            name="research_locations[]"
+                            name="regions_location_researches[]"
                             selected-count-text="région(s) sélectionnée(s)"
                             placeholder="Choississez une/des région(s)" >
                         </multi-select>
@@ -84,21 +84,20 @@
                     {!! Form::submit('Rechercher', ['class' => 'button']) !!}
                 </div>
                 <div class="column is-2">
-                    <a href="#" @click="more_criteria">Plus de critère</a>
+                    <a href="#" @click="more_criteria()">Plus de critère</a>
                 </div>
 
             </div>
         </div>
-
-    <div class="container-custom" v-if="adTypeChosen === 'job'">
-        @include('layouts.partials.header_job_research')
-    </div>
-    <div class="container-custom" v-if="adTypeChosen === 'land'">
-        @include('layouts.partials.header_land_research')
+    <div v-if="isFormOpen" class="has-ba">
+        <div class="container-custom" v-show="adCategorySelected === 'job'">
+            @include('layouts.partials.header_job_research')
+        </div>
+        <div class="container-custom" v-show="adCategorySelected === 'land'">
+            @include('layouts.partials.header_land_research')
+        </div>
     </div>
     {!! Form::close() !!}
-
-
     <div class="container is-fluid">
         <nav class="navbar is-boxed">
             <div class="navbar-brand">

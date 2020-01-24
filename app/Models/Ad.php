@@ -168,14 +168,15 @@ class Ad extends Model implements HasPresenter
         return $this->morphedbyMany('App\Models\Department', 'locationable_ad');
     }
 
-    /**
-    * Get all cities 'location' for the ad
-    * @return MorphToMany
-    */
-    public function regions()
-    {
-        return $this->morphedbyMany('App\Models\Region', 'locationable_ad');
-    }
+	/**
+	 * Get all cities 'location' for the ad
+	 * @return MorphToMany
+	 */
+	public function regions()
+	{
+		return $this->morphedbyMany('App\Models\Region', 'locationable_ad');
+	}
+
 
     /**
      * Get the presenter class.
