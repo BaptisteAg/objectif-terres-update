@@ -56,12 +56,33 @@ class ResearchService
 		return $researches;
 	}
 
+	public function findRelatedAds(int $id)
+	{
+		$ads = $this->repository->findRelatedAds($id);
+		return $ads;
+	}
+
+	public function findNewRelatedAds()
+	{
+		$researches = $this->repository->all();
+		$newAdsInResearch= [];
+		foreach ($researches as $research){
+			$id = $research->id;
+			$date = $research->updated_at;
+			$newAds = $this->repository->findRelatedAds($id)->where('created_at', '>=', $date);
+			if(! $newAds->isEmpty()){
+				$newAdsInResearch[$research->id] = $this->repository->findRelatedAds($id)->where('created_at', '>=', $date);
+			}
+		}
+
+		return $newAdsInResearch;
+	}
+
 	public function index(Request $request)
 	{
 		$adTypeInput = $request->input('ad_type');
 		$adCategory = $request->input('ad_category');
 		$idRegions = $request->input('regions_location_researches');
-
 
 		$data = [];
 		foreach ($request->input() as $item => $value) {

@@ -1,6 +1,7 @@
 <?php namespace App\Repositories\Researches;
 
 use App\Htttp\Repositories\ResearchRepositoryInterface;
+use App\Models\Ad;
 use App\Models\Research;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
@@ -66,6 +67,25 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 
 		return $research;
 	}
+
+	public function findRelatedAds(int $id)
+	{
+		$research = $this->find($id);
+		$regions = $research->regions;
+		$adType = $research->ad_type;
+
+		$ads = collect();
+		foreach ($regions as $region) {
+			$regionAds = $region->ads;
+			foreach ($regionAds as $key => $ad) {
+				if ($ad->$adType) {
+					$ads[$ad->id] = $ad;
+				}
+			}
+		}
+		return $ads;
+	}
+
 
 	private function getEagerLoading()
 	{

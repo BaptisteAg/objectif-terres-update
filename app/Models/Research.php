@@ -99,7 +99,7 @@ class Research extends Model
     }
 
     /**
-     * Get all cities 'location' for the ad
+     * Get all cities 'location' for the research
      * @return MorphToMany
      */
     public function cities()
@@ -108,7 +108,7 @@ class Research extends Model
     }
 
     /**
-     * Get all cities 'location' for the ad
+     * Get all cities 'location' for the research
      * @return MorphToMany
      */
     public function departments()
@@ -117,7 +117,7 @@ class Research extends Model
     }
 
     /**
-     * Get all cities 'location' for the ad
+     * Get all cities 'location' for the research
      * @return MorphToMany
      */
     public function regions()

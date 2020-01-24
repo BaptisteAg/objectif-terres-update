@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Researches;
 
 use App\Http\Controllers\Controller;
+use App\Listeners\SendResearchNotification;
 use App\Notifications\ResearchNotification;
 use App\Services\Researches\ResearchService;
 use Illuminate\Database\Eloquent\Collection;
@@ -14,10 +15,12 @@ use Illuminate\Support\Facades\Notification;
 class ResearchesController extends Controller
 {
 	private $researchService;
+	private $researchNotification;
 
-	public function __construct(ResearchService $researchService)
+	public function __construct(ResearchService $researchService, SendResearchNotification $researchNotification)
 	{
 		$this->researchService = $researchService;
+		$this->researchNotification = $researchNotification;
 	}
 
 	public function index(Request $request)
@@ -60,12 +63,15 @@ class ResearchesController extends Controller
 
 	}
 
-	public function notification(Request $request)
+	public function notificationCreateAlert(Request $request)
 	{
-
-		$research = $this->researchService->find($request->input('research'));
-		Notification::route('mail', "test@mailtrap.io")
-			->notify(new ResearchNotification($research));
+		$this->researchNotification->newAlertResearch($request->input('research'));
 		return back()->with('success', 'message');
+	}
+
+	public function notificationNewAds (){
+
+		$this->researchNotification->alertResearch();
+
 	}
 }

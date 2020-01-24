@@ -129,7 +129,7 @@
 							</nav>
 							<div></div>
 							<h1 class="title">{{ $ad->$adType->title }}</h1>
-							<div class="descritption">Je suis une discritpion {{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</div>
+							<div class="descritption">{{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</div>
 							<a href="{{route("ads.show", $ad->id)}}">Voir</a>
 						</div>
 					</div>
