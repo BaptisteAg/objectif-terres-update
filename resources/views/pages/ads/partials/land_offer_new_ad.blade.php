@@ -7,41 +7,52 @@
                      ['true' => 'En mon nom',
                      'false' => 'Pour le compte d\'une autre personne'],
                       old('land_offer[is_beneficiary]'),
-                      ['placeholder' => 'Veuillez séléctionner...',
-                      ':disabled' => 'isInputDisabled',
-                      'v-model.trim'=>'formInput.isBeneficiary',
-                      'ref' => 'isBeneficiary',
-                        'aria-describedby'=>'isBeneficiaryError']);!!}
+                      [
+                          'placeholder' => 'Veuillez séléctionner...',
+                          ':disabled' => 'isInputDisabled',
+                          'v-model.trim'=>'formInput.isBeneficiary',
+                          'ref' => 'isBeneficiary',
+                          'aria-describedby'=>'isBeneficiaryError'
+                      ]);!!}
         </div>
-        <p class="help is-danger" id="isBeneficiaryError" v-if="$v.formInput.isBeneficiary.$error">Ce champ est
-            requis.</p>
+        <p class="help is-danger" id="isBeneficiaryError" v-if="$v.formInput.isBeneficiary.$error">Ce champ est requis.</p>
     </div>
     <div class="columns">
         <div class="column is-half">
             <div class="field">
                 {!! Form::label('land_offer[zip_code]', 'Code postal*', ['class' => 'label']); !!}
                 <div class="control">
-                    {!! Form::text('land_offer[zip_code]',
-                             old('land_offer[zip_code]'),
-                             ['min' => 1,
-                              'class' => 'input',
-                              'v-model.trim'=>'formInput.zipCode',
-                              ':disabled' => 'isInputDisabled',
-                              'ref' => 'zip_code',
-								'aria-describedby'=>'zipCodeError']) !!}
+                    <autocomplete
+                            id="land_offer_zone-autocomplete"
+                            class="input"
+                            placeholder="Saisissez les premiers chiffres"
+                            ref='selectedZipCode'
+                            :disabled="isInputDisabled"
+                            src="/json/cities"
+                            v-model="formInput.selectedZones"
+                            aria-describedby='zipCodeError'>
+                    </autocomplete>
+                    <input type="hidden" name="land_offer[zip_code]" :value="zone.value.id"  v-for="(zone,i) in formInput.selectedZones">
+                    <input type="hidden" name="land_offer[selected_zones]" :value="JSON.stringify(formInput.selectedZones)">
+                    <div>
+                        <span class="tag is-info"
+                              v-for="(zone,i) in formInput.selectedZones"
+                              @click="_ => formInput.selectedZones.splice(i,1)">
+                            Code postal sélectionné :&nbsp;&nbsp;
+                            <b>@{{ zone.label }}</b>
+                            &nbsp;&nbsp;
+                            <i class="fa fa-trash" style="cursor:pointer"></i>
+                        </span>
+                    </div>
                 </div>
-                <p class="help is-danger" if="zipCodeError" v-if="$v.formInput.zipCode.$error">Ce champ est
-                    requis.</p>
-                <p class="help is-danger" v-if="!$v.formInput.zipCode.numeric">Veuillez saisir des chiffres.</p>
-                <p class="help is-danger" v-if="!$v.formInput.zipCode.minLength || !$v.formInput.zipCode.maxLength">
-                    Veuillez saisir les 5 numéros d'un code postal valide.</p>
+                <p class="help is-danger" if="zipCodeError" v-if="$v.formInput.selectedZones.$error">Ce champ est requis. Vous devez sélectionner une zone dans la liste.</p>
             </div>
         </div>
         <div class="column"></div>
     </div>
     <div class="field">
-        {!! Form::checkbox('land_offer[accept_use_zip_code]', 'true', old('land_offer[accept_use_zip_code]'), [':disabled'=>'isInputDisabled']) !!}
-        J'accepte que le code postal soit utilisé pour localiser l'annonce(recommandé)
+        {!! Form::checkbox('land_offer[accept_use_zip_code]', '1', old('land_offer[accept_use_zip_code]'), [':disabled'=>'isInputDisabled']) !!}
+        J'accepte que le code postal soit utilisé pour localiser l'annonce (recommandé). A défaut, l'annonce sera localisée au niveau départemental.
     </div>
     <div class="field">
         {!! Form::label('land_offer[surface]', 'Surface du foncier agricole(en ha)*', ['class' => 'label']); !!}
@@ -166,26 +177,27 @@
         {!! Form::label('land_offer[production_genre][]', 'Système de production en place*', ['class' => 'label']); !!}
         @foreach ($productionGenres->pluck('name', 'id') as $id => $productionGenre)
             {!! Form::checkbox(
-            'land_offer[production_genre][]',
-            $id,
-            in_array($id, old('land_offer[production_genre][]', [])),
-            [
-                ':disabled' => 'isInputDisabled',
-                'v-model'=>'formInput.productionGenre',
-                'ref' => 'productionGenre',
-            ]
+                'land_offer[production_genre][]',
+                $id,
+                in_array($id, old('land_offer[production_genre][]', [])),
+                [
+                    ':disabled' => 'isInputDisabled || !formInput.isActivityTransfer',
+                    'v-model'=>'formInput.productionGenre',
+                    'ref' => 'productionGenre',
+                ]
             ) !!}
             {{$productionGenre}}
         @endforeach
-        {!! Form::checkbox('land_offer[production_genre][]',
+        {!! Form::checkbox('land_offer_production_genre_list',
         'other',
         null,
         ['v-model' => 'formInput.productionGenre',
-        ':disabled' => 'isInputDisabled' ]) !!}
+        ':disabled' => 'isInputDisabled || !formInput.isActivityTransfer' ]) !!}
         Autre
+        <p class="help is-danger" id="productionGenreError" v-show="$v.formInput.productionGenre.$error">Ce champ est requis.</p>
     </div>
     <div class="field" v-show="isProductionGenreOther">
-        {!! Form::label('land_offer[other_production_genre]', 'Veuillez préciser', ['class' => 'label']); !!}
+        {!! Form::label('land_offer[other_production_genre]', 'Autre production : Veuillez préciser', ['class' => 'label']); !!}
         {!! Form::text('land_offer[other_production_genre]',
                  in_array('other', old('land_offer[production_genre][]', [])),
                  ['class' => 'input',
@@ -193,11 +205,10 @@
     </div>
     <div class="field">
         <div v-if="formInput.isActivityTransfer === '0'">
-            {!! Form::label('land_offer[production_genre_wanted][]', 'Production envisageables*', ['class' => 'label']); !!}
+            {!! Form::label('land_offer_production_genre_wanted_list', 'Production envisageables*', ['class' => 'label']); !!}
         </div>
         <div v-else>
-            {!! Form::label('land_offer[production_genre_wanted][]', 'Production envisageables', ['class' => 'label']); !!}
-
+            {!! Form::label('land_offer_production_genre_wanted_list', 'Production envisageables', ['class' => 'label']); !!}
         </div>
 
         @foreach ($productionGenres->pluck('name', 'id') as $id => $productionGenre)
@@ -207,7 +218,7 @@
             in_array($id, old('land_offer[production_genre_wanted][]', [])),
             [
                 ':disabled' => 'isInputDisabled',
-                'v-model'=>'formInput.isProductionGenreWanted',
+                'v-model'=>'formInput.productionGenreWanted',
                 'ref' => 'productionGenre',
             ]
             ) !!}
@@ -216,7 +227,7 @@
         {!! Form::checkbox('land_offer[production_genre_wanted][]',
                 'other',
                 null,
-                ['v-model' => 'formInput.isProductionGenreWanted',
+                ['v-model' => 'formInput.productionGenreWanted',
                 ':disabled' => 'isInputDisabled' ]) !!}
         Autre
         {!! Form::checkbox('land_offer[production_genre_wanted][]',
@@ -226,7 +237,7 @@
         Je ne sais pas
     </div>
     <div class="field" v-show="isProductionGenreWantedOther">
-        {!! Form::label('land_offer[other_production_genre_wanted]', 'Veuillez préciser', ['class' => 'label']); !!}
+        {!! Form::label('land_offer[other_production_genre_wanted]', 'Autre production : Veuillez préciser', ['class' => 'label']); !!}
         {!! Form::text('land_offer[other_production_genre_wanted]',
                  old('land_offer[other_production_genre_wanted]'),
                   ['class' => 'input',
@@ -329,12 +340,10 @@
 
             Je certifie que le prix est conforme à l’<a>indice des fermages de mon département</a>
         </label>
-        <p class="help is-danger" id="confirmPriceFermageError" v-if="$v.formInput.confirmPriceFermage.$error">Ce champ
-            est requis.</p>
     </div>
     <div class="field">
-        <label class="label is-inline-block">Et si vous nous en disiez un peu plus sur votre projet ?*</label>
-        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-right" data-tooltip="Parce qu’il y a derrière chaque
+        <label class="label is-inline-block has-tooltip-multiline has-tooltip-right"
+               data-tooltip="Parce qu’il y a derrière chaque
 				projet et chaque lieu des personnes
 				et des histoires, nous vous invitons
 				ici à en dire un peu plus sur vous et
@@ -344,9 +353,8 @@
 				Quelles sont les valeurs qui vous
 				portent ? Quelle est l’histoire du
 				lieu ? Quelles sont les conditions de
-				la transmission le cas échéant ?">
-            <i class="fas fa-info-circle"></i>
-        </button>
+				la transmission le cas échéant ?">Et si vous nous en disiez un peu plus sur votre projet ?* <i class="fas fa-info-circle has-text-info"></i></label>
+
         <text-area-counter
                 name="land_offer[about_project_content]"
                 :max-length=1000

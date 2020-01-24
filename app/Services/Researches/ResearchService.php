@@ -2,8 +2,10 @@
 
 
 use App\Models\Ad;
+use App\Models\Department;
 use App\Models\Region;
 use App\Repositories\Researches\ResearchRepository;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -22,14 +24,14 @@ class ResearchService
 
 	public function create(Request $request)
 	{
-		$adType = $request->input('ad_type');
-		$regions = $request->input('regions');
-		$name = $request->input('name');
+		$url = (url()->previous());
+		$urlGet = substr($url, strpos($url, "?"));
 
-
-		$data['ad_type'] = $adType;
-		$data['regions'] = $regions;
-		$data['name'] = $name;
+		$data = [];
+		foreach ($request->input() as $item => $value) {
+			$data[$item] = $value;
+		}
+		$data['url'] = $urlGet;
 
 		$research = DB::transaction(function () use ($data) {
 			$research = $this->repository->create($data);
@@ -54,24 +56,38 @@ class ResearchService
 		return $researches;
 	}
 
+	public function findRelatedAds(int $id)
+	{
+		$ads = $this->repository->findRelatedAds($id);
+		return $ads;
+	}
+
+	public function findNewRelatedAds()
+	{
+		$researches = $this->repository->all();
+		$newAdsInResearch= [];
+		foreach ($researches as $research){
+			$id = $research->id;
+			$date = $research->updated_at;
+			$newAds = $this->repository->findRelatedAds($id)->where('created_at', '>=', $date);
+			if(! $newAds->isEmpty()){
+				$newAdsInResearch[$research->id] = $this->repository->findRelatedAds($id)->where('created_at', '>=', $date);
+			}
+		}
+
+		return $newAdsInResearch;
+	}
+
 	public function index(Request $request)
 	{
-
 		$adTypeInput = $request->input('ad_type');
 		$adCategory = $request->input('ad_category');
-        $idRegions = $request->input('regions_location_researches');
-        $idDepartments = $request->input('departments_location_researches');
-        $idCities = $request->input('cites_location_researches');
-        $radius = $request->input('radius_research');
-        $offer_genres = $request->input('offer_genres');
-        $surfaces = $request->input('surfaces_research');
-        $priceMin = $request->input('price_min');
-        $priceMax = $request->input('price_max');
-        $has_pics = $request->input('has_pics');
-        $has_building = $request->input('has_buildings');
-        $productionGenres = $request->input('production_genres');
-        $bioCertifications = $request->input('bio_certifications');
+		$idRegions = $request->input('regions_location_researches');
 
+		$data = [];
+		foreach ($request->input() as $item => $value) {
+			$data[$item] = $value;
+		}
 
 		if ($adCategory === 'land') {
 			$adType = ($adTypeInput === 'offer_ads') ? 'landOfferAd' : 'landSeekAd';
@@ -80,7 +96,6 @@ class ResearchService
 		} else {
 			$adType = $adTypeInput;
 		}
-
 
 		if ($idRegions && !in_array('0', $idRegions)) {
 			$regions = Region::with('ads')->whereIn('id', $idRegions)->get();
@@ -94,15 +109,26 @@ class ResearchService
 			$regionAds = $region->ads;
 			foreach ($regionAds as $key => $ad) {
 				if ($ad->$adType) {
-				    dd($ad->$adType->where('building_id', '=', '1'));
 					$ads[$ad->id] = $ad;
 				}
 			}
 		}
 
+//		DB::enableQueryLog();
+//		$ads = Ad::whereHas('locationables', function (Builder $query) use ($idRegions) {
+//			$query->where('locationables.locationable_ad_type', Region::class);
+//			foreach ($idRegions as $idRegion) {
+//				$query->orWhere('locationables.locationable_ad_id', $idRegion);
+//			}
+//		})->get();
+//
+//		dd(DB::getQueryLog());
+
 		return [$ads, $adType, $regions];
 	}
-	public function destroy (Request $request){
+
+	public function destroy(Request $request)
+	{
 		$researchId = $request->input('research');
 		$research = $this->find($researchId);
 		$research->delete();

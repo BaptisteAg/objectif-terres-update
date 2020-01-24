@@ -34,7 +34,8 @@
                             :disabled="isInputDisabled"
                             src="/json/locationables"
                             :data-renderer="renderZoneItemData"
-                            v-model="formInput.selectedZones">
+                            v-model="formInput.selectedZones"
+                            :multiple="true">
                     </autocomplete>
                     <div v-show="$v.formInput.selectedZones.$error">
                         <p class="help is-danger" v-show="!$v.formInput.selectedZones.hasZone">Vous devez sélectionner au minimum une
@@ -145,7 +146,7 @@
                        'v-model'=> 'formInput.offerGenre']);!!}
         </div>
     </div>
-    <div class="field" v-show="formInput.offerGenre === '1'">
+    <div class="field" v-show="formInput.offerGenre === '2'">
         {!! Form::label('land_seek[price_range][]', 'Prix (en €)', ['class' => 'label']); !!}
         @foreach ($priceRanges->pluck('price', "id") as $priceId => $price)
             {!! Form::checkbox('land_seek[price_range][]', $priceId, in_array($priceId, old('land_seek[price_range]', [])), [':disabled' => 'isInputDisabled']) !!}
@@ -154,7 +155,7 @@
     </div>
     <div class="columns">
         <div class="column is-half">
-            <div class="field" v-show="formInput.offerGenre === '2'">
+            <div class="field" v-show="formInput.offerGenre === '1'">
                 {!! Form::label('land_seek[rent_min]', 'Loyer minimum (en €)', ['class' => 'label']); !!}
                 {!! Form::text('land_seek[rent_min]',
                          null,
@@ -166,7 +167,7 @@
             </div>
         </div>
         <div class="column">
-            <div class="field" v-show="formInput.offerGenre === '2'">
+            <div class="field" v-show="formInput.offerGenre === '1'">
                 {!! Form::label('land_seek[rent_max]', 'Loyer maximum (en €)', ['class' => 'label']); !!}
                 {!! Form::text('land_seek[rent_max]',
                           null,

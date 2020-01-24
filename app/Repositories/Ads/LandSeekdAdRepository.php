@@ -48,4 +48,5 @@ class LandSeekdAdRepository extends AbstractRepository implements LandSeekAdRepo
 
         return $landSeekAd;
     }
+
 }

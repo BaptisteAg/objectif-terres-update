@@ -17,6 +17,7 @@
 					<div class="level-item">
 						{!! Form::open(['route' => 'researches.store']) !!}
 						<input type="hidden" name="ad_type" value="{{$adType}}">
+						<input
 
 						@foreach ($regions->pluck('id') as $region)
 						<input type="hidden" name="regions[]" value="{{ $region }}">
@@ -128,8 +129,8 @@
 							</nav>
 							<div></div>
 							<h1 class="title">{{ $ad->$adType->title }}</h1>
-							<div class="descritption">Je suis une discritpion {{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</div>
-							<a href="{{url("/annonce", $ad->id)}}">Voir</a>
+							<div class="descritption">{{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</div>
+							<a href="{{route("ads.show", $ad->id)}}">Voir</a>
 						</div>
 					</div>
 				@endforeach
