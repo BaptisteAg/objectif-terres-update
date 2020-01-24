@@ -21,7 +21,4 @@ class SalesForceAuthController extends Controller
 
 //        return Redirect::to('/');
     }
-
-
-
 }

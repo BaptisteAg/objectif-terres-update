@@ -19,7 +19,8 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
     Route::get('{id}', 'AdsController@show')->name('show');
 });
 
-Route::get('/authenticate', 'SalesForceAuthController@register');
+Route::get('/authenticate', 'Salesforces\SalesForceAuthController@register');
+Route::get('test', 'Salesforces\SalesForceAuthController@register');
 
 
 Route::prefix('recherches')->name('researches.')->namespace('Researches')->group(function () {
@@ -30,8 +31,6 @@ Route::prefix('recherches')->name('researches.')->namespace('Researches')->group
 	Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
 });
 
-
-
 Route::prefix('json')->group(function () {
     Route::get('locationables', 'Json\LocationableController@locationables');
     Route::get('cities', 'Json\LocationableController@cities');
@@ -40,4 +39,3 @@ Route::prefix('json')->group(function () {
     });
 });
 
-Route::get('test', 'Salesforces\SalesForceAuthController@register');
