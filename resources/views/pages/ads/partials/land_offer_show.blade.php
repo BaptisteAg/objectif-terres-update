@@ -1,6 +1,45 @@
 @section('title', $ad->landOfferAd->title)
 <section class="section is-medium ">
 	<div class="container ">
+		<div class="columns ">
+			<div class="column is-two-thirds">
+
+				@if ($message = Session::get('success'))
+					<article class="message is-success">
+						<div class="message-header">
+							<p>Succès</p>
+							<button id="close-notification" class="delete" aria-label="delete"></button>
+						</div>
+						<div class="message-body">
+							Votre message a bien été envoyé !
+						</div>
+					</article>
+				@endif
+					@if ($message = Session::get('save'))
+						<article class="message is-success">
+							<div class="message-header">
+								<p>Succès</p>
+								<button id="close-notification" class="delete" aria-label="delete"></button>
+							</div>
+							<div class="message-body">
+								Cette annonce a été sauvegardée dans vos favoris !
+							</div>
+						</article>
+					@endif
+					@if ($message = Session::get('error'))
+						<article class="message is-warning">
+							<div class="message-header">
+								<p>Avertissement</p>
+								<button id="close-notification" class="delete" aria-label="delete"></button>
+							</div>
+							<div class="message-body">
+								Vous avez déjà sauvegardé cette annonce dans vos favoris !
+							</div>
+						</article>
+					@endif
+			</div>
+			<div class="column"></div>
+		</div>
 		<nav class="breadcrumb" aria-label="breadcrumbs">
 			<ul>
 				<li><a href="#">Annonces</a></li>
@@ -62,22 +101,59 @@
 						</div>
 					</div>
 					<footer class="card-footer">
-						<button class="card-footer-item button is-link">
+						<button id="open-modal-message" type="button" class="card-footer-item button is-link">
 								 <span class="icon is-small">
 								<i class="fas fa-reply"></i>
 								</span>
 							<span> Répondre à l'annonce</span>
 						</button>
+						{!! Form::open(['route'=>'favoriteAds.create']) !!}
+						<input name="ad_id" value="{{$ad->id}}" type="hidden">
 						<button class="card-footer-item button is-link is-light">
 							 <span class="icon is-small">
 									<i class="fas fa-save"></i>
 								</span>
 							<span> Sauvegarder l'annonce</span>
 						</button>
+						{!! Form::close() !!}
 					</footer>
 				</div>
 			</div>
 		</div>
+		{!! Form::open(['route' => 'adMessages.create', 'method'=>'post']) !!}
+		<div class="modal">
+			<div class="modal-background"></div>
+			<div class="modal-content">
+				<div class="card">
+					<div class="card-content">
+						<h3 class="title is-3 has-text-centered has-text-black ">Envoyer un message au porteur de
+							projet</h3>
+					</div>
+					<div class="card-content">
+						<div class="container">
+							<div class="field">
+								<label class="label">Votre message :</label>
+								<div class="field">
+									<div class="control">
+										<input type="hidden" name="ad_id" value="{{$ad->id}}">
+										<textarea name="content" class="textarea is-medium"
+												  placeholder="Votre message..."></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<footer class="card-footer">
+						<div class="buttons card-footer-item">
+							<button type="submit" class="button is-link">
+								<span>Envoyer</span></button>
+						</div>
+						<button class="modal-close is-large" aria-label="close"></button>
+					</footer>
+				</div>
+			</div>
+		</div>
+		{!! Form::close() !!}
 		<hr class="navbar-divider">
 		<h3 class="title is-3 has-text-centered">Caractéristiques du projet</h3>
 		<div class="columns is-multiline is-mobile is-centered">
@@ -244,7 +320,12 @@
 								<div class="content has-text-centered ">
 									<p class="has-text-centered is-size-4">Vous souhaitez répondre à cette annonce
 										?</p>
-									<button class="button is-link  is-large">Répondre à l'annonce</button>
+									<button id="open-modal-message" class="button is-link  is-large">
+									 	<span class="icon is-small">
+										<i class="fas fa-reply"></i>
+										</span>
+										<span> Répondre à l'annonce</span>
+									</button>
 								</div>
 
 							</div>
