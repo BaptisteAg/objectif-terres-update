@@ -1,6 +1,22 @@
 @section('title', $ad->jobAd->title)
 <section class="section is-medium ">
 	<div class="container ">
+		<div class="columns">
+			<div class="column is-two-thirds">
+				@if ($message = Session::get('success'))
+					<article class="message is-success">
+						<div class="message-header">
+							<p>Succès</p>
+							<button id="close-notification" class="delete" aria-label="delete"></button>
+						</div>
+						<div class="message-body">
+							Votre message a bien été envoyé !
+						</div>
+					</article>
+				@endif
+			</div>
+			<div class="column"></div>
+		</div>
 		<nav class="breadcrumb" aria-label="breadcrumbs">
 			<ul>
 				<li><a href="#">Annonces</a></li>
@@ -45,9 +61,12 @@
 						</div>
 						<div class="content">
 							<span class="is-size-5 is-capitalized has-text-black">Localisation(s) : </span>
-							<p><span class="is-size-6 is-italic">Commune(s) :</span><span class="subtitle">{{$ad->cities->pluck('name')->implode(', ') }}</span></p>
-							<p><span class="is-size-6 is-italic">Département(s) :</span><span class="subtitle">{{$ad->departments->pluck('name')->implode(', ') }}</span></p>
-							<p><span class="is-size-6 is-italic">Région(s) :</span><span class="subtitle">{{$ad->regions->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="is-size-6 is-italic">Commune(s) :</span><span
+										class="subtitle">{{$ad->cities->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="is-size-6 is-italic">Département(s) :</span><span
+										class="subtitle">{{$ad->departments->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="is-size-6 is-italic">Région(s) :</span><span
+										class="subtitle">{{$ad->regions->pluck('name')->implode(', ') }}</span></p>
 						</div>
 						<div class="content">
 							<p><span class="is-size-4  has-text-black">Statut :</span>
@@ -60,7 +79,7 @@
 						</div>
 					</div>
 					<footer class="card-footer">
-						<button class="card-footer-item button is-link">
+						<button id="open-modal-message" type="button" class="card-footer-item button is-link">
 								 <span class="icon is-small">
 								<i class="fas fa-reply"></i>
 								</span>
@@ -72,6 +91,63 @@
 								</span>
 							<span> Sauvegarder l'annonce</span>
 						</button>
+					</footer>
+				</div>
+			</div>
+		</div>
+		{!! Form::open(['route' => 'adMessages.store', 'method'=>'post']) !!}
+		<div class="modal">
+			<div class="modal-background"></div>
+			<div class="modal-content">
+				<div class="card">
+					<div class="card-content">
+						<h3 class="title is-3 has-text-centered has-text-black ">Envoyer un message au porteur de
+							projet</h3>
+					</div>
+					<div class="card-content">
+						<div class="container">
+							<div class="field">
+								<label class="label">Votre message :</label>
+								<div class="field">
+									<div class="control">
+										<input type="hidden" name="ad_id" value="{{$ad->id}}">
+										<textarea name="content" class="textarea is-medium"
+												  placeholder="Votre message..."></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<footer class="card-footer">
+						<div class="buttons card-footer-item">
+							<button type="submit" class="button is-link">
+								<span>Envoyer</span></button>
+						</div>
+						<button class="modal-close is-large" aria-label="close"></button>
+					</footer>
+				</div>
+			</div>
+		</div>
+		{!! Form::close() !!}
+		<div class="modal">
+			<div class="modal-background"></div>
+			<div class="modal-content">
+				<div class="card">
+					<div class="card-content">
+						<div class="field">
+							<label class="label">Envoyer un message au porteur de projet :</label>
+							<div class="control">
+								<input class="input" type="textarea" name="message" id="message"
+									   placeholder="Votre message...">
+							</div>
+						</div>
+					</div>
+					<footer class="card-footer">
+						<div class="buttons card-footer-item">
+							<button type="submit" class="button is-link">
+								<span>Envoyer</span></button>
+						</div>
+						<button class="modal-close is-large" aria-label="close"></button>
 					</footer>
 				</div>
 			</div>
@@ -123,14 +199,13 @@
 								<div class="content has-text-centered ">
 									<p class="has-text-centered is-size-4">Vous souhaitez répondre à cette annonce
 										?</p>
-									<button class="button is-link  is-large">
+									<button id="open-modal-message" class="button is-link is-large">
 									 	<span class="icon is-small">
 										<i class="fas fa-reply"></i>
 										</span>
 										<span> Répondre à l'annonce</span>
 									</button>
 								</div>
-
 							</div>
 						</article>
 					</div>

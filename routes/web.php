@@ -30,6 +30,10 @@ Route::prefix('recherches')->name('researches.')->namespace('Researches')->group
 	Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
 });
 
+Route::prefix('messages')->name('adMessages.')->namespace('AdMessages')->group(function () {
+	Route::post('sauvegarde', 'AdMessagesController@store')->name('store');
+});
+
 
 
 Route::prefix('json')->group(function () {
