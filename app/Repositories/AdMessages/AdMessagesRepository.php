@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 /**
- * Class ResearchRepository
- * @package App\Repositories\Researches
+ * Class AdMessageRepository
+ * @package App\Repositories\AdMessage
  * @property AdMessage $entity
  */
 class AdMessagesRepository extends AbstractRepository implements AdMessagesRepositoryInterface

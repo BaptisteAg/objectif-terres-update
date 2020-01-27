@@ -16,15 +16,19 @@
 				</div>
 			</nav>
 			@if ($message = Session::get('success'))
-				<article class="message is-success">
-					<div class="message-header">
-						<p>Succès</p>
-						<button class="delete" aria-label="delete"></button>
+				<div class="columns">
+					<div class="column is-two-thirds">
+						<article class="message is-success">
+							<div class="message-header">
+								<p>Succès</p>
+								<button id="close-notification" class="delete" aria-label="delete"></button>
+							</div>
+							<div class="message-body">
+								Une alerte a bien été créée. Un email de confirmation vous a été envoyé !
+							</div>
+						</article>
 					</div>
-					<div class="message-body">
-						Une alerte a bien été créée. Un email de confirmation vous a été envoyé !
-					</div>
-				</article>
+				</div>
 			@endif
 			<section class="section">
 				@foreach ($researches as $research)

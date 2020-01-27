@@ -4,7 +4,6 @@ use App\Htttp\Repositories\AdRepositoryInterface;
 use App\Models\Ad;
 use App\Models\Document;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Cache;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 /**

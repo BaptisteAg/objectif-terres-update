@@ -3,6 +3,7 @@
 	<div class="container ">
 		<div class="columns ">
 			<div class="column is-two-thirds">
+
 				@if ($message = Session::get('success'))
 					<article class="message is-success">
 						<div class="message-header">
@@ -14,6 +15,28 @@
 						</div>
 					</article>
 				@endif
+					@if ($message = Session::get('save'))
+						<article class="message is-success">
+							<div class="message-header">
+								<p>Succès</p>
+								<button id="close-notification" class="delete" aria-label="delete"></button>
+							</div>
+							<div class="message-body">
+								Cette annonce a été sauvegardée dans vos favoris !
+							</div>
+						</article>
+					@endif
+					@if ($message = Session::get('error'))
+						<article class="message is-warning">
+							<div class="message-header">
+								<p>Avertissement</p>
+								<button id="close-notification" class="delete" aria-label="delete"></button>
+							</div>
+							<div class="message-body">
+								Vous avez déjà sauvegardé cette annonce dans vos favoris !
+							</div>
+						</article>
+					@endif
 			</div>
 			<div class="column"></div>
 		</div>
@@ -84,17 +107,20 @@
 								</span>
 							<span> Répondre à l'annonce</span>
 						</button>
+						{!! Form::open(['route'=>'favoriteAds.create']) !!}
+						<input name="ad_id" value="{{$ad->id}}" type="hidden">
 						<button class="card-footer-item button is-link is-light">
 							 <span class="icon is-small">
 									<i class="fas fa-save"></i>
 								</span>
 							<span> Sauvegarder l'annonce</span>
 						</button>
+						{!! Form::close() !!}
 					</footer>
 				</div>
 			</div>
 		</div>
-		{!! Form::open(['route' => 'adMessages.store', 'method'=>'post']) !!}
+		{!! Form::open(['route' => 'adMessages.create', 'method'=>'post']) !!}
 		<div class="modal">
 			<div class="modal-background"></div>
 			<div class="modal-content">

@@ -31,7 +31,13 @@ Route::prefix('recherches')->name('researches.')->namespace('Researches')->group
 });
 
 Route::prefix('messages')->name('adMessages.')->namespace('AdMessages')->group(function () {
-	Route::post('sauvegarde', 'AdMessagesController@store')->name('store');
+	Route::post('sauvegarde', 'AdMessagesController@create')->name('create');
+});
+
+Route::prefix('annonces-favorites')->name('favoriteAds.')->namespace('favoriteAds')->group(function () {
+	Route::post('sauvegarde', 'FavoriteAdsController@create')->name('create');
+	Route::get('liste', 'FavoriteAdsController@show')->name('show');
+	Route::post('supprimer', 'FavoriteAdsController@destroy')->name('destroy');
 });
 
 

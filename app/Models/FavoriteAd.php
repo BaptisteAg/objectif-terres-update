@@ -10,10 +10,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $ad_id
  * @property string $sf_id
- * @property Ad $ad
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Ad $ads
+ * @property-read \App\Models\Ad $ad
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FavoriteAd newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FavoriteAd newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FavoriteAd query()
@@ -30,13 +29,13 @@ class FavoriteAd extends Model
      * @var array
      */
     protected $fillable = [
-        'ad_id', 'sf_id'
+        'ad_id', 'sf_id',
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function ads()
+    public function ad()
     {
         return $this->belongsTo('App\Models\Ad');
     }

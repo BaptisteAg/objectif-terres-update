@@ -4,7 +4,6 @@ namespace App\Http\Controllers\AdMessages;
 
 use App\Http\Controllers\Controller;
 use App\Services\AdMessages\AdMessagesService;
-use App\Services\Ads\AdService;
 use Illuminate\Http\Request;
 
 
@@ -20,7 +19,7 @@ class AdMessagesController extends Controller
 		$this->adMessageService = $adMessageService;
 	}
 
-	public function store(Request $request)
+	public function create(Request $request)
 	{
 
 		$adMessage = $this->adMessageService->create($request);
