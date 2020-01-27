@@ -16,12 +16,17 @@
         <p class="help is-danger" id="installationTypeIdError" v-if="$v.formInput.installationTypeId.$error">Ce champ
             est requis.</p>
     </div>
+
     <zone-select
-            ad-type="land_seek"
+            name="land_seek[locationable]"
+            radius-name="land_seek[locationable_radius]"
+            json-name="land_seek[selected_zones]"
             ref="selectedZones"
-            v-model="formInput.selectedZones">
+            v-model="formInput.selectedZones"
+            :vuelidate="$v.formInput.selectedZones"
+            :disabled="isInputDisabled">
     </zone-select>
-    
+
     <div class="field">
         {!! Form::label('land_seek[is_bio]', 'Je souhaite m\'installer en bio', ['class' => 'label']) !!}
         {!! Form::radio('land_seek[is_bio]', '1',old('land_seek[is_bio]') === '1', [':disabled' => 'isInputDisabled']) !!}

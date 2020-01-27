@@ -15,39 +15,38 @@
                             :id="id"
                             class="input"
                             placeholder="Ajoutez une zone en saisissant les premières lettres"
-                            ref='selectedZones'
-                            :disabled="isInputDisabled"
+                            :disabled="disabled"
                             src="/json/locationables"
                             :data-renderer="renderZoneItemData"
-                            v-model="formInput.selectedZones"
+                            v-model="value"
                             :multiple="true">
                     </autocomplete>
-                    <div v-show="$v.formInput.selectedZones.$error">
-                        <p class="help is-danger" v-show="!$v.formInput.selectedZones.hasZone">
+                    <div v-show="vuelidate.$error">
+                        <p class="help is-danger">
                             Vous devez sélectionner au minimum une zone géographique.
                         </p>
                     </div>
                 </div>
 
-                <h4 v-if="formInput.selectedZones.length">Vous avez sélectionné :</h4>
+                <h4 v-if="value.length">Vous avez sélectionné :</h4>
                 <h4 v-else>Vous n'avez encore sélectionné aucune zone.</h4>
 
-                <div class="selected-zone" v-for="(zone,i) in formInput.selectedZones">
-                    <span @click="_ => formInput.selectedZones.splice(i, 1)">
+                <div class="selected-zone" v-for="(zone,i) in value">
+                    <span @click="_ => value.splice(i, 1)">
                         <i class="fa fa-trash-alt" style="cursor:pointer;"></i>
                     </span>
                     <b>{{getLabels().ZONE_TYPES[zone.value.type]}}</b> : {{zone.value.originalLabel}}
-                    <input type="hidden" :name="'land_seek[locationable]['+zone.value.type+'][]'" :value="zone.value.id">
+                    <input type="hidden" :name="name+'['+zone.value.type+'][]'" :value="zone.value.id">
                 </div>
             </div>
         </div>
-        <input type="hidden" name="land_seek[selected_zones]" :value="JSON.stringify(formInput.selectedZones)">
+        <input type="hidden" :name="jsonName" :value="JSON.stringify(value)">
         <div class="card-footer">
             <div class="card-footer-item">
                 <div class="column">
                     <p class="label">Dans un rayon de </p>
                     <vue-slider
-                            name="land_seek[locationable_radius]"
+                            :name="radiusName"
                             :data="['0km','5km','10km','20km','50km']"
                     ></vue-slider>
                 </div>
@@ -64,19 +63,64 @@
 
 <script>
     import Autocomplete from "./Autocomplete";
+    import VueSlider from "./VueSlider";
+
+    const LABELS = {
+        ZONE_TYPES: {
+            cities: 'Code postal',
+            departments: 'Département',
+            regions: 'Région'
+        }
+    };
 
     export default {
-        components: [
-            Autocomplete
-        ],
+        components: {
+            Autocomplete,
+            VueSlider,
+        },
         props: {
             value: {
-                type:
+                type: Array,
+                required: true
+            },
+            vuelidate: {
+                type: Object,
+                required: true
+            },
+            name: {
+                type: String,
+                required: true
+            },
+            jsonName: {
+                type: String,
+                required: true
+            },
+            radiusName: {
+                type: String,
+                required: true
+            },
+            disabled: {
+                type: Boolean,
+                required: true
             }
         },
         data() {
             return {
                 id: 'zone-select'+Math.random().toString(36).substr(2, 9)
+            }
+        },
+        methods: {
+            renderZoneItemData(item) {
+                return {
+                    label: '<b>' + LABELS.ZONE_TYPES[item.value.type] + '</b>: ' + item.label,
+                    value: {
+                        ...item.value,
+                        originalLabel: item.label
+                    },
+                }
+            },
+            getLabels() {
+                return LABELS;
             }
         }
     }

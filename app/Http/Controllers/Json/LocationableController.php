@@ -23,7 +23,7 @@ class LocationableController extends Controller
         return response()->json(array_merge(
             $this->searchRegions($request->get('q')),
             $this->searchDepartments($request->get('q')),
-            $this->searchCities($request->get('q')),
+            $this->searchCities($request->get('q'))
         ));
     }
 

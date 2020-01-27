@@ -17,8 +17,7 @@ export default {
             isInputRequired: false,
             formInput: {
                 beneficiary: hasOld ? v.is_beneficiary : '',
-                zipCode: hasOld ? v.zipCode : '',
-                city: hasOld ? v.city : '',
+                selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
                 agriculturalActivity: hasOld ? v.agricultural_activity : [],
                 jobStatus: hasOld ? v.job_status : '',
                 isJobOpportunity: hasOld ? v.is_offer : '',
@@ -39,18 +38,8 @@ export default {
         formInput: {
             beneficiary: {required},
             isJobOpportunity: {required},
-            zipCode: {
-                numeric,
-                minLength: minLength(5),
-                maxLength: maxLength(5),
-                required: requiredIf(function () {
-                    return this.isInputRequired
-                })
-            },
-            city: {
-                required: requiredIf(function () {
-                    return this.isInputRequired
-                })
+            selectedZones: {
+                hasZone() { return this.formInput.selectedZones.length; }
             },
             agriculturalActivity: {
                 required: requiredIf(function () {

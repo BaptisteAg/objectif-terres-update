@@ -3,7 +3,7 @@ import FormValidationMixin from '../components/mixins/form-new-ad-validation-mix
 import {minLength, maxLength, requiredIf, numeric, required} from 'vuelidate/lib/validators'
 import TextAreaCounter from "../../../components/TextAreaCounter";
 import VueSlider from "../../../components/VueSlider";
-import Autocomplete from '../../../components/Autocomplete'
+import ZoneSelect from '../../../components/ZoneSelect'
 
 export default Vue.extend({
     mixins: [FormNewAdMixin, FormValidationMixin],
@@ -11,7 +11,7 @@ export default Vue.extend({
     components: {
         TextAreaCounter,
         VueSlider,
-        Autocomplete,
+        ZoneSelect,
     },
     data() {
         const v = this.oldValues;
@@ -45,17 +45,6 @@ export default Vue.extend({
                 this.formInput.productionTypeAdd = '';
             }
         }
-    },
-    methods: {
-        renderZoneItemData(item) {
-            return {
-                label: '<b>' + this.getLabels().ZONE_TYPES[item.value.type] + '</b>: ' + item.label,
-                value: {
-                    ...item.value,
-                    originalLabel: item.label
-                },
-            }
-        },
     },
     validations: {
         formInput: {

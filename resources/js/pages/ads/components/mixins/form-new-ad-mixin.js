@@ -1,11 +1,3 @@
-const LABELS = {
-    ZONE_TYPES: {
-        cities: 'Code postal',
-        departments: 'Département',
-        regions: 'Région'
-    }
-};
-
 export default {
     props: {
         oldValues: Object,
@@ -24,8 +16,5 @@ export default {
         }
     },
     methods: {
-        getLabels() {
-            return LABELS;
-        },
     }
 };
