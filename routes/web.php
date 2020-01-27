@@ -19,9 +19,7 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
     Route::get('{id}', 'AdsController@show')->name('show');
 });
 
-Route::get('/authenticate', 'Salesforces\SalesForceAuthController@register');
-Route::get('test', 'Salesforces\SalesForceAuthController@register');
-
+Route::get('/register', 'Salesforces\SalesForceAuthController@register');
 
 Route::prefix('recherches')->name('researches.')->namespace('Researches')->group(function () {
 	Route::get('recherche', 'ResearchesController@index')->name('index');
