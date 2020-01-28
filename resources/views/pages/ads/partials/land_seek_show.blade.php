@@ -143,7 +143,7 @@
 								<div class="field">
 									<div class="control">
 										<input type="hidden" name="ad_id" value="{{$ad->id}}">
-										<textarea name="content" class="textarea is-medium"
+										<textarea required name="content" class="textarea is-medium"
 												  placeholder="Votre message..."></textarea>
 									</div>
 								</div>
@@ -155,7 +155,7 @@
 							<button type="submit" class="button is-link">
 								<span>Envoyer</span></button>
 						</div>
-						<button class="modal-close is-large" aria-label="close"></button>
+						<button id="close-modal" class="modal-close is-large" aria-label="close"></button>
 					</footer>
 				</div>
 			</div>
