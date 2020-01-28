@@ -26,7 +26,7 @@
                             id="land_offer_zone-autocomplete"
                             class="input"
                             placeholder="Saisissez les premiers chiffres"
-                            ref='selectedZipCode'
+                            ref='selectedZones'
                             :disabled="isInputDisabled"
                             src="/json/cities"
                             v-model="formInput.selectedZones"
@@ -45,7 +45,7 @@
                         </span>
                     </div>
                 </div>
-                <p class="help is-danger" if="zipCodeError" v-if="$v.formInput.selectedZones.$error">Ce champ est requis. Vous devez sélectionner une zone dans la liste.</p>
+                <p class="help is-danger" if="zipCodeError" v-if="$v.formInput.selectedZones.$error">Ce champ est requis. Vous devez sélectionner un code postal dans la liste.</p>
             </div>
         </div>
         <div class="column"></div>

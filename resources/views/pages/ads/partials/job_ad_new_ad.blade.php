@@ -37,51 +37,17 @@
 		<p class="help is-danger" id="isJobOpportunityError" v-if="$v.formInput.isJobOpportunity.$error">Ce champ est
 			requis.</p>
 	</div>
-	<div class="columns">
-		<div class="column is-half">
-			<div class="field">
-				<div v-if="isInputRequired === true">
-					{!! Form::label('job_ad[zipCode]', 'Code postal*', ['class' => 'label']); !!}
-				</div>
-				<div v-else>
-					{!! Form::label('job_ad[zipCode]', 'Code postal', ['class' => 'label']); !!}
-				</div>
-				{!! Form::text('job_ad[zipCode]',
-						 old('job_ad[zipCode]'),
-						 ['min'=>1,
-						  'class' => 'input',
-						   'v-model.trim.lazy'=>'formInput.zipCode',
-						  ':disabled'=>'isInputDisabled',
-						   'ref' => 'zipCode',
-                   			'aria-describedby'=>'zipCodeError']
-						  ); !!}
-			</div>
-			<p class="help is-danger" id="zipCodeError" v-if="$v.formInput.zipCode.$error">Ce champ est
-				obligatoire.</p>
-			<p class="help is-danger" v-if="!$v.formInput.zipCode.numeric">Veuillez saisir des chiffres.</p>
-			<p class="help is-danger" v-if="!$v.formInput.zipCode.minLength || !$v.formInput.zipCode.maxLength">
-				Veuillez saisir les 5 numéros d'un code postal valide.</p>
-		</div>
-		<div class="column">
-			<div class="field">
-				<div v-if="isInputRequired === true">
-					{!! Form::label('job_ad[city]', 'Commune*', ['class' => 'label']); !!}
-				</div>
-				<div v-else>
-					{!! Form::label('job_ad[city]', 'Commune', ['class' => 'label']); !!}
-				</div>
-				{!! Form::text('job_ad[city]',
-						 old('job_ad[city]'),
-						 ['class' => 'input',
-						  'v-model.trim.lazy'=>'formInput.city',
-						  ':disabled'=>'isInputDisabled',
-						  'ref' => 'city',
-						  'aria-describedby'=>'cityError']
-						 );!!}
-			</div>
-			<p class="help is-danger" id="cityError" v-if="$v.formInput.city.$error">Ce champ est obligatoire.</p>
-		</div>
-	</div>
+
+    <zone-select
+        name="job_ad[locationable]"
+        radius-name="job_ad[locationable_radius]"
+        json-name="job_ad[selected_zones]"
+        ref="selectedZones"
+        v-model="formInput.selectedZones"
+        :vuelidate="$v.formInput.selectedZones"
+        :disabled="isInputDisabled">
+    </zone-select>
+
 	<div class="field">
 		<div v-if="isInputRequired === true">
 			{!! Form::label('job_ad[agricultural_activity][]', 'Activités agricoles*', ['class' => 'label']); !!}
