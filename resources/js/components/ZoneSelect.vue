@@ -112,11 +112,19 @@
         methods: {
             renderZoneItemData(item) {
                 return {
-                    label: '<b>' + LABELS.ZONE_TYPES[item.value.type] + '</b>: ' + item.label,
+                    label: this.getFormattedLabel(item),
                     value: {
                         ...item.value,
                         originalLabel: item.label
                     },
+                }
+            },
+            getFormattedLabel(item) {
+                if(!item.value) {
+                    return item
+                }
+                else {
+                    return '<b>' + LABELS.ZONE_TYPES[item.value.type] + '</b>: ' + item.label;
                 }
             },
             getLabels() {

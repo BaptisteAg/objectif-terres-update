@@ -32,8 +32,8 @@ export default {
     },
     watch: {
         'formInput.isJobOpportunity': function () {
-                this.isInputRequired = this.isJobOpportunity === "1";
-            },
+            this.isInputRequired = this.isJobOpportunity === "1";
+        },
 
     },
     validations: {
@@ -41,7 +41,9 @@ export default {
             beneficiary: {required},
             isJobOpportunity: {required},
             selectedZones: {
-                hasZone() { return this.formInput.selectedZones.length; }
+                hasZone() {
+                    return this.formInput.selectedZones.length;
+                }
             },
             agriculturalActivity: {
                 required: requiredIf(function () {
