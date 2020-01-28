@@ -11,9 +11,7 @@
     },
     "devDependencies": {
         "axios": "^0.19.1",
-        "bootstrap": "^4.0.0",
         "cross-env": "^5.1",
-        "jquery": "^3.2",
         "laravel-mix": "^4.0.7",
         "lodash": "^4.17.13",
         "popper.js": "^1.12",
@@ -29,6 +27,7 @@
         "bulma-accordion": "^2.0.1",
         "bulma-carousel": "^4.0.4",
         "bulma-tooltip": "^3.0.2",
+        "vue-form-wizard": "^0.8.4",
         "vue-multiselect": "^2.1.6",
         "vue-pagination-2": "^2.0.3",
         "vue-plugin-load-script": "^1.2.0",

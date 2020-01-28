@@ -38,7 +38,7 @@
 						</article>
 					@endif
 			</div>
-			<div class="column"></div>
+			<div class="column"></div>+
 		</div>
 		<nav class="breadcrumb" aria-label="breadcrumbs">
 			<ul>

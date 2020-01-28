@@ -3,6 +3,7 @@ import {maxLength, minLength, numeric, required} from 'vuelidate/lib/validators'
 import TextAreaCounter from "../../../components/TextAreaCounter";
 import VueSlider from "../../../components/VueSlider";
 import ZoneSelect from '../../../components/ZoneSelect'
+import AdTypeSelect from'../../../components/AdTypeSelect'
 
 export default Vue.extend({
     mixins: [FormNewAdMixin],
@@ -11,6 +12,7 @@ export default Vue.extend({
         TextAreaCounter,
         VueSlider,
         ZoneSelect,
+        AdTypeSelect
     },
     data() {
         const v = this.oldValues;

@@ -1,6 +1,7 @@
 import LandSeekNewAd from './components/land-seek-new-ad'
 import LandOfferNewAd from './components/land-offer-new-ad'
 import JobOfferNewAd from './components/job-offer-new-ad'
+import AdTypeSelect from'../../components/AdTypeSelect'
 
 import Vue from 'vue'
 
@@ -8,7 +9,8 @@ Vue.component('new-ad', {
     components: {
         'new-land-seek-ad': LandSeekNewAd,
         'new-land-offer-ad': LandOfferNewAd,
-        'new-job-offer-ad': JobOfferNewAd
+        'new-job-offer-ad': JobOfferNewAd,
+        AdTypeSelect
     },
     props: {
         oldAdTypeSelected: String
@@ -43,7 +45,8 @@ Vue.component('new-ad', {
                 this.enabledForm.setInputsBorderColor();
 
                 this.isSubmitting = false;
-            } else {
+            }
+            else {
                 if (!confirm('Êtes-vous sûr de la saisie de votre annonce?')) {
                     this.isSubmitting = false;
                     e.preventDefault();
@@ -57,6 +60,10 @@ Vue.component('new-ad', {
         },
         setEnabledForm(form) {
             this.enabledForm = form;
+        },
+        onFormComplete() {
+            const evt = new CustomEvent("submit", {"bubbles":true, "cancelable": true});
+            this.$refs.form.dispatchEvent(evt);
         }
     }
 });
