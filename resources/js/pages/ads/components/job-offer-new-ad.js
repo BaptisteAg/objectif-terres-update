@@ -2,10 +2,12 @@ import FormNewAdMixin from "./mixins/form-new-ad-mixin";
 import FormValidationMixin from '../components/mixins/form-new-ad-validation-mixin';
 import {required, maxLength, numeric, minLength, requiredUnless, sameAs, requiredIf} from 'vuelidate/lib/validators'
 import TextAreaCounter from "../../../components/TextAreaCounter";
+import ZoneSelect from "../../../components/ZoneSelect";
 
 export default {
     components: {
-        TextAreaCounter
+        TextAreaCounter,
+        ZoneSelect,
     },
     mixins: [FormNewAdMixin, FormValidationMixin],
     props: {},

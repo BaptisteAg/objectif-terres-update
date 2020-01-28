@@ -20,15 +20,38 @@
 
 @section('script')
 	<script src="{{asset('/js/bulma-carousel.js')}}"></script>
+
 	<script>
         bulmaCarousel.attach('#ad_images', {
             slidesToScroll: 1,
             slidesToShow: 1,
             loop: true,
             navigation: true,
-
-
         });
+
+        let buttons = document.querySelectorAll('#open-modal-message');
+        buttons.forEach((button)=>{
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                let modal = document.querySelector('.modal');
+                let html = document.querySelector('html');
+                modal.classList.add('is-active');
+                html.classList.add('is-clipped');
+
+                modal.querySelector('.modal-background').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    modal.classList.remove('is-active');
+                    html.classList.remove('is-clipped');
+                });
+            });
+		})
+
+		let deleteButton = document.querySelector('#close-notification');
+        deleteButton.addEventListener('click', function (e) {
+            let notification = document.querySelector('.message');
+            notification.style.display='none';
+
+        })
 	</script>
 
 @endsection
