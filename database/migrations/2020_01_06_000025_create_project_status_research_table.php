@@ -30,16 +30,16 @@ class CreateProjectStatusResearchTable extends Migration
             $table->index(["project_status_id"], 'fk_project_status_research_1_idx');
             $table->timestamps();
 
-
             $table->foreign('project_status_id', 'fk_project_status_research_1_idx')
                 ->references('id')->on('project_statuses')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
 
-            $table->foreign('research_id', 'fk_project_status_research_2_idx')
-                ->references('id')->on('researches')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
+			$table->foreign('research_id', 'fk_project_status_research_2_idx')
+				->references('id')->on('researches')
+				->onDelete('cascade')
+				->onUpdate('cascade');
+
         });
     }
 

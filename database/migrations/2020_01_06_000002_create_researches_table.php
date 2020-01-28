@@ -31,6 +31,8 @@ class CreateResearchesTable extends Migration
             $table->boolean('has_house')->nullable();
             $table->integer('price_min')->nullable();
             $table->integer('price_max')->nullable();
+			$table->string('ad_type')->nullable();
+			$table->string('url')->nullable();
 
             $table->index(["sf_id"], 'ix_research_sf_id');
             $table->timestamps();

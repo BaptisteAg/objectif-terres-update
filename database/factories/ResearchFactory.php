@@ -15,5 +15,6 @@ $factory->define(Research::class, function (Faker $faker) {
         'has_house' => $faker->boolean,
         'price_min' => $faker->numberBetween(0, 50),
         'price_max' => $faker->numberBetween(50, 500),
+
     ];
 });
