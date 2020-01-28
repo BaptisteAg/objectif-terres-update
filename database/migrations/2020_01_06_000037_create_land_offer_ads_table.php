@@ -32,6 +32,12 @@ class CreateLandOfferAdsTable extends Migration
             $table->boolean('is_activity_transfer')->nullable();
             $table->string('water_access')->nullable();
             $table->integer('altitude')->nullable();
+			$table->date('land_availability')->nullable();
+			$table->date('land_transfer_deadline')->nullable();
+			$table->integer('land_price')->nullable();
+			$table->integer('house_price')->nullable();
+			$table->integer('building_price')->nullable();
+			$table->boolean('confirm_price_fermage');
             $table->unsignedInteger('ad_id');
             $table->unsignedInteger('building_id')->nullable();
             $table->unsignedInteger('house_id')->nullable();

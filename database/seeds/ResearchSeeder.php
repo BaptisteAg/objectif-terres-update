@@ -20,6 +20,7 @@ class ResearchSeeder extends Seeder
     {
         factory(Research::class, 10)->create()->each(function (Research $research) {
             $research->adStatuses()->save(factory(AdStatus::class)->make());
+			$research->adStatuses()->save(factory(AdStatus::class)->make());
             $research->projectStatuses()->save(factory(ProjectStatus::class)->make());
             $research->jobStatuses()->save(JobStatus::all()->random())->make();
             $research->offerGenres()->save(OfferGenre::all()->random());
