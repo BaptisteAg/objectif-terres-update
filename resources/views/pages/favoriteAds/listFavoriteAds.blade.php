@@ -85,7 +85,7 @@
 							<div class="buttons">
 								<a class="">
 									{!! Form::open(['route' => ['ads.show', $favoriteAd->ad->id], 'method' => 'get']) !!}
-									<button type="submit" class="button is-link is-normal ">
+									<button type="submit" class="button is-link is-medium ">
 											<span class="icon is-small">
 											 <i class="fas fa-eye"></i>
 											</span>
@@ -95,10 +95,10 @@
 								</a>
 							</div>
 							{{Form::open(['route' => 'favoriteAds.destroy'])}}
-							<div class="buttons">
+							<div class="buttons ">
 								<input type="hidden" type="number" value="{{(int)$favoriteAd->id}}"
 									   name="favoriteAdsId">
-								<button type="submit" class="button is-danger is-normal is-light">
+								<button type="submit" class="button is-danger is-medium is-light">
 												<span class="icon has-text-danger">
 												  <i class="fas fa-ban"></i>
 												</span>
@@ -108,6 +108,24 @@
 							{{Form::close()}}
 						</div>
 					</div>
+				<div class="columns">
+					<div class="column is-two-fifths">
+						@if(count ($favoriteAd->ad->adMessages()->whereSfSenderId(999)->get()) > 0)
+							<article class="message is-success">
+								<div class="message-body">
+									Vous avez déjà envoyé un message au porteur de projet.
+								</div>
+							</article>
+						@else
+							<article class="message is-warning">
+								<div class="message-body">
+									Vous n'avez pas encore répondu à cette annonce !
+								</div>
+							</article>
+						@endif
+					</div>
+					<div></div>
+				</div>
 					<hr class="navbar-divider">
 				@endforeach
 			</section>

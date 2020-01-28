@@ -26,7 +26,6 @@ class FavoriteAdsController extends Controller
 		}
 		$data['sf_id'] = 999;
 
-
 		$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
 
 		if (count($favoriteAdAlreadyExist) > 0) {
@@ -41,6 +40,7 @@ class FavoriteAdsController extends Controller
 	public function show(){
 
 		$favoriteAds= $this->favoriteAdRepository->findAllByUserId(999);
+
 		return view('pages.favoriteAds.listFavoriteAds', compact('favoriteAds'));
 	}
 
