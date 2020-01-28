@@ -23,12 +23,17 @@ class CreateFavoriteAdsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('ad_id');
             $table->string('sf_id');
+			$table->unsignedInteger('ad_id');
+
 
             $table->index(["ad_id"], 'fk_favorite_ads_1');
-
             $table->index(["sf_id"], 'ix_favorite_ads_sf_id');
+
+			$table->foreign('ad_id', 'fk_favorite_ads_1')
+				->references('id')->on('ads')
+				->onDelete('cascade')
+				->onUpdate('cascade');
             $table->timestamps();
         });
     }

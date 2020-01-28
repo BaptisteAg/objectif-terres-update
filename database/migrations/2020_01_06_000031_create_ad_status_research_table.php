@@ -36,6 +36,11 @@ class CreateAdStatusResearchTable extends Migration
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
 
+			$table->foreign('research_id', 'fk_ads_status_research_2_idx')
+				->references('id')->on('researches')
+				->onDelete('cascade')
+				->onUpdate('cascade');
+
         });
     }
 

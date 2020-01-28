@@ -36,10 +36,10 @@ class CreateJobStatusResearchTable extends Migration
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
 
-            $table->foreign('research_id', 'fk_job_status_research_2_idx')
-                ->references('id')->on('researches')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
+			$table->foreign('research_id', 'fk_job_status_research_2_idx')
+				->references('id')->on('researches')
+				->onDelete('cascade')
+				->onUpdate('cascade');
         });
     }
 

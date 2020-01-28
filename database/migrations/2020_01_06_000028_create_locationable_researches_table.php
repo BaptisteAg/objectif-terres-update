@@ -35,10 +35,10 @@ class CreateLocationableResearchesTable extends Migration
             $table->index(["research_id"], 'fk_locationable_researches_1');
             $table->timestamps();
 
-            $table->foreign('research_id', 'fk_locationable_researches_1')
-                ->references('id')->on('researches')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
+			$table->foreign('research_id', 'fk_locationable_researches_1')
+				->references('id')->on('researches')
+				->onDelete('cascade')
+				->onUpdate('cascade');
         });
     }
 
