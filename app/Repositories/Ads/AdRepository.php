@@ -76,6 +76,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
         $ad->save();
 
+        $adData["ad_id"] = $ad->id;
+
         foreach (["cities", "departments", "regions"] as $locationableType) {
             $locationables = $adData["locationable"][$locationableType] ?? [];
             if (count($locationables)) {
@@ -83,8 +85,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             }
         }
 
-        if($adData["images"]) {
-            foreach($adData["images"] as $image) {
+        if(isset($adData["documents"])) {
+            foreach($adData["documents"] as $image) {
                 $imageName = time().'.'.$image->getClientOriginalExtension();
                 $image->move(public_path('images'), $imageName);
                 $document = new Document();
@@ -96,13 +98,12 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             }
         }
 
-        if ($data["ad_type"] === "landSeek") {
-            $adData["ad_id"] = $ad->id;
+
+        if ($data["ad_type"] === "land_seek") {
             $landSeekAd = $this->landSeekAdRepository->create($adData);
         }
-        else if ($data["ad_type"] === "landOffer") {
-            $adData["ad_id"] = $ad->id;
-            $landSeekAd = $this->landSeekAdRepository->create($adData);
+        else if ($data["ad_type"] === "land_offer") {
+            //$landSeekAd = $this->landSeekAdRepository->create($adData);
         }
 
         return $ad;

@@ -1,12 +1,14 @@
-#land_seek_form .field {
-  margin-bottom: 20px;
-}
-
-.selected-zones.card {
-  margin-bottom: 20px;
-
-  .card-footer-item {
+#new-ad {
+  .field {
     margin-bottom: 20px;
   }
 
+  .wizard-tab-content {
+    display: flex; // to avoid horizontal scroll when animating
+    .wizard-tab-container {
+      display: block;
+      width:100%;
+      animation: fadeInRight 0.5s;
+    }
+  }
 }

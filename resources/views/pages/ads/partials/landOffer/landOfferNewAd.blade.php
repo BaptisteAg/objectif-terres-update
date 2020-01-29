@@ -1,5 +1,4 @@
 <div id="land_offer_form">
-    <p class="is-size-7">Les champs marqués d'un astérisque (*) sont obligatoires</p>
     <div class="field">
         {!! Form::label('landOffer[is_beneficiary]', 'Je poste l\'annonce*', ['class' => 'label']); !!}
         <div class="select">

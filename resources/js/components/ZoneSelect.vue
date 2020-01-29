@@ -56,7 +56,12 @@
 </template>
 
 <style lang="scss">
-    .selected-zones {
+    .selected-zones.card {
+        margin-bottom: 20px;
+
+        .card-footer-item {
+            margin-bottom: 20px;
+        }
 
     }
 </style>

@@ -12,14 +12,18 @@
 //import Awesomplete
 @import '~awesomplete/awesomplete.css';
 
+// Themify
+@import url('https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css');
+
+// Animate
+@import url('https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css');
 
 ///////////////
 // Pages
 @import "ads";
 
-
 /////////////////
-// Custom scss
+// Global scss
 .container-custom {
   padding: 0.5rem 2rem;
 }

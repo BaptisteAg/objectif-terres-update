@@ -1,8 +1,13 @@
-import FormNewAdMixin from './mixins/form-new-ad-mixin'
 import {maxLength, minLength, numeric, required} from 'vuelidate/lib/validators'
+
+import FormNewAdMixin from './mixins/form-new-ad-mixin'
 import TextAreaCounter from "../../../components/TextAreaCounter";
 import VueSlider from "../../../components/VueSlider";
 import ZoneSelect from '../../../components/ZoneSelect'
+import AdTypeSelect from'../../../components/AdTypeSelect'
+
+import vue2Dropzone from 'vue2-dropzone'
+import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 
 export default Vue.extend({
     mixins: [FormNewAdMixin],
@@ -11,6 +16,8 @@ export default Vue.extend({
         TextAreaCounter,
         VueSlider,
         ZoneSelect,
+        AdTypeSelect,
+        vueDropzone: vue2Dropzone
     },
     data() {
         const v = this.oldValues;
@@ -29,7 +36,7 @@ export default Vue.extend({
                 selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
                 aboutProject: hasOld ? v.about_project_content : '',
                 aboutContent: hasOld ? v.about_content: '',
-                experienceFarming: hasOld ? v.experience_farming : '',
+                experienceFarming: hasOld ? (v.experience_farming || '') : '',
             },
         }
     },
@@ -47,10 +54,10 @@ export default Vue.extend({
     },
     validations: {
         formInput: {
-            installationTypeId: {required},
             selectedZones: {
                 hasZone() { return this.formInput.selectedZones.length; }
             },
+            installationTypeId: {required},
             productionGenre: {required},
             minRent: {numeric},
             maxRent: {numeric},

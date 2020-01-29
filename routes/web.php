@@ -63,7 +63,6 @@ Route::get('inscription', 'Auth\RegisterController@showRegistrationForm')->name(
 Route::post('inscription', 'Auth\RegisterController@register');
 
 // Password Reset Routes...
-
 Route::prefix('motdepasse')->name('password.')->group(function () {
 	Route::get('reinitialiser', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('request');
 	Route::post('email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('email');

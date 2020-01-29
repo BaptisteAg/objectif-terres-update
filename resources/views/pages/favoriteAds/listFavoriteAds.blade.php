@@ -1,6 +1,6 @@
 @extends ('default')
 
-@section ('title', 'Consulter la liste de vos annonces sauvegardées')
+@section ('title', 'Consulter la liste de vos annonces favorites')
 
 @section('main-content')
 
@@ -10,11 +10,11 @@
 			<nav class="level">
 				<div class="level-left">
 					<div>
-						<h1 class="title">Liste des annonces sauvegardées</h1>
+						<h1 class="title">Liste des annonces favorites</h1>
 						@if(count($favoriteAds) <=1)
-							<h2 class="subtitle"> {{ count($favoriteAds) }} annonce sauvegardée.</h2>
+							<h2 class="subtitle"> {{ count($favoriteAds) }} annonce favorite.</h2>
 						@else
-							<h2 class="subtitle"> {{ count($favoriteAds) }} annonces sauvegardées.</h2>
+							<h2 class="subtitle"> {{ count($favoriteAds) }} annonces favorites.</h2>
 						@endif
 					</div>
 				</div>
