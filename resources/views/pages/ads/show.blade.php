@@ -7,13 +7,13 @@
 
 @section('main-content')
 	@if($ad->ad_type === 'land_seek')
-		@include('pages.ads.partials.land_seek_show')
+		@include('pages.ads.partials.land_seek.land_seek_show')
 	@endif
 	@if($ad->ad_type === 'land_offer')
-		@include('pages.ads.partials.land_offer_show')
+		@include('pages.ads.partials.land_offer.land_offer_show')
 	@endif
 	@if($ad->ad_type === 'job_ad')
-		@include('pages.ads.partials.job_ad_show')
+		@include('pages.ads.partials.job_ad.job_ad_show')
 	@endif
 
 @endsection
@@ -39,6 +39,11 @@
                 html.classList.add('is-clipped');
 
                 modal.querySelector('.modal-background').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    modal.classList.remove('is-active');
+                    html.classList.remove('is-clipped');
+                });
+                modal.querySelector('#close-modal').addEventListener('click', function (e) {
                     e.preventDefault();
                     modal.classList.remove('is-active');
                     html.classList.remove('is-clipped');
