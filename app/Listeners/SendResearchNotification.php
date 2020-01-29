@@ -4,13 +4,11 @@ namespace App\Listeners;
 
 use App\Events\Research;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 
 class SendResearchNotification implements ShouldQueue
 {
-
-	private Research $event;
+	private $event;
 
 	/**
 	 * Create the event listener.

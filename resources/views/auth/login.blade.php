@@ -1,4 +1,5 @@
 @extends('default')
+@section('title', 'Connexion')
 
 @section('main-content')
 

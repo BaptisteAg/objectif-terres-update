@@ -74,6 +74,10 @@
             onSelect(e) {
                 e.preventDefault();
 
+                if(!e.text.value.id) {
+                    return
+                }
+
                 if(!this.multiple) {
                     this.value.splice(0,1)
                 }

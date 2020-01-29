@@ -19,8 +19,7 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
     Route::get('{id}', 'AdsController@show')->name('show');
 });
 
-Route::get('/authenticate', 'SalesForceAuthController@register');
-
+Route::get('/register', 'Salesforces\SalesForceAuthController@register');
 
 Route::prefix('recherches')->name('researches.')->namespace('Researches')->group(function () {
 	Route::get('recherche', 'ResearchesController@index')->name('index');
@@ -29,6 +28,7 @@ Route::prefix('recherches')->name('researches.')->namespace('Researches')->group
 	Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
 	Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
 });
+
 
 Route::prefix('messages')->name('adMessages.')->namespace('AdMessages')->group(function () {
 	Route::post('sauvegarde', 'AdMessagesController@create')->name('create');
@@ -48,6 +48,7 @@ Route::prefix('json')->group(function () {
         Route::post('regions', 'Json\LocationableController@regionsPolygon');
     });
 });
+
 
 // Authentication Routes...
 Route::get('connexion', 'Auth\LoginController@showLoginForm')->name('signIn');

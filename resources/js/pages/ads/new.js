@@ -18,7 +18,6 @@ Vue.component('new-ad', {
             adTypeSelected: this.oldAdTypeSelected,
             enabledForm: null
         }
-
     },
     mounted() {
         window.addEventListener("beforeunload", (e) => {
@@ -39,7 +38,10 @@ Vue.component('new-ad', {
             this.enabledForm.$v.$touch();
             if (this.enabledFormHasErrors()) {
                 e.preventDefault();
-                this.focusOnFirstError(this.enabledForm);
+
+                this.enabledForm.focusOnFirstError();
+                this.enabledForm.setInputsBorderColor();
+
                 this.isSubmitting = false;
             } else {
                 if (!confirm('Êtes-vous sûr de la saisie de votre annonce?')) {
@@ -55,32 +57,6 @@ Vue.component('new-ad', {
         },
         setEnabledForm(form) {
             this.enabledForm = form;
-        },
-        focusOnFirstError(vueForm) {
-            for (let key in Object.keys(vueForm.$v.formInput)) {
-                const inputName = Object.keys(vueForm.$v.formInput)[key];
-                if (inputName.includes("$")) return false;
-                if (vueForm.$v.formInput[inputName].$error) {
-                    let input = vueForm.$refs[inputName];
-
-                    if (input instanceof Vue) {
-                        input = vueForm.$refs[inputName].$el
-                    }
-                    if (input instanceof Element) {
-                        const tagNames = ['input', 'textarea', 'select'];
-
-                        if (!tagNames.includes(input.tagName.toLowerCase())) {
-                            input = input.querySelector(tagNames.join(','));
-                        }
-                    }
-                    try {
-                        input.focus();
-                    } catch (error) {
-                        console.log(error)
-                    }
-                    return true;
-                }
-            }
         }
     }
 });

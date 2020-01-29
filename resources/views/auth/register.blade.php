@@ -1,4 +1,5 @@
 @extends('default')
+@section('title', 'Inscription')
 
 @section('main-content')
 	<div class="section">
