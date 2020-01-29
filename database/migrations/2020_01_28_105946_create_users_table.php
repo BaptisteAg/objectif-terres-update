@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateUsersTable extends Migration
 {
+	/**
+	 * Schema table name to migrate
+	 * @var string
+	 */
+	public $tableName = 'users';
     /**
      * Run the migrations.
      *
@@ -13,7 +18,9 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+		Schema::dropIfExists($this->tableName);
+
+        Schema::create($this->tableName, function (Blueprint $table) {
 			$table->increments('id');
 			$table->string('name');
 			$table->string('first_name');
@@ -25,13 +32,17 @@ class CreateUsersTable extends Migration
 			$table->string('email')->unique();
 			$table->timestamp('email_verified_at')->nullable();
 			$table->string('password');
+			$table->unsignedSmallInteger('country_id');
 			$table->rememberToken();
 			$table->timestamps();
 
-			$table->foreign('country_id')
+			$table->index(["country_id"], 'fk_users_countries_1_idx');
+			$table->foreign('country_id', 'fk_users_countries_1_idx')
 				->references('id')->on('countries');
 
         });
+
+
     }
 
     /**
@@ -41,6 +52,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists($this->tableName);
     }
 }

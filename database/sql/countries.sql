@@ -19,10 +19,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pays`
+-- Table structure for table `countries`
 --
 
-CREATE TABLE IF NOT EXISTS `pays` (
+CREATE TABLE IF NOT EXISTS `countries` (
   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
   `code` int(3) NOT NULL,
   `alpha2` varchar(2) NOT NULL,
@@ -33,13 +33,13 @@ CREATE TABLE IF NOT EXISTS `pays` (
   UNIQUE KEY `alpha2` (`alpha2`),
   UNIQUE KEY `alpha3` (`alpha3`),
   UNIQUE KEY `code_unique` (`code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=242 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=242 ;
 
 --
--- Dumping data for table `pays`
+-- Dumping data for table `countries`
 --
 
-INSERT INTO `pays` (`id`, `code`, `alpha2`, `alpha3`, `name_en_gb`, `name_fr_fr`) VALUES
+INSERT INTO `countries` (`id`, `code`, `alpha2`, `alpha3`, `name_en_gb`, `name_fr_fr`) VALUES
 (1, 4, 'AF', 'AFG', 'Afghanistan', 'Afghanistan'),
 (2, 8, 'AL', 'ALB', 'Albania', 'Albanie'),
 (3, 10, 'AQ', 'ATA', 'Antarctica', 'Antarctique'),

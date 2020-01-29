@@ -49,6 +49,7 @@ class DatabaseSeeder extends Seeder
             ResearchSeeder::class,
             UserToUserMessageSeeder::class,
             EducationLevelSeeder::class,
+			
         ]);
 
         factory(Ad::class, 25)->create()->each(function (Ad $ad) use(&$queriesCount) {
@@ -72,6 +73,7 @@ class DatabaseSeeder extends Seeder
         factory(JobAd::class, 10)->create()->each(function (JobAd $jobAd) {
             $jobAd->agriculturalActivity()->save(factory(AgriculturalActivity::class)->make());
         });
+
 
         echo "\nTotal queries : ".$queriesCount."\n";
     }
