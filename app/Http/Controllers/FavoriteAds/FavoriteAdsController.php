@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class FavoriteAdsController extends Controller
 {
 
-	protected FavoriteAdRepository $favoriteAdRepository;
+	protected  $favoriteAdRepository;
 
 	public function __construct(FavoriteAdRepository $favoriteAdRepository)
 	{

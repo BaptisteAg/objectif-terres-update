@@ -49,7 +49,6 @@
                                     @include('pages.ads.partials.land_seek.land_seek_new_ad')
                                 </new-land-seek-ad>
 
-
                                 <new-land-offer-ad inline-template
                                                    v-show="adTypeSelected === 'land_offer'"
                                                    :is-input-disabled="adTypeSelected !== 'land_offer'"
@@ -74,7 +73,7 @@
             <div class="column"></div>
         </div>
         @include('components.partnering')
-        @include('components.support_terre_liens')
+        @include('components.supportTerreLiens')
     </section>
 @endsection
 

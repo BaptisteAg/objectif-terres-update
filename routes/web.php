@@ -23,18 +23,21 @@ Route::get('/register', 'Salesforces\SalesForceAuthController@register');
 
 Route::prefix('recherches')->name('researches.')->namespace('Researches')->group(function () {
 	Route::get('recherche', 'ResearchesController@index')->name('index');
-	Route::post('sauvegarde', 'ResearchesController@store')->name('store');
-	Route::get('liste', 'ResearchesController@show')->name('show');
-	Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
-	Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
+
+	Route::middleware('auth')->group(function (){
+		Route::post('sauvegarde', 'ResearchesController@store')->name('store');
+		Route::get('liste', 'ResearchesController@show')->name('show');
+		Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
+		Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
+	});
+
 });
 
-
-Route::prefix('messages')->name('adMessages.')->namespace('AdMessages')->group(function () {
-	Route::post('sauvegarde', 'AdMessagesController@create')->name('create');
+Route::middleware('auth')->prefix('messages')->name('adMessages.')->namespace('AdMessages')->group(function () {
+	Route::post('creer', 'AdMessagesController@create')->name('create');
 });
 
-Route::prefix('annonces-favorites')->name('favoriteAds.')->namespace('favoriteAds')->group(function () {
+Route::prefix('annonces-favorites')->middleware('auth')->name('favoriteAds.')->namespace('favoriteAds')->group(function () {
 	Route::post('sauvegarde', 'FavoriteAdsController@create')->name('create');
 	Route::get('liste', 'FavoriteAdsController@show')->name('show');
 	Route::post('supprimer', 'FavoriteAdsController@destroy')->name('destroy');

@@ -180,7 +180,6 @@
 				agricole, de stages ou de bénévolat sur
 				des fermes ou encore si vous êtes
 				titulaires de diplômes agricoles.">
-                    Expérience dans le domaine agricole
                     <i class="fas fa-info-circle has-text-info"></i>
                 </label>
 

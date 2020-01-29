@@ -6,14 +6,14 @@
 
 
 @section('main-content')
-	@if($ad->ad_type === 'land_seek')
-		@include('pages.ads.partials.land_seek.land_seek_show')
+	@if($ad->ad_type === 'landSeek')
+		@include('pages.ads.partials.landSeek.landSeekShow')
 	@endif
-	@if($ad->ad_type === 'land_offer')
-		@include('pages.ads.partials.land_offer.land_offer_show')
+	@if($ad->ad_type === 'landOffer')
+		@include('pages.ads.partials.landOffer.landOfferShow')
 	@endif
-	@if($ad->ad_type === 'job_ad')
-		@include('pages.ads.partials.job_ad.job_ad_show')
+	@if($ad->ad_type === 'jobAd')
+		@include('pages.ads.partials.jobAd.jobAdShow')
 	@endif
 
 @endsection

@@ -51,5 +51,5 @@
 		</div>
 	</div>
 
-	@include('components.support_terre_liens')
+	@include('components.supportTerreLiens')
 @endsection

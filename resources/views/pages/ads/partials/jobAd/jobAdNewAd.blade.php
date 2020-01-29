@@ -1,8 +1,8 @@
 <div id="job_ad_form">
 	<div class="field">
-		{!! Form::label('job_ad[is_beneficiary]', 'Je poste l\'annonce*', ['class' => 'label']); !!}
+		{!! Form::label('jobAd[is_beneficiary]', 'Je poste l\'annonce*', ['class' => 'label']); !!}
 		<div class="select">
-			{!! Form::select('job_ad[is_beneficiary]',
+			{!! Form::select('jobAd[is_beneficiary]',
 				[
 					'true' => 'En mon nom',
 					'false' => 'Pour le compte d\'une autre personne'
@@ -18,9 +18,9 @@
 		<p class="help is-danger" id="beneficiaryError" v-if="$v.formInput.beneficiary.$error">Ce champ est requis.</p>
 	</div>
 	<div class="field">
-		{!! Form::label('job_ad[is_offer]', 'Offre ou recherche* ', ['class' => 'label']); !!}
+		{!! Form::label('jobAd[is_offer]', 'Offre ou recherche* ', ['class' => 'label']); !!}
 		<div class="select">
-			{!! Form::select('job_ad[is_offer]',
+			{!! Form::select('jobAd[is_offer]',
 				[
 					1 => 'Je propose une opportunité professionnelle',
 					0 => 'Je cherche une opportunité professionnelle'
@@ -49,15 +49,15 @@
 
 	<div class="field">
 		<div v-if="isInputRequired === true">
-			{!! Form::label('job_ad[agricultural_activity][]', 'Activités agricoles*', ['class' => 'label']); !!}
+			{!! Form::label('jobAd[agricultural_activity][]', 'Activités agricoles*', ['class' => 'label']); !!}
 
 		</div>
 		<div v-else>
-			{!! Form::label('job_ad[agricultural_activity][]', 'Activités agricoles', ['class' => 'label']); !!}
+			{!! Form::label('jobAd[agricultural_activity][]', 'Activités agricoles', ['class' => 'label']); !!}
 		</div>
 		@foreach ($agriculturalActivities->pluck('name', 'id') as $id => $agriculturalActivity)
 			{!! Form::checkbox(
-					'job_ad[agricultural_activity][]',
+					'jobAd[agricultural_activity][]',
 					$id,
 					null,
 					[':disabled'=>'isInputDisabled',
@@ -72,15 +72,15 @@
 	</div>
 	<div class="field">
 		<div v-if="isInputRequired === true">
-			{!! Form::label('job_ad[job_status]', 'Statut* ', ['class' => 'label']); !!}
+			{!! Form::label('jobAd[job_status]', 'Statut* ', ['class' => 'label']); !!}
 		</div>
 		<div v-else>
-			{!! Form::label('job_ad[job_status]', 'Statut ', ['class' => 'label']); !!}
+			{!! Form::label('jobAd[job_status]', 'Statut ', ['class' => 'label']); !!}
 		</div>
 		<div class="select">
-			{!! Form::select('job_ad[job_status]',
+			{!! Form::select('jobAd[job_status]',
 					$jobStatus->pluck('name'),
-					old('job_ad[job_status]'),
+					old('jobAd[job_status]'),
 					 ['placeholder' => 'Veuillez séléctionner...',
 					 ':disabled'=>'isInputDisabled',
 					 'v-model.trim.lazy'=>'formInput.jobStatus',
@@ -91,9 +91,9 @@
 			obligatoire.</p>
 	</div>
 	<div class="field">
-		{!! Form::label('job_ad[experience_farming]', 'Expérience dans le milieu agricole (en années)', ['class' => 'label']); !!}
-		{!! Form::text('job_ad[experience_farming]',
-				 old('job_ad[experience_farming]'),
+		{!! Form::label('jobAd[experience_farming]', 'Expérience dans le milieu agricole (en années)', ['class' => 'label']); !!}
+		{!! Form::text('jobAd[experience_farming]',
+				 old('jobAd[experience_farming]'),
 				 ['min'=>0,
 				  'class' => 'input',
 				  ':disabled'=>'isInputDisabled',
@@ -102,11 +102,11 @@
 		<p class="help is-danger" v-if="!$v.formInput.experienceFarming.numeric">Veuillez saisir des chiffres.</p>
 	</div>
 	<div class="field">
-		{!! Form::label('job_ad[education_level]', 'Niveau de formation agricole ', ['class' => 'label']); !!}
+		{!! Form::label('jobAd[education_level]', 'Niveau de formation agricole ', ['class' => 'label']); !!}
 		<div class="select">
-			{!! Form::select('job_ad[is_offer]',
+			{!! Form::select('jobAd[is_offer]',
 					$educationLevels->pluck('name', 'id'),
-					  old('job_ad[education_level]'),
+					  old('jobAd[education_level]'),
 					  ['placeholder' => 'Veuillez séléctionner...',
 					   ':disabled'=>'isInputDisabled']);!!}
 		</div>
@@ -146,7 +146,7 @@
 		</text-area-counter>
 	</div>
 	<div class="field">
-		{!! Form::label('job_ad[title]', 'Titre de votre annonce*', ['class' => 'label is-inline-block']); !!}
+		{!! Form::label('jobAd[title]', 'Titre de votre annonce*', ['class' => 'label is-inline-block']); !!}
 		<button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-right" data-tooltip="Le titre de l’annonce est primordial ! Il
 				s’agit de votre carte de visite sur la
 				plateforme. Un titre clair et bien
@@ -154,8 +154,8 @@
 				contacts !">
 			<i class="fas fa-info-circle"></i>
 		</button>
-		{!! Form::text('job_ad[title]',
-				 old('job_ad[title]'),
+		{!! Form::text('jobAd[title]',
+				 old('jobAd[title]'),
 				  ['class' => 'input',
 					':disabled'=>'isInputDisabled',
 					'v-model.trim.lazy' => 'formInput.title',
@@ -170,7 +170,7 @@
 		<span>Augmentez votre chance d'être vu! Une photo augmente vos chances d’être recontactés !</span>
 		<div class="file">
 			<label class="file-label">
-				{!! Form::file('job_ad[image]', ['class' => 'file-input', ':disabled'=>'isInputDisabled'] ) !!}
+				{!! Form::file('jobAd[image]', ['class' => 'file-input', ':disabled'=>'isInputDisabled'] ) !!}
 				<span class="file-cta">
                     <span class="file-icon">
                         <i class="fas fa-upload"></i>

@@ -1,11 +1,11 @@
 <div id="land_offer_form">
     <div class="field">
-        {!! Form::label('land_offer[is_beneficiary]', 'Je poste l\'annonce*', ['class' => 'label']); !!}
+        {!! Form::label('landOffer[is_beneficiary]', 'Je poste l\'annonce*', ['class' => 'label']); !!}
         <div class="select">
-            {!! Form::select('land_offer[is_beneficiary]',
+            {!! Form::select('landOffer[is_beneficiary]',
                      ['true' => 'En mon nom',
                      'false' => 'Pour le compte d\'une autre personne'],
-                      old('land_offer[is_beneficiary]'),
+                      old('landOffer[is_beneficiary]'),
                       [
                           'placeholder' => 'Veuillez séléctionner...',
                           ':disabled' => 'isInputDisabled',
@@ -19,7 +19,7 @@
     <div class="columns">
         <div class="column is-half">
             <div class="field">
-                {!! Form::label('land_offer[zip_code]', 'Code postal*', ['class' => 'label']); !!}
+                {!! Form::label('landOffer[zip_code]', 'Code postal*', ['class' => 'label']); !!}
                 <div class="control">
                     <autocomplete
                             id="land_offer_zone-autocomplete"
@@ -50,19 +50,19 @@
         <div class="column"></div>
     </div>
     <div class="field">
-        {!! Form::checkbox('land_offer[accept_use_zip_code]', '1', old('land_offer[accept_use_zip_code]'), [':disabled'=>'isInputDisabled']) !!}
+        {!! Form::checkbox('landOffer[accept_use_zip_code]', '1', old('landOffer[accept_use_zip_code]'), [':disabled'=>'isInputDisabled']) !!}
         J'accepte que le code postal soit utilisé pour localiser l'annonce (recommandé). A défaut, l'annonce sera localisée au niveau départemental.
     </div>
     <div class="field">
-        {!! Form::label('land_offer[surface]', 'Surface du foncier agricole(en ha)*', ['class' => 'label']); !!}
-        {!! Form::number('land_offer[surface]', null, ['min'=>0, 'class' => 'input', ':disabled'=>'isInputDisabled', 'v-model' => 'formInput.surface'] ) !!}
+        {!! Form::label('landOffer[surface]', 'Surface du foncier agricole(en ha)*', ['class' => 'label']); !!}
+        {!! Form::number('landOffer[surface]', null, ['min'=>0, 'class' => 'input', ':disabled'=>'isInputDisabled', 'v-model' => 'formInput.surface'] ) !!}
         <p class="help is-danger" id="surfaceError" v-if="$v.formInput.surface.$error">Ce champ est
             requis.</p>
     </div>
     <div class="field">
-        {!! Form::label('land_offer[lands_offer_genre][]', 'Type de cession du foncier', ['class' => 'label']); !!}
+        {!! Form::label('landOffer[lands_offer_genre][]', 'Type de cession du foncier', ['class' => 'label']); !!}
         @foreach ($offerGenresLand->pluck('name','id') as $landOffer)
-            {!! Form::checkbox('land_offer[lands_offer_genre][]', $landOffer,  old('land_offer[lands_offer_genre[]]'), [':disabled'=>'isInputDisabled']) !!}
+            {!! Form::checkbox('landOffer[lands_offer_genre][]', $landOffer,  old('landOffer[lands_offer_genre[]]'), [':disabled'=>'isInputDisabled']) !!}
             {{$landOffer}}
         @endforeach
     </div>
@@ -70,15 +70,15 @@
     <div class="columns">
         <div class="column is-one-third">
             <div class="field">
-                {!! Form::label('land_offer[building_number]', 'Nombre', ['class' => 'label']); !!}
-                {!! Form::number('land_offer[building_number]', old('land_offer[building_number]'), ['min'=>0, 'class' => 'input', ':disabled'=>'isInputDisabled'] ) !!}
+                {!! Form::label('landOffer[building_number]', 'Nombre', ['class' => 'label']); !!}
+                {!! Form::number('landOffer[building_number]', old('landOffer[building_number]'), ['min'=>0, 'class' => 'input', ':disabled'=>'isInputDisabled'] ) !!}
             </div>
         </div>
         <div class="column ">
             <div class="field">
-                {!! Form::label('land_offer[building_surface]', 'Surface (en m²)', ['class' => 'label']); !!}
-                {!! Form::number('land_offer[building_surface]',
-                         old('land_offer[building_surface]'),
+                {!! Form::label('landOffer[building_surface]', 'Surface (en m²)', ['class' => 'label']); !!}
+                {!! Form::number('landOffer[building_surface]',
+                         old('landOffer[building_surface]'),
                           ['min' => 0,
                            'class' => 'input',
                            ':disabled' => 'isInputDisabled']) !!}
@@ -86,9 +86,9 @@
         </div>
         <div class="column ">
             <div class="field">
-                {!! Form::label('land_offer[building_offer_genre][]', 'Type de cession', ['class' => 'label']); !!}
+                {!! Form::label('landOffer[building_offer_genre][]', 'Type de cession', ['class' => 'label']); !!}
                 @foreach ($offerGenresBuilding->pluck('name' ,'id') as $buildingOffer)
-                    {!! Form::checkbox('land_offer[building_offer_genre][]', $buildingOffer, old('land_offer[building_offer_genre[]]'), [':disabled'=>'isInputDisabled']) !!}
+                    {!! Form::checkbox('landOffer[building_offer_genre][]', $buildingOffer, old('landOffer[building_offer_genre[]]'), [':disabled'=>'isInputDisabled']) !!}
                     {{$buildingOffer}}
                 @endforeach
             </div>
@@ -98,21 +98,21 @@
     <div class="columns">
         <div class="column is-one-third">
             <div class="field">
-                {!! Form::label('land_offer[house_number]', 'Nombre de pièces', ['class' => 'label']); !!}
-                {!! Form::number('land_offer[house_number]', old('land_offer[house_number]'), ['min'=> 0, 'class' => 'input', ':disabled'=>'isInputDisabled']); !!}
+                {!! Form::label('landOffer[house_number]', 'Nombre de pièces', ['class' => 'label']); !!}
+                {!! Form::number('landOffer[house_number]', old('landOffer[house_number]'), ['min'=> 0, 'class' => 'input', ':disabled'=>'isInputDisabled']); !!}
             </div>
         </div>
         <div class="column ">
             <div class="field">
-                {!! Form::label('land_offer[house_surface]', 'Surface (en m²)', ['class' => 'label']); !!}
-                {!! Form::number('land_offer[house_surface]', old('land_offer[house_surface]'), ['min'=> 0, 'class' => 'input', ':disabled'=>'isInputDisabled']); !!}
+                {!! Form::label('landOffer[house_surface]', 'Surface (en m²)', ['class' => 'label']); !!}
+                {!! Form::number('landOffer[house_surface]', old('landOffer[house_surface]'), ['min'=> 0, 'class' => 'input', ':disabled'=>'isInputDisabled']); !!}
             </div>
         </div>
         <div class="column ">
             <div class="field">
-                {!! Form::label('land_offer[house_offer_genre][]', 'Type de cession', ['class' => 'label']); !!}
+                {!! Form::label('landOffer[house_offer_genre][]', 'Type de cession', ['class' => 'label']); !!}
                 @foreach ($offerGenresHouse->pluck('name', 'id') as $houseOffer)
-                    {!! Form::checkbox('land_offer[house_offer_genre][]', $houseOffer, old('land_offer[house_offer_genre[]]'), [':disabled' => 'isInputDisabled']) !!}
+                    {!! Form::checkbox('landOffer[house_offer_genre][]', $houseOffer, old('landOffer[house_offer_genre[]]'), [':disabled' => 'isInputDisabled']) !!}
                     {{$houseOffer}}
                 @endforeach
             </div>
@@ -120,39 +120,39 @@
     </div>
     <p class="has-text-centered is-size-4">Appel à candidature</p>
     <div class="field">
-        {!! Form::checkbox('land_offer[is_call_for_application_community]',
+        {!! Form::checkbox('landOffer[is_call_for_application_community]',
         'true',
-        old('land_offer[is_call_for_application_community]'),
+        old('landOffer[is_call_for_application_community]'),
         [':disabled' => 'isInputDisabled']) !!}
         Il s'agit d’un appel à candidatures dans le cadre d'un projet soutenu par une collectivité
     </div>
     <div class="field">
-        {!! Form::checkbox('land_offer[is_call_for_application_terre_de_liens]',
+        {!! Form::checkbox('landOffer[is_call_for_application_terre_de_liens]',
         'true',
-        old('land_offer[is_call_for_application_terre_de_liens]'),
+        old('landOffer[is_call_for_application_terre_de_liens]'),
         [':disabled' => 'isInputDisabled']) !!}
         Il s’agit d’un appel à candidatures pour une ferme Terre de Liens
     </div>
     <div class="field">
-        {!! Form::checkbox('land_offer[is_call_for_application_test_area]',
+        {!! Form::checkbox('landOffer[is_call_for_application_test_area]',
         'true',
-        old('land_offer[is_call_for_application_test_area]'),
+        old('landOffer[is_call_for_application_test_area]'),
         [':disabled' => 'isInputDisabled']) !!}
         Il s’agit d’un appel à candidatures dans le cadre d'un Espace test
     </div>
     <div class="field">
-        {!! Form::label('land_offer[is_activity_transfer]', 'Transmission d\'activité (ferme toujours en fonctionnement)*', ['class' => 'label']) !!}
-        {!! Form::radio('land_offer[is_activity_transfer]',
+        {!! Form::label('landOffer[is_activity_transfer]', 'Transmission d\'activité (ferme toujours en fonctionnement)*', ['class' => 'label']) !!}
+        {!! Form::radio('landOffer[is_activity_transfer]',
         1,
-        old('land_offer[is_activity_transfer]'),
+        old('landOffer[is_activity_transfer]'),
         [':disabled' => 'isInputDisabled',
         'v-model' => 'formInput.isActivityTransfer',
 		'ref' => 'formInput.isActivityTransfer',
 		'aria-describedby'=>'isActivityTransferError']) !!}
         Oui
-        {!! Form::radio('land_offer[is_activity_transfer]',
+        {!! Form::radio('landOffer[is_activity_transfer]',
         0,
-        old('land_offer[is_activity_transfer]'),
+        old('landOffer[is_activity_transfer]'),
         [':disabled' => 'isInputDisabled',
         'v-model' => 'formInput.isActivityTransfer',
 		'ref' => 'formInput.isActivityTransfer',
@@ -164,21 +164,21 @@
 
     <div class="columns">
         <div class="column is-half" v-show="formInput.isActivityTransfer === '0'">
-            {!! Form::label('land_offer[land_availability]', 'A partir de quand votre terre est-elle disponible ?', ['class' => 'label']); !!}
-            {!! Form::date('land_offer[land_availability]', old('land_offer[land_availability]'), [ ':disabled' => 'isInputDisabled'] ) !!}
+            {!! Form::label('landOffer[land_availability]', 'A partir de quand votre terre est-elle disponible ?', ['class' => 'label']); !!}
+            {!! Form::date('landOffer[land_availability]', old('landOffer[land_availability]'), [ ':disabled' => 'isInputDisabled'] ) !!}
         </div>
         <div class="column" v-show="formInput.isActivityTransfer === '1' ">
-            {!! Form::label('land_offer[land_transfer_deadline]', 'Avant quelle date souhaitez-vous transmettre votre ferme ?', ['class' => 'label']); !!}
-            {!! Form::date('land_offer[land_transfer_deadline]', old('land_offer[land_availability]'), [ ':disabled' => 'isInputDisabled'] ) !!}
+            {!! Form::label('landOffer[land_transfer_deadline]', 'Avant quelle date souhaitez-vous transmettre votre ferme ?', ['class' => 'label']); !!}
+            {!! Form::date('landOffer[land_transfer_deadline]', old('landOffer[land_availability]'), [ ':disabled' => 'isInputDisabled'] ) !!}
         </div>
     </div>
     <div class="field" v-show="formInput.isActivityTransfer === '1' ">
-        {!! Form::label('land_offer[production_genre][]', 'Système de production en place*', ['class' => 'label']); !!}
+        {!! Form::label('landOffer[production_genre][]', 'Système de production en place*', ['class' => 'label']); !!}
         @foreach ($productionGenres->pluck('name', 'id') as $id => $productionGenre)
             {!! Form::checkbox(
-                'land_offer[production_genre][]',
+                'landOffer[production_genre][]',
                 $id,
-                in_array($id, old('land_offer[production_genre][]', [])),
+                in_array($id, old('landOffer[production_genre][]', [])),
                 [
                     ':disabled' => 'isInputDisabled || !formInput.isActivityTransfer',
                     'v-model'=>'formInput.productionGenre',
@@ -196,9 +196,9 @@
         <p class="help is-danger" id="productionGenreError" v-show="$v.formInput.productionGenre.$error">Ce champ est requis.</p>
     </div>
     <div class="field" v-show="isProductionGenreOther">
-        {!! Form::label('land_offer[other_production_genre]', 'Autre production : Veuillez préciser', ['class' => 'label']); !!}
-        {!! Form::text('land_offer[other_production_genre]',
-                 in_array('other', old('land_offer[production_genre][]', [])),
+        {!! Form::label('landOffer[other_production_genre]', 'Autre production : Veuillez préciser', ['class' => 'label']); !!}
+        {!! Form::text('landOffer[other_production_genre]',
+                 in_array('other', old('landOffer[production_genre][]', [])),
                  ['class' => 'input',
                  ':disabled' => 'isInputDisabled']) !!}
     </div>
@@ -212,9 +212,9 @@
 
         @foreach ($productionGenres->pluck('name', 'id') as $id => $productionGenre)
             {!! Form::checkbox(
-            'land_offer[production_genre_wanted][]',
+            'landOffer[production_genre_wanted][]',
             $id,
-            in_array($id, old('land_offer[production_genre_wanted][]', [])),
+            in_array($id, old('landOffer[production_genre_wanted][]', [])),
             [
                 ':disabled' => 'isInputDisabled',
                 'v-model'=>'formInput.productionGenreWanted',
@@ -223,35 +223,35 @@
             ) !!}
             {{$productionGenre}}
         @endforeach
-        {!! Form::checkbox('land_offer[production_genre_wanted][]',
+        {!! Form::checkbox('landOffer[production_genre_wanted][]',
                 'other',
                 null,
                 ['v-model' => 'formInput.productionGenreWanted',
                 ':disabled' => 'isInputDisabled' ]) !!}
         Autre
-        {!! Form::checkbox('land_offer[production_genre_wanted][]',
+        {!! Form::checkbox('landOffer[production_genre_wanted][]',
                 '',
-                old('land_offer[production_genre_wanted[]]'),
+                old('landOffer[production_genre_wanted[]]'),
                 [':disabled' => 'isInputDisabled' ]) !!}
         Je ne sais pas
     </div>
     <div class="field" v-show="isProductionGenreWantedOther">
-        {!! Form::label('land_offer[other_production_genre_wanted]', 'Autre production : Veuillez préciser', ['class' => 'label']); !!}
-        {!! Form::text('land_offer[other_production_genre_wanted]',
-                 old('land_offer[other_production_genre_wanted]'),
+        {!! Form::label('landOffer[other_production_genre_wanted]', 'Autre production : Veuillez préciser', ['class' => 'label']); !!}
+        {!! Form::text('landOffer[other_production_genre_wanted]',
+                 old('landOffer[other_production_genre_wanted]'),
                   ['class' => 'input',
                    ':disabled' => 'isInputDisabled'] ) !!}
     </div>
     <div class="columns">
         <div class="column is-two-thirds">
             <div class="field">
-                {!! Form::label('land_offer[water_access]', 'Accès à l\'eau (forage, réserve d\'eau, canal d’irrigation, borne)*', ['class' => 'label']); !!}
+                {!! Form::label('landOffer[water_access]', 'Accès à l\'eau (forage, réserve d\'eau, canal d’irrigation, borne)*', ['class' => 'label']); !!}
                 <div class="select">
-                    {!! Form::select('land_offer[water_access]',
+                    {!! Form::select('landOffer[water_access]',
                              ['oui' => 'Oui',
                              'non' => 'Non',
                               '' => 'Je ne sais pas'],
-                              old('land_offer[water_access]'),
+                              old('landOffer[water_access]'),
                               ['placeholder' => 'Veuillez séléctionner...',
                               ':disabled' => 'isInputDisabled']); !!}
                 </div>
@@ -259,9 +259,9 @@
         </div>
         <div class="column">
             <div class="field">
-                {!! Form::label('land_offer[altitude]', 'Altitude (en m)*', ['class' => 'label']); !!}
+                {!! Form::label('landOffer[altitude]', 'Altitude (en m)*', ['class' => 'label']); !!}
                 <div class="control">
-                    {!! Form::text('land_offer[altitude]',
+                    {!! Form::text('landOffer[altitude]',
                              null,
                              ['min'=> 0,
                               'class' => 'input',
@@ -277,11 +277,11 @@
         </div>
     </div>
     <div class="field">
-        {!! Form::label('land_offer[bio_certification][]', 'Certification bio des terres*', ['class' => 'label']); !!}
+        {!! Form::label('landOffer[bio_certification][]', 'Certification bio des terres*', ['class' => 'label']); !!}
         @foreach ($bioCertifications->pluck('name') as $bioCertification)
-            {!! Form::checkbox('land_offer[bio_certification][]',
+            {!! Form::checkbox('landOffer[bio_certification][]',
             $bioCertification,
-            old('land_offer[bio_certification[]]'),
+            old('landOffer[bio_certification[]]'),
             [':disabled' => 'isInputDisabled',
             'v-model.trim.lazy' => 'formInput.bioCertification',
             'ref' => 'bioCertification',
@@ -296,9 +296,9 @@
     <div class="columns">
         <div class="column is-one-third">
             <div class="field">
-                {!! Form::label('land_offer[land_price]', 'Foncier', ['class' => 'label']); !!}
-                {!! Form::number('land_offer[land_price]',
-                         old('land_offer[land_price]'),
+                {!! Form::label('landOffer[land_price]', 'Foncier', ['class' => 'label']); !!}
+                {!! Form::number('landOffer[land_price]',
+                         old('landOffer[land_price]'),
                           ['min' => 0,
                            'class' => 'input',
                             ':disabled' => 'isInputDisabled',
@@ -307,9 +307,9 @@
         </div>
         <div class="column">
             <div class="field">
-                {!! Form::label('land_offer[house_price]', 'Habitation', ['class' => 'label']); !!}
-                {!! Form::number('land_offer[house_price]',
-                         old('land_offer[house_price]'),
+                {!! Form::label('landOffer[house_price]', 'Habitation', ['class' => 'label']); !!}
+                {!! Form::number('landOffer[house_price]',
+                         old('landOffer[house_price]'),
                           ['min' => 0,
                            'class' => 'input',
                            ':disabled' => 'isInputDisabled',
@@ -318,9 +318,9 @@
         </div>
         <div class="column ">
             <div class="field">
-                {!! Form::label('land_offer[building_price]', 'Bâti', ['class' => 'label']); !!}
-                {!! Form::number('land_offer[building_price]',
-                         old('land_offer[building_price]'),
+                {!! Form::label('landOffer[building_price]', 'Bâti', ['class' => 'label']); !!}
+                {!! Form::number('landOffer[building_price]',
+                         old('landOffer[building_price]'),
                           ['min'=> 0,
                            'class' => 'input',
                            ':disabled' => 'isInputDisabled'] ) !!}
@@ -391,7 +391,7 @@
 
     </div>
     <div class="field">
-        {!! Form::label('land_offer[title]', 'Titre de votre annonce*', ['class' => 'label is-inline-block']); !!}
+        {!! Form::label('landOffer[title]', 'Titre de votre annonce*', ['class' => 'label is-inline-block']); !!}
         <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-right" data-tooltip="Le titre de l’annonce est primordial !
 				Il s’agit de votre carte de visite sur la
 				plateforme. Un titre clair et bien
@@ -399,7 +399,7 @@
 				contacts !">
             <i class="fas fa-info-circle"></i>
         </button>
-        {!! Form::text('land_offer[title]', old('land_offer[title]'),
+        {!! Form::text('landOffer[title]', old('landOffer[title]'),
                  ['class' => 'input',
                   ':disabled' => 'isInputDisabled',
                   'v-model.trim' => 'formInput.title',
@@ -419,19 +419,19 @@
         </button>
         <div class="file">
             <label class="file-label">
-                {!! Form::file('land_offer[image1]',
+                {!! Form::file('landOffer[image1]',
                          ['class' => 'file-input',
                           ':disabled' => 'isInputDisabled']) !!}
-                {!! Form::file('land_offer[image2]',
+                {!! Form::file('landOffer[image2]',
                          ['class' => 'file-input',
                           ':disabled'=>'isInputDisabled'] ) !!}
-                {!! Form::file('land_offer[image3]',
+                {!! Form::file('landOffer[image3]',
                          ['class' => 'file-input',
                           ':disabled'=>'isInputDisabled'] ) !!}
-                {!! Form::file('land_offer[image4]',
+                {!! Form::file('landOffer[image4]',
                          ['class' => 'file-input',
                           ':disabled' => 'isInputDisabled'] ) !!}
-                {!! Form::file('land_offer[image5]',
+                {!! Form::file('landOffer[image5]',
                          ['class' => 'file-input',
                           ':disabled' => 'isInputDisabled'] ) !!}
                 <span class="file-cta">
