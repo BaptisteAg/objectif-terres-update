@@ -27,9 +27,18 @@
                                 inline-template
                                 :old-ad-type-selected="'{{old('ad_type')}}'">
 
-                            <form enctype="multipart/form-data" @submit="submit" ref="form">
+                            <form
+                                method="post"
+                                enctype="multipart/form-data"
+                                @submit="submit"
+                                ref="form">
 
-                                <ad-type-select v-model="adTypeSelected"></ad-type-select>
+                                {{ csrf_field() }}
+
+                                <ad-type-select
+                                    v-model="adTypeSelected"
+                                    name="ad_type">
+                                </ad-type-select>
 
                                 <new-land-seek-ad inline-template
                                                   v-show="adTypeSelected === 'land_seek'"
@@ -56,29 +65,6 @@
                                                   @input-enabled="setEnabledForm">
                                     @include('pages.ads.partials.job_ad.job_ad_new_ad')
                                 </new-job-offer-ad>
-
-                                <template v-if="adTypeSelected !== ''">
-                                    <article class="message is-warning" v-if="enabledFormHasErrors()">
-                                        <div class="message-header">
-                                            <p>Veuillez revoir votre formulaire</p>
-                                        </div>
-                                        <div class="message-body">
-                                            Des erreurs empêchent l'envoi du formulaire. Avez-vous tout vérifié ?
-                                        </div>
-                                    </article>
-
-                                    <div class="field is-grouped">
-                                        <div class="control">
-                                            {!! Form::submit('Envoyer',['class'=>'button is-link']) !!}
-                                        </div>
-                                        <div class="control">
-                                            <button class="button is-light">Sauvegarder</button>
-                                        </div>
-                                        <div class="control">
-                                            <button class="button is-link is-light">Annuler</button>
-                                        </div>
-                                    </div>
-                                </template>
                             </form>
                         </new-ad>
                     </div>

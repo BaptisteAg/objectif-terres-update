@@ -22,6 +22,7 @@ Vue.component('new-ad', {
         }
     },
     mounted() {
+        // Avoid accidental page leaving
         window.addEventListener("beforeunload", (e) => {
             if (this.isSubmitting) {
                 return true;
@@ -37,9 +38,11 @@ Vue.component('new-ad', {
     },
     methods: {
         submit(e) {
+            e.preventDefault();
+
             this.enabledForm.$v.$touch();
+
             if (this.enabledFormHasErrors()) {
-                e.preventDefault();
 
                 this.enabledForm.focusOnFirstError();
                 this.enabledForm.setInputsBorderColor();
@@ -49,9 +52,9 @@ Vue.component('new-ad', {
             else {
                 if (!confirm('Êtes-vous sûr de la saisie de votre annonce?')) {
                     this.isSubmitting = false;
-                    e.preventDefault();
                 } else {
                     this.isSubmitting = true;
+                    this.$el.submit()
                 }
             }
         },

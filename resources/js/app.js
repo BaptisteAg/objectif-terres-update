@@ -4,7 +4,6 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-
 _ = require('lodash');
 
 window.Vue = require('vue');

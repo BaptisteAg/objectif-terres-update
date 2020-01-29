@@ -1,24 +1,24 @@
 <div id="land_seek_form">
     <form-wizard
-            title=""
-            subtitle=""
-            next-button-text="Suivant"
-            back-button-text="Précédent"
-            finish-button-text="Publier"
-            step-size="xs"
-            @on-complete="$emit('form-complete')"
-            color="#3498db"
-            ref="formWizard">
+        title=""
+        subtitle=""
+        next-button-text="Suivant"
+        back-button-text="Précédent"
+        finish-button-text="Publier"
+        step-size="xs"
+        @on-complete="$emit('form-complete')"
+        color="#3498db"
+        ref="formWizard">
 
         <tab-content title="Zone" icon="ti-location-arrow">
             <zone-select
-                    name="land_seek[locationable]"
-                    radius-name="land_seek[locationable_radius]"
-                    json-name="land_seek[selected_zones]"
-                    ref="selectedZones"
-                    v-model="formInput.selectedZones"
-                    :vuelidate="$v.formInput.selectedZones"
-                    :disabled="isInputDisabled">
+                name="land_seek[locationable]"
+                radius-name="land_seek[locationable_radius]"
+                json-name="land_seek[selected_zones]"
+                ref="selectedZones"
+                v-model="formInput.selectedZones"
+                :vuelidate="$v.formInput.selectedZones"
+                :disabled="isInputDisabled">
             </zone-select>
         </tab-content>
 
@@ -36,7 +36,8 @@
                          'aria-describedby'=>'installationTypeIdError']); !!}
                 </div>
 
-                <p class="help is-danger" id="installationTypeIdError" v-if="$v.formInput.installationTypeId.$error">Ce champ
+                <p class="help is-danger" id="installationTypeIdError" v-if="$v.formInput.installationTypeId.$error">Ce
+                    champ
                     est requis.</p>
             </div>
 
@@ -85,7 +86,8 @@
                 'ref' => 'productionGenre',
                 'aria-describedby'=>'productionGenreError']) !!}
                 Autre
-                <p class="help is-danger" id="productionGenreError" v-if="$v.formInput.productionGenre.$error">Ce champ est
+                <p class="help is-danger" id="productionGenreError" v-if="$v.formInput.productionGenre.$error">Ce champ
+                    est
                     requis.</p>
             </div>
 
@@ -156,22 +158,15 @@
             </div>
         </tab-content>
 
-        <tab-content title="Fichiers" icon="ti-folder">
+        <tab-content title="Documents" icon="ti-folder">
             <div class="field">
                 <span>Une photo de vous ? Une synthèse de votre projet ? Les photos sont importantes pour donner envie de consulter votre annonce.</span>
-                <div class="file">
-                    <label class="file-label">
-                        {!! Form::file('land_seek[images][]', ['class' => 'file-input', ':disabled' => 'isInputDisabled', 'multiple' => true] ) !!}
-                        <span class="file-cta">
-                    <span class="file-icon">
-                        <i class="fas fa-upload"></i>
-                    </span>
-                    <span class="file-label">
-                        Importer une photo
-                    </span>
-                </span>
-                    </label>
-                </div>
+
+                <vue-dropzone
+                    ref="documents"
+                    id="dropzone"
+                    :options="{url: '/documents/tmp_upload'}">
+                </vue-dropzone>
             </div>
         </tab-content>
 
@@ -190,12 +185,12 @@
                 </label>
 
                 <text-area-counter
-                        name="land_seek[experience_farming]"
-                        :max-length=1000
-                        :disabled="isInputDisabled"
-                        ref="experienceFarming"
-                        v-model="formInput.experienceFarming"
-                        :vuelidate="$v.formInput.experienceFarming">
+                    name="land_seek[experience_farming]"
+                    :max-length=1000
+                    :disabled="isInputDisabled"
+                    ref="experienceFarming"
+                    v-model="formInput.experienceFarming"
+                    :vuelidate="$v.formInput.experienceFarming">
                 </text-area-counter>
             </div>
             <div class="field">
@@ -210,12 +205,12 @@
                 </label>
 
                 <text-area-counter
-                        name="land_seek[about_project_content]"
-                        :max-length="1000"
-                        :disabled="isInputDisabled"
-                        ref="aboutProject"
-                        v-model="formInput.aboutProject"
-                        :vuelidate="$v.formInput.aboutProject">
+                    name="land_seek[about_project_content]"
+                    :max-length="1000"
+                    :disabled="isInputDisabled"
+                    ref="aboutProject"
+                    v-model="formInput.aboutProject"
+                    :vuelidate="$v.formInput.aboutProject">
                 </text-area-counter>
             </div>
             <div class="field">
@@ -227,12 +222,12 @@
                 </label>
 
                 <text-area-counter
-                        name="land_seek[about_content]"
-                        :max-length="1000"
-                        :disabled="isInputDisabled"
-                        ref="aboutContent"
-                        v-model="formInput.aboutContent"
-                        :vuelidate="$v.formInput.aboutContent">
+                    name="land_seek[about_content]"
+                    :max-length="1000"
+                    :disabled="isInputDisabled"
+                    ref="aboutContent"
+                    v-model="formInput.aboutContent"
+                    :vuelidate="$v.formInput.aboutContent">
                 </text-area-counter>
             </div>
         </tab-content>
@@ -242,10 +237,10 @@
                 <label class="label is-inline-block has-tooltip-multiline has-tooltip-right"
                        for="land_seek[title]"
                        data-tooltip="Le titre de l’annonce est primordial ! Il
-				s’agit de votre carte de visite sur la
-				plateforme. Un titre clair et bien
-				formulé augmentera vos chances de
-				contacts.">
+                                    s’agit de votre carte de visite sur la
+                                    plateforme. Un titre clair et bien
+                                    formulé augmentera vos chances de
+                                    contacts.">
                     Titre de votre annonce*
                     <i class="fas fa-info-circle has-text-info"></i>
                 </label>
@@ -259,7 +254,8 @@
                           'ref' => 'title',
                           'aria-describedby'=>'titleError']) !!}
                 <p class="help is-danger" id="titleError" v-if="$v.formInput.title.$error">Ce champ est requis.</p>
-                <p class="help is-danger" v-show="!$v.formInput.title.minLength">Le titre de votre annonce doit faire au minimum
+                <p class="help is-danger" v-show="!$v.formInput.title.minLength">Le titre de votre annonce doit faire au
+                    minimum
                     @{{$v.formInput.title.$params.minLength.min}} caractères .</p>
             </div>
             <div class="field">
@@ -270,13 +266,28 @@
                            :disabled="isInputDisabled"
                            v-model="formInput.chartConfirmation"
                            ref='chartConfirmation'
-                           aria-describedby= 'chartConfirmationError'>
+                           aria-describedby='chartConfirmationError'>
 
                     Je certifie que mon projet correspond à la <a href="/">charte de Terre de Liens</a>
                 </label>
-                <p class="help is-danger" id="chartConfirmationError" v-if="$v.formInput.chartConfirmation.$error">Vous devez cocher cette case.</p>
+                <p class="help is-danger" id="chartConfirmationError" v-if="$v.formInput.chartConfirmation.$error">Vous
+                    devez cocher cette case.</p>
             </div>
+
+            <article class="message is-warning" v-if="$v.$error">
+                <div class="message-header">
+                    <p>Veuillez revoir votre formulaire</p>
+                </div>
+                <div class="message-body">
+                    Des erreurs empêchent la publication de votre annonce. Avez-vous tout vérifié ?
+                </div>
+            </article>
         </tab-content>
+
+        <template slot="custom-buttons-right">
+            <button class="button is-light">Sauvegarder</button>
+        </template>
+
     </form-wizard>
 </div>
 

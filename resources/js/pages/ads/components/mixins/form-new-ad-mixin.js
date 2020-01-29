@@ -1,9 +1,10 @@
 import Vue from "vue";
 
+// Whitelist of html form inputs
 const INPUT_TAGS = ['input', 'textarea', 'select'];
 
 /**
- *  Find the first input in object parameter, be it either :
+ *  Find the first input within received object parameter, be it either :
  *  - any html element
  *  - a vue component
  *
@@ -79,21 +80,24 @@ export default {
 
                     if(input) {
                         const inputTabIndex = $form.tabs.findIndex(
-                            tab => [...tab.$el.querySelectorAll(INPUT_TAGS)].find(
+                            $tab => [...$tab.$el.querySelectorAll(INPUT_TAGS)].find(
                                 element => input.isSameNode(element)
                             )
                         );
 
-                        if(inputTabIndex) {
+                        if(typeof inputTabIndex !== "undefined") {
                             // Change current form step if needed
                             $form.changeTab($form.activeTabIndex, inputTabIndex);
 
-                            // Lets try to focus
-                            try {
-                                input.focus();
-                            } catch (error) {
-                                console.log(error)
-                            }
+                            const tab = $form.tabs[inputTabIndex].$el;
+                            tab.addEventListener('animationend', e => {
+                                // Lets try to focus
+                                try {
+                                    input.focus();
+                                } catch (error) {
+                                    console.log(error)
+                                }
+                            });
                         }
                     }
 

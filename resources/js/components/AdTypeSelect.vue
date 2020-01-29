@@ -1,8 +1,9 @@
 <template>
     <div class="field">
-        <label for="ad_type" class="label">Type d'annonce</label>
+        <label :for="name" class="label">Type d'annonce</label>
         <div class="select">
-            <select id="ad_type"
+            <select :id="name"
+                    :name="name"
                     v-bind:value="value"
                     v-on:input="$emit('input', $event.target.value)">
                 <option value="" selected>Choisir un type d'annonce...</option>
@@ -19,6 +20,10 @@
                 type: String,
                 required: true
             },
+            name: {
+                type: String,
+                required: true
+            }
         },
         computed: {
             adTypes() {
