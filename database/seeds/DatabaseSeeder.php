@@ -55,7 +55,7 @@ class DatabaseSeeder extends Seeder
             $ad->adMessages()->save(factory(AdMessage::class)->make());
             $ad->ppToUserMessages()->save(factory(PpToUserMessage::class)->make());
             $ad->favoriteAd()->save(factory(FavoriteAd::class)->make());
-            $ad->documents()->save(factory(Document::class)->make());
+            //$ad->documents()->save(factory(Document::class)->make());
             $ad->regions()->save(Region::inRandomOrder()->first())->make();
 
             echo "\nAd ID saved : ".$ad->id. " (Queries : ".$queriesCount.")";
@@ -72,6 +72,6 @@ class DatabaseSeeder extends Seeder
             $jobAd->agriculturalActivity()->save(factory(AgriculturalActivity::class)->make());
         });
 
-        echo "\nTotal queries : ".$queriesCount;
+        echo "\nTotal queries : ".$queriesCount."\n";
     }
 }
