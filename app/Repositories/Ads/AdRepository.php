@@ -96,11 +96,11 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             }
         }
 
-        if ($data["ad_type"] === "land_seek") {
+        if ($data["ad_type"] === "landSeek") {
             $adData["ad_id"] = $ad->id;
             $landSeekAd = $this->landSeekAdRepository->create($adData);
         }
-        else if ($data["ad_type"] === "land_offer") {
+        else if ($data["ad_type"] === "landOffer") {
             $adData["ad_id"] = $ad->id;
             $landSeekAd = $this->landSeekAdRepository->create($adData);
         }

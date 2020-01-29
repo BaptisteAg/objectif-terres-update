@@ -26,9 +26,12 @@
 					@endif
 				@else
 					<div class="level-item">
+						<a href="">
 						<span class="icon">
-							<a href=""><i class="far fa-user"></i><span>Bienvenue, {{ Auth::user()->name }}</span></a>
+							<i class="far fa-user"></i>
 						</span>
+							<span>Bienvenue, {{ Auth::user()->name }}</span>
+						</a>
 					</div>
 					<div class="level-item">
                 <span class="icon">
@@ -41,12 +44,15 @@
                 </span>
 					</div>
 					<div class="level-item">
-						<span class="icon">
 						<a class="dropdown-item" href="{{ route('logout') }}"
 						   onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-							Se déconnecter
-						<i class="fas fa-sign-out-alt"></i></a>
+							<span class="icon">
+							<i class="fas fa-sign-out-alt"></i>
+							</span>
+							<span>Se déconnecter</span>
+						</a>
+						<span class="icon">
 						<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
 							@csrf
 						</form>
@@ -117,10 +123,10 @@
 	</div>
 	<div v-if="isFormOpen" class="has-ba">
 		<div class="container-custom" v-show="adCategorySelected === 'job'">
-			@include('layouts.partials.header_job_research')
+			@include('layouts.partials.headerJobResearch')
 		</div>
 		<div class="container-custom" v-show="adCategorySelected === 'land'">
-			@include('layouts.partials.header_land_research')
+			@include('layouts.partials.headerLandResearch')
 		</div>
 	</div>
 	{!! Form::close() !!}

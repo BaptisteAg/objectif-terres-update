@@ -134,9 +134,9 @@
 				<pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
 			</section>
 
-			@include('components.section_orientation_terre_liens')
+			@include('components.sectionOrientationTerreLiens')
 			@include('components.partnering')
-			@include('components.support_terre_liens')
+			@include('components.supportTerreLiens')
 
 		</div>
 	</section>

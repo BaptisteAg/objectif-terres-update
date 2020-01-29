@@ -1,5 +1,5 @@
 <div class="columns">
-   @include('layouts.partials.header_research_location')
+   @include('layouts.partials.headerResearchLocation')
     <div class="column">
         {{ Form::label('jobStatus', 'Choisissez un statut', ['class' => 'label']) }}
         <div class="select">

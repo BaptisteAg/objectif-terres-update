@@ -1,9 +1,9 @@
 <div id="land_seek_form">
     <p class="is-size-7">Les champ marqués d'un astérisque (*) sont obligatoires</p>
     <div class="field">
-        {!! Form::label('land_seek[installation_type_id]', 'Type d\'installation*', ['class' => 'label']); !!}
+        {!! Form::label('landSeek[installation_type_id]', 'Type d\'installation*', ['class' => 'label']); !!}
         <div class="select">
-            {!! Form::select('land_seek[installation_type_id]',
+            {!! Form::select('landSeek[installation_type_id]',
                  $installationTypes->pluck('name', 'id'),
                  null,
                  ['placeholder' => 'Choisir un type d\'installation...',
@@ -28,17 +28,17 @@
     </zone-select>
 
     <div class="field">
-        {!! Form::label('land_seek[is_bio]', 'Je souhaite m\'installer en bio', ['class' => 'label']) !!}
-        {!! Form::radio('land_seek[is_bio]', '1',old('land_seek[is_bio]') === '1', [':disabled' => 'isInputDisabled']) !!}
+        {!! Form::label('landSeek[is_bio]', 'Je souhaite m\'installer en bio', ['class' => 'label']) !!}
+        {!! Form::radio('landSeek[is_bio]', '1',old('landSeek[is_bio]') === '1', [':disabled' => 'isInputDisabled']) !!}
         oui
-        {!! Form::radio('land_seek[is_bio]', '0', old('land_seek[is_bio]') === '0', [':disabled' => 'isInputDisabled']) !!}
+        {!! Form::radio('landSeek[is_bio]', '0', old('landSeek[is_bio]') === '0', [':disabled' => 'isInputDisabled']) !!}
         non
     </div>
     <div class="field">
-        {!! Form::label('land_seek[surface_range][]', 'Surface recherchée(en ha)', ['class' => 'label']); !!}
+        {!! Form::label('landSeek[surface_range][]', 'Surface recherchée(en ha)', ['class' => 'label']); !!}
         @foreach ($surfaceRanges->pluck('surface', 'id') as $id => $surface)
             {!! Form::checkbox(
-                'land_seek[surface_range][]',
+                'landSeek[surface_range][]',
                 $id,
                 null,
                 [
@@ -49,10 +49,10 @@
         @endforeach
     </div>
     <div class="field">
-        {!! Form::label('land_seek[production_genre][]', 'Production(s) envisagée(s)*', ['class' => 'label']); !!}
+        {!! Form::label('landSeek[production_genre][]', 'Production(s) envisagée(s)*', ['class' => 'label']); !!}
 
         @foreach ($productionGenres->pluck('name', 'id') as $id => $productionGenre)
-            {!! Form::checkbox('land_seek[production_genre][]',
+            {!! Form::checkbox('landSeek[production_genre][]',
                 $id,
                 null,
                 [
@@ -64,7 +64,7 @@
             !!}
             {{$productionGenre}}
         @endforeach
-        {!! Form::checkbox('land_seek[production_genre][]',
+        {!! Form::checkbox('landSeek[production_genre][]',
         'other',
         null,
         [':disabled' => 'isInputDisabled',
@@ -77,8 +77,8 @@
     </div>
 
     <div class="field" v-show="isProductionGenreOther">
-        {!! Form::label('land_seek[production_type_add]', 'Veuillez préciser', ['class' => 'label']); !!}
-        {!! Form::text('land_seek[production_type_add]',
+        {!! Form::label('landSeek[production_type_add]', 'Veuillez préciser', ['class' => 'label']); !!}
+        {!! Form::text('landSeek[production_type_add]',
              null,
              [
                 'class' => 'input',
@@ -89,15 +89,15 @@
     </div>
     <div class="field">
         {!! Form::label('land_seek_has_farms_or_buildings', 'Habitation(s) et bâti(s)', ['class' => 'label']); !!}
-        {!! Form::checkbox('land_seek[has_farm_buildings]', '1', old('land_seek[has_farm_buildings]'), [':disabled' => 'isInputDisabled']) !!}
+        {!! Form::checkbox('landSeek[has_farm_buildings]', '1', old('landSeek[has_farm_buildings]'), [':disabled' => 'isInputDisabled']) !!}
         Avec une maison d'habitation existante
-        {!! Form::checkbox('land_seek[has_houses]', '1', old('land_seek[has_houses]'), [':disabled' => 'isInputDisabled']) !!}
+        {!! Form::checkbox('landSeek[has_houses]', '1', old('landSeek[has_houses]'), [':disabled' => 'isInputDisabled']) !!}
         Avec des bâtis agricoles existants
     </div>
     <div class="field">
-        {!! Form::label('land_seek[offer_genre_id]', 'Accès au foncier souhaité', ['class' => 'label']); !!}
+        {!! Form::label('landSeek[offer_genre_id]', 'Accès au foncier souhaité', ['class' => 'label']); !!}
         <div class="select">
-            {!! Form::select('land_seek[offer_genre_id]',
+            {!! Form::select('landSeek[offer_genre_id]',
                      $offerGenresLandSeek->pluck('name', 'id'),
                      null,
                       ['placeholder' => 'Veuillez choisir...',
@@ -106,17 +106,17 @@
         </div>
     </div>
     <div class="field" v-show="formInput.offerGenre === '2'">
-        {!! Form::label('land_seek[price_range][]', 'Prix (en €)', ['class' => 'label']); !!}
+        {!! Form::label('landSeek[price_range][]', 'Prix (en €)', ['class' => 'label']); !!}
         @foreach ($priceRanges->pluck('price', "id") as $priceId => $price)
-            {!! Form::checkbox('land_seek[price_range][]', $priceId, in_array($priceId, old('land_seek[price_range]', [])), [':disabled' => 'isInputDisabled']) !!}
+            {!! Form::checkbox('landSeek[price_range][]', $priceId, in_array($priceId, old('landSeek[price_range]', [])), [':disabled' => 'isInputDisabled']) !!}
             {{$price}}
         @endforeach
     </div>
     <div class="columns">
         <div class="column is-half">
             <div class="field" v-show="formInput.offerGenre === '1'">
-                {!! Form::label('land_seek[rent_min]', 'Loyer minimum (en €)', ['class' => 'label']); !!}
-                {!! Form::text('land_seek[rent_min]',
+                {!! Form::label('landSeek[rent_min]', 'Loyer minimum (en €)', ['class' => 'label']); !!}
+                {!! Form::text('landSeek[rent_min]',
                          null,
                           ['min'=>0,
                           'class' => 'input',
@@ -127,8 +127,8 @@
         </div>
         <div class="column">
             <div class="field" v-show="formInput.offerGenre === '1'">
-                {!! Form::label('land_seek[rent_max]', 'Loyer maximum (en €)', ['class' => 'label']); !!}
-                {!! Form::text('land_seek[rent_max]',
+                {!! Form::label('landSeek[rent_max]', 'Loyer maximum (en €)', ['class' => 'label']); !!}
+                {!! Form::text('landSeek[rent_max]',
                           null,
                           ['min'=>1,
                           'class' => 'input',
@@ -196,7 +196,7 @@
         </text-area-counter>
     </div>
     <div class="field">
-        {!! Form::label('land_seek[title]', 'Titre de votre annonce*', ['class' => 'label is-inline-block']); !!}
+        {!! Form::label('landSeek[title]', 'Titre de votre annonce*', ['class' => 'label is-inline-block']); !!}
 
         <i class="icon has-text-info has-tooltip-multiline has-tooltip-right" data-tooltip="Le titre de l’annonce est primordial ! Il
 				s’agit de votre carte de visite sur la
@@ -206,7 +206,7 @@
             <i class="fas fa-info-circle"></i>
         </i>
 
-        {!! Form::text('land_seek[title]',
+        {!! Form::text('landSeek[title]',
                  null,
                  ['class' => 'input',
                   'placeholder'=> 'Saisissez votre titre...',
@@ -222,7 +222,7 @@
         <span>Une photo de vous ? Une synthèse de votre projet ? Les photos sont importantes pour donner envie de consulter votre annonce.</span>
         <div class="file">
             <label class="file-label">
-                {!! Form::file('land_seek[images][]', ['class' => 'file-input', ':disabled' => 'isInputDisabled', 'multiple' => true] ) !!}
+                {!! Form::file('landSeek[images][]', ['class' => 'file-input', ':disabled' => 'isInputDisabled', 'multiple' => true] ) !!}
                 <span class="file-cta">
                     <span class="file-icon">
                         <i class="fas fa-upload"></i>

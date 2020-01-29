@@ -116,7 +116,7 @@
 		</div>
 	</section>
 
-	@include('components.card_video')
+	@include('components.cardVideo')
 
 	<section class="section">
 		<div class="container has-text-centered ">
@@ -153,10 +153,10 @@
 		</div>
 	</section>
 
-	@include('components.faq-accordion')
+	@include('components.faqAccordion')
 	@include('components.study')
 	@include('components.partnering')
-	@include('components.support_terre_liens')
+	@include('components.supportTerreLiens')
 
 @endsection
 

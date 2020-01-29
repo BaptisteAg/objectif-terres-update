@@ -30,6 +30,21 @@
 					</div>
 				</div>
 			@endif
+			@if ($message = Session::get('destroy'))
+				<div class="columns">
+					<div class="column is-two-thirds">
+						<article class="message is-success">
+							<div class="message-header">
+								<p>Succès</p>
+								<button id="close-notification" class="delete" aria-label="delete"></button>
+							</div>
+							<div class="message-body">
+								La recherche a bien été supprimée de vos favoris.
+							</div>
+						</article>
+					</div>
+				</div>
+			@endif
 			<section class="section">
 				@foreach ($researches as $research)
 					<div class="columns ">
@@ -193,9 +208,9 @@
 				<pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
 			</section>
 
-			@include('components.section_orientation_terre_liens')
+			@include('components.sectionOrientationTerreLiens')
 			@include('components.partnering')
-			@include('components.support_terre_liens')
+			@include('components.supportTerreLiens')
 
 		</div>
 	</section>
