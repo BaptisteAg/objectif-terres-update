@@ -2,6 +2,7 @@
 <section class="section is-medium ">
 	<div class="container ">
 		@include('pages.ads.partials.notificationMessages')
+
 		<nav class="breadcrumb" aria-label="breadcrumbs">
 			<ul>
 				<li><a href="#">Annonces</a></li>

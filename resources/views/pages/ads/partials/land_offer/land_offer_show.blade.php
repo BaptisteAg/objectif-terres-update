@@ -84,7 +84,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		@include('pages.ads.partials.adMessageModal')
 
 		<hr class="navbar-divider">
@@ -238,12 +238,10 @@
 			<h3 class="title is-3">Description du projet</h3>
 			<p> {{$ad->about_project_content}}</p>
 		</div>
-
 		<div class="content">
 			<h3 class="title is-3">A propos du porteur de projet</h3>
 			<p> {{$ad->about_content}}</p>
 		</div>
-
 		<div class="content">
 			<div class="columns is-mobile is-centered">
 				<div class="column is-half">
