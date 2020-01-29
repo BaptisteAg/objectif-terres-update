@@ -13,13 +13,13 @@ class AdPresenter extends BasePresenter
     public function ad_type()
     {
         if($this->wrappedObject->landSeekAd) {
-            return 'land_seek';
+            return 'landSeek';
         }
         if($this->wrappedObject->landOfferAd) {
-            return 'land_offer';
+            return 'landOffer';
         }
         if($this->wrappedObject->jobAd) {
-            return 'job_ad';
+            return 'jobAd';
         }
 
         return '';

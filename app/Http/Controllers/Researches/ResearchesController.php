@@ -59,7 +59,7 @@ class ResearchesController extends Controller
 		$this->researchService->destroy($request);
 		$researches = $this->researchService->findAll();
 
-		return redirect()->route('researches.show', compact('researches'));
+		return back()->with('destroy', 'message');
 
 	}
 

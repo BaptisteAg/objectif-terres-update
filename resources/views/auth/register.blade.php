@@ -50,9 +50,10 @@
 					<div class="field">
 						<label class="label">Mot de passe</label>
 						<p class="control has-icons-left">
-							<input name="password" class="input @error('password') is-danger @enderror " type="password"
+							<input id="password" name="password" class="input @error('password') is-danger @enderror "
+								   type="password"
 								   required
-								   autocomplete="current-password" placeholder="Votre mot de passe...">
+								   autocomplete="new-password" placeholder="Votre mot de passe...">
 							<span class="icon is-small is-left">
                               <i class="fas fa-lock"></i>
                             </span>
@@ -68,7 +69,7 @@
 					<div class="field">
 						<label class="label">Confirmation mot de passe</label>
 						<p class="control has-icons-left">
-							<input name="password_confirm" name="password_confirmation"
+							<input id="password-confirm" name="password_confirmation"
 								   class="input" type="password"
 								   autocomplete="new-password"
 								   required
@@ -90,6 +91,6 @@
 			<div class="column"></div>
 		</div>
 	</div>
-	@include('components.support_terre_liens')
+	@include('components.supportTerreLiens')
 
 @endsection

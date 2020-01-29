@@ -204,5 +204,5 @@
 
 
 @include('components.partnering')
-@include('components.support_terre_liens')
+@include('components.supportTerreLiens')
 

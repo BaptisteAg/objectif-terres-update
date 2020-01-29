@@ -10,23 +10,23 @@ class LandSeekRuleset implements RulesetInterface
     {
         //dd(request()->all());
         return [
-            'land_seek.installation_type_id'     => ['required', 'integer'],
-            'land_seek.locationable'             => [new HasZone],
-            'land_seek.locationable_radius'      => ['string'],
-            'land_seek.is_bio'                   => ['boolean'],
-            'land_seek.surface_range'            => ['array'],
-            'land_seek.production_genre'         => [new HasProductionGenre],
-            'land_seek.production_type_add'      => ['nullable', 'string'],
-            'land_seek.has_farm_buildings'       => ['boolean'],
-            'land_seek.has_houses'               => ['boolean'],
-            'land_seek.offer_genre'              => ['string'],
-            'land_seek.price_range'              => ['nullable', 'array'],
-            'land_seek.rent_min'                 => ['nullable', 'integer'],
-            'land_seek.rent_max'                 => ['nullable', 'integer'],
-            'land_seek.experience_farming'       => ['string', 'max:1000'],
-            'land_seek.about_content'            => ['required', 'string', 'max:1000'],
-            'land_seek.about_project_content'    => ['required', 'string', 'max:1000'],
-            'land_seek.title'                    => ['required', 'string']
+            'landSeek.installation_type_id'     => ['required', 'integer'],
+            'landSeek.locationable'             => [new HasZone],
+            'landSeek.locationable_radius'      => ['string'],
+            'landSeek.is_bio'                   => ['boolean'],
+            'landSeek.surface_range'            => ['array'],
+            'landSeek.production_genre'         => [new HasProductionGenre],
+            'landSeek.production_type_add'      => ['nullable', 'string'],
+            'landSeek.has_farm_buildings'       => ['boolean'],
+            'landSeek.has_houses'               => ['boolean'],
+            'landSeek.offer_genre'              => ['string'],
+            'landSeek.price_range'              => ['nullable', 'array'],
+            'landSeek.rent_min'                 => ['nullable', 'integer'],
+            'landSeek.rent_max'                 => ['nullable', 'integer'],
+            'landSeek.experience_farming'       => ['string', 'max:1000'],
+            'landSeek.about_content'            => ['required', 'string', 'max:1000'],
+            'landSeek.about_project_content'    => ['required', 'string', 'max:1000'],
+            'landSeek.title'                    => ['required', 'string']
         ];
     }
 }

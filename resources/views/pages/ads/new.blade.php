@@ -30,8 +30,8 @@
                                 {!! Form::label('ad_type', 'Type d\'annonce', ['class' => 'label']); !!}
                                 <div class="select">
                                     {{ Form::select('ad_type',
-                                        ['land_seek' => 'Recherche de foncier',
-                                         'land_offer'=>'Offre de foncier',
+                                        ['landSeek' => 'Recherche de foncier',
+                                         'landOffer'=>'Offre de foncier',
                                          'job_offer'=>'Opportunité professionnelle'],
                                          null,
                                          [
@@ -42,19 +42,19 @@
                             </div>
 
                             <new-land-seek-ad inline-template
-                                              v-show="adTypeSelected === 'land_seek'"
-                                              :is-input-disabled="adTypeSelected !== 'land_seek'"
-                                              :old-values="{{json_encode(old('land_seek', new stdClass))}}"
+                                              v-show="adTypeSelected === 'landSeek'"
+                                              :is-input-disabled="adTypeSelected !== 'landSeek'"
+                                              :old-values="{{json_encode(old('landSeek', new stdClass))}}"
                                               @input-enabled="setEnabledForm">
-                                @include('pages.ads.partials.land_seek.land_seek_new_ad')
+                                @include('pages.ads.partials.landSeek.landSeekNewAd')
                             </new-land-seek-ad>
 
                             <new-land-offer-ad inline-template
-                                               v-show="adTypeSelected === 'land_offer'"
-                                               :is-input-disabled="adTypeSelected !== 'land_offer'"
-                                               :old-values="{{json_encode(old('land_offer', new stdClass))}}"
+                                               v-show="adTypeSelected === 'landOffer'"
+                                               :is-input-disabled="adTypeSelected !== 'landOffer'"
+                                               :old-values="{{json_encode(old('landOffer', new stdClass))}}"
                                                @input-enabled="setEnabledForm">
-                                @include('pages.ads.partials.land_offer.land_offer_new_ad')
+                                @include('pages.ads.partials.landOffer.landOfferNewAd')
                             </new-land-offer-ad>
 
                             <new-job-offer-ad inline-template
@@ -62,7 +62,7 @@
                                               :is-input-disabled="adTypeSelected !== 'job_offer'"
                                               :old-values="{{json_encode(old('job_offer', new stdClass))}}"
                                               @input-enabled="setEnabledForm">
-                                @include('pages.ads.partials.job_ad.job_ad_new_ad')
+                                @include('pages.ads.partials.jobAd.jobAdNewAd')
                             </new-job-offer-ad>
 
                             <template v-if="adTypeSelected !== ''">
@@ -96,7 +96,7 @@
             <div class="column"></div>
         </div>
         @include('components.partnering')
-        @include('components.support_terre_liens')
+        @include('components.supportTerreLiens')
     </section>
 @endsection
 
