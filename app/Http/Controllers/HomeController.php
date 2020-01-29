@@ -7,17 +7,17 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
 	protected $adService;
-    public function __construct(AdService $adService)
-    {
+	public function __construct(AdService $adService)
+	{
 		$this->adService = $adService;
-        $this->middleware('auth');
-    }
+
+	}
 
 	public function show(AdService $adService)
 	{

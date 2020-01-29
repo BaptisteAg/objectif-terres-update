@@ -46,7 +46,7 @@
                                               :is-input-disabled="adTypeSelected !== 'land_seek'"
                                               :old-values="{{json_encode(old('land_seek', new stdClass))}}"
                                               @input-enabled="setEnabledForm">
-                                @include('pages.ads.partials.land_seek_new_ad')
+                                @include('pages.ads.partials.land_seek.land_seek_new_ad')
                             </new-land-seek-ad>
 
                             <new-land-offer-ad inline-template
@@ -54,7 +54,7 @@
                                                :is-input-disabled="adTypeSelected !== 'land_offer'"
                                                :old-values="{{json_encode(old('land_offer', new stdClass))}}"
                                                @input-enabled="setEnabledForm">
-                                @include('pages.ads.partials.land_offer_new_ad')
+                                @include('pages.ads.partials.land_offer.land_offer_new_ad')
                             </new-land-offer-ad>
 
                             <new-job-offer-ad inline-template
@@ -62,7 +62,7 @@
                                               :is-input-disabled="adTypeSelected !== 'job_offer'"
                                               :old-values="{{json_encode(old('job_offer', new stdClass))}}"
                                               @input-enabled="setEnabledForm">
-                                @include('pages.ads.partials.job_ad_new_ad')
+                                @include('pages.ads.partials.job_ad.job_ad_new_ad')
                             </new-job-offer-ad>
 
                             <template v-if="adTypeSelected !== ''">

@@ -35,10 +35,10 @@
 										<p class="title is-4">{{$ad->landSeekAd->title}}</p>
 									@endif
 									@if($ad->landOfferAd)
-											<p class="title is-4">{{$ad->landOfferAd->title}}</p>
+										<p class="title is-4">{{$ad->landOfferAd->title}}</p>
 									@endif
 									@if($ad->jobAd)
-											<p class="title is-4">{{$ad->jobAd->title}}</p>
+										<p class="title is-4">{{$ad->jobAd->title}}</p>
 									@endif
 
 								</div>
@@ -163,8 +163,20 @@
 
 @section('script')
 	<script src="{{ asset('js/bulma-accordion.js') }}"></script>
+	<script>let accordions = bulmaAccordion.attach();</script>
 
-    <script>
+	<script src="{{ asset('js/bulma-carousel.js') }}"></script>
+	<script>
+        bulmaCarousel.attach('#post_images', {
+            slidesToScroll: 1,
+            slidesToShow: 2,
+            loop: true,
+            navigation : true,
+
+        });
+	</script>
+
+	<script>
         let map = L.map('my_osm_widget_map', { /* use the same name as your <div id=""> */
             center: [46.290552, 2.771017], /* set GPS Coordinates */
             zoom: 5, /* define the zoom level */
@@ -179,34 +191,34 @@
 
         //L.marker([46.290552, 2.771017]).addTo(mymap); /* set your location's GPS Coordinates : [LAT,LON] */
 
-		let formData = new FormData;
+        let formData = new FormData;
 		@foreach($adsCountByRegionId as $regionId => $adCount)
-			formData.append('ads_count_by_region_id[{{$regionId}}]','{{$adCount}}');
+        formData.append('ads_count_by_region_id[{{$regionId}}]','{{$adCount}}');
 		@endforeach
-		formData.append('_token', "{{ csrf_token() }}");
+        formData.append('_token', "{{ csrf_token() }}");
 
-		fetch('/json/polygon/regions', {
-			method: 'POST',
-			body: formData
-		})
-				.then(response => response.json())
-				.then(polygonsData => {
-					polygonsData.forEach(polygonData => {
-						const polygon = L.geoJSON(polygonData.geojson, {
-							smoothFactor: 2
-						});
+        fetch('/json/polygon/regions', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(polygonsData => {
+                polygonsData.forEach(polygonData => {
+                    const polygon = L.geoJSON(polygonData.geojson, {
+                        smoothFactor: 2
+                    });
 
-						polygon.addTo(map);
+                    polygon.addTo(map);
 
-						polygon.bindTooltip(polygonData.ads_count,
-								{permanent: true, direction:"center"}
-						).openTooltip();
+                    polygon.bindTooltip(polygonData.ads_count,
+                        {permanent: true, direction:"center"}
+                    ).openTooltip();
 
-						polygon.addEventListener('click',_ => {
-							console.log("polygon click");
-						});
-					})
-				})
+                    polygon.addEventListener('click',_ => {
+                        console.log("polygon click");
+                    });
+                })
+            })
 	</script>
 
 @endsection

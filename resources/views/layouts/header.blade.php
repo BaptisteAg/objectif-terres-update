@@ -13,26 +13,47 @@
 				</div>
 			</div>
 			<div class="level-right">
-				<div class="level-item">Bienvenue !</div>
-				<div class="level-item"><a href="">Connectez-vous</a></div>
-				<div class="level-item">ou</div>
-				<div class="level-item"><a href="">créez un compte</a></div>
-				<div class="level-item">
+				@guest
+					<div class="level-item">Bienvenue !</div>
+					<div class="level-item">
+						<a href="{{ route('signIn') }}">Connectez-vous</a>
+					</div>
+					<div class="level-item">ou</div>
+					@if (Route::has('register'))
+						<div class="level-item">
+							<a href="{{ route('register') }}">Créez un compte</a>
+						</div>
+					@endif
+				@else
+					<div class="level-item">
+						<span class="icon">
+							<a href=""><i class="far fa-user"></i><span>Bienvenue, {{ Auth::user()->name }}</span></a>
+						</span>
+					</div>
+					<div class="level-item">
                 <span class="icon">
                     <a href=""><i class="far fa-bell"></i></a>
                 </span>
-				</div>
-				<div class="level-item">
+					</div>
+					<div class="level-item">
                 <span class="icon">
                     <a href=""><i class="far fa-envelope"></i></a>
                 </span>
-				</div>
-				<div class="level-item">
-                <span class="icon">
-                    <a href=""><i class="far fa-user"></i></a>
-                </span>
-				</div>
+					</div>
+					<div class="level-item">
+						<span class="icon">
+						<a class="dropdown-item" href="{{ route('logout') }}"
+						   onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+							Se déconnecter
+						<i class="fas fa-sign-out-alt"></i></a>
+						<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+							@csrf
+						</form>
+						</span>
+					</div>
 			</div>
+			@endguest
 		</nav>
 	</div>
 	{!! Form::open(['route' => 'researches.index', 'method' => 'get']) !!}
