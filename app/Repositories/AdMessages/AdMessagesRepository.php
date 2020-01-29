@@ -13,11 +13,18 @@ use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 class AdMessagesRepository extends AbstractRepository implements AdMessagesRepositoryInterface
 {
 
+	/**
+	 * @return string
+	 */
 	public function entity()
 	{
 		return AdMessage::class;
 	}
 
+	/**
+	 * @param null $paginate
+	 * @return AdMessage[]|\Illuminate\Support\Collection|mixed
+	 */
 	public function all($paginate = null)
 	{
 		return $this->entity
@@ -25,9 +32,10 @@ class AdMessagesRepository extends AbstractRepository implements AdMessagesRepos
 			->get();
 	}
 
+
 	/**
 	 * @param $id
-	 * @return AdMessage
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
 	 */
 	public function find($id)
 	{

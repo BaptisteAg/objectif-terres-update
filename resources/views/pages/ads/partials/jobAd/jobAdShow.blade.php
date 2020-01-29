@@ -71,13 +71,13 @@
 								</span>
 							<span> Répondre à l'annonce</span>
 						</button>
-						{!! Form::open(['route'=>'favoriteAds.create']) !!}
+						{!! Form::open(['route'=>'favoriteAds.create', 'method'=>'get']) !!}
 						<input name="ad_id" value="{{$ad->id}}" type="hidden">
 						<button class="card-footer-item button is-link is-light">
 							 <span class="icon is-small">
-									<i class="fas fa-save"></i>
+								<i class="fas fa-star"></i>
 								</span>
-							<span> Sauvegarder l'annonce</span>
+							<span> Mettre cette annonce en favoris</span>
 						</button>
 						{!! Form::close() !!}
 					</footer>

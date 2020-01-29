@@ -38,7 +38,7 @@ Route::middleware('auth')->prefix('messages')->name('adMessages.')->namespace('A
 });
 
 Route::prefix('annonces-favorites')->middleware('auth')->name('favoriteAds.')->namespace('favoriteAds')->group(function () {
-	Route::post('sauvegarde', 'FavoriteAdsController@create')->name('create');
+	Route::get('sauvegarde', 'FavoriteAdsController@create')->name('create');
 	Route::get('liste', 'FavoriteAdsController@show')->name('show');
 	Route::post('supprimer', 'FavoriteAdsController@destroy')->name('destroy');
 });

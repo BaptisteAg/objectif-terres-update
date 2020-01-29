@@ -2,9 +2,7 @@
 
 <section class="section is-medium ">
 	<div class="container ">
-
 		@include('pages.ads.partials.notificationMessages')
-
 		<nav class="breadcrumb" aria-label="breadcrumbs">
 			<ul>
 				<li><a href="#">Annonces</a></li>
@@ -12,7 +10,7 @@
 			</ul>
 		</nav>
 		<h1 class="title has-text-link">{{$ad->landSeekAd->title}}</h1>
-		<div class="columns">
+		<div class="columns ">
 			<div class=" column is-two-thirds ">
 				<div id="ad_images" class="carousel">
 					@foreach($ad->documents as $document)
@@ -79,13 +77,13 @@
 								</span>
 							<span> Répondre à l'annonce</span>
 						</button>
-						{!! Form::open(['route'=>'favoriteAds.create']) !!}
+						{!! Form::open(['route'=>'favoriteAds.create', 'method'=>'get']) !!}
 						<input name="ad_id" value="{{$ad->id}}" type="hidden">
 						<button class="card-footer-item button is-link is-light">
 							 <span class="icon is-small">
-									<i class="fas fa-save"></i>
+										<i class="fas fa-star"></i>
 								</span>
-							<span> Sauvegarder l'annonce</span>
+							<span> Mettre cette annonce en favoris</span>
 						</button>
 						{!! Form::close() !!}
 					</footer>

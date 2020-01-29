@@ -1,9 +1,4 @@
 @guest
-	<a id="open-modal" href="">
-		<span class="icon"><i class="far fa-heart"></i></span>
-		<span>Envoyer un message au porteur de
-						projet</span>
-	</a>
 	<div class="modal">
 		<div class="modal-background"></div>
 		<div class="modal-content">
@@ -11,7 +6,7 @@
 				<div class="card-content">
 					<div class="content">
 						<p class="title is-3 has-text-centered has-text-link">Pas encore connecté·e ?</p>
-						<p class="subtitle is-6">Pour sauvegarder cette annonce, vous devez vous connecter ou créer un
+						<p class="subtitle is-6">Pour envoyer un message à ce porteur de projet, vous devez vous connecter ou créer un
 							compte sur Objectif Terres</p>
 					</div>
 				</div>
@@ -32,7 +27,6 @@
 		</div>
 	</div>
 @else
-
 	{!! Form::open(['route' => 'adMessages.create', 'method'=>'post']) !!}
 	<div class="modal">
 		<div class="modal-background"></div>

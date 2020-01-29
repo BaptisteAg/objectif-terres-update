@@ -70,6 +70,11 @@
 						@endif
 					</div>
 					{!! Form::close() !!}
+
+					<div class="section">
+						<h4 class="title is-4 has-text-centered">Vous n'avez pas encore de compte ?</h4>
+						<p class="has-text-centered"><a href="{{route('register')}}">Créer un compte</a></p>
+					</div>
 				</div>
 			</div>
 			<div class="column"></div>
