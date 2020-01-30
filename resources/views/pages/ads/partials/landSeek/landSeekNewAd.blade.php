@@ -176,6 +176,7 @@
                         <h3 class="dropzone-custom-title">Vous pouvez également glisser-déposer</h3>
                     </div>
                 </vue-dropzone>
+                <input type="hidden" name="land_seek[documents][]" :value="id" v-for="id in formInput.documents">
             </div>
         </tab-content>
 
