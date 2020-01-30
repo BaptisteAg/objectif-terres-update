@@ -19,9 +19,9 @@ class SalesForceAuthController extends Controller
     {
         Forrest::authenticate();
 
-        dd(Forrest::query('Select Id, Name, Description from Profile where Id=\'00ew0000001V72nAAC\''));
+        //dd(Forrest::query('Select Id, Name, Description from Profile where Id=\'00ew0000001V72nAAC\''));
 
-        /*$response = Forrest::sobjects('User',[
+        $response = Forrest::sobjects('Contact',[
             'method' => 'post',
             'body'   => [
                 'FirstName' => 'Dunder',
@@ -33,9 +33,10 @@ class SalesForceAuthController extends Controller
                 "LocaleSidKey" => "fr_FR",
                 "EmailEncodingKey" => "UTF-8",
                 "ProfileId" => "00ew0000001V72nAAC",
-                "LanguageLocaleKey" => "fr"
+                "LanguageLocaleKey" => "fr",
+                "CanAllowPortalSelfReg" => true
             ]
-        ]);*/
+        ]);
 
         dd($response);
 

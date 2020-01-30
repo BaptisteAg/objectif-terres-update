@@ -165,8 +165,18 @@
                 <vue-dropzone
                     ref="documents"
                     id="dropzone"
-                    :options="{url: '/documents/tmp_upload'}">
+                    :options="{url: '/documents/upload', thumbnailWidth: 150, maxFiles: 5, maxFilesize: 1, addRemoveLinks: true, uploadMultiple: true}"
+                    :duplicate-check="true"
+                    :use-custom-slot="true"
+                    @vdropzone-sending-multiple="onBeforeDocumentsUpload"
+                    @vdropzone-success-multiple="onSuccessDocumentsUpload">
+
+                    <div class="dropzone-custom-content">
+                        <div class="subtitle">Cliquez ici pour déposer des fichiers</div>
+                        <h3 class="dropzone-custom-title">Vous pouvez également glisser-déposer</h3>
+                    </div>
                 </vue-dropzone>
+                <input type="hidden" name="land_seek[documents][]" :value="id" v-for="id in formInput.documents">
             </div>
         </tab-content>
 
@@ -180,6 +190,7 @@
 				agricole, de stages ou de bénévolat sur
 				des fermes ou encore si vous êtes
 				titulaires de diplômes agricoles.">
+                    Expérience dans le domaine agricole
                     <i class="fas fa-info-circle has-text-info"></i>
                 </label>
 

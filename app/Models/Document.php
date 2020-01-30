@@ -33,7 +33,7 @@ class Document extends Model
      * @var array
      */
     protected $fillable = [
-        'path', 'type_document'
+        'name', 'path', 'type_document', 'user_id'
     ];
 
     /**
@@ -54,5 +54,10 @@ class Document extends Model
     public function adNotes()
     {
         return $this->morphedByMany('App\Models\AdNote', 'documentable');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

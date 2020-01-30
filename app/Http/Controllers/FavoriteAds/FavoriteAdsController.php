@@ -10,7 +10,10 @@ use Illuminate\Http\Request;
 class FavoriteAdsController extends Controller
 {
 
-	protected  $favoriteAdRepository;
+    /**
+     * @var FavoriteAdRepository
+     */
+    protected  $favoriteAdRepository;
 
 	public function __construct(FavoriteAdRepository $favoriteAdRepository)
 	{
@@ -18,7 +21,12 @@ class FavoriteAdsController extends Controller
 
 	}
 
-	public function create(Request $request)
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
+     */
+    public function create(Request $request)
 	{
 		$data = [];
 		foreach ($request->input() as $item => $value) {
@@ -29,7 +37,7 @@ class FavoriteAdsController extends Controller
 
 		$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
 
-		if (count($favoriteAdAlreadyExist) > 0) {
+		if ($favoriteAdAlreadyExist) {
 			return back()->with('error', 'message');
 		}
 
@@ -39,14 +47,22 @@ class FavoriteAdsController extends Controller
 		return back()->with('save', 'save');
 	}
 
-	public function show(){
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function show(){
 
 		$favoriteAds= $this->favoriteAdRepository->findAllByUserId(999);
 
 		return view('pages.favoriteAds.listFavoriteAds', compact('favoriteAds'));
 	}
 
-	public function destroy(Request $request){
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function destroy(Request $request){
 		$this->favoriteAdRepository->destroy((int)$request->input('favoriteAdsId'));
 		return back()->with('success', 'message');
 	}

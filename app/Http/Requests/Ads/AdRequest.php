@@ -27,11 +27,11 @@ class AdRequest extends FormRequest
     {
         $rules = [
             'ad_type' => "required",
-            'landSeek' => "array",
+            'land_seek' => "array",
         ];
 
         $rulesetsByAdType = [
-            'landSeek' => LandSeekRuleset::class,
+            'land_seek' => LandSeekRuleset::class,
         ];
 
         foreach($rulesetsByAdType as $adType => $rulesetClass) {

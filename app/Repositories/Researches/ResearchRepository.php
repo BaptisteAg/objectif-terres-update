@@ -1,6 +1,5 @@
 <?php namespace App\Repositories\Researches;
 
-use App\Htttp\Repositories\ResearchRepositoryInterface;
 use App\Models\Ad;
 use App\Models\Research;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
