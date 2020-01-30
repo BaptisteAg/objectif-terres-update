@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\City;
+use App\Models\Country;
 use App\Models\User;
 use App\Services\Users\UserService;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -58,6 +60,20 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
+
+	/**
+	 * Show the application registration form.
+	 *
+	 */
+	public function showRegistrationForm()
+	{
+		$countries = Country::all();
+		$cities = City::all();
+
+		return view('auth.register', compact('countries','cities'));
+	}
+
+
 
 	/**
 	 * Create a new user instance after a valid registration.

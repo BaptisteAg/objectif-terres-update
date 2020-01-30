@@ -1,7 +1,7 @@
 <?php namespace App\Repositories\Users;
 
 
-use App\Htttp\Repositories\UserRepositoryInterface;
+use App\Repositories\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;

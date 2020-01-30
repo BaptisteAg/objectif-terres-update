@@ -57,49 +57,55 @@
                             </div>
                         </div>
                     </div>
-                    <div class="field">
-                        <label class="label">Adresse email</label>
-                        <p class="control has-icons-left has-icons-right">
-                            <input id="email" class="input @error('email') is-danger @enderror" type="email"
-                                   name="email" value="{{ old('email') }}" required autocomplete="email" autofocus
-                                   placeholder="Votre adresse email...">
-                            <span class="icon is-small is-left">
-                              <i class="fas fa-envelope"></i>
-                            </span>
-                        </p>
-                        @error('email')
-                        <article class="message is-danger" role="alert">
-                            <div class="message-body">
-                                {{ $message }}
-                            </div>
-                        </article>
-                        @enderror
-                    </div>
-
-                    <div class="field">
-                        <label class="label">Numéro de téléphone </label>
-                        <p class="control has-icons-left has-icons-right">
-                            <input id="phone" class="input @error('phone') is-danger @enderror" type="text"
-                                   name="phone" value="{{ old('phone') }}" autocomplete="phone" autofocus
-                                   placeholder="Votre numéro de téléphone ...">
-                            <span class="icon is-small is-left">
+                    <div class="columns">
+                        <div class="column is-half">
+                            <div class="field">
+                                <label class="label">Numéro de téléphone </label>
+                                <p class="control has-icons-left has-icons-right">
+                                    <input id="phone" class="input @error('phone') is-danger @enderror" type="text"
+                                           name="phone" value="{{ old('phone') }}" autocomplete="phone" autofocus
+                                           placeholder="Votre numéro de téléphone ...">
+                                    <span class="icon is-small is-left">
                            <i class="fas fa-phone"></i>
                             </span>
-                        </p>
-                        @error('phone')
-                        <article class="message is-danger" role="alert">
-                            <div class="message-body">
-                                {{ $message }}
+                                </p>
+                                @error('phone')
+                                <article class="message is-danger" role="alert">
+                                    <div class="message-body">
+                                        {{ $message }}
+                                    </div>
+                                </article>
+                                @enderror
                             </div>
-                        </article>
-                        @enderror
+                        </div>
+                        <div class="column">
+                            <div class="field">
+                                <label class="label">Adresse email</label>
+                                <p class="control has-icons-left has-icons-right">
+                                    <input id="email" class="input @error('email') is-danger @enderror" type="email"
+                                           name="email" value="{{ old('email') }}" required autocomplete="email"
+                                           autofocus
+                                           placeholder="Votre adresse email...">
+                                    <span class="icon is-small is-left">
+                              <i class="fas fa-envelope"></i>
+                            </span>
+                                </p>
+                                @error('email')
+                                <article class="message is-danger" role="alert">
+                                    <div class="message-body">
+                                        {{ $message }}
+                                    </div>
+                                </article>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
-
                     <div class="field">
                         <label class="label">Adresse </label>
                         <p class="control has-icons-left has-icons-right">
                             <input id="address" class="input @error('address') is-danger @enderror" type="text"
-                                   name="address" value="{{ old('address') }}" required autocomplete="address" autofocus
+                                   name="address" value="{{ old('address') }}" required autocomplete="address"
+                                   autofocus
                                    placeholder="Votre adresse ...">
                             <span class="icon is-small is-left">
                                         <i class="fas fa-map-marker-alt"></i>
@@ -113,6 +119,14 @@
                         </article>
                         @enderror
                     </div>
+                    <div id="vue-render">
+                        <city-select
+                                name="city"
+                                ref="selectedZones">
+                        </city-select>
+                    </div>
+
+
                     <div class="columns">
                         <div class="column is-one-third">
                             <div class="field">
@@ -165,8 +179,9 @@
                                                 class="input @error('country_id') is-danger @enderror "
                                                 autocomplete="new-password">
                                             <option disabled="disabled" selected>Choississez votre pays...</option>
-                                            <option value="1">France</option>
-                                            <option value="2">With options</option>
+                                            @foreach($countries as $country)
+                                                <option value="{{$country->id}}">{{$country->name_fr_fr}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="icon is-small is-left">
@@ -249,3 +264,6 @@
     @include('components.supportTerreLiens')
 
 @endsection
+
+
+}
