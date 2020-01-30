@@ -16,94 +16,72 @@
                 <br>
                 <div>
                     <p class="has-text-grey">Pour nous permettre de vous valider votre annonce, veuillez nous en dire en
-                        peu plus…</p>
+                        peu plus…<br>
+                        Les champ marqués d'un astérisque (*) sont obligatoires
+                    </p>
                 </div>
                 <div class="section">
                     <div id="vue-render">
-                        <new-ad inline-template
+
+                        <new-ad id="new-ad"
+                                inline-template
                                 :old-ad-type-selected="'{{old('ad_type')}}'">
-                            {!! Form::open([
-                                'files' => true,
-                                '@submit' => 'submit'
-                            ]) !!}
-                            <div class="field">
-                                {!! Form::label('ad_type', 'Type d\'annonce', ['class' => 'label']); !!}
-                                <div class="select">
-                                    {{ Form::select('ad_type',
-                                        ['land_seek' => 'Recherche de foncier',
-                                         'land_offer'=>'Offre de foncier',
-                                         'job_offer'=>'Opportunité professionnelle'],
-                                         null,
-                                         [
-                                            'v-model'=>'adTypeSelected',
-                                            'placeholder' => 'Choisir un type d\'annonce...'
-                                        ]) }}
-                                </div>
-                            </div>
 
-                            <new-land-seek-ad inline-template
-                                              v-show="adTypeSelected === 'land_seek'"
-                                              :is-input-disabled="adTypeSelected !== 'land_seek'"
-                                              :old-values="{{json_encode(old('land_seek', new stdClass))}}"
-                                              @input-enabled="setEnabledForm">
-                                @include('pages.ads.partials.land_seek_new_ad')
-                            </new-land-seek-ad>
+                            <form
+                                method="post"
+                                enctype="multipart/form-data"
+                                @submit="submit"
+                                ref="form">
 
-                            <new-land-offer-ad inline-template
-                                               v-show="adTypeSelected === 'land_offer'"
-                                               :is-input-disabled="adTypeSelected !== 'land_offer'"
-                                               :old-values="{{json_encode(old('land_offer', new stdClass))}}"
-                                               @input-enabled="setEnabledForm">
-                                @include('pages.ads.partials.land_offer_new_ad')
-                            </new-land-offer-ad>
+                                {{ csrf_field() }}
 
-                            <new-job-offer-ad inline-template
-                                              v-show="adTypeSelected === 'job_offer'"
-                                              :is-input-disabled="adTypeSelected !== 'job_offer'"
-                                              :old-values="{{json_encode(old('job_offer', new stdClass))}}"
-                                              @input-enabled="setEnabledForm">
-                                @include('pages.ads.partials.job_ad_new_ad')
-                            </new-job-offer-ad>
+                                <ad-type-select
+                                    v-model="adTypeSelected"
+                                    name="ad_type">
+                                </ad-type-select>
 
-                            <template v-if="adTypeSelected !== ''">
-                                <article class="message is-warning" v-if="enabledFormHasErrors()">
-                                    <div class="message-header">
-                                        <p>Veuillez revoir votre formulaire</p>
-                                    </div>
-                                    <div class="message-body">
-                                        Des erreurs empêchent l'envoi du formulaire. Avez-vous tout vérifié ?
-                                    </div>
-                                </article>
+                                <new-land-seek-ad inline-template
+                                                  v-show="adTypeSelected === 'land_seek'"
+                                                  :is-input-disabled="adTypeSelected !== 'land_seek'"
+                                                  :old-values="{{json_encode(old('land_seek', new stdClass))}}"
+                                                  @input-enabled="setEnabledForm"
+                                                  @form-complete="onFormComplete">
+                                    @include('pages.ads.partials.landSeek.landSeekNewAd')
+                                </new-land-seek-ad>
 
-                                <div class="field is-grouped">
-                                    <div class="control">
-                                        {!! Form::submit('Envoyer',['class'=>'button is-link']) !!}
-                                    </div>
-                                    <div class="control">
-                                        <button class="button is-light">Sauvegarder</button>
-                                    </div>
-                                    <div class="control">
-                                        <button class="button is-link is-light">Annuler</button>
-                                    </div>
-                                </div>
-                            </template>
+                                <new-land-offer-ad inline-template
+                                                   v-show="adTypeSelected === 'land_offer'"
+                                                   :is-input-disabled="adTypeSelected !== 'land_offer'"
+                                                   :old-values="{{json_encode(old('land_offer', new stdClass))}}"
+                                                   @input-enabled="setEnabledForm">
+                                    @include('pages.ads.partials.landOffer.landOfferNewAd')
+                                </new-land-offer-ad>
+
+                                <new-job-offer-ad inline-template
+                                                  v-show="adTypeSelected === 'job_offer'"
+                                                  :is-input-disabled="adTypeSelected !== 'job_offer'"
+                                                  :old-values="{{json_encode(old('job_offer', new stdClass))}}"
+                                                  @input-enabled="setEnabledForm">
+                                    @include('pages.ads.partials.jobAd.jobAdNewAd')
+                                </new-job-offer-ad>
+                            </form>
                         </new-ad>
                     </div>
                     <div class="column"></div>
-                    {!! Form::close() !!}
                 </div>
             </div>
             <div class="column"></div>
         </div>
         @include('components.partnering')
-        @include('components.support_terre_liens')
+        @include('components.supportTerreLiens')
     </section>
 @endsection
 
 @section('script')
     <script>
         const vuePage = new Vue({
-            el: '#vue-render'
+            el: '#vue-render',
+            name: 'content'
         });
     </script>
 @endsection

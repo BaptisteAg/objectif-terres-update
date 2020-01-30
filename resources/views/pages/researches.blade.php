@@ -15,41 +15,76 @@
 				</div>
 				<div class="level-right">
 					<div class="level-item">
-						{!! Form::open(['route' => 'researches.store']) !!}
-						<input type="hidden" name="ad_type" value="{{$adType}}">
-
-						@foreach ($regions->pluck('id') as $region)
-						<input type="hidden" name="regions[]" value="{{ $region }}">
-						@endforeach
-
-						<a id="open-modal" href="">
-							<span class="icon"><i class="far fa-heart"></i></span>
-							<span>Sauvegarder cette recherche</span>
-						</a>
-						<div class="modal">
-							<div class="modal-background"></div>
-							<div class="modal-content">
-								<div class="card">
-									<div class="card-content">
-										<div class="field">
-											<label class="label">Donner un titre à votre recherche :</label>
-											<div class="control">
-												<input class="input" type="text" name="name" id="title"
-													   placeholder="Votre titre...">
+						@guest
+							<a id="open-modal" href="">
+								<span class="icon"><i class="far fa-heart"></i></span>
+								<span>Sauvegarder cette recherche</span>
+							</a>
+							<div class="modal">
+								<div class="modal-background"></div>
+								<div class="modal-content">
+									<div class="card">
+										<div class="card-content">
+											<div class="content">
+												<p class="title is-3 has-text-centered has-text-link">Pas encore connecter ?</p>
+												<p class="subtitle is-6">Pour sauvegarder cette recherche, vous devez vous connecter ou créer un compte sur Objectif Terres</p>
 											</div>
 										</div>
+										<footer class="card-footer">
+											<div class="buttons card-footer-item">
+												<a href="{{route('signIn')}}">
+													<button class="button is-link">
+													<span>Se connecter</span></button>
+												</a>
+												<a href="{{route('register')}}">
+													<button class="button is-link is-light">
+														<span>S'inscrire</span></button>
+												</a>
+											</div>
+											<button id="close-modal" class="modal-close is-large" aria-label="close"></button>
+										</footer>
 									</div>
-									<footer class="card-footer">
-										<div class="buttons card-footer-item">
-											<button type="submit" class="button is-link">
-												<span>Valider</span></button>
-										</div>
-										<button class="modal-close is-large" aria-label="close"></button>
-									</footer>
 								</div>
 							</div>
-						</div>
-						{!! Form::close() !!}
+						@else
+
+							{!! Form::open(['route' => 'researches.store']) !!}
+							<input type="hidden" name="ad_type" value="{{$adType}}">
+							@foreach ($regions->pluck('id') as $region)
+								<input type="hidden" name="regions[]" value="{{ $region }}">
+							@endforeach
+
+							<a id="open-modal" href="">
+								<span class="icon"><i class="far fa-heart"></i></span>
+								<span>Sauvegarder cette recherche</span>
+							</a>
+							<div class="modal">
+								<div class="modal-background"></div>
+								<div class="modal-content">
+									<div class="card">
+										<div class="card-content">
+											<div class="field">
+												<label class="label">Donner un titre à votre recherche :</label>
+												<div class="control">
+													<input class="input" type="text" name="name" id="title"
+														   placeholder="Votre titre...">
+												</div>
+											</div>
+										</div>
+										<footer class="card-footer">
+											<div class="buttons card-footer-item">
+												<button type="submit" class="button is-link">
+													<span>Valider</span></button>
+											</div>
+											<button id="close-modal" class="modal-close is-large" aria-label="close"></button>
+										</footer>
+									</div>
+								</div>
+							</div>
+							{!! Form::close() !!}
+
+						@endguest
+
 					</div>
 				</div>
 			</nav>
@@ -128,8 +163,8 @@
 							</nav>
 							<div></div>
 							<h1 class="title">{{ $ad->$adType->title }}</h1>
-							<div class="descritption">Je suis une discritpion {{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</div>
-							<a href="{{url("/annonce", $ad->id)}}">Voir</a>
+							<div class="descritption">{{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</div>
+							<a href="{{route("ads.show", $ad->id)}}">Voir</a>
 						</div>
 					</div>
 				@endforeach
@@ -185,11 +220,11 @@
 					</div>
 				</section>
 			@else
-				@include('components.section_orientation_terre_liens')
+				@include('components.sectionOrientationTerreLiens')
 			@endif
 
 			@include('components.partnering')
-			@include('components.support_terre_liens')
+			@include('components.supportTerreLiens')
 
 		</div>
 	</section>
@@ -206,6 +241,11 @@
             html.classList.add('is-clipped');
 
             modal.querySelector('.modal-background').addEventListener('click', function (e) {
+                e.preventDefault();
+                modal.classList.remove('is-active');
+                html.classList.remove('is-clipped');
+            });
+            modal.querySelector('#close-modal').addEventListener('click', function (e) {
                 e.preventDefault();
                 modal.classList.remove('is-active');
                 html.classList.remove('is-clipped');

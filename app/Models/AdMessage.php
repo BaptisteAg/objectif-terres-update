@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\AdMessage
+ * App\Models\AdMessages
  *
  * @property int $id
  * @property int $ad_id

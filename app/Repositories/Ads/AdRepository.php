@@ -1,10 +1,8 @@
 <?php namespace App\Repositories\Ads;
 
-use App\Htttp\Repositories\AdRepositoryInterface;
 use App\Models\Ad;
 use App\Models\Document;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Cache;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 /**
@@ -77,6 +75,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
         $ad->save();
 
+        $adData["ad_id"] = $ad->id;
+
         foreach (["cities", "departments", "regions"] as $locationableType) {
             $locationables = $adData["locationable"][$locationableType] ?? [];
             if (count($locationables)) {
@@ -84,26 +84,18 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             }
         }
 
-        if($adData["images"]) {
-            foreach($adData["images"] as $image) {
-                $imageName = time().'.'.$image->getClientOriginalExtension();
-                $image->move(public_path('images'), $imageName);
-                $document = new Document();
-                $document->path = $imageName;
-                $document->type_document = 'image';
-                $document->save();
-
-                $ad->documents()->attach($document->id);
+        if(isset($adData["documents"])) {
+            foreach($adData["documents"] as $documentId) {
+                $ad->documents()->attach($documentId);
             }
         }
 
+
         if ($data["ad_type"] === "land_seek") {
-            $adData["ad_id"] = $ad->id;
             $landSeekAd = $this->landSeekAdRepository->create($adData);
         }
         else if ($data["ad_type"] === "land_offer") {
-            $adData["ad_id"] = $ad->id;
-            $landSeekAd = $this->landSeekAdRepository->create($adData);
+            //$landSeekAd = $this->landSeekAdRepository->create($adData);
         }
 
         return $ad;

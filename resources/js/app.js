@@ -4,13 +4,12 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+_ = require('lodash');
 
 window.Vue = require('vue');
 
 import Vuelidate from 'vuelidate';
-
 Vue.use(Vuelidate);
-
 
 require('awesomplete/awesomplete.min');
 require('vue-pagination-2/dist/vue-pagination-2.min');
@@ -21,4 +20,4 @@ require ('./pages/ads/new');
 require('./pages/header');
 
 
-
+require('./main.js');

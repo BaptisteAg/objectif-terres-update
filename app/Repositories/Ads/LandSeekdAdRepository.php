@@ -1,6 +1,5 @@
 <?php namespace App\Repositories\Ads;
 
-use App\Htttp\Repositories\LandSeekAdRepositoryInterface;
 use App\Models\Ad;
 use App\Models\LandSeekAd;
 use Illuminate\Support\Arr;
@@ -48,4 +47,5 @@ class LandSeekdAdRepository extends AbstractRepository implements LandSeekAdRepo
 
         return $landSeekAd;
     }
+
 }

@@ -24,5 +24,6 @@ $factory->define(LandOfferAd::class, function (Faker $faker) {
         'building_id' => factory(Building::class),
         'house_id' => factory(House::class),
         'land_id' => factory(Land::class),
+		'confirm_price_fermage'=> $faker->boolean,
     ];
 });

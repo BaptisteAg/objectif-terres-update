@@ -1,14 +1,20 @@
 import LandSeekNewAd from './components/land-seek-new-ad'
 import LandOfferNewAd from './components/land-offer-new-ad'
 import JobOfferNewAd from './components/job-offer-new-ad'
+import AdTypeSelect from'../../components/AdTypeSelect'
 
 import Vue from 'vue'
+
+import VueFormWizard from 'vue-form-wizard'
+import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+Vue.use(VueFormWizard);
 
 Vue.component('new-ad', {
     components: {
         'new-land-seek-ad': LandSeekNewAd,
         'new-land-offer-ad': LandOfferNewAd,
-        'new-job-offer-ad': JobOfferNewAd
+        'new-job-offer-ad': JobOfferNewAd,
+        AdTypeSelect
     },
     props: {
         oldAdTypeSelected: String
@@ -18,9 +24,9 @@ Vue.component('new-ad', {
             adTypeSelected: this.oldAdTypeSelected,
             enabledForm: null
         }
-
     },
     mounted() {
+        // Avoid accidental page leaving
         window.addEventListener("beforeunload", (e) => {
             if (this.isSubmitting) {
                 return true;
@@ -36,17 +42,23 @@ Vue.component('new-ad', {
     },
     methods: {
         submit(e) {
+            e.preventDefault();
+
             this.enabledForm.$v.$touch();
+
             if (this.enabledFormHasErrors()) {
-                e.preventDefault();
-                this.focusOnFirstError(this.enabledForm);
+
+                this.enabledForm.focusOnFirstError();
+                this.enabledForm.setInputsBorderColor();
+
                 this.isSubmitting = false;
-            } else {
+            }
+            else {
                 if (!confirm('Êtes-vous sûr de la saisie de votre annonce?')) {
                     this.isSubmitting = false;
-                    e.preventDefault();
                 } else {
                     this.isSubmitting = true;
+                    this.$el.submit()
                 }
             }
         },
@@ -56,31 +68,9 @@ Vue.component('new-ad', {
         setEnabledForm(form) {
             this.enabledForm = form;
         },
-        focusOnFirstError(vueForm) {
-            for (let key in Object.keys(vueForm.$v.formInput)) {
-                const inputName = Object.keys(vueForm.$v.formInput)[key];
-                if (inputName.includes("$")) return false;
-                if (vueForm.$v.formInput[inputName].$error) {
-                    let input = vueForm.$refs[inputName];
-
-                    if (input instanceof Vue) {
-                        input = vueForm.$refs[inputName].$el
-                    }
-                    if (input instanceof Element) {
-                        const tagNames = ['input', 'textarea', 'select'];
-
-                        if (!tagNames.includes(input.tagName.toLowerCase())) {
-                            input = input.querySelector(tagNames.join(','));
-                        }
-                    }
-                    try {
-                        input.focus();
-                    } catch (error) {
-                        console.log(error)
-                    }
-                    return true;
-                }
-            }
+        onFormComplete() {
+            const evt = new CustomEvent("submit", {"bubbles":true, "cancelable": true});
+            this.$refs.form.dispatchEvent(evt);
         }
     }
 });

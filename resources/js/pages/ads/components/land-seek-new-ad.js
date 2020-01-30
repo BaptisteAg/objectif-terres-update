@@ -1,17 +1,23 @@
+import {maxLength, minLength, numeric, required} from 'vuelidate/lib/validators'
+
 import FormNewAdMixin from './mixins/form-new-ad-mixin'
-import FormValidationMixin from '../components/mixins/form-new-ad-validation-mixin';
-import {minLength, maxLength, requiredIf, numeric, required} from 'vuelidate/lib/validators'
 import TextAreaCounter from "../../../components/TextAreaCounter";
 import VueSlider from "../../../components/VueSlider";
-import Autocomplete from '../../../components/Autocomplete'
+import ZoneSelect from '../../../components/ZoneSelect'
+import AdTypeSelect from '../../../components/AdTypeSelect'
+
+import vue2Dropzone from 'vue2-dropzone'
+import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 
 export default Vue.extend({
-    mixins: [FormNewAdMixin, FormValidationMixin],
+    mixins: [FormNewAdMixin],
     props: {},
     components: {
         TextAreaCounter,
         VueSlider,
-        Autocomplete,
+        ZoneSelect,
+        AdTypeSelect,
+        vueDropzone: vue2Dropzone
     },
     data() {
         const v = this.oldValues;
@@ -29,8 +35,9 @@ export default Vue.extend({
                 offerGenre: hasOld ? v.offer_genre_id : '',
                 selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
                 aboutProject: hasOld ? v.about_project_content : '',
-                aboutContent: hasOld ? v.about_content: '',
-                experienceFarming: hasOld ? v.experience_farming : '',
+                aboutContent: hasOld ? v.about_content : '',
+                experienceFarming: hasOld ? (v.experience_farming || '') : '',
+                documents: hasOld ? v.documents : []
             },
         }
     },
@@ -40,29 +47,31 @@ export default Vue.extend({
         }
     },
     watch: {
-        'formInput.productionGenre': function(productionGenre) {
-            if(!productionGenre.includes('other')) {
+        'formInput.productionGenre': function (productionGenre) {
+            if (!productionGenre.includes('other')) {
                 this.formInput.productionTypeAdd = '';
-            }
-        }
-    },
-    methods: {
-        renderZoneItemData(item) {
-            return {
-                label: '<b>' + this.getLabels().ZONE_TYPES[item.value.type] + '</b>: ' + item.label,
-                value: {
-                    ...item.value,
-                    originalLabel: item.label
-                },
             }
         },
     },
+    methods: {
+        onBeforeDocumentsUpload(files, xhr, formData) {
+            formData.append('_token', window.csrf_token);
+            formData.append('type', 'ads');
+        },
+        onSuccessDocumentsUpload(files, response) {
+            if(response.ids) {
+                response.ids.forEach(id => this.formInput.documents.push(id));
+            }
+        }
+    },
     validations: {
         formInput: {
-            installationTypeId: {required},
             selectedZones: {
-                hasZone() { return this.formInput.selectedZones.length; }
+                hasZone() {
+                    return this.formInput.selectedZones.length;
+                }
             },
+            installationTypeId: {required},
             productionGenre: {required},
             minRent: {numeric},
             maxRent: {numeric},
@@ -85,7 +94,9 @@ export default Vue.extend({
                 minLength: minLength(5),
             },
             chartConfirmation: {
-                checked(v) {return !!v}
+                checked(v) {
+                    return !!v
+                }
             }
 
         }

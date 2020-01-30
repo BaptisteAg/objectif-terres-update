@@ -1,5 +1,6 @@
-<?php namespace App\Htttp\Repositories;
+<?php namespace App\Repositories\Researches;
 
+use App\Models\Ad;
 use App\Models\Research;
 
 interface ResearchRepositoryInterface
@@ -40,5 +41,13 @@ interface ResearchRepositoryInterface
 	 * @param int
 	 * @param array
 	 */
+
 	public function create(array $data) : Research;
+	/**
+	 * Find all ads related to research
+	 *
+	 * @param int
+	 * @param array
+	 */
+	public function findRelatedAds(int $id) ;
 }

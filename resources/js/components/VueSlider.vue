@@ -27,7 +27,7 @@
         },
         data: function () {
             return {
-                sliderValue: this.values,
+                sliderValue: this.values || "",
                 ranges: this.data
             }
         }

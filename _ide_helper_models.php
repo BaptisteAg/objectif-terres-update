@@ -64,7 +64,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\AdMessage
+ * App\Models\AdMessages
  *
  * @property int $id
  * @property int $ad_id
