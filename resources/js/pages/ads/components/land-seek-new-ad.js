@@ -55,10 +55,13 @@ export default Vue.extend({
     },
     methods: {
         onBeforeDocumentsUpload(files, xhr, formData) {
-            formData.append('_token', window.csrf_token)
+            formData.append('_token', window.csrf_token);
+            formData.append('type', 'ads');
         },
         onSuccessDocumentsUpload(files, response) {
-            console.log(response)
+            if(response.ids) {
+                response.ids.forEach(id => this.formInput.documents.push(id));
+            }
         }
     },
     validations: {

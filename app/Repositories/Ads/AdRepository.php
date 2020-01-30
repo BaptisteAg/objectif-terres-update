@@ -85,15 +85,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         }
 
         if(isset($adData["documents"])) {
-            foreach($adData["documents"] as $image) {
-                $imageName = time().'.'.$image->getClientOriginalExtension();
-                $image->move(public_path('images'), $imageName);
-                $document = new Document();
-                $document->path = $imageName;
-                $document->type_document = 'image';
-                $document->save();
-
-                $ad->documents()->attach($document->id);
+            foreach($adData["documents"] as $documentId) {
+                $ad->documents()->attach($documentId);
             }
         }
 

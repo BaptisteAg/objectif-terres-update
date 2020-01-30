@@ -16,9 +16,9 @@ class DocumentService
         $this->repository = $repository;
     }
 
-    public function create(UploadedFile $file) : Document
+    public function create(UploadedFile $file, string $type) : Document
     {
-        $storedFilePath = $file->store('ads/documents');
+        $storedFilePath = $file->store('documents/'.$type);
 
         $document = $this->repository->create([
             'path' => $storedFilePath,
@@ -26,6 +26,17 @@ class DocumentService
             "user_id" => auth()->id(),
             'type_document' => 'ad'
         ]);
+
+        return $document;
+    }
+
+    public function findByPath(string $path) : Document
+    {
+        $document = $this->repository->findByPath($path);
+
+        if(!$document || $document->user_id !== auth()->id()) {
+            abort(404, "Document non trouvé");
+        }
 
         return $document;
     }

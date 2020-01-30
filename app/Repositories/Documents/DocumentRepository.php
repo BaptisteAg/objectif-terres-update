@@ -14,4 +14,9 @@ class DocumentRepository extends AbstractRepository implements DocumentRepositor
 	{
 		return Document::class;
 	}
+
+    public function findByPath(string $path)
+    {
+        return $this->entity->where('path', '=', $path)->first();
+    }
 }

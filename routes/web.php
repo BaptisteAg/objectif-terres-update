@@ -14,13 +14,14 @@
 Route::get('/', 'HomePage\HomePageController@show');
 
 Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
-    Route::get('creer', 'AdsController@create')->name('create');
-    Route::post('creer', 'AdsController@store')->name('store');
+    Route::middleware('auth')->get('creer', 'AdsController@create')->name('create');
+    Route::middleware('auth')->post('creer', 'AdsController@store')->name('store');
     Route::get('{id}', 'AdsController@show')->name('show');
 });
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {
     Route::post('upload', 'DocumentsController@upload')->name('upload');
+    Route::get('{type}/{file}', 'DocumentsController@show')->name('show');
 });
 
 Route::get('/register', 'Salesforces\SalesForceAuthController@register');

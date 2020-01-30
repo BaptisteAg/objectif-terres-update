@@ -22,7 +22,7 @@
 									@if($document->path === "0")
 										<img src="https://picsum.photos/480/320" alt="picsum">
 									@else
-										<img src="/images/{{$document->path}}" alt="Placeholder image">
+										<img src="{{asset($document->path)}}" alt="{{$document->name}}">
 									@endif
 								</figure>
 							</div>
