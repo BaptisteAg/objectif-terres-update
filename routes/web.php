@@ -13,9 +13,10 @@
 
 Route::get('/', 'HomePage\HomePageController@show');
 
+Route::get('/test', 'HomePage\HomePageController@show');
 Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
-    Route::middleware('auth')->get('creer', 'AdsController@create')->name('create');
-    Route::middleware('auth')->post('creer', 'AdsController@store')->name('store');
+    Route::get('creer', 'AdsController@create')->name('create');
+    Route::post('creer', 'AdsController@store')->name('store');
     Route::get('{id}', 'AdsController@show')->name('show');
 });
 
@@ -42,7 +43,7 @@ Route::middleware('auth')->prefix('messages')->name('adMessages.')->namespace('A
 });
 
 Route::prefix('annonces-favorites')->middleware('auth')->name('favoriteAds.')->namespace('favoriteAds')->group(function () {
-	Route::post('sauvegarde', 'FavoriteAdsController@create')->name('create');
+	Route::get('sauvegarde', 'FavoriteAdsController@create')->name('create');
 	Route::get('liste', 'FavoriteAdsController@show')->name('show');
 	Route::post('supprimer', 'FavoriteAdsController@destroy')->name('destroy');
 });

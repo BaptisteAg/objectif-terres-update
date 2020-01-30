@@ -22,6 +22,11 @@ $factory->define(User::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+		'address' => $faker->address,
+		'first_name'=>$faker->name,
+		'city'=> $faker->city,
+		'zip_code'=>$faker->numberBetween([10000, 99999]),
+		'country_id'=>$faker->numberBetween([1, 200]),
         'remember_token' => Str::random(10),
     ];
 });

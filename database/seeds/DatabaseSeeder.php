@@ -36,11 +36,12 @@ class DatabaseSeeder extends Seeder
         \Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__.'/../sql/regions.sql'));
         \Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__.'/../sql/departments.sql'));
         \Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__.'/../sql/cities.sql'));
+		\Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__.'/../sql/countries.sql'));
 
         $this->call([
             ResponseTypeSeeder::class,
-            SurfaceRangeSeeder::class,
             PriceRangeSeeder::class,
+            SurfaceRangeSeeder::class,
             InstallationTypeSeeder::class,
             BioCertificationSeeder::class,
             JobStatusSeeder::class,
@@ -48,6 +49,7 @@ class DatabaseSeeder extends Seeder
             ResearchSeeder::class,
             UserToUserMessageSeeder::class,
             EducationLevelSeeder::class,
+
         ]);
 
         factory(Ad::class, 25)->create()->each(function (Ad $ad) use(&$queriesCount) {
@@ -71,6 +73,7 @@ class DatabaseSeeder extends Seeder
         factory(JobAd::class, 10)->create()->each(function (JobAd $jobAd) {
             $jobAd->agriculturalActivity()->save(factory(AgriculturalActivity::class)->make());
         });
+
 
         echo "\nTotal queries : ".$queriesCount."\n";
     }

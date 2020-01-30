@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\City;
+use App\Models\Country;
 use App\Models\User;
+use App\Services\Users\UserService;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,15 +33,17 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/';
+	protected $userService;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserService $userService)
     {
         $this->middleware('guest');
+        $this->userService = $userService;
     }
 
     /**
@@ -55,18 +61,29 @@ class RegisterController extends Controller
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
+	/**
+	 * Show the application registration form.
+	 *
+	 */
+	public function showRegistrationForm()
+	{
+		$countries = Country::all();
+		$cities = City::all();
+
+		return view('auth.register', compact('countries','cities'));
+	}
+
+
+
+	/**
+	 * Create a new user instance after a valid registration.
+	 *
+	 * @param array $data
+	 * @return \App\Models\User
+	 * @throws \Throwable
+	 */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+		$this->userService->create($data);
     }
 }

@@ -18,6 +18,7 @@ class FavoriteAdsController extends Controller
 	public function __construct(FavoriteAdRepository $favoriteAdRepository)
 	{
 		$this->favoriteAdRepository = $favoriteAdRepository;
+
 	}
 
     /**
@@ -27,12 +28,12 @@ class FavoriteAdsController extends Controller
      */
     public function create(Request $request)
 	{
-
 		$data = [];
 		foreach ($request->input() as $item => $value) {
 			$data[$item] = $value;
 		}
 		$data['sf_id'] = 999;
+
 
 		$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
 
@@ -41,6 +42,7 @@ class FavoriteAdsController extends Controller
 		}
 
 		$this->favoriteAdRepository->create($data);
+
 
 		return back()->with('save', 'save');
 	}
