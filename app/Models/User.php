@@ -9,6 +9,20 @@ use Illuminate\Notifications\Notifiable;
 /**
  * App\User
  *
+ * @property int $id
+ * @property string $name
+ * @property string $first_name
+ * @property string $phone
+ * @property string $address
+ * @property string $city
+ * @property int 	$zip_code_id
+ * @property string $accept_communication
+ * @property string $email
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property string $password
+ * @property int $country_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User newModelQuery()
@@ -26,7 +40,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'first_name','phone', 'address', 'city', 'zip_code_id', 'accept_communication', 'country_id'
     ];
 
     /**
@@ -46,4 +60,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function country()
+	{
+		return $this->belongsTo('App\Models\Country');
+	}
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function zipCode()
+	{
+		return $this->belongsTo('App\Models\City');
+	}
 }

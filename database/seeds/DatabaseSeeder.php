@@ -40,8 +40,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             ResponseTypeSeeder::class,
-            SurfaceRangeSeeder::class,
             PriceRangeSeeder::class,
+            SurfaceRangeSeeder::class,
             InstallationTypeSeeder::class,
             BioCertificationSeeder::class,
             JobStatusSeeder::class,

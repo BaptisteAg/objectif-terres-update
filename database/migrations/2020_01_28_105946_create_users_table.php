@@ -27,18 +27,22 @@ class CreateUsersTable extends Migration
 			$table->string('phone')->nullable();
 			$table->string('address');
 			$table->string('city');
-			$table->string('zip_code');
 			$table->boolean('accept_communication');
 			$table->string('email')->unique();
 			$table->timestamp('email_verified_at')->nullable();
 			$table->string('password');
 			$table->unsignedSmallInteger('country_id');
+			$table->unsignedInteger('zip_code_id');
 			$table->rememberToken();
 			$table->timestamps();
 
 			$table->index(["country_id"], 'fk_users_countries_1_idx');
 			$table->foreign('country_id', 'fk_users_countries_1_idx')
 				->references('id')->on('countries');
+
+			$table->index(["zip_code_id"], 'fk_users_zip_code_2_idx');
+			$table->foreign('zip_code_id', 'fk_users_zip_code_2_idx')
+				->references('id')->on('cities');
 
         });
 
