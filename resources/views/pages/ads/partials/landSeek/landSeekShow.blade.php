@@ -14,7 +14,7 @@
 		<h1 class="title has-text-link">{{$ad->landSeekAd->title}}</h1>
 		<div class="columns">
 			<div class=" column is-two-thirds ">
-				<div id="ad_images" class="carousel">
+				<div id="ad_images" class="carousel" style="overflow:hidden">
 					@foreach($ad->documents as $document)
 						<div class="card">
 							<div class="card-image">

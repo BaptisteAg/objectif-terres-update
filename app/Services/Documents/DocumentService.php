@@ -34,7 +34,7 @@ class DocumentService
     {
         $document = $this->repository->findByPath($path);
 
-        if(!$document || $document->user_id !== auth()->id()) {
+        if(!$document) {
             abort(404, "Document non trouvé");
         }
 

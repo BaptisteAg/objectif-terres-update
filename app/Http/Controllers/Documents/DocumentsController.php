@@ -18,6 +18,11 @@ class DocumentsController extends Controller
         $this->service = $service;
     }
 
+    /**
+     * @param string $type
+     * @param string $fileName
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
     public function show(string $type, string $fileName)
     {
         $document = $this->service->findByPath('documents/' . $type . '/' . $fileName);
@@ -32,6 +37,7 @@ class DocumentsController extends Controller
     /**
      *
      * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function upload(Request $request)
     {
@@ -56,6 +62,10 @@ class DocumentsController extends Controller
         return response()->json(compact('ids'));
     }
 
+    /**
+     * @param string $path
+     * @return mixed
+     */
     protected function getCrossPlatformPath(string $path)
     {
         return str_replace('/', DIRECTORY_SEPARATOR, $path);

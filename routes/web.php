@@ -20,7 +20,7 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
 });
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {
-    Route::post('upload', 'DocumentsController@upload')->name('upload');
+    Route::middleware('auth')->post('upload', 'DocumentsController@upload')->name('upload');
     Route::get('{type}/{file}', 'DocumentsController@show')->name('show');
 });
 
