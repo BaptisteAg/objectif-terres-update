@@ -1,11 +1,9 @@
-import MultiSelect from "../components/MultiSelect";
-import AjaxMultiSelect from "../components/AjaxMultiSelect";
+import AjaxMultiSelect from "../../components/AjaxMultiSelect";
 
 
 new Vue({
-    name: "CitySelect",
+    name: "SelectCity",
     components : {
-        MultiSelect,
         AjaxMultiSelect,
     },
     el: '#vue-render',

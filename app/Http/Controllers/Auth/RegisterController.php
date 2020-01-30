@@ -84,6 +84,7 @@ class RegisterController extends Controller
 	 */
     protected function create(array $data)
     {
+    	dd($data);
 		$this->userService->create($data);
     }
 }

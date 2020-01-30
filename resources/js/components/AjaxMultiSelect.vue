@@ -1,6 +1,7 @@
 <template>
     <div>
-        <multiselect v-model="selectedData"
+        <multiselect
+                v-model="selectedData"
                      id="ajax"
                      label="name"
                      track-by="code"
@@ -21,6 +22,7 @@
                      :hide-selected="true"
                      @search-change=" query => asyncFind(query, 300)"
                      :custom-label="customLabel">
+
             <template slot="tag" slot-scope="{ option, remove }">
                 <span class="custom__tag"><span>{{ option.label }}{{ option.name }}</span>
                     <span class="custom__remove" @click="remove(option)">❌</span>
@@ -30,8 +32,10 @@
                 <div class="multiselect__clear" v-if="selectedData.length"
                      @mousedown.prevent.stop="clearAll(props.search)"></div>
             </template>
+            <span slot="noOptions">Veuillez précisez les termes de votre recherche</span>
             <span slot="noResult">Oups! Pas de {{ nameOptionLabel }} trouvé. Essayer de changer votre recherche.</span>
         </multiselect>
+
         <input type="hidden" v-for="selected in selectedData" :value="selected.value.id" :name="name">
     </div>
 </template>
@@ -76,6 +80,9 @@
                     fetch(this.src + '?q=' + query)
                         .then(response => response.json())
                         .then(results => {
+
+                            console.log(!results.length);
+
                             if (!results.length) {
                                 results =  [{
                                     label: "Pas de résultat pour " + query + " :("
@@ -89,14 +96,11 @@
                                     }
                                 });
                             }
-
-
                             this.data = results;
-                            console.log("nouvelle valeur data", this.data);
                             this.isLoading = false;
                         })
                         .catch(error => {
-                            console.log(error);
+
                         })
                         .finally(_ => {
                             this.isLoading = false;

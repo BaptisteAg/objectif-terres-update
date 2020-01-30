@@ -19,6 +19,7 @@ require('awesomplete/awesomplete.min');
 require('vue-pagination-2/dist/vue-pagination-2.min');
 
 require ('./pages/ads/new');
+require ('./pages/auth/register');
 
 
 // require('./pages/researches/researches');

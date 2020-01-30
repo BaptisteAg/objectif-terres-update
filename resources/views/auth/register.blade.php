@@ -119,55 +119,20 @@
                         </article>
                         @enderror
                     </div>
-                    <div id="vue-render">
-                        <city-select
-                                name="city"
-                                ref="selectedZones">
-                        </city-select>
-                    </div>
-
-
                     <div class="columns">
-                        <div class="column is-one-third">
+                        <div class="column is-two-thirds">
                             <div class="field">
-                                <label class="label">Ville</label>
-                                <div class="control has-icons-left">
-                                    <input id="city" name="city" class="input @error('city')is-danger @enderror"
-                                           type="text"
-                                           value="{{ old('city') }}" required autocomplete="city" autofocus
-                                           placeholder="Votre ville...">
-                                    <span class="icon is-small is-left">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                    </span>
+                                <label class="label">Ville ou code postal</label>
+                                <div id="vue-render">
+                                    <ajax-multi-select
+                                            :multiple="true"
+                                            selected-count-text="Ville sélectionnée"
+                                            placeholder="Choississez une ville"
+                                            name-option-label="villes"
+                                            src="/json/cities"
+                                            name="cities_location_researches[]">
+                                    </ajax-multi-select>
                                 </div>
-                                @error('city')
-                                <article class="message is-danger" role="alert">
-                                    <div class="message-body">
-                                        {{ $message }}
-                                    </div>
-                                </article>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="column">
-                            <div class="field">
-                                <label class="label">Code postal</label>
-                                <div class="control has-icons-left">
-                                    <input id="zip_code" name="zip_code"
-                                           class="input @error('zip_code')is-danger @enderror" type="text"
-                                           value="{{ old('zip_code') }}" required autocomplete="zip_code" autofocus
-                                           placeholder="Votre code postal...">
-                                    <span class="icon is-small is-left">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                    </span>
-                                </div>
-                                @error('zip_code')
-                                <article class="message is-danger" role="alert">
-                                    <div class="message-body">
-                                        {{ $message }}
-                                    </div>
-                                </article>
-                                @enderror
                             </div>
                         </div>
                         <div class="column">
