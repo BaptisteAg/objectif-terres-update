@@ -1,7 +1,5 @@
 <?php namespace App\Repositories\FavoriteAds;
 
-
-use App\Htttp\Repositories\FavoriteAdRepositoryInterface;
 use App\Models\FavoriteAd;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;

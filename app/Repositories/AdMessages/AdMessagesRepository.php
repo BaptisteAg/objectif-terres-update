@@ -1,6 +1,5 @@
 <?php namespace App\Repositories\AdMessages;
 
-use App\Htttp\Repositories\AdMessagesRepositoryInterface;
 use App\Models\AdMessage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;

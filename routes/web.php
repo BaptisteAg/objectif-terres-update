@@ -19,6 +19,10 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
     Route::get('{id}', 'AdsController@show')->name('show');
 });
 
+Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {
+    Route::post('upload', 'DocumentsController@upload')->name('upload');
+});
+
 Route::get('/register', 'Salesforces\SalesForceAuthController@register');
 
 Route::prefix('recherches')->name('researches.')->namespace('Researches')->group(function () {
@@ -30,7 +34,6 @@ Route::prefix('recherches')->name('researches.')->namespace('Researches')->group
 		Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
 		Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
 	});
-
 });
 
 Route::middleware('auth')->prefix('messages')->name('adMessages.')->namespace('AdMessages')->group(function () {
