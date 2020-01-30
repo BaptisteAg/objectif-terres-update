@@ -26,7 +26,7 @@
 									<div class="card">
 										<div class="card-content">
 											<div class="content">
-												<p class="title is-3 has-text-centered has-text-link">Pas encore connecter ?</p>
+												<p class="title is-3 has-text-centered has-text-link">Pas encore connecté·e ?</p>
 												<p class="subtitle is-6">Pour sauvegarder cette recherche, vous devez vous connecter ou créer un compte sur Objectif Terres</p>
 											</div>
 										</div>

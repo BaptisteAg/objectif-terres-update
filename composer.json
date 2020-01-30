@@ -18,8 +18,8 @@
         "laravelcollective/html": "^6.0",
         "mccool/laravel-auto-presenter": "^7.3",
         "omniphx/forrest": "^2.5",
-        "ozankurt/repoist": "^3.2",
-      "ext-soap": "*"
+        "ozankurt/repoist": "^3.2"
+
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",

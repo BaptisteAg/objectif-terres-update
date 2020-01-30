@@ -31,7 +31,7 @@ class Region extends Model
 {
     use Locationable;
 
-    /**
+    /**a
      * @var array
      */
     protected $fillable = ['code', 'name', 'slug'];
