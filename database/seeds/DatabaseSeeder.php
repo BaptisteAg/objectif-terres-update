@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
             ResearchSeeder::class,
             UserToUserMessageSeeder::class,
             EducationLevelSeeder::class,
-			
+
         ]);
 
         factory(Ad::class, 25)->create()->each(function (Ad $ad) use(&$queriesCount) {
