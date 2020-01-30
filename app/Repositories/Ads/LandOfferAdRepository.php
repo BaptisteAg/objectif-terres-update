@@ -1,6 +1,5 @@
 <?php namespace App\Repositories\Ads;
 
-use App\Htttp\Repositories\LandOfferAdRepositoryInterface;
 use App\Models\LandOfferAd;
 use Illuminate\Support\Arr;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;

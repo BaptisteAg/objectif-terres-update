@@ -1,4 +1,4 @@
-<?php namespace App\Htttp\Repositories;
+<?php namespace App\Repositories\Ads;
 
 use App\Models\Ad;
 

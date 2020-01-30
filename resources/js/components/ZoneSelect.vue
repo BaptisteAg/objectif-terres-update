@@ -36,7 +36,7 @@
                         <i class="fa fa-trash-alt" style="cursor:pointer;"></i>
                     </span>
                     <b>{{getLabels().ZONE_TYPES[zone.value.type]}}</b> : {{zone.value.originalLabel}}
-                    <input type="hidden" :name="name+'['+zone.value.type+'][]'" :value="zone.value.id">
+                    <input type="hidden" :name="name+'['+zone.vaue.type+'][]'" :value="zone.value.id">
                 </div>
             </div>
         </div>

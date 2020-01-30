@@ -1,6 +1,5 @@
 <?php namespace App\Repositories\Ads;
 
-use App\Htttp\Repositories\AdRepositoryInterface;
 use App\Models\Ad;
 use App\Models\Document;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

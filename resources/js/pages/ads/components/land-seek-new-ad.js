@@ -4,7 +4,7 @@ import FormNewAdMixin from './mixins/form-new-ad-mixin'
 import TextAreaCounter from "../../../components/TextAreaCounter";
 import VueSlider from "../../../components/VueSlider";
 import ZoneSelect from '../../../components/ZoneSelect'
-import AdTypeSelect from'../../../components/AdTypeSelect'
+import AdTypeSelect from '../../../components/AdTypeSelect'
 
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
@@ -35,8 +35,9 @@ export default Vue.extend({
                 offerGenre: hasOld ? v.offer_genre_id : '',
                 selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
                 aboutProject: hasOld ? v.about_project_content : '',
-                aboutContent: hasOld ? v.about_content: '',
+                aboutContent: hasOld ? v.about_content : '',
                 experienceFarming: hasOld ? (v.experience_farming || '') : '',
+                documents: hasOld ? v.documents : []
             },
         }
     },
@@ -46,16 +47,26 @@ export default Vue.extend({
         }
     },
     watch: {
-        'formInput.productionGenre': function(productionGenre) {
-            if(!productionGenre.includes('other')) {
+        'formInput.productionGenre': function (productionGenre) {
+            if (!productionGenre.includes('other')) {
                 this.formInput.productionTypeAdd = '';
             }
         },
     },
+    methods: {
+        onBeforeDocumentsUpload(files, xhr, formData) {
+            formData.append('_token', window.csrf_token)
+        },
+        onSuccessDocumentsUpload(files, response) {
+            console.log(response)
+        }
+    },
     validations: {
         formInput: {
             selectedZones: {
-                hasZone() { return this.formInput.selectedZones.length; }
+                hasZone() {
+                    return this.formInput.selectedZones.length;
+                }
             },
             installationTypeId: {required},
             productionGenre: {required},
@@ -80,7 +91,9 @@ export default Vue.extend({
                 minLength: minLength(5),
             },
             chartConfirmation: {
-                checked(v) {return !!v}
+                checked(v) {
+                    return !!v
+                }
             }
 
         }
