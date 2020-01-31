@@ -31,6 +31,7 @@
                      @mousedown.prevent.stop="clearAll(props.search)"></div>
             </template>
             <span slot="noResult">Oups! Pas de {{ nameOptionLabel }} trouvé. Essayer de changer votre recherche.</span>
+            <span slot="noOptions">Veuillez précisez les termes de votre recherche</span>
         </multiselect>
         <input type="hidden" v-for="selected in selectedData" :value="selected.value.id" :name="name">
     </div>
@@ -89,8 +90,6 @@
                                     }
                                 });
                             }
-
-
                             this.data = results;
                             console.log("nouvelle valeur data", this.data);
                             this.isLoading = false;

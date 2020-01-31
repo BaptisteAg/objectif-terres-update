@@ -15,8 +15,8 @@ Route::get('/', 'HomePage\HomePageController@show');
 
 Route::get('/test', 'HomePage\HomePageController@show');
 Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
-    Route::get('creer', 'AdsController@create')->name('create');
-    Route::post('creer', 'AdsController@store')->name('store');
+	Route::middleware('auth')->get('creer', 'AdsController@create')->name('create');
+	Route::middleware('auth')->post('creer', 'AdsController@store')->name('store');
     Route::get('{id}', 'AdsController@show')->name('show');
 });
 

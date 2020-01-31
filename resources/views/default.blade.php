@@ -6,7 +6,6 @@
     <title>@yield('title')</title>
     @yield('head-script')
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link ref="stylesheet" src="./node_modules/vue-slider-component/theme/default.css">
 </head>
 <body>
 
@@ -29,7 +28,7 @@
 </div>
 
 @include('layouts.footer')
-
+<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 <script>
     window.csrf_token = "{{ csrf_token() }}"
