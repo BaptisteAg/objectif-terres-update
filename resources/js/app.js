@@ -15,16 +15,18 @@ import VueFormWizard from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 Vue.use(VueFormWizard);
 
+
+
 require('awesomplete/awesomplete.min');
 require('vue-pagination-2/dist/vue-pagination-2.min');
 
-require ('./pages/ads/new');
-require ('./pages/auth/register');
 
+
+require ('./pages/ads/new');
 
 // require('./pages/researches/researches');
 
 require('./pages/header');
-
+require('./pages/auth/register');
 
 require('./main.js');

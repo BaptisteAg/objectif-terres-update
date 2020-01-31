@@ -57,7 +57,12 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'first_name' => ['required', 'string', 'max:255'],
+			'phone' => ['string', 'min:10','max:255'],
+			'address' => ['string', 'min:5'],
+			'city_id' => ['required'],
+			'accept_condition' => ['required'],
+
         ]);
     }
 
@@ -79,12 +84,11 @@ class RegisterController extends Controller
 	 * Create a new user instance after a valid registration.
 	 *
 	 * @param array $data
-	 * @return \App\Models\User
 	 * @throws \Throwable
 	 */
     protected function create(array $data)
     {
-    	dd($data);
+
 		$this->userService->create($data);
     }
 }

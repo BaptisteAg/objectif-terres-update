@@ -41,7 +41,7 @@ class City extends Model
      * @var array
      */
     protected $fillable = [
-        'department_code', 'insee_code', 'zip_code', 'name', 'slug', 'gps_lat', 'gps_lng'
+        'id','department_code', 'insee_code', 'zip_code', 'name', 'slug', 'gps_lat', 'gps_lng'
     ];
 
     /**
