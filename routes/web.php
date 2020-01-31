@@ -57,7 +57,6 @@ Route::prefix('json')->group(function () {
     });
 });
 
-
 // Authentication Routes...
 Route::get('connexion', 'Auth\LoginController@showLoginForm')->name('signIn');
 Route::post('login', 'Auth\LoginController@login')->name('login');
