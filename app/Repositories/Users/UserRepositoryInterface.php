@@ -11,9 +11,8 @@ interface UserRepositoryInterface
 	 *
 	 * @param int
 	 * @param array
-	 * @return User
 	 */
 
-	public function create(array $data) : User;
+	public function create(array $data) ;
 
 }

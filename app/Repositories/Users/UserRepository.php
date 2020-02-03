@@ -23,22 +23,19 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 
 	/**
 	 * Creates a user.
-	 *
-	 * @param int
-	 * @param array
-	 * @return User
-	 * @throws \Throwable
 	 */
-	public function create(array $data): User
+	public function create(array $data)
 	{
 		$user = DB::transaction(function () use ($data) {
 			$user = new User();
 			$user->fill($data);
 			$user->password = Hash::make($data['password']);
 			$user->save();
-
 			return $user;
 		});
+		return $user;
+
+
 	}
 
 

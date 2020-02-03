@@ -1,6 +1,8 @@
 <?php namespace App\Services\Users;
 
 
+use App\Models\City;
+use App\Models\User;
 use App\Repositories\Users\UserRepository;
 
 
@@ -27,20 +29,24 @@ class UserService
 
 	/**
 	 * @param array $data
-	 * @return \App\Models\User
 	 * @throws \Throwable
 	 */
-	public function create(array $data)
+	public function create(array $data) :User
 	{
 		if (!isset($data['accept_communication'])) {
 			$data['accept_communication'] = 0;
 		}
+
+		$city = City::find($data['city_id']);
+		$data['zip_code_id'] = $city->id;
+		$data['city'] = $city->name;
+
 		foreach ($data as $item => $value) {
 			$data[$item] = $value;
 		}
 
-		dd($data);
-		$this->repository->create($data);
+
+		return $this->repository->create($data);
 
 	}
 

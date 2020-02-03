@@ -19,6 +19,7 @@ use App\Models\ProductionGenre;
 use App\Models\Region;
 use App\Models\SurfaceRange;
 use App\Services\Ads\AdService;
+use Illuminate\Support\Facades\Request;
 
 
 class AdsController extends Controller
@@ -78,13 +79,26 @@ class AdsController extends Controller
 
 	/**
 	 * @param AdRequest $request
-	 * @param AdService $adService
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
 	 * @throws \Throwable
 	 */
 	public function store(AdRequest $request)
 	{
 		$data = $request->validated();
+
+		$ad = $this->adService->create($data);
+
+		return redirect()->route('ads.show', [$ad->id]);
+	}
+
+	/**
+	 * @param Request $request
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 * @throws \Throwable
+	 */
+	public function saveDraft(Request $request)
+	{
+		$data = $request->all();
 
 		$ad = $this->adService->create($data);
 
