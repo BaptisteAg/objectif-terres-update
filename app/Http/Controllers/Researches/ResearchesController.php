@@ -59,14 +59,14 @@ class ResearchesController extends Controller
 		$this->researchService->destroy($request);
 		$researches = $this->researchService->findAll();
 
-		return back()->with('destroy', 'message');
+		return back()->with('success', 'La recherche a bien été supprimée.');
 
 	}
 
 	public function notificationCreateAlert(Request $request)
 	{
 		$this->researchNotification->newAlertResearch($request->input('research'));
-		return back()->with('success', 'message');
+		return back()->with('success', 'Une alerte a bien été créée. Un email de confirmation vous a été envoyé !');
 	}
 
 }

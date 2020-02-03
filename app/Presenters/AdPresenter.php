@@ -24,4 +24,9 @@ class AdPresenter extends BasePresenter
 
         return '';
     }
+
+    public function created_at()
+	{
+		return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->format('d/m/Y');
+	}
 }

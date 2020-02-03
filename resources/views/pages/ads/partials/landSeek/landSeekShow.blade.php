@@ -2,7 +2,6 @@
 
 <section class="section is-medium ">
 	<div class="container ">
-		@include('pages.ads.partials.notificationMessages')
 		<nav class="breadcrumb" aria-label="breadcrumbs">
 			<ul>
 				<li><a href="#">Annonces</a></li>
@@ -11,21 +10,38 @@
 		</nav>
 		<h1 class="title has-text-link">{{$ad->landSeekAd->title}}</h1>
 		<div class="columns ">
-			<div class=" column is-two-thirds ">
-				<div id="ad_images" class="carousel" style="overflow:hidden">
-					@foreach($ad->documents as $document)
-						<div class="card">
+			<div id="slider-container" class="column is-two-thirds ">
+				<div id="ad-images" class="carousel ">
+					@if(count($ad->documents) <= 0)
+						<div id="test" class="card carousel-item ad-carousel ">
 							<div class="card-image">
 								<figure class="image is-2by1">
-									@if($document->path === "0")
-										<img src="https://picsum.photos/480/320" alt="picsum">
-									@else
-										<img src="{{asset($document->path)}}" alt="{{$document->name}}">
-									@endif
+									<img src="https://picsum.photos/480/320" alt="picsum">
 								</figure>
 							</div>
 						</div>
-					@endforeach
+						<div class="card carousel-item  ad-carousel">
+							<div class="card-image">
+								<figure class="image is-2by1">
+									<img src="https://picsum.photos/480/320" alt="picsum">
+								</figure>
+							</div>
+						</div>
+					@else
+						@foreach($ad->documents as $document)
+							<div class="card">
+								<div class="card-image">
+									<figure class="image is-2by1">
+										@if($document->path === "0")
+											<img src="https://picsum.photos/480/320" alt="picsum">
+										@else
+											<img src="{{URL::asset($document->path)}}" alt="Placeholder image">
+										@endif
+									</figure>
+								</div>
+							</div>
+						@endforeach
+					@endif
 				</div>
 			</div>
 			<div class="column">

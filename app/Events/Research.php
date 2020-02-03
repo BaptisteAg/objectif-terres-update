@@ -51,7 +51,7 @@ class Research
 		$ads = $this->researchService->findNewRelatedAds();
 		foreach ( $ads as $idResearch =>$ad){
 			$research = $this->researchService->find($idResearch);
-			$research['subject'] = 'De nouvelles annonces sont disponibles pour votre recherche | Objectif Terres';
+			$research['subject'] = 'De nouvelles annonces correspondantes à votre recherche ont été publiées | Objectif Terres';
 			$research['message'] = 'Consulter les dernières annonces publiées !';
 			Notification::route('mail', "test@mailtrap.io")
 				->notify(new ResearchNotification($research));

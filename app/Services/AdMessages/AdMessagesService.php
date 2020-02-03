@@ -1,5 +1,6 @@
 <?php namespace App\Services\AdMessages;
 
+use App\Models\Ad;
 use App\Repositories\AdMessages\AdMessagesRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,6 +31,18 @@ class AdMessagesService
 		});
 
 		return $adMessage;
+
+	}
+
+	/**
+	 * @param Ad $ad
+	 * @return mixed
+	 */
+	public function findAllByAd(Ad $ad)
+	{
+		$adMessages = $this->repository->findAllByAd($ad);
+
+		return $adMessages;
 
 	}
 

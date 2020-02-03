@@ -6,6 +6,7 @@
 
 
 @section('main-content')
+
 	@if($ad->ad_type === 'landSeek')
 		@include('pages.ads.partials.landSeek.landSeekShow')
 	@endif
@@ -19,19 +20,14 @@
 @endsection
 
 @section('script')
-	<script src="{{asset('/js/bulma-carousel.js')}}"></script>
+
 
 	<script>
-        bulmaCarousel.attach('#ad_images', {
-            slidesToScroll: 1,
-            slidesToShow: 1,
-            loop: true,
-            navigation: true,
-        });
 
         let buttons = document.querySelectorAll('#open-modal-message');
         buttons.forEach((button)=>{
             button.addEventListener('click', function (event) {
+                console.log('oui')
                 event.preventDefault();
                 let modal = document.querySelector('.modal');
                 let html = document.querySelector('html');
@@ -58,5 +54,28 @@
 
         })
 	</script>
+	<script src="{{asset('/js/bulma-carousel.js')}}"></script>
+	<script>
+
+        const carousel = bulmaCarousel.attach('#ad-images', {
+            slidesToScroll: 1,
+            slidesToShow: 1,
+            loop: true,
+            navigation: true,
+        });
+
+        // Loop on each carousel initialized
+        for(let i = 0; i < carousel.length; i++) {
+
+            carousel[i].on('after:show', state => {
+                console.log(carousel[i].slides)
+
+            });
+        }
+
+
+
+	</script>
+
 
 @endsection

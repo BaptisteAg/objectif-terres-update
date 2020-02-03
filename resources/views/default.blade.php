@@ -1,30 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title')</title>
-    @yield('head-script')
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>@yield('title') | Objectif Terres</title>
+	@yield('head-script')
+	<link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body>
 
 @include('layouts.header')
 
 @foreach($errors->all() as $message)
-    <article class="message is-danger">
-        <div class="message-header">
-            <p>Erreur !</p>
-            <button class="delete" aria-label="delete"></button>
-        </div>
-        <div class="message-body">
-            {{ $message }}
-        </div>
-    </article>
+	<article class="message is-danger">
+		<div class="message-header">
+			<p>Erreur !</p>
+			<button class="delete" aria-label="delete"></button>
+		</div>
+		<div class="message-body">
+			{{ $message }}
+		</div>
+	</article>
 @endforeach
+@if ($message = Session::get('success'))
+		<article class="message is-success">
+			<div class="message-header">
+				<p>Succès !</p>
+				<button class="delete" aria-label="delete"></button>
+			</div>
+			<div class="message-body">
+				{{ $message }}
+			</div>
+		</article>
+@endif
+
+@if($message = Session::get('warning'))
+		<article class="message is-warning">
+			<div class="message-header">
+				<p>Attention ! </p>
+				<button class="delete" aria-label="delete"></button>
+			</div>
+			<div class="message-body">
+				{{ $message }}
+			</div>
+		</article>
+@endif
 
 <div id="app">
-    @yield('main-content')
+	@yield('main-content')
 </div>
 
 @include('layouts.footer')
