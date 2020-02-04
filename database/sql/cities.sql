@@ -19,23 +19,6 @@
 -- Table structure for table `cities`
 --
 
-DROP TABLE IF EXISTS `cities`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cities` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `department_code` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `insee_code` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `zip_code` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gps_lat` double(16,14) NOT NULL,
-  `gps_lng` double(17,14) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `cities_department_code_foreign` (`department_code`),
-  CONSTRAINT `cities_department_code_foreign` FOREIGN KEY (`department_code`) REFERENCES `departments` (`code`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=35854 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `cities`

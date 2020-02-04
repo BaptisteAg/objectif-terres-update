@@ -159,7 +159,7 @@
 									</button>
 									{{Form::close()}}
 								@else
-									<button disabled title="Vous avez déjà créer une alerte pour cette recherche" class="button is-link is-light"><span class="icon is-small"><i
+									<button disabled title="Une alerte existe déjà pour cette recherche" class="button is-link is-light"><span class="icon is-small"><i
 													class="fas fa-bell"
 													></i></span>
 										<span>Créer une alerte</span>
