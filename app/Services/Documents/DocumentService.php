@@ -2,12 +2,13 @@
 
 use App\Models\Document;
 use App\Repositories\Documents\DocumentRepository;
+use App\Repositories\Documents\DocumentRepositoryInterface;
 use Illuminate\Http\UploadedFile;
 
 class DocumentService
 {
     /**
-     * @var DocumentRepository
+     * @var DocumentRepositoryInterface
      */
     protected $repository;
 
