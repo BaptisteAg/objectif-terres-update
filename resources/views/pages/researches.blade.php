@@ -153,10 +153,10 @@
 								</div>
 								<div class="level-right">
 									<div class="level-item">
-										@if($ad->created_at->isToday())
+										@if($ad->is_today)
 											<span>Publié aujourd'hui</span>
 										@else
-											<span>Publié {{ $ad->created_at->diffForHumans() }}</span>
+											<span>Publié {{ $ad->created_at_diff }}</span>
 										@endif
 									</div>
 								</div>

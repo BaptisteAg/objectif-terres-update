@@ -30,7 +30,7 @@
                 return {
                     land_seek: "Recherche de foncier",
                     land_offer: "Offre de foncier",
-                    job_ad: "Opportunité professionnelle",
+                    job_offer: "Opportunité professionnelle",
                 }
             }
         }

@@ -58,9 +58,9 @@
 
 						</div>
 						<div class="content">
-							<span class="is-size-5 is-capitalized has-text-black">Localisation(s) : </span>
+							<span class="is-size-5 has-text-black">Localisation(s) : </span>
 							@if(count($ad->cities))
-								<p><span class="subtitle">Villes : {{$ad->cities->pluck('name')->implode(', ') }}</span>
+								<p><span class="subtitle">Villes : {{ ucwords($ad->cities->pluck('name')->implode(', ')) }}</span>
 								</p>
 							@endif
 
