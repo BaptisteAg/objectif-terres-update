@@ -48,7 +48,7 @@
 					<div class="card-content">
 						<div class="content">
 							<p><span class="is-size-5 is-capitalized has-text-black ">Publié le  : </span><span
-										class="subtitle">{{ \Carbon\Carbon::parse($ad->created_at)->format('d/m/Y')}}</span>
+										class="subtitle">{{ $ad->created_at}}</span>
 							</p>
 						</div>
 						<div class="content">

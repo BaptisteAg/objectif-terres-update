@@ -21,7 +21,6 @@
 			</nav>
 			<section class="section">
 				@foreach ($ads as $ad)
-
 					<div class="columns ">
 						<div class="column is-three-quarters ">
 							<div class="columns">
@@ -63,29 +62,52 @@
 									</p>
 									<p><span class="has-text-grey-dark">Annonce créée le :</span> <span
 												class="has-text-black">{{ $ad->created_at }}</span>
-									</p></div>
+									</p>
+
+
+									@if(count($ad->adMessages) <= 1)
+										<p><span>Vous avez reçu <span class="has-text-black has-text-weight-bold"> {{count($ad->adMessages)}} réponse </span>concernant cette annonce !</span>
+										</p>
+									@else
+										<p><span class="has-text-grey-dark">Vous avez reçu <span
+														class="has-text-black has-text-weight-bold"> {{count($ad->adMessages)}} réponses </span>
+											 concernant cette annonce ! </span>
+										</p>
+									@endif
+								</div>
 							</div>
-
-
 						</div>
 						<div class="column ">
 							<div class="buttons">
-								<a class="">
-									{!! Form::open(['route' => ['ads.show', $ad->id], 'method' => 'get']) !!}
-									<button type="submit" class="button is-link is-medium ">
+								@if($ad->is_draft === 0)
+									<a class="">
+										{!! Form::open(['route' => ['ads.show', $ad->id], 'method' => 'get']) !!}
+										<button type="submit" class="button is-link is-medium ">
 											<span class="icon is-small">
 											 <i class="fas fa-eye"></i>
 											</span>
-										<span>Voir l'annonce</span>
-									</button>
-									{{Form::close()}}
-								</a>
+											<span>Voir l'annonce</span>
+										</button>
+										{{Form::close()}}
+									</a>
+								@else
+									<a href="">
+										<button class="button is-link is-light is-medium ">
+											<span class="icon is-small">
+											<i class="fas fa-pen"></i>
+											</span>
+											<span>Modifier l'annonce</span>
+										</button>
+
+									</a>
+								@endif
 							</div>
 						</div>
 					</div>
 					<div class="columns">
-						<div class="column is-two-fifths">
-							@if($ad->isDraft === 0)
+						<div class="column is-three-fifths">
+
+							@if($ad->is_draft === 0)
 								<article class="message is-success">
 									<div class="message-body">
 										Votre annonce est en ligne !
@@ -94,7 +116,7 @@
 							@else
 								<article class="message is-warning">
 									<div class="message-body">
-										Votre annonce n'est pas encore publié !
+										Votre annonce est en mode brouillon, elle n'est pas encore publiée !
 									</div>
 								</article>
 							@endif

@@ -23,7 +23,7 @@
 			<div class="tabs is-centered is-medium">
 				<ul>
 					<li><a href="{{route ('ads.list')}}"><span class="icon is-small">
-											<i class="fas fa-chalkboard-teacher" aria-hidden="true"></i></span>
+											<i class="far fa-newspaper" aria-hidden="true"></i></span>
 							<span>Mes annonces</span>
 						</a>
 					</li>

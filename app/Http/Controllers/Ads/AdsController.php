@@ -117,13 +117,10 @@ class AdsController extends Controller
 
 	public function list()
 	{
-		$sfId = "eSLXVCa7WgTRjz4VFsbe";
+		$sfId = "WM8O6v7uKYStNJGiJaeJ";
 		$ads = $this->adService->findAllByUser($sfId);
 
-		$messages = [];
-		foreach ($ads as $ad){
-			$messages = $this->adMessageService->findAllByAd($ad);
-		}
-		return view('pages.ads.listUserAds', compact('ads', 'messages'));
+
+		return view('pages.ads.listUserAds', compact('ads'));
 	}
 }
