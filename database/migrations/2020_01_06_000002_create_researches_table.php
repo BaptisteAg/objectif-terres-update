@@ -33,6 +33,7 @@ class CreateResearchesTable extends Migration
             $table->integer('price_max')->nullable();
 			$table->string('ad_type')->nullable();
 			$table->string('url')->nullable();
+			$table->boolean('has_alert')->default(0);
 
             $table->index(["sf_id"], 'ix_research_sf_id');
             $table->timestamps();

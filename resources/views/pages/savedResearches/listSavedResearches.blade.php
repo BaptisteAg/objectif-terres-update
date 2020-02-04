@@ -9,7 +9,9 @@
 				<div class="level-left">
 					<div>
 						<h1 class="title">Liste des recherches sauvegardées</h1>
+						<br>
 						<h2 class="subtitle"> {{ count($researches) }} recherches sauvegardées.</h2>
+						<h2 class="subtitle"> {{ $numberAlertActives}} alertes actives.</h2>
 					</div>
 				</div>
 			</nav>
@@ -147,13 +149,22 @@
 								</a>
 							</div>
 							<div class="buttons">
-								{{Form::open(['route' => 'researches.notification', 'method' => 'get'])}}
-								<input type="hidden" value="{{$research->id}}" name="research">
-								<button type="submit" class="button is-link is-light"><span class="icon is-small"><i
-												class="fas fa-bell"></i></span>
-									<span>Créer une alerte</span>
-								</button>
-								{{Form::close()}}
+
+								@if($research->has_alert ===0)
+									{{Form::open(['route' => 'researches.notification', 'method' => 'get'])}}
+									<input type="hidden" value="{{$research->id}}" name="research">
+									<button type="submit" class="button is-link is-light"><span class="icon is-small"><i
+													class="fas fa-bell"></i></span>
+										<span>Créer une alerte</span>
+									</button>
+									{{Form::close()}}
+								@else
+									<button disabled title="Vous avez déjà créer une alerte pour cette recherche" class="button is-link is-light"><span class="icon is-small"><i
+													class="fas fa-bell"
+													></i></span>
+										<span>Créer une alerte</span>
+									</button>
+								@endif
 							</div>
 							{{Form::open(['route' => 'researches.destroy'])}}
 							<div class="buttons">
@@ -175,11 +186,11 @@
 			<section class="section">
 				<pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
 			</section>
-
 			@include('components.sectionOrientationTerreLiens')
-			@include('components.partnering')
-			@include('components.supportTerreLiens')
-
 		</div>
+
 	</section>
+
+	@include('components.partnering')
+	@include('components.supportTerreLiens')
 @endsection

@@ -50,8 +50,14 @@ class ResearchesController extends Controller
 	public function show()
 	{
 		$researches = $this->researchService->findAll();
+		$numberAlertActives = 0;
+		foreach ($researches as $research){
+			if ($research->has_alert === 1){
+				$numberAlertActives ++;
+			}
+		}
 
-		return view('pages.savedResearches.listSavedResearches', compact('researches'));
+		return view('pages.savedResearches.listSavedResearches', compact('researches', 'numberAlertActives'));
 	}
 
 	public function destroy(Request $request)
