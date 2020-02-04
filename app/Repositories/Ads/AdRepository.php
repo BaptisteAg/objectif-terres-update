@@ -55,13 +55,36 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         return $model;
     }
 
-    /**
-     * Creates an ad.
-     *
-     * @param int
-     * @param array
-     * @throws \Throwable
-     */
+	/**
+	 * @param  $idUser
+	 * @return Ad[]|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function allByIdUser($idUser)
+	{
+
+		$model = $this->entity
+			->where(["sf_pp_id" => $idUser])
+			->with($this->getEagerLoading())
+			->get();
+
+		if (!$model) {
+			throw (new ModelNotFoundException)->setModel(
+				get_class($this->entity->getModel()),
+				$idUser
+			);
+		}
+
+		return $model;
+	}
+
+	/**
+	 * Creates an ad.
+	 *
+	 * @param int
+	 * @param array
+	 * @return Ad
+	 * @throws \Throwable
+	 */
     public function create(array $data): Ad
     {
         $ad = new Ad();

@@ -28,6 +28,8 @@ class SendResearchNotification implements ShouldQueue
 	 */
 	public function newAlertResearch(int $id)
 	{
+
+
 		$this->event->createAlert($id);
 	}
 

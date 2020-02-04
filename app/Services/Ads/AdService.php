@@ -43,4 +43,11 @@ class AdService
 
         return $ads;
     }
+
+	public function findAllByUser($idUser)
+	{
+		$ads = $this->repository->allByIdUser($idUser);
+
+		return $ads;
+	}
 }

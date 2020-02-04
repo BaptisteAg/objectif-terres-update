@@ -1,5 +1,6 @@
 <?php namespace App\Repositories\AdMessages;
 
+use App\Models\Ad;
 use App\Models\AdMessage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
@@ -46,6 +47,27 @@ class AdMessagesRepository extends AbstractRepository implements AdMessagesRepos
 			throw (new ModelNotFoundException)->setModel(
 				get_class($this->entity->getModel()),
 				$id
+			);
+		}
+
+		return $model;
+	}
+
+	/**
+	 * @param $id
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function findAllByAd(Ad $ad)
+	{
+		$model = $this->entity
+			->where(["ad_id" => $ad->id])
+			->get();
+
+
+		if (!$model) {
+			throw (new ModelNotFoundException)->setModel(
+				get_class($this->entity->getModel()),
+				$ad->id
 			);
 		}
 

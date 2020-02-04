@@ -19,21 +19,6 @@
 					</div>
 				</div>
 			</nav>
-			@if ($message = Session::get('success'))
-				<div class="columns">
-					<div class="column is-two-thirds">
-						<article class="message is-success">
-							<div class="message-header">
-								<p>Succès</p>
-								<button id="close-notification" class="delete" aria-label="delete"></button>
-							</div>
-							<div class="message-body">
-								L'annonce a bien été retiré de vos favoris !
-							</div>
-						</article>
-					</div>
-				</div>
-			@endif
 			<section class="section">
 				@foreach ($favoriteAds as $favoriteAd)
 					<div class="columns ">
@@ -41,14 +26,15 @@
 							<div class="columns">
 								<div class="column is-one-quarter ">
 									<figure class="image is-5by4">
-										@if($favoriteAd->ad->documents)
+										@if(count ($favoriteAd->ad->documents) > 0)
 											@foreach($favoriteAd->ad->documents as $document)
 												@if($document->type_document ==="image")
 													<img src="{{asset($document->path)}}">
 												@endif
 											@endforeach
+										@else
+											<img src="https://picsum.photos/256/256">
 										@endif
-										<img src="https://picsum.photos/256/256">
 									</figure>
 								</div>
 								<div class="column">@if($favoriteAd->ad->landSeekAd)
@@ -108,24 +94,24 @@
 							{{Form::close()}}
 						</div>
 					</div>
-				<div class="columns">
-					<div class="column is-two-fifths">
-						@if(count ($favoriteAd->ad->adMessages()->whereSfSenderId(999)->get()) > 0)
-							<article class="message is-success">
-								<div class="message-body">
-									Vous avez déjà envoyé un message au porteur de projet.
-								</div>
-							</article>
-						@else
-							<article class="message is-warning">
-								<div class="message-body">
-									Vous n'avez pas encore répondu à cette annonce !
-								</div>
-							</article>
-						@endif
+					<div class="columns">
+						<div class="column is-two-fifths">
+							@if(count ($favoriteAd->ad->adMessages()->whereSfSenderId(999)->get()) > 0)
+								<article class="message is-success">
+									<div class="message-body">
+										Vous avez déjà envoyé un message au porteur de projet.
+									</div>
+								</article>
+							@else
+								<article class="message is-warning">
+									<div class="message-body">
+										Vous n'avez pas encore répondu à cette annonce !
+									</div>
+								</article>
+							@endif
+						</div>
+						<div></div>
 					</div>
-					<div></div>
-				</div>
 					<hr class="navbar-divider">
 				@endforeach
 			</section>

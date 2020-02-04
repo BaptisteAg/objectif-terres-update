@@ -50,8 +50,14 @@ class ResearchesController extends Controller
 	public function show()
 	{
 		$researches = $this->researchService->findAll();
+		$numberAlertActives = 0;
+		foreach ($researches as $research){
+			if ($research->has_alert === 1){
+				$numberAlertActives ++;
+			}
+		}
 
-		return view('pages.savedResearches.listSavedResearches', compact('researches'));
+		return view('pages.savedResearches.listSavedResearches', compact('researches', 'numberAlertActives'));
 	}
 
 	public function destroy(Request $request)
@@ -59,14 +65,14 @@ class ResearchesController extends Controller
 		$this->researchService->destroy($request);
 		$researches = $this->researchService->findAll();
 
-		return back()->with('destroy', 'message');
+		return back()->with('success', 'La recherche a bien été supprimée.');
 
 	}
 
 	public function notificationCreateAlert(Request $request)
 	{
 		$this->researchNotification->newAlertResearch($request->input('research'));
-		return back()->with('success', 'message');
+		return back()->with('success', 'Une alerte a bien été créée. Un email de confirmation vous a été envoyé !');
 	}
 
 }

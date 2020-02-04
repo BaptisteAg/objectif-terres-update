@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Ads;
 
 use App\Http\Controllers\Controller;
+use App\Models\Document;
 use App\Repositories\Ads\AdRepository;
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
@@ -18,6 +19,7 @@ use App\Models\PriceRange;
 use App\Models\ProductionGenre;
 use App\Models\Region;
 use App\Models\SurfaceRange;
+use App\Services\AdMessages\AdMessagesService;
 use App\Services\Ads\AdService;
 use Illuminate\Support\Facades\Request;
 
@@ -28,10 +30,12 @@ class AdsController extends Controller
      * @var AdService
      */
     protected $adService;
+    protected $adMessageService;
 
-    public function __construct(AdService $adService)
+    public function __construct(AdService $adService, AdMessagesService $adMessageService)
     {
         $this->adService = $adService;
+		$this->adMessageService = $adMessageService;
     }
 
     public function create()
@@ -108,7 +112,15 @@ class AdsController extends Controller
 	public function show(int $adId)
 	{
         $ad = $this->adService->find($adId);
-
         return view('pages.ads.show', compact('ad'));
+	}
+
+	public function list()
+	{
+		$sfId = "WM8O6v7uKYStNJGiJaeJ";
+		$ads = $this->adService->findAllByUser($sfId);
+
+
+		return view('pages.ads.listUserAds', compact('ads'));
 	}
 }
