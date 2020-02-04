@@ -1,13 +1,16 @@
-import MultiSelect from "../components/MultiSelect";
-import AjaxMultiSelect from "../components/AjaxMultiSelect";
 
+import Autocomplete from '../../components/Autocomplete'
 
 new Vue({
-    name: "CitySelect",
+    name: "SelectCity",
     components : {
-        MultiSelect,
-        AjaxMultiSelect,
+        Autocomplete,
     },
-    el: '#vue-render',
+    el: '#vue-multi-select-city',
+    data(){
+        return {
+            citySelect : [],
+        }
+    }
 
 });
