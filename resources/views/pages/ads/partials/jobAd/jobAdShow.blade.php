@@ -1,7 +1,6 @@
 @section('title', $ad->jobAd->title)
 <section class="section is-medium ">
 	<div class="container ">
-		@include('pages.ads.partials.notificationMessages')
 
 		<nav class="breadcrumb" aria-label="breadcrumbs">
 			<ul>
@@ -11,21 +10,38 @@
 		</nav>
 		<h1 class="title has-text-link">{{$ad->jobAd->title}}</h1>
 		<div class="columns">
-			<div class=" column is-two-thirds ">
-				<div id="ad_images" class="carousel">
-					@foreach($ad->documents as $document)
-						<div class="card">
+			<div id="slider-container" class="column is-two-thirds ">
+				<div id="ad-images" class="carousel ">
+					@if(count($ad->documents) <= 0)
+						<div id="test" class="card carousel-item ad-carousel ">
 							<div class="card-image">
 								<figure class="image is-2by1">
-									@if($document->path === "0")
-										<img src="https://picsum.photos/480/320" alt="pop">
-									@else
-										<img src="{{$document->path}}" alt="Placeholder image">
-									@endif
+									<img src="https://picsum.photos/480/320" alt="picsum">
 								</figure>
 							</div>
 						</div>
-					@endforeach
+						<div class="card carousel-item  ad-carousel">
+							<div class="card-image">
+								<figure class="image is-2by1">
+									<img src="https://picsum.photos/480/320" alt="picsum">
+								</figure>
+							</div>
+						</div>
+					@else
+						@foreach($ad->documents as $document)
+							<div class="card">
+								<div class="card-image">
+									<figure class="image is-2by1">
+										@if($document->path === "0")
+											<img src="https://picsum.photos/480/320" alt="picsum">
+										@else
+											<img src="{{URL::asset($document->path)}}" alt="Placeholder image">
+										@endif
+									</figure>
+								</div>
+							</div>
+						@endforeach
+					@endif
 				</div>
 			</div>
 			<div class="column">
@@ -33,7 +49,7 @@
 					<div class="card-content">
 						<div class="content">
 							<p><span class="is-size-5 is-capitalized has-text-black ">Publié le  : </span><span
-										class="subtitle">{{ \Carbon\Carbon::parse($ad->created_at)->format('d/m/Y')}}</span>
+										class="subtitle">{{ $ad->created_at}}</span>
 							</p>
 						</div>
 						<div class="content">

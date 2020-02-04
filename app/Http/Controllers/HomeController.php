@@ -72,4 +72,8 @@ class HomeController extends Controller
 
 	}
 
+	public function showAccount (){
+		return view('pages.account.showAccount');
+	}
+
 }

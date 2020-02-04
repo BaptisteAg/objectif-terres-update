@@ -24,6 +24,7 @@ use Illuminate\Notifications\Notifiable;
  * @property int $price_max
  * @property string $ad_type
  * @property string $url
+ * @property boolean $has_alert
  * @property JobStatus[] $jobStatuses
  * @property ProjectStatus[] $projectStatuses
  * @property AdStatus[] $adStatuses
@@ -62,66 +63,66 @@ use Illuminate\Notifications\Notifiable;
  */
 class Research extends Model
 {
-    use OfferableGenre;
-    use BioCertifiable;
-    use ProductionableGenre;
+	use OfferableGenre;
+	use BioCertifiable;
+	use ProductionableGenre;
 	use Notifiable;
 
-    /**
-     * @var array
-     */
-    protected $fillable = [
-        'sf_id', 'name', 'surface_min', 'surface_max', 'has_pics', 'has_house', 'price_min', 'price_max', 'ad_type', 'url'
-    ];
+	/**
+	 * @var array
+	 */
+	protected $fillable = [
+		'sf_id', 'name', 'surface_min', 'surface_max', 'has_pics', 'has_house', 'price_min', 'price_max', 'ad_type', 'url', 'has_alert'
+	];
 
-    /**
-     * @return belongsToMany
-     */
-    public function adStatuses()
-    {
-        return $this->belongsToMany('App\Models\AdStatus')->withTimestamps();
-    }
+	/**
+	 * @return belongsToMany
+	 */
+	public function adStatuses()
+	{
+		return $this->belongsToMany('App\Models\AdStatus')->withTimestamps();
+	}
 
-    /**
-     * @return belongsToMany
-     */
-    public function jobStatuses()
-    {
-        return $this->belongsToMany('App\Models\JobStatus')->withTimestamps();
-    }
+	/**
+	 * @return belongsToMany
+	 */
+	public function jobStatuses()
+	{
+		return $this->belongsToMany('App\Models\JobStatus')->withTimestamps();
+	}
 
-    /**
-     * @return belongsToMany
-     */
-    public function projectStatuses()
-    {
-        return $this->belongsToMany('App\Models\ProjectStatus')->withTimestamps();
-    }
+	/**
+	 * @return belongsToMany
+	 */
+	public function projectStatuses()
+	{
+		return $this->belongsToMany('App\Models\ProjectStatus')->withTimestamps();
+	}
 
-    /**
-     * Get all cities 'location' for the research
-     * @return MorphToMany
-     */
-    public function cities()
-    {
-        return $this->morphedbyMany('App\Models\City', 'locationable_research');
-    }
+	/**
+	 * Get all cities 'location' for the research
+	 * @return MorphToMany
+	 */
+	public function cities()
+	{
+		return $this->morphedbyMany('App\Models\City', 'locationable_research');
+	}
 
-    /**
-     * Get all cities 'location' for the research
-     * @return MorphToMany
-     */
-    public function departments()
-    {
-        return $this->morphedbyMany('App\Models\Department', 'locationable_research');
-    }
+	/**
+	 * Get all cities 'location' for the research
+	 * @return MorphToMany
+	 */
+	public function departments()
+	{
+		return $this->morphedbyMany('App\Models\Department', 'locationable_research');
+	}
 
-    /**
-     * Get all cities 'location' for the research
-     * @return MorphToMany
-     */
-    public function regions()
-    {
-        return $this->morphedbyMany('App\Models\Region', 'locationable_research');
-    }
+	/**
+	 * Get all cities 'location' for the research
+	 * @return MorphToMany
+	 */
+	public function regions()
+	{
+		return $this->morphedbyMany('App\Models\Region', 'locationable_research');
+	}
 }

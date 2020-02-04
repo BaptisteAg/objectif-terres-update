@@ -13,11 +13,12 @@
 
 Route::get('/', 'HomePage\HomePageController@show');
 
-Route::get('/test', 'HomePage\HomePageController@show');
 Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
 	Route::middleware('auth')->get('creer', 'AdsController@create')->name('create');
 	Route::middleware('auth')->post('creer', 'AdsController@store')->name('store');
+	Route::middleware('auth')->get('liste-mes-annonces', 'AdsController@list')->name('list');
     Route::get('{id}', 'AdsController@show')->name('show');
+
 });
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {
@@ -40,6 +41,10 @@ Route::prefix('recherches')->name('researches.')->namespace('Researches')->group
 
 Route::middleware('auth')->prefix('messages')->name('adMessages.')->namespace('AdMessages')->group(function () {
 	Route::post('creer', 'AdMessagesController@create')->name('create');
+});
+
+Route::middleware('auth')->prefix('mon-compte')->name('userAccount.')->group(function () {
+	Route::get('/', 'HomeController@showAccount')->name('showAccount');
 });
 
 Route::prefix('annonces-favorites')->middleware('auth')->name('favoriteAds.')->namespace('favoriteAds')->group(function () {

@@ -34,17 +34,13 @@ class FavoriteAdsController extends Controller
 		}
 		$data['sf_id'] = 999;
 
-
 		$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
 
-		if ($favoriteAdAlreadyExist) {
-			return back()->with('error', 'message');
+		if (! $favoriteAdAlreadyExist->isEmpty()) {
+			return back()->with('warning', 'Vous avez déjà sauvegardé cette annonce dans vos favoris !');
 		}
-
 		$this->favoriteAdRepository->create($data);
-
-
-		return back()->with('save', 'save');
+		return back()->with('success', 'Cette annonce a été sauvegardée dans vos favoris !');
 	}
 
     /**
@@ -64,6 +60,6 @@ class FavoriteAdsController extends Controller
      */
     public function destroy(Request $request){
 		$this->favoriteAdRepository->destroy((int)$request->input('favoriteAdsId'));
-		return back()->with('success', 'message');
+		return back()->with('success', 'Vous avez bien retiré l\'annonce de vos favoris');
 	}
 }

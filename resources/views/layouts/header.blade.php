@@ -26,7 +26,7 @@
 					@endif
 				@else
 					<div class="level-item">
-						<a href="">
+						<a href="{{route('userAccount.showAccount')}}">
 						<span class="icon">
 							<i class="far fa-user"></i>
 						</span>

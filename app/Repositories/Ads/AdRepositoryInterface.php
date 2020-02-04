@@ -18,6 +18,14 @@ interface AdRepositoryInterface
      */
     public function all($paginate = null);
 
+	/**
+	 * Gets all ads by id user.
+	 *
+	 * @param $id
+	 * @return Ad[]
+	 */
+	public function allByIdUser($id);
+
     /**
      * Deletes an ad.
      *

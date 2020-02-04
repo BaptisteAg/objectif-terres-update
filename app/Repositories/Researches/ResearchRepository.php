@@ -28,7 +28,7 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 
 	/**
 	 * @param $id
-	 * @return Research
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
 	 */
 	public function find($id)
 	{
@@ -50,9 +50,8 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 	/**
 	 * Creates a research.
 	 *
-	 * @param int
-	 * @param array
-	 * @throws \Throwable
+	 * @param array $data
+	 * @return Research
 	 */
 	public function create(array $data): Research
 	{
