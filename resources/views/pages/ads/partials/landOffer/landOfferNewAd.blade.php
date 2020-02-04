@@ -1,4 +1,5 @@
 <div id="land_offer_form">
+
     <div class="field">
         {!! Form::label('landOffer[is_beneficiary]', 'Je poste l\'annonce*', ['class' => 'label']); !!}
         <div class="select">
@@ -12,7 +13,7 @@
                           'v-model.trim'=>'formInput.isBeneficiary',
                           'ref' => 'isBeneficiary',
                           'aria-describedby'=>'isBeneficiaryError'
-                      ]);!!}
+              ]); !!}
         </div>
         <p class="help is-danger" id="isBeneficiaryError" v-if="$v.formInput.isBeneficiary.$error">Ce champ est requis.</p>
     </div>
@@ -54,7 +55,7 @@
         J'accepte que le code postal soit utilisé pour localiser l'annonce (recommandé). A défaut, l'annonce sera localisée au niveau départemental.
     </div>
     <div class="field">
-        {!! Form::label('landOffer[surface]', 'Surface du foncier agricole(en ha)*', ['class' => 'label']); !!}
+        {!! Form::label('landOffer[surface]', 'Surface totale du foncier agricole(en ha)*', ['class' => 'label']); !!}
         {!! Form::number('landOffer[surface]', null, ['min'=>0, 'class' => 'input', ':disabled'=>'isInputDisabled', 'v-model' => 'formInput.surface'] ) !!}
         <p class="help is-danger" id="surfaceError" v-if="$v.formInput.surface.$error">Ce champ est
             requis.</p>
@@ -76,7 +77,7 @@
         </div>
         <div class="column ">
             <div class="field">
-                {!! Form::label('landOffer[building_surface]', 'Surface (en m²)', ['class' => 'label']); !!}
+                {!! Form::label('landOffer[building_surface]', 'Surface totale (en m²)', ['class' => 'label']); !!}
                 {!! Form::number('landOffer[building_surface]',
                          old('landOffer[building_surface]'),
                           ['min' => 0,
@@ -399,7 +400,7 @@
 				contacts !">
             <i class="fas fa-info-circle"></i>
         </button>
-        {!! Form::text('landOffer[title]', old('landOffer[title]'),
+        {!! Form::text('landOffer[title]', null,
                  ['class' => 'input',
                   ':disabled' => 'isInputDisabled',
                   'v-model.trim' => 'formInput.title',
