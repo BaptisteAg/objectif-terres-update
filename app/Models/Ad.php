@@ -14,11 +14,13 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property int $id
  * @property int $attribution_ad_id
  * @property int $project_id
- * @property string $sf_pp_id
- * @property string $sf_admin_id
+ * @property int $user_pp_id
+ * @property int $user_admin_id
  * @property boolean $is_draft
  * @property string $about_content
  * @property string $about_project_content
+ * @property User $userPp
+ * @property User $userAdmin
  * @property AttributionAd $attributionAd
  * @property Project $project
  * @property AdMessage[] $adMessages
@@ -52,8 +54,8 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereIsDraft($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereProjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereSfAdminId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereSfPpId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserAdminId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserPpId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -65,15 +67,31 @@ class Ad extends Model implements HasPresenter
      * @var array
      */
     protected $fillable = [
-        'attribution_ad_id', 'project_id', 'sf_pp_id', 'sf_admin_id', 'is_draft', 'about_content', 'about_project_content'
+        'attribution_ad_id', 'project_id', 'user_pp_id', 'user_admin_id', 'is_draft', 'about_content', 'about_project_content'
     ];
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function userPP()
+	{
+		return $this->belongsTo(User::class);
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function userAdmin()
+	{
+		return $this->belongsTo(User::class);
+	}
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function attributionAd()
     {
-        return $this->hasOne('App\Models\AttributionAd');
+        return $this->hasOne(AttributionAd::class);
     }
 
     /**
@@ -81,7 +99,7 @@ class Ad extends Model implements HasPresenter
      */
     public function project()
     {
-        return $this->belongsTo('App\Models\Project');
+        return $this->belongsTo(Project::class);
     }
 
     /**
@@ -89,7 +107,7 @@ class Ad extends Model implements HasPresenter
      */
     public function adMessages()
     {
-        return $this->hasMany('App\Models\AdMessage');
+        return $this->hasMany(AdMessage::class);
     }
 
     /**
@@ -97,7 +115,7 @@ class Ad extends Model implements HasPresenter
      */
     public function adNotes()
     {
-        return $this->hasMany('App\Models\AdNote');
+        return $this->hasMany(AdNote::class);
     }
 
     /**
@@ -105,7 +123,7 @@ class Ad extends Model implements HasPresenter
      */
     public function favoriteAd()
     {
-        return $this->hasMany('App\Models\FavoriteAd');
+        return $this->hasMany(FavoriteAd::class);
     }
 
     /**
@@ -113,17 +131,17 @@ class Ad extends Model implements HasPresenter
      */
     public function jobAd()
     {
-        return $this->hasOne('App\Models\JobAd');
+        return $this->hasOne(JobAd::class);
     }
 
     public function jobOfferAd()
     {
-        return $this->hasOne('App\Models\JobAd')->where('is_offer', '=', true);
+        return $this->hasOne(JobAd::class)->where('is_offer', '=', true);
     }
 
     public function jobSeekAd()
     {
-        return $this->hasOne('App\Models\JobAd')->where('is_offer', '=', false);
+        return $this->hasOne(JobAd::class)->where('is_offer', '=', false);
     }
 
     /**
@@ -131,7 +149,7 @@ class Ad extends Model implements HasPresenter
      */
     public function landOfferAd()
     {
-        return $this->hasOne('App\Models\LandOfferAd');
+        return $this->hasOne(LandOfferAd::class);
     }
 
     /**
@@ -139,7 +157,7 @@ class Ad extends Model implements HasPresenter
      */
     public function landSeekAd()
     {
-        return $this->hasOne('App\Models\LandSeekAd');
+        return $this->hasOne(LandSeekAd::class);
     }
 
     /**
@@ -147,7 +165,7 @@ class Ad extends Model implements HasPresenter
      */
     public function ppToUserMessages()
     {
-        return $this->hasMany('App\Models\PpToUserMessage');
+        return $this->hasMany(PpToUserMessage::class);
     }
 
     /**
@@ -156,7 +174,7 @@ class Ad extends Model implements HasPresenter
     */
     public function cities()
     {
-        return $this->morphedbyMany('App\Models\City', 'locationable_ad');
+        return $this->morphedbyMany(City::class, 'locationable_ad');
     }
 
     /**
@@ -165,7 +183,7 @@ class Ad extends Model implements HasPresenter
     */
     public function departments()
     {
-        return $this->morphedbyMany('App\Models\Department', 'locationable_ad');
+        return $this->morphedbyMany(Department::class, 'locationable_ad');
     }
 
 	/**
@@ -174,7 +192,7 @@ class Ad extends Model implements HasPresenter
 	 */
 	public function regions()
 	{
-		return $this->morphedbyMany('App\Models\Region', 'locationable_ad');
+		return $this->morphedbyMany(Region::class, 'locationable_ad');
 	}
 
     /**

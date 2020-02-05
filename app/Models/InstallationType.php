@@ -36,6 +36,6 @@ class InstallationType extends Model
      */
     public function landSeekAds()
     {
-        return $this->hasMany('App\Models\LandSeekAd');
+        return $this->hasMany(LandSeekAd::class);
     }
 }

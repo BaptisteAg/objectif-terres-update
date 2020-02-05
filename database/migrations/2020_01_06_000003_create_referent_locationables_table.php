@@ -23,7 +23,7 @@ class CreateReferentLocationablesTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('sf_user_id');
+            $table->unsignedInteger('user_id');
             $table->unsignedInteger('referent_locationable_id');
             $table->string('referent_locationable_type')->comment('cette colonne fait référence au table cities, departments, regions');
 
@@ -31,7 +31,12 @@ class CreateReferentLocationablesTable extends Migration
 
             $table->index(["referent_locationable_type"], 'ix_referent_localisationable_2');
 
-            $table->index(["sf_user_id"], 'ix_referent_localisationable_sf_user');
+
+			$table->foreign('user_id')
+				->references('id')
+				->on('users')
+				->onDelete('cascade');
+
             $table->timestamps();
         });
     }

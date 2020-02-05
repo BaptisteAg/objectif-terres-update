@@ -5,12 +5,13 @@
 use App\Models\Ad;
 use App\Models\AttributionAd;
 use App\Models\Project;
+use App\Models\User;
 use Faker\Generator as Faker;
 
 $factory->define(Ad::class, function (Faker $faker) {
     return [
-        'sf_pp_id' => $faker->regexify('[A-Za-z0-9]{20}'),
-        'sf_admin_id' => $faker->regexify('[A-Za-z0-9]{20}'),
+        'user_pp_id' => User::all()->random(),
+        'user_admin_id' => User::all()->random(),
         'is_draft' => $faker->boolean,
         'about_content' => $faker->text(500),
         'about_project_content' => $faker->text(750),

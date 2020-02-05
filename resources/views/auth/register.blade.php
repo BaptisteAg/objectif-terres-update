@@ -120,9 +120,9 @@
 						@enderror
 					</div>
 					<div class="columns">
-						<div class="column is-two-thirds">
+						<div class="column is-one-third">
 							<div class="field">
-								<label class="label">Ville ou code postal</label>
+								<label class="label">Code postal</label>
 								<div id="vue-multi-select-city">
 									<div class="control">
 
@@ -157,12 +157,28 @@
 						</div>
 						<div class="column">
 							<div class="field">
+								<label class="label">Ville</label>
+								<div class="control has-icons-left">
+									<div class="select">
+										<select id="city" name="city"
+												class="input @error('city') is-danger @enderror "
+												autocomplete="city">
+												<option value=""></option>
+										</select>
+									</div>
+									<div class="icon is-small is-left">
+										<i class="fas fa-city"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="column">
+							<div class="field">
 								<label class="label">Pays</label>
 								<div class="control has-icons-left">
 									<div class="select">
 										<select id="country_id" name="country_id"
 												class="input @error('country_id') is-danger @enderror "
-												autocomplete="new-password"
 												required>
 											<option disabled="disabled" selected>Choississez votre pays...</option>
 											@foreach($countries as $country)

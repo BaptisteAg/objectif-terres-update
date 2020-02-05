@@ -49,7 +49,7 @@ class ResearchesController extends Controller
 
 	public function show()
 	{
-		$researches = $this->researchService->findAll();
+		$researches = $this->researchService->findAllByUser(auth()->user()->id);
 		$numberAlertActives = 0;
 		foreach ($researches as $research){
 			if ($research->has_alert === 1){

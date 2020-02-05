@@ -36,6 +36,6 @@ class AgriculturalActivity extends Model
      */
     public function jobAds()
     {
-        return $this->belongsToMany('App\Models\JobAd')->withTimestamps();
+        return $this->belongsToMany(JobAd::class)->withTimestamps();
     }
 }

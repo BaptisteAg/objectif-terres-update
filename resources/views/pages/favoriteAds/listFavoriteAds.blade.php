@@ -96,7 +96,7 @@
 					</div>
 					<div class="columns">
 						<div class="column is-two-fifths">
-							@if(count ($favoriteAd->ad->adMessages()->whereSfSenderId(999)->get()) > 0)
+							@if(count ($favoriteAd->ad->adMessages()->whereUserId(auth()->user()->id)->get()) > 0)
 								<article class="message is-success">
 									<div class="message-body">
 										Vous avez déjà envoyé un message au porteur de projet.

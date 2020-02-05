@@ -86,23 +86,23 @@ class LandOfferAd extends Model
 
     public function ad()
     {
-        return $this->belongsTo('App\Models\Ad');
+        return $this->belongsTo(Ad::class);
     }
 
 
     public function building()
     {
-        return $this->belongsTo('App\Models\Building');
+        return $this->belongsTo(Building::class);
     }
 
     public function house()
     {
-        return $this->belongsTo('App\Models\House');
+        return $this->belongsTo(House::class);
     }
 
     public function land()
     {
-        return $this->belongsTo('App\Models\Land');
+        return $this->belongsTo(Land::class);
     }
 
 }

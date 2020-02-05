@@ -43,7 +43,7 @@ class ProductionGenre extends Model
      */
     public function landSeekAds()
     {
-        return $this->morphedByMany('App\Models\LandSeekAd', 'productionable_genre');
+        return $this->morphedByMany(LandSeekAd::class, 'productionable_genre');
     }
 
     /**
@@ -53,7 +53,7 @@ class ProductionGenre extends Model
      */
     public function landOfferAds()
     {
-        return $this->morphedByMany('App\Models\LandOfferAd', 'productionable_genre');
+        return $this->morphedByMany(LandOfferAd::class, 'productionable_genre');
     }
 
     /**
@@ -63,6 +63,6 @@ class ProductionGenre extends Model
      */
     public function researches()
     {
-        return $this->morphedByMany('App\Models\Research', 'productionable_genre');
+        return $this->morphedByMany(Research::class, 'productionable_genre');
     }
 }

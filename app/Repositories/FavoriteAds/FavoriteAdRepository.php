@@ -53,7 +53,7 @@ class FavoriteAdRepository extends AbstractRepository implements FavoriteAdRepos
 	public function findAllByUserId(int $id)
 	{
 		$model = $this->entity
-			->whereSfId($id)
+			->where("user_id" , $id)
 			->get();
 
 		if (!$model) {
@@ -72,9 +72,10 @@ class FavoriteAdRepository extends AbstractRepository implements FavoriteAdRepos
 	 */
 	public function findByUserAndAdId(array $data)
 	{
+
 		$favoriteAd = $this->entity
 			->where("ad_id", $data['ad_id'])
-			->where("sf_id", $data['sf_id'])
+			->where("user_id", $data['user_id'])
 			->get();
 
 		return $favoriteAd;
