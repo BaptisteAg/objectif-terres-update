@@ -3,6 +3,8 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use App\Models\User;
 use Faker\Generator as Faker;
+Use App\Models\City;
+use App\Models\Country;
 use Illuminate\Support\Str;
 
 /*
@@ -25,8 +27,8 @@ $factory->define(User::class, function (Faker $faker) {
 		'address' => $faker->address,
 		'first_name'=>$faker->name,
 		'city'=> $faker->city,
-		'zip_code'=>$faker->numberBetween([10000, 99999]),
-		'country_id'=>$faker->numberBetween([1, 200]),
+		'zip_code_id'=>City::all()->random(),
+		'country_id'=>Country::all()->random(),
         'remember_token' => Str::random(10),
     ];
 });

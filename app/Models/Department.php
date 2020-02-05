@@ -46,7 +46,7 @@ class Department extends Model
      */
     public function region()
     {
-        return $this->belongsTo('App\Models\Region', 'region_code', 'code');
+        return $this->belongsTo(Region::class, 'region_code', 'code');
     }
 
     /**
@@ -54,6 +54,6 @@ class Department extends Model
      */
     public function cities()
     {
-        return $this->hasMany('App\Models\City', 'department_code', 'code');
+        return $this->hasMany(City::class, 'department_code', 'code');
     }
 }

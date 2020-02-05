@@ -49,6 +49,6 @@ class City extends Model
      */
     public function department()
     {
-        return $this->belongsTo('App\Models\Department', 'department_code', 'code');
+        return $this->belongsTo(Department::class, 'department_code', 'code');
     }
 }

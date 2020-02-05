@@ -6,12 +6,13 @@ use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\PpType;
 use App\Models\RefusalType;
+use App\Models\User;
 use Faker\Generator as Faker;
 
 $factory->define(AttributionAd::class, function (Faker $faker) {
     return [
-        'sf_owner_id' => $faker->regexify('[A-Za-z0-9]{20}'),
-        'sf_admin_id'=> $faker->regexify('[A-Za-z0-9]{20}'),
+        'user_owner_id' => User::all()->random(),
+        'user_admin_id'=> User::all()->random(),
         'to_call_back' => $faker->boolean,
         'short_description' => $faker->text(350),
         'ad_status_id' => factory(AdStatus::class),

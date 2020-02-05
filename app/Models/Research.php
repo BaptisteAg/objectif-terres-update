@@ -14,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
  * App\Models\Research
  *
  * @property int $id
- * @property string $sf_id
+ * @property int $user_id
  * @property string $name
  * @property int $surface_min
  * @property int $surface_max
@@ -25,6 +25,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $ad_type
  * @property string $url
  * @property boolean $has_alert
+ * @property User $user
  * @property JobStatus[] $jobStatuses
  * @property ProjectStatus[] $projectStatuses
  * @property AdStatus[] $adStatuses
@@ -55,7 +56,7 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research wherePriceMax($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research wherePriceMin($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereSfId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereSurfaceMax($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereSurfaceMin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereUpdatedAt($value)
@@ -72,15 +73,22 @@ class Research extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'sf_id', 'name', 'surface_min', 'surface_max', 'has_pics', 'has_house', 'price_min', 'price_max', 'ad_type', 'url', 'has_alert'
+		'user_id', 'name', 'surface_min', 'surface_max', 'has_pics', 'has_house', 'price_min', 'price_max', 'ad_type', 'url', 'has_alert'
 	];
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function user(){
+		$this->belongsTo(User::class);
+	}
 
 	/**
 	 * @return belongsToMany
 	 */
 	public function adStatuses()
 	{
-		return $this->belongsToMany('App\Models\AdStatus')->withTimestamps();
+		return $this->belongsToMany(AdStatus::class)->withTimestamps();
 	}
 
 	/**
@@ -88,7 +96,7 @@ class Research extends Model
 	 */
 	public function jobStatuses()
 	{
-		return $this->belongsToMany('App\Models\JobStatus')->withTimestamps();
+		return $this->belongsToMany(JobStatus::class)->withTimestamps();
 	}
 
 	/**
@@ -96,7 +104,7 @@ class Research extends Model
 	 */
 	public function projectStatuses()
 	{
-		return $this->belongsToMany('App\Models\ProjectStatus')->withTimestamps();
+		return $this->belongsToMany(ProjectStatus::class)->withTimestamps();
 	}
 
 	/**
@@ -105,7 +113,7 @@ class Research extends Model
 	 */
 	public function cities()
 	{
-		return $this->morphedbyMany('App\Models\City', 'locationable_research');
+		return $this->morphedbyMany(City::class, 'locationable_research');
 	}
 
 	/**
@@ -114,7 +122,7 @@ class Research extends Model
 	 */
 	public function departments()
 	{
-		return $this->morphedbyMany('App\Models\Department', 'locationable_research');
+		return $this->morphedbyMany(Department::class, 'locationable_research');
 	}
 
 	/**
@@ -123,6 +131,6 @@ class Research extends Model
 	 */
 	public function regions()
 	{
-		return $this->morphedbyMany('App\Models\Region', 'locationable_research');
+		return $this->morphedbyMany(Region::class, 'locationable_research');
 	}
 }

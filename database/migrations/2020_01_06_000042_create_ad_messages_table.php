@@ -24,14 +24,18 @@ class CreateAdMessagesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->text('content');
-            $table->string('sf_sender_id')->comment('id d\'une personne enregistrée dans Salesforce (membre de TdL ou non) en étant l\'auteur d\'un message');
+            $table->unsignedInteger('user_id');
             $table->unsignedInteger('ad_id');
 
-            $table->index(["sf_sender_id"], 'ix_ad_message_sf_sender_id');
+            $table->index(["user_id"], 'ix_ad_message_sf_user_id');
 
             $table->index(["ad_id"], 'fk_ad_messages_1_idx');
             $table->timestamps();
 
+			$table->foreign('user_id','ix_ad_message_sf_user_id' )
+				->references('id')
+				->on('users')
+				->onDelete('cascade');
 
             $table->foreign('ad_id', 'fk_ad_messages_1_idx')
                 ->references('id')->on('ads')

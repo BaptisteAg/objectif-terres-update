@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
 
 
         $this->call([
+			UserSeeder::class,
             ResponseTypeSeeder::class,
             PriceRangeSeeder::class,
             SurfaceRangeSeeder::class,
@@ -51,6 +52,7 @@ class DatabaseSeeder extends Seeder
             ResearchSeeder::class,
             UserToUserMessageSeeder::class,
             EducationLevelSeeder::class,
+
 
         ]);
 
