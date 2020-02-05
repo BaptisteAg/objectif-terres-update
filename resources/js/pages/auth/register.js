@@ -6,9 +6,10 @@ new Vue({
     components : {
         Autocomplete,
     },
-    el: '#vue-multi-select-city',
+    el: '#vue-register-form',
     data(){
         return {
+            optionProfileSelected : '',
             citySelect : [],
         }
     }

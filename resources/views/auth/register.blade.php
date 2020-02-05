@@ -2,19 +2,17 @@
 @section('title', 'Inscription')
 
 @section('main-content')
-	<div class="section">
+	<div id="vue-register-form" class="section">
 		<div class="container">
 			<div class="columns is-mobile is-centered">
 				<div class="column is-two-thirds">
 					<h1 class="title is-2 has-text-centered has-text-link">Inscription </h1>
 					<h2 class="subtitle has-text-centered">Créez votre compte pour profiter des services d'Objectif
 						Terres </h2>
-
 					{!! Form::open(['route'=>'register']) !!}
 					@csrf
-
 					<div class="columns">
-						<div class="column is-half">
+						<div class="column is-one-third">
 							<div class="field">
 								<label class="label">Votre nom</label>
 								<div class="control has-icons-left">
@@ -56,6 +54,26 @@
 								@enderror
 							</div>
 						</div>
+						<div class="column ">
+							<div class="field">
+								<label class="label">Civilité</label>
+								<div class="control has-icons-left">
+									<div class="select">
+										<select id="civility" name="civility"
+												class="input @error('civility') is-danger @enderror "
+												required>
+											<option disabled="disabled" selected>Veuillez préciser...</option>
+											<option value="1">Madame</option>
+											<option value="2">Monsieur</option>
+											<option value="3">Autre</option>
+										</select>
+									</div>
+									<div class="icon is-small is-left">
+										<i class="fas fa-user"></i>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="columns">
 						<div class="column is-half">
@@ -78,7 +96,7 @@
 								@enderror
 							</div>
 						</div>
-						<div class="column">
+						<div class="column ">
 							<div class="field">
 								<label class="label">Adresse email</label>
 								<p class="control has-icons-left has-icons-right">
@@ -100,6 +118,66 @@
 							</div>
 						</div>
 					</div>
+					<div class="field">
+						<label class="checkbox">
+							<input value="1" name="accept_share_contact_infos" type="checkbox">
+							J'accepte de faire apparaître publiquement mes informations de contact
+						</label>
+					</div>
+					<div class="columns">
+						<div class="column is-two-thirds">
+							<div class="field">
+								<label class="label">Votre situation</label>
+								<div class="control has-icons-left">
+									<div class="select">
+										<select id="profile" name="profile"
+												class="input @error('profile') is-danger @enderror "
+												required
+												v-model="optionProfileSelected">
+											<option disabled="disabled" selected>Vous êtes...</option>
+											<option value="1">un candidat à l’installation agricole</option>
+											<option value="2">une personne en recherche de travail ou d’expérience
+												professionnelle dans le
+												domaine agricole
+											</option>
+											<option value="3">un agriculteur qui souhaite consolider sa ferme</option>
+											<option value="4">un agriculteur qui souhaite transmettre sa ferme</option>
+											<option value="5">un propriétaire foncier qui souhaite vendre ou louer sa
+												terre
+											</option>
+											<option value="6">Autre</option>
+										</select>
+									</div>
+									<div class="icon is-small is-left">
+										<i class="fas fa-user"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div v-if="optionProfileSelected === '6'" class="column">
+							<div class="field">
+								<label class="label">Situation autre </label>
+								<p class="control has-icons-left has-icons-right">
+									<input id="other_profile" class="input @error('other_profile') is-danger @enderror"
+										   type="text"
+										   name="other_profile" value="{{ old('other_profile') }}" required
+										   autocomplete="other_profile"
+										   placeholder="Veuillez préciser ...">
+									<span class="icon is-small is-left">
+                                       <i class="fas fa-pen"></i>
+                                    </span>
+								</p>
+								@error('other_profile')
+								<article class="message is-danger" role="alert">
+									<div class="message-body">
+										{{ $message }}
+									</div>
+								</article>
+								@enderror
+							</div>
+						</div>
+					</div>
+
 					<div class="field">
 						<label class="label">Adresse </label>
 						<p class="control has-icons-left has-icons-right">
@@ -123,9 +201,8 @@
 						<div class="column is-one-third">
 							<div class="field">
 								<label class="label">Code postal</label>
-								<div id="vue-multi-select-city">
+								<div>
 									<div class="control">
-
 										<autocomplete
 												name="citySelect"
 												id="citySelect"
@@ -163,7 +240,7 @@
 										<select id="city" name="city"
 												class="input @error('city') is-danger @enderror "
 												autocomplete="city">
-												<option value=""></option>
+											<option value=""></option>
 										</select>
 									</div>
 									<div class="icon is-small is-left">
@@ -228,7 +305,7 @@
 					</div>
 					<div class="field">
 						<label class="checkbox">
-							<input type="checkbox" name="accept_condition" id="accept_condition">
+							<input type="checkbox" required>
 							"J'ai pris connaissance de <a>la charte d'utilisation de la plateforme d'annonces du site
 								web de
 								Terre de Liens</a> ."
@@ -243,6 +320,7 @@
 					</div>
 					<div class="field is-grouped is-centered">
 						<div class="control">
+							<p>En appuyant sur valider, vous consentez <a>à l'utilisation de vos données personnelles</a> par Objectif Terres  </p>
 							<button type="submit" class="button is-link">Valider</button>
 						</div>
 					</div>

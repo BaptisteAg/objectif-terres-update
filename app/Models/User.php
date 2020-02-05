@@ -18,6 +18,10 @@ use Illuminate\Notifications\Notifiable;
  * @property int 	$zip_code_id
  * @property string $accept_communication
  * @property string $email
+ * @property int $civility
+ * @property int $profile
+ * @property string $other_profile
+ * @property boolean $accept_share_contact_infos
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
  * @property int $country_id
@@ -40,7 +44,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'first_name','phone', 'address', 'city', 'zip_code_id', 'accept_communication', 'country_id'
+        'name', 'email', 'password', 'first_name','phone', 'address', 'city', 'zip_code_id', 'accept_communication', 'country_id', 'profile', 'civility', 'profile', 'other_profile', 'accept_share_contact_infos'
     ];
 
     /**
