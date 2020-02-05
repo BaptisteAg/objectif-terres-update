@@ -117,10 +117,8 @@ class AdsController extends Controller
 
 	public function list()
 	{
-		$sfId = "WM8O6v7uKYStNJGiJaeJ";
-		$ads = $this->adService->findAllByUser($sfId);
 
-
+		$ads = $this->adService->findAllByUser(auth()->user()->id);
 		return view('pages.ads.listUserAds', compact('ads'));
 	}
 }

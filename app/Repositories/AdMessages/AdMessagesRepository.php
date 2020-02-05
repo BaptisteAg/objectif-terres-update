@@ -86,7 +86,7 @@ class AdMessagesRepository extends AbstractRepository implements AdMessagesRepos
 	{
 		$adMessage = new AdMessage();
 		$adMessage->fill($data);
-		$adMessage->sf_sender_id = 999;
+		$adMessage->user_id = auth()->user()->id;
 		$adMessage->save();
 
 		return $adMessage;

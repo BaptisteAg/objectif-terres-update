@@ -49,6 +49,13 @@ class ResearchService
 		return $research;
 	}
 
+	public function findAllByUser(int $id)
+	{
+		$researches = $this->repository->findAllByUser($id);
+
+		return $researches;
+	}
+
 	public function findAll()
 	{
 
@@ -65,12 +72,12 @@ class ResearchService
 	public function findNewRelatedAds()
 	{
 		$researches = $this->repository->all();
-		$newAdsInResearch= [];
-		foreach ($researches as $research){
+		$newAdsInResearch = [];
+		foreach ($researches as $research) {
 			$id = $research->id;
 			$date = $research->updated_at;
 			$newAds = $this->repository->findRelatedAds($id)->where('created_at', '>=', $date);
-			if(! $newAds->isEmpty()){
+			if (!$newAds->isEmpty()) {
 				$newAdsInResearch[$research->id] = $this->repository->findRelatedAds($id)->where('created_at', '>=', $date);
 			}
 		}

@@ -56,7 +56,7 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
-        factory(Ad::class, 25)->create()->each(function (Ad $ad) use(&$queriesCount) {
+        factory(Ad::class, 30)->create()->each(function (Ad $ad) use(&$queriesCount) {
             $ad->adNotes()->save(factory(AdNote::class)->make());
             $ad->adMessages()->save(factory(AdMessage::class)->make());
             $ad->ppToUserMessages()->save(factory(PpToUserMessage::class)->make());
@@ -66,19 +66,27 @@ class DatabaseSeeder extends Seeder
 
             echo "\nAd ID saved : ".$ad->id. " (Queries : ".$queriesCount.")";
         });
-        factory(LandOfferAd::class, 10)->create()->each(function (LandOfferAd $landOfferAd) {
+        $adIds = Ad::all()->pluck("id")->toArray();
+        factory(LandOfferAd::class, 10)->create()->each(function (LandOfferAd $landOfferAd) use(&$adIds) {
             $landOfferAd->bioCertifications()->save(BioCertification::inRandomOrder()->first())->make();
             $landOfferAd->productionGenres()->save(ProductionGenre::inRandomOrder()->first())->make();
+            $landOfferAd->ad_id = array_shift($adIds);
+            $landOfferAd->save();
         });
-        factory(LandSeekAd::class, 10)->create()->each(function (LandSeekAd $landSeekAd) {
+        factory(LandSeekAd::class, 10)->create()->each(function (LandSeekAd $landSeekAd) use(&$adIds) {
             $landSeekAd->surfaceRanges()->save(SurfaceRange::inRandomOrder()->first())->make();
             $landSeekAd->priceRanges()->save(PriceRange::inRandomOrder()->first())->make();
+			$landSeekAd->ad_id = array_shift($adIds);
+			$landSeekAd->save();
         });
-        factory(JobAd::class, 10)->create()->each(function (JobAd $jobAd) {
+        factory(JobAd::class, 10)->create()->each(function (JobAd $jobAd) use(&$adIds) {
             $jobAd->agriculturalActivity()->save(factory(AgriculturalActivity::class)->make());
+			$jobAd->ad_id = array_shift($adIds);
+			$jobAd->save();
         });
 
 
         echo "\nTotal queries : ".$queriesCount."\n";
+        echo count($adIds)." adIds left.\n";
     }
 }
