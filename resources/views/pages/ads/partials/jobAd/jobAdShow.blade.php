@@ -80,23 +80,25 @@
 							</p>
 						</div>
 					</div>
-					<footer class="card-footer">
-						<button id="open-modal-message" type="button" class="card-footer-item button is-link">
+					@if( $ad->user_pp_id !== auth()->user()->id)
+						<footer class="card-footer">
+							<button id="open-modal-message" type="button" class="card-footer-item button is-link">
 								 <span class="icon is-small">
 								<i class="fas fa-reply"></i>
 								</span>
-							<span> Répondre à l'annonce</span>
-						</button>
-						{!! Form::open(['route'=>'favoriteAds.create', 'method'=>'get']) !!}
-						<input name="ad_id" value="{{$ad->id}}" type="hidden">
-						<button class="card-footer-item button is-link is-light">
+								<span> Répondre à l'annonce</span>
+							</button>
+							{!! Form::open(['route'=>'favoriteAds.create', 'method'=>'get']) !!}
+							<input name="ad_id" value="{{$ad->id}}" type="hidden">
+							<button class="card-footer-item button is-link is-light">
 							 <span class="icon is-small">
 								<i class="fas fa-star"></i>
 								</span>
-							<span> Mettre cette annonce en favoris</span>
-						</button>
-						{!! Form::close() !!}
-					</footer>
+								<span> Mettre cette annonce en favoris</span>
+							</button>
+							{!! Form::close() !!}
+						</footer>
+					@endif
 				</div>
 			</div>
 		</div>
@@ -141,28 +143,30 @@
 			<h3 class="title is-3">A propos du porteur de projet</h3>
 			<p> {{$ad->about_content}}</p>
 		</div>
-		<div class="content">
-			<div class="columns is-mobile is-centered">
-				<div class="column is-half">
-					<div class="box has-background-white-ter ">
-						<article class="media">
-							<div class="media-content">
-								<div class="content has-text-centered ">
-									<p class="has-text-centered is-size-4">Vous souhaitez répondre à cette annonce
-										?</p>
-									<button id="open-modal-message" class="button is-link is-large">
+		@if( $ad->user_pp_id !== auth()->user()->id)
+			<div class="content">
+				<div class="columns is-mobile is-centered">
+					<div class="column is-half">
+						<div class="box has-background-white-ter ">
+							<article class="media">
+								<div class="media-content">
+									<div class="content has-text-centered ">
+										<p class="has-text-centered is-size-4">Vous souhaitez répondre à cette annonce
+											?</p>
+										<button id="open-modal-message" class="button is-link is-large">
 									 	<span class="icon is-small">
 										<i class="fas fa-reply"></i>
 										</span>
-										<span> Répondre à l'annonce</span>
-									</button>
+											<span> Répondre à l'annonce</span>
+										</button>
+									</div>
 								</div>
-							</div>
-						</article>
+							</article>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		@endif
 	</div>
 
 </section>

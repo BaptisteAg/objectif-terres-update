@@ -27,7 +27,11 @@ class CreateUsersTable extends Migration
 			$table->string('phone')->nullable();
 			$table->string('address');
 			$table->string('city');
+			$table->integer('civility');
+			$table->integer('profile');
+			$table->string('other_profile')->nullable();
 			$table->boolean('accept_communication');
+			$table->boolean('accept_share_contact_infos');
 			$table->string('email')->unique();
 			$table->timestamp('email_verified_at')->nullable();
 			$table->string('password');
