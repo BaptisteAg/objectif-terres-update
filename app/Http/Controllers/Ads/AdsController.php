@@ -3,10 +3,7 @@
 namespace App\Http\Controllers\Ads;
 
 use App\Http\Controllers\Controller;
-use App\Models\Document;
-use App\Repositories\Ads\AdRepository;
 use App\Http\Requests\Ads\AdRequest;
-use App\Models\Ad;
 use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
 use App\Models\City;
@@ -50,9 +47,6 @@ class AdsController extends Controller
 		$offerGenresHouse = OfferGenre::where('offer_genre_model', 'House')->get();
 		$offerGenresBuilding = OfferGenre::where('offer_genre_model', 'Building')->get();
 		$offerGenresLand = OfferGenre::where('offer_genre_model', 'Land')->get();
-		$cities = City::all();
-		$departments = Department::all();
-		$regions = Region::all();
 		$productionGenres = ProductionGenre::all();
 		$agriculturalActivities = AgriculturalActivity::all();
 		$educationLevels = EducationLevel::all();
@@ -65,9 +59,6 @@ class AdsController extends Controller
             'bioCertifications',
             'jobStatus',
             'offerGenres',
-            'cities',
-            'departments',
-            'regions',
             'offerGenresLandSeek',
             'offerGenresHouse',
             'offerGenresBuilding',
@@ -92,7 +83,7 @@ class AdsController extends Controller
 
 		$ad = $this->adService->create($data);
 
-		return redirect()->route('ads.show', [$ad->id]);
+		return redirect()->route('ads.show', [$ad->id])->with('success', 'Votre annonce a bien été publiée.');
 	}
 
 	/**
@@ -117,9 +108,7 @@ class AdsController extends Controller
 
 	public function list()
 	{
-		$sfId = "WM8O6v7uKYStNJGiJaeJ";
-		$ads = $this->adService->findAllByUser($sfId);
-
+		$ads = $this->adService->findAllByUser(auth()->id());
 
 		return view('pages.ads.listUserAds', compact('ads'));
 	}

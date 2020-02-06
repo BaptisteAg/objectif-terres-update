@@ -25,7 +25,7 @@ class DocumentService
             'path' => $storedFilePath,
             'name' => $file->getClientOriginalName(),
             "user_id" => auth()->id(),
-            'type_document' => 'ad'
+            'type_document' => 'image'
         ]);
 
         return $document;
