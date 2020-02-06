@@ -54,11 +54,26 @@ class AdMessagesRepository extends AbstractRepository implements AdMessagesRepos
 	}
 
 	/**
+	 * @param int $userId
+	 * @param int $adId
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function findByUserAndAd($userId, $adId)
+	{
+		/** @var AdMessage $model */
+		$model = $this->entity
+			->where(["user_id" => $userId, 'ad_id'=> $adId])
+			->first();
+		return $model;
+	}
+
+	/**
 	 * @param $id
 	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
 	 */
 	public function findAllByAd(Ad $ad)
 	{
+		/** @var AdMessage $model */
 		$model = $this->entity
 			->where(["ad_id" => $ad->id])
 			->get();
@@ -79,8 +94,8 @@ class AdMessagesRepository extends AbstractRepository implements AdMessagesRepos
 	 *
 	 * @param int
 	 * @param array
-	 * @throws \Throwable
 	 * @return AdMessage
+	 * @throws \Throwable
 	 */
 	public function create(array $data): AdMessage
 	{

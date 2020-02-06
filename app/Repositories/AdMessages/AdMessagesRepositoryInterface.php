@@ -29,6 +29,14 @@ interface AdMessagesRepositoryInterface
 	public function findAllByAd(Ad $ad);
 
 	/**
+	 * Gets message by User ID and Ad ID.
+	 *
+	 * @param int $userId
+	 * @param int $adId
+	 */
+	public function findByUserAndAd(int $userId, int $adId);
+
+	/**
 	 * Deletes message.
 	 *
 	 * @param int

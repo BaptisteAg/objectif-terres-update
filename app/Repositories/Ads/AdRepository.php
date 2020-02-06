@@ -1,7 +1,6 @@
 <?php namespace App\Repositories\Ads;
 
 use App\Models\Ad;
-use App\Models\Document;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
@@ -40,10 +39,11 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
      */
     public function find($id)
     {
+    	/** @var Ad $model */
         $model = $this->entity
             ->where(["id" => $id])
             ->with($this->getEagerLoading())
-            ->firstOrFail();
+            ->first();
 
         if (!$model) {
             throw (new ModelNotFoundException)->setModel(
@@ -61,7 +61,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 */
 	public function allByIdUser($idUser)
 	{
-
+		/** @var Ad $model */
 		$model = $this->entity
 			->where(["user_pp_id" => $idUser])
 			->with($this->getEagerLoading())
@@ -128,14 +128,15 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     {
         return [
             'landSeekAd',
-            'landOfferAd',
-            'jobAd',
-            'cities',
-            'cities.department',
-            'cities.department.region',
-            'departments',
-            'departments.region',
-            'regions',
+			'landOfferAd',
+			'jobAd',
+			'cities',
+			'cities.department',
+			'cities.department.region',
+			'departments',
+			'departments.region',
+			'regions',
+			'adMessages'
         ];
     }
 }

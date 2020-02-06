@@ -25,32 +25,39 @@
 						<div class="column is-three-quarters ">
 							<div class="columns">
 								<div class="column is-one-quarter ">
-									<figure class="image is-5by4">
-										@if(count ($favoriteAd->ad->documents) > 0)
-											@foreach($favoriteAd->ad->documents as $document)
-												@if($document->type_document ==="image")
-													<img src="{{asset($document->path)}}">
-												@endif
-											@endforeach
-										@else
-											<img src="https://picsum.photos/256/256">
-										@endif
-									</figure>
+									<a href="{{route("ads.show", $favoriteAd->ad->id)}}">
+										<figure class="image is-5by4">
+											@if(count ($favoriteAd->ad->documents) > 0)
+												@foreach($favoriteAd->ad->documents as $document)
+													@if($document->type_document ==="image")
+														<img src="{{asset($document->path)}}">
+													@endif
+												@endforeach
+											@else
+												<img src="https://picsum.photos/256/256">
+											@endif
+										</figure>
+									</a>
 								</div>
 								<div class="column">@if($favoriteAd->ad->landSeekAd)
-										<h1 class="title">{{$favoriteAd->ad->landSeekAd->title}} </h1>
+										<a href="{{route("ads.show", $favoriteAd->ad->id)}}">
+											<h1 class="title">{{$favoriteAd->ad->landSeekAd->title}} </h1>
+										</a>
 										<p><span class="has-text-grey-dark">Type d'annonces recherchés :</span>
 											<span class="has-text-black">Recherche de foncier</span></p>
 									@elseif($favoriteAd->ad->landOfferAd)
-										<h1 class="title">{{$favoriteAd->ad->landOfferAd->title}} </h1>
+										<a href="{{route("ads.show", $favoriteAd->ad->id)}}"><h1
+													class="title">{{$favoriteAd->ad->landOfferAd->title}} </h1></a>
 										<p><span class="has-text-grey-dark">Type d'annonces recherchés :</span>
 											<span class="has-text-black">Offre de foncier</span></p>
 									@elseif($favoriteAd->ad->jobOfferAd)
-										<h1 class="title">{{$favoriteAd->ad->jobAd->title}} </h1>
+										<a href="{{route("ads.show", $favoriteAd->ad->id)}}"><h1
+													class="title">{{$favoriteAd->ad->jobAd->title}} </h1></a>
 										<p><span class="has-text-grey-dark">Type d'annonces recherchés :</span>
 											<span class="has-text-black">Offre d'emploi</span></p>
 									@elseif($favoriteAd->ad->jobSeekAd)
-										<h1 class="title">{{$favoriteAd->ad->jobAd->title}} </h1>
+										<a href="{{route("ads.show", $favoriteAd->ad->id)}}"><h1
+													class="title">{{$favoriteAd->ad->jobAd->title}} </h1></a>
 										<p><span class="has-text-grey-dark">Type d'annonces recherchés :</span>
 											<span class="has-text-black">Recherche d'emploi</span></p>
 									@endif
@@ -69,15 +76,13 @@
 						</div>
 						<div class="column ">
 							<div class="buttons">
-								<a class="">
-									{!! Form::open(['route' => ['ads.show', $favoriteAd->ad->id], 'method' => 'get']) !!}
-									<button type="submit" class="button is-link is-medium ">
+								<a href="{{route("ads.show", $favoriteAd->ad->id)}}">
+									<button class="button is-link is-medium ">
 											<span class="icon is-small">
 											 <i class="fas fa-eye"></i>
 											</span>
 										<span>Voir l'annonce</span>
 									</button>
-									{{Form::close()}}
 								</a>
 							</div>
 							{{Form::open(['route' => 'favoriteAds.destroy'])}}
@@ -95,7 +100,7 @@
 						</div>
 					</div>
 					<div class="columns">
-						<div class="column is-two-fifths">
+						<div class="column ">
 							@if(count ($favoriteAd->ad->adMessages()->whereUserId(auth()->user()->id)->get()) > 0)
 								<article class="message is-success">
 									<div class="message-body">

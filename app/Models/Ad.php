@@ -73,7 +73,7 @@ class Ad extends Model implements HasPresenter
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function userPP()
+	public function userPp()
 	{
 		return $this->belongsTo(User::class);
 	}

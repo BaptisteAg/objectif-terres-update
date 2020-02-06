@@ -1,6 +1,6 @@
 @section('title', $ad->landSeekAd->title)
 
-<section class="section is-medium ">
+<section class="section">
 	<div class="container ">
 		<nav class="breadcrumb" aria-label="breadcrumbs">
 			<ul>
@@ -13,7 +13,7 @@
 			<div id="slider-container" class="column is-two-thirds ">
 				<div id="ad-images" class="carousel ">
 					@if(count($ad->documents) <= 0)
-						<div id="test" class="card carousel-item ad-carousel ">
+						<div class="card carousel-item ad-carousel ">
 							<div class="card-image">
 								<figure class="image is-2by1">
 									<img src="https://picsum.photos/480/320" alt="picsum">
@@ -86,27 +86,76 @@
 									@endif
 								</p>
 						</div>
+						@if($ad->userPp->accept_share_contact_infos === 1)
+							<div class="content">
+								<p><span class="is-size-5 has-text-black">N° de téléphone du porteur de projet : </span>
+								</p>
+								<p><span class="subtitle">{{$ad->userPp->phone}}</span></p>
+							</div>
+						@endif
 					</div>
-
-					@if( $ad->user_pp_id !== auth()->user()->id)
+					@auth
+						@if( $ad->user_pp_id !== auth()->user()->id)
+							<footer class="card-footer">
+								@isset($userMessage)
+									<a href="">
+										<button type="button" class="card-footer-item button is-link">
+											<span class="icon is-small">
+											<i class="fas fa-reply"></i>
+											</span>
+											<span> Ouvrir la messagerie </span>
+										</button>
+									</a>
+								@else
+									<button id="open-modal-message" type="button"
+											class="card-footer-item button is-link">
+										 <span class="icon is-small">
+											<i class="fas fa-reply"></i>
+										</span>
+										<span> Répondre à l'annonce</span>
+									</button>
+								@endisset
+								@isset($favoriteAdAlreadyExist)
+									<button class="card-footer-item button is-danger is-light">
+									 <span class="icon is-small">
+										 <i class="fas fa-trash"></i>
+										</span>
+										<span> Supprimer  de vos favoris</span>
+									</button>
+								@else
+									{!! Form::open(['route'=>'favoriteAds.create', 'method'=>'get']) !!}
+									<input name="ad_id" value="{{$ad->id}}" type="hidden">
+									<button class="card-footer-item button is-link is-light">
+									 	<span class="icon is-small">
+												<i class="fas fa-star"></i>
+										</span>
+										<span> Mettre cette annonce en favoris</span>
+									</button>
+									{!! Form::close() !!}
+								@endisset
+							</footer>
+						@endif
+					@else
 						<footer class="card-footer">
-							<button id="open-modal-message" type="button" class="card-footer-item button is-link">
+							<button id="open-modal-message" type="button"
+									class="card-footer-item button is-link">
 								 <span class="icon is-small">
 								<i class="fas fa-reply"></i>
 								</span>
 								<span> Répondre à l'annonce</span>
 							</button>
+
 							{!! Form::open(['route'=>'favoriteAds.create', 'method'=>'get']) !!}
 							<input name="ad_id" value="{{$ad->id}}" type="hidden">
 							<button class="card-footer-item button is-link is-light">
 							 <span class="icon is-small">
-										<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
 								</span>
 								<span> Mettre cette annonce en favoris</span>
 							</button>
 							{!! Form::close() !!}
 						</footer>
-					@endif
+					@endauth
 				</div>
 			</div>
 		</div>
@@ -195,7 +244,60 @@
 				<p> {{$ad->landSeekAd->experience_farming}}</p>
 			</div>
 		@endif
-		@if( $ad->user_pp_id !== auth()->user()->id)
+		@auth
+			@if( $ad->user_pp_id !== auth()->user()->id)
+				@isset($userMessage)
+					<div class="content">
+						<div class="columns is-mobile is-centered">
+							<div class="column is-half">
+								<div class="box has-background-white-ter ">
+									<article class="media">
+										<div class="media-content">
+											<div class="content has-text-centered ">
+												<p class="has-text-centered is-size-4">Vous avez déjà envoyé une réponse
+													à cette annnonce ! </p>
+												<button id="open-modal-message" class="button is-link  is-large">
+									 	<span class="icon is-small">
+										<i class="fas fa-reply"></i>
+										</span>
+													<span> Consulter votre messagerie</span>
+												</button>
+											</div>
+										</div>
+									</article>
+								</div>
+							</div>
+						</div>
+					</div>
+				@else
+					<div class="content">
+						<div class="columns is-mobile is-centered">
+							<div class="column is-half">
+								<div class="box has-background-white-ter ">
+									<article class="media">
+										<div class="media-content">
+											<div class="content has-text-centered ">
+												<p class="has-text-centered is-size-4">Vous souhaitez répondre à cette
+													annonce
+													?</p>
+												<button id="open-modal-message" class="button is-link  is-large">
+									 	<span class="icon is-small">
+										<i class="fas fa-reply"></i>
+										</span>
+													<span> Répondre à l'annonce</span>
+												</button>
+											</div>
+										</div>
+									</article>
+								</div>
+							</div>
+						</div>
+					</div>
+				@endisset
+			@else
+				@include('pages.ads.partials.listMessagesAd')
+			@endif
+		@else
 			<div class="content">
 				<div class="columns is-mobile is-centered">
 					<div class="column is-half">
@@ -203,7 +305,8 @@
 							<article class="media">
 								<div class="media-content">
 									<div class="content has-text-centered ">
-										<p class="has-text-centered is-size-4">Vous souhaitez répondre à cette annonce
+										<p class="has-text-centered is-size-4">Vous souhaitez répondre à cette
+											annonce
 											?</p>
 										<button id="open-modal-message" class="button is-link  is-large">
 									 	<span class="icon is-small">
@@ -218,7 +321,8 @@
 					</div>
 				</div>
 			</div>
-		@endif
+
+		@endauth
 	</div>
 </section>
 

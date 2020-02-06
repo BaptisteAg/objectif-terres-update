@@ -3,8 +3,6 @@
 @section ('title', 'Consulter la liste de vos annonces favorites')
 
 @section('main-content')
-
-
 	<section class="section">
 		<div class="container">
 			<nav class="level">
@@ -25,32 +23,46 @@
 						<div class="column is-three-quarters ">
 							<div class="columns">
 								<div class="column is-one-quarter ">
-									<figure class="image is-5by4">
-										@if(count($ad->documents) > 0)
-											@foreach($ad->documents as $document)
-												@if($document->type_document ==="image")
-													<img src="{{asset($document->path)}}">
-												@endif
-											@endforeach
-										@else
-											<img src="https://picsum.photos/256/256">
-										@endif
-									</figure>
+									<a href="{{route("ads.show", $ad->id)}}">
+										<figure class="image is-5by4">
+											@if(count($ad->documents) > 0)
+												@foreach($ad->documents as $document)
+													@if($document->type_document ==="image")
+														<img src="{{asset($document->path)}}">
+													@endif
+												@endforeach
+											@else
+												<img src="https://picsum.photos/256/256">
+											@endif
+										</figure>
+									</a>
 								</div>
 								<div class="column">@if($ad->landSeekAd)
-										<h1 class="title">{{$ad->landSeekAd->title}} </h1>
-										<p><span class="has-text-grey-dark">Type d'annonce  :</span>
+										<h1 class="title">
+											<a href="{{route('ads.show', $ad->id)}}">{{$ad->landSeekAd->title}}</a>
+										</h1>
+										<p><span class=" has-text-grey-dark">Type d'annonce  :</span>
 											<span class="has-text-black">Recherche de foncier</span></p>
 									@elseif($ad->landOfferAd)
-										<h1 class="title">{{$ad->landOfferAd->title}} </h1>
+										<h1 class="title">
+											<a href="{{route("ads.show", $ad->id)}}">{{$ad->landOfferAd->title}}</a>
+										</h1>
 										<p><span class="has-text-grey-dark">Type d'annonce  :</span>
 											<span class="has-text-black">Offre de foncier</span></p>
 									@elseif($ad->jobOfferAd)
-										<h1 class="title">{{$ad->jobAd->title}} </h1>
+										<h1 class="title">
+											<a href="{{route("ads.show", $ad->id)}}">
+												{{$ad->jobAd->title}}
+											</a>
+										</h1>
 										<p><span class="has-text-grey-dark">Type d'annonce :</span>
 											<span class="has-text-black">Offre d'emploi</span></p>
 									@elseif($ad->jobSeekAd)
-										<h1 class="title">{{$ad->jobAd->title}} </h1>
+										<h1 class="title">
+											<a href="{{route("ads.show", $ad->id)}}">
+												{{$ad->jobAd->title}}
+											</a>
+										</h1>
 										<p><span class="has-text-grey-dark">Type d'annonces  :</span>
 											<span class="has-text-black">Recherche d'emploi</span></p>
 									@endif
@@ -65,14 +77,22 @@
 									</p>
 
 
-									@if(count($ad->adMessages) <= 1)
-										<p><span>Vous avez reçu <span class="has-text-black has-text-weight-bold"> {{count($ad->adMessages)}} réponse </span>concernant cette annonce !</span>
+									@isset($ad->adMessages)
+										<p><span>Vous n'avez pas reçu de messages concernant cette annonce</span>
 										</p>
-									@else
-										<p><span class="has-text-grey-dark">Vous avez reçu <span
-														class="has-text-black has-text-weight-bold"> {{count($ad->adMessages)}} réponses </span>
+									@endisset
+									@if(count($ad->adMessages) === 1 )
+										<a href="{{route("ads.show", $ad->id).'#reponses'}}">
+											<p><span>Vous avez reçu <span class="has-text-black has-text-weight-bold"> {{count($ad->adMessages)}} réponse </span>concernant cette annonce !</span>
+											</p>
+										</a>
+									@elseif(count($ad->adMessages) > 1)
+										<a href="{{route("ads.show", $ad->id).'#reponses'}}"><p><span
+														class="has-text-grey-dark">Vous avez reçu <span
+															class="has-text-black has-text-weight-bold"> {{count($ad->adMessages)}} réponses </span>
 											 concernant cette annonce ! </span>
-										</p>
+											</p>
+										</a>
 									@endif
 								</div>
 							</div>
@@ -80,15 +100,13 @@
 						<div class="column ">
 							<div class="buttons">
 								@if($ad->is_draft === 0)
-									<a class="">
-										{!! Form::open(['route' => ['ads.show', $ad->id], 'method' => 'get']) !!}
-										<button type="submit" class="button is-link is-medium ">
+									<a href="{{route("ads.show", $ad->id)}}">
+										<button class="button is-link is-medium ">
 											<span class="icon is-small">
 											 <i class="fas fa-eye"></i>
 											</span>
 											<span>Voir l'annonce</span>
 										</button>
-										{{Form::close()}}
 									</a>
 								@else
 									<a href="">
@@ -106,7 +124,6 @@
 					</div>
 					<div class="columns">
 						<div class="column is-three-fifths">
-
 							@if($ad->is_draft === 0)
 								<article class="message is-success">
 									<div class="message-body">
@@ -125,6 +142,7 @@
 					</div>
 					<hr class="navbar-divider">
 				@endforeach
+
 			</section>
 
 			<section class="section">

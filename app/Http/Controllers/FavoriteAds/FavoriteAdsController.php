@@ -34,11 +34,6 @@ class FavoriteAdsController extends Controller
 		}
 		$data['user_id'] = auth()->user()->id;
 
-		$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
-
-		if (!$favoriteAdAlreadyExist->isEmpty()) {
-			return back()->with('warning', 'Vous avez déjà sauvegardé cette annonce dans vos favoris !');
-		}
 		$this->favoriteAdRepository->create($data);
 		return back()->with('success', 'Cette annonce a été sauvegardée dans vos favoris !');
 	}

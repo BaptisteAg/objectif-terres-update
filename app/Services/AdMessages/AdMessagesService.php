@@ -43,6 +43,17 @@ class AdMessagesService
 		return $adMessage;
 
 	}
+	/**
+	 * @param Ad $ad
+	 * @return mixed
+	 */
+	public function findByUserAndAd(int $userID, int $adId)
+	{
+		$adMessage = $this->repository->findByUserAndAd($userID,$adId );
+
+		return $adMessage;
+
+	}
 
 	/**
 	 * @param Ad $ad
