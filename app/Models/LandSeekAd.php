@@ -70,7 +70,7 @@ class LandSeekAd extends Model
      */
     public function ad()
     {
-        return $this->HasOne('App\Models\Ad');
+        return $this->HasOne(Ad::class);
     }
 
     /**
@@ -78,7 +78,7 @@ class LandSeekAd extends Model
      */
     public function installationType()
     {
-        return $this->belongsTo('App\Models\InstallationType');
+        return $this->belongsTo(InstallationType::class);
     }
 
     /**
@@ -86,7 +86,7 @@ class LandSeekAd extends Model
      */
     public function offerGenre()
     {
-        return $this->belongsTo('App\Models\OfferGenre', 'offer_genre_id');
+        return $this->belongsTo(OfferGenre::class, 'offer_genre_id');
     }
 
     /**
@@ -94,7 +94,7 @@ class LandSeekAd extends Model
      */
     public function priceRanges()
     {
-        return $this->belongsToMany('App\Models\PriceRange')->withTimestamps();
+        return $this->belongsToMany(PriceRange::class)->withTimestamps();
     }
 
     /**
@@ -102,6 +102,6 @@ class LandSeekAd extends Model
      */
     public function surfaceRanges()
     {
-        return $this->belongsToMany('App\Models\SurfaceRange')->withTimestamps();
+        return $this->belongsToMany(SurfaceRange::class)->withTimestamps();
     }
 }

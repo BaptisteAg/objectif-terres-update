@@ -10,8 +10,17 @@
 					<div>
 						<h1 class="title">Liste des recherches sauvegardées</h1>
 						<br>
-						<h2 class="subtitle"> {{ count($researches) }} recherches sauvegardées.</h2>
-						<h2 class="subtitle"> {{ $numberAlertActives}} alertes actives.</h2>
+						@if(count($researches) <= 1)
+							<h2 class="subtitle"> {{ count($researches) }} recherche sauvegardée.</h2>
+						@else
+							<h2 class="subtitle"> {{ count($researches) }} recherches sauvegardées.</h2>
+						@endif
+
+						@if($numberAlertActives <= 1)
+							<h2 class="subtitle"> {{ $numberAlertActives}} alerte active.</h2>
+						@else
+							<h2 class="subtitle"> {{ $numberAlertActives}} alertes actives.</h2>
+						@endif
 					</div>
 				</div>
 			</nav>
@@ -159,9 +168,10 @@
 									</button>
 									{{Form::close()}}
 								@else
-									<button disabled title="Vous avez déjà créer une alerte pour cette recherche" class="button is-link is-light"><span class="icon is-small"><i
+									<button disabled title="Une alerte existe déjà pour cette recherche"
+											class="button is-link is-light"><span class="icon is-small"><i
 													class="fas fa-bell"
-													></i></span>
+											></i></span>
 										<span>Créer une alerte</span>
 									</button>
 								@endif

@@ -38,7 +38,7 @@ class AdStatus extends Model
      */
     public function researches()
     {
-        return $this->belongsToMany('App\Models\Research')->withTimestamps();
+        return $this->belongsToMany(Research::class)->withTimestamps();
     }
 
     /**
@@ -46,6 +46,6 @@ class AdStatus extends Model
      */
     public function attributionAds()
     {
-        return $this->hasMany('App\Models\AttributionAd');
+        return $this->hasMany(AttributionAd::class);
     }
 }

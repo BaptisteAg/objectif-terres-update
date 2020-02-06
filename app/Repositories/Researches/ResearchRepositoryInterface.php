@@ -20,6 +20,13 @@ interface ResearchRepositoryInterface
 	public function all($paginate = null);
 
 	/**
+	 * Gets all researches by ID User.
+	 *
+	 * @return Research[]
+	 */
+	public function findAllByUser(int $id);
+
+	/**
 	 * Deletes a research.
 	 *
 	 * @param int

@@ -63,7 +63,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	{
 
 		$model = $this->entity
-			->where(["sf_pp_id" => $idUser])
+			->where(["user_pp_id" => $idUser])
 			->with($this->getEagerLoading())
 			->get();
 
@@ -93,7 +93,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
         $ad->fill($adData);
 
-        $ad->sf_pp_id = 999;
+        $ad->user_pp_id = auth()->user()->id;;
         $ad->is_draft = false;
 
         $ad->save();

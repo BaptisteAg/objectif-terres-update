@@ -48,6 +48,27 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 	}
 
 	/**
+	 * @param $id
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function findAllByUser($id)
+	{
+		$model = $this->entity
+			->where(["user_id" => $id])
+			->with($this->getEagerLoading())
+			->get();
+
+		if (!$model) {
+			throw (new ModelNotFoundException)->setModel(
+				get_class($this->entity->getModel()),
+				$id
+			);
+		}
+
+		return $model;
+	}
+
+	/**
 	 * Creates a research.
 	 *
 	 * @param array $data
@@ -58,7 +79,7 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 		$research = new Research();
 		$researchData = $data;
 		$research->fill($researchData);
-		$research->sf_id = 999;
+		$research->user_id = auth()->user()->id;
 		$research->save();
 
 		$research->regions()->attach($data['regions']);

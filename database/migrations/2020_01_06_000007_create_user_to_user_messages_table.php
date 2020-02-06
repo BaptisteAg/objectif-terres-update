@@ -23,10 +23,16 @@ class CreateUserToUserMessagesTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('sf_user_id');
+            $table->unsignedInteger('user_id');
             $table->text('content');
 
-            $table->index(["sf_user_id"], 'ix_user_to_user_message_sf_user');
+
+			$table->foreign('user_id')
+				->references('id')
+				->on('users')
+				->onDelete('cascade');
+
+
             $table->timestamps();
         });
     }

@@ -41,7 +41,7 @@ class BioCertification extends Model
      */
     public function landOfferAds()
     {
-        return $this->morphedByMany('App\Models\LandOfferAd', 'bio_certifiable');
+        return $this->morphedByMany(LandOfferAd::class, 'bio_certifiable');
     }
 
     /**
@@ -51,6 +51,6 @@ class BioCertification extends Model
      */
     public function researches()
     {
-        return $this->morphedByMany('App\Models\Research', 'bio_certifiable');
+        return $this->morphedByMany(Research::class, 'bio_certifiable');
     }
 }

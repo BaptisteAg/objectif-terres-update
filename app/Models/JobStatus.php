@@ -39,7 +39,7 @@ class JobStatus extends Model
      */
     public function jobAds()
     {
-        return $this->hasMany('App\Models\JobAd');
+        return $this->hasMany(JobAd::class);
     }
 
     /**
@@ -47,6 +47,6 @@ class JobStatus extends Model
      */
     public function Researches()
     {
-        return $this->belongsToMany('App\Models\Research')->withTimestamps();
+        return $this->belongsToMany(Research::class)->withTimestamps();
     }
 }

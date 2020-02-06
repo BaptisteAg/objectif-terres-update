@@ -45,7 +45,7 @@ class Building extends Model
      */
     public function landOfferAd()
     {
-        return $this->hasOne('App\Models\LandOfferAd');
+        return $this->hasOne(LandOfferAd::class);
     }
 
 

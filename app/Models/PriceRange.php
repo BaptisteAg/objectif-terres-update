@@ -36,6 +36,6 @@ class PriceRange extends Model
      */
     public function landSeekAds()
     {
-        return $this->belongsToMany('App\Models\LandSeekAd')->withTimestamps();
+        return $this->belongsToMany(LandSeekAd::class)->withTimestamps();
     }
 }

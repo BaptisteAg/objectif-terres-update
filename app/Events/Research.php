@@ -40,10 +40,9 @@ class Research
 		$research = $this->researchService->find($id);
 		$research->update(['has_alert' => 1]);
 
-
 		$research['subject'] = 'Création d\'une alerte pour une recherche de projet | Objectif Terres';
 		$research['message'] = 'Une alerte a bien été créée pour une recherche';
-		Notification::route('mail', "test@mailtrap.io")
+		Notification::route('mail', auth()->user()->email)
 			->notify(new ResearchNotification($research));
     }
 
