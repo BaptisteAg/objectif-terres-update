@@ -10,6 +10,7 @@ use App\Models\FavoriteAd;
 use App\Models\JobAd;
 use App\Models\LandOfferAd;
 use App\Models\LandSeekAd;
+use App\Models\Message;
 use App\Models\PpToUserMessage;
 use App\Models\PriceRange;
 use App\Models\ProductionGenre;
@@ -58,7 +59,8 @@ class DatabaseSeeder extends Seeder
 
         factory(Ad::class, 30)->create()->each(function (Ad $ad) use(&$queriesCount) {
             $ad->adNotes()->save(factory(AdNote::class)->make());
-            $ad->adMessages()->save(factory(AdMessage::class)->make());
+            $ad->messages()->save(factory(Message::class)->make());
+			$ad->adMessages()->save(factory(AdMessage::class)->make());
             $ad->ppToUserMessages()->save(factory(PpToUserMessage::class)->make());
             $ad->favoriteAds()->save(factory(FavoriteAd::class)->make());
             //$ad->documents()->save(factory(Document::class)->make());

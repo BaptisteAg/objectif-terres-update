@@ -110,6 +110,14 @@ class Ad extends Model implements HasPresenter
         return $this->hasMany(AdMessage::class);
     }
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function messages()
+	{
+		return $this->hasMany(Message::class);
+	}
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
