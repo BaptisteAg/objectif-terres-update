@@ -61,13 +61,14 @@
 									<label class="label">Civilité</label>
 									<div class="control has-icons-left">
 										<div class="select">
+
 											<select id="civility" name="civility"
 													class="input @error('civility') is-danger @enderror "
 													required>
-												<option disabled="disabled" selected>Veuillez préciser...</option>
-												<option value="1">Madame</option>
-												<option value="2">Monsieur</option>
-												<option value="3">Autre</option>
+												<option disabled="disabled" selected >Veuillez préciser...</option>
+												<option value="1" {{old('civility') == 1 ? 'selected' : ''}}>Madame</option>
+												<option value="2" {{old('civility') == 2 ? 'selected' : ''}}>Monsieur</option>
+												<option value="3" {{old('civility') == 3 ?'selected' : ''}}>Autre</option>
 											</select>
 										</div>
 										<div class="icon is-small is-left">
@@ -122,10 +123,11 @@
 						</div>
 						<div class="field">
 							<label class="checkbox">
-								<input value="1" name="accept_share_contact_infos" type="checkbox">
+								<input value="1" {{old('accept_share_contact_infos') == 1 ? 'checked' : ''}} name="accept_share_contact_infos" type="checkbox">
 								J'accepte de faire apparaître publiquement mes informations de contact
 							</label>
 						</div>
+
 						<div class="columns">
 							<div class="column is-two-thirds">
 								<div class="field">
@@ -135,23 +137,23 @@
 											<select id="profile" name="profile"
 													class="input @error('profile') is-danger @enderror "
 													required
-													v-model="optionProfileSelected"
+													@on-change="optionProfileSelected"
 													placeholder="Veuillez choisir">
 												<option disabled="disabled" selected>Vous êtes...</option>
-												<option value="1">un candidat à l’installation agricole</option>
-												<option value="2">une personne en recherche de travail ou d’expérience
+												<option value="1" {{old('profile') == 1 ? 'selected' : ''}} >un candidat à l’installation agricole</option>
+												<option value="2" {{old('profile') == 2 ? 'selected' : ''}}>une personne en recherche de travail ou d’expérience
 													professionnelle dans le
 													domaine agricole
 												</option>
-												<option value="3">un agriculteur qui souhaite consolider sa ferme
+												<option value="3" {{old('profile') == 3 ? 'selected' : ''}}>un agriculteur qui souhaite consolider sa ferme
 												</option>
-												<option value="4">un agriculteur qui souhaite transmettre sa ferme
+												<option value="4" {{old('profile') == 4 ? 'selected' : ''}}>un agriculteur qui souhaite transmettre sa ferme
 												</option>
-												<option value="5">un propriétaire foncier qui souhaite vendre ou louer
+												<option value="5" {{old('profile') == 5 ? 'selected' : ''}}>un propriétaire foncier qui souhaite vendre ou louer
 													sa
 													terre
 												</option>
-												<option value="6">Autre</option>
+												<option value="6" {{old('profile') == 6 ? 'selected' : ''}}>Autre</option>
 											</select>
 										</div>
 										<div class="icon is-small is-left">
@@ -265,7 +267,7 @@
 													required>
 												<option disabled="disabled" selected>Choississez votre pays...</option>
 												@foreach($countries as $country)
-													<option value="{{$country->id}}">{{$country->name_fr_fr}}</option>
+													<option value="{{$country->id}}" {{old('country_id') == $country->id ? 'selected' : ''}}>{{$country->name_fr_fr}}</option>
 												@endforeach
 											</select>
 										</div>

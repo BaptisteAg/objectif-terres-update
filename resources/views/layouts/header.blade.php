@@ -124,7 +124,7 @@
 
 				</div>
 			</div>
-			<div id="test" v-show="isFormOpen" class="has-ba" v-bind:style="{ display: isDisplay}">
+			<div  v-show="isFormOpen" class="has-ba" style="display : none">
 				<div class="container-custom" v-show="adCategorySelected === 'job'">
 					@include('layouts.partials.headerJobResearch')
 				</div>

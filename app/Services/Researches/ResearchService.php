@@ -121,6 +121,7 @@ class ResearchService
 			}
 		}
 
+
 //		DB::enableQueryLog();
 //		$ads = Ad::whereHas('locationables', function (Builder $query) use ($idRegions) {
 //			$query->where('locationables.locationable_ad_type', Region::class);

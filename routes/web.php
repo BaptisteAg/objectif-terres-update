@@ -77,5 +77,5 @@ Route::prefix('motdepasse')->name('password.')->group(function () {
 	Route::get('reinitialiser', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('request');
 	Route::post('email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('email');
 	Route::get('reinitialiser/{token}', 'Auth\ResetPasswordController@showResetForm')->name('reset');
-	Route::post('reinitialiser', 'Auth\ResetPasswordController@reset');
+	Route::post('reinitialiser', 'Auth\ResetPasswordController@reset')->name('update');
 });

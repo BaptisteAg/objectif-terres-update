@@ -28,6 +28,7 @@ class ResearchesController extends Controller
 	{
 		list($ads, $adType, $regions) = $this->researchService->index($request);
 
+
 		return view('pages.researches', compact('ads', 'adType', 'regions'));
 	}
 
@@ -73,7 +74,7 @@ class ResearchesController extends Controller
 
 	public function deleteAlert(int $researchId)
 	{
-		
+
 		$this->researchService->deleteAlert($researchId);
 		return back()->with('success', 'L\'alerte a bien été supprimée');
 
