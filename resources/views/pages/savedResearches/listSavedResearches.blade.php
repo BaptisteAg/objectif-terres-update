@@ -28,7 +28,8 @@
 				@foreach ($researches as $research)
 					<div class="columns ">
 						<div class="column is-three-quarters ">
-							<h1 class="title">{{$research->name}} </h1>
+							<a href="{{route ('researches.index', $research->url)}}"><h1
+										class="title">{{$research->name}} </h1></a>
 							<p><span class="has-text-grey-dark">Type d'annonces recherchés :</span>
 								@if($research->ad_type === 'jobOfferAd')
 									<span class="has-text-black">Offres d'emplois</span>
@@ -49,117 +50,74 @@
 										class="has-text-black">{{ \Carbon\Carbon::parse($research->created_at)->format('d/m/Y')}}</span>
 							</p>
 
-							@if($research->surface_min)
+							@isset($research->surface_min)
 								<p><span class="has-text-grey-dark">Surface minimum : </span><span
 											class="has-text-black">{{ $research->surface_min }}</span></p>
-							@endif
-							@if($research->surface_max)
+							@endisset
+							@isset($research->surface_max)
 								<p><span class="has-text-grey-dark">Surface maximum : </span><span
 											class="has-text-black">{{ $research->surface_max }}</span></p>
-							@endif
-							@if($research->price_min)
+							@endisset
+							@isset($research->price_min)
 								<p><span class="has-text-grey-dark">Prix minimum : </span><span
 											class="has-text-black">{{ $research->price_min }}</span></p>
-							@endif
-							@if($research->price_max)
+							@endisset
+							@isset($research->price_max)
 								<p><span class="has-text-grey-dark">Prix maximum : </span><span
 											class="has-text-black">{{ $research->price_max }}</span></p>
-							@endif
+							@endisset
 							@if($research->has_pics === '1')
 								<p><span class="has-text-grey-dark">Annonces avec photos </span></p>
 							@endif
 							@if($research->has_houses === '1')
 								<p><span class="has-text-grey-dark">Uniquement des anonces avec habitation </span></p>
 							@endif
-							@if($research->adStatuses )
+							@empty($research->adStatuses )
 								<p><span class="has-text-grey-dark">Statut(s) des annonces : </span><span
 											class="has-text-black">{{ $research->adStatuses->pluck('name')->implode(', ') }}</span>
 								</p>
-							@endif
-							@if($research->jobStatuses )
+							@endempty
+							@empty($research->jobStatuses )
 								<p><span class="has-text-grey-dark">Statut(s) des opportunités professionnels  : </span><span
 											class="has-text-black">{{ $research->jobStatuses->pluck('name')->implode(', ') }}</span>
 								</p>
-							@endif
-							@if($research->projectStatuses )
+							@endempty
+							@empty($research->projectStatuses )
 								<p><span class="has-text-grey-dark">Statut(s) des projets  : </span><span
 											class="has-text-black">{{ $research->jobStatuses->pluck('name')->implode(', ') }}</span>
 								</p>
-							@endif
-							@if($research->offerGenres )
+							@endempty
+							@empty($research->offerGenres )
 								<p><span class="has-text-grey-dark">Type(s) d'offre(s)  : </span><span
 											class="has-text-black">{{ $research->offerGenres->pluck('name')->implode(', ') }}</span>
 								</p>
-							@endif
-							@if($research->bioCertifications )
+							@endempty
+							@empty($research->bioCertifications )
 								<p><span class="has-text-grey-dark">Système(s) de production bio  : </span><span
 											class="has-text-black">{{ $research->bioCertifications->pluck('name')->implode(', ') }}</span>
 								</p>
-							@endif
-							@if($research->productionGenres )
+							@endempty
+
+							@empty($research->productionGenres )
 								<p><span class="has-text-grey-dark">Type(s) de productions recherché(s)  : </span><span
 											class="has-text-black">{{ $research->productionGenres->pluck('name')->implode(', ') }}</span>
 								</p>
-							@endif
+							@endempty
 						</div>
 						<div class="column ">
 							<div class="buttons">
-								<a class="">
-									{!! Form::open(['route' => 'researches.index', 'method' => 'get']) !!}
-									<input type="hidden" name="ad_type" value="{{$research->ad_type}}">
-									<input type="hidden" name="surface_min" value="{{$research->surface_min}}">
-									<input type="hidden" name="surface_max" value="{{$research->surface_max}}">
-									<input type="hidden" name="has_pics" value="{{$research->has_pics}}">
-									<input type="hidden" name="has_house" value="{{$research->has_house}}">
-									<input type="hidden" name="price_min" value="{{$research->price_min}}">
-									<input type="hidden" name="price_max" value="{{$research->price_max}}">
-
-									@foreach ($research->regions->pluck('id') as $region)
-										<input type="hidden" name="research_locations[]" value="{{ $region }}">
-									@endforeach
-
-									@foreach ($research->departments->pluck('id') as $department)
-										<input type="hidden" name="research_locations_departments[]"
-											   value="{{ $department }}">
-									@endforeach
-
-									@foreach ($research->cities->pluck('id') as $city)
-										<input type="hidden" name="research_locations_cities[]" value="{{ $city }}">
-									@endforeach
-
-									@foreach ($research->adStatuses->pluck('id') as $adStatus)
-										<input type="hidden" name="ad_status[]" value="{{ $adStatus }}">
-									@endforeach
-
-									@foreach ($research->jobStatuses->pluck('id') as $jobStatus)
-										<input type="hidden" name="job_status[]" value="{{ $jobStatus }}">
-									@endforeach
-
-									@foreach ($research->offerGenres->pluck('id') as $offerGenre)
-										<input type="hidden" name="project_status[]" value="{{ $offerGenre }}">
-									@endforeach
-									@foreach ($research->projectStatuses->pluck('id') as $projectStatus)
-										<input type="hidden" name="project_status[]" value="{{ $projectStatus }}">
-									@endforeach
-									@foreach ($research->bioCertifications->pluck('id') as $bioCertification)
-										<input type="hidden" name="project_status[]" value="{{ $bioCertification }}">
-									@endforeach
-									@foreach ($research->productionGenres->pluck('id') as $productionGenre)
-										<input type="hidden" name="project_status[]" value="{{ $productionGenre }}">
-									@endforeach
-
-									<button type="submit" class="button is-link is-normal ">
+								<a href="{{route ('researches.index', $research->url)}}">
+									<button class="button is-link is-normal ">
 											<span class="icon is-small">
 											 <i class="fas fa-eye"></i>
 											</span>
 										<span>Voir les annonces</span>
 									</button>
-									{{Form::close()}}
 								</a>
 							</div>
 							<div class="buttons">
 
-								@if($research->has_alert ===0)
+								@if($research->has_alert === 0)
 									{{Form::open(['route' => 'researches.notification', 'method' => 'get'])}}
 									<input type="hidden" value="{{$research->id}}" name="research">
 									<button type="submit" class="button is-link is-light"><span class="icon is-small"><i
@@ -168,20 +126,22 @@
 									</button>
 									{{Form::close()}}
 								@else
-									<button disabled title="Une alerte existe déjà pour cette recherche"
-											class="button is-link is-light"><span class="icon is-small"><i
-													class="fas fa-bell"
-											></i></span>
-										<span>Créer une alerte</span>
+									<a href="{{route ('researches.deleteAlert', $research->id)}}">
+									<button class="button is-danger is-light">
+										<span class="icon is-small">
+											<i class="fas fa-bell-slash"></i>
+										</span>
+										<span>Supprimer l'alerte</span>
 									</button>
+									</a>
 								@endif
 							</div>
 							{{Form::open(['route' => 'researches.destroy'])}}
 							<div class="buttons">
 								<input type="hidden" value="{{$research->id}}" name="research">
-								<button type="submit" class="button is-danger is-normal is-light">
+								<button type="submit" class="button is-danger is-normal">
 												<span class="icon has-text-danger">
-												  <i class="fas fa-ban"></i>
+												 <i class="fas fa-ban has-text-white"></i>
 												</span>
 									<span>Supprimer la recherche</span>
 								</button>

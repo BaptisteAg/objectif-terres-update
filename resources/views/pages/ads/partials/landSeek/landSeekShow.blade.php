@@ -1,6 +1,6 @@
 @section('title', $ad->landSeekAd->title)
 
-<section class="section is-medium ">
+<section class="section">
 	<div class="container ">
 		<nav class="breadcrumb" aria-label="breadcrumbs">
 			<ul>
@@ -13,7 +13,7 @@
 			<div id="slider-container" class="column is-two-thirds ">
 				<div id="ad-images" class="carousel ">
 					@if(count($ad->documents) <= 0)
-						<div id="test" class="card carousel-item ad-carousel ">
+						<div class="card carousel-item ad-carousel ">
 							<div class="card-image">
 								<figure class="image is-2by1">
 									<img src="https://picsum.photos/480/320" alt="picsum">
@@ -86,27 +86,15 @@
 									@endif
 								</p>
 						</div>
+						@if($ad->userPp->accept_share_contact_infos === 1)
+							<div class="content">
+								<p><span class="is-size-5 has-text-black">N° de téléphone du porteur de projet : </span>
+								</p>
+								<p><span class="subtitle">{{$ad->userPp->phone}}</span></p>
+							</div>
+						@endif
 					</div>
-
-					@if( $ad->user_pp_id !== auth()->user()->id)
-						<footer class="card-footer">
-							<button id="open-modal-message" type="button" class="card-footer-item button is-link">
-								 <span class="icon is-small">
-								<i class="fas fa-reply"></i>
-								</span>
-								<span> Répondre à l'annonce</span>
-							</button>
-							{!! Form::open(['route'=>'favoriteAds.create', 'method'=>'get']) !!}
-							<input name="ad_id" value="{{$ad->id}}" type="hidden">
-							<button class="card-footer-item button is-link is-light">
-							 <span class="icon is-small">
-										<i class="fas fa-star"></i>
-								</span>
-								<span> Mettre cette annonce en favoris</span>
-							</button>
-							{!! Form::close() !!}
-						</footer>
-					@endif
+					@include('pages.ads.partials.buttonsFavoriteAndMessage')
 				</div>
 			</div>
 		</div>
@@ -195,30 +183,9 @@
 				<p> {{$ad->landSeekAd->experience_farming}}</p>
 			</div>
 		@endif
-		@if( $ad->user_pp_id !== auth()->user()->id)
-			<div class="content">
-				<div class="columns is-mobile is-centered">
-					<div class="column is-half">
-						<div class="box has-background-white-ter ">
-							<article class="media">
-								<div class="media-content">
-									<div class="content has-text-centered ">
-										<p class="has-text-centered is-size-4">Vous souhaitez répondre à cette annonce
-											?</p>
-										<button id="open-modal-message" class="button is-link  is-large">
-									 	<span class="icon is-small">
-										<i class="fas fa-reply"></i>
-										</span>
-											<span> Répondre à l'annonce</span>
-										</button>
-									</div>
-								</div>
-							</article>
-						</div>
-					</div>
-				</div>
-			</div>
-		@endif
+
+@include('pages.ads.partials.callToActionMessage')
+
 	</div>
 </section>
 

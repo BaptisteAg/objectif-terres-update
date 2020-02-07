@@ -39,7 +39,7 @@ class Research
     	//Set the has_alert column to TRUE
 		$research = $this->researchService->find($id);
 		$research->update(['has_alert' => 1]);
-
+		$research['greeting'] = "Bonjour,";
 		$research['subject'] = 'Création d\'une alerte pour une recherche de projet | Objectif Terres';
 		$research['message'] = 'Une alerte a bien été créée pour une recherche';
 		Notification::route('mail', auth()->user()->email)
@@ -54,6 +54,7 @@ class Research
 		$ads = $this->researchService->findNewRelatedAds();
 		foreach ( $ads as $idResearch =>$ad){
 			$research = $this->researchService->find($idResearch);
+			$research['greeting'] = "Bonjour,";
 			$research['subject'] = 'De nouvelles annonces correspondantes à votre recherche ont été publiées | Objectif Terres';
 			$research['message'] = 'Consulter les dernières annonces publiées !';
 			Notification::route('mail', "test@mailtrap.io")

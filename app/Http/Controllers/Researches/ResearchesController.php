@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Researches;
 
+use App\Events\Research;
 use App\Http\Controllers\Controller;
 use App\Listeners\SendResearchNotification;
 use App\Notifications\ResearchNotification;
@@ -26,6 +27,7 @@ class ResearchesController extends Controller
 	public function index(Request $request)
 	{
 		list($ads, $adType, $regions) = $this->researchService->index($request);
+
 
 		return view('pages.researches', compact('ads', 'adType', 'regions'));
 	}
@@ -66,6 +68,15 @@ class ResearchesController extends Controller
 		$researches = $this->researchService->findAll();
 
 		return back()->with('success', 'La recherche a bien été supprimée.');
+
+	}
+
+
+	public function deleteAlert(int $researchId)
+	{
+
+		$this->researchService->deleteAlert($researchId);
+		return back()->with('success', 'L\'alerte a bien été supprimée');
 
 	}
 

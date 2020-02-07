@@ -35,6 +35,7 @@ Route::prefix('recherches')->name('researches.')->namespace('Researches')->group
 		Route::post('sauvegarde', 'ResearchesController@store')->name('store');
 		Route::get('liste', 'ResearchesController@show')->name('show');
 		Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
+		Route::get('supprimer-alerte/{id}', 'ResearchesController@deleteAlert')->name('deleteAlert');
 		Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
 	});
 });
@@ -76,5 +77,5 @@ Route::prefix('motdepasse')->name('password.')->group(function () {
 	Route::get('reinitialiser', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('request');
 	Route::post('email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('email');
 	Route::get('reinitialiser/{token}', 'Auth\ResetPasswordController@showResetForm')->name('reset');
-	Route::post('reinitialiser', 'Auth\ResetPasswordController@reset');
+	Route::post('reinitialiser', 'Auth\ResetPasswordController@reset')->name('update');
 });

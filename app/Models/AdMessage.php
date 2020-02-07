@@ -2,7 +2,11 @@
 
 namespace App\Models;
 
+use App\Presenters\AdMessagePresenter;
+use App\Presenters\AdPresenter;
 use Illuminate\Database\Eloquent\Model;
+use McCool\LaravelAutoPresenter\Decoratable;
+use McCool\LaravelAutoPresenter\HasPresenter;
 
 /**
  * App\Models\AdMessages
@@ -10,9 +14,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $ad_id
  * @property string $content
- * @property int $user_sender_id
+ * @property int $user_id
  * @property Ad $ad
- * @property User $userSender
+ * @property User $user
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdMessage newModelQuery()
@@ -26,13 +30,13 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdMessage whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class AdMessage extends Model
+class AdMessage extends Model implements HasPresenter
 {
     /**
      * @var array
      */
     protected $fillable = [
-        'ad_id', 'content', 'user_sender_id'
+        'ad_id', 'content', 'user_id', 'created_at'
     ];
 
     /**
@@ -45,8 +49,17 @@ class AdMessage extends Model
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function userSender()
+	public function user()
 	{
 		return $this->belongsTo(User::class);
+	}
+	/**
+	 * Get the presenter class.
+	 *
+	 * @return string
+	 */
+	public function getPresenterClass()
+	{
+		return AdMessagePresenter::class;
 	}
 }
