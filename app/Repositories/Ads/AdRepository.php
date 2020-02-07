@@ -136,7 +136,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'departments',
 			'departments.region',
 			'regions',
-			'adMessages'
+			'adMessages',
         ];
     }
 }

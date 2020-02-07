@@ -35,6 +35,7 @@ Route::prefix('recherches')->name('researches.')->namespace('Researches')->group
 		Route::post('sauvegarde', 'ResearchesController@store')->name('store');
 		Route::get('liste', 'ResearchesController@show')->name('show');
 		Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
+		Route::get('supprimer-alerte/{id}', 'ResearchesController@deleteAlert')->name('deleteAlert');
 		Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
 	});
 });

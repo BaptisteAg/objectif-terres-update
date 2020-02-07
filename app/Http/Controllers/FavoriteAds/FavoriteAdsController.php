@@ -56,7 +56,9 @@ class FavoriteAdsController extends Controller
 	 */
 	public function destroy(Request $request)
 	{
-		$this->favoriteAdRepository->destroy((int)$request->input('favoriteAdsId'));
+
+
+		$this->favoriteAdRepository->destroy($request->input('favoriteAdId'));
 		return back()->with('success', 'Vous avez bien retiré l\'annonce de vos favoris');
 	}
 }

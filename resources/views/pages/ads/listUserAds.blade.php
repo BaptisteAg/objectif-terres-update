@@ -82,17 +82,19 @@
 										</p>
 									@endisset
 									@if(count($ad->adMessages) === 1 )
-										<a href="{{route("ads.show", $ad->id).'#reponses'}}">
-											<p><span>Vous avez reçu <span class="has-text-black has-text-weight-bold"> {{count($ad->adMessages)}} réponse </span>concernant cette annonce !</span>
-											</p>
-										</a>
+
+										<p><span>Vous avez reçu <span class="has-text-black has-text-weight-bold"><a
+															href="{{route("ads.show", $ad->id).'#reponses'}}"> {{count($ad->adMessages)}} réponse </a></span>concernant cette annonce !</span>
+										</p>
+
 									@elseif(count($ad->adMessages) > 1)
-										<a href="{{route("ads.show", $ad->id).'#reponses'}}"><p><span
-														class="has-text-grey-dark">Vous avez reçu <span
-															class="has-text-black has-text-weight-bold"> {{count($ad->adMessages)}} réponses </span>
+										<p><span
+													class="has-text-grey-dark">Vous avez reçu <span
+														class="has-text-black has-text-weight-bold">	<a
+															href="{{route("ads.show", $ad->id).'#reponses'}}"> {{count($ad->adMessages)}} réponses </a></span>
 											 concernant cette annonce ! </span>
-											</p>
-										</a>
+										</p>
+
 									@endif
 								</div>
 							</div>

@@ -33,11 +33,15 @@ class FavoriteAdRepository extends AbstractRepository implements FavoriteAdRepos
 	 */
 	public function find($id)
 	{
+
 		$model = $this->entity
 			->where(["id" => $id])
-			->firstOrFail();
+			->with('ad')
+			->first();
+
 
 		if (!$model) {
+
 			throw (new ModelNotFoundException)->setModel(
 				get_class($this->entity->getModel()),
 				$id
@@ -107,8 +111,10 @@ class FavoriteAdRepository extends AbstractRepository implements FavoriteAdRepos
 	 */
 	public function destroy(int $id)
 	{
+
 		$favoriteAd = $this->find($id);
 		$favoriteAd->delete();
+
 	}
 
 

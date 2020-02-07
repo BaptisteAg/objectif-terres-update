@@ -134,6 +134,12 @@ class ResearchService
 		return [$ads, $adType, $regions];
 	}
 
+	public function deleteAlert(int $researchId){
+		$research = $this->find($researchId);
+		$research->has_alert = 0;
+		$research->save();
+	}
+
 	public function destroy(Request $request)
 	{
 		$researchId = $request->input('research');

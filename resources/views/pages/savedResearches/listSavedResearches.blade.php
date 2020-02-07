@@ -126,20 +126,22 @@
 									</button>
 									{{Form::close()}}
 								@else
-									<button disabled title="Une alerte existe déjà pour cette recherche"
-											class="button is-link is-light"><span class="icon is-small"><i
-													class="fas fa-bell"
-											></i></span>
-										<span>Créer une alerte</span>
+									<a href="{{route ('researches.deleteAlert', $research->id)}}">
+									<button class="button is-danger is-light">
+										<span class="icon is-small">
+											<i class="fas fa-bell-slash"></i>
+										</span>
+										<span>Supprimer l'alerte</span>
 									</button>
+									</a>
 								@endif
 							</div>
 							{{Form::open(['route' => 'researches.destroy'])}}
 							<div class="buttons">
 								<input type="hidden" value="{{$research->id}}" name="research">
-								<button type="submit" class="button is-danger is-normal is-light">
+								<button type="submit" class="button is-danger is-normal">
 												<span class="icon has-text-danger">
-												  <i class="fas fa-ban"></i>
+												 <i class="fas fa-ban has-text-white"></i>
 												</span>
 									<span>Supprimer la recherche</span>
 								</button>

@@ -88,7 +88,7 @@
 							{{Form::open(['route' => 'favoriteAds.destroy'])}}
 							<div class="buttons ">
 								<input type="hidden" type="number" value="{{(int)$favoriteAd->id}}"
-									   name="favoriteAdsId">
+									   name="favoriteAdId">
 								<button type="submit" class="button is-danger is-medium is-light">
 												<span class="icon has-text-danger">
 												  <i class="fas fa-ban"></i>
@@ -104,7 +104,7 @@
 							@if(count ($favoriteAd->ad->adMessages()->whereUserId(auth()->user()->id)->get()) > 0)
 								<article class="message is-success">
 									<div class="message-body">
-										Vous avez déjà envoyé un message au porteur de projet.
+										<a href="">Vous avez déjà envoyé un message au porteur de projet. Consulter votre messagerie !</a>
 									</div>
 								</article>
 							@else
