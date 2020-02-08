@@ -6,18 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
-use App\Models\City;
-use App\Models\Department;
 use App\Models\EducationLevel;
 use App\Models\InstallationType;
 use App\Models\JobStatus;
 use App\Models\OfferGenre;
 use App\Models\PriceRange;
 use App\Models\ProductionGenre;
-use App\Models\Region;
 use App\Models\SurfaceRange;
 use App\Services\AdMessages\AdMessagesService;
 use App\Services\Ads\AdService;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Request;
 
 
@@ -35,6 +33,9 @@ class AdsController extends Controller
 		$this->adMessageService = $adMessageService;
     }
 
+    /**
+     * @return \Illuminate\View\View
+     */
     public function create()
 	{
 		$surfaceRanges = SurfaceRange::all();
@@ -100,13 +101,20 @@ class AdsController extends Controller
 		return redirect()->route('ads.show', [$ad->id]);
 	}
 
-	public function show(int $adId)
+    /**
+     * @param int $adId
+     * @return Factory|\Illuminate\View\View
+     */
+    public function show(int $adId)
 	{
         $ad = $this->adService->find($adId);
         return view('pages.ads.show', compact('ad'));
 	}
 
-	public function list()
+    /**
+     * @return Factory|\Illuminate\View\View
+     */
+    public function list()
 	{
 		$ads = $this->adService->findAllByUser(auth()->id());
 
