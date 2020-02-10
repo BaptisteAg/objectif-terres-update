@@ -1,6 +1,7 @@
 <?php namespace App\Repositories\FavoriteAds;
 
 use App\Models\FavoriteAd;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
@@ -32,11 +33,15 @@ class FavoriteAdRepository extends AbstractRepository implements FavoriteAdRepos
 	 */
 	public function find($id)
 	{
+
 		$model = $this->entity
 			->where(["id" => $id])
-			->firstOrFail();
+			->with('ad')
+			->first();
+
 
 		if (!$model) {
+
 			throw (new ModelNotFoundException)->setModel(
 				get_class($this->entity->getModel()),
 				$id
@@ -76,7 +81,7 @@ class FavoriteAdRepository extends AbstractRepository implements FavoriteAdRepos
 		$favoriteAd = $this->entity
 			->where("ad_id", $data['ad_id'])
 			->where("user_id", $data['user_id'])
-			->get();
+			->first();
 
 		return $favoriteAd;
 	}
@@ -106,8 +111,10 @@ class FavoriteAdRepository extends AbstractRepository implements FavoriteAdRepos
 	 */
 	public function destroy(int $id)
 	{
+
 		$favoriteAd = $this->find($id);
 		$favoriteAd->delete();
+
 	}
 
 

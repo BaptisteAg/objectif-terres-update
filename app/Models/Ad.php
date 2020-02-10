@@ -39,7 +39,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read int|null $departments_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Document[] $documents
  * @property-read int|null $documents_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\FavoriteAd[] $favoriteAd
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\FavoriteAd[] $favoriteAds
  * @property-read int|null $favorite_ad_count
  * @property-read int|null $pp_to_user_messages_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
@@ -73,7 +73,7 @@ class Ad extends Model implements HasPresenter
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function userPP()
+	public function userPp()
 	{
 		return $this->belongsTo(User::class);
 	}
@@ -121,7 +121,7 @@ class Ad extends Model implements HasPresenter
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function favoriteAd()
+    public function favoriteAds()
     {
         return $this->hasMany(FavoriteAd::class);
     }

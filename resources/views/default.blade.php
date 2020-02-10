@@ -23,27 +23,27 @@
 	</article>
 @endforeach
 @if ($message = Session::get('success'))
-		<article class="message is-success">
-			<div class="message-header">
-				<p>Succès !</p>
-				<button class="delete" aria-label="delete"></button>
-			</div>
-			<div class="message-body">
-				{{ $message }}
-			</div>
-		</article>
+	<article class="message is-success">
+		<div class="message-header">
+			<p>Succès !</p>
+			<button class="delete" aria-label="delete"></button>
+		</div>
+		<div class="message-body">
+			{{ $message }}
+		</div>
+	</article>
 @endif
 
 @if($message = Session::get('warning'))
-		<article class="message is-warning">
-			<div class="message-header">
-				<p>Attention ! </p>
-				<button class="delete" aria-label="delete"></button>
-			</div>
-			<div class="message-body">
-				{{ $message }}
-			</div>
-		</article>
+	<article class="message is-warning">
+		<div class="message-header">
+			<p>Attention ! </p>
+			<button class="delete" aria-label="delete"></button>
+		</div>
+		<div class="message-body">
+			{{ $message }}
+		</div>
+	</article>
 @endif
 
 <div id="app">
@@ -55,6 +55,12 @@
 <script src="{{ asset('js/app.js') }}"></script>
 <script>
     window.csrf_token = "{{ csrf_token() }}"
+</script>
+<script>
+    const vueHeader = new Vue({
+        el: '#vue-header',
+        name: 'content'
+    });
 </script>
 
 @yield('script')

@@ -1,20 +1,20 @@
 import MultiSelect from "../components/MultiSelect";
 import AjaxMultiSelect from "../components/AjaxMultiSelect";
 import VueSlider from "../components/VueSlider";
+import Vue from 'vue'
 
-new Vue({
-    name: "HeaderPage",
+
+Vue.component('header-page',{
     components : {
         MultiSelect,
         VueSlider,
         AjaxMultiSelect,
     },
-    el: '#vue-header',
     data() {
         return {
             adTypeSelected: 'offer_ads',
             adCategorySelected: 'land',
-            isFormOpen : false
+            isFormOpen : false,
         }
     },
     methods: {
@@ -25,3 +25,4 @@ new Vue({
 
     }
 });
+

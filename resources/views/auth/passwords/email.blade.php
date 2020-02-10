@@ -2,7 +2,6 @@
 @section('title', 'Mot de passe oublié')
 
 @section('main-content')
-
 	<div class="section">
 		<div class="container">
 			<div class="columns is-mobile is-centered">
@@ -12,7 +11,7 @@
 
 
 					@if(session('status'))
-					<article class="message is-danger" role="alert">
+					<article class="message is-succes" role="alert">
 						<div class="message-body">
 							{{ session('status') }}
 						</div>

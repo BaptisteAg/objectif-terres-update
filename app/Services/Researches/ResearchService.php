@@ -121,6 +121,7 @@ class ResearchService
 			}
 		}
 
+
 //		DB::enableQueryLog();
 //		$ads = Ad::whereHas('locationables', function (Builder $query) use ($idRegions) {
 //			$query->where('locationables.locationable_ad_type', Region::class);
@@ -132,6 +133,12 @@ class ResearchService
 //		dd(DB::getQueryLog());
 
 		return [$ads, $adType, $regions];
+	}
+
+	public function deleteAlert(int $researchId){
+		$research = $this->find($researchId);
+		$research->has_alert = 0;
+		$research->save();
 	}
 
 	public function destroy(Request $request)

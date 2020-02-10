@@ -1,5 +1,5 @@
 @section('title', $ad->landOfferAd->title)
-<section class="section is-medium ">
+<section class="section">
 	<div class="container ">
 		<nav class="breadcrumb" aria-label="breadcrumbs">
 			<ul>
@@ -12,7 +12,7 @@
 			<div id="slider-container" class="column is-two-thirds ">
 				<div id="ad-images" class="carousel ">
 					@if(count($ad->documents) <= 0)
-						<div id="test" class="card carousel-item ad-carousel ">
+						<div class="card carousel-item ad-carousel ">
 							<div class="card-image">
 								<figure class="image is-2by1">
 									<img src="https://picsum.photos/480/320" alt="picsum">
@@ -57,12 +57,12 @@
 						</div>
 						<div class="content">
 							<span class="is-size-5 is-capitalized has-text-black">Localisation(s) : </span>
-							<p><span class="is-size-6 is-italic">Commune(s) :</span><span
-										class="subtitle">{{$ad->cities->pluck('name')->implode(', ') }}</span></p>
-							<p><span class="is-size-6 is-italic">Département(s) :</span><span
-										class="subtitle">{{$ad->departments->pluck('name')->implode(', ') }}</span></p>
-							<p><span class="is-size-6 is-italic">Région(s) :</span><span
-										class="subtitle">{{$ad->regions->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="is-size-6 is-italic">Commune(s) : </span><span
+										class="subtitle"> {{$ad->cities->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="is-size-6 is-italic">Département(s) : </span><span
+										class="subtitle"> {{$ad->departments->pluck('name')->implode(', ') }}</span></p>
+							<p><span class="is-size-6 is-italic">Région(s) : </span><span
+										class="subtitle"> {{$ad->regions->pluck('name')->implode(', ') }}</span></p>
 						</div>
 						<div class="content">
 							@if($ad->landOfferAd->land->price)
@@ -83,33 +83,21 @@
 								</p>
 							@endif
 						</div>
+						@if($ad->userPp->accept_share_contact_infos === 1)
+							<div class="content">
+								<p><span class="is-size-5 has-text-black">N° de téléphone du porteur de projet : </span>
+								</p>
+								<p><span class="subtitle">{{$ad->userPp->phone}}</span></p>
+							</div>
+						@endif
 					</div>
-					@if( $ad->user_pp_id !== auth()->user()->id)
-						<footer class="card-footer">
-							<button id="open-modal-message" type="button" class="card-footer-item button is-link">
-								 <span class="icon is-small">
-								<i class="fas fa-reply"></i>
-								</span>
-								<span> Répondre à l'annonce</span>
-							</button>
-							{!! Form::open(['route'=>'favoriteAds.create', 'method'=>'get']) !!}
-							<input name="ad_id" value="{{$ad->id}}" type="hidden">
-							<button class="card-footer-item button is-link is-light">
-							 <span class="icon is-small">
-								<i class="fas fa-star"></i>
-								</span>
-								<span> Mettre cette annonce en favoris</span>
-							</button>
-							{!! Form::close() !!}
-						</footer>
-					@endif
+
+					@include('pages.ads.partials.buttonsFavoriteAndMessage')
+
 				</div>
 			</div>
 		</div>
-
-
 		@include('pages.ads.partials.adMessageModal')
-
 		<hr class="navbar-divider">
 		<h3 class="title is-3 has-text-centered">Caractéristiques du projet</h3>
 		<div class="columns is-multiline is-mobile is-centered">
@@ -123,8 +111,6 @@
 					<p class="has-text-centered">Non</p>
 				@endif
 			</div>
-
-
 			<div class="column is-one-quarter ">
 				@if($ad->landOfferAd->is_activity_transfer === 1)
 					<p class="has-text-link is-size-5 has-text-centered"> Système(s) de production en place </p>
@@ -265,31 +251,7 @@
 			<h3 class="title is-3">A propos du porteur de projet</h3>
 			<p> {{$ad->about_content}}</p>
 		</div>
-		@if( $ad->user_pp_id !== auth()->user()->id)
-			<div class="content">
-				<div class="columns is-mobile is-centered">
-					<div class="column is-half">
-						<div class="box has-background-white-ter ">
-							<article class="media">
-								<div class="media-content">
-									<div class="content has-text-centered ">
-										<p class="has-text-centered is-size-4">Vous souhaitez répondre à cette annonce
-											?</p>
-										<button id="open-modal-message" class="button is-link  is-large">
-									 	<span class="icon is-small">
-										<i class="fas fa-reply"></i>
-										</span>
-											<span> Répondre à l'annonce</span>
-										</button>
-									</div>
-
-								</div>
-							</article>
-						</div>
-					</div>
-				</div>
-			</div>
-		@endif
+		@include('pages.ads.partials.callToActionMessage')
 	</div>
 
 </section>
