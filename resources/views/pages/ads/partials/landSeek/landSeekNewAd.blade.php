@@ -4,13 +4,13 @@
         subtitle=""
         next-button-text="Suivant"
         back-button-text="Précédent"
-        finish-button-text="Publier"
+        finish-button-text="Demander la publication"
         step-size="xs"
         @on-complete="$emit('form-complete')"
         color="#3498db"
         ref="formWizard">
 
-        <tab-content title="Zone" icon="ti-location-arrow">
+        <tab-content title="Localisation" icon="ti-location-arrow">
             <zone-select
                 name="land_seek[locationable]"
                 radius-name="land_seek[locationable_radius]"
@@ -22,7 +22,26 @@
             </zone-select>
         </tab-content>
 
-        <tab-content title="Production" icon="ti-settings">
+        <tab-content title="Foncier" icon="ti-settings">
+            <div class="field">
+                {!! Form::label('land_seek[surface_range][]', 'Surface recherchée (en hectares)', ['class' => 'label']); !!}
+                <vue-slider-range
+                    name-min="land_seek[surface_range_min]"
+                    name-max="land_seek[surface_range_max]"
+                    :data="{{ json_encode($surfaceRanges->pluck('label', 'value')) }}"
+                    :value="[formInput.surfaceRangeMin, formInput.surfaceRangeMax]"
+                ></vue-slider-range>
+            </div>
+            <br>
+
+            <div class="field">
+                {!! Form::label('land_seek_has_farms_or_buildings', 'Habitation(s) et bâti(s)', ['class' => 'label']); !!}
+                {!! Form::checkbox('land_seek[has_farm_buildings]', '1', old('land_seek[has_farm_buildings]'), [':disabled' => 'isInputDisabled']) !!}
+                Avec une maison d'habitation existante
+                {!! Form::checkbox('land_seek[has_houses]', '1', old('land_seek[has_houses]'), [':disabled' => 'isInputDisabled']) !!}
+                Avec des bâtis agricoles existants
+            </div>
+
             <div class="field">
                 {!! Form::label('land_seek[installation_type_id]', 'Type d\'installation*', ['class' => 'label']); !!}
                 <div class="select">
@@ -47,20 +66,6 @@
                 oui
                 {!! Form::radio('land_seek[is_bio]', '0', old('land_seek[is_bio]') === '0', [':disabled' => 'isInputDisabled']) !!}
                 non
-            </div>
-            <div class="field">
-                {!! Form::label('land_seek[surface_range][]', 'Surface recherchée(en ha)', ['class' => 'label']); !!}
-                @foreach ($surfaceRanges->pluck('surface', 'id') as $id => $surface)
-                    {!! Form::checkbox(
-                        'land_seek[surface_range][]',
-                        $id,
-                        null,
-                        [
-                            ':disabled' => 'isInputDisabled'
-                        ]
-                    ) !!}
-                    {{$surface}}
-                @endforeach
             </div>
             <div class="field">
                 {!! Form::label('land_seek[production_genre][]', 'Production(s) envisagée(s)*', ['class' => 'label']); !!}
@@ -105,13 +110,6 @@
         </tab-content>
 
         <tab-content title="Foncier" icon="ti-home">
-            <div class="field">
-                {!! Form::label('land_seek_has_farms_or_buildings', 'Habitation(s) et bâti(s)', ['class' => 'label']); !!}
-                {!! Form::checkbox('land_seek[has_farm_buildings]', '1', old('land_seek[has_farm_buildings]'), [':disabled' => 'isInputDisabled']) !!}
-                Avec une maison d'habitation existante
-                {!! Form::checkbox('land_seek[has_houses]', '1', old('land_seek[has_houses]'), [':disabled' => 'isInputDisabled']) !!}
-                Avec des bâtis agricoles existants
-            </div>
             <div class="field">
                 {!! Form::label('land_seek[offer_genre_id]', 'Accès au foncier souhaité', ['class' => 'label']); !!}
                 <div class="select">
@@ -165,7 +163,15 @@
                 <vue-dropzone
                     ref="documents"
                     id="dropzone"
-                    :options="{url: '/documents/upload', thumbnailWidth: 150, maxFiles: 5, maxFilesize: 1, addRemoveLinks: true, uploadMultiple: true}"
+                    :options="{
+                        url: '/documents/upload',
+                        thumbnailWidth: 150,
+                        maxFiles: 5,
+                        maxFilesize: 1,
+                        addRemoveLinks: true,
+                        uploadMultiple: true,
+                        acceptedFiles: 'image/*, application/pdf, text/*, application/msword, application/vnd.ms-excel, application/zip'
+                    }"
                     :duplicate-check="true"
                     :use-custom-slot="true"
                     @vdropzone-sending-multiple="onBeforeDocumentsUpload"

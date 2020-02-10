@@ -5,7 +5,6 @@ use App\Models\AdMessage;
 use App\Models\AdNote;
 use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
-use App\Models\Document;
 use App\Models\FavoriteAd;
 use App\Models\JobAd;
 use App\Models\LandOfferAd;
@@ -15,7 +14,6 @@ use App\Models\PriceRange;
 use App\Models\ProductionGenre;
 use App\Models\Region;
 use App\Models\SurfaceRange;
-
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -42,6 +40,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
 			UserSeeder::class,
+            RequirementSeeder::class,
+            BuildingTypeSeeder::class,
             ResponseTypeSeeder::class,
             PriceRangeSeeder::class,
             SurfaceRangeSeeder::class,
@@ -52,8 +52,6 @@ class DatabaseSeeder extends Seeder
             ResearchSeeder::class,
             UserToUserMessageSeeder::class,
             EducationLevelSeeder::class,
-
-
         ]);
 
         factory(Ad::class, 30)->create()->each(function (Ad $ad) use(&$queriesCount) {

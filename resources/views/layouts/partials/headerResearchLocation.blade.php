@@ -25,7 +25,13 @@
 		<p class="label">Dans un rayon de </p>
 		<vue-slider
 				name="radius_research"
-				:data="['0km','5km','10km','20km','50km']"
+                :data="{
+                    0: '0km',
+                    5: '5km',
+                    10: '10km',
+                    20: '20km',
+                    50: '50km'
+                }"
 		></vue-slider>
 	</div>
 </div>

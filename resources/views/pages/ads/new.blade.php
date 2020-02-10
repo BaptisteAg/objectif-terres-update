@@ -49,7 +49,7 @@
                                     @include('pages.ads.partials.landSeek.landSeekNewAd')
                                 </new-land-seek-ad>
 
-                                <new-land-offer-ad inline-template
+<!--                                <new-land-offer-ad inline-template
                                                    v-show="adTypeSelected === 'land_offer'"
                                                    :is-input-disabled="adTypeSelected !== 'land_offer'"
                                                    :old-values="{{json_encode(old('land_offer', new stdClass))}}"
@@ -63,7 +63,7 @@
                                                   :old-values="{{json_encode(old('job_offer', new stdClass))}}"
                                                   @input-enabled="setEnabledForm">
                                     @include('pages.ads.partials.jobAd.jobAdNewAd')
-                                </new-job-offer-ad>
+                                </new-job-offer-ad>-->
                             </form>
                         </new-ad>
                     </div>

@@ -23,7 +23,8 @@ class CreateSurfaceRangesTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('surface');
+            $table->string('label');
+            $table->string('value');
             $table->timestamps();
         });
     }
