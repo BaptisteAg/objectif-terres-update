@@ -15,7 +15,13 @@
                 <p class="label">Surface (ha)</p>
                 <vue-slider
                     name="surfaces_research"
-                    :data="['0','5','10','20','50', '>100']"
+                    :data="{
+                        0: '0km',
+                        5: '5km',
+                        10: '10km',
+                        20: '20km',
+                        50: '50km'
+                    }"
                     :values="['0', '>100']"></vue-slider>
                 <br>
             </div>

@@ -14,7 +14,7 @@
                     <autocomplete
                             :id="id"
                             class="input"
-                            placeholder="Ajoutez une zone en saisissant les premières lettres"
+                            :placeholder="value.length ? 'Saisissez une autre localisation' : 'Saisissez au moins 2 caractères pour faire apparaître la liste'"
                             :disabled="disabled"
                             src="/json/locationables"
                             :data-renderer="renderZoneItemData"
@@ -28,11 +28,15 @@
                     </div>
                 </div>
 
-                <h4 v-if="value.length">Vous avez sélectionné :</h4>
-                <h4 v-else>Vous n'avez encore sélectionné aucune zone.</h4>
+                <h4 v-if="value.length">Votre sélection :</h4>
+                <div v-else>
+                    Pour sélectionner une localisation cliquez dessus dans la liste. <br>
+                    Vous pouvez ajouter plusieurs localisations l'une après l'autre.<br>
+                    Pour trouver une commune utilisez de préférence le code postal sinon respectez bien les accents et les tirets pour qu'elle apparaisse dans la liste.
+                </div>
 
                 <div class="selected-zone" v-for="(zone,i) in value">
-                    <span @click="_ => value.splice(i, 1)">
+                    <span @click="_ => value.splice(i, 1)" data-tooltip="Retirer cette localisation">
                         <i class="fa fa-trash-alt" style="cursor:pointer;"></i>
                     </span>
                     <b>{{getLabels().ZONE_TYPES[zone.value.type]}}</b> : {{zone.value.originalLabel}}
@@ -41,14 +45,23 @@
             </div>
         </div>
         <input type="hidden" :name="jsonName" :value="JSON.stringify(value)">
-        <div class="card-footer">
+        <div class="card-footer" v-show="hasCities">
             <div class="card-footer-item">
                 <div class="column">
                     <p class="label">Dans un rayon de </p>
                     <vue-slider
                             :name="radiusName"
-                            :data="['0km','5km','10km','20km','50km']"
+                            :data="{
+                                0: '0km',
+                                5: '5km',
+                                10: '10km',
+                                20: '20km',
+                                50: '50km'
+                            }"
                     ></vue-slider>
+                    <div style="margin-top: 40px;">
+                        Ce rayon s'appliquera à chaque commune de votre sélection
+                    </div>
                 </div>
             </div>
         </div>
@@ -112,6 +125,11 @@
         data() {
             return {
                 id: 'zone-select'+Math.random().toString(36).substr(2, 9)
+            }
+        },
+        computed: {
+            hasCities() {
+                return !!this.value.find(zone => zone.value.type === "cities");
             }
         },
         methods: {
