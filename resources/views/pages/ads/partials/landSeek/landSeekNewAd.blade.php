@@ -165,7 +165,15 @@
                 <vue-dropzone
                     ref="documents"
                     id="dropzone"
-                    :options="{url: '/documents/upload', thumbnailWidth: 150, maxFiles: 5, maxFilesize: 1, addRemoveLinks: true, uploadMultiple: true}"
+                    :options="{
+                        url: '/documents/upload',
+                        thumbnailWidth: 150,
+                        maxFiles: 5,
+                        maxFilesize: 1,
+                        addRemoveLinks: true,
+                        uploadMultiple: true,
+                        acceptedFiles: 'image/*, application/pdf, text/*, application/msword, application/vnd.ms-excel, application/zip'
+                    }"
                     :duplicate-check="true"
                     :use-custom-slot="true"
                     @vdropzone-sending-multiple="onBeforeDocumentsUpload"

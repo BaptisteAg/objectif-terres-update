@@ -16,6 +16,10 @@
 
     .awesomplete {
         width: 100%;
+
+        ul {
+            z-index: 5;
+        }
     }
 
     .autocomplete-input {
