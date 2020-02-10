@@ -54,14 +54,16 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
+
+
+
+		return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'first_name' => ['required', 'string', 'max:255'],
 			'phone' => ['string', 'min:10','max:255'],
 			'address' => ['string', 'min:5'],
 			'city_id' => ['required'],
-			'accept_condition' => ['required'],
 
         ]);
     }
@@ -89,6 +91,8 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 
-		$this->userService->create($data);
+		$user = new User();
+		$user = $this->userService->create($data);
+		return $user;
     }
 }

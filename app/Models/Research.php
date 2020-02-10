@@ -14,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
  * App\Models\Research
  *
  * @property int $id
- * @property string $sf_id
+ * @property int $user_id
  * @property string $name
  * @property int $surface_min
  * @property int $surface_max
@@ -24,6 +24,8 @@ use Illuminate\Notifications\Notifiable;
  * @property int $price_max
  * @property string $ad_type
  * @property string $url
+ * @property boolean $has_alert
+ * @property User $user
  * @property JobStatus[] $jobStatuses
  * @property ProjectStatus[] $projectStatuses
  * @property AdStatus[] $adStatuses
@@ -54,7 +56,7 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research wherePriceMax($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research wherePriceMin($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereSfId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereSurfaceMax($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereSurfaceMin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereUpdatedAt($value)
@@ -62,66 +64,73 @@ use Illuminate\Notifications\Notifiable;
  */
 class Research extends Model
 {
-    use OfferableGenre;
-    use BioCertifiable;
-    use ProductionableGenre;
+	use OfferableGenre;
+	use BioCertifiable;
+	use ProductionableGenre;
 	use Notifiable;
 
-    /**
-     * @var array
-     */
-    protected $fillable = [
-        'sf_id', 'name', 'surface_min', 'surface_max', 'has_pics', 'has_house', 'price_min', 'price_max', 'ad_type', 'url'
-    ];
+	/**
+	 * @var array
+	 */
+	protected $fillable = [
+		'user_id', 'name', 'surface_min', 'surface_max', 'has_pics', 'has_house', 'price_min', 'price_max', 'ad_type', 'url', 'has_alert'
+	];
 
-    /**
-     * @return belongsToMany
-     */
-    public function adStatuses()
-    {
-        return $this->belongsToMany('App\Models\AdStatus')->withTimestamps();
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function user(){
+		$this->belongsTo(User::class);
+	}
 
-    /**
-     * @return belongsToMany
-     */
-    public function jobStatuses()
-    {
-        return $this->belongsToMany('App\Models\JobStatus')->withTimestamps();
-    }
+	/**
+	 * @return belongsToMany
+	 */
+	public function adStatuses()
+	{
+		return $this->belongsToMany(AdStatus::class)->withTimestamps();
+	}
 
-    /**
-     * @return belongsToMany
-     */
-    public function projectStatuses()
-    {
-        return $this->belongsToMany('App\Models\ProjectStatus')->withTimestamps();
-    }
+	/**
+	 * @return belongsToMany
+	 */
+	public function jobStatuses()
+	{
+		return $this->belongsToMany(JobStatus::class)->withTimestamps();
+	}
 
-    /**
-     * Get all cities 'location' for the research
-     * @return MorphToMany
-     */
-    public function cities()
-    {
-        return $this->morphedbyMany('App\Models\City', 'locationable_research');
-    }
+	/**
+	 * @return belongsToMany
+	 */
+	public function projectStatuses()
+	{
+		return $this->belongsToMany(ProjectStatus::class)->withTimestamps();
+	}
 
-    /**
-     * Get all cities 'location' for the research
-     * @return MorphToMany
-     */
-    public function departments()
-    {
-        return $this->morphedbyMany('App\Models\Department', 'locationable_research');
-    }
+	/**
+	 * Get all cities 'location' for the research
+	 * @return MorphToMany
+	 */
+	public function cities()
+	{
+		return $this->morphedbyMany(City::class, 'locationable_research');
+	}
 
-    /**
-     * Get all cities 'location' for the research
-     * @return MorphToMany
-     */
-    public function regions()
-    {
-        return $this->morphedbyMany('App\Models\Region', 'locationable_research');
-    }
+	/**
+	 * Get all cities 'location' for the research
+	 * @return MorphToMany
+	 */
+	public function departments()
+	{
+		return $this->morphedbyMany(Department::class, 'locationable_research');
+	}
+
+	/**
+	 * Get all cities 'location' for the research
+	 * @return MorphToMany
+	 */
+	public function regions()
+	{
+		return $this->morphedbyMany(Region::class, 'locationable_research');
+	}
 }

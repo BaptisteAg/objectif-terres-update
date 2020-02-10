@@ -36,6 +36,6 @@ class EducationLevel extends Model
      */
     public function jobAds()
     {
-        return $this->hasMany('App\Models\JobAd');
+        return $this->hasMany(JobAd::class);
     }
 }

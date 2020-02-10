@@ -1,16 +1,14 @@
-
 import Autocomplete from '../../components/Autocomplete'
+import Vue from 'vue'
 
-new Vue({
-    name: "SelectCity",
-    components : {
+Vue.component('register-form', {
+    components: {
         Autocomplete,
     },
-    el: '#vue-multi-select-city',
-    data(){
+    data() {
         return {
-            citySelect : [],
+            optionProfileSelected: '',
+            citySelect: [],
         }
     }
-
 });

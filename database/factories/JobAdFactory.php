@@ -14,7 +14,6 @@ $factory->define(JobAd::class, function (Faker $faker) {
         'is_offer' => $faker->boolean,
         'is_beneficiary' => $faker->boolean,
         'experience_farming' => $faker->numberBetween(0, 50),
-        'ad_id' => Ad::all()->random()->id,
         'education_level_id' => EducationLevel::all()->random(),
         'job_status_id' => JobStatus::all()->random(),
     ];

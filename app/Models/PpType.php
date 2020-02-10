@@ -36,6 +36,6 @@ class PpType extends Model
      */
     public function attributionAds()
     {
-        return $this->hasMany('App\Models\AttributionAd', 'lead_type_id');
+        return $this->hasMany(AttributionAd::class, 'lead_type_id');
     }
 }

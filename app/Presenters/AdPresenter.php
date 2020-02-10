@@ -24,4 +24,19 @@ class AdPresenter extends BasePresenter
 
         return '';
     }
+
+    public function created_at()
+    {
+        return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->format('d/m/Y');
+    }
+
+    public function is_today()
+    {
+        return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->isToday();
+    }
+
+    public function created_at_diff()
+    {
+        return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->diffForHumans();
+    }
 }

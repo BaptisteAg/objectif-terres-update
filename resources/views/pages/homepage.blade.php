@@ -4,7 +4,7 @@
 
 @section('head-script')
 	<!-- Import Leaflet CSS Style Sheet -->
-	<link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css"/>
 	<!-- Import Leaflet JS Library -->
 	<script src="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
@@ -16,7 +16,8 @@
 	<section class="section is-medium">
 		<div class="has-text-centered">
 			<h2 class="title is-1">Dernières annonces foncières publiées</h2>
-			<p>ASTUCE : <a href="{{url('/')}}">Créez votre compte gratuit</a> pour visualiser directement les annonces de votre région !</p>
+			<p>ASTUCE : <a href="{{url('/')}}">Créez votre compte gratuit</a> pour visualiser directement les annonces
+				de votre région !</p>
 		</div>
 		<div class="columns">
 			@foreach ($ads as $ad)
@@ -24,21 +25,27 @@
 					<div class="card">
 						<div class="card-image">
 							<figure class="image is-4by3">
-								<img src="https://picsum.photos/900/660" alt="Placeholder image">
+								<a href="{{route("ads.show", $ad->id)}}">
+									<img src="https://picsum.photos/900/660" alt="Placeholder image">
+								</a>
 							</figure>
+
 						</div>
 						<div class="card-content has-text-centered">
 							<div class="media">
 								<div class="media-content has-text-centered">
 
 									@if($ad->landSeekAd)
-										<p class="title is-4">{{$ad->landSeekAd->title}}</p>
+										<a href="{{route("ads.show", $ad->id)}}"><p
+													class="title is-4">{{$ad->landSeekAd->title}}</p></a>
 									@endif
 									@if($ad->landOfferAd)
-										<p class="title is-4">{{$ad->landOfferAd->title}}</p>
+										<a href="{{route("ads.show", $ad->id)}}"><p
+													class="title is-4">{{$ad->landOfferAd->title}}</p></a>
 									@endif
 									@if($ad->jobAd)
-										<p class="title is-4">{{$ad->jobAd->title}}</p>
+										<a href="{{route("ads.show", $ad->id)}}"><p
+													class="title is-4">{{$ad->jobAd->title}}</p></a>
 									@endif
 
 								</div>
@@ -46,7 +53,14 @@
 							<div class="content">
 								{{ \Illuminate\Support\Str::limit($ad->about_project_content, 200, $end='...') }}
 							</div>
-							<a href="{{url("/annonces", $ad->id)}}"><button class="button is-link">Voir l'annonce</button></a>
+							<a href="{{route('ads.show', $ad->id)}}">
+								<button class="button is-link">
+									<span class="icon is-small">
+											 <i class="fas fa-eye"></i>
+											</span>
+									<span>Voir l'annonce</span>
+								</button>
+							</a>
 						</div>
 					</div>
 				</div>
@@ -123,7 +137,7 @@
 			<h2 class="title is-2 ">Ils ont réussi avec nous ! </h2>
 		</div>
 		<div class="container ">
-			<div id="post_images" class="carousel" >
+			<div id="post_images" class="carousel">
 				@for ($i = 0; $i < 4; $i++)
 					<div class="column is-12 ">
 						<div class="card">
@@ -131,7 +145,8 @@
 								<div class="media">
 									<div class="media-left">
 										<figure class="image is-48x48">
-											<img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+											<img src="https://bulma.io/images/placeholders/96x96.png"
+												 alt="Placeholder image">
 										</figure>
 									</div>
 									<div class="media-content">
@@ -171,7 +186,7 @@
             slidesToScroll: 1,
             slidesToShow: 2,
             loop: true,
-            navigation : true,
+            navigation: true,
 
         });
 	</script>
@@ -193,7 +208,7 @@
 
         let formData = new FormData;
 		@foreach($adsCountByRegionId as $regionId => $adCount)
-        formData.append('ads_count_by_region_id[{{$regionId}}]','{{$adCount}}');
+        formData.append('ads_count_by_region_id[{{$regionId}}]', '{{$adCount}}');
 		@endforeach
         formData.append('_token', "{{ csrf_token() }}");
 
@@ -211,10 +226,10 @@
                     polygon.addTo(map);
 
                     polygon.bindTooltip(polygonData.ads_count,
-                        {permanent: true, direction:"center"}
+                        {permanent: true, direction: "center"}
                     ).openTooltip();
 
-                    polygon.addEventListener('click',_ => {
+                    polygon.addEventListener('click', _ => {
                         console.log("polygon click");
                     });
                 })

@@ -24,6 +24,6 @@ class AdMessagesController extends Controller
 
 		$adMessage = $this->adMessageService->create($request);
 
-		return back()->with('success', 'message');
+		return back()->with('success', 'Votre message a bien été envoyé au porteur de projet !');
 	}
 }

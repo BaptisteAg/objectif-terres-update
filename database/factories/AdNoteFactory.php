@@ -4,12 +4,13 @@
 
 use App\Models\Ad;
 use App\Models\AdNote;
+use App\Models\User;
 use Faker\Generator as Faker;
 
 $factory->define(AdNote::class, function (Faker $faker) {
     return [
         'content' => $faker->text(500),
-        'sf_user_id' => $faker->regexify('[A-Za-z0-9]{20}'),
+        'user_id' => User::all()->random(),
         'contact_name' => $faker->name,
         'ad_id' => Ad::all()->random()
     ];

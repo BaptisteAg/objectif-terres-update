@@ -48,7 +48,7 @@ class OfferGenre extends Model
      */
     public function landSeekAds()
     {
-        return $this->hasMany('App\Models\LandSeekAd', 'offer_type_id');
+        return $this->hasMany(LandSeekAd::class, 'offer_type_id');
     }
 
     /**
@@ -58,7 +58,7 @@ class OfferGenre extends Model
      */
     public function buildings()
     {
-        return $this->morphedByMany('App\Models\Building', 'offerable_genre');
+        return $this->morphedByMany(Building::class, 'offerable_genre');
     }
 
     /**
@@ -68,7 +68,7 @@ class OfferGenre extends Model
      */
     public function houses()
     {
-        return $this->morphedByMany('App\Models\House', 'offerable_genre');
+        return $this->morphedByMany(House::class, 'offerable_genre');
     }
 
     /**
@@ -78,7 +78,7 @@ class OfferGenre extends Model
      */
     public function lands()
     {
-        return $this->morphedByMany('App\Models\Land', 'offerable_genre');
+        return $this->morphedByMany(Land::class, 'offerable_genre');
     }
 
     /**
@@ -88,7 +88,7 @@ class OfferGenre extends Model
      */
     public function researches()
     {
-        return $this->morphedByMany('App\Models\Research', 'offerable_genre');
+        return $this->morphedByMany(Research::class, 'offerable_genre');
     }
 
 }

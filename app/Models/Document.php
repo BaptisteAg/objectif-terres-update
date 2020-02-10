@@ -11,9 +11,12 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property int $id
  * @property string $path
  * @property string $type_document
+ * @property string $name
+ * @property int $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AdNote[] $adNotes
+ * @property User $user
  * @property-read int|null $ad_notes_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $ads
  * @property-read int|null $ads_count
@@ -43,7 +46,7 @@ class Document extends Model
      */
     public function ads()
     {
-        return $this->morphedByMany('App\Models\Research', 'documentable');
+        return $this->morphedByMany(Research::class , 'documentable');
     }
 
     /**
@@ -53,7 +56,7 @@ class Document extends Model
      */
     public function adNotes()
     {
-        return $this->morphedByMany('App\Models\AdNote', 'documentable');
+        return $this->morphedByMany(AdNote::class, 'documentable');
     }
 
     public function user()

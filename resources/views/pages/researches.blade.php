@@ -26,22 +26,25 @@
 									<div class="card">
 										<div class="card-content">
 											<div class="content">
-												<p class="title is-3 has-text-centered has-text-link">Pas encore connecté·e ?</p>
-												<p class="subtitle is-6">Pour sauvegarder cette recherche, vous devez vous connecter ou créer un compte sur Objectif Terres</p>
+												<p class="title is-3 has-text-centered has-text-link">Pas encore
+													connecté·e ?</p>
+												<p class="subtitle is-6">Pour sauvegarder cette recherche, vous devez
+													vous connecter ou créer un compte sur Objectif Terres</p>
 											</div>
 										</div>
 										<footer class="card-footer">
 											<div class="buttons card-footer-item">
 												<a href="{{route('signIn')}}">
 													<button class="button is-link">
-													<span>Se connecter</span></button>
+														<span>Se connecter</span></button>
 												</a>
 												<a href="{{route('register')}}">
 													<button class="button is-link is-light">
 														<span>S'inscrire</span></button>
 												</a>
 											</div>
-											<button id="close-modal" class="modal-close is-large" aria-label="close"></button>
+											<button id="close-modal" class="modal-close is-large"
+													aria-label="close"></button>
 										</footer>
 									</div>
 								</div>
@@ -76,7 +79,8 @@
 												<button type="submit" class="button is-link">
 													<span>Valider</span></button>
 											</div>
-											<button id="close-modal" class="modal-close is-large" aria-label="close"></button>
+											<button id="close-modal" class="modal-close is-large"
+													aria-label="close"></button>
 										</footer>
 									</div>
 								</div>
@@ -132,7 +136,9 @@
 				@foreach($ads as $ad)
 					<div class="columns is-gapless">
 						<div class="column is-two-fifths">
-							<figure><img src="https://picsum.photos/500/300" alt="Placeholder image"></figure>
+							<a href="{{route("ads.show", $ad->id)}}">
+								<figure><img src="https://picsum.photos/500/300" alt="Placeholder image"></figure>
+							</a>
 							<div>
 								{{ $ad->regions->pluck('name')->implode(', ') }}
 							</div>
@@ -153,18 +159,29 @@
 								</div>
 								<div class="level-right">
 									<div class="level-item">
-										@if($ad->created_at->isToday())
+										@if($ad->is_today)
 											<span>Publié aujourd'hui</span>
 										@else
-											<span>Publié {{ $ad->created_at->diffForHumans() }}</span>
+											<span>Publié {{ $ad->created_at_diff }}</span>
 										@endif
 									</div>
 								</div>
 							</nav>
 							<div></div>
-							<h1 class="title">{{ $ad->$adType->title }}</h1>
-							<div class="descritption">{{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</div>
-							<a href="{{route("ads.show", $ad->id)}}">Voir</a>
+							<a href="{{route("ads.show", $ad->id)}}"><h1 class="title">{{ $ad->$adType->title }}</h1>
+							</a>
+							<div class="content descritption">
+								<p>{{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</p>
+							</div>
+
+							<a href="{{route("ads.show", $ad->id)}}">
+								<button class="button is-link ">
+											<span class="icon is-small">
+											 <i class="fas fa-eye"></i>
+											</span>
+									<span>Voir plus</span>
+								</button>
+							</a>
 						</div>
 					</div>
 				@endforeach

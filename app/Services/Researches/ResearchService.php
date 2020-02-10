@@ -49,6 +49,13 @@ class ResearchService
 		return $research;
 	}
 
+	public function findAllByUser(int $id)
+	{
+		$researches = $this->repository->findAllByUser($id);
+
+		return $researches;
+	}
+
 	public function findAll()
 	{
 
@@ -65,12 +72,12 @@ class ResearchService
 	public function findNewRelatedAds()
 	{
 		$researches = $this->repository->all();
-		$newAdsInResearch= [];
-		foreach ($researches as $research){
+		$newAdsInResearch = [];
+		foreach ($researches as $research) {
 			$id = $research->id;
 			$date = $research->updated_at;
 			$newAds = $this->repository->findRelatedAds($id)->where('created_at', '>=', $date);
-			if(! $newAds->isEmpty()){
+			if (!$newAds->isEmpty()) {
 				$newAdsInResearch[$research->id] = $this->repository->findRelatedAds($id)->where('created_at', '>=', $date);
 			}
 		}
@@ -114,6 +121,7 @@ class ResearchService
 			}
 		}
 
+
 //		DB::enableQueryLog();
 //		$ads = Ad::whereHas('locationables', function (Builder $query) use ($idRegions) {
 //			$query->where('locationables.locationable_ad_type', Region::class);
@@ -125,6 +133,12 @@ class ResearchService
 //		dd(DB::getQueryLog());
 
 		return [$ads, $adType, $regions];
+	}
+
+	public function deleteAlert(int $researchId){
+		$research = $this->find($researchId);
+		$research->has_alert = 0;
+		$research->save();
 	}
 
 	public function destroy(Request $request)

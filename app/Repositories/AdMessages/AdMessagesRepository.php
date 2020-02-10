@@ -1,5 +1,6 @@
 <?php namespace App\Repositories\AdMessages;
 
+use App\Models\Ad;
 use App\Models\AdMessage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
@@ -53,18 +54,54 @@ class AdMessagesRepository extends AbstractRepository implements AdMessagesRepos
 	}
 
 	/**
+	 * @param int $userId
+	 * @param int $adId
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function findByUserAndAd($userId, $adId)
+	{
+		/** @var AdMessage $model */
+		$model = $this->entity
+			->where(["user_id" => $userId, 'ad_id'=> $adId])
+			->first();
+		return $model;
+	}
+
+	/**
+	 * @param $id
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function findAllByAd(Ad $ad)
+	{
+		/** @var AdMessage $model */
+		$model = $this->entity
+			->where(["ad_id" => $ad->id])
+			->get();
+
+
+		if (!$model) {
+			throw (new ModelNotFoundException)->setModel(
+				get_class($this->entity->getModel()),
+				$ad->id
+			);
+		}
+
+		return $model;
+	}
+
+	/**
 	 * Creates message.
 	 *
 	 * @param int
 	 * @param array
-	 * @throws \Throwable
 	 * @return AdMessage
+	 * @throws \Throwable
 	 */
 	public function create(array $data): AdMessage
 	{
 		$adMessage = new AdMessage();
 		$adMessage->fill($data);
-		$adMessage->sf_sender_id = 999;
+		$adMessage->user_id = auth()->user()->id;
 		$adMessage->save();
 
 		return $adMessage;

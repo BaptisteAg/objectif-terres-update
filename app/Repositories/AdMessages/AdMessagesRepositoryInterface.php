@@ -1,5 +1,6 @@
 <?php namespace App\Repositories\AdMessages;
 
+use App\Models\Ad;
 use App\Models\AdMessage;
 
 
@@ -18,6 +19,22 @@ interface AdMessagesRepositoryInterface
 	 * @return AdMessage[]
 	 */
 	public function all($paginate = null);
+
+	/**
+	 * Gets all message by ad.
+	 *
+	 * @param Ad $ad
+	 * @return AdMessage[]
+	 */
+	public function findAllByAd(Ad $ad);
+
+	/**
+	 * Gets message by User ID and Ad ID.
+	 *
+	 * @param int $userId
+	 * @param int $adId
+	 */
+	public function findByUserAndAd(int $userId, int $adId);
 
 	/**
 	 * Deletes message.

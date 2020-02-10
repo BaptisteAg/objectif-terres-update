@@ -37,7 +37,7 @@ class Project extends Model
      */
     public function projectStatus()
     {
-        return $this->belongsTo('App\Models\ProjectStatus');
+        return $this->belongsTo(ProjectStatus::class);
     }
 
     /**
@@ -45,6 +45,6 @@ class Project extends Model
      */
     public function ads()
     {
-        return $this->hasMany('App\Models\Ad');
+        return $this->hasMany(Ad::class);
     }
 }

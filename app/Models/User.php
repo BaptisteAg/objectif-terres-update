@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Notifications\ResetPasswordNotification;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -18,6 +20,10 @@ use Illuminate\Notifications\Notifiable;
  * @property int 	$zip_code_id
  * @property string $accept_communication
  * @property string $email
+ * @property int $civility
+ * @property int $profile
+ * @property string $other_profile
+ * @property boolean $accept_share_contact_infos
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
  * @property int $country_id
@@ -33,6 +39,8 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use Notifiable;
+    use CanResetPassword;
+
 
     /**
      * The attributes that are mass assignable.
@@ -40,7 +48,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'first_name','phone', 'address', 'city', 'zip_code_id', 'accept_communication', 'country_id'
+        'name', 'email', 'password', 'first_name','phone', 'address', 'city', 'zip_code_id', 'accept_communication', 'country_id', 'profile', 'civility', 'profile', 'other_profile', 'accept_share_contact_infos'
     ];
 
     /**
@@ -74,4 +82,17 @@ class User extends Authenticatable
 	{
 		return $this->belongsTo('App\Models\City');
 	}
+
+	/**
+	 * Send the password reset notification.
+	 *
+	 * @param  string  $token
+	 * @return void
+	 */
+	public function sendPasswordResetNotification($token)
+	{
+		$this->notify(new ResetPasswordNotification($token));
+
+	}
+
 }

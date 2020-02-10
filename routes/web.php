@@ -13,11 +13,12 @@
 
 Route::get('/', 'HomePage\HomePageController@show');
 
-Route::get('/test', 'HomePage\HomePageController@show');
 Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
 	Route::middleware('auth')->get('creer', 'AdsController@create')->name('create');
 	Route::middleware('auth')->post('creer', 'AdsController@store')->name('store');
+	Route::middleware('auth')->get('liste-mes-annonces', 'AdsController@list')->name('list');
     Route::get('{id}', 'AdsController@show')->name('show');
+
 });
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {
@@ -34,12 +35,17 @@ Route::prefix('recherches')->name('researches.')->namespace('Researches')->group
 		Route::post('sauvegarde', 'ResearchesController@store')->name('store');
 		Route::get('liste', 'ResearchesController@show')->name('show');
 		Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
+		Route::get('supprimer-alerte/{id}', 'ResearchesController@deleteAlert')->name('deleteAlert');
 		Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
 	});
 });
 
 Route::middleware('auth')->prefix('messages')->name('adMessages.')->namespace('AdMessages')->group(function () {
 	Route::post('creer', 'AdMessagesController@create')->name('create');
+});
+
+Route::middleware('auth')->prefix('mon-compte')->name('userAccount.')->group(function () {
+	Route::get('/', 'HomeController@showAccount')->name('showAccount');
 });
 
 Route::prefix('annonces-favorites')->middleware('auth')->name('favoriteAds.')->namespace('favoriteAds')->group(function () {
@@ -71,5 +77,5 @@ Route::prefix('motdepasse')->name('password.')->group(function () {
 	Route::get('reinitialiser', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('request');
 	Route::post('email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('email');
 	Route::get('reinitialiser/{token}', 'Auth\ResetPasswordController@showResetForm')->name('reset');
-	Route::post('reinitialiser', 'Auth\ResetPasswordController@reset');
+	Route::post('reinitialiser', 'Auth\ResetPasswordController@reset')->name('update');
 });

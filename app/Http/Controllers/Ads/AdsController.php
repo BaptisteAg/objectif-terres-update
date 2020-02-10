@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Ads;
 
 use App\Http\Controllers\Controller;
+use App\Models\Document;
 use App\Repositories\Ads\AdRepository;
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
@@ -18,23 +19,31 @@ use App\Models\PriceRange;
 use App\Models\ProductionGenre;
 use App\Models\Region;
 use App\Models\SurfaceRange;
+use App\Repositories\FavoriteAds\FavoriteAdRepository;
+use App\Services\AdMessages\AdMessagesService;
 use App\Services\Ads\AdService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
 
 class AdsController extends Controller
 {
-    /**
-     * @var AdService
-     */
-    protected $adService;
+	/**
+	 * @var AdService
+	 */
+	protected $adService;
+	protected $adMessageService;
+	protected $favoriteAdRepository;
 
-    public function __construct(AdService $adService)
-    {
-        $this->adService = $adService;
-    }
+	public function __construct(AdService $adService, AdMessagesService $adMessageService, FavoriteAdRepository $favoriteAdRepository)
+	{
+		$this->adService = $adService;
+		$this->adMessageService = $adMessageService;
+		$this->favoriteAdRepository = $favoriteAdRepository;
 
-    public function create()
+	}
+
+	public function create()
 	{
 		$surfaceRanges = SurfaceRange::all();
 		$priceRanges = PriceRange::all();
@@ -54,28 +63,28 @@ class AdsController extends Controller
 		$educationLevels = EducationLevel::all();
 
 
-        return view('pages.ads.new', compact(
-            'installationTypes',
-            'surfaceRanges',
-            'priceRanges',
-            'bioCertifications',
-            'jobStatus',
-            'offerGenres',
-            'cities',
-            'departments',
-            'regions',
-            'offerGenresLandSeek',
-            'offerGenresHouse',
-            'offerGenresBuilding',
-            'offerGenresLand',
-            'productionGenres',
-            'agriculturalActivities',
-            'educationLevels',
-            'productionGenres',
-            'agriculturalActivities',
-            'educationLevels'
-        ));
-    }
+		return view('pages.ads.new', compact(
+			'installationTypes',
+			'surfaceRanges',
+			'priceRanges',
+			'bioCertifications',
+			'jobStatus',
+			'offerGenres',
+			'cities',
+			'departments',
+			'regions',
+			'offerGenresLandSeek',
+			'offerGenresHouse',
+			'offerGenresBuilding',
+			'offerGenresLand',
+			'productionGenres',
+			'agriculturalActivities',
+			'educationLevels',
+			'productionGenres',
+			'agriculturalActivities',
+			'educationLevels'
+		));
+	}
 
 	/**
 	 * @param AdRequest $request
@@ -107,8 +116,27 @@ class AdsController extends Controller
 
 	public function show(int $adId)
 	{
-        $ad = $this->adService->find($adId);
+		$ad = $this->adService->find($adId);
 
-        return view('pages.ads.show', compact('ad'));
+		if (Auth::user()) {
+			//if the user connected has send a response to an ad, get the first message
+			$userMessage = $this->adMessageService->findByUserAndAd((auth()->user()->id), $adId);
+
+			$data = array(
+				"ad_id" => $adId,
+				"user_id" => auth()->user()->id,
+			);
+			$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
+
+		}
+
+		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist'));
+	}
+
+	public function list()
+	{
+
+		$ads = $this->adService->findAllByUser(auth()->user()->id);
+		return view('pages.ads.listUserAds', compact('ads'));
 	}
 }

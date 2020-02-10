@@ -23,8 +23,8 @@ class CreateAdsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('sf_pp_id');
-            $table->string('sf_admin_id')->nullable();
+            $table->unsignedInteger('user_pp_id');
+            $table->unsignedInteger('user_admin_id')->nullable();
             $table->boolean('is_draft');
             $table->string('about_content', 1000)->nullable();
             $table->string('about_project_content', 1000)->nullable();
@@ -33,13 +33,22 @@ class CreateAdsTable extends Migration
 
             $table->index(["attribution_ad_id"], 'fk_ads_1_idx');
 
-            $table->index(["sf_admin_id"], 'iix_ads_sf_admin_id');
+            $table->index(["user_admin_id"], 'iix_ads_user_admin_id');
 
-            $table->index(["sf_pp_id"], 'ix_ads_sf_lead_id');
+            $table->index(["user_pp_id"], 'ix_ads_user_lead_id');
 
             $table->index(["project_id"], 'fk_ads_2_idx');
             $table->timestamps();
 
+			$table->foreign('user_admin_id','iix_ads_user_admin_id' )
+				->references('id')
+				->on('users')
+				->onDelete('cascade');
+
+			$table->foreign('user_pp_id','ix_ads_user_lead_id' )
+				->references('id')
+				->on('users')
+				->onDelete('cascade');
 
             $table->foreign('attribution_ad_id', 'fk_ads_1_idx')
                 ->references('id')->on('attribution_ads')

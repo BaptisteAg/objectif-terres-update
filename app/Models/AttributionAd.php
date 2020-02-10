@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $ad_status_id
  * @property int $lead_type_id
  * @property int $refusal_type_id
- * @property string $sf_owner_id
- * @property string $sf_admin_id
+ * @property int|null $user_owner_id
+ * @property int $user_admin_id
  * @property boolean $to_call_back
  * @property string $short_description
  * @property string $archived_at
@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property PpType $ppType
  * @property RefusalType $refusalType
  * @property Ad $ads
+ * @property User $userOwner
+ * @property User $userAdmin
  * @property int|null $pp_type_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -32,8 +34,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd wherePpTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereRefusalTypeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereSfAdminId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereSfOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserAdminId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserOwnerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereShortDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereToCallBack($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUpdatedAt($value)
@@ -45,15 +47,31 @@ class AttributionAd extends Model
      * @var array
      */
     protected $fillable = [
-        'ad_status_id', 'lead_type_id', 'refusal_type_id', 'sf_owner_id', 'sf_admin_id', 'to_call_back', 'short_description', 'archived_at'
+        'ad_status_id', 'lead_type_id', 'refusal_type_id', 'user_owner_id', 'user_admin_id', 'to_call_back', 'short_description', 'archived_at'
     ];
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function userOwner()
+	{
+		return $this->belongsTo(User::class);
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function userAdmin()
+	{
+		return $this->belongsTo(User::class);
+	}
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function adStatus()
     {
-        return $this->belongsTo('App\Models\AdStatus');
+        return $this->belongsTo(AdStatus::class);
     }
 
     /**
@@ -61,7 +79,7 @@ class AttributionAd extends Model
      */
     public function ppType()
     {
-        return $this->belongsTo('App\Models\PpType', 'lead_type_id');
+        return $this->belongsTo(PpType::class, 'lead_type_id');
     }
 
     /**
@@ -69,7 +87,7 @@ class AttributionAd extends Model
      */
     public function refusalType()
     {
-        return $this->belongsTo('App\Models\RefusalType');
+        return $this->belongsTo(RefusalType::class);
     }
 
     /**
@@ -77,6 +95,6 @@ class AttributionAd extends Model
      */
     public function ads()
     {
-        return $this->hasOne('App\Models\Ad');
+        return $this->hasOne(Ad::class );
     }
 }

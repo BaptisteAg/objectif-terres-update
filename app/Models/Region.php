@@ -41,6 +41,6 @@ class Region extends Model
      */
     public function departments()
     {
-        return $this->hasMany('App\Models\Department', 'region_code', 'code');
+        return $this->hasMany(Department::class, 'region_code', 'code');
     }
 }

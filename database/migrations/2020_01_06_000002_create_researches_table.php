@@ -23,7 +23,7 @@ class CreateResearchesTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('sf_id');
+            $table->unsignedInteger('user_id');
             $table->string('name')->nullable();
             $table->string('surface_min')->nullable();
             $table->string('surface_max')->nullable();
@@ -33,8 +33,13 @@ class CreateResearchesTable extends Migration
             $table->integer('price_max')->nullable();
 			$table->string('ad_type')->nullable();
 			$table->string('url')->nullable();
+			$table->boolean('has_alert')->default(0);
 
-            $table->index(["sf_id"], 'ix_research_sf_id');
+			$table->foreign('user_id')
+				->references('id')
+				->on('users')
+				->onDelete('cascade');
+
             $table->timestamps();
         });
     }

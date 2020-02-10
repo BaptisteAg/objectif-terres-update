@@ -1,7 +1,6 @@
 <?php namespace App\Repositories\Ads;
 
 use App\Models\Ad;
-use App\Models\Document;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
@@ -40,10 +39,11 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
      */
     public function find($id)
     {
+    	/** @var Ad $model */
         $model = $this->entity
             ->where(["id" => $id])
             ->with($this->getEagerLoading())
-            ->firstOrFail();
+            ->first();
 
         if (!$model) {
             throw (new ModelNotFoundException)->setModel(
@@ -55,13 +55,36 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         return $model;
     }
 
-    /**
-     * Creates an ad.
-     *
-     * @param int
-     * @param array
-     * @throws \Throwable
-     */
+	/**
+	 * @param  $idUser
+	 * @return Ad[]|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function allByIdUser($idUser)
+	{
+		/** @var Ad $model */
+		$model = $this->entity
+			->where(["user_pp_id" => $idUser])
+			->with($this->getEagerLoading())
+			->get();
+
+		if (!$model) {
+			throw (new ModelNotFoundException)->setModel(
+				get_class($this->entity->getModel()),
+				$idUser
+			);
+		}
+
+		return $model;
+	}
+
+	/**
+	 * Creates an ad.
+	 *
+	 * @param int
+	 * @param array
+	 * @return Ad
+	 * @throws \Throwable
+	 */
     public function create(array $data): Ad
     {
         $ad = new Ad();
@@ -70,7 +93,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
         $ad->fill($adData);
 
-        $ad->sf_pp_id = 999;
+        $ad->user_pp_id = auth()->user()->id;;
         $ad->is_draft = false;
 
         $ad->save();
@@ -105,14 +128,15 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     {
         return [
             'landSeekAd',
-            'landOfferAd',
-            'jobAd',
-            'cities',
-            'cities.department',
-            'cities.department.region',
-            'departments',
-            'departments.region',
-            'regions',
+			'landOfferAd',
+			'jobAd',
+			'cities',
+			'cities.department',
+			'cities.department.region',
+			'departments',
+			'departments.region',
+			'regions',
+			'adMessages',
         ];
     }
 }

@@ -24,15 +24,19 @@ class CreateAdNotesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->text('content');
-            $table->string('sf_user_id');
+            $table->unsignedInteger('user_id');
             $table->string('contact_name')->nullable();
             $table->unsignedInteger('ad_id');
 
-            $table->index(["sf_user_id"], 'ix_lead_ad_note_sf_user');
+            $table->index(["user_id"], 'ix_lead_ad_note_user_id');
 
             $table->index(["ad_id"], 'fk_lead_ad_notes_1_idx');
             $table->timestamps();
 
+			$table->foreign('user_id','ix_lead_ad_note_user_id' )
+				->references('id')
+				->on('users')
+				->onDelete('cascade');
 
             $table->foreign('ad_id', 'fk_lead_ad_notes_1_idx')
                 ->references('id')->on('ads')

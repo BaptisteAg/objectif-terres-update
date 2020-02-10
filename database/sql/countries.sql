@@ -22,18 +22,18 @@ SET time_zone = "+00:00";
 -- Table structure for table `countries`
 --
 
-CREATE TABLE IF NOT EXISTS `countries` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  `code` int(3) NOT NULL,
-  `alpha2` varchar(2) NOT NULL,
-  `alpha3` varchar(3) NOT NULL,
-  `name_en_gb` varchar(45) NOT NULL,
-  `name_fr_fr` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `alpha2` (`alpha2`),
-  UNIQUE KEY `alpha3` (`alpha3`),
-  UNIQUE KEY `code_unique` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=242 ;
+-- CREATE TABLE IF NOT EXISTS `countries` (
+--   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+--   `code` int(3) NOT NULL,
+--   `alpha2` varchar(2) NOT NULL,
+--   `alpha3` varchar(3) NOT NULL,
+--   `name_en_gb` varchar(45) NOT NULL,
+--   `name_fr_fr` varchar(45) NOT NULL,
+--   PRIMARY KEY (`id`),
+--   UNIQUE KEY `alpha2` (`alpha2`),
+--   UNIQUE KEY `alpha3` (`alpha3`),
+--   UNIQUE KEY `code_unique` (`code`)
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=242 ;
 
 --
 -- Dumping data for table `countries`

@@ -52,7 +52,7 @@ class JobAd extends Model
 	 */
     public function ad()
     {
-        return $this->belongsTo('App\Models\Ad');
+        return $this->belongsTo(Ad::class);
     }
 
     /**
@@ -60,7 +60,7 @@ class JobAd extends Model
      */
     public function educationLevel()
     {
-        return $this->belongsTo('App\Models\EducationLevel');
+        return $this->belongsTo(EducationLevel::class);
     }
 
     /**
@@ -68,7 +68,7 @@ class JobAd extends Model
      */
     public function jobStatus()
     {
-        return $this->belongsTo('App\Models\JobStatus');
+        return $this->belongsTo(JobStatus::class);
     }
 
     /**
@@ -76,6 +76,6 @@ class JobAd extends Model
      */
     public function agriculturalActivity()
     {
-        return $this->belongsToMany('App\Models\AgriculturalActivity')->withTimestamps();
+        return $this->belongsToMany(AgriculturalActivity::class)->withTimestamps();
     }
 }
