@@ -2,7 +2,7 @@
 <template>
     <div>
         <multiselect v-model="values"
-                     :options="options"
+                     :options="data"
                      :multiple="multiple"
                      :close-on-select="false"
                      :clear-on-select="false"
@@ -10,7 +10,7 @@
                      :placeholder=placeholder
                      label="name"
                      :track-by=trackBy
-                     :custom-label="customLabel" >
+                     :custom-label="customLabel">
             <template slot="selection" slot-scope="{ values, search, isOpen }">
                 <span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} {{ selectedCountText }}</span>
             </template>
@@ -31,22 +31,26 @@
             name: String,
             selectedCountText: String,
             placeholder: String,
-            multiple: Boolean,
+            multiple: {
+                type: Boolean,
+                default: true
+            },
             trackBy: {
                 type: String,
                 default: 'name'
             },
+            value: {
+                type: Array,
+            }
         },
         data () {
             return {
-                values: [],
-                options: this.data,
+                values: this.value || [],
             }
         },
         watch: {
             values(newValues) {
-                console.log(newValues);
-                this.$emit('multiselect-select', newValues)
+                this.$emit('input', newValues.map(v => v.id))
             }
 
         },

@@ -27,8 +27,8 @@ $factory->define(User::class, function (Faker $faker) {
 		'address' => $faker->address,
 		'first_name'=>$faker->name,
 		'city'=> $faker->city,
-		'zip_code_id'=>City::all()->random(),
-		'country_id'=>Country::all()->random(),
+		'zip_code_id'=>City::inRandomOrder()->take(1)->get(),
+		'country_id'=>Country::inRandomOrder()->take(1)->get(),
         'remember_token' => Str::random(10),
     ];
 });

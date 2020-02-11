@@ -21,6 +21,15 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereNameFrFr($value)
  * @mixin \Eloquent
+ * @property int $price
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereAlpha2($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereAlpha3($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereNameEnGb($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereUpdatedAt($value)
  */
 class Country extends Model
 {

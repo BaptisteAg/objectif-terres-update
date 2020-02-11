@@ -61,6 +61,11 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereSurfaceMin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereAdType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereHasAlert($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Research whereUrl($value)
  */
 class Research extends Model
 {

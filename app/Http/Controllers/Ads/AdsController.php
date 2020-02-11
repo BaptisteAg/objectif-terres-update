@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
+use App\Models\BuildingType;
 use App\Models\EducationLevel;
 use App\Models\InstallationType;
 use App\Models\JobStatus;
 use App\Models\OfferGenre;
 use App\Models\PriceRange;
 use App\Models\ProductionGenre;
+use App\Models\Requirement;
 use App\Models\SurfaceRange;
 use App\Repositories\FavoriteAds\FavoriteAdRepository;
 use App\Services\AdMessages\AdMessagesService;
@@ -53,9 +55,19 @@ class AdsController extends Controller
 		$offerGenresHouse = OfferGenre::where('offer_genre_model', 'House')->get();
 		$offerGenresBuilding = OfferGenre::where('offer_genre_model', 'Building')->get();
 		$offerGenresLand = OfferGenre::where('offer_genre_model', 'Land')->get();
-		$productionGenres = ProductionGenre::all();
+		$productionGenres = ProductionGenre::with('children')
+            ->whereNull('parent_id')
+            ->get()
+            ->map
+            ->only(['name', 'id', 'children'])
+            ->concat([[
+                'id' => 'other',
+                'name' => 'Autre'
+            ]]);
 		$agriculturalActivities = AgriculturalActivity::all();
 		$educationLevels = EducationLevel::all();
+		$buildingTypes = BuildingType::all();
+		$requirements = Requirement::all();
 
 		return view('pages.ads.new', compact(
 			'installationTypes',
@@ -76,7 +88,8 @@ class AdsController extends Controller
 			'educationLevels',
 			'productionGenres',
 			'agriculturalActivities',
-			'educationLevels'
+			'buildingTypes',
+			'requirements'
 		));
 	}
 
