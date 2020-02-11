@@ -53,6 +53,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int|null $surface
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereSurface($value)
  */
 class LandSeekAd extends Model
 {

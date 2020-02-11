@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\hasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereSurface($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\LandOfferAd $landOfferAd
  */
 class Building extends Model
 {

@@ -29,6 +29,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdMessage whereUserSenderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdMessage whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdMessage whereUserId($value)
  */
 class AdMessage extends Model implements HasPresenter
 {

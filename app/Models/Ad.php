@@ -58,6 +58,13 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserPpId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read int|null $favorite_ads_count
+ * @property-read \App\Models\JobAd $jobOfferAd
+ * @property-read \App\Models\JobAd $jobSeekAd
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Message[] $messages
+ * @property-read int|null $messages_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
+ * @property-read int|null $threads_count
  */
 class Ad extends Model implements HasPresenter
 {
@@ -113,9 +120,9 @@ class Ad extends Model implements HasPresenter
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
-	public function messages()
+	public function threads()
 	{
-		return $this->hasMany(Message::class);
+		return $this->hasMany(Thread::class);
 	}
 
     /**

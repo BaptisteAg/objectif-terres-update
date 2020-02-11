@@ -76,7 +76,7 @@
 					</div>
 					<div class="column is-2">
 						<a href="{{url ('/')}}">
-							<h3 class="title">Objectif Terre</h3>
+							<h3 class="title">Objectif Terres</h3>
 						</a>
 						<h4 class="subtitle">Réalisez votre projet agricole.</h4>
 						<p>Une initiative Terre de Liens</p>
@@ -177,7 +177,7 @@
 					</div>
 				</nav>
 				@if( Auth::check())
-					@if (Route::current()->getName() === 'ads.list' || Route::current()->getName() === 'researches.show' || Route::current()->getName() == 'favoriteAds.show' )
+					@if (Route::current()->getName() === 'ads.list' || Route::current()->getName() === 'researches.show' || Route::current()->getName() == 'favoriteAds.show' || Route::current()->getName() == 'messages.index' )
 						<div class="tabs is-centered is-medium">
 							<ul>
 								<li class="{{ Route::current()->getName() === 'ads.list' ? 'is-active' : '' }}"><a
@@ -197,6 +197,13 @@
 											href="{{route('favoriteAds.show')}}"><span class="icon is-small">
 											<i class="fas fa-star" aria-hidden="true"></i></span>
 										<span>Mes annonces favorites</span>
+									</a>
+								</li>
+								<li class="{{ Route::current()->getName() == 'messagerie.index' ? 'is-active' : '' }}">
+									<a
+											href="{{route('messagerie.index')}}"><span class="icon is-small">
+											<i class="fas fa-comments"></i></span>
+										<span>Ma messagerie</span>
 									</a>
 								</li>
 							</ul>

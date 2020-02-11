@@ -29,6 +29,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereTypeDocument($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereUserId($value)
  */
 class Document extends Model
 {
