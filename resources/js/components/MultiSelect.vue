@@ -2,13 +2,15 @@
 <template>
     <div>
         <multiselect v-model="values"
-                     :options="data"
+                     :options="options"
                      :multiple="multiple"
                      :close-on-select="false"
                      :clear-on-select="false"
                      :preserve-search="true"
                      :placeholder=placeholder
                      label="name"
+                     :group-values="groupValues"
+                     :group-label="groupLabel"
                      :track-by=trackBy
                      :custom-label="customLabel">
             <template slot="selection" slot-scope="{ values, search, isOpen }">
@@ -27,7 +29,7 @@
             Multiselect,
         },
         props: {
-            data: Array,
+            options: Array,
             name: String,
             selectedCountText: String,
             placeholder: String,
@@ -41,6 +43,14 @@
             },
             value: {
                 type: Array,
+            },
+            groupValues: {
+                type: String,
+                default: ''
+            },
+            groupLabel: {
+                type: String,
+                default: 'name'
             }
         },
         data () {
@@ -50,7 +60,7 @@
         },
         watch: {
             values(newValues) {
-                this.$emit('input', newValues.map(v => v.id))
+                this.$emit('input', newValues)
             }
 
         },
@@ -64,7 +74,3 @@
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"/>
-
-<style>
-
-</style>

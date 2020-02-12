@@ -1,24 +1,24 @@
 <div id="land_seek_form">
     <form-wizard
-        title=""
-        subtitle=""
-        next-button-text="Suivant"
-        back-button-text="Précédent"
-        finish-button-text="Demander la publication"
-        step-size="xs"
-        @on-complete="$emit('form-complete')"
-        color="#3498db"
-        ref="formWizard">
+            title=""
+            subtitle=""
+            next-button-text="Suivant"
+            back-button-text="Précédent"
+            finish-button-text="Demander la publication"
+            step-size="xs"
+            @on-complete="$emit('form-complete')"
+            color="#3498db"
+            ref="formWizard">
 
         <tab-content title="Localisation" icon="ti-location-arrow">
             <zone-select
-                name="land_seek[locationable]"
-                radius-name="land_seek[locationable_radius]"
-                json-name="land_seek[selected_zones]"
-                ref="selectedZones"
-                v-model="formInput.selectedZones"
-                :vuelidate="$v.formInput.selectedZones"
-                :disabled="isInputDisabled">
+                    name="land_seek[locationable]"
+                    radius-name="land_seek[locationable_radius]"
+                    json-name="land_seek[selected_zones]"
+                    ref="selectedZones"
+                    v-model="formInput.selectedZones"
+                    :vuelidate="$v.formInput.selectedZones"
+                    :disabled="isInputDisabled">
             </zone-select>
         </tab-content>
 
@@ -26,10 +26,10 @@
             <div class="field">
                 {!! Form::label('land_seek[surface_range][]', 'Surface recherchée (en hectares)', ['class' => 'label']); !!}
                 <vue-slider-range
-                    name-min="land_seek[surface_range_min]"
-                    name-max="land_seek[surface_range_max]"
-                    :data="{{ json_encode($surfaceRanges->pluck('label', 'value')) }}"
-                    :value="[formInput.surfaceRangeMin, formInput.surfaceRangeMax]"
+                        name-min="land_seek[surface_range_min]"
+                        name-max="land_seek[surface_range_max]"
+                        :data="{{ json_encode($surfaceRanges->pluck('label', 'value')) }}"
+                        :value="[formInput.surfaceRangeMin, formInput.surfaceRangeMax]"
                 ></vue-slider-range>
             </div>
             <br>
@@ -78,21 +78,22 @@
                 {!! Form::label('land_seek[production_genre][]', 'Production(s) envisagée(s)*', ['class' => 'label']); !!}
 
                 <multi-select
-                    :data="{{json_encode($productionGenres)}}"
-                    name="land_seek[production_genre][]"
-                    v-model="formInput.productionGenre"
-                    selected-count-text=" productions sélectionnées"
-                    placeholder="Sélectionnez au moins une production"
-                    ref="productionGenre">
+                        :options="{{json_encode($productionGenres)}}"
+                        group-values="children"
+                        name="land_seek[production_genre][]"
+                        v-model="selectedProductionGenres"
+                        selected-count-text="productions sélectionnée(s)"
+                        placeholder="Sélectionnez au moins une production"
+                        ref="productionGenre">
                 </multi-select>
 
-                <p class="help is-danger" id="productionGenreError" v-if="$v.formInput.productionGenre.$error">Ce champ
-                    est
-                    requis.</p>
+                <p class="help is-danger" id="productionGenreError" v-if="$v.formInput.productionGenre.$error">
+                    Ce champ est requis.
+                </p>
             </div>
 
             <div class="field" v-show="isProductionGenreOther">
-                {!! Form::label('land_seek[production_type_add]', 'Veuillez préciser', ['class' => 'label']); !!}
+                {!! Form::label('land_seek[production_type_add]', 'Autre production : Veuillez préciser', ['class' => 'label']); !!}
                 {!! Form::text('land_seek[production_type_add]',
                      null,
                      [
@@ -127,9 +128,9 @@
                 <span>Une photo de vous ? Une synthèse de votre projet ? Les photos sont importantes pour donner envie de consulter votre annonce.</span>
 
                 <vue-dropzone
-                    ref="documents"
-                    id="dropzone"
-                    :options="{
+                        ref="documents"
+                        id="dropzone"
+                        :options="{
                         url: '/documents/upload',
                         thumbnailWidth: 150,
                         maxFiles: 5,
@@ -138,10 +139,10 @@
                         uploadMultiple: true,
                         acceptedFiles: 'image/*, application/pdf, text/*, application/msword, application/vnd.ms-excel, application/zip'
                     }"
-                    :duplicate-check="true"
-                    :use-custom-slot="true"
-                    @vdropzone-sending-multiple="onBeforeDocumentsUpload"
-                    @vdropzone-success-multiple="onSuccessDocumentsUpload">
+                        :duplicate-check="true"
+                        :use-custom-slot="true"
+                        @vdropzone-sending-multiple="onBeforeDocumentsUpload"
+                        @vdropzone-success-multiple="onSuccessDocumentsUpload">
 
                     <div class="dropzone-custom-content">
                         <div class="subtitle">Cliquez ici pour déposer des fichiers</div>
@@ -167,12 +168,12 @@
                 </label>
 
                 <text-area-counter
-                    name="land_seek[experience_farming]"
-                    :max-length=1000
-                    :disabled="isInputDisabled"
-                    ref="experienceFarming"
-                    v-model="formInput.experienceFarming"
-                    :vuelidate="$v.formInput.experienceFarming">
+                        name="land_seek[experience_farming]"
+                        :max-length=1000
+                        :disabled="isInputDisabled"
+                        ref="experienceFarming"
+                        v-model="formInput.experienceFarming"
+                        :vuelidate="$v.formInput.experienceFarming">
                 </text-area-counter>
             </div>
             <div class="field">
@@ -187,12 +188,12 @@
                 </label>
 
                 <text-area-counter
-                    name="land_seek[about_project_content]"
-                    :max-length="1000"
-                    :disabled="isInputDisabled"
-                    ref="aboutProject"
-                    v-model="formInput.aboutProject"
-                    :vuelidate="$v.formInput.aboutProject">
+                        name="land_seek[about_project_content]"
+                        :max-length="1000"
+                        :disabled="isInputDisabled"
+                        ref="aboutProject"
+                        v-model="formInput.aboutProject"
+                        :vuelidate="$v.formInput.aboutProject">
                 </text-area-counter>
             </div>
             <div class="field">
@@ -204,12 +205,12 @@
                 </label>
 
                 <text-area-counter
-                    name="land_seek[about_content]"
-                    :max-length="1000"
-                    :disabled="isInputDisabled"
-                    ref="aboutContent"
-                    v-model="formInput.aboutContent"
-                    :vuelidate="$v.formInput.aboutContent">
+                        name="land_seek[about_content]"
+                        :max-length="1000"
+                        :disabled="isInputDisabled"
+                        ref="aboutContent"
+                        v-model="formInput.aboutContent"
+                        :vuelidate="$v.formInput.aboutContent">
                 </text-area-counter>
             </div>
         </tab-content>

@@ -49,7 +49,7 @@
             <div class="field">
                 {!! Form::label('production_genre', 'Choisissez des types de production', ['class' => 'label']); !!}
                 <multi-select
-                    :data="{{ json_encode($productionGenres) }}"
+                    :options="{{ json_encode($productionGenres) }}"
                     :multiple="true"
                     name="production_genres[]"
                     selected-count-text="production(s) sélectionné(s)"
@@ -59,7 +59,7 @@
             <div class="field">
                 {!! Form::label('bio_certification', 'Choisissez des systèmes de production bio ou aucun', ['class' => 'label']); !!}
                 <multi-select
-                    :data="{{ json_encode($bioCertifications) }}"
+                    :options="{{ json_encode($bioCertifications) }}"
                     :multiple="true"
                     name="bio_certifications[]"
                     selected-count-text="production(s) bio sélectionné(s)"

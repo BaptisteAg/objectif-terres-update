@@ -2,7 +2,7 @@
 	<div class="field">
 		{!! Form::label('departments', 'Choisissez un département', ['class' => 'label']); !!}
 		<multi-select
-				:data="{{ json_encode($departments) }}"
+				:options="{{ json_encode($departments) }}"
 				:multiple="true"
 				name="departments_location_researches[]"
 				selected-count-text="département(s) sélectionné(s)"

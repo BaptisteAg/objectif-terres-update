@@ -45,6 +45,7 @@ export default Vue.extend({
                 experienceFarming: hasOld ? (v.experience_farming || '') : '',
                 documents: hasOld ? v.documents : []
             },
+            selectedProductionGenres: []
         }
     },
     computed: {
@@ -53,6 +54,9 @@ export default Vue.extend({
         }
     },
     watch: {
+        selectedProductionGenres(productionGenres) {
+            this.formInput.productionGenre = productionGenres.map(productionGenre => productionGenre.id)
+        },
         'formInput.productionGenre': function (productionGenre) {
             if (!productionGenre.includes('other')) {
                 this.formInput.productionTypeAdd = '';

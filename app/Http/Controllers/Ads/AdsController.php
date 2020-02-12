@@ -62,12 +62,20 @@ class AdsController extends Controller
             ->only(['name', 'id', 'children'])
             ->concat([[
                 'id' => 'other',
-                'name' => 'Autre'
+                'name' => 'Autre',
+                'children' => []
             ]]);
 		$agriculturalActivities = AgriculturalActivity::all();
 		$educationLevels = EducationLevel::all();
 		$buildingTypes = BuildingType::all();
 		$requirements = Requirement::all();
+
+        $productionGenres = $productionGenres->map(function ($productionGenre) {
+            if(!count($productionGenre["children"])) {
+                unset($productionGenre["children"]);
+            }
+            return $productionGenre;
+        });
 
 		return view('pages.ads.new', compact(
 			'installationTypes',
@@ -76,9 +84,6 @@ class AdsController extends Controller
 			'bioCertifications',
 			'jobStatus',
 			'offerGenres',
-			'cities',
-			'departments',
-			'regions',
 			'offerGenresLandSeek',
 			'offerGenresHouse',
 			'offerGenresBuilding',
