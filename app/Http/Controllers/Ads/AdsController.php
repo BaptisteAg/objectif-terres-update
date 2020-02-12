@@ -3,25 +3,22 @@
 namespace App\Http\Controllers\Ads;
 
 use App\Http\Controllers\Controller;
-use App\Models\Document;
-use App\Repositories\Ads\AdRepository;
 use App\Http\Requests\Ads\AdRequest;
-use App\Models\Ad;
 use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
-use App\Models\City;
-use App\Models\Department;
+use App\Models\BuildingType;
 use App\Models\EducationLevel;
 use App\Models\InstallationType;
 use App\Models\JobStatus;
 use App\Models\OfferGenre;
 use App\Models\PriceRange;
 use App\Models\ProductionGenre;
-use App\Models\Region;
+use App\Models\Requirement;
 use App\Models\SurfaceRange;
 use App\Repositories\FavoriteAds\FavoriteAdRepository;
 use App\Services\AdMessages\AdMessagesService;
 use App\Services\Ads\AdService;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
@@ -43,6 +40,9 @@ class AdsController extends Controller
 
 	}
 
+    /**
+     * @return \Illuminate\View\View
+     */
 	public function create()
 	{
 		$surfaceRanges = SurfaceRange::all();
@@ -55,13 +55,27 @@ class AdsController extends Controller
 		$offerGenresHouse = OfferGenre::where('offer_genre_model', 'House')->get();
 		$offerGenresBuilding = OfferGenre::where('offer_genre_model', 'Building')->get();
 		$offerGenresLand = OfferGenre::where('offer_genre_model', 'Land')->get();
-		$cities = City::all();
-		$departments = Department::all();
-		$regions = Region::all();
-		$productionGenres = ProductionGenre::all();
+		$productionGenres = ProductionGenre::with('children')
+            ->whereNull('parent_id')
+            ->get()
+            ->map
+            ->only(['name', 'id', 'children'])
+            ->concat([[
+                'id' => 'other',
+                'name' => 'Autre',
+                'children' => []
+            ]]);
 		$agriculturalActivities = AgriculturalActivity::all();
 		$educationLevels = EducationLevel::all();
+		$buildingTypes = BuildingType::all();
+		$requirements = Requirement::all();
 
+        $productionGenres = $productionGenres->map(function ($productionGenre) {
+            if(!count($productionGenre["children"])) {
+                unset($productionGenre["children"]);
+            }
+            return $productionGenre;
+        });
 
 		return view('pages.ads.new', compact(
 			'installationTypes',
@@ -70,9 +84,6 @@ class AdsController extends Controller
 			'bioCertifications',
 			'jobStatus',
 			'offerGenres',
-			'cities',
-			'departments',
-			'regions',
 			'offerGenresLandSeek',
 			'offerGenresHouse',
 			'offerGenresBuilding',
@@ -82,7 +93,8 @@ class AdsController extends Controller
 			'educationLevels',
 			'productionGenres',
 			'agriculturalActivities',
-			'educationLevels'
+			'buildingTypes',
+			'requirements'
 		));
 	}
 
@@ -97,7 +109,7 @@ class AdsController extends Controller
 
 		$ad = $this->adService->create($data);
 
-		return redirect()->route('ads.show', [$ad->id]);
+		return redirect()->route('ads.show', [$ad->id])->with('success', 'Votre annonce a bien été publiée.');
 	}
 
 	/**
@@ -114,7 +126,11 @@ class AdsController extends Controller
 		return redirect()->route('ads.show', [$ad->id]);
 	}
 
-	public function show(int $adId)
+    /**
+     * @param int $adId
+     * @return Factory|\Illuminate\View\View
+     */
+    public function show(int $adId)
 	{
 		$ad = $this->adService->find($adId);
 
@@ -133,10 +149,13 @@ class AdsController extends Controller
 		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist'));
 	}
 
-	public function list()
+    /**
+     * @return Factory|\Illuminate\View\View
+     */
+    public function list()
 	{
+		$ads = $this->adService->findAllByUser(auth()->id());
 
-		$ads = $this->adService->findAllByUser(auth()->user()->id);
 		return view('pages.ads.listUserAds', compact('ads'));
 	}
 }

@@ -24,7 +24,12 @@ class CreateProductionGenresTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
+            $table->unsignedInteger('parent_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('parent_id', 'fk_parent_idx')
+                ->references('id')->on($this->tableName)
+                ->onDelete('cascade');
         });
     }
 

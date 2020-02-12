@@ -22,6 +22,7 @@
 											   value="{{ old('name') }}" required autocomplete="name" autofocus
 											   placeholder="Votre nom...">
 										<span class="icon is-small is-left">
+
                                      <i class="fas fa-user"></i>
                                     </span>
 									</div>

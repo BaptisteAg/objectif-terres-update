@@ -58,6 +58,9 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserPpId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read int|null $favorite_ads_count
+ * @property-read \App\Models\JobAd $jobOfferAd
+ * @property-read \App\Models\JobAd $jobSeekAd
  */
 class Ad extends Model implements HasPresenter
 {

@@ -24,8 +24,8 @@ class DocumentService
         $document = $this->repository->create([
             'path' => $storedFilePath,
             'name' => $file->getClientOriginalName(),
-            "user_id" => auth()->user()->id,
-            'type_document' => 'ad'
+            "user_id" => auth()->id(),
+            'type_document' => 'image'
         ]);
 
         return $document;

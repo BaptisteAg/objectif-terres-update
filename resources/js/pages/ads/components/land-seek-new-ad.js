@@ -3,8 +3,10 @@ import {maxLength, minLength, numeric, required} from 'vuelidate/lib/validators'
 import FormNewAdMixin from './mixins/form-new-ad-mixin'
 import TextAreaCounter from "../../../components/TextAreaCounter";
 import VueSlider from "../../../components/VueSlider";
+import VueSliderRange from "../../../components/VueSliderRange";
 import ZoneSelect from '../../../components/ZoneSelect'
 import AdTypeSelect from '../../../components/AdTypeSelect'
+import MultiSelect from "../../../components/MultiSelect";
 
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
@@ -15,8 +17,10 @@ export default Vue.extend({
     components: {
         TextAreaCounter,
         VueSlider,
+        VueSliderRange,
         ZoneSelect,
         AdTypeSelect,
+        MultiSelect,
         vueDropzone: vue2Dropzone
     },
     data() {
@@ -25,6 +29,8 @@ export default Vue.extend({
 
         return {
             formInput: {
+                surfaceRangeMin : hasOld ? v.surface_range_min : 0,
+                surfaceRangeMax : hasOld ? v.surface_range_max : 0,
                 installationTypeId: hasOld ? v.installation_type_id : '',
                 productionGenre: hasOld ? v.production_genre : [],
                 productionTypeAdd: hasOld ? v.production_type_add : '',
@@ -39,6 +45,7 @@ export default Vue.extend({
                 experienceFarming: hasOld ? (v.experience_farming || '') : '',
                 documents: hasOld ? v.documents : []
             },
+            selectedProductionGenres: []
         }
     },
     computed: {
@@ -47,6 +54,9 @@ export default Vue.extend({
         }
     },
     watch: {
+        selectedProductionGenres(productionGenres) {
+            this.formInput.productionGenre = productionGenres.map(productionGenre => productionGenre.id)
+        },
         'formInput.productionGenre': function (productionGenre) {
             if (!productionGenre.includes('other')) {
                 this.formInput.productionTypeAdd = '';

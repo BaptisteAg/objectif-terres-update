@@ -65,4 +65,14 @@ class ProductionGenre extends Model
     {
         return $this->morphedByMany(Research::class, 'productionable_genre');
     }
+
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_id', 'id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(self::class, 'id', 'parent_id');
+    }
 }

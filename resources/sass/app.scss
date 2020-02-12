@@ -39,6 +39,14 @@
   /* ... */
 }
 
+// Vue-Multiselect
+body .multiselect__option--highlight {
+  background: rgb(52, 152, 219);
+
+  &::after {
+    background: rgb(52, 152, 219);
+  }
+}
 
 .slider-pagination {
   bottom: -40px;

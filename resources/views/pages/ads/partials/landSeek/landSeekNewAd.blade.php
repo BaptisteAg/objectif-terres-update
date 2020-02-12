@@ -1,28 +1,109 @@
 <div id="land_seek_form">
     <form-wizard
-        title=""
-        subtitle=""
-        next-button-text="Suivant"
-        back-button-text="Précédent"
-        finish-button-text="Publier"
-        step-size="xs"
-        @on-complete="$emit('form-complete')"
-        color="#3498db"
-        ref="formWizard">
+            title=""
+            subtitle=""
+            next-button-text="Suivant"
+            back-button-text="Précédent"
+            finish-button-text="Demander la publication"
+            step-size="xs"
+            @on-complete="$emit('form-complete')"
+            color="#3498db"
+            ref="formWizard">
 
-        <tab-content title="Zone" icon="ti-location-arrow">
+        <tab-content title="Localisation" icon="ti-location-arrow">
             <zone-select
-                name="land_seek[locationable]"
-                radius-name="land_seek[locationable_radius]"
-                json-name="land_seek[selected_zones]"
-                ref="selectedZones"
-                v-model="formInput.selectedZones"
-                :vuelidate="$v.formInput.selectedZones"
-                :disabled="isInputDisabled">
+                    name="land_seek[locationable]"
+                    radius-name="land_seek[locationable_radius]"
+                    json-name="land_seek[selected_zones]"
+                    ref="selectedZones"
+                    v-model="formInput.selectedZones"
+                    :vuelidate="$v.formInput.selectedZones"
+                    :disabled="isInputDisabled">
             </zone-select>
         </tab-content>
 
-        <tab-content title="Production" icon="ti-settings">
+        <tab-content title="Foncier" icon="ti-settings">
+            <div class="field">
+                {!! Form::label('land_seek[surface_range][]', 'Surface recherchée (en hectares)', ['class' => 'label']); !!}
+                <vue-slider-range
+                        name-min="land_seek[surface_range_min]"
+                        name-max="land_seek[surface_range_max]"
+                        :data="{{ json_encode($surfaceRanges->pluck('label', 'value')) }}"
+                        :value="[formInput.surfaceRangeMin, formInput.surfaceRangeMax]"
+                ></vue-slider-range>
+            </div>
+            <br>
+
+            <div class="field">
+                {!! Form::label('land_seek_wants_farms_or_buildings', 'Habitation(s) et bâti(s)', ['class' => 'label']); !!}
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <td></td>
+                        @foreach($requirements as $requirement)
+                            <td>{{ $requirement->label }}</td>
+                        @endforeach
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($buildingTypes as $buildingType)
+                        <tr>
+                            <td>{{ $buildingType->label }}</td>
+                            @foreach($requirements as $requirement)
+                                <td style="text-align:center">
+                                    <input type="radio"
+                                           name="land_seek[buildings][{{$buildingType->id}}]"
+                                           value="{{ $requirement->id }}">
+                                </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </tab-content>
+
+        <tab-content title="Votre projet" icon="ti-settings">
+
+            <div class="field">
+                {!! Form::label('land_seek[is_bio]', "Votre projet est-il en agriculture biologique ?", ['class' => 'label']) !!}
+                {!! Form::radio('land_seek[is_bio]', '1',old('land_seek[is_bio]') === '1', [':disabled' => 'isInputDisabled']) !!}
+                oui
+                {!! Form::radio('land_seek[is_bio]', '0', old('land_seek[is_bio]') === '0', [':disabled' => 'isInputDisabled']) !!}
+                non
+            </div>
+
+            <div class="field">
+                {!! Form::label('land_seek[production_genre][]', 'Production(s) envisagée(s)*', ['class' => 'label']); !!}
+
+                <multi-select
+                        :options="{{json_encode($productionGenres)}}"
+                        group-values="children"
+                        name="land_seek[production_genre][]"
+                        v-model="selectedProductionGenres"
+                        selected-count-text="productions sélectionnée(s)"
+                        placeholder="Sélectionnez au moins une production"
+                        ref="productionGenre">
+                </multi-select>
+
+                <p class="help is-danger" id="productionGenreError" v-if="$v.formInput.productionGenre.$error">
+                    Ce champ est requis.
+                </p>
+            </div>
+
+            <div class="field" v-show="isProductionGenreOther">
+                {!! Form::label('land_seek[production_type_add]', 'Autre production : Veuillez préciser', ['class' => 'label']); !!}
+                {!! Form::text('land_seek[production_type_add]',
+                     null,
+                     [
+                        'class' => 'input',
+                        ':disabled' => 'isInputDisabled',
+                        'v-model' => 'formInput.productionTypeAdd'
+                     ]
+                 ) !!}
+            </div>
+
             <div class="field">
                 {!! Form::label('land_seek[installation_type_id]', 'Type d\'installation*', ['class' => 'label']); !!}
                 <div class="select">
@@ -40,122 +121,6 @@
                     champ
                     est requis.</p>
             </div>
-
-            <div class="field">
-                {!! Form::label('land_seek[is_bio]', 'Je souhaite m\'installer en bio', ['class' => 'label']) !!}
-                {!! Form::radio('land_seek[is_bio]', '1',old('land_seek[is_bio]') === '1', [':disabled' => 'isInputDisabled']) !!}
-                oui
-                {!! Form::radio('land_seek[is_bio]', '0', old('land_seek[is_bio]') === '0', [':disabled' => 'isInputDisabled']) !!}
-                non
-            </div>
-            <div class="field">
-                {!! Form::label('land_seek[surface_range][]', 'Surface recherchée(en ha)', ['class' => 'label']); !!}
-                @foreach ($surfaceRanges->pluck('surface', 'id') as $id => $surface)
-                    {!! Form::checkbox(
-                        'land_seek[surface_range][]',
-                        $id,
-                        null,
-                        [
-                            ':disabled' => 'isInputDisabled'
-                        ]
-                    ) !!}
-                    {{$surface}}
-                @endforeach
-            </div>
-            <div class="field">
-                {!! Form::label('land_seek[production_genre][]', 'Production(s) envisagée(s)*', ['class' => 'label']); !!}
-
-                @foreach ($productionGenres->pluck('name', 'id') as $id => $productionGenre)
-                    {!! Form::checkbox('land_seek[production_genre][]',
-                        $id,
-                        null,
-                        [
-                            ':disabled' => 'isInputDisabled',
-                            'v-model'=>'formInput.productionGenre',
-                            'ref' => 'productionGenre',
-                            'aria-describedby'=>'productionGenreError'
-                        ])
-                    !!}
-                    {{$productionGenre}}
-                @endforeach
-                {!! Form::checkbox('land_seek[production_genre][]',
-                'other',
-                null,
-                [':disabled' => 'isInputDisabled',
-                'v-model.trim.lazy'=>'formInput.productionGenre',
-                'ref' => 'productionGenre',
-                'aria-describedby'=>'productionGenreError']) !!}
-                Autre
-                <p class="help is-danger" id="productionGenreError" v-if="$v.formInput.productionGenre.$error">Ce champ
-                    est
-                    requis.</p>
-            </div>
-
-            <div class="field" v-show="isProductionGenreOther">
-                {!! Form::label('land_seek[production_type_add]', 'Veuillez préciser', ['class' => 'label']); !!}
-                {!! Form::text('land_seek[production_type_add]',
-                     null,
-                     [
-                        'class' => 'input',
-                        ':disabled' => 'isInputDisabled',
-                        'v-model' => 'formInput.productionTypeAdd'
-                     ]
-                 ) !!}
-            </div>
-        </tab-content>
-
-        <tab-content title="Foncier" icon="ti-home">
-            <div class="field">
-                {!! Form::label('land_seek_has_farms_or_buildings', 'Habitation(s) et bâti(s)', ['class' => 'label']); !!}
-                {!! Form::checkbox('land_seek[has_farm_buildings]', '1', old('land_seek[has_farm_buildings]'), [':disabled' => 'isInputDisabled']) !!}
-                Avec une maison d'habitation existante
-                {!! Form::checkbox('land_seek[has_houses]', '1', old('land_seek[has_houses]'), [':disabled' => 'isInputDisabled']) !!}
-                Avec des bâtis agricoles existants
-            </div>
-            <div class="field">
-                {!! Form::label('land_seek[offer_genre_id]', 'Accès au foncier souhaité', ['class' => 'label']); !!}
-                <div class="select">
-                    {!! Form::select('land_seek[offer_genre_id]',
-                             $offerGenresLandSeek->pluck('name', 'id'),
-                             null,
-                              ['placeholder' => 'Veuillez choisir...',
-                               ':disabled' => 'isInputDisabled',
-                               'v-model'=> 'formInput.offerGenre']);!!}
-                </div>
-            </div>
-            <div class="field" v-show="formInput.offerGenre === '2'">
-                {!! Form::label('land_seek[price_range][]', 'Prix (en €)', ['class' => 'label']); !!}
-                @foreach ($priceRanges->pluck('price', "id") as $priceId => $price)
-                    {!! Form::checkbox('land_seek[price_range][]', $priceId, in_array($priceId, old('land_seek[price_range]', [])), [':disabled' => 'isInputDisabled']) !!}
-                    {{$price}}
-                @endforeach
-            </div>
-            <div class="columns">
-                <div class="column is-half">
-                    <div class="field" v-show="formInput.offerGenre === '1'">
-                        {!! Form::label('land_seek[rent_min]', 'Loyer minimum (en €)', ['class' => 'label']); !!}
-                        {!! Form::text('land_seek[rent_min]',
-                                 null,
-                                  ['min'=>0,
-                                  'class' => 'input',
-                                   'v-model.trim'=> 'formInput.minRent',
-                                   ':disabled' => 'isInputDisabled'] ) !!}
-                        <p class="help is-danger" v-if="!$v.formInput.minRent.numeric">Veuillez saisir des chiffres.</p>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="field" v-show="formInput.offerGenre === '1'">
-                        {!! Form::label('land_seek[rent_max]', 'Loyer maximum (en €)', ['class' => 'label']); !!}
-                        {!! Form::text('land_seek[rent_max]',
-                                  null,
-                                  ['min'=>1,
-                                  'class' => 'input',
-                                  'v-model.trim' => 'formInput.maxRent',
-                                  ':disabled' => 'isInputDisabled'] ) !!}
-                        <p class="help is-danger" v-if="!$v.formInput.maxRent.numeric">Veuillez saisir des chiffres.</p>
-                    </div>
-                </div>
-            </div>
         </tab-content>
 
         <tab-content title="Documents" icon="ti-folder">
@@ -163,13 +128,21 @@
                 <span>Une photo de vous ? Une synthèse de votre projet ? Les photos sont importantes pour donner envie de consulter votre annonce.</span>
 
                 <vue-dropzone
-                    ref="documents"
-                    id="dropzone"
-                    :options="{url: '/documents/upload', thumbnailWidth: 150, maxFiles: 5, maxFilesize: 1, addRemoveLinks: true, uploadMultiple: true}"
-                    :duplicate-check="true"
-                    :use-custom-slot="true"
-                    @vdropzone-sending-multiple="onBeforeDocumentsUpload"
-                    @vdropzone-success-multiple="onSuccessDocumentsUpload">
+                        ref="documents"
+                        id="dropzone"
+                        :options="{
+                        url: '/documents/upload',
+                        thumbnailWidth: 150,
+                        maxFiles: 5,
+                        maxFilesize: 1,
+                        addRemoveLinks: true,
+                        uploadMultiple: true,
+                        acceptedFiles: 'image/*, application/pdf, text/*, application/msword, application/vnd.ms-excel, application/zip'
+                    }"
+                        :duplicate-check="true"
+                        :use-custom-slot="true"
+                        @vdropzone-sending-multiple="onBeforeDocumentsUpload"
+                        @vdropzone-success-multiple="onSuccessDocumentsUpload">
 
                     <div class="dropzone-custom-content">
                         <div class="subtitle">Cliquez ici pour déposer des fichiers</div>
@@ -195,12 +168,12 @@
                 </label>
 
                 <text-area-counter
-                    name="land_seek[experience_farming]"
-                    :max-length=1000
-                    :disabled="isInputDisabled"
-                    ref="experienceFarming"
-                    v-model="formInput.experienceFarming"
-                    :vuelidate="$v.formInput.experienceFarming">
+                        name="land_seek[experience_farming]"
+                        :max-length=1000
+                        :disabled="isInputDisabled"
+                        ref="experienceFarming"
+                        v-model="formInput.experienceFarming"
+                        :vuelidate="$v.formInput.experienceFarming">
                 </text-area-counter>
             </div>
             <div class="field">
@@ -215,12 +188,12 @@
                 </label>
 
                 <text-area-counter
-                    name="land_seek[about_project_content]"
-                    :max-length="1000"
-                    :disabled="isInputDisabled"
-                    ref="aboutProject"
-                    v-model="formInput.aboutProject"
-                    :vuelidate="$v.formInput.aboutProject">
+                        name="land_seek[about_project_content]"
+                        :max-length="1000"
+                        :disabled="isInputDisabled"
+                        ref="aboutProject"
+                        v-model="formInput.aboutProject"
+                        :vuelidate="$v.formInput.aboutProject">
                 </text-area-counter>
             </div>
             <div class="field">
@@ -232,12 +205,12 @@
                 </label>
 
                 <text-area-counter
-                    name="land_seek[about_content]"
-                    :max-length="1000"
-                    :disabled="isInputDisabled"
-                    ref="aboutContent"
-                    v-model="formInput.aboutContent"
-                    :vuelidate="$v.formInput.aboutContent">
+                        name="land_seek[about_content]"
+                        :max-length="1000"
+                        :disabled="isInputDisabled"
+                        ref="aboutContent"
+                        v-model="formInput.aboutContent"
+                        :vuelidate="$v.formInput.aboutContent">
                 </text-area-counter>
             </div>
         </tab-content>
@@ -300,4 +273,3 @@
 
     </form-wizard>
 </div>
-

@@ -21,20 +21,9 @@ class LandOfferAdRepository extends AbstractRepository implements LandOfferAdRep
     {
         $landOfferAd = new LandOfferAd();
 
-        $productionGenres = $data["production_genre"] ?? [];
-
-        if(in_array('other', $productionGenres)) {
-            $data["production_type_add"] = "";
-            $productionGenres = Arr::where($productionGenres, function($productionGenre) {return $productionGenre !== 'other';});
-        }
-
         $landOfferAd->fill($data);
 
         $landOfferAd->save();
-
-        if (count($productionGenres)) {
-            $landOfferAd->productionGenres()->attach($productionGenres);
-        }
 
         return $landOfferAd;
     }

@@ -54,6 +54,20 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereWaterAccess($value)
  * @mixin \Eloquent
+ * @property string|null $title
+ * @property string|null $land_availability
+ * @property string|null $land_transfer_deadline
+ * @property int|null $land_price
+ * @property int|null $house_price
+ * @property int|null $building_price
+ * @property int $confirm_price_fermage
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereBuildingPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereConfirmPriceFermage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereHousePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereLandAvailability($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereLandPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereLandTransferDeadline($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereTitle($value)
  */
 class LandOfferAd extends Model
 {

@@ -22,6 +22,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange whereSurface($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $label
+ * @property string $value
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange whereLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange whereValue($value)
  */
 class SurfaceRange extends Model
 {

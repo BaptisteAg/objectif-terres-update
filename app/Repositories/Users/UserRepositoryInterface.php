@@ -5,7 +5,6 @@ use App\Models\User;
 
 interface UserRepositoryInterface
 {
-
 	/**
 	 * Creates a user.
 	 *
@@ -14,5 +13,4 @@ interface UserRepositoryInterface
 	 */
 
 	public function create(array $data) ;
-
 }

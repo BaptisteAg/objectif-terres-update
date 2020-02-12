@@ -32,7 +32,8 @@ class CreateLandSeekAdsTable extends Migration
             $table->integer('rent_min')->nullable();
             $table->integer('rent_max')->nullable();
             $table->unsignedInteger('ad_id');
-			$table->integer('surface')->nullable();
+			$table->integer('surface_range_min')->nullable();
+			$table->integer('surface_range_max')->nullable();
             $table->unsignedInteger('installation_type_id')->nullable();
             $table->unsignedInteger('offer_genre_id')->nullable();
 

@@ -9,8 +9,10 @@
                      :preserve-search="true"
                      :placeholder=placeholder
                      label="name"
+                     :group-values="groupValues"
+                     :group-label="groupLabel"
                      :track-by=trackBy
-                     :custom-label="customLabel" >
+                     :custom-label="customLabel">
             <template slot="selection" slot-scope="{ values, search, isOpen }">
                 <span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} {{ selectedCountText }}</span>
             </template>
@@ -27,26 +29,38 @@
             Multiselect,
         },
         props: {
-            data: Array,
+            options: Array,
             name: String,
             selectedCountText: String,
             placeholder: String,
-            multiple: Boolean,
+            multiple: {
+                type: Boolean,
+                default: true
+            },
             trackBy: {
                 type: String,
                 default: 'name'
             },
+            value: {
+                type: Array,
+            },
+            groupValues: {
+                type: String,
+                default: ''
+            },
+            groupLabel: {
+                type: String,
+                default: 'name'
+            }
         },
         data () {
             return {
-                values: [],
-                options: this.data,
+                values: this.value || [],
             }
         },
         watch: {
             values(newValues) {
-                console.log(newValues);
-                this.$emit('multiselect-select', newValues)
+                this.$emit('input', newValues)
             }
 
         },
@@ -60,7 +74,3 @@
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"/>
-
-<style>
-
-</style>
