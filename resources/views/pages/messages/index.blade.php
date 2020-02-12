@@ -12,7 +12,9 @@
 						inline-template>
 					<div class="columns">
 						<div class="column is-one-quarter">
-								<list-threads :values="{{json_encode($interlocutors)}}"></list-threads>
+							<list-threads
+									:threads="{{json_encode($messagesByThread)}}">
+							</list-threads>
 						</div>
 						<div class="column box">
 							<header-message></header-message>

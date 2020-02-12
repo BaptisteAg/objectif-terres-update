@@ -31,12 +31,12 @@ class MessagesService
 
 
 	/**
-	 * @param User $id
+	 * @param int $userId
 	 * @return mixed
 	 */
-	public function findAllThreads(int $id)
+	public function findAllThreadsByUserId(int $userId)
 	{
-		$messages = $this->repository->findAllThreads($id);
+		$messages = $this->repository->findAllThreads($userId);
 
 		return $messages;
 

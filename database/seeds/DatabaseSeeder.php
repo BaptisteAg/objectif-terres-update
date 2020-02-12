@@ -10,6 +10,7 @@ use App\Models\FavoriteAd;
 use App\Models\JobAd;
 use App\Models\LandOfferAd;
 use App\Models\LandSeekAd;
+use App\Models\Message;
 use App\Models\Thread;
 use App\Models\PpToUserMessage;
 use App\Models\PriceRange;
@@ -55,6 +56,7 @@ class DatabaseSeeder extends Seeder
             EducationLevelSeeder::class,
 
 
+
         ]);
 
         factory(Ad::class, 30)->create()->each(function (Ad $ad) use(&$queriesCount) {
@@ -87,6 +89,11 @@ class DatabaseSeeder extends Seeder
 			$jobAd->save();
         });
 
+		$threadId = Thread::all()->pluck("id")->toArray();
+		factory(Message::class, 10)->create()->each(function (Message $message) use(&$threadId) {
+			$message->thread_id = array_shift($threadId);
+			$message->save();
+		});
 
         echo "\nTotal queries : ".$queriesCount."\n";
         echo count($adIds)." adIds left.\n";

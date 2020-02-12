@@ -44,10 +44,10 @@ class Thread extends Model
 		return $this->belongsTo(Message::class);
 	}
 	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function ads()
 	{
-		return $this->hasOne(Ad::class);
+		return $this->belongsTo(Ad::class, 'ad_id', 'id');
 	}
 }

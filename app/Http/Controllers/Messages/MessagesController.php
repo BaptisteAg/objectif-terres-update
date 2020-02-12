@@ -30,18 +30,16 @@ class MessagesController extends Controller
 	 */
 	public function index()
 	{
-		$threads = $this->messageService->findAllThreads(auth()->user()->id);
-		$interlocutors = [];
+		$threads = $this->messageService->findAllThreadsByUserId(auth()->user()->id);
+
+		$messagesByThread = [];
 		foreach ($threads as $thread){
-			$interlocutors[$thread->thread_id] = $this->messageService->findInterlocutorsByThread($thread->thread_id,auth()->user()->id );
+			$messagesByThread[$thread->thread_id] = $this->messageService->findAllByThread($thread->thread_id);
 		}
 
-		foreach($interlocutors as $threadId=>$interlocutor){
-			foreach ($interlocutor as $key=>$idUser)
-			$interlocutors[$threadId][$key] = $this->userService->find($idUser);
-		};
-
-		return view('pages.messages.index', compact('interlocutors'));
+		return view('pages.messages.index', compact('messagesByThread'));
 
 	}
+
+
 }

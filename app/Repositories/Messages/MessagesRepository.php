@@ -1,10 +1,8 @@
 <?php namespace App\Repositories\Messages;
 
 use App\Models\Message;
-use App\Repositories\Messages\MessagesRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 /**
@@ -87,6 +85,7 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 		/** @var Message $model */
 		$model = $this->entity
 			->where(['thread_id'=> $threadId])
+			->with($this->getEagerLoading())
 			->get();
 
 		return $model;
@@ -109,6 +108,17 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 		$message->save();
 
 		return $message;
+	}
+
+
+	private function getEagerLoading()
+	{
+		return [
+			'senderUser',
+			'receiverUser',
+			'thread',
+			'thread.ads',
+		];
 	}
 
 

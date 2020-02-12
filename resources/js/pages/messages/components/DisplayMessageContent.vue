@@ -46,8 +46,5 @@
 <script>
     export default {
         props: {},
-        mounted: function () {
-            console.log('content')
-        }
     }
 </script>
