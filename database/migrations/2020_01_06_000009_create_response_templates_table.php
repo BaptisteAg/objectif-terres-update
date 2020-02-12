@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateResponseTypesTable extends Migration
+class CreateResponseTemplatesTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $tableName = 'response_types';
+    public $tableName = 'response_templates';
 
     /**
      * Run the migrations.
-     * @table response_types
+     * @table response_templates
      *
      * @return void
      */

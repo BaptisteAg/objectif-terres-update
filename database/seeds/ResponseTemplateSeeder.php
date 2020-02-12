@@ -1,8 +1,9 @@
 <?php
 
+use App\Models\ResponseTemplate;
 use Illuminate\Database\Seeder;
 
-class ResponseTypeSeeder extends Seeder
+class ResponseTemplateSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +12,6 @@ class ResponseTypeSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\ResponseType::class, 10)->create();
+        factory(ResponseTemplate::class, 10)->create();
     }
 }
