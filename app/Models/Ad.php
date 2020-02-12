@@ -8,64 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use McCool\LaravelAutoPresenter\HasPresenter;
 
-/**
- * App\Models\Ad
- *
- * @property int $id
- * @property int $attribution_ad_id
- * @property int $project_id
- * @property int $user_pp_id
- * @property int $user_admin_id
- * @property boolean $is_draft
- * @property string $about_content
- * @property string $about_project_content
- * @property User $userPp
- * @property User $userAdmin
- * @property AttributionAd $attributionAd
- * @property Project $project
- * @property AdMessage[] $adMessages
- * @property AdNote[] $adNotes
- * @property JobAd $jobAd
- * @property LandOfferAd $landOfferAd
- * @property LandSeekAd $landSeekAd
- * @property PpToUserMessage[] $ppToUserMessages
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read int|null $ad_messages_count
- * @property-read int|null $ad_notes_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\City[] $cities
- * @property-read int|null $cities_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Department[] $departments
- * @property-read int|null $departments_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Document[] $documents
- * @property-read int|null $documents_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\FavoriteAd[] $favoriteAds
- * @property-read int|null $favorite_ad_count
- * @property-read int|null $pp_to_user_messages_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
- * @property-read int|null $regions_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAboutContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAboutProjectContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAttributionAdId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereIsDraft($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereProjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserAdminId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserPpId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property-read int|null $favorite_ads_count
- * @property-read \App\Models\JobAd $jobOfferAd
- * @property-read \App\Models\JobAd $jobSeekAd
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Message[] $messages
- * @property-read int|null $messages_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
- * @property-read int|null $threads_count
- */
+
 class Ad extends Model implements HasPresenter
 {
     use Documentable;

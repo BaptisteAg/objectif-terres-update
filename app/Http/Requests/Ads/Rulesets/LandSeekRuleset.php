@@ -10,6 +10,8 @@ class LandSeekRuleset implements RulesetInterface
     {
         //dd(request()->all());
         return [
+            'land_seek.surface_range_min'        => ['nullable', 'integer'],
+            'land_seek.surface_range_max'        => ['nullable', 'integer'],
             'land_seek.installation_type_id'     => ['required', 'integer'],
             'land_seek.locationable'             => [new HasZone],
             'land_seek.locationable_radius'      => ['nullable', 'string'],

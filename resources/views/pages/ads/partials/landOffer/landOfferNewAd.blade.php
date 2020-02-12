@@ -1,5 +1,4 @@
 <div id="land_offer_form">
-
     <div class="field">
         {!! Form::label('landOffer[is_beneficiary]', 'Je poste l\'annonce*', ['class' => 'label']); !!}
         <div class="select">
@@ -188,21 +187,9 @@
             ) !!}
             {{$productionGenre}}
         @endforeach
-        {!! Form::checkbox('land_offer_production_genre_list',
-        'other',
-        null,
-        ['v-model' => 'formInput.productionGenre',
-        ':disabled' => 'isInputDisabled || !formInput.isActivityTransfer' ]) !!}
-        Autre
         <p class="help is-danger" id="productionGenreError" v-show="$v.formInput.productionGenre.$error">Ce champ est requis.</p>
     </div>
-    <div class="field" v-show="isProductionGenreOther">
-        {!! Form::label('landOffer[other_production_genre]', 'Autre production : Veuillez préciser', ['class' => 'label']); !!}
-        {!! Form::text('landOffer[other_production_genre]',
-                 in_array('other', old('landOffer[production_genre][]', [])),
-                 ['class' => 'input',
-                 ':disabled' => 'isInputDisabled']) !!}
-    </div>
+
     <div class="field">
         <div v-if="formInput.isActivityTransfer === '0'">
             {!! Form::label('land_offer_production_genre_wanted_list', 'Production envisageables*', ['class' => 'label']); !!}
@@ -225,23 +212,10 @@
             {{$productionGenre}}
         @endforeach
         {!! Form::checkbox('landOffer[production_genre_wanted][]',
-                'other',
-                null,
-                ['v-model' => 'formInput.productionGenreWanted',
-                ':disabled' => 'isInputDisabled' ]) !!}
-        Autre
-        {!! Form::checkbox('landOffer[production_genre_wanted][]',
                 '',
                 old('landOffer[production_genre_wanted[]]'),
                 [':disabled' => 'isInputDisabled' ]) !!}
         Je ne sais pas
-    </div>
-    <div class="field" v-show="isProductionGenreWantedOther">
-        {!! Form::label('landOffer[other_production_genre_wanted]', 'Autre production : Veuillez préciser', ['class' => 'label']); !!}
-        {!! Form::text('landOffer[other_production_genre_wanted]',
-                 old('landOffer[other_production_genre_wanted]'),
-                  ['class' => 'input',
-                   ':disabled' => 'isInputDisabled'] ) !!}
     </div>
     <div class="columns">
         <div class="column is-two-thirds">

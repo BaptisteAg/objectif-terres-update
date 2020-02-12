@@ -2,6 +2,7 @@
 
 use App\Models\AdStatus;
 use App\Models\BioCertification;
+use App\Models\Department;
 use App\Models\JobStatus;
 use App\Models\OfferGenre;
 use App\Models\ProductionGenre;
@@ -21,12 +22,12 @@ class ResearchSeeder extends Seeder
         factory(Research::class, 10)->create()->each(function (Research $research) {
             $research->adStatuses()->save(factory(AdStatus::class)->make());
 			$research->adStatuses()->save(factory(AdStatus::class)->make());
-            $research->projectStatuses()->save(factory(ProjectStatus::class)->make());
-            $research->jobStatuses()->save(JobStatus::all()->random())->make();
-            $research->offerGenres()->save(OfferGenre::all()->random());
-            $research->bioCertifications()->save(BioCertification::all()->random())->make();
-            $research->productionGenres()->save(factory(ProductionGenre::class)->make());
-            $research->departments()->save(\App\Models\Department::all()->random())->make();
+            $research->projectStatuses()->save(ProjectStatus::inRandomOrder()->first());
+            $research->jobStatuses()->save(JobStatus::inRandomOrder()->first());
+            $research->offerGenres()->save(OfferGenre::inRandomOrder()->first());
+            $research->bioCertifications()->save(BioCertification::inRandomOrder()->first())->make();
+            $research->productionGenres()->save(ProductionGenre::inRandomOrder()->first());
+            $research->departments()->save(Department::inRandomOrder()->first());
         });
     }
 }

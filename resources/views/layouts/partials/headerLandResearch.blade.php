@@ -15,7 +15,13 @@
                 <p class="label">Surface (ha)</p>
                 <vue-slider
                     name="surfaces_research"
-                    :data="['0','5','10','20','50', '>100']"
+                    :data="{
+                        0: '0km',
+                        5: '5km',
+                        10: '10km',
+                        20: '20km',
+                        50: '50km'
+                    }"
                     :values="['0', '>100']"></vue-slider>
                 <br>
             </div>
@@ -43,7 +49,7 @@
             <div class="field">
                 {!! Form::label('production_genre', 'Choisissez des types de production', ['class' => 'label']); !!}
                 <multi-select
-                    :data="{{ json_encode($productionGenres) }}"
+                    :options="{{ json_encode($productionGenres) }}"
                     :multiple="true"
                     name="production_genres[]"
                     selected-count-text="production(s) sélectionné(s)"
@@ -53,7 +59,7 @@
             <div class="field">
                 {!! Form::label('bio_certification', 'Choisissez des systèmes de production bio ou aucun', ['class' => 'label']); !!}
                 <multi-select
-                    :data="{{ json_encode($bioCertifications) }}"
+                    :options="{{ json_encode($bioCertifications) }}"
                     :multiple="true"
                     name="bio_certifications[]"
                     selected-count-text="production(s) bio sélectionné(s)"

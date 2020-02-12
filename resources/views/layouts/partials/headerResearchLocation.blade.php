@@ -2,7 +2,7 @@
 	<div class="field">
 		{!! Form::label('departments', 'Choisissez un département', ['class' => 'label']); !!}
 		<multi-select
-				:data="{{ json_encode($departments) }}"
+				:options="{{ json_encode($departments) }}"
 				:multiple="true"
 				name="departments_location_researches[]"
 				selected-count-text="département(s) sélectionné(s)"
@@ -25,7 +25,13 @@
 		<p class="label">Dans un rayon de </p>
 		<vue-slider
 				name="radius_research"
-				:data="['0km','5km','10km','20km','50km']"
+                :data="{
+                    0: '0km',
+                    5: '5km',
+                    10: '10km',
+                    20: '20km',
+                    50: '50km'
+                }"
 		></vue-slider>
 	</div>
 </div>
