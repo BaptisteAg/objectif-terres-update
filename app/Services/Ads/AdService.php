@@ -1,6 +1,9 @@
 <?php namespace App\Services\Ads;
 
 use App\Repositories\Ads\AdRepository;
+use App\Repositories\Ads\LandOfferAdRepository;
+use App\Repositories\Ads\LandSeekAdRepository;
+use App\Repositories\Ads\ProductionGenreRepository;
 use Illuminate\Support\Facades\DB;
 
 class AdService
@@ -9,10 +12,29 @@ class AdService
      * @var AdRepository
      */
     protected $repository;
+    /**
+     * @var LandSeekAdRepository
+     */
+    protected $landSeekAdRepository;
+    /**
+     * @var LandOfferAdRepository
+     */
+    protected $landOfferAdRepository;
+    /**
+     * @var ProductionGenreRepository
+     */
+    protected $productionGenreRepository;
 
-    public function __construct(AdRepository $repository)
-    {
+    public function __construct(
+        AdRepository $repository,
+        LandSeekAdRepository $landSeekdAdRepository,
+        LandOfferAdRepository $landOfferAdRepository,
+        ProductionGenreRepository $productionGenreRepository
+    ) {
         $this->repository = $repository;
+        $this->landSeekAdRepository = $landSeekdAdRepository;
+        $this->landOfferAdRepository = $landOfferAdRepository;
+        $this->productionGenreRepository = $productionGenreRepository;
     }
 
     /**
@@ -23,6 +45,16 @@ class AdService
     {
         $ad =  DB::transaction(function() use($data) {
             $ad = $this->repository->create($data);
+
+            $adData = $data[$data["ad_type"]];
+            $adData["ad_id"] = $ad->id;
+
+            if ($data["ad_type"] === "land_seek") {
+                $landSeekAd = $this->landSeekAdRepository->create($adData);
+            }
+            else if ($data["ad_type"] === "land_offer") {
+                $landOfferAd = $this->landOfferAdRepository->create($adData);
+            }
 
             return $ad;
         });
@@ -50,4 +82,9 @@ class AdService
 
 		return $ads;
 	}
+
+    public function getProductionGenresFlattened()
+    {
+        return $this->productionGenreRepository->getFlattened();
+    }
 }

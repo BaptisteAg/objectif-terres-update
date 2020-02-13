@@ -10,7 +10,6 @@ use Faker\Generator as Faker;
 
 $factory->define(JobAd::class, function (Faker $faker) {
     return [
-        'title' => $faker->text(10),
         'is_offer' => $faker->boolean,
         'is_beneficiary' => $faker->boolean,
         'experience_farming' => $faker->numberBetween(0, 50),

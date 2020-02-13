@@ -66,7 +66,7 @@ class LandSeekAd extends Model
      * @var array
      */
     protected $fillable = [
-        'ad_id', 'installation_type_id', 'offer_type_id', 'title', 'is_bio', 'production_type_add', 'has_farm_buildings', 'has_houses', 'experience_farming', 'rent_min', 'rent_max'
+        'ad_id', 'installation_type_id', 'offer_type_id', 'is_bio', 'production_type_add', 'has_farm_buildings', 'has_houses', 'experience_farming', 'rent_min', 'rent_max'
     ];
 
     /**

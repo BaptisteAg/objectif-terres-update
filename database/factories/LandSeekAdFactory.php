@@ -10,7 +10,6 @@ use Faker\Generator as Faker;
 
 $factory->define(LandSeekAd::class, function (Faker $faker) {
     return [
-        'title' => $faker->word,
         'is_bio' => $faker->boolean,
         'production_type_add' => $faker->text(60),
         'has_farm_buildings' => $faker->boolean,

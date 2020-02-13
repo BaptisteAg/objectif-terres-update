@@ -5,7 +5,7 @@ use App\Models\LandSeekAd;
 use Illuminate\Support\Arr;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
-class LandSeekdAdRepository extends AbstractRepository implements LandSeekAdRepositoryInterface
+class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepositoryInterface
 {
     public function entity()
     {

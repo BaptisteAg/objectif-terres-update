@@ -26,6 +26,11 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int|null $parent_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $children
+ * @property-read int|null $children_count
+ * @property-read \App\Models\ProductionGenre $parent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre whereParentId($value)
  */
 class ProductionGenre extends Model
 {

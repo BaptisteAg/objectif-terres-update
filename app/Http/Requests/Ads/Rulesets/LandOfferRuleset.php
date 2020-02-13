@@ -35,10 +35,6 @@ class LandOfferRuleset implements RulesetInterface
             'landOffer.house_price'                             => ['nullable', 'integer'],
             'landOffer.building_price'                          => ['nullable', 'integer'],
             'landOffer.confirm_price_fermage'                   => ['boolean'],
-            'landOffer.about_content'                           => ['required', 'string', 'max:1000'],
-            'landOffer.about_project_content'                   => ['required', 'string', 'max:1000'],
-            'landOffer.title'                                   => ['required', 'string'],
-            'landOffer.documents'                               => ['nullable, array'],
         ];
     }
 }
