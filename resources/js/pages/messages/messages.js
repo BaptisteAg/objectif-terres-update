@@ -13,9 +13,14 @@ Vue.component('vue-threads',{
     },
     data() {
         return {
-            v : this.values,
-
+            messages : []
         }
     },
-
+    methods : {
+        onThreadClick(threadId) {
+            fetch('/mon-espace/messagerie/' + threadId)
+                .then(response => response.json())
+                .then(messages => this.messages = messages)
+        }
+    }
 });

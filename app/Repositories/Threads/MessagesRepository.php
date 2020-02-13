@@ -1,4 +1,4 @@
-<?php namespace App\Repositories\Messages;
+<?php namespace App\Repositories\Threads;
 
 use App\Models\Message;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -117,9 +117,16 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 			'senderUser',
 			'receiverUser',
 			'thread',
-			'thread.ads',
+			'thread.messages',
 		];
 	}
 
 
+	/**
+	 * @inheritDoc
+	 */
+	public function findNewestMessage()
+	{
+		// TODO: Implement findNewestMessage() method.
+	}
 }

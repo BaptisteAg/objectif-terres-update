@@ -8,17 +8,23 @@
 		<div class="container ">
 			<h1 class="title has-text-link">Bienvenue sur votre messagerie</h1>
 			<div id="vue-messages">
+
 				<vue-threads
 						inline-template>
 					<div class="columns">
 						<div class="column is-one-quarter">
+
 							<list-threads
-									:threads="{{json_encode($messagesByThread)}}">
+									:threads='{{$threads}}'
+									@on-thread-click="onThreadClick"
+								>
 							</list-threads>
 						</div>
 						<div class="column box">
 							<header-message></header-message>
-							<display-message-content></display-message-content>
+							<display-message-content
+									v-model="messages">
+							</display-message-content>
 							<form-message-reply></form-message-reply>
 						</div>
 					</div>

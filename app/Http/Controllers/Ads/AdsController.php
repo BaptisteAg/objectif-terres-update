@@ -16,8 +16,8 @@ use App\Models\ProductionGenre;
 use App\Models\Requirement;
 use App\Models\SurfaceRange;
 use App\Repositories\FavoriteAds\FavoriteAdRepository;
-use App\Services\AdMessages\AdMessagesService;
 use App\Services\Ads\AdService;
+use App\Services\Threads\ThreadService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -29,13 +29,13 @@ class AdsController extends Controller
 	 * @var AdService
 	 */
 	protected $adService;
-	protected $adMessageService;
+	protected $threadService;
 	protected $favoriteAdRepository;
 
-	public function __construct(AdService $adService, AdMessagesService $adMessageService, FavoriteAdRepository $favoriteAdRepository)
+	public function __construct(AdService $adService, ThreadService $threadService, FavoriteAdRepository $favoriteAdRepository)
 	{
 		$this->adService = $adService;
-		$this->adMessageService = $adMessageService;
+		$this->threadService = $threadService;
 		$this->favoriteAdRepository = $favoriteAdRepository;
 
 	}
@@ -134,9 +134,12 @@ class AdsController extends Controller
 	{
 		$ad = $this->adService->find($adId);
 
+		$userMessage = null;
+
+
 		if (Auth::user()) {
-			//if the user connected has send a response to an ad, get the first message
-			$userMessage = $this->adMessageService->findByUserAndAd((auth()->user()->id), $adId);
+			//TODO if the user connected has send a response to an ad, get the first message
+
 
 			$data = array(
 				"ad_id" => $adId,

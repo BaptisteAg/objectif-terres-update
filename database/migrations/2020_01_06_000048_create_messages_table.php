@@ -26,16 +26,10 @@ class CreateMessagesTable extends Migration
 			$table->boolean('is_read')->default(0);
 			$table->unsignedInteger('thread_id');
 			$table->unsignedInteger('sender_user_id');
-			$table->unsignedInteger('receiver_user_id')->nullable();
 
 			$table->timestamps();
 
 			$table->foreign('sender_user_id')
-				->references('id')
-				->on('users')
-				->onDelete('restrict');
-
-			$table->foreign('receiver_user_id')
 				->references('id')
 				->on('users')
 				->onDelete('restrict');

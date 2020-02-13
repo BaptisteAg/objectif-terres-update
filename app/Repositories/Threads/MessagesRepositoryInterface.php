@@ -1,4 +1,4 @@
-<?php namespace App\Repositories\Messages;
+<?php namespace App\Repositories\Threads;
 
 
 use App\Models\Message;
@@ -36,7 +36,12 @@ interface MessagesRepositoryInterface
 	 */
 	public function findAllByThread(string $threadId);
 
-
+	/**
+	 * Gets most recent message .
+	 *
+	 * @return Message
+	 */
+	public function findNewestMessage();
 
 	/**
 	 * Creates message.

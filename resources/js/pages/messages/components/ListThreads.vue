@@ -1,21 +1,17 @@
 <template>
     <aside class="menu">
         <p class="menu-label">
-           Vos discussions
+            Vos discussions
         </p>
         <ul class="menu-list">
-            <li v-for="datas in menuData">
-                <a>
-                    <span v-for="data in datas">
-                    <span v-if='data.threadTitle !== null'>
-                        <span>{{data.threadTitle}}</span>
-                        </span>
-                    <span v-else>
-                        <span>{{data.user.first_name}} <strong>{{data.user.name}} </strong></span>
-                    </span>
-                    </span>
+            <li v-for="thread in threads">
+                <template v-if="thread.title !== null">
+                    <a><span @click="onThreadClick(thread.id)">{{thread.title}}</span></a>
+                </template>
+                <template v-else>
+                    <a><span @click="onThreadClick(thread.id)">{{thread.ad.about_content}}</span></a>
+                </template>
 
-                </a>
             </li>
         </ul>
     </aside>
@@ -24,47 +20,13 @@
 <script>
     export default {
         props: {
-            threads: Object,
+            threads: '',
         },
         data() {
-            return {
-                menuData: [],
-
-            }
+            return {}
         },
         methods: {
-            getInterlocutors() {
-                for (let [key, thread] of Object.entries(this.threads)) {
-                    let interlocutorsInThread = [];
-                    thread.forEach(message => {
-                        if (message.receiver_user_id !== 21) {
-                            interlocutorsInThread.push({
-                                threadId: message.thread_id,
-                                threadTitle: message.thread.title,
-                                user: message.receiver_user
-                            });
-
-                        } else if (message.sender_user_id !== 21) {
-                            interlocutorsInThread.push({
-                                threadId: message.thread_id,
-                                threadTitle: message.thread.title,
-                                user: message.sender_user
-                            });
-
-                        }
-                        let valueArr = interlocutorsInThread.map(function (item) {
-                            return item.user.id
-                        });
-                        valueArr.some(function (item, idx) {
-                            if (valueArr.indexOf(item) !== idx) {
-                                interlocutorsInThread.splice(valueArr.indexOf(item), 1);
-                            }
-                        })
-
-                    })
-                    this.menuData.push(interlocutorsInThread);
-                }
-
+            setTitle() {
 
                 // Object.keys(this.threads).forEach(key => {
                 //     let thread = this.threads[key]
@@ -95,10 +57,14 @@
                 //     })
                 // })
 
+            },
+            onThreadClick(threadId) {
+                this.$emit('on-thread-click', threadId)
+
             }
         },
         mounted: function () {
-            this.getInterlocutors()
+
         }
     }
 </script>

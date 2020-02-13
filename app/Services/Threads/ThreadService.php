@@ -1,0 +1,122 @@
+<?php namespace App\Services\Threads;
+
+use App\Models\Thread;
+use App\Repositories\Ads\AdRepository;
+use App\Repositories\Threads\MessagesRepository;
+use App\Repositories\Threads\ThreadsRepository;
+use App\ThreadUser;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
+
+/**
+ * Class MessagesService
+ * @package App\Services\Threads
+ */
+class ThreadService
+{
+
+	/**
+	 * @var ThreadsRepository
+	 */
+	protected $repository;
+	/**
+	 * @var AdRepository
+	 */
+	protected $adRepository;
+	/**
+	 * @var MessagesRepository
+	 */
+	protected $messagesRepository;
+
+
+	/**
+	 * AdMessagesService constructor.
+	 * @param ThreadsRepository $repository
+	 */
+	public function __construct(
+		ThreadsRepository $repository,
+		AdRepository $adRepository,
+		MessagesRepository $messagesRepository
+	)
+	{
+		$this->repository = $repository;
+		$this->adRepository = $adRepository;
+		$this->messagesRepository = $messagesRepository;
+	}
+
+
+	/**
+	 * @param int $userId
+	 * @return mixed
+	 */
+	public function findAllThreadsByLoggedUser()
+	{
+		/** @var Collection $threads */
+		$threads = $this->repository->findAllThreadsByLoggedUser();
+		return $threads;
+
+	}
+
+	/**
+	 * @param int $threadId
+	 * @return mixed
+	 */
+	public function findAllByThread(int $threadId)
+	{
+		$messages = $this->repository->findAllByThread($threadId);
+		return $messages;
+
+	}
+
+	/**
+	 * @param int $threadId
+	 * @param int $userId
+	 * @return mixed
+	 */
+	public function findInterlocutorsByThread(int $threadId, int $userId){
+		$messages = $this->repository->findAllByThread($threadId);
+		$interlocutors= [];
+		foreach ($messages as $message){
+			if ($message->sender_user_id !== $userId){
+				array_push($interlocutors, $message->sender_user_id);
+			}else{
+				array_push($interlocutors, $message->receiver_user_id);
+			}
+			array_unique($interlocutors);
+		}
+		return $interlocutors;
+
+	}
+
+	/**
+	 * @param array $data
+	 * @throws \Throwable
+	 */
+	public function create(array $data)
+	{
+		$threadData = Arr::only($data, [
+			"ad_id"
+		]);
+		$thread = $this->repository->create($threadData);
+
+		$threadParticipants = [
+			$this->adRepository->find($data["ad_id"])->user_pp_id,
+			auth()->id()
+		];
+
+		foreach($threadParticipants as $user_id) {
+			$threadUser = new ThreadUser([
+				"user_id" => $user_id,
+				"thread_id" => $thread->id
+			]);
+			$threadUser->save();
+		}
+
+		$messageData = Arr::only($data, ["content"]);
+		$messageData["sender_user_id"] = auth()->id();
+		$messageData["thread_id"] = $thread->id;
+
+		$this->messagesRepository->create($messageData);
+	}
+
+}

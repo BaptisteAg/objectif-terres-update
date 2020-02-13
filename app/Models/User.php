@@ -57,6 +57,8 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereZipCodeId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
+ * @property-read int|null $threads_count
  */
 class User extends Authenticatable
 {
@@ -117,4 +119,8 @@ class User extends Authenticatable
 
 	}
 
+	public function threads()
+	{
+		return $this->belongsToMany(Thread::class, 'thread_users')->withTimestamps();
+	}
 }
