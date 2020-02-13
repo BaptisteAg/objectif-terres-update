@@ -4,7 +4,7 @@
         <div class="select">
             <select :id="name"
                     :name="name"
-                    v-bind:value="value"
+                    :value="value"
                     v-on:input="$emit('input', $event.target.value)">
                 <option value="" selected>Choisir un type d'annonce...</option>
                 <option :value="val" v-for="(label,val) in adTypes">{{ label }}</option>

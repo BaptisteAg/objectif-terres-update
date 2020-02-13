@@ -1,7 +1,6 @@
 <?php namespace App\Presenters;
 
 use App\Models\Thread;
-use McCool\LaravelAutoPresenter\BasePresenter;
 
 /**
  * Class AdPresenter
@@ -10,19 +9,29 @@ use McCool\LaravelAutoPresenter\BasePresenter;
  */
 class ThreadPresenter extends BasePresenter
 {
-	public function test()
+	public function title() : string
 	{
-		$title = $this->wrappedObject->title;
+		$title = array_filter([$this->wrappedObject->title]);
 
-		if(!$title) {
-			$title=[];
+		if(!count($title)) {
+			$title = [];
+			if($this->wrappedObject->ad->title){
+				$title = $this->wrappedObject->ad->title;
+				return $title;
+			}
 			foreach ($this->wrappedObject->users as $user){
 				if ($user->id !== auth()->id()){
-					array_push($title, $user);
+					array_push($title, $user->first_name. ' '. $user->name);
 				}
 				array_unique($title);
 			}
 		}
-		return $title;
+
+		return implode(' - ', $title);
+	}
+
+	public function created_at()
+	{
+		return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->format('d/m/Y');
 	}
 }

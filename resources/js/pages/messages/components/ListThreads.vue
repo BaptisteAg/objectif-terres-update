@@ -5,12 +5,7 @@
         </p>
         <ul class="menu-list">
             <li v-for="thread in threads">
-                <template v-if="thread.title !== null">
                     <a><span @click="onThreadClick(thread.id)">{{thread.title}}</span></a>
-                </template>
-                <template v-else>
-                    <a><span @click="onThreadClick(thread.id)">{{thread.ad.about_content}}</span></a>
-                </template>
 
             </li>
         </ul>
@@ -60,7 +55,6 @@
             },
             onThreadClick(threadId) {
                 this.$emit('on-thread-click', threadId)
-
             }
         },
         mounted: function () {

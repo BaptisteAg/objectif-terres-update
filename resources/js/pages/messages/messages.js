@@ -11,16 +11,31 @@ Vue.component('vue-threads',{
         DisplayMessageContent,
         FormMessageReply
     },
+    props: {
+        initThread : '',
+        userLoggedId :'',
+    },
     data() {
         return {
-            messages : []
+            messages : [],
+            activeThread: this.initThread || null
+        }
+    },
+    mounted() {
+        console.log(this.activeThread)
+        if(this.initThread) {
+            setInterval(_ => this.onThreadClick(this.activeThread), 15000);
+            this.onThreadClick(this.activeThread);
         }
     },
     methods : {
         onThreadClick(threadId) {
             fetch('/mon-espace/messagerie/' + threadId)
                 .then(response => response.json())
-                .then(messages => this.messages = messages)
+                .then(results => {
+                    this.messages = results;
+                    this.activeThread = threadId;
+                })
         }
-    }
+    },
 });

@@ -1,4 +1,4 @@
-@section('title', $ad->jobAd->title)
+@section('title', $ad->title)
 <section class="section">
 	<div class="container ">
 
@@ -8,7 +8,7 @@
 				<li><a href="#">Opportunités professionnelles</a></li>
 			</ul>
 		</nav>
-		<h1 class="title has-text-link">{{$ad->jobAd->title}}</h1>
+		<h1 class="title has-text-link">{{$ad->title}}</h1>
 		<div class="columns">
 			<div id="slider-container" class="column is-two-thirds ">
 				<div id="ad-images" class="carousel ">

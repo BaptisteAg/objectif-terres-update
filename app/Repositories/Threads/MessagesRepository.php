@@ -115,9 +115,9 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 	{
 		return [
 			'senderUser',
-			'receiverUser',
 			'thread',
-			'thread.messages',
+			'thread.ad',
+			'thread.users'
 		];
 	}
 

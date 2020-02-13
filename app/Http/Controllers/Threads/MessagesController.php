@@ -3,30 +3,41 @@
 namespace App\Http\Controllers\Threads;
 
 use App\Http\Controllers\Controller;
+use App\Models\Thread;
+use App\Models\User;
 use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
+use Illuminate\Http\Request;
 
 class MessagesController extends Controller
 {
 	/**
 	 * @var ThreadService
 	 */
-	protected $messageService;
+	protected $threadService;
 	protected $adService;
 	protected $userService;
 
-	public function __construct(ThreadService $messageService, AdService $adService, UserService $userService)
+	public function __construct(ThreadService $threadService, AdService $adService, UserService $userService)
 	{
-		$this->messageService = $messageService;
+		$this->threadService = $threadService;
 		$this->adService = $adService;
 		$this->userService = $userService;
 	}
 
 
-	public function index(\Request $request)
+	public function show(Thread $thread)
 	{
-		$messages = $this->messageService->findAllByThread($request->get('thread_id'));
+		$loggedUserIsParticipant = $thread->users->first(function (User $user) {
+			return auth()->id() === $user->id;
+		});
+
+		if(!$loggedUserIsParticipant) {
+			abort(404);
+		}
+
+		$messages = $this->threadService->findAllByThread($thread->id);
 
 		return response()->json($messages);
 	}

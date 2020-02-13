@@ -63,8 +63,8 @@ class ThreadService
 	 */
 	public function findAllByThread(int $threadId)
 	{
-		$messages = $this->repository->findAllByThread($threadId);
-		return $messages;
+		$allMessagesInThread = $this->messagesRepository->findAllByThread($threadId);
+		return $allMessagesInThread;
 
 	}
 

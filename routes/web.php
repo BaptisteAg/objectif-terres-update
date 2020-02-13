@@ -48,8 +48,8 @@ Route::middleware('auth')->prefix('threads')->name('threads.')->namespace('Threa
 	Route::post('creer', 'ThreadsController@create')->name('create');
 });
 
-Route::middleware('auth')->prefix('mon-espace')->name('userAccount.')->group(function () {
-	Route::get('/', 'HomeController@showAccount')->name('showAccount');
+Route::middleware('auth')->prefix('mon-espace')->name('userAccount.')->namespace('HomePage')->group(function () {
+	Route::get('/', 'HomePageLoggedController@index')->name('showAccount');
 });
 
 Route::prefix('mon-espace/annonces-favorites')->middleware('auth')->name('favoriteAds.')->namespace('FavoriteAds')->group(function () {
@@ -60,7 +60,7 @@ Route::prefix('mon-espace/annonces-favorites')->middleware('auth')->name('favori
 
 Route::prefix('mon-espace/messagerie')->middleware('auth')->name('messagerie.')->namespace('Threads')->group(function () {
 	Route::get('/', 'ThreadsController@index')->name('index');
-	Route::get('{id}', 'ThreadsController@show')->name('show');
+	Route::get('{thread}', 'MessagesController@show')->name('show');
 });
 
 

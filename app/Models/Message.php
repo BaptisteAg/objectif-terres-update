@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Models\Traits\Documentable;
+use App\Presenters\MessagePresenter;
 use Illuminate\Database\Eloquent\Model;
+use McCool\LaravelAutoPresenter\HasPresenter;
 
-	/**
+/**
  * App\Models\Message
  *
  * @property int $id
@@ -37,14 +39,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $is_read
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereIsRead($value)
  */
-class Message extends Model
+class Message extends Model implements HasPresenter
 {
 	use Documentable;
 	/**
 	 * @var array
 	 */
 	protected $fillable = [
-		'sender_user_id', 'receiver_user_id', 'content', 'thread_id'
+		'sender_user_id', 'receiver_user_id', 'content', 'thread_id', 'created_at'
 	];
 
 	/**
@@ -58,16 +60,18 @@ class Message extends Model
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function receiverUser()
-	{
-		return $this->belongsTo(User::class);
-	}
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
 	public function thread()
 	{
 		return $this->belongsTo(Thread::class);
+	}
+	/**
+	 * Get the presenter class.
+	 *
+	 * @return string
+	 */
+	public function getPresenterClass()
+	{
+		return MessagePresenter::class;
 	}
 }
 

@@ -7,12 +7,17 @@ use App\Http\Requests\ThreadRequest;
 use App\Services\Threads\ThreadService;
 use Illuminate\Http\Request;
 
+/**
+ * Class ThreadsController
+ * @package App\Http\Controllers\Threads
+ */
 class ThreadsController extends Controller
 {
 	/**
 	 * @var ThreadService
 	 */
 	protected $service;
+
 
 	/**
 	 * ThreadsController constructor.
@@ -21,6 +26,7 @@ class ThreadsController extends Controller
 	public function __construct(ThreadService $service)
 	{
 		$this->service = $service;
+
 	}
 
 	/**
@@ -43,25 +49,14 @@ class ThreadsController extends Controller
 	public function index()
 	{
 		$threads = $this->service->findAllThreadsByLoggedUser();
-
-		$threads = json_encode($threads);
-
-		return view('pages.messages.index', compact('threads'));
-
-	}
+		$firstThread = $this->service->findAllByThread($threads[0]->id);
 
 
-	/**
-	 * @param int $threadId
-	 * @return \Illuminate\Http\JsonResponse
-	 */
-	public function show(int $threadId)
-	{
-		$allMessageInThread = $this->service->findAllByThread($threadId);
 
-		return response()->json([
-			$allMessageInThread
-		]);
+		return view('pages.messages.index', compact('threads', 'firstThread'));
 
 	}
+
+
+
 }

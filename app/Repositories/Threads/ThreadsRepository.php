@@ -38,11 +38,11 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 	 *
 	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
 	 */
-	public function findAllByThread($threadId)
+	public function find($threadId)
 	{
 		/** @var Thread $model */
 		$model = $this->entity
-			->where(['thread_id' => $threadId])
+			->where(['id' => $threadId])
 			->with($this->getEagerLoading())
 			->get();
 

@@ -9,22 +9,30 @@
 			<h1 class="title has-text-link">Bienvenue sur votre messagerie</h1>
 			<div id="vue-messages">
 
+
 				<vue-threads
-						inline-template>
+						inline-template
+						init-thread='{{ $firstThread[0]->thread_id }}'
+						user-logged-id="{{auth()->id()}}"
+				>
 					<div class="columns">
 						<div class="column is-one-quarter">
 
 							<list-threads
-									:threads='{{$threads}}'
+									:threads="{{json_encode($threads)}}"
 									@on-thread-click="onThreadClick"
-								>
+							>
 							</list-threads>
 						</div>
 						<div class="column box">
-							<header-message></header-message>
+							<header-message
+									v-model="messages"
+									:user-id = "{{auth()->id()}}"
+							></header-message>
 							<display-message-content
-									v-model="messages">
-							</display-message-content>
+									v-model ="messages"
+									:user-id = "{{auth()->id()}}"
+							></display-message-content>
 							<form-message-reply></form-message-reply>
 						</div>
 					</div>
