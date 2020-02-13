@@ -19,6 +19,8 @@ use App\Repositories\FavoriteAds\FavoriteAdRepository;
 use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
@@ -55,27 +57,11 @@ class AdsController extends Controller
 		$offerGenresHouse = OfferGenre::where('offer_genre_model', 'House')->get();
 		$offerGenresBuilding = OfferGenre::where('offer_genre_model', 'Building')->get();
 		$offerGenresLand = OfferGenre::where('offer_genre_model', 'Land')->get();
-		$productionGenres = ProductionGenre::with('children')
-            ->whereNull('parent_id')
-            ->get()
-            ->map
-            ->only(['name', 'id', 'children'])
-            ->concat([[
-                'id' => 'other',
-                'name' => 'Autre',
-                'children' => []
-            ]]);
 		$agriculturalActivities = AgriculturalActivity::all();
 		$educationLevels = EducationLevel::all();
 		$buildingTypes = BuildingType::all();
 		$requirements = Requirement::all();
-
-        $productionGenres = $productionGenres->map(function ($productionGenre) {
-            if(!count($productionGenre["children"])) {
-                unset($productionGenre["children"]);
-            }
-            return $productionGenre;
-        });
+        $productionGenres = $this->adService->getProductionGenresFlattened();
 
 		return view('pages.ads.new', compact(
 			'installationTypes',
@@ -146,7 +132,6 @@ class AdsController extends Controller
 				"user_id" => auth()->user()->id,
 			);
 			$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
-
 		}
 
 		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist'));

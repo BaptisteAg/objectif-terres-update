@@ -7,12 +7,13 @@
                      :close-on-select="false"
                      :clear-on-select="false"
                      :preserve-search="true"
-                     :placeholder=placeholder
+                     :placeholder="placeholder"
                      label="name"
-                     :group-values="groupValues"
-                     :group-label="groupLabel"
-                     :track-by=trackBy
-                     :custom-label="customLabel">
+                     :track-by="trackBy"
+                     :custom-label="customLabel"
+                     select-label="Sélectionner"
+                     selected-label="Sélectionné"
+                     deselect-label="Supprimer">
             <template slot="selection" slot-scope="{ values, search, isOpen }">
                 <span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} {{ selectedCountText }}</span>
             </template>

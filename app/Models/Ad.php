@@ -63,6 +63,9 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserAdminId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserPpId($value)
  * @mixin \Eloquent
+ * @property string|null $title
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereTitle($value)
+
  */
 class Ad extends Model implements HasPresenter
 {
@@ -72,24 +75,24 @@ class Ad extends Model implements HasPresenter
      * @var array
      */
     protected $fillable = [
-        'attribution_ad_id', 'project_id', 'user_pp_id', 'user_admin_id', 'is_draft', 'about_content', 'about_project_content'
+        'attribution_ad_id', 'project_id', 'user_pp_id', 'user_admin_id', 'is_draft', 'title', 'about_content', 'about_project_content'
     ];
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function userPp()
-	{
-		return $this->belongsTo(User::class);
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userPp()
+    {
+        return $this->belongsTo(User::class);
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function userAdmin()
-	{
-		return $this->belongsTo(User::class);
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userAdmin()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -182,31 +185,31 @@ class Ad extends Model implements HasPresenter
     }
 
     /**
-    * Get all cities 'location' for the ad
-    * @return MorphToMany
-    */
+     * Get all cities 'location' for the ad
+     * @return MorphToMany
+     */
     public function cities()
     {
         return $this->morphedbyMany(City::class, 'locationable_ad');
     }
 
     /**
-    * Get all cities 'location' for the ad
-    * @return MorphToMany
-    */
+     * Get all cities 'location' for the ad
+     * @return MorphToMany
+     */
     public function departments()
     {
         return $this->morphedbyMany(Department::class, 'locationable_ad');
     }
 
-	/**
-	 * Get all cities 'location' for the ad
-	 * @return MorphToMany
-	 */
-	public function regions()
-	{
-		return $this->morphedbyMany(Region::class, 'locationable_ad');
-	}
+    /**
+     * Get all cities 'location' for the ad
+     * @return MorphToMany
+     */
+    public function regions()
+    {
+        return $this->morphedbyMany(Region::class, 'locationable_ad');
+    }
 
 
     /**

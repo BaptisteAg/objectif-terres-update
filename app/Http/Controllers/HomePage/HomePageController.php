@@ -23,7 +23,6 @@ class HomePageController extends Controller
 
 	public function show(AdService $adService)
 	{
-
 		//TODO get the last ads with  : $lastAdsAdded = Ad::orderBy('id', 'desc')->take(2)->get();
 //		$ads = [];
 //		$firstAd = $this->adService->find(6);

@@ -39,15 +39,13 @@ class DatabaseSeeder extends Seeder
             \Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__.'/../sql/regions.sql'));
             \Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__.'/../sql/departments.sql'));
             \Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__.'/../sql/cities.sql'));
-            \Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__.'/../sql/countries.sql'));
 
 
             $this->call([
-                UserSeeder::class,
-                ProjectStatusSeeder::class,
                 RequirementSeeder::class,
 				BuildingTypeSeeder::class,
 				ResponseTemplateSeeder::class,
+
                 PriceRangeSeeder::class,
                 SurfaceRangeSeeder::class,
                 InstallationTypeSeeder::class,
@@ -55,48 +53,50 @@ class DatabaseSeeder extends Seeder
                 BioCertificationSeeder::class,
                 JobStatusSeeder::class,
                 OfferGenreSeeder::class,
-                ResearchSeeder::class,
-                UserToUserMessageSeeder::class,
                 EducationLevelSeeder::class,
             ]);
 
 
+            if(app()->environment() === "local") {
+                $this->call([
+                    TestUserSeeder::class,
+                    TestProjectStatusSeeder::class,
+                    TestResponseTypeSeeder::class,
+                    TestResearchSeeder::class,
+                    TestUserToUserMessageSeeder::class,
+                ]);
 
-			/*$threadId = Thread::all()->pluck("id")->toArray();
-			factory(Message::class, 10)->create()->each(function (Message $message) use(&$threadId) {
-				$message->thread_id = array_shift($threadId);
-				$message->save();
-			});*/
+                factory(Ad::class, 30)->create()->each(function (Ad $ad) use(&$queriesCount) {
+                    $ad->adNotes()->save(factory(AdNote::class)->make());
+                    $ad->adMessages()->save(factory(AdMessage::class)->make());
+                    $ad->ppToUserMessages()->save(factory(PpToUserMessage::class)->make());
+                    $ad->favoriteAds()->save(factory(FavoriteAd::class)->make());
+                    //$ad->documents()->save(factory(Document::class)->make());
+                    $ad->regions()->save(Region::inRandomOrder()->first());
 
-			factory(Ad::class, 30)->create()->each(function (Ad $ad) use(&$queriesCount) {
-				$ad->adNotes()->save(factory(AdNote::class)->make());
-				$ad->adMessages()->save(factory(AdMessage::class)->make());
-				$ad->ppToUserMessages()->save(factory(PpToUserMessage::class)->make());
-				$ad->favoriteAds()->save(factory(FavoriteAd::class)->make());
-				//$ad->documents()->save(factory(Document::class)->make());
-				$ad->regions()->save(Region::inRandomOrder()->first())->make();
+                    echo "\nAd ID saved : ".$ad->id. " (Queries : ".$queriesCount.")";
+                });
+                $adIds = Ad::all()->pluck("id")->toArray();
+                factory(LandOfferAd::class, 10)->create()->each(function (LandOfferAd $landOfferAd) use(&$adIds) {
+                    $landOfferAd->bioCertifications()->save(BioCertification::inRandomOrder()->first());
+                    $landOfferAd->productionGenres()->save(ProductionGenre::inRandomOrder()->first());
+                    $landOfferAd->ad_id = array_shift($adIds);
+                    $landOfferAd->save();
+                });
+                factory(LandSeekAd::class, 10)->create()->each(function (LandSeekAd $landSeekAd) use(&$adIds) {
+                    $landSeekAd->surfaceRanges()->save(SurfaceRange::inRandomOrder()->first());
+                    $landSeekAd->priceRanges()->save(PriceRange::inRandomOrder()->first());
+                    $landSeekAd->ad_id = array_shift($adIds);
+                    $landSeekAd->save();
+                });
+                factory(JobAd::class, 10)->create()->each(function (JobAd $jobAd) use(&$adIds) {
+                    $jobAd->agriculturalActivity()->save(factory(AgriculturalActivity::class)->make());
+                    $jobAd->ad_id = array_shift($adIds);
+                    $jobAd->save();
+                });
+            }
 
-				echo "\nAd ID saved : ".$ad->id. " (Queries : ".$queriesCount.")";
-			});
-			$adIds = Ad::all()->pluck("id")->toArray();
-			factory(LandOfferAd::class, 10)->create()->each(function (LandOfferAd $landOfferAd) use(&$adIds) {
-				$landOfferAd->bioCertifications()->save(BioCertification::inRandomOrder()->first())->make();
-				$landOfferAd->productionGenres()->save(ProductionGenre::inRandomOrder()->first())->make();
-				$landOfferAd->ad_id = array_shift($adIds);
-				$landOfferAd->save();
-			});
-			factory(LandSeekAd::class, 10)->create()->each(function (LandSeekAd $landSeekAd) use(&$adIds) {
-				$landSeekAd->surfaceRanges()->save(SurfaceRange::inRandomOrder()->first())->make();
-				$landSeekAd->priceRanges()->save(PriceRange::inRandomOrder()->first())->make();
-				$landSeekAd->ad_id = array_shift($adIds);
-				$landSeekAd->save();
-			});
-			factory(JobAd::class, 10)->create()->each(function (JobAd $jobAd) use(&$adIds) {
-				$jobAd->agriculturalActivity()->save(factory(AgriculturalActivity::class)->make());
-				$jobAd->ad_id = array_shift($adIds);
-				$jobAd->save();
-			});
-		});
+        });
 
 
         echo "\nTotal queries : ".$queriesCount."\n";

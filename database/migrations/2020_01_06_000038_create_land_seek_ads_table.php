@@ -23,7 +23,6 @@ class CreateLandSeekAdsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('title')->nullable();
             $table->boolean('is_bio')->nullable();
             $table->string('production_type_add')->nullable();
             $table->boolean('has_farm_buildings')->nullable();
