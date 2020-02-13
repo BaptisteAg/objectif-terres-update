@@ -106,25 +106,25 @@
 
             <div class="field">
                 {!! Form::label('land_seek[installation_type_id]', 'Vous êtes installé ou comptez vous installer...*', ['class' => 'label']); !!}
-                <div class="select">
-                    {!! Form::select('land_seek[installation_type_id]',
-                         $installationTypes->pluck('name', 'id'),
-                         null,
-                         ['placeholder' => 'Choisir un type d\'installation...',
-                         "v-model.trim"=>"formInput.installationTypeId",
-                         ':disabled' => 'isInputDisabled',
-                         'ref' => 'installationTypeId',
-                         'aria-describedby'=>'installationTypeIdError']); !!}
 
-                    <custom-radio name="land_seek[installation_type_id]">
-                        @foreach($installationTypes as $installationType)
-                            <choice value="{{$installationType["id"]}}">
-                                <i class="fa fa-user" style="font-size: 30px;"></i>
+                <?php
+                    $installationTypesFaIcons = ["fa-user", "fa-user-friends", "fa-users", "fa-times"]
+                ?>
+
+                @foreach($installationTypes as $i => $installationType)
+                    <custom-radio
+                            name="land_seek[installation_type_id]"
+                            input-value="{{$installationType["id"]}}"
+                            v-model="formInput.installationTypeId"
+                            :disabled="isInputDisabled"
+                            ref="installationTypeId">
+
+                        <i class="fa {{ $installationTypesFaIcons[$i] }}" style="font-size: 30px;"></i><br>
+                        <span style="font-size:14px">
                                 {{ $installationType["name"] }}
-                            </choice>
-                        @endforeach
+                            </span>
                     </custom-radio>
-                </div>
+                @endforeach
 
                 <p class="help is-danger" id="installationTypeIdError" v-if="$v.formInput.installationTypeId.$error">
                     Ce champ est requis.

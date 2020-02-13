@@ -7,6 +7,7 @@ import VueSliderRange from "../../../components/VueSliderRange";
 import ZoneSelect from '../../../components/ZoneSelect'
 import AdTypeSelect from '../../../components/AdTypeSelect'
 import MultiSelect from "../../../components/MultiSelect";
+import CustomRadio from "../../../components/CustomRadio"
 
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
@@ -15,6 +16,7 @@ export default Vue.extend({
     mixins: [FormNewAdMixin],
     props: {},
     components: {
+        CustomRadio,
         TextAreaCounter,
         VueSlider,
         VueSliderRange,
