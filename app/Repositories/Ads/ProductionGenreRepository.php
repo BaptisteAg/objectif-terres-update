@@ -1,0 +1,48 @@
+<?php namespace App\Repositories\Ads;
+
+use App\Models\ProductionGenre;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
+
+/**
+ * @package App\Repositories\Ads
+ * @property ProductionGenre $entity
+ */
+class ProductionGenreRepository extends AbstractRepository
+{
+    public function entity()
+    {
+        return ProductionGenre::class;
+    }
+
+    public function getFlattened()
+    {
+        $productionGenresWithDepth = ProductionGenre::with('children')
+            ->whereNull('parent_id')
+            ->get()
+            ->map
+            ->only(['name', 'id', 'children'])
+            ->concat([[
+                'id' => 'other',
+                'name' => 'Autre',
+                'children' => []
+            ]]);
+
+        $productionGenresFlattened = new Collection();
+        foreach($productionGenresWithDepth as $productionGenre) {
+            if(count($productionGenre["children"])) {
+                /** @var Model $child */
+                foreach($productionGenre["children"] as $child) {
+                    $child["name"] = $productionGenre["name"]." - ".$child["name"];
+                    $productionGenresFlattened[] = $child->only(['name', 'id', 'children']);
+                }
+            }
+            else {
+                $productionGenresFlattened[] = $productionGenre;
+            }
+        }
+
+        return $productionGenresFlattened;
+    }
+}

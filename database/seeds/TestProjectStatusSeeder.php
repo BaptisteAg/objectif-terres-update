@@ -3,7 +3,7 @@
 use App\Models\ProjectStatus;
 use Illuminate\Database\Seeder;
 
-class ProjectStatusSeeder extends Seeder
+class TestProjectStatusSeeder extends Seeder
 {
     /**
      * Run the database seeds.

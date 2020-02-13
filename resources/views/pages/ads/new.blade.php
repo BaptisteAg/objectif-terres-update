@@ -43,7 +43,7 @@
                                 <new-land-seek-ad inline-template
                                                   v-show="adTypeSelected === 'land_seek'"
                                                   :is-input-disabled="adTypeSelected !== 'land_seek'"
-                                                  :old-values="{{json_encode(old('land_seek', new stdClass))}}"
+                                                  :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
                                                   @input-enabled="setEnabledForm"
                                                   @form-complete="onFormComplete">
                                     @include('pages.ads.partials.landSeek.landSeekNewAd')

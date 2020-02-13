@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ResponseTypeSeeder extends Seeder
+class TestResponseTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.

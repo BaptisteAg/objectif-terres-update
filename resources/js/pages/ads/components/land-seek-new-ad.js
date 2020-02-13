@@ -29,20 +29,20 @@ export default Vue.extend({
 
         return {
             formInput: {
-                surfaceRangeMin : hasOld ? v.surface_range_min : 0,
-                surfaceRangeMax : hasOld ? v.surface_range_max : 0,
-                installationTypeId: hasOld ? v.installation_type_id : '',
-                productionGenre: hasOld ? v.production_genre : [],
-                productionTypeAdd: hasOld ? v.production_type_add : '',
-                title: hasOld ? v.title : '',
-                minRent: hasOld ? v.rent_min : '',
-                maxRent: hasOld ? v.rent_max : '',
+                surfaceRangeMin : hasOld ? v.land_seek.surface_range_min : 0,
+                surfaceRangeMax : hasOld ? v.land_seek.surface_range_max : 0,
+                installationTypeId: hasOld ? v.land_seek.installation_type_id : '',
+                productionGenre: hasOld ? v.land_seek.production_genre : [],
+                productionTypeAdd: hasOld ? v.land_seek.production_type_add : '',
+                minRent: hasOld ? v.land_seek.rent_min : '',
+                maxRent: hasOld ? v.land_seek.rent_max : '',
                 chartConfirmation: false,
-                offerGenre: hasOld ? v.offer_genre_id : '',
-                selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
+                offerGenre: hasOld ? v.land_seek.offer_genre_id : '',
+                selectedZones: hasOld ? JSON.parse(v.land_seek.selected_zones) : [],
+                experienceFarming: hasOld ? (v.land_seek.experience_farming || '') : '',
+                title: hasOld ? v.title : '',
                 aboutProject: hasOld ? v.about_project_content : '',
                 aboutContent: hasOld ? v.about_content : '',
-                experienceFarming: hasOld ? (v.experience_farming || '') : '',
                 documents: hasOld ? v.documents : []
             },
             selectedProductionGenres: []

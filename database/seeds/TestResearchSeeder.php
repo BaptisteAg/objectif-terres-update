@@ -10,7 +10,7 @@ use App\Models\ProjectStatus;
 use App\Models\Research;
 use Illuminate\Database\Seeder;
 
-class ResearchSeeder extends Seeder
+class TestResearchSeeder extends Seeder
 {
     /**
      * Run the database seeds.

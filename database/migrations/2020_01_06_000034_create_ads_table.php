@@ -26,6 +26,7 @@ class CreateAdsTable extends Migration
             $table->unsignedInteger('user_pp_id');
             $table->unsignedInteger('user_admin_id')->nullable();
             $table->boolean('is_draft');
+            $table->string('title')->nullable();
             $table->string('about_content', 1000)->nullable();
             $table->string('about_project_content', 1000)->nullable();
             $table->unsignedInteger('attribution_ad_id')->nullable();

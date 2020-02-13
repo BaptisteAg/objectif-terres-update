@@ -11,16 +11,6 @@ use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
  */
 class AdRepository extends AbstractRepository implements AdRepositoryInterface
 {
-    /** @var LandSeekdAdRepository */
-    protected $landSeekAdRepository;
-
-    public function __construct(LandSeekdAdRepository $landSeekAdRepository)
-    {
-        parent::__construct();
-
-        $this->landSeekAdRepository = $landSeekAdRepository;
-    }
-
     public function entity()
     {
         return Ad::class;
@@ -89,36 +79,24 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     {
         $ad = new Ad();
 
-        $adData = $data[$data["ad_type"]];
+        $ad->fill($data);
 
-        $ad->fill($adData);
-
-        $ad->user_pp_id = auth()->user()->id;;
+        $ad->user_pp_id = auth()->user()->id;
         $ad->is_draft = false;
 
         $ad->save();
 
-        $adData["ad_id"] = $ad->id;
-
         foreach (["cities", "departments", "regions"] as $locationableType) {
-            $locationables = $adData["locationable"][$locationableType] ?? [];
+            $locationables = $data["locationable"][$locationableType] ?? [];
             if (count($locationables)) {
-                $ad->$locationableType()->attach($locationables, ["radius" => $adData["locationable_radius"]]);
+                $ad->$locationableType()->attach($locationables, ["radius" => $data["locationable_radius"]]);
             }
         }
 
-        if(isset($adData["documents"])) {
-            foreach($adData["documents"] as $documentId) {
+        if(isset($data["documents"])) {
+            foreach($data["documents"] as $documentId) {
                 $ad->documents()->attach($documentId);
             }
-        }
-
-
-        if ($data["ad_type"] === "land_seek") {
-            $landSeekAd = $this->landSeekAdRepository->create($adData);
-        }
-        else if ($data["ad_type"] === "land_offer") {
-            //$landSeekAd = $this->landSeekAdRepository->create($adData);
         }
 
         return $ad;

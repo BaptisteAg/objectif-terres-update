@@ -23,6 +23,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAdBuilding whereRequirementId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAdBuilding whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\BuildingType $buildingType
+ * @property-read \App\Models\LandSeekAd $landSeekAd
+ * @property-read \App\Models\Requirement $requirement
  */
 class LandSeekAdBuilding extends Model
 {

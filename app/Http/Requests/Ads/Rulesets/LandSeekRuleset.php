@@ -26,10 +26,6 @@ class LandSeekRuleset implements RulesetInterface
             'land_seek.rent_min'                 => ['nullable', 'integer'],
             'land_seek.rent_max'                 => ['nullable', 'integer'],
             'land_seek.experience_farming'       => ['nullable', 'string', 'max:1000'],
-            'land_seek.about_content'            => ['required', 'string', 'max:1000'],
-            'land_seek.about_project_content'    => ['required', 'string', 'max:1000'],
-            'land_seek.title'                    => ['required', 'string'],
-            'land_seek.documents'                => ['nullable', 'array'],
         ];
     }
 }

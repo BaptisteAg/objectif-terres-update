@@ -105,7 +105,7 @@
             </div>
 
             <div class="field">
-                {!! Form::label('land_seek[installation_type_id]', 'Type d\'installation*', ['class' => 'label']); !!}
+                {!! Form::label('land_seek[installation_type_id]', 'Vous êtes installé ou comptez vous installer...*', ['class' => 'label']); !!}
                 <div class="select">
                     {!! Form::select('land_seek[installation_type_id]',
                          $installationTypes->pluck('name', 'id'),
@@ -115,42 +115,25 @@
                          ':disabled' => 'isInputDisabled',
                          'ref' => 'installationTypeId',
                          'aria-describedby'=>'installationTypeIdError']); !!}
+
+                    <custom-radio name="land_seek[installation_type_id]">
+                        @foreach($installationTypes as $installationType)
+                            <choice value="{{$installationType["id"]}}">
+                                <i class="fa fa-user" style="font-size: 30px;"></i>
+                                {{ $installationType["name"] }}
+                            </choice>
+                        @endforeach
+                    </custom-radio>
                 </div>
 
-                <p class="help is-danger" id="installationTypeIdError" v-if="$v.formInput.installationTypeId.$error">Ce
-                    champ
-                    est requis.</p>
+                <p class="help is-danger" id="installationTypeIdError" v-if="$v.formInput.installationTypeId.$error">
+                    Ce champ est requis.
+                </p>
             </div>
         </tab-content>
 
         <tab-content title="Documents" icon="ti-folder">
-            <div class="field">
-                <span>Une photo de vous ? Une synthèse de votre projet ? Les photos sont importantes pour donner envie de consulter votre annonce.</span>
-
-                <vue-dropzone
-                        ref="documents"
-                        id="dropzone"
-                        :options="{
-                        url: '/documents/upload',
-                        thumbnailWidth: 150,
-                        maxFiles: 5,
-                        maxFilesize: 1,
-                        addRemoveLinks: true,
-                        uploadMultiple: true,
-                        acceptedFiles: 'image/*, application/pdf, text/*, application/msword, application/vnd.ms-excel, application/zip'
-                    }"
-                        :duplicate-check="true"
-                        :use-custom-slot="true"
-                        @vdropzone-sending-multiple="onBeforeDocumentsUpload"
-                        @vdropzone-success-multiple="onSuccessDocumentsUpload">
-
-                    <div class="dropzone-custom-content">
-                        <div class="subtitle">Cliquez ici pour déposer des fichiers</div>
-                        <h3 class="dropzone-custom-title">Vous pouvez également glisser-déposer</h3>
-                    </div>
-                </vue-dropzone>
-                <input type="hidden" name="land_seek[documents][]" :value="id" v-for="id in formInput.documents">
-            </div>
+            @include('pages.ads.partials.inputs.documents')
         </tab-content>
 
         <tab-content title="Description" icon="ti-menu-alt">
@@ -176,71 +159,15 @@
                         :vuelidate="$v.formInput.experienceFarming">
                 </text-area-counter>
             </div>
-            <div class="field">
-                <label class="label is-inline-block has-tooltip-multiline has-tooltip-right"
-                       data-tooltip="Quel est le projet que vous portez ?
-                            Qu’est-ce qui motive votre projet ?
-                            Quelles sont les valeurs que vous
-                            défendez ? etc."
-                       for="land_seek[about_project_content]">
-                    Et si vous nous en disiez un peu plus sur votre projet ?*
-                    <i class="fas fa-info-circle has-text-info"></i>
-                </label>
 
-                <text-area-counter
-                        name="land_seek[about_project_content]"
-                        :max-length="1000"
-                        :disabled="isInputDisabled"
-                        ref="aboutProject"
-                        v-model="formInput.aboutProject"
-                        :vuelidate="$v.formInput.aboutProject">
-                </text-area-counter>
-            </div>
-            <div class="field">
-                <label class="label is-inline-block has-tooltip-multiline has-tooltip-right"
-                       data-tooltip="Qui êtes-vous en quelques mots ?"
-                       for="land_seek[about_content]">
-                    Et si vous nous en disiez un peu plus sur vous ?*
-                    <i class="fas fa-info-circle has-text-info"></i>
-                </label>
+            @include('pages.ads.partials.inputs.about_project_content')
 
-                <text-area-counter
-                        name="land_seek[about_content]"
-                        :max-length="1000"
-                        :disabled="isInputDisabled"
-                        ref="aboutContent"
-                        v-model="formInput.aboutContent"
-                        :vuelidate="$v.formInput.aboutContent">
-                </text-area-counter>
-            </div>
+            @include('pages.ads.partials.inputs.about_content')
         </tab-content>
 
         <tab-content title="Titre" icon="ti-share">
-            <div class="field">
-                <label class="label is-inline-block has-tooltip-multiline has-tooltip-right"
-                       for="land_seek[title]"
-                       data-tooltip="Le titre de l’annonce est primordial ! Il
-                                    s’agit de votre carte de visite sur la
-                                    plateforme. Un titre clair et bien
-                                    formulé augmentera vos chances de
-                                    contacts.">
-                    Titre de votre annonce*
-                    <i class="fas fa-info-circle has-text-info"></i>
-                </label>
+            @include('pages.ads.partials.inputs.title')
 
-                {!! Form::text('land_seek[title]',
-                         null,
-                         ['class' => 'input',
-                          'placeholder'=> 'Saisissez votre titre...',
-                          ':disabled' => 'isInputDisabled',
-                          'v-model.trim' => 'formInput.title',
-                          'ref' => 'title',
-                          'aria-describedby'=>'titleError']) !!}
-                <p class="help is-danger" id="titleError" v-if="$v.formInput.title.$error">Ce champ est requis.</p>
-                <p class="help is-danger" v-show="!$v.formInput.title.minLength">Le titre de votre annonce doit faire au
-                    minimum
-                    @{{$v.formInput.title.$params.minLength.min}} caractères .</p>
-            </div>
             <div class="field">
                 <label class="checkbox">
                     <input type="checkbox"

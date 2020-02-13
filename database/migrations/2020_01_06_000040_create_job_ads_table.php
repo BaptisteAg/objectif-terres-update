@@ -23,7 +23,6 @@ class CreateJobAdsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('title')->nullable();
             $table->boolean('is_offer')->nullable();
             $table->boolean('is_beneficiary')->nullable();
             $table->integer('experience_farming')->nullable();
