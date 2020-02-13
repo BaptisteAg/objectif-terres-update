@@ -41,6 +41,7 @@
         /* When the checkbox is checked, add a blue background */
         input:checked ~ .cradio-checkmark {
             background-color: #2196F3;
+            color: #fff;
         }
 
         /* Show the checkmark when checked */
@@ -72,6 +73,7 @@
         width: 100px;
         background-color: #eee;
         border-radius:5px;
+        box-shadow: 1px 1px 1px rgba(0,0,0,0.2);
 
         /* Create the cradio-checkmark/indicator (hidden when not checked) */
         &:after {
@@ -92,5 +94,4 @@
         },
         methods: {}
     }
-
 </script>

@@ -22,7 +22,7 @@
             </zone-select>
         </tab-content>
 
-        <tab-content title="Foncier" icon="ti-settings">
+        <tab-content title="Foncier" icon="ti-home">
             <div class="field">
                 {!! Form::label('land_seek[surface_range][]', 'Surface recherchée (en hectares)', ['class' => 'label']); !!}
                 <vue-slider-range
@@ -81,10 +81,10 @@
                         :options="{{json_encode($productionGenres)}}"
                         group-values="children"
                         name="land_seek[production_genre][]"
-                        v-model="selectedProductionGenres"
+                        v-model="formInput.productionGenres"
                         selected-count-text="productions sélectionnée(s)"
                         placeholder="Sélectionnez au moins une production"
-                        ref="productionGenre">
+                        ref="productionGenres">
                 </multi-select>
 
                 <p class="help is-danger" id="productionGenreError" v-if="$v.formInput.productionGenre.$error">
@@ -130,22 +130,14 @@
                     Ce champ est requis.
                 </p>
             </div>
+            @include('pages.ads.partials.inputs.about_project_content')
         </tab-content>
 
-        <tab-content title="Documents" icon="ti-folder">
-            @include('pages.ads.partials.inputs.documents')
-        </tab-content>
-
-        <tab-content title="Description" icon="ti-menu-alt">
+        <tab-content title="Vous" icon="ti-menu-alt">
             <div class="field">
-                <label class="label is-inline-block has-tooltip-multiline has-tooltip-right"
-                       data-tooltip="Pour certains cédants, l’expérience est
-				un plus. N’hésitez pas à détailler ici de
-				précédentes expériences
-				professionnelles dans le domaine
-				agricole, de stages ou de bénévolat sur
-				des fermes ou encore si vous êtes
-				titulaires de diplômes agricoles.">
+                <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
+                       data-tooltip="Pour les cédants ou propriétaires, l’expérience est un plus !
+                       Détaillez ici vos expériences professionnelles agricoles, stages ou bénévolat sur des fermes et vos diplômes agricoles.">
                     Expérience dans le domaine agricole
                     <i class="fas fa-info-circle has-text-info"></i>
                 </label>
@@ -160,13 +152,14 @@
                 </text-area-counter>
             </div>
 
-            @include('pages.ads.partials.inputs.about_project_content')
 
             @include('pages.ads.partials.inputs.about_content')
         </tab-content>
 
-        <tab-content title="Titre" icon="ti-share">
+        <tab-content title="Finalisation" icon="ti-share">
             @include('pages.ads.partials.inputs.title')
+
+            @include('pages.ads.partials.inputs.documents')
 
             <div class="field">
                 <label class="checkbox">

@@ -38,16 +38,15 @@ export default Vue.extend({
                 productionTypeAdd: hasOld ? v.land_seek.production_type_add : '',
                 minRent: hasOld ? v.land_seek.rent_min : '',
                 maxRent: hasOld ? v.land_seek.rent_max : '',
-                chartConfirmation: false,
                 offerGenre: hasOld ? v.land_seek.offer_genre_id : '',
                 selectedZones: hasOld ? JSON.parse(v.land_seek.selected_zones) : [],
                 experienceFarming: hasOld ? (v.land_seek.experience_farming || '') : '',
-                title: hasOld ? v.title : '',
                 aboutProject: hasOld ? v.about_project_content : '',
                 aboutContent: hasOld ? v.about_content : '',
-                documents: hasOld ? v.documents : []
-            },
-            selectedProductionGenres: []
+                title: hasOld ? v.title : '',
+                documents: hasOld ? JSON.parse(v.documents) : [],
+                chartConfirmation: false,
+            }
         }
     },
     computed: {
@@ -56,9 +55,6 @@ export default Vue.extend({
         }
     },
     watch: {
-        selectedProductionGenres(productionGenres) {
-            this.formInput.productionGenre = productionGenres.map(productionGenre => productionGenre.id)
-        },
         'formInput.productionGenre': function (productionGenre) {
             if (!productionGenre.includes('other')) {
                 this.formInput.productionTypeAdd = '';
@@ -71,6 +67,7 @@ export default Vue.extend({
             formData.append('type', 'ads');
         },
         onSuccessDocumentsUpload(files, response) {
+            console.log(files);
             if(response.ids) {
                 response.ids.forEach(id => this.formInput.documents.push(id));
             }
@@ -79,12 +76,12 @@ export default Vue.extend({
     validations: {
         formInput: {
             selectedZones: {
-                hasZone() {
-                    return this.formInput.selectedZones.length;
+                hasZone(zones) {
+                    return zones.length;
                 }
             },
-            installationTypeId: {required},
             productionGenre: {required},
+            installationTypeId: {required},
             minRent: {numeric},
             maxRent: {numeric},
             experienceFarming: {
@@ -109,8 +106,13 @@ export default Vue.extend({
                 checked(v) {
                     return !!v
                 }
+            },
+            documents: {
+                onePdf(documents) {
+                    console.log(documents);
+                    return true
+                }
             }
-
         }
     }
 });

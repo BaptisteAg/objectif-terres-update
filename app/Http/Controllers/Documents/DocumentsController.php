@@ -56,6 +56,7 @@ class DocumentsController extends Controller
 
         foreach ($files as $file) {
             $document = $this->service->create($file, $request->get('type'));
+            dd($file);
             $ids[] = $document->id;
         }
 

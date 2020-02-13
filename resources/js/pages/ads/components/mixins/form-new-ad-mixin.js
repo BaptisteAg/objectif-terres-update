@@ -8,20 +8,22 @@ const INPUT_TAGS = ['input', 'textarea', 'select'];
  *  - any html element
  *  - a vue component
  *
- * @param input
+ * @param element
  * @returns {Element}
  */
-function findInputElement(input) {
+function findInputElement(element) {
+    let input = element;
+
     if (input instanceof Vue) {
         input = input.$el
     }
     if (input instanceof Element) {
         if (!INPUT_TAGS.includes(input.tagName.toLowerCase())) {
-            input = input.querySelector(INPUT_TAGS);
+            input = input.querySelector(INPUT_TAGS) || input
         }
     }
 
-    return input
+    return input;
 }
 
 export default {
@@ -57,9 +59,16 @@ export default {
                 if(validation && ref) {
                     const input = findInputElement(ref);
                     const hasDirtyError = validation.$dirty && validation.$error;
+                    const type = input.getAttribute("type");
+                    const isCheckbox = type && type.match(/checkbox|radio/i);
+                    const isMultiSelect = input.classList.contains('multiselect__input');
 
-                    if(input.getAttribute("type") === "checkbox") {
-                        input.parentElement.style.border = hasDirtyError ? "1px dashed red" : "none"
+                    if(isCheckbox ||isMultiSelect) {
+                        let field = input.parentElement;
+                        while(!field.classList.contains('field')) {
+                            field = field.parentElement
+                        }
+                        field.style.border = hasDirtyError ? "1px dashed red" : "none"
                     }
                     else {
                         input.style.borderColor = hasDirtyError ? "red" : "#dbdbdb"
