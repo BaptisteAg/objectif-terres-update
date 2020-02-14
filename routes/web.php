@@ -19,6 +19,7 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
     Route::middleware('auth')->post('creer', 'AdsController@store')->name('store');
     Route::middleware('auth')->get('liste-mes-annonces', 'AdsController@list')->name('list');
     Route::get('{id}', 'AdsController@show')->name('show');
+	Route::middleware('auth')->get('supprimer/{ad}', 'AdsController@delete')->name('delete');
 
 
 });
@@ -53,10 +54,6 @@ Route::prefix('mon-espace/recherches')->middleware('auth')->name('researches.')-
 	Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
 });
 
-Route::middleware('auth')->prefix('threads')->name('threads.')->namespace('Threads')->group(function () {
-	Route::post('creer', 'ThreadsController@create')->name('create');
-});
-
 Route::middleware('auth')->prefix('mon-espace')->name('userAccount.')->namespace('HomePage')->group(function () {
 	Route::get('/', 'HomePageLoggedController@index')->name('showAccount');
 });
@@ -70,8 +67,9 @@ Route::prefix('mon-espace/annonces-favorites')->middleware('auth')->name('favori
 
 Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->namespace('Threads')->group(function () {
 	Route::get('/', 'ThreadsController@index')->name('index');
+	Route::post('creer', 'ThreadsController@create')->name('create');
 	Route::get('{thread}', 'MessagesController@show')->name('show');
-	Route::post('creer', 'MessagesController@create')->name('create');
+	Route::post('envoi', 'MessagesController@create')->name('send');
 });
 
 

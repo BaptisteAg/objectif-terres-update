@@ -110,16 +110,27 @@
 										</button>
 									</a>
 								@else
-									<a href="">
+									<a href="{{route("ads.show", $ad->id)}}">
 										<button class="button is-link is-light is-medium ">
 											<span class="icon is-small">
-											<i class="fas fa-pen"></i>
+											<i class="fas fa-eye"></i>
 											</span>
-											<span>Modifier l'annonce</span>
+											<span>Voir l'annonce l'annonce</span>
 										</button>
 
 									</a>
 								@endif
+							</div>
+							<div class="buttons">
+									<a href="{{route("ads.delete", $ad->id)}}">
+										<button class="button is-danger is-light is-medium ">
+											<span class="icon is-small">
+											<i class="fas fa-trash"></i>
+											</span>
+											<span>Supprimer l'annonce</span>
+										</button>
+
+									</a>
 							</div>
 						</div>
 					</div>

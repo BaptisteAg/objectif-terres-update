@@ -101,6 +101,19 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
         return $ad;
     }
+	/**
+	 * Delete an  ad.
+	 *
+	 * @param int
+	 * @throws \Exception
+	 */
+	public function destroy(int $id)
+	{
+
+		$ad = $this->find($id);
+		$ad->delete();
+
+	}
 
     private function getEagerLoading()
     {

@@ -29,8 +29,8 @@ class CreateThreadsTable extends Migration
 
 			$table->foreign('ad_id')
 				->references('id')->on('ads')
-				->onDelete('restrict')
-				->onUpdate('restrict');
+				->onDelete('cascade')
+				->onUpdate('cascade');
         });
     }
 

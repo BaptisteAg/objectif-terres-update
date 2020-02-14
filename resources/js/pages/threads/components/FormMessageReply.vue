@@ -40,7 +40,7 @@
         methods: {
             formSubmit(e) {
                 e.preventDefault();
-                axios.post('/mon-espace/messagerie/creer', {
+                axios.post('/mon-espace/messagerie/envoi', {
                     content: this.content,
                     thread_id: this.value[0].thread.id
                 })

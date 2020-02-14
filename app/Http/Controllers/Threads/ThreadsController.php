@@ -38,6 +38,8 @@ class ThreadsController extends Controller
 	 */
 	public function create(ThreadRequest $request)
 	{
+
+
 		$this->service->create($request->validated());
 
 		return redirect()->back()->with('success',

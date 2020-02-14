@@ -54,8 +54,8 @@ class CreateLandOfferAdsTable extends Migration
 
             $table->foreign('ad_id', 'fk_land_offer_ads_1_idx')
                 ->references('id')->on('ads')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
             $table->foreign('building_id', 'fk_land_offer_ads_2_idx')
                 ->references('id')->on('buildings')

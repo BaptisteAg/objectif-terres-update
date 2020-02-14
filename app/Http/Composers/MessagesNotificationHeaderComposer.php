@@ -28,11 +28,14 @@ class MessagesNotificationHeaderComposer
 
 	public function compose(View $view)
 	{
-		/** @var Collection $threads */
-		$threads = $this->service->findAllThreadsByLoggedUser();
-		$numberOfUnreadMessages = array_reduce($threads->all(), function($count, Thread $thread) {
-			return $count + $thread->unreadMessages()->count();
-		}, 0);
+		if (Auth()->user()){
+			/** @var Collection $threads */
+			$threads = $this->service->findAllThreadsByLoggedUser();
+			$numberOfUnreadMessages = array_reduce($threads->all(), function($count, Thread $thread) {
+				return $count + $thread->unreadMessages()->count();
+			}, 0);
+		}
+
 
 		$view->with(compact('numberOfUnreadMessages'));
 	}

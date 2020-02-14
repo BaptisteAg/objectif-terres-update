@@ -146,4 +146,9 @@ class AdsController extends Controller
 
 		return view('pages.ads.listUserAds', compact('ads'));
 	}
+
+	public function delete(int $id){
+    	$this->adService->delete($id);
+    	return back()->with('success', 'Votre annonce a bien été supprimée');
+	}
 }

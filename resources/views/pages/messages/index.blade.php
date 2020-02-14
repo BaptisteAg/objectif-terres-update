@@ -35,21 +35,12 @@
 									v-model="messages"
 									:user-id="{{auth()->id()}}"
 							></display-message-content>
-							<form
-									method="post"
-									enctype="multipart/form-data"
-									action="{{ route('threads.create') }}"
-									>
-
-								{{ csrf_field() }}
-
 								<form-message-reply
 										v-model="messages"
 										:user-id="{{auth()->id()}}"
 										@message-reply-success="onMessageReplySuccess"
 								>
 								</form-message-reply>
-							</form>
 						</div>
 					</div>
 				</vue-threads>
