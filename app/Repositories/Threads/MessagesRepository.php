@@ -1,9 +1,9 @@
 <?php namespace App\Repositories\Threads;
 
 use App\Models\Message;
+use App\Repositories\AbstractRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Builder;
-use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 /**
  * Class MessageRepository

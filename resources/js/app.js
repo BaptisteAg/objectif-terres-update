@@ -17,6 +17,7 @@ Vue.use(VueFormWizard);
 // Choose a deep merge strategy for the vuelidate properties
 Vue.config.optionMergeStrategies.validations = function (toVal, fromVal) {
     return _.merge({}, fromVal, toVal);
+
 };
 
 import Affix from 'vue-affix';

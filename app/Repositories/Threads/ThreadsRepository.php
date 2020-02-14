@@ -1,10 +1,7 @@
 <?php namespace App\Repositories\Threads;
 
 use App\Models\Thread;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\Eloquent\Builder;
-use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
+use App\Repositories\AbstractRepository;
 
 /**
  * Class ThreadRepository
@@ -52,12 +49,15 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 
 	/**
 	 * @param int $userId
-	 * @return mixed
+	 * @return Thread[]
 	 */
 	public function findAllThreadsByLoggedUser()
 	{
-		/** @var Collection $threads */
-		$threads = auth()->user()->threads()->with($this->getEagerLoading())->get();
+		$threads = auth()
+			->user()
+			->threads()
+			->with($this->getEagerLoading())
+			->get();
 
 		return $threads;
 
@@ -68,7 +68,7 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 	{
 		return [
 			'ad',
-			'users',
+			'users'
 		];
 	}
 

@@ -32,6 +32,9 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread whereUpdatedAt($value)
  * @mixin \Eloquent
  * @property-read \App\Models\Ad|null $ad
+ * @property-read int|null $messages_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Message[] $unreadMessages
+ * @property-read int|null $unread_messages_count
  */
 class Thread extends Model implements HasPresenter
 {
@@ -43,11 +46,21 @@ class Thread extends Model implements HasPresenter
 	];
 
 	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
 	public function messages()
 	{
-		return $this->belongsTo(Message::class);
+		return $this->hasMany(Message::class);
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function unreadMessages()
+	{
+		return $this->hasMany(Message::class)
+			->where('is_read', '=', '0')
+			->where('sender_user_id', '!=', auth()->id());
 	}
 
 	/**
@@ -62,6 +75,8 @@ class Thread extends Model implements HasPresenter
 	{
 		return $this->belongsToMany(User::class, 'thread_users')->withTimestamps();
 	}
+
+
 	/**
 	 * Get the presenter class.
 	 *

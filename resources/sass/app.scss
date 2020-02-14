@@ -64,3 +64,25 @@ body .multiselect__option--highlight {
 .slider {
   overflow: hidden !important;
 }
+
+
+//Dot notification
+
+.notification-container {
+  position: relative;
+  i {
+    color: #fff;
+  }
+}
+
+.notification-counter {
+  position: absolute;
+  top: -2px;
+  left: 12px;
+
+  background-color: rgba(212, 19, 13, 1);
+  color: #fff;
+  border-radius: 3px;
+  padding: 1px 3px;
+  font: 10px Verdana;
+}

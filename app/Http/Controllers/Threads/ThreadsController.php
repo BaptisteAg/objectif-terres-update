@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Threads;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ThreadRequest;
+use App\Models\Thread;
 use App\Services\Threads\ThreadService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 /**
  * Class ThreadsController
@@ -48,13 +50,15 @@ class ThreadsController extends Controller
 	 */
 	public function index()
 	{
+		/** @var Collection $threads */
 		$threads = $this->service->findAllThreadsByLoggedUser();
-		$firstThread = $this->service->findAllByThread($threads[0]->id);
+		$numberOfUnreadMessages = array_reduce($threads->all(), function($count, Thread $thread) {
+			return $count + $thread->unreadMessages()->count();
+		}, 0);
 
 
 
-		return view('pages.messages.index', compact('threads', 'firstThread'));
-
+		return view('pages.messages.index', compact('threads', 'numberOfUnreadMessages'));
 	}
 
 

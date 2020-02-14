@@ -13,15 +13,14 @@ Vue.component('vue-threads',{
     },
     props: {
         initThread : '',
-        userLoggedId :'',
     },
     data() {
         return {
             messages : [],
-            activeThread: this.initThread || null
+            activeThread: this.initThread || null,
         }
     },
-    mounted() {
+    mounted(){
         if(this.initThread) {
             setInterval(_ => this.onThreadClick(this.activeThread), 15000);
             this.onThreadClick(this.activeThread);
@@ -36,5 +35,8 @@ Vue.component('vue-threads',{
                     this.activeThread = threadId;
                 })
         },
+        onMessageReplySuccess(message) {
+            this.messages.push(message)
+        }
     },
 });

@@ -15,5 +15,9 @@ class MessagePresenter extends BasePresenter
 	{
 		return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->format('d/m/Y');
 	}
+	public function created_at_diff()
+	{
+		return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->diffForHumans();
+	}
 
 }

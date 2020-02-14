@@ -26,5 +26,6 @@ class ViewServiceProvider extends ServiceProvider
     {
 
         View::composer('layouts.header', 'App\Http\Composers\ResearchComposer');
+		View::composer('layouts.header', 'App\Http\Composers\MessagesNotificationHeaderComposer');
     }
 }

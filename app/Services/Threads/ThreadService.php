@@ -1,5 +1,6 @@
 <?php namespace App\Services\Threads;
 
+use App\Models\Message;
 use App\Models\Thread;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Threads\MessagesRepository;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 
 /**
- * Class MessagesService
+ * Class ThreadService
  * @package App\Services\Threads
  */
 class ThreadService
@@ -31,7 +32,7 @@ class ThreadService
 
 
 	/**
-	 * AdMessagesService constructor.
+	 * ThreadService constructor.
 	 * @param ThreadsRepository $repository
 	 */
 	public function __construct(
@@ -48,11 +49,10 @@ class ThreadService
 
 	/**
 	 * @param int $userId
-	 * @return mixed
+	 * @return Thread[]
 	 */
 	public function findAllThreadsByLoggedUser()
 	{
-		/** @var Collection $threads */
 		$threads = $this->repository->findAllThreadsByLoggedUser();
 		return $threads;
 
@@ -73,6 +73,24 @@ class ThreadService
 
 		return $allMessagesInThread;
 
+	}
+
+	/**
+	 * @param int $threadId
+	 * @return mixed
+	 */
+	public function setToReadAllMessagesInThread(int $threadId)
+	{
+		$allMessagesInThread = $this->messagesRepository->findAllByThread($threadId);
+
+		$idsToUpdate = [];
+		/** @var Message $message */
+		foreach ($allMessagesInThread as $message){
+			if($message->is_read === 0 && auth()->id() !== $message->sender_user_id) {
+				$idsToUpdate[] = $message->id;
+			}
+		}
+		$this->messagesRepository->updateMany($idsToUpdate, ["is_read" => 1]);
 	}
 
 	/**
@@ -132,9 +150,7 @@ class ThreadService
 	 */
 	public function createMessage(array $data)
 	{
-
-		$this->messagesRepository->create($data);
-
+		return $this->messagesRepository->create($data);
 	}
 
 }

@@ -53,7 +53,7 @@ class MessagesController extends Controller
 		}
 
 		$messages = $this->threadService->findAllByThread($thread->id);
-
+		$this->threadService->setToReadAllMessagesInThread($thread->id);
 		return response()->json($messages);
 	}
 
@@ -65,9 +65,9 @@ class MessagesController extends Controller
 	 */
 	public function create(MessageRequest $request)
 	{
-		$this->threadService->createMessage($request->validated());
+		$message = $this->threadService->createMessage($request->validated());
 
-		return back();
+		return response()->json($message);
 	}
 
 }

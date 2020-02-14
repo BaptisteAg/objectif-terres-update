@@ -115,6 +115,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'departments.region',
 			'regions',
 			'adMessages',
+			'threads',
+			'threads.messages',
+			'threads.users',
+			'threads.messages.senderUser',
         ];
     }
 }

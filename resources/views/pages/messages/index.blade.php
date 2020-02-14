@@ -10,14 +10,18 @@
 			<div id="vue-messages">
 				<vue-threads
 						inline-template
-						init-thread='{{ $firstThread[0]->thread_id }}'
+						init-thread='{{ $threads[0]->id }}'
 						user-logged-id="{{auth()->id()}}"
 				>
 					<div class="columns">
 						<div class="column is-one-quarter">
 
+
+
 							<list-threads
 									:threads="{{json_encode($threads)}}"
+									:number-of-unread-messages ="{{$numberOfUnreadMessages}}"
+									v-model="messages"
 									@on-thread-click="onThreadClick"
 							>
 							</list-threads>
@@ -42,6 +46,7 @@
 								<form-message-reply
 										v-model="messages"
 										:user-id="{{auth()->id()}}"
+										@message-reply-success="onMessageReplySuccess"
 								>
 								</form-message-reply>
 							</form>

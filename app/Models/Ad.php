@@ -65,7 +65,6 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @mixin \Eloquent
  * @property string|null $title
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereTitle($value)
-
  */
 class Ad extends Model implements HasPresenter
 {

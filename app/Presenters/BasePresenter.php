@@ -1,7 +1,12 @@
 <?php namespace App\Presenters;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use \McCool\LaravelAutoPresenter\BasePresenter as OriginalBasePresenter;
 
+/**
+ * @property Model $wrappedObject
+ */
 abstract class BasePresenter extends OriginalBasePresenter implements \JsonSerializable
 {
 	/**
@@ -15,6 +20,16 @@ abstract class BasePresenter extends OriginalBasePresenter implements \JsonSeria
 
 		foreach($this->wrappedObject->getAttributes() as $attribute => $value) {
 			$serialized[$attribute] = $this->$attribute;
+		}
+
+		foreach($this->wrappedObject->getRelations() as $relationName => $relation) {
+			$serialized[$relationName] = $this->$relationName;
+		}
+
+		foreach($serialized as $attribute => &$value) {
+			if($value instanceof Collection) {
+				$value = $value->toArray();
+			}
 		}
 
 		return $serialized;

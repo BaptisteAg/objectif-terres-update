@@ -30,8 +30,18 @@ class ThreadPresenter extends BasePresenter
 		return implode(' - ', $title);
 	}
 
+	public function unread_count()
+	{
+		return $this->wrappedObject->unreadMessages()->count();
+	}
+
 	public function created_at()
 	{
 		return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->format('d/m/Y');
+	}
+
+	public function created_at_diff()
+	{
+		return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->diffForHumans();
 	}
 }

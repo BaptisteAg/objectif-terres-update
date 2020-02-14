@@ -123,4 +123,6 @@ class User extends Authenticatable
 	{
 		return $this->belongsToMany(Thread::class, 'thread_users')->withTimestamps();
 	}
+
+
 }

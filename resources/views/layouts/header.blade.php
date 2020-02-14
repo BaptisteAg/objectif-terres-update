@@ -41,9 +41,16 @@
                 </span>
 							</div>
 							<div class="level-item">
-                <span class="icon">
-                    <a href=""><i class="far fa-envelope"></i></a>
-                </span>
+								<span class="notification-container">
+								 <a href="{{route('threads.index')}}">
+										<i class="far fa-envelope"></i>
+									</a>
+									<span class="notification-counter">{{$numberOfUnreadMessages}}</span>
+								</span>
+
+
+							
+
 							</div>
 							<div class="level-item">
 								<a class="dropdown-item" href="{{ route('logout') }}"
@@ -124,7 +131,7 @@
 
 				</div>
 			</div>
-			<div  v-show="isFormOpen" class="has-ba" style="display : none">
+			<div v-show="isFormOpen" class="has-ba" style="display : none">
 				<div class="container-custom" v-show="adCategorySelected === 'job'">
 					@include('layouts.partials.headerJobResearch')
 				</div>
