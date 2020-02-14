@@ -54,4 +54,12 @@ class UserService
 
 	}
 
+	/**
+	 * @param int $id
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function find(int $id){
+		return $this->repository->find($id);
+	}
+
 }

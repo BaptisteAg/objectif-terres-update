@@ -2,10 +2,10 @@
 //////////////
 // LODASH
 _ = require('lodash');
-
 //////////////
 // VUE
 window.Vue = require('vue');
+
 
 import Vuelidate from 'vuelidate';
 Vue.use(Vuelidate);
@@ -17,6 +17,7 @@ Vue.use(VueFormWizard);
 // Choose a deep merge strategy for the vuelidate properties
 Vue.config.optionMergeStrategies.validations = function (toVal, fromVal) {
     return _.merge({}, fromVal, toVal);
+
 };
 
 import Affix from 'vue-affix';
@@ -34,6 +35,7 @@ require ('./pages/ads/new');
 // require('./pages/researches/researches');
 require('./pages/header');
 require('./pages/auth/register');
+require('./pages/threads/threads');
 
 //////////////
 // GLOBAL

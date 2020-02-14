@@ -37,6 +37,13 @@
 							<span>Mes annonces favorites</span>
 						</a>
 					</li>
+					<li class="{{ Route::current()->getName() == 'threads.index' ? 'is-active' : '' }}">
+						<a
+								href="{{route('threads.index')}}"><span class="icon is-small">
+											<i class="fas fa-comments"></i></span>
+							<span>Ma messagerie</span>
+						</a>
+					</li>
 				</ul>
 			</div>
 		</div>

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Presenters\AdMessagePresenter;
+use App\Presenters\MessagePresenter;
 use App\Presenters\AdPresenter;
 use Illuminate\Database\Eloquent\Model;
 use McCool\LaravelAutoPresenter\Decoratable;
@@ -61,6 +61,6 @@ class AdMessage extends Model implements HasPresenter
 	 */
 	public function getPresenterClass()
 	{
-		return AdMessagePresenter::class;
+		return MessagePresenter::class;
 	}
 }

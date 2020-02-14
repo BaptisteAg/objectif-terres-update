@@ -27,7 +27,6 @@
         let buttons = document.querySelectorAll('#open-modal-message');
         buttons.forEach((button)=>{
             button.addEventListener('click', function (event) {
-                console.log('oui')
                 event.preventDefault();
                 let modal = document.querySelector('.modal');
                 let html = document.querySelector('html');

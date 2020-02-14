@@ -1,4 +1,5 @@
 <template>
+
     <div class="columns ad-types-container">
         <div class="column"></div>
         <div class="column is-half">

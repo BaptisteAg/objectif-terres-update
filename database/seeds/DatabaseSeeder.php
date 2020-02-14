@@ -9,6 +9,8 @@ use App\Models\FavoriteAd;
 use App\Models\JobAd;
 use App\Models\LandOfferAd;
 use App\Models\LandSeekAd;
+use App\Models\Message;
+use App\Models\Thread;
 use App\Models\PpToUserMessage;
 use App\Models\PriceRange;
 use App\Models\ProductionGenre;
@@ -41,7 +43,9 @@ class DatabaseSeeder extends Seeder
 
             $this->call([
                 RequirementSeeder::class,
-                BuildingTypeSeeder::class,
+				BuildingTypeSeeder::class,
+				ResponseTemplateSeeder::class,
+
                 PriceRangeSeeder::class,
                 SurfaceRangeSeeder::class,
                 InstallationTypeSeeder::class,
@@ -51,6 +55,7 @@ class DatabaseSeeder extends Seeder
                 OfferGenreSeeder::class,
                 EducationLevelSeeder::class,
             ]);
+
 
             if(app()->environment() === "local") {
                 $this->call([
@@ -92,6 +97,7 @@ class DatabaseSeeder extends Seeder
             }
 
         });
+
 
         echo "\nTotal queries : ".$queriesCount."\n";
     }

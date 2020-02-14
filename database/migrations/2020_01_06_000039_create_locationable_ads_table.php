@@ -38,8 +38,8 @@ class CreateLocationableAdsTable extends Migration
 
             $table->foreign('ad_id', 'fk_locationable_ads_1')
                 ->references('id')->on('ads')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

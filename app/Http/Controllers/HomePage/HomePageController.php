@@ -7,7 +7,6 @@ use App\Models\City;
 use App\Models\Department;
 use App\Models\Region;
 use App\Services\Ads\AdService;
-use Illuminate\Support\Collection;
 
 class HomePageController extends Controller
 {

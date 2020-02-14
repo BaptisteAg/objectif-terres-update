@@ -1,4 +1,4 @@
-@section('title', $ad->landOfferAd->title)
+@section('title', $ad->title)
 <section class="section">
 	<div class="container ">
 		<nav class="breadcrumb" aria-label="breadcrumbs">
@@ -7,7 +7,7 @@
 				<li><a href="#">Offres foncières</a></li>
 			</ul>
 		</nav>
-		<h1 class="title has-text-link">{{$ad->landOfferAd->title}}</h1>
+		<h1 class="title has-text-link">{{$ad->title}}</h1>
 		<div class="columns">
 			<div id="slider-container" class="column is-two-thirds ">
 				<div id="ad-images" class="carousel ">

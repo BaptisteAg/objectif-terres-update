@@ -34,7 +34,7 @@
 										<p class="has-text-centered is-size-4">Vous souhaitez répondre à cette
 											annonce
 											?</p>
-										<button class="button is-link  is-large">
+										<button id="open-modal-message" class="button is-link  is-large">
 									 	<span class="icon is-small">
 										<i class="fas fa-reply"></i>
 										</span>

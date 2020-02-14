@@ -101,6 +101,19 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
         return $ad;
     }
+	/**
+	 * Delete an  ad.
+	 *
+	 * @param int
+	 * @throws \Exception
+	 */
+	public function destroy(int $id)
+	{
+
+		$ad = $this->find($id);
+		$ad->delete();
+
+	}
 
     private function getEagerLoading()
     {
@@ -115,6 +128,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'departments.region',
 			'regions',
 			'adMessages',
+			'threads',
+			'threads.messages',
+			'threads.users',
+			'threads.messages.senderUser',
         ];
     }
 }
