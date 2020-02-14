@@ -81,10 +81,10 @@
                         :options="{{json_encode($productionGenres)}}"
                         group-values="children"
                         name="land_seek[production_genre][]"
-                        v-model="formInput.productionGenres"
+                        v-model="formInput.productionGenre"
                         selected-count-text="productions sélectionnée(s)"
                         placeholder="Sélectionnez au moins une production"
-                        ref="productionGenres">
+                        ref="productionGenre">
                 </multi-select>
 
                 <p class="help is-danger" id="productionGenreError" v-if="$v.formInput.productionGenre.$error">

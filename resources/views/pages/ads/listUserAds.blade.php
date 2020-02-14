@@ -27,7 +27,7 @@
 										<figure class="image is-5by4">
 											@if(count($ad->documents) > 0)
 												@foreach($ad->documents as $document)
-													@if($document->type_document ==="image")
+													@if(strpos($document->type, "image") !== false)
 														<img src="{{asset($document->path)}}">
 													@endif
 												@endforeach

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Documents;
 
 use App\Http\Controllers\Controller;
 use App\Services\Documents\DocumentService;
+use App\Services\Documents\DocumentServiceInterface;
 use Illuminate\Http\Request;
 
 class DocumentsController extends Controller
@@ -13,7 +14,7 @@ class DocumentsController extends Controller
      */
     protected $service;
 
-    public function __construct(DocumentService $service)
+    public function __construct(DocumentServiceInterface $service)
     {
         $this->service = $service;
     }
@@ -52,15 +53,12 @@ class DocumentsController extends Controller
             return response()->json('Paramètres incorrects.');
         }
 
-        $ids = [];
-
+        $documents = [];
         foreach ($files as $file) {
-            $document = $this->service->create($file, $request->get('type'));
-            dd($file);
-            $ids[] = $document->id;
+            $documents[] = $this->service->create($file, $request->get('type'));
         }
 
-        return response()->json(compact('ids'));
+        return response()->json($documents);
     }
 
     /**

@@ -1,25 +1,20 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
-
 // Variables
 @import 'variables';
-
 //import framework bulma
 @import '~bulma/bulma';
 @import '~bulma-accordion/dist/css/bulma-accordion';
 @import '~bulma-tooltip/dist/css/bulma-tooltip.min.css';
-
 //import Awesomplete
 @import '~awesomplete/awesomplete.css';
-
 // Themify
 @import url('https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css');
-
 // Animate
 @import url('https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css');
-
-
-
+///////////////
+// Loader
+@import "loader";
 ///////////////
 // Pages
 @import "ads";
@@ -30,6 +25,11 @@
   padding: 0.5rem 2rem;
 }
 
+.title {
+  font-family:$font-family-sans-serif;
+}
+
+// Leaflet / OpenStreetmap
 #my_osm_widget_map { /* use the same name as <div id=""> */
   width: 100vw; /* important! if you need full width display */
   height: 400px;
@@ -48,8 +48,30 @@ body .multiselect__option--highlight {
   }
 }
 
+// Dropzone
+body .vue-dropzone {
+  & > .dz-preview .dz-remove {
+    bottom: initial;
+    top: 5px;
+    right: 5px;
+    font-size: .6rem;
+    font-weight: normal;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .dz-preview {
+    .dz-details .dz-size {
+      margin-top: 2em;
+    }
+    .dz-filename {
+      margin-top: 5em;
+  }
+}
+
 .slider-pagination {
   bottom: -40px;
+
   .slider-page {
     box-shadow: 0 2px 5px #808080;
   }
@@ -59,6 +81,8 @@ body .multiselect__option--highlight {
   margin-top: 20px;
 }
 
-.slider{
+.slider {
   overflow: hidden !important;
+}
+
 }

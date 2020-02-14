@@ -93,8 +93,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             }
         }
 
-        if(isset($data["documents"])) {
-            foreach($data["documents"] as $documentId) {
+        if(isset($data["documents_ids"]) && is_array($data["documents_ids"])) {
+            foreach($data["documents_ids"] as $documentId) {
                 $ad->documents()->attach($documentId);
             }
         }

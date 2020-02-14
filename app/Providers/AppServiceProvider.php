@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Documents\DocumentService;
+use App\Services\Documents\DocumentServiceInterface;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,5 +29,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->bind(DocumentServiceInterface::class, DocumentService::class);
     }
 }

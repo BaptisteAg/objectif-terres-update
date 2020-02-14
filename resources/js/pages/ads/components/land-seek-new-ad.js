@@ -62,16 +62,6 @@ export default Vue.extend({
         },
     },
     methods: {
-        onBeforeDocumentsUpload(files, xhr, formData) {
-            formData.append('_token', window.csrf_token);
-            formData.append('type', 'ads');
-        },
-        onSuccessDocumentsUpload(files, response) {
-            console.log(files);
-            if(response.ids) {
-                response.ids.forEach(id => this.formInput.documents.push(id));
-            }
-        }
     },
     validations: {
         formInput: {
@@ -88,29 +78,9 @@ export default Vue.extend({
                 minLength: minLength(5),
                 maxLength: maxLength(1000),
             },
-            aboutProject: {
-                minLength: minLength(5),
-                maxLength: maxLength(1000),
-                required
-            },
-            aboutContent: {
-                minLength: minLength(5),
-                maxLength: maxLength(1000),
-                required
-            },
-            title: {
-                required,
-                minLength: minLength(5),
-            },
             chartConfirmation: {
                 checked(v) {
                     return !!v
-                }
-            },
-            documents: {
-                onePdf(documents) {
-                    console.log(documents);
-                    return true
                 }
             }
         }

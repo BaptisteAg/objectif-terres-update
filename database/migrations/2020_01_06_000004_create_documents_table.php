@@ -23,9 +23,10 @@ class CreateDocumentsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('path');
-            $table->string('type_document');
             $table->string('name');
+            $table->string('path');
+            $table->string('type');
+            $table->integer('size');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')
                 ->references('id')
