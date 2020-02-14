@@ -60,6 +60,8 @@ class ThreadsController extends Controller
 
 
 
+
+
 		return view('pages.messages.index', compact('threads', 'numberOfUnreadMessages'));
 	}
 
