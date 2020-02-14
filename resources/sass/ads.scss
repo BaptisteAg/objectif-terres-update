@@ -1,18 +1,72 @@
 #new-ad {
   .field {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+    margin-top: 20px;
+    font-size: 19px;
   }
+  label {
+    font-size: 1.5rem;
+    font-family: "Nunito", sans-serif;
 
-  .wizard-tab-content {
-    display: flex; // to avoid horizontal scroll when animating
-    .wizard-tab-container {
-      display: block;
-      width:100%;
-      animation: fadeInRight 0.5s;
+    span, &.checkbox {
+      font-size:15px;
     }
   }
-}
 
-#slider-container{
-  overflow: hidden;
+  .button.is-light {
+    background:rgb(176, 203, 220);
+  }
+
+  .vue-form-wizard {
+    .wizard-header {
+      padding: 0;
+    }
+    .wizard-navigation {
+      position: relative;
+      top: -40px;
+    }
+    .wizard-tab-content {
+      display: flex; // to avoid horizontal scroll when animating
+      .wizard-tab-container {
+        display: block;
+        width: 100%;
+        animation: fadeInRight 0.5s;
+      }
+    }
+    .affix-wizard-footer {
+      width: 100%;
+
+      button {
+        font-size:30px;
+        padding:14px 30px;
+      }
+    }
+  }
+
+  // Dropzone
+  body .vue-dropzone {
+    & > .dz-preview .dz-remove {
+      bottom: initial;
+      top: 5px;
+      right: 5px;
+      font-size: .6rem;
+      font-weight: normal;
+      box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .dz-preview {
+      .dz-details .dz-size {
+        margin-top: 2em;
+      }
+
+      .dz-filename {
+        margin-top: 5em;
+      }
+    }
+  }
+
+  #slider-container {
+    overflow: hidden;
+  }
 }

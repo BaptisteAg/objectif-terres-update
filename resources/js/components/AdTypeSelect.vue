@@ -32,7 +32,8 @@
     }
 
     .ad-types-container {
-        background: rgba(0,0,0,0.05);;
+        background: rgba(0,0,0,0.05);
+        padding-bottom:40px;
     }
 
     .ad-type {
@@ -46,7 +47,6 @@
         cursor: pointer;
         margin: 0 10px;
         text-align: center;
-
         background: #fff;
         box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 

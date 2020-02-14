@@ -3,7 +3,7 @@
 @section('title', 'Déposer une annonce')
 
 @section('main-content')
-    <section class="section">
+    <section style="padding-top:50px;padding-bottom:100px;">
         <div class="columns">
             <div class="column"></div>
             <div class="column is-half">
@@ -44,41 +44,34 @@
                             name="ad_type">
                     </ad-type-select>
 
-                    <div class="columns">
-                        <div class="column"></div>
-                        <div class="column is-half">
-                            <new-land-seek-ad inline-template
-                                              v-show="adTypeSelected === 'land_seek'"
-                                              :is-input-disabled="adTypeSelected !== 'land_seek'"
-                                              :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
-                                              @input-enabled="setEnabledForm"
-                                              @form-complete="onFormComplete">
-                                @include('pages.ads.partials.landSeek.landSeekNewAd')
-                            </new-land-seek-ad>
+                    <new-land-seek-ad inline-template
+                                      v-show="adTypeSelected === 'land_seek'"
+                                      :is-input-disabled="adTypeSelected !== 'land_seek'"
+                                      :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
+                                      @input-enabled="setEnabledForm"
+                                      @form-complete="onFormComplete">
+                        @include('pages.ads.partials.landSeek.landSeekNewAd')
+                    </new-land-seek-ad>
 
-                        <!--                                <new-land-offer-ad inline-template
-                                                           v-show="adTypeSelected === 'land_offer'"
-                                                           :is-input-disabled="adTypeSelected !== 'land_offer'"
-                                                           :old-values="{{json_encode(old('land_offer', new stdClass))}}"
-                                                           @input-enabled="setEnabledForm">
-                                            @include('pages.ads.partials.landOffer.landOfferNewAd')
-                                </new-land-offer-ad>
+            <!--    <new-land-offer-ad inline-template
+                                                       v-show="adTypeSelected === 'land_offer'"
+                                                       :is-input-disabled="adTypeSelected !== 'land_offer'"
+                                                       :old-values="{{json_encode(old('land_offer', new stdClass))}}"
+                                                       @input-enabled="setEnabledForm">
+                                        @include('pages.ads.partials.landOffer.landOfferNewAd')
+                    </new-land-offer-ad>
 
-                                <new-job-offer-ad inline-template
-                                                  v-show="adTypeSelected === 'job_offer'"
-                                                  :is-input-disabled="adTypeSelected !== 'job_offer'"
-                                                  :old-values="{{json_encode(old('job_offer', new stdClass))}}"
-                                                          @input-enabled="setEnabledForm">
-                                            @include('pages.ads.partials.jobAd.jobAdNewAd')
-                                </new-job-offer-ad>-->
-                        </div>
-                        <div class="column"></div>
-                    </div>
+                    <new-job-offer-ad inline-template
+                                      v-show="adTypeSelected === 'job_offer'"
+                                      :is-input-disabled="adTypeSelected !== 'job_offer'"
+                                      :old-values="{{json_encode(old('job_offer', new stdClass))}}"
+                                                      @input-enabled="setEnabledForm">
+                                        @include('pages.ads.partials.jobAd.jobAdNewAd')
+                    </new-job-offer-ad>-->
+
                 </form>
             </new-ad>
         </div>
-        @include('components.partnering')
-        @include('components.supportTerreLiens')
     </section>
 @endsection
 
