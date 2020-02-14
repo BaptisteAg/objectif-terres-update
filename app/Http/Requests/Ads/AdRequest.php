@@ -32,7 +32,7 @@ class AdRequest extends FormRequest
             'about_content'           => ['required', 'string', 'max:1000'],
             'about_project_content'   => ['required', 'string', 'max:1000'],
             'title'                   => ['required', 'string'],
-            'documents'               => ['nullable, array'],
+            'documents_ids'           => ['nullable, array'],
         ];
 
         $rulesetsByAdType = [

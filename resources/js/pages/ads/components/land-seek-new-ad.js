@@ -7,6 +7,7 @@ import VueSliderRange from "../../../components/VueSliderRange";
 import ZoneSelect from '../../../components/ZoneSelect'
 import AdTypeSelect from '../../../components/AdTypeSelect'
 import MultiSelect from "../../../components/MultiSelect";
+import CustomRadio from "../../../components/CustomRadio"
 
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
@@ -15,6 +16,7 @@ export default Vue.extend({
     mixins: [FormNewAdMixin],
     props: {},
     components: {
+        CustomRadio,
         TextAreaCounter,
         VueSlider,
         VueSliderRange,
@@ -36,16 +38,15 @@ export default Vue.extend({
                 productionTypeAdd: hasOld ? v.land_seek.production_type_add : '',
                 minRent: hasOld ? v.land_seek.rent_min : '',
                 maxRent: hasOld ? v.land_seek.rent_max : '',
-                chartConfirmation: false,
                 offerGenre: hasOld ? v.land_seek.offer_genre_id : '',
                 selectedZones: hasOld ? JSON.parse(v.land_seek.selected_zones) : [],
                 experienceFarming: hasOld ? (v.land_seek.experience_farming || '') : '',
-                title: hasOld ? v.title : '',
                 aboutProject: hasOld ? v.about_project_content : '',
                 aboutContent: hasOld ? v.about_content : '',
-                documents: hasOld ? v.documents : []
-            },
-            selectedProductionGenres: []
+                title: hasOld ? v.title : '',
+                documents: hasOld ? JSON.parse(v.documents) : [],
+                chartConfirmation: false,
+            }
         }
     },
     computed: {
@@ -54,9 +55,6 @@ export default Vue.extend({
         }
     },
     watch: {
-        selectedProductionGenres(productionGenres) {
-            this.formInput.productionGenre = productionGenres.map(productionGenre => productionGenre.id)
-        },
         'formInput.productionGenre': function (productionGenre) {
             if (!productionGenre.includes('other')) {
                 this.formInput.productionTypeAdd = '';
@@ -64,51 +62,27 @@ export default Vue.extend({
         },
     },
     methods: {
-        onBeforeDocumentsUpload(files, xhr, formData) {
-            formData.append('_token', window.csrf_token);
-            formData.append('type', 'ads');
-        },
-        onSuccessDocumentsUpload(files, response) {
-            if(response.ids) {
-                response.ids.forEach(id => this.formInput.documents.push(id));
-            }
-        }
     },
     validations: {
         formInput: {
             selectedZones: {
-                hasZone() {
-                    return this.formInput.selectedZones.length;
+                hasZone(zones) {
+                    return zones.length;
                 }
             },
-            installationTypeId: {required},
             productionGenre: {required},
+            installationTypeId: {required},
             minRent: {numeric},
             maxRent: {numeric},
             experienceFarming: {
                 minLength: minLength(5),
                 maxLength: maxLength(1000),
             },
-            aboutProject: {
-                minLength: minLength(5),
-                maxLength: maxLength(1000),
-                required
-            },
-            aboutContent: {
-                minLength: minLength(5),
-                maxLength: maxLength(1000),
-                required
-            },
-            title: {
-                required,
-                minLength: minLength(5),
-            },
             chartConfirmation: {
                 checked(v) {
                     return !!v
                 }
             }
-
         }
     }
 });

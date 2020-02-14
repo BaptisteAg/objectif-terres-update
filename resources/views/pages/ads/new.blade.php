@@ -3,7 +3,7 @@
 @section('title', 'Déposer une annonce')
 
 @section('main-content')
-    <section class="section is-medium">
+    <section style="padding-top:50px;padding-bottom:100px;">
         <div class="columns">
             <div class="column"></div>
             <div class="column is-half">
@@ -20,60 +20,58 @@
                         Les champ marqués d'un astérisque (*) sont obligatoires
                     </p>
                 </div>
-                <div class="section">
-                    <div id="vue-render">
-
-                        <new-ad id="new-ad"
-                                inline-template
-                                :old-ad-type-selected="'{{old('ad_type')}}'">
-
-                            <form
-                                method="post"
-                                enctype="multipart/form-data"
-                                @submit="submit"
-                                ref="form">
-
-                                {{ csrf_field() }}
-
-                                <ad-type-select
-                                    v-model="adTypeSelected"
-                                    name="ad_type">
-                                </ad-type-select>
-
-                                <new-land-seek-ad inline-template
-                                                  v-show="adTypeSelected === 'land_seek'"
-                                                  :is-input-disabled="adTypeSelected !== 'land_seek'"
-                                                  :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
-                                                  @input-enabled="setEnabledForm"
-                                                  @form-complete="onFormComplete">
-                                    @include('pages.ads.partials.landSeek.landSeekNewAd')
-                                </new-land-seek-ad>
-
-<!--                                <new-land-offer-ad inline-template
-                                                   v-show="adTypeSelected === 'land_offer'"
-                                                   :is-input-disabled="adTypeSelected !== 'land_offer'"
-                                                   :old-values="{{json_encode(old('land_offer', new stdClass))}}"
-                                                   @input-enabled="setEnabledForm">
-                                    @include('pages.ads.partials.landOffer.landOfferNewAd')
-                                </new-land-offer-ad>
-
-                                <new-job-offer-ad inline-template
-                                                  v-show="adTypeSelected === 'job_offer'"
-                                                  :is-input-disabled="adTypeSelected !== 'job_offer'"
-                                                  :old-values="{{json_encode(old('job_offer', new stdClass))}}"
-                                                  @input-enabled="setEnabledForm">
-                                    @include('pages.ads.partials.jobAd.jobAdNewAd')
-                                </new-job-offer-ad>-->
-                            </form>
-                        </new-ad>
-                    </div>
-                    <div class="column"></div>
-                </div>
             </div>
             <div class="column"></div>
         </div>
-        @include('components.partnering')
-        @include('components.supportTerreLiens')
+        <div id="vue-render">
+            @include('components.loader', ['text' => 'Chargement du formulaire'])
+            <new-ad id="new-ad"
+                    inline-template
+                    :old-ad-type-selected="'{{old('ad_type')}}'"
+                    style="display:none"
+                    :style="{display:loading ? 'none': 'block'}">
+
+                <form
+                        method="post"
+                        enctype="multipart/form-data"
+                        @submit="submit"
+                        ref="form">
+
+                    {{ csrf_field() }}
+
+                    <ad-type-select
+                            v-model="adTypeSelected"
+                            name="ad_type">
+                    </ad-type-select>
+
+                    <new-land-seek-ad inline-template
+                                      v-show="adTypeSelected === 'land_seek'"
+                                      :is-input-disabled="adTypeSelected !== 'land_seek'"
+                                      :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
+                                      @input-enabled="setEnabledForm"
+                                      @form-complete="onFormComplete">
+                        @include('pages.ads.partials.landSeek.landSeekNewAd')
+                    </new-land-seek-ad>
+
+            <!--    <new-land-offer-ad inline-template
+                                                       v-show="adTypeSelected === 'land_offer'"
+                                                       :is-input-disabled="adTypeSelected !== 'land_offer'"
+                                                       :old-values="{{json_encode(old('land_offer', new stdClass))}}"
+                                                       @input-enabled="setEnabledForm">
+                                        @include('pages.ads.partials.landOffer.landOfferNewAd')
+                    </new-land-offer-ad>
+
+                    <new-job-offer-ad inline-template
+                                      v-show="adTypeSelected === 'job_offer'"
+                                      :is-input-disabled="adTypeSelected !== 'job_offer'"
+                                      :old-values="{{json_encode(old('job_offer', new stdClass))}}"
+                                                      @input-enabled="setEnabledForm">
+                                        @include('pages.ads.partials.jobAd.jobAdNewAd')
+                    </new-job-offer-ad>-->
+
+                </form>
+            </new-ad>
+        </div>
     </section>
 @endsection
 
@@ -81,7 +79,12 @@
     <script>
         const vuePage = new Vue({
             el: '#vue-render',
-            name: 'content'
+            name: 'content',
+            data() {
+                return {
+                    loading: false
+                }
+            }
         });
     </script>
 @endsection

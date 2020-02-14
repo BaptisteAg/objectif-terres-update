@@ -5,7 +5,7 @@ use App\Repositories\Documents\DocumentRepository;
 use App\Repositories\Documents\DocumentRepositoryInterface;
 use Illuminate\Http\UploadedFile;
 
-class DocumentService
+class DocumentService implements DocumentServiceInterface
 {
     /**
      * @var DocumentRepositoryInterface
@@ -17,15 +17,16 @@ class DocumentService
         $this->repository = $repository;
     }
 
-    public function create(UploadedFile $file, string $type) : Document
+    public function create(UploadedFile $file, string $directory) : Document
     {
-        $storedFilePath = $file->store('documents/'.$type);
+        $storedFilePath = $file->store('documents/'.$directory);
 
         $document = $this->repository->create([
             'path' => $storedFilePath,
             'name' => $file->getClientOriginalName(),
+            'size' => $file->getSize(),
+            'type' => $file->getMimeType(),
             "user_id" => auth()->id(),
-            'type_document' => 'image'
         ]);
 
         return $document;

@@ -1,9 +1,6 @@
 <div class="field">
-    <label class="label is-inline-block has-tooltip-multiline has-tooltip-right"
-           data-tooltip="Quel est le projet que vous portez ?
-                            Qu’est-ce qui motive votre projet ?
-                            Quelles sont les valeurs que vous
-                            défendez ? etc."
+    <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
+           data-tooltip="Pour donner envie à un cédant ou propriétaire de vous proposer du foncier, décrivez votre projet, son histoire, ses valeurs, votre date d'installation envisagée, etc."
            for="about_project_content">
         Et si vous nous en disiez un peu plus sur votre projet ?*
         <i class="fas fa-info-circle has-text-info"></i>

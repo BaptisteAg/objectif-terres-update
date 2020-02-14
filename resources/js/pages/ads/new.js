@@ -35,6 +35,22 @@ Vue.component('new-ad', {
             (e || window).returnValue = confirmationMessage; //Gecko + IE
             return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
         });
+
+        // Force bulma-tooltip display on field hover
+        document.querySelectorAll('.field').forEach($field => {
+            const $hoveredTooltip = $field.querySelector('[data-tooltip]');
+
+            $field.addEventListener('mouseover', event => {
+                if($hoveredTooltip) {
+                    $hoveredTooltip.classList.add('has-tooltip-active');
+                }
+                document.querySelectorAll('[data-tooltip]').forEach($otherTooltip =>{
+                    if(!$otherTooltip.isEqualNode($hoveredTooltip)) {
+                        $otherTooltip.classList.remove('has-tooltip-active')
+                    }
+                })
+            })
+        });
     },
     methods: {
         submit(e) {
