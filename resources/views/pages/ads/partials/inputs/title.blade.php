@@ -1,5 +1,5 @@
 <div class="field">
-    <label class="label is-inline-block has-tooltip-multiline has-tooltip-right"
+    <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
            for="title"
            data-tooltip="Le titre de l’annonce est primordial ! Il
                                     s’agit de votre carte de visite sur la

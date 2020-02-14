@@ -31,6 +31,10 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereUserId($value)
+ * @property string $type
+ * @property int $size
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereSize($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereType($value)
  */
 class Document extends Model
 {
@@ -38,7 +42,7 @@ class Document extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'path', 'type_document', 'user_id'
+        'name', 'path', 'type', 'size', 'user_id'
     ];
 
     /**
@@ -48,7 +52,7 @@ class Document extends Model
      */
     public function ads()
     {
-        return $this->morphedByMany(Research::class , 'documentable');
+        return $this->morphedByMany(Research::class, 'documentable');
     }
 
     /**

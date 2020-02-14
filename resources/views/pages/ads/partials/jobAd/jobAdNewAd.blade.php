@@ -130,7 +130,7 @@
 
 	<div class="field">
 		<label class="label is-inline-block">Et si vous nous en disiez un peu plus sur vous ?*</label>
-		<button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-right" data-tooltip="Dans le cas où vous êtes une personne
+		<button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left" data-tooltip="Dans le cas où vous êtes une personne
 				morale dans le cadre d’un appel à
 				candidatures, présentez votre structure
 				et vos missions principales en quelques
@@ -147,7 +147,7 @@
 	</div>
 	<div class="field">
 		{!! Form::label('jobAd[title]', 'Titre de votre annonce*', ['class' => 'label is-inline-block']); !!}
-		<button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-right" data-tooltip="Le titre de l’annonce est primordial ! Il
+		<button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left" data-tooltip="Le titre de l’annonce est primordial ! Il
 				s’agit de votre carte de visite sur la
 				plateforme. Un titre clair et bien
 				formulé augmentera vos chances de

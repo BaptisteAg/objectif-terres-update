@@ -8,17 +8,15 @@
                      :clear-on-select="false"
                      :preserve-search="true"
                      :placeholder="placeholder"
-                     label="name"
+                     :label="label"
                      :track-by="trackBy"
                      :custom-label="customLabel"
                      select-label="Sélectionner"
                      selected-label="Sélectionné"
                      deselect-label="Supprimer">
-            <template slot="selection" slot-scope="{ values, search, isOpen }">
-                <span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} {{ selectedCountText }}</span>
-            </template>
+
         </multiselect>
-        <input type="hidden" v-for="value in values" :value="value.id" :name="name">
+        <input type="hidden" v-for="selected in values" :value="selected[idProp]" :name="name">
     </div>
 </template>
 
@@ -38,30 +36,32 @@
                 type: Boolean,
                 default: true
             },
+            label: {
+                type: String,
+                default: 'name'
+            },
             trackBy: {
                 type: String,
                 default: 'name'
             },
+            idProp: {
+                type: String,
+                default: 'id'
+            },
             value: {
                 type: Array,
             },
-            groupValues: {
-                type: String,
-                default: ''
-            },
-            groupLabel: {
-                type: String,
-                default: 'name'
-            }
         },
         data () {
             return {
-                values: this.value || [],
+                values: this.value ? this.value.map(value =>
+                    _.isObject(value) ? value[this.idProp] : value
+                ) : [],
             }
         },
         watch: {
             values(newValues) {
-                this.$emit('input', newValues)
+                this.$emit('input', newValues.map( value => value[this.idProp]))
             }
 
         },
