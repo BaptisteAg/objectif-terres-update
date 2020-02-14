@@ -22,7 +22,6 @@ Vue.component('vue-threads',{
         }
     },
     mounted() {
-        console.log(this.activeThread)
         if(this.initThread) {
             setInterval(_ => this.onThreadClick(this.activeThread), 15000);
             this.onThreadClick(this.activeThread);
@@ -36,6 +35,6 @@ Vue.component('vue-threads',{
                     this.messages = results;
                     this.activeThread = threadId;
                 })
-        }
+        },
     },
 });

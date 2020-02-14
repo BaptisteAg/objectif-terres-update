@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\Documentable;
 use App\Presenters\MessagePresenter;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use McCool\LaravelAutoPresenter\HasPresenter;
 
@@ -63,6 +64,11 @@ class Message extends Model implements HasPresenter
 	public function thread()
 	{
 		return $this->belongsTo(Thread::class);
+	}
+
+	public function getCreatedAtAttribute($date)
+	{
+		return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('d-m-Y');
 	}
 	/**
 	 * Get the presenter class.

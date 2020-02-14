@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Threads;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MessageRequest;
 use App\Models\Thread;
 use App\Models\User;
 use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class MessagesController extends Controller
 {
@@ -16,9 +18,18 @@ class MessagesController extends Controller
 	 * @var ThreadService
 	 */
 	protected $threadService;
+	/**
+	 * @var AdService
+	 */
 	protected $adService;
 	protected $userService;
 
+	/**
+	 * MessagesController constructor.
+	 * @param ThreadService $threadService
+	 * @param AdService $adService
+	 * @param UserService $userService
+	 */
 	public function __construct(ThreadService $threadService, AdService $adService, UserService $userService)
 	{
 		$this->threadService = $threadService;
@@ -27,6 +38,10 @@ class MessagesController extends Controller
 	}
 
 
+	/**
+	 * @param Thread $thread
+	 * @return \Illuminate\Http\JsonResponse
+	 */
 	public function show(Thread $thread)
 	{
 		$loggedUserIsParticipant = $thread->users->first(function (User $user) {
@@ -42,5 +57,17 @@ class MessagesController extends Controller
 		return response()->json($messages);
 	}
 
+
+	/**
+	 * @param MessageRequest $request
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \Throwable
+	 */
+	public function create(MessageRequest $request)
+	{
+		$this->threadService->createMessage($request->validated());
+
+		return back();
+	}
 
 }

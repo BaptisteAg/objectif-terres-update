@@ -25,13 +25,26 @@
 						<div class="column box">
 							<header-message
 									v-model="messages"
-									:user-id = "{{auth()->id()}}"
+									:user-id="{{auth()->id()}}"
 							></header-message>
 							<display-message-content
-									v-model ="messages"
-									:user-id = "{{auth()->id()}}"
+									v-model="messages"
+									:user-id="{{auth()->id()}}"
 							></display-message-content>
-							<form-message-reply></form-message-reply>
+							<form
+									method="post"
+									enctype="multipart/form-data"
+									action="{{ route('threads.create') }}"
+									>
+
+								{{ csrf_field() }}
+
+								<form-message-reply
+										v-model="messages"
+										:user-id="{{auth()->id()}}"
+								>
+								</form-message-reply>
+							</form>
 						</div>
 					</div>
 				</vue-threads>

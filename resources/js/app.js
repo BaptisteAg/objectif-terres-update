@@ -2,10 +2,10 @@
 //////////////
 // LODASH
 _ = require('lodash');
-
 //////////////
 // VUE
 window.Vue = require('vue');
+
 
 import Vuelidate from 'vuelidate';
 Vue.use(Vuelidate);
@@ -34,7 +34,7 @@ require ('./pages/ads/new');
 // require('./pages/researches/researches');
 require('./pages/header');
 require('./pages/auth/register');
-require('./pages/messages/messages');
+require('./pages/threads/threads');
 
 //////////////
 // GLOBAL
