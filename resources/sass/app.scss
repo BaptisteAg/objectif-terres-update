@@ -48,26 +48,6 @@ body .multiselect__option--highlight {
   }
 }
 
-// Dropzone
-body .vue-dropzone {
-  & > .dz-preview .dz-remove {
-    bottom: initial;
-    top: 5px;
-    right: 5px;
-    font-size: .6rem;
-    font-weight: normal;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  .dz-preview {
-    .dz-details .dz-size {
-      margin-top: 2em;
-    }
-    .dz-filename {
-      margin-top: 5em;
-  }
-}
 
 .slider-pagination {
   bottom: -40px;
@@ -83,6 +63,4 @@ body .vue-dropzone {
 
 .slider {
   overflow: hidden !important;
-}
-
 }

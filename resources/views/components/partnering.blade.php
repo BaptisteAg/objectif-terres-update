@@ -1,4 +1,4 @@
-<section class="section">
+<section class="section" style="background:rgba(0,0,0,0.05);margin-top:50px;">
     <div class="container">
         <h2 class="title is-2 has-text-centered">Nos partenaires</h2>
         <div class="section">
