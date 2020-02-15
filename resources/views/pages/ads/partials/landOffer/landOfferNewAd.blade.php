@@ -27,7 +27,7 @@
                             placeholder="Saisissez les premiers chiffres"
                             ref='selectedZones'
                             :disabled="isInputDisabled"
-                            src="/json/cities"
+                            src="/locations/cities"
                             v-model="formInput.selectedZones"
                             aria-describedby='zipCodeError'>
                     </autocomplete>

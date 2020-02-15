@@ -1,5 +1,3 @@
-@section('title', $ad->landSeekAd->title)
-
 <section class="section">
 	<div class="container ">
 		<nav class="breadcrumb" aria-label="breadcrumbs">
@@ -29,17 +27,19 @@
 						</div>
 					@else
 						@foreach($ad->documents as $document)
-							<div class="card">
-								<div class="card-image">
-									<figure class="image is-2by1">
-										@if($document->path === "0")
-											<img src="https://picsum.photos/480/320" alt="picsum">
-										@else
-											<img src="{{URL::asset($document->path)}}" alt="Placeholder image">
-										@endif
-									</figure>
+							@if(strpos($document->type, 'image') !== false)
+								<div class="card">
+									<div class="card-image">
+										<figure class="image is-2by1">
+											@if($document->path === "0")
+												<img src="https://picsum.photos/480/320" alt="picsum">
+											@else
+												<img src="{{URL::asset($document->path)}}" alt="Placeholder image">
+											@endif
+										</figure>
+									</div>
 								</div>
-							</div>
+							@endif
 						@endforeach
 					@endif
 				</div>
@@ -78,13 +78,13 @@
 							@endif
 						</div>
 						<div class="content">
-							@if(count($ad->landSeekAd->priceRanges))
+							{{--@if(count($ad->landSeekAd->priceRanges))
 								<p><span class="is-size-4  has-text-black">Prix recherché : </span>
 									@foreach($ad->landSeekAd->priceRanges as $priceRange)
 										<span class="subtitle has-text-black">{{$priceRange->price }}€</span><br>
 									@endforeach
-									@endif
 								</p>
+							@endif--}}
 						</div>
 						@if($ad->userPp->accept_share_contact_infos === 1)
 							<div class="content">
@@ -92,6 +92,24 @@
 								</p>
 								<p><span class="subtitle">{{$ad->userPp->phone}}</span></p>
 							</div>
+						@endif
+
+						@if($ad->documents->hasImages)
+							@foreach($ad->documents as $document)
+								@if(strpos($document->type, 'image') !== false)
+									<div class="card">
+										<div class="card-image">
+											<figure class="image is-2by1">
+												@if($document->path === "0")
+													<img src="https://picsum.photos/480/320" alt="picsum">
+												@else
+													<img src="{{URL::asset($document->path)}}" alt="Placeholder image">
+												@endif
+											</figure>
+										</div>
+									</div>
+								@endif
+							@endforeach
 						@endif
 					</div>
 					@include('pages.ads.partials.buttonsFavoriteAndMessage')
@@ -109,13 +127,6 @@
 				<p class="has-text-centered">{{$ad->landSeekAd->installationType->name}}</p>
 			</div>
 
-			@if($ad->landSeekAd->offerGenre)
-				<div class="column is-one-quarter ">
-					<p class="has-text-link is-size-5 has-text-centered"> Accès au foncier souhaité </p>
-					<p class="has-text-centered">{{$ad->landSeekAd->offerGenre->name}}</p>
-				</div>
-			@endif
-
 			<div class="column is-one-quarter ">
 				<p class="has-text-link is-size-5 has-text-centered"> Souhaite s'installer en bio</p>
 
@@ -128,6 +139,14 @@
 				@endif
 			</div>
 
+			{{--
+			@if($ad->landSeekAd->offerGenre)
+				<div class="column is-one-quarter ">
+					<p class="has-text-link is-size-5 has-text-centered"> Accès au foncier souhaité </p>
+					<p class="has-text-centered">{{$ad->landSeekAd->offerGenre->name}}</p>
+				</div>
+			@endif
+
 			<div class="column is-one-quarter ">
 				<p class="has-text-link is-size-5 has-text-centered"> Surface(s) recherchée(s)(en ha)</p>
 				@foreach ($ad->landSeekAd->surfaceRanges as $surfaceRangeSeek)
@@ -137,7 +156,8 @@
 						<p class="has-text-centered">Non renseigné</p>
 					@endif
 				@endforeach
-			</div>
+			</div>--}}
+
 			<div class="column is-one-quarter ">
 				<p class="has-text-link is-size-5 has-text-centered"> Production(s) envisagée(s)</p>
 				@foreach ($ad->landSeekAd->productionGenres as $productionGenresSeek)
@@ -151,17 +171,12 @@
 
 			<div class="column is-one-quarter ">
 				<p class="has-text-link is-size-5 has-text-centered">Habitation(s) et bâti(s) recherché(s)</p>
+				@if($ad->landSeekAd->buildings && count($ad->landSeekAd->buildings))
+					@foreach($ad->landSeekAd->buildings as $building)
+						{{ $building->buildingType->label }} : {{ $building->requirement->label }}
+					@endforeach
+				@endif
 
-				@if($ad->landSeekAd->has_farm_buildings === 1)
-					<p class="has-text-centered">Avec des bâtis agricoles existants</p>
-				@else
-					<p class="has-text-centered">Sans bâtis agricoles existants</p>
-				@endif
-				@if($ad->landSeekAd->has_houses === 1)
-					<p class="has-text-centered">Avec une maison d’habitation existante</p>
-				@else
-					<p class="has-text-centered">Sans maison d’habitation existante</p>
-				@endif
 			</div>
 
 		</div>

@@ -55,8 +55,8 @@ Route::prefix('annonces-favorites')->middleware('auth')->name('favoriteAds.')->n
 });
 
 
-Route::prefix('json')->group(function () {
-    Route::get('locationables', 'Json\LocationableController@locationables');
+Route::prefix('locations')->group(function () {
+    Route::get('/', 'Json\LocationableController@locations');
     Route::get('cities', 'Json\LocationableController@cities');
     Route::prefix('polygon')->group(function () {
         Route::post('regions', 'Json\LocationableController@regionsPolygon');

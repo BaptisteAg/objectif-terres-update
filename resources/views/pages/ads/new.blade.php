@@ -49,7 +49,8 @@
                                       :is-input-disabled="adTypeSelected !== 'land_seek'"
                                       :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
                                       @input-enabled="setEnabledForm"
-                                      @form-complete="onFormComplete">
+                                      @form-complete="onFormComplete"
+                                      ref="land_seek">
                         @include('pages.ads.partials.landSeek.landSeekNewAd')
                     </new-land-seek-ad>
 

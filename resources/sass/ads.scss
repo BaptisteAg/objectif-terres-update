@@ -14,7 +14,7 @@
   }
 
   .button.is-light {
-    background:rgb(176, 203, 220);
+    background:rgb(135, 188, 225);
   }
 
   .vue-form-wizard {
@@ -33,13 +33,37 @@
         animation: fadeInRight 0.5s;
       }
     }
-    .affix-wizard-footer {
-      width: 100%;
 
-      button {
-        font-size:30px;
-        padding:14px 30px;
-      }
+  }
+
+
+  .clearfix:after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  .affix-wizard-footer {
+    width: 100%;
+    z-index:100;
+
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 70px;
+    padding: 0px;
+    height: 0px;
+
+    button {
+      font-size: 25px;
+      padding: 10px 30px;
+    }
+    .wizard-footer-left {
+      float:left;
+      padding-left:10px;
+    }
+    .wizard-footer-right {
+      float:right;
+      padding-right:10px;
     }
   }
 

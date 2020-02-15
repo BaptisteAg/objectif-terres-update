@@ -1,7 +1,7 @@
 <!-- Vue component -->
 <template>
     <label class="cradio-container">
-        <input type="radio" :name="name" :checked="value === inputValue" :disabled="disabled" @input="$emit('input', inputValue)">
+        <input type="radio" :name="name" :checked="value === inputValue" :value="inputValue" :disabled="disabled" @input="$emit('input', inputValue)">
         <span class="cradio-checkmark">
             <slot></slot>
         </span>
@@ -12,7 +12,7 @@
     .cradio-container {
         display: inline-block;
         position: relative;
-        padding-left: 105px;
+        padding-left: 100%;
         margin-bottom: 12px;
         cursor: pointer;
         font-size: 22px;
@@ -69,8 +69,8 @@
         top: 0;
         left: 0;
         padding-top:20px;
-        height: 100px;
-        width: 100px;
+        height: 100%;
+        width: 100%;
         background-color: #eee;
         border-radius:5px;
         box-shadow: 1px 1px 1px rgba(0,0,0,0.2);

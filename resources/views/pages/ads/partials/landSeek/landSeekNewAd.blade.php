@@ -13,11 +13,12 @@
                     <div class="column"></div>
                     <div class="column is-half">
                         <zone-select
-                                name="land_seek[locationable]"
-                                radius-name="land_seek[locationable_radius]"
-                                json-name="land_seek[selected_zones]"
+                                name="locationable"
+                                radius-name="locationable_radius"
+                                json-name="selected_zones"
                                 ref="selectedZones"
                                 v-model="formInput.selectedZones"
+                                radiusValue="{{old('land_seek[locationable_radius]', 0)}}"
                                 :vuelidate="$v.formInput.selectedZones"
                                 :disabled="isInputDisabled">
                         </zone-select>
@@ -44,7 +45,7 @@
                         <br>
 
                         <div class="field">
-                            {!! Form::label('land_seek_wants_farms_or_buildings', 'Habitation(s) et bâti(s)', ['class' => 'label']); !!}
+                            {!! Form::label('land_seek_farms_and_buildings', 'Habitation(s) et bâti(s)', ['class' => 'label']); !!}
 
                             <table class="table">
                                 <thead>
@@ -63,7 +64,8 @@
                                             <td style="text-align:center">
                                                 <input type="radio"
                                                        name="land_seek[buildings][{{$buildingType->id}}]"
-                                                       value="{{ $requirement->id }}">
+                                                       value="{{ $requirement->id }}"
+                                                       {{ in_array($requirement->id, old('land_seek[buildings]', [])) ? 'checked' : '' }}>
                                             </td>
                                         @endforeach
                                     </tr>
@@ -130,20 +132,25 @@
                             $installationTypesFaIcons = ["fa-user", "fa-user-friends", "fa-users", "fa-times"]
                             ?>
 
-                            @foreach($installationTypes as $i => $installationType)
-                                <custom-radio
-                                        name="land_seek[installation_type_id]"
-                                        input-value="{{$installationType["id"]}}"
-                                        v-model="formInput.installationTypeId"
-                                        :disabled="isInputDisabled"
-                                        ref="installationTypeId">
+                            <div class="columns">
+                                @foreach($installationTypes as $i => $installationType)
+                                    <div class="column">
+                                        <custom-radio
+                                                name="land_seek[installation_type_id]"
+                                                input-value="{{$installationType["id"]}}"
+                                                v-model="formInput.installationTypeId"
+                                                :disabled="isInputDisabled"
+                                                ref="installationTypeId">
 
-                                    <i class="fa {{ $installationTypesFaIcons[$i] }}" style="font-size: 30px;"></i><br>
-                                    <span style="font-size:14px">
-                                {{ $installationType["name"] }}
-                            </span>
-                                </custom-radio>
-                            @endforeach
+                                            <i class="fa {{ $installationTypesFaIcons[$i] }}"
+                                               style="font-size: 30px;"></i><br><br>
+                                            <span style="font-size:16px">
+                                                {{ $installationType["name"] }}
+                                            </span>
+                                        </custom-radio>
+                                    </div>
+                                @endforeach
+                            </div>
 
                             <p class="help is-danger" id="installationTypeIdError"
                                v-if="$v.formInput.installationTypeId.$error">
@@ -228,16 +235,17 @@
             </section>
         </tab-content>
 
-        <template slot="footer" slot-scope="props">
-            <div class="affix-wizard-footer" relative-element-selector="#new-ad">
+        <template slot="footer" slot-scope="props" >
+            <div class="affix-wizard-footer" data-move-to-ref="land_seek">
                 <div class="wizard-footer-left">
-                    <span @click="props.prevTab" @keyup.enter="props.prevTab" v-if="props.displayPrevButton"
-                          role="button" tabindex="0">
-                      <wizard-button :style="props.fillButtonStyle"
-                                     :disabled="props.loading">
-                        Précédent
-                      </wizard-button>
-                    </span>
+                <span @click="props.prevTab" @keyup.enter="props.prevTab" v-if="props.activeTabIndex > 0"
+                      role="button" tabindex="0">
+                  <wizard-button class="button is-light"
+                                 style="background-color: #eee;border-color: #eee;color: #555;"
+                                 :disabled="props.loading">
+                    Précédent
+                  </wizard-button>
+                </span>
                 </div>
 
                 <div class="wizard-footer-right">
@@ -246,19 +254,21 @@
                     </button>
                     <span @click="props.nextTab" @keyup.enter="props.nextTab" v-if="props.isLastStep" role="button"
                           tabindex="0">
-                        <wizard-button :style="props.fillButtonStyle">
-                            Demander la publication
-                        </wizard-button>
-                    </span>
+                    <wizard-button
+                            class="button is-primary"
+                            :style="props.fillButtonStyle">
+                        Demander la publication
+                    </wizard-button>
+                </span>
                     <span @click="props.nextTab" @keyup.enter="props.nextTab" role="button" tabindex="0" v-else>
-                        <wizard-button :style="props.fillButtonStyle"
-                                       :disabled="props.loading">
-                            Suivant
-                        </wizard-button>
-                    </span>
+                    <wizard-button class="button is-primary"
+                                   :style="props.fillButtonStyle"
+                                   :disabled="props.loading">
+                        Suivant
+                    </wizard-button>
+                </span>
                 </div>
             </div>
         </template>
-
     </form-wizard>
 </div>

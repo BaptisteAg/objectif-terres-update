@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Presenters\DocumentPresenter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use McCool\LaravelAutoPresenter\HasPresenter;
 
 /**
  * App\Models\Document
@@ -36,8 +38,19 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereSize($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereType($value)
  */
-class Document extends Model
+class Document extends Model implements HasPresenter
 {
+
+    /**
+     * Get the presenter class.
+     *
+     * @return string
+     */
+    public function getPresenterClass()
+    {
+        return DocumentPresenter::class;
+    }
+
     /**
      * @var array
      */

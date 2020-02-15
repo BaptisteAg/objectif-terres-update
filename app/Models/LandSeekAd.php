@@ -57,6 +57,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int|null $surface_range_max
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereSurfaceRangeMax($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereSurfaceRangeMin($value)
+ * @property-read \App\Models\LandSeekAdBuilding $buildings
  */
 class LandSeekAd extends Model
 {
@@ -66,7 +67,18 @@ class LandSeekAd extends Model
      * @var array
      */
     protected $fillable = [
-        'ad_id', 'installation_type_id', 'offer_type_id', 'is_bio', 'production_type_add', 'has_farm_buildings', 'has_houses', 'experience_farming', 'rent_min', 'rent_max'
+        'ad_id',
+        'installation_type_id',
+        'offer_type_id',
+        'is_bio',
+        'production_type_add',
+        'experience_farming',
+        'surface_range_min',
+        'surface_range_max',
+        /*'has_farm_buildings',
+        'has_houses',
+        'rent_min',
+        'rent_max'*/
     ];
 
     /**
@@ -74,7 +86,7 @@ class LandSeekAd extends Model
      */
     public function ad()
     {
-        return $this->HasOne(Ad::class);
+        return $this->hasOne(Ad::class);
     }
 
     /**
@@ -86,26 +98,26 @@ class LandSeekAd extends Model
     }
 
     /**
-     * @return BelongsTo
-     */
-    public function offerGenre()
-    {
-        return $this->belongsTo(OfferGenre::class, 'offer_genre_id');
-    }
-
-    /**
-     * @return belongsToMany
-     */
-    public function priceRanges()
-    {
-        return $this->belongsToMany(PriceRange::class)->withTimestamps();
-    }
-
-    /**
      * @return belongsToMany
      */
     public function surfaceRanges()
     {
         return $this->belongsToMany(SurfaceRange::class)->withTimestamps();
     }
+
+    public function buildings()
+    {
+        return $this->hasMany(LandSeekAdBuilding::class);
+    }
+
+
+    /*public function offerGenre()
+    {
+        return $this->belongsTo(OfferGenre::class, 'offer_genre_id');
+    }
+
+    public function priceRanges()
+    {
+        return $this->belongsToMany(PriceRange::class)->withTimestamps();
+    }*/
 }

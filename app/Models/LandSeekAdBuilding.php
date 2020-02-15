@@ -29,6 +29,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class LandSeekAdBuilding extends Model
 {
+    protected $fillable = [
+        "requirement_id",
+        "building_type_id",
+        "land_seek_ad_id"
+    ];
+
     public function landSeekAd()
     {
         return $this->belongsTo(LandSeekAd::class);

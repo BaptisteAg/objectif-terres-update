@@ -17,7 +17,7 @@
 				selected-count-text="ville sélectionnée"
 				placeholder="Choississez un département"
 				name-option-label="villes"
-				src="/json/cities"
+				src="/locations/cities"
 				name="cities_location_researches[]">
 		</ajax-multi-select>
 	</div>

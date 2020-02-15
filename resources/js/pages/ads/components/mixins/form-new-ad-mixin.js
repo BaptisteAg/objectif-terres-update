@@ -19,18 +19,6 @@ export default {
         if (!this.isInputDisabled) {
             this.$emit('input-enabled', this)
         }
-
-        // Initiate correctly existing documents
-        if (Array.isArray(this.formInput.documents) && this.formInput.documents.length) {
-            const dropzone = this.getDropzone();
-
-            // Dropzone requirements for file object properties are the same as DB document object definition
-            this.formInput.documents.forEach(document => {
-                dropzone.emit("addedfile", document);
-                dropzone.emit("thumbnail", document, document.path);
-                dropzone.emit("complete", document);
-            })
-        }
     },
     watch: {
         isInputDisabled(isDisabled) {
@@ -46,31 +34,8 @@ export default {
         }
     },
     methods: {
-        getDropzone() {
-            return this.$refs.documents.$refs.dropzoneElement.dropzone
-        },
-        /**
-         * Handler for dropzone event, before documents are uploaded
-         */
-        onBeforeDocumentsUpload(files, xhr, formData) {
-            formData.append('_token', window.csrf_token);
-            formData.append('type', 'ads');
-            this.uploading = true;
-        },
-        /**
-         * Set inputs border color ( red or initial ) based on error status
-         */
-        onSuccessDocumentsUpload(files, documents) {
-            if (documents.length) {
-                documents.forEach(document => this.formInput.documents.push(document));
-            }
-            this.uploading = false;
-        },
-        /**
-         * Set inputs border color ( red or initial ) based on error status
-         */
-        onRemoveUploadedDocument(file) {
-            console.log(this.getDropzone().getAcceptedFiles())
+        setUploading(bool) {
+            this.uploading = bool;
         },
         /**
          *  Find the first input within received object parameter, be it either :
@@ -124,16 +89,13 @@ export default {
         },
         /**
          * Try to focus on the first error found
+         * Fails silently
          */
         focusOnFirstError() {
-            for (let key in Object.keys(this.$v.formInput)) {
-                const inputName = Object.keys(this.$v.formInput)[key];
-
-                // Filter out vuelidate private props
-                if (inputName.includes("$")) continue;
-
-                if (this.$v.formInput[inputName].$error) {
+            return Object.keys(this.formInput).find(inputName => {
+                if (this.$v.formInput[inputName] && this.$v.formInput[inputName].$error) {
                     let input = this.findInputElement(this.$refs[inputName]);
+                    console.log(input);
                     const $form = this.$refs.formWizard;
 
                     if (input) {
@@ -155,13 +117,13 @@ export default {
                                 } catch (error) {
                                     console.log(error)
                                 }
-                            });
+                            }, {once: true});
                         }
                     }
 
                     return true;
                 }
-            }
+            });
         }
     },
     validations: {

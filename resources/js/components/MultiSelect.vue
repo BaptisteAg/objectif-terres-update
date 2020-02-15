@@ -13,10 +13,11 @@
                      :custom-label="customLabel"
                      select-label="Sélectionner"
                      selected-label="Sélectionné"
-                     deselect-label="Supprimer">
+                     deselect-label="Supprimer"
+                     :max-height="height">
 
         </multiselect>
-        <input type="hidden" v-for="selected in values" :value="selected[idProp]" :name="name">
+        <input type="hidden" v-for="v in values" :value="getId(v)" :name="name">
     </div>
 </template>
 
@@ -51,12 +52,14 @@
             value: {
                 type: Array,
             },
+            height: {
+                type: Number,
+                default: 500
+            }
         },
         data () {
             return {
-                values: this.value ? this.value.map(value =>
-                    _.isObject(value) ? value[this.idProp] : value
-                ) : [],
+                values: this.value ? this.value.map(value => this.getId(value)) : [],
             }
         },
         watch: {
@@ -66,6 +69,9 @@
 
         },
         methods: {
+            getId(v) {
+                return _.isObject(v) ? v[this.idProp] : v
+            },
             customLabel(result) {
                 return `${result[this.trackBy]}`
             }

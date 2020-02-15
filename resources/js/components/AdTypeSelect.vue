@@ -18,6 +18,7 @@
                 <label><i :class="'fa '+currentAdType.icon"></i> {{currentAdType.label}}</label><br>
                 <a href="#" @click.prevent="displaySelection = true">← Changer de type d'annonce</a>
             </div>
+            <input type="hidden" :name="name" :value="value">
         </div>
         <div class="column"></div>
     </div>

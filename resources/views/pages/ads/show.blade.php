@@ -1,12 +1,24 @@
 @extends('default')
 
+@section('title')
+    @if($ad->ad_type === 'land_seek')
+        {{ $ad->landSeekAd->title }}
+    @endif
+    @if($ad->ad_type === 'land_offer')
+        {{ $ad->landOfferAd->title }}
+    @endif
+    @if($ad->ad_type === 'job_ad')
+        {{ $ad->jobOfferAd->title }}
+    @endif
+@endsection
+
 @section('head-script')
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
 @endsection
 
 
-@section('main-content')
 
+@section('main-content')
 	@if($ad->ad_type === 'landSeek')
 		@include('pages.ads.partials.landSeek.landSeekShow')
 	@endif
@@ -16,14 +28,10 @@
 	@if($ad->ad_type === 'jobAd')
 		@include('pages.ads.partials.jobAd.jobAdShow')
 	@endif
-
 @endsection
 
 @section('script')
-
-
 	<script>
-
         let buttons = document.querySelectorAll('#open-modal-message');
         buttons.forEach((button)=>{
             button.addEventListener('click', function (event) {
@@ -45,7 +53,7 @@
                     html.classList.remove('is-clipped');
                 });
             });
-		})
+		});
 
 		let deleteButton = document.querySelector('#close-notification');
         deleteButton.addEventListener('click', function (e) {
@@ -72,10 +80,5 @@
 
             });
         }
-
-
-
 	</script>
-
-
 @endsection

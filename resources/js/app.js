@@ -19,9 +19,6 @@ Vue.config.optionMergeStrategies.validations = function (toVal, fromVal) {
     return _.merge({}, fromVal, toVal);
 };
 
-import Affix from 'vue-affix';
-Vue.use(Affix);
-
 require('vue-pagination-2/dist/vue-pagination-2.min');
 
 //////////////

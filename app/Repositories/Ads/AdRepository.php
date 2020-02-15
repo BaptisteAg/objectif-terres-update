@@ -115,6 +115,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'departments.region',
 			'regions',
 			'adMessages',
+            'landSeekAd.buildings',
+            'landSeekAd.buildings.buildingType',
+            'landSeekAd.buildings.requirement',
+            'documents'
         ];
     }
 }

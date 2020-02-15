@@ -41,11 +41,14 @@
 
 // Vue-Multiselect
 body .multiselect__option--highlight {
-  background: rgb(52, 152, 219);
+  background: $blue;
 
   &::after {
-    background: rgb(52, 152, 219);
+    background: $blue;
   }
+}
+body .multiselect__tag {
+  background: $blue;
 }
 
 
