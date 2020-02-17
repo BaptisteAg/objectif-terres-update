@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Json;
+namespace App\Http\Controllers\Locationables;
 
 use App\Http\Controllers\Controller;
 use App\Models\City;
@@ -42,6 +42,17 @@ class LocationableController extends Controller
 
         return response()->json(
             $this->service->searchCities($request->get('q'))
+        );
+    }
+
+    public function citiesAndDepartments(Request $request)
+    {
+        if (!$request->get('q')) {
+            return response()->json(['error' => 'La requête est vide.']);
+        }
+
+        return response()->json(
+            $this->service->searchCitiesAndDepartments($request->get('q'))
         );
     }
 

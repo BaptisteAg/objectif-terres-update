@@ -1,4 +1,5 @@
 <template>
+
     <div class="columns ad-types-container">
         <div class="column"></div>
         <div class="column is-half">
@@ -79,17 +80,17 @@
             adTypes() {
                 return {
                     land_seek: {
-                        label: "Recherche de foncier",
+                        label: "Je cherche du foncier agricole",
                         icon: "fa-home"
                     },
                     land_offer: {
-                        label: "Offre de foncier",
+                        label: "Je propose du foncier agricole",
                         icon: "fa-home"
                     },
-                    job_offer: {
+                    /*job_offer: {
                         label: "Opportunité professionnelle",
                         icon: "fa-universal-access"
-                    },
+                    },*/
                 }
             },
             currentAdType() {

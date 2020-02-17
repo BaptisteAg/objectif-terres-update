@@ -13,11 +13,36 @@ class BioCertificationSeeder extends Seeder
     public function run()
     {
         BioCertification::insert([
-            ['name' => 'AB', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => 'Demeter', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => 'Nature & Progrès', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => 'En conversion', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => 'Aucune', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+            [
+                'name' => 'Aucune',
+                'icon' => '',
+                "created_at" =>  \Carbon\Carbon::now(),
+                "updated_at" => \Carbon\Carbon::now()
+            ],
+            [
+                'name' => 'En conversion',
+                'icon' => '',
+                "created_at" =>  \Carbon\Carbon::now(),
+                "updated_at" => \Carbon\Carbon::now()
+            ],
+            [
+                'name' => 'AB',
+                'icon' => '/images/biocertifications/bio-certification-ab.png',
+                "created_at" =>  \Carbon\Carbon::now(),
+                "updated_at" => \Carbon\Carbon::now()
+            ],
+            [
+                'name' => 'Demeter',
+                'icon' => '/images/biocertifications/bio-certification-demeter.png',
+                "created_at" =>  \Carbon\Carbon::now(),
+                "updated_at" => \Carbon\Carbon::now()
+            ],
+            [
+                'name' => 'Nature & Progrès',
+                'icon' => '/images/biocertifications/bio-certification-nature-progres.png',
+                "created_at" =>  \Carbon\Carbon::now(),
+                "updated_at" => \Carbon\Carbon::now()
+            ],
         ]);
     }
 }

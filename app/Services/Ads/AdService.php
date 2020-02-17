@@ -6,6 +6,10 @@ use App\Repositories\Ads\LandSeekAdRepository;
 use App\Repositories\Ads\ProductionGenreRepository;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class AdService
+ * @package App\Services\Ads
+ */
 class AdService
 {
     /**
@@ -25,7 +29,14 @@ class AdService
      */
     protected $productionGenreRepository;
 
-    public function __construct(
+	/**
+	 * AdService constructor.
+	 * @param AdRepository $repository
+	 * @param LandSeekAdRepository $landSeekdAdRepository
+	 * @param LandOfferAdRepository $landOfferAdRepository
+	 * @param ProductionGenreRepository $productionGenreRepository
+	 */
+	public function __construct(
         AdRepository $repository,
         LandSeekAdRepository $landSeekdAdRepository,
         LandOfferAdRepository $landOfferAdRepository,
@@ -49,6 +60,8 @@ class AdService
             $adData = $data[$data["ad_type"]];
             $adData["ad_id"] = $ad->id;
 
+            //dd($data);
+
             if ($data["ad_type"] === "land_seek") {
                 $landSeekAd = $this->landSeekAdRepository->create($adData);
             }
@@ -62,20 +75,31 @@ class AdService
         return $ad;
     }
 
-    public function find(int $id)
+	/**
+	 * @param int $id
+	 * @return \App\Models\Ad
+	 */
+	public function find(int $id)
     {
         $ad = $this->repository->find($id);
 
         return $ad;
     }
 
-    public function findAll()
+	/**
+	 * @return \App\Models\Ad[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|mixed
+	 */
+	public function findAll()
     {
         $ads = $this->repository->all();
 
         return $ads;
     }
 
+	/**
+	 * @param $idUser
+	 * @return \App\Models\Ad[]|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
 	public function findAllByUser($idUser)
 	{
 		$ads = $this->repository->allByIdUser($idUser);
@@ -83,8 +107,20 @@ class AdService
 		return $ads;
 	}
 
-    public function getProductionGenresFlattened()
+	/**
+	 * @return array|\Illuminate\Support\Collection
+	 */
+	public function getProductionGenresFlattened()
     {
         return $this->productionGenreRepository->getFlattened();
     }
+
+	/**
+	 * @param int $id
+	 * @throws \Exception
+	 */
+	public function delete(int $id)
+	{
+		return $this->repository->destroy($id);
+	}
 }

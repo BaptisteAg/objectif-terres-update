@@ -31,17 +31,8 @@ class CreateLandSeekAdsTable extends Migration
 			$table->integer('surface_range_max')->nullable();
             $table->unsignedInteger('installation_type_id')->nullable();
 
-            /*$table->unsignedInteger('offer_genre_id')->nullable();
-            $table->boolean('has_farm_buildings')->nullable();
-            $table->boolean('has_houses')->nullable();
-            $table->index(["offer_genre_id"], 'fk_land_seek_ads_3_idx');
-            $table->timestamps();*/
-
-            $table->index(["ad_id"], 'fk_land_seek_ads_1_idx');
-
             $table->index(["installation_type_id"], 'fk_land_seek_ads_2_idx');
-
-
+            $table->index(["ad_id"], 'fk_land_seek_ads_1_idx');
 
             $table->foreign('ad_id', 'fk_land_seek_ads_1_idx')
                 ->references('id')->on('ads')
@@ -53,10 +44,17 @@ class CreateLandSeekAdsTable extends Migration
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
 
+            $table->timestamps();
+
+            /*$table->unsignedInteger('offer_genre_id')->nullable();
+            $table->boolean('has_farm_buildings')->nullable();
+            $table->boolean('has_houses')->nullable();
+            $table->index(["offer_genre_id"], 'fk_land_seek_ads_3_idx');
+
             $table->foreign('offer_genre_id', 'fk_land_seek_ads_3_idx')
                 ->references('id')->on('offer_genres')
                 ->onDelete('restrict')
-                ->onUpdate('restrict');
+                ->onUpdate('restrict');*/
         });
     }
 

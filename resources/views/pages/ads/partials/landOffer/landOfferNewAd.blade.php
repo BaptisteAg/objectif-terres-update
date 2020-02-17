@@ -1,438 +1,480 @@
 <div id="land_offer_form">
-    <div class="field">
-        {!! Form::label('landOffer[is_beneficiary]', 'Je poste l\'annonce*', ['class' => 'label']); !!}
-        <div class="select">
-            {!! Form::select('landOffer[is_beneficiary]',
-                     ['true' => 'En mon nom',
-                     'false' => 'Pour le compte d\'une autre personne'],
-                      old('landOffer[is_beneficiary]'),
-                      [
-                          'placeholder' => 'Veuillez séléctionner...',
-                          ':disabled' => 'isInputDisabled',
-                          'v-model.trim'=>'formInput.isBeneficiary',
-                          'ref' => 'isBeneficiary',
-                          'aria-describedby'=>'isBeneficiaryError'
-              ]); !!}
-        </div>
-        <p class="help is-danger" id="isBeneficiaryError" v-if="$v.formInput.isBeneficiary.$error">Ce champ est requis.</p>
-    </div>
-    <div class="columns">
-        <div class="column is-half">
-            <div class="field">
-                {!! Form::label('landOffer[zip_code]', 'Code postal*', ['class' => 'label']); !!}
-                <div class="control">
-                    <autocomplete
-                            id="land_offer_zone-autocomplete"
-                            class="input"
-                            placeholder="Saisissez les premiers chiffres"
-                            ref='selectedZones'
-                            :disabled="isInputDisabled"
-                            src="/locations/cities"
-                            v-model="formInput.selectedZones"
-                            aria-describedby='zipCodeError'>
-                    </autocomplete>
-                    <input type="hidden" name="land_offer[zip_code]" :value="zone.value.id"  v-for="(zone,i) in formInput.selectedZones">
-                    <input type="hidden" name="land_offer[selected_zones]" :value="JSON.stringify(formInput.selectedZones)">
-                    <div>
-                        <span class="tag is-info"
-                              v-for="(zone,i) in formInput.selectedZones"
-                              @click="_ => formInput.selectedZones.splice(i,1)">
-                            Code postal sélectionné :&nbsp;&nbsp;
-                            <b>@{{ zone.label }}</b>
-                            &nbsp;&nbsp;
-                            <i class="fa fa-trash" style="cursor:pointer"></i>
-                        </span>
+    <form-wizard
+            title=""
+            subtitle=""
+            step-size="xs"
+            @on-complete="$emit('form-complete')"
+            color="#3498db"
+            ref="formWizard">
+        <tab-content title="Description du bien" icon="ti-location-arrow">
+            <section class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-half">
+                        <div class="field">
+                            {!! Form::label('locationable', 'Code postal du bien*', ['class' => 'label']); !!}
+                            <div class="control">
+                                <autocomplete
+                                        id="land_offer_zone-autocomplete"
+                                        class="input"
+                                        placeholder="Saisissez les premiers chiffres"
+                                        ref='selectedZones'
+                                        :disabled="isInputDisabled"
+                                        src="/locations/cities-and-departments"
+                                        v-model="formInput.selectedZones"
+                                        aria-describedby='zipCodeError'>
+                                </autocomplete>
+                                <input type="hidden" name="locationable[cities][]" :value="zone.value.id"
+                                       v-for="(zone,i) in formInput.selectedZones">
+                                <input type="hidden" name="selected_zones"
+                                       :value="JSON.stringify(formInput.selectedZones)">
+                                <div>
+                                    <span class="tag is-info"
+                                          v-for="(zone,i) in formInput.selectedZones"
+                                          @click="_ => formInput.selectedZones.splice(i,1)">
+                                        Code postal sélectionné :
+                                        <b>@{{ zone.label }}</b>
+                                        <i class="fa fa-trash" style="cursor:pointer"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="help is-danger" v-if="$v.formInput.selectedZones.$error">
+                                Ce champ est requis. Vous devez sélectionner un code postal dans la liste.
+                            </p>
+                        </div>
+
+                        <div class="field">
+                            <label for="land_offer[accept_use_zip_code]" class="checkbox">
+                                {!! Form::checkbox('land_offer[accept_use_zip_code]', '0', old('land_offer[accept_use_zip_code]'), [
+                                    "id" =>"land_offer[accept_use_zip_code]",
+                                    ':disabled'=>'isInputDisabled'
+                                ]) !!}
+                                <span>
+                                    Je ne souhaite pas que le code postal de mon bien soit rendu public. Dans ce cas, mon
+                                    annonce sera
+                                    référencée au niveau du département.
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="field">
+                            {!! Form::label('land_offer[surface]', 'Surface totale du foncier agricole*', [
+                                'class' => 'label has-tooltip-left',
+                                'data-tooltip' => '1ha = 10 000m²'
+                            ]); !!}
+
+                            <div class="columns">
+                                <div class="column is-half">
+                                    <div class="control has-icons-right">
+                                        {!! Form::number('land_offer[surface]', null, [
+                                            'class' => 'input',
+                                            ':disabled'=>'isInputDisabled',
+                                            'v-model' => 'formInput.surface',
+                                            'ref' => 'surface'
+                                        ]) !!}
+                                        <span class="icon is-small is-right">
+                                          ha
+                                        </span>
+                                    </div>
+
+                                    <template v-if="$v.formInput.surface.$error">
+                                        <p class="help is-danger" v-if="!$v.formInput.surface.maxValue">
+                                            Surface maximum : @{{$v.formInput.surface.$params.maxValue.max}} hectares.
+                                        </p>
+                                        <p class="help is-danger" v-if="!$v.formInput.surface.required">
+                                            Ce champ est requis.
+                                        </p>
+                                    </template>
+                                </div>
+                                <div class="column is-half">
+                                    <p v-if="formInput.surface">
+                                        = @{{ (formInput.surface*10000).toLocaleString() }}m²
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
+                                   data-tooltip="Décrivez la répartition de la SAU :
+                                   terres arables (qui peuvent être labourées ou cultivées),
+                                   surfaces toujours en herbe (prairies naturelles),
+                                   cultures pérennes (vignes, vergers)"
+                                   for="about_project_content">
+                                Description de la Surface Agricole Utile (SAU)
+                                <i class="fas fa-info-circle has-text-info"></i>
+                            </label>
+
+                            <text-area-counter
+                                    name="land_offer[sau_description]"
+                                    :max-length="1000"
+                                    :disabled="isInputDisabled"
+                                    ref="sauDescription"
+                                    v-model="formInput.sauDescription"
+                                    :vuelidate="$v.formInput.sauDescription">
+                            </text-area-counter>
+                        </div>
                     </div>
+                    <div class="column"></div>
                 </div>
-                <p class="help is-danger" if="zipCodeError" v-if="$v.formInput.selectedZones.$error">Ce champ est requis. Vous devez sélectionner un code postal dans la liste.</p>
-            </div>
-        </div>
-        <div class="column"></div>
-    </div>
-    <div class="field">
-        {!! Form::checkbox('landOffer[accept_use_zip_code]', '1', old('landOffer[accept_use_zip_code]'), [':disabled'=>'isInputDisabled']) !!}
-        J'accepte que le code postal soit utilisé pour localiser l'annonce (recommandé). A défaut, l'annonce sera localisée au niveau départemental.
-    </div>
-    <div class="field">
-        {!! Form::label('landOffer[surface]', 'Surface totale du foncier agricole(en ha)*', ['class' => 'label']); !!}
-        {!! Form::number('landOffer[surface]', null, ['min'=>0, 'class' => 'input', ':disabled'=>'isInputDisabled', 'v-model' => 'formInput.surface'] ) !!}
-        <p class="help is-danger" id="surfaceError" v-if="$v.formInput.surface.$error">Ce champ est
-            requis.</p>
-    </div>
-    <div class="field">
-        {!! Form::label('landOffer[lands_offer_genre][]', 'Type de cession du foncier', ['class' => 'label']); !!}
-        @foreach ($offerGenresLand->pluck('name','id') as $landOffer)
-            {!! Form::checkbox('landOffer[lands_offer_genre][]', $landOffer,  old('landOffer[lands_offer_genre[]]'), [':disabled'=>'isInputDisabled']) !!}
-            {{$landOffer}}
-        @endforeach
-    </div>
-    <p class="has-text-centered is-size-4">Bâti agricole</p>
-    <div class="columns">
-        <div class="column is-one-third">
-            <div class="field">
-                {!! Form::label('landOffer[building_number]', 'Nombre', ['class' => 'label']); !!}
-                {!! Form::number('landOffer[building_number]', old('landOffer[building_number]'), ['min'=>0, 'class' => 'input', ':disabled'=>'isInputDisabled'] ) !!}
-            </div>
-        </div>
-        <div class="column ">
-            <div class="field">
-                {!! Form::label('landOffer[building_surface]', 'Surface totale (en m²)', ['class' => 'label']); !!}
-                {!! Form::number('landOffer[building_surface]',
-                         old('landOffer[building_surface]'),
-                          ['min' => 0,
-                           'class' => 'input',
-                           ':disabled' => 'isInputDisabled']) !!}
-            </div>
-        </div>
-        <div class="column ">
-            <div class="field">
-                {!! Form::label('landOffer[building_offer_genre][]', 'Type de cession', ['class' => 'label']); !!}
-                @foreach ($offerGenresBuilding->pluck('name' ,'id') as $buildingOffer)
-                    {!! Form::checkbox('landOffer[building_offer_genre][]', $buildingOffer, old('landOffer[building_offer_genre[]]'), [':disabled'=>'isInputDisabled']) !!}
-                    {{$buildingOffer}}
-                @endforeach
-            </div>
-        </div>
-    </div>
-    <p class="has-text-centered is-size-4">Habitation</p>
-    <div class="columns">
-        <div class="column is-one-third">
-            <div class="field">
-                {!! Form::label('landOffer[house_number]', 'Nombre de pièces', ['class' => 'label']); !!}
-                {!! Form::number('landOffer[house_number]', old('landOffer[house_number]'), ['min'=> 0, 'class' => 'input', ':disabled'=>'isInputDisabled']); !!}
-            </div>
-        </div>
-        <div class="column ">
-            <div class="field">
-                {!! Form::label('landOffer[house_surface]', 'Surface (en m²)', ['class' => 'label']); !!}
-                {!! Form::number('landOffer[house_surface]', old('landOffer[house_surface]'), ['min'=> 0, 'class' => 'input', ':disabled'=>'isInputDisabled']); !!}
-            </div>
-        </div>
-        <div class="column ">
-            <div class="field">
-                {!! Form::label('landOffer[house_offer_genre][]', 'Type de cession', ['class' => 'label']); !!}
-                @foreach ($offerGenresHouse->pluck('name', 'id') as $houseOffer)
-                    {!! Form::checkbox('landOffer[house_offer_genre][]', $houseOffer, old('landOffer[house_offer_genre[]]'), [':disabled' => 'isInputDisabled']) !!}
-                    {{$houseOffer}}
-                @endforeach
-            </div>
-        </div>
-    </div>
-    <p class="has-text-centered is-size-4">Appel à candidature</p>
-    <div class="field">
-        {!! Form::checkbox('landOffer[is_call_for_application_community]',
-        'true',
-        old('landOffer[is_call_for_application_community]'),
-        [':disabled' => 'isInputDisabled']) !!}
-        Il s'agit d’un appel à candidatures dans le cadre d'un projet soutenu par une collectivité
-    </div>
-    <div class="field">
-        {!! Form::checkbox('landOffer[is_call_for_application_terre_de_liens]',
-        'true',
-        old('landOffer[is_call_for_application_terre_de_liens]'),
-        [':disabled' => 'isInputDisabled']) !!}
-        Il s’agit d’un appel à candidatures pour une ferme Terre de Liens
-    </div>
-    <div class="field">
-        {!! Form::checkbox('landOffer[is_call_for_application_test_area]',
-        'true',
-        old('landOffer[is_call_for_application_test_area]'),
-        [':disabled' => 'isInputDisabled']) !!}
-        Il s’agit d’un appel à candidatures dans le cadre d'un Espace test
-    </div>
-    <div class="field">
-        {!! Form::label('landOffer[is_activity_transfer]', 'Transmission d\'activité (ferme toujours en fonctionnement)*', ['class' => 'label']) !!}
-        {!! Form::radio('landOffer[is_activity_transfer]',
-        1,
-        old('landOffer[is_activity_transfer]'),
-        [':disabled' => 'isInputDisabled',
-        'v-model' => 'formInput.isActivityTransfer',
-		'ref' => 'formInput.isActivityTransfer',
-		'aria-describedby'=>'isActivityTransferError']) !!}
-        Oui
-        {!! Form::radio('landOffer[is_activity_transfer]',
-        0,
-        old('landOffer[is_activity_transfer]'),
-        [':disabled' => 'isInputDisabled',
-        'v-model' => 'formInput.isActivityTransfer',
-		'ref' => 'formInput.isActivityTransfer',
-		'aria-describedby'=>'isActivityTransferError']) !!}
-        Non
-    </div>
-    <p class="help is-danger" id="isActivityTransferError" v-show="$v.formInput.isActivityTransfer.$error">Ce champ est
-        requis.</p>
+            </section>
+        </tab-content>
 
-    <div class="columns">
-        <div class="column is-half" v-show="formInput.isActivityTransfer === '0'">
-            {!! Form::label('landOffer[land_availability]', 'A partir de quand votre terre est-elle disponible ?', ['class' => 'label']); !!}
-            {!! Form::date('landOffer[land_availability]', old('landOffer[land_availability]'), [ ':disabled' => 'isInputDisabled'] ) !!}
-        </div>
-        <div class="column" v-show="formInput.isActivityTransfer === '1' ">
-            {!! Form::label('landOffer[land_transfer_deadline]', 'Avant quelle date souhaitez-vous transmettre votre ferme ?', ['class' => 'label']); !!}
-            {!! Form::date('landOffer[land_transfer_deadline]', old('landOffer[land_availability]'), [ ':disabled' => 'isInputDisabled'] ) !!}
-        </div>
-    </div>
-    <div class="field" v-show="formInput.isActivityTransfer === '1' ">
-        {!! Form::label('landOffer[production_genre][]', 'Système de production en place*', ['class' => 'label']); !!}
-        @foreach ($productionGenres->pluck('name', 'id') as $id => $productionGenre)
-            {!! Form::checkbox(
-                'landOffer[production_genre][]',
-                $id,
-                in_array($id, old('landOffer[production_genre][]', [])),
-                [
-                    ':disabled' => 'isInputDisabled || !formInput.isActivityTransfer',
-                    'v-model'=>'formInput.productionGenre',
-                    'ref' => 'productionGenre',
-                ]
-            ) !!}
-            {{$productionGenre}}
-        @endforeach
-        <p class="help is-danger" id="productionGenreError" v-show="$v.formInput.productionGenre.$error">Ce champ est requis.</p>
-    </div>
+        <tab-content title="Description générale du bien" icon="ti-location-arrow">
+            <section class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-half">
+                        <div class="field">
+                            {!! Form::label('land_offer[production_genres][]', 'Système de production en place', ['class' => 'label']); !!}
 
-    <div class="field">
-        <div v-if="formInput.isActivityTransfer === '0'">
-            {!! Form::label('land_offer_production_genre_wanted_list', 'Production envisageables*', ['class' => 'label']); !!}
-        </div>
-        <div v-else>
-            {!! Form::label('land_offer_production_genre_wanted_list', 'Production envisageables', ['class' => 'label']); !!}
-        </div>
+                            <multi-select
+                                    :options="{{json_encode($productionGenres)}}"
+                                    group-values="children"
+                                    name="land_offer[production_genres][]"
+                                    v-model="formInput.productionGenres"
+                                    placeholder="Sélectionnez au moins une production"
+                                    ref="productionGenres">
+                            </multi-select>
 
-        @foreach ($productionGenres->pluck('name', 'id') as $id => $productionGenre)
-            {!! Form::checkbox(
-            'landOffer[production_genre_wanted][]',
-            $id,
-            in_array($id, old('landOffer[production_genre_wanted][]', [])),
-            [
-                ':disabled' => 'isInputDisabled',
-                'v-model'=>'formInput.productionGenreWanted',
-                'ref' => 'productionGenre',
-            ]
-            ) !!}
-            {{$productionGenre}}
-        @endforeach
-        {!! Form::checkbox('landOffer[production_genre_wanted][]',
-                '',
-                old('landOffer[production_genre_wanted[]]'),
-                [':disabled' => 'isInputDisabled' ]) !!}
-        Je ne sais pas
-    </div>
-    <div class="columns">
-        <div class="column is-two-thirds">
-            <div class="field">
-                {!! Form::label('landOffer[water_access]', 'Accès à l\'eau (forage, réserve d\'eau, canal d’irrigation, borne)*', ['class' => 'label']); !!}
-                <div class="select">
-                    {!! Form::select('landOffer[water_access]',
-                             ['oui' => 'Oui',
-                             'non' => 'Non',
-                              '' => 'Je ne sais pas'],
-                              old('landOffer[water_access]'),
-                              ['placeholder' => 'Veuillez séléctionner...',
-                              ':disabled' => 'isInputDisabled']); !!}
+                            {{--                            <p class="help is-danger" id="productionGenresError"--}}
+                            {{--                               v-if="$v.formInput.productionGenres.$error">--}}
+                            {{--                                Ce champ est requis.--}}
+                            {{--                            </p>--}}
+                        </div>
+
+                        <div class="field">
+                            {!! Form::label('land_offer[production_genres_wanted][]', 'Productions possibles sur la ferme', ['class' => 'label']); !!}
+
+                            <multi-select
+                                    :options="{{json_encode($productionGenres)}}"
+                                    group-values="children"
+                                    name="land_offer[production_genres_wanted][]"
+                                    v-model="formInput.productionGenresWanted"
+                                    placeholder="Sélectionnez au moins une production"
+                                    ref="productionGenresWanted">
+                            </multi-select>
+                        </div>
+
+                        <div class="field">
+                            {!! Form::label('land_offer[bio_certifications][]', 'Certification des terres', ['class' => 'label']); !!}
+
+                            <multi-select
+                                    :options="{{json_encode($bioCertifications)}}"
+                                    group-values="children"
+                                    name="land_offer[bio_certifications][]"
+                                    v-model="formInput.bioCertifications"
+                                    :clear-other-values="{{json_encode($bioCertifications->filter(function ($v) {
+                                        return in_array($v->name, ['Aucune', 'En conversion']);
+                                    }))}}"
+                                    :show-icons="true"
+                                    placeholder="Sélectionnez au moins une production"
+                                    ref="bioCertifications">
+                            </multi-select>
+                        </div>
+
+                        <div class="field">
+                            {!! Form::label('land_offer[water_access]', "Accès à l'eau existant", ['class' => 'label']); !!}
+                            <div class="select">
+                                {!! Form::select('land_offer[water_access]',
+                                     [
+                                        '1' => 'Oui',
+                                        '0' => 'Non',
+                                        '' => 'Je ne sais pas'
+                                    ],
+                                    null,
+                                    [
+                                        'v-model' => 'formInput.waterAccess',
+                                        'placeholder' => 'Veuillez séléctionner...',
+                                        ':disabled' => 'isInputDisabled'
+                                    ]);
+                                !!}
+                            </div>
+                        </div>
+                        <div class="field" v-show="hasWaterAccess">
+                            <label for='land_offer[water_access_description]'
+                                   class="tooltip has-tooltip-left has-tooltip-multiline"
+                                   data-tooltip="Indiquez les modalités d'accès à l'eau, ainsi qu'un rapide descriptif (forage, réserve d'eau, canal d'irrigation, borne, etc.)..">
+                                Précisez votre accès à l'eau
+                                <i class="fas fa-info-circle has-text-info"></i>
+                            </label>
+                            <text-area-counter
+                                    name="land_offer[water_access_description]"
+                                    :max-length="1000"
+                                    :disabled="isInputDisabled"
+                                    ref="waterAccessDescription"
+                                    v-model="formInput.waterAccessDescription"
+                                    :vuelidate="$v.formInput.waterAccessDescription">
+                            </text-area-counter>
+                        </div>
+
+                        <div class="field">
+                            {!! Form::label('land_offer[altitude]', 'Altitude*', [
+                                'class' => 'label',
+                            ]); !!}
+
+                            <div class="columns">
+                                <div class="column is-half">
+                                    <div class="control has-icons-right">
+                                        {!! Form::number('land_offer[altitude]',null, [
+                                            'v-model' => 'formInput.altitude',
+                                            'class' => 'input',
+                                            ':disabled'=>'isInputDisabled',
+                                        ]) !!}
+                                        <span class="icon is-small is-right">
+                                          m
+                                        </span>
+                                    </div>
+
+                                    <p class="help is-danger" v-if="$v.formInput.altitude.$error">
+                                        Ce champ est requis.
+                                    </p>
+                                </div>
+                                <div class="column"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column"></div>
                 </div>
-            </div>
-        </div>
-        <div class="column">
-            <div class="field">
-                {!! Form::label('landOffer[altitude]', 'Altitude (en m)*', ['class' => 'label']); !!}
-                <div class="control">
-                    {!! Form::text('landOffer[altitude]',
-                             null,
-                             ['min'=> 0,
-                              'class' => 'input',
-                              ':disabled' => 'isInputDisabled',
-                              'v-model.trim.lazy' => 'formInput.altitude',
-                              'ref' => 'altitude',
-                              'aria-describedby'=>'altitudeError']) !!}
+            </section>
+        </tab-content>
+
+        <tab-content title="Bâtiment(s)" icon="ti-share">
+            <section class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-half">
+                        <div class="field">
+                            {!! Form::label('land_offer[has_buildings]', "Présence de bâtiment(s) agricole(s)", ['class' => 'label']) !!}
+                            {!! Form::radio('land_offer[has_buildings]', 1, null , [
+                                'v-model' => 'formInput.hasBuildings',
+                                ':disabled' => 'isInputDisabled'
+                            ]) !!}
+                            oui
+                            {!! Form::radio('land_offer[has_buildings]', 0, null , [
+                                'v-model' => 'formInput.hasBuildings',
+                                ':disabled' => 'isInputDisabled'
+                            ]) !!}
+                            non
+                        </div>
+                        <div class="field" v-show="formInput.hasBuildings == 1">
+                            <label for='land_offer[buildings_description]'
+                                   class="tooltip has-tooltip-multiline has-tooltip-left"
+                                   data-tooltip="Décrivez la nature des bâtiments agricoles présents sur la ferme (stabulation, hangar, tunnel, ...),
+                                   leur surface ou leur prix si une estimation a déjà été réalisée, leur état (s'il y a des travaux à prévoir).">
+                                Description des bâtiments
+                                <i class="fas fa-info-circle has-text-info"></i>
+                            </label>
+                            <text-area-counter
+                                    name="land_offer[buildings_description]"
+                                    :max-length="1000"
+                                    :disabled="isInputDisabled"
+                                    ref="buildingsDescription"
+                                    v-model="formInput.buildingsDescription"
+                                    :vuelidate="$v.formInput.buildingsDescription">
+                            </text-area-counter>
+                        </div>
+
+                        <div class="field">
+                            {!! Form::label('land_offer[has_houses]', "Présence d'habitation(s)", ['class' => 'label']) !!}
+                            {!! Form::radio('land_offer[has_houses]', 1, null, [
+                                'v-model' => 'formInput.hasHouses',
+                                ':disabled' => 'isInputDisabled'
+                            ]) !!}
+                            oui
+                            {!! Form::radio('land_offer[has_houses]', 0, null, [
+                                'v-model' => 'formInput.hasHouses',
+                                ':disabled' => 'isInputDisabled'
+                            ]) !!}
+                            non
+                        </div>
+                        <div class="field" v-show="formInput.hasHouses == 1">
+                            <label for='land_offer[houses_description]'
+                                   class="tooltip has-tooltip-multiline has-tooltip-left"
+                                   data-tooltip="Décrivez les habitations présentes sur la ferme (nombre de pièces, surface, état, prix ou modalité de cession imaginé, etc.).">
+                                Description des habitations
+                                <i class="fas fa-info-circle has-text-info"></i>
+                            </label>
+                            <text-area-counter
+                                    name="land_offer[houses_description]"
+                                    :max-length="1000"
+                                    :disabled="isInputDisabled"
+                                    ref="housesDescription"
+                                    v-model="formInput.housesDescription"
+                                    :vuelidate="$v.formInput.housesDescription">
+                            </text-area-counter>
+                        </div>
+                    </div>
+                    <div class="column"></div>
                 </div>
-                <p class="help is-danger" id="altitudeError" v-if="$v.formInput.altitude.$error">Ce champ est
-                    requis.</p>
-                <p class="help is-danger" v-if="!$v.formInput.altitude.numeric">Veuillez saisir des chiffres.</p>
-            </div>
-        </div>
-    </div>
-    <div class="field">
-        {!! Form::label('landOffer[bio_certification][]', 'Certification bio des terres*', ['class' => 'label']); !!}
-        @foreach ($bioCertifications->pluck('name') as $bioCertification)
-            {!! Form::checkbox('landOffer[bio_certification][]',
-            $bioCertification,
-            old('landOffer[bio_certification[]]'),
-            [':disabled' => 'isInputDisabled',
-            'v-model.trim.lazy' => 'formInput.bioCertification',
-            'ref' => 'bioCertification',
-            'aria-describedby'=>'bioCertificationError']) !!}
-            {{$bioCertification}}
-        @endforeach
-        <p class="help is-danger" id="bioCertificationError" v-if="$v.formInput.bioCertification.$error">Ce champ est
-            requis.</p>
-    </div>
-    <p class="has-text-centered is-size-4">Prix de vente ou loyer mensuel (en €)</p>
+            </section>
+        </tab-content>
 
-    <div class="columns">
-        <div class="column is-one-third">
-            <div class="field">
-                {!! Form::label('landOffer[land_price]', 'Foncier', ['class' => 'label']); !!}
-                {!! Form::number('landOffer[land_price]',
-                         old('landOffer[land_price]'),
-                          ['min' => 0,
-                           'class' => 'input',
-                            ':disabled' => 'isInputDisabled',
-                            ] ) !!}
-            </div>
-        </div>
-        <div class="column">
-            <div class="field">
-                {!! Form::label('landOffer[house_price]', 'Habitation', ['class' => 'label']); !!}
-                {!! Form::number('landOffer[house_price]',
-                         old('landOffer[house_price]'),
-                          ['min' => 0,
-                           'class' => 'input',
-                           ':disabled' => 'isInputDisabled',
-                           ] ) !!}
-            </div>
-        </div>
-        <div class="column ">
-            <div class="field">
-                {!! Form::label('landOffer[building_price]', 'Bâti', ['class' => 'label']); !!}
-                {!! Form::number('landOffer[building_price]',
-                         old('landOffer[building_price]'),
-                          ['min'=> 0,
-                           'class' => 'input',
-                           ':disabled' => 'isInputDisabled'] ) !!}
-            </div>
-        </div>
-    </div>
-    <div class="field">
-        <label class="checkbox">
-            <input type="checkbox"
-                   id="land_offer[confirm_price_fermage]"
-                   name="confirm_price_fermage"
-                   :disabled="isInputDisabled"
-                   v-model.trim.lazy="formInput.confirmPriceFermage"
-                   ref='confirmPriceFermage'
-                   aria-describedby='confirmPriceFermageError'>
+        <tab-content title="Prix et modalités" icon="ti-share">
+            <section class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-half">
 
-            Je certifie que le prix est conforme à l’<a>indice des fermages de mon département</a>
-        </label>
-    </div>
-    <div class="field">
-        <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
-               data-tooltip="Parce qu’il y a derrière chaque
-				projet et chaque lieu des personnes
-				et des histoires, nous vous invitons
-				ici à en dire un peu plus sur vous et
-				votre projet, le tout en quelques
-				lignes : qu’est-ce qui motive votre
-				projet ? Quelles sont vos attentes ?
-				Quelles sont les valeurs qui vous
-				portent ? Quelle est l’histoire du
-				lieu ? Quelles sont les conditions de
-				la transmission le cas échéant ?">Et si vous nous en disiez un peu plus sur votre projet ?* <i class="fas fa-info-circle has-text-info"></i></label>
+                        <div class="field">
+                            {!! Form::label('land_offer[offer_genres][]', 'Vous proposez ce bien*', ['class' => 'label']); !!}
 
-        <text-area-counter
-                name="land_offer[about_project_content]"
-                :max-length=1000
-                :disabled="isInputDisabled"
-                v-model="formInput.aboutProject"
-                :vuelidate="$v.formInput.aboutProject">
-        </text-area-counter>
+                            <?php
+                            $offerGenresFaIcons = ["fa-user", "fa-user-friends", "fa-users"]
+                            ?>
 
-    </div>
-    <div class="field">
+                            <div class="columns">
+                                @foreach($offerGenres as $i => $offerGenre)
+                                    <div class="column">
+                                        <custom-checkbox
+                                                name="land_offer[offer_genres][]"
+                                                input-value="{{$offerGenre["id"]}}"
+                                                v-model="formInput.offerGenres"
+                                                :disabled="isInputDisabled"
+                                                ref="offerGenres">
 
-        <label class="label is-inline-block">Et si vous nous en disiez un peu plus sur vous ?*</label>
-        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left" data-tooltip="Parce qu’il y a derrière chaque
-				projet et chaque lieu des personnes
-				et des histoires, nous vous invitons
-				ici à en dire un peu plus sur vous et
-				votre projet, le tout en quelques
-				lignes : qu’est-ce qui motive votre
-				projet ? Quelles sont vos attentes ?
-				Quelles sont les valeurs qui vous
-				portent ? Quelle est l’histoire du
-				lieu ? Quelles sont les conditions de
-				la transmission le cas échéant ?">
-            <i class="fas fa-info-circle"></i>
-        </button>
-        <text-area-counter
-                name="land_offer[about_content]"
-                :max-length=1000
-                :disabled="isInputDisabled"
-                :input-required=true
-                v-model="formInput.aboutContent"
-                :vuelidate="$v.formInput.aboutContent"
-        >
-        </text-area-counter>
+                                            <i class="fa {{ $offerGenresFaIcons[$i] }}"
+                                               style="font-size: 30px;"></i><br><br>
+                                            <span style="font-size:16px">
+                                                {{ $offerGenre["land_offer_label"] }}
+                                            </span>
+                                        </custom-checkbox>
+                                    </div>
+                                @endforeach
+                            </div>
 
-    </div>
-    <div class="field">
-        {!! Form::label('landOffer[title]', 'Titre de votre annonce*', ['class' => 'label is-inline-block']); !!}
-        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left" data-tooltip="Le titre de l’annonce est primordial !
-				Il s’agit de votre carte de visite sur la
-				plateforme. Un titre clair et bien
-				formulé augmentera vos chances de
-				contacts !">
-            <i class="fas fa-info-circle"></i>
-        </button>
-        {!! Form::text('landOffer[title]', null,
-                 ['class' => 'input',
-                  ':disabled' => 'isInputDisabled',
-                  'v-model.trim' => 'formInput.title',
-                  'ref' => 'title',
-                  'aria-describedby'=>'titleError',
-                  'placeholder'=>'Saisissez votre titre'
-                  ] ) !!}
-        <p class="help is-danger" id="titleError" v-if="$v.formInput.title.$error">Ce champ est requis.</p>
-        <p class="help is-danger" v-show="!$v.formInput.title.minLength">Le titre de votre annonce doit faire au minimum
-            @{{$v.formInput.title.$params.minLength.min}} caractères .</p>
-    </div>
-    <div class="field">
-        <span>Des photos ? Chaque photo augmente vos chances d’être recontactés !</span>
-        <button type="button" class="button icon has-text-info has-tooltip-multiline has-tooltip-left"
-                data-tooltip="5 photos maximum">
-            <i class="fas fa-info-circle"></i>
-        </button>
-        <div class="file">
-            <label class="file-label">
-                {!! Form::file('landOffer[image1]',
-                         ['class' => 'file-input',
-                          ':disabled' => 'isInputDisabled']) !!}
-                {!! Form::file('landOffer[image2]',
-                         ['class' => 'file-input',
-                          ':disabled'=>'isInputDisabled'] ) !!}
-                {!! Form::file('landOffer[image3]',
-                         ['class' => 'file-input',
-                          ':disabled'=>'isInputDisabled'] ) !!}
-                {!! Form::file('landOffer[image4]',
-                         ['class' => 'file-input',
-                          ':disabled' => 'isInputDisabled'] ) !!}
-                {!! Form::file('landOffer[image5]',
-                         ['class' => 'file-input',
-                          ':disabled' => 'isInputDisabled'] ) !!}
-                <span class="file-cta">
-                    <span class="file-icon">
-                        <i class="fas fa-upload"></i>
-                    </span>
-                    <span class="file-label">
-                        Importer une photo (maximum 5 photos)
-                    </span>
-                </span>
-            </label>
-        </div>
-    </div>
-    <div class="field">
-        <label class="checkbox">
-            <input type="checkbox"
-                   id="land_offer[chart_confirmation]"
-                   name="certification_charte"
-                   :disabled="isInputDisabled"
-                   v-model.trim.lazy="formInput.chartConfirmation"
-                   ref='chartConfirmation'
-                   aria-describedby='chartConfirmationError'>
+                            <p id="offerGenreIdError" class="help is-danger" v-if="$v.formInput.offerGenres.$error">
+                                Ce champ est requis.
+                            </p>
+                        </div>
 
-            Je certifie que mon projet correspond à la <a href="/">charte de Terre de Liens</a>
-        </label>
-        <p class="help is-danger" id="chartConfirmationError" v-if="$v.formInput.chartConfirmation.$error">Ce champ est
-            requis.</p>
-    </div>
+                        <div class="columns">
+                            <div class="column is-half" v-if="isSaleOffer">
+                                <div class="field">
+                                    {!! Form::label('land_offer[price]', 'Prix de vente*', [
+                                        'class' => 'label',
+                                    ]); !!}
+
+                                    <div class="control has-icons-right">
+                                        {!! Form::number('land_offer[price]', old('land_offer[price]'), [
+                                            'class' => 'input',
+                                            'ref' => 'price',
+                                            'v-model' => 'formInput.price',
+                                            ':disabled'=>'isInputDisabled',
+                                        ]) !!}
+                                        <span class="icon is-small is-right">
+                                          €
+                                        </span>
+                                    </div>
+
+                                    <p class="help is-danger" v-if="$v.formInput.price.$error">
+                                        Ce champ est requis.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="column is-half" v-if="isRentOffer">
+                                <div class="field">
+                                    {!! Form::label('land_offer[rent_price]', 'Loyer mensuel*', [
+                                        'class' => 'label',
+                                    ]); !!}
+
+                                    <div class="control has-icons-right">
+                                        {!! Form::number('land_offer[rent_price]', old('land_offer[rent_price]'), [
+                                            'class' => 'input',
+                                            'ref' => 'rentPrice',
+                                            'v-model' => 'formInput.rentPrice',
+                                            ':disabled'=>'isInputDisabled',
+                                        ]) !!}
+                                        <span class="icon is-small is-right">
+                                          €
+                                        </span>
+                                    </div>
+                                    <p class="help is-danger" v-if="$v.formInput.rentPrice.$error">
+                                        Ce champ est requis.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field" v-if="isTestOffer">
+                            <label for='land_offer[test_description]'
+                                   class="has-tooltip-multiline has-tooltip-left"
+                                   data-tooltip="Décrivez les habitations présentes sur la ferme (nombre de pièces, surface, état, prix ou modalité de cession imaginé, etc.).">
+                                Description du test agricole
+                                <i class="fas fa-info-circle has-text-info"></i>
+                            </label>
+                            <text-area-counter
+                                    name="land_offer[test_description]"
+                                    :max-length="1000"
+                                    :disabled="isInputDisabled"
+                                    ref="testDescription"
+                                    v-model="formInput.testDescription"
+                                    :vuelidate="$v.formInput.testDescription">
+                            </text-area-counter>
+                        </div>
+                    </div>
+                    <div class="column"></div>
+                </div>
+            </section>
+        </tab-content>
+
+
+        <tab-content title="Autres informations" icon="ti-share">
+            <section class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-half">
+
+                        @include('pages.ads.partials.inputs.about_project_content', ['tooltip' => "Parce qu’il y a derrière chaque projet et chaque lieu des personnes et des histoires, nous vous invitons ici à en dire un peu plus sur votre projet : qu’est-ce qui motive votre projet ? Quelles sont vos attentes ? Quelles sont les valeurs qui vous portent ? Quelle est l’histoire du lieu ? Quelles sont les conditions de la transmission le cas échéant  ? Quel type de personnes et de projet agricole recherchez-vous ?"])
+
+                        @include('pages.ads.partials.inputs.about_content')
+                    </div>
+                    <div class="column"></div>
+                </div>
+            </section>
+        </tab-content>
+
+
+        <tab-content title="C'est presque fini !" icon="ti-share">
+            <section class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-half">
+                        @include('pages.ads.partials.inputs.title')
+
+                        @include('pages.ads.partials.inputs.documents')
+
+                        <div class="field">
+                            <label class="checkbox">
+                                <input type="checkbox"
+                                       id="certification_charte"
+                                       name="land_offer[chart_confirmation]"
+                                       :disabled="isInputDisabled"
+                                       v-model="formInput.chartConfirmation"
+                                       ref='chartConfirmation'
+                                       aria-describedby='chartConfirmationError'>
+
+                                Je certifie que mon projet correspond à la <a href="/">charte de Terre de Liens</a>
+                            </label>
+                            <p class="help is-danger" id="chartConfirmationError"
+                               v-if="$v.formInput.chartConfirmation.$error">Vous
+                                devez cocher cette case.</p>
+                        </div>
+
+                        <article class="message is-warning" v-if="$v.$error">
+                            <div class="message-header">
+                                <p>Veuillez revoir votre formulaire</p>
+                            </div>
+                            <div class="message-body">
+                                Des erreurs empêchent la publication de votre annonce. Avez-vous tout vérifié ?
+                            </div>
+                        </article>
+                    </div>
+                    <div class="column"></div>
+                </div>
+            </section>
+        </tab-content>
+
+        @include('pages.ads.partials.form-wizard-footer', ["moveToRef"=>"land_offer"])
+    </form-wizard>
 </div>

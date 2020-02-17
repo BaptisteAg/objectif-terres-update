@@ -1,28 +1,23 @@
 <?php namespace App\Presenters;
 
-use App\Models\AdMessage;
+use App\Models\Message;
 use McCool\LaravelAutoPresenter\BasePresenter;
 
 /**
- * Class AdMessagePresenter
+ * Class MessagePresenter
  * @package App\Presenters
- * @property AdMessage $wrappedObject
+ * @property Message $wrappedObject
  */
-class AdMessagePresenter extends BasePresenter
+class MessagePresenter extends BasePresenter
 {
 
 	public function created_at()
 	{
 		return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->format('d/m/Y');
 	}
-
-	public function is_today()
-	{
-		return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->isToday();
-	}
-
 	public function created_at_diff()
 	{
 		return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->diffForHumans();
 	}
+
 }

@@ -8,32 +8,32 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\belongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+
 /**
  * App\Models\LandSeekAd
  *
  * @property int $id
+ * @property int|null $is_bio
+ * @property string|null $production_type_add
+ * @property int|null $has_farm_buildings
+ * @property int|null $has_houses
+ * @property string|null $experience_farming
+ * @property int|null $rent_min
+ * @property int|null $rent_max
  * @property int $ad_id
- * @property int $installation_type_id
- * @property int $offer_type_id
- * @property string $title
- * @property boolean $is_bio
- * @property string $production_type_add
- * @property boolean $has_farm_buildings
- * @property boolean $has_houses
- * @property string $experience_farming
- * @property float $rent_min
- * @property float $rent_max
- * @property Ad $ad
- * @property InstallationType $installationType
- * @property OfferGenre $offerGenre
- * @property PriceRange[] $priceRanges
- * @property SurfaceRange[] $surfaceRanges
+ * @property int|null $surface_range_min
+ * @property int|null $surface_range_max
+ * @property int|null $installation_type_id
  * @property int|null $offer_genre_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read int|null $price_ranges_count
+ * @property-read \App\Models\Ad $ad
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandSeekAdBuilding[] $buildings
+ * @property-read int|null $buildings_count
+ * @property-read \App\Models\InstallationType|null $installationType
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenres
  * @property-read int|null $production_genres_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SurfaceRange[] $surfaceRanges
  * @property-read int|null $surface_ranges_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd newQuery()
@@ -50,14 +50,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereProductionTypeAdd($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereRentMax($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereRentMin($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property int|null $surface_range_min
- * @property int|null $surface_range_max
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereSurfaceRangeMax($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereSurfaceRangeMin($value)
- * @property-read \App\Models\LandSeekAdBuilding $buildings
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class LandSeekAd extends Model
 {

@@ -41,9 +41,14 @@
                 </span>
 							</div>
 							<div class="level-item">
-                <span class="icon">
-                    <a href=""><i class="far fa-envelope"></i></a>
-                </span>
+								<span class="notification-container">
+								 <a href="{{route('threads.index')}}">
+										<i class="far fa-envelope"></i>
+									</a>
+									@if($numberOfUnreadMessages)
+										<span class="notification-counter">{{$numberOfUnreadMessages}}</span>
+									@endif
+								</span>
 							</div>
 							<div class="level-item">
 								<a class="dropdown-item" href="{{ route('logout') }}"
@@ -76,7 +81,7 @@
 					</div>
 					<div class="column is-2">
 						<a href="{{url ('/')}}">
-							<h3 class="title">Objectif Terre</h3>
+							<h3 class="title">Objectif Terres</h3>
 						</a>
 						<h4 class="subtitle">Réalisez votre projet agricole.</h4>
 						<p>Une initiative Terre de Liens</p>
@@ -124,7 +129,7 @@
 
 				</div>
 			</div>
-			<div  v-show="isFormOpen" class="has-ba" style="display : none">
+			<div v-show="isFormOpen" class="has-ba" style="display : none">
 				<div class="container-custom" v-show="adCategorySelected === 'job'">
 					@include('layouts.partials.headerJobResearch')
 				</div>
@@ -177,7 +182,7 @@
 					</div>
 				</nav>
 				@if( Auth::check())
-					@if (Route::current()->getName() === 'ads.list' || Route::current()->getName() === 'researches.show' || Route::current()->getName() == 'favoriteAds.show' )
+					@if (Route::current()->getName() === 'ads.list' || Route::current()->getName() === 'researches.show' || Route::current()->getName() == 'favoriteAds.show' || Route::current()->getName() == 'messages.index' )
 						<div class="tabs is-centered is-medium">
 							<ul>
 								<li class="{{ Route::current()->getName() === 'ads.list' ? 'is-active' : '' }}"><a
@@ -197,6 +202,13 @@
 											href="{{route('favoriteAds.show')}}"><span class="icon is-small">
 											<i class="fas fa-star" aria-hidden="true"></i></span>
 										<span>Mes annonces favorites</span>
+									</a>
+								</li>
+								<li class="{{ Route::current()->getName() == 'threads.index' ? 'is-active' : '' }}">
+									<a
+											href="{{route('threads.index')}}"><span class="icon is-small">
+											<i class="fas fa-comments"></i></span>
+										<span>Ma messagerie</span>
 									</a>
 								</li>
 							</ul>

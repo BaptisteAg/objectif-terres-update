@@ -9,6 +9,8 @@ use App\Models\FavoriteAd;
 use App\Models\JobAd;
 use App\Models\LandOfferAd;
 use App\Models\LandSeekAd;
+use App\Models\Message;
+use App\Models\Thread;
 use App\Models\PpToUserMessage;
 use App\Models\PriceRange;
 use App\Models\ProductionGenre;
@@ -41,7 +43,7 @@ class DatabaseSeeder extends Seeder
 
             $this->call([
                 RequirementSeeder::class,
-                BuildingTypeSeeder::class,
+				BuildingTypeSeeder::class,
                 PriceRangeSeeder::class,
                 SurfaceRangeSeeder::class,
                 InstallationTypeSeeder::class,
@@ -52,12 +54,14 @@ class DatabaseSeeder extends Seeder
                 EducationLevelSeeder::class,
             ]);
 
+
             if(app()->environment() === "local") {
                 $this->call([
                     TestUserSeeder::class,
                     TestProjectStatusSeeder::class,
                     TestResponseTypeSeeder::class,
                     TestResearchSeeder::class,
+                    TestResponseTemplateSeeder::class,
                     TestUserToUserMessageSeeder::class,
                 ]);
 
@@ -79,8 +83,8 @@ class DatabaseSeeder extends Seeder
                     $landOfferAd->save();
                 });
                 factory(LandSeekAd::class, 10)->create()->each(function (LandSeekAd $landSeekAd) use(&$adIds) {
-                    $landSeekAd->surfaceRanges()->save(SurfaceRange::inRandomOrder()->first());
-                    $landSeekAd->priceRanges()->save(PriceRange::inRandomOrder()->first());
+                    //$landSeekAd->surfaceRanges()->save(SurfaceRange::inRandomOrder()->first());
+                    //$landSeekAd->priceRanges()->save(PriceRange::inRandomOrder()->first());
                     $landSeekAd->ad_id = array_shift($adIds);
                     $landSeekAd->save();
                 });
@@ -92,6 +96,7 @@ class DatabaseSeeder extends Seeder
             }
 
         });
+
 
         echo "\nTotal queries : ".$queriesCount."\n";
     }

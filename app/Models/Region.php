@@ -26,6 +26,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereSlug($value)
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereUpdatedAt($value)
  */
 class Region extends Model
 {

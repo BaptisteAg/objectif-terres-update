@@ -76,22 +76,21 @@
 												class="has-text-black">{{ $ad->created_at }}</span>
 									</p>
 
-
-									@isset($ad->adMessages)
+									@if(count($ad->threads) === 0)
 										<p><span>Vous n'avez pas reçu de messages concernant cette annonce</span>
 										</p>
-									@endisset
-									@if(count($ad->adMessages) === 1 )
+									@endif
+									@if(count($ad->threads) === 1 )
 
-										<p><span>Vous avez reçu <span class="has-text-black has-text-weight-bold"><a
-															href="{{route("ads.show", $ad->id).'#reponses'}}"> {{count($ad->adMessages)}} réponse </a></span>concernant cette annonce !</span>
+										<p><span>Vous avez  <span class="has-text-black has-text-weight-bold"><a
+															href="{{route("threads.index")}}"> {{count($ad->threads)}} fil de discussion </a></span>concernant cette annonce !</span>
 										</p>
 
-									@elseif(count($ad->adMessages) > 1)
+									@elseif(count($ad->threads) > 1)
 										<p><span
-													class="has-text-grey-dark">Vous avez reçu <span
+													class="has-text-grey-dark">Vous avez <span
 														class="has-text-black has-text-weight-bold">	<a
-															href="{{route("ads.show", $ad->id).'#reponses'}}"> {{count($ad->adMessages)}} réponses </a></span>
+															href="{{route("threads.index")}}"> {{count($ad->threads)}} fils de discussion </a></span>
 											 concernant cette annonce ! </span>
 										</p>
 
@@ -111,16 +110,27 @@
 										</button>
 									</a>
 								@else
-									<a href="">
+									<a href="{{route("ads.show", $ad->id)}}">
 										<button class="button is-link is-light is-medium ">
 											<span class="icon is-small">
-											<i class="fas fa-pen"></i>
+											<i class="fas fa-eye"></i>
 											</span>
-											<span>Modifier l'annonce</span>
+											<span>Voir l'annonce l'annonce</span>
 										</button>
 
 									</a>
 								@endif
+							</div>
+							<div class="buttons">
+									<a href="{{route("ads.delete", $ad->id)}}">
+										<button class="button is-danger is-light is-medium ">
+											<span class="icon is-small">
+											<i class="fas fa-trash"></i>
+											</span>
+											<span>Supprimer l'annonce</span>
+										</button>
+
+									</a>
 							</div>
 						</div>
 					</div>

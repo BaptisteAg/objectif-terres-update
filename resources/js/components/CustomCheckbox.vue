@@ -1,7 +1,11 @@
 <!-- Vue component -->
 <template>
     <label class="cradio-container">
-        <input type="radio" :name="name" :checked="value === inputValue" :value="inputValue" :disabled="disabled" @input="$emit('input', inputValue)">
+        <input :type="isRadio ? 'radio' : 'checkbox'"
+               :name="name"
+               :value="inputValue"
+               :disabled="disabled"
+                v-model="checked">
         <span class="cradio-checkmark">
             <slot></slot>
         </span>
@@ -20,9 +24,9 @@
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
-        height:100px;
+        height: 100px;
         line-height: 13px;
-        text-align:center;
+        text-align: center;
 
         /* Hide the browser's default checkbox */
         input {
@@ -68,12 +72,12 @@
         position: absolute;
         top: 0;
         left: 0;
-        padding-top:20px;
+        padding-top: 20px;
         height: 100%;
         width: 100%;
         background-color: #eee;
-        border-radius:5px;
-        box-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+        border-radius: 5px;
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 
         /* Create the cradio-checkmark/indicator (hidden when not checked) */
         &:after {
@@ -88,10 +92,36 @@
     export default {
         props: {
             name: String,
-            value: String,
+            value: {
+                type: [String, Array],
+                required: true
+            },
             inputValue: String,
-            disabled: Boolean
+            disabled: Boolean,
+            isRadio: {
+                type: Boolean,
+                default: false
+            }
         },
-        methods: {}
+        data() {
+            return {
+                checked: this.value
+            };
+        },
+        watch: {
+            checked(newValue) {
+                if(Array.isArray(newValue)) {
+                    if(newValue.length) {
+                        this.$emit('input', this.value.concat(newValue))
+                    }
+                    else {
+                        this.$emit('input', this.value.filter(v => v !== this.inputValue))
+                    }
+                }
+                else {
+                    this.$emit('input', this.inputValue)
+                }
+            }
+        }
     }
 </script>

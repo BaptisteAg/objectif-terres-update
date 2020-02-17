@@ -5,6 +5,7 @@ use App\Models\Ad;
 use App\Models\Department;
 use App\Models\Region;
 use App\Repositories\Researches\ResearchRepository;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -76,9 +77,11 @@ class ResearchService
 		foreach ($researches as $research) {
 			$id = $research->id;
 			$date = $research->updated_at;
-			$newAds = $this->repository->findRelatedAds($id)->where('created_at', '>=', $date);
+			$newAds = $this->repository->findRelatedAds($id)->where('updated_at', '>=', $date);
 			if (!$newAds->isEmpty()) {
 				$newAdsInResearch[$research->id] = $this->repository->findRelatedAds($id)->where('created_at', '>=', $date);
+				$research->updated_at = Carbon::now();
+				$research->save();
 			}
 		}
 

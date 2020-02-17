@@ -8,9 +8,15 @@ interface UserRepositoryInterface
 	/**
 	 * Creates a user.
 	 *
-	 * @param int
-	 * @param array
+	 * @param array $data
 	 */
+	public function create(array $data);
 
-	public function create(array $data) ;
+	/**
+	 * Find a user by Id.
+	 *
+	 * @param int $id
+	 * @return User
+	 */
+	public function find ($id);
 }

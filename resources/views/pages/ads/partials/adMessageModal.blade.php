@@ -27,7 +27,7 @@
 		</div>
 	</div>
 @else
-	{!! Form::open(['route' => 'adMessages.create', 'method'=>'post']) !!}
+	{!! Form::open(['route' => 'threads.create', 'method'=>'post']) !!}
 	<div class="modal">
 		<div class="modal-background"></div>
 		<div class="modal-content">

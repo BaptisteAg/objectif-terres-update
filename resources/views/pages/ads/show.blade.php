@@ -1,13 +1,13 @@
 @extends('default')
 
 @section('title')
-    @if($ad->ad_type === 'land_seek')
+    @if($ad->ad_type === 'landSeek')
         {{ $ad->landSeekAd->title }}
     @endif
-    @if($ad->ad_type === 'land_offer')
+    @if($ad->ad_type === 'landOffer')
         {{ $ad->landOfferAd->title }}
     @endif
-    @if($ad->ad_type === 'job_ad')
+    @if($ad->ad_type === 'jobAd')
         {{ $ad->jobOfferAd->title }}
     @endif
 @endsection
@@ -15,8 +15,6 @@
 @section('head-script')
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
 @endsection
-
-
 
 @section('main-content')
 	@if($ad->ad_type === 'landSeek')
@@ -35,7 +33,6 @@
         let buttons = document.querySelectorAll('#open-modal-message');
         buttons.forEach((button)=>{
             button.addEventListener('click', function (event) {
-                console.log('oui')
                 event.preventDefault();
                 let modal = document.querySelector('.modal');
                 let html = document.querySelector('html');
@@ -62,23 +59,15 @@
 
         })
 	</script>
-	<script src="{{asset('/js/bulma-carousel.js')}}"></script>
-	<script>
-
-        const carousel = bulmaCarousel.attach('#ad-images', {
-            slidesToScroll: 1,
-            slidesToShow: 1,
-            loop: true,
-            navigation: true,
-        });
-
-        // Loop on each carousel initialized
-        for(let i = 0; i < carousel.length; i++) {
-
-            carousel[i].on('after:show', state => {
-                console.log(carousel[i].slides)
-
+	@if(count($ad->images) > 1)
+        <script src="{{asset('/js/bulma-carousel.js')}}"></script>
+        <script>
+            const carousel = bulmaCarousel.attach('#ad-images', {
+                slidesToScroll: 1,
+                slidesToShow: 1,
+                loop: true,
+                navigation: true,
             });
-        }
-	</script>
+        </script>
+    @endif
 @endsection

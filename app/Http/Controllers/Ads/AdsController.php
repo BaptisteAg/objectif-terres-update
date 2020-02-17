@@ -7,6 +7,7 @@ use App\Http\Requests\Ads\AdRequest;
 use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
 use App\Models\BuildingType;
+use App\Models\City;
 use App\Models\EducationLevel;
 use App\Models\InstallationType;
 use App\Models\JobStatus;
@@ -16,8 +17,8 @@ use App\Models\ProductionGenre;
 use App\Models\Requirement;
 use App\Models\SurfaceRange;
 use App\Repositories\FavoriteAds\FavoriteAdRepository;
-use App\Services\AdMessages\AdMessagesService;
 use App\Services\Ads\AdService;
+use App\Services\Threads\ThreadService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -31,13 +32,13 @@ class AdsController extends Controller
 	 * @var AdService
 	 */
 	protected $adService;
-	protected $adMessageService;
+	protected $threadService;
 	protected $favoriteAdRepository;
 
-	public function __construct(AdService $adService, AdMessagesService $adMessageService, FavoriteAdRepository $favoriteAdRepository)
+	public function __construct(AdService $adService, ThreadService $threadService, FavoriteAdRepository $favoriteAdRepository)
 	{
 		$this->adService = $adService;
-		$this->adMessageService = $adMessageService;
+		$this->threadService = $threadService;
 		$this->favoriteAdRepository = $favoriteAdRepository;
 
 	}
@@ -53,15 +54,17 @@ class AdsController extends Controller
 		$bioCertifications = BioCertification::all();
 		$jobStatus = JobStatus::all();
 		$offerGenres = OfferGenre::all();
-		$offerGenresLandSeek = OfferGenre::where('offer_genre_model', 'LandSeekAd')->get();
-		$offerGenresHouse = OfferGenre::where('offer_genre_model', 'House')->get();
-		$offerGenresBuilding = OfferGenre::where('offer_genre_model', 'Building')->get();
-		$offerGenresLand = OfferGenre::where('offer_genre_model', 'Land')->get();
 		$agriculturalActivities = AgriculturalActivity::all();
 		$educationLevels = EducationLevel::all();
 		$buildingTypes = BuildingType::all();
 		$requirements = Requirement::all();
         $productionGenres = $this->adService->getProductionGenresFlattened();
+        $productionGenresWithOther = clone $this->adService->getProductionGenresFlattened()
+            ->concat([[
+                'id' => 'other',
+                'name' => 'Autre',
+                'children' => []
+            ]]);
 
 		return view('pages.ads.new', compact(
 			'installationTypes',
@@ -70,14 +73,9 @@ class AdsController extends Controller
 			'bioCertifications',
 			'jobStatus',
 			'offerGenres',
-			'offerGenresLandSeek',
-			'offerGenresHouse',
-			'offerGenresBuilding',
-			'offerGenresLand',
-			'productionGenres',
-			'agriculturalActivities',
 			'educationLevels',
 			'productionGenres',
+			'productionGenresWithOther',
 			'agriculturalActivities',
 			'buildingTypes',
 			'requirements'
@@ -120,9 +118,12 @@ class AdsController extends Controller
 	{
 		$ad = $this->adService->find($adId);
 
+		$userMessage = null;
+        $favoriteAdAlreadyExist = false;
+
 		if (Auth::user()) {
-			//if the user connected has send a response to an ad, get the first message
-			$userMessage = $this->adMessageService->findByUserAndAd((auth()->user()->id), $adId);
+			//TODO if the user connected has send a response to an ad, get the first message
+
 
 			$data = array(
 				"ad_id" => $adId,
@@ -142,5 +143,10 @@ class AdsController extends Controller
 		$ads = $this->adService->findAllByUser(auth()->id());
 
 		return view('pages.ads.listUserAds', compact('ads'));
+	}
+
+	public function delete(int $id){
+    	$this->adService->delete($id);
+    	return back()->with('success', 'Votre annonce a bien été supprimée');
 	}
 }

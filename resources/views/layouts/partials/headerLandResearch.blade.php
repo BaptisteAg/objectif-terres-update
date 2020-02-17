@@ -47,7 +47,7 @@
                 </label>
             </div>
             <div class="field">
-                {!! Form::label('production_genre', 'Choisissez des types de production', ['class' => 'label']); !!}
+                {!! Form::label('production_genres', 'Choisissez des types de production', ['class' => 'label']); !!}
                 <multi-select
                     :options="{{ json_encode($productionGenres) }}"
                     :multiple="true"

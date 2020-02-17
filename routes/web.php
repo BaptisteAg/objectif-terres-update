@@ -14,21 +14,27 @@
 Route::get('/', 'HomePage\HomePageController@show');
 
 Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
+
     Route::middleware('auth')->get('creer', 'AdsController@create')->name('create');
     Route::middleware('auth')->post('creer', 'AdsController@store')->name('store');
     Route::middleware('auth')->get('liste-mes-annonces', 'AdsController@list')->name('list');
     Route::get('{id}', 'AdsController@show')->name('show');
+	Route::middleware('auth')->get('supprimer/{ad}', 'AdsController@delete')->name('delete');
+
 
 });
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {
+
     Route::middleware('auth')->post('upload', 'DocumentsController@upload')->name('upload');
     Route::get('{type}/{filename}', 'DocumentsController@show')->name('show');
+
 });
 
 Route::get('/register', 'Salesforces\SalesForceAuthController@register');
 
 Route::prefix('recherches')->name('researches.')->namespace('Researches')->group(function () {
+
     Route::get('recherche', 'ResearchesController@index')->name('index');
 
     Route::middleware('auth')->group(function () {
@@ -38,28 +44,41 @@ Route::prefix('recherches')->name('researches.')->namespace('Researches')->group
         Route::get('supprimer-alerte/{id}', 'ResearchesController@deleteAlert')->name('deleteAlert');
         Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
     });
+
+});
+Route::prefix('mon-espace/recherches')->middleware('auth')->name('researches.')->namespace('Researches')->group(function () {
+	Route::post('sauvegarde', 'ResearchesController@store')->name('store');
+	Route::get('liste', 'ResearchesController@show')->name('show');
+	Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
+	Route::get('supprimer-alerte/{id}', 'ResearchesController@deleteAlert')->name('deleteAlert');
+	Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
 });
 
-Route::middleware('auth')->prefix('messages')->name('adMessages.')->namespace('AdMessages')->group(function () {
-    Route::post('creer', 'AdMessagesController@create')->name('create');
+Route::middleware('auth')->prefix('mon-espace')->name('userAccount.')->namespace('HomePage')->group(function () {
+	Route::get('/', 'HomePageLoggedController@index')->name('showAccount');
 });
 
-Route::middleware('auth')->prefix('mon-compte')->name('userAccount.')->group(function () {
-    Route::get('/', 'HomeController@showAccount')->name('showAccount');
+Route::prefix('mon-espace/annonces-favorites')->middleware('auth')->name('favoriteAds.')->namespace('FavoriteAds')->group(function () {
+	Route::get('sauvegarde', 'FavoriteAdsController@create')->name('create');
+	Route::get('liste', 'FavoriteAdsController@show')->name('show');
+	Route::post('supprimer', 'FavoriteAdsController@destroy')->name('destroy');
+
 });
 
-Route::prefix('annonces-favorites')->middleware('auth')->name('favoriteAds.')->namespace('favoriteAds')->group(function () {
-    Route::get('sauvegarde', 'FavoriteAdsController@create')->name('create');
-    Route::get('liste', 'FavoriteAdsController@show')->name('show');
-    Route::post('supprimer', 'FavoriteAdsController@destroy')->name('destroy');
+Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->namespace('Threads')->group(function () {
+	Route::get('/', 'ThreadsController@index')->name('index');
+	Route::post('creer', 'ThreadsController@create')->name('create');
+	Route::get('{thread}', 'MessagesController@show')->name('show');
+	Route::post('envoi', 'MessagesController@create')->name('send');
 });
 
 
-Route::prefix('locations')->group(function () {
-    Route::get('/', 'Json\LocationableController@locations');
-    Route::get('cities', 'Json\LocationableController@cities');
+Route::prefix('locations')->namespace('Locationables')->group(function () {
+    Route::get('/', 'LocationableController@locations');
+    Route::get('cities', 'LocationableController@cities');
+    Route::get('cities-and-departments', 'LocationableController@citiesAndDepartments');
     Route::prefix('polygon')->group(function () {
-        Route::post('regions', 'Json\LocationableController@regionsPolygon');
+        Route::post('regions', 'LocationableController@regionsPolygon');
     });
 });
 

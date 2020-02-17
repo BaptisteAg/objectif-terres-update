@@ -39,8 +39,8 @@ class CreateAdMessagesTable extends Migration
 
             $table->foreign('ad_id', 'fk_ad_messages_1_idx')
                 ->references('id')->on('ads')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

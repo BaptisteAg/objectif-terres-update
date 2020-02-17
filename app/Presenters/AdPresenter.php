@@ -1,6 +1,7 @@
 <?php namespace App\Presenters;
 
 use App\Models\Ad;
+use App\Models\City;
 use McCool\LaravelAutoPresenter\BasePresenter;
 
 /**
@@ -39,4 +40,46 @@ class AdPresenter extends BasePresenter
     {
         return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->diffForHumans();
     }
+
+    public function zipCodesByCity()
+    {
+        return $this->wrappedObject->cities->mapToGroups(function(City $city, $key) {
+            return [$city['name'] => $city["zip_code"]];
+        });
+    }
+
+    public function locationable_radius()
+    {
+        return $this->wrappedObject->cities[0]->pivot->radius;
+    }
+
+    public function hasImages()
+    {
+        return $this->images()->count();
+    }
+
+    public function hasNonImageDocuments()
+    {
+        return $this->nonImageDocuments()->count();
+    }
+
+    public function images()
+    {
+        return $this->wrappedObject->documents->filter(function ($document) {
+            return $this->documentIsImage($document);
+        });
+    }
+
+    public function nonImageDocuments()
+    {
+        return $this->wrappedObject->documents->filter(function ($document) {
+            return !$this->documentIsImage($document);
+        });
+    }
+
+    private function documentIsImage($document)
+    {
+        return strpos($document->type, 'image') !== false;
+    }
+
 }

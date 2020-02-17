@@ -32,7 +32,7 @@
 			<button class="delete" aria-label="delete"></button>
 		</div>
 		<div class="message-body">
-			{{ $message }}
+			{!! $message !!}
 		</div>
 	</article>
 @endif

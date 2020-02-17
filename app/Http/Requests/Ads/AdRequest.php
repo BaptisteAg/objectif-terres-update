@@ -5,6 +5,7 @@ namespace App\Http\Requests\Ads;
 use App\Http\Requests\Ads\Rulesets\LandOfferRuleset;
 use App\Http\Requests\Ads\Rulesets\LandSeekRuleset;
 use App\Http\Requests\Rulesets\RulesetInterface;
+use App\Rules\HasZone;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AdRequest extends FormRequest
@@ -28,7 +29,10 @@ class AdRequest extends FormRequest
     {
         $rules = [
             'ad_type'                 => "required",
-            'land_seek'               => "array",
+            'land_seek'               => ['nullable', 'array'],
+            'land_offer'              => ['nullable', 'array'],
+            'locationable'            => [new HasZone],
+            'locationable_radius'     => ['nullable', 'string'],
             'about_content'           => ['required', 'string', 'max:1000'],
             'about_project_content'   => ['required', 'string', 'max:1000'],
             'title'                   => ['required', 'string'],

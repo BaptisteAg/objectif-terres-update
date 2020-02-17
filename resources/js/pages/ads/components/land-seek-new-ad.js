@@ -6,7 +6,7 @@ import VueSliderRange from "../../../components/VueSliderRange";
 import ZoneSelect from '../../../components/ZoneSelect'
 import AdTypeSelect from '../../../components/AdTypeSelect'
 import MultiSelect from "../../../components/MultiSelect";
-import CustomRadio from "../../../components/CustomRadio"
+import CustomCheckbox from "../../../components/CustomCheckbox"
 import DocumentsUpload from "../../../components/DocumentsUpload"
 
 export default Vue.extend({
@@ -17,7 +17,7 @@ export default Vue.extend({
         ZoneSelect,
         VueSliderRange,
         MultiSelect,
-        CustomRadio,
+        CustomCheckbox,
         TextAreaCounter,
         DocumentsUpload
     },
@@ -28,7 +28,7 @@ export default Vue.extend({
         return {
             formInput: {
                 selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
-                productionGenre: hasOld ? v.land_seek.production_genre : [],
+                productionGenres: hasOld ? v.land_seek.production_genres : [],
                 productionTypeAdd: hasOld ? v.land_seek.production_type_add : '',
                 installationTypeId: hasOld ? v.land_seek.installation_type_id : '',
                 //offerGenre: hasOld ? v.land_seek.offer_genre_id : '',
@@ -46,13 +46,13 @@ export default Vue.extend({
         }
     },
     computed: {
-        isProductionGenreOther() {
-            return this.formInput.productionGenre.includes('other');
+        productionGenresHasOther() {
+            return this.formInput.productionGenres.includes('other');
         }
     },
     watch: {
-        'formInput.productionGenre': function (productionGenre) {
-            if (!productionGenre.includes('other')) {
+        'formInput.productionGenres': function (productionGenres) {
+            if (!productionGenres.includes('other')) {
                 this.formInput.productionTypeAdd = '';
             }
         },
@@ -61,12 +61,7 @@ export default Vue.extend({
     },
     validations: {
         formInput: {
-            selectedZones: {
-                hasZone(zones) {
-                    return zones.length;
-                }
-            },
-            productionGenre: {required},
+            productionGenres: {required},
             installationTypeId: {required},
             minRent: {numeric},
             maxRent: {numeric},

@@ -101,12 +101,34 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
         return $ad;
     }
+	/**
+	 * Delete an  ad.
+	 *
+	 * @param int
+	 * @throws \Exception
+	 */
+	public function destroy(int $id)
+	{
+
+		$ad = $this->find($id);
+		$ad->delete();
+
+	}
 
     private function getEagerLoading()
     {
         return [
             'landSeekAd',
+            'landSeekAd.buildings',
+            'landSeekAd.buildings.buildingType',
+            'landSeekAd.buildings.requirement',
+
 			'landOfferAd',
+			'landOfferAd.productionGenres',
+			'landOfferAd.productionGenresPossible',
+			'landOfferAd.bioCertifications',
+			'landOfferAd.offerGenres',
+
 			'jobAd',
 			'cities',
 			'cities.department',
@@ -115,10 +137,11 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'departments.region',
 			'regions',
 			'adMessages',
-            'landSeekAd.buildings',
-            'landSeekAd.buildings.buildingType',
-            'landSeekAd.buildings.requirement',
-            'documents'
+            'documents',
+			'threads',
+			'threads.messages',
+			'threads.users',
+			'threads.messages.senderUser',
         ];
     }
 }

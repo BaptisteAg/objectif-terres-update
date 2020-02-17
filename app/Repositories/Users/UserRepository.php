@@ -1,6 +1,7 @@
 <?php namespace App\Repositories\Users;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
@@ -33,5 +34,25 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 			return $user;
 		});
 		return $user;
+	}
+
+	/**
+	 * @param $id
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function find($id)
+	{
+		$model = $this->entity
+			->where(["id" => $id])
+			->firstOrFail();
+
+		if (!$model) {
+			throw (new ModelNotFoundException)->setModel(
+				get_class($this->entity->getModel()),
+				$id
+			);
+		}
+
+		return $model;
 	}
 }

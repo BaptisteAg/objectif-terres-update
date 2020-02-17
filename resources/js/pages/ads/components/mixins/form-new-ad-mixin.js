@@ -128,6 +128,9 @@ export default {
     },
     validations: {
         formInput: {
+            selectedZones: {
+                hasZone(zones) { return zones.length; }
+            },
             aboutProject: {
                 minLength: minLength(5),
                 maxLength: maxLength(1000),
