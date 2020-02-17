@@ -35,7 +35,7 @@ class AdsController extends Controller
 	protected $threadService;
 	protected $favoriteAdRepository;
 
-	public function __construct(AdService $adService, ThreadService $threadService, FavoriteAdRepository $favoriteAdRepository)
+	public function __construct(AdService $adService, ThreadService $threadService, FavoriteAdRepository $favoriteAdRepository )
 	{
 		$this->adService = $adService;
 		$this->threadService = $threadService;
@@ -124,7 +124,7 @@ class AdsController extends Controller
 		if (Auth::user()) {
 			//TODO if the user connected has send a response to an ad, get the first message
 
-
+			$threadAlreadyExist = $this->threadService->findThreadAlreadyExist($adId);
 			$data = array(
 				"ad_id" => $adId,
 				"user_id" => auth()->user()->id,
@@ -132,7 +132,7 @@ class AdsController extends Controller
 			$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
 		}
 
-		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist'));
+		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist', 'threadAlreadyExist'));
 	}
 
     /**

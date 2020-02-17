@@ -17,6 +17,8 @@
 							inline-template
 							init-thread='{{ $threads[0]->id }}'
 							:user-logged-id="{{auth()->id()}}"
+							v-bind:is-display-in-thread-page=true
+							v-bind:is-user-ad-owner=false
 					>
 						<div class="columns is-centered " v-if="initialLoading === true">
 							<div  class="column is-half  has-text-centered">
@@ -31,11 +33,15 @@
 										:number-of-unread-messages="{{$numberOfUnreadMessages}}"
 										v-model="messages"
 										@on-thread-click="onThreadClick"
+										v-bind:is-display="isDisplay"
+										v-bind:is-user-logged-ad-owner="isUserAdOwner"
+										:user-id="{{auth()->id()}}"
 								>
 								</list-threads>
 							</div>
 							<div class="column box ">
 								<header-message
+										v-bind:is-display="isDisplay"
 										v-model="messages"
 										:user-id="{{auth()->id()}}"
 								></header-message>

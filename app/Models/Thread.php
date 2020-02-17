@@ -64,6 +64,15 @@ class Thread extends Model implements HasPresenter
 	}
 
 	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function messageAlreadySended()
+	{
+		return $this->hasMany(Message::class)
+			->where('is_read', '=', '0')
+			->where('sender_user_id', '!=', auth()->id());
+	}
+	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function ad()

@@ -2,12 +2,12 @@
 
     <div v-if="value.length !==0 " class="content ">
         <form @submit="formSubmit">
-            <p class="has-text-black"> Répondre</p>
+            <label id="reply-input-label" for="reply-input" class=" label has-text-black"> Répondre</label>
             <div class="field has-addons">
             <div class="control is-expanded  has-icons-left">
                 <input type="hidden" name="thread_id" :value="value[0].thread.id">
 
-                <input v-model="content" class="input" name="content" type="text" placeholder="Votre message..."/>
+                <input id="reply-input" v-model="content" class="input" name="content" type="text" placeholder="Votre message..."/>
                 <span class="icon is-small is-left">
                         <i class="fas fa-reply"></i>
                     </span>

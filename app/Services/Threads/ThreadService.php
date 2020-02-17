@@ -58,17 +58,10 @@ class ThreadService
 	}
 
 
-	public function findThreadAlreadyExist(array $data)
+	public function findThreadAlreadyExist(int $adId)
 	{
 		/** @var Thread $thread */
-		$threads = $this->repository->findAllThreadsByLoggedUser();
-		foreach($threads as $thread){
-			if($thread->ad_id === (int)$data['ad_id'] && $thread->messages->sender_user_id === auth()->id()){
-				dd('oui');
-			}
-		}
-
-
+		$threads = $this->repository->findThreadByLoggedUserAndAdId($adId);
 		return $threads;
 
 	}
