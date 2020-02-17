@@ -45,12 +45,10 @@
 								 <a href="{{route('threads.index')}}">
 										<i class="far fa-envelope"></i>
 									</a>
-									<span class="notification-counter">{{$numberOfUnreadMessages}}</span>
+									@if($numberOfUnreadMessages)
+										<span class="notification-counter">{{$numberOfUnreadMessages}}</span>
+									@endif
 								</span>
-
-
-
-
 							</div>
 							<div class="level-item">
 								<a class="dropdown-item" href="{{ route('logout') }}"

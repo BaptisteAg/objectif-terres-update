@@ -60,6 +60,8 @@ class AdService
             $adData = $data[$data["ad_type"]];
             $adData["ad_id"] = $ad->id;
 
+            //dd($data);
+
             if ($data["ad_type"] === "land_seek") {
                 $landSeekAd = $this->landSeekAdRepository->create($adData);
             }

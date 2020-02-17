@@ -1,7 +1,7 @@
 import LandSeekNewAd from './components/land-seek-new-ad'
 import LandOfferNewAd from './components/land-offer-new-ad'
 import JobOfferNewAd from './components/job-offer-new-ad'
-import AdTypeSelect from'../../components/AdTypeSelect'
+import AdTypeSelect from '../../components/AdTypeSelect'
 
 import Vue from 'vue'
 
@@ -41,15 +41,27 @@ Vue.component('new-ad', {
             const $hoveredTooltip = $field.querySelector('[data-tooltip]');
 
             $field.addEventListener('mouseover', event => {
-                if($hoveredTooltip) {
+                if ($hoveredTooltip) {
                     $hoveredTooltip.classList.add('has-tooltip-active');
                 }
-                document.querySelectorAll('[data-tooltip]').forEach($otherTooltip =>{
-                    if(!$otherTooltip.isEqualNode($hoveredTooltip)) {
+                document.querySelectorAll('[data-tooltip]').forEach($otherTooltip => {
+                    if (!$otherTooltip.isEqualNode($hoveredTooltip)) {
                         $otherTooltip.classList.remove('has-tooltip-active')
                     }
                 })
             })
+        });
+
+
+        /**
+         * Move wizard footer to a container it can stick to ( position:sticky )
+         *
+         * @param {Element} $affix
+         */
+        document.querySelectorAll('.affix-wizard-footer[data-move-to-ref]').forEach($affix => {
+            const $container = this.$refs[$affix.dataset.moveToRef].$el;
+            const $removedAffix = $affix.parentElement.removeChild($affix);
+            $container.appendChild($removedAffix);
         });
     },
     methods: {
@@ -64,8 +76,7 @@ Vue.component('new-ad', {
                 this.enabledForm.setInputsBorderColor();
 
                 this.isSubmitting = false;
-            }
-            else {
+            } else {
                 if (!confirm('Êtes-vous sûr de la saisie de votre annonce?')) {
                     this.isSubmitting = false;
                 } else {
@@ -81,8 +92,9 @@ Vue.component('new-ad', {
             this.enabledForm = form;
         },
         onFormComplete() {
-            const evt = new CustomEvent("submit", {"bubbles":true, "cancelable": true});
+            const evt = new CustomEvent("submit", {"bubbles": true, "cancelable": true});
             this.$refs.form.dispatchEvent(evt);
-        }
+        },
+
     }
 });

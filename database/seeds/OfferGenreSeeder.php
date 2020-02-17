@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\OfferGenre;
 use Illuminate\Database\Seeder;
 
 class OfferGenreSeeder extends Seeder
@@ -11,17 +12,10 @@ class OfferGenreSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\OfferGenre::insert([
-            ['name' => 'Location', 'offer_genre_model' => 'LandSeekAd', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => 'Acquisition', 'offer_genre_model' => 'LandSeekAd', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => 'Indifférent', 'offer_genre_model' => 'LandSeekAd', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => 'Location', 'offer_genre_model' => 'House', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => 'Vente', 'offer_genre_model' => 'House', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => 'Location', 'offer_genre_model' => 'Land', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => 'Vente', 'offer_genre_model' => 'Land', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => 'Test agricole', 'offer_genre_model' => 'Land', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => 'Location', 'offer_genre_model' => 'Building', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => 'Vente', 'offer_genre_model' => 'Building', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+        OfferGenre::insert([
+            ['name' => 'Acquisition', "land_offer_label" => 'A la vente', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+            ['name' => 'Location', "land_offer_label" => 'En location', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+            ['name' => 'Test Agricole', "land_offer_label" => 'Pour du test agricole', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
         ]);
     }
 }

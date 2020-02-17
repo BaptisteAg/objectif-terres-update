@@ -2,12 +2,11 @@
 
 use App\Models\Message;
 use App\Models\Thread;
+use App\Models\ThreadUser;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Threads\MessagesRepository;
 use App\Repositories\Threads\ThreadsRepository;
-use App\ThreadUser;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 
 /**

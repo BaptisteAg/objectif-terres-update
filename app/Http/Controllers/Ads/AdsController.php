@@ -7,6 +7,7 @@ use App\Http\Requests\Ads\AdRequest;
 use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
 use App\Models\BuildingType;
+use App\Models\City;
 use App\Models\EducationLevel;
 use App\Models\InstallationType;
 use App\Models\JobStatus;
@@ -53,15 +54,17 @@ class AdsController extends Controller
 		$bioCertifications = BioCertification::all();
 		$jobStatus = JobStatus::all();
 		$offerGenres = OfferGenre::all();
-		$offerGenresLandSeek = OfferGenre::where('offer_genre_model', 'LandSeekAd')->get();
-		$offerGenresHouse = OfferGenre::where('offer_genre_model', 'House')->get();
-		$offerGenresBuilding = OfferGenre::where('offer_genre_model', 'Building')->get();
-		$offerGenresLand = OfferGenre::where('offer_genre_model', 'Land')->get();
 		$agriculturalActivities = AgriculturalActivity::all();
 		$educationLevels = EducationLevel::all();
 		$buildingTypes = BuildingType::all();
 		$requirements = Requirement::all();
         $productionGenres = $this->adService->getProductionGenresFlattened();
+        $productionGenresWithOther = clone $this->adService->getProductionGenresFlattened()
+            ->concat([[
+                'id' => 'other',
+                'name' => 'Autre',
+                'children' => []
+            ]]);
 
 		return view('pages.ads.new', compact(
 			'installationTypes',
@@ -70,14 +73,9 @@ class AdsController extends Controller
 			'bioCertifications',
 			'jobStatus',
 			'offerGenres',
-			'offerGenresLandSeek',
-			'offerGenresHouse',
-			'offerGenresBuilding',
-			'offerGenresLand',
-			'productionGenres',
-			'agriculturalActivities',
 			'educationLevels',
 			'productionGenres',
+			'productionGenresWithOther',
 			'agriculturalActivities',
 			'buildingTypes',
 			'requirements'
@@ -121,7 +119,7 @@ class AdsController extends Controller
 		$ad = $this->adService->find($adId);
 
 		$userMessage = null;
-
+        $favoriteAdAlreadyExist = false;
 
 		if (Auth::user()) {
 			//TODO if the user connected has send a response to an ad, get the first message

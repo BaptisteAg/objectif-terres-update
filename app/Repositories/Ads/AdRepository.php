@@ -119,7 +119,16 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     {
         return [
             'landSeekAd',
+            'landSeekAd.buildings',
+            'landSeekAd.buildings.buildingType',
+            'landSeekAd.buildings.requirement',
+
 			'landOfferAd',
+			'landOfferAd.productionGenres',
+			'landOfferAd.productionGenresPossible',
+			'landOfferAd.bioCertifications',
+			'landOfferAd.offerGenres',
+
 			'jobAd',
 			'cities',
 			'cities.department',
@@ -128,6 +137,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'departments.region',
 			'regions',
 			'adMessages',
+            'documents',
 			'threads',
 			'threads.messages',
 			'threads.users',

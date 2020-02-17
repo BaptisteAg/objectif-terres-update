@@ -18,27 +18,81 @@ class SalesForceAuthController extends Controller
     public function register()
     {
         Forrest::authenticate();
+        //Forrest::authenticateUser('https://test.salesforce.com',"dunder.miffli3@test.com", "test123".env('SF_TOKEN'));
+        dd(Forrest::identity());
 
         //dd(Forrest::query('Select Id, Name, Description from Profile where Id=\'00ew0000001V72nAAC\''));
 
-        $response = Forrest::sobjects('Contact',[
+        /*
+         * array:3 [▼
+              "id" => "0011q00000XA0LIAA1"
+              "success" => true
+              "errors" => []
+            ]
+         */
+        /*$response = Forrest::sobjects('Account',[
             'method' => 'post',
             'body'   => [
-                'FirstName' => 'Dunder',
-                "Username" => "dunder.mifflin@test.com",
+                "Name" => "Dunder Mifflin",
+                "Description" => "Test",
+            ]
+        ]);*/
+
+
+        /**
+         * array:3 [▼
+            "id" => "0031q00000RVzsRAAT"
+            "success" => true
+            "errors" => []
+            ]
+         */
+        /*$response = Forrest::sobjects('Contact',[
+            'method' => 'post',
+            'body'   => [
+                "AccountId" => "0011q00000XA0LIAA1",
+                "Email" => "dunder.miffli3n@test.com",
                 "LastName" => "Mifflin",
-                "Email" => "dunder.mifflin@test.com",
+            ]
+        ]);
+        dd($response);*/
+
+
+        /**
+         * array:3 [▼
+            "id" => "0051q000003fRgJAAU"
+            "success" => true
+            "errors" => []
+            ]
+         */
+        /*$response = Forrest::sobjects('User',[
+            'method' => 'post',
+            'body'   => [
+                'Email' => 'dunder.miffli3n@test.com',
+                'Username' => 'dunder.miffli3@test.com',
                 "Alias" => "dmifflin",
+                'FirstName' => 'Dunder',
+                "LastName" => "Mifflin",
                 "TimeZoneSidKey" => "Europe/Paris",
                 "LocaleSidKey" => "fr_FR",
                 "EmailEncodingKey" => "UTF-8",
-                "ProfileId" => "00ew0000001V72nAAC",
+                // Chatter Free
+                //"ProfileId" => "00e20000001clYf",
+                // Chatter External
+                //"ProfileId" => "00e20000001Ue7l",
+                // Customer community - membre
+                "ProfileId" => "00ew0000001V7RJ",
                 "LanguageLocaleKey" => "fr",
-                "CanAllowPortalSelfReg" => true
+                "ContactId" => "0031q00000RVzsRAAT"
             ]
         ]);
+        dd($response);*/
 
-        dd($response);
+        dd(Forrest::sobjects('User/0051q000003fRgJAAU/password', [
+            'method' => 'post',
+            'body' => [
+                "NewPassword" => "test123"
+            ]
+        ]));
 
 //        return Redirect::to('/');
     }

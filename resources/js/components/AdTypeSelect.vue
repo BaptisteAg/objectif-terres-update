@@ -19,6 +19,7 @@
                 <label><i :class="'fa '+currentAdType.icon"></i> {{currentAdType.label}}</label><br>
                 <a href="#" @click.prevent="displaySelection = true">← Changer de type d'annonce</a>
             </div>
+            <input type="hidden" :name="name" :value="value">
         </div>
         <div class="column"></div>
     </div>
@@ -79,17 +80,17 @@
             adTypes() {
                 return {
                     land_seek: {
-                        label: "Recherche de foncier",
+                        label: "Je cherche du foncier agricole",
                         icon: "fa-home"
                     },
                     land_offer: {
-                        label: "Offre de foncier",
+                        label: "Je propose du foncier agricole",
                         icon: "fa-home"
                     },
-                    job_offer: {
+                    /*job_offer: {
                         label: "Opportunité professionnelle",
                         icon: "fa-universal-access"
-                    },
+                    },*/
                 }
             },
             currentAdType() {

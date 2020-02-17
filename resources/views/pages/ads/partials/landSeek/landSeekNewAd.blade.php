@@ -8,23 +8,7 @@
             ref="formWizard">
 
         <tab-content title="Localisation" icon="ti-location-arrow">
-            <section class="container">
-                <div class="columns">
-                    <div class="column"></div>
-                    <div class="column is-half">
-                        <zone-select
-                                name="land_seek[locationable]"
-                                radius-name="land_seek[locationable_radius]"
-                                json-name="land_seek[selected_zones]"
-                                ref="selectedZones"
-                                v-model="formInput.selectedZones"
-                                :vuelidate="$v.formInput.selectedZones"
-                                :disabled="isInputDisabled">
-                        </zone-select>
-                    </div>
-                    <div class="column"></div>
-                </div>
-            </section>
+            @include('pages.ads.partials.inputs.locations')
         </tab-content>
 
         <tab-content title="Foncier" icon="ti-home">
@@ -44,7 +28,7 @@
                         <br>
 
                         <div class="field">
-                            {!! Form::label('land_seek_wants_farms_or_buildings', 'Habitation(s) et bâti(s)', ['class' => 'label']); !!}
+                            {!! Form::label('land_seek_farms_and_buildings', 'Habitation(s) et bâti(s)', ['class' => 'label']); !!}
 
                             <table class="table">
                                 <thead>
@@ -63,7 +47,8 @@
                                             <td style="text-align:center">
                                                 <input type="radio"
                                                        name="land_seek[buildings][{{$buildingType->id}}]"
-                                                       value="{{ $requirement->id }}">
+                                                       value="{{ $requirement->id }}"
+                                                       {{ in_array($requirement->id, old('land_seek[buildings]', [])) ? 'checked' : '' }}>
                                             </td>
                                         @endforeach
                                     </tr>
@@ -86,32 +71,32 @@
 
                         <div class="field">
                             {!! Form::label('land_seek[is_bio]', "Votre projet est-il en agriculture biologique ?", ['class' => 'label']) !!}
-                            {!! Form::radio('land_seek[is_bio]', '1',old('land_seek[is_bio]') === '1', [':disabled' => 'isInputDisabled']) !!}
+                            {!! Form::radio('land_seek[is_bio]', '1', old('land_seek[is_bio]') , [':disabled' => 'isInputDisabled']) !!}
                             oui
-                            {!! Form::radio('land_seek[is_bio]', '0', old('land_seek[is_bio]') === '0', [':disabled' => 'isInputDisabled']) !!}
+                            {!! Form::radio('land_seek[is_bio]', '0', old('land_seek[is_bio]') , [':disabled' => 'isInputDisabled']) !!}
                             non
                         </div>
 
                         <div class="field">
-                            {!! Form::label('land_seek[production_genre][]', 'Production(s) envisagée(s)*', ['class' => 'label']); !!}
+                            {!! Form::label('land_seek[production_genres][]', 'Production(s) envisagée(s)*', ['class' => 'label']); !!}
 
                             <multi-select
-                                    :options="{{json_encode($productionGenres)}}"
+                                    :options="{{json_encode($productionGenresWithOther)}}"
                                     group-values="children"
-                                    name="land_seek[production_genre][]"
-                                    v-model="formInput.productionGenre"
+                                    name="land_seek[production_genres][]"
+                                    v-model="formInput.productionGenres"
                                     selected-count-text="productions sélectionnée(s)"
                                     placeholder="Sélectionnez au moins une production"
-                                    ref="productionGenre">
+                                    ref="productionGenres">
                             </multi-select>
 
-                            <p class="help is-danger" id="productionGenreError"
-                               v-if="$v.formInput.productionGenre.$error">
+                            <p class="help is-danger" id="productionGenresError"
+                               v-if="$v.formInput.productionGenres.$error">
                                 Ce champ est requis.
                             </p>
                         </div>
 
-                        <div class="field" v-show="isProductionGenreOther">
+                        <div class="field" v-show="productionGenresHasOther">
                             {!! Form::label('land_seek[production_type_add]', 'Autre production : Veuillez préciser', ['class' => 'label']); !!}
                             {!! Form::text('land_seek[production_type_add]',
                                  null,
@@ -130,27 +115,33 @@
                             $installationTypesFaIcons = ["fa-user", "fa-user-friends", "fa-users", "fa-times"]
                             ?>
 
-                            @foreach($installationTypes as $i => $installationType)
-                                <custom-radio
-                                        name="land_seek[installation_type_id]"
-                                        input-value="{{$installationType["id"]}}"
-                                        v-model="formInput.installationTypeId"
-                                        :disabled="isInputDisabled"
-                                        ref="installationTypeId">
+                            <div class="columns">
+                                @foreach($installationTypes as $i => $installationType)
+                                    <div class="column">
+                                        <custom-checkbox
+                                                name="land_seek[installation_type_id]"
+                                                input-value="{{$installationType["id"]}}"
+                                                v-model="formInput.installationTypeId"
+                                                :disabled="isInputDisabled"
+                                                ref="installationTypeId"
+                                                :is-radio="true">
 
-                                    <i class="fa {{ $installationTypesFaIcons[$i] }}" style="font-size: 30px;"></i><br>
-                                    <span style="font-size:14px">
-                                {{ $installationType["name"] }}
-                            </span>
-                                </custom-radio>
-                            @endforeach
+                                            <i class="fa {{ $installationTypesFaIcons[$i] }}"
+                                               style="font-size: 30px;"></i><br><br>
+                                            <span style="font-size:16px">
+                                                {{ $installationType["name"] }}
+                                            </span>
+                                        </custom-checkbox>
+                                    </div>
+                                @endforeach
+                            </div>
 
                             <p class="help is-danger" id="installationTypeIdError"
                                v-if="$v.formInput.installationTypeId.$error">
                                 Ce champ est requis.
                             </p>
                         </div>
-                        @include('pages.ads.partials.inputs.about_project_content')
+                        @include('pages.ads.partials.inputs.about_project_content', ['tooltip' => "Pour donner envie à un cédant ou propriétaire de vous proposer du foncier, décrivez votre projet, son histoire, ses valeurs, votre date d'installation envisagée, etc."])
                     </div>
                     <div class="column"></div>
                 </div>
@@ -228,37 +219,7 @@
             </section>
         </tab-content>
 
-        <template slot="footer" slot-scope="props">
-            <div class="affix-wizard-footer" relative-element-selector="#new-ad">
-                <div class="wizard-footer-left">
-                    <span @click="props.prevTab" @keyup.enter="props.prevTab" v-if="props.displayPrevButton"
-                          role="button" tabindex="0">
-                      <wizard-button :style="props.fillButtonStyle"
-                                     :disabled="props.loading">
-                        Précédent
-                      </wizard-button>
-                    </span>
-                </div>
-
-                <div class="wizard-footer-right">
-                    <button class="button is-light">
-                        Sauvegarder
-                    </button>
-                    <span @click="props.nextTab" @keyup.enter="props.nextTab" v-if="props.isLastStep" role="button"
-                          tabindex="0">
-                        <wizard-button :style="props.fillButtonStyle">
-                            Demander la publication
-                        </wizard-button>
-                    </span>
-                    <span @click="props.nextTab" @keyup.enter="props.nextTab" role="button" tabindex="0" v-else>
-                        <wizard-button :style="props.fillButtonStyle"
-                                       :disabled="props.loading">
-                            Suivant
-                        </wizard-button>
-                    </span>
-                </div>
-            </div>
-        </template>
+        @include('pages.ads.partials.form-wizard-footer', ["moveToRef"=>"land_seek"])
 
     </form-wizard>
 </div>

@@ -22,12 +22,11 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
     {
         $landSeekAd = new LandSeekAd();
 
-        $productionGenres = $data["production_genre"] ?? [];
-        $surfaceRanges = $data["surface_range"] ?? [];
-        $priceRanges = $data["price_range"] ?? [];
+        $productionGenres = $data["production_genres"] ?? [];
+        $buildings = $data["buildings"] ?? [];
 
         if(in_array('other', $productionGenres)) {
-            $data["production_type_add"] = "";
+            //$data["production_type_add"] = "";
             $productionGenres = Arr::where($productionGenres, function($productionGenre) {return $productionGenre !== 'other';});
         }
 
@@ -35,14 +34,18 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
 
         $landSeekAd->save();
 
-        if (count($surfaceRanges)) {
-            $landSeekAd->surfaceRanges()->attach($surfaceRanges);
-        }
-        if (count($priceRanges)) {
-            $landSeekAd->priceRanges()->attach($priceRanges);
-        }
         if (count($productionGenres)) {
             $landSeekAd->productionGenres()->attach($productionGenres);
+        }
+
+        if (count($buildings)) {
+            foreach($buildings as $buildingId => $requirementId) {
+                $landSeekAd->buildings()->create([
+                    "requirement_id" => $requirementId,
+                    "building_type_id" => $buildingId,
+                    "land_seek_ad_id" => $landSeekAd->id
+                ]);
+            }
         }
 
         return $landSeekAd;

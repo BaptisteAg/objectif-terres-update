@@ -3,7 +3,7 @@
 use App\Models\ResponseTemplate;
 use Illuminate\Database\Seeder;
 
-class ResponseTemplateSeeder extends Seeder
+class TestResponseTemplateSeeder extends Seeder
 {
     /**
      * Run the database seeds.
