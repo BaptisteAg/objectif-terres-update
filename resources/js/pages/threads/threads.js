@@ -18,21 +18,27 @@ Vue.component('vue-threads',{
         return {
             messages : [],
             activeThread: this.initThread || null,
+            initialLoading : true,
+            messagesLoading : true,
         }
     },
     mounted(){
         if(this.initThread) {
             setInterval(_ => this.onThreadClick(this.activeThread), 15000);
             this.onThreadClick(this.activeThread);
+
         }
     },
     methods : {
         onThreadClick(threadId) {
+            this.messagesLoading = true;
             fetch('/mon-espace/messagerie/' + threadId)
                 .then(response => response.json())
                 .then(results => {
                     this.messages = results;
                     this.activeThread = threadId;
+                    this.initialLoading = false;
+                    this.messagesLoading = false;
                 })
         },
         onMessageReplySuccess(message) {

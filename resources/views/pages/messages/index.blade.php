@@ -16,10 +16,16 @@
 					<vue-threads
 							inline-template
 							init-thread='{{ $threads[0]->id }}'
-							user-logged-id="{{auth()->id()}}"
+							:user-logged-id="{{auth()->id()}}"
 					>
-						<div class="columns">
-							<div class="column is-one-quarter">
+						<div class="columns is-centered " v-if="initialLoading === true">
+							<div  class="column is-half  has-text-centered">
+								<div id="loading">
+								</div>
+							</div>
+						</div>
+						<div class="columns" v-else-if="initialLoading === false">
+							<div  class="column is-one-quarter">
 								<list-threads
 										:threads="{{json_encode($threads)}}"
 										:number-of-unread-messages="{{$numberOfUnreadMessages}}"
@@ -28,7 +34,7 @@
 								>
 								</list-threads>
 							</div>
-							<div class="column box">
+							<div class="column box ">
 								<header-message
 										v-model="messages"
 										:user-id="{{auth()->id()}}"

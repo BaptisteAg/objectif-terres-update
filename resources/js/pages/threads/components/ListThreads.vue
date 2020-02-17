@@ -3,7 +3,6 @@
         <div class="content">
             <p>{{numberUnreadMessages}} message non lus</p>
         </div>
-
         <aside class="menu">
             <p class="menu-label">
                 Vos discussions
