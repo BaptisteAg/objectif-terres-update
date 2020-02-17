@@ -24,7 +24,7 @@ class CreateOfferGenresTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
-            $table->enum('offer_genre_model', ['LandSeekAd', 'Land', 'House', 'Building']);
+            $table->string('land_offer_label');
             $table->timestamps();
         });
     }

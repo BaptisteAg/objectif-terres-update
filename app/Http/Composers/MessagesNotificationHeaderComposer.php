@@ -28,6 +28,8 @@ class MessagesNotificationHeaderComposer
 
 	public function compose(View $view)
 	{
+        $numberOfUnreadMessages = 0;
+
 		if (Auth()->user()){
 			/** @var Collection $threads */
 			$threads = $this->service->findAllThreadsByLoggedUser();

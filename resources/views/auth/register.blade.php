@@ -220,7 +220,7 @@
 													placeholder="Saisissez les premiers caractères"
 													ref='citySelect'
 													:disabled="false"
-													src="/json/cities"
+													src="/locations/cities"
 													v-model="citySelect"
 													aria-describedby='citySelectError'
 													value="citySelect">

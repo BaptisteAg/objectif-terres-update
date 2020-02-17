@@ -22,12 +22,7 @@ class ProductionGenreRepository extends AbstractRepository
             ->whereNull('parent_id')
             ->get()
             ->map
-            ->only(['name', 'id', 'children'])
-            ->concat([[
-                'id' => 'other',
-                'name' => 'Autre',
-                'children' => []
-            ]]);
+            ->only(['name', 'id', 'children']);
 
         $productionGenresFlattened = new Collection();
         foreach($productionGenresWithDepth as $productionGenre) {

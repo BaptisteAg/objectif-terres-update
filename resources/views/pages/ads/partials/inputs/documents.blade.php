@@ -8,39 +8,14 @@
         </span>
     </label>
 
-    <vue-dropzone
-        ref="documents"
-        id="dropzone"
-        :options="{
-            url: '/documents/upload',
-            thumbnailWidth: 150,
-            maxFiles: 15,
-            maxFilesize: 15,
-            addRemoveLinks: true,
-            uploadMultiple: true,
-            acceptedFiles: 'image/*, application/pdf, application/msword',
-            dictFileTooBig: 'Fichier trop volumineux: @{{filesize}}Mo. Maximum  @{{maxFilesize}}Mo',
-            dictInvalidFileType: 'Type de fichier invalide. Acceptés : image, pdf, word',
-            dictResponseError: 'Erreur interne. Essayez plus tard.',
-            dictCancelUpload : 'Annuler',
-            dictUploadCanceled : 'Annulé',
-            dictCancelUploadConfirmation : 'Êtes-vous sûr ?',
-            dictRemoveFile: 'Supprimer',
-            dictRemoveFileConfirmation: 'Êtes-vous sûr ?',
-            dictMaxFilesExceeded: 'Vous avez dépassé la limite de @{{maxFiles}} fichiers.'
-        }"
-        :duplicate-check="true"
-        :use-custom-slot="true"
-        @vdropzone-sending-multiple="onBeforeDocumentsUpload"
-        @vdropzone-success-multiple="onSuccessDocumentsUpload"
-        @vdropzone-removed-file="onRemoveUploadedDocument">
+    <documents-upload
+            name="documents"
+            v-model="formInput.documents"
+            @uploading="setUploading"
+            ref="documents">
+    </documents-upload>
 
-        <div class="dropzone-custom-content">
-            <div class="subtitle">Cliquez ici pour déposer des fichiers</div>
-            <h3 class="dropzone-custom-title">Vous pouvez également glisser-déposer</h3>
-        </div>
-    </vue-dropzone>
-    <input type="hidden" name="documents_ids" :value="document.id" v-for="document in formInput.documents">
+    <input type="hidden" name="documents_ids[]" :value="document.id" v-for="document in formInput.documents">
     <input type="hidden" name="documents" :value="JSON.stringify(formInput.documents)">
 
     <div>

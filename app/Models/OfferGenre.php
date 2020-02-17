@@ -33,6 +33,10 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereOfferGenreModel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $land_offer_label
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandOfferAd[] $landOfferAds
+ * @property-read int|null $land_offer_ads_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereLandOfferLabel($value)
  */
 class OfferGenre extends Model
 {
@@ -46,49 +50,8 @@ class OfferGenre extends Model
     /**
      * @return HasMany
      */
-    public function landSeekAds()
+    public function landOfferAds()
     {
-        return $this->hasMany(LandSeekAd::class, 'offer_type_id');
+        return $this->hasMany(LandOfferAd::class);
     }
-
-    /**
-     * Get all of the buildings who have an offer_genre.
-     *
-     * @return MorphToMany
-     */
-    public function buildings()
-    {
-        return $this->morphedByMany(Building::class, 'offerable_genre');
-    }
-
-    /**
-     * Get all of the houses who have an offer_genre.
-     *
-     * @return MorphToMany
-     */
-    public function houses()
-    {
-        return $this->morphedByMany(House::class, 'offerable_genre');
-    }
-
-    /**
-     * Get all of the lands who have an offer_genre.
-     *
-     * @return MorphToMany
-     */
-    public function lands()
-    {
-        return $this->morphedByMany(Land::class, 'offerable_genre');
-    }
-
-    /**
-     * Get all of the researches who have an offer_genre.
-     *
-     * @return MorphToMany
-     */
-    public function researches()
-    {
-        return $this->morphedByMany(Research::class, 'offerable_genre');
-    }
-
 }

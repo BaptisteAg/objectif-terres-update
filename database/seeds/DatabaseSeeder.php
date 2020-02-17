@@ -44,8 +44,6 @@ class DatabaseSeeder extends Seeder
             $this->call([
                 RequirementSeeder::class,
 				BuildingTypeSeeder::class,
-				ResponseTemplateSeeder::class,
-
                 PriceRangeSeeder::class,
                 SurfaceRangeSeeder::class,
                 InstallationTypeSeeder::class,
@@ -63,6 +61,7 @@ class DatabaseSeeder extends Seeder
                     TestProjectStatusSeeder::class,
                     TestResponseTypeSeeder::class,
                     TestResearchSeeder::class,
+                    TestResponseTemplateSeeder::class,
                     TestUserToUserMessageSeeder::class,
                 ]);
 
@@ -84,8 +83,8 @@ class DatabaseSeeder extends Seeder
                     $landOfferAd->save();
                 });
                 factory(LandSeekAd::class, 10)->create()->each(function (LandSeekAd $landSeekAd) use(&$adIds) {
-                    $landSeekAd->surfaceRanges()->save(SurfaceRange::inRandomOrder()->first());
-                    $landSeekAd->priceRanges()->save(PriceRange::inRandomOrder()->first());
+                    //$landSeekAd->surfaceRanges()->save(SurfaceRange::inRandomOrder()->first());
+                    //$landSeekAd->priceRanges()->save(PriceRange::inRandomOrder()->first());
                     $landSeekAd->ad_id = array_shift($adIds);
                     $landSeekAd->save();
                 });

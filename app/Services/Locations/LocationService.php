@@ -1,62 +1,16 @@
-<?php
+<?php namespace App\Services\Locations;
 
-namespace App\Http\Controllers\Json;
-
-use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Department;
 use App\Models\Region;
+use Cache;
 use GuzzleHttp\Client;
 use Illuminate\Database\Query\Builder;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
 
-class LocationableController extends Controller
+class LocationService
 {
-    public function locationables(Request $request)
-    {
-        if (!$request->get('q')) {
-            return response()->json(['error' => 'La requête est vide.']);
-        }
-
-        return response()->json(array_merge(
-            $this->searchRegions($request->get('q')),
-            $this->searchDepartments($request->get('q')),
-            $this->searchCities($request->get('q'))
-        ));
-    }
-
-    public function cities(Request $request)
-    {
-        if (!$request->get('q')) {
-            return response()->json(['error' => 'La requête est vide.']);
-        }
-
-        return response()->json(
-            $this->searchCities($request->get('q'))
-        );
-    }
-
-    public function regionsPolygon(Request $request)
-    {
-        $adsCountByRegionId = $request->get('ads_count_by_region_id');
-        /** @var Region[] $regions */
-        $regions = Region::whereIn('id', array_keys($adsCountByRegionId))->get();
-
-        $json = [];
-
-        foreach($regions as $region) {
-            $geoPolygon = $this->getLocationGeoPolygon($region->name);
-            $geoPolygon->id = $region->id;
-            $geoPolygon->ads_count = $adsCountByRegionId[$region->id];
-            $json[] = $geoPolygon;
-        }
-
-        return response()->json($json);
-    }
-
-    protected function getLocationGeoPolygon($q)
+    public function getLocationGeoPolygon(string $q)
     {
         $cacheKey = 'geopolygon-'.$q;
 
@@ -74,9 +28,66 @@ class LocationableController extends Controller
         return Cache::get($cacheKey);
     }
 
-    protected function searchCities(string $q)
+    public function searchAll($q)
     {
-        return $this->search(
+        $cities = $this->searchCities($q);
+        $this->addCitiesRanges($cities);
+
+        return array_merge(
+            $this->searchRegions($q),
+            $this->searchDepartments($q),
+            $cities
+        );
+    }
+
+    public function searchCitiesAndDepartments(string $q)
+    {
+        return array_merge(
+            $this->searchDepartments($q),
+            $this->searchCities($q)
+        );
+    }
+
+    public function addCitiesRanges(&$cities)
+    {
+        $groupsCriterias = [
+            [
+                "key" => "name",
+                "type" => "zipcodesrange"
+            ],
+            [
+                "key" => "zip_code",
+                "type" => "citiesrange"
+            ]
+        ];
+        foreach($groupsCriterias as $criteria) {
+            $groupedCities = [];
+            foreach ($cities as $i => $city) {
+                if(isset($city["value"][$criteria["key"]])) {
+                    $keyBy = $city["value"][$criteria["key"]];
+                    $groupedCities[$keyBy] = $groupedCities[$keyBy] ?? [];
+                    $groupedCities[$keyBy][$i] = $city["value"];
+                }
+            }
+            foreach($groupedCities as $city => $group) {
+                if(count($group) > 1) {
+                    $position = array_key_first($group);
+
+                    array_splice($cities, $position, 0, [[
+                        'label' => (string)$city,
+                        'value' => [
+                            'ids' => array_map(function ($city) {return $city["id"];}, $group),
+                            'type' => $criteria["type"]
+                        ]
+                    ]]);
+                }
+            }
+        }
+    }
+
+    public function searchCities(string $q)
+    {
+        $cities = $this->search(
             'cities',
             $q,
             City::select(['id', 'name', 'zip_code']),
@@ -85,9 +96,11 @@ class LocationableController extends Controller
                 return $city["name"] . " (" . $city["zip_code"] . ")";
             }
         );
+
+        return $cities;
     }
 
-    protected function searchDepartments(string $q)
+    public function searchDepartments(string $q)
     {
         return $this->search(
             'departments',
@@ -100,7 +113,7 @@ class LocationableController extends Controller
         );
     }
 
-    protected function searchRegions(string $q)
+    public function searchRegions(string $q)
     {
         return $this->search(
             'regions',
@@ -172,11 +185,10 @@ class LocationableController extends Controller
         return array_map(
             function ($result) use ($type, $renderer) {
                 return [
-                    "value" => [
-                        "id" => $result["id"],
+                    "label" => $renderer($result),
+                    "value" => array_merge($result, [
                         "type" => $type
-                    ],
-                    "label" => $renderer($result)
+                    ]),
                 ];
             },
             array_slice($sortedResults, 0, 20)

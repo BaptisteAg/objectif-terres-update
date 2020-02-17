@@ -73,12 +73,13 @@ Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->na
 });
 
 
-Route::prefix('json')->group(function () {
-	Route::get('locationables', 'Json\LocationableController@locationables');
-	Route::get('cities', 'Json\LocationableController@cities');
-	Route::prefix('polygon')->group(function () {
-		Route::post('regions', 'Json\LocationableController@regionsPolygon');
-	});
+Route::prefix('locations')->namespace('Locationables')->group(function () {
+    Route::get('/', 'LocationableController@locations');
+    Route::get('cities', 'LocationableController@cities');
+    Route::get('cities-and-departments', 'LocationableController@citiesAndDepartments');
+    Route::prefix('polygon')->group(function () {
+        Route::post('regions', 'LocationableController@regionsPolygon');
+    });
 });
 
 // Authentication Routes...

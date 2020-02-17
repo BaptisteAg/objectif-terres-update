@@ -189,7 +189,7 @@ class Ad extends Model implements HasPresenter
      */
     public function cities()
     {
-        return $this->morphedbyMany(City::class, 'locationable_ad');
+        return $this->morphedbyMany(City::class, 'locationable_ad')->withPivot('radius');
     }
 
     /**

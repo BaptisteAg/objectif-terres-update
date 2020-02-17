@@ -16,7 +16,7 @@
                             class="input"
                             :placeholder="value.length ? 'Saisissez une autre localisation' : 'Saisissez au moins 2 caractères pour faire apparaître la liste'"
                             :disabled="disabled"
-                            src="/json/locationables"
+                            src="/locations"
                             :data-renderer="renderZoneItemData"
                             v-model="value"
                             :multiple="true">
@@ -39,8 +39,11 @@
                     <span @click="_ => value.splice(i, 1)" data-tooltip="Retirer cette localisation">
                         <i class="fa fa-trash-alt" style="cursor:pointer;"></i>
                     </span>
-                    <b>{{getLabels().ZONE_TYPES[zone.value.type]}}</b> : {{zone.value.originalLabel}}
-                    <input type="hidden" :name="name+'['+zone.value.type+'][]'" :value="zone.value.id">
+                    <b>{{getLabel(zone.value.type)}}</b> : {{zone.value.originalLabel}}
+                    <input type="hidden" :name="name+'['+zone.value.type+'][]'" :value="zone.value.id" v-if="zone.value.id">
+                    <template v-if="zone.value.ids">
+                        <input type="hidden" :name="name+'['+getInputNameRangeMapping(zone.value.type)+'][]'" :value="id" v-for="id in zone.value.ids">
+                    </template>
                 </div>
             </div>
         </div>
@@ -51,6 +54,7 @@
                     <p class="label">Dans un rayon de </p>
                     <vue-slider
                             :name="radiusName"
+                            :value="parseInt(radiusValue)"
                             :data="{
                                 0: '0km',
                                 5: '5km',
@@ -85,10 +89,18 @@
 
     const LABELS = {
         ZONE_TYPES: {
-            cities: 'Code postal',
-            departments: 'Département',
-            regions: 'Région'
-        }
+
+        },
+        cities: 'Code postal',
+        departments: 'Département',
+        regions: 'Région',
+        zipcodesrange: 'Commune',
+        citiesrange: 'Toutes communes'
+    };
+
+    const INPUT_NAME_RANGE_MAPPING = {
+        citiesrange: 'cities',
+        zipcodesrange: 'cities'
     };
 
     export default {
@@ -116,6 +128,10 @@
             radiusName: {
                 type: String,
                 required: true
+            },
+            radiusValue: {
+                type: String,
+                default: ''
             },
             disabled: {
                 type: Boolean,
@@ -147,11 +163,14 @@
                     return item
                 }
                 else {
-                    return '<b>' + LABELS.ZONE_TYPES[item.value.type] + '</b>: ' + item.label;
+                    return '<b>' + LABELS[item.value.type] + '</b>: ' + item.label;
                 }
             },
-            getLabels() {
-                return LABELS;
+            getLabel(key) {
+                return LABELS[key];
+            },
+            getInputNameRangeMapping(key) {
+                return INPUT_NAME_RANGE_MAPPING[key];
             }
         }
     }
