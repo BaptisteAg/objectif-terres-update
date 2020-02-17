@@ -58,10 +58,6 @@ class ThreadsController extends Controller
 			return $count + $thread->unreadMessages()->count();
 		}, 0);
 
-
-
-
-
 		return view('pages.messages.index', compact('threads', 'numberOfUnreadMessages'));
 	}
 
