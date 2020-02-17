@@ -22,7 +22,7 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
     {
         $landSeekAd = new LandSeekAd();
 
-        $productionGenres = $data["production_genre"] ?? [];
+        $productionGenres = $data["production_genres"] ?? [];
         $buildings = $data["buildings"] ?? [];
 
         if(in_array('other', $productionGenres)) {

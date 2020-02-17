@@ -26,7 +26,7 @@
                         @if($ad->landSeekAd->surface_range_max)
                             <div class="content">
                                 <p>
-                                    <span class="is-size-4  ad-show-feature-label">Surface recherchée : </span>
+                                    <span class="is-size-5  ad-show-feature-label">Surface recherchée : </span>
                                     <span class="subtitle ad-show-feature-label">
 										De {{$ad->landSeekAd->surface_range_min}}<small>ha</small>
 										à {{$ad->landSeekAd->surface_range_max}}<small>ha</small>
@@ -130,26 +130,29 @@
                 @endforeach
             </div>--}}
 
-            <div class="column is-one-quarter ">
-                <p class="has-text-link is-size-5 has-text-centered"> Production(s) envisagée(s)</p>
-                @foreach ($ad->landSeekAd->productionGenres as $productionGenresSeek)
-                    @if($productionGenresSeek->name !== '')
-                        <p class="has-text-centered">{{$productionGenresSeek->name}}</p>
-                    @else
-                        <p class="has-text-centered">-</p>
-                    @endif
-                @endforeach
-            </div>
-
-            <div class="column is-one-quarter ">
-                <p class="has-text-link is-size-5 has-text-centered">Habitation(s) et bâti(s) recherché(s)</p>
-                @if($ad->landSeekAd->buildings && count($ad->landSeekAd->buildings))
-                    @foreach($ad->landSeekAd->buildings as $building)
-                        {{ $building->buildingType->label }} : {{ $building->requirement->label }}<br>
+            @if($ad->landSeekAd->productionGenres->count())
+                <div class="column is-one-quarter ">
+                    <p class="has-text-link is-size-5 has-text-centered"> Production(s) envisagée(s)</p>
+                    @foreach ($ad->landSeekAd->productionGenres as $productionGenresSeek)
+                        @if($productionGenresSeek->name !== '')
+                            <p class="has-text-centered">{{$productionGenresSeek->name}}</p>
+                        @else
+                            <p class="has-text-centered">-</p>
+                        @endif
                     @endforeach
-                @endif
+                </div>
+            @endif
 
-            </div>
+            @if($ad->landSeekAd->buildings->count())
+                <div class="column is-one-quarter ">
+                    <p class="has-text-link is-size-5 has-text-centered">Habitation(s) et bâti(s) recherché(s)</p>
+                    @if($ad->landSeekAd->buildings)
+                        @foreach($ad->landSeekAd->buildings as $building)
+                            {{ $building->buildingType->label }} : {{ $building->requirement->label }}<br>
+                        @endforeach
+                    @endif
+                </div>
+            @endif
 
         </div>
 

@@ -93,26 +93,21 @@ class LandSeekAd extends Model
         return $this->belongsTo(InstallationType::class);
     }
 
-    /**
-     * @return belongsToMany
-     */
-    public function surfaceRanges()
-    {
-        return $this->belongsToMany(SurfaceRange::class)->withTimestamps();
-    }
 
     public function buildings()
     {
         return $this->hasMany(LandSeekAdBuilding::class);
     }
 
-
-    /*public function offerGenre()
+    /**
+     * @return belongsToMany
+     */
+    /*public function surfaceRanges()
     {
-        return $this->belongsTo(OfferGenre::class, 'offer_genre_id');
-    }
+        return $this->belongsToMany(SurfaceRange::class)->withTimestamps();
+    }*/
 
-    public function priceRanges()
+    /*public function priceRanges()
     {
         return $this->belongsToMany(PriceRange::class)->withTimestamps();
     }*/
