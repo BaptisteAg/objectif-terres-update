@@ -134,6 +134,8 @@ class AdsController extends Controller
 			$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
 		}
 
+
+
 		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist'));
 	}
 
