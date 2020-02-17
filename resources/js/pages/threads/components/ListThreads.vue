@@ -1,13 +1,27 @@
-<template>
-    <div>
-        <div class="content">
+<template >
+    <div >
+        <div class="content" v-if="isDisplay">
             <p>{{numberUnreadMessages}} message non lus</p>
         </div>
-        <aside class="menu">
-            <p class="menu-label">
+        <aside class="menu" >
+            <p class="menu-label" v-if="isDisplay">
                 Vos discussions
             </p>
-            <ul class="menu-list">
+            <p class="menu-label" v-else>
+                Vos fils de discussion concernant cette annonce
+            </p>
+            <ul class="menu-list"  v-if="isUserLoggedAdOwner">
+                <li v-for="thread in threads">
+                <template v-if="thread.users[0].id !== userId">
+                    <a><span @click="onThreadClick(thread.id)">{{thread.users[0].first_name}} {{thread.users[0].name}}</span></a>
+                </template>
+                <template v-else>
+                    <a><span @click="onThreadClick(thread.id)">{{thread.users[1].first_name}} {{thread.users[1].name}}</span></a>
+                </template>
+                </li>
+            </ul>
+
+            <ul class="menu-list"  v-else>
                 <li v-for="thread in threads">
                     <a><span @click="onThreadClick(thread.id)">{{thread.title}}</span></a>
                 </li>
@@ -22,6 +36,9 @@
         props: {
             threads: '',
             numberOfUnreadMessages: '',
+            isDisplay : Boolean,
+            isUserLoggedAdOwner : Boolean,
+            userId:{},
         },
         data() {
             return {

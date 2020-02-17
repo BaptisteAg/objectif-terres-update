@@ -2,6 +2,7 @@
 
 use App\Models\Thread;
 use App\Repositories\AbstractRepository;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class ThreadRepository
@@ -47,6 +48,25 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 
 	}
 
+	/**
+	 * @param string $threadId
+	 *
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function findThreadByLoggedUserAndAdId($adId)
+	{
+		/** @var Thread $model */
+		$model = $this->entity
+			->where(['ad_id' => $adId])
+			->whereHas('messages',function(Builder $query){
+				$query->where('sender_user_id', '=',auth()->id() );
+			} )
+			->with($this->getEagerLoading())
+			->get();
+
+		return $model;
+
+	}
 
 
 	/**
@@ -66,13 +86,12 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 	}
 
 
-
-
 	private function getEagerLoading()
 	{
 		return [
 			'ad',
-			'users'
+			'users',
+
 		];
 	}
 
