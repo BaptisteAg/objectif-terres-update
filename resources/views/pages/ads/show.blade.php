@@ -52,7 +52,7 @@
             });
 		});
 
-		let deleteButton = document.querySelector('#close-notification');
+		let deleteButton = document.querySelector('.close-notification');
         deleteButton.addEventListener('click', function (e) {
             let notification = document.querySelector('.message');
             notification.style.display='none';
@@ -70,4 +70,13 @@
             });
         </script>
     @endif
+
+	<script>
+        const vueThreads = new Vue({
+            el: '#vue-messages',
+            name: 'content'
+        });
+
+	</script>
+
 @endsection

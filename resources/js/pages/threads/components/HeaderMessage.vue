@@ -9,9 +9,9 @@
             <template v-else>
                 <p class="title is-4 has-text-centered" >{{value[0].thread.users[1].first_name}} {{value[0].thread.users[1].name}}</p>
             </template>
-            <a :href="'/annonces/' + value[0].thread.ad.id"><p class="subtitle is-6 has-text-centered" >{{value[0].thread.ad.title}}</p></a>
+            <a :href="'/annonces/' + value[0].thread.ad.id" v-if ="isDisplay"><p class="subtitle is-6 has-text-centered" >{{value[0].thread.ad.title}}</p></a>
           <br>
-           <div class="content">
+           <div class="content" v-if ="isDisplay">
                <div class="buttons is-centered ">
                    <a :href="'/annonces/' + value[0].thread.ad.id">
                        <button class="button is-link ">
@@ -27,7 +27,6 @@
         </div>
         <hr>
     </div>
-
 </template>
 
 <script>
@@ -35,6 +34,7 @@
         props : {
             value: {},
             userId:{},
+            isDisplay :'',
         },
 
     }

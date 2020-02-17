@@ -174,7 +174,9 @@
             </div>
         @endif
 
-        @include('pages.ads.partials.callToActionMessage')
+        <div class="section">
+            @include('pages.ads.partials.threadsDisplay')
+        </div>
 
     </div>
 </section>

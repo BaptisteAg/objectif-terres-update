@@ -45,7 +45,7 @@
 								 <a href="{{route('threads.index')}}">
 										<i class="far fa-envelope"></i>
 									</a>
-									@if($numberOfUnreadMessages)
+									@if($numberOfUnreadMessages >=0)
 										<span class="notification-counter">{{$numberOfUnreadMessages}}</span>
 									@endif
 								</span>
