@@ -1,22 +1,22 @@
 <template>
 
-    <div class="content ">
+    <div v-if="value.length !==0 " class="content ">
         <form @submit="formSubmit">
             <p class="has-text-black"> Répondre</p>
-
+            <div class="field has-addons">
             <div class="control is-expanded  has-icons-left">
                 <input type="hidden" name="thread_id" :value="value[0].thread.id">
+
                 <input v-model="content" class="input" name="content" type="text" placeholder="Votre message..."/>
                 <span class="icon is-small is-left">
                         <i class="fas fa-reply"></i>
                     </span>
             </div>
-            <div class="control">
+                <div class="control">
                 <button class="button is-link">
                     Envoyer
                 </button>
             </div>
-            <div class="field has-addons">
             </div>
         </form>
     </div>
@@ -27,9 +27,7 @@
 
     export default {
         props: {
-            value: {
-                type: Array,
-            },
+           value:{}
         },
         data() {
             return {
