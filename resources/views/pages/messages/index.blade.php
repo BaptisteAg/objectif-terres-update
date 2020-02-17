@@ -34,7 +34,7 @@
 								>
 								</list-threads>
 							</div>
-							<div class="column box">
+							<div class="column box ">
 								<header-message
 										v-model="messages"
 										:user-id="{{auth()->id()}}"

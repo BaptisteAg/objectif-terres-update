@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="display-message">
         <template v-for="message in value">
             <template v-if="message.sender_user_id === userId">
                 <div class=" message-sended">
@@ -48,6 +48,10 @@
 
 
 <style lang="scss">
+    .display-message{
+             overflow-x: hidden;
+             max-height:700px;
+         }
     .message-sender {
         border-bottom-left-radius: 5px;
         border-top-left-radius: 5px;
