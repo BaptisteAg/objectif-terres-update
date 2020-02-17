@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * App\Models\LandSeekAd
  *
  * @property int $id
- * @property string|null $title
  * @property int|null $is_bio
  * @property string|null $production_type_add
  * @property int|null $has_farm_buildings
@@ -29,10 +28,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Ad $ad
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandSeekAdBuilding[] $buildings
+ * @property-read int|null $buildings_count
  * @property-read \App\Models\InstallationType|null $installationType
- * @property-read \App\Models\OfferGenre|null $offerGenre
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PriceRange[] $priceRanges
- * @property-read int|null $price_ranges_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenres
  * @property-read int|null $production_genres_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SurfaceRange[] $surfaceRanges
@@ -54,7 +52,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereRentMin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereSurfaceRangeMax($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereSurfaceRangeMin($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -66,7 +63,18 @@ class LandSeekAd extends Model
      * @var array
      */
     protected $fillable = [
-        'ad_id', 'installation_type_id', 'offer_type_id', 'is_bio', 'production_type_add', 'has_farm_buildings', 'has_houses', 'experience_farming', 'rent_min', 'rent_max'
+        'ad_id',
+        'installation_type_id',
+        'offer_type_id',
+        'is_bio',
+        'production_type_add',
+        'experience_farming',
+        'surface_range_min',
+        'surface_range_max',
+        /*'has_farm_buildings',
+        'has_houses',
+        'rent_min',
+        'rent_max'*/
     ];
 
     /**
@@ -74,7 +82,7 @@ class LandSeekAd extends Model
      */
     public function ad()
     {
-        return $this->HasOne(Ad::class);
+        return $this->hasOne(Ad::class);
     }
 
     /**
@@ -85,27 +93,22 @@ class LandSeekAd extends Model
         return $this->belongsTo(InstallationType::class);
     }
 
-    /**
-     * @return BelongsTo
-     */
-    public function offerGenre()
+
+    public function buildings()
     {
-        return $this->belongsTo(OfferGenre::class, 'offer_genre_id');
+        return $this->hasMany(LandSeekAdBuilding::class);
     }
 
     /**
      * @return belongsToMany
      */
-    public function priceRanges()
-    {
-        return $this->belongsToMany(PriceRange::class)->withTimestamps();
-    }
-
-    /**
-     * @return belongsToMany
-     */
-    public function surfaceRanges()
+    /*public function surfaceRanges()
     {
         return $this->belongsToMany(SurfaceRange::class)->withTimestamps();
-    }
+    }*/
+
+    /*public function priceRanges()
+    {
+        return $this->belongsToMany(PriceRange::class)->withTimestamps();
+    }*/
 }

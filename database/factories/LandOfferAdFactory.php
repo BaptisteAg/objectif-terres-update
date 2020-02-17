@@ -11,17 +11,17 @@ use Faker\Generator as Faker;
 
 $factory->define(LandOfferAd::class, function (Faker $faker) {
     return [
-        'is_beneficiary' => $faker->boolean,
         'accept_use_zip_code' => $faker->boolean,
-        'is_call_for_application_community' => $faker->boolean,
-        'is_call_for_application_terre_de_liens' => $faker->boolean,
-        'is_call_for_application_test_area' => $faker->boolean,
-        'is_activity_transfer' => $faker->boolean,
-        'water_access' => $faker->text(100),
+        'water_access' => random_int(0,1),
         'altitude' => $faker->randomNumber(4),
-        'building_id' => factory(Building::class),
-        'house_id' => factory(House::class),
-        'land_id' => factory(Land::class),
-		'confirm_price_fermage'=> $faker->boolean,
+       // 'is_call_for_application_community' => $faker->boolean,
+        //'is_call_for_application_terre_de_liens' => $faker->boolean,
+        //'is_call_for_application_test_area' => $faker->boolean,
+		//'confirm_price_fermage'=> $faker->boolean,
+        //'is_beneficiary' => $faker->boolean,
+        //'is_activity_transfer' => $faker->boolean,
+        //'building_id' => factory(Building::class),
+        //'house_id' => factory(House::class),
+        //'land_id' => factory(Land::class),
     ];
 });

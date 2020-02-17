@@ -12,12 +12,12 @@ $factory->define(LandSeekAd::class, function (Faker $faker) {
     return [
         'is_bio' => $faker->boolean,
         'production_type_add' => $faker->text(60),
-        'has_farm_buildings' => $faker->boolean,
-        'has_houses' => $faker->boolean,
+        //'has_farm_buildings' => $faker->boolean,
+        //'has_houses' => $faker->boolean,
+        //'rent_min' => $faker->randomFloat(4),
+        //'rent_max' => $faker->randomFloat(4),
+        //'offer_genre_id' => OfferGenre::all()->random(),
         'experience_farming' => $faker->text,
-        'rent_min' => $faker->randomFloat(4),
-        'rent_max' => $faker->randomFloat(4),
-        'installation_type_id' => InstallationType::all()->random(),
-        'offer_genre_id' => OfferGenre::all()->random(),
+        'installation_type_id' => InstallationType::inRandomOrder()->take(1)->first(),
     ];
 });

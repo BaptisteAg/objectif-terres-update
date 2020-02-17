@@ -25,6 +25,7 @@
         </div>
         <div id="vue-render">
             @include('components.loader', ['text' => 'Chargement du formulaire'])
+
             <new-ad id="new-ad"
                     inline-template
                     :old-ad-type-selected="'{{old('ad_type')}}'"
@@ -49,25 +50,28 @@
                                       :is-input-disabled="adTypeSelected !== 'land_seek'"
                                       :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
                                       @input-enabled="setEnabledForm"
-                                      @form-complete="onFormComplete">
+                                      @form-complete="onFormComplete"
+                                      ref="land_seek">
                         @include('pages.ads.partials.landSeek.landSeekNewAd')
                     </new-land-seek-ad>
 
-            <!--    <new-land-offer-ad inline-template
-                                                       v-show="adTypeSelected === 'land_offer'"
-                                                       :is-input-disabled="adTypeSelected !== 'land_offer'"
-                                                       :old-values="{{json_encode(old('land_offer', new stdClass))}}"
-                                                       @input-enabled="setEnabledForm">
-                                        @include('pages.ads.partials.landOffer.landOfferNewAd')
+                    <new-land-offer-ad inline-template
+                                       v-show="adTypeSelected === 'land_offer'"
+                                       :is-input-disabled="adTypeSelected !== 'land_offer'"
+                                       :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
+                                       @input-enabled="setEnabledForm"
+                                       @form-complete="onFormComplete"
+                                       ref="land_offer">
+                        @include('pages.ads.partials.landOffer.landOfferNewAd')
                     </new-land-offer-ad>
 
-                    <new-job-offer-ad inline-template
+                <!--    <new-job-offer-ad inline-template
                                       v-show="adTypeSelected === 'job_offer'"
                                       :is-input-disabled="adTypeSelected !== 'job_offer'"
                                       :old-values="{{json_encode(old('job_offer', new stdClass))}}"
                                                       @input-enabled="setEnabledForm">
                                         @include('pages.ads.partials.jobAd.jobAdNewAd')
-                    </new-job-offer-ad>-->
+                        </new-job-offer-ad>-->
 
                 </form>
             </new-ad>

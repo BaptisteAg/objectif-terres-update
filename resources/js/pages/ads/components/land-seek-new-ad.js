@@ -2,28 +2,24 @@ import {maxLength, minLength, numeric, required} from 'vuelidate/lib/validators'
 
 import FormNewAdMixin from './mixins/form-new-ad-mixin'
 import TextAreaCounter from "../../../components/TextAreaCounter";
-import VueSlider from "../../../components/VueSlider";
 import VueSliderRange from "../../../components/VueSliderRange";
 import ZoneSelect from '../../../components/ZoneSelect'
 import AdTypeSelect from '../../../components/AdTypeSelect'
 import MultiSelect from "../../../components/MultiSelect";
-import CustomRadio from "../../../components/CustomRadio"
-
-import vue2Dropzone from 'vue2-dropzone'
-import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+import CustomCheckbox from "../../../components/CustomCheckbox"
+import DocumentsUpload from "../../../components/DocumentsUpload"
 
 export default Vue.extend({
     mixins: [FormNewAdMixin],
     props: {},
     components: {
-        CustomRadio,
-        TextAreaCounter,
-        VueSlider,
-        VueSliderRange,
-        ZoneSelect,
         AdTypeSelect,
+        ZoneSelect,
+        VueSliderRange,
         MultiSelect,
-        vueDropzone: vue2Dropzone
+        CustomCheckbox,
+        TextAreaCounter,
+        DocumentsUpload
     },
     data() {
         const v = this.oldValues;
@@ -31,17 +27,17 @@ export default Vue.extend({
 
         return {
             formInput: {
-                surfaceRangeMin : hasOld ? v.land_seek.surface_range_min : 0,
-                surfaceRangeMax : hasOld ? v.land_seek.surface_range_max : 0,
-                installationTypeId: hasOld ? v.land_seek.installation_type_id : '',
-                productionGenre: hasOld ? v.land_seek.production_genre : [],
+                selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
+                productionGenres: hasOld ? v.land_seek.production_genres : [],
                 productionTypeAdd: hasOld ? v.land_seek.production_type_add : '',
-                minRent: hasOld ? v.land_seek.rent_min : '',
-                maxRent: hasOld ? v.land_seek.rent_max : '',
-                offerGenre: hasOld ? v.land_seek.offer_genre_id : '',
-                selectedZones: hasOld ? JSON.parse(v.land_seek.selected_zones) : [],
-                experienceFarming: hasOld ? (v.land_seek.experience_farming || '') : '',
+                installationTypeId: hasOld ? v.land_seek.installation_type_id : '',
+                //offerGenre: hasOld ? v.land_seek.offer_genre_id : '',
+                //surfaceRangeMin : hasOld ? v.land_seek.surface_range_min : 0,
+                //surfaceRangeMax : hasOld ? v.land_seek.surface_range_max : 0,
+                //minRent: hasOld ? v.land_seek.rent_min : '',
+                //maxRent: hasOld ? v.land_seek.rent_max : '',
                 aboutProject: hasOld ? v.about_project_content : '',
+                experienceFarming: hasOld ? (v.land_seek.experience_farming || '') : '',
                 aboutContent: hasOld ? v.about_content : '',
                 title: hasOld ? v.title : '',
                 documents: hasOld ? JSON.parse(v.documents) : [],
@@ -50,13 +46,13 @@ export default Vue.extend({
         }
     },
     computed: {
-        isProductionGenreOther() {
-            return this.formInput.productionGenre.includes('other');
+        productionGenresHasOther() {
+            return this.formInput.productionGenres.includes('other');
         }
     },
     watch: {
-        'formInput.productionGenre': function (productionGenre) {
-            if (!productionGenre.includes('other')) {
+        'formInput.productionGenres': function (productionGenres) {
+            if (!productionGenres.includes('other')) {
                 this.formInput.productionTypeAdd = '';
             }
         },
@@ -65,12 +61,7 @@ export default Vue.extend({
     },
     validations: {
         formInput: {
-            selectedZones: {
-                hasZone(zones) {
-                    return zones.length;
-                }
-            },
-            productionGenre: {required},
+            productionGenres: {required},
             installationTypeId: {required},
             minRent: {numeric},
             maxRent: {numeric},

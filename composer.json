@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2",
         "ext-json": "*",
+        "aacotroneo/laravel-saml2": "^2.1",
         "caouecs/laravel-lang": "~4.0",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "~6.0",
@@ -19,7 +20,6 @@
         "mccool/laravel-auto-presenter": "^7.3",
         "omniphx/forrest": "^2.5",
         "ozankurt/repoist": "^3.2"
-
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",

@@ -1,7 +1,7 @@
 <!-- Vue component -->
 <template>
     <div>
-        <multiselect v-model="values"
+        <multiselect v-model="selected"
                      :options="options"
                      :multiple="multiple"
                      :close-on-select="false"
@@ -13,10 +13,19 @@
                      :custom-label="customLabel"
                      select-label="Sélectionner"
                      selected-label="Sélectionné"
-                     deselect-label="Supprimer">
+                     deselect-label="Supprimer"
+                     :max-height="height">
 
         </multiselect>
-        <input type="hidden" v-for="selected in values" :value="selected[idProp]" :name="name">
+        <input type="hidden" v-for="id in value" :value="id" :name="name">
+
+        <template v-if="showIcons">
+            <template v-for="option in selected">
+                <span class="biocertification-icon" v-if="option.icon">
+                    <img :src="option.icon">
+                </span>
+            </template>
+        </template>
     </div>
 </template>
 
@@ -50,20 +59,52 @@
             },
             value: {
                 type: Array,
+                default: _ => []
             },
-        },
-        data () {
-            return {
-                values: this.value ? this.value.map(value =>
-                    _.isObject(value) ? value[this.idProp] : value
-                ) : [],
+            height: {
+                type: Number,
+                default: 500
+            },
+            clearOtherValues: {
+                type: Array,
+                default: _ => []
+            },
+            showIcons: {
+                type: Boolean,
+                default: false
             }
         },
-        watch: {
-            values(newValues) {
-                this.$emit('input', newValues.map( value => value[this.idProp]))
-            }
+        computed: {
+            selected: {
+                get() {
+                    return this.value.map(id =>
+                        this.options.find(option => option.id === id)
+                    )
+                },
+                set(options) {
+                    let selectedOptions = [];
 
+                    const lastOption = options[options.length-1];
+
+                    // any of the clearingIds will clear other ids from the array
+                    if (this.clearingIds.includes(lastOption.id)) {
+                        selectedOptions = [lastOption];
+                    }
+                    else {
+                        selectedOptions = options.filter(option => {
+                            return !this.clearingIds.includes(option.id);
+                        });
+                    }
+
+                    console.log(selectedOptions);
+
+                    this.$emit('input', selectedOptions.map(option => option[this.idProp]));
+                    return selectedOptions;
+                }
+            },
+            clearingIds() {
+                return this.clearOtherValues.map(options => options[this.idProp]);
+            }
         },
         methods: {
             customLabel(result) {

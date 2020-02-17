@@ -1,6 +1,6 @@
 <div class="field">
     <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
-           data-tooltip="Présentez-vous en quelque lignes pour faciliter la mise en relation avec les personnes intéressées par votre annonce."
+           data-tooltip="Présentez-vous brièvement pour faciliter la mise en relation avec les personnes qui consulteront votre annonce."
            for="about_content">
         Et si vous nous en disiez un peu plus sur vous ?*
         <i class="fas fa-info-circle has-text-info"></i>

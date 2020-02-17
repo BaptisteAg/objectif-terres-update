@@ -28,9 +28,7 @@ class CreateOfferableGenresTable extends Migration
             $table->string('offerable_genre_type')->comment('Cette colonne fait référence au namespace du modèle qui est relier à un type d\'offre : la table buildings, houses, lands, researches.');
 
             $table->index(["offerable_genre_id"], 'ix_offerable_genre_1');
-
             $table->index(["offer_genre_id"], 'fk_offerable_genre_1_idx');
-
             $table->index(["offerable_genre_type"], 'ix_offerable_genre_2');
             $table->timestamps();
 

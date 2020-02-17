@@ -28,7 +28,7 @@
         },
         data: function () {
             return {
-                sliderTextValue: this.values || "",
+                sliderTextValue: this.value || "",
                 sliderValue: ""
             }
         },

@@ -212,7 +212,7 @@
 		@endforeach
         formData.append('_token', "{{ csrf_token() }}");
 
-        fetch('/json/polygon/regions', {
+        fetch('/locations/polygon/regions', {
             method: 'POST',
             body: formData
         })

@@ -1,0 +1,35 @@
+<template slot="footer" slot-scope="props">
+    <div class="affix-wizard-footer" data-move-to-ref="{{$moveToRef}}">
+        <div class="wizard-footer-left">
+            <span @click="props.prevTab" @keyup.enter="props.prevTab" v-if="props.activeTabIndex > 0"
+                  role="button" tabindex="0">
+              <wizard-button class="button is-light"
+                             style="background-color: #eee;border-color: #eee;color: #555;"
+                             :disabled="props.loading">
+                Précédent
+              </wizard-button>
+            </span>
+        </div>
+
+        <div class="wizard-footer-right">
+            <button class="button is-light">
+                Sauvegarder
+            </button>
+            <span @click="props.nextTab" @keyup.enter="props.nextTab" v-if="props.isLastStep" role="button"
+                  tabindex="0">
+                <wizard-button
+                        class="button is-primary"
+                        :style="props.fillButtonStyle">
+                    Demander la publication
+                </wizard-button>
+            </span>
+            <span @click="props.nextTab" @keyup.enter="props.nextTab" role="button" tabindex="0" v-else>
+                <wizard-button class="button is-primary"
+                               :style="props.fillButtonStyle"
+                               :disabled="props.loading">
+                    Suivant
+                </wizard-button>
+            </span>
+        </div>
+    </div>
+</template>

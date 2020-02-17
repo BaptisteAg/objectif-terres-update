@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use McCool\LaravelAutoPresenter\HasPresenter;
 
 /**
  * App\Models\Document
