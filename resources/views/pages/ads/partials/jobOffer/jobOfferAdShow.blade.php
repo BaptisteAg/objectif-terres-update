@@ -100,7 +100,10 @@
             <h3 class="title is-3">A propos du porteur de projet</h3>
             <p> {{$ad->about_content}}</p>
         </div>
-        @include('pages.ads.partials.callToActionMessage')
+
+        <div class="section">
+            @include('pages.ads.partials.threadsDisplay')
+        </div>
     </div>
 
 </section>

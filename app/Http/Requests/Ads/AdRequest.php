@@ -33,11 +33,9 @@ class AdRequest extends FormRequest
             'ad_type'                 => "required",
             'land_seek'               => ['nullable', 'array'],
             'land_offer'              => ['nullable', 'array'],
-<<<<<<< HEAD
             'job_offer'               => ['nullable', 'array'],
             'job_seek'                => ['nullable', 'array'],
-=======
->>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
+
             'locationable'            => [new HasZone],
             'locationable_radius'     => ['nullable', 'string'],
             'about_content'           => ['required', 'string', 'max:1000'],

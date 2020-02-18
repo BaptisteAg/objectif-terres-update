@@ -144,25 +144,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'landOfferAd.bioCertifications',
 			'landOfferAd.offerGenres',
 
-<<<<<<< HEAD
 			'jobOfferAd',
 			'jobOfferAd.educationLevels',
 			'jobOfferAd.jobOfferTypes',
-=======
-			'jobAd',
-			'cities',
-			'cities.department',
-			'cities.department.region',
-			'departments',
-			'departments.region',
-			'regions',
-			'adMessages',
-            'documents',
-			'threads',
-			'threads.messages',
-			'threads.users',
-			'threads.messages.senderUser',
->>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
         ];
     }
 }

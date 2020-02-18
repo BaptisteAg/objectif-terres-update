@@ -87,19 +87,14 @@
                         label: "Je propose du foncier agricole",
                         icon: "fa-home"
                     },
-<<<<<<< HEAD
                     job_seek: {
                         label: "Je cherche une opportunité professionnelle",
                         icon: "fa-universal-access"
                     },
                     job_offer: {
                         label: "Je propose une opportunité professionnelle",
-=======
-                    /*job_offer: {
-                        label: "Opportunité professionnelle",
->>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
                         icon: "fa-universal-access"
-                    },*/
+                    }
                 }
             },
             currentAdType() {

@@ -1,10 +1,7 @@
 import LandSeekNewAd from './components/land-seek-new-ad'
 import LandOfferNewAd from './components/land-offer-new-ad'
 import JobOfferNewAd from './components/job-offer-new-ad'
-<<<<<<< HEAD
 import JobSeekNewAd from './components/job-seek-new-ad'
-=======
->>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
 import AdTypeSelect from '../../components/AdTypeSelect'
 
 import Vue from 'vue'
