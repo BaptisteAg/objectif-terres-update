@@ -3,7 +3,7 @@
 use App\Models\AdStatus;
 use App\Models\BioCertification;
 use App\Models\Department;
-use App\Models\JobStatus;
+use App\Models\JobOfferType;
 use App\Models\OfferGenre;
 use App\Models\ProductionGenre;
 use App\Models\ProjectStatus;
@@ -23,7 +23,7 @@ class TestResearchSeeder extends Seeder
             $research->adStatuses()->save(factory(AdStatus::class)->make());
 			$research->adStatuses()->save(factory(AdStatus::class)->make());
             $research->projectStatuses()->save(ProjectStatus::inRandomOrder()->first());
-            $research->jobStatuses()->save(JobStatus::inRandomOrder()->first());
+            $research->jobOfferTypes()->save(JobOfferType::inRandomOrder()->first());
             $research->offerGenres()->save(OfferGenre::inRandomOrder()->first());
             $research->bioCertifications()->save(BioCertification::inRandomOrder()->first())->make();
             $research->productionGenres()->save(ProductionGenre::inRandomOrder()->first());

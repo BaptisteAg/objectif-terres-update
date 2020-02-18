@@ -16,6 +16,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property int $user_pp_id
  * @property int|null $user_admin_id
  * @property int $is_draft
+ * @property string|null $title
  * @property string|null $about_content
  * @property string|null $about_project_content
  * @property int|null $attribution_ad_id
@@ -35,9 +36,8 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read int|null $documents_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\FavoriteAd[] $favoriteAds
  * @property-read int|null $favorite_ads_count
- * @property-read \App\Models\JobAd $jobAd
- * @property-read \App\Models\JobAd $jobOfferAd
- * @property-read \App\Models\JobAd $jobSeekAd
+ * @property-read \App\Models\JobOfferAd $jobOfferAd
+ * @property-read \App\Models\JobSeekAd $jobSeekAd
  * @property-read \App\Models\LandOfferAd $landOfferAd
  * @property-read \App\Models\LandSeekAd $landSeekAd
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PpToUserMessage[] $ppToUserMessages
@@ -59,12 +59,11 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereIsDraft($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereProjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserAdminId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserPpId($value)
  * @mixin \Eloquent
- * @property string|null $title
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereTitle($value)
  */
 class Ad extends Model implements HasPresenter
 {
@@ -141,22 +140,15 @@ class Ad extends Model implements HasPresenter
         return $this->hasMany(FavoriteAd::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function jobAd()
-    {
-        return $this->hasOne(JobAd::class);
-    }
 
     public function jobOfferAd()
     {
-        return $this->hasOne(JobAd::class)->where('is_offer', '=', true);
+        return $this->hasOne(JobOfferAd::class);
     }
 
     public function jobSeekAd()
     {
-        return $this->hasOne(JobAd::class)->where('is_offer', '=', false);
+        return $this->hasOne(JobSeekAd::class);
     }
 
     /**

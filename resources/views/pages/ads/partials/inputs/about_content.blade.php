@@ -1,8 +1,16 @@
+<?php
+    if(!isset($title)) {
+        $title = "Et si vous nous en disiez un peu plus sur vous ?";
+    }
+    if(!isset($tooltip)) {
+        $tooltip = "Présentez-vous brièvement pour faciliter la mise en relation avec les personnes qui consulteront votre annonce.";
+    }
+?>
 <div class="field">
     <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
-           data-tooltip="Présentez-vous brièvement pour faciliter la mise en relation avec les personnes qui consulteront votre annonce."
+           data-tooltip="{{$tooltip}}"
            for="about_content">
-        Et si vous nous en disiez un peu plus sur vous ?*
+        {{$title}}*
         <i class="fas fa-info-circle has-text-info"></i>
     </label>
 

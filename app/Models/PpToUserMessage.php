@@ -8,15 +8,15 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\PpToUserMessage
  *
  * @property int $id
- * @property int $ad_id
+ * @property string $content
  * @property int $user_sender_id
  * @property int $user_receiver_id
- * @property string $content
- * @property Ad $ad
- * @property User $userSender
- * @property USer $userReceiver
+ * @property int $ad_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Ad $ad
+ * @property-read \App\Models\User $userReceiver
+ * @property-read \App\Models\User $userSender
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PpToUserMessage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PpToUserMessage newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PpToUserMessage query()
@@ -24,9 +24,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PpToUserMessage whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PpToUserMessage whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PpToUserMessage whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PpToUserMessage whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PpToUserMessage whereUserReceiverId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PpToUserMessage whereUserSenderId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PpToUserMessage whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class PpToUserMessage extends Model

@@ -43,9 +43,9 @@
 										<a href="{{route("ads.show", $ad->id)}}"><p
 													class="title is-4">{{$ad->landOfferAd->title}}</p></a>
 									@endif
-									@if($ad->jobAd)
+									@if($ad->jobOfferAd)
 										<a href="{{route("ads.show", $ad->id)}}"><p
-													class="title is-4">{{$ad->jobAd->title}}</p></a>
+													class="title is-4">{{$ad->jobOfferAd->title}}</p></a>
 									@endif
 
 								</div>

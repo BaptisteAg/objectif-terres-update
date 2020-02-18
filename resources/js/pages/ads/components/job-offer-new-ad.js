@@ -1,12 +1,18 @@
 import FormNewAdMixin from "./mixins/form-new-ad-mixin";
 import {maxLength, minLength, numeric, required, requiredIf} from 'vuelidate/lib/validators'
 import TextAreaCounter from "../../../components/TextAreaCounter";
-import ZoneSelect from "../../../components/ZoneSelect";
+import CustomCheckbox from "../../../components/CustomCheckbox"
+import Autocomplete from '../../../components/Autocomplete'
+import DocumentsUpload from "../../../components/DocumentsUpload"
+import MultiSelect from "../../../components/MultiSelect";
 
 export default {
     components: {
         TextAreaCounter,
-        ZoneSelect,
+        CustomCheckbox,
+        Autocomplete,
+        DocumentsUpload,
+        MultiSelect
     },
     mixins: [FormNewAdMixin],
     props: {},
@@ -15,62 +21,37 @@ export default {
         const hasOld = Object.keys(v).length;
 
         return {
-            isInputRequired: false,
             formInput: {
-                beneficiary: hasOld ? v.is_beneficiary : '',
-                selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
-                agriculturalActivity: hasOld ? v.agricultural_activity : [],
-                jobStatus: hasOld ? v.job_status : '',
-                isJobOpportunity: hasOld ? v.is_offer : '',
-                experienceFarming: hasOld ? v.experience_farming : '',
+                selectedZones: hasOld ? v.selected_zones : [],
+
+                offerTypes: hasOld ? v.job_offer.offer_types : [],
+                jobDescription: hasOld ? v.job_offer.job_description : '',
+                experienceFarming: hasOld ? v.job_offer.experience_farming : '',
+                educationLevels: hasOld ? v.job_offer.education_levels : [],
+
                 aboutProject: hasOld ? v.about_project_content : '',
                 aboutContent: hasOld ? v.about_content : '',
                 title: hasOld ? v.title : '',
+                documents: hasOld ? JSON.parse(v.documents) : [],
+                //beneficiary: hasOld ? v.is_beneficiary : '',
+                //agriculturalActivity: hasOld ? v.agricultural_activity : [],
             }
         }
     },
     watch: {
-        'formInput.isJobOpportunity': function () {
-            this.isInputRequired = this.isJobOpportunity === "1";
-        },
 
     },
     validations: {
         formInput: {
-            beneficiary: {required},
-            isJobOpportunity: {required},
-            selectedZones: {
-                hasZone() {
-                    return this.formInput.selectedZones.length;
-                }
-            },
-            agriculturalActivity: {
-                required: requiredIf(function () {
-                    return this.isInputRequired
-                })
-            },
-            jobStatus: {
-                required: requiredIf(function () {
-                    return this.isInputRequired
-                })
-            },
-            experienceFarming: {numeric},
-            aboutProject: {
-                minLength: minLength(5),
-                maxLength: maxLength(1000),
-                required: requiredIf(function () {
-                    return this.isInputRequired
-                })
-
-            },
-            aboutContent: {
-                minLength: minLength(5),
-                maxLength: maxLength(1000),
-                required
-            },
-            title: {
+            jobDescription: {
                 required,
-                minLength: minLength(5)
+                minLength: minLength(5),
+                maxLength: maxLength(1000)
+            },
+            experienceFarming: {
+                required,
+                minLength: minLength(5),
+                maxLength: maxLength(1000)
             },
         }
     }

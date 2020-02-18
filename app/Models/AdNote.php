@@ -10,16 +10,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * App\Models\AdNote
  *
  * @property int $id
- * @property int $ad_id
- * @property int $user_id
  * @property string $content
- * @property string $contact_name
- * @property Ad $ad
- * @property User $user
+ * @property int $user_id
+ * @property string|null $contact_name
+ * @property int $ad_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Ad $ad
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Document[] $documents
  * @property-read int|null $documents_count
+ * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote query()
@@ -28,8 +28,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote whereUserId($value)
  * @mixin \Eloquent
  */
 class AdNote extends Model

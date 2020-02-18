@@ -19,8 +19,11 @@ class AdPresenter extends BasePresenter
         if($this->wrappedObject->landOfferAd) {
             return 'landOffer';
         }
-        if($this->wrappedObject->jobAd) {
-            return 'jobAd';
+        if($this->wrappedObject->jobOfferAd) {
+            return 'jobOffer';
+        }
+        if($this->wrappedObject->jobSeekAd) {
+            return 'jobSeek';
         }
 
         return '';
@@ -41,16 +44,17 @@ class AdPresenter extends BasePresenter
         return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->diffForHumans();
     }
 
+
+    public function locationable_radius()
+    {
+        return $this->wrappedObject->cities[0]->pivot->radius;
+    }
+
     public function zipCodesByCity()
     {
         return $this->wrappedObject->cities->mapToGroups(function(City $city, $key) {
             return [$city['name'] => $city["zip_code"]];
         });
-    }
-
-    public function locationable_radius()
-    {
-        return $this->wrappedObject->cities[0]->pivot->radius;
     }
 
     public function hasImages()
