@@ -18,6 +18,7 @@ class ResearchComposer
         $departments = Department::orderBy('name')->get();
 //        $cities = City::orderBy('name')->get();
 
+
         $jobOfferTypes = JobOfferType::orderBy('name')->get();
 //        $surfaces = SurfaceRange::all()->pluck('surface');
         $productionGenres = ProductionGenre::orderBy('name')->get();
