@@ -23,8 +23,12 @@
             :duplicate-check="true"
             :use-custom-slot="true"
             @vdropzone-sending-multiple="onBeforeDocumentsUpload"
+<<<<<<< HEAD
             @vdropzone-success-multiple="onSuccessDocumentsUpload"
             @vdropzone-removed-file="onRemoveUploadedDocument">
+=======
+            @vdropzone-success-multiple="onSuccessDocumentsUpload">
+>>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
 
         <div class="dropzone-custom-content">
             <div class="subtitle">Cliquez ici pour déposer des fichiers</div>
@@ -84,6 +88,7 @@
              */
             onSuccessDocumentsUpload(files, documents) {
                 if (documents.length) {
+<<<<<<< HEAD
                     this.$emit('input', this.value.concat(documents));
                 }
                 this.$emit('uploading', false);
@@ -100,6 +105,12 @@
                     document.name !== removedFile.name && document.name !== removedFile.size
                 ));
             },
+=======
+                    documents.forEach(document => this.value.push(document));
+                }
+                this.$emit('uploading', false);
+            },
+>>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
         }
     }
 </script>

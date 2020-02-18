@@ -23,7 +23,10 @@ export default {
         return {
             formInput: {
                 selectedZones: hasOld ? v.selected_zones : [],
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
                 surface: hasOld ? v.land_offer.surface : '',
                 sauDescription: hasOld ? v.land_offer.sau_description : '',
                 productionGenres: hasOld ? v.land_offer.production_genres : [],
@@ -64,10 +67,17 @@ export default {
         },
         isSaleOffer() {
             return this.formInput.offerGenres.includes("1");
+<<<<<<< HEAD
         },
         isRentOffer() {
             return this.formInput.offerGenres.includes("2");
         },
+=======
+        },
+        isRentOffer() {
+            return this.formInput.offerGenres.includes("2");
+        },
+>>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
         isTestOffer() {
             return this.formInput.offerGenres.includes("3");
         }

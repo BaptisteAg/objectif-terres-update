@@ -1,5 +1,5 @@
 <template>
-    <div class="display-message">
+    <div  class="display-message">
         <template v-for="message in value">
             <template v-if="message.sender_user_id === userId">
                 <div class=" message-sended">
@@ -45,7 +45,6 @@
         <hr>
     </div>
 </template>
-
 
 <style lang="scss">
     .display-message{

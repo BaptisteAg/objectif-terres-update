@@ -44,11 +44,14 @@ class AdPresenter extends BasePresenter
         return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->diffForHumans();
     }
 
+<<<<<<< HEAD
     public function locationable_radius()
     {
         return $this->wrappedObject->cities[0]->pivot->radius;
     }
 
+=======
+>>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
     public function zipCodesByCity()
     {
         return $this->wrappedObject->cities->mapToGroups(function(City $city, $key) {
@@ -56,6 +59,14 @@ class AdPresenter extends BasePresenter
         });
     }
 
+<<<<<<< HEAD
+=======
+    public function locationable_radius()
+    {
+        return $this->wrappedObject->cities[0]->pivot->radius;
+    }
+
+>>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
     public function hasImages()
     {
         return $this->images()->count();

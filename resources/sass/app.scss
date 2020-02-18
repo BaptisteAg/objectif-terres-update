@@ -24,6 +24,10 @@
 .container-custom {
   padding: 0.5rem 2rem;
 }
+html {
+  scroll-behavior: smooth;
+}
+
 
 .title {
   font-family: $font-family-sans-serif;

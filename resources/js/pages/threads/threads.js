@@ -13,6 +13,9 @@ Vue.component('vue-threads',{
     },
     props: {
         initThread : '',
+        isDisplayInThreadPage : Boolean,
+        isUserAdOwner : Boolean
+
     },
     data() {
         return {
@@ -20,6 +23,8 @@ Vue.component('vue-threads',{
             activeThread: this.initThread || null,
             initialLoading : true,
             messagesLoading : true,
+            isDisplay : this.isDisplayInThreadPage,
+            isUserLoggedAdOwner : this.isUserLoggedAdOwner,
         }
     },
     mounted(){

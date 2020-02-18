@@ -181,7 +181,14 @@
                 <p> {!! nl2br(e($ad->landOfferAd->test_description))!!}</p>
             </div>
         @endif
+<<<<<<< HEAD
         @include('pages.ads.partials.callToActionMessage')
+=======
+        <div class="section">
+            @include('pages.ads.partials.threadsDisplay')
+        </div>
+
+>>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
     </div>
 
 </section>

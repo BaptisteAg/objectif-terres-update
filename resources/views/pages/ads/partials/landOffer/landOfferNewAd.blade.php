@@ -11,7 +11,41 @@
                 <div class="columns">
                     <div class="column"></div>
                     <div class="column is-half">
+<<<<<<< HEAD
                         @include('pages.ads.partials.inputs.zip_code', ["uri"=>"cities-and-departments"])
+=======
+                        <div class="field">
+                            {!! Form::label('locationable', 'Code postal du bien*', ['class' => 'label']); !!}
+                            <div class="control">
+                                <autocomplete
+                                        id="land_offer_zone-autocomplete"
+                                        class="input"
+                                        placeholder="Saisissez les premiers chiffres"
+                                        ref='selectedZones'
+                                        :disabled="isInputDisabled"
+                                        src="/locations/cities-and-departments"
+                                        v-model="formInput.selectedZones"
+                                        aria-describedby='zipCodeError'>
+                                </autocomplete>
+                                <input type="hidden" name="locationable[cities][]" :value="zone.value.id"
+                                       v-for="(zone,i) in formInput.selectedZones">
+                                <input type="hidden" name="selected_zones"
+                                       :value="JSON.stringify(formInput.selectedZones)">
+                                <div>
+                                    <span class="tag is-info"
+                                          v-for="(zone,i) in formInput.selectedZones"
+                                          @click="_ => formInput.selectedZones.splice(i,1)">
+                                        Code postal sélectionné :
+                                        <b>@{{ zone.label }}</b>
+                                        <i class="fa fa-trash" style="cursor:pointer"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="help is-danger" v-if="$v.formInput.selectedZones.$error">
+                                Ce champ est requis. Vous devez sélectionner un code postal dans la liste.
+                            </p>
+                        </div>
+>>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
 
                         <div class="field">
                             <label for="land_offer[accept_use_zip_code]" class="checkbox">
@@ -394,6 +428,7 @@
                 <div class="columns">
                     <div class="column"></div>
                     <div class="column is-half">
+<<<<<<< HEAD
                         <?php
                             $aboutProjectTooltip = "Parce qu’il y a derrière chaque projet et chaque lieu des personnes
                                                     et des histoires, nous vous invitons ici à en dire un peu plus sur votre projet :
@@ -404,6 +439,10 @@
                                                     Quel type de personnes et de projet agricole recherchez-vous ?";
                         ?>
                         @include('pages.ads.partials.inputs.about_project_content', ['tooltip' => $aboutProjectTooltip])
+=======
+
+                        @include('pages.ads.partials.inputs.about_project_content', ['tooltip' => "Parce qu’il y a derrière chaque projet et chaque lieu des personnes et des histoires, nous vous invitons ici à en dire un peu plus sur votre projet : qu’est-ce qui motive votre projet ? Quelles sont vos attentes ? Quelles sont les valeurs qui vous portent ? Quelle est l’histoire du lieu ? Quelles sont les conditions de la transmission le cas échéant  ? Quel type de personnes et de projet agricole recherchez-vous ?"])
+>>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
 
                         @include('pages.ads.partials.inputs.about_content')
                     </div>
@@ -412,15 +451,23 @@
             </section>
         </tab-content>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
         <tab-content title="C'est presque fini !" icon="ti-share">
             <section class="container">
                 <div class="columns">
                     <div class="column"></div>
                     <div class="column is-half">
+<<<<<<< HEAD
                         <?php
                             $titleTooltip = 'Décrivez précisément et succintement le bien proposé. Ne pas mentionner "Vente" ou "Location" dans le titre.';
                         ?>
                         @include('pages.ads.partials.inputs.title', ["tooltip"=>$titleTooltip])
+=======
+                        @include('pages.ads.partials.inputs.title')
+>>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
 
                         @include('pages.ads.partials.inputs.documents')
 

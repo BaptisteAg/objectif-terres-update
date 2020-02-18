@@ -1,15 +1,14 @@
 @auth
 	@if( $ad->user_pp_id !== auth()->user()->id)
 		<footer class="card-footer">
-
-			@isset($userMessage)
+			@if(count($threadAlreadyExist) >0 )
 				<p class="control">
-					<a href="">
+					<a href="#messages-display">
 						<button type="button" class="card-footer-item button is-link is-fullwidth">
 											<span class="icon is-small">
 											<i class="fas fa-reply"></i>
 											</span>
-							<span> Ouvrir la messagerie </span>
+							<span> Voir votre fil de discussion </span>
 						</button>
 					</a>
 				</p>
@@ -23,7 +22,7 @@
 						<span> Répondre à l'annonce</span>
 					</button>
 				</p>
-			@endisset
+			@endif
 			@isset($favoriteAdAlreadyExist)
 				<p class="control">
 					{{Form::open(['route' => 'favoriteAds.destroy'])}}
@@ -50,9 +49,11 @@
 					{!! Form::close() !!}
 				</p>
 			@endisset
-
 		</footer>
+	@else
+
 	@endif
+
 @else
 	<footer class="card-footer">
 		<button id="open-modal-message" type="button"

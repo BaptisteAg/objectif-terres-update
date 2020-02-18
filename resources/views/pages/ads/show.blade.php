@@ -1,7 +1,19 @@
 @extends('default')
 
 @section('title')
+<<<<<<< HEAD
     {{ $ad->jobSeekAd->title }}
+=======
+    @if($ad->ad_type === 'landSeek')
+        {{ $ad->landSeekAd->title }}
+    @endif
+    @if($ad->ad_type === 'landOffer')
+        {{ $ad->landOfferAd->title }}
+    @endif
+    @if($ad->ad_type === 'jobAd')
+        {{ $ad->jobOfferAd->title }}
+    @endif
+>>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
 @endsection
 
 @section('head-script')
@@ -47,7 +59,7 @@
             });
 		});
 
-		let deleteButton = document.querySelector('#close-notification');
+		let deleteButton = document.querySelector('.close-notification');
         deleteButton.addEventListener('click', function (e) {
             let notification = document.querySelector('.message');
             notification.style.display='none';
@@ -65,4 +77,16 @@
             });
         </script>
     @endif
+<<<<<<< HEAD
+=======
+
+	<script>
+        const vueThreads = new Vue({
+            el: '#vue-messages',
+            name: 'content'
+        });
+
+	</script>
+
+>>>>>>> 1a90b43a85118e725f01b9fc78f76c14ea08bc83
 @endsection

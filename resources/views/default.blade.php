@@ -18,7 +18,7 @@
 	<article class="message is-danger">
 		<div class="message-header">
 			<p>Erreur !</p>
-			<button class="delete" aria-label="delete"></button>
+			<button class=" delete close-notification" aria-label="delete"></button>
 		</div>
 		<div class="message-body">
 			{{ $message }}
@@ -29,7 +29,7 @@
 	<article class="message is-success">
 		<div class="message-header">
 			<p>Succès !</p>
-			<button class="delete" aria-label="delete"></button>
+			<button class="delete close-notification" aria-label="delete"></button>
 		</div>
 		<div class="message-body">
 			{!! $message !!}
@@ -41,7 +41,7 @@
 	<article class="message is-warning">
 		<div class="message-header">
 			<p>Attention ! </p>
-			<button class="delete" aria-label="delete"></button>
+			<button class="delete close-notification" aria-label="delete"></button>
 		</div>
 		<div class="message-body">
 			{{ $message }}
