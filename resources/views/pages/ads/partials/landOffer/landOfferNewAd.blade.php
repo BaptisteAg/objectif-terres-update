@@ -181,6 +181,7 @@
 
                         <div class="field">
                             {!! Form::label('land_offer[altitude]', 'Altitude*', [
+                                'ref' => 'altitude',
                                 'class' => 'label',
                             ]); !!}
 
