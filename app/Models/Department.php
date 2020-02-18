@@ -13,22 +13,22 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $code
  * @property string $name
  * @property string $slug
- * @property Region $region
- * @property City[] $cities
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $ads
  * @property-read int|null $ads_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\City[] $cities
  * @property-read int|null $cities_count
+ * @property-read \App\Models\Region $region
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $researches
  * @property-read int|null $researches_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department query()
- * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereRegionCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereSlug($value)
+ * @mixin \Eloquent
  */
 class Department extends Model
 {

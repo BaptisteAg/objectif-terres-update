@@ -16,15 +16,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $slug
  * @property float $gps_lat
  * @property float $gps_lng
- * @property Department $department
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $ads
  * @property-read int|null $ads_count
+ * @property-read \App\Models\Department $department
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $researches
  * @property-read int|null $researches_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City query()
- * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereDepartmentCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereGpsLat($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereGpsLng($value)
@@ -33,6 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereZipCode($value)
+ * @mixin \Eloquent
  */
 class City extends Model
 {

@@ -9,12 +9,12 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\House
  *
  * @property int $id
- * @property int $number
- * @property float $surface
- * @property float $price
- * @property LandOfferAd $landOfferAds
+ * @property int|null $number
+ * @property string|null $surface
+ * @property int|null $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\LandOfferAd $landOfferAds
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OfferGenre[] $offerGenres
  * @property-read int|null $offer_genres_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\House newModelQuery()

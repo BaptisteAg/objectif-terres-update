@@ -52,12 +52,12 @@
 											<span class="has-text-black">Offre de foncier</span></p>
 									@elseif($favoriteAd->ad->jobOfferAd)
 										<a href="{{route("ads.show", $favoriteAd->ad->id)}}"><h1
-													class="title">{{$favoriteAd->ad->jobAd->title}} </h1></a>
+													class="title">{{$favoriteAd->ad->jobOfferAd->title}} </h1></a>
 										<p><span class="has-text-grey-dark">Type d'annonces recherchés :</span>
 											<span class="has-text-black">Offre d'emploi</span></p>
 									@elseif($favoriteAd->ad->jobSeekAd)
 										<a href="{{route("ads.show", $favoriteAd->ad->id)}}"><h1
-													class="title">{{$favoriteAd->ad->jobAd->title}} </h1></a>
+													class="title">{{$favoriteAd->ad->jobOfferAd->title}} </h1></a>
 										<p><span class="has-text-grey-dark">Type d'annonces recherchés :</span>
 											<span class="has-text-black">Recherche d'emploi</span></p>
 									@endif

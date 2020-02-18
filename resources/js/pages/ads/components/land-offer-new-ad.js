@@ -23,6 +23,7 @@ export default {
         return {
             formInput: {
                 selectedZones: hasOld ? v.selected_zones : [],
+
                 surface: hasOld ? v.land_offer.surface : '',
                 sauDescription: hasOld ? v.land_offer.sau_description : '',
                 productionGenres: hasOld ? v.land_offer.production_genres : [],

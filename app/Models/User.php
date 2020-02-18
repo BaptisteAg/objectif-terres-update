@@ -9,35 +9,36 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * App\User
+ * App\Models\User
  *
  * @property int $id
  * @property string $name
  * @property string $first_name
- * @property string $phone
+ * @property string|null $phone
  * @property string $address
  * @property string $city
- * @property int 	$zip_code_id
- * @property string $accept_communication
- * @property string $email
  * @property int $civility
  * @property int $profile
- * @property string $other_profile
- * @property boolean $accept_share_contact_infos
+ * @property string|null $other_profile
+ * @property int $accept_communication
+ * @property int $accept_share_contact_infos
+ * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
  * @property int $country_id
+ * @property int $zip_code_id
+ * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Country $country
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User query()
- * @mixin \Eloquent
- * @property string|null $remember_token
- * @property-read \App\Models\Country $country
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
+ * @property-read int|null $threads_count
  * @property-read \App\Models\City $zipCode
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAcceptCommunication($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAcceptShareContactInfos($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAddress($value)
@@ -57,8 +58,7 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereZipCodeId($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
- * @property-read int|null $threads_count
+ * @mixin \Eloquent
  */
 class User extends Authenticatable
 {

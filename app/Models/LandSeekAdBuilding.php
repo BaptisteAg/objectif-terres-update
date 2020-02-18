@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $requirement_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\BuildingType $buildingType
+ * @property-read \App\Models\LandSeekAd $landSeekAd
+ * @property-read \App\Models\Requirement $requirement
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAdBuilding newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAdBuilding newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAdBuilding query()
@@ -23,9 +26,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAdBuilding whereRequirementId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAdBuilding whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property-read \App\Models\BuildingType $buildingType
- * @property-read \App\Models\LandSeekAd $landSeekAd
- * @property-read \App\Models\Requirement $requirement
  */
 class LandSeekAdBuilding extends Model
 {

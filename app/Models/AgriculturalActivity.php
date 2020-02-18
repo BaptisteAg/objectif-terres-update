@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $name
- * @property JobAd[] $jobAds
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read int|null $job_ads_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\JobOfferAd[] $jobOfferAds
+ * @property-read int|null $job_offer_ads_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AgriculturalActivity newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AgriculturalActivity newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AgriculturalActivity query()
@@ -34,8 +34,8 @@ class AgriculturalActivity extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function jobAds()
+    public function jobOfferAds()
     {
-        return $this->belongsToMany(JobAd::class)->withTimestamps();
+        return $this->belongsToMany(JobOfferAd::class)->withTimestamps();
     }
 }

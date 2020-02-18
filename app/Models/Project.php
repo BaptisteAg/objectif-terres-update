@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\Project
  *
  * @property int $id
- * @property int $project_status_id
- * @property ProjectStatus $projectStatus
- * @property Ad[] $ads
+ * @property int|null $project_status_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $ads
  * @property-read int|null $ads_count
+ * @property-read \App\Models\ProjectStatus|null $projectStatus
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project query()

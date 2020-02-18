@@ -10,12 +10,16 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  *
  * @property int $id
  * @property string $name
+ * @property int|null $parent_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $children
+ * @property-read int|null $children_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandOfferAd[] $landOfferAds
  * @property-read int|null $land_offer_ads_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandSeekAd[] $landSeekAds
  * @property-read int|null $land_seek_ads_count
+ * @property-read \App\Models\ProductionGenre $parent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $researches
  * @property-read int|null $researches_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre newModelQuery()
@@ -24,13 +28,9 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre whereParentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property int|null $parent_id
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $children
- * @property-read int|null $children_count
- * @property-read \App\Models\ProductionGenre $parent
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre whereParentId($value)
  */
 class ProductionGenre extends Model
 {

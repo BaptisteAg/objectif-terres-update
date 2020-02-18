@@ -3,7 +3,7 @@
 use App\Models\AgriculturalActivity;
 use Illuminate\Database\Seeder;
 
-class AgriculturalActivitiesTableSeeder extends Seeder
+class TestAgriculturalActivitiesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

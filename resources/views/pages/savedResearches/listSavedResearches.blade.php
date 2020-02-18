@@ -31,7 +31,7 @@
 							<a href="{{route ('researches.index', $research->url)}}"><h1
 										class="title">{{$research->name}} </h1></a>
 							<p><span class="has-text-grey-dark">Type d'annonces recherchés :</span>
-								@if($research->ad_type === 'jobOfferAd')
+								@if($research->ad_type === 'jobOffer')
 									<span class="has-text-black">Offres d'emplois</span>
 								@elseif($research->ad_type === 'jobSeekAd')
 									<span class="has-text-black">Recherche d'emplois</span>
@@ -77,14 +77,14 @@
 											class="has-text-black">{{ $research->adStatuses->pluck('name')->implode(', ') }}</span>
 								</p>
 							@endempty
-							@empty($research->jobStatuses )
+							@empty($research->jobOfferTypes )
 								<p><span class="has-text-grey-dark">Statut(s) des opportunités professionnels  : </span><span
-											class="has-text-black">{{ $research->jobStatuses->pluck('name')->implode(', ') }}</span>
+											class="has-text-black">{{ $research->jobOfferTypes->pluck('name')->implode(', ') }}</span>
 								</p>
 							@endempty
 							@empty($research->projectStatuses )
 								<p><span class="has-text-grey-dark">Statut(s) des projets  : </span><span
-											class="has-text-black">{{ $research->jobStatuses->pluck('name')->implode(', ') }}</span>
+											class="has-text-black">{{ $research->jobOfferTypes->pluck('name')->implode(', ') }}</span>
 								</p>
 							@endempty
 							@empty($research->offerGenres )

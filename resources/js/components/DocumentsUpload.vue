@@ -23,7 +23,8 @@
             :duplicate-check="true"
             :use-custom-slot="true"
             @vdropzone-sending-multiple="onBeforeDocumentsUpload"
-            @vdropzone-success-multiple="onSuccessDocumentsUpload">
+            @vdropzone-success-multiple="onSuccessDocumentsUpload"
+            @vdropzone-removed-file="onRemoveUploadedDocument">
 
         <div class="dropzone-custom-content">
             <div class="subtitle">Cliquez ici pour déposer des fichiers</div>
@@ -83,9 +84,21 @@
              */
             onSuccessDocumentsUpload(files, documents) {
                 if (documents.length) {
-                    documents.forEach(document => this.value.push(document));
+                    this.$emit('input', this.value.concat(documents));
                 }
                 this.$emit('uploading', false);
+            },
+            /**
+             *  Removes the file from the list of documents.
+             *  Be careful, those are not the same object types.
+             *  Thats why we have to compare both name and size instead of id.
+             *
+             * @param {File} removedFile
+             */
+            onRemoveUploadedDocument(removedFile) {
+                this.$emit('input', this.value.filter(document =>
+                    document.name !== removedFile.name && document.name !== removedFile.size
+                ));
             },
         }
     }

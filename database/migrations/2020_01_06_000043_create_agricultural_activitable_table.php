@@ -4,13 +4,13 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAgriculturalActivityJobAdTable extends Migration
+class CreateAgriculturalActivitableTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $tableName = 'agricultural_activity_job_ad';
+    public $tableName = 'agricultural_activitable';
 
     /**
      * Run the migrations.
@@ -22,24 +22,23 @@ class CreateAgriculturalActivityJobAdTable extends Migration
     {
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->increments('id');
             $table->unsignedInteger('agricultural_activity_id');
-            $table->unsignedInteger('job_ad_id');
+            $table->unsignedInteger('agricultural_activatable_id');
+            $table->string('agricultural_activatable_type')->comment('Cette colonne fait référence au namespace du modèle qui est reliée à un type d\'offre');
 
             $table->index(["agricultural_activity_id"], 'fk_agricultural_activity_job_ad_1_idx');
+            $table->index(["agricultural_activatable_id"], 'ix_agricultural_activatable_1');
+            $table->index(["agricultural_activatable_type"], 'ix_agricultural_activatable_2');
 
-            $table->index(["job_ad_id"], 'fk_agricultural_activity_job_ad_2_idx');
             $table->timestamps();
-
 
             $table->foreign('agricultural_activity_id', 'fk_agricultural_activity_job_ad_1_idx')
                 ->references('id')->on('agricultural_activities')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
 
-            $table->foreign('job_ad_id', 'fk_agricultural_activity_job_ad_2_idx')
-                ->references('id')->on('job_ads')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
+
         });
     }
 

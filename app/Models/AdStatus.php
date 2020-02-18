@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $name
- * @property Research[] $researches
- * @property AttributionAd[] $attributionAds
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AttributionAd[] $attributionAds
  * @property-read int|null $attribution_ads_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $researches
  * @property-read int|null $researches_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdStatus newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdStatus newQuery()

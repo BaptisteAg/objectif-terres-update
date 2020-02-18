@@ -7,21 +7,17 @@ use App\Http\Requests\Ads\AdRequest;
 use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
 use App\Models\BuildingType;
-use App\Models\City;
 use App\Models\EducationLevel;
 use App\Models\InstallationType;
-use App\Models\JobStatus;
+use App\Models\JobOfferType;
 use App\Models\OfferGenre;
 use App\Models\PriceRange;
-use App\Models\ProductionGenre;
 use App\Models\Requirement;
 use App\Models\SurfaceRange;
 use App\Repositories\FavoriteAds\FavoriteAdRepository;
 use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
@@ -52,7 +48,7 @@ class AdsController extends Controller
 		$priceRanges = PriceRange::all();
 		$installationTypes = InstallationType::all();
 		$bioCertifications = BioCertification::all();
-		$jobStatus = JobStatus::all();
+		$jobOfferTypes = JobOfferType::all();
 		$offerGenres = OfferGenre::all();
 		$agriculturalActivities = AgriculturalActivity::all();
 		$educationLevels = EducationLevel::all();
@@ -71,7 +67,7 @@ class AdsController extends Controller
 			'surfaceRanges',
 			'priceRanges',
 			'bioCertifications',
-			'jobStatus',
+			'jobOfferTypes',
 			'offerGenres',
 			'educationLevels',
 			'productionGenres',
