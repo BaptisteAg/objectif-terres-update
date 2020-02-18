@@ -117,6 +117,7 @@ class AdsController extends Controller
 
 		$userMessage = null;
         $favoriteAdAlreadyExist = false;
+        $threadAlreadyExist = [];
 
 		if (Auth::user()) {
 			//TODO if the user connected has send a response to an ad, get the first message

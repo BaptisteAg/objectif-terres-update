@@ -26,8 +26,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BioCertification whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BioCertification whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property string $icon
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BioCertification whereIcon($value)
  */
 class BioCertification extends Model
 {

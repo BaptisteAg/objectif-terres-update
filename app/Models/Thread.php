@@ -18,6 +18,8 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Ad|null $ad
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Message[] $messageAlreadySended
+ * @property-read int|null $message_already_sended_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Message[] $messages
  * @property-read int|null $messages_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Message[] $unreadMessages

@@ -25,10 +25,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property string $land_offer_label
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandOfferAd[] $landOfferAds
- * @property-read int|null $land_offer_ads_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereLandOfferLabel($value)
  */
 class OfferGenre extends Model
 {

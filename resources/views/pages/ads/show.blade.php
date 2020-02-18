@@ -1,7 +1,7 @@
 @extends('default')
 
 @section('title')
-    {{ $ad->jobSeekAd->title }}
+    {{ $ad->title }}
 @endsection
 
 @section('head-script')

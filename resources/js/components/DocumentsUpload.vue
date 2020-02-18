@@ -23,10 +23,8 @@
             :duplicate-check="true"
             :use-custom-slot="true"
             @vdropzone-sending-multiple="onBeforeDocumentsUpload"
-
             @vdropzone-success-multiple="onSuccessDocumentsUpload"
             @vdropzone-removed-file="onRemoveUploadedDocument">
-            @vdropzone-success-multiple="onSuccessDocumentsUpload">
 
         <div class="dropzone-custom-content">
             <div class="subtitle">Cliquez ici pour déposer des fichiers</div>
