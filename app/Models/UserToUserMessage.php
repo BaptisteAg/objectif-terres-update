@@ -8,9 +8,8 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\UserToUserMessage
  *
  * @property int $id
- * @property string $user_id
+ * @property int $user_id
  * @property string $content
- * @property User $user
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserToUserMessage newModelQuery()
@@ -19,8 +18,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserToUserMessage whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserToUserMessage whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserToUserMessage whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserToUserMessage whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserToUserMessage whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserToUserMessage whereUserId($value)
  * @mixin \Eloquent
  */
 class UserToUserMessage extends Model

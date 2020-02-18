@@ -1,6 +1,6 @@
 <div class="field">
     <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
-           data-tooltip="15mo maximum par document. Un seul PDF est autorisé. Formats acceptés : .pdf, .doc, .docx, .jpg, .png">
+           data-tooltip="15mo maximum par document. Un seul PDF est autorisé. Formats acceptés : PDF, Microsoft Word, images">
         Documents
         <i class="fas fa-info-circle has-text-info"></i><br>
         <span style="font-weight:normal">

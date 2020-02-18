@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateJobStatusesTable extends Migration
+class CreateJobOfferTypesTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $tableName = 'job_statuses';
+    public $tableName = 'job_offer_types';
 
     /**
      * Run the migrations.
-     * @table job_statuses
+     * @table job_offer_types
      *
      * @return void
      */

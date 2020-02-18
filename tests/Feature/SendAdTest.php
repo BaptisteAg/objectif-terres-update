@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Ad;
-use App\Models\JobAd;
+use App\Models\JobOfferAd;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -39,7 +39,7 @@ class ExampleTest extends TestCase
         $paramsJob = [
 
         ];
-        $job = new JobAd($paramsJob);
+        $job = new JobOfferAd($paramsJob);
 
 
 //        $this->assertNotEmpty($ad->id);

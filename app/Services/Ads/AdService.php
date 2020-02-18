@@ -1,6 +1,8 @@
 <?php namespace App\Services\Ads;
 
 use App\Repositories\Ads\AdRepository;
+use App\Repositories\Ads\JobOfferAdRepository;
+use App\Repositories\Ads\JobSeekAdRepository;
 use App\Repositories\Ads\LandOfferAdRepository;
 use App\Repositories\Ads\LandSeekAdRepository;
 use App\Repositories\Ads\ProductionGenreRepository;
@@ -28,8 +30,16 @@ class AdService
      * @var ProductionGenreRepository
      */
     protected $productionGenreRepository;
+    /**
+     * @var JobOfferAdRepository
+     */
+    protected $jobOfferAdRepository;
+    /**
+     * @var JobSeekAdRepository
+     */
+    protected $jobSeekAdRepository;
 
-	/**
+    /**
 	 * AdService constructor.
 	 * @param AdRepository $repository
 	 * @param LandSeekAdRepository $landSeekdAdRepository
@@ -40,11 +50,15 @@ class AdService
         AdRepository $repository,
         LandSeekAdRepository $landSeekdAdRepository,
         LandOfferAdRepository $landOfferAdRepository,
+        JobOfferAdRepository $jobOfferAdRepository,
+        JobSeekAdRepository $jobSeekAdRepository,
         ProductionGenreRepository $productionGenreRepository
     ) {
         $this->repository = $repository;
         $this->landSeekAdRepository = $landSeekdAdRepository;
         $this->landOfferAdRepository = $landOfferAdRepository;
+        $this->jobOfferAdRepository = $jobOfferAdRepository;
+        $this->jobSeekAdRepository = $jobSeekAdRepository;
         $this->productionGenreRepository = $productionGenreRepository;
     }
 
@@ -57,16 +71,22 @@ class AdService
         $ad =  DB::transaction(function() use($data) {
             $ad = $this->repository->create($data);
 
+            //dd($data);
             $adData = $data[$data["ad_type"]];
             $adData["ad_id"] = $ad->id;
 
-            //dd($data);
 
             if ($data["ad_type"] === "land_seek") {
                 $landSeekAd = $this->landSeekAdRepository->create($adData);
             }
             else if ($data["ad_type"] === "land_offer") {
                 $landOfferAd = $this->landOfferAdRepository->create($adData);
+            }
+            else if ($data["ad_type"] === "job_offer") {
+                $jobOfferAd = $this->jobOfferAdRepository->create($adData);
+            }
+            else if ($data["ad_type"] === "job_seek") {
+                $jobSeekAd = $this->jobSeekAdRepository->create($adData);
             }
 
             return $ad;

@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $price
- * @property LandSeekAd[] $landSeekAds
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandSeekAd[] $landSeekAds
  * @property-read int|null $land_seek_ads_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PriceRange newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PriceRange newQuery()

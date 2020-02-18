@@ -76,7 +76,7 @@
 				</vue-threads>
 			</div>
 		@endif
-	@else
+	@elseif(count($threadAlreadyExist) > 0)
 		<div id="messages-display" class="content">
 			<h3 class="title is-3 has-text-link has-text-centered">Vos messages reçu pour votre annonce</h3>
 		</div>

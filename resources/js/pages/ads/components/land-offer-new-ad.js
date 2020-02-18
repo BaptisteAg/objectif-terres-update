@@ -1,5 +1,5 @@
 import FormNewAdMixin from "./mixins/form-new-ad-mixin";
-import {maxValue, maxLength, minLength, numeric, required, requiredIf} from 'vuelidate/lib/validators'
+import {maxLength, maxValue, minLength, required} from 'vuelidate/lib/validators'
 import TextAreaCounter from "../../../components/TextAreaCounter";
 import Autocomplete from '../../../components/Autocomplete'
 import MultiSelect from "../../../components/MultiSelect";
@@ -23,6 +23,7 @@ export default {
         return {
             formInput: {
                 selectedZones: hasOld ? v.selected_zones : [],
+
                 surface: hasOld ? v.land_offer.surface : '',
                 sauDescription: hasOld ? v.land_offer.sau_description : '',
                 productionGenres: hasOld ? v.land_offer.production_genres : [],

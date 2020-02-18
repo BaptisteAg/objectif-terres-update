@@ -1,15 +1,7 @@
 @extends('default')
 
 @section('title')
-    @if($ad->ad_type === 'landSeek')
-        {{ $ad->landSeekAd->title }}
-    @endif
-    @if($ad->ad_type === 'landOffer')
-        {{ $ad->landOfferAd->title }}
-    @endif
-    @if($ad->ad_type === 'jobAd')
-        {{ $ad->jobOfferAd->title }}
-    @endif
+    {{ $ad->title }}
 @endsection
 
 @section('head-script')
@@ -23,8 +15,11 @@
 	@if($ad->ad_type === 'landOffer')
 		@include('pages.ads.partials.landOffer.landOfferShow')
 	@endif
-	@if($ad->ad_type === 'jobAd')
-		@include('pages.ads.partials.jobAd.jobAdShow')
+	@if($ad->ad_type === 'jobOffer')
+		@include('pages.ads.partials.jobOffer.jobOfferAdShow')
+	@endif
+	@if($ad->ad_type === 'jobSeek')
+		@include('pages.ads.partials.jobOffer.jobSeekAdShow')
 	@endif
 @endsection
 
@@ -78,5 +73,4 @@
         });
 
 	</script>
-
 @endsection

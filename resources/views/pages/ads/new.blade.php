@@ -1,6 +1,6 @@
 @extends('default')
 
-@section('title', 'Déposer une annonce')
+@section('title', 'Publier une nouvelle annonce')
 
 @section('main-content')
     <section style="padding-top:50px;padding-bottom:100px;">
@@ -40,9 +40,8 @@
 
                     {{ csrf_field() }}
 
-                    <ad-type-select
-                            v-model="adTypeSelected"
-                            name="ad_type">
+                    <ad-type-select v-model="adTypeSelected"
+                                    name="ad_type">
                     </ad-type-select>
 
                     <new-land-seek-ad inline-template
@@ -65,13 +64,26 @@
                         @include('pages.ads.partials.landOffer.landOfferNewAd')
                     </new-land-offer-ad>
 
-                <!--    <new-job-offer-ad inline-template
+                    <new-job-seek-ad inline-template
+                                      v-show="adTypeSelected === 'job_seek'"
+                                      :is-input-disabled="adTypeSelected !== 'job_seek'"
+                                      :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
+                                      @input-enabled="setEnabledForm"
+                                      @form-complete="onFormComplete"
+                                      ref="job_seek">
+                        @include('pages.ads.partials.jobSeek.jobSeekNewAd')
+                    </new-job-seek-ad>
+
+                    <new-job-offer-ad inline-template
                                       v-show="adTypeSelected === 'job_offer'"
                                       :is-input-disabled="adTypeSelected !== 'job_offer'"
-                                      :old-values="{{json_encode(old('job_offer', new stdClass))}}"
-                                                      @input-enabled="setEnabledForm">
-                                        @include('pages.ads.partials.jobAd.jobAdNewAd')
-                        </new-job-offer-ad>-->
+                                      :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
+                                      @input-enabled="setEnabledForm"
+                                      @form-complete="onFormComplete"
+                                      ref="job_offer">
+                        @include('pages.ads.partials.jobOffer.jobOfferNewAd')
+                    </new-job-offer-ad>
+
 
                 </form>
             </new-ad>

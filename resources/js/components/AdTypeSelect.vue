@@ -40,11 +40,11 @@
 
     .ad-type {
         width: 300px;
-        line-height: 32px;
+        line-height: 23px;
         border: 1px solid #ccc;
         border-radius: 4px;
         padding: 20px;
-        font-size: 30px;
+        font-size: 20px;
         font-family: $font-family-sans-serif;
         cursor: pointer;
         margin: 0 10px;
@@ -87,10 +87,14 @@
                         label: "Je propose du foncier agricole",
                         icon: "fa-home"
                     },
-                    /*job_offer: {
-                        label: "Opportunité professionnelle",
+                    job_seek: {
+                        label: "Je cherche une opportunité professionnelle",
                         icon: "fa-universal-access"
-                    },*/
+                    },
+                    job_offer: {
+                        label: "Je propose une opportunité professionnelle",
+                        icon: "fa-universal-access"
+                    }
                 }
             },
             currentAdType() {
