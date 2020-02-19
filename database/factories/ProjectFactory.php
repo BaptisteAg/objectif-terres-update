@@ -8,6 +8,6 @@ use Faker\Generator as Faker;
 
 $factory->define(Project::class, function (Faker $faker) {
     return [
-        'project_status_id' => factory(ProjectStatus::class),
+        'project_status_id' => ProjectStatus::all()->random(),
     ];
 });

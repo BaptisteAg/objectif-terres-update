@@ -1,5 +1,6 @@
 <?php namespace App\Services\Ads;
 
+use App\Models\Ad;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Ads\JobOfferAdRepository;
 use App\Repositories\Ads\JobSeekAdRepository;
@@ -136,11 +137,12 @@ class AdService
     }
 
 	/**
-	 * @param int $id
+	 * @param Ad $ad
+	 * @return void
 	 * @throws \Exception
 	 */
-	public function delete(int $id)
+	public function delete(Ad $ad)
 	{
-		return $this->repository->destroy($id);
+		return $this->repository->destroy($ad->id);
 	}
 }

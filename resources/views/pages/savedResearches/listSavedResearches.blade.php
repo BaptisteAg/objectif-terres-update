@@ -136,17 +136,16 @@
 									</a>
 								@endif
 							</div>
-							{{Form::open(['route' => 'researches.destroy'])}}
+							<a href="{{route ('researches.destroy', $research->id)}}">
 							<div class="buttons">
-								<input type="hidden" value="{{$research->id}}" name="research">
-								<button type="submit" class="button is-danger is-normal">
+								<button class="button is-danger is-normal">
 												<span class="icon has-text-danger">
 												 <i class="fas fa-ban has-text-white"></i>
 												</span>
 									<span>Supprimer la recherche</span>
 								</button>
 							</div>
-							{{Form::close()}}
+							</a>
 						</div>
 					</div>
 					<hr class="navbar-divider">

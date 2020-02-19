@@ -49,8 +49,8 @@ Route::prefix('recherches')->name('researches.')->namespace('Researches')->group
 Route::prefix('mon-espace/recherches')->middleware('auth')->name('researches.')->namespace('Researches')->group(function () {
 	Route::post('sauvegarde', 'ResearchesController@store')->name('store');
 	Route::get('liste', 'ResearchesController@show')->name('show');
-	Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
-	Route::get('supprimer-alerte/{id}', 'ResearchesController@deleteAlert')->name('deleteAlert');
+	Route::get('supprimer/{research}', 'ResearchesController@destroy')->name('destroy');
+	Route::get('supprimer-alerte/{research}', 'ResearchesController@deleteAlert')->name('deleteAlert');
 	Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
 });
 
@@ -61,7 +61,7 @@ Route::middleware('auth')->prefix('mon-espace')->name('userAccount.')->namespace
 Route::prefix('mon-espace/annonces-favorites')->middleware('auth')->name('favoriteAds.')->namespace('FavoriteAds')->group(function () {
 	Route::get('sauvegarde', 'FavoriteAdsController@create')->name('create');
 	Route::get('liste', 'FavoriteAdsController@show')->name('show');
-	Route::post('supprimer', 'FavoriteAdsController@destroy')->name('destroy');
+	Route::get('supprimer/{favoriteAd}', 'FavoriteAdsController@destroy')->name('destroy');
 
 });
 

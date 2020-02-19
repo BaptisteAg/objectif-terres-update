@@ -4,6 +4,7 @@
 use App\Models\Ad;
 use App\Models\Department;
 use App\Models\Region;
+use App\Models\Research;
 use App\Repositories\Researches\ResearchRepository;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -138,16 +139,20 @@ class ResearchService
 		return [$ads, $adType, $regions];
 	}
 
-	public function deleteAlert(int $researchId){
-		$research = $this->find($researchId);
+	/**
+	 * @param Research $research
+	 */
+	public function deleteAlert(Research $research){
 		$research->has_alert = 0;
 		$research->save();
 	}
 
-	public function destroy(Request $request)
+	/**
+	 * @param Research $research
+	 * @return mixed
+	 */
+	public function destroy(Research $research)
 	{
-		$researchId = $request->input('research');
-		$research = $this->find($researchId);
-		$research->delete();
+		return $this->repository->delete($research->id);
 	}
 }

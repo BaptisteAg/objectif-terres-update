@@ -25,16 +25,14 @@
 			@endif
 			@isset($favoriteAdAlreadyExist)
 				<p class="control">
-					{{Form::open(['route' => 'favoriteAds.destroy'])}}
-					<input type="hidden" value="{{$favoriteAdAlreadyExist->id}}"
-						   name="favoriteAdId">
-					<button type="submit" class="card-footer-item button is-danger is-light is-fullwidth">
+					<a href="{{route ('favoriteAds.destroy', $favoriteAdAlreadyExist->id)}}">
+					<button class="card-footer-item button is-danger is-light is-fullwidth">
 									 <span class="icon is-small">
 										 <i class="fas fa-trash"></i>
 										</span>
 						<span> Supprimer cette annonce  de vos favoris</span>
 					</button>
-					{{Form::close()}}
+					</a>
 				</p>
 			@else
 				<p class="control">
