@@ -1,10 +1,8 @@
 @extends ('default')
 
-@section ('title', 'Rechercher parmis les annonces posté sur Objectif Terres')
+@section ('title', 'Rechercher parmis les annonces postées sur Objectif Terres')
 
 @section('main-content')
-
-
 	<section class="section">
 		<div class="container">
 			<nav class="level">
@@ -88,7 +86,6 @@
 							{!! Form::close() !!}
 
 						@endguest
-
 					</div>
 				</div>
 			</nav>
@@ -99,11 +96,11 @@
 						@if ($adType === 'landOfferAd')
 							<h1 class="title">Offres foncières</h1>
 						@elseif($adType === 'landSeekAd')
-							<h1 class="title">Demandes de fonciers</h1>
+							<h1 class="title">Recherche de fonciers</h1>
 						@elseif($adType === 'landSeekAd')
 							<h1 class="title">Offres d'emploi</h1>
 						@else
-							<h1 class="title">Demandes d'emploi</h1>
+							<h1 class="title">Recherche d'emploi</h1>
 						@endif
 						<h2 class="subtitle">{{ count($ads) }} annonces trouvées.</h2>
 					</div>
@@ -111,13 +108,9 @@
 				<div class="level-right">
 					<div class="level-item">
 						{!! Form::open(['url' => '']) !!}
-						{!! Form::submit('Tout', ['class' => 'button']) !!}
-						{!! Form::close() !!}
-						{!! Form::open(['url' => '']) !!}
-						{!! Form::submit('Vente', ['class' => 'button']) !!}
-						{!! Form::close() !!}
-						{!! Form::open(['url' => '']) !!}
-						{!! Form::submit('Location', ['class' => 'button']) !!}
+                            {!! Form::submit('Tout', ['class' => 'button']) !!}
+                            {!! Form::submit('Vente', ['class' => 'button']) !!}
+                            {!! Form::submit('Location', ['class' => 'button']) !!}
 						{!! Form::close() !!}
 					</div>
 					<div class="level-item">
@@ -136,40 +129,56 @@
 				@foreach($ads as $ad)
 					<div class="columns is-gapless">
 						<div class="column is-two-fifths">
-							<a href="{{route("ads.show", $ad->id)}}">
-								<figure><img src="https://picsum.photos/500/300" alt="Placeholder image"></figure>
-							</a>
-							<div>
-								{{ $ad->regions->pluck('name')->implode(', ') }}
-							</div>
-							@if($adType === 'landOfferAd')
-								<div><span>{{ $ad->$adType->land->price }}</span> € |
-									<span>{{ $ad->$adType->land->area }}</span> ha
-								</div>
-							@else
-								<div><span></span></div>
-							@endif
+
+                            <a href="{{route("ads.show", $ad->id)}}">
+                                @if($ad->hasImages)
+                                    <figure class="image is-2by1">
+                                        @if($ad->images[0]->path === "0")
+                                            <img src="https://picsum.photos/480/320" alt="picsum">
+                                        @else
+                                            <img src="{{URL::asset($ad->images[0]->path)}}" alt="Placeholder image">
+                                        @endif
+                                    </figure>
+                                @else
+                                    <figure class="image is-2by1">
+                                        <img src="/images/placeholder-ad.png">
+                                    </figure>
+                                @endif
+                            </a>
 						</div>
-						<div class="column">
-							<nav class="level">
-								<div class="level-left">
-									<div class="level-item">
-										<span>Partenaire Objectif Terre</span>
-									</div>
-								</div>
-								<div class="level-right">
-									<div class="level-item">
-										@if($ad->is_today)
-											<span>Publié aujourd'hui</span>
-										@else
-											<span>Publié {{ $ad->created_at_diff }}</span>
-										@endif
-									</div>
-								</div>
-							</nav>
-							<div></div>
-							<a href="{{route("ads.show", $ad->id)}}"><h1 class="title">{{ $ad->$adType->title }}</h1>
+						<div class="column" style="margin-left:20px">
+							<a href="{{route("ads.show", $ad->id)}}"><h1 class="title">{{ $ad->title }}</h1>
 							</a>
+
+
+                            <nav class="level">
+                                <div class="level-left">
+                                    <div class="level-item" style="display:none">
+                                        <span>Partenaire Objectif Terre</span>
+                                    </div>
+                                    <div>
+                                        {{ $ad->regions->pluck('name')->implode(', ') }}
+                                    </div>
+                                </div>
+                                <div class="level-right">
+                                    <div class="level-item">
+                                        @if($ad->is_today)
+                                            <span>Publié aujourd'hui</span>
+                                        @else
+                                            <span>Publié {{ $ad->created_at_diff }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </nav>
+
+                            @if($adType === 'landOfferAd')
+                                <div><span>{{ $ad->landOfferAd->price }}</span> € |
+                                    <span>{{ $ad->landOfferAd->surface }}</span> ha
+                                </div>
+                            @else
+                                <div><span></span></div>
+                            @endif
+
 							<div class="content descritption">
 								<p>{{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</p>
 							</div>
@@ -240,15 +249,14 @@
 				@include('components.sectionOrientationTerreLiens')
 			@endif
 
-			@include('components.partnering')
-			@include('components.supportTerreLiens')
 
 		</div>
 	</section>
+    @include('components.partnering')
+    @include('components.supportTerreLiens')
 @endsection
 
 @section('script')
-
 	<script>
         document.querySelector('a#open-modal').addEventListener('click', function (event) {
             event.preventDefault();
@@ -268,7 +276,5 @@
                 html.classList.remove('is-clipped');
             });
         });
-
 	</script>
-
 @endsection

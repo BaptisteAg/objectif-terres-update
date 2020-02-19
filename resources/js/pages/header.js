@@ -10,17 +10,20 @@ Vue.component('header-page',{
         VueSlider,
         AjaxMultiSelect,
     },
+    props: {
+        searchValues: [Array, Object]
+    },
     data() {
         return {
-            adTypeSelected: 'offer_ads',
-            adCategorySelected: 'land',
+            offerTypeSelected: this.searchValues.offer_type || 'offer',
+            adCategorySelected: this.searchValues.ad_category || 'land',
+            selectedRegions: this.searchValues.regions || [],
             isFormOpen : false,
         }
     },
     methods: {
         more_criteria() {
-            this.isFormOpen = (this.isFormOpen === true) ? false : true;
-
+            this.isFormOpen = this.isFormOpen !== true;
         }
 
     }

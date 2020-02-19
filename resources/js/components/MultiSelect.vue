@@ -17,12 +17,12 @@
                      :max-height="height">
 
         </multiselect>
-        <input type="hidden" v-for="id in value" :value="id" :name="name">
+        <input type="hidden" v-for="option in selected" :value="option.id" :name="name">
 
         <template v-if="showIcons">
             <template v-for="option in selected">
                 <span class="biocertification-icon" v-if="option.icon">
-                    <img :src="option.icon">
+                    <img :src="option.icon" :alt="option.name">
                 </span>
             </template>
         </template>
@@ -74,11 +74,16 @@
                 default: false
             }
         },
+        data() {
+            return {
+                selectedIds: this.value || []
+            };
+        },
         computed: {
             selected: {
                 get() {
-                    return this.value.map(id =>
-                        this.options.find(option => option.id === id)
+                    return this.selectedIds.map(id =>
+                        this.options.find(option => option.id.toString() === id)
                     )
                 },
                 set(options) {
@@ -98,7 +103,8 @@
 
                     console.log(selectedOptions);
 
-                    this.$emit('input', selectedOptions.map(option => option[this.idProp]));
+                    this.selectedIds = selectedOptions.map(option => option[this.idProp]);
+                    this.$emit('input', this.selectedIds);
                     return selectedOptions;
                 }
             },

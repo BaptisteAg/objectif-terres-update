@@ -92,7 +92,7 @@ class ResearchService
 	{
 		$adTypeInput = $request->input('ad_type');
 		$adCategory = $request->input('ad_category');
-		$idRegions = $request->input('regions_location_researches');
+		$regionIds = $request->input('regions');
 
 		$data = [];
 		foreach ($request->input() as $item => $value) {
@@ -107,8 +107,8 @@ class ResearchService
 			$adType = $adTypeInput;
 		}
 
-		if ($idRegions && !in_array('0', $idRegions)) {
-			$regions = Region::with('ads')->whereIn('id', $idRegions)->get();
+		if ($regionIds && !in_array('0', $regionIds)) {
+			$regions = Region::with('ads')->whereIn('id', $regionIds)->get();
 		} else {
 			$regions = Region::all();
 		}
@@ -126,9 +126,9 @@ class ResearchService
 
 
 //		DB::enableQueryLog();
-//		$ads = Ad::whereHas('locationables', function (Builder $query) use ($idRegions) {
+//		$ads = Ad::whereHas('locationables', function (Builder $query) use ($regionIds) {
 //			$query->where('locationables.locationable_ad_type', Region::class);
-//			foreach ($idRegions as $idRegion) {
+//			foreach ($regionIds as $idRegion) {
 //				$query->orWhere('locationables.locationable_ad_id', $idRegion);
 //			}
 //		})->get();

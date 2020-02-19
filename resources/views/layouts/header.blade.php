@@ -1,5 +1,7 @@
 <header id="vue-header">
-    <header-page id="header-page" inline-template>
+    <header-page id="header-page"
+                 inline-template
+                 :search-values="{{json_encode(request()->all())}}">
         <div>
             <div class="container-custom">
                 <nav class="level">
@@ -29,10 +31,10 @@
                         @else
                             <div class="level-item">
                                 <a href="{{route('userAccount.showAccount')}}">
-						<span class="icon">
-							<i class="far fa-user"></i>
-						</span>
-                                    <span>Mon compte ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
+                                <span class="icon">
+                                    <i class="far fa-user"></i>
+                                </span>
+                                <span>Mon compte ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
                                 </a>
                             </div>
                             <div class="level-item">
@@ -42,13 +44,12 @@
                             </div>
                             <div class="level-item">
 								<span class="notification-container">
-								 <a href="{{route('threads.index')}}">
+								    <a href="{{route('threads.index')}}">
 										<i class="far fa-envelope"></i>
 									</a>
-
-									@if($numberOfUnreadMessages >=0)
-                                        <span class="notification-counter">{{$numberOfUnreadMessages}}</span>
-                                    @endif
+                                    <span class="notification-counter">
+                                        {{$numberOfUnreadMessages}}
+                                    </span>
 								</span>
                             </div>
                             <div class="level-item">
@@ -80,51 +81,52 @@
                             </figure>
                         </a>
                     </div>
-                    <div class="column is-2">
+                    <div class="column is-4">
                         <a href="{{url ('/')}}">
                             <h3 class="title">Objectif Terres</h3>
                         </a>
                         <h4 class="subtitle">Réalisez votre projet agricole.</h4>
                         <p>Une initiative Terre de Liens</p>
                     </div>
-                    <div class="column is-2">
-                        <p>Je cherche</p>
+                    <div class="column is-2" style="padding-top: 38px;">
+                        <div style="display:inline-block; padding-top: 7px;">
+                            <p>Je</p>
+                        </div>
                         <div class="select">
                             <label for="select"></label>
-                            {{ Form::select('ad_type',
-                                            ['offer_ads' => 'Des offres', 'seek_ads' => 'Des demandes'],
-                                            null,
-                                            ['v-model' => 'adTypeSelected']) }}
+                            {{ Form::select('offer_type',
+                                ['offer' => 'Cherche ', 'seek' => 'Propose'],
+                                null,
+                                ['v-model' => 'offerTypeSelected']
+                            ) }}
+                        </div>
+
+                        <div class="select">
+                            <label for="select"></label>
+                            {{ Form::select('ad_category',
+                                ['land' => 'une terre ', 'job' => 'un emploi'],
+                                null,
+                                ['v-model' => 'adCategorySelected']
+                            ) }}
                         </div>
                     </div>
-                    <div class="column is-2">
-                        <div class="control">
-                            <label class="radio is-block" for="land">
-                                <input id="land" type="radio" name="ad_category" value="land" checked
-                                       v-model="adCategorySelected">
-                                de terres/ferme
-                            </label>
-                            <label class="radio is-block is-marginless" for="job">
-                                <input id="job" type="radio" name="ad_category" value="job"
-                                       v-model="adCategorySelected">
-                                d'emploi
-                            </label>
+                    <div class="column is-3" style="padding-top: 38px;">
+                        <div style="display:inline-block; padding-top: 2px;">
+                            <p>ici : </p>
                         </div>
-                    </div>
-                    <div class="column is-3">
-                        <p>Où</p>
-                        <div>
+                        <div style="display:inline-block">
                             <multi-select
-                                    :options="{{ json_encode(array_merge([(object)['id' => '0','name' => 'Toutes les régions']], json_decode($regions))) }}"
-                                    :multiple="true"
-                                    name="regions_location_researches[]"
-                                    selected-count-text="région(s) sélectionnée(s)"
-                                    placeholder="Choississez une/des région(s)">
+                                :options="{{ $regionsWithAll }}"
+                                v-model="selectedRegions"
+                                :multiple="true"
+                                name="regions[]"
+                                selected-count-text="région(s) sélectionnée(s)"
+                                placeholder="Choississez une/des région(s)">
                             </multi-select>
                         </div>
-                        {!! Form::submit('Rechercher', ['class' => 'button']) !!}
                     </div>
-                    <div class="column is-2">
+                    <div class="column is-2" style="padding-top: 38px;">
+                        {!! Form::submit('Rechercher', ['class' => 'button']) !!}<br>
                         <a href="#" @click="more_criteria()">Plus de critère</a>
                     </div>
 
@@ -187,27 +189,27 @@
                         <div class="tabs is-centered is-medium">
                             <ul>
                                 <li class="{{ Route::current()->getName() === 'ads.list' ? 'is-active' : '' }}"><a
-                                            href="{{route ('ads.list')}}"><span class="icon is-small">
+                                        href="{{route ('ads.list')}}"><span class="icon is-small">
 											<i class="far fa-newspaper" aria-hidden="true"></i></span>
                                         <span>Mes annonces</span>
                                     </a>
                                 </li>
                                 <li class="{{Route::current()->getName() === 'researches.show' ? 'is-active' : '' }}"><a
-                                            href="{{route('researches.show')}}"><span class="icon is-small">
+                                        href="{{route('researches.show')}}"><span class="icon is-small">
 											<i class="fas fa-save" aria-hidden="true"></i></span>
                                         <span>Mes recherches sauvegardées</span>
                                     </a>
                                 </li>
                                 <li class="{{ Route::current()->getName() == 'favoriteAds.show' ? 'is-active' : '' }}">
                                     <a
-                                            href="{{route('favoriteAds.show')}}"><span class="icon is-small">
+                                        href="{{route('favoriteAds.show')}}"><span class="icon is-small">
 											<i class="fas fa-star" aria-hidden="true"></i></span>
                                         <span>Mes annonces favorites</span>
                                     </a>
                                 </li>
                                 <li class="{{ Route::current()->getName() == 'threads.index' ? 'is-active' : '' }}">
                                     <a
-                                            href="{{route('threads.index')}}"><span class="icon is-small">
+                                        href="{{route('threads.index')}}"><span class="icon is-small">
 											<i class="fas fa-comments"></i></span>
                                         <span>Ma messagerie</span>
                                     </a>
