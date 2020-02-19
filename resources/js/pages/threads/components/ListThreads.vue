@@ -1,7 +1,13 @@
 <template >
     <div >
         <div class="content" v-if="isDisplay">
-            <p>{{numberUnreadMessages}} message non lus</p>
+            <template v-if="numberUnreadMessages <=1">
+                <p>{{numberUnreadMessages}} message non lus</p>
+            </template>
+            <template v-else>
+                <p>{{numberUnreadMessages}} messages non lus</p>
+            </template>
+
         </div>
         <aside class="menu" >
             <p class="menu-label" v-if="isDisplay">
