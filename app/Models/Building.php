@@ -10,12 +10,12 @@ use Illuminate\Database\Eloquent\Relations\hasOne;
  * App\Models\Building
  *
  * @property int $id
- * @property int $number
- * @property float $surface
- * @property float $price
- * @property LandOfferAd $landOfferAds
+ * @property int|null $number
+ * @property string|null $surface
+ * @property int|null $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\LandOfferAd $landOfferAd
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OfferGenre[] $offerGenres
  * @property-read int|null $offer_genres_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building newModelQuery()
@@ -28,7 +28,6 @@ use Illuminate\Database\Eloquent\Relations\hasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereSurface($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property-read \App\Models\LandOfferAd $landOfferAd
  */
 class Building extends Model
 {

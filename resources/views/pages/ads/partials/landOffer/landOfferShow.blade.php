@@ -181,10 +181,10 @@
                 <p> {!! nl2br(e($ad->landOfferAd->test_description))!!}</p>
             </div>
         @endif
+
         <div class="section">
             @include('pages.ads.partials.threadsDisplay')
         </div>
-
     </div>
 
 </section>

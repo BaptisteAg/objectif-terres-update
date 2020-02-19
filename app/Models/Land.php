@@ -9,13 +9,13 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\Land
  *
  * @property int $id
- * @property float $area
- * @property float $price
- * @property string $land_availability
- * @property string $land_transfer_deadline
- * @property LandOfferAd $landOfferAds
+ * @property string $area
+ * @property int|null $price
+ * @property string|null $land_availability
+ * @property string|null $land_transfer_deadline
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\LandOfferAd $landOfferAds
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OfferGenre[] $offerGenres
  * @property-read int|null $offer_genres_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land newModelQuery()

@@ -52,7 +52,7 @@
 									@elseif($ad->jobOfferAd)
 										<h1 class="title">
 											<a href="{{route("ads.show", $ad->id)}}">
-												{{$ad->jobAd->title}}
+												{{$ad->jobOfferAd->title}}
 											</a>
 										</h1>
 										<p><span class="has-text-grey-dark">Type d'annonce :</span>
@@ -60,7 +60,7 @@
 									@elseif($ad->jobSeekAd)
 										<h1 class="title">
 											<a href="{{route("ads.show", $ad->id)}}">
-												{{$ad->jobAd->title}}
+												{{$ad->jobOfferAd->title}}
 											</a>
 										</h1>
 										<p><span class="has-text-grey-dark">Type d'annonces  :</span>

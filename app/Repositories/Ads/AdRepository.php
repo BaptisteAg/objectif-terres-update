@@ -118,6 +118,21 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     private function getEagerLoading()
     {
         return [
+            'adMessages',
+            'documents',
+
+            'cities',
+            'cities.department',
+            'cities.department.region',
+            'departments',
+            'departments.region',
+            'regions',
+
+            'threads',
+            'threads.messages',
+            'threads.users',
+            'threads.messages.senderUser',
+
             'landSeekAd',
             'landSeekAd.buildings',
             'landSeekAd.buildings.buildingType',
@@ -129,19 +144,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'landOfferAd.bioCertifications',
 			'landOfferAd.offerGenres',
 
-			'jobAd',
-			'cities',
-			'cities.department',
-			'cities.department.region',
-			'departments',
-			'departments.region',
-			'regions',
-			'adMessages',
-            'documents',
-			'threads',
-			'threads.messages',
-			'threads.users',
-			'threads.messages.senderUser',
+			'jobOfferAd',
+			'jobOfferAd.educationLevels',
+			'jobOfferAd.jobOfferTypes',
         ];
     }
 }

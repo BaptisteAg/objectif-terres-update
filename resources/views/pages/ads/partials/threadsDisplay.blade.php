@@ -1,6 +1,6 @@
 @auth
 	@if( $ad->user_pp_id !== auth()->user()->id)
-		@if(count($threadAlreadyExist) <= 0)
+		@if(count($threads) <= 0)
 			<div class="content">
 				<div class="columns is-mobile is-centered">
 					<div class="column is-half">
@@ -34,7 +34,7 @@
 						inline-template
 						v-bind:is-display-in-thread-page=false
 						v-bind:is-user-ad-owner=false
-						init-thread='{{ $threadAlreadyExist[0]->id }}'
+						init-thread='{{ $threads[0]->id }}'
 						:user-logged-id="{{auth()->id()}}"
 				>
 					<div class="columns is-centered " v-if="initialLoading === true">
@@ -46,7 +46,7 @@
 					<div class="columns" v-else-if="initialLoading === false">
 						<div class="column is-one-quarter" v-if="isUserAdOwner">
 							<list-threads
-									:threads="{{json_encode($threadAlreadyExist)}}"
+									:threads="{{json_encode($threads)}}"
 									:number-of-unread-messages="0"
 									v-model="messages"
 									v-bind:is-display="isDisplay"
@@ -78,7 +78,7 @@
 			</div>
 		@endif
 	@else
-		@if(count($threadAlreadyExist) <= 0)
+		@if(count($threads) <= 0)
 			<div class="content">
 				<div class="columns is-mobile is-centered">
 					<div class="column is-half">
@@ -104,7 +104,7 @@
 						inline-template
 						v-bind:is-display-in-thread-page=false
 						v-bind:is-user-ad-owner=true
-						init-thread='{{ $threadAlreadyExist[0]->id }}'
+						init-thread='{{ $threads[0]->id }}'
 						:user-logged-id="{{auth()->id()}}"
 				>
 					<div class="columns is-centered " v-if="initialLoading === true">
@@ -116,7 +116,7 @@
 					<div class="columns" v-else-if="initialLoading === false">
 						<div class="column is-one-quarter" v-if="isUserAdOwner">
 							<list-threads
-									:threads="{{json_encode($threadAlreadyExist)}}"
+									:threads="{{json_encode($threads)}}"
 									:number-of-unread-messages="0"
 									v-model="messages"
 									v-bind:is-display="isDisplay"

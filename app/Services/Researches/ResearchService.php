@@ -102,7 +102,7 @@ class ResearchService
 		if ($adCategory === 'land') {
 			$adType = ($adTypeInput === 'offer_ads') ? 'landOfferAd' : 'landSeekAd';
 		} else if ($adCategory === 'offer') {
-			$adType = ($adTypeInput === 'offer_ads') ? 'jobOfferAd' : 'jobSeekAd';
+			$adType = ($adTypeInput === 'offer_ads') ? 'jobOffer' : 'jobSeekAd';
 		} else {
 			$adType = $adTypeInput;
 		}

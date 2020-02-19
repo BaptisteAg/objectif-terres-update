@@ -174,6 +174,7 @@
             </div>
         @endif
 
+
         <div class="section">
             @include('pages.ads.partials.threadsDisplay')
         </div>

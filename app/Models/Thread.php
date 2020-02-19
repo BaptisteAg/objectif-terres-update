@@ -17,8 +17,13 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property int|null $ad_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Ad|null $ads
- * @property-read \App\Models\Message $messages
+ * @property-read \App\Models\Ad|null $ad
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Message[] $messageAlreadySended
+ * @property-read int|null $message_already_sended_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Message[] $messages
+ * @property-read int|null $messages_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Message[] $unreadMessages
+ * @property-read int|null $unread_messages_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread newModelQuery()
@@ -31,10 +36,6 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property-read \App\Models\Ad|null $ad
- * @property-read int|null $messages_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Message[] $unreadMessages
- * @property-read int|null $unread_messages_count
  */
 class Thread extends Model implements HasPresenter
 {

@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\SurfaceRange
  *
  * @property int $id
- * @property string $surface
- * @property LandSeekAd[] $landSeekAd
+ * @property string $label
+ * @property string $value
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandSeekAd[] $landSeekAds
@@ -19,13 +19,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange whereSurface($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property string $label
- * @property string $value
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange whereLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange whereValue($value)
+ * @mixin \Eloquent
  */
 class SurfaceRange extends Model
 {

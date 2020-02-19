@@ -1,6 +1,7 @@
 import LandSeekNewAd from './components/land-seek-new-ad'
 import LandOfferNewAd from './components/land-offer-new-ad'
 import JobOfferNewAd from './components/job-offer-new-ad'
+import JobSeekNewAd from './components/job-seek-new-ad'
 import AdTypeSelect from '../../components/AdTypeSelect'
 
 import Vue from 'vue'
@@ -10,6 +11,7 @@ Vue.component('new-ad', {
         'new-land-seek-ad': LandSeekNewAd,
         'new-land-offer-ad': LandOfferNewAd,
         'new-job-offer-ad': JobOfferNewAd,
+        'new-job-seek-ad': JobSeekNewAd,
         AdTypeSelect
     },
     props: {

@@ -8,23 +8,22 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\AttributionAd
  *
  * @property int $id
- * @property int $ad_status_id
- * @property int $lead_type_id
- * @property int $refusal_type_id
  * @property int|null $user_owner_id
  * @property int $user_admin_id
- * @property boolean $to_call_back
- * @property string $short_description
- * @property string $archived_at
- * @property AdStatus $adStatus
- * @property PpType $ppType
- * @property RefusalType $refusalType
- * @property Ad $ads
- * @property User $userOwner
- * @property User $userAdmin
+ * @property int|null $to_call_back
+ * @property string|null $short_description
+ * @property int $ad_status_id
  * @property int|null $pp_type_id
+ * @property int|null $refusal_type_id
+ * @property string|null $archived_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\AdStatus $adStatus
+ * @property-read \App\Models\Ad $ads
+ * @property-read \App\Models\PpType $ppType
+ * @property-read \App\Models\RefusalType|null $refusalType
+ * @property-read \App\Models\User $userAdmin
+ * @property-read \App\Models\User|null $userOwner
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd query()
@@ -34,11 +33,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd wherePpTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereRefusalTypeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserAdminId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserOwnerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereShortDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereToCallBack($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserAdminId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserOwnerId($value)
  * @mixin \Eloquent
  */
 class AttributionAd extends Model

@@ -26,7 +26,7 @@ namespace App\Models{
  * @property Project $project
  * @property AdMessage[] $adMessages
  * @property AdNote[] $adNotes
- * @property JobAd $jobAds
+ * @property JobOfferAd $jobAds
  * @property LandOfferAd $landOfferAds
  * @property LandSeekAd $landSeekAds
  * @property PpToUserMessage[] $ppToUserMessages
@@ -143,7 +143,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property string $name
- * @property JobAd[] $jobAds
+ * @property JobOfferAd[] $jobAds
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read int|null $job_ads_count
@@ -323,7 +323,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property string $name
- * @property JobAd[] $jobAds
+ * @property JobOfferAd[] $jobAds
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read int|null $job_ads_count
@@ -428,19 +428,19 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read int|null $agricultural_activity_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereAdId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereEducationLevelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereExperienceFarming($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereIsBeneficiary($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereIsOffer($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereJobStatusId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobAd whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereAdId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereEducationLevelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereExperienceFarming($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereIsBeneficiary($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereIsOffer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereJobStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereUpdatedAt($value)
  */
 	class JobAd extends \Eloquent {}
 }
@@ -451,7 +451,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property string $name
- * @property JobAd[] $jobAds
+ * @property JobOfferAd[] $jobAds
  * @property Research[] $researches
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at

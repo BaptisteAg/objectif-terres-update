@@ -12,33 +12,27 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * App\Models\Message
  *
  * @property int $id
- * @property int $sender_user_id
- * @property int $receiver_user_id
  * @property string $content
- * @property string $thread_id
- * @property User $senderUser
- * @property User $receiverUser
+ * @property int $is_read
+ * @property int $thread_id
+ * @property int $sender_user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Document[] $documents
+ * @property-read int|null $documents_count
+ * @property-read \App\Models\User $senderUser
+ * @property-read \App\Models\Thread $thread
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereAdId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereUserReceiverId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereUserSenderId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Document[] $documents
- * @property-read int|null $documents_count
- * @property-read \App\Models\Thread $thread
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereReceiverUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereIsRead($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereSenderUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereThreadId($value)
- * @property int $is_read
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereIsRead($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Message extends Model implements HasPresenter
 {

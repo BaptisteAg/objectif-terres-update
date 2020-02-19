@@ -6,7 +6,7 @@ use App\Models\AdNote;
 use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
 use App\Models\FavoriteAd;
-use App\Models\JobAd;
+use App\Models\JobOfferAd;
 use App\Models\LandOfferAd;
 use App\Models\LandSeekAd;
 use App\Models\Message;
@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
                 InstallationTypeSeeder::class,
                 ProductionGenreSeeder::class,
                 BioCertificationSeeder::class,
-                JobStatusSeeder::class,
+                JobOfferTypeSeeder::class,
                 OfferGenreSeeder::class,
                 EducationLevelSeeder::class,
             ]);
@@ -88,8 +88,8 @@ class DatabaseSeeder extends Seeder
                     $landSeekAd->ad_id = array_shift($adIds);
                     $landSeekAd->save();
                 });
-                factory(JobAd::class, 10)->create()->each(function (JobAd $jobAd) use(&$adIds) {
-                    $jobAd->agriculturalActivity()->save(factory(AgriculturalActivity::class)->make());
+                factory(JobOfferAd::class, 10)->create()->each(function (JobOfferAd $jobAd) use(&$adIds) {
+                    //$jobAd->agriculturalActivity()->save(factory(AgriculturalActivity::class)->make());
                     $jobAd->ad_id = array_shift($adIds);
                     $jobAd->save();
                 });
