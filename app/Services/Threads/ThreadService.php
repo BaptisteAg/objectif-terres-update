@@ -57,6 +57,14 @@ class ThreadService
 
 	}
 
+	public function findThreadsByAd(int $adId)
+	{
+		/** @var Thread $thread */
+		$threads = $this->repository->findThreadsByAdId($adId);
+		return $threads;
+
+	}
+
 
 	public function findThreadAlreadyExist(int $adId)
 	{
@@ -99,26 +107,6 @@ class ThreadService
 			}
 		}
 		$this->messagesRepository->updateMany($idsToUpdate, ["is_read" => 1]);
-	}
-
-	/**
-	 * @param int $threadId
-	 * @param int $userId
-	 * @return mixed
-	 */
-	public function findInterlocutorsByThread(int $threadId, int $userId){
-		$messages = $this->repository->findAllByThread($threadId);
-		$interlocutors= [];
-		foreach ($messages as $message){
-			if ($message->sender_user_id !== $userId){
-				array_push($interlocutors, $message->sender_user_id);
-			}else{
-				array_push($interlocutors, $message->receiver_user_id);
-			}
-			array_unique($interlocutors);
-		}
-		return $interlocutors;
-
 	}
 
 	/**

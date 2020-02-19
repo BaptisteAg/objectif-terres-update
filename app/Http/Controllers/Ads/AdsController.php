@@ -117,20 +117,23 @@ class AdsController extends Controller
 
 		$userMessage = null;
         $favoriteAdAlreadyExist = false;
-        $threadAlreadyExist = [];
+        $threads = [];
 
 		if (Auth::user()) {
-			//TODO if the user connected has send a response to an ad, get the first message
+			if (auth()->user()->id === $ad->user_pp_id){
+				$threads= $this->threadService->findThreadsByAd($adId);
+			}else{
+				$threads = $this->threadService->findThreadAlreadyExist($adId);
+				$data = array(
+					"ad_id" => $adId,
+					"user_id" => auth()->user()->id,
+				);
+				$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
+			}
 
-			$threadAlreadyExist = $this->threadService->findThreadAlreadyExist($adId);
-			$data = array(
-				"ad_id" => $adId,
-				"user_id" => auth()->user()->id,
-			);
-			$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
 		}
 
-		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist', 'threadAlreadyExist'));
+		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist', 'threads'));
 	}
 
     /**

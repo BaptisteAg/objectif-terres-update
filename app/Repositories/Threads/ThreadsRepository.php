@@ -49,6 +49,21 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 	}
 
 	/**
+	 * @param int $adId
+	 * @return Thread
+	 */
+	public function findThreadsByAdId(int $adId)
+	{
+		/** @var Thread $model */
+		$model = $this->entity
+			->where(['ad_id' => $adId])
+			->with($this->getEagerLoading())
+			->get();
+
+		return $model;
+	}
+
+	/**
 	 * @param string $threadId
 	 *
 	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
@@ -58,9 +73,9 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 		/** @var Thread $model */
 		$model = $this->entity
 			->where(['ad_id' => $adId])
-			->whereHas('messages',function(Builder $query){
-				$query->where('sender_user_id', '=',auth()->id() );
-			} )
+			->whereHas('messages', function (Builder $query) {
+				$query->where('sender_user_id', '=', auth()->id());
+			})
 			->with($this->getEagerLoading())
 			->get();
 
