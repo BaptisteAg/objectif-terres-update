@@ -9,7 +9,7 @@ class HomePageLoggedController extends Controller
 
 	public function index()
 	{
-		return view('pages.account.showAccount');
+		return view('pages.auth.index');
 
 	}
 }

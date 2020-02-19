@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -52,5 +53,13 @@ class LoginController extends Controller
 		}
 
 		return view('auth.login');
+	}
+
+	public function authenticated(Request $request, $user)
+	{
+		if($user->email === 'moderateur@test.fr'){
+			session()->put('isModerator', 1);
+			$this->redirectTo ='/mon-espace-moderateur';
+		}
 	}
 }

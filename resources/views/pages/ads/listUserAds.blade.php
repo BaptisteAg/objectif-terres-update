@@ -115,7 +115,7 @@
 											<span class="icon is-small">
 											<i class="fas fa-eye"></i>
 											</span>
-											<span>Voir l'annonce l'annonce</span>
+											<span>Voir l'annonce</span>
 										</button>
 
 									</a>

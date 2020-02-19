@@ -55,7 +55,7 @@ Route::prefix('mon-espace/recherches')->middleware('auth')->name('researches.')-
 });
 
 Route::middleware('auth')->prefix('mon-espace')->name('userAccount.')->namespace('HomePage')->group(function () {
-	Route::get('/', 'HomePageLoggedController@index')->name('showAccount');
+	Route::get('/', 'HomePageLoggedController@index')->name('index');
 });
 
 Route::prefix('mon-espace/annonces-favorites')->middleware('auth')->name('favoriteAds.')->namespace('FavoriteAds')->group(function () {
@@ -82,7 +82,11 @@ Route::prefix('locations')->namespace('Locationables')->group(function () {
     });
 });
 
-// Authentication Routes...
+Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderator.')->namespace('HomePage')->group(function () {
+	Route::get('/', 'HomePageModeratorController@index')->name('index');
+});
+
+// Authentication Routes for authentification
 Route::get('connexion', 'Auth\LoginController@showLoginForm')->name('signIn');
 Route::post('login', 'Auth\LoginController@login')->name('login');
 Route::post('deconnexion', 'Auth\LoginController@logout')->name('logout');

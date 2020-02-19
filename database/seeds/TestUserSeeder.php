@@ -14,10 +14,16 @@ class TestUserSeeder extends Seeder
 		factory(\App\Models\User::class, 20)->create();
 
 		\App\Models\User::create([
-		    'email' => "test@test.com",
+		    ['email' => "test@test.com",
             'password' => Hash::make('test'),
             'first_name' => 'Test',
-            'name' => 'Test'
+            'name' => 'Test',],
+			[
+				'email' => "moderateur@test.fr",
+				'password' => Hash::make('test'),
+				'first_name' => 'Test',
+				'name' => 'Moderateur',]
+
         ]);
 	}
 }
