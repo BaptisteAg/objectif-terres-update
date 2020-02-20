@@ -65,6 +65,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserAdminId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserPpId($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Thread $threadAlreadyExist
  */
 class Ad extends Model implements HasPresenter
 {

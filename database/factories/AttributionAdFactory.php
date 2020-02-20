@@ -15,7 +15,7 @@ $factory->define(AttributionAd::class, function (Faker $faker) {
         'user_admin_id'=> User::all()->random(),
         'to_call_back' => $faker->boolean,
         'short_description' => $faker->text(350),
-        'ad_status_id' => factory(AdStatus::class),
+        'ad_status_id' => AdStatus::all()->random(),
         'pp_type_id' => factory(PpType::class),
         'refusal_type_id' => factory(RefusalType::class),
         'archived_at' => null

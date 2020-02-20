@@ -2,6 +2,8 @@ import MultiSelect from "../../components/MultiSelect";
 import AjaxMultiSelect from "../../components/AjaxMultiSelect";
 import VueSlider from "../../components/VueSlider";
 import Autocomplete from '../../components/Autocomplete'
+import DatePicker from "../../components/DatePicker";
+import VueSliderRange from "../../components/VueSliderRange";
 import Vue from 'vue'
 
 
@@ -10,12 +12,19 @@ Vue.component('research-form-moderator',{
         MultiSelect,
         VueSlider,
         AjaxMultiSelect,
-        Autocomplete
+        Autocomplete,
+        DatePicker,
+        VueSliderRange
     },
     data() {
         return {
-            optionProfileSelected: '',
+            adType: 'land',
             citySelect: [],
+        }
+    },
+    methods : {
+        adTypeSelected(value){
+            this.adType = value;
         }
     }
 });

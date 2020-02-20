@@ -52,6 +52,7 @@ class DatabaseSeeder extends Seeder
                 JobOfferTypeSeeder::class,
                 OfferGenreSeeder::class,
                 ProjectStatusSeeder::class,
+				AdStatusSeeder::class,
                 EducationLevelSeeder::class,
             ]);
 

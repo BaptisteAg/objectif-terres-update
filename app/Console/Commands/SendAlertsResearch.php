@@ -13,7 +13,7 @@ class SendAlertsResearch extends Command
      *
      * @var string
      */
-    protected $signature = 'command:sendAlertResearch';
+    protected $signature = 'command:send-alert-research';
 
     /**
      * The console command description.
