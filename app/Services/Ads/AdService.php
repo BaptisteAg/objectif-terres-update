@@ -40,11 +40,13 @@ class AdService
      */
     protected $jobSeekAdRepository;
 
-    /**
+	/**
 	 * AdService constructor.
 	 * @param AdRepository $repository
 	 * @param LandSeekAdRepository $landSeekdAdRepository
 	 * @param LandOfferAdRepository $landOfferAdRepository
+	 * @param JobOfferAdRepository $jobOfferAdRepository
+	 * @param JobSeekAdRepository $jobSeekAdRepository
 	 * @param ProductionGenreRepository $productionGenreRepository
 	 */
 	public function __construct(
@@ -63,10 +65,11 @@ class AdService
         $this->productionGenreRepository = $productionGenreRepository;
     }
 
-    /**
-     * @param $data
-     * @throws \Throwable
-     */
+	/**
+	 * @param $data
+	 * @return mixed
+	 * @throws \Throwable
+	 */
     public function create($data)
     {
         $ad =  DB::transaction(function() use($data) {

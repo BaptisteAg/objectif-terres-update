@@ -9,13 +9,22 @@ use App\Models\JobOfferType;
 use App\Models\ProductionGenre;
 use App\Models\ProjectStatus;
 use App\Models\Region;
-
+use App\Services\AttributionAds\AttributionAdsService;
+use Illuminate\Http\Request;
 
 class HomePageModeratorController extends Controller
 {
+	protected $service;
 
-	public function index()
+
+	public function __construct(AttributionAdsService $attributionAdsService)
 	{
+		$this->service = $attributionAdsService;
+	}
+
+	public function index(Request $request)
+	{
+
 		$cities = City::all();
 		$departments = Department::all();
 		$regions = Region::all();
@@ -24,7 +33,9 @@ class HomePageModeratorController extends Controller
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
 
-		return view('pages.moderator.index', compact( 'cities', 'departments', 'regions','projectStatuses', 'adStatuses', 'productionGenres','jobOfferTypes'));
+		$ads = $this->service->findAllByUserModerator(auth()->user()->id);
+
+		return view('pages.moderator.index', compact( 'cities', 'departments', 'regions','projectStatuses', 'adStatuses', 'productionGenres','jobOfferTypes', 'ads'));
 
 	}
 }

@@ -9,6 +9,10 @@
 			</ul>
 		</nav>
 		<h1 class="title has-text-link">{{$ad->title}}</h1>
+		@if(session()->get('isModerator') === 1)
+			@include('pages.ads.partials.moderator-options')
+		@endif
+
 		<div class="columns">
 			<div id="slider-container" class="column is-two-thirds ">
 				<div id="ad-images" class="carousel ">

@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use App\Presenters\AdPresenter;
 use Illuminate\Database\Eloquent\Model;
+use McCool\LaravelAutoPresenter\HasPresenter;
 
 /**
  * App\Models\AttributionAd
  *
  * @property int $id
  * @property int|null $user_owner_id
- * @property int $user_admin_id
+ * @property int $user_moderator_id
  * @property int|null $to_call_back
  * @property string|null $short_description
  * @property int $ad_status_id
@@ -22,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\Ad $ads
  * @property-read \App\Models\PpType $ppType
  * @property-read \App\Models\RefusalType|null $refusalType
- * @property-read \App\Models\User $userAdmin
+ * @property-read \App\Models\User $userModerator
  * @property-read \App\Models\User|null $userOwner
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd newQuery()
@@ -36,17 +38,17 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereShortDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereToCallBack($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserAdminId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserModeratorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserOwnerId($value)
  * @mixin \Eloquent
  */
-class AttributionAd extends Model
+class AttributionAd extends Model implements HasPresenter
 {
     /**
      * @var array
      */
     protected $fillable = [
-        'ad_status_id', 'lead_type_id', 'refusal_type_id', 'user_owner_id', 'user_admin_id', 'to_call_back', 'short_description', 'archived_at'
+        'ad_status_id', 'lead_type_id', 'refusal_type_id', 'user_owner_id', 'user_moderator_id', 'to_call_back', 'short_description', 'archived_at'
     ];
 
 	/**
@@ -60,7 +62,7 @@ class AttributionAd extends Model
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function userAdmin()
+	public function userModerator()
 	{
 		return $this->belongsTo(User::class);
 	}
@@ -92,8 +94,18 @@ class AttributionAd extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function ads()
+    public function ad()
     {
         return $this->hasOne(Ad::class );
     }
+	/**
+	 * Get the presenter class.
+	 *
+	 * @return string
+	 */
+	public function getPresenterClass()
+	{
+		return AdPresenter::class;
+
+	}
 }

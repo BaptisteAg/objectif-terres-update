@@ -1,6 +1,6 @@
 @extends ('default')
 
-@section ('title', 'Mon esapce modérateur')
+@section ('title', 'Mon espace modérateur')
 
 @section('main-content')
 
@@ -14,55 +14,57 @@
 				<li><a>Aide</a></li>
 			</ul>
 		</div>
-		<div class="notification   is-light is-info">
+		<div class="notification is-light is-info">
 			<button class="delete"></button>
 			<p><i class="far fa-bell"></i> Vous avez <strong>5 nouvelles annonces</strong> à modérer !</p>
 			<p><i class="fas fa-envelope"></i> Vous avez <strong>2 nouveaux messages !</strong></p>
 		</div>
+		{{Form::open(['route'=>'moderator.index'])}}
 		<div id="vue-form-moderator">
 			<research-form-moderator inline-template>
 				<div>
 					<div class="columns">
 						<div class="column is-four-fifths">
-							<div class="columns">
-								<div class="column">
-									<div @click="adTypeSelected('land')"
-										 class="button is-info is-light is-fullwidth form-research-buttons">
-										<span class="icon is-small is-hidden ">
+								<div class="columns">
+									<div class="column">
+										<div @click="adTypeSelected('landOffer')"
+											 class="button is-info is-light is-fullwidth form-research-buttons">
+											<span class="icon is-small is-hidden ">
 												  <i class="fas fa-check"></i>
 										</span>
-										<span>Offre foncière</span>
+											<span>Offre foncière</span>
+										</div>
+									</div>
+									<div class="column">
+										<div @click="adTypeSelected('landSeek')"
+											 class="button is-link is-light is-fullwidth form-research-buttons">
+											<span class="icon is-small is-hidden ">
+												  <i class="fas fa-check"></i>
+										</span>
+											<span>Recherche foncière</span>
+										</div>
+									</div>
+									<div class="column">
+										<div @click="adTypeSelected('jobOffer')"
+											 class="button is-info is-light is-fullwidth form-research-buttons">
+											<span class="icon is-small is-hidden ">
+												  <i class="fas fa-check"></i>
+										</span>
+											<span>Offre d'emploi</span>
+										</div>
+									</div>
+									<div class="column">
+										<div @click="adTypeSelected('jobSeek')"
+											 class="button is-link is-light is-fullwidth form-research-buttons">
+											<span class="icon is-small is-hidden ">
+												  <i class="fas fa-check"></i>
+										</span>
+											<span>Recherche d'emploi</span>
+										</div>
 									</div>
 								</div>
-								<div class="column">
-									<button @click="adTypeSelected('land')"
-											class="button is-link is-light is-fullwidth form-research-buttons">
-										<span class="icon is-small is-hidden ">
-												  <i class="fas fa-check"></i>
-										</span>
-										<span>Recherche foncière</span>
-									</button>
-								</div>
-								<div class="column">
-									<button @click="adTypeSelected('job')"
-											class="button is-info is-light is-fullwidth form-research-buttons">
-										<span class="icon is-small is-hidden ">
-												  <i class="fas fa-check"></i>
-										</span>
-										<span>Offre d'emplois</span>
-									</button>
-								</div>
-								<div class="column">
-									<button @click="adTypeSelected('job')"
-											class="button is-link is-light is-fullwidth form-research-buttons">
-										<span class="icon is-small is-hidden ">
-												  <i class="fas fa-check"></i>
-										</span>
-										<span>Recherche d'emplois</span>
-									</button>
-								</div>
-							</div>
 						</div>
+						<input type="hidden" v-bind:value="typeSelected" name="adTypeSelected">
 						<div class="column">
 							<div class="control has-icons-right ">
 								<date-picker></date-picker>
@@ -94,9 +96,9 @@
 														value="citySelect">
 												</autocomplete>
 												<input type="hidden" name="city_id" :value="zone.value.id"
-													   v-for="(zone,i) in citySelect">
+												v-for="(zone,i) in citySelect">
 												<div>
-											<span class="tag is-info"
+													<span class="tag is-info"
 												  v-for="(zone,i) in citySelect"
 												  @click="_ => citySelect.splice(i,1)">
 												Code postal sélectionné :&nbsp;&nbsp;
@@ -164,7 +166,7 @@
 					</div>
 					<hr class="navbar-divider">
 
-					<div class="columns   ">
+					<div class="columns">
 						<div class=" column is-3">
 							<label class="label">Recherche par mots clés</label>
 							<input class="input" type="text" placeholder="Votre recherche...">
@@ -197,7 +199,6 @@
 								></vue-slider-range>
 							</div>
 						</div>
-
 						<div v-show="adType === 'job'" class="column is-4 has-text-center">
 							<label class="label">Statut de l'emploi</label>
 							<div class="select">
@@ -208,8 +209,8 @@
 								</select>
 							</div>
 						</div>
-						<div class=" column">
-							<button class="button is-link is-large is-pulled-right">
+						<div class="column">
+							<button type="submit" class="button is-link is-large is-pulled-right">
 								<span>Filtrer</span>
 							</button>
 						</div>
@@ -217,6 +218,7 @@
 				</div>
 			</research-form-moderator>
 		</div>
+		{{Form::close()}}
 
 		<div class="section">
 			<h1 class="title is-1 has-text-centered">Liste des annonces à modérer</h1>
@@ -232,24 +234,69 @@
 						<th>Adresse mail</th>
 						<th>Localisation(s)</th>
 						<th>Status de l'annonce</th>
+						<th>Status du projet</th>
 						<th></th>
 					</tr>
 					</thead>
 					<tbody>
-					@for($i = 0; $i < 10; $i++)
+					@foreach($ads as $ad)
 						<tr>
-							<td>38</td>
-							<td>10</td>
-							<td>13</td>
-							<td>15</td>
-							<td>34</td>
-							<td>48</td>
-							<td>−14</td>
-							<td><a href=""><span><i class="fas fa-search"></i></span> <span>Voir le détails</span></a>
+							<td>{{$ad->ad->updated_at}}</td>
+							<td>
+								<a target="_blank" href="{{route('ads.show', $ad->ad->id)}}">{{$ad->ad->title}}</a>
+							</td>
+							<td>{{$ad->ad->ad_type_full_name}}</td>
+							<td>{{$ad->ad->userPp->first_name}} {{$ad->ad->userPp->name}}</td>
+							<td>{{$ad->ad->userPp->email}}</td>
+							<td>
+								@if(! is_null($ad->ad->regionsList))
+									<p>Region(s) : {{$ad->ad->regionsList}}</p>
+								@endif
+								@if(! is_null($ad->ad->departmentList))
+									<p>Département(s) : {{$ad->ad->departmentsList}}</p>
+								@endif
+								@if(! is_null($ad->ad->citiesList))
+									<p>Communes(s) : {{$ad->ad->citiesList}}</p>
+								@endif
+							</td>
+							<td>
+								@if($ad->adStatus->name === "Validé")
+									<span class="tag is-success">{{$ad->adStatus->name}}</span>
+								@elseif($ad->adStatus->name ==="A modifier")
+									<span class="tag is-warning is-light">{{$ad->adStatus->name}}</span>
+								@elseif($ad->adStatus->name === "Refuser")
+									<span class="tag is-danger">{{$ad->adStatus->name}}</span>
+
+								@elseif($ad->adStatus->name === "A modérer")
+									<span class="tag is-warning">{{$ad->adStatus->name}}</span>
+								@elseif($ad->adStatus->name === "A assigner")
+									<span class="tag is-primary">{{$ad->adStatus->name}}</span>
+								@else
+									<span class="tag is-info">{{$ad->adStatus->name}}</span>
+								@endif
+							</td>
+							<td>
+
+								@if($ad->ad->project->projectStatus->name === "Accompagné")
+									<span class="tag is-success is-light">{{$ad->ad->project->projectStatus->name}}</span>
+								@elseif($ad->ad->project->projectStatus->name ==="Installé")
+									<span class="tag is-success is-light">{{$ad->ad->project->projectStatus->name}}</span>
+								@elseif($ad->ad->project->projectStatus->name === "A rappeler")
+									<span class="tag is-danger is-light">{{$ad->ad->project->projectStatus->name}}</span>
+
+								@elseif($ad->ad->project->projectStatus->name === "Non accompagné")
+									<span class="tag is-warning is-light">{{$ad->ad->project->projectStatus->name}}</span>
+								@else
+									<span class="tag is-info is-light">{{$ad->ad->project->projectStatus->name}}</span>
+								@endif
+
+							</td>
+							<td><a target="_blank" href="{{route('ads.show', $ad->ad->id)}}"><span><i
+												class="fas fa-search"></i></span> <span>Voir le détails</span></a>
 							</td>
 						</tr>
 
-					@endfor
+					@endforeach
 					</tbody>
 				</table>
 			</div>

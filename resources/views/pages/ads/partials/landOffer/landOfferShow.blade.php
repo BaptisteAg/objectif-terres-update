@@ -8,6 +8,11 @@
             </ul>
         </nav>
         <h1 class="title has-text-link">{{$ad->title}}</h1>
+
+        @if(session()->get('isModerator') === 1)
+            @include('pages.ads.partials.moderator-options')
+        @endif
+
         <div class="columns">
             @include('pages.ads.partials.show-images')
             <div class="column">

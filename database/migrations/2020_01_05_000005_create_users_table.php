@@ -37,6 +37,7 @@ class CreateUsersTable extends Migration
 			$table->string('password');
 			$table->unsignedSmallInteger('country_id');
 			$table->unsignedInteger('zip_code_id');
+			$table->unsignedInteger('role')->default(0);
 			$table->rememberToken();
 			$table->timestamps();
 

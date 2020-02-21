@@ -24,7 +24,7 @@ class CreateAttributionAdsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->unsignedInteger('user_owner_id')->nullable();
-            $table->unsignedInteger('user_admin_id');
+            $table->unsignedInteger('user_moderator_id');
             $table->boolean('to_call_back')->nullable();
             $table->text('short_description')->nullable();
             $table->unsignedInteger('ad_status_id');
@@ -38,7 +38,7 @@ class CreateAttributionAdsTable extends Migration
 
             $table->index(["refusal_type_id"], 'fk_attribution_ads_4_idx');
 
-            $table->index(["user_admin_id"], 'ix_attribution_ad_user_admin_id');
+            $table->index(["user_moderator_id"], 'ix_attribution_ad_user_moderator_id');
 
             $table->index(["pp_type_id"], 'fk_attribution_ads_2_idx');
             $table->timestamps();
@@ -49,7 +49,7 @@ class CreateAttributionAdsTable extends Migration
 				->on('users')
 				->onDelete('cascade');
 
-			$table->foreign('user_admin_id','ix_attribution_ad_user_admin_id' )
+			$table->foreign('user_moderator_id','ix_attribution_ad_user_moderator_id' )
 				->references('id')
 				->on('users')
 				->onDelete('cascade');

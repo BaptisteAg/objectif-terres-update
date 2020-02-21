@@ -12,7 +12,7 @@ use Faker\Generator as Faker;
 $factory->define(AttributionAd::class, function (Faker $faker) {
     return [
         'user_owner_id' => User::all()->random(),
-        'user_admin_id'=> User::all()->random(),
+        'user_moderator_id'=> User::all()->random(),
         'to_call_back' => $faker->boolean,
         'short_description' => $faker->text(350),
         'ad_status_id' => AdStatus::all()->random(),

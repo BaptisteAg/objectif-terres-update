@@ -19,6 +19,7 @@ class TestUserSeeder extends Seeder
 				'first_name' => 'Test',
 				'name' => 'Moderateur',
 
+
         ]);
 	}
 }

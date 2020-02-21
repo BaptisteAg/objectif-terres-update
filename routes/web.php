@@ -83,7 +83,7 @@ Route::prefix('locations')->namespace('Locationables')->group(function () {
 });
 
 Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderator.')->namespace('HomePage')->group(function () {
-	Route::get('/', 'HomePageModeratorController@index')->name('index');
+	Route::post('/', 'HomePageModeratorController@index')->name('index');
 });
 
 // Authentication Routes for authentification

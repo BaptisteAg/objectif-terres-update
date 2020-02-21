@@ -14,7 +14,12 @@ class ProjectStatusSeeder extends Seeder {
 				"updated_at" => \Carbon\Carbon::now()
 			],
 			[
-				'name'=> 'Accompagnement',
+				'name'=> 'Accompagné',
+				"created_at" =>  \Carbon\Carbon::now(),
+				"updated_at" => \Carbon\Carbon::now()
+			],
+			[
+				'name'=> 'Non accompagné',
 				"created_at" =>  \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
 			],
