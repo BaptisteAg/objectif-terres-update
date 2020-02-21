@@ -82,7 +82,7 @@
         computed: {
             selected: {
                 get() {
-                    return this.selectedIds.map(id =>
+                    return this.electedIds.map(id =>
                         this.options.find(option => option.id.toString() === id)
                     )
                 },

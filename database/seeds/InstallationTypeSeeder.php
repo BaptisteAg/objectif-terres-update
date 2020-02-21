@@ -16,7 +16,7 @@ class InstallationTypeSeeder extends Seeder
             ['name' => 'Seul', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
             ['name' => 'En couple', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
             ['name' => 'En collectif', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => 'Ne sait pas encore', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+            ['name' => 'Indifférent', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
         ]);
     }
 }
