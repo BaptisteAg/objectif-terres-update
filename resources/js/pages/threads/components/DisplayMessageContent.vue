@@ -36,12 +36,6 @@
                 </div>
             </template>
         </template>
-        <div class="columns ">
-            <div  class="column">
-                <div id="loading" style="float: right" v-if="loading">
-                </div>
-            </div>
-        </div>
         <hr>
     </div>
 </template>

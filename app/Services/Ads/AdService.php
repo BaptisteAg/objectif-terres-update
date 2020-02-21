@@ -1,5 +1,6 @@
 <?php namespace App\Services\Ads;
 
+use App\Models\Ad;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Ads\JobOfferAdRepository;
 use App\Repositories\Ads\JobSeekAdRepository;
@@ -39,11 +40,13 @@ class AdService
      */
     protected $jobSeekAdRepository;
 
-    /**
+	/**
 	 * AdService constructor.
 	 * @param AdRepository $repository
 	 * @param LandSeekAdRepository $landSeekdAdRepository
 	 * @param LandOfferAdRepository $landOfferAdRepository
+	 * @param JobOfferAdRepository $jobOfferAdRepository
+	 * @param JobSeekAdRepository $jobSeekAdRepository
 	 * @param ProductionGenreRepository $productionGenreRepository
 	 */
 	public function __construct(
@@ -62,10 +65,11 @@ class AdService
         $this->productionGenreRepository = $productionGenreRepository;
     }
 
-    /**
-     * @param $data
-     * @throws \Throwable
-     */
+	/**
+	 * @param $data
+	 * @return mixed
+	 * @throws \Throwable
+	 */
     public function create($data)
     {
         $ad =  DB::transaction(function() use($data) {
@@ -136,11 +140,12 @@ class AdService
     }
 
 	/**
-	 * @param int $id
+	 * @param Ad $ad
+	 * @return void
 	 * @throws \Exception
 	 */
-	public function delete(int $id)
+	public function delete(Ad $ad)
 	{
-		return $this->repository->destroy($id);
+		return $this->repository->destroy($ad->id);
 	}
 }

@@ -85,26 +85,24 @@
 									</button>
 								</a>
 							</div>
-							{{Form::open(['route' => 'favoriteAds.destroy'])}}
+							<a href="{{route ('favoriteAds.destroy', $favoriteAd->id)}}">
 							<div class="buttons ">
-								<input type="hidden" type="number" value="{{(int)$favoriteAd->id}}"
-									   name="favoriteAdId">
-								<button type="submit" class="button is-danger is-medium is-light">
+								<button class="button is-danger is-medium is-light">
 												<span class="icon has-text-danger">
 												  <i class="fas fa-ban"></i>
 												</span>
 									<span>Retirer l'annonce des favoris</span>
 								</button>
 							</div>
-							{{Form::close()}}
+							</a>
 						</div>
 					</div>
 					<div class="columns">
 						<div class="column ">
-							@if(count ($favoriteAd->ad->adMessages()->whereUserId(auth()->user()->id)->get()) > 0)
+							@if($favoriteAd->ad->threadAlreadyExist)
 								<article class="message is-success">
 									<div class="message-body">
-										<a href="">Vous avez déjà envoyé un message au porteur de projet. Consulter votre messagerie !</a>
+										<a href="{{route('threads.index')}}">Vous avez déjà envoyé un message au porteur de projet. Consulter votre messagerie !</a>
 									</div>
 								</article>
 							@else

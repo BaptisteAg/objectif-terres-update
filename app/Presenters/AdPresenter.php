@@ -2,6 +2,7 @@
 
 use App\Models\Ad;
 use App\Models\City;
+use App\Models\Region;
 use McCool\LaravelAutoPresenter\BasePresenter;
 
 /**
@@ -11,79 +12,146 @@ use McCool\LaravelAutoPresenter\BasePresenter;
  */
 class AdPresenter extends BasePresenter
 {
-    public function ad_type()
-    {
-        if($this->wrappedObject->landSeekAd) {
-            return 'landSeek';
-        }
-        if($this->wrappedObject->landOfferAd) {
-            return 'landOffer';
-        }
-        if($this->wrappedObject->jobOfferAd) {
-            return 'jobOffer';
-        }
-        if($this->wrappedObject->jobSeekAd) {
-            return 'jobSeek';
-        }
+	public function ad_type()
+	{
+		if ($this->wrappedObject->landSeekAd) {
+			return 'landSeek';
+		}
+		if ($this->wrappedObject->landOfferAd) {
+			return 'landOffer';
+		}
+		if ($this->wrappedObject->jobOfferAd) {
+			return 'jobOffer';
+		}
+		if ($this->wrappedObject->jobSeekAd) {
+			return 'jobSeek';
+		}
 
-        return '';
-    }
+		return '';
+	}
 
-    public function created_at()
-    {
-        return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->format('d/m/Y');
-    }
+	public function ad_type_full_name()
+	{
+		if ($this->wrappedObject->landSeekAd) {
+			return 'Recherche de foncier';
+		}
+		if ($this->wrappedObject->landOfferAd) {
+			return 'Offre de foncier';
+		}
+		if ($this->wrappedObject->jobOfferAd) {
+			return 'Offre d\'emploi';
+		}
+		if ($this->wrappedObject->jobSeekAd) {
+			return 'Recehrche d\'emploi';
+		}
 
-    public function is_today()
-    {
-        return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->isToday();
-    }
+		return '';
+	}
 
-    public function created_at_diff()
-    {
-        return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->diffForHumans();
-    }
+	public function created_at()
+	{
+		return \Carbon\Carbon::parse($this->wrappedObject->created_at)->format('d/m/Y');
+	}
+
+	public function is_today()
+	{
+		return \Carbon\Carbon::parse($this->wrappedObject->created_at)->isToday();
+	}
+
+	public function created_at_diff()
+	{
+		return \Carbon\Carbon::parse($this->wrappedObject->created_at)->diffForHumans();
+	}
+
+	public function updated_at()
+	{
+		return \Carbon\Carbon::parse($this->wrappedObject->updated_at)->format('d/m/Y');
+	}
 
 
-    public function locationable_radius()
-    {
-        return $this->wrappedObject->cities[0]->pivot->radius;
-    }
+	public function locationable_radius()
+	{
+		return $this->wrappedObject->cities[0]->pivot->radius;
+	}
 
-    public function zipCodesByCity()
-    {
-        return $this->wrappedObject->cities->mapToGroups(function(City $city, $key) {
-            return [$city['name'] => $city["zip_code"]];
-        });
-    }
+	public function regionsList()
+	{
+		$regions = '';
+		foreach ($this->wrappedObject->regions as $key => $attribute) {
+			if ($key === 0) {
+				$regions = $regions.$attribute['name'];
+			} else {
+				$regions = $regions . ', ' .$attribute['name'];
+			}
+		}
+		return $regions;
+	}
 
-    public function hasImages()
-    {
-        return $this->images()->count();
-    }
+	public function departmentsList()
+	{
+		$departments = null;
 
-    public function hasNonImageDocuments()
-    {
-        return $this->nonImageDocuments()->count();
-    }
+		foreach ($this->wrappedObject->departments as $key => $attribute) {
+			if ($key === 0) {
+				$departments = $departments. $attribute['name'];
+			} else {
+				$departments = $departments . ', ' . $attribute['name'];
+			}
+		}
+		return $departments;
+	}
 
-    public function images()
-    {
-        return $this->wrappedObject->documents->filter(function ($document) {
-            return $this->documentIsImage($document);
-        });
-    }
+	public function citiesList()
+	{
 
-    public function nonImageDocuments()
-    {
-        return $this->wrappedObject->documents->filter(function ($document) {
-            return !$this->documentIsImage($document);
-        });
-    }
+		$cities = null;
+		foreach ($this->wrappedObject->cities as $key => $attribute) {
+			if ($key === 0) {
+				$cities = $cities. $attribute['name'];
+			} else {
+				$cities = $cities . ', ' . $attribute['name'];
+			}
+		}
+		return $cities;
 
-    private function documentIsImage($document)
-    {
-        return strpos($document->type, 'image') !== false;
-    }
+	}
+
+
+	public function zipCodesByCity()
+	{
+		return $this->wrappedObject->cities->mapToGroups(function (City $city, $key) {
+			return [$city['name'] => $city["zip_code"]];
+		});
+	}
+
+
+	public function hasImages()
+	{
+		return $this->images()->count();
+	}
+
+	public function hasNonImageDocuments()
+	{
+		return $this->nonImageDocuments()->count();
+	}
+
+	public function images()
+	{
+		return $this->wrappedObject->documents->filter(function ($document) {
+			return $this->documentIsImage($document);
+		});
+	}
+
+	public function nonImageDocuments()
+	{
+		return $this->wrappedObject->documents->filter(function ($document) {
+			return !$this->documentIsImage($document);
+		});
+	}
+
+	private function documentIsImage($document)
+	{
+		return strpos($document->type, 'image') !== false;
+	}
 
 }

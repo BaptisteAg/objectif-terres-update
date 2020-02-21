@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Ads;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Ads\AdRequest;
+use App\Models\Ad;
 use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
 use App\Models\BuildingType;
@@ -15,6 +16,7 @@ use App\Models\OfferGenre;
 use App\Models\PriceRange;
 use App\Models\Requirement;
 use App\Models\SurfaceRange;
+use App\Models\User;
 use App\Repositories\FavoriteAds\FavoriteAdRepository;
 use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
@@ -32,7 +34,7 @@ class AdsController extends Controller
 	protected $threadService;
 	protected $favoriteAdRepository;
 
-	public function __construct(AdService $adService, ThreadService $threadService, FavoriteAdRepository $favoriteAdRepository )
+	public function __construct(AdService $adService, ThreadService $threadService, FavoriteAdRepository $favoriteAdRepository)
 	{
 		$this->adService = $adService;
 		$this->threadService = $threadService;
@@ -40,9 +42,9 @@ class AdsController extends Controller
 
 	}
 
-    /**
-     * @return \Illuminate\View\View
-     */
+	/**
+	 * @return \Illuminate\View\View
+	 */
 	public function create()
 	{
 		$surfaceRanges = SurfaceRange::all();
@@ -55,13 +57,13 @@ class AdsController extends Controller
 		$educationLevels = EducationLevel::all();
 		$buildingTypes = BuildingType::all();
 		$requirements = Requirement::all();
-        $productionGenres = $this->adService->getProductionGenresFlattened();
-        $productionGenresWithOther = clone $this->adService->getProductionGenresFlattened()
-            ->concat([[
-                'id' => 'other',
-                'name' => 'Autre',
-                'children' => []
-            ]]);
+		$productionGenres = $this->adService->getProductionGenresFlattened();
+		$productionGenresWithOther = clone $this->adService->getProductionGenresFlattened()
+			->concat([[
+				'id' => 'other',
+				'name' => 'Autre',
+				'children' => []
+			]]);
 
 		return view('pages.ads.new', compact(
 			'installationTypes',
@@ -107,22 +109,22 @@ class AdsController extends Controller
 		return redirect()->route('ads.show', [$ad->id]);
 	}
 
-    /**
-     * @param int $adId
-     * @return Factory|\Illuminate\View\View
-     */
-    public function show(int $adId)
+	/**
+	 * @param int $adId
+	 * @return Factory|\Illuminate\View\View
+	 */
+	public function show(int $adId)
 	{
 		$ad = $this->adService->find($adId);
 
 		$userMessage = null;
-        $favoriteAdAlreadyExist = false;
-        $threads = [];
+		$favoriteAdAlreadyExist = false;
+		$threads = [];
 
 		if (Auth::user()) {
-			if (auth()->user()->id === $ad->user_pp_id){
-				$threads= $this->threadService->findThreadsByAd($adId);
-			}else{
+			if (auth()->user()->id === $ad->user_pp_id) {
+				$threads = $this->threadService->findThreadsByAd($adId);
+			} else {
 				$threads = $this->threadService->findThreadAlreadyExist($adId);
 				$data = array(
 					"ad_id" => $adId,
@@ -136,18 +138,30 @@ class AdsController extends Controller
 		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist', 'threads'));
 	}
 
-    /**
-     * @return Factory|\Illuminate\View\View
-     */
-    public function list()
+	/**
+	 * @return Factory|\Illuminate\View\View
+	 */
+	public function list()
 	{
 		$ads = $this->adService->findAllByUser(auth()->id());
 
 		return view('pages.ads.listUserAds', compact('ads'));
 	}
 
-	public function delete(int $id){
-    	$this->adService->delete($id);
-    	return back()->with('success', 'Votre annonce a bien été supprimée');
+
+	/**
+	 * @param Ad $ad
+	 * @return \Illuminate\Http\RedirectResponse
+	 * @throws \Exception
+	 */
+	public function delete(Ad $ad)
+	{
+
+		if ($ad->user_pp_id !== auth()->id()) {
+			abort(404);
+		}
+
+		$this->adService->delete($ad);
+		return back()->with('success', 'Votre annonce a bien été supprimée');
 	}
 }

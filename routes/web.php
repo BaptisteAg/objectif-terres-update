@@ -49,19 +49,19 @@ Route::prefix('recherches')->name('researches.')->namespace('Researches')->group
 Route::prefix('mon-espace/recherches')->middleware('auth')->name('researches.')->namespace('Researches')->group(function () {
 	Route::post('sauvegarde', 'ResearchesController@store')->name('store');
 	Route::get('liste', 'ResearchesController@show')->name('show');
-	Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
-	Route::get('supprimer-alerte/{id}', 'ResearchesController@deleteAlert')->name('deleteAlert');
+	Route::get('supprimer/{research}', 'ResearchesController@destroy')->name('destroy');
+	Route::get('supprimer-alerte/{research}', 'ResearchesController@deleteAlert')->name('deleteAlert');
 	Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
 });
 
 Route::middleware('auth')->prefix('mon-espace')->name('userAccount.')->namespace('HomePage')->group(function () {
-	Route::get('/', 'HomePageLoggedController@index')->name('showAccount');
+	Route::get('/', 'HomePageLoggedController@index')->name('index');
 });
 
 Route::prefix('mon-espace/annonces-favorites')->middleware('auth')->name('favoriteAds.')->namespace('FavoriteAds')->group(function () {
 	Route::get('sauvegarde', 'FavoriteAdsController@create')->name('create');
 	Route::get('liste', 'FavoriteAdsController@show')->name('show');
-	Route::post('supprimer', 'FavoriteAdsController@destroy')->name('destroy');
+	Route::get('supprimer/{favoriteAd}', 'FavoriteAdsController@destroy')->name('destroy');
 
 });
 
@@ -82,7 +82,11 @@ Route::prefix('locations')->namespace('Locationables')->group(function () {
     });
 });
 
-// Authentication Routes...
+Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderator.')->namespace('HomePage')->group(function () {
+	Route::post('/', 'HomePageModeratorController@index')->name('index');
+});
+
+// Authentication Routes for authentification
 Route::get('connexion', 'Auth\LoginController@showLoginForm')->name('signIn');
 Route::post('login', 'Auth\LoginController@login')->name('login');
 Route::post('deconnexion', 'Auth\LoginController@logout')->name('logout');

@@ -15,7 +15,6 @@ Vue.component('vue-threads',{
         initThread : '',
         isDisplayInThreadPage : Boolean,
         isUserAdOwner : Boolean
-
     },
     data() {
         return {
@@ -36,7 +35,6 @@ Vue.component('vue-threads',{
     },
     methods : {
         onThreadClick(threadId) {
-            this.messagesLoading = true;
             fetch('/mon-espace/messagerie/' + threadId)
                 .then(response => response.json())
                 .then(results => {

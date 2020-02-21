@@ -10,12 +10,14 @@
 						<h1 class="title is-2 has-text-centered has-text-link">Inscription </h1>
 						<h2 class="subtitle has-text-centered">Créez votre compte pour profiter des services d'Objectif
 							Terres </h2>
+						<p class="is-size-7">Les champs marqués d'un astérisque <strong>(*)</strong> sont obligatoires.</p>
+						<br>
 						{!! Form::open(['route'=>'register']) !!}
 						@csrf
 						<div class="columns">
 							<div class="column is-one-third">
 								<div class="field">
-									<label class="label">Votre nom</label>
+									<label class="label">Votre nom*</label>
 									<div class="control has-icons-left">
 										<input id="name" name="name" class="input @error('name')is-danger @enderror"
 											   type="text"
@@ -37,7 +39,7 @@
 							</div>
 							<div class="column">
 								<div class="field">
-									<label class="label">Votre prénom</label>
+									<label class="label">Votre prénom*</label>
 									<div class="control has-icons-left">
 										<input id="first_name" name="first_name"
 											   class="input @error('first_name')is-danger @enderror" type="text"
@@ -59,7 +61,7 @@
 							</div>
 							<div class="column ">
 								<div class="field">
-									<label class="label">Civilité</label>
+									<label class="label">Civilité*</label>
 									<div class="control has-icons-left">
 										<div class="select">
 
@@ -102,7 +104,7 @@
 							</div>
 							<div class="column ">
 								<div class="field">
-									<label class="label">Adresse email</label>
+									<label class="label">Adresse email*</label>
 									<p class="control has-icons-left has-icons-right">
 										<input id="email" class="input @error('email') is-danger @enderror" type="email"
 											   name="email" value="{{ old('email') }}" required autocomplete="email"
@@ -132,7 +134,7 @@
 						<div class="columns">
 							<div class="column is-two-thirds">
 								<div class="field">
-									<label class="label">Votre situation</label>
+									<label class="label">Votre situation*</label>
 									<div class="control has-icons-left">
 										<div class="select">
 											<select id="profile" name="profile"
@@ -189,7 +191,7 @@
 						</div>
 
 						<div class="field">
-							<label class="label">Adresse </label>
+							<label class="label">Adresse* </label>
 							<p class="control has-icons-left has-icons-right">
 								<input id="address" class="input @error('address') is-danger @enderror" type="text"
 									   name="address" value="{{ old('address') }}" required autocomplete="address"
@@ -210,7 +212,7 @@
 						<div class="columns">
 							<div class="column is-one-third">
 								<div class="field">
-									<label class="label">Code postal</label>
+									<label class="label">Code postal*</label>
 									<div>
 										<div class="control">
 											<autocomplete
@@ -260,7 +262,7 @@
 							</div>
 							<div class="column">
 								<div class="field">
-									<label class="label">Pays</label>
+									<label class="label">Pays*</label>
 									<div class="control has-icons-left">
 										<div class="select">
 											<select id="country_id" name="country_id"
@@ -281,7 +283,7 @@
 						</div>
 
 						<div class="field">
-							<label class="label">Mot de passe</label>
+							<label class="label">Mot de passe*</label>
 							<p class="control has-icons-left">
 								<input id="password" name="password"
 									   class="input @error('password') is-danger @enderror "
@@ -301,7 +303,7 @@
 							@enderror
 						</div>
 						<div class="field">
-							<label class="label">Confirmation mot de passe</label>
+							<label class="label">Confirmation mot de passe*</label>
 							<p class="control has-icons-left">
 								<input id="password-confirm" name="password_confirmation"
 									   class="input" type="password"
@@ -319,7 +321,7 @@
 								"J'ai pris connaissance de <a>la charte d'utilisation de la plateforme d'annonces du
 									site
 									web de
-									Terre de Liens</a> ."
+									Terre de Liens</a> ."*
 							</label>
 						</div>
 						<div class="field">

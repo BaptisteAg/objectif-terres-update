@@ -20,43 +20,46 @@
 							v-bind:is-display-in-thread-page=true
 							v-bind:is-user-ad-owner=false
 					>
-						<div class="columns is-centered " v-if="initialLoading === true">
-							<div  class="column is-half  has-text-centered">
-								<div id="loading">
+						<div>
+							<div class="columns is-vcentered " v-if="initialLoading === true">
+								<div  class="column is-7 ">
+									<div id="loading" class="is-pulled-right">
+									</div>
+								</div>
+							</div>
+							<div class="columns" v-if="initialLoading === false">
+								<div  class="column is-one-quarter">
+									<list-threads
+											:threads="{{json_encode($threads)}}"
+											:number-of-unread-messages="{{$numberOfUnreadMessages}}"
+											v-model="messages"
+											@on-thread-click="onThreadClick"
+											v-bind:is-display="isDisplay"
+											v-bind:is-user-logged-ad-owner="isUserAdOwner"
+											:user-id="{{auth()->id()}}"
+									>
+									</list-threads>
+								</div>
+								<div class="column box ">
+									<header-message
+											v-bind:is-display="isDisplay"
+											v-model="messages"
+											:user-id="{{auth()->id()}}"
+									></header-message>
+									<display-message-content
+											v-model="messages"
+											:user-id="{{auth()->id()}}"
+									></display-message-content>
+									<form-message-reply
+											v-model="messages"
+											:user-id="{{auth()->id()}}"
+											@message-reply-success="onMessageReplySuccess"
+									>
+									</form-message-reply>
 								</div>
 							</div>
 						</div>
-						<div class="columns" v-else-if="initialLoading === false">
-							<div  class="column is-one-quarter">
-								<list-threads
-										:threads="{{json_encode($threads)}}"
-										:number-of-unread-messages="{{$numberOfUnreadMessages}}"
-										v-model="messages"
-										@on-thread-click="onThreadClick"
-										v-bind:is-display="isDisplay"
-										v-bind:is-user-logged-ad-owner="isUserAdOwner"
-										:user-id="{{auth()->id()}}"
-								>
-								</list-threads>
-							</div>
-							<div class="column box ">
-								<header-message
-										v-bind:is-display="isDisplay"
-										v-model="messages"
-										:user-id="{{auth()->id()}}"
-								></header-message>
-								<display-message-content
-										v-model="messages"
-										:user-id="{{auth()->id()}}"
-								></display-message-content>
-								<form-message-reply
-										v-model="messages"
-										:user-id="{{auth()->id()}}"
-										@message-reply-success="onMessageReplySuccess"
-								>
-								</form-message-reply>
-							</div>
-						</div>
+
 					</vue-threads>
 				</div>
 			@endif

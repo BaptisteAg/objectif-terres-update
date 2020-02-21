@@ -106,14 +106,13 @@ class FavoriteAdRepository extends AbstractRepository implements FavoriteAdRepos
 	/**
 	 * Delete an favorite ad.
 	 *
-	 * @param int
+	 * @param FavoriteAd $favoriteAd
+	 * @return bool|null
 	 * @throws \Exception
 	 */
-	public function destroy(int $id)
+	public function destroy(FavoriteAd $favoriteAd)
 	{
-
-		$favoriteAd = $this->find($id);
-		$favoriteAd->delete();
+		return $favoriteAd->delete();
 
 	}
 
