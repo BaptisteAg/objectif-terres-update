@@ -56,13 +56,11 @@
 											@on-new-thread-click="onNewThreadClick"
 											v-bind:is-display="isDisplay"
 											v-bind:is-user-moderator="isUserModerator"
-											v-bind:is-user-logged-ad-owner="isUserAdOwner"
 											:user-id="{{auth()->id()}}"
 									>
 									</list-threads>
-
 								</div>
-								<div class="column box">
+								<div class="column box box-thread-display">
 									<header-message
 											v-bind:is-display="isDisplay"
 											v-model="messages"

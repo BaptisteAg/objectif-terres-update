@@ -100,7 +100,7 @@
 			</div>
 		@else
 			<div id="messages-display" class="content">
-				<h3 class="title is-3 has-text-link has-text-centered">Vos messages reçu pour votre annonce</h3>
+				<h3 class="title is-3 has-text-link has-text-centered">Vos messages reçus pour votre annonce</h3>
 			</div>
 			<div id="vue-messages">
 				<vue-threads
@@ -149,7 +149,6 @@
 							</div>
 						</div>
 					</div>
-
 				</vue-threads>
 			</div>
 		@endif
