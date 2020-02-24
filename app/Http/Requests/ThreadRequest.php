@@ -17,7 +17,9 @@ class ThreadRequest extends FormRequest
             'content' => ['required', 'string', 'max:1000'],
 			'ad_id' => [ 'integer'],
 			'receiver_user_message' =>['integer'],
-			'title' =>['string']
+			'receivers_user_message'=>['array'],
+			'receivers_user_message.*'=>['integer'],
+			'title' =>['string', 'nullable']
         ];
     }
 }

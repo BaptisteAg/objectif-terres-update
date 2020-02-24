@@ -12,17 +12,23 @@
 					<p class="subtitle has-text-centered">Vous n'avez pas encore reçu de messages ! </p>
 				</div>
 				@if(auth()->user()->role >= 1 )
-					<div class="columns is-centered is-mobile">
-						<div class="column is-2">
-							<button id="test" class="open-modal-new-message button is-link" type="button">
+					<div id="vue-messages">
+						<vue-threads inline-template>
+							<div>
+								<div class="columns is-centered is-mobile">
+									<div class="column is-2">
+										<button id="test" class="open-modal-new-message button is-link" type="button">
 								 <span class="icon is-small">
 								<i class="fa fa-paper-plane" aria-hidden="true"></i>
 								</span>
-								<span> Envoyer un message</span>
-							</button>
-						</div>
+											<span> Envoyer un message</span>
+										</button>
+									</div>
+								</div>
+								@include('pages.messages.partials.newMessageModal')
+							</div>
+						</vue-threads>
 					</div>
-					@include('pages.messages.partials.newMessageModal')
 				@endif
 			@else
 				<div id="vue-messages">
@@ -56,7 +62,7 @@
 									</list-threads>
 
 								</div>
-								<div class="column box ">
+								<div class="column box">
 									<header-message
 											v-bind:is-display="isDisplay"
 											v-model="messages"
@@ -74,7 +80,7 @@
 									</form-message-reply>
 								</div>
 							</div>
-								@include('pages.messages.partials.newMessageModal')
+							@include('pages.messages.partials.newMessageModal')
 						</div>
 					</vue-threads>
 				</div>

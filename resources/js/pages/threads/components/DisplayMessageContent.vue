@@ -26,6 +26,9 @@
                                     <p class="has-text-black">
                                         {{message.content}}
                                     </p>
+                                    <p class="is-size-7 has-text-black is-marginless">
+                                        De : {{message.sender_user.first_name}} {{message.sender_user.name}}
+                                    </p>
                                     <time class="has-text-black is-size-7">Le {{message.created_at}}</time>
                                 </div>
 

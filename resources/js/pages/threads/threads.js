@@ -3,13 +3,15 @@ import HeaderMessage from "./components/HeaderMessage";
 import DisplayMessageContent from "./components/DisplayMessageContent";
 import FormMessageReply from "./components/FormMessageReply";
 import ListThreads from "./components/ListThreads";
+import MultiSelect from "../../components/MultiSelect";
 
 Vue.component('vue-threads',{
     components :{
         ListThreads,
         HeaderMessage,
         DisplayMessageContent,
-        FormMessageReply
+        FormMessageReply,
+        MultiSelect
     },
     props: {
         initThread : '',
@@ -25,7 +27,8 @@ Vue.component('vue-threads',{
             messagesLoading : true,
             isDisplay : this.isDisplayInThreadPage,
             isUserLoggedAdOwner : this.isUserLoggedAdOwner,
-            isUserModerator: false
+            isUserModerator: false,
+            usersSelected : []
 
         }
     },

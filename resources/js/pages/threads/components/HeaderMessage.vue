@@ -7,26 +7,20 @@
                 <div class="column is-one-third"></div>
                 <div class="column ">
                     <template v-if="value[0].thread.title">
-                        <p class="title is-4 has-text-centered">{{value[0].thread.title}}</p>
-                        <template v-if="value[0].thread.users[0].id !== userId">
-                            <p class="subtitle is-6 has-text-centered has-text-grey">
-                                {{value[0].thread.users[0].first_name}}
-                                {{value[0].thread.users[0].name}}</p>
+                        <p class="title is-5 has-text-centered">{{value[0].thread.title}}</p>
+                        <template v-for="(user, index) in value[0].thread.users">
+                            <p class=" is-marginless subtitle is-6 has-text-centered has-text-grey"
+                               v-if="user.id !==userId">
+                                {{user.first_name}} {{user.name}}</p>
                         </template>
-                        <template v-else>
-                            <p class="subtitle is-6 has-text-centered has-text-grey">
-                                {{value[0].thread.users[1].first_name}}
-                                {{value[0].thread.users[1].name}}</p>
-                        </template>
+                    </template>
 
-                    </template>
-                    <template v-else-if="value[0].thread.users[0].id !== userId">
-                        <p class="title is-4 has-text-centered">{{value[0].thread.users[0].first_name}}
-                            {{value[0].thread.users[0].name}}</p>
-                    </template>
                     <template v-else>
-                        <p class="title is-4 has-text-centered">{{value[0].thread.users[1].first_name}}
-                            {{value[0].thread.users[1].name}}</p>
+
+                            <template v-for="(user, index) in value[0].thread.users">
+                                <p class=" title is-5 has-text-centered is-marginless" v-if="user.id !==userId"> {{user.first_name}} <span class="is-uppercase">{{user.name}}</span></p>
+                            </template>
+
                     </template>
 
                     <template v-if="value[0].thread.ad !== null">

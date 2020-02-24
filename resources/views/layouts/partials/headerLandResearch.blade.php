@@ -46,11 +46,12 @@
                     Habitation
                 </label>
             </div>
+
             <div class="field">
                 {!! Form::label('production_genres', 'Choisissez des types de production', ['class' => 'label']); !!}
                 <multi-select
                     :options="{{ json_encode($productionGenres) }}"
-                    :multiple="true"
+                    v-model="productionsSelected"
                     name="production_genres[]"
                     selected-count-text="production(s) sélectionné(s)"
                     placeholder="Choississez">
@@ -61,6 +62,7 @@
                 <multi-select
                     :options="{{ json_encode($bioCertifications) }}"
                     :multiple="true"
+                    v-model="bioProductionsSelected"
                     name="bio_certifications[]"
                     selected-count-text="production(s) bio sélectionné(s)"
                     placeholder="Choississez">

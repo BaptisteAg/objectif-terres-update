@@ -131,9 +131,12 @@ class ThreadService
 			];
 		} else {
 			$threadParticipants = [
-				$data['receiver_user_message'],
 				auth()->id()
 			];
+
+			foreach($data['receivers_user_message'] as $receiverUserMessage){
+				array_push($threadParticipants, (int)$receiverUserMessage);
+			}
 		}
 
 		foreach ($threadParticipants as $user_id) {

@@ -8,13 +8,16 @@
 					<h3 class="title is-3 has-text-centered has-text-black ">Envoyer un message </h3>
 				</div>
 				<div class="columns is-mobile is-centered">
-					<div class="column is-5 is-centered">
-						<div class="select ">
-							<select name="receiver_user_message">
-								@foreach($users as $user)
-									<option value="{{$user->id}}">{{$user->first_name}} {{$user->name}}</option>
-								@endforeach
-							</select>
+					<div class="column is-7 is-centered">
+						<div class="field">
+							{!! Form::label('receivers_user_message[]', 'Choisissez votre ou vos interlocuteurs', ['class' => 'label']); !!}
+							<multi-select
+									:options="{{ json_encode($users) }}"
+									v-model="usersSelected"
+									name="receivers_user_message[]"
+									selected-count-text="personne(s) séléctionnée(s)"
+									placeholder="Choississez">
+							</multi-select>
 						</div>
 					</div>
 				</div>
