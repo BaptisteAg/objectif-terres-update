@@ -27,6 +27,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $password
  * @property int $country_id
  * @property int $zip_code_id
+ * @property int $role
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -54,6 +55,7 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereOtherProfile($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereProfile($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
@@ -62,8 +64,8 @@ use Illuminate\Notifications\Notifiable;
  */
 class User extends Authenticatable
 {
-    use Notifiable;
-    use CanResetPassword;
+	use Notifiable;
+	use CanResetPassword;
 
 	const ROLES = [
 		0 => 'ROLE_PP',
@@ -71,34 +73,35 @@ class User extends Authenticatable
 		2 => 'ROLE_MODERATOR',
 		3 => 'ROLE_AT',
 		4 => 'ROLE_ADMIN',
-    ];
+	];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'email', 'password', 'first_name','phone', 'address', 'city', 'zip_code_id', 'accept_communication', 'country_id', 'profile', 'civility', 'profile', 'other_profile', 'accept_share_contact_infos', 'role'
-    ];
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
+	protected $fillable = [
+		'name', 'email', 'password', 'first_name', 'phone', 'address', 'city', 'zip_code_id', 'accept_communication', 'country_id', 'profile', 'civility', 'profile', 'other_profile', 'accept_share_contact_infos', 'role',
+	];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+	/**
+	 * The attributes that should be hidden for arrays.
+	 *
+	 * @var array
+	 */
+	protected $hidden = [
+		'password', 'remember_token',
+	];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+	/**
+	 * The attributes that should be cast to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'email_verified_at' => 'datetime',
+	];
+
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
@@ -106,6 +109,7 @@ class User extends Authenticatable
 	{
 		return $this->belongsTo('App\Models\Country');
 	}
+
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
@@ -117,7 +121,7 @@ class User extends Authenticatable
 	/**
 	 * Send the password reset notification.
 	 *
-	 * @param  string  $token
+	 * @param string $token
 	 * @return void
 	 */
 	public function sendPasswordResetNotification($token)

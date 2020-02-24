@@ -61,7 +61,6 @@
 								</span>
 			<span> Répondre à l'annonce</span>
 		</button>
-
 		{!! Form::open(['route'=>'favoriteAds.create', 'method'=>'get']) !!}
 		<input name="ad_id" value="{{$ad->id}}" type="hidden">
 		<button class="card-footer-item button is-link is-light">

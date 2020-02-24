@@ -3,6 +3,7 @@
         <div class="content" v-if="isDisplay">
             <template v-if="numberUnreadMessages <=1">
                 <p>{{numberUnreadMessages}} message non lus</p>
+
             </template>
             <template v-else>
                 <p>{{numberUnreadMessages}} messages non lus</p>
@@ -32,6 +33,13 @@
                     <a><span @click="onThreadClick(thread.id)">{{thread.title}}</span></a>
                 </li>
             </ul>
+            <button v-if="isUserModerator"  @click="onNewThreadClick"  class="open-modal-new-message button is-link" type="button">
+								 <span class="icon is-small">
+								<i class="fa fa-plus" aria-hidden="true"></i>
+								</span>
+                <span> Créer une nouvelle discussion</span>
+            </button>
+
         </aside>
     </div>
 
@@ -45,6 +53,7 @@
             isDisplay : Boolean,
             isUserLoggedAdOwner : Boolean,
             userId:{},
+            isUserModerator : Boolean
         },
         data() {
             return {
@@ -55,6 +64,10 @@
             onThreadClick(threadId) {
                 this.$emit('on-thread-click', threadId)
             },
+            onNewThreadClick(){
+                this.$emit('on-new-thread-click')
+            }
+
         },
 
     }

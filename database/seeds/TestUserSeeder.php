@@ -18,6 +18,7 @@ class TestUserSeeder extends Seeder
 				'password' => Hash::make('test'),
 				'first_name' => 'Test',
 				'name' => 'Moderateur',
+				'role'=> 2
 
 
         ]);

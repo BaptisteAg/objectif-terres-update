@@ -82,7 +82,7 @@ class ThreadService
 	{
 		$allMessagesInThread = $this->messagesRepository->findAllByThread($threadId);
 
-		foreach ($allMessagesInThread as $message){
+		foreach ($allMessagesInThread as $message) {
 			$date = Carbon::parse($message->created_at)->format('m/d/Y');
 
 		}
@@ -101,8 +101,8 @@ class ThreadService
 
 		$idsToUpdate = [];
 		/** @var Message $message */
-		foreach ($allMessagesInThread as $message){
-			if($message->is_read === 0 && auth()->id() !== $message->sender_user_id) {
+		foreach ($allMessagesInThread as $message) {
+			if ($message->is_read === 0 && auth()->id() !== $message->sender_user_id) {
 				$idsToUpdate[] = $message->id;
 			}
 		}
@@ -117,16 +117,26 @@ class ThreadService
 	{
 
 		$threadData = Arr::only($data, [
-			"ad_id"
+			"ad_id",
+			"title"
 		]);
 		$thread = $this->repository->create($threadData);
 
-		$threadParticipants = [
-			$this->adRepository->find($data["ad_id"])->user_pp_id,
-			auth()->id()
-		];
+		$threadParticipants = [];
 
-		foreach($threadParticipants as $user_id) {
+		if (isset($data['ad_id'])) {
+			$threadParticipants = [
+				$this->adRepository->find($data["ad_id"])->user_pp_id,
+				auth()->id()
+			];
+		} else {
+			$threadParticipants = [
+				$data['receiver_user_message'],
+				auth()->id()
+			];
+		}
+
+		foreach ($threadParticipants as $user_id) {
 			$threadUser = new ThreadUser([
 				"user_id" => $user_id,
 				"thread_id" => $thread->id
@@ -143,6 +153,7 @@ class ThreadService
 
 	/**
 	 * @param array $data
+	 * @return Message
 	 * @throws \Throwable
 	 */
 	public function createMessage(array $data)

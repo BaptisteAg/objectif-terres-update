@@ -15,7 +15,7 @@ class ThreadPresenter extends BasePresenter
 
 		if(!count($title)) {
 			$title = [];
-			if($this->wrappedObject->ad->title){
+			if(! is_null($this->wrappedObject->ad)){
 				$title = $this->wrappedObject->ad->title;
 				return $title;
 			}

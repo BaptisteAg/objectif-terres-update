@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ThreadRequest;
 use App\Models\Thread;
 use App\Services\Threads\ThreadService;
-use Illuminate\Http\Request;
+use App\Services\Users\UserService;
 use Illuminate\Support\Collection;
 
 /**
@@ -19,15 +19,18 @@ class ThreadsController extends Controller
 	 * @var ThreadService
 	 */
 	protected $service;
+	protected $userService;
 
 
 	/**
 	 * ThreadsController constructor.
 	 * @param ThreadService $service
+	 * @param UserService $userService
 	 */
-	public function __construct(ThreadService $service)
+	public function __construct(ThreadService $service, UserService $userService)
 	{
 		$this->service = $service;
+		$this->userService = $userService;
 
 	}
 
@@ -56,7 +59,12 @@ class ThreadsController extends Controller
 			return $count + $thread->unreadMessages()->count();
 		}, 0);
 
-		return view('pages.messages.index', compact('threads', 'numberOfUnreadMessages'));
+		$users = [];
+		if(auth()->user()->role >= 1 ){
+			$users = $this->userService->findAllExceptPP();
+		}
+
+		return view('pages.messages.index', compact('threads', 'numberOfUnreadMessages', 'users'));
 	}
 
 
