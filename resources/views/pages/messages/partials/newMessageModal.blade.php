@@ -5,10 +5,10 @@
 		<div class="modal-content">
 			<div class="card">
 				<div class="card-content">
-					<h3 class="title is-3 has-text-centered has-text-black ">Envoyer un message </h3>
+					<h3 class="title is-3 has-text-centered has-text-black ">Créer une nouvelle discussion </h3>
 				</div>
-				<div class="columns is-mobile is-centered">
-					<div class="column is-7 is-centered">
+				<div class="card-content">
+					<div class="container">
 						<div class="field">
 							{!! Form::label('receivers_user_message[]', 'Choisissez votre ou vos interlocuteurs', ['class' => 'label']); !!}
 							<multi-select
@@ -19,10 +19,6 @@
 									placeholder="Choississez">
 							</multi-select>
 						</div>
-					</div>
-				</div>
-				<div class="card-content">
-					<div class="container">
 						<div class="field">
 							<label class="label">Donnez un nom à votre discussion : </label>
 							<div class="field">

@@ -31,7 +31,7 @@
                     <template v-if="value[0].thread.ad !== null">
                         <div class="content" v-if="isDisplay">
                             <div class="buttons is-centered ">
-                                <a :href="'/annonces/' + value[0].thread.ad.id">
+                                <a target="_blank" :href="'/annonces/' + value[0].thread.ad.id">
                                     <button class="button is-link ">
 											<span class="icon is-small">
 											 <i class="fas fa-eye"></i>

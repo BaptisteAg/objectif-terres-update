@@ -147,11 +147,14 @@ class ThreadService
 			$threadUser->save();
 		}
 
-		$messageData = Arr::only($data, ["content"]);
-		$messageData["sender_user_id"] = auth()->id();
-		$messageData["thread_id"] = $thread->id;
+		if(isset($data['content'])){
+			$messageData = Arr::only($data, ["content"]);
+			$messageData["sender_user_id"] = auth()->id();
+			$messageData["thread_id"] = $thread->id;
 
-		$this->messagesRepository->create($messageData);
+			$this->messagesRepository->create($messageData);
+		}
+
 	}
 
 	/**

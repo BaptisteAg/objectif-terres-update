@@ -3,7 +3,6 @@
         <div class="content" v-if="isDisplay">
             <template v-if="numberUnreadMessages <=1">
                 <p>{{numberUnreadMessages}} message non lus</p>
-
             </template>
             <template v-else>
                 <p>{{numberUnreadMessages}} messages non lus</p>
@@ -15,7 +14,6 @@
 								</span>
                 <span> Créer une nouvelle discussion</span>
             </button>
-
         </div>
         <aside class="menu">
             <p class="menu-label" v-if="isDisplay">
@@ -24,20 +22,29 @@
             <p class="menu-label" v-else>
                 Vos fils de discussion concernant cette annonce
             </p>
-            <ul class="menu-list" v-if="isUserLoggedAdOwner">
+            <ul class="menu-list">
                 <li v-for="thread in threads">
-                    <template v-if="thread.users[0].id !== userId">
-                        <a @click="onThreadClick(thread.id)"><span>{{thread.users[0].first_name}} {{thread.users[0].name}}</span></a>
+                    <template v-if="thread.users.length >2">
+                        <a @click="onThreadClick(thread.id)">
+                            <span class="icon">
+                             <i class="fas fa-users"></i>
+                            </span>
+                            <span>{{thread.title}}</span></a>
+                    </template>
+                    <template v-else-if="thread.ad_id !== null">
+                        <a @click="onThreadClick(thread.id)">
+                            <span class="icon">
+                            <i class="far fa-newspaper"></i>
+                            </span>
+                            <span>{{thread.title}}</span></a>
                     </template>
                     <template v-else>
-                        <a @click="onThreadClick(thread.id)"><span>{{thread.users[1].first_name}} {{thread.users[1].name}}</span></a>
+                        <a @click="onThreadClick(thread.id)">
+                            <span class="icon">
+                            <i class="fas fa-user"></i>
+                            </span>
+                            <span>{{thread.title}}</span></a>
                     </template>
-                </li>
-            </ul>
-
-            <ul class="menu-list" v-else>
-                <li v-for="thread in threads">
-                    <a @click="onThreadClick(thread.id)"><span>{{thread.title}}</span></a>
                 </li>
             </ul>
         </aside>
