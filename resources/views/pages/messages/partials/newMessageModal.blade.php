@@ -20,7 +20,7 @@
 							</multi-select>
 						</div>
 						<div class="field">
-							<label class="label">Donnez un nom à votre discussion : </label>
+							<label class="label">Donnez un titre à votre discussion : </label>
 							<div class="field">
 								<div class="control">
 									<input type="text" name="title" class="input is-medium"

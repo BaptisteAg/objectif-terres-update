@@ -85,6 +85,31 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 
 
 	/**
+	 * @param string $threadId
+	 *
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function findThreadsByUnreadedMessages()
+	{
+		/** @var Thread $model */
+		$threads = auth()
+			->user()
+			->threads()
+			->whereHas('messages', function (Builder $query) {
+				$query->where([
+					['sender_user_id', '!=', auth()->id()],
+					['is_read', '=', '0']
+				]);
+			})
+			->with($this->getEagerLoading())
+			->get();
+
+		return $threads;
+
+	}
+
+
+	/**
 	 * @param int $userId
 	 * @return Thread[]
 	 */

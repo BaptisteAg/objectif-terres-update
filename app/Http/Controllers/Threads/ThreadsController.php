@@ -60,12 +60,14 @@ class ThreadsController extends Controller
 			return $count + $thread->unreadMessages()->count();
 		}, 0);
 
+		$threadsWithUnreadMessages = $this->service->findThreadsByUnreadMessage();
 		$users = [];
 		if(auth()->user()->role >= 1 ){
 			$users = $this->userService->findAllExceptPP();
 		}
 
-		return view('pages.messages.index', compact('threads', 'numberOfUnreadMessages', 'users'));
+
+		return view('pages.messages.index', compact('threads', 'numberOfUnreadMessages', 'users', 'threadsWithUnreadMessages'));
 	}
 
 

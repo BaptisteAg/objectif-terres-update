@@ -167,4 +167,8 @@ class ThreadService
 		return $this->messagesRepository->create($data);
 	}
 
+
+	public function findThreadsByUnreadMessage(){
+		return $this->repository->findThreadsByUnreadedMessages();
+	}
 }

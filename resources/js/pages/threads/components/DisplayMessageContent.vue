@@ -21,17 +21,14 @@
                 <div class="content message-received">
                     <div class="columns">
                         <div class="column is-half ">
+                            <p class="is-marginless has-text-grey">{{message.sender_user.first_name}} {{message.sender_user.name}} </p>
                             <div class="content message-receiver ">
                                 <div class="message-receiver-content">
                                     <p class="has-text-black">
                                         {{message.content}}
                                     </p>
-                                    <p class="is-size-7 has-text-black is-marginless">
-                                        De : {{message.sender_user.first_name}} {{message.sender_user.name}}
-                                    </p>
                                     <time class="has-text-black is-size-7">Le {{message.created_at}}</time>
                                 </div>
-
                             </div>
                         </div>
                         <div class="column"></div>

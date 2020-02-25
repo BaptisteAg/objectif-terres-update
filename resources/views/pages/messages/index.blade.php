@@ -5,8 +5,12 @@
 @section('main-content')
 
 	<div class="section">
+		<h1 class="title has-text-link">Bienvenue sur votre messagerie</h1>
+		@if(auth()->user()->role >=2)
+			@include('components.moderatorTabs')
+			<br>
+		@endif
 		<div class="container ">
-			<h1 class="title has-text-link">Bienvenue sur votre messagerie</h1>
 			@if(count($threads)===0)
 				<div class="content">
 					<p class="subtitle has-text-centered">Vous n'avez pas encore reçu de messages ! </p>
@@ -51,6 +55,7 @@
 									<list-threads
 											:threads="{{json_encode($threads)}}"
 											:number-of-unread-messages="{{$numberOfUnreadMessages}}"
+											:threads-with-unread-messages="{{$threadsWithUnreadMessages}}"
 											v-model="messages"
 											@on-thread-click="onThreadClick"
 											@on-new-thread-click="onNewThreadClick"

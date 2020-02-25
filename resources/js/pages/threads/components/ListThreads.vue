@@ -27,26 +27,40 @@
                     <template v-if="isDisplay">
                         <template v-if="thread.users.length >2">
                             <a @click="onThreadClick(thread.id)">
-                            <span class="icon">
+                                <template v-for="threadUnreadMessages in threadsUnreadMessages">
+                                    <span v-if="threadUnreadMessages.id === thread.id" class="icon has-text-danger">
+                                    <i class="fas fa-circle has-"></i>
+                                    </span>
+                                </template>
+                                <span class="icon">
                              <i class="fas fa-users"></i>
                             </span>
                                 <span>{{thread.title}}</span></a>
                         </template>
                         <template v-else-if="thread.ad_id !== null">
                             <a @click="onThreadClick(thread.id)">
-                            <span class="icon">
+                                <template v-for="threadUnreadMessages in threadsUnreadMessages">
+                                    <span v-if="threadUnreadMessages.id === thread.id" class="icon has-text-danger">
+                                    <i class="fas fa-circle"></i>
+                                    </span>
+                                </template>
+                                <span class="icon">
                             <i class="far fa-newspaper"></i>
                             </span>
                                 <span>{{thread.title}}</span></a>
                         </template>
                         <template v-else>
                             <a @click="onThreadClick(thread.id)">
-                            <span class="icon">
+                                <template v-for="threadUnreadMessages in threadsUnreadMessages">
+                                    <span v-if="threadUnreadMessages.id === thread.id" class="icon has-text-danger">
+                                    <i class="fas fa-circle"></i>
+                                    </span>
+                                </template>
+                                <span class="icon">
                             <i class="fas fa-user"></i>
                             </span>
                                 <span>{{thread.title}}</span></a>
                         </template>
-
                     </template>
                     <template v-else>
                         <template v-if="thread.users[0].id !== userId">
@@ -69,13 +83,15 @@
         props: {
             threads: '',
             numberOfUnreadMessages: '',
+            threadsWithUnreadMessages: '',
             isDisplay: Boolean,
             userId: {},
             isUserModerator: Boolean
         },
         data() {
             return {
-                numberUnreadMessages: this.numberOfUnreadMessages
+                numberUnreadMessages: this.numberOfUnreadMessages,
+                threadsUnreadMessages: this.threadsWithUnreadMessages
             }
         },
         methods: {
