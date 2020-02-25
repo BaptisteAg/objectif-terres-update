@@ -17,7 +17,7 @@
                      :max-height="height">
 
         </multiselect>
-        <input type="hidden" v-for="option in selected" :value="option.id" :name="name">
+        <input type="hidden" v-for="id in selectedIds" :value="id" :name="name">
 
         <template v-if="showIcons">
             <template v-for="option in selected">
@@ -82,8 +82,8 @@
         computed: {
             selected: {
                 get() {
-                    return this.electedIds.map(id =>
-                        this.options.find(option => option.id.toString() === id)
+                    return this.selectedIds.map(id =>
+                        this.options.find(option => option.id.toString() === id.toString())
                     )
                 },
                 set(options) {

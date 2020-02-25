@@ -9,7 +9,7 @@
 				placeholder="Choississez un/des département(s)">
 		</multi-select>
 	</div>
-	<p class="has-text-centered">ou</p>
+	<div class="is-divider" data-content="OU"></div>
 	<div class="field">
 		{!! Form::label('cities', 'Choisissez une ville', ['class' => 'label']); !!}
 		<ajax-multi-select

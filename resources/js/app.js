@@ -33,6 +33,7 @@ require ('./pages/ads/new');
 require('./pages/header');
 require('./pages/auth/register');
 require('./pages/threads/threads');
+require('./pages/moderator/index')
 
 //////////////
 // GLOBAL

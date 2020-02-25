@@ -54,7 +54,7 @@
                     return _.findKey(this.data, d => d === v);
                 });
 
-                this.$emit('input', textValues)
+                this.$emit('input', this.selectedMinMaxValues)
             }
         }
     }

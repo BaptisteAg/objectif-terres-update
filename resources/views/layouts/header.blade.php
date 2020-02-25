@@ -30,11 +30,12 @@
                             @endif
                         @else
                             <div class="level-item">
-                                <a href="{{route('userAccount.showAccount')}}">
-                                <span class="icon">
-                                    <i class="far fa-user"></i>
-                                </span>
-                                <span>Mon compte ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
+
+                                <a href="{{route('userAccount.index')}}">
+						<span class="icon">
+							<i class="far fa-user"></i>
+						</span>
+                                    <span>Mon compte ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
                                 </a>
                             </div>
                             <div class="level-item">

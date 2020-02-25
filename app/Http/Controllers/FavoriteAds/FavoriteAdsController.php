@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\FavoriteAds;
 
 use App\Http\Controllers\Controller;
+use App\Models\FavoriteAd;
 use App\Repositories\FavoriteAds\FavoriteAdRepository;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,7 @@ class FavoriteAdsController extends Controller
 		$data['user_id'] = auth()->user()->id;
 
 		$this->favoriteAdRepository->create($data);
-		return back()->with('success', 'Cette annonce a été sauvegardée dans vos favoris !');
+		return back()->with('success', 'Cette annonce a été sauvegardée dans <a href=\'/mon-espace/annonces-favorites/liste\'>vos favoris</a> !');
 	}
 
 	/**
@@ -43,22 +44,23 @@ class FavoriteAdsController extends Controller
 	 */
 	public function show()
 	{
-
 		$favoriteAds = $this->favoriteAdRepository->findAllByUserId(auth()->user()->id);
 
 		return view('pages.favoriteAds.listFavoriteAds', compact('favoriteAds'));
 	}
 
 	/**
-	 * @param Request $request
+	 * @param FavoriteAd $favoriteAd
 	 * @return \Illuminate\Http\RedirectResponse
 	 * @throws \Exception
 	 */
-	public function destroy(Request $request)
+	public function destroy(FavoriteAd $favoriteAd)
 	{
+		if (auth()->id() !== $favoriteAd->user_id) {
+			abort(404);
+		}
+		$this->favoriteAdRepository->destroy($favoriteAd);
 
-
-		$this->favoriteAdRepository->destroy($request->input('favoriteAdId'));
 		return back()->with('success', 'Vous avez bien retiré l\'annonce de vos favoris');
 	}
 }

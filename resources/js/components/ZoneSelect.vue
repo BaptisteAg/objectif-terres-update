@@ -145,7 +145,7 @@
         },
         computed: {
             hasCities() {
-                return !!this.value.find(zone => zone.value.type === "cities");
+                return !!this.value.find(zone => zone.value.type.match(/cities|zipcode/));
             }
         },
         methods: {

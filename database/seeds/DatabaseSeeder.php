@@ -51,6 +51,8 @@ class DatabaseSeeder extends Seeder
                 BioCertificationSeeder::class,
                 JobOfferTypeSeeder::class,
                 OfferGenreSeeder::class,
+                ProjectStatusSeeder::class,
+				AdStatusSeeder::class,
                 EducationLevelSeeder::class,
             ]);
 
@@ -58,7 +60,6 @@ class DatabaseSeeder extends Seeder
             if(app()->environment() === "local") {
                 $this->call([
                     TestUserSeeder::class,
-                    TestProjectStatusSeeder::class,
                     TestResponseTypeSeeder::class,
                     TestResearchSeeder::class,
                     TestResponseTemplateSeeder::class,

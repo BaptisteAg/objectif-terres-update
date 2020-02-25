@@ -39,20 +39,20 @@
 								</div>
 								<div class="column">@if($ad->landSeekAd)
 										<h1 class="title">
-											<a href="{{route('ads.show', $ad->id)}}">{{$ad->landSeekAd->title}}</a>
+											<a href="{{route('ads.show', $ad->id)}}">{{$ad->title}}</a>
 										</h1>
 										<p><span class=" has-text-grey-dark">Type d'annonce  :</span>
 											<span class="has-text-black">Recherche de foncier</span></p>
 									@elseif($ad->landOfferAd)
 										<h1 class="title">
-											<a href="{{route("ads.show", $ad->id)}}">{{$ad->landOfferAd->title}}</a>
+											<a href="{{route("ads.show", $ad->id)}}">{{$ad->title}}</a>
 										</h1>
 										<p><span class="has-text-grey-dark">Type d'annonce  :</span>
 											<span class="has-text-black">Offre de foncier</span></p>
 									@elseif($ad->jobOfferAd)
 										<h1 class="title">
 											<a href="{{route("ads.show", $ad->id)}}">
-												{{$ad->jobOfferAd->title}}
+												{{$ad->title}}
 											</a>
 										</h1>
 										<p><span class="has-text-grey-dark">Type d'annonce :</span>
@@ -60,7 +60,7 @@
 									@elseif($ad->jobSeekAd)
 										<h1 class="title">
 											<a href="{{route("ads.show", $ad->id)}}">
-												{{$ad->jobOfferAd->title}}
+												{{$ad->title}}
 											</a>
 										</h1>
 										<p><span class="has-text-grey-dark">Type d'annonces  :</span>
@@ -115,7 +115,7 @@
 											<span class="icon is-small">
 											<i class="fas fa-eye"></i>
 											</span>
-											<span>Voir l'annonce l'annonce</span>
+											<span>Voir l'annonce</span>
 										</button>
 
 									</a>

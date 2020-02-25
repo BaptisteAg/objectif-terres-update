@@ -16,11 +16,11 @@
                 <vue-slider
                     name="surfaces_research"
                     :data="{
-                        0: '0km',
-                        5: '5km',
-                        10: '10km',
-                        20: '20km',
-                        50: '50km'
+                        0: '0 ha',
+                        5: '5 ha',
+                        10: '10 ha',
+                        20: '20 ha',
+                        50: '50 ha'
                     }"
                     :values="['0', '>100']"></vue-slider>
                 <br>

@@ -28,20 +28,20 @@ export default Vue.extend({
         return {
             formInput: {
                 selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
+                surfaceRangeMin : hasOld ? v.land_seek.surface_range_min : 0,
+                surfaceRangeMax : hasOld ? v.land_seek.surface_range_max : 0,
                 productionGenres: hasOld ? v.land_seek.production_genres : [],
                 productionTypeAdd: hasOld ? v.land_seek.production_type_add : '',
                 installationTypeId: hasOld ? v.land_seek.installation_type_id : '',
-                //offerGenre: hasOld ? v.land_seek.offer_genre_id : '',
-                //surfaceRangeMin : hasOld ? v.land_seek.surface_range_min : 0,
-                //surfaceRangeMax : hasOld ? v.land_seek.surface_range_max : 0,
-                //minRent: hasOld ? v.land_seek.rent_min : '',
-                //maxRent: hasOld ? v.land_seek.rent_max : '',
                 aboutProject: hasOld ? v.about_project_content : '',
                 experienceFarming: hasOld ? (v.land_seek.experience_farming || '') : '',
                 aboutContent: hasOld ? v.about_content : '',
                 title: hasOld ? v.title : '',
                 documents: hasOld ? JSON.parse(v.documents) : [],
                 chartConfirmation: false,
+                //offerGenre: hasOld ? v.land_seek.offer_genre_id : '',
+                //minRent: hasOld ? v.land_seek.rent_min : '',
+                //maxRent: hasOld ? v.land_seek.rent_max : '',
             }
         }
     },
@@ -73,7 +73,8 @@ export default Vue.extend({
                 checked(v) {
                     return !!v
                 }
-            }
+            },
+            surfaceRangeMax: {required}
         }
     }
 });

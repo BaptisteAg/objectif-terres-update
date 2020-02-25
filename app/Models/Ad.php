@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\Documentable;
 use App\Presenters\AdPresenter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use McCool\LaravelAutoPresenter\HasPresenter;
@@ -64,6 +65,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserAdminId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserPpId($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Thread $threadAlreadyExist
  */
 class Ad extends Model implements HasPresenter
 {
@@ -122,6 +124,17 @@ class Ad extends Model implements HasPresenter
 	public function threads()
 	{
 		return $this->hasMany(Thread::class);
+	}
+
+	/**
+	 * @return Builder|\Illuminate\Database\Eloquent\Relations\HasOne
+	 */
+	public function threadAlreadyExist()
+	{
+		return $this->hasOne(Thread::class)
+			->whereHas('messages', function (Builder $query) {
+				$query->where('sender_user_id', '=', auth()->id());
+			});
 	}
 
     /**

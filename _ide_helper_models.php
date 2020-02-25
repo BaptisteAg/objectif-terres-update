@@ -167,7 +167,7 @@ namespace App\Models{
  * @property int $lead_type_id
  * @property int $refusal_type_id
  * @property string $sf_owner_id
- * @property string $sf_admin_id
+ * @property string $sf_moderator_id
  * @property boolean $to_call_back
  * @property string $short_description
  * @property string $archived_at
@@ -187,8 +187,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd wherePpTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereRefusalTypeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereSfAdminId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereSfOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserModeratorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserOwnerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereShortDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereToCallBack($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUpdatedAt($value)

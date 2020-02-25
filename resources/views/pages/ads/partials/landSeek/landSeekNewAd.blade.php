@@ -17,13 +17,20 @@
                     <div class="column"></div>
                     <div class="column is-half">
                         <div class="field">
-                            {!! Form::label('land_seek[surface_range][]', 'Surface recherchée (en hectares)', ['class' => 'label']); !!}
+                            {!! Form::label('land_seek[surface_range][]', 'Surface recherchée* (en hectares)', ['class' => 'label']); !!}
                             <vue-slider-range
+                                    ref="surfaceRangeMax"
                                     name-min="land_seek[surface_range_min]"
                                     name-max="land_seek[surface_range_max]"
                                     :data="{{ json_encode($surfaceRanges->pluck('label', 'value')) }}"
                                     :value="[formInput.surfaceRangeMin, formInput.surfaceRangeMax]"
+                                    @input="v => (formInput.surfaceRangeMin = v[0]) && (formInput.surfaceRangeMax = v[1])"
                             ></vue-slider-range>
+
+                            <p class="help is-danger"
+                               v-if="$v.formInput.surfaceRangeMax.$error">
+                                Ce champ est requis.
+                            </p>
                         </div>
                         <br>
 

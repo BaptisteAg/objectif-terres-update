@@ -6,6 +6,7 @@
 @import '~bulma/bulma';
 @import '~bulma-accordion/dist/css/bulma-accordion';
 @import '~bulma-tooltip/dist/css/bulma-tooltip.min.css';
+@import '~bulma-divider/dist/css/bulma-divider.min.css';
 //import Awesomplete
 @import '~awesomplete/awesomplete.css';
 // Themify
@@ -104,7 +105,6 @@ body .multiselect__tag {
 
 //Spinner
 #loading {
-  display: inline-block;
   width: 50px;
   height: 50px;
   border: 3px solid hsl(0, 0%, 95%);
