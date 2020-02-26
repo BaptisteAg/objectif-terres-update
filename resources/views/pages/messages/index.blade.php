@@ -21,7 +21,7 @@
 							<div>
 								<div class="columns is-centered is-mobile">
 									<div class="column is-2">
-										<button id="test" class="open-modal-new-message button is-link" type="button">
+										<button class="open-modal-new-message button is-link" type="button">
 								 <span class="icon is-small">
 								<i class="fa fa-paper-plane" aria-hidden="true"></i>
 								</span>
