@@ -4,8 +4,11 @@
             :monday-first = "mondayFirst"
             calendar-button-icon = "fas fa-calendar-alt"
             input-class = "input"
+            name="dateResearchRange"
             placeholder = "Plage de dates"
             :disabled-dates = "disabledDates"
+            v-model = "highlighted.from"
+            :highlighted="highlighted"
             >
 
     </datepicker>
@@ -29,7 +32,11 @@
                 disabledDates: {
                     from: new Date(Date.now()),
 
-                }
+                },
+                highlighted : {
+                    to : new Date(Date.now()),
+                    from : new Date(Date.now()),
+                },
             }
         },
 

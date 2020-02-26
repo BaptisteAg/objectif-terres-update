@@ -20,12 +20,13 @@ Vue.component('research-form-moderator',{
         return {
             adType: 'land',
             citySelect: [],
-            typeSelected : ''
+            typeSelected : 'landOffer',
+            departmentsSelected :[],
+            regionsSelected: [],
         }
     },
     methods : {
         adTypeSelected(value){
-
             this.typeSelected = value;
             if(value ==="landOffer" || value==="landSeek"){
                 this.adType = 'land';

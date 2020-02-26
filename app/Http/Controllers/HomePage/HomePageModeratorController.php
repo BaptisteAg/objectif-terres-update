@@ -10,16 +10,20 @@ use App\Models\ProductionGenre;
 use App\Models\ProjectStatus;
 use App\Models\Region;
 use App\Services\AttributionAds\AttributionAdsService;
+use App\Services\Threads\ThreadService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class HomePageModeratorController extends Controller
 {
 	protected $service;
+	protected $threadService;
 
 
-	public function __construct(AttributionAdsService $attributionAdsService)
+	public function __construct(AttributionAdsService $attributionAdsService, ThreadService $threadService)
 	{
 		$this->service = $attributionAdsService;
+		$this->threadService = $threadService;
 	}
 
 	public function index(Request $request)
@@ -27,6 +31,8 @@ class HomePageModeratorController extends Controller
 		if (auth()->user()->role < 2 ) {
 			abort(404);
 		}
+
+		dump($request->input());
 
 		$cities = City::all();
 		$departments = Department::all();
@@ -38,7 +44,9 @@ class HomePageModeratorController extends Controller
 
 		$ads = $this->service->findAllByUserModerator(auth()->user()->id);
 
-		return view('pages.moderator.index', compact( 'cities', 'departments', 'regions','projectStatuses', 'adStatuses', 'productionGenres','jobOfferTypes', 'ads'));
+		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
+
+		return view('pages.moderator.index', compact( 'cities', 'departments', 'regions','projectStatuses', 'adStatuses', 'productionGenres','jobOfferTypes', 'ads', 'numberOfUnreadMessages'));
 
 	}
 }

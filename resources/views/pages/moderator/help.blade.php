@@ -50,7 +50,7 @@
 										</figure>
 									</div>
 									<div class="card-content is-marginless">
-										<p class="title is-4">Titre du document</p>
+										<p class="title is-4 has-text-centered">Titre du document</p>
 										<p class="subtitle is-6 has-text-grey">Lorem ipsum dolor sit amet, consectetur
 											adipisicing
 											elit. Accusamus corporis deleniti </p>
@@ -96,82 +96,85 @@
 	<br>
 	<div class="section">
 		<div class="container is-fluid">
-			<div class="columns is-centered">
-				<div class="column is-one-third ">
-					<div class="content">
-						<div class="columns is-mobile is-centered">
-							<div class="column is-three-quarters">
-								<h2 class="title is-2 has-text-link">Conseil sur la gestion de la modération</h2>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cupiditate debitis
-									deleniti dicta, error exercitationem fugit illo labore laudantium modi</p>
+			<div class="section">
+				<div class="columns is-centered ">
+					<div class="column is-one-third ">
+						<div class="content">
+							<div class="columns is-mobile is-centered">
+								<div class="column is-three-quarters">
+									<h2 class="title is-2 has-text-link">Conseil sur la gestion de la modération</h2>
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cupiditate debitis
+										deleniti dicta, error exercitationem fugit illo labore laudantium modi</p>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="column">
-					<div class="columns is-centered">
-						@for ($i = 0; $i < 3; $i++)
-							<div class="column is-one-third ">
-								<div class="card">
-									<div class="card-image">
-										<figure class="image is-4by3">
-											<a href="/" download="rapport2019"><img src="/images/placeholder-ad.png"
-																					alt=""></a>
-										</figure>
-									</div>
-									<div class="card-content is-marginless">
-										<p class="title is-4">Titre du document</p>
-										<p class="subtitle is-6 has-text-grey">Lorem ipsum dolor sit amet, consectetur
-											adipisicing
-											elit. Accusamus corporis deleniti </p>
-										<div class="content has-text-centered">
-											<a href="/" class="button is-link is-uppercase"
-											   download="rapport2019">Télécharger</a>
+					<div class="column">
+						<div class="columns is-centered">
+							@for ($i = 0; $i < 3; $i++)
+								<div class="column is-one-third ">
+									<div class="card">
+										<div class="card-image">
+											<figure class="image is-4by3">
+												<a href="/" download="rapport2019"><img src="/images/placeholder-ad.png"
+																						alt=""></a>
+											</figure>
+										</div>
+										<div class="card-content is-marginless">
+											<p class="title is-4 has-text-centered">Titre du document</p>
+											<p class="subtitle is-6 has-text-grey">Lorem ipsum dolor sit amet, consectetur
+												adipisicing
+												elit. Accusamus corporis deleniti </p>
+											<div class="content has-text-centered">
+												<a href="/" class="button is-link is-uppercase"
+												   download="rapport2019">Télécharger</a>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						@endfor
+							@endfor
+						</div>
 					</div>
 				</div>
 			</div>
-			<br>
-			<div class="columns is-centered">
-				<div class="column is-one-third ">
-					<div class="content">
-						<div class="columns is-mobile is-centered">
-							<div class="column is-three-quarters">
-								<h2 class="title is-3 has-text-link">Utilisation du site d'Objectif Terres</h2>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cupiditate debitis
-									deleniti dicta, error exercitationem fugit illo labore laudantium modi</p>
+			<div class="section">
+				<div class="columns is-centered">
+					<div class="column is-one-third ">
+						<div class="content">
+							<div class="columns is-mobile is-centered">
+								<div class="column is-three-quarters">
+									<h2 class="title is-2 has-text-link">Utilisation du site d'Objectif Terres</h2>
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cupiditate debitis
+										deleniti dicta, error exercitationem fugit illo labore laudantium modi</p>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="column">
-					<div class="columns is-centered">
-						@for ($i = 0; $i < 3; $i++)
-							<div class="column is-one-third ">
-								<div class="card">
-									<div class="card-image">
-										<figure class="image is-4by3">
-											<a href="/" download="rapport2019"><img src="/images/placeholder-ad.png"
-																					alt=""></a>
-										</figure>
-									</div>
-									<div class="card-content is-marginless">
-										<p class="title is-4">Titre du document</p>
-										<p class="subtitle is-6 has-text-grey">Lorem ipsum dolor sit amet, consectetur
-											adipisicing
-											elit. Accusamus corporis deleniti </p>
-										<div class="content has-text-centered">
-											<a href="/" class="button is-link is-uppercase"
-											   download="rapport2019">Télécharger</a>
+					<div class="column">
+						<div class="columns is-centered">
+							@for ($i = 0; $i < 3; $i++)
+								<div class="column is-one-third ">
+									<div class="card">
+										<div class="card-image">
+											<figure class="image is-4by3">
+												<a href="/" download="rapport2019"><img src="/images/placeholder-ad.png"
+																						alt=""></a>
+											</figure>
+										</div>
+										<div class="card-content is-marginless">
+											<p class="title is-4 has-text-centered">Titre du document</p>
+											<p class="subtitle is-6 has-text-grey">Lorem ipsum dolor sit amet, consectetur
+												adipisicing
+												elit. Accusamus corporis deleniti </p>
+											<div class="content has-text-centered">
+												<a href="/" class="button is-link is-uppercase"
+												   download="rapport2019">Télécharger</a>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						@endfor
+							@endfor
+						</div>
 					</div>
 				</div>
 			</div>
