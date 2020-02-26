@@ -3,18 +3,21 @@ import HeaderMessage from "./components/HeaderMessage";
 import DisplayMessageContent from "./components/DisplayMessageContent";
 import FormMessageReply from "./components/FormMessageReply";
 import ListThreads from "./components/ListThreads";
+import MultiSelect from "../../components/MultiSelect";
 
 Vue.component('vue-threads',{
     components :{
         ListThreads,
         HeaderMessage,
         DisplayMessageContent,
-        FormMessageReply
+        FormMessageReply,
+        MultiSelect
     },
     props: {
         initThread : '',
         isDisplayInThreadPage : Boolean,
-        isUserAdOwner : Boolean
+        isUserAdOwner : Boolean,
+        userRole : '',
     },
     data() {
         return {
@@ -24,6 +27,9 @@ Vue.component('vue-threads',{
             messagesLoading : true,
             isDisplay : this.isDisplayInThreadPage,
             isUserLoggedAdOwner : this.isUserLoggedAdOwner,
+            isUserModerator: false,
+            usersSelected : []
+
         }
     },
     mounted(){
@@ -31,10 +37,14 @@ Vue.component('vue-threads',{
             setInterval(_ => this.onThreadClick(this.activeThread), 15000);
             this.onThreadClick(this.activeThread);
 
+            if(this.userRole >=1){
+                this.isUserModerator = true;
+            }
         }
     },
     methods : {
         onThreadClick(threadId) {
+
             fetch('/mon-espace/messagerie/' + threadId)
                 .then(response => response.json())
                 .then(results => {
@@ -46,6 +56,10 @@ Vue.component('vue-threads',{
         },
         onMessageReplySuccess(message) {
             this.messages.push(message)
+        },
+
+        onNewThreadClick(){
+            this.$refs.newMessageModal.classList.add('is-active')
         }
     },
 });

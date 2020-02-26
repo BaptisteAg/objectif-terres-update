@@ -110,14 +110,6 @@ class Ad extends Model implements HasPresenter
         return $this->belongsTo(Project::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function adMessages()
-    {
-        return $this->hasMany(AdMessage::class);
-    }
-
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
@@ -178,14 +170,6 @@ class Ad extends Model implements HasPresenter
     public function landSeekAd()
     {
         return $this->hasOne(LandSeekAd::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function ppToUserMessages()
-    {
-        return $this->hasMany(PpToUserMessage::class);
     }
 
     /**

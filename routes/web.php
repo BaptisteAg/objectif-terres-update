@@ -66,6 +66,7 @@ Route::prefix('mon-espace/annonces-favorites')->middleware('auth')->name('favori
 });
 
 Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->namespace('Threads')->group(function () {
+	Route::get('actualisation', 'ThreadsController@refreshUnreadMessages')->name('refreshUnreadMessages');
 	Route::get('/', 'ThreadsController@index')->name('index');
 	Route::post('creer', 'ThreadsController@create')->name('create');
 	Route::get('{thread}', 'MessagesController@show')->name('show');
@@ -83,7 +84,7 @@ Route::prefix('locations')->namespace('Locationables')->group(function () {
 });
 
 Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderator.')->namespace('HomePage')->group(function () {
-	Route::post('/', 'HomePageModeratorController@index')->name('index');
+	Route::get('/', 'HomePageModeratorController@index')->name('index');
 });
 
 // Authentication Routes for authentification

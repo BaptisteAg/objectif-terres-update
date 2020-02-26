@@ -40,6 +40,7 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 	{
 		$model = $this->entity
 			->where(["id" => $id])
+			->with($this->getEagerLoading())
 			->firstOrFail();
 
 		if (!$model) {
@@ -48,29 +49,6 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 				$id
 			);
 		}
-
-		return $model;
-	}
-
-	/**
-	 * @param int $userId
-	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
-	 */
-	public function findAllThreads($userId)
-	{
-		/** @var Message $model */
-		$model = $this->entity
-			->select('thread_id')
-			->where(function( Builder $builder) use($userId ) {
-				$builder->where(["sender_user_id" => $userId]);
-
-			})
-			->orWhere(function( Builder $builder) use( $userId ) {
-				$builder->where(["receiver_user_id" => $userId]);
-
-			})
-			->groupBy(['thread_id'])
-			->get();
 
 		return $model;
 	}
@@ -90,6 +68,25 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 
 		return $model;
 
+	}
+
+
+	/**
+	 * @param $threadId
+	 * @return Message
+	 */
+	public function findAllUnreadMessagesByThread($threadId){
+		/** @var Message $model */
+		$model= $this->entity
+			->where(['thread_id'=> $threadId])
+			->whereHas('unreadMessages', function (Builder $query) {
+				$query->where([
+					['user_id', '=', auth()->id()],
+					['is_read', '=', '0']
+				]);
+			})
+			->get();
+			return $model;
 	}
 
 	/**
@@ -115,13 +112,13 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 	{
 		return [
 			'senderUser',
+			'unreadMessages',
 			'thread',
 			'thread.ad',
-			'thread.users'
+			'thread.users',
+
 		];
 	}
-
-
 	/**
 	 * @inheritDoc
 	 */

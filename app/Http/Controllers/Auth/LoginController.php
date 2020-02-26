@@ -8,35 +8,35 @@ use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Login Controller
+	|--------------------------------------------------------------------------
+	|
+	| This controller handles authenticating users for the application and
+	| redirecting them to your home screen. The controller uses a trait
+	| to conveniently provide its functionality to your applications.
+	|
+	*/
 
-    use AuthenticatesUsers;
+	use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/';
+	/**
+	 * Where to redirect users after login.
+	 *
+	 * @var string
+	 */
+	protected $redirectTo = '/';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		$this->middleware('guest')->except('logout');
+	}
 
 	/**
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -48,7 +48,7 @@ class LoginController extends Controller
 		$urlBase = url()->to('/');
 
 		// Set the previous url that we came from to redirect to after successful login but only if is internal
-		if(($previousUrl != $urlBase . '/connexion') && (substr($previousUrl, 0, strlen($urlBase)) === $urlBase)) {
+		if (($previousUrl != $urlBase . '/connexion') && (substr($previousUrl, 0, strlen($urlBase)) === $urlBase)) {
 			session()->put('url.intended', $previousUrl);
 		}
 
@@ -57,9 +57,6 @@ class LoginController extends Controller
 
 	public function authenticated(Request $request, $user)
 	{
-		if($user->email === 'moderateur@test.fr'){
-			session()->put('isModerator', 1);
-			$this->redirectTo ='/mon-espace-moderateur';
-		}
+		session()->put('role', $user::ROLES[$user->role]);
 	}
 }

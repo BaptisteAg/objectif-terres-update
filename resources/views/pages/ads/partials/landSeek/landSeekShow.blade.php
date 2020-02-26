@@ -8,7 +8,7 @@
 		</nav>
 		<h1 class="title has-text-link">{{$ad->title}}</h1>
 
-		@if(session()->get('isModerator') === 1)
+		@if(session()->get('role') >= 2)
 			@include('pages.ads.partials.moderator-options')
 		@endif
 

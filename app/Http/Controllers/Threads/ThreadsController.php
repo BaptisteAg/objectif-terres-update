@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ThreadRequest;
 use App\Models\Thread;
 use App\Services\Threads\ThreadService;
-use Illuminate\Http\Request;
+use App\Services\Users\UserService;
 use Illuminate\Support\Collection;
 
 /**
@@ -19,15 +19,18 @@ class ThreadsController extends Controller
 	 * @var ThreadService
 	 */
 	protected $service;
+	protected $userService;
 
 
 	/**
 	 * ThreadsController constructor.
 	 * @param ThreadService $service
+	 * @param UserService $userService
 	 */
-	public function __construct(ThreadService $service)
+	public function __construct(ThreadService $service, UserService $userService)
 	{
 		$this->service = $service;
+		$this->userService = $userService;
 
 	}
 
@@ -38,6 +41,7 @@ class ThreadsController extends Controller
 	 */
 	public function create(ThreadRequest $request)
 	{
+
 		$this->service->create($request->validated());
 
 		return redirect()->back()->with('success',
@@ -52,13 +56,22 @@ class ThreadsController extends Controller
 	{
 		/** @var Collection $threads */
 		$threads = $this->service->findAllThreadsByLoggedUser();
-		$numberOfUnreadMessages = array_reduce($threads->all(), function($count, Thread $thread) {
-			return $count + $thread->unreadMessages()->count();
-		}, 0);
 
-		return view('pages.messages.index', compact('threads', 'numberOfUnreadMessages'));
+		$threadsWithUnreadMessages = $this->service->findThreadsByUnreadMessage();
+		$users = [];
+		if (auth()->user()->role >= 1) {
+			$users = $this->userService->findAllExceptPP();
+		}
+
+		return view('pages.messages.index', compact('threads', 'users', 'threadsWithUnreadMessages'));
 	}
 
+	public function refreshUnreadMessages(){
 
+		/** @var Collection $threads */
+		$threads = $this->service->findAllThreadsByLoggedUser();
+		$threadsWithUnreadMessages = $this->service->findThreadsByUnreadMessage();
+		return response()->json($threadsWithUnreadMessages);
+	}
 
 }

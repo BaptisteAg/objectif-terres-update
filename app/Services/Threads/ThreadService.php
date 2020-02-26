@@ -1,6 +1,7 @@
 <?php namespace App\Services\Threads;
 
 use App\Models\Message;
+use App\Models\ReadMessage;
 use App\Models\Thread;
 use App\Models\ThreadUser;
 use App\Repositories\Ads\AdRepository;
@@ -8,6 +9,7 @@ use App\Repositories\Threads\MessagesRepository;
 use App\Repositories\Threads\ThreadsRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 /**
  * Class ThreadService
@@ -33,6 +35,8 @@ class ThreadService
 	/**
 	 * ThreadService constructor.
 	 * @param ThreadsRepository $repository
+	 * @param AdRepository $adRepository
+	 * @param MessagesRepository $messagesRepository
 	 */
 	public function __construct(
 		ThreadsRepository $repository,
@@ -47,7 +51,6 @@ class ThreadService
 
 
 	/**
-	 * @param int $userId
 	 * @return Thread[]
 	 */
 	public function findAllThreadsByLoggedUser()
@@ -82,7 +85,7 @@ class ThreadService
 	{
 		$allMessagesInThread = $this->messagesRepository->findAllByThread($threadId);
 
-		foreach ($allMessagesInThread as $message){
+		foreach ($allMessagesInThread as $message) {
 			$date = Carbon::parse($message->created_at)->format('m/d/Y');
 
 		}
@@ -95,18 +98,34 @@ class ThreadService
 	 * @param int $threadId
 	 * @return mixed
 	 */
-	public function setToReadAllMessagesInThread(int $threadId)
+	public function setToReadAllUnreadMessagesInThread(int $threadId)
 	{
-		$allMessagesInThread = $this->messagesRepository->findAllByThread($threadId);
 
-		$idsToUpdate = [];
-		/** @var Message $message */
-		foreach ($allMessagesInThread as $message){
-			if($message->is_read === 0 && auth()->id() !== $message->sender_user_id) {
-				$idsToUpdate[] = $message->id;
-			}
+		$allUnreadMessagesInThread = $this->messagesRepository->findAllUnreadMessagesByThread($threadId);
+		foreach ($allUnreadMessagesInThread as $unreadMessage) {
+
+			$unreadMessage = ReadMessage::where([
+				["message_id", $unreadMessage->id],
+				["user_id", auth()->id()]])
+				->firstOrFail();
+			$unreadMessage->is_read = 1;
+			$unreadMessage->save();
 		}
-		$this->messagesRepository->updateMany($idsToUpdate, ["is_read" => 1]);
+		return $allUnreadMessagesInThread;
+	}
+
+	/**
+	 * @param $threads
+	 * @return mixed
+	 */
+	public function countAllUnreadMessagesInThreads(Collection $threads)
+	{
+		$numberOfUnreadMessages = 0;
+		foreach ($threads as $thread) {
+			$numberOfUnreadMessages = $numberOfUnreadMessages + $this->messagesRepository->findAllUnreadMessagesByThread($thread->id)->count();
+		}
+
+		return $numberOfUnreadMessages;
 	}
 
 	/**
@@ -117,16 +136,27 @@ class ThreadService
 	{
 
 		$threadData = Arr::only($data, [
-			"ad_id"
+			"ad_id",
+			"title"
 		]);
 		$thread = $this->repository->create($threadData);
 
-		$threadParticipants = [
-			$this->adRepository->find($data["ad_id"])->user_pp_id,
-			auth()->id()
-		];
+		$threadParticipants = [];
+		if (isset($data['ad_id'])) {
+			$threadParticipants = [
+				$this->adRepository->find($data["ad_id"])->user_pp_id,
+				auth()->id()
+			];
+		} else {
+			$threadParticipants = [
+				auth()->id()
+			];
+			foreach ($data['receivers_user_message'] as $receiverUserMessage) {
+				array_push($threadParticipants, (int)$receiverUserMessage);
+			}
+		}
 
-		foreach($threadParticipants as $user_id) {
+		foreach ($threadParticipants as $user_id) {
 			$threadUser = new ThreadUser([
 				"user_id" => $user_id,
 				"thread_id" => $thread->id
@@ -134,20 +164,62 @@ class ThreadService
 			$threadUser->save();
 		}
 
-		$messageData = Arr::only($data, ["content"]);
-		$messageData["sender_user_id"] = auth()->id();
-		$messageData["thread_id"] = $thread->id;
+		if (isset($data['content'])) {
+			$messageData = Arr::only($data, ["content"]);
+			$messageData["sender_user_id"] = auth()->id();
+			$messageData["thread_id"] = $thread->id;
 
-		$this->messagesRepository->create($messageData);
+			$message = $this->messagesRepository->create($messageData);
+			foreach ($threadParticipants as $user_id) {
+				if ($user_id !== auth()->id()) {
+					$threadUser = new ReadMessage([
+						"message_id" => $message->id,
+						"user_id" => $user_id,
+					]);
+					$threadUser->save();
+				}
+			}
+		}
+
 	}
 
 	/**
 	 * @param array $data
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
 	 * @throws \Throwable
 	 */
 	public function createMessage(array $data)
 	{
-		return $this->messagesRepository->create($data);
+		$test = $this->messagesRepository->create($data);
+
+		$message = $this->messagesRepository->find($test->id);
+		foreach ($message->thread->users as $user) {
+			if ($user->id !== auth()->id()) {
+				$threadUser = new ReadMessage([
+					"message_id" => $message->id,
+					"user_id" => $user->id,
+				]);
+				$threadUser->save();
+			}
+		}
+		return $message;
 	}
 
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function findThreadsByUnreadMessage()
+	{
+		return $this->repository->findThreadsByUnreadMessages();
+	}
+
+	/**
+	 * @param int $adId
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function findThreadsByUnreadMessageAndAdId(int $adId)
+	{
+		return $this->repository->findThreadsByUnreadMessagesAndAdId($adId);
+	}
 }

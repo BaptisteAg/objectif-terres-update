@@ -41,6 +41,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserModeratorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserOwnerId($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Ad $ad
  */
 class AttributionAd extends Model implements HasPresenter
 {

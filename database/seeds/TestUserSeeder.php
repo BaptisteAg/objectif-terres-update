@@ -12,14 +12,12 @@ class TestUserSeeder extends Seeder
 	public function run()
 	{
 		factory(\App\Models\User::class, 20)->create();
-
 		\App\Models\User::create([
 				'email' => "moderateur@test.fr",
 				'password' => Hash::make('test'),
 				'first_name' => 'Test',
 				'name' => 'Moderateur',
-
-
+				'role'=> 2
         ]);
 	}
 }

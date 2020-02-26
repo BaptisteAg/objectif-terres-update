@@ -15,7 +15,11 @@ class ThreadRequest extends FormRequest
     {
         return [
             'content' => ['required', 'string', 'max:1000'],
-			'ad_id' => ['required', 'integer'],
+			'ad_id' => [ 'integer'],
+			'receiver_user_message' =>['integer'],
+			'receivers_user_message'=>['array'],
+			'receivers_user_message.*'=>['integer'],
+			'title' =>['string', 'nullable']
         ];
     }
 }

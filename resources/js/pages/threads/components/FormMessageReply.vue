@@ -1,6 +1,6 @@
 <template>
 
-    <div v-if="value.length !==0 " class="content ">
+    <div  v-if="value.length !==0 " class="content">
         <form @submit="formSubmit">
             <label id="reply-input-label" for="reply-input" class=" label has-text-black"> Répondre</label>
             <div class="field has-addons">
@@ -43,7 +43,6 @@
                     thread_id: this.value[0].thread.id
                 })
                     .then (response => {
-                        console.log(response)
                         const message = response.data;
                         this.$emit('message-reply-success', message)
                         this.content = '';

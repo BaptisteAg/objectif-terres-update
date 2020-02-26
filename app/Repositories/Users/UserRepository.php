@@ -20,10 +20,10 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 		return User::class;
 	}
 
-    /**
-     * Creates a user.
-     * @throws \Throwable
-     */
+	/**
+	 * Creates a user.
+	 * @throws \Throwable
+	 */
 	public function create(array $data)
 	{
 		$user = DB::transaction(function () use ($data) {
@@ -54,5 +54,19 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 		}
 
 		return $model;
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+	 */
+	public function findAllExceptPP()
+	{
+		$users = $this->entity
+			->where([[
+				"role", '>=', 1],
+				["id", '!=', auth()->id()]])
+			->get();
+		return $users;
+
 	}
 }

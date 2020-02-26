@@ -63,13 +63,10 @@ class DatabaseSeeder extends Seeder
                     TestResponseTypeSeeder::class,
                     TestResearchSeeder::class,
                     TestResponseTemplateSeeder::class,
-                    TestUserToUserMessageSeeder::class,
                 ]);
 
                 factory(Ad::class, 30)->create()->each(function (Ad $ad) use(&$queriesCount) {
                     $ad->adNotes()->save(factory(AdNote::class)->make());
-                    $ad->adMessages()->save(factory(AdMessage::class)->make());
-                    $ad->ppToUserMessages()->save(factory(PpToUserMessage::class)->make());
                     $ad->favoriteAds()->save(factory(FavoriteAd::class)->make());
                     //$ad->documents()->save(factory(Document::class)->make());
                     $ad->regions()->save(Region::inRandomOrder()->first());

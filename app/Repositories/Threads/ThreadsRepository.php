@@ -42,7 +42,7 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 		$model = $this->entity
 			->where(['id' => $threadId])
 			->with($this->getEagerLoading())
-			->get();
+			->firstOrFail();
 
 		return $model;
 
@@ -83,6 +83,54 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 
 	}
 
+
+	/**
+	 * @param string $threadId
+	 *
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function findThreadsByUnreadMessages()
+	{
+		/** @var Thread $model */
+		$threads = auth()
+			->user()
+			->threads()
+			->whereHas('messages.unreadMessages', function (Builder $query) {
+				$query->where([
+					['user_id', '=', auth()->id()],
+					['is_read', '=', '0']
+				]);
+			})
+			->with($this->getEagerLoading())
+			->get();
+
+		return $threads;
+
+	}
+
+	/**
+	 * @param int $adId
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function findThreadsByUnreadMessagesAndAdId(int $adId)
+	{
+		/** @var Thread $model */
+		$threads = auth()
+			->user()
+			->threads()
+			->where('ad_id', '=', $adId)
+			->whereHas('messages.unreadMessages', function (Builder $query) {
+				$query->where([
+					['user_id', '=', auth()->id()],
+					['is_read', '=', '0']
+				]);
+			})
+			->with($this->getEagerLoading())
+			->get();
+
+		return $threads;
+
+	}
 
 	/**
 	 * @param int $userId

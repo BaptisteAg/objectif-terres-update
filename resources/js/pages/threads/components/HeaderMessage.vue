@@ -6,30 +6,42 @@
             <div class="columns is-vcentered">
                 <div class="column is-one-third"></div>
                 <div class="column ">
-                    <template v-if="value[0].thread.users[0].id !== userId">
-                        <p class="title is-4 has-text-centered">{{value[0].thread.users[0].first_name}}
-                            {{value[0].thread.users[0].name}}</p>
-                    </template>
-                    <template v-else>
-                        <p class="title is-4 has-text-centered">{{value[0].thread.users[1].first_name}}
-                            {{value[0].thread.users[1].name}}</p>
+                    <template v-if="value[0].thread.title">
+                        <p class="title is-5 has-text-centered">{{value[0].thread.title}}</p>
+                        <template v-for="(user, index) in value[0].thread.users">
+                            <p class=" is-marginless subtitle is-6 has-text-centered has-text-grey"
+                               v-if="user.id !==userId">
+                                {{user.first_name}} {{user.name}}</p>
+                        </template>
                     </template>
 
-                    <a :href="'/annonces/' + value[0].thread.ad.id" v-if="isDisplay"><p
-                            class="subtitle is-6 has-text-centered">{{value[0].thread.ad.title}}</p></a>
+                    <template v-else>
+
+                            <template v-for="(user, index) in value[0].thread.users">
+                                <p class=" title is-5 has-text-centered is-marginless" v-if="user.id !==userId"> {{user.first_name}} <span class="is-uppercase">{{user.name}}</span></p>
+                            </template>
+
+                    </template>
+
+                    <template v-if="value[0].thread.ad !== null">
+                        <a :href="'/annonces/' + value[0].thread.ad.id" v-if="isDisplay"><p
+                                class="subtitle is-6 has-text-centered">{{value[0].thread.ad.title}}</p></a>
+                    </template>
                     <br>
-                    <div class="content" v-if="isDisplay">
-                        <div class="buttons is-centered ">
-                            <a :href="'/annonces/' + value[0].thread.ad.id">
-                                <button class="button is-link ">
+                    <template v-if="value[0].thread.ad !== null">
+                        <div class="content" v-if="isDisplay">
+                            <div class="buttons is-centered ">
+                                <a target="_blank" :href="'/annonces/' + value[0].thread.ad.id">
+                                    <button class="button is-link ">
 											<span class="icon is-small">
 											 <i class="fas fa-eye"></i>
 											</span>
-                                    <span>Voir l'annonce</span>
-                                </button>
-                            </a>
+                                        <span>Voir l'annonce</span>
+                                    </button>
+                                </a>
+                            </div>
                         </div>
-                    </div>
+                    </template>
                 </div>
                 <div class="column">
                     <div id="loading" class="is-pulled-right" v-if="loading"></div>

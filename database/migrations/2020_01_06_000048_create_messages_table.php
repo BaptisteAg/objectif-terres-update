@@ -23,7 +23,6 @@ class CreateMessagesTable extends Migration
 			$table->engine = 'InnoDB';
 			$table->increments('id');
 			$table->text('content');
-			$table->boolean('is_read')->default(0);
 			$table->unsignedInteger('thread_id');
 			$table->unsignedInteger('sender_user_id');
 
