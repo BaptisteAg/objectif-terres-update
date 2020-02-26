@@ -44,6 +44,7 @@ Vue.component('vue-threads',{
     },
     methods : {
         onThreadClick(threadId) {
+
             fetch('/mon-espace/messagerie/' + threadId)
                 .then(response => response.json())
                 .then(results => {

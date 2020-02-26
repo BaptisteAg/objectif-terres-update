@@ -20,13 +20,6 @@ interface MessagesRepositoryInterface
 	 */
 	public function all($paginate = null);
 
-	/**
-	 * Gets message by Ad ID .
-	 *
-	 * @param int $userId
-	 * @return Message[]
-	 */
-	public function findAllThreads(int $userId);
 
 	/**
 	 * Gets message by User ID .

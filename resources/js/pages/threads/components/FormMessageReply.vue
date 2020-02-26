@@ -43,7 +43,6 @@
                     thread_id: this.value[0].thread.id
                 })
                     .then (response => {
-                        console.log(response)
                         const message = response.data;
                         this.$emit('message-reply-success', message)
                         this.content = '';

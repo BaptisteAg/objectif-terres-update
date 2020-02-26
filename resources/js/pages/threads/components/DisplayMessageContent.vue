@@ -17,11 +17,11 @@
                     </div>
                 </div>
             </template>
-            <template v-else>
+            <template v-if="message.sender_user_id !== userId">
                 <div class="content message-received">
                     <div class="columns">
                         <div class="column is-half ">
-                            <p class="is-marginless has-text-grey">{{message.sender_user.first_name}} {{message.sender_user.name}} </p>
+                            <p class="is-marginless has-text-grey"><span>{{message.sender_user.first_name}}</span> {{message.sender_user.name}} </p>
                             <div class="content message-receiver ">
                                 <div class="message-receiver-content">
                                     <p class="has-text-black">

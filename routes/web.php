@@ -66,6 +66,7 @@ Route::prefix('mon-espace/annonces-favorites')->middleware('auth')->name('favori
 });
 
 Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->namespace('Threads')->group(function () {
+	Route::get('actualisation', 'ThreadsController@refreshUnreadMessages')->name('refreshUnreadMessages');
 	Route::get('/', 'ThreadsController@index')->name('index');
 	Route::post('creer', 'ThreadsController@create')->name('create');
 	Route::get('{thread}', 'MessagesController@show')->name('show');

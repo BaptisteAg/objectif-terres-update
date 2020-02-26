@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="content" v-if="isDisplay">
-            <template v-if="numberUnreadMessages <=1">
-                <p>{{numberUnreadMessages}} message non lus</p>
+            <template v-if="numberThreadsUnreadMessages <=1">
+                <p>{{numberThreadsUnreadMessages}} discussion non lu</p>
             </template>
             <template v-else>
-                <p>{{numberUnreadMessages}} messages non lus</p>
+                <p>{{numberThreadsUnreadMessages}} discussions non lus</p>
             </template>
             <button v-if="isUserModerator" @click="onNewThreadClick" class="open-modal-new-message button is-link"
                     type="button">
@@ -28,7 +28,8 @@
                         <template v-if="thread.users.length >2">
                             <a @click="onThreadClick(thread.id)">
                                 <template v-for="threadUnreadMessages in threadsUnreadMessages">
-                                    <span v-if="threadUnreadMessages.id === thread.id" class="icon has-text-danger">
+                                    <span v-if="threadUnreadMessages.id === thread.id "
+                                          class="icon has-text-danger">
                                     <i class="fas fa-circle has-"></i>
                                     </span>
                                 </template>
@@ -40,7 +41,8 @@
                         <template v-else-if="thread.ad_id !== null">
                             <a @click="onThreadClick(thread.id)">
                                 <template v-for="threadUnreadMessages in threadsUnreadMessages">
-                                    <span v-if="threadUnreadMessages.id === thread.id" class="icon has-text-danger">
+                                    <span v-if="threadUnreadMessages.id === thread.id "
+                                          class="icon has-text-danger">
                                     <i class="fas fa-circle"></i>
                                     </span>
                                 </template>
@@ -52,7 +54,8 @@
                         <template v-else>
                             <a @click="onThreadClick(thread.id)">
                                 <template v-for="threadUnreadMessages in threadsUnreadMessages">
-                                    <span v-if="threadUnreadMessages.id === thread.id" class="icon has-text-danger">
+                                    <span v-if="threadUnreadMessages.id === thread.id"
+                                          class="icon has-text-danger">
                                     <i class="fas fa-circle"></i>
                                     </span>
                                 </template>
@@ -79,10 +82,12 @@
 </template>
 
 <script>
+    import axios from 'axios'
+
     export default {
         props: {
             threads: '',
-            numberOfUnreadMessages: '',
+            numberOfThreadsWithUnreadMessages: '',
             threadsWithUnreadMessages: '',
             isDisplay: Boolean,
             userId: {},
@@ -90,13 +95,18 @@
         },
         data() {
             return {
-                numberUnreadMessages: this.numberOfUnreadMessages,
+                numberThreadsUnreadMessages: this.numberOfThreadsWithUnreadMessages,
                 threadsUnreadMessages: this.threadsWithUnreadMessages
             }
         },
         methods: {
             onThreadClick(threadId) {
-                this.$emit('on-thread-click', threadId)
+                this.$emit('on-thread-click', threadId);
+                axios.get('/mon-espace/messagerie/actualisation')
+                    .then(response => (
+                        this.threadsUnreadMessages = response.data,
+                            this.numberThreadsUnreadMessages = response.data.length
+                    ))
             },
             onNewThreadClick() {
                 this.$emit('on-new-thread-click')

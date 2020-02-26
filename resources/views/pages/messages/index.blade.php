@@ -54,7 +54,7 @@
 								<div class="column is-one-quarter">
 									<list-threads
 											:threads="{{json_encode($threads)}}"
-											:number-of-unread-messages="{{$numberOfUnreadMessages}}"
+											:number-of-threads-with-unread-messages="{{$threadsWithUnreadMessages->count()}}"
 											:threads-with-unread-messages="{{$threadsWithUnreadMessages}}"
 											v-model="messages"
 											@on-thread-click="onThreadClick"

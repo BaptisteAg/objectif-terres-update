@@ -4,6 +4,7 @@ namespace App\Models;
 
 
 use App\Presenters\ThreadPresenter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use McCool\LaravelAutoPresenter\HasPresenter;
 
@@ -43,7 +44,7 @@ class Thread extends Model implements HasPresenter
 	 * @var array
 	 */
 	protected $fillable = [
-		'title', 'created_at', 'updated_at','ad_id', 'is_private'
+		'title', 'created_at', 'updated_at', 'ad_id', 'is_private'
 	];
 
 	/**
@@ -60,19 +61,16 @@ class Thread extends Model implements HasPresenter
 	public function unreadMessages()
 	{
 		return $this->hasMany(Message::class)
-			->where('is_read', '=', '0')
-			->where('sender_user_id', '!=', auth()->id());
+			->whereHas('unreadMessages', function (Builder $query) {
+				$query->where([
+					['is_read', '=', '0'],
+					['user_id', '=', auth()->id()]
+				]);
+			}
+			);
 	}
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function messageAlreadySended()
-	{
-		return $this->hasMany(Message::class)
-			->where('is_read', '=', '0')
-			->where('sender_user_id', '!=', auth()->id());
-	}
+
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */

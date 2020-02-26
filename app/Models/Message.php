@@ -13,7 +13,6 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  *
  * @property int $id
  * @property string $content
- * @property int $is_read
  * @property int $thread_id
  * @property int $sender_user_id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -28,7 +27,6 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereIsRead($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereSenderUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereThreadId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereUpdatedAt($value)
@@ -41,7 +39,7 @@ class Message extends Model implements HasPresenter
 	 * @var array
 	 */
 	protected $fillable = [
-		'sender_user_id', 'receiver_user_id', 'content', 'thread_id', 'created_at'
+		'sender_user_id', 'content', 'thread_id', 'created_at', 'updated_at'
 	];
 
 	/**
@@ -60,10 +58,21 @@ class Message extends Model implements HasPresenter
 		return $this->belongsTo(Thread::class);
 	}
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function unreadMessages()
+	{
+		return $this->hasMany(ReadMessage::class)
+			->where([['is_read', '=',0],
+				['user_id', auth()->id()]]);
+	}
+
 	public function getCreatedAtAttribute($date)
 	{
 		return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('d-m-Y');
 	}
+
 	/**
 	 * Get the presenter class.
 	 *

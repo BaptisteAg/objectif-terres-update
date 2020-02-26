@@ -42,7 +42,7 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 		$model = $this->entity
 			->where(['id' => $threadId])
 			->with($this->getEagerLoading())
-			->get();
+			->firstOrFail();
 
 		return $model;
 
@@ -89,15 +89,15 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 	 *
 	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
 	 */
-	public function findThreadsByUnreadedMessages()
+	public function findThreadsByUnreadMessages()
 	{
 		/** @var Thread $model */
 		$threads = auth()
 			->user()
 			->threads()
-			->whereHas('messages', function (Builder $query) {
+			->whereHas('messages.unreadMessages', function (Builder $query) {
 				$query->where([
-					['sender_user_id', '!=', auth()->id()],
+					['user_id', '=', auth()->id()],
 					['is_read', '=', '0']
 				]);
 			})

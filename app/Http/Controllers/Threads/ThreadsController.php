@@ -56,20 +56,23 @@ class ThreadsController extends Controller
 	{
 		/** @var Collection $threads */
 		$threads = $this->service->findAllThreadsByLoggedUser();
-		$numberOfUnreadMessages = array_reduce($threads->all(), function($count, Thread $thread) {
-			return $count + $thread->unreadMessages()->count();
-		}, 0);
 
 		$threadsWithUnreadMessages = $this->service->findThreadsByUnreadMessage();
 		$users = [];
-		if(auth()->user()->role >= 1 ){
+		if (auth()->user()->role >= 1) {
 			$users = $this->userService->findAllExceptPP();
 		}
 
-
-		return view('pages.messages.index', compact('threads', 'numberOfUnreadMessages', 'users', 'threadsWithUnreadMessages'));
+		return view('pages.messages.index', compact('threads', 'users', 'threadsWithUnreadMessages'));
 	}
 
+	public function refreshUnreadMessages(){
 
+		/** @var Collection $threads */
+		$threads = $this->service->findAllThreadsByLoggedUser();
+		$numberOfUnreadMessages = $this->service->countAllUnreadMessagesInThreads( $threads);
+		$threadsWithUnreadMessages = $this->service->findThreadsByUnreadMessage();
+		return response()->json($threadsWithUnreadMessages);
+	}
 
 }
