@@ -213,4 +213,13 @@ class ThreadService
 	{
 		return $this->repository->findThreadsByUnreadMessages();
 	}
+
+	/**
+	 * @param int $adId
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function findThreadsByUnreadMessageAndAdId(int $adId)
+	{
+		return $this->repository->findThreadsByUnreadMessagesAndAdId($adId);
+	}
 }

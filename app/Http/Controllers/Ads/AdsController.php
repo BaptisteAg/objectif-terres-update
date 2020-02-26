@@ -116,14 +116,15 @@ class AdsController extends Controller
 	public function show(int $adId)
 	{
 		$ad = $this->adService->find($adId);
-
 		$userMessage = null;
 		$favoriteAdAlreadyExist = false;
 		$threads = [];
+		$threadsWithUnreadMessages = null;
 
 		if (Auth::user()) {
 			if (auth()->user()->id === $ad->user_pp_id) {
 				$threads = $this->threadService->findThreadsByAd($adId);
+				$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
 			} else {
 				$threads = $this->threadService->findThreadAlreadyExist($adId);
 				$data = array(
@@ -135,7 +136,8 @@ class AdsController extends Controller
 
 		}
 
-		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist', 'threads'));
+
+		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist', 'threads', 'threadsWithUnreadMessages'));
 	}
 
 	/**

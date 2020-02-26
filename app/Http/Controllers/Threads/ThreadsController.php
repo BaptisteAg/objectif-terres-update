@@ -70,7 +70,6 @@ class ThreadsController extends Controller
 
 		/** @var Collection $threads */
 		$threads = $this->service->findAllThreadsByLoggedUser();
-		$numberOfUnreadMessages = $this->service->countAllUnreadMessagesInThreads( $threads);
 		$threadsWithUnreadMessages = $this->service->findThreadsByUnreadMessage();
 		return response()->json($threadsWithUnreadMessages);
 	}

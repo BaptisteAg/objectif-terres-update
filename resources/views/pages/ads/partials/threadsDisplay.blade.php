@@ -1,29 +1,55 @@
 @auth
 	@if( $ad->user_pp_id !== auth()->user()->id)
 		@if(count($threads) <= 0)
-			<div class="content">
-				<div class="columns is-mobile is-centered">
-					<div class="column is-half">
-						<div class="box has-background-white-ter ">
-							<article class="media">
-								<div class="media-content">
-									<div class="content has-text-centered ">
-										<p class="has-text-centered is-size-4">Vous souhaitez répondre à cette
-											annonce
-											?</p>
-										<button id="open-modal-message" class="button is-link  is-large">
+			@if(auth()->user()->role >= 1)
+				<div class="content">
+					<div class="columns is-mobile is-centered">
+						<div class="column is-half">
+							<div class="box has-background-white-ter ">
+								<article class="media">
+									<div class="media-content">
+										<div class="content has-text-centered ">
+											<p class="has-text-centered is-size-4">Vous souhaitez contacter ce porteur
+												de projet
+												?</p>
+											<button id="open-modal-message" class="button is-link  is-large">
 									 	<span class="icon is-small">
 										<i class="fas fa-reply"></i>
 										</span>
-											<span> Répondre à l'annonce</span>
-										</button>
+												<span> Contacter le porteur de projet</span>
+											</button>
+										</div>
 									</div>
-								</div>
-							</article>
+								</article>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			@else
+				<div class="content">
+					<div class="columns is-mobile is-centered">
+						<div class="column is-half">
+							<div class="box has-background-white-ter ">
+								<article class="media">
+									<div class="media-content">
+										<div class="content has-text-centered ">
+											<p class="has-text-centered is-size-4">Vous souhaitez répondre à cette
+												annonce
+												?</p>
+											<button id="open-modal-message" class="button is-link  is-large">
+									 	<span class="icon is-small">
+										<i class="fas fa-reply"></i>
+										</span>
+												<span> Répondre à l'annonce</span>
+											</button>
+										</div>
+									</div>
+								</article>
+							</div>
+						</div>
+					</div>
+				</div>
+			@endif
 		@else
 			<div id="messages-display" class="content">
 				<h3 class=" title is-3 has-text-link has-text-centered">Votre fil de discusion au sujet de cette
@@ -39,7 +65,7 @@
 				>
 					<div>
 						<div class="columns is-vcentered " v-if="initialLoading === true">
-							<div  class="column is-7">
+							<div class="column is-7">
 								<div id="loading" class="is-pulled-right">
 								</div>
 							</div>
@@ -112,7 +138,7 @@
 				>
 					<div>
 						<div class="columns is-vcentered " v-if="initialLoading === true">
-							<div  class="column is-7 ">
+							<div class="column is-7 ">
 								<div id="loading" class="is-pulled-right">
 								</div>
 							</div>
@@ -122,6 +148,7 @@
 								<list-threads
 										:threads="{{json_encode($threads)}}"
 										:number-of-unread-messages="0"
+										:threads-with-unread-messages="{{$threadsWithUnreadMessages}}"
 										v-model="messages"
 										v-bind:is-display="isDisplay"
 										v-bind:is-user-logged-ad-owner="isUserAdOwner"
