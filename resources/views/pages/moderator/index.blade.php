@@ -177,17 +177,17 @@
 							<input class="input" type="text" placeholder="Votre recherche...">
 						</div>
 
-						<div v-show="adType === 'land'" class=" column is-3">
+						<div v-if="adType === 'land'" class=" column is-3">
 							<label class="label">Système de production</label>
 							<div class="select">
-								<select>
+								<select name="production_genres">
 									@foreach($productionGenres as $productionGenre)
 										<option value="{{$productionGenre->id}}">{{$productionGenre->name}} </option>
 									@endforeach
 								</select>
 							</div>
 						</div>
-						<div v-show="adType === 'land'" class="column is-4">
+						<div v-if="adType === 'land'" class="column is-4">
 							<div class="field">
 								<p class="label">Surface(en ha) </p>
 								<vue-slider-range
@@ -204,7 +204,7 @@
 								></vue-slider-range>
 							</div>
 						</div>
-						<div v-show="adType === 'job'" class="column is-4 has-text-center">
+						<div v-if="adType === 'job'" class="column is-4 has-text-center">
 							<label class="label">Statut de l'emploi</label>
 							<div class="select">
 								<select name="projectStatus">
