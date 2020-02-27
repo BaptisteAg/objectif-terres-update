@@ -118,8 +118,9 @@ class ThreadService
 	 * @param $threads
 	 * @return mixed
 	 */
-	public function countAllUnreadMessagesInThreads(Collection $threads)
+	public function countAllUnreadMessagesInThreadsByLoggedUser()
 	{
+		$threads = $this->repository->findAllThreadsByLoggedUser();
 		$numberOfUnreadMessages = 0;
 		foreach ($threads as $thread) {
 			$numberOfUnreadMessages = $numberOfUnreadMessages + $this->messagesRepository->findAllUnreadMessagesByThread($thread->id)->count();

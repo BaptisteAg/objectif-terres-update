@@ -10,10 +10,17 @@
 
 		@include('components.moderatorTabs')
 
-		<div class="notification is-light is-info">
+		<div class="notification has-background-light ">
 			<button class="delete"></button>
 			<p><i class="far fa-bell"></i> Vous avez <strong>5 nouvelles annonces</strong> à modérer !</p>
-			<p><i class="fas fa-envelope"></i> Vous avez <strong>2 nouveaux messages !</strong></p>
+			@if($numberOfUnreadMessages > 1 )
+				<p><i class="fas fa-envelope"></i> Vous avez <strong>{{$numberOfUnreadMessages}} nouveaux messages
+						!</strong></p>
+
+			@else
+				<p><i class="fas fa-envelope"></i> Vous avez <strong>{{$numberOfUnreadMessages}} nouveau message
+						!</strong></p>
+			@endif
 		</div>
 		{{Form::open(['route'=>'moderator.index', 'method'=>'get'])}}
 		<div id="vue-form-moderator">
@@ -24,8 +31,8 @@
 							<div class="columns">
 								<div class="column">
 									<div @click="adTypeSelected('landOffer')"
-										 class="button is-info is-light is-fullwidth form-research-buttons">
-											<span class="icon is-small is-hidden ">
+										 class="button is-link is-fullwidth form-research-buttons">
+											<span class="icon is-small  ">
 												  <i class="fas fa-check"></i>
 										</span>
 										<span>Offre foncière</span>
@@ -42,7 +49,7 @@
 								</div>
 								<div class="column">
 									<div @click="adTypeSelected('jobOffer')"
-										 class="button is-info is-light is-fullwidth form-research-buttons">
+										 class="button is-link is-light is-fullwidth form-research-buttons">
 											<span class="icon is-small is-hidden ">
 												  <i class="fas fa-check"></i>
 										</span>
@@ -130,6 +137,7 @@
 							<multi-select
 									:options="{{ json_encode($departments) }}"
 									:multiple="true"
+									v-model="departmentsSelected"
 									name="departments_location_researches[]"
 									selected-count-text="département(s) sélectionné(s)"
 									placeholder="Choississez un/des département(s)">
@@ -141,7 +149,8 @@
 							<multi-select
 									:options="{{ json_encode($regions) }}"
 									:multiple="true"
-									name="departments_location_researches[]"
+									v-model="regionsSelected"
+									name="regions_location_researches[]"
 									selected-count-text="département(s) sélectionné(s)"
 									placeholder="Choississez un/des département(s)">
 							</multi-select>
@@ -168,17 +177,17 @@
 							<input class="input" type="text" placeholder="Votre recherche...">
 						</div>
 
-						<div v-show="adType === 'land'" class=" column is-3">
+						<div v-if="adType === 'land'" class=" column is-3">
 							<label class="label">Système de production</label>
 							<div class="select">
-								<select>
+								<select name="production_genres">
 									@foreach($productionGenres as $productionGenre)
 										<option value="{{$productionGenre->id}}">{{$productionGenre->name}} </option>
 									@endforeach
 								</select>
 							</div>
 						</div>
-						<div v-show="adType === 'land'" class="column is-4">
+						<div v-if="adType === 'land'" class="column is-4">
 							<div class="field">
 								<p class="label">Surface(en ha) </p>
 								<vue-slider-range
@@ -195,12 +204,12 @@
 								></vue-slider-range>
 							</div>
 						</div>
-						<div v-show="adType === 'job'" class="column is-4 has-text-center">
+						<div v-if="adType === 'job'" class="column is-4 has-text-center">
 							<label class="label">Statut de l'emploi</label>
 							<div class="select">
-								<select>
+								<select name="projectStatus">
 									@foreach($jobOfferTypes as $jobOfferType)
-										<option value="{{$jobOfferType->id}}">{{$jobOfferType->name}} </option>
+										<option  value="{{$jobOfferType->id}}">{{$jobOfferType->name}} </option>
 									@endforeach
 								</select>
 							</div>
