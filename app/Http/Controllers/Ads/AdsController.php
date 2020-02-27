@@ -8,15 +8,14 @@ use App\Models\Ad;
 use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
 use App\Models\BuildingType;
-use App\Models\City;
 use App\Models\EducationLevel;
 use App\Models\InstallationType;
 use App\Models\JobOfferType;
 use App\Models\OfferGenre;
 use App\Models\PriceRange;
 use App\Models\Requirement;
+use App\Models\ResponseTemplate;
 use App\Models\SurfaceRange;
-use App\Models\User;
 use App\Repositories\FavoriteAds\FavoriteAdRepository;
 use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
@@ -120,12 +119,16 @@ class AdsController extends Controller
 		$favoriteAdAlreadyExist = false;
 		$threads = [];
 		$threadsWithUnreadMessages = null;
+		$responseTemplates = '';
 
 		if (Auth::user()) {
 			if (auth()->user()->id === $ad->user_pp_id) {
 				$threads = $this->threadService->findThreadsByAd($adId);
 				$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
 			} else {
+				if(auth()->user()->role >= 2){
+					$responseTemplates = ResponseTemplate::all();
+				}
 				$threads = $this->threadService->findThreadAlreadyExist($adId);
 				$data = array(
 					"ad_id" => $adId,
@@ -136,8 +139,7 @@ class AdsController extends Controller
 
 		}
 
-
-		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist', 'threads', 'threadsWithUnreadMessages'));
+		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist', 'threads', 'threadsWithUnreadMessages', 'responseTemplates'));
 	}
 
 	/**

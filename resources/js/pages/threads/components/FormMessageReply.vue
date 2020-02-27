@@ -1,22 +1,42 @@
 <template>
 
-    <div  v-if="value.length !==0 " class="content">
+    <div v-if="value.length !==0 " class="content">
         <form @submit="formSubmit">
             <label id="reply-input-label" for="reply-input" class=" label has-text-black"> Répondre</label>
             <div class="field has-addons">
-            <div class="control is-expanded  has-icons-left">
-                <input type="hidden" name="thread_id" :value="value[0].thread.id">
-
-                <input id="reply-input" v-model="content" class="input" name="content" type="text" placeholder="Votre message..."/>
-                <span class="icon is-small is-left">
+                <div class="control is-expanded  has-icons-left">
+                    <input type="hidden" name="thread_id" :value="value[0].thread.id">
+                    <input id="reply-input" v-model="content" class="input" name="content" type="text"
+                           placeholder="Votre message..."/>
+                    <span class="icon is-small is-left">
                         <i class="fas fa-reply"></i>
                     </span>
+                </div>
+                <div v-if='isUserModerator === false' class="control">
+                    <button class="button is-link">
+                        Envoyer
+                    </button>
+                </div>
             </div>
-                <div class="control">
-                <button class="button is-link">
-                    Envoyer
-                </button>
-            </div>
+
+            <div v-if="isUserModerator">
+                <label class="label">Envoyer une réponse type</label>
+                <div class="field is-grouped">
+                    <p class="control is-expanded">
+                    <span class="select is-fullwidth">
+                    <select v-model.trim="content">
+                        <option disabled selected="selected">Choisissez votre réponse type...</option>
+                        <option v-for="responseTemplate in responseTemplates">{{responseTemplate.content}}
+                        </option>
+                    </select>
+                </span>
+                    </p>
+                    <p class="control">
+                        <button class="button is-link">
+                            Envoyer
+                        </button>
+                    </p>
+                </div>
             </div>
         </form>
     </div>
@@ -27,12 +47,13 @@
 
     export default {
         props: {
-           value:{}
+            value: {},
+            responseTemplates: '',
+            isUserModerator: Boolean
         },
         data() {
             return {
                 content: '',
-
             }
         },
         methods: {
@@ -42,7 +63,7 @@
                     content: this.content,
                     thread_id: this.value[0].thread.id
                 })
-                    .then (response => {
+                    .then(response => {
                         const message = response.data;
                         this.$emit('message-reply-success', message)
                         this.content = '';

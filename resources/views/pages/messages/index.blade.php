@@ -78,7 +78,9 @@
 									<form-message-reply
 											v-model="messages"
 											:user-id="{{auth()->id()}}"
+											:response-templates ="{{json_encode($responseTemplates)}}"
 											@message-reply-success="onMessageReplySuccess"
+											v-bind:is-user-moderator="isUserModerator"
 									>
 									</form-message-reply>
 								</div>

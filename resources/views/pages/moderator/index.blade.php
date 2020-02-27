@@ -12,13 +12,16 @@
 
 		<div class="notification has-background-info">
 			<button class="delete"></button>
-			<p class="has-text-white-ter"><i class="far fa-bell has-text-white-ter"></i> Vous avez <strong>5 nouvelles annonces</strong> à modérer !</p>
+			<p class="has-text-white-ter"><i class="far fa-bell has-text-white-ter"></i> Vous avez <strong>5 nouvelles
+					annonces</strong> à modérer !</p>
 			@if($numberOfUnreadMessages > 1 )
-				<p class="has-text-white"><i class="fas fa-envelope "></i> Vous avez <strong>{{$numberOfUnreadMessages}} nouveaux messages
+				<p class="has-text-white"><i class="fas fa-envelope "></i> Vous avez <strong>{{$numberOfUnreadMessages}}
+						nouveaux messages
 						!</strong></p>
 
 			@else
-				<p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez <strong>{{$numberOfUnreadMessages}} nouveau message
+				<p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez <strong>{{$numberOfUnreadMessages}}
+						nouveau message
 						!</strong></p>
 			@endif
 		</div>
@@ -55,46 +58,46 @@
 									</div>
 								@endforeach
 							</div>
-{{--							<div class="columns">--}}
-{{--								<div class="column">--}}
-{{--									<div @click="adTypeSelected('landOfferAd')"--}}
-{{--										 class="button is-link is-fullwidth form-research-buttons">--}}
-{{--											<span class="icon is-small  ">--}}
-{{--												  <i class="fas fa-check"></i>--}}
-{{--										</span>--}}
-{{--										<span>Offre foncière</span>--}}
-{{--									</div>--}}
-{{--								</div>--}}
-{{--								<div class="column">--}}
-{{--									<div @click="adTypeSelected('landSeekAd')"--}}
-{{--										 class="button is-link is-light is-fullwidth form-research-buttons">--}}
-{{--											<span class="icon is-small is-hidden ">--}}
-{{--												  <i class="fas fa-check"></i>--}}
-{{--										</span>--}}
-{{--										<span>Recherche foncière</span>--}}
-{{--									</div>--}}
-{{--								</div>--}}
-{{--								<div class="column">--}}
-{{--									<div @click="adTypeSelected('jobOfferAd')"--}}
-{{--										 class="button is-link is-light is-fullwidth form-research-buttons">--}}
-{{--											<span class="icon is-small is-hidden ">--}}
-{{--												  <i class="fas fa-check"></i>--}}
-{{--										</span>--}}
-{{--										<span>Offre d'emploi</span>--}}
-{{--									</div>--}}
-{{--								</div>--}}
-{{--								<div class="column">--}}
-{{--									<div @click="adTypeSelected('jobSeekAd')"--}}
-{{--										 class="button is-link is-light is-fullwidth form-research-buttons">--}}
-{{--											<span class="icon is-small is-hidden ">--}}
-{{--												  <i class="fas fa-check"></i>--}}
-{{--										</span>--}}
-{{--										<span>Recherche d'emploi</span>--}}
-{{--									</div>--}}
-{{--								</div>--}}
-{{--							</div>--}}
+							{{--							<div class="columns">--}}
+							{{--								<div class="column">--}}
+							{{--									<div @click="adTypeSelected('landOfferAd')"--}}
+							{{--										 class="button is-link is-fullwidth form-research-buttons">--}}
+							{{--											<span class="icon is-small  ">--}}
+							{{--												  <i class="fas fa-check"></i>--}}
+							{{--										</span>--}}
+							{{--										<span>Offre foncière</span>--}}
+							{{--									</div>--}}
+							{{--								</div>--}}
+							{{--								<div class="column">--}}
+							{{--									<div @click="adTypeSelected('landSeekAd')"--}}
+							{{--										 class="button is-link is-light is-fullwidth form-research-buttons">--}}
+							{{--											<span class="icon is-small is-hidden ">--}}
+							{{--												  <i class="fas fa-check"></i>--}}
+							{{--										</span>--}}
+							{{--										<span>Recherche foncière</span>--}}
+							{{--									</div>--}}
+							{{--								</div>--}}
+							{{--								<div class="column">--}}
+							{{--									<div @click="adTypeSelected('jobOfferAd')"--}}
+							{{--										 class="button is-link is-light is-fullwidth form-research-buttons">--}}
+							{{--											<span class="icon is-small is-hidden ">--}}
+							{{--												  <i class="fas fa-check"></i>--}}
+							{{--										</span>--}}
+							{{--										<span>Offre d'emploi</span>--}}
+							{{--									</div>--}}
+							{{--								</div>--}}
+							{{--								<div class="column">--}}
+							{{--									<div @click="adTypeSelected('jobSeekAd')"--}}
+							{{--										 class="button is-link is-light is-fullwidth form-research-buttons">--}}
+							{{--											<span class="icon is-small is-hidden ">--}}
+							{{--												  <i class="fas fa-check"></i>--}}
+							{{--										</span>--}}
+							{{--										<span>Recherche d'emploi</span>--}}
+							{{--									</div>--}}
+							{{--								</div>--}}
+							{{--							</div>--}}
 						</div>
-{{--						<input type="hidden" v-bind:value="typeSelected" name="ad_type">--}}
+						{{--						<input type="hidden" v-bind:value="typeSelected" name="ad_type">--}}
 						<div class="column">
 							<div class="control has-icons-right ">
 								<label class="label"> Annonces soumises depuis le </label>
@@ -197,47 +200,47 @@
 
 					<div class="columns">
 						<div class=" column is-one-third ">
-							<label class="label">Recherche par mots clés</label>
-							<input class="input" type="text" placeholder="Votre recherche...">
+							<label class="label">Recherche par titre de l'annonce</label>
+							<input name="ad_title" class="input" type="text" placeholder="Votre recherche...">
 						</div>
 
-{{--						<div v-if="adType === 'land'" class=" column is-3">--}}
-{{--							<label class="label">Système de production</label>--}}
-{{--							<div class="select">--}}
-{{--								<select name="production_genres">--}}
-{{--									@foreach($productionGenres as $productionGenre)--}}
-{{--										<option value="{{$productionGenre->id}}">{{$productionGenre->name}} </option>--}}
-{{--									@endforeach--}}
-{{--								</select>--}}
-{{--							</div>--}}
-{{--						</div>--}}
-{{--						<div v-if="adType === 'land'" class="column is-4">--}}
-{{--							<div class="field">--}}
-{{--								<p class="label">Surface(en ha) </p>--}}
-{{--								<vue-slider-range--}}
-{{--										name-min="land_seek[surface_range_min]"--}}
-{{--										name-max="land_seek[surface_range_max]"--}}
-{{--										:data="{--}}
-{{--													0: '0 ha',--}}
-{{--													5: '5 ha',--}}
-{{--													10: '10 ha',--}}
-{{--													20: '20 ha',--}}
-{{--													50: '50 ha'--}}
-{{--												}"--}}
-{{--										:value="0"--}}
-{{--								></vue-slider-range>--}}
-{{--							</div>--}}
-{{--						</div>--}}
-{{--						<div v-if="adType === 'job'" class="column is-4 has-text-center">--}}
-{{--							<label class="label">Statut de l'emploi</label>--}}
-{{--							<div class="select">--}}
-{{--								<select name="projectStatus">--}}
-{{--									@foreach($jobOfferTypes as $jobOfferType)--}}
-{{--										<option value="{{$jobOfferType->id}}">{{$jobOfferType->name}} </option>--}}
-{{--									@endforeach--}}
-{{--								</select>--}}
-{{--							</div>--}}
-{{--						</div>--}}
+						{{--						<div v-if="adType === 'land'" class=" column is-3">--}}
+						{{--							<label class="label">Système de production</label>--}}
+						{{--							<div class="select">--}}
+						{{--								<select name="production_genres">--}}
+						{{--									@foreach($productionGenres as $productionGenre)--}}
+						{{--										<option value="{{$productionGenre->id}}">{{$productionGenre->name}} </option>--}}
+						{{--									@endforeach--}}
+						{{--								</select>--}}
+						{{--							</div>--}}
+						{{--						</div>--}}
+						{{--						<div v-if="adType === 'land'" class="column is-4">--}}
+						{{--							<div class="field">--}}
+						{{--								<p class="label">Surface(en ha) </p>--}}
+						{{--								<vue-slider-range--}}
+						{{--										name-min="land_seek[surface_range_min]"--}}
+						{{--										name-max="land_seek[surface_range_max]"--}}
+						{{--										:data="{--}}
+						{{--													0: '0 ha',--}}
+						{{--													5: '5 ha',--}}
+						{{--													10: '10 ha',--}}
+						{{--													20: '20 ha',--}}
+						{{--													50: '50 ha'--}}
+						{{--												}"--}}
+						{{--										:value="0"--}}
+						{{--								></vue-slider-range>--}}
+						{{--							</div>--}}
+						{{--						</div>--}}
+						{{--						<div v-if="adType === 'job'" class="column is-4 has-text-center">--}}
+						{{--							<label class="label">Statut de l'emploi</label>--}}
+						{{--							<div class="select">--}}
+						{{--								<select name="projectStatus">--}}
+						{{--									@foreach($jobOfferTypes as $jobOfferType)--}}
+						{{--										<option value="{{$jobOfferType->id}}">{{$jobOfferType->name}} </option>--}}
+						{{--									@endforeach--}}
+						{{--								</select>--}}
+						{{--							</div>--}}
+						{{--						</div>--}}
 						<div class="column  ">
 							<button type="submit" class="button is-link is-large is-pulled-right">
 								<span>Filtrer</span>

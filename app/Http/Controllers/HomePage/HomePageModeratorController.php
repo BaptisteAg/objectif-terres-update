@@ -60,8 +60,6 @@ class HomePageModeratorController extends Controller
 	}
 
 	public function show(Request $request){
-
-
 		$cities = City::all();
 		$departments = Department::all();
 		$regions = Region::all();
@@ -73,6 +71,10 @@ class HomePageModeratorController extends Controller
 		$attributionAds = $this->service->show($request);
 
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
+
+		if(count($attributionAds) === 0 ){
+			return redirect()->route('moderator.index')->with('warning', 'Aucun résultat pour votre recherche');
+		}
 
 		return view('pages.moderator.index', compact( 'cities', 'departments', 'regions','projectStatuses', 'adStatuses', 'productionGenres','jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages'));
 

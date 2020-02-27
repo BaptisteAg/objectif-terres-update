@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Threads;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ThreadRequest;
+use App\Models\ResponseTemplate;
 use App\Models\Thread;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
@@ -56,17 +57,19 @@ class ThreadsController extends Controller
 	{
 		/** @var Collection $threads */
 		$threads = $this->service->findAllThreadsByLoggedUser();
-
 		$threadsWithUnreadMessages = $this->service->findThreadsByUnreadMessage();
-		$users = [];
+		$users = null;
+		$responseTemplates = '';
 		if (auth()->user()->role >= 1) {
 			$users = $this->userService->findAllExceptPP();
+			$responseTemplates = ResponseTemplate::all();
 		}
 
-		return view('pages.messages.index', compact('threads', 'users', 'threadsWithUnreadMessages'));
+		return view('pages.messages.index', compact('threads', 'users', 'threadsWithUnreadMessages', 'responseTemplates'));
 	}
 
-	public function refreshUnreadMessages(){
+	public function refreshUnreadMessages()
+	{
 
 		/** @var Collection $threads */
 		$threads = $this->service->findAllThreadsByLoggedUser();

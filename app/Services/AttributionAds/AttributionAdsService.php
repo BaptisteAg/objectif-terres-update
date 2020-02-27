@@ -2,12 +2,14 @@
 
 namespace App\Services\AttributionAds;
 
+use App\Models\Ad;
 use App\Models\Region;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class AttributionAdsService
@@ -47,7 +49,6 @@ class AttributionAdsService
 			$data[$item] = $value;
 		}
 
-
 		if (!isset($data['ad_type'])) {
 			$data['ad_type'] = [];
 			array_push($data['ad_type'], "landOfferAd", "landSeekAd", "jobOfferAd", "jobSeekAd");
@@ -60,6 +61,12 @@ class AttributionAdsService
 		}
 
 		$attributionAds = collect();
+		if(isset ($data['ad_title'])){
+			$adsByTitle = Ad::where('title', 'like', '%'.$data['ad_title'].'%')->get();
+			foreach($adsByTitle as $adByTitle){
+				$attributionAds[$adByTitle->attributionAd->id] = $adByTitle->attributionAd->load('ad');
+			}
+		}
 
 		foreach ($regions as $region) {
 			$regionAds = $region->ads;

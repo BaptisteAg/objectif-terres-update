@@ -62,6 +62,7 @@
 						v-bind:is-user-ad-owner=false
 						init-thread='{{ $threads[0]->id }}'
 						:user-logged-id="{{auth()->id()}}"
+						:user-role="{{auth()->user()->role}}"
 				>
 					<div>
 						<div class="columns is-vcentered " v-if="initialLoading === true">
@@ -97,6 +98,8 @@
 										v-model="messages"
 										:user-id="{{auth()->id()}}"
 										@message-reply-success="onMessageReplySuccess"
+										v-bind:is-user-moderator="isUserModerator"
+										:response-templates = "{{json_encode($responseTemplates)}}"
 								>
 								</form-message-reply>
 							</div>
