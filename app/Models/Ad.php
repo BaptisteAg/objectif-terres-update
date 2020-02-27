@@ -95,11 +95,11 @@ class Ad extends Model implements HasPresenter
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function attributionAd()
     {
-        return $this->hasOne(AttributionAd::class);
+        return $this->belongsTo(AttributionAd::class);
     }
 
     /**

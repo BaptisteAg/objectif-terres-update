@@ -130,6 +130,7 @@
 									:options="{{ json_encode(array_merge([(object)['id' => '0','name' => 'Toutes les régions']], json_decode($regions))) }}"
 									:multiple="true"
 									name="regions_location_researches[]"
+									v-model="regionsSelected"
 									selected-count-text="région(s) sélectionnée(s)"
 									placeholder="Choississez une/des région(s)">
 							</multi-select>

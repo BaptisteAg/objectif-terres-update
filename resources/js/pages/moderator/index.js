@@ -4,6 +4,7 @@ import VueSlider from "../../components/VueSlider";
 import Autocomplete from '../../components/Autocomplete'
 import DatePicker from "../../components/DatePicker";
 import VueSliderRange from "../../components/VueSliderRange";
+import CustomCheckbox from "../../components/CustomCheckbox";
 import Vue from 'vue'
 
 
@@ -14,25 +15,16 @@ Vue.component('research-form-moderator',{
         AjaxMultiSelect,
         Autocomplete,
         DatePicker,
-        VueSliderRange
+        VueSliderRange,
+        CustomCheckbox
     },
     data() {
         return {
-            adType: 'land',
+            adTypeSelected: [],
             citySelect: [],
-            typeSelected : 'landOffer',
             departmentsSelected :[],
             regionsSelected: [],
         }
     },
-    methods : {
-        adTypeSelected(value){
-            this.typeSelected = value;
-            if(value ==="landOffer" || value==="landSeek"){
-                this.adType = 'land';
-            }else {
-                this.adType = 'job';
-            }
-        }
-    }
+
 });

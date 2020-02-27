@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Presenters\AdPresenter;
 use Illuminate\Database\Eloquent\Model;
+use McCool\LaravelAutoPresenter\Decoratable;
 use McCool\LaravelAutoPresenter\HasPresenter;
 
 /**
@@ -43,7 +44,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @mixin \Eloquent
  * @property-read \App\Models\Ad $ad
  */
-class AttributionAd extends Model implements HasPresenter
+class AttributionAd extends Model implements Decoratable
 {
     /**
      * @var array
@@ -107,6 +108,5 @@ class AttributionAd extends Model implements HasPresenter
 	public function getPresenterClass()
 	{
 		return AdPresenter::class;
-
 	}
 }

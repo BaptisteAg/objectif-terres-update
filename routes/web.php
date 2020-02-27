@@ -86,6 +86,7 @@ Route::prefix('locations')->namespace('Locationables')->group(function () {
 Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderator.')->namespace('HomePage')->group(function () {
 	Route::get('/', 'HomePageModeratorController@index')->name('index');
 	Route::get('aide-et-ressources', 'HelpAreasModeratorController@index')->name('help');
+	Route::get('recherches', 'HomePageModeratorController@show')->name('show');
 });
 Route::middleware('auth')->prefix('mon-espace-moderateur')->name('helpArea.')->namespace('HelpAreas')->group(function () {
 	Route::get('aide-et-ressources', 'HelpAreasModeratorController@index')->name('index');

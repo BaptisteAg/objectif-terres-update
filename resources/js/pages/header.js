@@ -16,7 +16,8 @@ Vue.component('header-page',{
             adCategorySelected: 'land',
             isFormOpen : false,
             productionsSelected : [],
-            bioProductionsSelected : []
+            bioProductionsSelected : [],
+            regionsSelected :[],
         }
     },
     methods: {
