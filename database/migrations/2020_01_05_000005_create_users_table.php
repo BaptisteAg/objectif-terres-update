@@ -22,21 +22,22 @@ class CreateUsersTable extends Migration
 
         Schema::create($this->tableName, function (Blueprint $table) {
 			$table->increments('id');
+			$table->string('sf_id')->nullable();
 			$table->string('name');
 			$table->string('first_name');
 			$table->string('phone')->nullable();
-			$table->string('address');
-			$table->string('city');
-			$table->integer('civility');
-			$table->integer('profile');
+			$table->string('address')->nullable();
+			$table->string('city')->nullable();
+			$table->integer('civility')->nullable();
+			$table->integer('profile')->nullable();
 			$table->string('other_profile')->nullable();
-			$table->boolean('accept_communication');
-			$table->boolean('accept_share_contact_infos');
+			$table->boolean('accept_communication')->default(0);
+			$table->boolean('accept_share_contact_infos')->default(0);
 			$table->string('email')->unique();
 			$table->timestamp('email_verified_at')->nullable();
-			$table->string('password');
-			$table->unsignedSmallInteger('country_id');
-			$table->unsignedInteger('zip_code_id');
+			$table->string('password')->nullable();
+			$table->unsignedSmallInteger('country_id')->nullable();
+			$table->unsignedInteger('zip_code_id')->nullable();
 			$table->unsignedInteger('role')->default(0);
 			$table->rememberToken();
 			$table->timestamps();

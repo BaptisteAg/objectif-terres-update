@@ -29,7 +29,11 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 		$user = DB::transaction(function () use ($data) {
 			$user = new User();
 			$user->fill($data);
-			$user->password = Hash::make($data['password']);
+
+			if(isset($data['password'])) {
+                $user->password = Hash::make($data['password']);
+            }
+
 			$user->save();
 			return $user;
 		});
@@ -46,13 +50,15 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 			->where(["id" => $id])
 			->firstOrFail();
 
-		if (!$model) {
-			throw (new ModelNotFoundException)->setModel(
-				get_class($this->entity->getModel()),
-				$id
-			);
-		}
-
 		return $model;
 	}
+
+    /**
+     * @param string $email
+     * @return mixed
+     */
+    public function findByEmail(string $email)
+    {
+        return $this->entity->where('email', $email)->first();
+    }
 }

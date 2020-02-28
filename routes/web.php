@@ -87,8 +87,8 @@ Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderator.')->
 });
 
 // Authentication Routes for authentification
-Route::get('connexion', 'Auth\LoginController@showLoginForm')->name('signIn');
-Route::post('login', 'Auth\LoginController@login')->name('login');
+Route::get('connexion', 'Auth\SalesForceSamlController@connexion')->name('signIn');
+//Route::post('login', 'Auth\LoginController@login')->name('login');
 Route::post('deconnexion', 'Auth\LoginController@logout')->name('logout');
 
 // Registration Routes...

@@ -6,6 +6,7 @@ use App\Services\Documents\DocumentService;
 use App\Services\Documents\DocumentServiceInterface;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
+use Omniphx\Forrest\Providers\Laravel\Facades\Forrest;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,5 +31,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->bind(DocumentServiceInterface::class, DocumentService::class);
+
     }
 }

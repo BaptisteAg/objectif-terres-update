@@ -20,8 +20,8 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property string|null $archived_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Ad $ad
  * @property-read \App\Models\AdStatus $adStatus
- * @property-read \App\Models\Ad $ads
  * @property-read \App\Models\PpType $ppType
  * @property-read \App\Models\RefusalType|null $refusalType
  * @property-read \App\Models\User $userModerator

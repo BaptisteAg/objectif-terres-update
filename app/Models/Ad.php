@@ -17,6 +17,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property int $user_pp_id
  * @property int|null $user_admin_id
  * @property int $is_draft
+ * @property int $accept_share_contact_infos
  * @property string|null $title
  * @property string|null $about_content
  * @property string|null $about_project_content
@@ -46,6 +47,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \App\Models\Project|null $project
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
  * @property-read int|null $regions_count
+ * @property-read \App\Models\Thread $threadAlreadyExist
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
  * @property-read int|null $threads_count
  * @property-read \App\Models\User|null $userAdmin
@@ -55,6 +57,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAboutContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAboutProjectContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAcceptShareContactInfos($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAttributionAdId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereId($value)
@@ -65,7 +68,6 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserAdminId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserPpId($value)
  * @mixin \Eloquent
- * @property-read \App\Models\Thread $threadAlreadyExist
  */
 class Ad extends Model implements HasPresenter
 {

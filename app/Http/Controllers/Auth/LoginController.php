@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\Salesforce\SalesforceService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
@@ -33,12 +34,14 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(SalesforceService $salesForceService)
     {
         $this->middleware('guest')->except('logout');
     }
 
 	/**
+     *
+     *
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
 	public function showLoginForm()

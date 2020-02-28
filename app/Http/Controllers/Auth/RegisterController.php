@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\Salesforce\SalesforceService;
 use App\Models\City;
 use App\Models\Country;
-use App\Models\User;
 use App\Services\Users\UserService;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -24,7 +22,6 @@ class RegisterController extends Controller
     | provide this functionality without requiring any additional code.
     |
     */
-
     use RegistersUsers;
 
     /**
@@ -33,17 +30,25 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/';
+
+    /** @var UserService  */
 	protected $userService;
+
+    /**
+     * @var SalesforceService
+     */
+    protected $salesForceService;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, SalesforceService $salesForceService)
     {
         $this->middleware('guest');
         $this->userService = $userService;
+        $this->salesForceService = $salesForceService;
     }
 
     /**
@@ -54,9 +59,6 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-
-
-
 		return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -91,8 +93,9 @@ class RegisterController extends Controller
 	 */
     protected function create(array $data)
     {
+        $salesForceUser = $this->salesForceService->registerPP($data);
+        $data["sf_id"] = $salesForceUser;
 
-		$user = new User();
 		$user = $this->userService->create($data);
 		return $user;
     }
