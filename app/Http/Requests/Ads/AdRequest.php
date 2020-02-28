@@ -30,18 +30,22 @@ class AdRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'ad_type'                 => "required",
-            'land_seek'               => ['nullable', 'array'],
-            'land_offer'              => ['nullable', 'array'],
-            'job_offer'               => ['nullable', 'array'],
-            'job_seek'                => ['nullable', 'array'],
+            'ad_type'                       => "required",
+            'land_seek'                     => ['nullable', 'array'],
+            'land_offer'                    => ['nullable', 'array'],
+            'job_offer'                     => ['nullable', 'array'],
+            'job_seek'                      => ['nullable', 'array'],
 
-            'locationable'            => [new HasZone],
-            'locationable_radius'     => ['nullable', 'string'],
-            'about_content'           => ['required', 'string', 'max:1000'],
-            'about_project_content'   => ['required', 'string', 'max:1000'],
-            'title'                   => ['required', 'string'],
-            'documents_ids'           => ['nullable', 'array'],
+            'locationable'                  => [new HasZone],
+            'locationable_radius'           => ['nullable', 'string'],
+
+            'about_content'                 => ['required', 'string', 'max:1000'],
+            'about_project_content'         => ['required', 'string', 'max:1000'],
+            'title'                         => ['required', 'string'],
+
+            'documents_ids'                 => ['nullable', 'array'],
+
+            'accept_share_contact_infos'    => ['nullable', 'boolean']
         ];
 
         $rulesetsByAdType = [

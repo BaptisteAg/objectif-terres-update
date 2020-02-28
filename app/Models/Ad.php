@@ -75,7 +75,15 @@ class Ad extends Model implements HasPresenter
      * @var array
      */
     protected $fillable = [
-        'attribution_ad_id', 'project_id', 'user_pp_id', 'user_admin_id', 'is_draft', 'title', 'about_content', 'about_project_content'
+        'attribution_ad_id',
+        'project_id',
+        'user_pp_id',
+        'user_admin_id',
+        'is_draft',
+        'title',
+        'about_content',
+        'about_project_content',
+        'accept_share_contact_infos'
     ];
 
     /**
