@@ -15,10 +15,8 @@
 					<br>
 					<br>
 				</div>
-
 			</div>
 		</div>
-
 		<div class="content">
 			<div class="tabs is-centered is-medium">
 				<ul>

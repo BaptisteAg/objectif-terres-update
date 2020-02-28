@@ -141,13 +141,21 @@ class ThreadService
 			"title"
 		]);
 		$thread = $this->repository->create($threadData);
-
 		$threadParticipants = [];
+
+		//in case of new message send from the ad view
 		if (isset($data['ad_id'])) {
 			$threadParticipants = [
 				$this->adRepository->find($data["ad_id"])->user_pp_id,
 				auth()->id()
 			];
+			//in case of new message send from the user profil view, message is no related to a specific ad
+		} elseif (isset($data['user_pp_id'])) {
+			$threadParticipants = [
+				$data['user_pp_id'],
+				auth()->id()
+			];
+			//in case of new message from a member of TdL to one or multiple members of Tdl
 		} else {
 			$threadParticipants = [
 				auth()->id()
@@ -181,7 +189,6 @@ class ThreadService
 				}
 			}
 		}
-
 	}
 
 	/**

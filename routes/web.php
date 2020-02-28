@@ -92,6 +92,10 @@ Route::middleware('auth')->prefix('mon-espace-moderateur')->name('helpArea.')->n
 	Route::get('aide-et-ressources', 'HelpAreasModeratorController@index')->name('index');
 });
 
+Route::middleware('auth')->prefix('porteur-de-projet')->name('user.')->namespace('users')->group(function () {
+	Route::get('{user}', 'UsersController@show')->name('show');
+});
+
 
 // Authentication Routes for authentification
 Route::get('connexion', 'Auth\LoginController@showLoginForm')->name('signIn');

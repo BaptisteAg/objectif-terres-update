@@ -282,7 +282,7 @@
 									   href="{{route('ads.show', $attributionAd->ad->id)}}">{{$attributionAd->ad->title}}</a>
 								</td>
 								<td>{{$attributionAd->ad->ad_type_full_name}}</td>
-								<td>{{$attributionAd->ad->userPp->first_name}} {{$attributionAd->ad->userPp->name}}</td>
+								<td><a href="{{route('user.show', $attributionAd->ad->userPp->id)}}">{{$attributionAd->ad->userPp->first_name}} {{$attributionAd->ad->userPp->name}}</a></td>
 								<td>{{$attributionAd->ad->userPp->email}}</td>
 								<td>
 									@if(! is_null($attributionAd->ad->regionsList))
@@ -312,17 +312,21 @@
 									@endif
 								</td>
 								<td>
-									@if($attributionAd->ad->project->projectStatus->name === "Accompagné")
-										<span class="tag is-success is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
-									@elseif($attributionAd->ad->project->projectStatus->name ==="Installé")
-										<span class="tag is-success is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
-									@elseif($attributionAd->ad->project->projectStatus->name === "A rappeler")
-										<span class="tag is-danger is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
-
-									@elseif($attributionAd->ad->project->projectStatus->name === "Non accompagné")
-										<span class="tag is-warning is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
+									@if(is_null($attributionAd->ad->project))
+										<span class="tag is-light">L'annonce n'a pas le status de projet</span>
 									@else
-										<span class="tag is-info is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
+										@if($attributionAd->ad->project->projectStatus->name === "Accompagné")
+											<span class="tag is-success is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
+										@elseif($attributionAd->ad->project->projectStatus->name ==="Installé")
+											<span class="tag is-success is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
+										@elseif($attributionAd->ad->project->projectStatus->name === "A rappeler")
+											<span class="tag is-danger is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
+
+										@elseif($attributionAd->ad->project->projectStatus->name === "Non accompagné")
+											<span class="tag is-warning is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
+										@else
+											<span class="tag is-info is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
+										@endif
 									@endif
 
 								</td>

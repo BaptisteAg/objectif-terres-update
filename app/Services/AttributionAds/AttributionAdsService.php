@@ -3,6 +3,7 @@
 namespace App\Services\AttributionAds;
 
 use App\Models\Ad;
+use App\Models\AttributionAd;
 use App\Models\Region;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use Carbon\Carbon;
@@ -61,19 +62,29 @@ class AttributionAdsService
 		}
 
 		$attributionAds = collect();
-		if(isset ($data['ad_title'])){
-			$adsByTitle = Ad::where('title', 'like', '%'.$data['ad_title'].'%')->get();
-			foreach($adsByTitle as $adByTitle){
+		if (isset ($data['ad_title'])) {
+			$adsByTitle = Ad::where('title', 'like', '%' . $data['ad_title'] . '%')->get();
+			foreach ($adsByTitle as $adByTitle) {
 				$attributionAds[$adByTitle->attributionAd->id] = $adByTitle->attributionAd->load('ad');
 			}
 		}
 
 		foreach ($regions as $region) {
+
+//			$ads = AttributionAd::with('ad')->with('ad.regions')
+//			->where('user_moderator_id', auth()->id())
+//				->whereHas('ad.regions', function (Builder $query) use ($region) {
+//						$query->where([['locationable_ad_id', $region->id]]);
+//					})
+//				->get();
+//
+//			dump($ads);
+
 			$regionAds = $region->ads;
 			foreach ($regionAds as $key => $ad) {
 				$isAdAttributedToModeratorLogged = $ad->attributionAd->user_moderator_id === auth()->id();
 				$isAdInRangeDateSelected = $ad->attributionAd->created_at->format('d/m/Y') >= $data['dateResearchRange'];
-				foreach ($data['ad_type'] as $adType){
+				foreach ($data['ad_type'] as $adType) {
 					if ($isAdAttributedToModeratorLogged && $isAdInRangeDateSelected && $ad->$adType) {
 						$attributionAds[$ad->attributionAd->id] = $ad->attributionAd->load('ad');
 					}

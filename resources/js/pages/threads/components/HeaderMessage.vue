@@ -16,16 +16,13 @@
                     </template>
 
                     <template v-else>
-
                             <template v-for="(user, index) in value[0].thread.users">
-                                <p class=" title is-5 has-text-centered is-marginless" v-if="user.id !==userId"> {{user.first_name}} <span class="is-uppercase">{{user.name}}</span></p>
+                                <a target="_blank" :href="'/porteur-de-projet/' + user.id">  <p class=" title is-5 has-text-centered is-marginless" v-if="user.id !==userId"> {{user.first_name}} <span class="is-uppercase">{{user.name}}</span></p></a>
                             </template>
-
                     </template>
 
                     <template v-if="value[0].thread.ad !== null">
-                        <a :href="'/annonces/' + value[0].thread.ad.id" v-if="isDisplay"><p
-                                class="subtitle is-6 has-text-centered">{{value[0].thread.ad.title}}</p></a>
+                       <p class="subtitle is-6 has-text-centered">{{value[0].thread.ad.title}}</p>
                     </template>
                     <br>
                     <template v-if="value[0].thread.ad !== null">

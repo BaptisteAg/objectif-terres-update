@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Notifications\ResetPasswordNotification;
+use App\Presenters\UserPresenter;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use McCool\LaravelAutoPresenter\HasPresenter;
 
 /**
  * App\Models\User
@@ -62,7 +64,7 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereZipCodeId($value)
  * @mixin \Eloquent
  */
-class User extends Authenticatable
+class User extends Authenticatable implements HasPresenter
 {
 	use Notifiable;
 	use CanResetPassword;
@@ -133,6 +135,16 @@ class User extends Authenticatable
 	public function threads()
 	{
 		return $this->belongsToMany(Thread::class, 'thread_users')->withTimestamps();
+	}
+
+	/**
+	 * Get the presenter class.
+	 *
+	 * @return string
+	 */
+	public function getPresenterClass()
+	{
+		return UserPresenter::class;
 	}
 
 
