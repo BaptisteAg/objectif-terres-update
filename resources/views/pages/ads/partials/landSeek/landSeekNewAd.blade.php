@@ -195,22 +195,9 @@
 
                         @include('pages.ads.partials.inputs.documents')
 
-                        <div class="field">
-                            <label class="checkbox">
-                                <input type="checkbox"
-                                       id="certification_charte"
-                                       name="land_seek[chart_confirmation]"
-                                       :disabled="isInputDisabled"
-                                       v-model="formInput.chartConfirmation"
-                                       ref='chartConfirmation'
-                                       aria-describedby='chartConfirmationError'>
+                        @include('pages.ads.partials.inputs.accept-share-contact-infos')
 
-                                Je certifie que mon projet correspond à la <a href="/">charte de Terre de Liens</a>
-                            </label>
-                            <p class="help is-danger" id="chartConfirmationError"
-                               v-if="$v.formInput.chartConfirmation.$error">Vous
-                                devez cocher cette case.</p>
-                        </div>
+                        @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'land_seek'])
 
                         <article class="message is-warning" v-if="$v.$error">
                             <div class="message-header">

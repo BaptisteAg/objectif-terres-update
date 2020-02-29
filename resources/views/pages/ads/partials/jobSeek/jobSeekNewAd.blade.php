@@ -132,6 +132,8 @@
 
                         @include('pages.ads.partials.inputs.documents')
 
+                        @include('pages.ads.partials.inputs.accept-share-contact-infos')
+
                         <article class="message is-warning" v-if="$v.$error">
                             <div class="message-header">
                                 <p>Veuillez revoir votre formulaire</p>
