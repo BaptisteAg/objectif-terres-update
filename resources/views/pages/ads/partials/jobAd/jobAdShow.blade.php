@@ -9,7 +9,7 @@
 			</ul>
 		</nav>
 		<h1 class="title has-text-link">{{$ad->title}}</h1>
-		@if(session()->get('role') >= 2)
+		@if(auth()->user()->role >= 2)
 			@include('pages.ads.partials.moderator-options')
 		@endif
 

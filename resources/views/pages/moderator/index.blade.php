@@ -331,7 +331,7 @@
 
 								</td>
 								<td><a target="_blank" href="{{route('ads.show', $attributionAd->ad->id)}}"><span><i
-													class="fas fa-search"></i></span> <span>Voir le détails</span></a>
+													class="fas fa-search"></i></span> <span>Voir le détail</span></a>
 								</td>
 							</tr>
 

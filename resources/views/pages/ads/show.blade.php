@@ -72,5 +72,10 @@
             name: 'content'
         });
 
+        const VueModerationModal = new Vue({
+			el : "#vue-moderation-modal",
+			name : 'content'
+		})
+
 	</script>
 @endsection

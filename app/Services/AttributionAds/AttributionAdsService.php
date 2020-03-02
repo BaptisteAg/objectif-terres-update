@@ -3,6 +3,7 @@
 namespace App\Services\AttributionAds;
 
 use App\Models\Ad;
+use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\Region;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
@@ -92,5 +93,24 @@ class AttributionAdsService
 			}
 		}
 		return $attributionAds;
+	}
+
+
+	/**
+	 * @param int $attributionAdId
+	 * @return mixed
+	 */
+	public function acceptAd(int $attributionAdId)
+	{
+		$attributionAd = $this->repository->find($attributionAdId);
+		//TODO when moderator accept an ad, if the pp want a support from Tdl, the ad Status is to assign the ad to an Tdl user
+//		$toAssignStatus = AdStatus::where('name', '=', 'A assigner')->first();
+//		$attributionAd->ad_status_id = $toAssignStatus->id;
+
+		$validateStatus = AdStatus::where('name', '=', 'Validé')->first();
+		$attributionAd->ad_status_id = $validateStatus->id;
+		$attributionAd->save();
+
+		return $attributionAd;
 	}
 }

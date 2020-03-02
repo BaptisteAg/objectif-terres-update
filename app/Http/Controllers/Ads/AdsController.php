@@ -13,6 +13,7 @@ use App\Models\InstallationType;
 use App\Models\JobOfferType;
 use App\Models\OfferGenre;
 use App\Models\PriceRange;
+use App\Models\RefusalType;
 use App\Models\Requirement;
 use App\Models\ResponseTemplate;
 use App\Models\SurfaceRange;
@@ -91,7 +92,7 @@ class AdsController extends Controller
 
 		$ad = $this->adService->create($data);
 
-		return redirect()->route('ads.show', [$ad->id])->with('success', 'Votre annonce a bien été publiée.');
+		return redirect()->route('ads.show', [$ad->id])->with('success', 'Votre annonce a bien été soumise à modération. Vous receverez une réponse très bientôt ! ');
 	}
 
 	/**
@@ -114,12 +115,14 @@ class AdsController extends Controller
 	 */
 	public function show(int $adId)
 	{
+
 		$ad = $this->adService->find($adId);
 		$userMessage = null;
 		$favoriteAdAlreadyExist = false;
 		$threads = [];
 		$threadsWithUnreadMessages = null;
 		$responseTemplates = '';
+		$refusalTypes = '';
 
 		if (Auth::user()) {
 			if (auth()->user()->id === $ad->user_pp_id) {
@@ -128,6 +131,7 @@ class AdsController extends Controller
 			} else {
 				if(auth()->user()->role >= 2){
 					$responseTemplates = ResponseTemplate::all();
+					$refusalTypes = RefusalType::all();
 				}
 				$threads = $this->threadService->findThreadAlreadyExist($adId);
 				$data = array(
@@ -139,7 +143,10 @@ class AdsController extends Controller
 
 		}
 
-		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist', 'threads', 'threadsWithUnreadMessages', 'responseTemplates'));
+		//Throw error 404 if a visitor try to show an ad is not validated
+		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validé" ;
+
+		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist', 'threads', 'threadsWithUnreadMessages', 'responseTemplates', 'refusalTypes'));
 	}
 
 	/**

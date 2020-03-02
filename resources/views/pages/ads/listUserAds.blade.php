@@ -9,6 +9,7 @@
 				<div class="level-left">
 					<div>
 						<h1 class="title">Liste de vos annonces</h1>
+
 						@if(count($ads) <=1)
 							<h2 class="subtitle"> {{ count($ads) }} annonce publiée.</h2>
 						@else

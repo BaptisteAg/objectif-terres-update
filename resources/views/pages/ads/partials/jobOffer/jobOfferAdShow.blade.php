@@ -11,7 +11,6 @@
         <h1 class="title has-text-link">{{$ad->title}}</h1>
         <div class="columns">
             @include('pages.ads.partials.show-images')
-
             <div class="column">
                 <div class="card">
                     <div class="card-content">
