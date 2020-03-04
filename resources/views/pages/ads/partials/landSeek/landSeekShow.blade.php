@@ -8,9 +8,11 @@
 		</nav>
 		<h1 class="title has-text-link">{{$ad->title}}</h1>
 
-		@if(auth()->user()->role >= 2)
-			@include('pages.ads.partials.moderator-options')
-		@endif
+		@auth
+			@if(auth()->user()->role >= 2)
+				@include('pages.ads.partials.moderator-options')
+			@endif
+		@endauth
 
 		<div class="columns ">
 			@include('pages.ads.partials.show-images')
@@ -18,10 +20,15 @@
 				<div class="card">
 					<div class="card-content">
 						<div class="content">
-							<p>
-								<span class="is-size-5 is-capitalized ad-show-feature-label ">Publié le  </span>
-								<span class="subtitle">{{ $ad->created_at }}</span>
-							</p>
+							@if(is_null($ad->published_on))
+								<p><span class="is-size-5  has-text-black ">Annonce soumise le : </span><span
+											class="subtitle">{{ $ad->created_at}}</span>
+								</p>
+							@else
+								<p><span class="is-size-5  has-text-black ">Publié le  : </span><span
+											class="subtitle">{{ $ad->published_on}}</span>
+								</p>
+							@endif
 						</div>
 						<div class="content">
 							<p><span class="is-size-5 is-capitalized ad-show-feature-label">Catégorie : </span><span

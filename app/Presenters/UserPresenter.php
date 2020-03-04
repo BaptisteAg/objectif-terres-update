@@ -4,7 +4,7 @@ use App\Models\User;
 use McCool\LaravelAutoPresenter\BasePresenter;
 
 /**
- * Class MessagePresenter
+ * Class UserPresenter
  * @package App\Presenters
  * @property User $wrappedObject
  */

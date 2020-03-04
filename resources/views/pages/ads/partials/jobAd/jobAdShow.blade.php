@@ -52,9 +52,15 @@
 				<div class="card">
 					<div class="card-content">
 						<div class="content">
-							<p><span class="is-size-5 is-capitalized has-text-black ">Publié le  : </span><span
-										class="subtitle">{{ $ad->created_at}}</span>
-							</p>
+							@if(is_null($ad->published_on))
+								<p><span class="is-size-5  has-text-black ">Annonce soumise le : </span><span
+											class="subtitle">{{ $ad->created_at}}</span>
+								</p>
+							@else
+								<p><span class="is-size-5  has-text-black ">Publié le  : </span><span
+											class="subtitle">{{ $ad->published_on}}</span>
+								</p>
+							@endif
 						</div>
 						<div class="content">
 							<p><span class="is-size-5  has-text-black ">Publié par  : </span>

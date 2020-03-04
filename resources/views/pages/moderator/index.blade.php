@@ -12,17 +12,26 @@
 
 		<div class="notification has-background-info">
 			<button class="delete"></button>
-			<p class="has-text-white-ter"><i class="far fa-bell has-text-white-ter"></i> Vous avez <strong>5 nouvelles
-					annonces</strong> à modérer !</p>
+			@if($numberOfAdsToModerate >1)
+				<p class="has-text-white-ter"><i class="far fa-bell has-text-white-ter"></i> Vous avez
+					<strong>{{$numberOfAdsToModerate}} annonces</strong> à modérer !</p>
+			@else
+				<p class="has-text-white-ter"><i class="far fa-bell has-text-white-ter"></i> Vous avez
+					<strong>{{$numberOfAdsToModerate}} annonce</strong> à modérer !</p>
+			@endif
+
 			@if($numberOfUnreadMessages > 1 )
-				<p class="has-text-white"><i class="fas fa-envelope "></i> Vous avez <strong>{{$numberOfUnreadMessages}}
-						nouveaux messages
-						!</strong></p>
+				<a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i class="fas fa-envelope "></i> Vous
+						avez <strong>{{$numberOfUnreadMessages}}
+							nouveaux messages
+							!</strong></p></a>
 
 			@else
-				<p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez <strong>{{$numberOfUnreadMessages}}
-						nouveau message
-						!</strong></p>
+				<a style="text-decoration: none" href="{{route('threads.index')}}">
+					<p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez
+						<strong>{{$numberOfUnreadMessages}} nouveau message !</strong>
+					</p>
+				</a>
 			@endif
 		</div>
 		{{Form::open(['route'=>'moderator.show', 'method'=>'get'])}}
@@ -263,13 +272,13 @@
 						<thead>
 						<tr>
 							<th>Date de soumission</th>
-							<th>Nom de l'annonce</th>
+							<th>Titre de l'annonce</th>
 							<th>Type d'annonce</th>
 							<th>Nom du porteur de projet</th>
 							<th>Adresse mail</th>
 							<th>Localisation(s)</th>
-							<th>Status de l'annonce</th>
-							<th>Status du projet</th>
+							<th>Statut de l'annonce</th>
+							<th>Statut du projet</th>
 							<th></th>
 						</tr>
 						</thead>
@@ -278,11 +287,13 @@
 							<tr>
 								<td>{{$attributionAd->ad->updated_at}}</td>
 								<td>
-									<a target="_blank"
-									   href="{{route('ads.show', $attributionAd->ad->id)}}">{{$attributionAd->ad->title}}</a>
+									<a
+											href="{{route('ads.show', $attributionAd->ad->id)}}">{{$attributionAd->ad->title}}</a>
 								</td>
 								<td>{{$attributionAd->ad->ad_type_full_name}}</td>
-								<td><a href="{{route('user.show', $attributionAd->ad->userPp->id)}}">{{$attributionAd->ad->userPp->first_name}} {{$attributionAd->ad->userPp->name}}</a></td>
+								<td>
+									<a href="{{route('user.show', $attributionAd->ad->userPp->id)}}">{{$attributionAd->ad->userPp->first_name}} {{$attributionAd->ad->userPp->name}}</a>
+								</td>
 								<td>{{$attributionAd->ad->userPp->email}}</td>
 								<td>
 									@if(! is_null($attributionAd->ad->regionsList))
@@ -330,7 +341,7 @@
 									@endif
 
 								</td>
-								<td><a target="_blank" href="{{route('ads.show', $attributionAd->ad->id)}}"><span><i
+								<td><a href="{{route('ads.show', $attributionAd->ad->id)}}"><span><i
 													class="fas fa-search"></i></span> <span>Voir le détail</span></a>
 								</td>
 							</tr>

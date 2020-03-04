@@ -9,7 +9,8 @@ Vue.component('vue-moderation-modal', {
     props: {
         refusalTypes: '',
         responseTemplates: '',
-        attributionAd: ''
+        adId: '',
+        attributionAdId :'',
     },
     data() {
         return {
@@ -17,7 +18,8 @@ Vue.component('vue-moderation-modal', {
             moderationChoice: '',
             selectOptions: {},
             formUrl: '',
-            attributionAdId: this.attributionAd,
+            adIdShow: this.adId,
+            attributionAd: this.attributionAdId,
         }
     },
 

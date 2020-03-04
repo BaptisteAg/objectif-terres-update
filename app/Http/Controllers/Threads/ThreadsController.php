@@ -57,6 +57,7 @@ class ThreadsController extends Controller
 	{
 		/** @var Collection $threads */
 		$threads = $this->service->findAllThreadsByLoggedUser();
+
 		$threadsWithUnreadMessages = $this->service->findThreadsByUnreadMessage();
 		$users = null;
 		$responseTemplates = '';
@@ -64,7 +65,6 @@ class ThreadsController extends Controller
 			$users = $this->userService->findAllExceptPP();
 			$responseTemplates = ResponseTemplate::all();
 		}
-
 		return view('pages.messages.index', compact('threads', 'users', 'threadsWithUnreadMessages', 'responseTemplates'));
 	}
 

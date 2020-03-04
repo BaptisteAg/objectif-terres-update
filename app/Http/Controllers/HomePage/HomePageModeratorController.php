@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\HomePage;
 
 use App\Http\Controllers\Controller;
@@ -37,10 +38,9 @@ class HomePageModeratorController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		if (auth()->user()->role < 2 ) {
+		if (auth()->user()->role < 2) {
 			abort(404);
 		}
-
 
 		$cities = City::all();
 		$departments = Department::all();
@@ -53,13 +53,14 @@ class HomePageModeratorController extends Controller
 		$attributionAds = $this->service->findAllByUserModerator(auth()->user()->id);
 
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
+		$numberOfAdsToModerate = $this->service->countAllAdsToModerateForLoggedModerator();
 
-
-		return view('pages.moderator.index', compact( 'cities', 'departments', 'regions','projectStatuses', 'adStatuses', 'productionGenres','jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages'));
+		return view('pages.moderator.index', compact('cities', 'departments', 'regions', 'projectStatuses', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
 
 	}
 
-	public function show(Request $request){
+	public function show(Request $request)
+	{
 		$cities = City::all();
 		$departments = Department::all();
 		$regions = Region::all();
@@ -71,12 +72,12 @@ class HomePageModeratorController extends Controller
 		$attributionAds = $this->service->show($request);
 
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
-
-		if(count($attributionAds) === 0 ){
+		$numberOfAdsToModerate = $this->service->countAllAdsToModerateForLoggedModerator();
+		if (count($attributionAds) === 0) {
 			return redirect()->route('moderator.index')->with('warning', 'Aucun résultat pour votre recherche');
 		}
 
-		return view('pages.moderator.index', compact( 'cities', 'departments', 'regions','projectStatuses', 'adStatuses', 'productionGenres','jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages'));
+		return view('pages.moderator.index', compact('cities', 'departments', 'regions', 'projectStatuses', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
 
 	}
 }

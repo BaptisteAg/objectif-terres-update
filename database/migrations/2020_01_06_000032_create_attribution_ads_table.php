@@ -30,6 +30,7 @@ class CreateAttributionAdsTable extends Migration
             $table->unsignedInteger('ad_status_id');
             $table->unsignedInteger('pp_type_id')->nullable();
             $table->unsignedInteger('refusal_type_id')->nullable();
+			$table->timestamp('published_on')->nullable();
             $table->timestamp('archived_at')->nullable();
 
             $table->index(["ad_status_id"], 'fk_attribution_ads_1_idx');

@@ -24,20 +24,22 @@
 											<p class="title is-4">{{$user->first_name}} {{$user->name}}</p>
 										</div>
 										<div class="column is-offset-3">
-											<div id="vue-contact-user-modal">
-												<vue-threads inline-template>
-													<div>
-														<button class="open-modal-new-message button is-link "
-																type="button">
+											@if(auth()->user()->id !== $user->id)
+												<div id="vue-contact-user-modal">
+													<vue-threads inline-template>
+														<div>
+															<button class="open-modal-new-message button is-link "
+																	type="button">
 														 <span class="icon is-small">
 															<i class="fa fa-paper-plane" aria-hidden="true"></i>
 														</span>
-															<span> Envoyer un message au porteur de projet</span>
-														</button>
-														@include('pages.users.partials.newMessageModal')
-													</div>
-												</vue-threads>
-											</div>
+																<span> Envoyer un message au porteur de projet</span>
+															</button>
+															@include('pages.users.partials.newMessageModal')
+														</div>
+													</vue-threads>
+												</div>
+											@endif
 										</div>
 									</div>
 								</div>
@@ -196,6 +198,13 @@
 								<article class="message is-warning">
 									<div class="message-body">
 										L'annonce est en mode brouillon, elle n'a pas été encore soumise à modération !
+									</div>
+								</article>
+							@endif
+							@if($ad->attributionAd->user_moderator_id === auth()->user()->id)
+								<article class="message is-link">
+									<div class="message-body">
+										Vous êtes le modérateur de cette annonce !
 									</div>
 								</article>
 							@endif

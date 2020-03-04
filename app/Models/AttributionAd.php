@@ -19,6 +19,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property int|null $pp_type_id
  * @property int|null $refusal_type_id
  * @property string|null $archived_at
+ * @property string|null $published_on
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\AdStatus $adStatus
@@ -32,6 +33,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereAdStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereArchivedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd wherePublishedOn($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd wherePpTypeId($value)
@@ -46,12 +48,12 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  */
 class AttributionAd extends Model implements Decoratable
 {
-    /**
-     * @var array
-     */
-    protected $fillable = [
-        'ad_status_id', 'lead_type_id', 'refusal_type_id', 'user_owner_id', 'user_moderator_id', 'to_call_back', 'short_description', 'archived_at'
-    ];
+	/**
+	 * @var array
+	 */
+	protected $fillable = [
+		'ad_status_id', 'lead_type_id', 'refusal_type_id', 'user_owner_id', 'user_moderator_id', 'to_call_back', 'short_description', 'archived_at', 'published_on'
+	];
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -69,37 +71,38 @@ class AttributionAd extends Model implements Decoratable
 		return $this->belongsTo(User::class);
 	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function adStatus()
-    {
-        return $this->belongsTo(AdStatus::class);
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function adStatus()
+	{
+		return $this->belongsTo(AdStatus::class);
+	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function ppType()
-    {
-        return $this->belongsTo(PpType::class, 'lead_type_id');
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function ppType()
+	{
+		return $this->belongsTo(PpType::class, 'lead_type_id');
+	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function refusalType()
-    {
-        return $this->belongsTo(RefusalType::class);
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function refusalType()
+	{
+		return $this->belongsTo(RefusalType::class);
+	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function ad()
-    {
-        return $this->hasOne(Ad::class );
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
+	 */
+	public function ad()
+	{
+		return $this->hasOne(Ad::class);
+	}
+
 	/**
 	 * Get the presenter class.
 	 *

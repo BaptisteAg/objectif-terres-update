@@ -6,6 +6,7 @@ use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\Region;
+use App\Repositories\Ads\AdRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,14 +21,17 @@ use Illuminate\Support\Facades\DB;
 class AttributionAdsService
 {
 	protected $repository;
+	protected $adRepository;
 
 	/**
 	 * AttributionAdsService constructor.
 	 * @param AttributionAdsRepository $attributionAdsRepository
+	 * @param AdRepository $adRepository
 	 */
-	public function __construct(AttributionAdsRepository $attributionAdsRepository)
+	public function __construct(AttributionAdsRepository $attributionAdsRepository, AdRepository $adRepository)
 	{
 		$this->repository = $attributionAdsRepository;
+		$this->adRepository = $adRepository;
 	}
 
 	/**
@@ -38,6 +42,15 @@ class AttributionAdsService
 	{
 		return $this->repository->findAllByModeratorId($idUser);
 	}
+
+	/**
+	 * @return int
+	 */
+	public function countAllAdsToModerateForLoggedModerator(){
+		$validateStatus = AdStatus::where('name', '=', 'A modérer')->first();
+		return $this->repository->findAllByLoggedUserAndStatusId($validateStatus->id)->count();
+	}
+
 
 	/**
 	 * @param Request $request
@@ -95,7 +108,6 @@ class AttributionAdsService
 		return $attributionAds;
 	}
 
-
 	/**
 	 * @param int $attributionAdId
 	 * @return mixed
@@ -109,8 +121,43 @@ class AttributionAdsService
 
 		$validateStatus = AdStatus::where('name', '=', 'Validé')->first();
 		$attributionAd->ad_status_id = $validateStatus->id;
+		$attributionAd->published_on = Carbon::now();
 		$attributionAd->save();
 
+		$ad = $this->adRepository->find($attributionAd->ad->id);
+		$ad->is_draft = 0;
+		$ad->save();
+
 		return $attributionAd;
+	}
+
+	public function modifyAd(int $attributionAdId)
+	{
+		$attributionAd = $this->repository->find($attributionAdId);
+		$toModifyStatus = AdStatus::where('name', '=', 'A modifier')->first();
+		$attributionAd->ad_status_id = $toModifyStatus->id;
+		$attributionAd->save();
+
+		$ad = $this->adRepository->find($attributionAd->ad->id);
+		$ad->is_draft = 1;
+		$ad->save();
+		return $attributionAd;
+	}
+
+	public function rejectAd(array $data)
+	{
+		$attributionAd = $this->repository->find($data['attribution_ad_id']);
+		$rejectStatus = AdStatus::where('name', '=', 'Refuser')->first();
+		$attributionAd->ad_status_id = $rejectStatus->id;
+		$attributionAd->refusal_type_id = $data['refusal_type_id'];
+		$attributionAd->save();
+
+		if ($attributionAd->ad->is_draft === 1) {
+			$ad = $this->adRepository->find($attributionAd->ad->id);
+			$ad->is_draft = 0;
+			$ad->save();
+		}
+		return $attributionAd;
+
 	}
 }

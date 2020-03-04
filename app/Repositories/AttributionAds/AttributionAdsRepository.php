@@ -4,6 +4,7 @@ namespace App\Repositories\AttributionAds;
 
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
+use Illuminate\Database\Eloquent\Builder;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 /**
@@ -44,6 +45,19 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 		return $this->entity
 			->where(["user_moderator_id" => $userId])
 			->with($this->getEagerLoading())
+			->get();
+	}
+
+	/**
+	 * @param int $statusId
+	 * @return Builder[]|\Illuminate\Database\Eloquent\Collection
+	 */
+	public function findAllByLoggedUserAndStatusId(int $statusId){
+		return $this->entity
+			->where(["user_moderator_id" => auth()->user()->id])
+			->whereHas('adStatus', function (Builder $query) use($statusId) {
+				$query->where('id', '=', $statusId);
+			})
 			->get();
 	}
 

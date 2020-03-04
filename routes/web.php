@@ -94,6 +94,8 @@ Route::middleware('auth')->prefix('mon-espace-moderateur')->name('helpArea.')->n
 
 Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderation.')->namespace('AttributionAds')->group(function (){
 	Route::post('validation', 'AttributionAdsController@acceptAd')->name('acceptAd');
+	Route::post('modification', 'AttributionAdsController@modifyAd')->name('modifyAd');
+	Route::post('refus', 'AttributionAdsController@rejectAd')->name('rejectAd');
 });
 
 Route::middleware('auth')->prefix('porteur-de-projet')->name('user.')->namespace('users')->group(function () {

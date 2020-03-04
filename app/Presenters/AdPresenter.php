@@ -79,9 +79,9 @@ class AdPresenter extends BasePresenter
 		$regions = '';
 		foreach ($this->wrappedObject->regions as $key => $attribute) {
 			if ($key === 0) {
-				$regions = $regions.$attribute['name'];
+				$regions = $regions . $attribute['name'];
 			} else {
-				$regions = $regions . ', ' .$attribute['name'];
+				$regions = $regions . ', ' . $attribute['name'];
 			}
 		}
 		return $regions;
@@ -93,7 +93,7 @@ class AdPresenter extends BasePresenter
 
 		foreach ($this->wrappedObject->departments as $key => $attribute) {
 			if ($key === 0) {
-				$departments = $departments. $attribute['name'];
+				$departments = $departments . $attribute['name'];
 			} else {
 				$departments = $departments . ', ' . $attribute['name'];
 			}
@@ -107,7 +107,7 @@ class AdPresenter extends BasePresenter
 		$cities = null;
 		foreach ($this->wrappedObject->cities as $key => $attribute) {
 			if ($key === 0) {
-				$cities = $cities. $attribute['name'];
+				$cities = $cities . $attribute['name'];
 			} else {
 				$cities = $cities . ', ' . $attribute['name'];
 			}
@@ -115,7 +115,6 @@ class AdPresenter extends BasePresenter
 		return $cities;
 
 	}
-
 
 	public function zipCodesByCity()
 	{
@@ -152,6 +151,16 @@ class AdPresenter extends BasePresenter
 	private function documentIsImage($document)
 	{
 		return strpos($document->type, 'image') !== false;
+	}
+
+	public function published_on()
+	{
+		if (is_null($this->wrappedObject->attributionAd->published_on)) {
+			return $this->wrappedObject->attributionAd->published_on;
+		} else {
+			return \Carbon\Carbon::parse($this->wrappedObject->attributionAd->published_on)->format('d/m/Y');
+		}
+
 	}
 
 }

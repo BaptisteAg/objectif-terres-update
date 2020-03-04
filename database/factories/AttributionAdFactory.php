@@ -18,6 +18,7 @@ $factory->define(AttributionAd::class, function (Faker $faker) {
         'ad_status_id' => AdStatus::all()->random(),
         'pp_type_id' => factory(PpType::class),
         'refusal_type_id' => factory(RefusalType::class),
-        'archived_at' => null
+        'archived_at' => null,
+		'published_on' => \Carbon\Carbon::now()
     ];
 });
