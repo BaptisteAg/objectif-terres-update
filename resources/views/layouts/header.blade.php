@@ -27,30 +27,33 @@
 								</div>
 							@endif
 						@else
-                            @if(auth()->user()->role >=2)
-                                <div class="level-item">
-                                    <a href="{{route('moderator.index')}}">
+							@if(auth()->user()->role >=2)
+								<div class="level-item">
+									<a href="{{route('moderator.index')}}">
                                         <span class="icon">
                                             <i class="far fa-user"></i>
                                         </span>
-                                        <span>Mon esapce modérateur ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
-                                    </a>
-                                </div>
-                                @else
+										<span>Mon esapce modérateur ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
+									</a>
+								</div>
+							@else
 
-                                <div class="level-item">
-                                    <a href="{{route('userAccount.index')}}">
+								<div class="level-item">
+									<a href="{{route('userAccount.index')}}">
                                         <span class="icon">
                                             <i class="far fa-user"></i>
                                         </span>
-                                        <span>Mon compte ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
-                                    </a>
-                                </div>
-                            @endif
+										<span>Mon compte ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
+									</a>
+								</div>
+							@endif
 							<div class="level-item">
-                                <span class="icon">
-                                    <a href=""><i class="far fa-bell"></i></a>
-                                </span>
+                                <span class="notification-container">
+                                    <a href="{{route('notification.index')}}"><i class="far fa-bell"></i></a>
+                                @unless(auth()->user()->unreadNotifications->isEmpty())
+										<span class="notification-counter">{{auth()->user()->unreadNotifications->count()}}</span>
+									@endunless
+								</span>
 							</div>
 							<div class="level-item">
 								<span class="notification-container">

@@ -17,10 +17,12 @@ use App\Models\RefusalType;
 use App\Models\Requirement;
 use App\Models\ResponseTemplate;
 use App\Models\SurfaceRange;
+use App\Notifications\ModerationNotification;
 use App\Repositories\FavoriteAds\FavoriteAdRepository;
 use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
@@ -90,7 +92,10 @@ class AdsController extends Controller
 	{
 		$data = $request->validated();
 
+		/** @var $ad Ad $ad */
 		$ad = $this->adService->create($data);
+		$ad->attributionAd->userModerator->notify(new ModerationNotification($ad, auth()->user()));
+
 
 		return redirect()->route('ads.show', [$ad->id])->with('success', 'Votre annonce a bien été soumise à modération. Vous receverez une réponse très bientôt ! ');
 	}
@@ -134,6 +139,9 @@ class AdsController extends Controller
 
 			if (auth()->user()->id === $ad->attributionAd->user_moderator_id) {
 				$isLoggedUserModeratorAd = true;
+				//set to read if notification about the ad exist
+				$notification = auth()->user()->notifications()->where('data->ad_id', $ad->id)->first();
+				$notification->markAsRead();
 			}
 
 			if (auth()->user()->id === $ad->user_pp_id) {

@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Controllers\Notifications;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
+
+class NotificationsController extends Controller
+{
+	/**
+	 * @param Request $request
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function index(Request $request)
+	{
+		$user = $request->user();
+		return view('pages.notifications.index', compact('user'));
+	}
+
+	public function update(Request $request, DatabaseNotification $notification)
+	{
+		$notification->markAsRead();
+		try {
+			$notification->delete();
+		} catch (\Exception $e) {
+			return back()->with('error', 'Une erreur est survenu, veuillez réessayer');
+		}
+		if ($request->user()->unreadNotifications->isEmpty()) {
+			return redirect()->route('/');
+		}
+		return redirect()->route('ads.show', $notification->data['ad_id']);
+	}
+}

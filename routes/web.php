@@ -102,6 +102,10 @@ Route::middleware('auth')->prefix('porteur-de-projet')->name('user.')->namespace
 	Route::get('{user}', 'UsersController@show')->name('show');
 });
 
+Route::middleware('auth')->prefix('notification')->name('notification.')->namespace('Notifications')->group( function(){
+	Route::get('index', 'NotificationsController@index')->name('index');
+	Route::patch('{notification}', 'NotificationsController@update')->name('update');
+});
 
 // Authentication Routes for authentification
 Route::get('connexion', 'Auth\LoginController@showLoginForm')->name('signIn');
