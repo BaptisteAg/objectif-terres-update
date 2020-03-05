@@ -54,7 +54,6 @@
                                         </span>
                                 </a>
                             </template>
-
                             <template v-else>
                                 <a @click="onThreadClick(thread.id)">
                                     <template v-for="threadUnreadMessages in threadsUnreadMessages">
@@ -69,7 +68,6 @@
                                     <span>{{thread.title}}</span>
                                 </a>
                             </template>
-
                         </template>
                         <template v-else>
                             <a @click="onThreadClick(thread.id)">

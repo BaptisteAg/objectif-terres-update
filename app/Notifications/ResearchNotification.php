@@ -51,6 +51,7 @@ class ResearchNotification extends Notification
 			->action('Consulter les résultats de votre recherche', $url)
 			->line('Merci d\'utiliser les services du site d\'Objectif Terres !');
 
+
 	}
 
 	/**

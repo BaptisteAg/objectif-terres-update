@@ -33,9 +33,15 @@
 						</div>
 						<div class="content">
 							<p><span class="is-size-5  has-text-black ">Publié par  : </span>
-
-								<span class="subtitle"><a
-											href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->userPp->first_name}} {{$ad->userPp->name}}</a></span>
+								@if(auth()->user()->role >= 1 )
+									<span class="subtitle">
+										<a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+									</span>
+								@else
+									<span class="subtitle">
+										{{ $ad->userPp->first_name}} {{$ad->userPp->name}}
+									</span>
+								@endif
 							</p>
 						</div>
 						<div class="content">
