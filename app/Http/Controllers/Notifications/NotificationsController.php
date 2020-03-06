@@ -20,15 +20,16 @@ class NotificationsController extends Controller
 
 	public function update(Request $request, DatabaseNotification $notification)
 	{
-		$notification->markAsRead();
-		try {
-			$notification->delete();
-		} catch (\Exception $e) {
-			return back()->with('error', 'Une erreur est survenu, veuillez réessayer');
-		}
 		if ($request->user()->unreadNotifications->isEmpty()) {
-			return redirect()->route('/');
+			return back()->with('warning', 'La notification n\'existe plus');
 		}
-		return redirect()->route('ads.show', $notification->data['ad_id']);
+
+		if ($request->input('route') === 'ads.show') {
+			$notification->markAsRead();
+			$notification->delete();
+			return redirect()->route($request->input('route'), $notification->data['ad_id']);
+		} else {
+			return redirect()->route($request->input('route'));
+		}
 	}
 }

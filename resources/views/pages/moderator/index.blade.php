@@ -285,10 +285,9 @@
 						<tbody>
 						@foreach($attributionAds as $attributionAd)
 							<tr>
-								<td>{{$attributionAd->ad->updated_at}}</td>
+								<td>{{$attributionAd->ad->submitDate}}</td>
 								<td>
-									<a
-											href="{{route('ads.show', $attributionAd->ad->id)}}">{{$attributionAd->ad->title}}</a>
+									<a href="{{route('ads.show', $attributionAd->ad->id)}}">{{$attributionAd->ad->title}}</a>
 								</td>
 								<td>{{$attributionAd->ad->ad_type_full_name}}</td>
 								<td>

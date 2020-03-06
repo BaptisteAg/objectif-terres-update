@@ -77,6 +77,7 @@ class HomePageModeratorController extends Controller
 			return redirect()->route('moderator.index')->with('warning', 'Aucun résultat pour votre recherche');
 		}
 
+
 		return view('pages.moderator.index', compact('cities', 'departments', 'regions', 'projectStatuses', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
 
 	}

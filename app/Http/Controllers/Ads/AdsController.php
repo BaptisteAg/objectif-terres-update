@@ -17,12 +17,11 @@ use App\Models\RefusalType;
 use App\Models\Requirement;
 use App\Models\ResponseTemplate;
 use App\Models\SurfaceRange;
-use App\Notifications\ModerationNotification;
+use App\Notifications\NewAdToModerateNotification;
 use App\Repositories\FavoriteAds\FavoriteAdRepository;
 use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
@@ -94,7 +93,7 @@ class AdsController extends Controller
 
 		/** @var $ad Ad $ad */
 		$ad = $this->adService->create($data);
-		$ad->attributionAd->userModerator->notify(new ModerationNotification($ad, auth()->user()));
+		$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
 
 
 		return redirect()->route('ads.show', [$ad->id])->with('success', 'Votre annonce a bien été soumise à modération. Vous receverez une réponse très bientôt ! ');
@@ -136,14 +135,17 @@ class AdsController extends Controller
 			if ($ad->attributionAd->adStatus->id === 4) {
 				$isAdToModerate = true;
 			}
-
 			if (auth()->user()->id === $ad->attributionAd->user_moderator_id) {
 				$isLoggedUserModeratorAd = true;
-				//set to read if notification about the ad exist
-				$notification = auth()->user()->notifications()->where('data->ad_id', $ad->id)->first();
-				$notification->markAsRead();
+				//set to read if notification about moderation task about the ad exist
+				if (!auth()->user()->unreadNotifications->isEmpty()) {
+					$notification = auth()->user()->unreadNotifications()->where('data->ad_id', $ad->id)->first();
+					if (!is_null($notification)) {
+						$notification->markAsRead();
+						$notification->delete();
+					}
+				}
 			}
-
 			if (auth()->user()->id === $ad->user_pp_id) {
 				$threads = $this->threadService->findThreadsByAd($adId);
 				$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);

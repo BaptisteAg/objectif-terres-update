@@ -50,15 +50,35 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 
 	/**
 	 * @param int $statusId
+	 * @param int $userId
 	 * @return Builder[]|\Illuminate\Database\Eloquent\Collection
 	 */
-	public function findAllByLoggedUserAndStatusId(int $statusId){
+	public function findAllByUserIdAndStatusId(int $statusId, int $userId)
+	{
 		return $this->entity
-			->where(["user_moderator_id" => auth()->user()->id])
-			->whereHas('adStatus', function (Builder $query) use($statusId) {
+			->where(["user_moderator_id" => $userId])
+			->whereHas('adStatus', function (Builder $query) use ($statusId) {
 				$query->where('id', '=', $statusId);
 			})
 			->get();
+	}
+
+
+	/**
+	 * @param int $statusId
+	 * @return AttributionAd[]|Builder[]|\Illuminate\Database\Eloquent\Collection
+	 */
+	public function findAllByStatusIdGroupByModerators(int $statusId)
+	{
+		return $this->entity
+			->whereHas('adStatus', function (Builder $query) use ($statusId) {
+
+				$query->where('id', '=', $statusId);
+			})
+			->get()
+			->mapToGroups(function ($attributionAd, $key){
+				return [$attributionAd->userModerator->id => $attributionAd];
+	});
 	}
 
 	/**

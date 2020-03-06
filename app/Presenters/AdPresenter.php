@@ -53,6 +53,11 @@ class AdPresenter extends BasePresenter
 		return \Carbon\Carbon::parse($this->wrappedObject->created_at)->format('d/m/Y');
 	}
 
+	public function submitDate()
+	{
+		return \Carbon\Carbon::parse($this->wrappedObject->attributionAd->created_at)->format('d/m/Y');
+	}
+
 	public function is_today()
 	{
 		return \Carbon\Carbon::parse($this->wrappedObject->created_at)->isToday();

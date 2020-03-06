@@ -4,7 +4,6 @@ namespace App\Services\AttributionAds;
 
 use App\Models\Ad;
 use App\Models\AdStatus;
-use App\Models\AttributionAd;
 use App\Models\Region;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
@@ -12,7 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Class AttributionAdsService
@@ -46,9 +44,30 @@ class AttributionAdsService
 	/**
 	 * @return int
 	 */
-	public function countAllAdsToModerateForLoggedModerator(){
-		$validateStatus = AdStatus::where('name', '=', 'A modérer')->first();
-		return $this->repository->findAllByLoggedUserAndStatusId($validateStatus->id)->count();
+	public function countAllAdsToModerateForLoggedModerator()
+	{
+		$toModerateStatus = AdStatus::where('name', '=', 'A modérer')->first();
+		return $this->repository->findAllByUserIdAndStatusId($toModerateStatus->id, auth()->user()->id)->count();
+	}
+
+
+	/**
+	 * Get all ads grouped by moderator id and not moderated since more than a week
+	 * @return array
+	 */
+	public function findAllAdsToModerateByModerators()
+	{
+		$toModerateStatus = AdStatus::where('name', '=', 'A modérer')->first();
+		$allAdsToModerateGroupByModerators = $this->repository->findAllByStatusIdGroupByModerators($toModerateStatus->id);
+
+		foreach ($allAdsToModerateGroupByModerators as $allAdsToModerateByModerator) {
+			foreach ($allAdsToModerateByModerator as $key => $attributionAd) {
+				if ($attributionAd->created_at >= Carbon::now()->subWeek()) {
+					unset($allAdsToModerateByModerator[$key]);
+				}
+			}
+		}
+		return $allAdsToModerateGroupByModerators;
 	}
 
 

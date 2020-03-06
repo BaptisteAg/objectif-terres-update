@@ -2,8 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Models\Ad;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -13,19 +11,19 @@ class ModerationNotification extends Notification
 {
 	use Queueable;
 
-	protected $ad;
-	protected $userPP;
+	protected $data;
+	protected $adsToModerateByModerator;
 
 	/**
 	 * Create a new notification instance.
 	 *
-	 * @param Ad $ad
-	 * @param User $userPP
+	 * @param string $data
+	 * @param object $adsToModerateByModerator
 	 */
-	public function __construct(Ad $ad, User $userPP)
+	public function __construct(string $data, object $adsToModerateByModerator)
 	{
-		$this->ad = $ad;
-		$this->userPP = $userPP;
+		$this->data = $data;
+		$this->adsToModerateByModerator = $adsToModerateByModerator;
 	}
 
 	/**
@@ -36,7 +34,7 @@ class ModerationNotification extends Notification
 	 */
 	public function via($notifiable)
 	{
-		return ['database', 'mail'];
+		return ['mail', 'database'];
 	}
 
 	/**
@@ -47,12 +45,13 @@ class ModerationNotification extends Notification
 	 */
 	public function toMail($notifiable)
 	{
-		$url = url('/annonces/'.$this->ad->id);
+		$message = $this->data;
+		$url = url('/mon-espace-moderateur/');
 		return (new MailMessage)
-			->subject('Nouvelle demande de modération !')
+			->subject('Des annonces sont en attente de modération !')
 			->greeting('Bonjour,')
-			->line('Vous avez reçu une nouvelle demande de modération pour une annonce postée par '. $this->userPP->first_name.' '.$this->userPP->name.' .')
-			->action('Modérer l\'annonce', $url)
+			->line($message)
+			->action('Accéder à mon espace modérateur', $url)
 			->line('A bientôt sur Objectif Terres !')
 			->salutation('Cordialement, L\'équipe d\'Objectif Terres');
 	}
@@ -65,12 +64,13 @@ class ModerationNotification extends Notification
 	 */
 	public function toArray($notifiable)
 	{
+		$listOfAdsId = '';
+		foreach ($this->adsToModerateByModerator as $attributionAd){
+			$listOfAdsId = $listOfAdsId.$attributionAd->id.' ';
+		}
 		return [
-			'ad_id' => $this->ad->id,
-			'user_pp_id' => $this->userPP->id,
-			'user_pp_first_name' => $this->userPP->first_name,
-			'user_pp_name' => $this->userPP->name,
-
+			'number_of_ads_to_moderate' => $this->adsToModerateByModerator->count(),
+			'ads_id' => $listOfAdsId,
 		];
 	}
 }
