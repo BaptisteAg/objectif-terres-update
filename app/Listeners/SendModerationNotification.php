@@ -4,7 +4,6 @@ namespace App\Listeners;
 
 use App\Events\Moderation;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Auth;
 
 
 class SendModerationNotification implements ShouldQueue

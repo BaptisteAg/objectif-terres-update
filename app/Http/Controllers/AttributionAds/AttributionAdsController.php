@@ -81,8 +81,8 @@ class AttributionAdsController extends Controller
 	 */
 	private function setToReadModeratorNotification(int $attributionAdsId)
 	{
-		if (!auth()->user()->unreadNotifications->isEmpty()) {
-			foreach ((auth()->user()->unreadNotifications) as $notification) {
+		if (!auth()->user()->notifications->isEmpty()) {
+			foreach ((auth()->user()->notifications) as $notification) {
 				if ($notification->type === "App\Notifications\ModerationNotification") {
 					$listOfAdsId = explode(' ', $notification->data['ads_id']);
 					if (in_array($attributionAdsId, $listOfAdsId)) {

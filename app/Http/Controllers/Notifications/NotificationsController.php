@@ -29,6 +29,7 @@ class NotificationsController extends Controller
 			$notification->delete();
 			return redirect()->route($request->input('route'), $notification->data['ad_id']);
 		} else {
+			$notification->markAsRead();
 			return redirect()->route($request->input('route'));
 		}
 	}
