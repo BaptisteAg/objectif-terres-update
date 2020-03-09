@@ -15,6 +15,10 @@
 			@endif
 		@endauth
 
+		@if(auth()->user()->id === $ad->user_pp_id)
+			@include('pages.ads.partials.ad-status-message-display')
+		@endif
+
 		<div class="columns">
 			@include('pages.ads.partials.show-images')
 			<div class="column">

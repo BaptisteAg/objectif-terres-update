@@ -1,0 +1,42 @@
+@if(! $ad->attributionAd and $ad->is_draft === 0)
+	<article class="message is-success">
+		<div class="message-body">
+			Votre annonce n'as pas encore été soumise, finaliser la création de votre annonce !
+		</div>
+	</article>
+
+@elseif($ad->attributionAd->adStatus->id === 1)
+	<article class="message is-success">
+		<div class="message-body">
+			Votre annonce est en ligne !
+		</div>
+	</article>
+@elseif($ad->attributionAd->adStatus->id === 2)
+	<article class="message is-warning">
+		<div class="message-body">
+			Votre annonce nécessite quelques modifications, <a
+					href="{{route('threads.index')}}">consulter votre messagerie</a> pour
+			plus d'informations !
+		</div>
+	</article>
+
+@elseif($ad->attributionAd->adStatus->id === 3)
+	<article class="message is-danger">
+		<div class="message-body">
+			Votre annonce a été réfusée, <a href="{{route('threads.index')}}">consulter votre
+				messagerie</a> pour plus d'informations !
+		</div>
+	</article>
+@elseif($ad->attributionAd->adStatus->id === 6)
+	<article class="message is-message">
+		<div class="message-body">
+			Votre annonce n'est plus en ligne, elle a été archivée !
+		</div>
+	</article>
+@else
+	<article class="message is-message">
+		<div class="message-body">
+			Votre annonce n'est pas encore en ligne !
+		</div>
+	</article>
+@endif
