@@ -9,6 +9,7 @@
 				<div class="level-left">
 					<div>
 						<h1 class="title">Liste de vos annonces</h1>
+
 						@if(count($ads) <=1)
 							<h2 class="subtitle"> {{ count($ads) }} annonce publiée.</h2>
 						@else
@@ -98,9 +99,12 @@
 								</div>
 							</div>
 						</div>
+
 						<div class="column ">
 							<div class="buttons">
-								@if($ad->is_draft === 0)
+								@if($ad->attributionAd and $ad->attributionAd->adStatus->id === 3 )
+
+								@elseif($ad->is_draft === 0)
 									<a href="{{route("ads.show", $ad->id)}}">
 										<button class="button is-link is-medium ">
 											<span class="icon is-small">
@@ -121,7 +125,9 @@
 									</a>
 								@endif
 							</div>
-							<div class="buttons">
+							@if($ad->attributionAd and $ad->attributionAd->adStatus->id === 3 )
+							@else
+								<div class="buttons">
 									<a href="{{route("ads.delete", $ad->id)}}">
 										<button class="button is-danger is-light is-medium ">
 											<span class="icon is-small">
@@ -131,21 +137,51 @@
 										</button>
 
 									</a>
-							</div>
+								</div>
+							@endif
 						</div>
 					</div>
 					<div class="columns">
 						<div class="column is-three-fifths">
-							@if($ad->is_draft === 0)
+							@if(! $ad->attributionAd and $ad->is_draft === 0)
 								<article class="message is-success">
 									<div class="message-body">
-										Votre annonce est en ligne !
+										Votre annonce n'as pas encore été soumise, finaliser la création de votre annonce !
+									</div>
+								</article>
+
+							@elseif($ad->attributionAd->adStatus->id === 1)
+								<article class="message is-success">
+									<div class="message-body">
+										Votre annonce  a été validée et est en ligne depuis le {{$ad->published_on}} !
+									</div>
+								</article>
+							@elseif($ad->attributionAd->adStatus->id === 2)
+								<article class="message is-warning">
+									<div class="message-body">
+										Votre annonce nécessite quelques modifications, <a
+												href="{{route('threads.index')}}">consulter votre messagerie</a> pour
+										plus d'informations !
+									</div>
+								</article>
+
+							@elseif($ad->attributionAd->adStatus->id === 3)
+								<article class="message is-danger">
+									<div class="message-body">
+										Votre annonce a été réfusé, <a href="{{route('threads.index')}}">consulter votre
+											messagerie</a> pour plus d'informations !
+									</div>
+								</article>
+							@elseif($ad->attributionAd->adStatus->id === 6)
+								<article class="message is-message">
+									<div class="message-body">
+										Votre annonce a été archivée !
 									</div>
 								</article>
 							@else
-								<article class="message is-warning">
+								<article class="message is-message">
 									<div class="message-body">
-										Votre annonce est en mode brouillon, elle n'est pas encore publiée !
+										Votre annonce n'as pas été encore approuvée et publiée !
 									</div>
 								</article>
 							@endif

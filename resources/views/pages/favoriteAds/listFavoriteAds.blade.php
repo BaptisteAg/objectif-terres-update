@@ -3,8 +3,6 @@
 @section ('title', 'Consulter la liste de vos annonces favorites')
 
 @section('main-content')
-
-
 	<section class="section">
 		<div class="container">
 			<nav class="level">

@@ -44,7 +44,7 @@ class Thread extends Model implements HasPresenter
 	 * @var array
 	 */
 	protected $fillable = [
-		'title', 'created_at', 'updated_at', 'ad_id', 'is_private'
+		'title', 'created_at', 'updated_at', 'ad_id', 'is_private', 'listUsers'
 	];
 
 	/**

@@ -8,19 +8,42 @@
 		</nav>
 		<h1 class="title has-text-link">{{$ad->title}}</h1>
 
-		@if(session()->get('role') >= 2)
-			@include('pages.ads.partials.moderator-options')
-		@endif
+		@auth
+			@if(auth()->user()->role >= 2)
+				@include('pages.ads.partials.moderator-options')
+			@endif
+		@endauth
 
+		@if(auth()->user()->id === $ad->user_pp_id)
+			@include('pages.ads.partials.ad-status-message-display')
+		@endif
 		<div class="columns ">
 			@include('pages.ads.partials.show-images')
 			<div class="column">
 				<div class="card">
 					<div class="card-content">
 						<div class="content">
-							<p>
-								<span class="is-size-5 is-capitalized ad-show-feature-label ">Publié le  </span>
-								<span class="subtitle">{{ $ad->created_at }}</span>
+							@if(is_null($ad->published_on))
+								<p><span class="is-size-5  has-text-black ">Annonce soumise le : </span><span
+											class="subtitle">{{ $ad->created_at}}</span>
+								</p>
+							@else
+								<p><span class="is-size-5  has-text-black ">Publié le  : </span><span
+											class="subtitle">{{ $ad->published_on}}</span>
+								</p>
+							@endif
+						</div>
+						<div class="content">
+							<p><span class="is-size-5  has-text-black ">Publié par  : </span>
+								@if(auth()->user()->role >= 1 )
+									<span class="subtitle">
+										<a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+									</span>
+								@else
+									<span class="subtitle">
+										{{ $ad->userPp->first_name}} {{$ad->userPp->name}}
+									</span>
+								@endif
 							</p>
 						</div>
 						<div class="content">

@@ -57,7 +57,7 @@ class Research
 			$research['greeting'] = "Bonjour,";
 			$research['subject'] = 'De nouvelles annonces correspondantes à votre recherche ont été publiées | Objectif Terres';
 			$research['message'] = 'Consulter les dernières annonces publiées !';
-			Notification::route('mail', "test@mailtrap.io")
+			Notification::route('mail', $ad->user->email)
 				->notify(new ResearchNotification($research));
 
 		}

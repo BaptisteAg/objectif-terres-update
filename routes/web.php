@@ -86,11 +86,26 @@ Route::prefix('locations')->namespace('Locationables')->group(function () {
 Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderator.')->namespace('HomePage')->group(function () {
 	Route::get('/', 'HomePageModeratorController@index')->name('index');
 	Route::get('aide-et-ressources', 'HelpAreasModeratorController@index')->name('help');
+	Route::get('recherches', 'HomePageModeratorController@show')->name('show');
 });
 Route::middleware('auth')->prefix('mon-espace-moderateur')->name('helpArea.')->namespace('HelpAreas')->group(function () {
 	Route::get('aide-et-ressources', 'HelpAreasModeratorController@index')->name('index');
 });
 
+Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderation.')->namespace('AttributionAds')->group(function (){
+	Route::post('validation', 'AttributionAdsController@acceptAd')->name('acceptAd');
+	Route::post('modification', 'AttributionAdsController@modifyAd')->name('modifyAd');
+	Route::post('refus', 'AttributionAdsController@rejectAd')->name('rejectAd');
+});
+
+Route::middleware('auth')->prefix('porteur-de-projet')->name('user.')->namespace('users')->group(function () {
+	Route::get('{user}', 'UsersController@show')->name('show');
+});
+
+Route::middleware('auth')->prefix('notification')->name('notification.')->namespace('Notifications')->group( function(){
+	Route::get('index', 'NotificationsController@index')->name('index');
+	Route::patch('{notification}', 'NotificationsController@update')->name('update');
+});
 
 // Authentication Routes for authentification
 Route::get('connexion', 'Auth\LoginController@showLoginForm')->name('signIn');

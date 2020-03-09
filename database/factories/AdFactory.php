@@ -9,7 +9,8 @@ use App\Models\User;
 use Faker\Generator as Faker;
 
 $factory->define(Ad::class, function (Faker $faker) {
-    return [
+
+	return [
         'user_pp_id' => User::all()->random(),
         'user_admin_id' => User::all()->random(),
         'is_draft' => $faker->boolean,
@@ -17,6 +18,5 @@ $factory->define(Ad::class, function (Faker $faker) {
         'about_content' => $faker->text(500),
         'about_project_content' => $faker->text(750),
         'attribution_ad_id' => factory(AttributionAd::class),
-        'project_id' => factory(Project::class)
     ];
 });

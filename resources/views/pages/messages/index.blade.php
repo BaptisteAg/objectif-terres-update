@@ -4,25 +4,26 @@
 
 @section('main-content')
 
+
 	<div class="section">
 		<h1 class="title has-text-link">Bienvenue sur votre messagerie</h1>
-		@if(auth()->user()->role >=2)
+	@if(auth()->user()->role >=2)
 			@include('components.moderatorTabs')
 			<br>
 		@endif
 		<div class="container ">
-			@if(count($threads)===0)
+		@if(count($threads)===0)
 				<div class="content">
 					<p class="subtitle has-text-centered">Vous n'avez pas encore reçu de messages ! </p>
 				</div>
-				@if(auth()->user()->role >= 1 )
+			@if(auth()->user()->role >= 1 )
 					<div id="vue-messages">
 						<vue-threads inline-template>
 							<div>
 								<div class="columns is-centered is-mobile">
 									<div class="column is-2">
 										<button class="open-modal-new-message button is-link" type="button">
-								 <span class="icon is-small">
+											<span class="icon is-small">
 								<i class="fa fa-paper-plane" aria-hidden="true"></i>
 								</span>
 											<span> Envoyer un message</span>
@@ -52,8 +53,9 @@
 							</div>
 							<div class="columns" v-if="initialLoading === false">
 								<div class="column is-one-quarter">
+
 									<list-threads
-											:threads="{{json_encode($threads)}}"
+											:threads="{{json_encode((object)$threads)}}"
 											:number-of-threads-with-unread-messages="{{$threadsWithUnreadMessages->count()}}"
 											:threads-with-unread-messages="{{$threadsWithUnreadMessages}}"
 											v-model="messages"
@@ -78,7 +80,9 @@
 									<form-message-reply
 											v-model="messages"
 											:user-id="{{auth()->id()}}"
+											:response-templates ="{{json_encode($responseTemplates)}}"
 											@message-reply-success="onMessageReplySuccess"
+											v-bind:is-user-moderator="isUserModerator"
 									>
 									</form-message-reply>
 								</div>
