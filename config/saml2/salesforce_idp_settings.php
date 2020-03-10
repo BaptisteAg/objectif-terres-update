@@ -2,11 +2,11 @@
 
 // If you choose to use ENV vars to define these values, give this IdP its own env var names
 // so you can define different values for each IdP, all starting with 'SAML2_'.$this_idp_env_id
-$this_idp_env_id = 'TEST';
+$this_idp_env_id = 'SALESFORCE';
 
 //This is variable is for simplesaml example only.
 // For real IdP, you must set the url values in the 'idp' config to conform to the IdP's real urls.
-$idp_host = env('SAML2_'.$this_idp_env_id.'_IDP_HOST', 'http://localhost:8000/simplesaml');
+$idp_host = env('APP_URL');
 
 return $settings = array(
 
@@ -33,12 +33,12 @@ return $settings = array(
 
         // Usually x509cert and privateKey of the SP are provided by files placed at
         // the certs folder. But we can also provide them with the following parameters
-        'x509cert' => env('SAML2_'.$this_idp_env_id.'_SP_x509',''),
-        'privateKey' => env('SAML2_'.$this_idp_env_id.'_SP_PRIVATEKEY',''),
+        'x509cert' => file_get_contents(__DIR__.'/../../certs/saml_salesforce_cert.pem'),
+        'privateKey' => file_get_contents(__DIR__.'/../../certs/saml_salesforce_key.pem'),
 
         // Identifier (URI) of the SP entity.
         // Leave blank to use the '{idpName}_metadata' route, e.g. 'test_metadata'.
-        'entityId' => env('SAML2_'.$this_idp_env_id.'_SP_ENTITYID',''),
+        'entityId' => env('SAML2_'.$this_idp_env_id.'_IDP_ENTITYID'),
 
         // Specifies info about where and how the <AuthnResponse> message MUST be
         // returned to the requester, in this case our SP.
@@ -62,29 +62,28 @@ return $settings = array(
     // Identity Provider Data that we want connect with our SP
     'idp' => array(
         // Identifier of the IdP entity  (must be a URI)
-        'entityId' => env('SAML2_'.$this_idp_env_id.'_IDP_ENTITYID', $idp_host . '/saml2/idp/metadata.php'),
+        'entityId' => env('SAML2_'.$this_idp_env_id.'_IDP_ENTITYID'),
         // SSO endpoint info of the IdP. (Authentication Request protocol)
         'singleSignOnService' => array(
             // URL Target of the IdP where the SP will send the Authentication Request Message,
             // using HTTP-Redirect binding.
-            'url' => env('SAML2_'.$this_idp_env_id.'_IDP_SSO_URL', $idp_host . '/saml2/idp/SSOService.php'),
+            'url' => env('SAML2_'.$this_idp_env_id.'_IDP_SSO_URL'),
         ),
         // SLO endpoint info of the IdP.
         'singleLogoutService' => array(
             // URL Location of the IdP where the SP will send the SLO Request,
             // using HTTP-Redirect binding.
-            'url' => env('SAML2_'.$this_idp_env_id.'_IDP_SL_URL', $idp_host . '/saml2/idp/SingleLogoutService.php'),
+            'url' => env('SAML2_'.$this_idp_env_id.'_IDP_SL_URL'),
         ),
+
         // Public x509 certificate of the IdP
-        'x509cert' => env('SAML2_'.$this_idp_env_id.'_IDP_x509', 'MIID/TCCAuWgAwIBAgIJAI4R3WyjjmB1MA0GCSqGSIb3DQEBCwUAMIGUMQswCQYDVQQGEwJBUjEVMBMGA1UECAwMQnVlbm9zIEFpcmVzMRUwEwYDVQQHDAxCdWVub3MgQWlyZXMxDDAKBgNVBAoMA1NJVTERMA8GA1UECwwIU2lzdGVtYXMxFDASBgNVBAMMC09yZy5TaXUuQ29tMSAwHgYJKoZIhvcNAQkBFhFhZG1pbmlAc2l1LmVkdS5hcjAeFw0xNDEyMDExNDM2MjVaFw0yNDExMzAxNDM2MjVaMIGUMQswCQYDVQQGEwJBUjEVMBMGA1UECAwMQnVlbm9zIEFpcmVzMRUwEwYDVQQHDAxCdWVub3MgQWlyZXMxDDAKBgNVBAoMA1NJVTERMA8GA1UECwwIU2lzdGVtYXMxFDASBgNVBAMMC09yZy5TaXUuQ29tMSAwHgYJKoZIhvcNAQkBFhFhZG1pbmlAc2l1LmVkdS5hcjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMbzW/EpEv+qqZzfT1Buwjg9nnNNVrxkCfuR9fQiQw2tSouS5X37W5h7RmchRt54wsm046PDKtbSz1NpZT2GkmHN37yALW2lY7MyVUC7itv9vDAUsFr0EfKIdCKgxCKjrzkZ5ImbNvjxf7eA77PPGJnQ/UwXY7W+cvLkirp0K5uWpDk+nac5W0JXOCFR1BpPUJRbz2jFIEHyChRt7nsJZH6ejzNqK9lABEC76htNy1Ll/D3tUoPaqo8VlKW3N3MZE0DB9O7g65DmZIIlFqkaMH3ALd8adodJtOvqfDU/A6SxuwMfwDYPjoucykGDu1etRZ7dF2gd+W+1Pn7yizPT1q8CAwEAAaNQME4wHQYDVR0OBBYEFPsn8tUHN8XXf23ig5Qro3beP8BuMB8GA1UdIwQYMBaAFPsn8tUHN8XXf23ig5Qro3beP8BuMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBAGu60odWFiK+DkQekozGnlpNBQz5lQ/bwmOWdktnQj6HYXu43e7sh9oZWArLYHEOyMUekKQAxOK51vbTHzzw66BZU91/nqvaOBfkJyZKGfluHbD0/hfOl/D5kONqI9kyTu4wkLQcYGyuIi75CJs15uA03FSuULQdY/Liv+czS/XYDyvtSLnu43VuAQWN321PQNhuGueIaLJANb2C5qq5ilTBUw6PxY9Z+vtMjAjTJGKEkE/tQs7CvzLPKXX3KTD9lIILmX5yUC3dLgjVKi1KGDqNApYGOMtjr5eoxPQrqDBmyx3flcy0dQTdLXud3UjWVW3N0PYgJtw5yBsS74QTGD4='),
+        'x509cert' => env('SAML2_'.$this_idp_env_id.'_IDP_x509'),
         /*
          *  Instead of use the whole x509cert you can use a fingerprint
          *  (openssl x509 -noout -fingerprint -in "idp.crt" to generate it)
          */
-        // 'certFingerprint' => '',
+        'certFingerprint' => '3b12d02fda229fc1d9d8b73350d7a87bdb24eae0',
     ),
-
-
 
     /***
      *
@@ -146,21 +145,26 @@ return $settings = array(
     // Contact information template, it is recommended to suply a technical and support contacts
     'contactPerson' => array(
         'technical' => array(
-            'givenName' => 'name',
-            'emailAddress' => 'no@reply.com'
+            'givenName' => 'Objectif Terres',
+            'emailAddress' => 'support@objectif-terres.fr'
         ),
         'support' => array(
             'givenName' => 'Support',
-            'emailAddress' => 'no@reply.com'
+            'emailAddress' => 'support@objectif-terres.fr'
         ),
     ),
 
     // Organization information template, the info in en_US lang is recomended, add more if required
     'organization' => array(
         'en-US' => array(
-            'name' => 'Name',
-            'displayname' => 'Display Name',
-            'url' => 'http://url'
+            'name' => 'Objectif Terres',
+            'displayname' => 'Objectif Terres',
+            'url' => $idp_host
+        ),
+        'fr-FR' => array(
+            'name' => 'Objectif Terres',
+            'displayname' => 'Objectif Terres',
+            'url' => $idp_host
         ),
     ),
 

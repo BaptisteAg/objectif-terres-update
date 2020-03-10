@@ -14,6 +14,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * App\Models\User
  *
  * @property int $id
+ * @property string $sf_id
  * @property string $name
  * @property string $first_name
  * @property string|null $phone
@@ -60,6 +61,8 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereProfile($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRole($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereSfId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereZipCodeId($value)
  * @mixin \Eloquent

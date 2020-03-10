@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\Salesforce\SalesforceService;
 use App\Models\City;
 use App\Models\Country;
-use App\Models\User;
 use App\Services\Users\UserService;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
@@ -15,47 +15,53 @@ use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
-	/*
-	|--------------------------------------------------------------------------
-	| Register Controller
-	|--------------------------------------------------------------------------
-	|
-	| This controller handles the registration of new users as well as their
-	| validation and creation. By default this controller uses a trait to
-	| provide this functionality without requiring any additional code.
-	|
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Register Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles the registration of new users as well as their
+    | validation and creation. By default this controller uses a trait to
+    | provide this functionality without requiring any additional code.
+    |
+    */
+    use RegistersUsers;
 
-	use RegistersUsers;
+    /**
+     * Where to redirect users after registration.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/';
 
-	/**
-	 * Where to redirect users after registration.
-	 *
-	 * @var string
-	 */
-	protected $redirectTo = '/';
+    /** @var UserService  */
 	protected $userService;
 
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct(UserService $userService)
-	{
-		$this->middleware('guest');
-		$this->userService = $userService;
-	}
+    /**
+     * @var SalesforceService
+     */
+    protected $salesForceService;
 
-	/**
-	 * Get a validator for an incoming registration request.
-	 *
-	 * @param array $data
-	 * @return \Illuminate\Contracts\Validation\Validator
-	 */
-	protected function validator(array $data)
-	{
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(UserService $userService, SalesforceService $salesForceService)
+    {
+        $this->middleware('guest');
+        $this->userService = $userService;
+        $this->salesForceService = $salesForceService;
+    }
 
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(array $data)
+    {
 		return Validator::make($data, [
 			'name' => ['required', 'string', 'max:255'],
 			'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -88,10 +94,11 @@ class RegisterController extends Controller
 	 * @param array $data
 	 * @throws \Throwable
 	 */
-	protected function create(array $data)
-	{
+    protected function create(array $data)
+    {
+        $salesForceUser = $this->salesForceService->registerPP($data);
+        $data["sf_id"] = $salesForceUser["id"];
 
-		$user = new User();
 		$user = $this->userService->create($data);
 		return $user;
 	}

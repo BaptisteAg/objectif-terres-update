@@ -108,8 +108,8 @@ Route::middleware('auth')->prefix('notification')->name('notification.')->namesp
 });
 
 // Authentication Routes for authentification
-Route::get('connexion', 'Auth\LoginController@showLoginForm')->name('signIn');
-Route::post('login', 'Auth\LoginController@login')->name('login');
+Route::get('connexion', 'Auth\SalesForceSamlController@connexion')->name('signIn');
+//Route::post('login', 'Auth\LoginController@login')->name('login');
 Route::post('deconnexion', 'Auth\LoginController@logout')->name('logout');
 
 // Registration Routes...
