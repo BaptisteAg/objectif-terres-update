@@ -1,12 +1,15 @@
 <?php namespace App\Services\Ads;
 
 use App\Models\Ad;
+use App\Models\AdStatus;
+use App\Models\AttributionAd;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Ads\JobOfferAdRepository;
 use App\Repositories\Ads\JobSeekAdRepository;
 use App\Repositories\Ads\LandOfferAdRepository;
 use App\Repositories\Ads\LandSeekAdRepository;
 use App\Repositories\Ads\ProductionGenreRepository;
+use App\Repositories\AttributionAds\AttributionAdsRepository;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -39,10 +42,15 @@ class AdService
      * @var JobSeekAdRepository
      */
     protected $jobSeekAdRepository;
+	/**
+	 * @var AttributionAdsRepository
+	 */
+    protected $attributionAdsRepository;
 
 	/**
 	 * AdService constructor.
 	 * @param AdRepository $repository
+	 * @param AttributionAdsRepository $attributionAdsRepository
 	 * @param LandSeekAdRepository $landSeekdAdRepository
 	 * @param LandOfferAdRepository $landOfferAdRepository
 	 * @param JobOfferAdRepository $jobOfferAdRepository
@@ -51,6 +59,7 @@ class AdService
 	 */
 	public function __construct(
         AdRepository $repository,
+        AttributionAdsRepository $attributionAdsRepository,
         LandSeekAdRepository $landSeekdAdRepository,
         LandOfferAdRepository $landOfferAdRepository,
         JobOfferAdRepository $jobOfferAdRepository,
@@ -58,6 +67,7 @@ class AdService
         ProductionGenreRepository $productionGenreRepository
     ) {
         $this->repository = $repository;
+        $this->attributionAdsRepository = $attributionAdsRepository;
         $this->landSeekAdRepository = $landSeekdAdRepository;
         $this->landOfferAdRepository = $landOfferAdRepository;
         $this->jobOfferAdRepository = $jobOfferAdRepository;
@@ -73,12 +83,21 @@ class AdService
     public function create($data)
     {
         $ad =  DB::transaction(function() use($data) {
-            $ad = $this->repository->create($data);
 
-            //dd($data);
-            $adData = $data[$data["ad_type"]];
+        	$attributionAdData = [];
+        	$toModerateStatus = AdStatus::where('name', '=', 'A modérer')->first();
+			$attributionAdData['user_moderator_id'] = 21;
+			$attributionAdData['ad_status_id'] = $toModerateStatus->id;
+
+
+			$attributionAd = $this->attributionAdsRepository->create($attributionAdData);
+			$ad = $this->repository->create($data);
+
+			$ad->attribution_ad_id = $attributionAd->id;
+			$ad->save();
+
+			$adData = $data[$data["ad_type"]];
             $adData["ad_id"] = $ad->id;
-
 
             if ($data["ad_type"] === "land_seek") {
                 $landSeekAd = $this->landSeekAdRepository->create($adData);

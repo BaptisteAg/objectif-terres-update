@@ -41,10 +41,10 @@ class Project extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function ads()
+    public function ad()
     {
-        return $this->hasMany(Ad::class);
+        return $this->hasOne(Ad::class);
     }
 }

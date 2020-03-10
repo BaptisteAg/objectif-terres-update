@@ -66,6 +66,7 @@ Route::prefix('mon-espace/annonces-favorites')->middleware('auth')->name('favori
 });
 
 Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->namespace('Threads')->group(function () {
+	Route::get('actualisation', 'ThreadsController@refreshUnreadMessages')->name('refreshUnreadMessages');
 	Route::get('/', 'ThreadsController@index')->name('index');
 	Route::post('creer', 'ThreadsController@create')->name('create');
 	Route::get('{thread}', 'MessagesController@show')->name('show');
@@ -83,7 +84,27 @@ Route::prefix('locations')->namespace('Locationables')->group(function () {
 });
 
 Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderator.')->namespace('HomePage')->group(function () {
-	Route::post('/', 'HomePageModeratorController@index')->name('index');
+	Route::get('/', 'HomePageModeratorController@index')->name('index');
+	Route::get('aide-et-ressources', 'HelpAreasModeratorController@index')->name('help');
+	Route::get('recherches', 'HomePageModeratorController@show')->name('show');
+});
+Route::middleware('auth')->prefix('mon-espace-moderateur')->name('helpArea.')->namespace('HelpAreas')->group(function () {
+	Route::get('aide-et-ressources', 'HelpAreasModeratorController@index')->name('index');
+});
+
+Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderation.')->namespace('AttributionAds')->group(function (){
+	Route::post('validation', 'AttributionAdsController@acceptAd')->name('acceptAd');
+	Route::post('modification', 'AttributionAdsController@modifyAd')->name('modifyAd');
+	Route::post('refus', 'AttributionAdsController@rejectAd')->name('rejectAd');
+});
+
+Route::middleware('auth')->prefix('porteur-de-projet')->name('user.')->namespace('users')->group(function () {
+	Route::get('{user}', 'UsersController@show')->name('show');
+});
+
+Route::middleware('auth')->prefix('notification')->name('notification.')->namespace('Notifications')->group( function(){
+	Route::get('index', 'NotificationsController@index')->name('index');
+	Route::patch('{notification}', 'NotificationsController@update')->name('update');
 });
 
 // Authentication Routes for authentification

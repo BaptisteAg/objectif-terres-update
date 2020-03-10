@@ -31,11 +31,7 @@ class MessagesNotificationHeaderComposer
         $numberOfUnreadMessages = 0;
 
 		if (Auth()->user()){
-			/** @var Collection $threads */
-			$threads = $this->service->findAllThreadsByLoggedUser();
-			$numberOfUnreadMessages = array_reduce($threads->all(), function($count, Thread $thread) {
-				return $count + $thread->unreadMessages()->count();
-			}, 0);
+			$numberOfUnreadMessages = $this->service->countAllUnreadMessagesInThreadsByLoggedUser();
 		}
 
 

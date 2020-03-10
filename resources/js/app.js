@@ -29,6 +29,7 @@ require('awesomplete/awesomplete.min');
 //////////////
 // PAGES
 require ('./pages/ads/new');
+require ('./pages/ads/show');
 // require('./pages/researches/researches');
 require('./pages/header');
 require('./pages/auth/register');

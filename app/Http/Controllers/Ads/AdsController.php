@@ -8,15 +8,16 @@ use App\Models\Ad;
 use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
 use App\Models\BuildingType;
-use App\Models\City;
 use App\Models\EducationLevel;
 use App\Models\InstallationType;
 use App\Models\JobOfferType;
 use App\Models\OfferGenre;
 use App\Models\PriceRange;
+use App\Models\RefusalType;
 use App\Models\Requirement;
+use App\Models\ResponseTemplate;
 use App\Models\SurfaceRange;
-use App\Models\User;
+use App\Notifications\NewAdToModerateNotification;
 use App\Repositories\FavoriteAds\FavoriteAdRepository;
 use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
@@ -90,9 +91,12 @@ class AdsController extends Controller
 	{
 		$data = $request->validated();
 
+		/** @var $ad Ad $ad */
 		$ad = $this->adService->create($data);
+		$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
 
-		return redirect()->route('ads.show', [$ad->id])->with('success', 'Votre annonce a bien été publiée.');
+
+		return redirect()->route('ads.show', [$ad->id])->with('success', 'Votre annonce a bien été soumise à modération. Vous receverez une réponse très bientôt ! ');
 	}
 
 	/**
@@ -115,16 +119,41 @@ class AdsController extends Controller
 	 */
 	public function show(int $adId)
 	{
-		$ad = $this->adService->find($adId);
 
+		$ad = $this->adService->find($adId);
 		$userMessage = null;
 		$favoriteAdAlreadyExist = false;
 		$threads = [];
+		$threadsWithUnreadMessages = null;
+		$responseTemplates = '';
+		$refusalTypes = '';
+		$isAdToModerate = false;
+		$isLoggedUserModeratorAd = false;
+
 
 		if (Auth::user()) {
+			if ($ad->attributionAd->adStatus->id === 4) {
+				$isAdToModerate = true;
+			}
+			if (auth()->user()->id === $ad->attributionAd->user_moderator_id) {
+				$isLoggedUserModeratorAd = true;
+				//set to read if notification about moderation task about the ad exist
+				if (!auth()->user()->unreadNotifications->isEmpty()) {
+					$notification = auth()->user()->unreadNotifications()->where('data->ad_id', $ad->id)->first();
+					if (!is_null($notification)) {
+						$notification->markAsRead();
+						$notification->delete();
+					}
+				}
+			}
 			if (auth()->user()->id === $ad->user_pp_id) {
 				$threads = $this->threadService->findThreadsByAd($adId);
+				$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
 			} else {
+				if (auth()->user()->role >= 2) {
+					$responseTemplates = ResponseTemplate::all();
+					$refusalTypes = RefusalType::all();
+				}
 				$threads = $this->threadService->findThreadAlreadyExist($adId);
 				$data = array(
 					"ad_id" => $adId,
@@ -135,7 +164,10 @@ class AdsController extends Controller
 
 		}
 
-		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist', 'threads'));
+		//Throw error 404 if a visitor try to show an ad is not validated
+		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validé" ;
+
+		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist', 'threads', 'threadsWithUnreadMessages', 'responseTemplates', 'refusalTypes', 'isAdToModerate', 'isLoggedUserModeratorAd'));
 	}
 
 	/**

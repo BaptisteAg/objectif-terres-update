@@ -19,6 +19,9 @@ Vue.component('header-page',{
             adCategorySelected: this.searchValues.ad_category || 'land',
             selectedRegions: this.searchValues.regions || [],
             isFormOpen : false,
+            productionsSelected : [],
+            bioProductionsSelected : [],
+            regionsSelected :[],
         }
     },
     methods: {

@@ -65,8 +65,14 @@
         @endif
 
         const vueThreads = new Vue({
-                el: '#vue-messages',
-                name: 'content'
-            });
+            el: '#vue-messages',
+            name: 'content'
+        });
+
+        const VueModerationModal = new Vue({
+			el : "#vue-moderation-modal",
+			name : 'content'
+		})
+
 	</script>
 @endsection

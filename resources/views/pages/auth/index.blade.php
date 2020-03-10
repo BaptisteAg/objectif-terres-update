@@ -4,6 +4,7 @@
 
 @section('main-content')
 
+
 	<div class="section">
 		<div class="container">
 			<div class="columns is-mobile is-centered">
@@ -15,10 +16,8 @@
 					<br>
 					<br>
 				</div>
-
 			</div>
 		</div>
-
 		<div class="content">
 			<div class="tabs is-centered is-medium">
 				<ul>

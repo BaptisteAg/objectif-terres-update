@@ -49,7 +49,8 @@ class ResearchNotification extends Notification
 			->line($message)
 			->greeting('Bonjour,')
 			->action('Consulter les résultats de votre recherche', $url)
-			->line('Merci d\'utiliser les services du site d\'Objectif Terres !');
+			->line('Merci d\'utiliser les services du site d\'Objectif Terres !')
+			->salutation('Cordialement, L\'équipe d\'Objectif Terres');
 
 	}
 

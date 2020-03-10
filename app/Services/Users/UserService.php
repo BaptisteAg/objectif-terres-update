@@ -29,6 +29,7 @@ class UserService
 
 	/**
 	 * @param array $data
+	 * @return User
 	 * @throws \Throwable
 	 */
 	public function create(array $data) :User
@@ -43,6 +44,7 @@ class UserService
 		$city = City::find($data['city_id']);
 		$data['zip_code_id'] = $city->id;
 		$data['city'] = $city->name;
+		$data['role'] = 0;
 
 		
 		foreach ($data as $item => $value) {
@@ -60,6 +62,14 @@ class UserService
 	 */
 	public function find(int $id){
 		return $this->repository->find($id);
+	}
+
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+	 */
+	public function findAllExceptPP(){
+		return $this->repository->findAllExceptPP();
 	}
 
 }

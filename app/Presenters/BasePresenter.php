@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use \McCool\LaravelAutoPresenter\BasePresenter as OriginalBasePresenter;
+use Psy\VarDumper\Presenter;
 
 /**
  * @property Model $wrappedObject
@@ -28,6 +29,9 @@ abstract class BasePresenter extends OriginalBasePresenter implements \JsonSeria
 
 		foreach($serialized as $attribute => &$value) {
 			if($value instanceof Collection) {
+				$value = $value->toArray();
+			}
+			if($value instanceof AdPresenter) {
 				$value = $value->toArray();
 			}
 		}
