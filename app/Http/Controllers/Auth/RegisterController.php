@@ -94,7 +94,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $salesForceUser = $this->salesForceService->registerPP($data);
-        $data["sf_id"] = $salesForceUser;
+        $data["sf_id"] = $salesForceUser["id"];
 
 		$user = $this->userService->create($data);
 		return $user;

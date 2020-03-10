@@ -73,6 +73,9 @@ class SalesforceServiceProvider extends ServiceProvider
             $user->save();
 
             Auth::login($user);
+            if(session('url.intended')) {
+                redirect(session('url.intended'))->send();
+            }
         });
 
         Event::listen('Aacotroneo\Saml2\Events\Saml2LogoutEvent', function ($event) {

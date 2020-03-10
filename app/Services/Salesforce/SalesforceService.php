@@ -18,14 +18,14 @@ class SalesforceService
 
     public function findObject($object, $id)
     {
-        $this->apiAuthenticate();
+        //$this->apiAuthenticate();
 
         return $this->repository->find($object, $id);
     }
 
     public function registerPP($data)
     {
-        $this->apiAuthenticate();
+        //$this->apiAuthenticate();
 
         /*
          * array:3 [▼
