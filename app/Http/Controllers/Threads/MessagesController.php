@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -48,13 +49,17 @@ class MessagesController extends Controller
 			return auth()->id() === $user->id;
 		});
 
-		if(!$loggedUserIsParticipant) {
+		if (!$loggedUserIsParticipant) {
 			abort(404);
 		}
 
 		$messages = $this->threadService->findAllByThread($thread->id);
 		$this->threadService->setToReadAllUnreadMessagesInThread($thread->id);
-
+		foreach ($messages as $key => $message) {
+			$date =  Carbon::parse($message->created_at);
+			$messages[$key]['day_posted'] = $date->format('d/m/Y');
+			$messages[$key]['time_posted'] = $date->format('H:i');
+		}
 		return response()->json($messages);
 	}
 
@@ -68,8 +73,7 @@ class MessagesController extends Controller
 	{
 
 		$message = $this->threadService->createMessage($request->validated());
-
-		return response()->json($message);
+		return response()->json((object)$message);
 	}
 
 }

@@ -12,8 +12,10 @@ use Faker\Generator as Faker;
 $factory->define(LandOfferAd::class, function (Faker $faker) {
     return [
         'accept_use_zip_code' => $faker->boolean,
-        'water_access' => random_int(0,1),
         'altitude' => $faker->randomNumber(4),
+		'surface'=> rand(0, 100),
+		'sau_description' => implode("\n", $faker->paragraphs()),
+		'water_access' => rand(0,1),
        // 'is_call_for_application_community' => $faker->boolean,
         //'is_call_for_application_terre_de_liens' => $faker->boolean,
         //'is_call_for_application_test_area' => $faker->boolean,

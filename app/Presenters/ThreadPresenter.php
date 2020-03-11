@@ -37,7 +37,8 @@ class ThreadPresenter extends BasePresenter
 
 	public function created_at()
 	{
-		return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->format('d/m/Y');
+		$date =  \Carbon\Carbon::parse($this->wrappedObject->created_at);
+		return 'Le '. $date->format('d-m-Y').' a '.$date->format('H:i');
 	}
 
 	public function created_at_diff()
