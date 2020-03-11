@@ -11,7 +11,7 @@
                                 <p class="has-text-white">
                                     {{message.content}}
                                 </p>
-                                <time class="has-text-white is-size-7">Le {{message.created_at}}</time>
+                                <time class="has-text-white is-size-7">Le {{message.day_posted}} à {{message.time_posted}}</time>
                             </div>
                         </div>
                     </div>
@@ -27,7 +27,7 @@
                                     <p class="has-text-black">
                                         {{message.content}}
                                     </p>
-                                    <time class="has-text-black is-size-7">Le {{message.created_at}}</time>
+                                    <time class="has-text-black is-size-7">Le {{message.day_posted}} à {{message.time_posted}}</time>
                                 </div>
                             </div>
                         </div>
