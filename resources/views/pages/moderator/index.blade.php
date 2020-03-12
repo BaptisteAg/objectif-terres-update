@@ -21,7 +21,8 @@
 			@endif
 
 			@if($numberOfUnreadMessages > 1 )
-				<a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i class="fas fa-envelope "></i> Vous
+				<a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i
+								class="fas fa-envelope "></i> Vous
 						avez <strong>{{$numberOfUnreadMessages}}
 							nouveaux messages
 							!</strong></p></a>
@@ -134,7 +135,8 @@
 														aria-describedby='citySelectError'
 														value="citySelect">
 												</autocomplete>
-												<input type="hidden" name="city_id" :value="zone.value.id"
+												<input type="hidden" name="city_location_researches[]"
+													   :value="zone.value.id"
 													   v-for="(zone,i) in citySelect">
 												<div>
 													<span class="tag is-info"
@@ -194,16 +196,35 @@
 					</div>
 					<hr class="navbar-divider">
 
-					<div class="columns is-centred">
-						@foreach($projectStatuses as $projectStatus)
-							<div class="column has-text-centered">
-								<label class="checkbox">
-									<input name="project_status[]" value="{{(int)$projectStatus->id}}" type="checkbox">
-									{{$projectStatus->name}}
-								</label>
+					<div class="columns">
+						<div class="column is-half">
+							<p class="label has-text-centered">Status de l'annonce</p>
+							<div class="columns is-mobile is-multiline is-centered">
+								@foreach($adStatuses as $adStatus)
+									<div class="column is-narrow has-text-centered">
+										<label class="checkbox">
+											<input name="ad_statuses[]" value="{{(int)$adStatus->id}}" type="checkbox">
+											{{$adStatus->name}}
+										</label>
+									</div>
+								@endforeach
 							</div>
-						@endforeach
+						</div>
+						<div class="column is-half">
+							<p class="label has-text-centered">Status du projet</p>
+							<div class="columns  is-mobile is-multiline is-centered">
+								@foreach($projectStatuses as $projectStatus)
+									<div class="column is-narrow has-text-centered">
+										<label class="checkbox">
+											<input name="project_statuses[]" value="{{(int)$projectStatus->id}}"
+												   type="checkbox">
+											{{$projectStatus->name}}
+										</label>
+									</div>
+								@endforeach
 
+							</div>
+						</div>
 					</div>
 					<hr class="navbar-divider">
 

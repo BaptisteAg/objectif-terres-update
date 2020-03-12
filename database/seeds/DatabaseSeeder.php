@@ -3,6 +3,7 @@
 use App\Models\Ad;
 use App\Models\AdNote;
 use App\Models\BioCertification;
+use App\Models\City;
 use App\Models\Document;
 use App\Models\FavoriteAd;
 use App\Models\JobOfferAd;
@@ -67,7 +68,7 @@ class DatabaseSeeder extends Seeder
 					$ad->adNotes()->save(factory(AdNote::class)->make());
 					$ad->favoriteAds()->save(factory(FavoriteAd::class)->make());
 //					$ad->documents()->save(factory(Document::class)->make());
-					$ad->regions()->save(Region::inRandomOrder()->first());
+					$ad->cities()->save(City::inRandomOrder()->first());
 					if ($ad->attributionAd->adStatus->id === 1) {
 						$ad->project_id = array_shift($projectIds);
 						$ad->save();
