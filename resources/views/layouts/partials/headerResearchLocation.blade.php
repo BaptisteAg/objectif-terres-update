@@ -4,7 +4,8 @@
 		<multi-select
 				:options="{{ json_encode($departments) }}"
 				:multiple="true"
-				name="departments_location_researches[]"
+				v-model = "departmentsSelected"
+				name="departments_location_researches_ids[]"
 				selected-count-text="département(s) sélectionné(s)"
 				placeholder="Choississez un/des département(s)">
 		</multi-select>
@@ -18,7 +19,7 @@
 				placeholder="Choississez un département"
 				name-option-label="villes"
 				src="/locations/cities"
-				name="cities_location_researches[]">
+				name="cities_location_researches_ids[]">
 		</ajax-multi-select>
 	</div>
 	<div class="field">

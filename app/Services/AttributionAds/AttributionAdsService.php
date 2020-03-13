@@ -120,10 +120,10 @@ class AttributionAdsService
 
 		} //If one or more regions are selected, get all ads located in regions, all ads in departments inside regions and cities in departments
 		else if ($filters->has('regions_location_researches')) {
-			$regionsCode = Region::whereIn('id', $filters->input('regions_location_researches'))->get('code')->toArray();
-			$departmentsCode = Department::whereIn('region_code', $regionsCode)->get('code')->toArray();
+			$regionsCodes = Region::whereIn('id', $filters->input('regions_location_researches'))->get('code')->toArray();
+			$departmentsCode = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
 			$attributionAdsFiltered->filterLocations('ad.regions', $filters->input('regions_location_researches'));
-			$attributionAdsFiltered->filterSubLocations('ad.departments', $regionsCode, 'departments.region_code');
+			$attributionAdsFiltered->filterSubLocations('ad.departments', $regionsCodes, 'departments.region_code');
 			$attributionAdsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
 		}
 

@@ -50,12 +50,11 @@
 								</div>
 							</div>
 						@else
-
-							{!! Form::open(['route' => 'researches.store']) !!}
-							<input type="hidden" name="ad_type" value="{{$adType}}">
-							@foreach ($regions->pluck('id') as $region)
-								<input type="hidden" name="regions[]" value="{{ $region }}">
-							@endforeach
+{{--							{!! Form::open(['route' => 'researches.store']) !!}--}}
+{{--							<input type="hidden" name="ad_type" value="{{$adType}}">--}}
+{{--							@foreach ($regions->pluck('id') as $region)--}}
+{{--								<input type="hidden" name="regions[]" value="{{ $region }}">--}}
+{{--							@endforeach--}}
 
 							<a id="open-modal" href="">
 								<span class="icon"><i class="far fa-heart"></i></span>
@@ -85,7 +84,7 @@
 									</div>
 								</div>
 							</div>
-							{!! Form::close() !!}
+{{--							{!! Form::close() !!}--}}
 
 						@endguest
 
@@ -142,13 +141,13 @@
 							<div>
 								{{ $ad->regions->pluck('name')->implode(', ') }}
 							</div>
-							@if($adType === 'landOfferAd')
-								<div><span>{{ $ad->$adType->land->price }}</span> € |
-									<span>{{ $ad->$adType->land->area }}</span> ha
-								</div>
-							@else
-								<div><span></span></div>
-							@endif
+{{--							@if($adType === 'landOfferAd')--}}
+{{--								<div><span>{{ $ad->$adType->land->price }}</span> € |--}}
+{{--									<span>{{ $ad->$adType->land->area }}</span> ha--}}
+{{--								</div>--}}
+{{--							@else--}}
+{{--								<div><span></span></div>--}}
+{{--							@endif--}}
 						</div>
 						<div class="column">
 							<nav class="level">
@@ -168,7 +167,7 @@
 								</div>
 							</nav>
 							<div></div>
-							<a href="{{route("ads.show", $ad->id)}}"><h1 class="title">{{ $ad->$adType->title }}</h1>
+							<a href="{{route("ads.show", $ad->id)}}"><h1 class="title">{{ $ad->title }}</h1>
 							</a>
 							<div class="content descritption">
 								<p>{{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</p>

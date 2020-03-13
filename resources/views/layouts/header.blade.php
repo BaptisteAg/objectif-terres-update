@@ -107,7 +107,7 @@
 						<div class="select">
 							<label for="select"></label>
 							{{ Form::select('ad_type',
-											['offer_ads' => 'Des offres', 'seek_ads' => 'Des demandes'],
+											['OfferAd' => 'Des offres', 'SeekAd' => 'Des demandes'],
 											null,
 											['v-model' => 'adTypeSelected']) }}
 						</div>
@@ -132,7 +132,7 @@
 							<multi-select
 									:options="{{ json_encode(array_merge([(object)['id' => '0','name' => 'Toutes les régions']], json_decode($regions))) }}"
 									:multiple="true"
-									name="regions_location_researches[]"
+									name="regions_location_researches_ids[]"
 									v-model="regionsSelected"
 									selected-count-text="région(s) sélectionnée(s)"
 									placeholder="Choississez une/des région(s)">

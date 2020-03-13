@@ -12,12 +12,13 @@ Vue.component('header-page',{
     },
     data() {
         return {
-            adTypeSelected: 'offer_ads',
+            adTypeSelected: 'OfferAd',
             adCategorySelected: 'land',
             isFormOpen : false,
             productionsSelected : [],
             bioProductionsSelected : [],
             regionsSelected :[],
+            departmentsSelected : []
         }
     },
     methods: {
