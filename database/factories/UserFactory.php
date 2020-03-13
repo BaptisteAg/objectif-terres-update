@@ -20,7 +20,7 @@ use Illuminate\Support\Str;
 */
 
 $factory->define(User::class, function (Faker $faker) {
-	$city = City::all()->random();
+	$city = City::inRandomOrder()->first();
 	return [
         'name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,

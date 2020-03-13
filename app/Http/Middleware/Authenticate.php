@@ -15,6 +15,16 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
+            // Get URLs
+            $previousUrl = url()->current();
+            $urlBase = url()->to('/');
+
+            // Set the previous url that we came from to redirect to after successful login but only if is internal
+            if(($previousUrl != $urlBase . '/connexion') && (substr($previousUrl, 0, strlen($urlBase)) === $urlBase)) {
+                session()->put('toto', $previousUrl);
+            }
+            logger("putting intended :".session('toto'));
+
             return route('signIn');
         }
     }

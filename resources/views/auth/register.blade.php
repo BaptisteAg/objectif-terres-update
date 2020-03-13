@@ -3,7 +3,9 @@
 
 @section('main-content')
 	<div id="vue-register-form" class="section">
-		<register-form id="register-form" inline-template>
+		<register-form id="register-form"
+                       inline-template
+                       :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}">
 			<div class="container">
 				<div class="columns is-mobile is-centered">
 					<div class="column is-two-thirds">
@@ -15,7 +17,7 @@
 						{!! Form::open(['route'=>'register']) !!}
 						@csrf
 						<div class="columns">
-							<div class="column is-one-third">
+							<div class="column is-two-fifths">
 								<div class="field">
 									<label class="label">Votre nom*</label>
 									<div class="control has-icons-left">
@@ -24,7 +26,6 @@
 											   value="{{ old('name') }}" required autocomplete="name" autofocus
 											   placeholder="Votre nom...">
 										<span class="icon is-small is-left">
-
                                      <i class="fas fa-user"></i>
                                     </span>
 									</div>
@@ -37,7 +38,7 @@
 									@enderror
 								</div>
 							</div>
-							<div class="column">
+							<div class="column is-two-fifths">
 								<div class="field">
 									<label class="label">Votre prénom*</label>
 									<div class="control has-icons-left">
@@ -59,7 +60,7 @@
 									@enderror
 								</div>
 							</div>
-							<div class="column ">
+							<div class="column is-one-fifths">
 								<div class="field">
 									<label class="label">Civilité*</label>
 									<div class="control has-icons-left">
@@ -68,7 +69,7 @@
 											<select id="civility" name="civility"
 													class="input @error('civility') is-danger @enderror "
 													required>
-												<option disabled="disabled" selected >Veuillez préciser...</option>
+												<option value="" disabled="disabled" selected> </option>
 												<option value="1" {{old('civility') == 1 ? 'selected' : ''}}>Madame</option>
 												<option value="2" {{old('civility') == 2 ? 'selected' : ''}}>Monsieur</option>
 												<option value="3" {{old('civility') == 3 ?'selected' : ''}}>Autre</option>
@@ -106,20 +107,25 @@
 								<div class="field">
 									<label class="label">Adresse email*</label>
 									<p class="control has-icons-left has-icons-right">
-										<input id="email" class="input @error('email') is-danger @enderror" type="email"
-											   name="email" value="{{ old('email') }}" required autocomplete="email"
+										<input id="email"
+                                               class="input @error('email') is-danger @enderror"
+                                               type="email"
+											   name="email"
+                                               value="{{ old('email') }}"
+                                               required
+                                               autocomplete="email"
 											   autofocus
 											   placeholder="Votre adresse email...">
 										<span class="icon is-small is-left">
-                              <i class="fas fa-envelope"></i>
-                            </span>
+                                          <i class="fas fa-envelope"></i>
+                                        </span>
 									</p>
 									@error('email')
-									<article class="message is-danger" role="alert">
-										<div class="message-body">
-											{{ $message }}
-										</div>
-									</article>
+                                        <article class="message is-danger" role="alert">
+                                            <div class="message-body">
+                                                {{ $message }}
+                                            </div>
+                                        </article>
 									@enderror
 								</div>
 							</div>
@@ -128,14 +134,13 @@
 						<div class="columns">
 							<div class="column is-two-thirds">
 								<div class="field">
-									<label class="label">Votre situation*</label>
+									<label for="profile" class="label">Votre situation*</label>
 									<div class="control has-icons-left">
 										<div class="select">
-											<select id="profile" name="profile"
-													class="input @error('profile') is-danger @enderror "
-													required
-													@on-change="optionProfileSelected"
-													placeholder="Veuillez choisir">
+											<select id="profile"
+                                                    name="profile"
+                                                    v-model="optionProfileSelected"
+													class="input @error('profile') is-danger @enderror ">
 												<option disabled="disabled" selected>Vous êtes...</option>
 												<option value="1" {{old('profile') == 1 ? 'selected' : ''}} >un candidat à l’installation agricole</option>
 												<option value="2" {{old('profile') == 2 ? 'selected' : ''}}>une personne en recherche de travail ou d’expérience
@@ -204,44 +209,35 @@
 							@enderror
 						</div>
 						<div class="columns">
-							<div class="column is-one-third">
+							<div class="column is-two-third">
 								<div class="field">
-									<label class="label">Code postal*</label>
-									<div>
-										<div class="control">
-											<autocomplete
-													name="citySelect"
-													id="citySelect"
-													class="input"
-													placeholder="Saisissez les premiers caractères"
-													ref='citySelect'
-													:disabled="false"
-													src="/locations/cities"
-													v-model="citySelect"
-													aria-describedby='citySelectError'
-													value="citySelect">
-											</autocomplete>
-											<input type="hidden" name="city_id" :value="zone.value.id"
-												   v-for="(zone,i) in citySelect">
-											<div>
-											<span class="tag is-info"
-												  v-for="(zone,i) in citySelect"
-												  @click="_ => citySelect.splice(i,1)">
-												Code postal sélectionné :&nbsp;&nbsp;
-												<b>@{{ zone.label }}</b>
-												&nbsp;&nbsp;
-												<i class="fa fa-trash" style="cursor:pointer"></i>
-											</span>
-											</div>
-										</div>
-									</div>
+									<label class="label">Commune et Code postal*</label>
+                                        <autocomplete
+                                                name="citySelect"
+                                                id="citySelect"
+                                                placeholder="Saisissez les premiers caractères"
+                                                ref='citySelect'
+                                                src="/locations/cities"
+                                                v-model="citySelect">
+
+                                            <input type="hidden" name="city_id" :value="zone.value.id"
+                                                   v-for="(zone,i) in citySelect">
+
+                                            <div class="tag autocomplete-input-tag is-info"
+                                                 v-for="(zone,i) in citySelect"
+                                                 @click="_ => citySelect.splice(i,1)">
+                                                @{{ zone.label }}
+                                                &nbsp;&nbsp;
+                                                <i class="fa fa-trash" style="cursor:pointer"></i>
+                                            </div>
+                                        </autocomplete>
 								</div>
 							</div>
-							<div class="column">
+							{{--<div class="column is-one-third">
 								<div class="field">
 									<label class="label">Ville</label>
 									<div class="control has-icons-left">
-										<div class="select">
+										<div class="select is-fullwidth">
 											<select id="city" name="city"
 													class="input @error('city') is-danger @enderror "
 													autocomplete="city">
@@ -253,8 +249,8 @@
 										</div>
 									</div>
 								</div>
-							</div>
-							<div class="column">
+							</div>--}}
+							<div class="column is-one-third">
 								<div class="field">
 									<label class="label">Pays*</label>
 									<div class="control has-icons-left">
@@ -279,11 +275,14 @@
 						<div class="field">
 							<label class="label">Mot de passe*</label>
 							<p class="control has-icons-left">
-								<input id="password" name="password"
+								<input id="password"
+                                       name="password"
 									   class="input @error('password') is-danger @enderror "
 									   type="password"
 									   required
-									   autocomplete="new-password" placeholder="Votre mot de passe...">
+									   autocomplete="new-password"
+                                       placeholder="Votre mot de passe..."
+                                        minlength="5">
 								<span class="icon is-small is-left">
                               <i class="fas fa-lock"></i>
                             </span>
@@ -299,8 +298,10 @@
 						<div class="field">
 							<label class="label">Confirmation mot de passe*</label>
 							<p class="control has-icons-left">
-								<input id="password-confirm" name="password_confirmation"
-									   class="input" type="password"
+								<input id="password-confirm"
+                                       name="password_confirmation"
+									   class="input"
+                                       type="password"
 									   autocomplete="new-password"
 									   required
 									   placeholder="Ressaisissez mot de passe...">
@@ -312,10 +313,10 @@
 						<div class="field">
 							<label class="checkbox">
 								<input type="checkbox" required>
-								"J'ai pris connaissance de <a>la charte d'utilisation de la plateforme d'annonces du
+								J'ai pris connaissance de <a>la charte d'utilisation de la plateforme d'annonces du
 									site
 									web de
-									Terre de Liens</a> ."*
+									Terre de Liens</a> .*
 							</label>
 						</div>
 						<div class="field">
@@ -325,11 +326,13 @@
 								J'accepte de recevoir les communications de Terre de Liens
 							</label>
 						</div>
-						<div class="field is-grouped is-centered">
-							<div class="control">
-								<p>En appuyant sur valider, vous consentez <a>à l'utilisation de vos données
-										personnelles</a> par Objectif Terres </p>
-								<button type="submit" class="button is-link">Valider</button>
+
+                        <p>En appuyant sur valider, vous consentez <a>à l'utilisation de vos données
+                                personnelles</a> par Objectif Terres </p>
+                        <br>
+						<div class="field is-grouped is-grouped-centered">
+							<div class="control is-pulled-right">
+								<button type="submit" class="button is-link is-size-3">Valider</button>
 							</div>
 						</div>
 						{!! Form::close() !!}

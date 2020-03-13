@@ -1,5 +1,7 @@
 <?php namespace App\Services\Salesforce;
 
+use App\Models\City;
+use App\Models\Country;
 use App\Repositories\SalesForce\SalesForceRepository;
 use Omniphx\Forrest\Exceptions\MissingTokenException;
 use Omniphx\Forrest\Providers\Laravel\Facades\Forrest;
@@ -18,14 +20,16 @@ class SalesforceService
 
     public function findObject($object, $id)
     {
-        //$this->apiAuthenticate();
+        $this->apiAuthenticate();
 
         return $this->repository->find($object, $id);
     }
 
     public function registerPP($data)
     {
-        //$this->apiAuthenticate();
+        $this->apiAuthenticate();
+
+        $city = City::findOrFail($data["city_id"]);
 
         /*
          * array:3 [▼
@@ -35,7 +39,7 @@ class SalesforceService
             ]
          */
         $account = $this->repository->create('Account', [
-            "Name" => $data["firstname"] . " " . $data["name"],
+            "Name" => $data["first_name"] . " " . $data["name"],
             "Description" => "Compte Objectif Terre",
         ]);
 
@@ -50,6 +54,7 @@ class SalesforceService
             "AccountId" => $account["id"],
             "Email" => $data["email"],
             "LastName" => $data["name"],
+            'FirstName' => $data["first_name"],
         ]);
         /**
          * array:3 [▼
@@ -62,9 +67,14 @@ class SalesforceService
         $user = $this->repository->create('User', [
             'Email' => $data["email"],
             'Username' => $data["email"],
-            "Alias" => $data["firstname"] . " " . $data["name"],
-            'FirstName' => $data["firstname"],
+            "Alias" => substr($data["first_name"],0,1) . substr($data["name"],1,7),
+            'FirstName' => $data["first_name"],
             "LastName" => $data["name"],
+            "Phone" => $data["phone"],
+            "Street" =>$data["address"],
+            "PostalCode" => $city->zip_code,
+            "City" => $city->name,
+            "Country" => Country::findOrFail($data["country_id"])->name_fr_fr,
             "TimeZoneSidKey" => "Europe/Paris",
             "LocaleSidKey" => "fr_FR",
             "EmailEncodingKey" => "UTF-8",
@@ -90,9 +100,18 @@ class SalesforceService
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function login()
+    public function getLoginRedirect()
     {
         return redirect()->route('saml2_login', 'salesforce');
+    }
+
+    public function emailExists($email)
+    {
+        $this->apiAuthenticate();
+
+        return !!$this->repository->findWhere('Contact', [
+            'Email' => $email
+        ]);
     }
 
     private function apiAuthenticate()
@@ -103,5 +122,4 @@ class SalesforceService
             Forrest::authenticate();
         }
     }
-
 }

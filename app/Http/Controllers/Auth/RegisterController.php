@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Rules\SalesforceUniqueEmail;
 use App\Services\Salesforce\SalesforceService;
 use App\Models\City;
 use App\Models\Country;
 use App\Services\Users\UserService;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -64,7 +66,13 @@ class RegisterController extends Controller
     {
 		return Validator::make($data, [
 			'name' => ['required', 'string', 'max:255'],
-			'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+			'email' => [
+			    'required',
+                'string', 'email',
+                'max:255',
+                'unique:users',
+                app(SalesforceUniqueEmail::class)
+            ],
 			'first_name' => ['required', 'string', 'max:255'],
 			'phone' => ['string', 'min:10', 'max:255'],
 			'address' => ['string', 'min:5', 'required'],
@@ -72,6 +80,7 @@ class RegisterController extends Controller
 			'profile' => ['required'],
 			'country_id' => ['required'],
 			'city_id' => ['required'],
+            'password' => ['required', 'confirmed', 'min:5']
 		]);
 	}
 
@@ -87,7 +96,6 @@ class RegisterController extends Controller
 		return view('auth.register', compact('countries', 'cities'));
 	}
 
-
 	/**
 	 * Create a new user instance after a valid registration.
 	 *
@@ -96,6 +104,7 @@ class RegisterController extends Controller
 	 */
     protected function create(array $data)
     {
+        //dd($data);
         $salesForceUser = $this->salesForceService->registerPP($data);
         $data["sf_id"] = $salesForceUser["id"];
 

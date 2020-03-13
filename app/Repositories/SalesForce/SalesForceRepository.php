@@ -6,6 +6,35 @@ class SalesForceRepository
 {
     /**
      * @param $objectName
+     * @param $id
+     * @return mixed
+     */
+    public function find($objectName, $id)
+    {
+        $entities = $this->findWhere($objectName, ["Id" => $id]);
+
+        if(!count($entities)) {
+            return null;
+        }
+
+        return $entities[0];
+    }
+
+    public function findWhere(string $objectName, array $fields)
+    {
+        $query = "SELECT FirstName, LastName FROM $objectName WHERE ";
+        array_walk($fields, function (&$value, $key) {
+            $value = "$key='".addslashes($value)."'";
+        });
+        $query .= implode(' AND ', $fields);
+
+        $result = Forrest::query($query);
+
+        return $result["records"];
+    }
+
+    /**
+     * @param $objectName
      * @param array $params
      * @param bool $sForceAutoAssign
      */
@@ -13,27 +42,11 @@ class SalesForceRepository
     {
         return Forrest::sobjects($objectName, [
             'method' => 'post',
-            'body' => [ $params ],
-            'headers' => [
+            'body' => $params,
+            /*'headers' => [
                 'Sforce-Auto-Assign' => $sForceAutoAssign
-            ]
+            ]*/
         ]);
-    }
-
-    /**
-     * @param $objectName
-     * @param $id
-     * @return mixed
-     */
-    public function find($objectName, $id)
-    {
-        $result = Forrest::query("SELECT FirstName, LastName FROM $objectName WHERE Id='$id'");
-
-        if(!count($result["records"])) {
-            return null;
-        }
-
-        return $result["records"][0];
     }
 
     /**

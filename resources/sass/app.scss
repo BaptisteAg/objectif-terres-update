@@ -126,3 +126,18 @@ body .multiselect__tag {
 .box-thread-display{
   margin-top: auto;
 }
+
+
+// Autocomplete bulma tags
+.tag.autocomplete-input-tag.is-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 15px;
+    text-align:left;
+    color:#000;
+    background:#fff;
+    border: 1px solid #dbdbdb;
+}
