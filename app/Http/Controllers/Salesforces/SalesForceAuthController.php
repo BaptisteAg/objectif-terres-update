@@ -18,7 +18,7 @@ class SalesForceAuthController extends Controller
     public function register()
     {
         Forrest::authenticate();
-        //Forrest::authenticateUser('https://test.salesforce.com',"dunder.miffli3@test.com", "test123".env('SF_TOKEN'));
+        //Forrest::authenticateUser('https://test.salesforce.com',"dunder.miffli3@test.com", "test123"..env('SF_TOKEN'));
         dd(Forrest::identity());
 
         //dd(Forrest::query('Select Id, Name, Description from Profile where Id=\'00ew0000001V72nAAC\''));

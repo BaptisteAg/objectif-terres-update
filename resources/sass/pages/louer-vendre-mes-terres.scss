@@ -1,0 +1,23 @@
+.title-slider{
+    color: #fff;
+    z-index: 5000;
+    position: absolute;
+    top: 150px;
+    left: 150px;
+    max-width: 450px;
+    h2{
+        color:#fff;
+    }
+}
+
+.text-slider {
+    color: #fff;
+    z-index: 5000;
+    position: absolute;
+    bottom: 150px;
+    left: 150px;
+
+    p {
+        max-width: 450px;
+    }
+}

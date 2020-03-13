@@ -21,6 +21,8 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read int|null $documents_count
  * @property-read \App\Models\User $senderUser
  * @property-read \App\Models\Thread $thread
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ReadMessage[] $unreadMessages
+ * @property-read int|null $unread_messages_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message query()

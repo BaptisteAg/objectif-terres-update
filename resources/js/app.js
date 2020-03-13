@@ -35,7 +35,7 @@ require('./pages/header');
 require('./pages/auth/register');
 require('./pages/threads/threads');
 require('./pages/moderator/index')
-
+require('./pages/video');
 //////////////
 // GLOBAL
 require('./main.js');
