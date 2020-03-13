@@ -350,7 +350,6 @@
 		</register-form>
 	</div>
 	@include('components.supportTerreLiens')
-
 @endsection
 
 @section('script')

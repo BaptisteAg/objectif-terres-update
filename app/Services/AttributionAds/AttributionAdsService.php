@@ -77,92 +77,97 @@ class AttributionAdsService
 	 * @param Request $request
 	 * @return \Illuminate\Support\Collection
 	 */
-	public function show(Request $request)
+	public function show(Request $filters)
+	{
+		$attributionAds = $this->filter($filters);
+		return $attributionAds;
+	}
+
+
+	/**
+	 * @param Request $filters
+	 * @return AttributionAd[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+	 */
+	public function filter(Request $filters)
 	{
 		//Return results if research ads by title
 		$attributionAds = collect();
-		if (!is_null($request->input('ad_title'))) {
-			$adsByTitle = Ad::where('title', 'like', '%' . $request->input('ad_title') . '%')->get();
+		if (!is_null($filters->input('ad_title'))) {
+			$adsByTitle = Ad::where('title', 'like', '%' . $filters->input('ad_title') . '%')->get();
 			foreach ($adsByTitle as $adByTitle) {
 				$attributionAds[$adByTitle->attributionAd->id] = $adByTitle->attributionAd->load('ad');
 				return $attributionAds;
 			}
 		}
-		/////START QUERY
-		$attributionAds = new AttributionAd();
-		$attributionAdsFiltered = $attributionAds->newQuery();
+		//START QUERY
+		$attributionAdsFiltered = (new AttributionAd)->newQuery();
 
 		//First, filter attributions ads based on the moderator who is the user logged
 		$attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
 
 		//Filter ads based on their types if requested
-		if ($request->has('ad_type')) {
-			foreach ($request->input('ad_type') as $index => $adType) {
-				if ($index === 0) {
-					$attributionAdsFiltered->with('ad')->whereHas('ad.' . $adType);
-				} else {
-					$attributionAdsFiltered->with('ad')->orWhereHas('ad.' . $adType);
-				}
-			}
+		if ($filters->has('ad_type')) {
+			$attributionAdsFiltered->filterAdTypes($filters->input('ad_type'), 'ad.');
 		}
 		//Filter attribution ads based on their locations if requested
-		if ($request->has('city_location_researches')) {
-			$citiesIds = $request->input('city_location_researches');
-			$attributionAdsFiltered->with('ad')->whereHas('ad.cities', function (Builder $query) use ($citiesIds) {
-				$query->whereIn('locationable_ad_id', $citiesIds);
-			});
-			//If one or more departments are selected, get all ads located in departments and cities in departments
-		} else if ($request->has('departments_location_researches')) {
-			$departmentsIds = $request->input('departments_location_researches');
-			$attributionAdsFiltered->with('ad')
-				->whereHas('ad.departments', function (Builder $query) use ($departmentsIds) {
-					$query->whereIn('locationable_ad_id', $departmentsIds);
-				})
-				->orWhereHas('ad.cities', function (Builder $query) use ($departmentsIds) {
-					$departmentsCode = Department::whereIn('id', $departmentsIds)->get('code')->toArray();
-					$query->whereIn('cities.department_code', $departmentsCode);
+		if ($filters->has('city_location_researches')) {
+			$attributionAdsFiltered->filterLocations('ad.cities', $filters->input('city_location_researches'));
+		} //If one or more departments are selected, get all ads located in departments and cities in departments
+		else if ($filters->has('departments_location_researches')) {
+			$departmentsCode = Department::whereIn('id', $filters->input('departments_location_researches'))->get('code')->toArray();
+			$attributionAdsFiltered->filterLocations('ad.departments', $filters->input('departments_location_researches'));
+			$attributionAdsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
 
-				});
-			//If one or more regions are selected, get all ads located in regions, all ads in departments inside regions and cities in departments
-		} else if ($request->has('regions_location_researches')) {
-			$regionsIds = $request->input('regions_location_researches');
-			$regionsCode = Region::whereIn('id', $regionsIds)->get('code')->toArray();
+		} //If one or more regions are selected, get all ads located in regions, all ads in departments inside regions and cities in departments
+		else if ($filters->has('regions_location_researches')) {
+			$regionsCode = Region::whereIn('id', $filters->input('regions_location_researches'))->get('code')->toArray();
 			$departmentsCode = Department::whereIn('region_code', $regionsCode)->get('code')->toArray();
-			$attributionAdsFiltered->with('ad')
-				->whereHas('ad.regions', function (Builder $query) use ($regionsIds) {
-					$query->whereIn('locationable_ad_id', $regionsIds);
-				})
-				->orWhereHas('ad.departments', function (Builder $query) use ($regionsCode) {
-					$query->whereIn('departments.region_code', $regionsCode);
-				})
-				->orWhereHas('ad.cities', function (Builder $query) use ($departmentsCode) {
-					$query->whereIn('cities.department_code', $departmentsCode);
-				});
+			$attributionAdsFiltered->filterLocations('ad.regions', $filters->input('regions_location_researches'));
+			$attributionAdsFiltered->filterSubLocations('ad.departments', $regionsCode, 'departments.region_code');
+			$attributionAdsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
 		}
 
 		//If a range of submitting date is selected, filter attribution ads based on creation date
-		if (!is_null($request->input('date_research_range'))) {
-			$date = strtotime($request->input('date_research_range'));
+		if (!is_null($filters->input('date_research_range'))) {
+			$date = strtotime($filters->input('date_research_range'));
 			$dateFormatted = date('Y-d-m', $date);
 			$attributionAdsFiltered->where('created_at', '>=', $dateFormatted);
 		}
 		//If one or many project status are selected, filter  ads based on their project status
-		if ($request->has('project_statuses')) {
-			$attributionAdsFiltered->with('ad')->whereHas('ad.project', function (Builder $query) use ($request) {
-				$projectStatusesId = $request->input('project_statuses');
-				$query->whereIn('project_status_id', $projectStatusesId);
-			});
+		if ($filters->has('project_statuses')) {
+			$attributionAdsFiltered->filterDataInRelationModel($filters->input('project_statuses'), 'ad.project', 'project_status_id');
 		}
 
 		//If one or many ad status are selected, filter attribution ads based on their status
-		if ($request->has('ad_statuses')) {
-			$adStatusesId = $request->input('ad_statuses');
-			$attributionAdsFiltered->whereIn('ad_status_id', $adStatusesId);
+		if ($filters->has('ad_statuses')) {
+			$attributionAdsFiltered->filterDataInCurrentModel($filters->input('ad_statuses'), 'ad_status_id');
 		}
+		$attributionAds = $attributionAdsFiltered
+			->limit(100)
+			->with('ad',
+			'ad.userPp',
+			'adStatus',
+			'ad.project.projectStatus',
 
-		$attributionAds = $attributionAdsFiltered->get()->load('ad');
+			'ad.cities',
+			'ad.cities.department',
+			'ad.cities.department.region',
+			'ad.departments',
+			'ad.departments.region',
+			'ad.regions',
+
+			'ad.landSeekAd',
+			'ad.landOfferAd',
+			'ad.jobOfferAd')
+			->get();
 		return $attributionAds;
 	}
+
+
+
+
+
+
 
 	/**
 	 * @param int $attributionAdId

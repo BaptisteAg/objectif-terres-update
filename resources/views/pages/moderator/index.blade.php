@@ -58,6 +58,7 @@
 												input-value="{{$adType['value']}}"
 												v-model="adTypeSelected"
 												ref="typeSelected"
+												value ="true"
 												:is-radio="false">
 											<i class="fa {{ $adTypesFaIcons[$i] }}"
 											   style="font-size: 30px;"></i><br><br>
@@ -198,7 +199,7 @@
 
 					<div class="columns">
 						<div class="column is-half">
-							<p class="label has-text-centered">Status de l'annonce</p>
+							<p class="label has-text-centered">Statut de l'annonce</p>
 							<div class="columns is-mobile is-multiline is-centered">
 								@foreach($adStatuses as $adStatus)
 									<div class="column is-narrow has-text-centered">
@@ -211,7 +212,7 @@
 							</div>
 						</div>
 						<div class="column is-half">
-							<p class="label has-text-centered">Status du projet</p>
+							<p class="label has-text-centered">Statut du projet</p>
 							<div class="columns  is-mobile is-multiline is-centered">
 								@foreach($projectStatuses as $projectStatus)
 									<div class="column is-narrow has-text-centered">
@@ -306,7 +307,7 @@
 						<tbody>
 						@foreach($attributionAds as $attributionAd)
 							<tr>
-								<td>{{$attributionAd->ad->submitDate}}</td>
+								<td>{{$attributionAd->created_at->format('d/m/Y')}}</td>
 								<td>
 									<a href="{{route('ads.show', $attributionAd->ad->id)}}">{{$attributionAd->ad->title}}</a>
 								</td>
@@ -344,7 +345,7 @@
 								</td>
 								<td>
 									@if(is_null($attributionAd->ad->project))
-										<span class="tag is-light">L'annonce n'a pas le status de projet</span>
+										<span class="tag is-light">L'annonce n'a pas le statut de projet</span>
 									@else
 										@if($attributionAd->ad->project->projectStatus->name === "Accompagné")
 											<span class="tag is-success is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>

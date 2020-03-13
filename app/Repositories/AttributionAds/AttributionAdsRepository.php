@@ -2,9 +2,12 @@
 
 namespace App\Repositories\AttributionAds;
 
-use App\Models\AdStatus;
+use App\Models\Ad;
 use App\Models\AttributionAd;
+use App\Models\Department;
+use App\Models\Region;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 /**
@@ -18,7 +21,6 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 	{
 		return AttributionAd::class;
 	}
-
 
 	/**
 	 * Creates a attributionAd.
@@ -45,6 +47,7 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 		return $this->entity
 			->where(["user_moderator_id" => $userId])
 			->with($this->getEagerLoading())
+			->limit(50)
 			->get();
 	}
 
@@ -76,9 +79,9 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 				$query->where('id', '=', $statusId);
 			})
 			->get()
-			->mapToGroups(function ($attributionAd, $key){
+			->mapToGroups(function ($attributionAd, $key) {
 				return [$attributionAd->userModerator->id => $attributionAd];
-	});
+			});
 	}
 
 	/**
@@ -89,11 +92,19 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 		return [
 			'ad',
 			'ad.userPp',
-			'ad.cities',
-			'ad.regions',
-			'ad.departments',
 			'adStatus',
-			'ad.project.projectStatus'
+			'ad.project.projectStatus',
+
+			'ad.cities',
+			'ad.cities.department',
+			'ad.cities.department.region',
+			'ad.departments',
+			'ad.departments.region',
+			'ad.regions',
+
+			'ad.landSeekAd',
+			'ad.landOfferAd',
+			'ad.jobOfferAd',
 		];
 	}
 

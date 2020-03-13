@@ -119,7 +119,6 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     {
         return [
             'documents',
-
             'cities',
             'cities.department',
             'cities.department.region',
