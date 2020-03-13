@@ -3,11 +3,44 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Models\Document;
+use App\Models\User;
 use Faker\Generator as Faker;
 
+function get_mime_type($filename) {
+	$idx = explode( '.', $filename );
+	$count_explode = count($idx);
+	$idx = strtolower($idx[$count_explode-1]);
+
+	$mimet = array(
+		// images
+		'png' => 'image/png',
+		'jpeg' => 'image/jpeg',
+		'jpg' => 'image/jpeg',
+		'gif' => 'image/gif',
+
+		// adobe
+		'pdf' => 'application/pdf',
+
+		// ms office
+		'doc' => 'application/msword',
+		'docx' => 'application/msword',
+	);
+
+	if (isset( $mimet[$idx] )) {
+		return $mimet[$idx];
+	} else {
+		return 'application/octet-stream';
+	}
+}
+
 $factory->define(Document::class, function (Faker $faker) {
-    return [
-        'path' => $faker->image('public/storage', 640, 320),
-        'type_document' => $faker->fileExtension
+	$extensions = ['.png', '.gif', '.jpg', '.pdf'];
+	$fileName = $faker->word.$extensions[array_rand($extensions)];
+	return [
+		'name' => $fileName,
+		'path' => 'storage/'.$fileName,
+		'type' => get_mime_type($fileName),
+		'size' => rand(100, 2000) * 10000,
+		'user_id'=> User::where('role', '=', '0')->get()->random()->id,
     ];
 });
