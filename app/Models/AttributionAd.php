@@ -18,8 +18,8 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property int $ad_status_id
  * @property int|null $pp_type_id
  * @property int|null $refusal_type_id
- * @property string|null $archived_at
  * @property string|null $published_on
+ * @property string|null $archived_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Ad $ad
@@ -33,10 +33,10 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereAdStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereArchivedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd wherePublishedOn($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd wherePpTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd wherePublishedOn($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereRefusalTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereShortDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereToCallBack($value)
@@ -44,7 +44,6 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserModeratorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserOwnerId($value)
  * @mixin \Eloquent
- * @property-read \App\Models\Ad $ad
  */
 class AttributionAd extends Model implements Decoratable
 {

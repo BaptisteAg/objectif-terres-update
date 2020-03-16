@@ -1,0 +1,25 @@
+.testimony-section{
+    border-bottom: 1px solid #dbdbdb;
+    margin-bottom: 50px;
+    padding-bottom: 12px;
+}
+
+.block-testimony{
+    background:url('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding-bottom: 150px;
+    .quote{
+        font-size: 2em;
+        color: #dbdbdb;
+    }
+    .quote-testimony{
+        padding-top: 30px;
+    }
+    .person-testimony{
+        margin-top: 15px;
+        p:first-child{
+            font-weight: bold;
+        }
+    }
+}

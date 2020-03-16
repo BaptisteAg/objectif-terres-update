@@ -182,7 +182,8 @@
 
 	<script src="{{ asset('js/bulma-carousel.js') }}"></script>
 	<script>
-        bulmaCarousel.attach('#post_images', {
+        bulmaCarousel.attach('#post_images',
+			{
             slidesToScroll: 1,
             slidesToShow: 2,
             loop: true,
