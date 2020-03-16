@@ -55,8 +55,7 @@ class LoginController extends Controller
 		return view('auth.login');
 	}
 
-	public function authenticated(Request $request, $user)
+	public function authenticated()
 	{
-		session()->put('role', $user::ROLES[$user->role]);
 	}
 }

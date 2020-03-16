@@ -167,21 +167,52 @@ class ResearchService
 		}
 
 		if($filters->has('offer_genres')){
-			$adsFilter->filterDataInRelationModel($filters->input('offer_genres'), $adTypeSelected.'.offerGenres', 'offer_genre_id');
+			$adsFilter->filterArrayDataInRelationModel($filters->input('offer_genres'), $adTypeSelected.'.offerGenres', 'offer_genre_id');
 		}
-		if($filters->has('surfaces_researches')){
-			if ($adTypeSelected === 'landSeekAds'){
+		if(! is_null($filters->input('surfaces_research'))){
+			if ($adTypeSelected === 'landSeekAd'){
 				$adsFilter->whereHas($adTypeSelected, function (Builder $query) use ($filters){
-					$query->where('surface_range_min', '>=',$filters->input('surfaces_researches'));
+					$query->where('surface_range_min', '>=',$filters->input('surfaces_research'));
 				});
 			}
-			else {
+			else if($adTypeSelected === 'landOfferAd') {
 				$adsFilter->whereHas($adTypeSelected, function (Builder $query) use ($filters){
-					$query->where('surface', '>=',$filters->input('surfaces_researches'));
+					$query->where('surface', '>=',$filters->input('surfaces_research'));
 				});
 			}
 		}
 
+		if(!is_null($filters->input('price_min'))){
+				$adsFilter->whereHas($adTypeSelected, function (Builder $query) use($filters){
+					$query->where('price', '>=', $filters->input('price_min'));
+					$query->orWhere('rent_price', '>=', $filters->input('price_min'));
+				});
+		}
+
+		if(! is_null($filters->input('price_max'))){
+			$adsFilter->whereHas($adTypeSelected, function (Builder $query) use($filters){
+				$query->where('price', '<=', $filters->input('price_max'));
+				$query->orWhere('rent_price', '<=', $filters->input('price_max'));
+			});
+		}
+
+		if($filters->has('has_buildings')){
+			$adsFilter->filterDataInRelationModel($filters->input('has_buildings'), $adTypeSelected, 'has_buildings');
+		}
+
+		if($filters->has('has_picture')){
+			$adsFilter->whereHas('documents', function (Builder $query){
+				$query->whereIn('type', 'image');
+			});
+		}
+
+		if($filters->has('production_genres')){
+			$adsFilter->filterArrayDataInRelationModel($filters->input('production_genres'), $adTypeSelected.'.productionGenres', 'production_genres.id' );
+			};
+
+		if($filters->has('bio_certifications')){
+			$adsFilter->filterArrayDataInRelationModel($filters->input('bio_certifications'), $adTypeSelected.'.bioCertifications', 'bio_certifications.id');
+		}
 
 		$ads = $adsFilter->get();
 		dd($ads);

@@ -135,12 +135,12 @@ class AttributionAdsService
 		}
 		//If one or many project status are selected, filter  ads based on their project status
 		if ($filters->has('project_statuses')) {
-			$attributionAdsFiltered->filterDataInRelationModel($filters->input('project_statuses'), 'ad.project', 'project_status_id');
+			$attributionAdsFiltered->filterArrayDataInRelationModel($filters->input('project_statuses'), 'ad.project', 'project_status_id');
 		}
 
 		//If one or many ad status are selected, filter attribution ads based on their status
 		if ($filters->has('ad_statuses')) {
-			$attributionAdsFiltered->filterDataInCurrentModel($filters->input('ad_statuses'), 'ad_status_id');
+			$attributionAdsFiltered->filterArrayDataInCurrentModel($filters->input('ad_statuses'), 'ad_status_id');
 		}
 		$attributionAds = $attributionAdsFiltered
 			->limit(100)

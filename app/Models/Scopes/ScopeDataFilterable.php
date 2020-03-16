@@ -6,15 +6,24 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait ScopeDataFilterable
 {
-	function scopeFilterDataInCurrentModel(Builder $query, array $data, string $columnName)
+	function scopeFilterArrayDataInCurrentModel(Builder $query, array $data, string $columnName)
 	{
 		$query->whereIn($columnName, $data);
 	}
 
-	function scopeFilterDataInRelationModel(Builder $query, array $data, string $relationNameTable, string $columnName)
+	function scopeFilterArrayDataInRelationModel(Builder $query, array $data, string $relationNameTable, string $columnName)
 	{
 		$query->whereHas($relationNameTable, function (Builder $query) use ($data, $columnName) {
 			$query->whereIn($columnName, $data);
 		});
 	}
+
+	function scopeFilterDataInRelationModel(Builder $query, string $data, string  $relationNameTable,string $columnName){
+
+		$query->whereHas($relationNameTable, function (Builder $query) use ($data, $columnName) {
+			$query->where($columnName, $data);
+		});
+	}
+
+
 }

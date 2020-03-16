@@ -4,15 +4,12 @@ use App\Models\Ad;
 use App\Models\AdNote;
 use App\Models\BioCertification;
 use App\Models\City;
-use App\Models\Document;
 use App\Models\FavoriteAd;
 use App\Models\JobOfferAd;
 use App\Models\LandOfferAd;
 use App\Models\LandSeekAd;
 use App\Models\Project;
 use App\Models\ProductionGenre;
-use App\Models\Region;
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -41,7 +38,6 @@ class DatabaseSeeder extends Seeder
 			$this->call([
 				RequirementSeeder::class,
 				BuildingTypeSeeder::class,
-				PriceRangeSeeder::class,
 				SurfaceRangeSeeder::class,
 				InstallationTypeSeeder::class,
 				ProductionGenreSeeder::class,

@@ -99,7 +99,7 @@
 							<h1 class="title">Offres foncières</h1>
 						@elseif($adType === 'landSeekAd')
 							<h1 class="title">Demandes de fonciers</h1>
-						@elseif($adType === 'landSeekAd')
+						@elseif($adType === 'jobOfferAd')
 							<h1 class="title">Offres d'emploi</h1>
 						@else
 							<h1 class="title">Demandes d'emploi</h1>
