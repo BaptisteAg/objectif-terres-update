@@ -1,9 +1,20 @@
 <?php namespace App\Repositories\SalesForce;
 
+use Omniphx\Forrest\Authentications\UserPasswordSoap;
 use Omniphx\Forrest\Providers\Laravel\Facades\Forrest;
 
 class SalesForceRepository
 {
+    /**
+     * @var UserPasswordSoap
+     */
+    protected $forrest;
+
+    public function __construct()
+    {
+        $this->forrest = app('forrest');
+    }
+
     /**
      * @param $objectName
      * @param $id
@@ -20,6 +31,11 @@ class SalesForceRepository
         return $entities[0];
     }
 
+    /**
+     * @param string $objectName
+     * @param array $fields
+     * @return mixed
+     */
     public function findWhere(string $objectName, array $fields)
     {
         $query = "SELECT FirstName, LastName FROM $objectName WHERE ";
@@ -28,7 +44,7 @@ class SalesForceRepository
         });
         $query .= implode(' AND ', $fields);
 
-        $result = Forrest::query($query);
+        $result = $this->forrest->query($query);
 
         return $result["records"];
     }
@@ -40,7 +56,7 @@ class SalesForceRepository
      */
     public function create($objectName, array $params, $sForceAutoAssign = false)
     {
-        return Forrest::sobjects($objectName, [
+        return $this->forrest->sobjects($objectName, [
             'method' => 'post',
             'body' => $params,
             /*'headers' => [
@@ -54,22 +70,11 @@ class SalesForceRepository
      * @param $sfId
      * @param array $params
      */
-    private function update($objectName, $id, array $params)
+    public function update($objectName, $id, array $params)
     {
-        return Forrest::sobjects($objectName. '/' . $id,[
-            'method' => 'put',
+        return $this->forrest->sobjects($objectName. '/' . $id,[
+            'method' => 'post',
             'body'   => [ $params ]
-        ]);
-    }
-
-    /**
-     * @param $objectName
-     * @param $sfId
-     */
-    public function delete($objectName, $id)
-    {
-        return Forrest::sobjects($objectName. '/' . $id, [
-            'method' => 'delete'
         ]);
     }
 
@@ -79,11 +84,24 @@ class SalesForceRepository
      */
     public function updateUserPassword($userId, $newPassword)
     {
-        Forrest::sobjects('User/' . $userId . '/password', [
-            'method' => 'post',
-            'body' => [
-                "NewPassword" => $newPassword
-            ]
+        $this->update('User', $userId . '/password', [
+            "NewPassword" => $newPassword
         ]);
+    }
+
+    /**
+     * @param $objectName
+     * @param $sfId
+     */
+    public function delete($objectName, $id)
+    {
+        return $this->forrest->sobjects($objectName. '/' . $id, [
+            'method' => 'delete'
+        ]);
+    }
+
+    public function authenticate()
+    {
+        $this->forrest->authenticate();
     }
 }

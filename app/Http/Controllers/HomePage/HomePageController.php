@@ -36,16 +36,16 @@ class HomePageController extends Controller
 
 		foreach($ads as $ad) {
             if(count($ad->cities)) {
-                /** @var City $city */
-                foreach($ad->cities as $city) {
-                    if($city->department && $city->department->region) {
-                        if(!isset($adsCountByRegionId[$city->department->region->id])) {
-                            $adsCountByRegionId[$city->department->region->id] = 1;
+                    /** @var City $city */
+                    foreach($ad->cities as $city) {
+                        if($city->department && $city->department->region) {
+                            if(!isset($adsCountByRegionId[$city->department->region->id])) {
+                                $adsCountByRegionId[$city->department->region->id] = 1;
+                            }
+                            $adsCountByRegionId[$city->department->region->id]++;
                         }
-                        $adsCountByRegionId[$city->department->region->id]++;
                     }
                 }
-            }
 
             if(count($ad->departments)) {
                 /** @var Department $department */

@@ -1,4 +1,4 @@
-import {maxLength, minLength, numeric, required} from 'vuelidate/lib/validators'
+import {maxLength, minLength, numeric, minValue, required} from 'vuelidate/lib/validators'
 
 import FormNewAdMixin from './mixins/form-new-ad-mixin'
 import TextAreaCounter from "../../../components/TextAreaCounter";
@@ -61,6 +61,9 @@ export default Vue.extend({
     },
     validations: {
         formInput: {
+            surfaceRangeMax: {
+                minValue: minValue(5)
+            },
             productionGenres: {required},
             installationTypeId: {required},
             minRent: {numeric},
@@ -73,8 +76,7 @@ export default Vue.extend({
                 checked(v) {
                     return !!v
                 }
-            },
-            surfaceRangeMax: {required}
+            }
         }
     }
 });

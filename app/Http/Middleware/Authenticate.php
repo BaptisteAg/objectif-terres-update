@@ -21,9 +21,9 @@ class Authenticate extends Middleware
 
             // Set the previous url that we came from to redirect to after successful login but only if is internal
             if(($previousUrl != $urlBase . '/connexion') && (substr($previousUrl, 0, strlen($urlBase)) === $urlBase)) {
-                session()->put('toto', $previousUrl);
+                session()->put('url.intended', $previousUrl);
+                session()->save();
             }
-            logger("putting intended :".session('toto'));
 
             return route('signIn');
         }

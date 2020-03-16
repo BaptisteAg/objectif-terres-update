@@ -162,6 +162,13 @@
 											<i class="fas fa-user"></i>
 										</div>
 									</div>
+									@error('profile')
+										<article class="message is-danger" role="alert">
+											<div class="message-body">
+												{{ $message }}
+											</div>
+										</article>
+									@enderror
 								</div>
 							</div>
 							<div v-if="optionProfileSelected === '6'" class="column">
@@ -191,14 +198,14 @@
 
 						<div class="field">
 							<label class="label">Adresse* </label>
-							<p class="control has-icons-left has-icons-right">
+							<p class="control has-icons-left">
 								<input id="address" class="input @error('address') is-danger @enderror" type="text"
 									   name="address" value="{{ old('address') }}" required autocomplete="address"
 									   autofocus
 									   placeholder="Votre adresse ...">
 								<span class="icon is-small is-left">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                    </span>
+									<i class="fas fa-map-marker-alt"></i>
+								</span>
 							</p>
 							@error('address')
 							<article class="message is-danger" role="alert">
@@ -212,25 +219,33 @@
 							<div class="column is-two-third">
 								<div class="field">
 									<label class="label">Commune et Code postal*</label>
-                                        <autocomplete
-                                                name="citySelect"
-                                                id="citySelect"
-                                                placeholder="Saisissez les premiers caractères"
-                                                ref='citySelect'
-                                                src="/locations/cities"
-                                                v-model="citySelect">
+									<autocomplete
+											name="citySelect"
+											id="citySelect"
+											class="@error('city_id') is-danger @enderror"
+											placeholder="Saisissez les premiers caractères"
+											ref='citySelect'
+											src="/locations/cities"
+											v-model="citySelect">
 
-                                            <input type="hidden" name="city_id" :value="zone.value.id"
-                                                   v-for="(zone,i) in citySelect">
+										<input type="hidden" name="city_id" :value="zone.value.id"
+											   v-for="(zone,i) in citySelect">
 
-                                            <div class="tag autocomplete-input-tag is-info"
-                                                 v-for="(zone,i) in citySelect"
-                                                 @click="_ => citySelect.splice(i,1)">
-                                                @{{ zone.label }}
-                                                &nbsp;&nbsp;
-                                                <i class="fa fa-trash" style="cursor:pointer"></i>
-                                            </div>
-                                        </autocomplete>
+										<div class="tag autocomplete-input-tag is-info"
+											 v-for="(zone,i) in citySelect"
+											 @click="_ => citySelect.splice(i,1)">
+											@{{ zone.label }}
+											&nbsp;&nbsp;
+											<i class="fa fa-trash" style="cursor:pointer"></i>
+										</div>
+									</autocomplete>
+									@error('city_id')
+										<article class="message is-danger" role="alert">
+											<div class="message-body">
+												{{ $message }}
+											</div>
+										</article>
+									@enderror
 								</div>
 							</div>
 							{{--<div class="column is-one-third">
@@ -282,17 +297,18 @@
 									   required
 									   autocomplete="new-password"
                                        placeholder="Votre mot de passe..."
+									   value="{{ old('password') }}"
                                         minlength="5">
 								<span class="icon is-small is-left">
                               <i class="fas fa-lock"></i>
                             </span>
 							</p>
 							@error('password')
-							<article class="message is-danger" role="alert">
-								<div class="message-body">
-									{{ $message }}
-								</div>
-							</article>
+								<article class="message is-danger" role="alert">
+									<div class="message-body">
+										{{ $message }}
+									</div>
+								</article>
 							@enderror
 						</div>
 						<div class="field">
@@ -302,6 +318,7 @@
                                        name="password_confirmation"
 									   class="input"
                                        type="password"
+									   value="{{ old('password_confirmation') }}"
 									   autocomplete="new-password"
 									   required
 									   placeholder="Ressaisissez mot de passe...">

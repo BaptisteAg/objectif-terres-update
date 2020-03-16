@@ -28,6 +28,7 @@
                             ></vue-slider-range>
 
                             <p class="help is-danger"
+                               style="margin-top: 30px;"
                                v-if="$v.formInput.surfaceRangeMax.$error">
                                 Ce champ est requis.
                             </p>
@@ -87,15 +88,30 @@
                         <div class="field">
                             {!! Form::label('land_seek[production_genres][]', 'Production(s) envisagée(s)*', ['class' => 'label']); !!}
 
-                            <multi-select
-                                    :options="{{json_encode($productionGenresWithOther)}}"
-                                    group-values="children"
-                                    name="land_seek[production_genres][]"
-                                    v-model="formInput.productionGenres"
-                                    selected-count-text="productions sélectionnée(s)"
-                                    placeholder="Sélectionnez au moins une production"
-                                    ref="productionGenres">
-                            </multi-select>
+                            <div class="checkboxes-production-genre">
+                                <div class="columns">
+                                    @foreach($productionGenresWithOther as $i => $productionGenre)
+                                        <div class="column is-half">
+                                            <custom-checkbox
+                                                    name="land_seek[production_genres][]"
+                                                    input-value="{{$productionGenre["id"]}}"
+                                                    :disabled="isInputDisabled"
+                                                    v-model="formInput.productionGenres"
+                                                    ref="productionGenres">
+
+                                                <i class="fa fa-home"></i>
+                                                <span style="font-size:16px">
+                                                    {{ $productionGenre["name"] }}
+                                                </span>
+                                            </custom-checkbox>
+                                        </div>
+                                        @if($i % 2)
+                                        </div>
+                                        <div class="columns">
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
 
                             <p class="help is-danger" id="productionGenresError"
                                v-if="$v.formInput.productionGenres.$error">
@@ -128,8 +144,8 @@
                                         <custom-checkbox
                                                 name="land_seek[installation_type_id]"
                                                 input-value="{{$installationType["id"]}}"
-                                                v-model="formInput.installationTypeId"
                                                 :disabled="isInputDisabled"
+                                                v-model="formInput.installationTypeId"
                                                 ref="installationTypeId"
                                                 :is-radio="true">
 
@@ -217,3 +233,9 @@
 
     </form-wizard>
 </div>
+<script>
+    import CustomCheckbox from "../../../../../js/components/CustomCheckbox";
+    export default {
+        components: {CustomCheckbox}
+    }
+</script>

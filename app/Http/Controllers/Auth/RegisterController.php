@@ -81,7 +81,9 @@ class RegisterController extends Controller
 			'country_id' => ['required'],
 			'city_id' => ['required'],
             'password' => ['required', 'confirmed', 'min:5']
-		]);
+		], [
+		    'city_id.required' => "Veuillez sélectionner un lieu dans la liste en saisissant les premiers caractères"
+        ]);
 	}
 
 	/**

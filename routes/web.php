@@ -14,27 +14,21 @@
 Route::get('/', 'HomePage\HomePageController@show');
 
 Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
-
     Route::middleware('auth')->get('creer', 'AdsController@create')->name('create');
     Route::middleware('auth')->post('creer', 'AdsController@store')->name('store');
     Route::middleware('auth')->get('liste-mes-annonces', 'AdsController@list')->name('list');
     Route::get('{id}', 'AdsController@show')->name('show');
 	Route::middleware('auth')->get('supprimer/{ad}', 'AdsController@delete')->name('delete');
-
-
 });
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {
-
     Route::middleware('auth')->post('upload', 'DocumentsController@upload')->name('upload');
     Route::get('{type}/{filename}', 'DocumentsController@show')->name('show');
-
 });
 
 Route::get('/register', 'Salesforces\SalesForceAuthController@register');
 
 Route::prefix('recherches')->name('researches.')->namespace('Researches')->group(function () {
-
     Route::get('recherche', 'ResearchesController@index')->name('index');
 
     Route::middleware('auth')->group(function () {
@@ -44,7 +38,6 @@ Route::prefix('recherches')->name('researches.')->namespace('Researches')->group
         Route::get('supprimer-alerte/{id}', 'ResearchesController@deleteAlert')->name('deleteAlert');
         Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
     });
-
 });
 Route::prefix('mon-espace/recherches')->middleware('auth')->name('researches.')->namespace('Researches')->group(function () {
 	Route::post('sauvegarde', 'ResearchesController@store')->name('store');
@@ -62,7 +55,6 @@ Route::prefix('mon-espace/annonces-favorites')->middleware('auth')->name('favori
 	Route::get('sauvegarde', 'FavoriteAdsController@create')->name('create');
 	Route::get('liste', 'FavoriteAdsController@show')->name('show');
 	Route::get('supprimer/{favoriteAd}', 'FavoriteAdsController@destroy')->name('destroy');
-
 });
 
 Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->namespace('Threads')->group(function () {
@@ -108,9 +100,9 @@ Route::middleware('auth')->prefix('notification')->name('notification.')->namesp
 });
 
 // Authentication Routes for authentification
-Route::get('connexion', 'Auth\SalesForceSamlController@connexion')->name('signIn');
+Route::get('connexion', 'Auth\LoginController@preLogin')->name('signIn');
 //Route::post('login', 'Auth\LoginController@login')->name('login');
-Route::post('deconnexion', 'Auth\LoginController@logout')->name('logout');
+Route::post('deconnexion', 'Auth\LegacyLoginController@logout')->name('logout');
 
 // Registration Routes...
 Route::get('inscription', 'Auth\RegisterController@showRegistrationForm')->name('register');

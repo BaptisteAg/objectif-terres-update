@@ -2,9 +2,10 @@
 
 use App\Models\City;
 use App\Models\Country;
+use App\Models\User;
 use App\Repositories\SalesForce\SalesForceRepository;
-use Omniphx\Forrest\Exceptions\MissingTokenException;
-use Omniphx\Forrest\Providers\Laravel\Facades\Forrest;
+use App\Repositories\Users\UserRepository;
+use Omniphx\Forrest\Repositories\TokenRepository;
 
 class SalesforceService
 {
@@ -12,22 +13,31 @@ class SalesforceService
      * @var SalesForceRepository
      */
     protected $repository;
+    /**
+     * @var UserRepository
+     */
+    protected $userRepository;
+    /**
+     * @var TokenRepository|null
+     */
+    protected $tokenRepository;
 
-    public function __construct(SalesForceRepository $repository)
+    public function __construct(SalesForceRepository $repository, UserRepository $userRepository)
     {
         $this->repository = $repository;
+        $this->userRepository = $userRepository;
     }
 
-    public function findObject($object, $id)
-    {
-        $this->apiAuthenticate();
-
-        return $this->repository->find($object, $id);
-    }
-
+    /**
+     * Registers a basic user ( role : Porteur de projet )
+     * in Salesforce.
+     *
+     * @param $data
+     * @return mixed
+     */
     public function registerPP($data)
     {
-        $this->apiAuthenticate();
+        $this->apiAuthenticationRefresh();
 
         $city = City::findOrFail($data["city_id"]);
 
@@ -105,21 +115,67 @@ class SalesforceService
         return redirect()->route('saml2_login', 'salesforce');
     }
 
-    public function emailExists($email)
+    /**
+     * Right after a successful login, this method receives the retrieved
+     * Saml2 User from Salesforce; it then retrieve or create a corresponding
+     * local user.
+     *
+     * @param \Aacotroneo\Saml2\Saml2User $samlUser
+     * @return User
+     * @throws \Throwable
+     */
+    public function getUserFromSaml(\Aacotroneo\Saml2\Saml2User $samlUser) : User
     {
-        $this->apiAuthenticate();
+        $this->apiAuthenticationRefresh();
+
+        $email = $samlUser->getAttribute('email')[0];
+        $sfId = $samlUser->getAttribute('userId')[0];
+
+        /** @var User $user */
+        $user = $this->userRepository->findByEmail($email);
+
+        // Reverse user creation : if no user has been found, then we'll create it on the fly
+        // to allow every salesforce-only user to pass the registration form
+        if(!$user) {
+            $salesforceUser = $this->repository->findObject('User', $sfId);
+            //dd($salesforceUser);
+
+            $user = $this->userRepository->create([
+                'first_name' => $salesforceUser["FirstName"],
+                'name' => $salesforceUser["LastName"],
+                'email' => $email,
+                // TODO: role
+            ]);
+        }
+
+        if($user->sf_id != $sfId) {
+            $user->sf_id = $sfId;
+            $user->save();
+        }
+
+        return $user;
+    }
+
+    /**
+     * @param string $email
+     * @return bool
+     */
+    public function emailExists(string $email) : bool
+    {
+        $this->apiAuthenticationRefresh();
 
         return !!$this->repository->findWhere('Contact', [
             'Email' => $email
         ]);
     }
 
-    private function apiAuthenticate()
+    protected function apiAuthenticationRefresh()
     {
-        try {
-            Forrest::identity();
-        } catch (MissingTokenException $exception) {
-            Forrest::authenticate();
+        /** @var TokenRepository $forrestToken */
+        $forrestToken = app('forrest_token');
+
+        if(!$forrestToken->has()) {
+            $this->repository->authenticate();
         }
     }
 }

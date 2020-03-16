@@ -1,5 +1,5 @@
 <template>
-    <div class="control autocomplete-control">
+    <div class="control autocomplete-control has-icons-right">
         <input type="text"
                class="input autocomplete-input"
                ref="input"
@@ -7,6 +7,9 @@
                :placeholder="placeholder"
                v-on:click="onClick"
                v-on:awesomplete-select="onSelect">
+        <span class="icon is-small right" v-show="isFetching">
+            <i class="fas fa-spinner fa-spin"></i>
+        </span>
 
         <input type="hidden" :name="name" :value="JSON.stringify(value)" v-if="name">
         <slot></slot>

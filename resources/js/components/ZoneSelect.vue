@@ -13,7 +13,6 @@
                     </label>
                     <autocomplete
                             :id="id"
-                            class="input"
                             :placeholder="value.length ? 'Saisissez une autre localisation' : 'Saisissez au moins 2 caractères pour faire apparaître la liste'"
                             :disabled="disabled"
                             src="/locations"
@@ -64,7 +63,7 @@
                             }"
                     ></vue-slider>
                     <div style="margin-top: 40px;">
-                        Ce rayon s'appliquera à chaque commune de votre sélection
+                        Ce rayon s'appliquera à chaque commune et code postal de votre sélection
                     </div>
                 </div>
             </div>

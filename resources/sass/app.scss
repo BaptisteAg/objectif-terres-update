@@ -29,9 +29,12 @@ html {
   scroll-behavior: smooth;
 }
 
-
 .title {
   font-family: $font-family-sans-serif;
+}
+
+.control.has-icons-left .icon, .control.has-icons-right .icon {
+  right: 0;
 }
 
 // Leaflet / OpenStreetmap

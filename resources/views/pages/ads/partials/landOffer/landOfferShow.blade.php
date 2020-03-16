@@ -150,6 +150,7 @@
 
 			<div class="column is-one-third ">
 				<p class="has-text-link is-size-5 has-text-centered"> Certification bio des terres</p>
+
 				<p class="has-text-centered">
 					<span>{{$ad->landOfferAd->bioCertifications->pluck('name')->implode(', ') }}</span><br>
 					@foreach($ad->landOfferAd->bioCertifications as $bioCertification)
