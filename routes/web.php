@@ -14,14 +14,21 @@
 Route::get('/', 'HomePage\HomePageController@show');
 
 Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
-
     Route::middleware('auth')->get('creer', 'AdsController@create')->name('create');
     Route::middleware('auth')->post('creer', 'AdsController@store')->name('store');
     Route::middleware('auth')->get('liste-mes-annonces', 'AdsController@list')->name('list');
     Route::get('{id}', 'AdsController@show')->name('show');
 	Route::middleware('auth')->get('supprimer/{ad}', 'AdsController@delete')->name('delete');
+});
 
-
+Route::name('cms.')->namespace('Cms')->group(function () {
+    Route::get('qui-sommes-nous', 'CmsController@quiSommesNous');
+    Route::get('minstaller-comme-paysan', 'CmsController@minstallerCommePaysan');
+    Route::get('louer-vendre-mes-terres', 'CmsController@louerVendreMesTerres');
+    Route::get('ceder-ma-ferme', 'CmsController@cederMaFerme');
+    Route::get('ceder-mes-terres', 'CmsController@cederMesTerres');
+    Route::get('trouver-un-emploi', 'CmsController@trouverUnEmploi');
+    Route::get('mentions-legales', 'CmsController@mentionsLegales');
 });
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {
