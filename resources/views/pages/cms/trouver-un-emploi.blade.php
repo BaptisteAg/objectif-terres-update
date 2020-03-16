@@ -1,7 +1,7 @@
 
 @extends ('default')
 
-@section ('title', "Céder mes terres")
+@section ('title', "Trouver un emploi")
 
 @section('head-script')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
@@ -12,24 +12,24 @@
         <div class="container">
             <div class="rows">
                 <div class="row is-full">
-                    <h1 class="title is-1 has_margin">Confier mes terres à TDL</h1>
-                    <p>Faire un legs c’est avant tout et eget risus varius blandit sit amet non magna. Sed
-                        posuere consectetur est at lobortis. Vestibulum id ligula porta felis euismod
-                        semper. Duis mollis, est non commodo luctus, nisi erat porttitor ligula,
+                    <h1 class="title is-1 has_margin">Trouver un emploi</h1>
+                    <p>Le milieu agricole et eget risus varius blandit sit amet non magna. Sed posuere
+                        consectetur est at lobortis. Vestibulum id ligula porta felis euismod semper. Duis
+                        mollis, est non commodo luctus, nisi erat porttitor ligula,
                     </p>
                 </div>
                 <div class="row is-full">
-                    <h3 class="title is-3 has_margin">Partager son patrimoine, c’est faire acte de don</h3>
+                    <h3 class="title is-3 has_margin">Votre plateforme de choix pour le monde agricole</h3>
                     <p>
-                        maecenas faucibus mollis interdum. Maecenas sed diam eget risus varius blandit
-                        sit amet non magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                        posuere con, maecenas faucibus mollis interdum. Maecenas sed diam eget risus
-                        varius blandit sit amet non magna. Lorem ipsum dolor sit amet, consectetur
-                        adipiscing elit. Sed posuere consectetur est at lobortis. Integer posuere erat a
-                        ante venenatis dapibus posuere velit aliquet. Donec sed odio dui.Vivamus sagittis
-                        lacus vel augue laoreet rutrum faucibus dolor auctor. Nullam quis risus eget urna
-                        mollis ornare vel eu leo. Maecenas faucibus mollis interdum. Maecenas sed diam
-                        eget risus varius blandit sit amet non magna. Morbi leo risus, porta ac consectetur
+                        Avec Objectif Terre vous allez être mis en relation avec maecenas faucibus mollis
+                        interdum. Maecenas sed diam eget risus varius blandit sit amet non magna. Lorem
+                        ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at
+                        lobortis. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.
+                        Donec sed odio dui.Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
+                        auctor. Nullam quis risus eget urna mollis ornare vel eu leo. Maecenas faucibus
+                        mollis interdum. Maecenas sed diam eget risus varius blandit sit amet non magna.
+                        Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam quis risus eget
+                        urna mollis ornare vel eu leo.
                     </p>
                 </div>
             </div>
@@ -37,6 +37,23 @@
     </section>
 
     @include('components.multiple-img-block')
+
+    <section class="section">
+        <div class="container block-numbers">
+            <div class="container has-text-centered">
+                <div class="rows">
+                    <div class="row is-full">
+                        <h2 class="title is-2 has_margin">Un marché plus sain</h2>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                            incididunt ut labore et dolore magna aliquat enim ad minim.
+                        </p>
+                    </div>
+                    @include('components/number-circle-percent')
+                </div>
+            </div>
+        </div>
+    </section>
 
     <section class="hero has_margin">
         <div class="hero-body block-video">
@@ -76,6 +93,8 @@
 
     @include('components/downloadPDF')
 
+    @include('components/step-guide')
+
     @include('components.partnering')
 
     @include('components.supportTerreLiens')
@@ -84,25 +103,4 @@
 
 
 
-@endsection
-
-@section('script')
-    <script src="{{ asset('js/bulma-carousel.js') }}"></script>
-    <script>
-        bulmaCarousel.attach('#carousel-installations', {
-            slidesToScroll: 1,
-            slidesToShow: 1,
-            loop: true,
-            navigation: true,
-
-        });
-        bulmaCarousel.attach('#carousel-testimony', {
-            slidesToScroll: 1,
-            slidesToShow: 1,
-            loop: true,
-            navigation: true,
-
-        });
-
-    </script>
 @endsection

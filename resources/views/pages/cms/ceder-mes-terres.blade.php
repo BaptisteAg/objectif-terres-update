@@ -86,23 +86,3 @@
 
 @endsection
 
-@section('script')
-    <script src="{{ asset('js/bulma-carousel.js') }}"></script>
-    <script>
-        bulmaCarousel.attach('#carousel-installations', {
-            slidesToScroll: 1,
-            slidesToShow: 1,
-            loop: true,
-            navigation: true,
-
-        });
-        bulmaCarousel.attach('#carousel-testimony', {
-            slidesToScroll: 1,
-            slidesToShow: 1,
-            loop: true,
-            navigation: true,
-
-        });
-
-    </script>
-@endsection

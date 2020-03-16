@@ -28,6 +28,7 @@ Route::name('cms.')->namespace('Cms')->group(function () {
     Route::get('ceder-ma-ferme', 'CmsController@cederMaFerme');
     Route::get('ceder-mes-terres', 'CmsController@cederMesTerres');
     Route::get('trouver-un-emploi', 'CmsController@trouverUnEmploi');
+    Route::get('mentions-legales', 'CmsController@mentionsLegales');
 });
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {

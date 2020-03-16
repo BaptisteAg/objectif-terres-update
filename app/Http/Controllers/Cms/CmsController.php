@@ -31,4 +31,8 @@ class CmsController extends Controller
     {
         return view('pages/cms/trouver-un-emploi');
     }
+    public function mentionsLegales()
+    {
+        return view('pages/cms/mentions-legales');
+    }
 }
