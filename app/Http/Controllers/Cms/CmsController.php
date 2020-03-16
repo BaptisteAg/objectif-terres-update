@@ -23,10 +23,10 @@ class CmsController extends Controller
     {
         return view('pages/cms/ceder-ma-ferme');
     }
-    public function cederMesTerres()
+    /*public function cederMesTerres()
     {
         return view('pages/cms/ceder-mes-terres');
-    }
+    }*/
     public function trouverUnEmploi()
     {
         return view('pages/cms/trouver-un-emploi');
@@ -34,5 +34,13 @@ class CmsController extends Controller
     public function mentionsLegales()
     {
         return view('pages/cms/mentions-legales');
+    }
+    public function confierMesTerres()
+    {
+        return view('pages/cms/confier-mes-terres');
+    }
+    public function ressourcesUtiles()
+    {
+        return view('pages/cms/ressources-utiles');
     }
 }

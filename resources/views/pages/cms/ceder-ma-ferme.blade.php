@@ -46,7 +46,7 @@
 
     @include('components.faq-frequentes')
 
-    <section class="section">
+    <section class="section contactus-background">
         <div class="container">
             <div class="columns">
                 <div class="column is-6">
