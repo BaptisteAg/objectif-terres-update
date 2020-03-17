@@ -2,26 +2,25 @@
     @include('layouts.partials.headerResearchLocation')
     <div class="column ">
         <div class="field">
+            @foreach ($offerGenres as $offerGenre)
             <label class="checkbox">
-                <input type="checkbox" name="offer_genres[]" value="rental">
-                location
+                <input type="checkbox" name="offer_genres[]" value="{{$offerGenre->id}}">
+                {{$offerGenre->name}}
             </label>
-            <label class="checkbox">
-                <input type="checkbox" name="offer_genres[]" value="sale">
-                vente
-            </label>
+            @endforeach
         </div>
             <div class="field">
                 <p class="label">Surface (ha)</p>
                 <vue-slider
                     name="surfaces_research"
                     :data="{
-                        0: '0 ha',
-                        5: '5 ha',
-                        10: '10 ha',
-                        20: '20 ha',
-                        50: '50 ha',
-                        100 : '100 ha',
+                        0: '0',
+                        5: '5',
+                        10: '10',
+                        20: '20',
+                        50: '50',
+                        100 : '100',
+                        '+100' : '+ de 100',
                     }"
                     :values="['0', '>100']"></vue-slider>
                 <br>

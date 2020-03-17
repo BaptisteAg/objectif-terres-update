@@ -18,10 +18,10 @@ trait ScopeDataFilterable
 		});
 	}
 
-	function scopeFilterDataInRelationModel(Builder $query, string $data, string  $relationNameTable,string $columnName){
+	function scopeFilterDataInRelationModel(Builder $query, string $data, string  $relationNameTable,string $operator, string $columnName){
 
-		$query->whereHas($relationNameTable, function (Builder $query) use ($data, $columnName) {
-			$query->where($columnName, $data);
+		$query->whereHas($relationNameTable, function (Builder $query) use ($data, $columnName, $operator) {
+			$query->where($columnName, $operator, $data);
 		});
 	}
 

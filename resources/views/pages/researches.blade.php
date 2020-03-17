@@ -50,48 +50,45 @@
 								</div>
 							</div>
 						@else
-{{--							{!! Form::open(['route' => 'researches.store']) !!}--}}
-{{--							<input type="hidden" name="ad_type" value="{{$adType}}">--}}
-{{--							@foreach ($regions->pluck('id') as $region)--}}
-{{--								<input type="hidden" name="regions[]" value="{{ $region }}">--}}
-{{--							@endforeach--}}
-
 							<a id="open-modal" href="">
 								<span class="icon"><i class="far fa-heart"></i></span>
 								<span>Sauvegarder cette recherche</span>
 							</a>
-							<div class="modal">
-								<div class="modal-background"></div>
-								<div class="modal-content">
-									<div class="card">
-										<div class="card-content">
-											<div class="field">
-												<label class="label">Donner un titre à votre recherche :</label>
-												<div class="control">
-													<input class="input" type="text" name="name" id="title"
-														   placeholder="Votre titre...">
+							<form method="POST" action="{{ route('researches.store', request()->input())}}">
+								@csrf
+								<div class="modal">
+									<div class="modal-background"></div>
+									<div class="modal-content">
+										<div class="card">
+											<div class="card-content">
+												<div class="field">
+													<label class="label">Donner un titre à votre recherche :</label>
+													<div class="control">
+														<input class="input" type="text" name="name" id="title"
+															   placeholder="Votre titre...">
+													</div>
 												</div>
 											</div>
+											<footer class="card-footer">
+												<div class="buttons card-footer-item">
+													<button type="submit" class="button is-link">
+														Valider
+													</button>
+
+												</div>
+												<button id="close-modal" class="modal-close is-large"
+														aria-label="close"></button>
+											</footer>
 										</div>
-										<footer class="card-footer">
-											<div class="buttons card-footer-item">
-												<button type="submit" class="button is-link">
-													<span>Valider</span></button>
-											</div>
-											<button id="close-modal" class="modal-close is-large"
-													aria-label="close"></button>
-										</footer>
 									</div>
 								</div>
-							</div>
-{{--							{!! Form::close() !!}--}}
+							</form>
 
 						@endguest
 
 					</div>
 				</div>
 			</nav>
-
 			<nav class="level">
 				<div class="level-left">
 					<div class="">
@@ -141,13 +138,13 @@
 							<div>
 								{{ $ad->regions->pluck('name')->implode(', ') }}
 							</div>
-{{--							@if($adType === 'landOfferAd')--}}
-{{--								<div><span>{{ $ad->$adType->land->price }}</span> € |--}}
-{{--									<span>{{ $ad->$adType->land->area }}</span> ha--}}
-{{--								</div>--}}
-{{--							@else--}}
-{{--								<div><span></span></div>--}}
-{{--							@endif--}}
+							{{--							@if($adType === 'landOfferAd')--}}
+							{{--								<div><span>{{ $ad->$adType->land->price }}</span> € |--}}
+							{{--									<span>{{ $ad->$adType->land->area }}</span> ha--}}
+							{{--								</div>--}}
+							{{--							@else--}}
+							{{--								<div><span></span></div>--}}
+							{{--							@endif--}}
 						</div>
 						<div class="column">
 							<nav class="level">

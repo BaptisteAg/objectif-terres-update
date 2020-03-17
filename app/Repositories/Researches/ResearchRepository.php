@@ -18,6 +18,10 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 		return Research::class;
 	}
 
+	/**
+	 * @param null $paginate
+	 * @return Research[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|mixed
+	 */
 	public function all($paginate = null)
 	{
 		return $this->entity
@@ -69,6 +73,17 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 	}
 
 	/**
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function findAllResearchesWithAlertActive()
+	{
+		$model = $this->entity
+			->where(["has_alert" => "1"])
+			->get();
+		return $model;
+	}
+
+	/**
 	 * Creates a research.
 	 *
 	 * @param array $data
@@ -76,13 +91,28 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 	 */
 	public function create(array $data): Research
 	{
+
 		$research = new Research();
 		$researchData = $data;
 		$research->fill($researchData);
+		$research->ad_type = $data['ad_category'] . $data['ad_type'];
 		$research->user_id = auth()->user()->id;
 		$research->save();
 
-		$research->regions()->attach($data['regions']);
+		if (isset ($data['cities_location_researches_ids'])) {
+			if (isset ($data['radius_research'])) {
+				$research->cities()->attach($data['cities_location_researches_ids'], ['radius' => $data['radius_research']]);
+			} else {
+				$research->cities()->attach($data['cities_location_researches_ids']);
+			}
+		}
+		if (isset ($data['departments_location_researches_ids'])) {
+			$research->departments()->attach($data['departments_location_researches_ids']);
+		}
+
+		if (isset ($data['regions_location_researches_ids'])) {
+			$research->regions()->attach($data['regions_location_researches_ids']);
+		}
 
 		return $research;
 	}

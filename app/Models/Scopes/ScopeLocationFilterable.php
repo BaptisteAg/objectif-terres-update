@@ -1,6 +1,8 @@
 <?php namespace App\Models\Scopes;
 
+use App\Models\City;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 trait ScopeLocationFilterable
 {
@@ -31,4 +33,5 @@ trait ScopeLocationFilterable
 			$query->whereIn($locationTargetTableName, $locationableCodes);
 		});
 	}
+
 }

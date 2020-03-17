@@ -26,7 +26,9 @@ class ResearchesController extends Controller
 
 	public function index(Request $request)
 	{
+
 		list ($ads, $adType) = $this->researchService->index($request);
+
 
 		return view('pages.researches', compact('ads', 'adType'));
 	}

@@ -5,14 +5,17 @@ namespace App\Services\AttributionAds;
 use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
+use App\Models\City;
 use App\Models\Department;
 use App\Models\Region;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
+use App\Services\Locations\LocationService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class AttributionAdsService
@@ -22,16 +25,18 @@ class AttributionAdsService
 {
 	protected $repository;
 	protected $adRepository;
+	protected $locationService;
 
 	/**
 	 * AttributionAdsService constructor.
 	 * @param AttributionAdsRepository $attributionAdsRepository
 	 * @param AdRepository $adRepository
 	 */
-	public function __construct(AttributionAdsRepository $attributionAdsRepository, AdRepository $adRepository)
+	public function __construct(AttributionAdsRepository $attributionAdsRepository, AdRepository $adRepository,  LocationService $locationService)
 	{
 		$this->repository = $attributionAdsRepository;
 		$this->adRepository = $adRepository;
+		$this->locationService = $locationService;
 	}
 
 	/**
@@ -111,7 +116,12 @@ class AttributionAdsService
 		}
 		//Filter attribution ads based on their locations if requested
 		if ($filters->has('city_location_researches')) {
-			$attributionAdsFiltered->filterLocations('ad.cities', $filters->input('city_location_researches'));
+			if (!is_null($filters->input('radius_research'))) {
+				$cityIds = $this->locationService->getCitiesInRadius($filters->input('city_location_researches'), $filters->input('radius_research'));
+				$attributionAdsFiltered->filterLocations('ad.cities', $cityIds);
+			} else {
+				$attributionAdsFiltered->filterLocations('ad.cities', $filters->input('city_location_researches'));
+			}
 		} //If one or more departments are selected, get all ads located in departments and cities in departments
 		else if ($filters->has('departments_location_researches')) {
 			$departmentsCode = Department::whereIn('id', $filters->input('departments_location_researches'))->get('code')->toArray();
@@ -145,28 +155,23 @@ class AttributionAdsService
 		$attributionAds = $attributionAdsFiltered
 			->limit(100)
 			->with('ad',
-			'ad.userPp',
-			'adStatus',
-			'ad.project.projectStatus',
+				'ad.userPp',
+				'adStatus',
+				'ad.project.projectStatus',
 
-			'ad.cities',
-			'ad.cities.department',
-			'ad.cities.department.region',
-			'ad.departments',
-			'ad.departments.region',
-			'ad.regions',
+				'ad.cities',
+				'ad.cities.department',
+				'ad.cities.department.region',
+				'ad.departments',
+				'ad.departments.region',
+				'ad.regions',
 
-			'ad.landSeekAd',
-			'ad.landOfferAd',
-			'ad.jobOfferAd')
+				'ad.landSeekAd',
+				'ad.landOfferAd',
+				'ad.jobOfferAd')
 			->get();
 		return $attributionAds;
 	}
-
-
-
-
-
 
 
 	/**

@@ -166,6 +166,7 @@
 													50: '50km'
 												}"
 										></vue-slider>
+										<br>
 									</div>
 								</div>
 							</div>

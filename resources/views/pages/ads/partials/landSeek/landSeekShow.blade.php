@@ -24,23 +24,27 @@
 					<div class="card-content">
 						<div class="content">
 							@if(is_null($ad->published_on))
-								<p><span class="is-size-5  has-text-black ">Annonce soumise le : </span><span
+								<p><span class="is-size-5 ">Annonce soumise le : </span><span
 											class="subtitle">{{ $ad->created_at}}</span>
 								</p>
 							@else
-								<p><span class="is-size-5  has-text-black ">Publié le  : </span><span
+								<p><span class="is-size-5  ">Publié le  : </span><span
 											class="subtitle">{{ $ad->published_on}}</span>
 								</p>
 							@endif
 						</div>
 						<div class="content">
-							<p><span class="is-size-5  has-text-black ">Publié par  : </span>
+							<p><span class="is-size-5   ">Publié par  : </span>
 								@auth()
 									@if(auth()->user()->role >= 1 )
 										<span class="subtitle">
 										<a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->userPp->first_name}} {{$ad->userPp->name}}</a>
 									</span>
-									@endif()
+									@elseif(auth()->user()->role < 1)
+										<span class="subtitle">
+										{{ $ad->userPp->first_name}} {{$ad->userPp->name}}
+									</span>
+									@endif
 								@endauth
 								@guest()
 									<span class="subtitle">
