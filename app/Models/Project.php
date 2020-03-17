@@ -11,8 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $project_status_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $ads
- * @property-read int|null $ads_count
+ * @property-read \App\Models\Ad $ad
  * @property-read \App\Models\ProjectStatus|null $projectStatus
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()

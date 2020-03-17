@@ -19,7 +19,20 @@
 ///////////////
 // Pages
 @import "ads";
-
+@import "pages/qui-sommes-nous";
+@import "pages/minstaller-comme-paysan";
+@import "pages/louer-vendre-mes-terres";
+@import "pages/ceder-ma-ferme";
+@import "pages/ceder-mes-terres";
+@import "pages/contactez-nous";
+// Components
+@import 'components/step-guide';
+@import 'components/carrousel-large';
+@import 'components/downloadPDF';
+@import 'components/video';
+@import 'components/testimony';
+// Keyframes
+@import "keyframes/progress-circle";
 /////////////////
 // Global scss
 .container-custom {
@@ -29,9 +42,20 @@ html {
   scroll-behavior: smooth;
 }
 
+.container {
+    max-width: 1055px;
+}
 
 .title {
   font-family: $font-family-sans-serif;
+}
+
+.has_margin{
+    margin:$has_margin;
+}
+
+.overflow-hidden{
+    overflow: hidden;
 }
 
 // Leaflet / OpenStreetmap
@@ -78,7 +102,6 @@ body .multiselect__tag {
 .slider {
   overflow: hidden !important;
 }
-
 
 //Dot notification
 

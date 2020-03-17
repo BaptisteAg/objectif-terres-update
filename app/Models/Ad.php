@@ -27,11 +27,9 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property int|null $project_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AdMessage[] $adMessages
- * @property-read int|null $ad_messages_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AdNote[] $adNotes
  * @property-read int|null $ad_notes_count
- * @property-read \App\Models\AttributionAd $attributionAd
+ * @property-read \App\Models\AttributionAd|null $attributionAd
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\City[] $cities
  * @property-read int|null $cities_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Department[] $departments
@@ -44,11 +42,10 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \App\Models\JobSeekAd $jobSeekAd
  * @property-read \App\Models\LandOfferAd $landOfferAd
  * @property-read \App\Models\LandSeekAd $landSeekAd
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PpToUserMessage[] $ppToUserMessages
- * @property-read int|null $pp_to_user_messages_count
  * @property-read \App\Models\Project|null $project
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
  * @property-read int|null $regions_count
+ * @property-read \App\Models\Thread $threadAlreadyExist
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
  * @property-read int|null $threads_count
  * @property-read \App\Models\User|null $userAdmin
@@ -68,7 +65,6 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserAdminId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserPpId($value)
  * @mixin \Eloquent
- * @property-read \App\Models\Thread $threadAlreadyExist
  */
 class Ad extends Model implements HasPresenter
 {
