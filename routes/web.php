@@ -31,6 +31,7 @@ Route::name('cms.')->namespace('Cms')->group(function () {
     Route::get('mentions-legales', 'CmsController@mentionsLegales');
     Route::get('confier-mes-terres', 'CmsController@confierMesTerres');
     Route::get('ressources-utiles', 'CmsController@ressourcesUtiles');
+    Route::get('contactez-nous', 'CmsController@contactezNous');
 });
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {

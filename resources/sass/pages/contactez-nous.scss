@@ -1,0 +1,24 @@
+.contact_form_background{
+    border-radius: 20px;
+    background-color: #dbdbdb;
+    padding: 40px;
+
+    .radio{
+        label{
+            margin-right: 15px;
+            cursor:pointer;
+        }
+    }
+
+    .width-input{
+        .control, .select{
+            width: 100%;
+        }
+    }
+
+    .is-full-width{
+        width: 100%;
+    }
+}
+
+
