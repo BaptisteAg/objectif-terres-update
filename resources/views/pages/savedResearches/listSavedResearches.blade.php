@@ -1,4 +1,4 @@
-@extends ('default')
+Zones de recherche@extends ('default')
 
 @section ('title', 'Consulter la liste de vos recherches sauvegarder')
 

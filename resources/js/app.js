@@ -36,6 +36,7 @@ require('./pages/auth/register');
 require('./pages/threads/threads');
 require('./pages/moderator/index')
 require('./pages/video');
+require('./pages/cms/contact-us-form');
 //////////////
 // GLOBAL
 require('./main.js');

@@ -43,4 +43,8 @@ class CmsController extends Controller
     {
         return view('pages/cms/ressources-utiles');
     }
+    public function contactezNous()
+    {
+        return view('pages/cms/contactez-nous');
+    }
 }
