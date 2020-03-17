@@ -26,9 +26,11 @@ Route::name('cms.')->namespace('Cms')->group(function () {
     Route::get('minstaller-comme-paysan', 'CmsController@minstallerCommePaysan');
     Route::get('louer-vendre-mes-terres', 'CmsController@louerVendreMesTerres');
     Route::get('ceder-ma-ferme', 'CmsController@cederMaFerme');
-    Route::get('ceder-mes-terres', 'CmsController@cederMesTerres');
+    //Route::get('ceder-mes-terres', 'CmsController@cederMesTerres');
     Route::get('trouver-un-emploi', 'CmsController@trouverUnEmploi');
     Route::get('mentions-legales', 'CmsController@mentionsLegales');
+    Route::get('confier-mes-terres', 'CmsController@confierMesTerres');
+    Route::get('ressources-utiles', 'CmsController@ressourcesUtiles');
 });
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {
