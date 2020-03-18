@@ -1,5 +1,7 @@
 <?php
 
+use Omniphx\Forrest\Providers\Laravel\ForrestServiceProvider;
+
 return [
 
     /*
@@ -165,6 +167,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Omniphx\Forrest\Providers\Laravel\ForrestServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -174,9 +177,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\ViewServiceProvider::class,
-
-        Omniphx\Forrest\Providers\Laravel\ForrestServiceProvider::class
+        App\Providers\ViewServiceProvider::class
     ],
 
     /*

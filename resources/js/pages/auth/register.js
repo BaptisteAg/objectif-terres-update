@@ -5,10 +5,15 @@ Vue.component('register-form', {
     components: {
         Autocomplete,
     },
+    props: {
+        oldValues: {
+            type: Object
+        }
+    },
     data() {
         return {
-            optionProfileSelected: '',
-            citySelect: [],
+            optionProfileSelected: this.oldValues.profile || '',
+            citySelect: this.oldValues.citySelect ? JSON.parse(this.oldValues.citySelect) : [],
         }
     }
 });

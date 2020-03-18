@@ -14,8 +14,9 @@ class AppInstall extends Command
      *
      * @var string
      */
-    protected $signature = 'app:install 
-                            {--C|composerdump : run composer dumpautoload before installing}';
+    protected $signature = 'app:install
+                            {--C|composer : run composer install}
+                            {--N|npm : run npm install}';
 
     /**
      * The console command description.
@@ -41,14 +42,15 @@ class AppInstall extends Command
      */
     public function handle()
     {
-        if($this->option('composerdump')) {
-            exec('composer dumpautoload');
+        if($this->option('composer')) {
+            exec('composer install');
         }
-
+        if($this->option('npm')) {
+            exec('npm install');
+        }
 
         $this->call(FreshCommand::class);
         $this->call(SeedCommand::class);
-
 
         exec('npm run '.(env('APP_ENV') === 'production' ? 'production' : 'dev'));
 

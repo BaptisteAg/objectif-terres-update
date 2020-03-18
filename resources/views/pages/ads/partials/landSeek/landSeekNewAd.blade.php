@@ -17,13 +17,21 @@
                     <div class="column"></div>
                     <div class="column is-half">
                         <div class="field">
-                            {!! Form::label('land_seek[surface_range][]', 'Surface recherchée (en hectares)', ['class' => 'label']); !!}
+                            {!! Form::label('land_seek[surface_range][]', 'Surface recherchée* (en hectares)', ['class' => 'label']); !!}
                             <vue-slider-range
+                                    ref="surfaceRangeMax"
                                     name-min="land_seek[surface_range_min]"
                                     name-max="land_seek[surface_range_max]"
                                     :data="{{ json_encode($surfaceRanges->pluck('label', 'value')) }}"
                                     :value="[formInput.surfaceRangeMin, formInput.surfaceRangeMax]"
+                                    @input="v => (formInput.surfaceRangeMin = v[0]) && (formInput.surfaceRangeMax = v[1])"
                             ></vue-slider-range>
+
+                            <p class="help is-danger"
+                               style="margin-top: 30px;"
+                               v-if="$v.formInput.surfaceRangeMax.$error">
+                                Ce champ est requis.
+                            </p>
                         </div>
                         <br>
 
@@ -80,15 +88,30 @@
                         <div class="field">
                             {!! Form::label('land_seek[production_genres][]', 'Production(s) envisagée(s)*', ['class' => 'label']); !!}
 
-                            <multi-select
-                                    :options="{{json_encode($productionGenresWithOther)}}"
-                                    group-values="children"
-                                    name="land_seek[production_genres][]"
-                                    v-model="formInput.productionGenres"
-                                    selected-count-text="productions sélectionnée(s)"
-                                    placeholder="Sélectionnez au moins une production"
-                                    ref="productionGenres">
-                            </multi-select>
+                            <div class="checkboxes-production-genre">
+                                <div class="columns">
+                                    @foreach($productionGenresWithOther as $i => $productionGenre)
+                                        <div class="column is-half">
+                                            <custom-checkbox
+                                                    name="land_seek[production_genres][]"
+                                                    input-value="{{$productionGenre["id"]}}"
+                                                    :disabled="isInputDisabled"
+                                                    v-model="formInput.productionGenres"
+                                                    ref="productionGenres">
+
+                                                <i class="fa fa-home"></i>
+                                                <span style="font-size:16px">
+                                                    {{ $productionGenre["name"] }}
+                                                </span>
+                                            </custom-checkbox>
+                                        </div>
+                                        @if($i % 2)
+                                        </div>
+                                        <div class="columns">
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
 
                             <p class="help is-danger" id="productionGenresError"
                                v-if="$v.formInput.productionGenres.$error">
@@ -121,8 +144,8 @@
                                         <custom-checkbox
                                                 name="land_seek[installation_type_id]"
                                                 input-value="{{$installationType["id"]}}"
-                                                v-model="formInput.installationTypeId"
                                                 :disabled="isInputDisabled"
+                                                v-model="formInput.installationTypeId"
                                                 ref="installationTypeId"
                                                 :is-radio="true">
 
@@ -188,22 +211,9 @@
 
                         @include('pages.ads.partials.inputs.documents')
 
-                        <div class="field">
-                            <label class="checkbox">
-                                <input type="checkbox"
-                                       id="certification_charte"
-                                       name="land_seek[chart_confirmation]"
-                                       :disabled="isInputDisabled"
-                                       v-model="formInput.chartConfirmation"
-                                       ref='chartConfirmation'
-                                       aria-describedby='chartConfirmationError'>
+                        @include('pages.ads.partials.inputs.accept-share-contact-infos')
 
-                                Je certifie que mon projet correspond à la <a href="/">charte de Terre de Liens</a>
-                            </label>
-                            <p class="help is-danger" id="chartConfirmationError"
-                               v-if="$v.formInput.chartConfirmation.$error">Vous
-                                devez cocher cette case.</p>
-                        </div>
+                        @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'land_seek'])
 
                         <article class="message is-warning" v-if="$v.$error">
                             <div class="message-header">
@@ -223,3 +233,9 @@
 
     </form-wizard>
 </div>
+<script>
+    import CustomCheckbox from "../../../../../js/components/CustomCheckbox";
+    export default {
+        components: {CustomCheckbox}
+    }
+</script>

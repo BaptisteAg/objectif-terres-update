@@ -153,7 +153,15 @@ class AdService
 	/**
 	 * @return array|\Illuminate\Support\Collection
 	 */
-	public function getProductionGenresFlattened()
+	public function getProductionGenres()
+    {
+        return $this->productionGenreRepository->all();
+    }
+
+    /**
+     * @return array|\Illuminate\Support\Collection
+     */
+    public function getProductionGenresFlattened()
     {
         return $this->productionGenreRepository->getFlattened();
     }

@@ -34,7 +34,7 @@
 
     </div>
 
-    <div v-if="adTypeSelected === 'offer_ads'" class="column">
+    <div v-if="offerTypeSelected === 'offer'" class="column">
         <div class="column">
             <div class="field">
                 <label class="checkbox">

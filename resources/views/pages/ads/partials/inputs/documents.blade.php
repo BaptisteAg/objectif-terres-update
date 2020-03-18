@@ -4,7 +4,7 @@
         Documents
         <i class="fas fa-info-circle has-text-info"></i><br>
         <span style="font-weight:normal">
-            Ajoutez des photos ou un document PDF pour donner envie de consulter votre annonce.<br>
+            Ajoutez des photos ou un document PDF ou DOC pour donner envie de consulter votre annonce.<br>
         </span>
     </label>
 
