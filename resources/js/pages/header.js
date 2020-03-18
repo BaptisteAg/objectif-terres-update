@@ -15,7 +15,7 @@ Vue.component('header-page',{
     },
     data() {
         return {
-            offerTypeSelected: this.searchValues ? this.searchValues.offer_type : 'offer',
+            offerTypeSelected: this.searchValues ? this.searchValues.offer_type : 'OfferAd',
             adCategorySelected: this.searchValues ? this.searchValues.ad_category : 'land',
             selectedRegions: this.searchValues ? this.searchValues.regions : [],
             isFormOpen : false,

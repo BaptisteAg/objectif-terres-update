@@ -160,11 +160,7 @@
 								</div>
 								<div class="level-right">
 									<div class="level-item">
-										@if($ad->is_today)
-											<span>Publié aujourd'hui</span>
-										@else
 											<span>Publié {{ $ad->created_at_diff }}</span>
-										@endif
 									</div>
 								</div>
 							</nav>
@@ -173,25 +169,16 @@
 							</a>
 
 
-                            <nav class="level">
-                                <div class="level-left">
-                                    <div class="level-item" style="display:none">
-                                        <span>Partenaire Objectif Terre</span>
-                                    </div>
-                                    <div>
-                                        {{ $ad->regions->pluck('name')->implode(', ') }}
-                                    </div>
-                                </div>
-                                <div class="level-right">
-                                    <div class="level-item">
-                                        @if($ad->is_today)
-                                            <span>Publié aujourd'hui</span>
-                                        @else
-                                            <span>Publié {{ $ad->created_at_diff }}</span>
-                                        @endif
-                                    </div>
-                                </div>
-                            </nav>
+{{--                            <nav class="level">--}}
+{{--                                <div class="level-left">--}}
+{{--                                    <div class="level-item" style="display:none">--}}
+{{--                                        <span>Partenaire Objectif Terre</span>--}}
+{{--                                    </div>--}}
+{{--                                    <div>--}}
+{{--                                        {{ $ad->regions->pluck('name')->implode(', ') }}--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </nav>--}}
 
                             @if($adType === 'landOfferAd')
                                 <div><span>{{ $ad->landOfferAd->price }}</span> € |

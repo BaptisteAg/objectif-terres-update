@@ -164,9 +164,10 @@ class ResearchService
 		$adsFilter = (new Ad)->newQuery();
 		//Filter by type of ads
 		$adTypeSelected = '';
-		if ($filters->has('ad_type') && $filters->has('ad_category')) {
-			$adTypeSelected = $filters->input('ad_category') . $filters->input('ad_type');
+		if ($filters->has('ad_category') && $filters->has('offer_type')) {
+			$adTypeSelected = $filters->input('ad_category') . $filters->input('offer_type');
 		}
+
 		//If request, filter by departments locations and all locations related to the departments selected
 		if ($filters->has('cities_location_researches_ids')) {
 			if (!is_null($filters->input('radius_research'))) {

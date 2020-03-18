@@ -28,6 +28,6 @@ class ResearchComposer
         $bioCertifications = BioCertification::orderBy('name')->get();
 		$offerGenres = OfferGenre::orderBy('name')->get();
 
-        $view->with(compact('regionsWithAll','departments', 'jobOfferTypes', 'productionGenres', 'bioCertifications'));
+        $view->with(compact('regionsWithAll','departments', 'jobOfferTypes', 'productionGenres', 'bioCertifications', 'offerGenres'));
     }
 }

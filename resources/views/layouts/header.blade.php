@@ -110,7 +110,7 @@
                             <div class="select">
                                 <label for="select"></label>
                                 {{ Form::select('offer_type',
-                                    ['offer' => 'Cherche ', 'seek' => 'Propose'],
+                                    ['OfferAd' => 'Cherche ', 'SeekAd' => 'Propose'],
                                     null,
                                     ['v-model' => 'offerTypeSelected']
                                 ) }}
