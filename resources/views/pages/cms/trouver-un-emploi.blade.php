@@ -63,29 +63,25 @@
 
     @include('components.faq-frequentes')
 
-    <section class="section">
+    <section class="section contactus-background">
         <div class="container">
-            <div class="rows">
-                <div class="columns">
-                    <div class="column is-9 block-tdl-contact">
-                        <div class="row">
-                            <h2 class="title is-2"><span>Léguez vos terres à Terre de Liens:</span><br> nous allons vous guider étape par étape.</h2>
-                            <p>
-                                maecenas faucibus mollis interdum. Maecenas sed diam eget risus varius blandit
-                                sit amet non magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                                posuere con, maecenas faucibus mollis interdum. Maecenas sed diam eget risus
-                                varius blandit sit amet non magna. Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Sed posuere consectetur est at lobortis. Integer posuere erat a
-                                ante venenatis dapibus posuere velit aliquet. Donec sed odio dui.Vivamus sagittis
-                                lacus vel augue laoreet rutrum faucibus dolor auctor. Nullam quis risus eget urna
-                                mollis ornare vel eu leo. Maecenas faucibus mollis interdum. Maecenas sed diam
-                                eget risus varius blandit sit amet non magna. Morbi leo risus, porta ac consectetur
-                            </p>
-                        </div>
-                        <div class="row">
-                            <button class="button is-link">CONTACTEZ-NOUS</button>
-                        </div>
-                    </div>
+            <div class="columns">
+                <div class="column is-6">
+                    <h2 class="title is-2">Avez-vous besoin d'un conseil ou d'une orientation dans votre recherche d'emploi ?</h2>
+                    <p>
+                        Votre meilleur option pour réaliser avec succès votre cession c’est de nous
+                        faire confiance. Avec nous une chose est sûre : vous êtes accompagné et suivi
+                        du début de votre projet jusqu’à son aboutissement.
+                    </p>
+                    <br>
+                    <p>
+                        Notre réseau territorial, nos bénévoles et nos partenaires sont tous là pour
+                        vous aider à trouver le meilleur candidat en mesure de reprendre votre
+                        ferme avec un projet sérieux et solide à la base.
+                    </p>
+                </div>
+                <div class="column is-6 contactUs-button">
+                    <button class="button is-link">CONTACTEZ-NOUS</button>
                 </div>
             </div>
         </div>
