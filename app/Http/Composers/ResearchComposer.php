@@ -15,15 +15,19 @@ class ResearchComposer
 
     public function compose(View $view)
     {
-        $regions = Region::orderBy('name')->get();
+        $regionsWithAll = Region::orderBy('name')->get()->prepend(
+            (object)[
+                'id' => -1,
+                'name' => 'Toutes les régions'
+            ]
+        );
         $departments = Department::orderBy('name')->get();
-
 
         $jobOfferTypes = JobOfferType::orderBy('name')->get();
         $productionGenres = ProductionGenre::orderBy('name')->get();
         $bioCertifications = BioCertification::orderBy('name')->get();
 		$offerGenres = OfferGenre::orderBy('name')->get();
 
-        $view->with(compact('regions','departments', 'jobOfferTypes', 'productionGenres', 'bioCertifications', 'offerGenres'));
+        $view->with(compact('regionsWithAll','departments', 'jobOfferTypes', 'productionGenres', 'bioCertifications'));
     }
 }

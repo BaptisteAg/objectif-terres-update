@@ -17,10 +17,9 @@ use Illuminate\Support\Str;
 |
 */
 
-$factory->define(User::class, function () {
+$factory->define(User::class, function (Faker $faker) {
+	$city = City::inRandomOrder()->first();
 	$faker = Factory::create('fr_FR');
-
-	$city = City::all()->random();
 	return [
         'name' => $faker->lastName,
 		'first_name'=>$faker->firstName,

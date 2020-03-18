@@ -41,16 +41,17 @@ class UserService
 			$data['accept_share_contact_infos'] = 0;
 		}
 
-		$city = City::find($data['city_id']);
-		$data['zip_code_id'] = $city->id;
-		$data['city'] = $city->name;
 		$data['role'] = 0;
 
+	    if(isset($data['city_id'])) {
+            $city = City::find($data['city_id']);
+            $data['zip_code_id'] = $city->id;
+            $data['city'] = $city->name;
+        }
 		
 		foreach ($data as $item => $value) {
 			$data[$item] = $value;
 		}
-
 
 		return $this->repository->create($data);
 
@@ -70,6 +71,14 @@ class UserService
 	 */
 	public function findAllExceptPP(){
 		return $this->repository->findAllExceptPP();
+	}
+
+	/**
+	 * @param int $id
+	 * @return User
+	 */
+	public function findByEmail(string $email){
+		return $this->repository->findByEmail($email);
 	}
 
 }

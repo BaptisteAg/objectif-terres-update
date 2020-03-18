@@ -1,33 +1,48 @@
 <template>
-    <input type="text"
-           class="autocomplete-input"
-           ref="input"
-           v-model="autocompleteValue"
-           v-on:click="onClick"
-           v-on:awesomplete-select="onSelect">
+    <div class="control autocomplete-control has-icons-right">
+        <input type="text"
+               class="input autocomplete-input"
+               ref="input"
+               v-model="autocompleteValue"
+               :placeholder="placeholder"
+               v-on:click="onClick"
+               v-on:awesomplete-select="onSelect">
+        <span class="icon is-small right" v-show="isFetching">
+            <i class="fas fa-spinner fa-spin"></i>
+        </span>
+
+        <input type="hidden" :name="name" :value="JSON.stringify(value)" v-if="name">
+        <slot></slot>
+    </div>
 </template>
 
 <style lang="scss">
-    .content .awesomplete > ul {
-        list-style: none;
-        z-index: 10;
-        margin: 0;
-    }
+    .control.autocomplete-control {
+        position: relative;
 
-    .awesomplete {
-        width: 100%;
+        .awesomplete {
+            width: 100%;
 
-        ul {
-            z-index: 5;
+            ul {
+                list-style: none;
+                z-index: 10;
+                margin: 0;
+            }
+        }
+
+        .autocomplete-input {
+            width: 100%;
+
+            &:focus {
+            }
         }
     }
 
-    .autocomplete-input {
-        width: 100%;
-    }
 </style>
 
 <script>
+    require('awesomplete/awesomplete.min');
+
     export default {
         props: {
             value: {
@@ -35,6 +50,9 @@
                 default() {
                     return []
                 }
+            },
+            name: {
+                type: String
             },
             src: {
                 type: String,
@@ -49,6 +67,9 @@
             multiple: {
                 type: Boolean,
                 default: false
+            },
+            placeholder: {
+                type: String
             }
         },
         data() {
@@ -82,8 +103,8 @@
                     return
                 }*/
 
-                if(!this.multiple) {
-                    this.value.splice(0,1)
+                if (!this.multiple) {
+                    this.value.splice(0, 1)
                 }
                 this.value.push(e.text);
 

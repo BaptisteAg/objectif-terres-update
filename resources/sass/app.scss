@@ -50,6 +50,10 @@ html {
   font-family: $font-family-sans-serif;
 }
 
+.control.has-icons-left .icon, .control.has-icons-right .icon {
+  right: 0;
+}
+
 .has_margin{
     margin:$has_margin;
 }
@@ -154,4 +158,19 @@ body .multiselect__tag {
 
 .research-bottom-element{
   margin-top: 25%;
+}
+
+
+// Autocomplete bulma tags
+.tag.autocomplete-input-tag.is-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 15px;
+    text-align:left;
+    color:#000;
+    background:#fff;
+    border: 1px solid #dbdbdb;
 }

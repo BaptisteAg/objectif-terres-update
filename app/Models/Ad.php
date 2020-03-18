@@ -20,6 +20,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property int $user_pp_id
  * @property int|null $user_admin_id
  * @property int $is_draft
+ * @property int $accept_share_contact_infos
  * @property string|null $title
  * @property string|null $about_content
  * @property string|null $about_project_content
@@ -55,6 +56,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAboutContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAboutProjectContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAcceptShareContactInfos($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAttributionAdId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereId($value)
@@ -74,7 +76,15 @@ class Ad extends Model implements HasPresenter
      * @var array
      */
     protected $fillable = [
-        'attribution_ad_id', 'project_id', 'user_pp_id', 'user_admin_id', 'is_draft', 'title', 'about_content', 'about_project_content'
+        'attribution_ad_id',
+        'project_id',
+        'user_pp_id',
+        'user_admin_id',
+        'is_draft',
+        'title',
+        'about_content',
+        'about_project_content',
+        'accept_share_contact_infos'
     ];
 
     /**

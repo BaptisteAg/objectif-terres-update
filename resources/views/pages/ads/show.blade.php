@@ -24,6 +24,7 @@
 @endsection
 
 @section('script')
+    <script src="{{asset('/js/bulma-carousel.js')}}"></script>
 	<script>
         let buttons = document.querySelectorAll('#open-modal-message');
         buttons.forEach((button)=>{
@@ -53,20 +54,16 @@
             notification.style.display='none';
 
         })
-	</script>
-	@if(count($ad->images) > 1)
-        <script src="{{asset('/js/bulma-carousel.js')}}"></script>
-        <script>
-            const carousel = bulmaCarousel.attach('#ad-images', {
-                slidesToScroll: 1,
-                slidesToShow: 1,
-                loop: true,
-                navigation: true,
-            });
-        </script>
-    @endif
 
-	<script>
+        @if(count($ad->images) > 1)
+            const carousel = bulmaCarousel.attach('#ad-images', {
+                    slidesToScroll: 1,
+                    slidesToShow: 1,
+                    loop: true,
+                    navigation: true,
+                });
+        @endif
+
         const vueThreads = new Vue({
             el: '#vue-messages',
             name: 'content'

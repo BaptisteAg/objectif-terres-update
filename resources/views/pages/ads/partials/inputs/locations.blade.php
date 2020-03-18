@@ -1,14 +1,14 @@
 <section class="container">
-    <div class="columns">
+    <div class="columns is-desktop">
         <div class="column"></div>
-        <div class="column is-half">
+        <div class="column is-half-desktop is-8-mobile">
             <zone-select
                     name="locationable"
                     radius-name="locationable_radius"
                     json-name="selected_zones"
                     ref="selectedZones"
                     v-model="formInput.selectedZones"
-                    radiusValue="{{old('land_seek[locationable_radius]', 0)}}"
+                    radius-value="{{old('land_seek[locationable_radius]', 0)}}"
                     :vuelidate="$v.formInput.selectedZones"
                     :disabled="isInputDisabled">
             </zone-select>

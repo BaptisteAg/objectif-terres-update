@@ -74,8 +74,9 @@ export default {
                     const type = input.getAttribute("type");
                     const isCheckbox = type && type.match(/checkbox|radio/i);
                     const isMultiSelect = input.classList.contains('multiselect__input');
+                    const isHidden = type && type.match(/hidden/i);
 
-                    if (isCheckbox || isMultiSelect) {
+                    if (isCheckbox || isMultiSelect || isHidden) {
                         let field = input.parentElement;
                         while (!field.classList.contains('field')) {
                             field = field.parentElement

@@ -3,7 +3,6 @@
     <div class="control">
         <autocomplete
                 id="land_offer_zone-autocomplete"
-                class="input"
                 placeholder="Saisissez les premiers chiffres"
                 ref='selectedZones'
                 :disabled="isInputDisabled"
@@ -16,13 +15,13 @@
         <input type="hidden" name="selected_zones"
                :value="JSON.stringify(formInput.selectedZones)">
         <div>
-                                    <span class="tag is-info"
-                                          v-for="(zone,i) in formInput.selectedZones"
-                                          @click="_ => formInput.selectedZones.splice(i,1)">
-                                        Code postal sélectionné :
-                                        <b>@{{ zone.label }}</b>
-                                        <i class="fa fa-trash" style="cursor:pointer"></i>
-                                    </span>
+            <span class="tag autocomplete-input-tag  is-info"
+                  v-for="(zone,i) in formInput.selectedZones"
+                  @click="_ => formInput.selectedZones.splice(i,1)">
+                Code postal sélectionné :
+                <b>@{{ zone.label }}</b>
+                <i class="fa fa-trash" style="cursor:pointer"></i>
+            </span>
         </div>
     </div>
     <p class="help is-danger" v-if="$v.formInput.selectedZones.$error">

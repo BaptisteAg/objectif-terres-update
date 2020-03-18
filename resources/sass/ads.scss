@@ -109,6 +109,42 @@
     display: inline-block;
     margin: 10px 10px 0 0;
   }
+
+  .checkboxes-production-genre {
+    .column {
+      padding: 0;
+
+      .cradio-container {
+        height: auto;
+        padding-bottom: 36px;
+        padding-left: 100%;
+        padding-top: 9px;
+        margin-bottom: 0;
+        text-align: left;
+
+        .cradio-checkmark {
+          background-color: transparent;
+          box-shadow: none;
+          padding-left: 15px;
+
+          span {
+            margin-bottom:20px;
+          }
+        }
+
+        /* On mouse-over, add a grey background color */
+        &:hover input ~ .cradio-checkmark {
+          background-color: #ccc;
+        }
+
+        /* When the checkbox is checked, add a blue background */
+        input:checked ~ .cradio-checkmark {
+          background-color: #2196F3;
+          color: #fff;
+        }
+      }
+    }
+  }
 }
 
 .subtitle {

@@ -6,7 +6,7 @@
             @on-complete="$emit('form-complete')"
             color="#3498db"
             ref="formWizard">
-        <tab-content title="Description du bien" icon="ti-location-arrow">
+        <tab-content title="Foncier" icon="ti-location-arrow">
             <section class="container">
                 <div class="columns">
                     <div class="column"></div>
@@ -14,7 +14,7 @@
 
                         @include('pages.ads.partials.inputs.zip_code', ["uri"=>"cities-and-departments"])
 
-                        <div class="field">
+                        <div class="field has-tooltip-left" data-tooltip="Ce choix peut rendre votre annonce moins visible lors des recherches.">
                             <label for="land_offer[accept_use_zip_code]" class="checkbox">
                                 {!! Form::checkbox('land_offer[accept_use_zip_code]', '0', old('land_offer[accept_use_zip_code]'), [
                                     "id" =>"land_offer[accept_use_zip_code]",
@@ -43,7 +43,7 @@
                                             'v-model' => 'formInput.surface',
                                             'ref' => 'surface'
                                         ]) !!}
-                                        <span class="icon is-small is-right">
+                                        <span class="icon is-small is-right" style="color: #4a4a4a;">
                                           ha
                                         </span>
                                     </div>
@@ -91,7 +91,7 @@
             </section>
         </tab-content>
 
-        <tab-content title="Description générale du bien" icon="ti-location-arrow">
+        <tab-content title="Production Agricole" icon="ti-location-arrow">
             <section class="container">
                 <div class="columns">
                     <div class="column"></div>
@@ -104,7 +104,7 @@
                                     group-values="children"
                                     name="land_offer[production_genres][]"
                                     v-model="formInput.productionGenres"
-                                    placeholder="Sélectionnez au moins une production"
+                                    placeholder="Sélectionnez une ou plusieurs productions"
                                     ref="productionGenres">
                             </multi-select>
 
@@ -122,7 +122,7 @@
                                     group-values="children"
                                     name="land_offer[production_genres_wanted][]"
                                     v-model="formInput.productionGenresWanted"
-                                    placeholder="Sélectionnez au moins une production"
+                                    placeholder="Sélectionnez une ou plusieurs productions"
                                     ref="productionGenresWanted">
                             </multi-select>
                         </div>
@@ -139,27 +139,30 @@
                                         return in_array($v->name, ['Aucune', 'En conversion']);
                                     }))}}"
                                     :show-icons="true"
-                                    placeholder="Sélectionnez au moins une production"
+                                    placeholder="Sélectionnez une ou plusieurs certifications"
                                     ref="bioCertifications">
                             </multi-select>
                         </div>
 
                         <div class="field">
                             {!! Form::label('land_offer[water_access]', "Accès à l'eau existant", ['class' => 'label']); !!}
-                            <div class="select">
-                                {!! Form::select('land_offer[water_access]',
-                                     [
-                                        '1' => 'Oui',
-                                        '0' => 'Non',
-                                        '' => 'Je ne sais pas'
-                                    ],
-                                    null,
-                                    [
-                                        'v-model' => 'formInput.waterAccess',
-                                        'placeholder' => 'Veuillez séléctionner...',
-                                        ':disabled' => 'isInputDisabled'
-                                    ]);
-                                !!}
+                            <div>
+                                <label>
+                                    {!! Form::radio('land_offer[water_access]', 1, null, [
+                                            'v-model' => 'formInput.waterAccess',
+                                            ':disabled' => 'isInputDisabled'
+                                        ]);
+                                    !!}
+                                    Oui
+                                </label>
+                                <label>
+                                    {!! Form::radio('land_offer[water_access]', 0, null, [
+                                            'v-model' => 'formInput.waterAccess',
+                                            ':disabled' => 'isInputDisabled'
+                                        ]);
+                                    !!}
+                                    Non
+                                </label>
                             </div>
                         </div>
                         <div class="field" v-show="hasWaterAccess">
@@ -181,6 +184,7 @@
 
                         <div class="field">
                             {!! Form::label('land_offer[altitude]', 'Altitude*', [
+                                'ref' => 'altitude',
                                 'class' => 'label',
                             ]); !!}
 
@@ -192,7 +196,7 @@
                                             'class' => 'input',
                                             ':disabled'=>'isInputDisabled',
                                         ]) !!}
-                                        <span class="icon is-small is-right">
+                                        <span class="icon is-small is-right" style="color: #4a4a4a;">
                                           m
                                         </span>
                                     </div>
@@ -333,7 +337,7 @@
                                             'v-model' => 'formInput.price',
                                             ':disabled'=>'isInputDisabled',
                                         ]) !!}
-                                        <span class="icon is-small is-right">
+                                        <span class="icon is-small is-right" style="color: #4a4a4a;">
                                           €
                                         </span>
                                     </div>
@@ -356,7 +360,7 @@
                                             'v-model' => 'formInput.rentPrice',
                                             ':disabled'=>'isInputDisabled',
                                         ]) !!}
-                                        <span class="icon is-small is-right">
+                                        <span class="icon is-small is-right" style="color: #4a4a4a;">
                                           €
                                         </span>
                                     </div>
@@ -424,25 +428,11 @@
                         ?>
                         @include('pages.ads.partials.inputs.title', ["tooltip"=>$titleTooltip])
 
-
                         @include('pages.ads.partials.inputs.documents')
 
-                        <div class="field">
-                            <label class="checkbox">
-                                <input type="checkbox"
-                                       id="certification_charte"
-                                       name="land_offer[chart_confirmation]"
-                                       :disabled="isInputDisabled"
-                                       v-model="formInput.chartConfirmation"
-                                       ref='chartConfirmation'
-                                       aria-describedby='chartConfirmationError'>
+                        @include('pages.ads.partials.inputs.accept-share-contact-infos')
 
-                                Je certifie que mon projet correspond à la <a href="/">charte de Terre de Liens</a>
-                            </label>
-                            <p class="help is-danger" id="chartConfirmationError"
-                               v-if="$v.formInput.chartConfirmation.$error">Vous
-                                devez cocher cette case.</p>
-                        </div>
+                        @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'land_offer'])
 
                         <article class="message is-warning" v-if="$v.$error">
                             <div class="message-header">

@@ -2,6 +2,7 @@
 
 use App\Models\ProductionGenre;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
@@ -14,6 +15,14 @@ class ProductionGenreRepository extends AbstractRepository
     public function entity()
     {
         return ProductionGenre::class;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function all($paginate = null)
+    {
+        return $this->entity->with('children')->get();
     }
 
     public function getFlattened()
