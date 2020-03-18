@@ -50,11 +50,5 @@ interface ResearchRepositoryInterface
 	 */
 
 	public function create(array $data) : Research;
-	/**
-	 * Find all ads related to research
-	 *
-	 * @param int
-	 * @param array
-	 */
-	public function findRelatedAds(int $id) ;
+
 }

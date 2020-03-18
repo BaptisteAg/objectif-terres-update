@@ -91,7 +91,6 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 	 */
 	public function create(array $data): Research
 	{
-
 		$research = new Research();
 		$researchData = $data;
 		$research->fill($researchData);
@@ -114,27 +113,24 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 			$research->regions()->attach($data['regions_location_researches_ids']);
 		}
 
+		if (isset ($data['production_genres'])){
+			$research->productionGenres()->attach($data['production_genres']);
+		}
+
+		if(isset ($data['bio_certifications'])){
+			$research->bioCertifications()->attach($data['bio_certifications']);
+		}
+
+		if(isset ($data['offer_genres'])){
+			$research->offerGenres()->attach($data['offer_genres']);
+		}
+
+		if(isset ($data['jobOfferType'])){
+			$research->jobOfferTypes()->attach($data['jobOfferType']);
+		}
+
 		return $research;
 	}
-
-	public function findRelatedAds(int $id)
-	{
-		$research = $this->find($id);
-		$regions = $research->regions;
-		$adType = $research->ad_type;
-
-		$ads = collect();
-		foreach ($regions as $region) {
-			$regionAds = $region->ads;
-			foreach ($regionAds as $key => $ad) {
-				if ($ad->$adType) {
-					$ads[$ad->id] = $ad;
-				}
-			}
-		}
-		return $ads;
-	}
-
 
 	private function getEagerLoading()
 	{
