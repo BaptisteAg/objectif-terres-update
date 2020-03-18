@@ -83,9 +83,7 @@
 									</div>
 								</div>
 							</form>
-
 						@endguest
-
 					</div>
 				</div>
 			</nav>
@@ -126,18 +124,31 @@
 					</div>
 				</div>
 			</nav>
-
-
 			<section class="section">
 				@foreach($ads as $ad)
-					<div class="columns is-gapless">
-						<div class="column is-two-fifths">
+					<div class="columns">
+						<div class="column is-two-fifths"
+							 style="background-image: url('https://picsum.photos/500/300')">
 							<a href="{{route("ads.show", $ad->id)}}">
-								<figure><img src="https://picsum.photos/500/300" alt="Placeholder image"></figure>
+								<div class="columns">
+									<div class="column is-full ">
+										@if(count($ad->regions))
+											<p class="has-text-link ">{{$ad->regions->pluck('name')->implode(', ')}}</p>
+										@endif
+										@if(count($ad->departments))
+											<p class="has-text-link ">{{$ad->departments->pluck('name')->implode(', ')}}</p>
+										@endif
+										@if(count($ad->cities))
+											<p class="has-text-link "></p>{{ $ad->cities->pluck('name')->implode(', ') }}
+										@endif
+									</div>
+								</div>
+{{--									<div class="columns">--}}
+{{--										<div class="column is-full has-background-info research-bottom-element">--}}
+{{--										</div>--}}
+{{--									</div>--}}
 							</a>
-							<div>
-								{{ $ad->regions->pluck('name')->implode(', ') }}
-							</div>
+
 							{{--							@if($adType === 'landOfferAd')--}}
 							{{--								<div><span>{{ $ad->$adType->land->price }}</span> € |--}}
 							{{--									<span>{{ $ad->$adType->land->area }}</span> ha--}}
@@ -146,6 +157,7 @@
 							{{--								<div><span></span></div>--}}
 							{{--							@endif--}}
 						</div>
+
 						<div class="column">
 							<nav class="level">
 								<div class="level-left">
@@ -180,6 +192,7 @@
 							</a>
 						</div>
 					</div>
+					<br>
 				@endforeach
 			</section>
 

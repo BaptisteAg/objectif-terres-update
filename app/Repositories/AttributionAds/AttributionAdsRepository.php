@@ -46,8 +46,8 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 	{
 		return $this->entity
 			->where(["user_moderator_id" => $userId])
+			->orderByDesc('created_at')
 			->with($this->getEagerLoading())
-			->limit(50)
 			->get();
 	}
 

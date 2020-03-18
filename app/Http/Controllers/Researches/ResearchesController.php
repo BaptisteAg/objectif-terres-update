@@ -27,6 +27,7 @@ class ResearchesController extends Controller
 	public function index(Request $request)
 	{
 
+
 		list ($ads, $adType) = $this->researchService->index($request);
 
 

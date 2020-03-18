@@ -16,7 +16,7 @@
 		<ajax-multi-select
 				:multiple="true"
 				selected-count-text="ville sélectionnée"
-				placeholder="Choississez un département"
+				placeholder="Choississez une ville"
 				name-option-label="villes"
 				src="/locations/cities"
 				name="cities_location_researches_ids[]">
