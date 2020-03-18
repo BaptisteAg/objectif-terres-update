@@ -153,7 +153,6 @@ class AttributionAdsService
 			$attributionAdsFiltered->filterArrayDataInCurrentModel($filters->input('ad_statuses'), 'ad_status_id');
 		}
 		$attributionAds = $attributionAdsFiltered
-			->limit(100)
 			->with('ad',
 				'ad.userPp',
 				'adStatus',
@@ -169,6 +168,7 @@ class AttributionAdsService
 				'ad.landSeekAd',
 				'ad.landOfferAd',
 				'ad.jobOfferAd')
+			->orderByDesc('created_at')
 			->get();
 		return $attributionAds;
 	}
