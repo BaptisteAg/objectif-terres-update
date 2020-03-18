@@ -4,7 +4,6 @@
             <div class="modal-background" @click="$emit('close')"></div>
             <div class="modal-content">
                 <div class="card">
-
                     <div class="card-content">
                         <template v-if="moderationChoice === 'modifyAd'">
                             <h3 class="title is-3 has-text-centered has-text-black ">Demander la modification de

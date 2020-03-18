@@ -103,9 +103,9 @@
 				<div class="level-right">
 					<div class="level-item">
 						{!! Form::open(['url' => '']) !!}
-                            {!! Form::submit('Tout', ['class' => 'button']) !!}
-                            {!! Form::submit('Vente', ['class' => 'button']) !!}
-                            {!! Form::submit('Location', ['class' => 'button']) !!}
+						{!! Form::submit('Tout', ['class' => 'button']) !!}
+						{!! Form::submit('Vente', ['class' => 'button']) !!}
+						{!! Form::submit('Location', ['class' => 'button']) !!}
 						{!! Form::close() !!}
 					</div>
 					<div class="level-item">
@@ -121,35 +121,10 @@
 			<section class="section">
 				@foreach($ads as $ad)
 					<div class="columns">
-						<div class="column is-two-fifths"
-							 style="background-image: url('https://picsum.photos/500/300')">
+						<div class="column is-two-fifths">
 							<a href="{{route("ads.show", $ad->id)}}">
-								<div class="columns">
-									<div class="column is-full ">
-										@if(count($ad->regions))
-											<p class="has-text-link ">{{$ad->regions->pluck('name')->implode(', ')}}</p>
-										@endif
-										@if(count($ad->departments))
-											<p class="has-text-link ">{{$ad->departments->pluck('name')->implode(', ')}}</p>
-										@endif
-										@if(count($ad->cities))
-											<p class="has-text-link "></p>{{ $ad->cities->pluck('name')->implode(', ') }}
-										@endif
-									</div>
-								</div>
-{{--									<div class="columns">--}}
-{{--										<div class="column is-full has-background-info research-bottom-element">--}}
-{{--										</div>--}}
-{{--									</div>--}}
+								<figure><img src="https://picsum.photos/500/300" alt="Placeholder image"></figure>
 							</a>
-
-							{{--							@if($adType === 'landOfferAd')--}}
-							{{--								<div><span>{{ $ad->$adType->land->price }}</span> € |--}}
-							{{--									<span>{{ $ad->$adType->land->area }}</span> ha--}}
-							{{--								</div>--}}
-							{{--							@else--}}
-							{{--								<div><span></span></div>--}}
-							{{--							@endif--}}
 						</div>
 						<div class="column">
 							<nav class="level">
@@ -160,33 +135,32 @@
 								</div>
 								<div class="level-right">
 									<div class="level-item">
-											<span>Publié {{ $ad->created_at_diff }}</span>
+										<span>Publié {{ $ad->created_at_diff }}</span>
 									</div>
 								</div>
 							</nav>
 							<div></div>
-							<a href="{{route("ads.show", $ad->id)}}"><h1 class="title">{{ $ad->$adType->title }}</h1>
+							<a href="{{route("ads.show", $ad->id)}}">
+								<h1 class="title">{{ $ad->title }}</h1>
 							</a>
 
+							@if($adType === 'landOfferAd')
+								<div><span>{{ $ad->landOfferAd->price }}</span> € |
+									<span>{{ $ad->landOfferAd->surface }}</span> ha
+								</div>
+							@else
+								<div><span></span></div>
+							@endif
+							@if(count($ad->regions))
+								<p class="is-italic ">{{$ad->regions->pluck('name')->implode(', ')}}</p>
+							@endif
+							@if(count($ad->departments))
+								<p class="is-italic ">{{$ad->departments->pluck('name')->implode(', ')}}</p>
+							@endif
+							@if(count($ad->cities))
+								<p class="is-italic ">{{ $ad->cities->pluck('name')->implode(', ') }}</p>
+							@endif
 
-{{--                            <nav class="level">--}}
-{{--                                <div class="level-left">--}}
-{{--                                    <div class="level-item" style="display:none">--}}
-{{--                                        <span>Partenaire Objectif Terre</span>--}}
-{{--                                    </div>--}}
-{{--                                    <div>--}}
-{{--                                        {{ $ad->regions->pluck('name')->implode(', ') }}--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </nav>--}}
-
-                            @if($adType === 'landOfferAd')
-                                <div><span>{{ $ad->landOfferAd->price }}</span> € |
-                                    <span>{{ $ad->landOfferAd->surface }}</span> ha
-                                </div>
-                            @else
-                                <div><span></span></div>
-                            @endif
 
 							<div class="content descritption">
 								<p>{{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</p>
@@ -262,8 +236,8 @@
 
 		</div>
 	</section>
-    @include('components.partnering')
-    @include('components.supportTerreLiens')
+	@include('components.partnering')
+	@include('components.supportTerreLiens')
 @endsection
 
 @section('script')

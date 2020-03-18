@@ -177,7 +177,6 @@ class ResearchService
 				$adsFilter->filterLocations('cities', $filters->input('cities_location_researches_ids'));
 			}
 
-
 		} //If request, filter by departments locations and all locations related to the departments selected
 		else if ($filters->has('departments_location_researches_ids')) {
 			$departmentsCodes = Department::whereIn('id', $filters->input('departments_location_researches_ids'))->get('code')->toArray();

@@ -25,7 +25,7 @@
                     :values="['0', '>100']"></vue-slider>
                 <br>
             </div>
-                <div v-if="adTypeSelected === 'OfferAd'" class="field">
+                <div v-if="offerTypeSelected === 'OfferAd'" class="field">
                     {{ form::label('price_min', 'Prix minimum', ['class' => 'label']) }}
                     {{ form::number('price_min', '', ['min' => '0', 'pattern' => "([0-9]{1,3}).([0-9]{1,3})", 'class'=>'input']) }}
                     {{ form::label('price_max', 'Prix maximum', ['class' => 'label']) }}
@@ -34,7 +34,7 @@
 
     </div>
 
-    <div v-if="adTypeSelected === 'OfferAd'" class="column">
+    <div v-if="offerTypeSelected === 'OfferAd'" class="column">
         <div class="column">
             <div class="field">
                 <label class="checkbox">

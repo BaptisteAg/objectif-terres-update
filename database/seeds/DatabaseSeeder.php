@@ -48,6 +48,7 @@ class DatabaseSeeder extends Seeder
 				ProjectSeeder::class,
 				AdStatusSeeder::class,
 				EducationLevelSeeder::class,
+				RefusalTypeSeeder::class,
 			]);
 
 

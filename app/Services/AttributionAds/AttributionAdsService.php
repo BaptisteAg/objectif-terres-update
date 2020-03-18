@@ -32,7 +32,7 @@ class AttributionAdsService
 	 * @param AttributionAdsRepository $attributionAdsRepository
 	 * @param AdRepository $adRepository
 	 */
-	public function __construct(AttributionAdsRepository $attributionAdsRepository, AdRepository $adRepository,  LocationService $locationService)
+	public function __construct(AttributionAdsRepository $attributionAdsRepository, AdRepository $adRepository, LocationService $locationService)
 	{
 		$this->repository = $attributionAdsRepository;
 		$this->adRepository = $adRepository;
@@ -98,11 +98,13 @@ class AttributionAdsService
 		//Return results if research ads by title
 		$attributionAds = collect();
 		if (!is_null($filters->input('ad_title'))) {
-			$adsByTitle = Ad::where('title', 'like', '%' . $filters->input('ad_title') . '%')->get();
-			foreach ($adsByTitle as $adByTitle) {
-				$attributionAds[$adByTitle->attributionAd->id] = $adByTitle->attributionAd->load('ad');
-				return $attributionAds;
-			}
+			$adsByTitle = AttributionAd::whereHas('ad', function (Builder $query) use ($filters) {
+				$query->where('title', 'like', '%' . $filters->input('ad_title') . '%');
+			});
+			$attributionAds = $adsByTitle
+				->with($this->getEagerLoading())
+				->get();
+			return $attributionAds;
 		}
 		//START QUERY
 		$attributionAdsFiltered = (new AttributionAd)->newQuery();
@@ -153,21 +155,7 @@ class AttributionAdsService
 			$attributionAdsFiltered->filterArrayDataInCurrentModel($filters->input('ad_statuses'), 'ad_status_id');
 		}
 		$attributionAds = $attributionAdsFiltered
-			->with('ad',
-				'ad.userPp',
-				'adStatus',
-				'ad.project.projectStatus',
-
-				'ad.cities',
-				'ad.cities.department',
-				'ad.cities.department.region',
-				'ad.departments',
-				'ad.departments.region',
-				'ad.regions',
-
-				'ad.landSeekAd',
-				'ad.landOfferAd',
-				'ad.jobOfferAd')
+			->with($this->getEagerLoading())
 			->orderByDesc('created_at')
 			->get();
 		return $attributionAds;
@@ -225,5 +213,31 @@ class AttributionAdsService
 		}
 		return $attributionAd;
 
+	}
+
+
+
+	/**
+	 * @return array
+	 */
+	private function getEagerLoading()
+	{
+		return [
+			'ad',
+			'ad.userPp',
+			'adStatus',
+			'ad.project.projectStatus',
+
+			'ad.cities',
+			'ad.cities.department',
+			'ad.cities.department.region',
+			'ad.departments',
+			'ad.departments.region',
+			'ad.regions',
+
+			'ad.landSeekAd',
+			'ad.landOfferAd',
+			'ad.jobOfferAd'
+		];
 	}
 }
