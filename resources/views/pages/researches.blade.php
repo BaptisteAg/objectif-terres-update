@@ -48,48 +48,43 @@
 								</div>
 							</div>
 						@else
-
-							{!! Form::open(['route' => 'researches.store']) !!}
-							<input type="hidden" name="ad_type" value="{{$adType}}">
-							@foreach ($regions->pluck('id') as $region)
-								<input type="hidden" name="regions[]" value="{{ $region }}">
-							@endforeach
-
 							<a id="open-modal" href="">
 								<span class="icon"><i class="far fa-heart"></i></span>
 								<span>Sauvegarder cette recherche</span>
 							</a>
-							<div class="modal">
-								<div class="modal-background"></div>
-								<div class="modal-content">
-									<div class="card">
-										<div class="card-content">
-											<div class="field">
-												<label class="label">Donner un titre à votre recherche :</label>
-												<div class="control">
-													<input class="input" type="text" name="name" id="title"
-														   placeholder="Votre titre...">
+							<form method="POST" action="{{ route('researches.store', request()->input())}}">
+								@csrf
+								<div class="modal">
+									<div class="modal-background"></div>
+									<div class="modal-content">
+										<div class="card">
+											<div class="card-content">
+												<div class="field">
+													<label class="label">Donner un titre à votre recherche :</label>
+													<div class="control">
+														<input class="input" type="text" name="name" id="title"
+															   placeholder="Votre titre...">
+													</div>
 												</div>
 											</div>
+											<footer class="card-footer">
+												<div class="buttons card-footer-item">
+													<button type="submit" class="button is-link">
+														Valider
+													</button>
+
+												</div>
+												<button id="close-modal" class="modal-close is-large"
+														aria-label="close"></button>
+											</footer>
 										</div>
-										<footer class="card-footer">
-											<div class="buttons card-footer-item">
-												<button type="submit" class="button is-link">
-													<span>Valider</span></button>
-											</div>
-											<button id="close-modal" class="modal-close is-large"
-													aria-label="close"></button>
-										</footer>
 									</div>
 								</div>
-							</div>
-							{!! Form::close() !!}
-
+							</form>
 						@endguest
 					</div>
 				</div>
 			</nav>
-
 			<nav class="level">
 				<div class="level-left">
 					<div class="">
@@ -97,7 +92,7 @@
 							<h1 class="title">Offres foncières</h1>
 						@elseif($adType === 'landSeekAd')
 							<h1 class="title">Recherche de fonciers</h1>
-						@elseif($adType === 'landSeekAd')
+						@elseif($adType === 'jobOfferAd')
 							<h1 class="title">Offres d'emploi</h1>
 						@else
 							<h1 class="title">Recherche d'emploi</h1>
@@ -123,53 +118,67 @@
 					</div>
 				</div>
 			</nav>
-
-
 			<section class="section">
 				@foreach($ads as $ad)
-					<div class="columns is-gapless">
-						<div class="column is-two-fifths">
+					<div class="columns">
+						<div class="column is-two-fifths"
+							 style="background-image: url('https://picsum.photos/500/300')">
+							<a href="{{route("ads.show", $ad->id)}}">
+								<div class="columns">
+									<div class="column is-full ">
+										@if(count($ad->regions))
+											<p class="has-text-link ">{{$ad->regions->pluck('name')->implode(', ')}}</p>
+										@endif
+										@if(count($ad->departments))
+											<p class="has-text-link ">{{$ad->departments->pluck('name')->implode(', ')}}</p>
+										@endif
+										@if(count($ad->cities))
+											<p class="has-text-link "></p>{{ $ad->cities->pluck('name')->implode(', ') }}
+										@endif
+									</div>
+								</div>
+{{--									<div class="columns">--}}
+{{--										<div class="column is-full has-background-info research-bottom-element">--}}
+{{--										</div>--}}
+{{--									</div>--}}
+							</a>
 
-                            <a href="{{route("ads.show", $ad->id)}}">
-                                @if($ad->hasImages)
-                                    <figure class="image is-2by1">
-                                        @if($ad->images[0]->path === "0")
-                                            <img src="https://picsum.photos/480/320" alt="picsum">
-                                        @else
-                                            <img src="{{URL::asset($ad->images[0]->path)}}" alt="Placeholder image">
-                                        @endif
-                                    </figure>
-                                @else
-                                    <figure class="image is-2by1">
-                                        <img src="/images/placeholder-ad.png">
-                                    </figure>
-                                @endif
-                            </a>
+							{{--							@if($adType === 'landOfferAd')--}}
+							{{--								<div><span>{{ $ad->$adType->land->price }}</span> € |--}}
+							{{--									<span>{{ $ad->$adType->land->area }}</span> ha--}}
+							{{--								</div>--}}
+							{{--							@else--}}
+							{{--								<div><span></span></div>--}}
+							{{--							@endif--}}
 						</div>
-						<div class="column" style="margin-left:20px">
-							<a href="{{route("ads.show", $ad->id)}}"><h1 class="title">{{ $ad->title }}</h1>
+						<div class="column">
+							<nav class="level">
+								<div class="level-left">
+									<div class="level-item">
+										<span>Partenaire Objectif Terre</span>
+									</div>
+								</div>
+								<div class="level-right">
+									<div class="level-item">
+											<span>Publié {{ $ad->created_at_diff }}</span>
+									</div>
+								</div>
+							</nav>
+							<div></div>
+							<a href="{{route("ads.show", $ad->id)}}"><h1 class="title">{{ $ad->$adType->title }}</h1>
 							</a>
 
 
-                            <nav class="level">
-                                <div class="level-left">
-                                    <div class="level-item" style="display:none">
-                                        <span>Partenaire Objectif Terre</span>
-                                    </div>
-                                    <div>
-                                        {{ $ad->regions->pluck('name')->implode(', ') }}
-                                    </div>
-                                </div>
-                                <div class="level-right">
-                                    <div class="level-item">
-                                        @if($ad->is_today)
-                                            <span>Publié aujourd'hui</span>
-                                        @else
-                                            <span>Publié {{ $ad->created_at_diff }}</span>
-                                        @endif
-                                    </div>
-                                </div>
-                            </nav>
+{{--                            <nav class="level">--}}
+{{--                                <div class="level-left">--}}
+{{--                                    <div class="level-item" style="display:none">--}}
+{{--                                        <span>Partenaire Objectif Terre</span>--}}
+{{--                                    </div>--}}
+{{--                                    <div>--}}
+{{--                                        {{ $ad->regions->pluck('name')->implode(', ') }}--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </nav>--}}
 
                             @if($adType === 'landOfferAd')
                                 <div><span>{{ $ad->landOfferAd->price }}</span> € |
@@ -193,6 +202,7 @@
 							</a>
 						</div>
 					</div>
+					<br>
 				@endforeach
 			</section>
 

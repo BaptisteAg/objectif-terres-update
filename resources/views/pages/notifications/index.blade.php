@@ -20,7 +20,7 @@
 							@endif
 							<br>
 							<br>
-							<a href="{{route ('moderator.index')}}">
+							<a href="{{route ('moderator.show', ['date_research_range=&citySelect=&radius_research=&ad_statuses[]=4&ad_title='])}}">
 								<button class="button is-link ">Consulter votre tableau de bord</button>
 							</a>
 						</div>
@@ -53,7 +53,7 @@
 							<form action="{{route('notification.update', $notification->id)}}" method="POST">
 								@csrf
 								@method('PATCH')
-								<input type="hidden" value="moderator.index" name="route">
+								<input type="hidden" value="moderator.show" name="route">
 								<br>
 								<input type="submit" class="button is-link "
 									   value="@lang('Consulter votre tableau de bord')">

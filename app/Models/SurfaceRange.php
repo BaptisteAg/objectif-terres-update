@@ -30,14 +30,7 @@ class SurfaceRange extends Model
      * @var array
      */
     protected $fillable = [
-        'surface'
+        'value', 'label'
     ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
-     */
-    public function landSeekAds()
-    {
-        return $this->belongsToMany(LandSeekAd::class)->withTimestamps();
-    }
 }

@@ -20,9 +20,9 @@ class SalesForceRepository
      * @param $id
      * @return mixed
      */
-    public function find($objectName, $id)
+    public function find($objectName, $id, $select = ["Id"])
     {
-        $entities = $this->findWhere($objectName, ["Id" => $id]);
+        $entities = $this->findWhere($objectName, ["Id" => $id], $select);
 
         if(!count($entities)) {
             return null;
@@ -33,16 +33,17 @@ class SalesForceRepository
 
     /**
      * @param string $objectName
-     * @param array $fields
+     * @param array $where
+     * @param array $select
      * @return mixed
      */
-    public function findWhere(string $objectName, array $fields)
+    public function findWhere(string $objectName, array $where, array $select = ["Id"])
     {
-        $query = "SELECT FirstName, LastName FROM $objectName WHERE ";
-        array_walk($fields, function (&$value, $key) {
+        $query = "SELECT ".implode(',', $select)." FROM $objectName WHERE ";
+        array_walk($where, function (&$value, $key) {
             $value = "$key='".addslashes($value)."'";
         });
-        $query .= implode(' AND ', $fields);
+        $query .= implode(' AND ', $where);
 
         $result = $this->forrest->query($query);
 
@@ -74,7 +75,7 @@ class SalesForceRepository
     {
         return $this->forrest->sobjects($objectName. '/' . $id,[
             'method' => 'post',
-            'body'   => [ $params ]
+            'body'   => $params
         ]);
     }
 

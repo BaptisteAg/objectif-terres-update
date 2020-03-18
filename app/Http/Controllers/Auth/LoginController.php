@@ -64,7 +64,7 @@ class LoginController extends Saml2Controller
         //$messageId = $event->getSaml2Auth()->getLastMessageId();
         //dd($samlUser->getAttributes());
 
-        $user = $this->salesforceService->getUserFromSaml($samlUser);
+		$user = $this->salesforceService->getUserFromSaml($samlUser);
 
         //dd($user);
         //dd(session()->all());

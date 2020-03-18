@@ -23,14 +23,13 @@ class NotificationsController extends Controller
 		if ($request->user()->unreadNotifications->isEmpty()) {
 			return back()->with('warning', 'La notification n\'existe plus');
 		}
-
 		if ($request->input('route') === 'ads.show') {
 			$notification->markAsRead();
 			$notification->delete();
 			return redirect()->route($request->input('route'), $notification->data['ad_id']);
 		} else {
 			$notification->markAsRead();
-			return redirect()->route($request->input('route'));
+			return redirect()->route($request->input('route'), ['date_research_range=&citySelect=&radius_research=&ad_statuses[]=4&ad_title=']);
 		}
 	}
 }

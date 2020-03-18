@@ -26,10 +26,12 @@ class ResearchesController extends Controller
 
 	public function index(Request $request)
 	{
-		list($ads, $adType, $regions) = $this->researchService->index($request);
 
 
-		return view('pages.researches', compact('ads', 'adType', 'regions'));
+		list ($ads, $adType) = $this->researchService->index($request);
+
+
+		return view('pages.researches', compact('ads', 'adType'));
 	}
 
 	public function paginate($ads, $perPage = 5, $page = null)

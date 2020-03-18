@@ -12,7 +12,6 @@ use App\Models\EducationLevel;
 use App\Models\InstallationType;
 use App\Models\JobOfferType;
 use App\Models\OfferGenre;
-use App\Models\PriceRange;
 use App\Models\RefusalType;
 use App\Models\Requirement;
 use App\Models\ResponseTemplate;
@@ -49,7 +48,6 @@ class AdsController extends Controller
 	public function create()
 	{
 		$surfaceRanges = SurfaceRange::all();
-		$priceRanges = PriceRange::all();
 		$installationTypes = InstallationType::all();
 		$bioCertifications = BioCertification::all();
 		$jobOfferTypes = JobOfferType::all();
@@ -69,7 +67,6 @@ class AdsController extends Controller
 		return view('pages.ads.new', compact(
 			'installationTypes',
 			'surfaceRanges',
-			'priceRanges',
 			'bioCertifications',
 			'jobOfferTypes',
 			'offerGenres',

@@ -5,7 +5,7 @@
                 :monday-first="mondayFirst"
                 calendar-button-icon="fas fa-calendar-alt"
                 input-class="input"
-                name="dateResearchRange"
+                name="date_research_range"
                 placeholder="Plage de dates"
                 format="dd/MM/yyyy"
                 :disabled-dates="disabledDates"
@@ -41,7 +41,7 @@
                 },
                 highlighted: {
                     to: new Date(Date.now()),
-                    from: new Date(Date.now()),
+                    from: new Date().setDate(Date.now()) - 6,
                 },
             }
         },

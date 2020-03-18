@@ -22,6 +22,16 @@ class SalesforceService
      */
     protected $tokenRepository;
 
+    protected $profileToRoleMapping = [
+    	// Customer community - membre
+    	'00ew0000001V7RJ' => 0,
+		// Moderator
+
+		// Super Admin
+		'00e20000001FEdPAAW' => 4
+		// .. TODO: complete
+	];
+
     public function __construct(SalesForceRepository $repository, UserRepository $userRepository)
     {
         $this->repository = $repository;
@@ -137,15 +147,15 @@ class SalesforceService
         // Reverse user creation : if no user has been found, then we'll create it on the fly
         // to allow every salesforce-only user to pass the registration form
         if(!$user) {
-            $salesforceUser = $this->repository->findObject('User', $sfId);
-            //dd($salesforceUser);
+            $salesforceUser = $this->repository->find('User', $sfId, ['FirstName', 'LastName', 'ProfileId']);
+			dd($salesforceUser);
 
-            $user = $this->userRepository->create([
-                'first_name' => $salesforceUser["FirstName"],
-                'name' => $salesforceUser["LastName"],
-                'email' => $email,
-                // TODO: role
-            ]);
+			$user = $this->userRepository->create([
+				'first_name' => $salesforceUser["FirstName"],
+				'name' => $salesforceUser["LastName"],
+				'email' => $email,
+				// TODO: role
+			]);
         }
 
         if($user->sf_id != $sfId) {

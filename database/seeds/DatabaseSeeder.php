@@ -3,15 +3,13 @@
 use App\Models\Ad;
 use App\Models\AdNote;
 use App\Models\BioCertification;
-use App\Models\Document;
+use App\Models\City;
 use App\Models\FavoriteAd;
 use App\Models\JobOfferAd;
 use App\Models\LandOfferAd;
 use App\Models\LandSeekAd;
 use App\Models\Project;
 use App\Models\ProductionGenre;
-use App\Models\Region;
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -40,7 +38,6 @@ class DatabaseSeeder extends Seeder
 			$this->call([
 				RequirementSeeder::class,
 				BuildingTypeSeeder::class,
-				PriceRangeSeeder::class,
 				SurfaceRangeSeeder::class,
 				InstallationTypeSeeder::class,
 				ProductionGenreSeeder::class,
@@ -63,11 +60,11 @@ class DatabaseSeeder extends Seeder
 				]);
 
 				$projectIds = Project::all()->pluck('id')->toArray();
-				factory(Ad::class, 30)->create()->each(function (Ad $ad) use (&$queriesCount, &$projectIds) {
+				factory(Ad::class, 900)->create()->each(function (Ad $ad) use (&$queriesCount, &$projectIds) {
 					$ad->adNotes()->save(factory(AdNote::class)->make());
 					$ad->favoriteAds()->save(factory(FavoriteAd::class)->make());
 //					$ad->documents()->save(factory(Document::class)->make());
-					$ad->regions()->save(Region::inRandomOrder()->first());
+					$ad->cities()->save(City::inRandomOrder()->first());
 					if ($ad->attributionAd->adStatus->id === 1) {
 						$ad->project_id = array_shift($projectIds);
 						$ad->save();
@@ -75,7 +72,7 @@ class DatabaseSeeder extends Seeder
 					echo "\nAd ID saved : " . $ad->id . " (Queries : " . $queriesCount . ")";
 				});
 				$adIds = Ad::all()->pluck("id")->toArray();
-				factory(LandOfferAd::class, 10)->create()->each(function (LandOfferAd $landOfferAd) use (&$adIds) {
+				factory(LandOfferAd::class, 300)->create()->each(function (LandOfferAd $landOfferAd) use (&$adIds) {
 
 					$cats = ['', 'Vend'];
 					$types = ['ferme', 'pâture', 'terrain', 'location', 'terre', 'petite structure'];
@@ -95,7 +92,7 @@ class DatabaseSeeder extends Seeder
 					);
 					$ad->save();
 				});
-				factory(LandSeekAd::class, 10)->create()->each(function (LandSeekAd $landSeekAd) use (&$adIds) {
+				factory(LandSeekAd::class, 300)->create()->each(function (LandSeekAd $landSeekAd) use (&$adIds) {
 					$cats = ['', 'Recherche', 'A la recherche de'];
 					$types = ['ferme', 'pâture', 'terrain', 'location', 'terre', 'petite structure'];
 					$pours = ['petit élevage', 'élevage caprins', 'élevage ovins', 'élevages poulets', 'réinstallation', 'installation collective'];
@@ -115,7 +112,7 @@ class DatabaseSeeder extends Seeder
 					$ad->save();
 
 				});
-				factory(JobOfferAd::class, 10)->create()->each(function (JobOfferAd $jobAd) use (&$adIds) {
+				factory(JobOfferAd::class, 300)->create()->each(function (JobOfferAd $jobAd) use (&$adIds) {
 					$cats = ['', 'Propose emploi', 'Recrutement', 'Urgent cherche', 'Opportunité'];
 					$types = ['éleveur', 'producteur', 'agent agricole', 'agriculteur'];
 					$pours = ['bio', 'laitier', 'élevage bovins', 'élevages poulets', 'réinstallation', 'installation collective'];

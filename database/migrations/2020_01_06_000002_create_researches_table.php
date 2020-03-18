@@ -27,12 +27,12 @@ class CreateResearchesTable extends Migration
             $table->string('name')->nullable();
             $table->string('surface_min')->nullable();
             $table->string('surface_max')->nullable();
-            $table->boolean('has_pics')->nullable();
+            $table->boolean('has_pics')->default(0);
             $table->boolean('has_house')->nullable();
             $table->integer('price_min')->nullable();
             $table->integer('price_max')->nullable();
 			$table->string('ad_type')->nullable();
-			$table->string('url')->nullable();
+			$table->mediumText('url')->nullable();
 			$table->boolean('has_alert')->default(0);
 
 			$table->foreign('user_id')

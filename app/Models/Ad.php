@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\ScopeAdTypesFilterable;
+use App\Models\Scopes\ScopeDataFilterable;
+use App\Models\Scopes\ScopeLocationFilterable;
 use App\Models\Traits\Documentable;
 use App\Presenters\AdPresenter;
 use Illuminate\Database\Eloquent\Builder;
@@ -67,7 +70,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  */
 class Ad extends Model implements HasPresenter
 {
-    use Documentable;
+    use Documentable, ScopeAdTypesFilterable, ScopeDataFilterable, ScopeLocationFilterable;
 
     /**
      * @var array

@@ -89,16 +89,4 @@ class LandSeekAd extends Model
         return $this->hasMany(LandSeekAdBuilding::class);
     }
 
-    /**
-     * @return belongsToMany
-     */
-    /*public function surfaceRanges()
-    {
-        return $this->belongsToMany(SurfaceRange::class)->withTimestamps();
-    }*/
-
-    /*public function priceRanges()
-    {
-        return $this->belongsToMany(PriceRange::class)->withTimestamps();
-    }*/
 }

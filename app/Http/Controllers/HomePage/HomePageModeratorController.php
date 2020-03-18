@@ -61,6 +61,8 @@ class HomePageModeratorController extends Controller
 
 	public function show(Request $request)
 	{
+		$request->flash();
+
 		$cities = City::all();
 		$departments = Department::all();
 		$regions = Region::all();

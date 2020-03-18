@@ -18,6 +18,10 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 		return Research::class;
 	}
 
+	/**
+	 * @param null $paginate
+	 * @return Research[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|mixed
+	 */
 	public function all($paginate = null)
 	{
 		return $this->entity
@@ -69,6 +73,17 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 	}
 
 	/**
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function findAllResearchesWithAlertActive()
+	{
+		$model = $this->entity
+			->where(["has_alert" => "1"])
+			->get();
+		return $model;
+	}
+
+	/**
 	 * Creates a research.
 	 *
 	 * @param array $data
@@ -79,32 +94,43 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 		$research = new Research();
 		$researchData = $data;
 		$research->fill($researchData);
+		$research->ad_type = $data['ad_category'] . $data['ad_type'];
 		$research->user_id = auth()->user()->id;
 		$research->save();
 
-		$research->regions()->attach($data['regions']);
+		if (isset ($data['cities_location_researches_ids'])) {
+			if (isset ($data['radius_research'])) {
+				$research->cities()->attach($data['cities_location_researches_ids'], ['radius' => $data['radius_research']]);
+			} else {
+				$research->cities()->attach($data['cities_location_researches_ids']);
+			}
+		}
+		if (isset ($data['departments_location_researches_ids'])) {
+			$research->departments()->attach($data['departments_location_researches_ids']);
+		}
+
+		if (isset ($data['regions_location_researches_ids'])) {
+			$research->regions()->attach($data['regions_location_researches_ids']);
+		}
+
+		if (isset ($data['production_genres'])){
+			$research->productionGenres()->attach($data['production_genres']);
+		}
+
+		if(isset ($data['bio_certifications'])){
+			$research->bioCertifications()->attach($data['bio_certifications']);
+		}
+
+		if(isset ($data['offer_genres'])){
+			$research->offerGenres()->attach($data['offer_genres']);
+		}
+
+		if(isset ($data['jobOfferType'])){
+			$research->jobOfferTypes()->attach($data['jobOfferType']);
+		}
 
 		return $research;
 	}
-
-	public function findRelatedAds(int $id)
-	{
-		$research = $this->find($id);
-		$regions = $research->regions;
-		$adType = $research->ad_type;
-
-		$ads = collect();
-		foreach ($regions as $region) {
-			$regionAds = $region->ads;
-			foreach ($regionAds as $key => $ad) {
-				if ($ad->$adType) {
-					$ads[$ad->id] = $ad;
-				}
-			}
-		}
-		return $ads;
-	}
-
 
 	private function getEagerLoading()
 	{

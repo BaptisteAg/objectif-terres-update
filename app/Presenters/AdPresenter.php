@@ -81,7 +81,7 @@ class AdPresenter extends BasePresenter
 
 	public function regionsList()
 	{
-		$regions = '';
+		$regions = null;
 		foreach ($this->wrappedObject->regions as $key => $attribute) {
 			if ($key === 0) {
 				$regions = $regions . $attribute['name'];

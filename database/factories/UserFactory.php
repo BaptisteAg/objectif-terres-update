@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
 |
 */
 
-$factory->define(User::class, function (Faker $faker) {
+$factory->define(User::class, function () {
 	$city = City::inRandomOrder()->first();
 	$faker = Factory::create('fr_FR');
 	return [

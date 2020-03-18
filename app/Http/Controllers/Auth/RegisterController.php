@@ -116,6 +116,5 @@ class RegisterController extends Controller
 
 	protected function registered(Request $request, $user)
 	{
-		session()->put('role', $user::ROLES[$user->role]);
 	}
 }

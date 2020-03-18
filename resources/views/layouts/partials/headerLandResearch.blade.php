@@ -2,30 +2,30 @@
     @include('layouts.partials.headerResearchLocation')
     <div class="column ">
         <div class="field">
+            @foreach ($offerGenres as $offerGenre)
             <label class="checkbox">
-                <input type="checkbox" name="offer_genres[]" value="rental">
-                location
+                <input type="checkbox" name="offer_genres[]" value="{{$offerGenre->id}}">
+                {{$offerGenre->name}}
             </label>
-            <label class="checkbox">
-                <input type="checkbox" name="offer_genres[]" value="sale">
-                vente
-            </label>
+            @endforeach
         </div>
             <div class="field">
                 <p class="label">Surface (ha)</p>
                 <vue-slider
                     name="surfaces_research"
                     :data="{
-                        0: '0 ha',
-                        5: '5 ha',
-                        10: '10 ha',
-                        20: '20 ha',
-                        50: '50 ha'
+                        0: '0',
+                        5: '5',
+                        10: '10',
+                        20: '20',
+                        50: '50',
+                        100 : '100',
+                        '+100' : '+ de 100',
                     }"
                     :values="['0', '>100']"></vue-slider>
                 <br>
             </div>
-                <div class="field">
+                <div v-if="adTypeSelected === 'OfferAd'" class="field">
                     {{ form::label('price_min', 'Prix minimum', ['class' => 'label']) }}
                     {{ form::number('price_min', '', ['min' => '0', 'pattern' => "([0-9]{1,3}).([0-9]{1,3})", 'class'=>'input']) }}
                     {{ form::label('price_max', 'Prix maximum', ['class' => 'label']) }}
@@ -34,15 +34,15 @@
 
     </div>
 
-    <div v-if="offerTypeSelected === 'offer'" class="column">
+    <div v-if="adTypeSelected === 'OfferAd'" class="column">
         <div class="column">
             <div class="field">
                 <label class="checkbox">
-                    <input type="checkbox" name="has_pics" value="true">
+                    <input type="checkbox" name="has_pics" value="1">
                     Avec photos
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" name="has_buildings" value="true">
+                    <input type="checkbox" name="has_buildings" value="1">
                     Habitation
                 </label>
             </div>

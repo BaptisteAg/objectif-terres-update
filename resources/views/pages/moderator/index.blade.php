@@ -21,7 +21,8 @@
 			@endif
 
 			@if($numberOfUnreadMessages > 1 )
-				<a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i class="fas fa-envelope "></i> Vous
+				<a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i
+								class="fas fa-envelope "></i> Vous
 						avez <strong>{{$numberOfUnreadMessages}}
 							nouveaux messages
 							!</strong></p></a>
@@ -57,6 +58,7 @@
 												input-value="{{$adType['value']}}"
 												v-model="adTypeSelected"
 												ref="typeSelected"
+												value ="true"
 												:is-radio="false">
 											<i class="fa {{ $adTypesFaIcons[$i] }}"
 											   style="font-size: 30px;"></i><br><br>
@@ -134,7 +136,8 @@
 														aria-describedby='citySelectError'
 														value="citySelect">
 												</autocomplete>
-												<input type="hidden" name="city_id" :value="zone.value.id"
+												<input type="hidden" name="city_location_researches[]"
+													   :value="zone.value.id"
 													   v-for="(zone,i) in citySelect">
 												<div>
 													<span class="tag is-info"
@@ -163,6 +166,7 @@
 													50: '50km'
 												}"
 										></vue-slider>
+										<br>
 									</div>
 								</div>
 							</div>
@@ -194,16 +198,35 @@
 					</div>
 					<hr class="navbar-divider">
 
-					<div class="columns is-centred">
-						@foreach($projectStatuses as $projectStatus)
-							<div class="column has-text-centered">
-								<label class="checkbox">
-									<input name="project_status[]" value="{{(int)$projectStatus->id}}" type="checkbox">
-									{{$projectStatus->name}}
-								</label>
+					<div class="columns">
+						<div class="column is-half">
+							<p class="label has-text-centered">Statut de l'annonce</p>
+							<div class="columns is-mobile is-multiline is-centered">
+								@foreach($adStatuses as $adStatus)
+									<div class="column is-narrow has-text-centered">
+										<label class="checkbox">
+											<input name="ad_statuses[]" value="{{(int)$adStatus->id}}" type="checkbox">
+											{{$adStatus->name}}
+										</label>
+									</div>
+								@endforeach
 							</div>
-						@endforeach
+						</div>
+						<div class="column is-half">
+							<p class="label has-text-centered">Statut du projet</p>
+							<div class="columns  is-mobile is-multiline is-centered">
+								@foreach($projectStatuses as $projectStatus)
+									<div class="column is-narrow has-text-centered">
+										<label class="checkbox">
+											<input name="project_statuses[]" value="{{(int)$projectStatus->id}}"
+												   type="checkbox">
+											{{$projectStatus->name}}
+										</label>
+									</div>
+								@endforeach
 
+							</div>
+						</div>
 					</div>
 					<hr class="navbar-divider">
 
@@ -285,7 +308,7 @@
 						<tbody>
 						@foreach($attributionAds as $attributionAd)
 							<tr>
-								<td>{{$attributionAd->ad->submitDate}}</td>
+								<td>{{$attributionAd->created_at->format('d/m/Y')}}</td>
 								<td>
 									<a href="{{route('ads.show', $attributionAd->ad->id)}}">{{$attributionAd->ad->title}}</a>
 								</td>
@@ -323,7 +346,7 @@
 								</td>
 								<td>
 									@if(is_null($attributionAd->ad->project))
-										<span class="tag is-light">L'annonce n'a pas le status de projet</span>
+										<span class="tag is-light">L'annonce n'a pas le statut de projet</span>
 									@else
 										@if($attributionAd->ad->project->projectStatus->name === "Accompagné")
 											<span class="tag is-success is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
