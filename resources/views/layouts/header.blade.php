@@ -1,9 +1,7 @@
 <header id="vue-header">
     <header-page id="header-page" inline-template
-                 :search-values="{{json_encode(old())}}"
+                 :old-search-values="{{json_encode(old())}}"
     >
-
-
         <div>
             <div class="container-custom">
                 <nav class="level">
@@ -152,10 +150,10 @@
                     </div>
                 </div>
                 <div v-show="isFormOpen" class="has-ba" style="display : none">
-                    <div class="container-custom" v-show="adCategorySelected === 'job'">
+                    <div class="container-custom" v-if="adCategorySelected === 'job'">
                         @include('layouts.partials.headerJobResearch')
                     </div>
-                    <div class="container-custom" v-show="adCategorySelected === 'land'">
+                    <div class="container-custom" v-if="adCategorySelected === 'land'">
                         @include('layouts.partials.headerLandResearch')
                     </div>
                 </div>

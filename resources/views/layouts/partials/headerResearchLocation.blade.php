@@ -1,6 +1,6 @@
 <div class="column">
 	<div class="field">
-		{!! Form::label('departments', 'Choisissez un département', ['class' => 'label']); !!}
+		<label class="label">Choississez un départments</label>
 		<multi-select
 				:options="{{ json_encode($departments) }}"
 				:multiple="true"
@@ -27,7 +27,10 @@
 		<p class="label">Dans un rayon de </p>
 		<vue-slider
 				name="radius_research"
-				v-model ="selectedRadius"
+				:old-data="{
+						'value' : {{json_encode(old('radius_research'))}},
+						'textValue' : {{json_encode(old('radius_research'))}}+'km'
+						}"
                 :data="{
                     0: '0km',
                     5: '5km',

@@ -4,30 +4,27 @@ import VueSlider from "../components/VueSlider";
 import Vue from 'vue'
 
 
-Vue.component('header-page',{
-    components : {
+Vue.component('header-page', {
+    components: {
         MultiSelect,
         VueSlider,
         AjaxMultiSelect,
     },
     props: {
-        searchValues: '',
+        oldSearchValues: '',
 
     },
     data() {
-        const hasOld = Object.keys(this.searchValues).length;
+        let hasOld = this.oldSearchValues.hasOwnProperty("offer_type") ? Object.values(this.oldSearchValues).some(x => (x !== null && x !== '')) : false;
         return {
-            hasOld : hasOld,
-            offerTypeSelected: hasOld  ? this.searchValues.offer_type : 'OfferAd',
-            adCategorySelected: hasOld ? this.searchValues.ad_category : 'land',
-            selectedRegions: hasOld ? this.searchValues.regions_location_researches_ids : [],
-            selectedDepartments : hasOld ? this.searchValues.departments_location_researches_ids : [],
-            selectedCities : hasOld ? this.searchValues.cities_location_researches_ids : [],
-            selectedRadius : hasOld ? this.searchValues.radius_research+'km' : '',
-            selectedRangeSurface : hasOld ? this.searchValues.surfaces_research : '',
-            selectedProductions : hasOld ? this.searchValues.production_genres : [],
-            selectedBioCertifications : hasOld ? this.searchValues.bio_certifications : [],
-            isFormOpen : false,
+            offerTypeSelected: hasOld ? this.oldSearchValues.offer_type : 'OfferAd',
+            adCategorySelected: hasOld ? this.oldSearchValues.ad_category : 'land',
+            selectedRegions: hasOld ? this.oldSearchValues.regions_location_researches_ids : [],
+            selectedDepartments: hasOld ? this.oldSearchValues.departments_location_researches_ids : [],
+            selectedCities: hasOld ? this.oldSearchValues.cities_location_researches_ids : [],
+            selectedProductions: hasOld ? this.oldSearchValues.production_genres : [],
+            selectedBioCertifications: hasOld ? this.oldSearchValues.bio_certifications : [],
+            isFormOpen: false,
         }
     },
     methods: {

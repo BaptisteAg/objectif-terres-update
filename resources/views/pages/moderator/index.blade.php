@@ -37,7 +37,11 @@
 		</div>
 		{{Form::open(['route'=>'moderator.show', 'method'=>'get'])}}
 		<div id="vue-form-moderator">
-			<research-form-moderator inline-template>
+
+			<research-form-moderator
+					inline-template
+					:old-input-selected="{{json_encode(old())}}"
+			>
 				<div>
 					<div class="columns">
 						<div class="column is-four-fifths">
@@ -58,7 +62,7 @@
 												input-value="{{$adType['value']}}"
 												v-model="adTypeSelected"
 												ref="typeSelected"
-												value ="true"
+												value="true"
 												:is-radio="false">
 											<i class="fa {{ $adTypesFaIcons[$i] }}"
 											   style="font-size: 30px;"></i><br><br>
@@ -112,7 +116,9 @@
 						<div class="column">
 							<div class="control has-icons-right ">
 								<label class="label"> Annonces soumises depuis le </label>
-								<date-picker></date-picker>
+								<date-picker
+										old-value= {{old('date_research_range')}}
+								></date-picker>
 							</div>
 						</div>
 					</div>
@@ -127,28 +133,23 @@
 												<autocomplete
 														name="citySelect"
 														id="citySelect"
-														class="input"
 														placeholder="Saisissez les premiers caractères"
 														ref='citySelect'
-														:disabled="false"
 														src="/locations/cities"
-														v-model="citySelect"
-														aria-describedby='citySelectError'
-														value="citySelect">
+														v-model="citySelect">
+
+													<input type="hidden" name="city_location_researches[]"
+														   :value="zone.value.id"
+														   v-for="(zone,i) in citySelect">
+
+													<div class="tag autocomplete-input-tag is-info"
+														 v-for="(zone,i) in citySelect"
+														 @click="_ => citySelect.splice(i,1)">
+														@{{ zone.label }}
+														&nbsp;&nbsp;
+														<i class="fa fa-trash" style="cursor:pointer"></i>
+													</div>
 												</autocomplete>
-												<input type="hidden" name="city_location_researches[]"
-													   :value="zone.value.id"
-													   v-for="(zone,i) in citySelect">
-												<div>
-													<span class="tag is-info"
-														  v-for="(zone,i) in citySelect"
-														  @click="_ => citySelect.splice(i,1)">
-												Code postal sélectionné :&nbsp;&nbsp;
-												<b>@{{ zone.label }}</b>
-												&nbsp;&nbsp;
-												<i class="fa fa-trash" style="cursor:pointer"></i>
-											</span>
-												</div>
 											</div>
 										</div>
 									</div>
@@ -158,6 +159,10 @@
 										<p class="label">Dans un rayon de </p>
 										<vue-slider
 												name="radius_research"
+												:old-data="{
+														'value' : {{json_encode(old('radius_research'))}},
+														'textValue' : {{json_encode(old('radius_research'))}}+'km'
+														}"
 												:data="{
 													0: '0km',
 													5: '5km',
@@ -197,7 +202,6 @@
 						</div>
 					</div>
 					<hr class="navbar-divider">
-
 					<div class="columns">
 						<div class="column is-half">
 							<p class="label has-text-centered">Statut de l'annonce</p>
@@ -205,7 +209,8 @@
 								@foreach($adStatuses as $adStatus)
 									<div class="column is-narrow has-text-centered">
 										<label class="checkbox">
-											<input name="ad_statuses[]" value="{{(int)$adStatus->id}}" type="checkbox">
+											<input name="ad_statuses[]" value="{{(int)$adStatus->id}}"
+												   type="checkbox" {{old('ad_statuses') && in_array((int)$adStatus->id,old('ad_statuses'))  ? ' checked' : '' }}>
 											{{$adStatus->name}}
 										</label>
 									</div>
@@ -219,12 +224,12 @@
 									<div class="column is-narrow has-text-centered">
 										<label class="checkbox">
 											<input name="project_statuses[]" value="{{(int)$projectStatus->id}}"
-												   type="checkbox">
+												   type="checkbox"
+													{{old('project_statuses') && in_array((int)$projectStatus->id,old('project_statuses'))  ? ' checked' : '' }}>
 											{{$projectStatus->name}}
 										</label>
 									</div>
 								@endforeach
-
 							</div>
 						</div>
 					</div>
@@ -233,7 +238,8 @@
 					<div class="columns">
 						<div class=" column is-one-third ">
 							<label class="label">Recherche par titre de l'annonce</label>
-							<input name="ad_title" class="input" type="text" placeholder="Votre recherche...">
+							<input name="ad_title" class="input" type="text" placeholder="Votre recherche..."
+								   value="{{old('ad_title')}}">
 						</div>
 
 						{{--						<div v-if="adType === 'land'" class=" column is-3">--}}

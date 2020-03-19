@@ -255,6 +255,7 @@ class ResearchService
 
 		$adsFilter->filterAdTypes(array($adTypeSelected), '');
 
+
 		$ads = $adsFilter->with(
 			'userPp',
 			'project.projectStatus',

@@ -2,10 +2,8 @@
 
 namespace App\Services\AttributionAds;
 
-use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
-use App\Models\City;
 use App\Models\Department;
 use App\Models\Region;
 use App\Repositories\Ads\AdRepository;
@@ -16,7 +14,6 @@ use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Class AttributionAdsService
@@ -78,7 +75,6 @@ class AttributionAdsService
 		return $allAdsToModerateGroupByModerators;
 	}
 
-
 	/**
 	 * @param Request $request
 	 * @return \Illuminate\Support\Collection
@@ -96,11 +92,13 @@ class AttributionAdsService
 	 */
 	public function filter(Request $filters)
 	{
+
 		//Return results if research ads by title
 		$attributionAds = collect();
 		if (!is_null($filters->input('ad_title'))) {
 			$adsByTitle = AttributionAd::whereHas('ad', function (Builder $query) use ($filters) {
 				$query->where('title', 'like', '%' . $filters->input('ad_title') . '%');
+				$query->where('user_moderator_id', '=', auth()->id());
 			});
 			$attributionAds = $adsByTitle
 				->with($this->getEagerLoading())
@@ -113,10 +111,6 @@ class AttributionAdsService
 		//First, filter attributions ads based on the moderator who is the user logged
 		$attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
 
-		//Filter ads based on their types if requested
-		if ($filters->has('ad_type')) {
-			$attributionAdsFiltered->filterAdTypes($filters->input('ad_type'), 'ad.');
-		}
 		//Filter attribution ads based on their locations if requested
 		if ($filters->has('city_location_researches')) {
 			if (!is_null($filters->input('radius_research'))) {
@@ -139,7 +133,6 @@ class AttributionAdsService
 			$attributionAdsFiltered->filterSubLocations('ad.departments', $regionsCodes, 'departments.region_code');
 			$attributionAdsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
 		}
-
 		//If a range of submitting date is selected, filter attribution ads based on creation date
 		if (!is_null($filters->input('date_research_range'))) {
 			$dateFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_research_range'))->format('Y-m-d');
@@ -154,6 +147,12 @@ class AttributionAdsService
 		if ($filters->has('ad_statuses')) {
 			$attributionAdsFiltered->filterArrayDataInCurrentModel($filters->input('ad_statuses'), 'ad_status_id');
 		}
+
+		//Filter ads based on their types if requested
+		if ($filters->has('ad_type')) {
+			$attributionAdsFiltered->filterAdTypes($filters->input('ad_type'), 'ad.');
+		}
+		$attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
 		$attributionAds = $attributionAdsFiltered
 			->with($this->getEagerLoading())
 			->orderByDesc('created_at')
@@ -213,9 +212,6 @@ class AttributionAdsService
 		return $attributionAd;
 
 	}
-
-
-
 	/**
 	 * @return array
 	 */

@@ -4,7 +4,7 @@
         <div class="field">
             @foreach ($offerGenres as $offerGenre)
             <label class="checkbox">
-                <input type="checkbox" name="offer_genres[]" value="{{$offerGenre->id}}" {{in_array($offerGenre->id,old('offer_genres'))  ? ' checked' : '' }}>
+                <input type="checkbox" name="offer_genres[]" value="{{$offerGenre->id}}" {{old('offer_genres') && in_array($offerGenre->id,old('offer_genres'))  ? ' checked' : '' }}>
                 {{$offerGenre->name}}
             </label>
             @endforeach
@@ -13,7 +13,10 @@
                 <p class="label">Surface (ha)</p>
                 <vue-slider
                     name="surfaces_research"
-                    v-model = "selectedRangeSurface"
+                    :old-data="{
+                            'value' : {{json_encode(old('surfaces_research'))}},
+                            'textValue' : {{json_encode(old('surfaces_research'))}}
+                            }"
                     :data="{
                         0: '0',
                         5: '5',
