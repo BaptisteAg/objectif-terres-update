@@ -59,8 +59,8 @@ class SalesforceService
             ]
          */
         /*$account = $this->repository->create('Account', [
-            "Name" => $data["first_name"] . " " . $data["name"],
-            "Description" => "Compte Objectif Terre",
+        "Name" => $data["first_name"] . " " . $data["name"],
+        "Description" => "Compte Objectif Terre",
         ]);*/
 
         /**
@@ -71,6 +71,7 @@ class SalesforceService
          * ]
          */
         $contact = $this->repository->create('Contact', [
+            // Account global donné par Youssouf
             "AccountId" => "0012000000o2X3TAAU",
             "Email" => $data["email"],
             "LastName" => $data["name"],
@@ -148,7 +149,6 @@ class SalesforceService
         // to allow every salesforce-only user to pass the registration form
         if(!$user) {
             $salesforceUser = $this->repository->find('User', $sfId, ['FirstName', 'LastName', 'ProfileId']);
-//			dd($salesforceUser);
 
 			$user = $this->userRepository->create([
 				'first_name' => $salesforceUser["FirstName"],
