@@ -11,18 +11,23 @@ Vue.component('header-page',{
         AjaxMultiSelect,
     },
     props: {
-        searchValues: [Array, Object]
+        searchValues: '',
+
     },
     data() {
+        const hasOld = Object.keys(this.searchValues).length;
         return {
-            offerTypeSelected: this.searchValues ? this.searchValues.offer_type : 'OfferAd',
-            adCategorySelected: this.searchValues ? this.searchValues.ad_category : 'land',
-            selectedRegions: this.searchValues ? this.searchValues.regions : [],
+            hasOld : hasOld,
+            offerTypeSelected: hasOld  ? this.searchValues.offer_type : 'OfferAd',
+            adCategorySelected: hasOld ? this.searchValues.ad_category : 'land',
+            selectedRegions: hasOld ? this.searchValues.regions_location_researches_ids : [],
+            selectedDepartments : hasOld ? this.searchValues.departments_location_researches_ids : [],
+            selectedCities : hasOld ? this.searchValues.cities_location_researches_ids : [],
+            selectedRadius : hasOld ? this.searchValues.radius_research+'km' : '',
+            selectedRangeSurface : hasOld ? this.searchValues.surfaces_research : '',
+            selectedProductions : hasOld ? this.searchValues.production_genres : [],
+            selectedBioCertifications : hasOld ? this.searchValues.bio_certifications : [],
             isFormOpen : false,
-            productionsSelected : [],
-            bioProductionsSelected : [],
-            regionsSelected :[],
-            departmentsSelected : []
         }
     },
     methods: {

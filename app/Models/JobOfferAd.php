@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\EducationLevelable;
 use App\Models\Traits\JobOfferTypable;
+use App\Models\Traits\OfferableGenre;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -39,6 +40,7 @@ class JobOfferAd extends Model
 {
     use JobOfferTypable;
     use EducationLevelable;
+	use OfferableGenre;
 
     /**
      * @var array

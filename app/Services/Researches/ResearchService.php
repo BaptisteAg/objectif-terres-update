@@ -160,6 +160,8 @@ class ResearchService
 
 	public function filter(Request $filters)
 	{
+
+
 		$ads = collect();
 		$adsFilter = (new Ad)->newQuery();
 		//Filter by type of ads
@@ -184,7 +186,7 @@ class ResearchService
 			$adsFilter->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
 		} //If request, filter by regions locations and all locations related to the regions selected
 		else if ($filters->has('regions_location_researches_ids')) {
-			if (!in_array(0, $filters->input('regions_location_researches_ids'))) {
+			if (!in_array(-1, $filters->input('regions_location_researches_ids'))) {
 				$regionsCodes = Region::whereIn('id', $filters->input('regions_location_researches_ids'))->get('code')->toArray();
 				$departmentsCodes = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
 				$adsFilter->filterLocations('regions', $filters->input('regions_location_researches_ids'));

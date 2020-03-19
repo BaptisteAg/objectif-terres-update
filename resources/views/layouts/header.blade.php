@@ -1,5 +1,9 @@
 <header id="vue-header">
-    <header-page id="header-page" inline-template>
+    <header-page id="header-page" inline-template
+                 :search-values="{{json_encode(old())}}"
+    >
+
+
         <div>
             <div class="container-custom">
                 <nav class="level">
@@ -134,7 +138,7 @@
                                     :options="{{ $regionsWithAll }}"
                                     v-model="selectedRegions"
                                     :multiple="true"
-                                    name="regions[]"
+                                    name="regions_location_researches_ids[]"
                                     selected-count-text="région(s) sélectionnée(s)"
                                     placeholder="Choississez une/des région(s)">
                                 </multi-select>

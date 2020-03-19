@@ -12,6 +12,7 @@ use App\Repositories\Ads\AdRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Services\Locations\LocationService;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -141,8 +142,7 @@ class AttributionAdsService
 
 		//If a range of submitting date is selected, filter attribution ads based on creation date
 		if (!is_null($filters->input('date_research_range'))) {
-			$date = strtotime($filters->input('date_research_range'));
-			$dateFormatted = date('Y-d-m', $date);
+			$dateFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_research_range'))->format('Y-m-d');
 			$attributionAdsFiltered->where('created_at', '>=', $dateFormatted);
 		}
 		//If one or many project status are selected, filter  ads based on their project status
@@ -160,7 +160,6 @@ class AttributionAdsService
 			->get();
 		return $attributionAds;
 	}
-
 
 	/**
 	 * @param int $attributionAdId

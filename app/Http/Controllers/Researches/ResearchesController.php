@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Redirect;
 
 class ResearchesController extends Controller
 {
@@ -27,10 +28,8 @@ class ResearchesController extends Controller
 	public function index(Request $request)
 	{
 
-
 		list ($ads, $adType) = $this->researchService->index($request);
-
-
+		$request->flash();
 		return view('pages.researches', compact('ads', 'adType'));
 	}
 

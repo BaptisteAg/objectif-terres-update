@@ -222,7 +222,6 @@ class LocationService
 								) myTable
 								WHERE distance <= '.(int)$radius.';
 								');
-
 		return array_column($cities, 'id');
 	}
 
