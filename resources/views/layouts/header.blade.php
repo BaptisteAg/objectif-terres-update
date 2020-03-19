@@ -18,7 +18,7 @@
                         @guest
                             <div class="level-item">Bienvenue !</div>
                             <div class="level-item">
-                                <a href="{{ route('signIn') }}">Connectez-vous</a>
+                                <a href="{{ route('login') }}">Connectez-vous</a>
                             </div>
                             <div class="level-item">ou</div>
                             @if (Route::has('register'))

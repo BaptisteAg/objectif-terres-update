@@ -115,18 +115,6 @@ class SalesforceService
     }
 
     /**
-     * Salesforce authentication by SAML SSO.
-     * User is redirected to salesforce login page
-     * before coming back to the website
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function getLoginRedirect()
-    {
-        return redirect()->route('saml2_login', 'salesforce');
-    }
-
-    /**
      * Right after a successful login, this method receives the retrieved
      * Saml2 User from Salesforce; it then retrieve or create a corresponding
      * local user.

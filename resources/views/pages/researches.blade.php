@@ -32,7 +32,7 @@
 										</div>
 										<footer class="card-footer">
 											<div class="buttons card-footer-item">
-												<a href="{{route('signIn')}}">
+												<a href="{{route('login')}}">
 													<button class="button is-link">
 														<span>Se connecter</span></button>
 												</a>

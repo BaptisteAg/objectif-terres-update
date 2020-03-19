@@ -355,7 +355,7 @@
 						{!! Form::close() !!}
 						<div class="section">
 							<h4 class="title is-4 has-text-centered">Vous avez déjà un compte ?</h4>
-							<p class="has-text-centered"><a href="{{route('signIn')}}">Se connecter</a></p>
+							<p class="has-text-centered"><a href="{{route('login')}}">Se connecter</a></p>
 						</div>
 					</div>
 				</div>
