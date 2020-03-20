@@ -3,7 +3,6 @@ import AjaxMultiSelect from "../components/AjaxMultiSelect";
 import VueSlider from "../components/VueSlider";
 import Vue from 'vue'
 
-
 Vue.component('header-page', {
     components: {
         MultiSelect,
@@ -12,7 +11,6 @@ Vue.component('header-page', {
     },
     props: {
         oldSearchValues: '',
-
     },
     data() {
         let hasOld = this.oldSearchValues.hasOwnProperty("offer_type") ? Object.values(this.oldSearchValues).some(x => (x !== null && x !== '')) : false;

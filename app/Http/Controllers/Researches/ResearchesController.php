@@ -28,9 +28,9 @@ class ResearchesController extends Controller
 	public function index(Request $request)
 	{
 
-		list ($ads, $adType) = $this->researchService->index($request);
+		list ($ads, $adsType) = $this->researchService->index($request);
 		$request->flash();
-		return view('pages.researches', compact('ads', 'adType'));
+		return view('pages.researches', compact('ads', 'adsType'));
 	}
 
 	public function paginate($ads, $perPage = 5, $page = null)

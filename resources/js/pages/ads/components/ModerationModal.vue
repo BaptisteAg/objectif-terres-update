@@ -24,18 +24,31 @@
                         <br>
                         <div class="container">
                             <div class="field">
-                                <div class="field">
-                                    <label class="label has-text-left" v-if="isRejectedChoice">Choisir un motif de refus</label>
-                                    <label class="label has-text-left" v-else>Envoyer un message type</label>
+                                <div v-if="isRejectedChoice" class="field">
+                                    <label class="label has-text-left" >Choisir un motif de
+                                        refus</label>
                                     <p class="control is-expanded">
                                     <span class="select is-fullwidth">
-                                <select  @change="setSelectOptionId">
-                                    <option disabled selected="selected">Choisissez...</option>
-                                    <option v-for="selectOption in selectOptions" :data-id="selectOption.id"
-                                            :value="selectOption.content">{{selectOption.name}} - {{selectOption.content}}
-                                    </option>
-                                </select>
-                            </span>
+                                        <select @change="setSelectOptionId">
+                                            <option disabled selected="selected">Choisissez...</option>
+                                            <option v-for="selectOption in selectOptions" :data-id="selectOption.id"
+                                                    :value="selectOption.content">{{selectOption.name}}
+                                            </option>
+                                        </select>
+                                    </span>
+                                    </p>
+                                </div>
+                                <div v-if="moderationChoice === 'modifyAd'" class="field">
+                                    <label class="label has-text-left" >Envoyer un message type</label>
+                                    <p class="control is-expanded">
+                                    <span class="select is-fullwidth">
+                                        <select v-model.trim="content" @change="setSelectOptionId">
+                                            <option disabled selected="selected">Choisissez...</option>
+                                            <option v-for="selectOption in selectOptions" :data-id="selectOption.id"
+                                                    :value="selectOption.content">{{selectOption.name}}
+                                            </option>
+                                        </select>
+                                    </span>
                                     </p>
                                 </div>
                                 <div class="field">

@@ -88,11 +88,11 @@
 			<nav class="level">
 				<div class="level-left">
 					<div class="">
-						@if ($adType === 'landOfferAd')
+						@if ($adsType === 'landOfferAd')
 							<h1 class="title">Offres foncières</h1>
-						@elseif($adType === 'landSeekAd')
+						@elseif($adsType === 'landSeekAd')
 							<h1 class="title">Recherche de fonciers</h1>
-						@elseif($adType === 'jobOfferAd')
+						@elseif($adsType === 'jobOfferAd')
 							<h1 class="title">Offres d'emploi</h1>
 						@else
 							<h1 class="title">Recherche d'emploi</h1>
@@ -101,20 +101,46 @@
 					</div>
 				</div>
 				<div class="level-right">
-					<div class="level-item">
-						{!! Form::open(['url' => '']) !!}
-						{!! Form::submit('Tout', ['class' => 'button']) !!}
-						{!! Form::submit('Vente', ['class' => 'button']) !!}
-						{!! Form::submit('Location', ['class' => 'button']) !!}
-						{!! Form::close() !!}
-					</div>
-					<div class="level-item">
-						<div class="help">Trier : </div>
-						{!! Form::open(['url' => '']) !!}
+					<div class="level-item ">
+						<label class="label">Trier par : </label>
+						<br>
 						<div class="select">
-							{!! Form::select('select', ['date' => 'Date: du plus récent au plus ancien', 'S' => 'Small']) !!}
+							<select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+								<option value="">Choisissez un filter</option>
+								<option value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date'])) }}">
+									Date: du plus récent au plus ancien
+								</option>
+								<option value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'date'])) }}">
+									Date: du plus ancien au plus récent
+								</option>
+
+								@if($adsType =='landSeekAd' or $adsType== 'landOfferAd')
+									@if($adsType == 'landOfferAd')
+										<option value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'price'])) }}">
+											Prix : du moins au plus élevé
+										</option>
+										<option value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'price'])) }}">
+											Prix : du plus au moins élevé
+										</option>
+									@endif
+									@if($adsType == 'landSeekAd')
+										<option value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'surface_max'])) }}">
+											Surface : du plus petit au plus grand
+										</option>
+										<option value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'surface_max'])) }}">
+											Surface : du plus grand au plus petit
+										</option>
+									@elseif($adsType == 'landOfferAd')
+										<option value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'surface'])) }}">
+											Surface : du plus petit au plus grand
+										</option>
+										<option value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'surface'])) }}">
+											Surface : du plus grand au plus petit
+										</option>
+									@endif
+								@endif
+							</select>
 						</div>
-						{!! Form::close() !!}
 					</div>
 				</div>
 			</nav>
@@ -144,7 +170,7 @@
 								<h1 class="title">{{ $ad->title }}</h1>
 							</a>
 
-							@if($adType === 'landOfferAd')
+							@if($adsType === 'landOfferAd')
 								<div><span>{{ $ad->landOfferAd->price }}</span> € |
 									<span>{{ $ad->landOfferAd->surface }}</span> ha
 								</div>
@@ -205,7 +231,7 @@
 				<pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
 			</section>
 
-			@if($adType === 'landOfferAd' || $adType === 'landSeekAd')
+			@if($adsType === 'landOfferAd' || $adsType === 'landSeekAd')
 				<section class="section">
 					<div class="columns">
 						<div class="column">

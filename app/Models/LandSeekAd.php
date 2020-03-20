@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\OfferableGenre;
 use App\Models\Traits\ProductionableGenre;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -48,6 +49,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class LandSeekAd extends Model
 {
     use ProductionableGenre;
+    use OfferableGenre;
 
     /**
      * @var array
