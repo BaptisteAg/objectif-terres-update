@@ -12,8 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $value
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandSeekAd[] $landSeekAds
- * @property-read int|null $land_seek_ads_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange query()

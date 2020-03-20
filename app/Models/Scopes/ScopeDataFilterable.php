@@ -11,6 +11,7 @@ trait ScopeDataFilterable
 		$query->whereIn($columnName, $data);
 	}
 
+	// TODO: renommer les scope sur ce modèle : scopeFilterWhereHasIn
 	function scopeFilterArrayDataInRelationModel(Builder $query, array $data, string $relationNameTable, string $columnName)
 	{
 		$query->whereHas($relationNameTable, function (Builder $query) use ($data, $columnName) {

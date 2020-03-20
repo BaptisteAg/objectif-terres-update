@@ -51,6 +51,12 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read int|null $threads_count
  * @property-read \App\Models\User|null $userAdmin
  * @property-read \App\Models\User $userPp
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterAdTypes($adTypesFilters, $relationTableName)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterArrayDataInCurrentModel($data, $columnName)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterArrayDataInRelationModel($data, $relationNameTable, $columnName)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterDataInRelationModel($data, $relationNameTable, $operator, $columnName)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterLocations($relationshipName, $locationableIds)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad query()

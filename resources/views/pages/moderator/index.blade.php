@@ -300,14 +300,14 @@
 					<table class="table is-striped is-hoverable is-fullwidth ">
 						<thead>
 						<tr>
-							<th>Date de soumission</th>
-							<th>Titre de l'annonce</th>
+							<th><a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'date'])) }}">Date de soumission</a></th>
+							<th> <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">Titre de l'annonce</a></th>
 							<th>Type d'annonce</th>
-							<th>Nom du porteur de projet</th>
+							<th><a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'name'])) }}">Nom du porteur de projet</a></th>
 							<th>Adresse mail</th>
 							<th>Localisation(s)</th>
-							<th>Statut de l'annonce</th>
-							<th>Statut du projet</th>
+							<th><a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'name'])) }}">Statut de l'annonce</a></th>
+							<th><a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'name'])) }}">Statut du projet</a></th>
 							<th></th>
 						</tr>
 						</thead>

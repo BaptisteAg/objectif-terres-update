@@ -136,7 +136,7 @@ class AttributionAdsService
 		//If a range of submitting date is selected, filter attribution ads based on creation date
 		if (!is_null($filters->input('date_research_range'))) {
 			$dateFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_research_range'))->format('Y-m-d');
-			$attributionAdsFiltered->where('created_at', '>=', $dateFormatted);
+			$attributionAdsFiltered->where('attribution_ads.created_at', '>=', $dateFormatted);
 		}
 		//If one or many project status are selected, filter  ads based on their project status
 		if ($filters->has('project_statuses')) {
@@ -153,9 +153,35 @@ class AttributionAdsService
 			$attributionAdsFiltered->filterAdTypes($filters->input('ad_type'), 'ad.');
 		}
 		$attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
-		$attributionAds = $attributionAdsFiltered
-			->with($this->getEagerLoading())
-			->orderByDesc('created_at')
+
+
+		if ($filters->has('order') && $filters->has('sort')) {
+			if ($filters->input('sort') === 'date') {
+				$attributionAdsFiltered->orderBy('created_at', $filters->input('order'));
+
+			} else if ($filters->input('sort') === 'title') {
+				$attributionAdsFiltered->join('ads', 'attribution_ads.id', '=', 'ads.id')
+					->orderBy($filters->input('sort'), $filters->input('order'));
+
+			} else if ($filters->input('sort') === 'name') {
+				//method 1
+				$attributionAdsFiltered
+					->select('attribution_ads.*')
+					->join('ads as a1', 'attribution_ads.id', '=', 'a1.attribution_ad_id')
+					->join('users', 'users.id', '=','a1.user_pp_id')
+					->orderBy('first_name', $filters->input('order'));
+
+
+				//method 2
+//				$attributionAdsFiltered->whereHas('ad.userPp', function (Builder $query) {
+//					$query->orderBy('first_name', 'desc');
+//				});
+			}
+		} else {
+			$attributionAdsFiltered->orderByDesc('created_at');
+		}
+
+		$attributionAds = $attributionAdsFiltered->with($this->getEagerLoading())
 			->get();
 		return $attributionAds;
 	}
@@ -212,6 +238,7 @@ class AttributionAdsService
 		return $attributionAd;
 
 	}
+
 	/**
 	 * @return array
 	 */
@@ -229,6 +256,8 @@ class AttributionAdsService
 			'ad.departments',
 			'ad.departments.region',
 			'ad.regions',
+			'ad.regions.departments',
+			'ad.regions.department.cities',
 
 			'ad.landSeekAd',
 			'ad.landOfferAd',
