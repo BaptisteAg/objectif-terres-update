@@ -32,11 +32,10 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \App\Models\User $userModerator
  * @property-read \App\Models\User|null $userOwner
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterAdTypes($adTypesFilters, $relationTableName)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterArrayDataInCurrentModel($data, $columnName)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterArrayDataInRelationModel($data, $relationNameTable, $columnName)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterDataInRelationModel($data, $relationNameTable, $operator, $columnName)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterLocations($relationshipName, $locationableIds)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterWhereHasIn($data, $relationNameTable, $columnName)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterWhereHasWhere($data, $relationNameTable, $operator, $columnName)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd query()

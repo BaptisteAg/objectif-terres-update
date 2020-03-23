@@ -85,7 +85,7 @@ class ResearchService
 				$adsFilter->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
 			}
 			if ($research->offerGenres()->exists()) {
-				$adsFilter->filterArrayDataInRelationModel($research->offerGenres()->pluck('offer_genres.id')->toArray(), $research->ad_type . '.offerGenres', 'offer_genre_id');
+				$adsFilter->filterWhereHasIn($research->offerGenres()->pluck('offer_genres.id')->toArray(), $research->ad_type . '.offerGenres', 'offer_genre_id');
 			}
 
 			if (!is_null($research->surface_min)) {
@@ -123,7 +123,7 @@ class ResearchService
 				});
 			}
 			if (!is_null($research->has_houses)) {
-				$adsFilter->filterDataInRelationModel($research->has_houses, $research->ad_type, '=', 'has_buildings');
+				$adsFilter->filterWhereHasWhere($research->has_houses, $research->ad_type, '=', 'has_buildings');
 			}
 			if ($research->has_pics === 1) {
 				$adsFilter->whereHas('documents', function (Builder $query) {
@@ -131,14 +131,14 @@ class ResearchService
 				});
 			}
 			if ($research->productionGenres()->exists()) {
-				$adsFilter->filterArrayDataInRelationModel($research->productionGenres()->pluck('production_genres.id')->toArray(), $research->ad_type . '.productionGenres', 'production_genres.id');
+				$adsFilter->filterWhereHasIn($research->productionGenres()->pluck('production_genres.id')->toArray(), $research->ad_type . '.productionGenres', 'production_genres.id');
 			}
 			if ($research->bioCertifications()->exists()) {
-				$adsFilter->filterArrayDataInRelationModel($research->bioCertifications()->pluck('bio_certifications.id')->toArray(), $research->ad_type . '.bioCertifications', 'bio_certifications.id');
+				$adsFilter->filterWhereHasIn($research->bioCertifications()->pluck('bio_certifications.id')->toArray(), $research->ad_type . '.bioCertifications', 'bio_certifications.id');
 			}
 
 			if ($research->jobOfferTypes()->exists()) {
-				$adsFilter->filterDataInRelationModel($research->jobOfferTypes()->pluck('job_offer_types.id'), $research->ad_type . '.jobOfferTypes', '=', 'job_offer_types.id');
+				$adsFilter->filterWhereHasIn($research->jobOfferTypes()->pluck('job_offer_types.id'), $research->ad_type . '.jobOfferTypes', '=', 'job_offer_types.id');
 			}
 			$newAds = $adsFilter->get();
 
@@ -196,20 +196,20 @@ class ResearchService
 		}
 
 		if ($filters->has('offer_genres')) {
-			$adsFilter->filterArrayDataInRelationModel($filters->input('offer_genres'), $adsTypeSelected . '.offerGenres', 'offer_genre_id');
+			$adsFilter->filterWhereHasIn($filters->input('offer_genres'), $adsTypeSelected . '.offerGenres', 'offer_genre_id');
 		}
 		if (!is_null($filters->input('surfaces_research')) && $filters->input('surfaces_research') !== "0") {
 			if ($adsTypeSelected === 'landSeekAd') {
 				if ($filters->input('surfaces_research') === "+100") {
-					$adsFilter->filterDataInRelationModel('100', $adsTypeSelected, '>=', 'surface_range_max');
+					$adsFilter->filterWhereHasWhere('100', $adsTypeSelected, '>=', 'surface_range_max');
 				} else {
-					$adsFilter->filterDataInRelationModel($filters->input('surfaces_research'), $adsTypeSelected, '<=', 'surface_range_max');
+					$adsFilter->filterWhereHasWhere($filters->input('surfaces_research'), $adsTypeSelected, '<=', 'surface_range_max');
 				}
 			} else if ($adsTypeSelected === 'landOfferAd') {
 				if ($filters->input('surfaces_research') === "+100") {
-					$adsFilter->filterDataInRelationModel('100', $adsTypeSelected, '>=', 'surface');
+					$adsFilter->filterWhereHasWhere('100', $adsTypeSelected, '>=', 'surface');
 				} else {
-					$adsFilter->filterDataInRelationModel($filters->input('surfaces_research'), $adsTypeSelected, '<=', 'surface');
+					$adsFilter->filterWhereHasWhere($filters->input('surfaces_research'), $adsTypeSelected, '<=', 'surface');
 				}
 			}
 		}
@@ -229,7 +229,7 @@ class ResearchService
 		}
 
 		if ($filters->has('has_buildings')) {
-			$adsFilter->filterDataInRelationModel($filters->input('has_buildings'), $adsTypeSelected, '=', 'has_buildings');
+			$adsFilter->filterWhereHasWhere($filters->input('has_buildings'), $adsTypeSelected, '=', 'has_buildings');
 		}
 
 		if ($filters->has('has_picture')) {
@@ -239,18 +239,18 @@ class ResearchService
 		}
 
 		if ($filters->has('production_genres')) {
-			$adsFilter->filterArrayDataInRelationModel($filters->input('production_genres'), $adsTypeSelected . '.productionGenres', 'production_genres.id');
+			$adsFilter->filterWhereHasIn($filters->input('production_genres'), $adsTypeSelected . '.productionGenres', 'production_genres.id');
 		};
 
 		if ($filters->has('bio_certifications')) {
-			$adsFilter->filterArrayDataInRelationModel($filters->input('bio_certifications'), $adsTypeSelected . '.bioCertifications', 'bio_certifications.id');
+			$adsFilter->filterWhereHasIn($filters->input('bio_certifications'), $adsTypeSelected . '.bioCertifications', 'bio_certifications.id');
 		}
 
 		if ($filters->has('offer_genres')) {
-			$adsFilter->filterArrayDataInRelationModel($filters->input('offer_genres'), $adsTypeSelected . '.offerGenres', 'offer_genres.id');
+			$adsFilter->filterWhereHasIn($filters->input('offer_genres'), $adsTypeSelected . '.offerGenres', 'offer_genres.id');
 		}
 		if (!is_null($filters->input('jobOfferType'))) {
-			$adsFilter->filterDataInRelationModel($filters->input('jobOfferType'), $adsTypeSelected . '.jobOfferTypes', '=', 'job_offer_types.id');
+			$adsFilter->filterWhereHasWhere($filters->input('jobOfferType'), $adsTypeSelected . '.jobOfferTypes', '=', 'job_offer_types.id');
 		}
 
 		$adsFilter->filterAdTypes(array($adsTypeSelected), '');

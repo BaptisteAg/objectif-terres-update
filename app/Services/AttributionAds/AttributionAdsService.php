@@ -92,7 +92,6 @@ class AttributionAdsService
 	 */
 	public function filter(Request $filters)
 	{
-
 		//Return results if research ads by title
 		$attributionAds = collect();
 		if (!is_null($filters->input('ad_title'))) {
@@ -140,12 +139,12 @@ class AttributionAdsService
 		}
 		//If one or many project status are selected, filter  ads based on their project status
 		if ($filters->has('project_statuses')) {
-			$attributionAdsFiltered->filterArrayDataInRelationModel($filters->input('project_statuses'), 'ad.project', 'project_status_id');
+			$attributionAdsFiltered->filterWhereHasIn($filters->input('project_statuses'), 'ad.project', 'project_status_id');
 		}
 
 		//If one or many ad status are selected, filter attribution ads based on their status
 		if ($filters->has('ad_statuses')) {
-			$attributionAdsFiltered->filterArrayDataInCurrentModel($filters->input('ad_statuses'), 'ad_status_id');
+			$attributionAdsFiltered->whereIn('ad_status_id',$filters->input('ad_statuses'));
 		}
 
 		//Filter ads based on their types if requested

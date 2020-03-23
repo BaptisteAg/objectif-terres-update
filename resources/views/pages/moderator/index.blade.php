@@ -127,31 +127,26 @@
 							<div class="columns">
 								<div class="column is-half">
 									<div class="field">
-										<label class="label">Code postal</label>
-										<div>
-											<div class="control">
-												<autocomplete
-														name="citySelect"
-														id="citySelect"
-														placeholder="Saisissez les premiers caractères"
-														ref='citySelect'
-														src="/locations/cities"
-														v-model="citySelect">
+										<label class="label">Commune ou Code postal</label>
+										<autocomplete
+												name="citySelect"
+												id="citySelect"
+												placeholder="Saisissez les premiers caractères"
+												ref='citySelect'
+												src="/locations/cities"
+												v-model="citySelect">
 
-													<input type="hidden" name="city_location_researches[]"
-														   :value="zone.value.id"
-														   v-for="(zone,i) in citySelect">
+											<input type="hidden" name="city_location_researches" :value="zone.value.id"
+												   v-for="(zone,i) in citySelect">
 
-													<div class="tag autocomplete-input-tag is-info"
-														 v-for="(zone,i) in citySelect"
-														 @click="_ => citySelect.splice(i,1)">
-														@{{ zone.label }}
-														&nbsp;&nbsp;
-														<i class="fa fa-trash" style="cursor:pointer"></i>
-													</div>
-												</autocomplete>
+											<div class="tag autocomplete-input-tag is-info"
+												 v-for="(zone,i) in citySelect"
+												 @click="_ => citySelect.splice(i,1)">
+												@{{ zone.label }}
+												&nbsp;&nbsp;
+												<i class="fa fa-trash" style="cursor:pointer"></i>
 											</div>
-										</div>
+										</autocomplete>
 									</div>
 								</div>
 								<div class="column">
