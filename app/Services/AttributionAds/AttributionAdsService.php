@@ -155,27 +155,31 @@ class AttributionAdsService
 		$attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
 
 
+		//Handling sort of research results
 		if ($filters->has('order') && $filters->has('sort')) {
 			if ($filters->input('sort') === 'date') {
 				$attributionAdsFiltered->orderBy('created_at', $filters->input('order'));
-
 			} else if ($filters->input('sort') === 'title') {
-				$attributionAdsFiltered->join('ads', 'attribution_ads.id', '=', 'ads.id')
+				$attributionAdsFiltered
+					->join('ads', 'attribution_ads.id', '=', 'ads.id')
 					->orderBy($filters->input('sort'), $filters->input('order'));
-
 			} else if ($filters->input('sort') === 'name') {
-				//method 1
 				$attributionAdsFiltered
 					->select('attribution_ads.*')
 					->join('ads as a1', 'attribution_ads.id', '=', 'a1.attribution_ad_id')
-					->join('users', 'users.id', '=','a1.user_pp_id')
+					->join('users', 'users.id', '=', 'a1.user_pp_id')
 					->orderBy('first_name', $filters->input('order'));
-
-
-				//method 2
-//				$attributionAdsFiltered->whereHas('ad.userPp', function (Builder $query) {
-//					$query->orderBy('first_name', 'desc');
-//				});
+			} else if ($filters->input('sort') === 'ad_statuses.name') {
+				$attributionAdsFiltered
+					->join('ad_statuses', 'attribution_ads.ad_status_id', '=', 'ad_statuses.id')
+					->orderBy('name', $filters->input('order'));
+			} else if ($filters->input('sort') === 'project_statuses.name') {
+				$attributionAdsFiltered
+					->select('attribution_ads.*')
+					->join('ads as a1', 'attribution_ads.id', '=', 'a1.attribution_ad_id')
+					->leftJoin('projects as p1', 'p1.id', '=', 'a1.project_id')
+					->leftJoin('project_statuses', 'p1.project_status_id', 'project_statuses.id' )
+					->orderBy('name', $filters->input('order'));
 			}
 		} else {
 			$attributionAdsFiltered->orderByDesc('created_at');

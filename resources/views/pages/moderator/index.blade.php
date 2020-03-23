@@ -300,14 +300,96 @@
 					<table class="table is-striped is-hoverable is-fullwidth ">
 						<thead>
 						<tr>
-							<th><a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'date'])) }}">Date de soumission</a></th>
-							<th> <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">Titre de l'annonce</a></th>
+
+							<th>
+								@if(request()->input('sort') !== 'date')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date'])) }}">
+										<span>Date de soumission</span>
+									</a>
+								@elseif(request()->input('sort') === 'date' && request()->input('order') === 'desc')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'date'])) }}">
+										<i class="fas fa-arrow-down"></i>
+										<span>Date de soumission</span>
+									</a>
+								@else
+									<a href="{{ route('moderator.show') }}">
+										<i class="fas fa-arrow-up"></i>
+										<span>Date de soumission</span>
+									</a>
+								@endif
+							</th>
+							<th>
+								@if(request()->input('sort') !== 'title')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">
+										<span>Titre de l'annonce</span>
+									</a>
+								@elseif(request()->input('sort') === 'title' && request()->input('order') === 'asc')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'title'])) }}">
+										<i class="fas fa-arrow-up"></i>
+										<span>Titre de l'annonce</span>
+									</a>
+								@else
+									<a href="{{ route('moderator.show') }}">
+										<i class="fas fa-arrow-down"></i>
+										<span>Titre de l'annonce</span>
+									</a>
+								@endif
+
+							</th>
 							<th>Type d'annonce</th>
-							<th><a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'name'])) }}">Nom du porteur de projet</a></th>
+							<th>
+								@if(request()->input('sort') !== 'name')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'name'])) }}">
+										<span>Nom du porteur de projet</span>
+									</a>
+								@elseif(request()->input('sort') === 'name' && request()->input('order') === 'asc')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'name'])) }}">
+										<i class="fas fa-arrow-up"></i>
+										<span>Nom du porteur de projet</span>
+									</a>
+								@else
+									<a href="{{ route('moderator.show') }}">
+										<i class="fas fa-arrow-down"></i>
+										<span>Nom du porteur de projet</span>
+									</a>
+								@endif
+							</th>
 							<th>Adresse mail</th>
 							<th>Localisation(s)</th>
-							<th><a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'name'])) }}">Statut de l'annonce</a></th>
-							<th><a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'name'])) }}">Statut du projet</a></th>
+							<th>
+								@if(request()->input('sort') !== 'ad_statuses.name')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'ad_statuses.name'])) }}">
+										<span>Statut de l'annonce</span>
+									</a>
+								@elseif(request()->input('sort') === 'ad_statuses.name' && request()->input('order') === 'asc')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'ad_statuses.name'])) }}">
+										<i class="fas fa-arrow-up"></i>
+										<span>Statut de l'annonce</span>
+									</a>
+								@else
+									<a href="{{ route('moderator.show') }}">
+										<i class="fas fa-arrow-down"></i>
+										<span>Statut de l'annonce</span>
+									</a>
+								@endif
+							</th>
+							<th>
+								@if(request()->input('sort') !== 'project_statuses.name')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'project_statuses.name'])) }}">
+										<span>Statut du projet</span>
+									</a>
+								@elseif(request()->input('sort') === 'project_statuses.name' && request()->input('order') === 'asc')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'project_statuses.name'])) }}">
+										<i class="fas fa-arrow-up"></i>
+										<span>Statut du projet</span>
+									</a>
+								@else
+									<a href="{{ route('moderator.show') }}">
+										<i class="fas fa-arrow-down"></i>
+										<span>Statut du projet</span>
+									</a>
+								@endif
+							</th>
 							<th></th>
 						</tr>
 						</thead>
