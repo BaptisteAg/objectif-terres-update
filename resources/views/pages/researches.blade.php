@@ -97,7 +97,7 @@
 						@else
 							<h1 class="title">Recherche d'emploi</h1>
 						@endif
-						<h2 class="subtitle">{{ count($ads) }} annonces trouvées.</h2>
+						<h2 class="subtitle">{{ ($ads->total()) }} annonces trouvées</h2>
 					</div>
 				</div>
 				<div class="level-right">
@@ -107,34 +107,34 @@
 						<div class="select">
 							<select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
 								<option value="">Choisissez un filter</option>
-								<option value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date'])) }}">
+								<option {{request()->input('order') === 'desc' && request()->input('sort') === 'date' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date', 'page'=> 0])) }}">
 									Date: du plus récent au plus ancien
 								</option>
-								<option value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'date'])) }}">
+								<option {{request()->input('order') === 'asc' && request()->input('sort') === 'date' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'date', 'page'=> 0])) }}">
 									Date: du plus ancien au plus récent
 								</option>
 
 								@if($adsType =='landSeekAd' or $adsType== 'landOfferAd')
 									@if($adsType == 'landOfferAd')
-										<option value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'price'])) }}">
+										<option {{request()->input('order') === 'asc' && request()->input('sort') === 'price' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'price', 'page'=> 0])) }}">
 											Prix : du moins au plus élevé
 										</option>
-										<option value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'price'])) }}">
+										<option {{request()->input('order') === 'desc' && request()->input('sort') === 'price' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'price', 'page'=> 0])) }}">
 											Prix : du plus au moins élevé
 										</option>
 									@endif
 									@if($adsType == 'landSeekAd')
-										<option value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'surface_max'])) }}">
+										<option {{request()->input('order') === 'asc' && request()->input('sort') === 'surface_max' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'surface_max', 'page'=> 0])) }}">
 											Surface : du plus petit au plus grand
 										</option>
-										<option value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'surface_max'])) }}">
+										<option {{request()->input('order') === 'desc' && request()->input('sort') === 'surface_max' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'surface_max', 'page'=> 0])) }}">
 											Surface : du plus grand au plus petit
 										</option>
 									@elseif($adsType == 'landOfferAd')
-										<option value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'surface'])) }}">
+										<option {{request()->input('order') === 'asc' && request()->input('sort') === 'surface' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'surface', 'page'=> 0])) }}">
 											Surface : du plus petit au plus grand
 										</option>
-										<option value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'surface'])) }}">
+										<option {{request()->input('order') === 'desc' && request()->input('sort') === 'surface' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'surface', 'page'=> 0])) }}">
 											Surface : du plus grand au plus petit
 										</option>
 									@endif
@@ -187,7 +187,6 @@
 								<p class="is-italic ">{{ $ad->cities->pluck('name')->implode(', ') }}</p>
 							@endif
 
-
 							<div class="content descritption">
 								<p>{{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</p>
 							</div>
@@ -205,32 +204,60 @@
 					<br>
 				@endforeach
 			</section>
-
 			<section class="section">
-				{{--                @if($ads->lastPage() > 1)--}}
-				{{--                    <nav class="pagination is-centered" role="navigation" aria-label="pagination">--}}
-				{{--                        <ul class="pagination-list">--}}
-				{{--                            <li class="{{ $ads->currentPage() === 1 ? 'disabled' : '' }}">--}}
-				{{--                                <a href="{{ $ads->url(1) }}" class="pagination-link" aria-label="Goto page 1">1</a>--}}
-				{{--                            </li>--}}
-				{{--                            <li class="{{ $ads->lastPage() > 6 }}"><span class="pagination-ellipsis">&hellip;</span></li>--}}
-				{{--                            @if($ads->lastPage() >= 3)--}}
-				{{--                                @for($i = 1; $i <= $ads->lastPage(); $i++)--}}
-				{{--                                    <li class="{{ ($ads->currentPage() == $i) ? ' active' : '' }}">--}}
-				{{--                                        <a href="{{ $ads->url($i) }}" class="pagination-link" aria-label="Goto page {{ $i }}">{{ $i }}</a>--}}
-				{{--                                    </li>--}}
-				{{--                                @endfor--}}
-				{{--                            @endif--}}
-				{{--                            <li><span class="pagination-ellipsis">&hellip;</span></li>--}}
-				{{--                            <li class="{{ ($ads->currentPage() == $ads->lastPage()) ? ' disabled' : '' }}">--}}
-				{{--                                <a href="{{ '/recherches' . $ads->url($ads->currentPage()+1) }}" class="pagination-link" aria-label="Goto page {{ $ads->lastPage() }}">{{ $ads->lastPage() }}</a>--}}
-				{{--                            </li>--}}
-				{{--                        </ul>--}}
-				{{--                    </nav>--}}
-				{{--                @endif--}}
-				<pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
-			</section>
+				<div class="columns is-mobile is-centered">
+					<div class="column is-half ">
+						{{ $ads->appends(Request::all())->links() }}
+					</div>
+				</div>
 
+				{{--				@if($ads->lastPage() > 1)--}}
+				{{--					<nav class="pagination is-centered" role="navigation" aria-label="pagination">--}}
+				{{--						<ul class="pagination-list">--}}
+				{{--							<li>--}}
+				{{--								<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => 1])) }}"--}}
+				{{--								   class="{{ $ads->currentPage() === 1 ?'pagination-link is-current-page' : 'pagination-link' }}"--}}
+				{{--								   aria-label="Goto page 1">1</a>--}}
+				{{--							</li>--}}
+				{{--							<li class="{{ $ads->lastPage() > 6 }}"><span class="pagination-ellipsis">&hellip;</span>--}}
+				{{--							</li>--}}
+				{{--							@if($ads->lastPage() >= 3)--}}
+				{{--								@if($ads->lastPage()<=10)--}}
+				{{--									<li>--}}
+				{{--										<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => $ads->currentPage()-1])) }}"--}}
+				{{--										   class="pagination-link is-current-page' "--}}
+				{{--										   aria-label="Goto page {{ $ads->currentPage()-1 }}"><< Précédent</a>--}}
+				{{--									</li>--}}
+				{{--									<li>--}}
+				{{--										<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => $ads->currentPage()])) }}"--}}
+				{{--										   class="{{ ((int)request()->input('page') === $ads->currentPage()) ? ' pagination-link is-current-page' : 'pagination-link' }}"--}}
+				{{--										   aria-label="Goto page {{ $ads->currentPage() }}">{{ $ads->currentPage() }}</a>--}}
+				{{--									</li>--}}
+				{{--									<li>--}}
+				{{--										<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => $ads->currentPage() + 1])) }}"--}}
+				{{--										   class="pagination-link is-current-page' "--}}
+				{{--										   aria-label="Goto page {{ $ads->currentPage()+1 }}">Suivant >></a>--}}
+				{{--									</li>--}}
+				{{--								@else--}}
+				{{--									@for($i = 2; $i <= $ads->lastPage()-1; $i++)--}}
+				{{--										<li>--}}
+				{{--											<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => $i])) }}"--}}
+				{{--											   class="{{ ((int)request()->input('page') === $i) ? ' pagination-link is-current-page' : 'pagination-link' }}"--}}
+				{{--											   aria-label="Goto page {{ $i }}">{{ $i }}</a>--}}
+				{{--										</li>--}}
+				{{--									@endfor--}}
+				{{--								@endif--}}
+				{{--							@endif--}}
+				{{--							<li><span class="pagination-ellipsis">&hellip;</span></li>--}}
+				{{--							<li>--}}
+				{{--								<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => $ads->lastPage()])) }}"--}}
+				{{--								   class="{{ ($ads->currentPage() == $ads->lastPage()) ? ' pagination-link is-current-page' : 'pagination-link' }}"--}}
+				{{--								   aria-label="Goto page {{ $ads->lastPage() }}">{{ $ads->lastPage() }}</a>--}}
+				{{--							</li>--}}
+				{{--						</ul>--}}
+				{{--					</nav>--}}
+				{{--				@endif--}}
+			</section>
 			@if($adsType === 'landOfferAd' || $adsType === 'landSeekAd')
 				<section class="section">
 					<div class="columns">

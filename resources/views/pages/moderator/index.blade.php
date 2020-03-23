@@ -13,8 +13,12 @@
 		<div class="notification has-background-info">
 			<button class="delete"></button>
 			@if($numberOfAdsToModerate >1)
-				<p class="has-text-white-ter"><i class="far fa-bell has-text-white-ter"></i> Vous avez
-					<strong>{{$numberOfAdsToModerate}} annonces</strong> à modérer !</p>
+				<p class="has-text-white-ter">
+					<i class="far fa-bell has-text-white-ter"></i>
+					Vous avez<a style="text-decoration: none"
+								href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4&ad_title='])}}">
+						<strong>{{$numberOfAdsToModerate}}
+							annonces</strong></a> à modérer !</p>
 			@else
 				<p class="has-text-white-ter"><i class="far fa-bell has-text-white-ter"></i> Vous avez
 					<strong>{{$numberOfAdsToModerate}} annonce</strong> à modérer !</p>
@@ -444,17 +448,20 @@
 											<span class="tag is-info is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
 										@endif
 									@endif
-
 								</td>
 								<td><a href="{{route('ads.show', $attributionAd->ad->id)}}"><span><i
 													class="fas fa-search"></i></span> <span>Voir le détail</span></a>
 								</td>
 							</tr>
-
 						@endforeach
 						</tbody>
 					</table>
 				</div>
+					<div class="columns is-mobile is-centered">
+						<div class="column is-half ">
+							{{ $attributionAds->appends(Request::all())->links() }}
+						</div>
+					</div>
 			@endif
 		</div>
 

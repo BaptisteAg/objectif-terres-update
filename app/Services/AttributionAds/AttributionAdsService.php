@@ -88,7 +88,7 @@ class AttributionAdsService
 
 	/**
 	 * @param Request $filters
-	 * @return AttributionAd[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
 	public function filter(Request $filters)
 	{
@@ -184,8 +184,9 @@ class AttributionAdsService
 			$attributionAdsFiltered->orderByDesc('created_at');
 		}
 
-		$attributionAds = $attributionAdsFiltered->with($this->getEagerLoading())
-			->get();
+		$attributionAds = $attributionAdsFiltered
+			->with($this->getEagerLoading())
+			->paginate(15);
 		return $attributionAds;
 	}
 

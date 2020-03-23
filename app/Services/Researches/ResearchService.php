@@ -31,12 +31,18 @@ class ResearchService
 	public function create(Request $request)
 	{
 		$url = (url()->previous());
-		$urlGet = substr($url, strpos($url, "?"));
+		$urlParsed = parse_url($url);
+		parse_str($urlParsed['query'], $urlQuery);
+		if ($request->input('page')) {
+			unset($urlQuery['page']);
+		}
+		$urlGet = http_build_query($urlQuery);
+
 		$data = [];
 		foreach ($request->input() as $item => $value) {
 			$data[$item] = $value;
 		}
-		$data['url'] = $urlGet;
+		$data['url'] = '?' . $urlGet;
 		$research = DB::transaction(function () use ($data) {
 			$research = $this->repository->create($data);
 
@@ -138,7 +144,7 @@ class ResearchService
 			}
 
 			if ($research->jobOfferTypes()->exists()) {
-				$adsFilter->filterWhereHasIn($research->jobOfferTypes()->pluck('job_offer_types.id'), $research->ad_type . '.jobOfferTypes', '=', 'job_offer_types.id');
+				$adsFilter->filterWhereHasIn($research->jobOfferTypes()->pluck('job_offer_types.id'), $research->ad_type . '.jobOfferTypes', 'job_offer_types.id');
 			}
 			$newAds = $adsFilter->get();
 
@@ -288,7 +294,7 @@ class ResearchService
 			'landOfferAd',
 			'jobOfferAd',
 			'jobSeekAd')
-			->get();
+			->paginate(15);
 
 		return [$ads, $adsTypeSelected];
 	}
