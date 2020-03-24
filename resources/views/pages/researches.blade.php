@@ -190,7 +190,6 @@
 							<div class="content descritption">
 								<p>{{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</p>
 							</div>
-
 							<a href="{{route("ads.show", $ad->id)}}">
 								<button class="button is-link ">
 											<span class="icon is-small">

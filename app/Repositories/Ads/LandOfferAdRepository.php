@@ -31,7 +31,7 @@ class LandOfferAdRepository extends AbstractRepository implements LandOfferAdRep
             }
         }
         if(isset($data["production_genres_wanted"])) {
-            foreach($data["production_genres"] as $productionGenreId) {
+            foreach($data["production_genres_wanted"] as $productionGenreId) {
                 $landOfferAd->productionGenres()->attach($productionGenreId, ["type" => "possible"]);
             }
         }

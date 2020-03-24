@@ -12,7 +12,7 @@
 								 <span class="icon is-small">
 								<i class="fa fa-plus" aria-hidden="true"></i>
 								</span>
-                <span> Créer une nouvelle discussion</span>
+                <span> Créer une discussion</span>
             </button>
         </div>
         <aside class="menu">

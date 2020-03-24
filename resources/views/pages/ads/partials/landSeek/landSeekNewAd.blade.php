@@ -233,9 +233,3 @@
 
     </form-wizard>
 </div>
-<script>
-    import CustomCheckbox from "../../../../../js/components/CustomCheckbox";
-    export default {
-        components: {CustomCheckbox}
-    }
-</script>

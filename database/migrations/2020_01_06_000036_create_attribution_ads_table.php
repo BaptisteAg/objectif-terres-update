@@ -36,7 +36,7 @@ class CreateAttributionAdsTable extends Migration
 
             $table->index(["ad_status_id"], 'fk_attribution_ads_1_idx');
 
-            $table->index(["ad_id"], 'fk_attribution_ads_1_idx');
+            $table->index(["ad_id"], 'fk_attribution_ads_ads_1_idx');
 
             $table->index(["user_owner_id"], 'ix_attribution_ad_user_owner_id');
 
@@ -57,6 +57,11 @@ class CreateAttributionAdsTable extends Migration
 				->references('id')
 				->on('users')
 				->onDelete('cascade');
+
+			$table->foreign('ad_id', 'fk_attribution_ads_ads_1_idx')
+				->references('id')->on('ads')
+				->onDelete('restrict')
+				->onUpdate('restrict');
 
             $table->foreign('ad_status_id', 'fk_attribution_ads_1_idx')
                 ->references('id')->on('ad_statuses')

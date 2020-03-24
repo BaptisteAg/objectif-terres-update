@@ -32,7 +32,8 @@
 						<div class="columns is-mobile is-centered">
 							<div class="column is-three-quarters">
 								<h2 class="title is-2 has-text-link">Suivre un porteur de projet</h2>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cupiditate debitis
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cupiditate
+									debitis
 									deleniti dicta, error exercitationem fugit illo labore laudantium modi</p>
 							</div>
 						</div>
@@ -103,7 +104,8 @@
 							<div class="columns is-mobile is-centered">
 								<div class="column is-three-quarters">
 									<h2 class="title is-2 has-text-link">Conseil sur la gestion de la modération</h2>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cupiditate debitis
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cupiditate
+										debitis
 										deleniti dicta, error exercitationem fugit illo labore laudantium modi</p>
 								</div>
 							</div>
@@ -122,7 +124,8 @@
 										</div>
 										<div class="card-content is-marginless">
 											<p class="title is-4 has-text-centered">Titre du document</p>
-											<p class="subtitle is-6 has-text-grey">Lorem ipsum dolor sit amet, consectetur
+											<p class="subtitle is-6 has-text-grey">Lorem ipsum dolor sit amet,
+												consectetur
 												adipisicing
 												elit. Accusamus corporis deleniti </p>
 											<div class="content has-text-centered">
@@ -144,7 +147,8 @@
 							<div class="columns is-mobile is-centered">
 								<div class="column is-three-quarters">
 									<h2 class="title is-2 has-text-link">Utilisation du site d'Objectif Terres</h2>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cupiditate debitis
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cupiditate
+										debitis
 										deleniti dicta, error exercitationem fugit illo labore laudantium modi</p>
 								</div>
 							</div>
@@ -163,7 +167,8 @@
 										</div>
 										<div class="card-content is-marginless">
 											<p class="title is-4 has-text-centered">Titre du document</p>
-											<p class="subtitle is-6 has-text-grey">Lorem ipsum dolor sit amet, consectetur
+											<p class="subtitle is-6 has-text-grey">Lorem ipsum dolor sit amet,
+												consectetur
 												adipisicing
 												elit. Accusamus corporis deleniti </p>
 											<div class="content has-text-centered">

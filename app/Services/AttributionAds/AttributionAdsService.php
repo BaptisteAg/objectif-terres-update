@@ -77,7 +77,7 @@ class AttributionAdsService
 
 	/**
 	 * @param Request $request
-	 * @return \Illuminate\Support\Collection
+	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
 	public function show(Request $filters)
 	{
@@ -101,7 +101,7 @@ class AttributionAdsService
 			});
 			$attributionAds = $adsByTitle
 				->with($this->getEagerLoading())
-				->get();
+				->paginate(15);;
 			return $attributionAds;
 		}
 		//START QUERY
@@ -116,7 +116,7 @@ class AttributionAdsService
 				$cityIds = $this->locationService->getCitiesInRadius($filters->input('city_location_researches'), $filters->input('radius_research'));
 				$attributionAdsFiltered->filterLocations('ad.cities', $cityIds);
 			} else {
-				$attributionAdsFiltered->filterLocations('ad.cities', $filters->input('city_location_researches'));
+				$attributionAdsFiltered->filterLocations('ad.cities', (array) $filters->input('city_location_researches'));
 			}
 		} //If one or more departments are selected, get all ads located in departments and cities in departments
 		else if ($filters->has('departments_location_researches')) {
@@ -165,7 +165,7 @@ class AttributionAdsService
 			} else if ($filters->input('sort') === 'name') {
 				$attributionAdsFiltered
 					->select('attribution_ads.*')
-					->join('ads as a1', 'attribution_ads.id', '=', 'a1.attribution_ad_id')
+					->join('ads as a1', 'attribution_ads.ad_id', '=', 'a1.id')
 					->join('users', 'users.id', '=', 'a1.user_pp_id')
 					->orderBy('first_name', $filters->input('order'));
 			} else if ($filters->input('sort') === 'ad_statuses.name') {
@@ -175,7 +175,7 @@ class AttributionAdsService
 			} else if ($filters->input('sort') === 'project_statuses.name') {
 				$attributionAdsFiltered
 					->select('attribution_ads.*')
-					->join('ads as a1', 'attribution_ads.id', '=', 'a1.attribution_ad_id')
+					->join('ads as a1', 'attribution_ads.ad_id', '=', 'a1.id')
 					->leftJoin('projects as p1', 'p1.id', '=', 'a1.project_id')
 					->leftJoin('project_statuses', 'p1.project_status_id', 'project_statuses.id' )
 					->orderBy('name', $filters->input('order'));

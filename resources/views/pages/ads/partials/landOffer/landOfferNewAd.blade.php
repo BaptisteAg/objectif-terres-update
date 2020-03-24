@@ -200,8 +200,7 @@
                                           m
                                         </span>
                                     </div>
-
-                                    <p class="help is-danger" v-if="$v.formInput.altitude.$error">
+                                    <p class="help is-danger" v-if="$v.formInput.altitude.$error ">
                                         Ce champ est requis.
                                     </p>
                                 </div>

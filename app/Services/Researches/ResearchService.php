@@ -212,6 +212,7 @@ class ResearchService
 					$adsFilter->filterWhereHasWhere($filters->input('surfaces_research'), $adsTypeSelected, '<=', 'surface_range_max');
 				}
 			} else if ($adsTypeSelected === 'landOfferAd') {
+
 				if ($filters->input('surfaces_research') === "+100") {
 					$adsFilter->filterWhereHasWhere('100', $adsTypeSelected, '>=', 'surface');
 				} else {
@@ -265,8 +266,6 @@ class ResearchService
 		if ($filters->has('order') && $filters->has('sort')) {
 
 			// TODO show only ads approved by moderators
-//			$adsFilter->join('attribution_ads', 'ads.attribution_ad_id', '=', 'attribution_ads.id')
-//				->orderBy('attribution_ads.published_on', $filters->input('sort'));
 			if ($filters->input('sort') === 'date') {
 				$adsFilter->orderBy('created_at', $filters->input('order'));
 			} else {

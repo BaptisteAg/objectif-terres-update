@@ -30,10 +30,7 @@ class CreateAdsTable extends Migration
             $table->string('title')->nullable();
             $table->string('about_content', 1000)->nullable();
             $table->string('about_project_content', 1000)->nullable();
-            $table->unsignedInteger('attribution_ad_id')->nullable();
             $table->unsignedInteger('project_id')->nullable();
-
-            $table->index(["attribution_ad_id"], 'fk_ads_1_idx');
 
             $table->index(["user_admin_id"], 'iix_ads_user_admin_id');
 
@@ -52,10 +49,6 @@ class CreateAdsTable extends Migration
 				->on('users')
 				->onDelete('cascade');
 
-            $table->foreign('attribution_ad_id', 'fk_ads_1_idx')
-                ->references('id')->on('attribution_ads')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
 
             $table->foreign('project_id', 'fk_ads_2_idx')
                 ->references('id')->on('projects')

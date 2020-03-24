@@ -19,7 +19,6 @@ $factory->define(Ad::class, function () {
         'user_admin_id' => User::where('role', '>=', '2')->get()->random()->id,
 		'about_content' => implode("\n", $faker->paragraphs()),
 		'about_project_content' => implode("\n", $faker->paragraphs()),
-        'attribution_ad_id' => factory(AttributionAd::class),
 		'created_at' => $randomDateCreated,
 		'updated_at' => $randomDateUpdated,
     ];

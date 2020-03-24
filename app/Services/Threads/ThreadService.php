@@ -160,11 +160,14 @@ class ThreadService
 			$threadParticipants = [
 				auth()->id()
 			];
-			foreach ($data['receivers_user_message'] as $receiverUserMessage) {
-				array_push($threadParticipants, (int)$receiverUserMessage);
+			if (isset ($data['receivers_user_message'])){
+				foreach ($data['receivers_user_message'] as $receiverUserMessage) {
+					array_push($threadParticipants, (int)$receiverUserMessage);
+				}
+			}else {
+				abort(redirect()->back()->with('warning', 'Aucun interlocuteur séléctionné'));
 			}
 		}
-
 		foreach ($threadParticipants as $user_id) {
 			$threadUser = new ThreadUser([
 				"user_id" => $user_id,

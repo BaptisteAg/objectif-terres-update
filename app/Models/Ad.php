@@ -24,13 +24,12 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property string|null $title
  * @property string|null $about_content
  * @property string|null $about_project_content
- * @property int|null $attribution_ad_id
  * @property int|null $project_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AdNote[] $adNotes
  * @property-read int|null $ad_notes_count
- * @property-read \App\Models\AttributionAd|null $attributionAd
+ * @property-read \App\Models\AttributionAd $attributionAd
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\City[] $cities
  * @property-read int|null $cities_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Department[] $departments
@@ -62,7 +61,6 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAboutContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAboutProjectContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAcceptShareContactInfos($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAttributionAdId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereIsDraft($value)
@@ -81,7 +79,6 @@ class Ad extends Model implements HasPresenter
      * @var array
      */
     protected $fillable = [
-        'attribution_ad_id',
         'project_id',
         'user_pp_id',
         'user_admin_id',
@@ -109,11 +106,11 @@ class Ad extends Model implements HasPresenter
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function attributionAd()
     {
-        return $this->belongsTo(AttributionAd::class);
+        return $this->hasOne(AttributionAd::class);
     }
 
     /**

@@ -1,12 +1,12 @@
 <template>
 
-    <div class="columns ad-types-container">
+    <div class="columns adTypes-container">
         <div class="column"></div>
         <div class="column is-half">
             <div class="field" v-if="displaySelection">
                 <label class="label">Quel type d'annonce souhaitez-vous publier ?</label>
-                <div class="columns ad-types">
-                    <div class="column ad-type"
+                <div class="columns adTypes">
+                    <div class="column adType"
                          v-for="(adType,adTypeValue) in adTypes"
                          :class="{active: value === adTypeValue}"
                          @click="_ => setAdType(adTypeValue)">
@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div class="ad-type-selected" v-else>
+            <div class="adType-selected" v-else>
                 <label><i :class="'fa '+currentAdType.icon"></i> {{currentAdType.label}}</label><br>
                 <a href="#" @click.prevent="displaySelection = true">← Changer de type d'annonce</a>
             </div>
@@ -33,12 +33,12 @@
         font-family: $font-family-sans-serif;
     }
 
-    .ad-types-container {
+    .adTypes-container {
         background: rgba(0,0,0,0.05);
         padding-bottom:40px;
     }
 
-    .ad-type {
+    .adType {
         width: 300px;
         line-height: 23px;
         border: 1px solid #ccc;

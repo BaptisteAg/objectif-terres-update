@@ -21,7 +21,10 @@
         },
         props: {
             data: Object,
-            oldData: Object,
+            oldData: {
+                type: Object,
+                required: false
+            },
             name: String,
             value: {
                 type: Number,
@@ -29,7 +32,7 @@
             }
         },
         data: function () {
-            const hasOld = Object.values(this.oldData).some(x => (x !== null && x !== ''));
+            const hasOld = this.oldData && Object.values(this.oldData).some(x => x);
             return {
                 sliderTextValue: hasOld ? this.oldData.textValue : "",
                 sliderValue: hasOld ? this.oldData.value : "",

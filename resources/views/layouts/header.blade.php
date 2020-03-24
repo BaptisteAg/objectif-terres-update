@@ -35,7 +35,7 @@
                                         <span class="icon">
                                             <i class="far fa-user"></i>
                                         </span>
-                                        <span>Mon esapce modérateur ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
+                                        <span>Mon espace modérateur ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
                                     </a>
                                 </div>
                             @else
