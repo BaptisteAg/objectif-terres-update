@@ -37,6 +37,7 @@ class AttributionAdsController extends Controller
 
 		$attributionAd = $this->service->acceptAd($request->input('attribution_ad_id'));
 		$this->setToReadModeratorNotification($request->input('attribution_ad_id'));
+		session()->flash('success', 'L\'annonce a été modérée !');
 		return ['redirect' => route('moderator.index')];
 
 	}
@@ -52,6 +53,7 @@ class AttributionAdsController extends Controller
 		$this->threadService->create($request->validated());
 		$attributionAd = $this->service->modifyAd($request->input('attribution_ad_id'));
 		$this->setToReadModeratorNotification($request->input('attribution_ad_id'));
+		session()->flash('success', 'L\'annonce a été modérée !');
 		return ['redirect' => route('moderator.index')];
 
 	}
@@ -70,6 +72,7 @@ class AttributionAdsController extends Controller
 		$rejectAdData['refusal_type_id'] = $request->input('refusal_type_id');
 		$attributionAd = $this->service->rejectAd($rejectAdData);
 		$this->setToReadModeratorNotification($request->input('attribution_ad_id'));
+		session()->flash('success', 'L\'annonce a été modérée !');
 		return ['redirect' => route('moderator.index')];
 
 	}

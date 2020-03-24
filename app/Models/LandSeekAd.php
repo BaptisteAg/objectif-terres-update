@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\OfferableGenre;
 use App\Models\Traits\ProductionableGenre;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandSeekAdBuilding[] $buildings
  * @property-read int|null $buildings_count
  * @property-read \App\Models\InstallationType|null $installationType
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OfferGenre[] $offerGenres
+ * @property-read int|null $offer_genres_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenres
  * @property-read int|null $production_genres_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
@@ -48,6 +51,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class LandSeekAd extends Model
 {
     use ProductionableGenre;
+    use OfferableGenre;
 
     /**
      * @var array

@@ -5,13 +5,9 @@ namespace App\Http\Controllers\Researches;
 use App\Models\Research;
 use App\Http\Controllers\Controller;
 use App\Listeners\SendResearchNotification;
-use App\Notifications\ResearchNotification;
 use App\Services\Researches\ResearchService;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Notification;
+
 
 class ResearchesController extends Controller
 {
@@ -27,19 +23,9 @@ class ResearchesController extends Controller
 	public function index(Request $request)
 	{
 
-
-		list ($ads, $adType) = $this->researchService->index($request);
-
-
-		return view('pages.researches', compact('ads', 'adType'));
-	}
-
-	public function paginate($ads, $perPage = 5, $page = null)
-	{
-		$page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-		$ads = $ads instanceof Collection ? $ads : Collection::make($ads);
-
-		return new LengthAwarePaginator($ads->forPage($page, $perPage), $ads->count(), $perPage, $page);
+		list ($ads, $adsType) = $this->researchService->index($request);
+		$request->flash();
+		return view('pages.researches', compact('ads', 'adsType'));
 	}
 
 	public function store(Request $request)

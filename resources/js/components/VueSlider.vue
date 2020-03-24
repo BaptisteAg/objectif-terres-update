@@ -1,11 +1,11 @@
 <template>
     <div>
         <vue-slider
-            v-model="sliderTextValue"
-            :adsorb="true"
-            :data="dataArray"
-            :marks="true"
-            :height="10"
+                v-model="sliderTextValue"
+                :adsorb="true"
+                :data="dataArray"
+                :marks="true"
+                :height="10"
         ></vue-slider>
         <input type="hidden" :id="name" :name="name" :value="sliderValue">
     </div>
@@ -14,12 +14,17 @@
 <script>
     import VueSlider from 'vue-slider-component'
     import 'vue-slider-component/theme/default.css'
-    export default  {
+
+    export default {
         components: {
             VueSlider
         },
-        props:{
-            data : Object,
+        props: {
+            data: Object,
+            oldData: {
+                type: Object,
+                required: false
+            },
             name: String,
             value: {
                 type: Number,
@@ -27,9 +32,10 @@
             }
         },
         data: function () {
+            const hasOld = this.oldData && Object.values(this.oldData).some(x => x);
             return {
-                sliderTextValue: this.value || "",
-                sliderValue: ""
+                sliderTextValue: hasOld ? this.oldData.textValue : "",
+                sliderValue: hasOld ? this.oldData.value : "",
             }
         },
         computed: {

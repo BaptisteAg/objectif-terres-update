@@ -1,7 +1,7 @@
 @extends('default')
 
 @section('title')
-    {{ $ad->title }}
+	{{ $ad->title }}
 @endsection
 
 @section('head-script')
@@ -24,10 +24,9 @@
 @endsection
 
 @section('script')
-    <script src="{{asset('/js/bulma-carousel.js')}}"></script>
 	<script>
         let buttons = document.querySelectorAll('#open-modal-message');
-        buttons.forEach((button)=>{
+        buttons.forEach((button) => {
             button.addEventListener('click', function (event) {
                 event.preventDefault();
                 let modal = document.querySelector('.modal');
@@ -46,33 +45,37 @@
                     html.classList.remove('is-clipped');
                 });
             });
-		});
+        });
 
-		let deleteButton = document.querySelector('.close-notification');
+        let deleteButton = document.querySelector('.close-notification');
         deleteButton.addEventListener('click', function (e) {
             let notification = document.querySelector('.message');
-            notification.style.display='none';
+            notification.style.display = 'none';
 
         })
-
-        @if(count($ad->images) > 1)
+	</script>
+	@if(count($ad->images) > 1)
+		<script src="{{asset('/js/bulma-carousel.js')}}"></script>
+		<script>
             const carousel = bulmaCarousel.attach('#ad-images', {
-                    slidesToScroll: 1,
-                    slidesToShow: 1,
-                    loop: true,
-                    navigation: true,
-                });
-        @endif
+                slidesToScroll: 1,
+                slidesToShow: 1,
+                loop: true,
+                navigation: true,
+            });
+		</script>
+	@endif
 
+	<script>
         const vueThreads = new Vue({
             el: '#vue-messages',
             name: 'content'
         });
 
         const VueModerationModal = new Vue({
-			el : "#vue-moderation-modal",
-			name : 'content'
-		})
+            el: "#vue-moderation-modal",
+            name: 'content'
+        })
 
 	</script>
 @endsection

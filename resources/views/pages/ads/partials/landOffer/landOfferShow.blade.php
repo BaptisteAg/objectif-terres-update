@@ -65,7 +65,7 @@
 									</p>
 								</div>
 							@endif
-
+						@else
 							@if($ad->departments->count())
 								<div class="content">
 									<p><span class="is-size-5 is-capitalized has-text-black">Département : </span><span
@@ -78,51 +78,55 @@
 							<p><span class="is-size-5 is-capitalized has-text-black">Surface : </span><span
 										class="subtitle">{{$ad->landOfferAd->surface}} hectares</span></p>
 						</div>
-						<div class="content">
-							<p>
-								<span class="is-size-5  has-text-black">Type d'offre : </span>
-								<span class="subtitle">
+
+							<div class="content">
+								@if ($ad->landOfferAd->offerGenres->count() >=1)
+								<p>
+									<span class="is-size-5  has-text-black">Type d'offre : </span>
+									<span class="subtitle">
 									{{$ad->landOfferAd->offerGenres->pluck('name')->implode(', ') }}
 								</span>
-							</p>
-
-							@if($ad->landOfferAd->price)
-								<p><span class="is-size-5  has-text-black">Prix : </span>
-									<span class="subtitle ">{{ number_format($ad->landOfferAd->price, 0, ",", " " )}} €</span>
 								</p>
-							@endif
-							@if($ad->landOfferAd->rent_price)
-								<p>
-									<span class="is-size-5  has-text-black">Loyer mensuel : </span>
-									<span
-											class="subtitle ">{{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} €</span>
-								</p>
-							@endif
-						</div>
-
-						<div class="content">
-							<p><span class="is-size-5 is-capitalized has-text-black">Altitude : </span><span
-										class="subtitle">{{$ad->landOfferAd->altitude}}m</span></p>
-						</div>
-
-
-						@if($ad->landOfferAd->water_access !== "" && $ad->landOfferAd->water_access !== null)
-							<div class="content">
-								<p><span class="is-size-5 is-capitalized has-text-black">Accès à l'eau : </span><span
-											class="subtitle">{{$ad->landOfferAd->water_access ? "Oui" : "Non"}}</span>
-								</p>
+								@endif
+								@if($ad->landOfferAd->price)
+									<p><span class="is-size-5  has-text-black">Prix : </span>
+										<span class="subtitle ">{{ number_format($ad->landOfferAd->price, 0, ",", " " )}} €</span>
+									</p>
+								@endif
+								@if($ad->landOfferAd->rent_price)
+									<p>
+										<span class="is-size-5  has-text-black">Loyer mensuel : </span>
+										<span
+												class="subtitle ">{{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} €</span>
+									</p>
+								@endif
 							</div>
-						@endif
 
-						@if($ad->userPp->accept_share_contact_infos === 1)
 							<div class="content">
-								<p><span class="is-size-5 has-text-black">N° de téléphone du porteur de projet : </span>
-								</p>
-								<p><span class="subtitle">{{$ad->userPp->phone}}</span></p>
+								<p><span class="is-size-5 is-capitalized has-text-black">Altitude : </span><span
+											class="subtitle">{{$ad->landOfferAd->altitude}}m</span></p>
 							</div>
-						@endif
 
-						@include('pages.ads.partials.show-documents')
+
+							@if($ad->landOfferAd->water_access !== "" && $ad->landOfferAd->water_access !== null)
+								<div class="content">
+									<p>
+										<span class="is-size-5 is-capitalized has-text-black">Accès à l'eau : </span><span
+												class="subtitle">{{$ad->landOfferAd->water_access ? "Oui" : "Non"}}</span>
+									</p>
+								</div>
+							@endif
+
+							@if($ad->userPp->accept_share_contact_infos === 1)
+								<div class="content">
+									<p>
+										<span class="is-size-5 has-text-black">N° de téléphone du porteur de projet : </span>
+									</p>
+									<p><span class="subtitle">{{$ad->userPp->phone}}</span></p>
+								</div>
+							@endif
+
+							@include('pages.ads.partials.show-documents')
 					</div>
 
 					@include('pages.ads.partials.buttonsFavoriteAndMessage')

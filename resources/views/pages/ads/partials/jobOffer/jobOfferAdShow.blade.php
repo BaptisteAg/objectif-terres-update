@@ -1,7 +1,6 @@
 @section('title', $ad->title)
 <section class="section">
 	<div class="container ">
-
 		<nav class="breadcrumb" aria-label="breadcrumbs">
 			<ul>
 				<li><a href="#">Annonces</a></li>

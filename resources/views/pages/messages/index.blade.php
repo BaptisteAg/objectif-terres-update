@@ -3,8 +3,6 @@
 @section ('title', 'Consulter la liste de vos messages')
 
 @section('main-content')
-
-
 	<div class="section">
 		<h1 class="title has-text-link">Bienvenue sur votre messagerie</h1>
 		@if(auth()->user()->role >=2)

@@ -20,7 +20,7 @@
 							Valider l'annonce
 						</button>
 					</div>
-					<div class="column is-3  is-centered">
+					<div class="column is-5  is-centered">
 						<button @click="showModerationModal('modifyAd')" class="button">
 							Demander la modification de l'annonce
 						</button>
