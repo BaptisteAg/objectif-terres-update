@@ -86,15 +86,12 @@ class AdService
 
         	$attributionAdData = [];
         	$toModerateStatus = AdStatus::where('name', '=', 'A modérer')->first();
-			$attributionAdData['user_moderator_id'] = 21;
+			$attributionAdData['user_moderator_id'] = 25;
 			$attributionAdData['ad_status_id'] = $toModerateStatus->id;
 
-
-			$attributionAd = $this->attributionAdsRepository->create($attributionAdData);
 			$ad = $this->repository->create($data);
-
-			$ad->attribution_ad_id = $attributionAd->id;
-			$ad->save();
+			$attributionAdData['ad_id'] = $ad->id;
+			$this->attributionAdsRepository->create($attributionAdData);
 
 			$adData = $data[$data["ad_type"]];
             $adData["ad_id"] = $ad->id;

@@ -112,11 +112,13 @@
 		<hr class="navbar-divider">
 		<h3 class="title is-3 has-text-centered">Profil</h3>
 		<div class="columns is-multiline is-mobile is-centered">
-			@if($ad->jobSeekAd->educationLevels)
-				<div class="column is-one-third ">
-					<p class="has-text-link is-size-5 has-text-centered">Niveau de formation</p>
-					<p class="has-text-centered">{{$ad->jobSeekAd->educationLevels->pluck('name')->implode(', ') }}</p>
-				</div>
+			@if( isset ($ad->jobSeekAd->educationLevels))
+				@if ($ad->jobSeekAd->educationLevels->count() >=1)
+					<div class="column is-one-third ">
+						<p class="has-text-link is-size-5 has-text-centered">Niveau de formation</p>
+						<p class="has-text-centered">{{$ad->jobSeekAd->educationLevels->pluck('name')->implode(', ') }}</p>
+					</div>
+				@endif
 			@endif
 
 			@if($ad->jobSeekAd->experience_farming)

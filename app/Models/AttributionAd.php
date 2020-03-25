@@ -18,6 +18,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property int $user_moderator_id
  * @property int|null $to_call_back
  * @property string|null $short_description
+ * @property int $ad_id
  * @property int $ad_status_id
  * @property int|null $pp_type_id
  * @property int|null $refusal_type_id
@@ -31,9 +32,15 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \App\Models\RefusalType|null $refusalType
  * @property-read \App\Models\User $userModerator
  * @property-read \App\Models\User|null $userOwner
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterAdTypes($adTypesFilters, $relationTableName)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterLocations($relationshipName, $locationableIds)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterWhereHasIn($data, $relationNameTable, $columnName)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterWhereHasWhere($data, $relationNameTable, $operator, $columnName)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereAdId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereAdStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereArchivedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereCreatedAt($value)
@@ -55,7 +62,7 @@ class AttributionAd extends Model implements Decoratable
 	 * @var array
 	 */
 	protected $fillable = [
-		'ad_status_id', 'lead_type_id', 'refusal_type_id', 'user_owner_id', 'user_moderator_id', 'to_call_back', 'short_description', 'archived_at', 'published_on'
+		'ad_status_id', 'ad_id', 'lead_type_id', 'refusal_type_id', 'user_owner_id', 'user_moderator_id', 'to_call_back', 'short_description', 'archived_at', 'published_on'
 	];
 
 	/**
@@ -99,11 +106,11 @@ class AttributionAd extends Model implements Decoratable
 	}
 
 	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function ad()
 	{
-		return $this->hasOne(Ad::class);
+		return $this->belongsTo(Ad::class);
 	}
 
 	/**

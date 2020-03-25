@@ -2,6 +2,7 @@
 
 use App\Models\Ad;
 use App\Models\AdNote;
+use App\Models\AttributionAd;
 use App\Models\BioCertification;
 use App\Models\City;
 use App\Models\FavoriteAd;
@@ -48,6 +49,7 @@ class DatabaseSeeder extends Seeder
 				ProjectSeeder::class,
 				AdStatusSeeder::class,
 				EducationLevelSeeder::class,
+				RefusalTypeSeeder::class,
 			]);
 
 
@@ -61,6 +63,7 @@ class DatabaseSeeder extends Seeder
 
 				$projectIds = Project::all()->pluck('id')->toArray();
 				factory(Ad::class, 900)->create()->each(function (Ad $ad) use (&$queriesCount, &$projectIds) {
+					$ad->attributionAd()->save(factory(AttributionAd::class)->make());
 					$ad->adNotes()->save(factory(AdNote::class)->make());
 					$ad->favoriteAds()->save(factory(FavoriteAd::class)->make());
 //					$ad->documents()->save(factory(Document::class)->make());

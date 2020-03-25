@@ -45,6 +45,7 @@ class SalesForceRepository
         });
         $query .= implode(' AND ', $where);
 
+
         $result = $this->forrest->query($query);
 
         return $result["records"];

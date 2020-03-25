@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import ModerationModal from "./components/ModerationModal";
-
-
 Vue.component('vue-moderation-modal', {
     components: {
         ModerationModal

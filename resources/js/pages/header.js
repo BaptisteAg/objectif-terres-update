@@ -3,26 +3,26 @@ import AjaxMultiSelect from "../components/AjaxMultiSelect";
 import VueSlider from "../components/VueSlider";
 import Vue from 'vue'
 
-
-Vue.component('header-page',{
-    components : {
+Vue.component('header-page', {
+    components: {
         MultiSelect,
         VueSlider,
         AjaxMultiSelect,
     },
     props: {
-        searchValues: [Array, Object]
+        oldSearchValues: '',
     },
     data() {
+        let hasOld = this.oldSearchValues.hasOwnProperty("offer_type") ? Object.values(this.oldSearchValues).some(x => (x !== null && x !== '')) : false;
         return {
-            offerTypeSelected: this.searchValues ? this.searchValues.offer_type : 'OfferAd',
-            adCategorySelected: this.searchValues ? this.searchValues.ad_category : 'land',
-            selectedRegions: this.searchValues ? this.searchValues.regions : [],
-            isFormOpen : false,
-            productionsSelected : [],
-            bioProductionsSelected : [],
-            regionsSelected :[],
-            departmentsSelected : []
+            offerTypeSelected: hasOld ? this.oldSearchValues.offer_type : 'OfferAd',
+            adCategorySelected: hasOld ? this.oldSearchValues.ad_category : 'land',
+            selectedRegions: hasOld ? this.oldSearchValues.regions_location_researches_ids : [],
+            selectedDepartments: hasOld ? this.oldSearchValues.departments_location_researches_ids : [],
+            selectedCities: hasOld ? this.oldSearchValues.cities_location_researches_ids : [],
+            selectedProductions: hasOld ? this.oldSearchValues.production_genres : [],
+            selectedBioCertifications: hasOld ? this.oldSearchValues.bio_certifications : [],
+            isFormOpen: false,
         }
     },
     methods: {

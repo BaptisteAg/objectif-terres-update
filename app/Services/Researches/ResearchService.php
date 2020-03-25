@@ -31,12 +31,18 @@ class ResearchService
 	public function create(Request $request)
 	{
 		$url = (url()->previous());
-		$urlGet = substr($url, strpos($url, "?"));
+		$urlParsed = parse_url($url);
+		parse_str($urlParsed['query'], $urlQuery);
+		if ($request->input('page')) {
+			unset($urlQuery['page']);
+		}
+		$urlGet = http_build_query($urlQuery);
+
 		$data = [];
 		foreach ($request->input() as $item => $value) {
 			$data[$item] = $value;
 		}
-		$data['url'] = $urlGet;
+		$data['url'] = '?' . $urlGet;
 		$research = DB::transaction(function () use ($data) {
 			$research = $this->repository->create($data);
 
@@ -85,7 +91,7 @@ class ResearchService
 				$adsFilter->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
 			}
 			if ($research->offerGenres()->exists()) {
-				$adsFilter->filterArrayDataInRelationModel($research->offerGenres()->pluck('offer_genres.id')->toArray(), $research->ad_type . '.offerGenres', 'offer_genre_id');
+				$adsFilter->filterWhereHasIn($research->offerGenres()->pluck('offer_genres.id')->toArray(), $research->ad_type . '.offerGenres', 'offer_genre_id');
 			}
 
 			if (!is_null($research->surface_min)) {
@@ -123,7 +129,7 @@ class ResearchService
 				});
 			}
 			if (!is_null($research->has_houses)) {
-				$adsFilter->filterDataInRelationModel($research->has_houses, $research->ad_type, '=', 'has_buildings');
+				$adsFilter->filterWhereHasWhere($research->has_houses, $research->ad_type, '=', 'has_buildings');
 			}
 			if ($research->has_pics === 1) {
 				$adsFilter->whereHas('documents', function (Builder $query) {
@@ -131,14 +137,14 @@ class ResearchService
 				});
 			}
 			if ($research->productionGenres()->exists()) {
-				$adsFilter->filterArrayDataInRelationModel($research->productionGenres()->pluck('production_genres.id')->toArray(), $research->ad_type . '.productionGenres', 'production_genres.id');
+				$adsFilter->filterWhereHasIn($research->productionGenres()->pluck('production_genres.id')->toArray(), $research->ad_type . '.productionGenres', 'production_genres.id');
 			}
 			if ($research->bioCertifications()->exists()) {
-				$adsFilter->filterArrayDataInRelationModel($research->bioCertifications()->pluck('bio_certifications.id')->toArray(), $research->ad_type . '.bioCertifications', 'bio_certifications.id');
+				$adsFilter->filterWhereHasIn($research->bioCertifications()->pluck('bio_certifications.id')->toArray(), $research->ad_type . '.bioCertifications', 'bio_certifications.id');
 			}
 
 			if ($research->jobOfferTypes()->exists()) {
-				$adsFilter->filterDataInRelationModel($research->jobOfferTypes()->pluck('job_offer_types.id'), $research->ad_type . '.jobOfferTypes', '=', 'job_offer_types.id');
+				$adsFilter->filterWhereHasIn($research->jobOfferTypes()->pluck('job_offer_types.id'), $research->ad_type . '.jobOfferTypes', 'job_offer_types.id');
 			}
 			$newAds = $adsFilter->get();
 
@@ -163,20 +169,21 @@ class ResearchService
 		$ads = collect();
 		$adsFilter = (new Ad)->newQuery();
 		//Filter by type of ads
-		$adTypeSelected = '';
+		$adsTypeSelected = '';
 		if ($filters->has('ad_category') && $filters->has('offer_type')) {
-			$adTypeSelected = $filters->input('ad_category') . $filters->input('offer_type');
+			$adsTypeSelected = $filters->input('ad_category') . $filters->input('offer_type');
+		} else {
+			abort(404);
 		}
 
 		//If request, filter by departments locations and all locations related to the departments selected
 		if ($filters->has('cities_location_researches_ids')) {
 			if (!is_null($filters->input('radius_research'))) {
-				$cityIds = $this->locationService->getCitiesInRadius ($filters->input('cities_location_researches_ids'),$filters->input('radius_research'));
+				$cityIds = $this->locationService->getCitiesInRadius($filters->input('cities_location_researches_ids'), $filters->input('radius_research'));
 				$adsFilter->filterLocations('cities', $cityIds);
-			}else {
+			} else {
 				$adsFilter->filterLocations('cities', $filters->input('cities_location_researches_ids'));
 			}
-
 
 		} //If request, filter by departments locations and all locations related to the departments selected
 		else if ($filters->has('departments_location_researches_ids')) {
@@ -185,7 +192,7 @@ class ResearchService
 			$adsFilter->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
 		} //If request, filter by regions locations and all locations related to the regions selected
 		else if ($filters->has('regions_location_researches_ids')) {
-			if (!in_array(0, $filters->input('regions_location_researches_ids'))) {
+			if (!in_array(-1, $filters->input('regions_location_researches_ids'))) {
 				$regionsCodes = Region::whereIn('id', $filters->input('regions_location_researches_ids'))->get('code')->toArray();
 				$departmentsCodes = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
 				$adsFilter->filterLocations('regions', $filters->input('regions_location_researches_ids'));
@@ -195,40 +202,41 @@ class ResearchService
 		}
 
 		if ($filters->has('offer_genres')) {
-			$adsFilter->filterArrayDataInRelationModel($filters->input('offer_genres'), $adTypeSelected . '.offerGenres', 'offer_genre_id');
+			$adsFilter->filterWhereHasIn($filters->input('offer_genres'), $adsTypeSelected . '.offerGenres', 'offer_genre_id');
 		}
 		if (!is_null($filters->input('surfaces_research')) && $filters->input('surfaces_research') !== "0") {
-			if ($adTypeSelected === 'landSeekAd') {
+			if ($adsTypeSelected === 'landSeekAd') {
 				if ($filters->input('surfaces_research') === "+100") {
-					$adsFilter->filterDataInRelationModel('100', $adTypeSelected, '>=', 'surface_range_max');
+					$adsFilter->filterWhereHasWhere('100', $adsTypeSelected, '>=', 'surface_range_max');
 				} else {
-					$adsFilter->filterDataInRelationModel($filters->input('surfaces_research'), $adTypeSelected, '<=', 'surface_range_max');
+					$adsFilter->filterWhereHasWhere($filters->input('surfaces_research'), $adsTypeSelected, '<=', 'surface_range_max');
 				}
-			} else if ($adTypeSelected === 'landOfferAd') {
+			} else if ($adsTypeSelected === 'landOfferAd') {
+
 				if ($filters->input('surfaces_research') === "+100") {
-					$adsFilter->filterDataInRelationModel('100', $adTypeSelected, '>=', 'surface');
+					$adsFilter->filterWhereHasWhere('100', $adsTypeSelected, '>=', 'surface');
 				} else {
-					$adsFilter->filterDataInRelationModel($filters->input('surfaces_research'), $adTypeSelected, '<=', 'surface');
+					$adsFilter->filterWhereHasWhere($filters->input('surfaces_research'), $adsTypeSelected, '<=', 'surface');
 				}
 			}
 		}
 
 		if (!is_null($filters->input('price_min'))) {
-			$adsFilter->whereHas($adTypeSelected, function (Builder $query) use ($filters) {
+			$adsFilter->whereHas($adsTypeSelected, function (Builder $query) use ($filters) {
 				$query->where('price', '>=', $filters->input('price_min'));
 				$query->orWhere('rent_price', '>=', $filters->input('price_min'));
 			});
 		}
 
 		if (!is_null($filters->input('price_max'))) {
-			$adsFilter->whereHas($adTypeSelected, function (Builder $query) use ($filters) {
+			$adsFilter->whereHas($adsTypeSelected, function (Builder $query) use ($filters) {
 				$query->where('price', '<=', $filters->input('price_max'));
 				$query->orWhere('rent_price', '<=', $filters->input('price_max'));
 			});
 		}
 
 		if ($filters->has('has_buildings')) {
-			$adsFilter->filterDataInRelationModel($filters->input('has_buildings'), $adTypeSelected, '=', 'has_buildings');
+			$adsFilter->filterWhereHasWhere($filters->input('has_buildings'), $adsTypeSelected, '=', 'has_buildings');
 		}
 
 		if ($filters->has('has_picture')) {
@@ -238,25 +246,41 @@ class ResearchService
 		}
 
 		if ($filters->has('production_genres')) {
-			$adsFilter->filterArrayDataInRelationModel($filters->input('production_genres'), $adTypeSelected . '.productionGenres', 'production_genres.id');
+			$adsFilter->filterWhereHasIn($filters->input('production_genres'), $adsTypeSelected . '.productionGenres', 'production_genres.id');
 		};
 
 		if ($filters->has('bio_certifications')) {
-			$adsFilter->filterArrayDataInRelationModel($filters->input('bio_certifications'), $adTypeSelected . '.bioCertifications', 'bio_certifications.id');
+			$adsFilter->filterWhereHasIn($filters->input('bio_certifications'), $adsTypeSelected . '.bioCertifications', 'bio_certifications.id');
 		}
 
 		if ($filters->has('offer_genres')) {
-			$adsFilter->filterArrayDataInRelationModel($filters->input('offer_genres'), $adTypeSelected . '.offerGenres', 'offer_genres.id');
+			$adsFilter->filterWhereHasIn($filters->input('offer_genres'), $adsTypeSelected . '.offerGenres', 'offer_genres.id');
 		}
 		if (!is_null($filters->input('jobOfferType'))) {
-			$adsFilter->filterDataInRelationModel($filters->input('jobOfferType'), $adTypeSelected . '.jobOfferTypes', '=', 'job_offer_types.id');
+			$adsFilter->filterWhereHasWhere($filters->input('jobOfferType'), $adsTypeSelected . '.jobOfferTypes', '=', 'job_offer_types.id');
 		}
 
-		$adsFilter->filterAdTypes(array($adTypeSelected), '');
+		$adsFilter->filterAdTypes(array($adsTypeSelected), '');
+
+
+		if ($filters->has('order') && $filters->has('sort')) {
+
+			// TODO show only ads approved by moderators
+			if ($filters->input('sort') === 'date') {
+				$adsFilter->orderBy('created_at', $filters->input('order'));
+			} else {
+				$adsTypeSelectedTableName = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $adsTypeSelected)) . 's';
+				$adsFilter->join($adsTypeSelectedTableName, 'ads.id', '=', $adsTypeSelectedTableName . '.ad_id')
+					->orderBy($filters->input('sort'), $filters->input('order'));
+			}
+		} else {
+			$adsFilter->orderByDesc('created_at');
+		}
 
 		$ads = $adsFilter->with(
 			'userPp',
 			'project.projectStatus',
+			'attributionAd',
 
 			'cities',
 			'cities.department',
@@ -269,15 +293,16 @@ class ResearchService
 			'landOfferAd',
 			'jobOfferAd',
 			'jobSeekAd')
-			->orderByDesc('created_at')
-			->get();
-		return [$ads, $adTypeSelected];
+			->paginate(15);
+
+		return [$ads, $adsTypeSelected];
 	}
 
 	/**
 	 * @param Research $research
 	 */
-	public function deleteAlert(Research $research)
+	public
+	function deleteAlert(Research $research)
 	{
 		$research->has_alert = 0;
 		$research->save();

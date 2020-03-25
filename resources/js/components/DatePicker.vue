@@ -30,8 +30,12 @@
         props: {
             calendarClass: String,
             inputClass: String,
+            oldValue : ''
         },
         data() {
+            let date =this.oldValue.split('/');
+            let dateFormatted = date[2]+'-'+date[1]+'-'+date[0];
+            let d = new Date();
             return {
                 fr: fr,
                 mondayFirst: true,
@@ -41,8 +45,8 @@
                 },
                 highlighted: {
                     to: new Date(Date.now()),
-                    from: new Date().setDate(Date.now()) - 6,
-                },
+                    from:this.oldValue ? new Date(dateFormatted) : d.setDate(d.getDate() -7),
+                }
             }
         },
 

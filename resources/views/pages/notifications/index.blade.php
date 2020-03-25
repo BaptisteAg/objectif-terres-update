@@ -5,7 +5,6 @@
 @section('main-content')
 	<div class="section">
 		<h1 class="title is-2 has-text-link">Vos notifications</h1>
-
 		@if(! $user->readNotifications->isEmpty())
 			@foreach ($user->readNotifications as $notification)
 				@if(isset($notification->data['number_of_ads_to_moderate']))
@@ -20,7 +19,7 @@
 							@endif
 							<br>
 							<br>
-							<a href="{{route ('moderator.show', ['date_research_range=&citySelect=&radius_research=&ad_statuses[]=4&ad_title='])}}">
+							<a href="{{route ('moderator.show', ['ad_statuses[0]=4&order=asc&sort=date'])}}">
 								<button class="button is-link ">Consulter votre tableau de bord</button>
 							</a>
 						</div>

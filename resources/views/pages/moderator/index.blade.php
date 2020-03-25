@@ -13,8 +13,12 @@
 		<div class="notification has-background-info">
 			<button class="delete"></button>
 			@if($numberOfAdsToModerate >1)
-				<p class="has-text-white-ter"><i class="far fa-bell has-text-white-ter"></i> Vous avez
-					<strong>{{$numberOfAdsToModerate}} annonces</strong> à modérer !</p>
+				<p class="has-text-white-ter">
+					<i class="far fa-bell has-text-white-ter"></i>
+					Vous avez<a style="text-decoration: none"
+								href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4&ad_title='])}}">
+						<strong>{{$numberOfAdsToModerate}}
+							annonces</strong></a> à modérer !</p>
 			@else
 				<p class="has-text-white-ter"><i class="far fa-bell has-text-white-ter"></i> Vous avez
 					<strong>{{$numberOfAdsToModerate}} annonce</strong> à modérer !</p>
@@ -37,7 +41,11 @@
 		</div>
 		{{Form::open(['route'=>'moderator.show', 'method'=>'get'])}}
 		<div id="vue-form-moderator">
-			<research-form-moderator inline-template>
+
+			<research-form-moderator
+					inline-template
+					:old-input-selected="{{json_encode(old())}}"
+			>
 				<div>
 					<div class="columns">
 						<div class="column is-four-fifths">
@@ -58,7 +66,7 @@
 												input-value="{{$adType['value']}}"
 												v-model="adTypeSelected"
 												ref="typeSelected"
-												value ="true"
+												value="true"
 												:is-radio="false">
 											<i class="fa {{ $adTypesFaIcons[$i] }}"
 											   style="font-size: 30px;"></i><br><br>
@@ -112,7 +120,9 @@
 						<div class="column">
 							<div class="control has-icons-right ">
 								<label class="label"> Annonces soumises depuis le </label>
-								<date-picker></date-picker>
+								<date-picker
+										old-value= {{old('date_research_range')}}
+								></date-picker>
 							</div>
 						</div>
 					</div>
@@ -121,36 +131,26 @@
 							<div class="columns">
 								<div class="column is-half">
 									<div class="field">
-										<label class="label">Code postal</label>
-										<div>
-											<div class="control">
-												<autocomplete
-														name="citySelect"
-														id="citySelect"
-														class="input"
-														placeholder="Saisissez les premiers caractères"
-														ref='citySelect'
-														:disabled="false"
-														src="/locations/cities"
-														v-model="citySelect"
-														aria-describedby='citySelectError'
-														value="citySelect">
-												</autocomplete>
-												<input type="hidden" name="city_location_researches[]"
-													   :value="zone.value.id"
-													   v-for="(zone,i) in citySelect">
-												<div>
-													<span class="tag is-info"
-														  v-for="(zone,i) in citySelect"
-														  @click="_ => citySelect.splice(i,1)">
-												Code postal sélectionné :&nbsp;&nbsp;
-												<b>@{{ zone.label }}</b>
+										<label class="label">Commune ou Code postal</label>
+										<autocomplete
+												name="citySelect"
+												id="citySelect"
+												placeholder="Saisissez les premiers caractères"
+												ref='citySelect'
+												src="/locations/cities"
+												v-model="citySelect">
+
+											<input type="hidden" name="city_location_researches" :value="zone.value.id"
+												   v-for="(zone,i) in citySelect">
+
+											<div class="tag autocomplete-input-tag is-info"
+												 v-for="(zone,i) in citySelect"
+												 @click="_ => citySelect.splice(i,1)">
+												@{{ zone.label }}
 												&nbsp;&nbsp;
 												<i class="fa fa-trash" style="cursor:pointer"></i>
-											</span>
-												</div>
 											</div>
-										</div>
+										</autocomplete>
 									</div>
 								</div>
 								<div class="column">
@@ -158,6 +158,10 @@
 										<p class="label">Dans un rayon de </p>
 										<vue-slider
 												name="radius_research"
+												:old-data="{
+														'value' : {{json_encode(old('radius_research'))}},
+														'textValue' : {{json_encode(old('radius_research'))}}+'km'
+														}"
 												:data="{
 													0: '0km',
 													5: '5km',
@@ -197,7 +201,6 @@
 						</div>
 					</div>
 					<hr class="navbar-divider">
-
 					<div class="columns">
 						<div class="column is-half">
 							<p class="label has-text-centered">Statut de l'annonce</p>
@@ -205,7 +208,8 @@
 								@foreach($adStatuses as $adStatus)
 									<div class="column is-narrow has-text-centered">
 										<label class="checkbox">
-											<input name="ad_statuses[]" value="{{(int)$adStatus->id}}" type="checkbox">
+											<input name="ad_statuses[]" value="{{(int)$adStatus->id}}"
+												   type="checkbox" {{old('ad_statuses') && in_array((int)$adStatus->id,old('ad_statuses'))  ? ' checked' : '' }}>
 											{{$adStatus->name}}
 										</label>
 									</div>
@@ -219,12 +223,12 @@
 									<div class="column is-narrow has-text-centered">
 										<label class="checkbox">
 											<input name="project_statuses[]" value="{{(int)$projectStatus->id}}"
-												   type="checkbox">
+												   type="checkbox"
+													{{old('project_statuses') && in_array((int)$projectStatus->id,old('project_statuses'))  ? ' checked' : '' }}>
 											{{$projectStatus->name}}
 										</label>
 									</div>
 								@endforeach
-
 							</div>
 						</div>
 					</div>
@@ -233,7 +237,8 @@
 					<div class="columns">
 						<div class=" column is-one-third ">
 							<label class="label">Recherche par titre de l'annonce</label>
-							<input name="ad_title" class="input" type="text" placeholder="Votre recherche...">
+							<input name="ad_title" class="input" type="text" placeholder="Votre recherche..."
+								   value="{{old('ad_title')}}">
 						</div>
 
 						{{--						<div v-if="adType === 'land'" class=" column is-3">--}}
@@ -294,14 +299,96 @@
 					<table class="table is-striped is-hoverable is-fullwidth ">
 						<thead>
 						<tr>
-							<th>Date de soumission</th>
-							<th>Titre de l'annonce</th>
+
+							<th>
+								@if(request()->input('sort') !== 'date')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date'])) }}">
+										<span>Date de soumission</span>
+									</a>
+								@elseif(request()->input('sort') === 'date' && request()->input('order') === 'desc')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'date'])) }}">
+										<i class="fas fa-arrow-down"></i>
+										<span>Date de soumission</span>
+									</a>
+								@else
+									<a href="{{ route('moderator.show') }}">
+										<i class="fas fa-arrow-up"></i>
+										<span>Date de soumission</span>
+									</a>
+								@endif
+							</th>
+							<th>
+								@if(request()->input('sort') !== 'title')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">
+										<span>Titre de l'annonce</span>
+									</a>
+								@elseif(request()->input('sort') === 'title' && request()->input('order') === 'asc')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'title'])) }}">
+										<i class="fas fa-arrow-up"></i>
+										<span>Titre de l'annonce</span>
+									</a>
+								@else
+									<a href="{{ route('moderator.show') }}">
+										<i class="fas fa-arrow-down"></i>
+										<span>Titre de l'annonce</span>
+									</a>
+								@endif
+
+							</th>
 							<th>Type d'annonce</th>
-							<th>Nom du porteur de projet</th>
+							<th>
+								@if(request()->input('sort') !== 'name')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'name'])) }}">
+										<span>Nom du porteur de projet</span>
+									</a>
+								@elseif(request()->input('sort') === 'name' && request()->input('order') === 'asc')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'name'])) }}">
+										<i class="fas fa-arrow-up"></i>
+										<span>Nom du porteur de projet</span>
+									</a>
+								@else
+									<a href="{{ route('moderator.show') }}">
+										<i class="fas fa-arrow-down"></i>
+										<span>Nom du porteur de projet</span>
+									</a>
+								@endif
+							</th>
 							<th>Adresse mail</th>
 							<th>Localisation(s)</th>
-							<th>Statut de l'annonce</th>
-							<th>Statut du projet</th>
+							<th>
+								@if(request()->input('sort') !== 'ad_statuses.name')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'ad_statuses.name'])) }}">
+										<span>Statut de l'annonce</span>
+									</a>
+								@elseif(request()->input('sort') === 'ad_statuses.name' && request()->input('order') === 'asc')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'ad_statuses.name'])) }}">
+										<i class="fas fa-arrow-up"></i>
+										<span>Statut de l'annonce</span>
+									</a>
+								@else
+									<a href="{{ route('moderator.show') }}">
+										<i class="fas fa-arrow-down"></i>
+										<span>Statut de l'annonce</span>
+									</a>
+								@endif
+							</th>
+							<th>
+								@if(request()->input('sort') !== 'project_statuses.name')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'project_statuses.name'])) }}">
+										<span>Statut du projet</span>
+									</a>
+								@elseif(request()->input('sort') === 'project_statuses.name' && request()->input('order') === 'asc')
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'project_statuses.name'])) }}">
+										<i class="fas fa-arrow-up"></i>
+										<span>Statut du projet</span>
+									</a>
+								@else
+									<a href="{{ route('moderator.show') }}">
+										<i class="fas fa-arrow-down"></i>
+										<span>Statut du projet</span>
+									</a>
+								@endif
+							</th>
 							<th></th>
 						</tr>
 						</thead>
@@ -361,17 +448,20 @@
 											<span class="tag is-info is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
 										@endif
 									@endif
-
 								</td>
 								<td><a href="{{route('ads.show', $attributionAd->ad->id)}}"><span><i
 													class="fas fa-search"></i></span> <span>Voir le détail</span></a>
 								</td>
 							</tr>
-
 						@endforeach
 						</tbody>
 					</table>
 				</div>
+					<div class="columns is-mobile is-centered">
+						<div class="column is-half ">
+							{{ $attributionAds->appends(Request::all())->links() }}
+						</div>
+					</div>
 			@endif
 		</div>
 

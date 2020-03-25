@@ -73,7 +73,6 @@ Vue.component('new-ad', {
             this.enabledForm.$v.$touch();
 
             if (this.enabledFormHasErrors()) {
-
                 this.enabledForm.focusOnFirstError();
                 this.enabledForm.setInputsBorderColor();
 

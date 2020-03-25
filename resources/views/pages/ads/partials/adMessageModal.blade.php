@@ -44,9 +44,7 @@
 								<div class="control">
 									<input type="hidden" name="ad_id" value="{{$ad->id}}">
 									<textarea required name="content" class="textarea is-medium"
-											  placeholder="Votre message...">
-
-									</textarea>
+											  placeholder="Votre message..."></textarea>
 								</div>
 							</div>
 						</div>

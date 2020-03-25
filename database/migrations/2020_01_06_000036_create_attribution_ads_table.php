@@ -27,6 +27,7 @@ class CreateAttributionAdsTable extends Migration
             $table->unsignedInteger('user_moderator_id');
             $table->boolean('to_call_back')->nullable();
             $table->text('short_description')->nullable();
+            $table->unsignedInteger('ad_id');
             $table->unsignedInteger('ad_status_id');
             $table->unsignedInteger('pp_type_id')->nullable();
             $table->unsignedInteger('refusal_type_id')->nullable();
@@ -34,6 +35,8 @@ class CreateAttributionAdsTable extends Migration
             $table->timestamp('archived_at')->nullable();
 
             $table->index(["ad_status_id"], 'fk_attribution_ads_1_idx');
+
+            $table->index(["ad_id"], 'fk_attribution_ads_ads_1_idx');
 
             $table->index(["user_owner_id"], 'ix_attribution_ad_user_owner_id');
 
@@ -54,6 +57,11 @@ class CreateAttributionAdsTable extends Migration
 				->references('id')
 				->on('users')
 				->onDelete('cascade');
+
+			$table->foreign('ad_id', 'fk_attribution_ads_ads_1_idx')
+				->references('id')->on('ads')
+				->onDelete('restrict')
+				->onUpdate('restrict');
 
             $table->foreign('ad_status_id', 'fk_attribution_ads_1_idx')
                 ->references('id')->on('ad_statuses')

@@ -46,7 +46,7 @@ class ModerationNotification extends Notification
 	public function toMail($notifiable)
 	{
 		$message = $this->data;
-		$url = url('/mon-espace-moderateur/');
+		$url = url('/mon-espace-moderateur/recherches?ad_statuses[0]=4&order=asc&sort=date');
 		return (new MailMessage)
 			->subject('Des annonces sont en attente de modération !')
 			->greeting('Bonjour,')
