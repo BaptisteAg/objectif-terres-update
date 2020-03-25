@@ -88,7 +88,7 @@ class AdService
         	$attributionAdData = [];
         	$toModerateStatus = AdStatus::where('name', '=', 'A modérer')->first();
         	// Temporary : should be attributed by territory
-			$attributionAdData['user_moderator_id'] = User::where('email', 'gael@kaffein.agency')->firstOrFail()->id;
+			$attributionAdData['user_moderator_id'] = User::where('email', 'test.ot.moderateur@gmail.com')->firstOrFail()->id;
 			$attributionAdData['ad_status_id'] = $toModerateStatus->id;
 
 			$ad = $this->repository->create($data);
