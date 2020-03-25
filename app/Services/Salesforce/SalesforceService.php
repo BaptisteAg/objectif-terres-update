@@ -26,7 +26,7 @@ class SalesforceService
     	// Customer community - membre
     	'00ew0000001V7RJ' => 0,
 		// Moderator
-
+        '00e1r000001td1k' => 1,
 		// Super Admin
 		'00e20000001FEdPAAW' => 4
 		// .. TODO: complete
