@@ -32,7 +32,7 @@
 										</div>
 										<footer class="card-footer">
 											<div class="buttons card-footer-item">
-												<a href="{{route('signIn')}}">
+												<a href="{{route('login')}}">
 													<button class="button is-link">
 														<span>Se connecter</span></button>
 												</a>
@@ -88,68 +88,69 @@
 			<nav class="level">
 				<div class="level-left">
 					<div class="">
-						@if ($adType === 'landOfferAd')
+						@if ($adsType === 'landOfferAd')
 							<h1 class="title">Offres foncières</h1>
-						@elseif($adType === 'landSeekAd')
+						@elseif($adsType === 'landSeekAd')
 							<h1 class="title">Recherche de fonciers</h1>
-						@elseif($adType === 'jobOfferAd')
+						@elseif($adsType === 'jobOfferAd')
 							<h1 class="title">Offres d'emploi</h1>
 						@else
 							<h1 class="title">Recherche d'emploi</h1>
 						@endif
-						<h2 class="subtitle">{{ count($ads) }} annonces trouvées.</h2>
+						<h2 class="subtitle">{{ ($ads->total()) }} annonces trouvées</h2>
 					</div>
 				</div>
 				<div class="level-right">
-					<div class="level-item">
-						{!! Form::open(['url' => '']) !!}
-                            {!! Form::submit('Tout', ['class' => 'button']) !!}
-                            {!! Form::submit('Vente', ['class' => 'button']) !!}
-                            {!! Form::submit('Location', ['class' => 'button']) !!}
-						{!! Form::close() !!}
-					</div>
-					<div class="level-item">
-						<div class="help">Trier : </div>
-						{!! Form::open(['url' => '']) !!}
+					<div class="level-item ">
+						<label class="label">Trier par : </label>
+						<br>
 						<div class="select">
-							{!! Form::select('select', ['date' => 'Date: du plus récent au plus ancien', 'S' => 'Small']) !!}
+							<select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+								<option value="">Choisissez un filter</option>
+								<option {{request()->input('order') === 'desc' && request()->input('sort') === 'date' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date', 'page'=> 0])) }}">
+									Date: du plus récent au plus ancien
+								</option>
+								<option {{request()->input('order') === 'asc' && request()->input('sort') === 'date' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'date', 'page'=> 0])) }}">
+									Date: du plus ancien au plus récent
+								</option>
+
+								@if($adsType =='landSeekAd' or $adsType== 'landOfferAd')
+									@if($adsType == 'landOfferAd')
+										<option {{request()->input('order') === 'asc' && request()->input('sort') === 'price' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'price', 'page'=> 0])) }}">
+											Prix : du moins au plus élevé
+										</option>
+										<option {{request()->input('order') === 'desc' && request()->input('sort') === 'price' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'price', 'page'=> 0])) }}">
+											Prix : du plus au moins élevé
+										</option>
+									@endif
+									@if($adsType == 'landSeekAd')
+										<option {{request()->input('order') === 'asc' && request()->input('sort') === 'surface_max' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'surface_max', 'page'=> 0])) }}">
+											Surface : du plus petit au plus grand
+										</option>
+										<option {{request()->input('order') === 'desc' && request()->input('sort') === 'surface_max' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'surface_max', 'page'=> 0])) }}">
+											Surface : du plus grand au plus petit
+										</option>
+									@elseif($adsType == 'landOfferAd')
+										<option {{request()->input('order') === 'asc' && request()->input('sort') === 'surface' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'surface', 'page'=> 0])) }}">
+											Surface : du plus petit au plus grand
+										</option>
+										<option {{request()->input('order') === 'desc' && request()->input('sort') === 'surface' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'surface', 'page'=> 0])) }}">
+											Surface : du plus grand au plus petit
+										</option>
+									@endif
+								@endif
+							</select>
 						</div>
-						{!! Form::close() !!}
 					</div>
 				</div>
 			</nav>
 			<section class="section">
 				@foreach($ads as $ad)
 					<div class="columns">
-						<div class="column is-two-fifths"
-							 style="background-image: url('https://picsum.photos/500/300')">
+						<div class="column is-two-fifths">
 							<a href="{{route("ads.show", $ad->id)}}">
-								<div class="columns">
-									<div class="column is-full ">
-										@if(count($ad->regions))
-											<p class="has-text-link ">{{$ad->regions->pluck('name')->implode(', ')}}</p>
-										@endif
-										@if(count($ad->departments))
-											<p class="has-text-link ">{{$ad->departments->pluck('name')->implode(', ')}}</p>
-										@endif
-										@if(count($ad->cities))
-											<p class="has-text-link "></p>{{ $ad->cities->pluck('name')->implode(', ') }}
-										@endif
-									</div>
-								</div>
-{{--									<div class="columns">--}}
-{{--										<div class="column is-full has-background-info research-bottom-element">--}}
-{{--										</div>--}}
-{{--									</div>--}}
+								<figure><img src="https://picsum.photos/500/300" alt="Placeholder image"></figure>
 							</a>
-
-							{{--							@if($adType === 'landOfferAd')--}}
-							{{--								<div><span>{{ $ad->$adType->land->price }}</span> € |--}}
-							{{--									<span>{{ $ad->$adType->land->area }}</span> ha--}}
-							{{--								</div>--}}
-							{{--							@else--}}
-							{{--								<div><span></span></div>--}}
-							{{--							@endif--}}
 						</div>
 						<div class="column">
 							<nav class="level">
@@ -160,38 +161,35 @@
 								</div>
 								<div class="level-right">
 									<div class="level-item">
-											<span>Publié {{ $ad->created_at_diff }}</span>
+										<span>Publié {{ $ad->created_at_diff }}</span>
 									</div>
 								</div>
 							</nav>
 							<div></div>
-							<a href="{{route("ads.show", $ad->id)}}"><h1 class="title">{{ $ad->$adType->title }}</h1>
+							<a href="{{route("ads.show", $ad->id)}}">
+								<h1 class="title">{{ $ad->title }}</h1>
 							</a>
 
-
-{{--                            <nav class="level">--}}
-{{--                                <div class="level-left">--}}
-{{--                                    <div class="level-item" style="display:none">--}}
-{{--                                        <span>Partenaire Objectif Terre</span>--}}
-{{--                                    </div>--}}
-{{--                                    <div>--}}
-{{--                                        {{ $ad->regions->pluck('name')->implode(', ') }}--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </nav>--}}
-
-                            @if($adType === 'landOfferAd')
-                                <div><span>{{ $ad->landOfferAd->price }}</span> € |
-                                    <span>{{ $ad->landOfferAd->surface }}</span> ha
-                                </div>
-                            @else
-                                <div><span></span></div>
-                            @endif
+							@if($adsType === 'landOfferAd')
+								<div><span>{{ $ad->landOfferAd->price }}</span> € |
+									<span>{{ $ad->landOfferAd->surface }}</span> ha
+								</div>
+							@else
+								<div><span></span></div>
+							@endif
+							@if(count($ad->regions))
+								<p class="is-italic ">{{$ad->regions->pluck('name')->implode(', ')}}</p>
+							@endif
+							@if(count($ad->departments))
+								<p class="is-italic ">{{$ad->departments->pluck('name')->implode(', ')}}</p>
+							@endif
+							@if(count($ad->cities))
+								<p class="is-italic ">{{ $ad->cities->pluck('name')->implode(', ') }}</p>
+							@endif
 
 							<div class="content descritption">
 								<p>{{ Illuminate\Support\Str::limit($ad->about_project_content, 200) }}</p>
 							</div>
-
 							<a href="{{route("ads.show", $ad->id)}}">
 								<button class="button is-link ">
 											<span class="icon is-small">
@@ -205,33 +203,61 @@
 					<br>
 				@endforeach
 			</section>
-
 			<section class="section">
-				{{--                @if($ads->lastPage() > 1)--}}
-				{{--                    <nav class="pagination is-centered" role="navigation" aria-label="pagination">--}}
-				{{--                        <ul class="pagination-list">--}}
-				{{--                            <li class="{{ $ads->currentPage() === 1 ? 'disabled' : '' }}">--}}
-				{{--                                <a href="{{ $ads->url(1) }}" class="pagination-link" aria-label="Goto page 1">1</a>--}}
-				{{--                            </li>--}}
-				{{--                            <li class="{{ $ads->lastPage() > 6 }}"><span class="pagination-ellipsis">&hellip;</span></li>--}}
-				{{--                            @if($ads->lastPage() >= 3)--}}
-				{{--                                @for($i = 1; $i <= $ads->lastPage(); $i++)--}}
-				{{--                                    <li class="{{ ($ads->currentPage() == $i) ? ' active' : '' }}">--}}
-				{{--                                        <a href="{{ $ads->url($i) }}" class="pagination-link" aria-label="Goto page {{ $i }}">{{ $i }}</a>--}}
-				{{--                                    </li>--}}
-				{{--                                @endfor--}}
-				{{--                            @endif--}}
-				{{--                            <li><span class="pagination-ellipsis">&hellip;</span></li>--}}
-				{{--                            <li class="{{ ($ads->currentPage() == $ads->lastPage()) ? ' disabled' : '' }}">--}}
-				{{--                                <a href="{{ '/recherches' . $ads->url($ads->currentPage()+1) }}" class="pagination-link" aria-label="Goto page {{ $ads->lastPage() }}">{{ $ads->lastPage() }}</a>--}}
-				{{--                            </li>--}}
-				{{--                        </ul>--}}
-				{{--                    </nav>--}}
-				{{--                @endif--}}
-				<pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
-			</section>
+				<div class="columns is-mobile is-centered">
+					<div class="column is-half ">
+						{{ $ads->appends(Request::all())->links() }}
+					</div>
+				</div>
 
-			@if($adType === 'landOfferAd' || $adType === 'landSeekAd')
+				{{--				@if($ads->lastPage() > 1)--}}
+				{{--					<nav class="pagination is-centered" role="navigation" aria-label="pagination">--}}
+				{{--						<ul class="pagination-list">--}}
+				{{--							<li>--}}
+				{{--								<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => 1])) }}"--}}
+				{{--								   class="{{ $ads->currentPage() === 1 ?'pagination-link is-current-page' : 'pagination-link' }}"--}}
+				{{--								   aria-label="Goto page 1">1</a>--}}
+				{{--							</li>--}}
+				{{--							<li class="{{ $ads->lastPage() > 6 }}"><span class="pagination-ellipsis">&hellip;</span>--}}
+				{{--							</li>--}}
+				{{--							@if($ads->lastPage() >= 3)--}}
+				{{--								@if($ads->lastPage()<=10)--}}
+				{{--									<li>--}}
+				{{--										<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => $ads->currentPage()-1])) }}"--}}
+				{{--										   class="pagination-link is-current-page' "--}}
+				{{--										   aria-label="Goto page {{ $ads->currentPage()-1 }}"><< Précédent</a>--}}
+				{{--									</li>--}}
+				{{--									<li>--}}
+				{{--										<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => $ads->currentPage()])) }}"--}}
+				{{--										   class="{{ ((int)request()->input('page') === $ads->currentPage()) ? ' pagination-link is-current-page' : 'pagination-link' }}"--}}
+				{{--										   aria-label="Goto page {{ $ads->currentPage() }}">{{ $ads->currentPage() }}</a>--}}
+				{{--									</li>--}}
+				{{--									<li>--}}
+				{{--										<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => $ads->currentPage() + 1])) }}"--}}
+				{{--										   class="pagination-link is-current-page' "--}}
+				{{--										   aria-label="Goto page {{ $ads->currentPage()+1 }}">Suivant >></a>--}}
+				{{--									</li>--}}
+				{{--								@else--}}
+				{{--									@for($i = 2; $i <= $ads->lastPage()-1; $i++)--}}
+				{{--										<li>--}}
+				{{--											<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => $i])) }}"--}}
+				{{--											   class="{{ ((int)request()->input('page') === $i) ? ' pagination-link is-current-page' : 'pagination-link' }}"--}}
+				{{--											   aria-label="Goto page {{ $i }}">{{ $i }}</a>--}}
+				{{--										</li>--}}
+				{{--									@endfor--}}
+				{{--								@endif--}}
+				{{--							@endif--}}
+				{{--							<li><span class="pagination-ellipsis">&hellip;</span></li>--}}
+				{{--							<li>--}}
+				{{--								<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => $ads->lastPage()])) }}"--}}
+				{{--								   class="{{ ($ads->currentPage() == $ads->lastPage()) ? ' pagination-link is-current-page' : 'pagination-link' }}"--}}
+				{{--								   aria-label="Goto page {{ $ads->lastPage() }}">{{ $ads->lastPage() }}</a>--}}
+				{{--							</li>--}}
+				{{--						</ul>--}}
+				{{--					</nav>--}}
+				{{--				@endif--}}
+			</section>
+			@if($adsType === 'landOfferAd' || $adsType === 'landSeekAd')
 				<section class="section">
 					<div class="columns">
 						<div class="column">
@@ -262,8 +288,8 @@
 
 		</div>
 	</section>
-    @include('components.partnering')
-    @include('components.supportTerreLiens')
+	@include('components.partnering')
+	@include('components.supportTerreLiens')
 @endsection
 
 @section('script')

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HomePage;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdStatus;
+use App\Models\AttributionAd;
 use App\Models\City;
 use App\Models\Department;
 use App\Models\JobOfferType;
@@ -78,7 +79,6 @@ class HomePageModeratorController extends Controller
 		if (count($attributionAds) === 0) {
 			return redirect()->route('moderator.index')->with('warning', 'Aucun résultat pour votre recherche');
 		}
-
 
 		return view('pages.moderator.index', compact('cities', 'departments', 'regions', 'projectStatuses', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
 

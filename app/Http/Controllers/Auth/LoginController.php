@@ -20,24 +20,24 @@ class LoginController extends Saml2Controller
      */
     public function __construct(SalesforceService $salesForceService)
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest')->except(["salesforceLogout", "sls"]);
         $this->salesforceService = $salesForceService;
     }
 
+
     /**
-     * @param Saml2Auth $saml2Auth
-     * @return \Illuminate\Http\RedirectResponse
+     * Initiate a login request.
+     *
      * @throws \Exception
      */
-    public function preLogin()
+    public function salesforceLogin()
     {
-        return $this->salesforceService->getLoginRedirect();
+        $saml2Auth = new Saml2Auth(Saml2Auth::loadOneLoginAuthFromIpdConfig('salesforce'));
+        return $saml2Auth->login('/');
     }
 
     /**
      * Process an incoming saml2 assertion request.
-     * Fires 'Saml2LoginEvent' event if a valid user is found.
-     *
      * This method is triggered right after a successful login
      *
      * @param Saml2Auth $saml2Auth
@@ -62,23 +62,64 @@ class LoginController extends Saml2Controller
         $samlUser = $saml2Auth->getSaml2User();
 
         // TODO: Implement preventing reuse of a $messageId to stop replay attacks
-        //$messageId = $event->getSaml2Auth()->getLastMessageId();
-        //dd($samlUser->getAttributes());
+        // Problem : no expiration date is passed by salesforce
+        $messageId = $saml2Auth->getLastMessageId();
+
+        session()->put([
+            'saml_session_index' => $samlUser->getSessionIndex(),
+            'saml_name_id' => $samlUser->getNameId(),
+        ]);
 
 		$user = $this->salesforceService->getUserFromSaml($samlUser);
-
-        //dd($user);
-        //dd(session()->all());
 
         auth()->login($user);
         session()->flash('success', "Vous avez bien été identifié.");
 
         $intended = session('url.intended');
-        logger("redirecting to intended :".$intended);
         if($intended) {
             return redirect($intended);
         }
 
+        return redirect('/');
+    }
+
+
+    /**
+     * Initiate a logout request across all the SSO infrastructure.
+     *
+     * @throws \OneLogin\Saml2\Error
+     * @throws \Exception
+     */
+    public function salesforceLogout()
+    {
+        $returnTo = route('saml2_sls', 'salesforce');
+        $nameId = session('saml_name_id');
+        $sessionIndex = session('saml_session_index');
+
+        $saml2Auth = new Saml2Auth(Saml2Auth::loadOneLoginAuthFromIpdConfig('salesforce'));
+        return $saml2Auth->logout($returnTo, $nameId, $sessionIndex); //will actually end up in the sls endpoint
+    }
+
+    /**
+     * Process an incoming saml2 logout request.
+     * Disconnected from Salesforce, the user is then disconnected locally
+     *
+     * @param Saml2Auth $saml2Auth
+     * @param $idpName
+     * @return \Illuminate\Http\Response
+     * @throws \Exception
+     */
+    public function sls(Saml2Auth $saml2Auth, $idpName)
+    {
+        $errors = $saml2Auth->sls($idpName, config('saml2_settings.retrieveParametersFromServer'));
+        if (!empty($errors)) {
+            logger()->error('Saml2 error', $errors);
+            session()->flash('saml2_error', $errors);
+            throw new \Exception("Could not log out : ".json_encode($errors));
+        }
+
+        auth()->logout();
+        session()->save();
         return redirect('/');
     }
 }

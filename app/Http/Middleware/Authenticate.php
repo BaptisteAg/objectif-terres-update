@@ -25,7 +25,7 @@ class Authenticate extends Middleware
                 session()->save();
             }
 
-            return route('signIn');
+            return route('login');
         }
     }
 }

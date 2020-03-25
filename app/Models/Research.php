@@ -19,7 +19,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string|null $name
  * @property string|null $surface_min
  * @property string|null $surface_max
- * @property int|null $has_pics
+ * @property int $has_pics
  * @property int|null $has_house
  * @property int|null $price_min
  * @property int|null $price_max

@@ -1,5 +1,5 @@
 <template>
-    <div  class="display-message">
+    <div class="display-message">
         <template v-if="value" v-for="message in value">
             <template v-if="message.sender_user_id === userId">
                 <div class=" message-sended">
@@ -11,7 +11,10 @@
                                 <p class="has-text-white">
                                     {{message.content}}
                                 </p>
-                                <time class="has-text-white is-size-7">Le {{message.day_posted}} à {{message.time_posted}}</time>
+                                <div v-if="!message.day_posted" id="loading" style="height : 30px; width : 30px"></div>
+                                <time v-else class="has-text-white is-size-7">Le {{message.day_posted}} à
+                                    {{message.time_posted}}
+                                </time>
                             </div>
                         </div>
                     </div>
@@ -21,13 +24,18 @@
                 <div class="content message-received">
                     <div class="columns">
                         <div class="column is-half ">
-                            <p class="is-marginless has-text-grey"><span>{{message.sender_user.first_name}}</span> {{message.sender_user.name}} </p>
+                            <p class="is-marginless has-text-grey"><span>{{message.sender_user.first_name}}</span>
+                                {{message.sender_user.name}} </p>
                             <div class="content message-receiver ">
                                 <div class="message-receiver-content">
                                     <p class="has-text-black">
                                         {{message.content}}
                                     </p>
-                                    <time class="has-text-black is-size-7">Le {{message.day_posted}} à {{message.time_posted}}</time>
+                                    <div v-if="!message.day_posted" id="loading"
+                                         style="height : 30px; width : 30px"></div>
+                                    <time class="has-text-black is-size-7">Le {{message.day_posted}} à
+                                        {{message.time_posted}}
+                                    </time>
                                 </div>
                             </div>
                         </div>
@@ -41,10 +49,11 @@
 </template>
 
 <style lang="scss">
-    .display-message{
-             overflow-x: hidden;
-             max-height:700px;
-         }
+    .display-message {
+        overflow-x: hidden;
+        max-height: 700px;
+    }
+
     .message-sender {
         border-bottom-left-radius: 5px;
         border-top-left-radius: 5px;
@@ -55,26 +64,30 @@
         padding-bottom: 5px;
         padding-left: 15px;
         padding-right: 15px;
-        &:first-child{
+
+        &:first-child {
             border-top-left-radius: 15px;
         }
-        &:last-child{
+
+        &:last-child {
             border-bottom-left-radius: 15px;
         }
     }
+
     .message-receiver {
         border-bottom-right-radius: 5px;
         border-top-right-radius: 5px;
         background-color: hsl(0, 0%, 86%);
         margin-right: 0px;
-        float : left;
+        float: left;
         padding-top: 5px;
         padding-bottom: 5px;
         padding-right: 15px;
         padding-right: 15px;
     }
-    .message-receiver-content{
-        margin-left : 12px
+
+    .message-receiver-content {
+        margin-left: 12px
     }
 
 
@@ -94,7 +107,7 @@
         watch: {
             value: function () {
                 this.loading = true;
-                setInterval(_ => this.loading = false, 2000);
+                setInterval(_ => this.loading = false, 1000);
             }
         },
     }

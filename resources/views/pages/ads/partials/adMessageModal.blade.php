@@ -12,7 +12,7 @@
 				</div>
 				<footer class="card-footer">
 					<div class="buttons card-footer-item">
-						<a href="{{route('signIn')}}">
+						<a href="{{route('login')}}">
 							<button class="button is-link">
 								<span>Se connecter</span></button>
 						</a>
@@ -44,9 +44,7 @@
 								<div class="control">
 									<input type="hidden" name="ad_id" value="{{$ad->id}}">
 									<textarea required name="content" class="textarea is-medium"
-											  placeholder="Votre message...">
-
-									</textarea>
+											  placeholder="Votre message..."></textarea>
 								</div>
 							</div>
 						</div>

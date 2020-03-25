@@ -1,5 +1,7 @@
 <header id="vue-header">
-    <header-page id="header-page" inline-template>
+    <header-page id="header-page" inline-template
+                 :old-search-values="{{json_encode(old())}}"
+    >
         <div>
             <div class="container-custom">
                 <nav class="level">
@@ -18,7 +20,7 @@
                         @guest
                             <div class="level-item">Bienvenue !</div>
                             <div class="level-item">
-                                <a href="{{ route('signIn') }}">Connectez-vous</a>
+                                <a href="{{ route('login') }}">Connectez-vous</a>
                             </div>
                             <div class="level-item">ou</div>
                             @if (Route::has('register'))
@@ -33,7 +35,7 @@
                                         <span class="icon">
                                             <i class="far fa-user"></i>
                                         </span>
-                                        <span>Mon esapce modérateur ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
+                                        <span>Mon espace modérateur ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
                                     </a>
                                 </div>
                             @else
@@ -134,7 +136,7 @@
                                     :options="{{ $regionsWithAll }}"
                                     v-model="selectedRegions"
                                     :multiple="true"
-                                    name="regions[]"
+                                    name="regions_location_researches_ids[]"
                                     selected-count-text="région(s) sélectionnée(s)"
                                     placeholder="Choississez une/des région(s)">
                                 </multi-select>
@@ -148,10 +150,10 @@
                     </div>
                 </div>
                 <div v-show="isFormOpen" class="has-ba" style="display : none">
-                    <div class="container-custom" v-show="adCategorySelected === 'job'">
+                    <div class="container-custom" v-if="adCategorySelected === 'job'">
                         @include('layouts.partials.headerJobResearch')
                     </div>
-                    <div class="container-custom" v-show="adCategorySelected === 'land'">
+                    <div class="container-custom" v-if="adCategorySelected === 'land'">
                         @include('layouts.partials.headerLandResearch')
                     </div>
                 </div>
@@ -192,8 +194,12 @@
                                 <div class="buttons">
                                     <a class="navbar-item">Ressources utiles</a>
                                     <a class="navbar-item">Témoignages & chiffres clés</a>
-                                    <a href="{{ route('ads.create') }}" class="button is-bordered">Déposer une
+                                    @if(auth()->user() && auth()->user()->role >= 1)
+                                        <a href="{{ route('moderator.index') }}" class="button is-bordered">Espace modérateur</a>
+                                    @else
+                                        <a href="{{ route('ads.create') }}" class="button is-bordered">Déposer une
                                         annonce</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>

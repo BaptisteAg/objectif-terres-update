@@ -113,9 +113,9 @@ Route::middleware('auth')->prefix('notification')->name('notification.')->namesp
 });
 
 // Authentication Routes for authentification
-Route::get('connexion', 'Auth\LoginController@preLogin')->name('signIn');
+Route::get('connexion', 'Auth\LoginController@salesforceLogin')->name('login');
 //Route::post('login', 'Auth\LoginController@login')->name('login');
-Route::post('deconnexion', 'Auth\LegacyLoginController@logout')->name('logout');
+Route::post('deconnexion', 'Auth\LoginController@salesforceLogout')->name('logout');
 
 // Registration Routes...
 Route::get('inscription', 'Auth\RegisterController@showRegistrationForm')->name('register');

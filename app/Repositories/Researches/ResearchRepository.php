@@ -94,7 +94,7 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 		$research = new Research();
 		$researchData = $data;
 		$research->fill($researchData);
-		$research->ad_type = $data['ad_category'] . $data['ad_type'];
+		$research->ad_type = $data['ad_category'] . $data['offer_type'];
 		$research->user_id = auth()->user()->id;
 		$research->save();
 

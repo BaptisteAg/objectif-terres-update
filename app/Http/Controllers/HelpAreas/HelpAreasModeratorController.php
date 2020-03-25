@@ -20,7 +20,7 @@ class HelpAreasModeratorController extends Controller
 			abort(404);
 		}
 
-		$users = $this->userService->findAllExceptPP();
+		$users = json_encode($this->userService->findAllExceptPP()) ;
 		return view('pages.moderator.help', compact('users'));
 	}
 }

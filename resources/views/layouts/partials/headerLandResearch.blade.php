@@ -4,7 +4,7 @@
         <div class="field">
             @foreach ($offerGenres as $offerGenre)
             <label class="checkbox">
-                <input type="checkbox" name="offer_genres[]" value="{{$offerGenre->id}}">
+                <input type="checkbox" name="offer_genres[]" value="{{$offerGenre->id}}" {{old('offer_genres') && in_array($offerGenre->id,old('offer_genres'))  ? ' checked' : '' }}>
                 {{$offerGenre->name}}
             </label>
             @endforeach
@@ -13,6 +13,10 @@
                 <p class="label">Surface (ha)</p>
                 <vue-slider
                     name="surfaces_research"
+                    :old-data="{
+                            'value' : {{json_encode(old('surfaces_research'))}},
+                            'textValue' : {{json_encode(old('surfaces_research'))}}
+                            }"
                     :data="{
                         0: '0',
                         5: '5',
@@ -20,29 +24,31 @@
                         20: '20',
                         50: '50',
                         100 : '100',
-                        '+100' : '+ de 100',
+                        '+100' : '+100',
                     }"
                     :values="['0', '>100']"></vue-slider>
                 <br>
             </div>
-                <div v-if="adTypeSelected === 'OfferAd'" class="field">
+                <div v-if="offerTypeSelected === 'OfferAd'" class="field">
                     {{ form::label('price_min', 'Prix minimum', ['class' => 'label']) }}
-                    {{ form::number('price_min', '', ['min' => '0', 'pattern' => "([0-9]{1,3}).([0-9]{1,3})", 'class'=>'input']) }}
+                    {{ form::number('price_min', '', ['min' => '0', 'pattern' => "([0-9]{1,3}).([0-9]{1,3})", 'class'=>'input', ]) }}
                     {{ form::label('price_max', 'Prix maximum', ['class' => 'label']) }}
                     {{ form::number('price_max', '', ['min' => '0', 'class' => 'input',]) }}
                 </div>
 
     </div>
 
-    <div v-if="adTypeSelected === 'OfferAd'" class="column">
+    <div v-if="offerTypeSelected === 'OfferAd'" class="column">
         <div class="column">
             <div class="field">
                 <label class="checkbox">
-                    <input type="checkbox" name="has_pics" value="1">
+
+
+                    <input type="checkbox" name="has_pics" value="1" {{ old('has_pics') === "1" ? ' checked' : '' }}>
                     Avec photos
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" name="has_buildings" value="1">
+                    <input type="checkbox" name="has_buildings" value="1" {{ old('has_buildings') === "1" ? ' checked' : '' }}>
                     Habitation
                 </label>
             </div>
@@ -51,7 +57,7 @@
                 {!! Form::label('production_genres', 'Choisissez des types de production', ['class' => 'label']); !!}
                 <multi-select
                     :options="{{ json_encode($productionGenres) }}"
-                    v-model="productionsSelected"
+                    v-model="selectedProductions"
                     name="production_genres[]"
                     selected-count-text="production(s) sélectionné(s)"
                     placeholder="Choississez">
@@ -62,7 +68,7 @@
                 <multi-select
                     :options="{{ json_encode($bioCertifications) }}"
                     :multiple="true"
-                    v-model="bioProductionsSelected"
+                    v-model="selectedBioCertifications"
                     name="bio_certifications[]"
                     selected-count-text="production(s) bio sélectionné(s)"
                     placeholder="Choississez">

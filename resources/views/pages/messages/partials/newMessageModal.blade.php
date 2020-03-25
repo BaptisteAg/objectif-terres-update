@@ -1,4 +1,4 @@
-@if(auth()->user()->role >=1)
+@if(auth()->user()->role >= 1)
 	{!! Form::open(['route' => 'threads.create', 'method'=>'post']) !!}
 	<div class="modal" ref="newMessageModal">
 		<div ref="closeMessageModal" class="modal-background"></div>
@@ -12,11 +12,12 @@
 						<div class="field">
 							{!! Form::label('receivers_user_message[]', 'Choisissez votre ou vos interlocuteurs', ['class' => 'label']); !!}
 							<multi-select
-									:options="{{ json_encode($users) }}"
+									:options="{{ $users }}"
 									v-model="usersSelected"
 									name="receivers_user_message[]"
 									selected-count-text="personne(s) séléctionnée(s)"
-									placeholder="Choississez">
+									placeholder="Choississez"
+							>
 							</multi-select>
 						</div>
 						<div class="field">
@@ -28,13 +29,12 @@
 								</div>
 							</div>
 						</div>
-
 						<div class="field">
 							<label class="label">Votre message :</label>
 							<div class="field">
 								<div class="control">
 								<textarea required name="content" class="textarea is-medium"
-										  placeholder="Votre message..."></textarea>
+										  placeholder="Votre message..."> </textarea>
 								</div>
 							</div>
 						</div>

@@ -124,6 +124,6 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 	 */
 	public function findNewestMessage()
 	{
-		// TODO: Implement findNewestMessage() method.
+		// TODO: Implement findNewestMessage() method or remove
 	}
 }

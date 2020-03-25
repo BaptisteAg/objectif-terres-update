@@ -18,7 +18,7 @@ return $settings = array(
     // or unencrypted messages if it expects them signed or encrypted
     // Also will reject the messages if not strictly follow the SAML
     // standard: Destination, NameId, Conditions ... are validated too.
-    'strict' => true, //@todo: make this depend on laravel config
+    'strict' => true,
 
     // Enable debug mode (to print errors)
     'debug' => env('APP_DEBUG', false),
@@ -106,11 +106,11 @@ return $settings = array(
 
         // Indicates whether the <samlp:logoutRequest> messages sent by this SP
         // will be signed.
-        'logoutRequestSigned' => false,
+        'logoutRequestSigned' => true,
 
         // Indicates whether the <samlp:logoutResponse> messages sent by this SP
         // will be signed.
-        'logoutResponseSigned' => false,
+        'logoutResponseSigned' => true,
 
         /* Sign the Metadata
          False || True (use sp certs) || array (
@@ -125,11 +125,11 @@ return $settings = array(
 
         // Indicates a requirement for the <samlp:Response>, <samlp:LogoutRequest> and
         // <samlp:LogoutResponse> elements received by this SP to be signed.
-        'wantMessagesSigned' => false,
+        'wantMessagesSigned' => true,
 
         // Indicates a requirement for the <saml:Assertion> elements received by
         // this SP to be signed.        [The Metadata of the SP will offer this info]
-        'wantAssertionsSigned' => false,
+        'wantAssertionsSigned' => true,
 
         // Indicates a requirement for the NameID received by
         // this SP to be encrypted.

@@ -40,7 +40,7 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 
 	/**
 	 * @param $userId
-	 * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
 	public function findAllByModeratorId($userId)
 	{
@@ -48,7 +48,7 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 			->where(["user_moderator_id" => $userId])
 			->orderByDesc('created_at')
 			->with($this->getEagerLoading())
-			->get();
+			->paginate(15);
 	}
 
 	/**

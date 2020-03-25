@@ -14,32 +14,32 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * App\Models\User
  *
  * @property int $id
- * @property string $sf_id
+ * @property string|null $sf_id
  * @property string $name
  * @property string $first_name
  * @property string|null $phone
- * @property string $address
- * @property string $city
- * @property int $civility
- * @property int $profile
+ * @property string|null $address
+ * @property string|null $city
+ * @property int|null $civility
+ * @property int|null $profile
  * @property string|null $other_profile
  * @property int $accept_communication
  * @property int $accept_share_contact_infos
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
- * @property string $password
- * @property int $country_id
- * @property int $zip_code_id
+ * @property string|null $password
+ * @property int|null $country_id
+ * @property int|null $zip_code_id
  * @property int $role
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Country $country
+ * @property-read \App\Models\Country|null $country
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
  * @property-read int|null $threads_count
- * @property-read \App\Models\City $zipCode
+ * @property-read \App\Models\City|null $zipCode
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()

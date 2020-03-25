@@ -87,10 +87,12 @@
                     )
                 },
                 set(options) {
+                    if(options.length === 0 ){
+                        return this.selectedIds = []
+                    }
+
                     let selectedOptions = [];
-
-                    const lastOption = options[options.length-1];
-
+                    let lastOption = options[options.length-1];
                     // any of the clearingIds will clear other ids from the array
                     if (this.clearingIds.includes(lastOption.id)) {
                         selectedOptions = [lastOption];
@@ -100,8 +102,6 @@
                             return !this.clearingIds.includes(option.id);
                         });
                     }
-
-                    console.log(selectedOptions);
 
                     this.selectedIds = selectedOptions.map(option => option[this.idProp]);
                     this.$emit('input', this.selectedIds);
