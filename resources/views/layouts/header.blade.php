@@ -194,8 +194,12 @@
                                 <div class="buttons">
                                     <a class="navbar-item">Ressources utiles</a>
                                     <a class="navbar-item">Témoignages & chiffres clés</a>
-                                    <a href="{{ route('ads.create') }}" class="button is-bordered">Déposer une
+                                    @if(auth()->user() && auth()->user()->role >= 1)
+                                        <a href="{{ route('moderator.index') }}" class="button is-bordered">Espace modérateur</a>
+                                    @else
+                                        <a href="{{ route('ads.create') }}" class="button is-bordered">Déposer une
                                         annonce</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>

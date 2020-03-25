@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HomePage;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdStatus;
+use App\Models\AttributionAd;
 use App\Models\City;
 use App\Models\Department;
 use App\Models\JobOfferType;
@@ -51,7 +52,6 @@ class HomePageModeratorController extends Controller
 		$jobOfferTypes = JobOfferType::all();
 
 		$attributionAds = $this->service->findAllByUserModerator(auth()->user()->id);
-
 
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfAdsToModerate = $this->service->countAllAdsToModerateForLoggedModerator();

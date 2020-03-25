@@ -52,19 +52,19 @@ class SalesforceService
         $city = City::findOrFail($data["city_id"]);
 
         /*
-         * array:3 [▼
+         * array:3 [
               "id" => "0011q00000XA0LIAA1"
               "success" => true
               "errors" => []
             ]
          */
         /*$account = $this->repository->create('Account', [
-        "Name" => $data["first_name"] . " " . $data["name"],
-        "Description" => "Compte Objectif Terre",
+            "Name" => $data["first_name"] . " " . $data["name"],
+            "Description" => "Compte Objectif Terre",
         ]);*/
 
         /**
-         * array:3 [▼
+         * array:3 [
          * "id" => "0031q00000RVzsRAAT"
          * "success" => true
          * "errors" => []
@@ -78,7 +78,7 @@ class SalesforceService
             'FirstName' => $data["first_name"],
         ]);
         /**
-         * array:3 [▼
+         * array:3 [
          * "id" => "0051q000003fRgJAAU"
          * "success" => true
          * "errors" => []
@@ -108,7 +108,6 @@ class SalesforceService
             "LanguageLocaleKey" => "fr",
             "ContactId" => $contact["id"]
         ]);
-
         $this->repository->updateUserPassword($user["id"], $data["password"]);
 
         return $user;
@@ -142,7 +141,7 @@ class SalesforceService
 				'first_name' => $salesforceUser["FirstName"],
 				'name' => $salesforceUser["LastName"],
 				'email' => $email,
-				// TODO: role
+				'role' => $this->getRoleFromProfileId($salesforceUser["ProfileId"])
 			]);
         }
 
@@ -175,5 +174,10 @@ class SalesforceService
         if(!$forrestToken->has()) {
             $this->repository->authenticate();
         }
+    }
+
+    protected function getRoleFromProfileId($profileId)
+    {
+        return $this->profileToRoleMapping[$profileId] ?? 0;
     }
 }
