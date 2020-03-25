@@ -20,7 +20,7 @@
                         @guest
                             <div class="level-item">Bienvenue !</div>
                             <div class="level-item">
-                                <a href="{{ route('signIn') }}">Connectez-vous</a>
+                                <a href="{{ route('login') }}">Connectez-vous</a>
                             </div>
                             <div class="level-item">ou</div>
                             @if (Route::has('register'))
@@ -194,8 +194,12 @@
                                 <div class="buttons">
                                     <a class="navbar-item">Ressources utiles</a>
                                     <a class="navbar-item">Témoignages & chiffres clés</a>
-                                    <a href="{{ route('ads.create') }}" class="button is-bordered">Déposer une
+                                    @if(auth()->user() && auth()->user()->role >= 1)
+                                        <a href="{{ route('moderator.index') }}" class="button is-bordered">Espace modérateur</a>
+                                    @else
+                                        <a href="{{ route('ads.create') }}" class="button is-bordered">Déposer une
                                         annonce</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>

@@ -106,11 +106,11 @@ return $settings = array(
 
         // Indicates whether the <samlp:logoutRequest> messages sent by this SP
         // will be signed.
-        'logoutRequestSigned' => false,
+        'logoutRequestSigned' => true,
 
         // Indicates whether the <samlp:logoutResponse> messages sent by this SP
         // will be signed.
-        'logoutResponseSigned' => false,
+        'logoutResponseSigned' => true,
 
         /* Sign the Metadata
          False || True (use sp certs) || array (
@@ -125,11 +125,11 @@ return $settings = array(
 
         // Indicates a requirement for the <samlp:Response>, <samlp:LogoutRequest> and
         // <samlp:LogoutResponse> elements received by this SP to be signed.
-        'wantMessagesSigned' => false,
+        'wantMessagesSigned' => true,
 
         // Indicates a requirement for the <saml:Assertion> elements received by
         // this SP to be signed.        [The Metadata of the SP will offer this info]
-        'wantAssertionsSigned' => false,
+        'wantAssertionsSigned' => true,
 
         // Indicates a requirement for the NameID received by
         // this SP to be encrypted.

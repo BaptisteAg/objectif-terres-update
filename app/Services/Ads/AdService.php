@@ -3,6 +3,7 @@
 use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
+use App\Models\User;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Ads\JobOfferAdRepository;
 use App\Repositories\Ads\JobSeekAdRepository;
@@ -86,7 +87,8 @@ class AdService
 
         	$attributionAdData = [];
         	$toModerateStatus = AdStatus::where('name', '=', 'A modérer')->first();
-			$attributionAdData['user_moderator_id'] = 25;
+        	// Temporary : should be attributed by territory
+			$attributionAdData['user_moderator_id'] = User::where('email', 'gael@kaffein.agency')->firstOrFail()->id;
 			$attributionAdData['ad_status_id'] = $toModerateStatus->id;
 
 			$ad = $this->repository->create($data);

@@ -27,7 +27,7 @@ class RegisterController extends Controller
     | provide this functionality without requiring any additional code.
     |
     */
-    use RegistersUsers;
+    //use RegistersUsers;
 
     /**
      * Where to redirect users after registration.
@@ -98,6 +98,25 @@ class RegisterController extends Controller
 		return view('auth.register', compact('countries', 'cities'));
 	}
 
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     * @throws \Throwable
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        //$this->guard()->login($user);
+
+        return redirect(session('url.intended', '/'));
+    }
+
 	/**
 	 * Create a new user instance after a valid registration.
 	 *
@@ -114,7 +133,13 @@ class RegisterController extends Controller
 		return $user;
 	}
 
-	protected function registered(Request $request, $user)
-	{
-	}
+    /**
+     * Get the guard to be used during registration.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard();
+    }
 }
