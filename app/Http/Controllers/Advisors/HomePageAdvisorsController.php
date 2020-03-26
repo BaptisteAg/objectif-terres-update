@@ -39,7 +39,7 @@ class HomePageAdvisorsController extends Controller
 	 */
 	public function index()
 	{
-		if (auth()->user()->role !== 1) {
+		if (auth()->user()->role !== 2) {
 			abort(404);
 		}
 
@@ -53,7 +53,7 @@ class HomePageAdvisorsController extends Controller
 		$attributionAds = AttributionAd::paginate(15);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 
-		return view('pages.advisors.index', compact('cities', 'departments', 'regions',  'productionGenres', 'projectStatuses', 'attributionAds', 'jobOfferTypes', 'numberOfUnreadMessages'));
+		return view('pages.advisor.index', compact('cities', 'departments', 'regions',  'productionGenres', 'projectStatuses', 'attributionAds', 'jobOfferTypes', 'numberOfUnreadMessages'));
 	}
 
 
@@ -63,6 +63,9 @@ class HomePageAdvisorsController extends Controller
 	 */
 	public function show(Request $request)
 	{
+		if (auth()->user()->role !== 2) {
+			abort(404);
+		}
 		$request->flash();
 
 		$cities = City::all();
@@ -75,7 +78,7 @@ class HomePageAdvisorsController extends Controller
 		$attributionAds = $this->attributionAdService->showForAdvisors($request);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 
-		return view('pages.advisors.index.index', compact('cities', 'departments', 'regions', 'projectStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
+		return view('pages.advisors.index', compact('cities', 'departments', 'regions', 'projectStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
 
 	}
 

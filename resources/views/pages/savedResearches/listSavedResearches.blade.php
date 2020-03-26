@@ -155,11 +155,11 @@
 			<section class="section">
 				<pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
 			</section>
-			@include('components.sectionOrientationTerreLiens')
+			@include('components.section-orientation-terre-liens')
 		</div>
 
 	</section>
 
 	@include('components.partnering')
-	@include('components.supportTerreLiens')
+	@include('components.support-terre-liens')
 @endsection

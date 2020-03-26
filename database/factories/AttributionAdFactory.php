@@ -16,8 +16,9 @@ $factory->define(AttributionAd::class, function (Faker $faker) {
 	array_push($statusArray, AdStatus::find(1), AdStatus::find(4));
 	$adStatus = $faker->randomElement($statusArray);
 	return [
-        'user_owner_id' => User::all()->random(),
-        'user_moderator_id'=> User::where('role', '>=', '2')->get()->random()->id,
+        'user_advisor_id' =>User::where('role', '=', '2')->get()->random()->id,
+        'user_moderator_id'=> User::where('role', '=', '1')->get()->random()->id,
+		'user_supervisor_id' => User::where('role', '=', '3')->get()->random()->id,
         'to_call_back' => $faker->boolean,
         'short_description' => $faker->text(350),
         'ad_status_id' => $adStatus,

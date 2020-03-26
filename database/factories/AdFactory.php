@@ -16,7 +16,6 @@ $factory->define(Ad::class, function () {
 
 	return [
         'user_pp_id' => User::all()->random(),
-        'user_admin_id' => User::where('role', '>=', '2')->get()->random()->id,
 		'about_content' => implode("\n", $faker->paragraphs()),
 		'about_project_content' => implode("\n", $faker->paragraphs()),
 		'created_at' => $randomDateCreated,

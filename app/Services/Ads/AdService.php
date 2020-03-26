@@ -3,6 +3,7 @@
 use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
+use App\Models\User;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Ads\JobOfferAdRepository;
 use App\Repositories\Ads\JobSeekAdRepository;
@@ -51,7 +52,7 @@ class AdService
 	 * AdService constructor.
 	 * @param AdRepository $repository
 	 * @param AttributionAdsRepository $attributionAdsRepository
-	 * @param LandSeekAdRepository $landSeekdAdRepository
+	 * @param LandSeekAdRepository $landSeekAdRepository
 	 * @param LandOfferAdRepository $landOfferAdRepository
 	 * @param JobOfferAdRepository $jobOfferAdRepository
 	 * @param JobSeekAdRepository $jobSeekAdRepository
@@ -60,7 +61,7 @@ class AdService
 	public function __construct(
         AdRepository $repository,
         AttributionAdsRepository $attributionAdsRepository,
-        LandSeekAdRepository $landSeekdAdRepository,
+        LandSeekAdRepository $landSeekAdRepository,
         LandOfferAdRepository $landOfferAdRepository,
         JobOfferAdRepository $jobOfferAdRepository,
         JobSeekAdRepository $jobSeekAdRepository,
@@ -68,7 +69,7 @@ class AdService
     ) {
         $this->repository = $repository;
         $this->attributionAdsRepository = $attributionAdsRepository;
-        $this->landSeekAdRepository = $landSeekdAdRepository;
+        $this->landSeekAdRepository = $landSeekAdRepository;
         $this->landOfferAdRepository = $landOfferAdRepository;
         $this->jobOfferAdRepository = $jobOfferAdRepository;
         $this->jobSeekAdRepository = $jobSeekAdRepository;
@@ -86,7 +87,8 @@ class AdService
 
         	$attributionAdData = [];
         	$toModerateStatus = AdStatus::where('name', '=', 'A modérer')->first();
-			$attributionAdData['user_moderator_id'] = 25;
+        	// Temporary : should be attributed by territory
+			$attributionAdData['user_moderator_id'] = User::where('email', 'test.ot.moderateur@gmail.com')->firstOrFail()->id;
 			$attributionAdData['ad_status_id'] = $toModerateStatus->id;
 
 			dd($data);

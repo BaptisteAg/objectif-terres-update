@@ -6,6 +6,7 @@ use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\Department;
 use App\Models\Region;
+use App\Models\User;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Services\Locations\LocationService;
@@ -47,6 +48,18 @@ class AttributionAdsService
 	}
 
 	/**
+	 * Show all ads published and related to supervisor
+	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+	 */
+	public function findAllByUserSupervisor()
+	{
+		$attributionAds = AttributionAd::where('user_supervisor_id', '=', auth()->id())
+			->with($this->getEagerLoading())
+			->paginate(15);
+		return $attributionAds;
+	}
+
+	/**
 	 * @return int
 	 */
 	public function countAllAdsToModerateForLoggedModerator()
@@ -54,7 +67,6 @@ class AttributionAdsService
 		$toModerateStatus = AdStatus::where('name', '=', 'A modérer')->first();
 		return $this->repository->findAllByUserIdAndStatusId($toModerateStatus->id, auth()->user()->id)->count();
 	}
-
 
 	/**
 	 * Get all ads grouped by moderator id and not moderated since more than a week
@@ -87,6 +99,17 @@ class AttributionAdsService
 	}
 
 	/**
+	 * Attribution ads filters for supervisor dashboard
+	 * @param Request $request
+	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+	 */
+	public function showForSupervisor(Request $filters)
+	{
+		$attributionAds = $this->filter($filters, auth()->user()->role);
+		return $attributionAds;
+	}
+
+	/**
 	 * Attribution ads filters for advisors dashboard
 	 * @param Request $request
 	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
@@ -109,9 +132,11 @@ class AttributionAdsService
 		if (!is_null($filters->input('ad_title'))) {
 			$adsByTitle = AttributionAd::whereHas('ad', function (Builder $query) use ($filters, $roleUser) {
 				$query->where('title', 'like', '%' . $filters->input('ad_title') . '%');
-				if ($roleUser === 1) {
-					$query->where('user_owner_id', '=', auth()->id());
-				} else if ($roleUser >= 2) {
+				if ($roleUser === 2) {
+					$query->where('user_advisor_id', '=', auth()->id());
+				} else if ($roleUser === 3) {
+					$query->where('user_supervisor_id', '=', auth()->id());
+				} else {
 					$query->where('user_moderator_id', '=', auth()->id());
 				}
 			});
@@ -124,11 +149,14 @@ class AttributionAdsService
 		$attributionAdsFiltered = (new AttributionAd)->newQuery();
 
 		//First, filter attributions ads based on the role who is the user logged
-		if ($roleUser === 1) {
-			$attributionAdsFiltered->where('user_owner_id', '=', auth()->id());
-		} else if ($roleUser >= 2) {
+		if ($roleUser === 2) {
+			$attributionAdsFiltered->where('user_advisor_id', '=', auth()->id());
+		} else if ($roleUser === 3) {
+			$attributionAdsFiltered->where('user_supervisor_id', '=', auth()->id());
+		} else {
 			$attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
 		}
+
 		//Filter attribution ads based on their locations if requested
 		if ($filters->has('city_location_researches')) {
 			if (!is_null($filters->input('radius_research'))) {
@@ -216,12 +244,17 @@ class AttributionAdsService
 	public function acceptAd(int $attributionAdId)
 	{
 		$attributionAd = $this->repository->find($attributionAdId);
-		//TODO when moderator accept an ad, if the pp want a support from Tdl, the ad Status is to assign the ad to an Tdl user
-//		$toAssignStatus = AdStatus::where('name', '=', 'A assigner')->first();
-//		$attributionAd->ad_status_id = $toAssignStatus->id;
+		//TODO if the pp want a support from Tdl, the ad Status is to assign the ad to an Tdl advisors
+		$toAssignStatus = AdStatus::where('name', '=', 'A assigner')->first();
+		$attributionAd->ad_status_id = $toAssignStatus->id;
+		//assign the ad to an supervisor randomly
+		$supervisor = User::where('role', '=', 3)->inRandomOrder()->first();
+		$attributionAd->user_supervisor_id = $supervisor->id;
 
-		$validateStatus = AdStatus::where('name', '=', 'Validé')->first();
-		$attributionAd->ad_status_id = $validateStatus->id;
+		//If the pp doesn't need a support from Tdl, the ad is validated
+//		$validateStatus = AdStatus::where('name', '=', 'Validé')->first();
+//		$attributionAd->ad_status_id = $validateStatus->id;
+
 		$attributionAd->published_on = Carbon::now();
 		$attributionAd->save();
 

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\HomePage;
+namespace App\Http\Controllers\Moderators;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdStatus;
+use App\Models\AttributionAd;
 use App\Models\City;
 use App\Models\Department;
 use App\Models\JobOfferType;
@@ -38,7 +39,7 @@ class HomePageModeratorController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		if (auth()->user()->role < 2) {
+		if (auth()->user()->role !== 1) {
 			abort(404);
 		}
 
@@ -52,7 +53,6 @@ class HomePageModeratorController extends Controller
 
 		$attributionAds = $this->service->findAllByUserModerator(auth()->user()->id);
 
-
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfAdsToModerate = $this->service->countAllAdsToModerateForLoggedModerator();
 
@@ -62,6 +62,10 @@ class HomePageModeratorController extends Controller
 
 	public function show(Request $request)
 	{
+		if (auth()->user()->role !== 1) {
+			abort(404);
+		}
+
 		$request->flash();
 
 		$cities = City::all();

@@ -32,7 +32,7 @@
 										</div>
 										<footer class="card-footer">
 											<div class="buttons card-footer-item">
-												<a href="{{route('signIn')}}">
+												<a href="{{route('login')}}">
 													<button class="button is-link">
 														<span>Se connecter</span></button>
 												</a>
@@ -282,14 +282,14 @@
 					</div>
 				</section>
 			@else
-				@include('components.sectionOrientationTerreLiens')
+				@include('components.section-orientation-terre-liens')
 			@endif
 
 
 		</div>
 	</section>
 	@include('components.partnering')
-	@include('components.supportTerreLiens')
+	@include('components.support-terre-liens')
 @endsection
 
 @section('script')

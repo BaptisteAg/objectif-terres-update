@@ -83,7 +83,7 @@
 			</div>
 		</div>
 		<div class="columns">
-			<div class="column is-one-third">
+			<div class="column ">
 				<div class="columns">
 					<div class="column is-half">
 						<div class="field">
@@ -143,21 +143,23 @@
 						placeholder="Choississez un/des département(s)">
 				</multi-select>
 			</div>
-			<div class="is-divider-vertical" data-content="OU"></div>
-			<div class="column ">
-				<label class="label">Régions</label>
-				<multi-select
-						:options="{{ json_encode($regions) }}"
-						:multiple="true"
-						v-model="regionsSelected"
-						name="regions_location_researches[]"
-						selected-count-text="département(s) sélectionné(s)"
-						placeholder="Choississez un/des département(s)">
-				</multi-select>
-			</div>
+			@if(auth()->user()->role === 1)
+				<div class="is-divider-vertical" data-content="OU"></div>
+				<div class="column is-one-quarter">
+					<label class="label">Régions</label>
+					<multi-select
+							:options="{{ json_encode($regions) }}"
+							:multiple="true"
+							v-model="regionsSelected"
+							name="regions_location_researches[]"
+							selected-count-text="département(s) sélectionné(s)"
+							placeholder="Choississez un/des département(s)">
+					</multi-select>
+				</div>
+			@endif
 		</div>
 		<hr class="navbar-divider">
-		@if(auth()->user()->role === 1 )
+		@if(auth()->user()->role >1 )
 			<div class="columns">
 				<div class="column is-half">
 					<p class="label has-text-centered">Statut du projet</p>

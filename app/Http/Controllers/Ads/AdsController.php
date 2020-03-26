@@ -147,7 +147,7 @@ class AdsController extends Controller
 				$threads = $this->threadService->findThreadsByAd($adId);
 				$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
 			} else {
-				if (auth()->user()->role >= 2) {
+				if (auth()->user()->role === 1) {
 					$responseTemplates = ResponseTemplate::all();
 					$refusalTypes = RefusalType::all();
 				}

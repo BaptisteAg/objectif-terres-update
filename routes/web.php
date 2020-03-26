@@ -88,14 +88,12 @@ Route::prefix('locations')->namespace('Locationables')->group(function () {
     });
 });
 
-Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderator.')->namespace('HomePage')->group(function () {
+Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderator.')->namespace('Moderators')->group(function () {
 	Route::get('/', 'HomePageModeratorController@index')->name('index');
 	Route::get('aide-et-ressources', 'HelpAreasModeratorController@index')->name('help');
-	Route::get('recherches', 'HomePageModeratorController@show')->name('show');
+	Route::get('recherche', 'HomePageModeratorController@show')->name('show');
 });
-Route::middleware('auth')->prefix('mon-espace-moderateur')->name('helpArea.')->namespace('HelpAreas')->group(function () {
-	Route::get('aide-et-ressources', 'HelpAreasModeratorController@index')->name('index');
-});
+
 
 Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderation.')->namespace('AttributionAds')->group(function (){
 	Route::post('validation', 'AttributionAdsController@acceptAd')->name('acceptAd');
@@ -103,8 +101,12 @@ Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderation.')-
 	Route::post('refus', 'AttributionAdsController@rejectAd')->name('rejectAd');
 });
 
+Route::middleware('auth')->prefix('mon-espace-responsable-territorial')->name('supervisor.')->namespace('Supervisors')->group(function (){
+	Route::get('/', 'HomePageSupervisorsController@index')->name('index');
+	Route::get('recherche', 'HomePageSupervisorsController@show')->name('show');
+});
 
-Route::middleware('auth')->prefix('mon-espace-primo-accueillant')->name('advisors.')->namespace('Advisors')->group(function (){
+Route::middleware('auth')->prefix('mon-espace-primo-accueillant')->name('advisor.')->namespace('Advisors')->group(function (){
 	Route::get('/', 'HomePageAdvisorsController@index')->name('index');
 });
 
@@ -119,9 +121,9 @@ Route::middleware('auth')->prefix('notification')->name('notification.')->namesp
 });
 
 // Authentication Routes for authentification
-Route::get('connexion', 'Auth\LoginController@preLogin')->name('signIn');
+Route::get('connexion', 'Auth\LoginController@salesforceLogin')->name('login');
 //Route::post('login', 'Auth\LoginController@login')->name('login');
-Route::post('deconnexion', 'Auth\LegacyLoginController@logout')->name('logout');
+Route::post('deconnexion', 'Auth\LoginController@salesforceLogout')->name('logout');
 
 // Registration Routes...
 Route::get('inscription', 'Auth\RegisterController@showRegistrationForm')->name('register');

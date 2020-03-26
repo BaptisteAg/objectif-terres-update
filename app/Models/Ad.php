@@ -18,7 +18,6 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  *
  * @property int $id
  * @property int $user_pp_id
- * @property int|null $user_admin_id
  * @property int $is_draft
  * @property int $accept_share_contact_infos
  * @property string|null $title
@@ -48,7 +47,6 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \App\Models\Thread $threadAlreadyExist
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
  * @property-read int|null $threads_count
- * @property-read \App\Models\User|null $userAdmin
  * @property-read \App\Models\User $userPp
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterAdTypes($adTypesFilters, $relationTableName)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterLocations($relationshipName, $locationableIds)
@@ -67,7 +65,6 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereProjectId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserAdminId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserPpId($value)
  * @mixin \Eloquent
  */
@@ -81,7 +78,6 @@ class Ad extends Model implements HasPresenter
     protected $fillable = [
         'project_id',
         'user_pp_id',
-        'user_admin_id',
         'is_draft',
         'title',
         'about_content',
@@ -93,14 +89,6 @@ class Ad extends Model implements HasPresenter
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function userPp()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function userAdmin()
     {
         return $this->belongsTo(User::class);
     }

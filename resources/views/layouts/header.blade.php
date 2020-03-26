@@ -20,7 +20,7 @@
 						@guest
 							<div class="level-item">Bienvenue !</div>
 							<div class="level-item">
-								<a href="{{ route('signIn') }}">Connectez-vous</a>
+								<a href="{{ route('login') }}">Connectez-vous</a>
 							</div>
 							<div class="level-item">ou</div>
 							@if (Route::has('register'))
@@ -29,7 +29,7 @@
 								</div>
 							@endif
 						@else
-							@if(auth()->user()->role >= 2)
+							@if(auth()->user()->role === 1 )
 								<div class="level-item">
 									<a href="{{route('moderator.index')}}">
                                         <span class="icon">
@@ -38,9 +38,18 @@
 										<span>Mon espace modérateur ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
 									</a>
 								</div>
-							@elseif(auth()->user()->role === 1 )
+							@elseif(auth()->user()->role === 3 )
 								<div class="level-item">
-									<a href="{{route('advisors.index')}}">
+									<a href="{{route('supervisor.index')}}">
+                                        <span class="icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+										<span>Mon espace responsable territorial ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
+									</a>
+								</div>
+							@elseif(auth()->user()->role === 2 )
+								<div class="level-item">
+									<a href="{{route('advisor.index')}}">
                                         <span class="icon">
                                             <i class="far fa-user"></i>
                                         </span>
@@ -155,7 +164,6 @@
 						{!! Form::submit('Rechercher', ['class' => 'button']) !!}<br>
 						<a href="#" @click="more_criteria()">Plus de critère</a>
 					</div>
-
 				</div>
 			</div>
 			<div v-show="isFormOpen" class="has-ba" style="display : none">
@@ -203,8 +211,25 @@
 								<div class="buttons">
 									<a class="navbar-item">Ressources utiles</a>
 									<a class="navbar-item">Témoignages & chiffres clés</a>
-									<a href="{{ route('ads.create') }}" class="button is-bordered">Déposer une
-										annonce</a>
+
+									@auth
+										@if(auth()->user()->role === 1 )
+											<a href="{{ route('moderator.index') }}" class="button is-bordered">Espace
+												modérateur</a>
+										@elseif(auth()->user()->role === 2)
+											<a href="{{ route('advisor.index') }}" class="button is-bordered">Espace
+												primo-acceuillant</a>
+										@elseif (auth()->user()->role === 3)
+											<a href="{{ route('supervisor.index') }}" class="button is-bordered">Espace
+												responsable territorial</a>
+										@else
+											<a href="{{ route('ads.create') }}" class="button is-bordered">Déposer une
+												annonce</a>
+										@endif
+									@else
+										<a href="{{ route('ads.create') }}" class="button is-bordered">Déposer une
+											annonce</a>
+									@endauth
 								</div>
 							</div>
 						</div>

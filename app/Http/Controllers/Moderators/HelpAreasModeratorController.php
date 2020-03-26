@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\HelpAreas;
+namespace App\Http\Controllers\Moderators;
 
 use App\Http\Controllers\Controller;
 use App\Services\Users\UserService;
@@ -16,7 +16,7 @@ class HelpAreasModeratorController extends Controller
 
 	public function index()
 	{
-		if (auth()->user()->role < 2 ) {
+		if (auth()->user()->role  !== 1 ) {
 			abort(404);
 		}
 

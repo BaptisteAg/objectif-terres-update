@@ -21,8 +21,6 @@ class UsersController extends Controller
 			abort(404);
 		}
 
-
-
 		$ads = $this->adService->findAllByUser($user->id);
 
    	return view('pages.users.show', compact('ads', 'user'));

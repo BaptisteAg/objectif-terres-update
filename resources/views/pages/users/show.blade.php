@@ -4,7 +4,7 @@
 
 @section('main-content')
 	<div class="section">
-		@include('components.moderatorTabs')
+		@include('components.moderator-tabs')
 		<div class="section">
 			<div class="columns is-mobile is-centered">
 				<div class="column is-half ">
