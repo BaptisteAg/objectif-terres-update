@@ -2,10 +2,8 @@
 
 @section('title', 'Profil de '. $user->first_name.' '.$user->name )
 
-
 @section('main-content')
 	<div class="section">
-		<h1 class="title is-2 has-text-link">Profil du porteur de projet</h1>
 		@include('components.moderatorTabs')
 		<div class="section">
 			<div class="columns is-mobile is-centered">

@@ -72,7 +72,7 @@ class HomePageModeratorController extends Controller
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
 
-		$attributionAds = $this->service->show($request);
+		$attributionAds = $this->service->showForModerators($request);
 
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfAdsToModerate = $this->service->countAllAdsToModerateForLoggedModerator();

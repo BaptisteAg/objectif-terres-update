@@ -39,7 +39,7 @@ class AttributionAdsService
 
 	/**
 	 * @param int $idUser
-	 * @return Builder[]|Collection
+	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
 	public function findAllByUserModerator(int $idUser)
 	{
@@ -76,12 +76,24 @@ class AttributionAdsService
 	}
 
 	/**
+	 * Attribution ads filters for moderators dashboard
 	 * @param Request $request
 	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
-	public function show(Request $filters)
+	public function showForModerators(Request $filters)
 	{
-		$attributionAds = $this->filter($filters);
+		$attributionAds = $this->filter($filters, auth()->user()->role);
+		return $attributionAds;
+	}
+
+	/**
+	 * Attribution ads filters for advisors dashboard
+	 * @param Request $request
+	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+	 */
+	public function showForAdvisors(Request $filters)
+	{
+		$attributionAds = $this->filter($filters, auth()->user()->role);
 		return $attributionAds;
 	}
 
@@ -90,14 +102,18 @@ class AttributionAdsService
 	 * @param Request $filters
 	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
-	public function filter(Request $filters)
+	public function filter(Request $filters, int $roleUser)
 	{
 		//Return results if research ads by title
 		$attributionAds = collect();
 		if (!is_null($filters->input('ad_title'))) {
-			$adsByTitle = AttributionAd::whereHas('ad', function (Builder $query) use ($filters) {
+			$adsByTitle = AttributionAd::whereHas('ad', function (Builder $query) use ($filters, $roleUser) {
 				$query->where('title', 'like', '%' . $filters->input('ad_title') . '%');
-				$query->where('user_moderator_id', '=', auth()->id());
+				if ($roleUser === 1) {
+					$query->where('user_owner_id', '=', auth()->id());
+				} else if ($roleUser >= 2) {
+					$query->where('user_moderator_id', '=', auth()->id());
+				}
 			});
 			$attributionAds = $adsByTitle
 				->with($this->getEagerLoading())
@@ -107,16 +123,19 @@ class AttributionAdsService
 		//START QUERY
 		$attributionAdsFiltered = (new AttributionAd)->newQuery();
 
-		//First, filter attributions ads based on the moderator who is the user logged
-		$attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
-
+		//First, filter attributions ads based on the role who is the user logged
+		if ($roleUser === 1) {
+			$attributionAdsFiltered->where('user_owner_id', '=', auth()->id());
+		} else if ($roleUser >= 2) {
+			$attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
+		}
 		//Filter attribution ads based on their locations if requested
 		if ($filters->has('city_location_researches')) {
 			if (!is_null($filters->input('radius_research'))) {
 				$cityIds = $this->locationService->getCitiesInRadius($filters->input('city_location_researches'), $filters->input('radius_research'));
 				$attributionAdsFiltered->filterLocations('ad.cities', $cityIds);
 			} else {
-				$attributionAdsFiltered->filterLocations('ad.cities', (array) $filters->input('city_location_researches'));
+				$attributionAdsFiltered->filterLocations('ad.cities', (array)$filters->input('city_location_researches'));
 			}
 		} //If one or more departments are selected, get all ads located in departments and cities in departments
 		else if ($filters->has('departments_location_researches')) {
@@ -144,7 +163,7 @@ class AttributionAdsService
 
 		//If one or many ad status are selected, filter attribution ads based on their status
 		if ($filters->has('ad_statuses')) {
-			$attributionAdsFiltered->whereIn('ad_status_id',$filters->input('ad_statuses'));
+			$attributionAdsFiltered->whereIn('ad_status_id', $filters->input('ad_statuses'));
 		}
 
 		//Filter ads based on their types if requested
@@ -177,7 +196,7 @@ class AttributionAdsService
 					->select('attribution_ads.*')
 					->join('ads as a1', 'attribution_ads.ad_id', '=', 'a1.id')
 					->leftJoin('projects as p1', 'p1.id', '=', 'a1.project_id')
-					->leftJoin('project_statuses', 'p1.project_status_id', 'project_statuses.id' )
+					->leftJoin('project_statuses', 'p1.project_status_id', 'project_statuses.id')
 					->orderBy('name', $filters->input('order'));
 			}
 		} else {

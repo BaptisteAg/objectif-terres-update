@@ -89,6 +89,7 @@ class AdService
 			$attributionAdData['user_moderator_id'] = 25;
 			$attributionAdData['ad_status_id'] = $toModerateStatus->id;
 
+			dd($data);
 			$ad = $this->repository->create($data);
 			$attributionAdData['ad_id'] = $ad->id;
 			$this->attributionAdsRepository->create($attributionAdData);

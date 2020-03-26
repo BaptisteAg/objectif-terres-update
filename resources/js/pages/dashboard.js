@@ -1,14 +1,13 @@
-import MultiSelect from "../../components/MultiSelect";
-import AjaxMultiSelect from "../../components/AjaxMultiSelect";
-import VueSlider from "../../components/VueSlider";
-import Autocomplete from '../../components/Autocomplete'
-import DatePicker from "../../components/DatePicker";
-import VueSliderRange from "../../components/VueSliderRange";
-import CustomCheckbox from "../../components/CustomCheckbox";
+import MultiSelect from "../components/MultiSelect";
+import AjaxMultiSelect from "../components/AjaxMultiSelect";
+import VueSlider from "../components/VueSlider";
+import Autocomplete from '../components/Autocomplete'
+import DatePicker from "../components/DatePicker";
+import VueSliderRange from "../components/VueSliderRange";
+import CustomCheckbox from "../components/CustomCheckbox";
 import Vue from 'vue'
 
-
-Vue.component('research-form-moderator',{
+Vue.component('dashboard-form-filter',{
     components : {
         MultiSelect,
         VueSlider,

@@ -33,7 +33,7 @@ require ('./pages/ads/show');
 require('./pages/header');
 require('./pages/auth/register');
 require('./pages/threads/threads');
-require('./pages/moderator/index');
+require('./pages/dashboard');
 require('./pages/video');
 require('./pages/cms/contact-us-form');
 //////////////

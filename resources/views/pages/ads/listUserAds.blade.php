@@ -8,7 +8,7 @@
 			<nav class="level">
 				<div class="level-left">
 					<div>
-						<h1 class="title">Liste de vos annonces</h1>
+						<h1 class="title">Liste de mes annonces</h1>
 
 						@if(count($ads) <=1)
 							<h2 class="subtitle"> {{ count($ads) }} annonce publiée.</h2>
@@ -102,15 +102,23 @@
 
 						<div class="column ">
 							<div class="buttons">
-								@if($ad->attributionAd and $ad->attributionAd->adStatus->id === 3 )
+								@if($ad->attributionAd and $ad->attributionAd->adStatus->id === 1 )
+									<a href="{{route("ads.show", $ad->id)}}">
+										<button class="button is-link is-light is-medium ">
+											<span class="icon is-small">
+											<i class="fas fa-eye"></i>
+											</span>
+											<span>Voir l'annonce</span>
+										</button>
 
+									</a>
 								@elseif($ad->is_draft === 0)
 									<a href="{{route("ads.show", $ad->id)}}">
-										<button class="button is-link is-medium ">
+										<button class="button is-link is-light is-medium ">
 											<span class="icon is-small">
 											 <i class="fas fa-eye"></i>
 											</span>
-											<span>Voir l'annonce</span>
+											<span>Apercu de  l'annonce</span>
 										</button>
 									</a>
 								@else
