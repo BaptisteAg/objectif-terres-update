@@ -21,7 +21,7 @@
 										<div class="column">
 											<p class="title is-4">{{$user->first_name}} {{$user->name}}</p>
 										</div>
-										<div class="column is-offset-3">
+										<div class="column is-offset-1">
 											@if(auth()->user()->id !== $user->id)
 												<div id="vue-contact-user-modal">
 													<vue-threads inline-template>

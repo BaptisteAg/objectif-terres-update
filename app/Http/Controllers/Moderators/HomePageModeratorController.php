@@ -39,10 +39,6 @@ class HomePageModeratorController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		if (auth()->user()->role !== 1) {
-			abort(404);
-		}
-
 		$cities = City::all();
 		$departments = Department::all();
 		$regions = Region::all();
@@ -62,9 +58,6 @@ class HomePageModeratorController extends Controller
 
 	public function show(Request $request)
 	{
-		if (auth()->user()->role !== 1) {
-			abort(404);
-		}
 
 		$request->flash();
 

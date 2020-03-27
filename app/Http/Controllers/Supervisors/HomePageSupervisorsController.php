@@ -37,9 +37,6 @@ class HomePageSupervisorsController extends Controller
 	 */
 	public function index()
 	{
-		if (auth()->user()->role !== 3) {
-			abort(404);
-		}
 		$user = User::find(auth()->id());
 		if ($user->zipCode){
 			$regionCode = Department::where('code', $user->zipCode->department_code)->pluck('region_code')->first();
@@ -66,9 +63,6 @@ class HomePageSupervisorsController extends Controller
 	 */
 	public function show(Request $request)
 	{
-		if (auth()->user()->role !== 3) {
-			abort(404);
-		}
 		$request->flash();
 
 		$user = User::find(auth()->id());

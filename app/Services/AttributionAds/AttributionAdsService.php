@@ -245,17 +245,23 @@ class AttributionAdsService
 	{
 		$attributionAd = $this->repository->find($attributionAdId);
 		//TODO if the pp want a support from Tdl, the ad Status is to assign the ad to an Tdl advisors
+		//If on the territory related to the ad, there is advisors dedicated to specific departments, the ad is automatically attributed to the advisor and we create a project related to the ad.
+		//$toAssignStatus = AdStatus::where('name', '=', 'Assigné')->first();
+		//$attributionAd->ad_status_id = $toAssignStatus->id;
+		//$supportStatus = ProjectStatus::where('name', '=', 'Accompagné')->first();
+		//$attributionAd->ad->project()->create(['project_status_id'=> $supportStatus]);
+
+		//Else, by default, the ad is attributed to an supervisor based on his territory saved in Salesforce . If there is many supervisors, one supervisor is pick randomly.
 		$toAssignStatus = AdStatus::where('name', '=', 'A assigner')->first();
 		$attributionAd->ad_status_id = $toAssignStatus->id;
-		//assign the ad to an supervisor randomly
 		$supervisor = User::where('role', '=', 3)->inRandomOrder()->first();
 		$attributionAd->user_supervisor_id = $supervisor->id;
 
-		//If the pp doesn't need a support from Tdl, the ad is validated
+		//If the pp doesn't need a support from Tdl, the ad is validated and published
 //		$validateStatus = AdStatus::where('name', '=', 'Validé')->first();
 //		$attributionAd->ad_status_id = $validateStatus->id;
+//		$attributionAd->published_on = Carbon::now();
 
-		$attributionAd->published_on = Carbon::now();
 		$attributionAd->save();
 
 		$ad = $this->adRepository->find($attributionAd->ad->id);

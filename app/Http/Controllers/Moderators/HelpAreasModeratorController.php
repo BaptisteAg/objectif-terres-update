@@ -16,10 +16,6 @@ class HelpAreasModeratorController extends Controller
 
 	public function index()
 	{
-		if (auth()->user()->role  !== 1 ) {
-			abort(404);
-		}
-
 		$users = json_encode($this->userService->findAllExceptPP()) ;
 		return view('pages.moderator.help', compact('users'));
 	}

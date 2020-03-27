@@ -34,7 +34,7 @@
 			@endif
 		</div>
 
-		{{Form::open(['route'=>'advisors.index', 'method'=>'get'])}}
+		{{Form::open(['route'=>'advisor.index', 'method'=>'get'])}}
 		<div id="vue-form-advisor">
 			@include('components.dashboard-filters')
 		</div>

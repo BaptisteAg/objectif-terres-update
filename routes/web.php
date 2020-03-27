@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'HomePage\HomePageController@show');
+Route::get('/', 'HomePage\HomePageController@show')->name('home');
 
 Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
     Route::middleware('auth')->get('creer', 'AdsController@create')->name('create');
@@ -88,25 +88,25 @@ Route::prefix('locations')->namespace('Locationables')->group(function () {
     });
 });
 
-Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderator.')->namespace('Moderators')->group(function () {
+Route::middleware('moderator')->prefix('mon-espace-moderateur')->name('moderator.')->namespace('Moderators')->group(function () {
 	Route::get('/', 'HomePageModeratorController@index')->name('index');
 	Route::get('aide-et-ressources', 'HelpAreasModeratorController@index')->name('help');
 	Route::get('recherche', 'HomePageModeratorController@show')->name('show');
 });
 
 
-Route::middleware('auth')->prefix('mon-espace-moderateur')->name('moderation.')->namespace('AttributionAds')->group(function (){
+Route::middleware('moderator')->prefix('mon-espace-moderateur')->name('moderation.')->namespace('AttributionAds')->group(function (){
 	Route::post('validation', 'AttributionAdsController@acceptAd')->name('acceptAd');
 	Route::post('modification', 'AttributionAdsController@modifyAd')->name('modifyAd');
 	Route::post('refus', 'AttributionAdsController@rejectAd')->name('rejectAd');
 });
 
-Route::middleware('auth')->prefix('mon-espace-responsable-territorial')->name('supervisor.')->namespace('Supervisors')->group(function (){
+Route::middleware('supervisor')->prefix('mon-espace-responsable-territorial')->name('supervisor.')->namespace('Supervisors')->group(function (){
 	Route::get('/', 'HomePageSupervisorsController@index')->name('index');
 	Route::get('recherche', 'HomePageSupervisorsController@show')->name('show');
 });
 
-Route::middleware('auth')->prefix('mon-espace-primo-accueillant')->name('advisor.')->namespace('Advisors')->group(function (){
+Route::middleware('advisor')->prefix('mon-espace-primo-accueillant')->name('advisor.')->namespace('Advisors')->group(function (){
 	Route::get('/', 'HomePageAdvisorsController@index')->name('index');
 });
 

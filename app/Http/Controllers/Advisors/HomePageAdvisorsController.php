@@ -39,9 +39,6 @@ class HomePageAdvisorsController extends Controller
 	 */
 	public function index()
 	{
-		if (auth()->user()->role !== 2) {
-			abort(404);
-		}
 
 		$cities = City::all();
 		$departments = Department::all();
@@ -49,11 +46,10 @@ class HomePageAdvisorsController extends Controller
 		$projectStatuses = ProjectStatus::all();
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
-
 		$attributionAds = AttributionAd::paginate(15);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 
-		return view('pages.advisor.index', compact('cities', 'departments', 'regions',  'productionGenres', 'projectStatuses', 'attributionAds', 'jobOfferTypes', 'numberOfUnreadMessages'));
+		return view('pages.advisors.index', compact('cities', 'departments', 'regions',  'productionGenres', 'projectStatuses', 'attributionAds', 'jobOfferTypes', 'numberOfUnreadMessages'));
 	}
 
 
@@ -63,9 +59,6 @@ class HomePageAdvisorsController extends Controller
 	 */
 	public function show(Request $request)
 	{
-		if (auth()->user()->role !== 2) {
-			abort(404);
-		}
 		$request->flash();
 
 		$cities = City::all();

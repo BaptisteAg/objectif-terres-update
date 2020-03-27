@@ -173,7 +173,7 @@ class ResearchService
 		if ($filters->has('ad_category') && $filters->has('offer_type')) {
 			$adsTypeSelected = $filters->input('ad_category') . $filters->input('offer_type');
 		} else {
-			abort(404);
+			abort(redirect()->back()->with('warning', 'Aucun catégorie d\'annonce séléctionnée'));
 		}
 
 		//If request, filter by departments locations and all locations related to the departments selected

@@ -17,7 +17,7 @@ class UsersController extends Controller
 
 	public function show(User $user){
 
-		if(auth()->user()->role <1){
+		if(auth()->user()->role < 1){
 			abort(404);
 		}
 

@@ -87,7 +87,7 @@ class AdService
 
         	$attributionAdData = [];
         	$toModerateStatus = AdStatus::where('name', '=', 'A modérer')->first();
-        	// Temporary : should be attributed by territory
+        	// Temporary : should be attributed by territory sored in Salesforce. If there is many moderators, one is pick randomly
 			$attributionAdData['user_moderator_id'] = User::where('email', 'test.ot.moderateur@gmail.com')->firstOrFail()->id;
 			$attributionAdData['ad_status_id'] = $toModerateStatus->id;
 
