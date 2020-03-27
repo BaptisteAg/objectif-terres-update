@@ -59,7 +59,6 @@ class Research
 			$research['message'] = 'Consulter les dernières annonces publiées !';
 			Notification::route('mail', $research->user->email)
 				->notify(new ResearchNotification($research));
-
 		}
 	}
 

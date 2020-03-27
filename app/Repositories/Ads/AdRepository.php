@@ -83,7 +83,6 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
         $ad->user_pp_id = auth()->user()->id;
         $ad->is_draft = false;
-
         $ad->save();
 
         foreach (["cities", "departments", "regions"] as $locationableType) {
@@ -92,7 +91,6 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                 $ad->$locationableType()->attach($locationables, ["radius" => $data["locationable_radius"]]);
             }
         }
-
         if(isset($data["documents_ids"]) && is_array($data["documents_ids"])) {
             foreach($data["documents_ids"] as $documentId) {
                 $ad->documents()->attach($documentId);

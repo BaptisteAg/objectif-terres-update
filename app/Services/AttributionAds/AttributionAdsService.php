@@ -7,6 +7,7 @@ use App\Models\AttributionAd;
 use App\Models\Department;
 use App\Models\Region;
 use App\Models\User;
+use App\Notifications\ModerationPpNotification;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Services\Locations\LocationService;
@@ -45,6 +46,17 @@ class AttributionAdsService
 	public function findAllByUserModerator(int $idUser)
 	{
 		return $this->repository->findAllByModeratorId($idUser);
+	}
+
+
+	/**
+	 * Find all attributions ads published since specific number of month
+	 * @param int $numberOfMonths
+	 * @return Builder[]|Collection
+	 */
+	public function findAllPublishedSinceMonths(int $numberOfMonths)
+	{
+		return $this->repository->findAllWherePublishedOnSinceMonths($numberOfMonths);
 	}
 
 	/**
@@ -244,7 +256,8 @@ class AttributionAdsService
 	public function acceptAd(int $attributionAdId)
 	{
 		$attributionAd = $this->repository->find($attributionAdId);
-		//TODO if the pp want a support from Tdl, the ad Status is to assign the ad to an Tdl advisors
+		//TODO if the pp want a support from Tdl, a special method as to be created.The moderator doesn't take part of the attribution process.
+
 		//If on the territory related to the ad, there is advisors dedicated to specific departments, the ad is automatically attributed to the advisor and we create a project related to the ad.
 		//$toAssignStatus = AdStatus::where('name', '=', 'Assigné')->first();
 		//$attributionAd->ad_status_id = $toAssignStatus->id;
@@ -261,6 +274,12 @@ class AttributionAdsService
 //		$validateStatus = AdStatus::where('name', '=', 'Validé')->first();
 //		$attributionAd->ad_status_id = $validateStatus->id;
 //		$attributionAd->published_on = Carbon::now();
+//		$data = [
+//			'message'=> 'Votre annonce a été validé par l\'équipe d\'Objectif Terres et est désormais publiée ! ',
+//			'action' => 'Consulter votre annonce',
+//			'url' => '/annonces/'.$attributionAd->ad->id,
+//		];
+//		$attributionAd->ad->userPp->notify(new ModerationPpNotification($data));
 
 		$attributionAd->save();
 
@@ -281,6 +300,14 @@ class AttributionAdsService
 		$ad = $this->adRepository->find($attributionAd->ad->id);
 		$ad->is_draft = 1;
 		$ad->save();
+
+		//TODO url is the link to the form form modifiy the ad
+		$data = [
+			'message' => 'Votre annonce nécessite quelques modifications pour être publiée ! Consulter votre messagerie pour plus d\'informations.',
+			'action' => 'Consulter votre messagerie',
+			'url' => '/mon-espace/messagerie',
+		];
+		$ad->userPp->notify(new ModerationPpNotification($data));
 		return $attributionAd;
 	}
 
@@ -291,6 +318,12 @@ class AttributionAdsService
 		$attributionAd->ad_status_id = $rejectStatus->id;
 		$attributionAd->refusal_type_id = $data['refusal_type_id'];
 		$attributionAd->save();
+		$data = [
+			'message' => 'Votre annonce n\'a pas été acceptée par l\'équipe d\'Objectif Terres. Consulter votre messagerie pour plus d\'informations.',
+			'action' => 'Consulter votre messagerie',
+			'url' => '/mon-espace/messagerie',
+		];
+		$attributionAd->ad->userPp->notify(new ModerationPpNotification($data));
 
 		if ($attributionAd->ad->is_draft === 1) {
 			$ad = $this->adRepository->find($attributionAd->ad->id);
