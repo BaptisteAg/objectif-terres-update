@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Supervisors;
+namespace App\Http\Controllers\Advisors;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ad;
+use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\City;
 use App\Models\Department;
@@ -10,19 +12,19 @@ use App\Models\JobOfferType;
 use App\Models\ProductionGenre;
 use App\Models\ProjectStatus;
 use App\Models\Region;
-use App\Models\User;
 use App\Services\AttributionAds\AttributionAdsService;
 use App\Services\Threads\ThreadService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
-class HomePageSupervisorsController extends Controller
+class AdvisorsController extends Controller
 {
 	protected $threadService;
 	protected $attributionAdService;
 
 	/**
-	 * HomePageAdvisorsController constructor.
+	 * AdvisorsController constructor.
 	 * @param AttributionAdsService $attributionAdsService
 	 * @param ThreadService $threadService
 	 */
@@ -37,23 +39,17 @@ class HomePageSupervisorsController extends Controller
 	 */
 	public function index()
 	{
-		$user = User::find(auth()->id());
-		if ($user->zipCode){
-			$regionCode = Department::where('code', $user->zipCode->department_code)->pluck('region_code')->first();
-			$departments = Department::where('region_code', $regionCode)->get();
-			$cities = City::where('department_code', $user->zipCode->department_code)->get();
-		}else{
-			$departments = Department::all();
-			$cities = City::all();
-		}
+
+		$cities = City::all();
+		$departments = Department::all();
+		$regions = Region::all();
 		$projectStatuses = ProjectStatus::all();
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
-
-		$attributionAds = $this->attributionAdService->findAllByUserSupervisor();
+		$attributionAds = AttributionAd::paginate(15);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 
-		return view('pages.supervisors.index', compact('cities', 'departments', 'productionGenres', 'projectStatuses', 'attributionAds', 'jobOfferTypes', 'numberOfUnreadMessages'));
+		return view('pages.advisors.index', compact('cities', 'departments', 'regions',  'productionGenres', 'projectStatuses', 'attributionAds', 'jobOfferTypes', 'numberOfUnreadMessages'));
 	}
 
 
@@ -65,21 +61,20 @@ class HomePageSupervisorsController extends Controller
 	{
 		$request->flash();
 
-		$user = User::find(auth()->id());
-
-		$regionCode = Department::where('code', $user->zipCode->department_code)->pluck('region_code')->first();
-		$departments = Department::where('region_code', $regionCode)->get();
-
+		$cities = City::all();
+		$departments = Department::all();
+		$regions = Region::all();
 		$projectStatuses = ProjectStatus::all();
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
 
-		$attributionAds = $this->attributionAdService->showForSupervisor($request);
+		$attributionAds = $this->attributionAdService->showForAdvisors($request);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 
-		return view('pages.supervisors.index', compact('cities', 'departments', 'projectStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
+		return view('pages.advisors.index', compact('cities', 'departments', 'regions', 'projectStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
 
 	}
+
 
 
 }
