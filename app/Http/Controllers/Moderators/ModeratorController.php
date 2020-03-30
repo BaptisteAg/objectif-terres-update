@@ -93,6 +93,4 @@ class ModeratorController extends Controller
 		$users = json_encode($this->userService->findAllExceptPP()) ;
 		return view('pages.moderator.help', compact('users'));
 	}
-
-
 }

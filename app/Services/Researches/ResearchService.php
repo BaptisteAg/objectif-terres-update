@@ -2,6 +2,7 @@
 
 
 use App\Models\Ad;
+use App\Models\AdStatus;
 use App\Models\City;
 use App\Models\Department;
 use App\Models\Region;
@@ -73,8 +74,6 @@ class ResearchService
 		foreach ($researches as $research) {
 			$ads = collect();
 			$adsFilter = (new Ad)->newQuery();
-
-			$adsFilter->where('updated_at', '>', $research->updated_at);
 			$adsFilter->filterAdTypes([$research->ad_type], '');
 
 			if ($research->cities()->exists()) {
@@ -146,6 +145,10 @@ class ResearchService
 			if ($research->jobOfferTypes()->exists()) {
 				$adsFilter->filterWhereHasIn($research->jobOfferTypes()->pluck('job_offer_types.id'), $research->ad_type . '.jobOfferTypes', 'job_offer_types.id');
 			}
+
+			$adsFilter->whereHas('attributionAd', function (Builder $query) use($research){
+				$query->where('published_on', '>', $research->updated_at);
+			});
 			$newAds = $adsFilter->get();
 
 			if (!$newAds->isEmpty()) {
@@ -261,11 +264,12 @@ class ResearchService
 		}
 
 		$adsFilter->filterAdTypes(array($adsTypeSelected), '');
-
+		// TODO show only ads approved by moderators
+		$validatedStatus = AdStatus::where('name', '=', 'Validé')->first();
+		$adsFilter->filterWhereHasWhere($validatedStatus->id, 'attributionAd', '=', 'ad_status_id');
 
 		if ($filters->has('order') && $filters->has('sort')) {
 
-			// TODO show only ads approved by moderators
 			if ($filters->input('sort') === 'date') {
 				$adsFilter->orderBy('created_at', $filters->input('order'));
 			} else {

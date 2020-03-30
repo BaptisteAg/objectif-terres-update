@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Advisors;
 
 use App\Http\Controllers\Controller;
-use App\Models\Ad;
-use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\City;
 use App\Models\Department;
@@ -14,24 +12,27 @@ use App\Models\ProjectStatus;
 use App\Models\Region;
 use App\Services\AttributionAds\AttributionAdsService;
 use App\Services\Threads\ThreadService;
+use App\Services\Users\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 
 class AdvisorsController extends Controller
 {
 	protected $threadService;
 	protected $attributionAdService;
+	protected $userService;
 
 	/**
 	 * AdvisorsController constructor.
 	 * @param AttributionAdsService $attributionAdsService
 	 * @param ThreadService $threadService
+	 * @param UserService $userService
 	 */
-	public function __construct(AttributionAdsService $attributionAdsService, ThreadService $threadService)
+	public function __construct(AttributionAdsService $attributionAdsService, ThreadService $threadService, UserService $userService)
 	{
 		$this->attributionAdService = $attributionAdsService;
 		$this->threadService = $threadService;
+		$this->userService = $userService;
 	}
 
 	/**
@@ -75,6 +76,13 @@ class AdvisorsController extends Controller
 
 	}
 
-
-
+	/**
+	 * Advisors help area controller
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function help()
+	{
+		$users = json_encode($this->userService->findAllExceptPP()) ;
+		return view('pages.moderator.help', compact('users'));
+	}
 }

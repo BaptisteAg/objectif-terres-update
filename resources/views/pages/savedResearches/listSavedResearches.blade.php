@@ -106,7 +106,7 @@
 						</div>
 						<div class="column ">
 							<div class="buttons">
-								<a href="{{route ('researches.index', $research->url)}}">
+								<a href="{{route ('researches.index', [ltrim($research->url, '?')])}}">
 									<button class="button is-link is-normal ">
 											<span class="icon is-small">
 											 <i class="fas fa-eye"></i>

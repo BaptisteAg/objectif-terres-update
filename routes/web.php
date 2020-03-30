@@ -106,10 +106,12 @@ Route::middleware('moderator')->prefix('mon-espace-moderateur')->name('moderator
 Route::middleware('supervisor')->prefix('mon-espace-responsable-territorial')->name('supervisor.')->namespace('Supervisors')->group(function () {
 	Route::get('/', 'SupervisorsController@index')->name('index');
 	Route::get('recherche', 'SupervisorsController@show')->name('show');
+	Route::get('aide-et-ressources', 'SupervisorsController@help')->name('help');
 });
 
 Route::middleware('advisor')->prefix('mon-espace-primo-accueillant')->name('advisor.')->namespace('Advisors')->group(function () {
 	Route::get('/', 'AdvisorsController@index')->name('index');
+	Route::get('aide-et-ressources', 'AdvisorsController@help')->name('help');
 });
 
 
