@@ -14,8 +14,9 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * App\Models\AttributionAd
  *
  * @property int $id
- * @property int|null $user_owner_id
+ * @property int|null $user_advisor_id
  * @property int $user_moderator_id
+ * @property int|null $user_supervisor_id
  * @property int|null $to_call_back
  * @property string|null $short_description
  * @property int $ad_id
@@ -30,8 +31,9 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \App\Models\AdStatus $adStatus
  * @property-read \App\Models\PpType $ppType
  * @property-read \App\Models\RefusalType|null $refusalType
+ * @property-read \App\Models\User|null $userAdvisor
  * @property-read \App\Models\User $userModerator
- * @property-read \App\Models\User|null $userOwner
+ * @property-read \App\Models\User|null $userSupervisor
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterAdTypes($adTypesFilters, $relationTableName)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterLocations($relationshipName, $locationableIds)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
@@ -51,8 +53,9 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereShortDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereToCallBack($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserAdvisorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserModeratorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserSupervisorId($value)
  * @mixin \Eloquent
  */
 class AttributionAd extends Model implements Decoratable
@@ -62,13 +65,23 @@ class AttributionAd extends Model implements Decoratable
 	 * @var array
 	 */
 	protected $fillable = [
-		'ad_status_id', 'ad_id', 'lead_type_id', 'refusal_type_id', 'user_owner_id', 'user_moderator_id', 'to_call_back', 'short_description', 'archived_at', 'published_on'
+		'ad_status_id',
+		'ad_id',
+		'lead_type_id',
+		'refusal_type_id',
+		'user_advisor_id',
+		'user_moderator_id',
+		'user_supervisor_id',
+		'to_call_back',
+		'short_description',
+		'archived_at',
+		'published_on'
 	];
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function userOwner()
+	public function userAdvisor()
 	{
 		return $this->belongsTo(User::class);
 	}
@@ -77,6 +90,14 @@ class AttributionAd extends Model implements Decoratable
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function userModerator()
+	{
+		return $this->belongsTo(User::class);
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function userSupervisor()
 	{
 		return $this->belongsTo(User::class);
 	}

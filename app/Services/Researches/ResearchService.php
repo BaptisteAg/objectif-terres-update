@@ -2,6 +2,7 @@
 
 
 use App\Models\Ad;
+use App\Models\AdStatus;
 use App\Models\City;
 use App\Models\Department;
 use App\Models\Region;
@@ -73,8 +74,6 @@ class ResearchService
 		foreach ($researches as $research) {
 			$ads = collect();
 			$adsFilter = (new Ad)->newQuery();
-
-			$adsFilter->where('updated_at', '>', $research->updated_at);
 			$adsFilter->filterAdTypes([$research->ad_type], '');
 
 			if ($research->cities()->exists()) {
@@ -146,6 +145,10 @@ class ResearchService
 			if ($research->jobOfferTypes()->exists()) {
 				$adsFilter->filterWhereHasIn($research->jobOfferTypes()->pluck('job_offer_types.id'), $research->ad_type . '.jobOfferTypes', 'job_offer_types.id');
 			}
+
+			$adsFilter->whereHas('attributionAd', function (Builder $query) use ($research) {
+				$query->where('published_on', '>', $research->updated_at);
+			});
 			$newAds = $adsFilter->get();
 
 			if (!$newAds->isEmpty()) {
@@ -173,7 +176,7 @@ class ResearchService
 		if ($filters->has('ad_category') && $filters->has('offer_type')) {
 			$adsTypeSelected = $filters->input('ad_category') . $filters->input('offer_type');
 		} else {
-			abort(404);
+			abort(redirect()->back()->with('warning', 'Aucun catégorie d\'annonce séléctionnée'));
 		}
 
 		//If request, filter by departments locations and all locations related to the departments selected
@@ -261,17 +264,20 @@ class ResearchService
 		}
 
 		$adsFilter->filterAdTypes(array($adsTypeSelected), '');
+		// TODO show only ads approved by moderators
+		$validatedStatus = AdStatus::where('name', '=', 'Validée')->first();
+		$adsFilter->filterWhereHasWhere($validatedStatus->id, 'attributionAd', '=', 'ad_status_id');
 
 
 		if ($filters->has('order') && $filters->has('sort')) {
-
-			// TODO show only ads approved by moderators
 			if ($filters->input('sort') === 'date') {
 				$adsFilter->orderBy('created_at', $filters->input('order'));
 			} else {
+
 				$adsTypeSelectedTableName = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $adsTypeSelected)) . 's';
-				$adsFilter->join($adsTypeSelectedTableName, 'ads.id', '=', $adsTypeSelectedTableName . '.ad_id')
-					->orderBy($filters->input('sort'), $filters->input('order'));
+				$adsFilter->join($adsTypeSelectedTableName,'ads.id', '=', $adsTypeSelectedTableName.'.ad_id')
+					->orderBy($filters->input('sort'), $filters->input('order'))
+					->select('ads.*');
 			}
 		} else {
 			$adsFilter->orderByDesc('created_at');

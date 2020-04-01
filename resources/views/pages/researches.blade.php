@@ -124,10 +124,10 @@
 										</option>
 									@endif
 									@if($adsType == 'landSeekAd')
-										<option {{request()->input('order') === 'asc' && request()->input('sort') === 'surface_max' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'surface_max', 'page'=> 0])) }}">
+										<option {{request()->input('order') === 'asc' && request()->input('sort') === 'surface_range_max' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'surface_range_max', 'page'=> 0])) }}">
 											Surface : du plus petit au plus grand
 										</option>
-										<option {{request()->input('order') === 'desc' && request()->input('sort') === 'surface_max' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'surface_max', 'page'=> 0])) }}">
+										<option {{request()->input('order') === 'desc' && request()->input('sort') === 'surface_range_max' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'surface_range_max', 'page'=> 0])) }}">
 											Surface : du plus grand au plus petit
 										</option>
 									@elseif($adsType == 'landOfferAd')
@@ -173,6 +173,11 @@
 							@if($adsType === 'landOfferAd')
 								<div><span>{{ $ad->landOfferAd->price }}</span> € |
 									<span>{{ $ad->landOfferAd->surface }}</span> ha
+								</div>
+
+							@elseif ($adsType === 'landSeekAd')
+								<div>
+									<span>Entre {{ $ad->landSeekAd->surface_range_min }} et {{ $ad->landSeekAd->surface_range_max }} ha</span>
 								</div>
 							@else
 								<div><span></span></div>
@@ -282,14 +287,14 @@
 					</div>
 				</section>
 			@else
-				@include('components.sectionOrientationTerreLiens')
+				@include('components.section-orientation-terre-liens')
 			@endif
 
 
 		</div>
 	</section>
 	@include('components.partnering')
-	@include('components.supportTerreLiens')
+	@include('components.support-terre-liens')
 @endsection
 
 @section('script')

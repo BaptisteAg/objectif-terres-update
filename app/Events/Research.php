@@ -56,10 +56,9 @@ class Research
 			$research = $this->researchService->find($idResearch);
 			$research['greeting'] = "Bonjour,";
 			$research['subject'] = 'De nouvelles annonces correspondantes à votre recherche ont été publiées | Objectif Terres';
-			$research['message'] = 'Consulter les dernières annonces publiées !';
+			$research['message'] = 'De nouvelles annonces concernant votre recherche ont été publiées, consulter les dernières annonces correspondantes à votre recherche !';
 			Notification::route('mail', $research->user->email)
 				->notify(new ResearchNotification($research));
-
 		}
 	}
 

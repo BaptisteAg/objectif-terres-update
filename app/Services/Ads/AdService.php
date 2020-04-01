@@ -52,7 +52,7 @@ class AdService
 	 * AdService constructor.
 	 * @param AdRepository $repository
 	 * @param AttributionAdsRepository $attributionAdsRepository
-	 * @param LandSeekAdRepository $landSeekdAdRepository
+	 * @param LandSeekAdRepository $landSeekAdRepository
 	 * @param LandOfferAdRepository $landOfferAdRepository
 	 * @param JobOfferAdRepository $jobOfferAdRepository
 	 * @param JobSeekAdRepository $jobSeekAdRepository
@@ -61,7 +61,7 @@ class AdService
 	public function __construct(
         AdRepository $repository,
         AttributionAdsRepository $attributionAdsRepository,
-        LandSeekAdRepository $landSeekdAdRepository,
+        LandSeekAdRepository $landSeekAdRepository,
         LandOfferAdRepository $landOfferAdRepository,
         JobOfferAdRepository $jobOfferAdRepository,
         JobSeekAdRepository $jobSeekAdRepository,
@@ -69,7 +69,7 @@ class AdService
     ) {
         $this->repository = $repository;
         $this->attributionAdsRepository = $attributionAdsRepository;
-        $this->landSeekAdRepository = $landSeekdAdRepository;
+        $this->landSeekAdRepository = $landSeekAdRepository;
         $this->landOfferAdRepository = $landOfferAdRepository;
         $this->jobOfferAdRepository = $jobOfferAdRepository;
         $this->jobSeekAdRepository = $jobSeekAdRepository;
@@ -86,11 +86,17 @@ class AdService
         $ad =  DB::transaction(function() use($data) {
 
         	$attributionAdData = [];
-        	$toModerateStatus = AdStatus::where('name', '=', 'A modérer')->first();
-        	// Temporary : should be attributed by territory
-			$attributionAdData['user_moderator_id'] = User::where('email', 'test.ot.moderateur@gmail.com')->firstOrFail()->id;
-			$attributionAdData['ad_status_id'] = $toModerateStatus->id;
+        	$toModerateStatus = AdStatus::where('name', '=', 'À modérer')->first();
 
+        	// Temporary : should be attributed by territory sored in Salesforce. If there is many moderators, one is pick randomly
+			$userModerator = User::where('email', 'test.ot.moderateur@gmail.com')->first();
+			if ($userModerator){
+				$attributionAdData['user_moderator_id'] = $userModerator->id;
+			}else {
+				$attributionAdData['user_moderator_id'] = User::where('role', '>=', '1')->get()->random()->id;
+			}
+
+			$attributionAdData['ad_status_id'] = $toModerateStatus->id;
 			$ad = $this->repository->create($data);
 			$attributionAdData['ad_id'] = $ad->id;
 			$this->attributionAdsRepository->create($attributionAdData);
@@ -110,7 +116,6 @@ class AdService
             else if ($data["ad_type"] === "job_seek") {
                 $jobSeekAd = $this->jobSeekAdRepository->create($adData);
             }
-
             return $ad;
         });
 

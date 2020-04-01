@@ -36,8 +36,8 @@ class CreateLandSeekAdsTable extends Migration
 
             $table->foreign('ad_id', 'fk_land_seek_ads_1_idx')
                 ->references('id')->on('ads')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
             $table->foreign('installation_type_id', 'fk_land_seek_ads_2_idx')
                 ->references('id')->on('installation_types')

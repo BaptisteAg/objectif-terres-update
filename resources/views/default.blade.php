@@ -15,10 +15,10 @@
 @include('layouts.header')
 
 @foreach($errors->all() as $message)
-	<article class="message is-danger">
+	<article class="message is-danger" data-type = "main-message">
 		<div class="message-header">
 			<p>Erreur !</p>
-			<button class=" delete close-notification" aria-label="delete"></button>
+			<button class=" delete close-notification" aria-label="delete" data-type = "close-main-message"></button>
 		</div>
 		<div class="message-body">
 			{{ $message }}
@@ -26,10 +26,10 @@
 	</article>
 @endforeach
 @if ($message = Session::get('success'))
-	<article class="message is-success">
+	<article class="message is-success main-message" data-type = "main-message">
 		<div class="message-header">
 			<p>Succès !</p>
-			<button class="delete close-notification" aria-label="delete"></button>
+			<button class="delete close-notification" aria-label="delete" data-type = "close-main-message"></button>
 		</div>
 		<div class="message-body">
 			{!! $message !!}
@@ -38,10 +38,10 @@
 @endif
 
 @if($message = Session::get('warning'))
-	<article class="message is-warning">
+	<article class="message is-warning main-message" data-type = "main-message">
 		<div class="message-header">
 			<p>Attention ! </p>
-			<button class="delete close-notification" aria-label="delete"></button>
+			<button class="delete close-notification" aria-label="delete" data-type = "close-main-message"></button>
 		</div>
 		<div class="message-body">
 			{{ $message }}
@@ -64,6 +64,13 @@
         el: '#vue-header',
         name: 'content'
     });
+</script>
+<script>
+    let closeNotification = document.querySelector('button[data-type=close-main-message]');
+    closeNotification.addEventListener('click', function (e) {
+        let message = document.querySelector('article[data-type=main-message ]');
+        message.style.display = 'none';
+    })
 </script>
 
 @yield('script')

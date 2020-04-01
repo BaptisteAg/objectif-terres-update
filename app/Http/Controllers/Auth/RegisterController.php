@@ -78,7 +78,6 @@ class RegisterController extends Controller
 			'address' => ['string', 'min:5', 'required'],
 			'civility' => ['required'],
 			'profile' => ['required'],
-			'country_id' => ['required'],
 			'city_id' => ['required'],
             'password' => ['required', 'confirmed', 'min:5']
 		], [
@@ -92,10 +91,8 @@ class RegisterController extends Controller
 	 */
 	public function showRegistrationForm()
 	{
-		$countries = Country::all();
 		$cities = City::all();
-
-		return view('auth.register', compact('countries', 'cities'));
+		return view('auth.register', compact('cities'));
 	}
 
 
@@ -125,7 +122,9 @@ class RegisterController extends Controller
 	 */
     protected function create(array $data)
     {
-        //dd($data);
+    	//dd($data);
+    	//TODO delete the country_id if save user country is not necessary
+		$data['country_id'] = 75;
         $salesForceUser = $this->salesForceService->registerPP($data);
         $data["sf_id"] = $salesForceUser["id"];
 

@@ -16,7 +16,7 @@
                             :placeholder="value.length ? 'Saisissez une autre localisation' : 'Saisissez au moins 2 caractères pour faire apparaître la liste'"
                             :disabled="disabled"
                             src="/locations"
-                            :data-renderer="renderZoneItemData"
+                            :data-renderer="helper.renderZoneItemData"
                             v-model="value"
                             :multiple="true">
                     </autocomplete>
@@ -38,10 +38,10 @@
                     <span @click="_ => value.splice(i, 1)" data-tooltip="Retirer cette localisation">
                         <i class="fa fa-trash-alt" style="cursor:pointer;"></i>
                     </span>
-                    <b>{{getLabel(zone.value.type)}}</b> : {{zone.value.originalLabel}}
+                    <b>{{helper.getLabel(zone.value.type)}}</b> : {{zone.value.originalLabel}}
                     <input type="hidden" :name="name+'['+zone.value.type+'][]'" :value="zone.value.id" v-if="zone.value.id">
                     <template v-if="zone.value.ids">
-                        <input type="hidden" :name="name+'['+getInputNameRangeMapping(zone.value.type)+'][]'" :value="id" v-for="id in zone.value.ids">
+                        <input type="hidden" :name="name+'['+helper.getInputNameRangeMapping(zone.value.type)+'][]'" :value="id" v-for="id in zone.value.ids">
                     </template>
                 </div>
             </div>
@@ -85,22 +85,7 @@
 <script>
     import Autocomplete from "./Autocomplete";
     import VueSlider from "./VueSlider";
-
-    const LABELS = {
-        ZONE_TYPES: {
-
-        },
-        cities: 'Code postal',
-        departments: 'Département',
-        regions: 'Région',
-        zipcodesrange: 'Commune',
-        citiesrange: 'Toutes communes'
-    };
-
-    const INPUT_NAME_RANGE_MAPPING = {
-        citiesrange: 'cities',
-        zipcodesrange: 'cities'
-    };
+    import { LocationHelper } from "../helpers";
 
     export default {
         components: {
@@ -145,32 +130,12 @@
         computed: {
             hasCities() {
                 return !!this.value.find(zone => zone.value.type.match(/cities|zipcode/));
+            },
+            helper() {
+                return LocationHelper;
             }
         },
         methods: {
-            renderZoneItemData(item) {
-                return {
-                    label: this.getFormattedLabel(item),
-                    value: {
-                        ...item.value,
-                        originalLabel: item.label
-                    },
-                }
-            },
-            getFormattedLabel(item) {
-                if(!item.value) {
-                    return item
-                }
-                else {
-                    return '<b>' + LABELS[item.value.type] + '</b>: ' + item.label;
-                }
-            },
-            getLabel(key) {
-                return LABELS[key];
-            },
-            getInputNameRangeMapping(key) {
-                return INPUT_NAME_RANGE_MAPPING[key];
-            }
         }
     }
 </script>

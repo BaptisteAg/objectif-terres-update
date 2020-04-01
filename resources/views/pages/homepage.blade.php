@@ -171,7 +171,7 @@
 	@include('components.faqAccordion')
 	@include('components.study')
 	@include('components.partnering')
-	@include('components.supportTerreLiens')
+	@include('components.support-terre-liens')
 
 @endsection
 
