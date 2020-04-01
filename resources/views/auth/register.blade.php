@@ -3,16 +3,17 @@
 
 @section('main-content')
 	<div id="vue-register-form" class="section">
-		<register-form id="register-form"
-                       inline-template
-                       :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}">
+		<user-form id="register-form"
+				   inline-template
+				   :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}">
 			<div class="container">
 				<div class="columns is-mobile is-centered">
 					<div class="column is-two-thirds">
 						<h1 class="title is-2 has-text-centered has-text-link">Inscription </h1>
 						<h2 class="subtitle has-text-centered">Créez votre compte pour profiter des services d'Objectif
 							Terres </h2>
-						<p class="is-size-7">Les champs marqués d'un astérisque <strong>(*)</strong> sont obligatoires.</p>
+						<p class="is-size-7">Les champs marqués d'un astérisque <strong>(*)</strong> sont obligatoires.
+						</p>
 						<br>
 						{!! Form::open(['route'=>'register']) !!}
 						@csrf
@@ -69,10 +70,13 @@
 											<select id="civility" name="civility"
 													class="input @error('civility') is-danger @enderror "
 													required>
-												<option value="" disabled="disabled" selected> </option>
-												<option value="1" {{old('civility') == 1 ? 'selected' : ''}}>Madame</option>
-												<option value="2" {{old('civility') == 2 ? 'selected' : ''}}>Monsieur</option>
-												<option value="3" {{old('civility') == 3 ?'selected' : ''}}>Autre</option>
+												<option value="" disabled="disabled" selected></option>
+												<option value="1" {{old('civility') == 1 ? 'selected' : ''}}>Madame
+												</option>
+												<option value="2" {{old('civility') == 2 ? 'selected' : ''}}>Monsieur
+												</option>
+												<option value="3" {{old('civility') == 3 ?'selected' : ''}}>Autre
+												</option>
 											</select>
 										</div>
 										<div class="icon is-small is-left">
@@ -108,12 +112,12 @@
 									<label class="label">Adresse email*</label>
 									<p class="control has-icons-left has-icons-right">
 										<input id="email"
-                                               class="input @error('email') is-danger @enderror"
-                                               type="email"
+											   class="input @error('email') is-danger @enderror"
+											   type="email"
 											   name="email"
-                                               value="{{ old('email') }}"
-                                               required
-                                               autocomplete="email"
+											   value="{{ old('email') }}"
+											   required
+											   autocomplete="email"
 											   autofocus
 											   placeholder="Votre adresse email...">
 										<span class="icon is-small is-left">
@@ -121,41 +125,48 @@
                                         </span>
 									</p>
 									@error('email')
-                                        <article class="message is-danger" role="alert">
-                                            <div class="message-body">
-                                                {{ $message }}
-                                            </div>
-                                        </article>
+									<article class="message is-danger" role="alert">
+										<div class="message-body">
+											{{ $message }}
+										</div>
+									</article>
 									@enderror
 								</div>
 							</div>
 						</div>
 
 						<div class="columns">
-							<div class="column is-two-thirds">
+							<div class="column ">
 								<div class="field">
 									<label for="profile" class="label">Votre situation*</label>
 									<div class="control has-icons-left">
 										<div class="select">
 											<select id="profile"
-                                                    name="profile"
-                                                    v-model="optionProfileSelected"
+													name="profile"
+													v-model="optionProfileSelected"
 													class="input @error('profile') is-danger @enderror ">
 												<option disabled="disabled" selected>Vous êtes...</option>
-												<option value="1" {{old('profile') == 1 ? 'selected' : ''}} >un candidat à l’installation agricole</option>
-												<option value="2" {{old('profile') == 2 ? 'selected' : ''}}>une personne en recherche de travail ou d’expérience
+												<option value="1" {{old('profile') == 1 ? 'selected' : ''}} >un candidat
+													à l’installation agricole
+												</option>
+												<option value="2" {{old('profile') == 2 ? 'selected' : ''}}>une personne
+													en recherche de travail ou d’expérience
 													professionnelle dans le
 													domaine agricole
 												</option>
-												<option value="3" {{old('profile') == 3 ? 'selected' : ''}}>un agriculteur qui souhaite consolider sa ferme
+												<option value="3" {{old('profile') == 3 ? 'selected' : ''}}>un
+													agriculteur qui souhaite consolider sa ferme
 												</option>
-												<option value="4" {{old('profile') == 4 ? 'selected' : ''}}>un agriculteur qui souhaite transmettre sa ferme
+												<option value="4" {{old('profile') == 4 ? 'selected' : ''}}>un
+													agriculteur qui souhaite transmettre sa ferme
 												</option>
-												<option value="5" {{old('profile') == 5 ? 'selected' : ''}}>un propriétaire foncier qui souhaite vendre ou louer
+												<option value="5" {{old('profile') == 5 ? 'selected' : ''}}>un
+													propriétaire foncier qui souhaite vendre ou louer
 													sa
 													terre
 												</option>
-												<option value="6" {{old('profile') == 6 ? 'selected' : ''}}>Autre</option>
+												<option value="6" {{old('profile') == 6 ? 'selected' : ''}}>Autre
+												</option>
 											</select>
 										</div>
 										<div class="icon is-small is-left">
@@ -163,15 +174,15 @@
 										</div>
 									</div>
 									@error('profile')
-										<article class="message is-danger" role="alert">
-											<div class="message-body">
-												{{ $message }}
-											</div>
-										</article>
+									<article class="message is-danger" role="alert">
+										<div class="message-body">
+											{{ $message }}
+										</div>
+									</article>
 									@enderror
 								</div>
 							</div>
-							<div v-if="optionProfileSelected === '6'" class="column">
+							<div v-if="optionProfileSelected === '6'" class="column is-half">
 								<div class="field">
 									<label class="label">Situation autre </label>
 									<p class="control has-icons-left has-icons-right">
@@ -195,28 +206,31 @@
 								</div>
 							</div>
 						</div>
-
-						<div class="field">
-							<label class="label">Adresse* </label>
-							<p class="control has-icons-left">
-								<input id="address" class="input @error('address') is-danger @enderror" type="text"
-									   name="address" value="{{ old('address') }}" required autocomplete="address"
-									   autofocus
-									   placeholder="Votre adresse ...">
-								<span class="icon is-small is-left">
+						<div class="columns">
+							<div class="column is-7">
+								<div class="field">
+									<label class="label">Adresse* </label>
+									<p class="control has-icons-left">
+										<input id="address" class="input @error('address') is-danger @enderror"
+											   type="text"
+											   name="address" value="{{ old('address') }}" required
+											   autocomplete="address"
+											   autofocus
+											   placeholder="Votre adresse ...">
+										<span class="icon is-small is-left">
 									<i class="fas fa-map-marker-alt"></i>
 								</span>
-							</p>
-							@error('address')
-							<article class="message is-danger" role="alert">
-								<div class="message-body">
-									{{ $message }}
+									</p>
+									@error('address')
+									<article class="message is-danger" role="alert">
+										<div class="message-body">
+											{{ $message }}
+										</div>
+									</article>
+									@enderror
 								</div>
-							</article>
-							@enderror
-						</div>
-						<div class="columns">
-							<div class="column is-two-third">
+							</div>
+							<div class="column is-5">
 								<div class="field">
 									<label class="label">Commune et Code postal*</label>
 									<autocomplete
@@ -240,84 +254,67 @@
 										</div>
 									</autocomplete>
 									@error('city_id')
-										<article class="message is-danger" role="alert">
-											<div class="message-body">
-												{{ $message }}
-											</div>
-										</article>
+									<article class="message is-danger" role="alert">
+										<div class="message-body">
+											{{ $message }}
+										</div>
+									</article>
 									@enderror
-								</div>
-							</div>
-							{{--<div class="column is-one-third">
-								<div class="field">
-									<label class="label">Ville</label>
-									<div class="control has-icons-left">
-										<div class="select is-fullwidth">
-											<select id="city" name="city"
-													class="input @error('city') is-danger @enderror "
-													autocomplete="city">
-												<option value=""></option>
-											</select>
-										</div>
-										<div class="icon is-small is-left">
-											<i class="fas fa-city"></i>
-										</div>
-									</div>
-								</div>
-							</div>--}}
-							<div class="column is-one-third">
-								<div class="field">
-									<label class="label">Pays*</label>
-									<div class="control has-icons-left">
-										<div class="select">
-											<select id="country_id" name="country_id"
-													class="input @error('country_id') is-danger @enderror "
-													required>
-												<option disabled="disabled" selected>Choississez votre pays...</option>
-												@foreach($countries as $country)
-													<option value="{{$country->id}}" {{old('country_id') == $country->id ? 'selected' : ''}}>{{$country->name_fr_fr}}</option>
-												@endforeach
-											</select>
-										</div>
-										<div class="icon is-small is-left">
-											<i class="fas fa-globe"></i>
-										</div>
-									</div>
 								</div>
 							</div>
 						</div>
 
+
+						{{--								TODO delete if information about country is not necessary
+																<div class="field">--}}
+						{{--									<label class="label">Pays*</label>--}}
+						{{--									<div class="control has-icons-left">--}}
+						{{--										<div class="select">--}}
+						{{--											<select id="country_id" name="country_id"--}}
+						{{--													class="input @error('country_id') is-danger @enderror "--}}
+						{{--													required>--}}
+						{{--												<option disabled="disabled" selected>Choississez votre pays...</option>--}}
+						{{--												@foreach($countries as $country)--}}
+						{{--													<option value="{{$country->id}}" {{old('country_id') == $country->id ? 'selected' : ''}}>{{$country->name_fr_fr}}</option>--}}
+						{{--												@endforeach--}}
+						{{--											</select>--}}
+						{{--										</div>--}}
+						{{--										<div class="icon is-small is-left">--}}
+						{{--											<i class="fas fa-globe"></i>--}}
+						{{--										</div>--}}
+						{{--									</div>--}}
+						{{--								</div>--}}
 						<div class="field">
 							<label class="label">Mot de passe*</label>
 							<p class="control has-icons-left">
 								<input id="password"
-                                       name="password"
+									   name="password"
 									   class="input @error('password') is-danger @enderror "
 									   type="password"
 									   required
 									   autocomplete="new-password"
-                                       placeholder="Votre mot de passe..."
+									   placeholder="Votre mot de passe..."
 									   value="{{ old('password') }}"
-                                        minlength="5">
+									   minlength="5">
 								<span class="icon is-small is-left">
                               <i class="fas fa-lock"></i>
                             </span>
 							</p>
 							@error('password')
-								<article class="message is-danger" role="alert">
-									<div class="message-body">
-										{{ $message }}
-									</div>
-								</article>
+							<article class="message is-danger" role="alert">
+								<div class="message-body">
+									{{ $message }}
+								</div>
+							</article>
 							@enderror
 						</div>
 						<div class="field">
 							<label class="label">Confirmation mot de passe*</label>
 							<p class="control has-icons-left">
 								<input id="password-confirm"
-                                       name="password_confirmation"
+									   name="password_confirmation"
 									   class="input"
-                                       type="password"
+									   type="password"
 									   value="{{ old('password_confirmation') }}"
 									   autocomplete="new-password"
 									   required
@@ -344,9 +341,9 @@
 							</label>
 						</div>
 
-                        <p>En appuyant sur valider, vous consentez <a>à l'utilisation de vos données
-                                personnelles</a> par Objectif Terres </p>
-                        <br>
+						<p>En appuyant sur valider, vous consentez <a>à l'utilisation de vos données
+								personnelles</a> par Objectif Terres </p>
+						<br>
 						<div class="field is-grouped is-grouped-centered">
 							<div class="control is-pulled-right">
 								<button type="submit" class="button is-link is-size-3">Valider</button>
@@ -361,7 +358,7 @@
 				</div>
 				<div class="column"></div>
 			</div>
-		</register-form>
+		</user-form>
 	</div>
 	@include('components.support-terre-liens')
 @endsection

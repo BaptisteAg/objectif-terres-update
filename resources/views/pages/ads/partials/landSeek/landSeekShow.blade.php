@@ -9,7 +9,7 @@
 		<h1 class="title has-text-link">{{$ad->title}}</h1>
 
 		@auth
-			@if(auth()->user()->role === 1)
+			@if(auth()->user()->role >= 1)
 				@include('pages.ads.partials.moderator-options')
 			@endif
 
@@ -217,7 +217,5 @@
 	</div>
 </section>
 
-
-@include('components.partnering')
 @include('components.support-terre-liens')
 

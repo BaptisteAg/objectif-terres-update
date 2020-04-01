@@ -6,6 +6,7 @@ import DatePicker from "../components/DatePicker";
 import VueSliderRange from "../components/VueSliderRange";
 import CustomCheckbox from "../components/CustomCheckbox";
 import Vue from 'vue'
+import {LocationHelper} from "../helpers";
 
 Vue.component('dashboard-form-filter',{
     components : {
@@ -24,11 +25,19 @@ Vue.component('dashboard-form-filter',{
         const hasOld = Object.values(this.oldInputSelected).some(x => (x !== null && x !== ''));
         return {
             adTypeSelected:hasOld && this.oldInputSelected.ad_type ? this.oldInputSelected.ad_type : [],
-            regionsSelected: hasOld ? this.oldInputSelected.regions_location_researches : [],
-            citySelect: hasOld ? JSON.parse(this.oldInputSelected.citySelect) : [],
-            departmentsSelected :hasOld ? this.oldInputSelected.departments_location_researches : [],
-            dateSelected : hasOld? this.oldInputSelected.date_research_range : ''
+            dateSelected : hasOld? this.oldInputSelected.date_research_range : '',
+            locations : hasOld && this.oldInputSelected.json_locations ?JSON.parse(this.oldInputSelected.json_locations)  : []
         }
     },
+    computed: {
+        hasCities() {
+            return !!this.locations.find(zone => zone.value.type.match(/cities|zipcode/));
+        },
+        helper() {
+            return LocationHelper;
+        }
+    },
+    methods : {
+    }
 
 });

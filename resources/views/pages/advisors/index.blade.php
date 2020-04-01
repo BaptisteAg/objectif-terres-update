@@ -34,11 +34,12 @@
 			@endif
 		</div>
 
-		{{Form::open(['route'=>'advisor.index', 'method'=>'get'])}}
-		<div id="vue-form-advisor">
-			@include('components.dashboard-filters')
-		</div>
-		{{Form::close()}}
+{{--		{{Form::open(['route'=>'advisor.index', 'method'=>'get'])}}--}}
+{{--		<div id="vue-form-advisor">--}}
+{{--			@include('components.dashboard-filters')--}}
+{{--		</div>--}}
+{{--		{{Form::close()}}--}}
+
 		<div class="section">
 			<h1 class="title is-1 has-text-centered">Liste des annonces dans votre territoire</h1>
 			@if (count($attributionAds) ==0)

@@ -44,12 +44,12 @@
 						@for ($i = 0; $i < 3; $i++)
 							<div class="column is-one-third ">
 								<div class="card">
-									<div class="card-image">
-										<figure class="image is-4by3">
-											<a href="/" download="rapport2019"><img src="/images/placeholder-ad.png"
-																					alt=""></a>
-										</figure>
-									</div>
+										<div class="card-image">
+											<figure class="image is-4by3">
+												<a href="/" download="rapport2019"><img src="/images/placeholder-ad.png"
+																						alt=""></a>
+											</figure>
+										</div>
 									<div class="card-content is-marginless">
 										<p class="title is-4 has-text-centered">Titre du document</p>
 										<p class="subtitle is-6 has-text-grey">Lorem ipsum dolor sit amet, consectetur

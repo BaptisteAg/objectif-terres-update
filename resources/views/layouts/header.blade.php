@@ -38,7 +38,7 @@
 										<span>Mon espace modérateur ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
 									</a>
 								</div>
-							@elseif(auth()->user()->role === 3 )
+							@elseif(auth()->user()->role >= 3 )
 								<div class="level-item">
 									<a href="{{route('supervisor.index')}}">
                                         <span class="icon">
@@ -58,7 +58,7 @@
 								</div>
 							@else
 								<div class="level-item">
-									<a href="{{route('userAccount.index')}}">
+									<a href="{{route('user.index')}}">
                                         <span class="icon">
                                             <i class="far fa-user"></i>
                                         </span>
@@ -219,7 +219,7 @@
 										@elseif(auth()->user()->role === 2)
 											<a href="{{ route('advisor.index') }}" class="button is-bordered">Espace
 												primo-acceuillant</a>
-										@elseif (auth()->user()->role === 3)
+										@elseif (auth()->user()->role >= 3)
 											<a href="{{ route('supervisor.index') }}" class="button is-bordered">Espace
 												responsable territorial</a>
 										@else
@@ -236,37 +236,8 @@
 					</div>
 				</nav>
 				@if( Auth::check())
-					@if (Route::current()->getName() === 'ads.list' || Route::current()->getName() === 'researches.show' || Route::current()->getName() == 'favoriteAds.show' || Route::current()->getName() == 'messages.index' )
-						<div class="tabs is-centered is-medium">
-							<ul>
-								<li class="{{ Route::current()->getName() === 'ads.list' ? 'is-active' : '' }}"><a
-											href="{{route ('ads.list')}}"><span class="icon is-small">
-											<i class="far fa-newspaper" aria-hidden="true"></i></span>
-										<span>Mes annonces</span>
-									</a>
-								</li>
-								<li class="{{Route::current()->getName() === 'researches.show' ? 'is-active' : '' }}"><a
-											href="{{route('researches.show')}}"><span class="icon is-small">
-											<i class="fas fa-save" aria-hidden="true"></i></span>
-										<span>Mes recherches sauvegardées</span>
-									</a>
-								</li>
-								<li class="{{ Route::current()->getName() == 'favoriteAds.show' ? 'is-active' : '' }}">
-									<a
-											href="{{route('favoriteAds.show')}}"><span class="icon is-small">
-											<i class="fas fa-star" aria-hidden="true"></i></span>
-										<span>Mes annonces favorites</span>
-									</a>
-								</li>
-								<li class="{{ Route::current()->getName() == 'threads.index' ? 'is-active' : '' }}">
-									<a
-											href="{{route('threads.index')}}"><span class="icon is-small">
-											<i class="fas fa-comments"></i></span>
-										<span>Ma messagerie</span>
-									</a>
-								</li>
-							</ul>
-						</div>
+					@if (Route::current()->getName() === 'ads.list' || Route::current()->getName() === 'researches.show' || Route::current()->getName() == 'favoriteAds.show' || Route::current()->getName() == 'messages.index'|| Route::current()->getName() == 'user.update' )
+						@include('layouts.partials.users-tabs')
 					@endif
 				@endif
 			</div>

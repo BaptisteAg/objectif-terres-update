@@ -42,7 +42,7 @@ class ModerationPpNotification extends Notification
     public function toMail($notifiable)
     {
 		return (new MailMessage)
-			->subject('Votre annonce a été modéré ! | Objectif terres ')
+			->subject('Votre annonce a été modérée ! | Objectif terres ')
 			->greeting('Bonjour,')
 			->line( $this->data['message'])
 			->action( $this->data['action'], url($this->data['url']))

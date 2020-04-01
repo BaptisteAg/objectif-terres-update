@@ -76,7 +76,7 @@ class AttributionAdsService
 	 */
 	public function countAllAdsToModerateForLoggedModerator()
 	{
-		$toModerateStatus = AdStatus::where('name', '=', 'A modérer')->first();
+		$toModerateStatus = AdStatus::where('name', '=', 'À modérer')->first();
 		return $this->repository->findAllByUserIdAndStatusId($toModerateStatus->id, auth()->user()->id)->count();
 	}
 
@@ -86,7 +86,7 @@ class AttributionAdsService
 	 */
 	public function findAllAdsToModerateByModerators()
 	{
-		$toModerateStatus = AdStatus::where('name', '=', 'A modérer')->first();
+		$toModerateStatus = AdStatus::where('name', '=', 'À modérer')->first();
 		$allAdsToModerateGroupByModerators = $this->repository->findAllByStatusIdGroupByModerators($toModerateStatus->id);
 
 		foreach ($allAdsToModerateGroupByModerators as $allAdsToModerateByModerator) {
@@ -144,6 +144,8 @@ class AttributionAdsService
 		if (!is_null($filters->input('ad_title'))) {
 			$adsByTitle = AttributionAd::whereHas('ad', function (Builder $query) use ($filters, $roleUser) {
 				$query->where('title', 'like', '%' . $filters->input('ad_title') . '%');
+				$query->orWhere('about_content', 'like', '%'.$filters->input('ad_title').'%');
+				$query->orWhere('about_project_content', 'like', '%'.$filters->input('ad_title').'%');
 				if ($roleUser === 2) {
 					$query->where('user_advisor_id', '=', auth()->id());
 				} else if ($roleUser === 3) {
@@ -152,6 +154,7 @@ class AttributionAdsService
 					$query->where('user_moderator_id', '=', auth()->id());
 				}
 			});
+			$adsByTitle->orderByDesc('created_at');
 			$attributionAds = $adsByTitle
 				->with($this->getEagerLoading())
 				->paginate(15);;
@@ -170,27 +173,55 @@ class AttributionAdsService
 		}
 
 		//Filter attribution ads based on their locations if requested
-		if ($filters->has('city_location_researches')) {
-			if (!is_null($filters->input('radius_research'))) {
-				$cityIds = $this->locationService->getCitiesInRadius($filters->input('city_location_researches'), $filters->input('radius_research'));
-				$attributionAdsFiltered->filterLocations('ad.cities', $cityIds);
-			} else {
-				$attributionAdsFiltered->filterLocations('ad.cities', (array)$filters->input('city_location_researches'));
-			}
-		} //If one or more departments are selected, get all ads located in departments and cities in departments
-		else if ($filters->has('departments_location_researches')) {
-			$departmentsCode = Department::whereIn('id', $filters->input('departments_location_researches'))->get('code')->toArray();
-			$attributionAdsFiltered->filterLocations('ad.departments', $filters->input('departments_location_researches'));
-			$attributionAdsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
 
-		} //If one or more regions are selected, get all ads located in regions, all ads in departments inside regions and cities in departments
-		else if ($filters->has('regions_location_researches')) {
-			$regionsCodes = Region::whereIn('id', $filters->input('regions_location_researches'))->get('code')->toArray();
-			$departmentsCode = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
-			$attributionAdsFiltered->filterLocations('ad.regions', $filters->input('regions_location_researches'));
-			$attributionAdsFiltered->filterSubLocations('ad.departments', $regionsCodes, 'departments.region_code');
-			$attributionAdsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+		if ($filters->has('locations')) {
+			$locations = $filters->input('locations');
+			if (array_key_exists('cities', $locations)) {
+				if (!is_null($filters->input('radius_research'))) {
+					$cityIds = $this->locationService->getCitiesInRadius($locations['cities'], $filters->input('radius_research'));
+					$attributionAdsFiltered->filterLocations('ad.cities', $cityIds);
+				} else {
+					$attributionAdsFiltered->filterLocations('ad.cities', $locations['cities']);
+				}
+				//If one or more departments are selected, get all ads located in departments and cities in departments
+			}
+			if (array_key_exists('departments', $locations)) {
+				$departmentsCode = Department::whereIn('id', $locations['departments'])->get('code')->toArray();
+				$attributionAdsFiltered->filterLocations('ad.departments', $locations['departments']);
+				$attributionAdsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+
+				//If one or more regions are selected, get all ads located in regions, all ads in departments inside regions and cities in departments
+			}
+			if (array_key_exists('regions', $locations)) {
+				$regionsCodes = Region::whereIn('id', $locations['regions'])->get('code')->toArray();
+				$departmentsCode = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
+				$attributionAdsFiltered->filterLocations('ad.regions', $locations['regions']);
+				$attributionAdsFiltered->filterSubLocations('ad.departments', $regionsCodes, 'departments.region_code');
+				$attributionAdsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+			}
 		}
+
+//		if ($filters->has('city_location_researches')) {
+//			if (!is_null($filters->input('radius_research'))) {
+//				$cityIds = $this->locationService->getCitiesInRadius($filters->input('city_location_researches'), $filters->input('radius_research'));
+//				$attributionAdsFiltered->filterLocations('ad.cities', $cityIds);
+//			} else {
+//				$attributionAdsFiltered->filterLocations('ad.cities', (array)$filters->input('city_location_researches'));
+//			}
+//		} //If one or more departments are selected, get all ads located in departments and cities in departments
+//		else if ($filters->has('departments_location_researches')) {
+//			$departmentsCode = Department::whereIn('id', $filters->input('departments_location_researches'))->get('code')->toArray();
+//			$attributionAdsFiltered->filterLocations('ad.departments', $filters->input('departments_location_researches'));
+//			$attributionAdsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+//
+//		} //If one or more regions are selected, get all ads located in regions, all ads in departments inside regions and cities in departments
+//		else if ($filters->has('regions_location_researches')) {
+//			$regionsCodes = Region::whereIn('id', $filters->input('regions_location_researches'))->get('code')->toArray();
+//			$departmentsCode = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
+//			$attributionAdsFiltered->filterLocations('ad.regions', $filters->input('regions_location_researches'));
+//			$attributionAdsFiltered->filterSubLocations('ad.departments', $regionsCodes, 'departments.region_code');
+//			$attributionAdsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+//		}
 		//If a range of submitting date is selected, filter attribution ads based on creation date
 		if (!is_null($filters->input('date_research_range'))) {
 			$dateFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_research_range'))->format('Y-m-d');
@@ -221,12 +252,15 @@ class AttributionAdsService
 				$attributionAdsFiltered
 					->join('ads', 'attribution_ads.id', '=', 'ads.id')
 					->orderBy($filters->input('sort'), $filters->input('order'));
-			} else if ($filters->input('sort') === 'name') {
-				$attributionAdsFiltered
-					->select('attribution_ads.*')
-					->join('ads as a1', 'attribution_ads.ad_id', '=', 'a1.id')
-					->join('users', 'users.id', '=', 'a1.user_pp_id')
-					->orderBy('first_name', $filters->input('order'));
+
+//			TODO delete sort by ads title if client approved
+//			} else if ($filters->input('sort') === 'name') {
+//				$attributionAdsFiltered
+//					->select('attribution_ads.*')
+//					->join('ads as a1', 'attribution_ads.ad_id', '=', 'a1.id')
+//					->join('users', 'users.id', '=', 'a1.user_pp_id')
+//					->orderBy('first_name', $filters->input('order'));
+
 			} else if ($filters->input('sort') === 'ad_statuses.name') {
 				$attributionAdsFiltered
 					->join('ad_statuses', 'attribution_ads.ad_status_id', '=', 'ad_statuses.id')
@@ -242,6 +276,7 @@ class AttributionAdsService
 		} else {
 			$attributionAdsFiltered->orderByDesc('created_at');
 		}
+
 
 		$attributionAds = $attributionAdsFiltered
 			->with($this->getEagerLoading())
@@ -259,28 +294,33 @@ class AttributionAdsService
 		//TODO if the pp want a support from Tdl, a special method as to be created.The moderator doesn't take part of the attribution process.
 
 		//If on the territory related to the ad, there is advisors dedicated to specific departments, the ad is automatically attributed to the advisor and we create a project related to the ad.
-		//$toAssignStatus = AdStatus::where('name', '=', 'Assigné')->first();
+		//$toAssignStatus = AdStatus::where('name', '=', 'Validée')->first();
 		//$attributionAd->ad_status_id = $toAssignStatus->id;
 		//$supportStatus = ProjectStatus::where('name', '=', 'Accompagné')->first();
 		//$attributionAd->ad->project()->create(['project_status_id'=> $supportStatus]);
 
 		//Else, by default, the ad is attributed to an supervisor based on his territory saved in Salesforce . If there is many supervisors, one supervisor is pick randomly.
-		$toAssignStatus = AdStatus::where('name', '=', 'A assigner')->first();
-		$attributionAd->ad_status_id = $toAssignStatus->id;
-		$supervisor = User::where('role', '=', 3)->inRandomOrder()->first();
-		$attributionAd->user_supervisor_id = $supervisor->id;
+		//$toAssignStatus = AdStatus::where('name', '=', 'Validée')->first();
+		//$attributionAd->ad_status_id = $toAssignStatus->id;
+		//$supportStatus = ProjectStatus::where('name', '=', 'Non accompagné')->first();
+		//$attributionAd->ad->project()->create(['project_status_id'=> $supportStatus]);
+		//$supervisor = User::where('role', '=', 3)->inRandomOrder()->first();
+		//$attributionAd->user_supervisor_id = $supervisor->id;
 
 		//If the pp doesn't need a support from Tdl, the ad is validated and published
-//		$validateStatus = AdStatus::where('name', '=', 'Validé')->first();
-//		$attributionAd->ad_status_id = $validateStatus->id;
-//		$attributionAd->published_on = Carbon::now();
-//		$data = [
-//			'message'=> 'Votre annonce a été validé par l\'équipe d\'Objectif Terres et est désormais publiée ! ',
-//			'action' => 'Consulter votre annonce',
-//			'url' => '/annonces/'.$attributionAd->ad->id,
-//		];
-//		$attributionAd->ad->userPp->notify(new ModerationPpNotification($data));
+		$validateStatus = AdStatus::where('name', '=', 'Validée')->first();
+		$attributionAd->ad_status_id = $validateStatus->id;
+		$attributionAd->published_on = Carbon::now();
+		$data = [
+			'message' => 'Votre annonce a été validée par l\'équipe d\'Objectif Terres et est désormais publiée ! ',
+			'action' => 'Consulter votre annonce',
+			'url' => '/annonces/' . $attributionAd->ad->id,
+		];
+		$attributionAd->ad->userPp->notify(new ModerationPpNotification($data));
 
+		if ($attributionAd->refusal_type_id) {
+			$attributionAd->refusal_type_id = null;
+		}
 		$attributionAd->save();
 
 		$ad = $this->adRepository->find($attributionAd->ad->id);
@@ -293,7 +333,7 @@ class AttributionAdsService
 	public function modifyAd(int $attributionAdId)
 	{
 		$attributionAd = $this->repository->find($attributionAdId);
-		$toModifyStatus = AdStatus::where('name', '=', 'A modifier')->first();
+		$toModifyStatus = AdStatus::where('name', '=', 'En attente')->first();
 		$attributionAd->ad_status_id = $toModifyStatus->id;
 		$attributionAd->save();
 
@@ -314,7 +354,7 @@ class AttributionAdsService
 	public function rejectAd(array $data)
 	{
 		$attributionAd = $this->repository->find($data['attribution_ad_id']);
-		$rejectStatus = AdStatus::where('name', '=', 'Refuser')->first();
+		$rejectStatus = AdStatus::where('name', '=', 'Refusée')->first();
 		$attributionAd->ad_status_id = $rejectStatus->id;
 		$attributionAd->refusal_type_id = $data['refusal_type_id'];
 		$attributionAd->save();
@@ -352,7 +392,7 @@ class AttributionAdsService
 			'ad.departments.region',
 			'ad.regions',
 			'ad.regions.departments',
-			'ad.regions.department.cities',
+			'ad.regions.departments.cities',
 
 			'ad.landSeekAd',
 			'ad.landOfferAd',

@@ -10,8 +10,8 @@
 
 		@include('components.moderator-tabs')
 
-		<div class="notification has-background-info">
-			<button class="delete"></button>
+		<div id="notification-moderator" class="notification has-background-info">
+			<button id="close-notification-moderator" class="delete"></button>
 			@if($numberOfAdsToModerate >1)
 				<p class="has-text-white-ter">
 					<i class="far fa-bell has-text-white-ter"></i>
@@ -39,6 +39,7 @@
 				</a>
 			@endif
 		</div>
+
 		{{Form::open(['route'=>'moderator.show', 'method'=>'get'])}}
 		<div id="vue-form-moderator">
 			@include('components.dashboard-filters')
@@ -73,22 +74,24 @@
 									</a>
 								@endif
 							</th>
-							<th>
-								@if(request()->input('sort') !== 'title')
-									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">
-										<span>Titre de l'annonce</span>
-									</a>
-								@elseif(request()->input('sort') === 'title' && request()->input('order') === 'asc')
-									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'title'])) }}">
-										<i class="fas fa-arrow-up"></i>
-										<span>Titre de l'annonce</span>
-									</a>
-								@else
-									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}">
-										<i class="fas fa-arrow-down"></i>
-										<span>Titre de l'annonce</span>
-									</a>
-								@endif
+							<th>Titre de l'annonce
+
+{{--								TODO Delete this sort if client approved
+									@if(request()->input('sort') !== 'title')--}}
+{{--									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">--}}
+{{--										<span>Titre de l'annonce</span>--}}
+{{--									</a>--}}
+{{--								@elseif(request()->input('sort') === 'title' && request()->input('order') === 'asc')--}}
+{{--									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'title'])) }}">--}}
+{{--										<i class="fas fa-arrow-up"></i>--}}
+{{--										<span>Titre de l'annonce</span>--}}
+{{--									</a>--}}
+{{--								@else--}}
+{{--									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}">--}}
+{{--										<i class="fas fa-arrow-down"></i>--}}
+{{--										<span>Titre de l'annonce</span>--}}
+{{--									</a>--}}
+{{--								@endif--}}
 
 							</th>
 							<th>Type d'annonce</th>
@@ -164,7 +167,7 @@
 									@if(! is_null($attributionAd->ad->regionsList))
 										<p>Region(s) : {{$attributionAd->ad->regionsList}}</p>
 									@endif
-									@if(! is_null($attributionAd->ad->departmentList))
+									@if(! is_null($attributionAd->ad->departmentsList))
 										<p>Département(s) : {{$attributionAd->ad->departmentsList}}</p>
 									@endif
 									@if(! is_null($attributionAd->ad->citiesList))
@@ -172,17 +175,15 @@
 									@endif
 								</td>
 								<td>
-									@if($attributionAd->adStatus->name === "Validé")
+									@if($attributionAd->adStatus->name === "Validée")
 										<span class="tag is-success">{{$attributionAd->adStatus->name}}</span>
-									@elseif($attributionAd->adStatus->name ==="A modifier")
+									@elseif($attributionAd->adStatus->name ==="En attente")
 										<span class="tag is-warning is-light">{{$attributionAd->adStatus->name}}</span>
-									@elseif($attributionAd->adStatus->name === "Refuser")
+									@elseif($attributionAd->adStatus->name === "Refusée")
 										<span class="tag is-danger">{{$attributionAd->adStatus->name}}</span>
 
-									@elseif($attributionAd->adStatus->name === "A modérer")
+									@elseif($attributionAd->adStatus->name === "À modérer")
 										<span class="tag is-warning">{{$attributionAd->adStatus->name}}</span>
-									@elseif($attributionAd->adStatus->name === "A assigner")
-										<span class="tag is-primary">{{$attributionAd->adStatus->name}}</span>
 									@else
 										<span class="tag is-info">{{$attributionAd->adStatus->name}}</span>
 									@endif
@@ -248,6 +249,12 @@
             });
 
         });
+
+        let deleteButton = document.querySelector('#close-notification-moderator');
+        deleteButton.addEventListener('click', function (e) {
+            let notification = document.querySelector('#notification-moderator');
+            notification.style.display = 'none';
+        })
 	</script>
 
 @endsection

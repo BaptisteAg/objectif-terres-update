@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class CmsController extends Controller
 {
+	public function faq()
+	{
+		return view('pages/cms/faq');
+	}
     public function quiSommesNous()
     {
         return view('pages/cms/qui-sommes-nous');

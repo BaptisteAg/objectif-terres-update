@@ -49,6 +49,7 @@ class NewAdToModerateNotification extends Notification
 	{
 		$url = url('/annonces/'.$this->ad->id);
 		return (new MailMessage)
+			->from(env('MAIL_FROM_ADDRESS'), "Administration | Objectif Terres")
 			->subject('Nouvelle demande de modération !')
 			->greeting('Bonjour,')
 			->line('Vous avez reçu une nouvelle demande de modération pour une annonce postée par '. $this->userPP->first_name.' '.$this->userPP->name.' .')

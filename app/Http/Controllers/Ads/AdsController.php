@@ -129,11 +129,13 @@ class AdsController extends Controller
 
 
 		if (Auth::user()) {
-			if ($ad->attributionAd->adStatus->id === 4) {
+			if ($ad->attributionAd->adStatus->name === "À modérer") {
 				$isAdToModerate = true;
 			}
 			if (auth()->user()->id === $ad->attributionAd->user_moderator_id) {
 				$isLoggedUserModeratorAd = true;
+				$responseTemplates = ResponseTemplate::all();
+				$refusalTypes = RefusalType::all();
 				//set to read if notification about moderation task about the ad exist
 				if (!auth()->user()->unreadNotifications->isEmpty()) {
 					$notification = auth()->user()->unreadNotifications()->where('data->ad_id', $ad->id)->first();
@@ -147,7 +149,7 @@ class AdsController extends Controller
 				$threads = $this->threadService->findThreadsByAd($adId);
 				$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
 			} else {
-				if (auth()->user()->role === 1) {
+				if (auth()->user()->role >= 1) {
 					$responseTemplates = ResponseTemplate::all();
 					$refusalTypes = RefusalType::all();
 				}
@@ -162,7 +164,7 @@ class AdsController extends Controller
 		}
 
 		//Throw error 404 if a visitor try to show an ad is not validated
-		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validé" ;
+		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validée" ;
 
 		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist', 'threads', 'threadsWithUnreadMessages', 'responseTemplates', 'refusalTypes', 'isAdToModerate', 'isLoggedUserModeratorAd'));
 	}

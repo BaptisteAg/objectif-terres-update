@@ -146,7 +146,7 @@ class ResearchService
 				$adsFilter->filterWhereHasIn($research->jobOfferTypes()->pluck('job_offer_types.id'), $research->ad_type . '.jobOfferTypes', 'job_offer_types.id');
 			}
 
-			$adsFilter->whereHas('attributionAd', function (Builder $query) use($research){
+			$adsFilter->whereHas('attributionAd', function (Builder $query) use ($research) {
 				$query->where('published_on', '>', $research->updated_at);
 			});
 			$newAds = $adsFilter->get();
@@ -265,17 +265,19 @@ class ResearchService
 
 		$adsFilter->filterAdTypes(array($adsTypeSelected), '');
 		// TODO show only ads approved by moderators
-		$validatedStatus = AdStatus::where('name', '=', 'Validé')->first();
+		$validatedStatus = AdStatus::where('name', '=', 'Validée')->first();
 		$adsFilter->filterWhereHasWhere($validatedStatus->id, 'attributionAd', '=', 'ad_status_id');
 
-		if ($filters->has('order') && $filters->has('sort')) {
 
+		if ($filters->has('order') && $filters->has('sort')) {
 			if ($filters->input('sort') === 'date') {
 				$adsFilter->orderBy('created_at', $filters->input('order'));
 			} else {
+
 				$adsTypeSelectedTableName = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $adsTypeSelected)) . 's';
-				$adsFilter->join($adsTypeSelectedTableName, 'ads.id', '=', $adsTypeSelectedTableName . '.ad_id')
-					->orderBy($filters->input('sort'), $filters->input('order'));
+				$adsFilter->join($adsTypeSelectedTableName,'ads.id', '=', $adsTypeSelectedTableName.'.ad_id')
+					->orderBy($filters->input('sort'), $filters->input('order'))
+					->select('ads.*');
 			}
 		} else {
 			$adsFilter->orderByDesc('created_at');

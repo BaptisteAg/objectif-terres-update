@@ -22,6 +22,7 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
 });
 
 Route::name('cms.')->namespace('Cms')->group(function () {
+	Route::get('faq', 'CmsController@faq');
 	Route::get('qui-sommes-nous', 'CmsController@quiSommesNous');
 	Route::get('minstaller-comme-paysan', 'CmsController@minstallerCommePaysan');
 	Route::get('louer-vendre-mes-terres', 'CmsController@louerVendreMesTerres');
@@ -60,8 +61,15 @@ Route::prefix('mon-espace/recherches')->middleware('auth')->name('researches.')-
 	Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
 });
 
-Route::middleware('auth')->prefix('mon-espace')->name('userAccount.')->namespace('HomePage')->group(function () {
-	Route::get('/', 'HomePageLoggedController@index')->name('index');
+
+Route::middleware('auth')->name('user.')->namespace('users')->group(function () {
+	Route::prefix('mon-espace')->group(function (){
+		Route::get('/', 'UsersController@index')->name('index');
+		Route::get('mon-compte','UsersController@update')->name('update');
+	});
+	Route::prefix('porteur-de-projet')->group(function (){
+		Route::get('{user}', 'UsersController@show')->name('show');
+	});
 });
 
 Route::prefix('mon-espace/annonces-favorites')->middleware('auth')->name('favoriteAds.')->namespace('FavoriteAds')->group(function () {
@@ -112,11 +120,6 @@ Route::middleware('supervisor')->prefix('mon-espace-responsable-territorial')->n
 Route::middleware('advisor')->prefix('mon-espace-primo-accueillant')->name('advisor.')->namespace('Advisors')->group(function () {
 	Route::get('/', 'AdvisorsController@index')->name('index');
 	Route::get('aide-et-ressources', 'AdvisorsController@help')->name('help');
-});
-
-
-Route::middleware('auth')->prefix('porteur-de-projet')->name('user.')->namespace('users')->group(function () {
-	Route::get('{user}', 'UsersController@show')->name('show');
 });
 
 Route::middleware('auth')->prefix('notification')->name('notification.')->namespace('Notifications')->group(function () {

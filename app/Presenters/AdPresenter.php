@@ -42,7 +42,7 @@ class AdPresenter extends BasePresenter
 			return 'Offre d\'emploi';
 		}
 		if ($this->wrappedObject->jobSeekAd) {
-			return 'Recehrche d\'emploi';
+			return 'Recherche d\'emploi';
 		}
 
 		return '';

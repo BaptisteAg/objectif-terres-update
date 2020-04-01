@@ -1,7 +1,7 @@
 import Autocomplete from '../../components/Autocomplete'
 import Vue from 'vue'
 
-Vue.component('register-form', {
+Vue.component('user-form', {
     components: {
         Autocomplete,
     },

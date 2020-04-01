@@ -44,7 +44,6 @@ class ModeratorController extends Controller
 		$departments = Department::all();
 		$regions = Region::all();
 		$adStatuses = AdStatus::all();
-		$projectStatuses = ProjectStatus::all();
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
 
@@ -53,7 +52,7 @@ class ModeratorController extends Controller
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfAdsToModerate = $this->service->countAllAdsToModerateForLoggedModerator();
 
-		return view('pages.moderator.index', compact('cities', 'departments', 'regions', 'projectStatuses', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
+		return view('pages.moderator.index', compact('cities', 'departments', 'regions', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
 
 	}
 
@@ -69,7 +68,6 @@ class ModeratorController extends Controller
 		$departments = Department::all();
 		$regions = Region::all();
 		$adStatuses = AdStatus::all();
-		$projectStatuses = ProjectStatus::all();
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
 
@@ -80,7 +78,7 @@ class ModeratorController extends Controller
 		if (count($attributionAds) === 0) {
 			return redirect()->route('moderator.index')->with('warning', 'Aucun résultat pour votre recherche');
 		}
-		return view('pages.moderator.index', compact('cities', 'departments', 'regions', 'projectStatuses', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
+		return view('pages.moderator.index', compact('cities', 'departments', 'regions', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
 
 	}
 

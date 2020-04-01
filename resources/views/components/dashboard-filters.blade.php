@@ -33,46 +33,7 @@
 						</div>
 					@endforeach
 				</div>
-				{{--							<div class="columns">--}}
-				{{--								<div class="column">--}}
-				{{--									<div @click="adTypeSelected('landOfferAd')"--}}
-				{{--										 class="button is-link is-fullwidth form-research-buttons">--}}
-				{{--											<span class="icon is-small  ">--}}
-				{{--												  <i class="fas fa-check"></i>--}}
-				{{--										</span>--}}
-				{{--										<span>Offre foncière</span>--}}
-				{{--									</div>--}}
-				{{--								</div>--}}
-				{{--								<div class="column">--}}
-				{{--									<div @click="adTypeSelected('landSeekAd')"--}}
-				{{--										 class="button is-link is-light is-fullwidth form-research-buttons">--}}
-				{{--											<span class="icon is-small is-hidden ">--}}
-				{{--												  <i class="fas fa-check"></i>--}}
-				{{--										</span>--}}
-				{{--										<span>Recherche foncière</span>--}}
-				{{--									</div>--}}
-				{{--								</div>--}}
-				{{--								<div class="column">--}}
-				{{--									<div @click="adTypeSelected('jobOfferAd')"--}}
-				{{--										 class="button is-link is-light is-fullwidth form-research-buttons">--}}
-				{{--											<span class="icon is-small is-hidden ">--}}
-				{{--												  <i class="fas fa-check"></i>--}}
-				{{--										</span>--}}
-				{{--										<span>Offre d'emploi</span>--}}
-				{{--									</div>--}}
-				{{--								</div>--}}
-				{{--								<div class="column">--}}
-				{{--									<div @click="adTypeSelected('jobSeekAd')"--}}
-				{{--										 class="button is-link is-light is-fullwidth form-research-buttons">--}}
-				{{--											<span class="icon is-small is-hidden ">--}}
-				{{--												  <i class="fas fa-check"></i>--}}
-				{{--										</span>--}}
-				{{--										<span>Recherche d'emploi</span>--}}
-				{{--									</div>--}}
-				{{--								</div>--}}
-				{{--							</div>--}}
 			</div>
-			{{--						<input type="hidden" v-bind:value="typeSelected" name="ad_type">--}}
 			<div class="column">
 				<div class="control has-icons-right ">
 					<label class="label"> Annonces soumises depuis le </label>
@@ -82,36 +43,41 @@
 				</div>
 			</div>
 		</div>
-		<div class="columns">
-			<div class="column ">
-				<div class="columns">
-					<div class="column is-half">
+		<hr class="navbar-divider">
+		<div class="columns is-mobile">
+			<div class="column is-5 ">
+				<div class="columns is-mobile">
+					<div class="column ">
 						<div class="field">
-							<label class="label">Commune ou Code postal</label>
+							<label class="label">Localisations (code postal, département, région)</label>
 							<autocomplete
-									name="citySelect"
-									id="citySelect"
-									placeholder="Saisissez les premiers caractères"
-									ref='citySelect'
-									src="/locations/cities"
-									v-model="citySelect">
-
-								<input type="hidden" name="city_location_researches" :value="zone.value.id"
-									   v-for="(zone,i) in citySelect">
-
-								<div class="tag autocomplete-input-tag is-info"
-									 v-for="(zone,i) in citySelect"
-									 @click="_ => citySelect.splice(i,1)">
-									@{{ zone.label }}
-									&nbsp;&nbsp;
-									<i class="fa fa-trash" style="cursor:pointer"></i>
-								</div>
+									id="localisations"
+									:placeholder="locations.length ? 'Saisissez une autre localisation' : 'Saisissez au moins 2 caractères pour faire apparaître la liste'"
+									src="/locations"
+									v-model="locations"
+									:data-renderer="helper.renderZoneItemData"
+									:multiple="true">
 							</autocomplete>
+							<div class="selected-zone" v-for="(location,i) in locations">
+										<span @click="function() { locations.splice(i, 1); }"
+											  data-tooltip="Retirer cette localisation">
+											<i class="fa fa-trash-alt" style="cursor:pointer;"></i>
+										</span>
+								<b>@{{helper.getLabel(location.value.type)}}</b> : @{{location.value.originalLabel}}
+								<input type="hidden" :name="'locations['+location.value.type+'][]'"
+									   :value="location.value.id" v-if="location.value.id">
+								<template v-if="location.value.ids">
+									<input type="hidden"
+										   :name="'locations['+helper.getInputNameRangeMapping(location.value.type)+'][]'"
+										   :value="id" v-for="id in location.value.ids">
+								</template>
+								<input type="hidden" name="json_locations" :value="JSON.stringify(locations)">
+							</div>
 						</div>
 					</div>
-					<div class="column">
+					<div class="column is-half"  v-show="hasCities">
 						<div class="field">
-							<p class="label">Dans un rayon de </p>
+							<p class="label">(Communes) Dans un rayon de </p>
 							<vue-slider
 									name="radius_research"
 									:old-data="{
@@ -131,35 +97,61 @@
 					</div>
 				</div>
 			</div>
-			<div class="is-divider-vertical" data-content="OU"></div>
-			<div class="column is-one-third">
-				<label class="label">Départements</label>
-				<multi-select
-						:options="{{ json_encode($departments) }}"
-						:multiple="true"
-						v-model="departmentsSelected"
-						name="departments_location_researches[]"
-						selected-count-text="département(s) sélectionné(s)"
-						placeholder="Choississez un/des département(s)">
-				</multi-select>
-			</div>
-			@if(auth()->user()->role === 1)
-				<div class="is-divider-vertical" data-content="OU"></div>
-				<div class="column is-one-quarter">
-					<label class="label">Régions</label>
-					<multi-select
-							:options="{{ json_encode($regions) }}"
-							:multiple="true"
-							v-model="regionsSelected"
-							name="regions_location_researches[]"
-							selected-count-text="département(s) sélectionné(s)"
-							placeholder="Choississez un/des département(s)">
-					</multi-select>
+			<div class="column is-4 ">
+				<p class="label has-text-centered">Statut de l'annonce</p>
+				<div class="columns is-mobile is-multiline is-centered">
+					@foreach($adStatuses as $adStatus)
+						<div class="column is-narrow has-text-centered">
+							<label class="checkbox">
+								<input name="ad_statuses[]" value="{{(int)$adStatus->id}}"
+									   type="checkbox" {{old('ad_statuses') && in_array((int)$adStatus->id,old('ad_statuses'))  ? ' checked' : '' }}>
+								{{$adStatus->name}}
+							</label>
+						</div>
+					@endforeach
 				</div>
-			@endif
+			</div>
+			<div class="column ">
+				<label class="label">Recherche par titre de l'annonce</label>
+				<input name="ad_title" class="input" type="text" placeholder="Votre recherche..."
+					   value="{{old('ad_title')}}">
+			</div>
+			<div class="column is-1  ">
+				<br>
+				<button type="submit" class="button is-link is-large is-pulled-right">
+					<span>Filtrer</span>
+				</button>
+			</div>
+
+			{{--			<div class="is-divider-vertical" data-content="OU"></div>--}}
+			{{--			<div class="column is-one-third">--}}
+			{{--				<label class="label">Départements</label>--}}
+			{{--				<multi-select--}}
+			{{--						:options="{{ json_encode($departments) }}"--}}
+			{{--						:multiple="true"--}}
+			{{--						v-model="departmentsSelected"--}}
+			{{--						name="departments_location_researches[]"--}}
+			{{--						selected-count-text="département(s) sélectionné(s)"--}}
+			{{--						placeholder="Choississez un/des département(s)">--}}
+			{{--				</multi-select>--}}
+			{{--			</div>--}}
+			{{--			@if(Route::current()->getName() == 'moderator.index' &&  Route::current()->getName() != 'moderator.show')--}}
+			{{--				<div class="is-divider-vertical" data-content="OU"></div>--}}
+			{{--				<div class="column is-one-quarter">--}}
+			{{--					<label class="label">Régions</label>--}}
+			{{--					<multi-select--}}
+			{{--							:options="{{ json_encode($regions) }}"--}}
+			{{--							:multiple="true"--}}
+			{{--							v-model="regionsSelected"--}}
+			{{--							name="regions_location_researches[]"--}}
+			{{--							selected-count-text="département(s) sélectionné(s)"--}}
+			{{--							placeholder="Choississez un/des département(s)">--}}
+			{{--					</multi-select>--}}
+			{{--				</div>--}}
+			{{--			@endif--}}
 		</div>
 		<hr class="navbar-divider">
-		@if(auth()->user()->role >1 )
+		@if(Route::current()->getName() != 'moderator.index' &&  Route::current()->getName() != 'moderator.show')
 			<div class="columns">
 				<div class="column is-half">
 					<p class="label has-text-centered">Statut du projet</p>
@@ -189,88 +181,6 @@
 				</div>
 			</div>
 			<hr class="navbar-divider">
-		@else
-			<div class="columns">
-				<div class="column is-half">
-					<p class="label has-text-centered">Statut de l'annonce</p>
-					<div class="columns is-mobile is-multiline is-centered">
-						@foreach($adStatuses as $adStatus)
-							<div class="column is-narrow has-text-centered">
-								<label class="checkbox">
-									<input name="ad_statuses[]" value="{{(int)$adStatus->id}}"
-										   type="checkbox" {{old('ad_statuses') && in_array((int)$adStatus->id,old('ad_statuses'))  ? ' checked' : '' }}>
-									{{$adStatus->name}}
-								</label>
-							</div>
-						@endforeach
-					</div>
-				</div>
-				<div class="column is-half">
-					<p class="label has-text-centered">Statut du projet</p>
-					<div class="columns  is-mobile is-multiline is-centered">
-						@foreach($projectStatuses as $projectStatus)
-							<div class="column is-narrow has-text-centered">
-								<label class="checkbox">
-									<input name="project_statuses[]" value="{{(int)$projectStatus->id}}"
-										   type="checkbox"
-											{{old('project_statuses') && in_array((int)$projectStatus->id,old('project_statuses'))  ? ' checked' : '' }}>
-									{{$projectStatus->name}}
-								</label>
-							</div>
-						@endforeach
-					</div>
-				</div>
-			</div>
-			<hr class="navbar-divider">
-			<div class="columns">
-				<div class=" column is-one-third ">
-					<label class="label">Recherche par titre de l'annonce</label>
-					<input name="ad_title" class="input" type="text" placeholder="Votre recherche..."
-						   value="{{old('ad_title')}}">
-				</div>
-				{{--						<div v-if="adType === 'land'" class=" column is-3">--}}
-				{{--							<label class="label">Système de production</label>--}}
-				{{--							<div class="select">--}}
-				{{--								<select name="production_genres">--}}
-				{{--									@foreach($productionGenres as $productionGenre)--}}
-				{{--										<option value="{{$productionGenre->id}}">{{$productionGenre->name}} </option>--}}
-				{{--									@endforeach--}}
-				{{--								</select>--}}
-				{{--							</div>--}}
-				{{--						</div>--}}
-				{{--						<div v-if="adType === 'land'" class="column is-4">--}}
-				{{--							<div class="field">--}}
-				{{--								<p class="label">Surface(en ha) </p>--}}
-				{{--								<vue-slider-range--}}
-				{{--										name-min="land_seek[surface_range_min]"--}}
-				{{--										name-max="land_seek[surface_range_max]"--}}
-				{{--										:data="{--}}
-				{{--													0: '0 ha',--}}
-				{{--													5: '5 ha',--}}
-				{{--													10: '10 ha',--}}
-				{{--													20: '20 ha',--}}
-				{{--													50: '50 ha'--}}
-				{{--												}"--}}
-				{{--										:value="0"--}}
-				{{--								></vue-slider-range>--}}
-				{{--							</div>--}}
-				{{--						</div>--}}
-				{{--						<div v-if="adType === 'job'" class="column is-4 has-text-center">--}}
-				{{--							<label class="label">Statut de l'emploi</label>--}}
-				{{--							<div class="select">--}}
-				{{--								<select name="projectStatus">--}}
-				{{--									@foreach($jobOfferTypes as $jobOfferType)--}}
-				{{--										<option value="{{$jobOfferType->id}}">{{$jobOfferType->name}} </option>--}}
-				{{--									@endforeach--}}
-				{{--								</select>--}}
-				{{--							</div>--}}
-				{{--						</div>--}}
-				<div class="column  ">
-					<button type="submit" class="button is-link is-large is-pulled-right">
-						<span>Filtrer</span>
-					</button>
-				</div>
-			</div>
 		@endif
 	</div>
 </dashboard-form-filter>
