@@ -50,7 +50,7 @@
 			<h1 class="title is-1 has-text-centered">Liste des annonces à modérer</h1>
 
 			@if (count($attributionAds) ==0)
-				<p class="has-text-centered">Vous n'avez pas d'annonce à modérer</p>
+				<p class="has-text-centered">Aucun résultat</p>
 			@else
 				<div class="table-container">
 					<table class="table is-striped is-hoverable is-fullwidth ">

@@ -59,9 +59,9 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 	public function findAllExceptPP()
 	{
 		$users = $this->entity
-			->where([[
-				"role", '>=', 1],
-				["id", '!=', auth()->id()]])
+			->where([
+				["role", '>=', 1],
+				["id", '<>', auth()->id()]])
 			->get();
 		return $users;
 

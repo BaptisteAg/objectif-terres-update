@@ -75,9 +75,6 @@ class ModeratorController extends Controller
 
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfAdsToModerate = $this->service->countAllAdsToModerateForLoggedModerator();
-		if (count($attributionAds) === 0) {
-			return redirect()->route('moderator.index')->with('warning', 'Aucun résultat pour votre recherche');
-		}
 		return view('pages.moderator.index', compact('cities', 'departments', 'regions', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
 
 	}

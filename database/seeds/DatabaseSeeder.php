@@ -75,7 +75,13 @@ class DatabaseSeeder extends Seeder
 					echo "\nAd ID saved : " . $ad->id . " (Queries : " . $queriesCount . ")";
 				});
 				$adIds = Ad::all()->pluck("id")->toArray();
-				factory(LandOfferAd::class, 300)->create()->each(function (LandOfferAd $landOfferAd) use (&$adIds) {
+
+				if (app()->environment() === "local") {
+					$numberAdsPerCategory = 300;
+				}else{
+					$numberAdsPerCategory= 10;
+				}
+				factory(LandOfferAd::class, $numberAdsPerCategory)->create()->each(function (LandOfferAd $landOfferAd) use (&$adIds) {
 
 					$cats = ['', 'Vend'];
 					$types = ['ferme', 'pâture', 'terrain', 'location', 'terre', 'petite structure'];
@@ -95,7 +101,7 @@ class DatabaseSeeder extends Seeder
 					);
 					$ad->save();
 				});
-				factory(LandSeekAd::class, 300)->create()->each(function (LandSeekAd $landSeekAd) use (&$adIds) {
+				factory(LandSeekAd::class, $numberAdsPerCategory)->create()->each(function (LandSeekAd $landSeekAd) use (&$adIds) {
 					$cats = ['', 'Recherche', 'A la recherche de'];
 					$types = ['ferme', 'pâture', 'terrain', 'location', 'terre', 'petite structure'];
 					$pours = ['petit élevage', 'élevage caprins', 'élevage ovins', 'élevages poulets', 'réinstallation', 'installation collective'];
@@ -115,7 +121,7 @@ class DatabaseSeeder extends Seeder
 					$ad->save();
 
 				});
-				factory(JobOfferAd::class, 300)->create()->each(function (JobOfferAd $jobAd) use (&$adIds) {
+				factory(JobOfferAd::class, $numberAdsPerCategory)->create()->each(function (JobOfferAd $jobAd) use (&$adIds) {
 					$cats = ['', 'Propose emploi', 'Recrutement', 'Urgent cherche', 'Opportunité'];
 					$types = ['éleveur', 'producteur', 'agent agricole', 'agriculteur'];
 					$pours = ['bio', 'laitier', 'élevage bovins', 'élevages poulets', 'réinstallation', 'installation collective'];

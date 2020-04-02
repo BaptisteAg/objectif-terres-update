@@ -4,6 +4,7 @@
 use App\Models\City;
 use App\Models\User;
 use App\Repositories\Users\UserRepository;
+use Illuminate\Support\Facades\Hash;
 
 
 /**
@@ -55,6 +56,24 @@ class UserService
 
 		return $this->repository->create($data);
 
+	}
+
+	/**
+	 * @param array $data
+	 * @return mixed
+	 */
+	public function update(array $data){
+		if(isset($data['city_id'])) {
+			$city = City::find($data['city_id']);
+			$data['zip_code_id'] = $city->id;
+			$data['city'] = $city->name;
+		}
+		if (isset ($data['password'])){
+			$data['password']=  Hash::make($data['password']);
+		}
+
+		$user = $this->repository->update(auth()->user()->id, $data);
+		return $user;
 	}
 
 	/**

@@ -8,12 +8,20 @@ Vue.component('user-form', {
     props: {
         oldValues: {
             type: Object
-        }
+        },
+
     },
     data() {
         return {
             optionProfileSelected: this.oldValues.profile || '',
-            citySelect: this.oldValues.citySelect ? JSON.parse(this.oldValues.citySelect) : [],
+            citySelect: this.oldValues.citySelect ? [JSON.parse(this.oldValues.citySelect)] : [],
+            isPasswordToChange: false,
         }
+    },
+    methods: {
+        show_password_inputs() {
+            this.isPasswordToChange = this.isPasswordToChange !== true;
+        }
+
     }
 });

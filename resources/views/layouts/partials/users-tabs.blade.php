@@ -26,12 +26,12 @@
 				<span>Ma messagerie</span>
 			</a>
 		</li>
-{{--		<li class="{{ Route::current()->getName() == 'user.update' ? 'is-active' : '' }}">--}}
-{{--			<a--}}
-{{--					href="{{route('user.update')}}"><span class="icon is-small">--}}
-{{--											<i class="fas fa-user"></i></span>--}}
-{{--				<span>Mon compte</span>--}}
-{{--			</a>--}}
-{{--		</li>--}}
+		<li class="{{ Route::current()->getName() == 'user.edit' ? 'is-active' : '' }}">
+			<a
+					href="{{route('user.edit')}}"><span class="icon is-small">
+											<i class="fas fa-user"></i></span>
+				<span>Mes informations</span>
+			</a>
+		</li>
 	</ul>
 </div>

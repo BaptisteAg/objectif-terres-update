@@ -154,6 +154,7 @@ return [
         'password'              => 'mot de passe',
         'password_confirmation' => 'confirmation du mot de passe',
         'city'                  => 'ville',
+		'city_id'               => 'ville',
         'country'               => 'pays',
         'address'               => 'adresse',
         'phone'                 => 'téléphone',
