@@ -146,14 +146,9 @@ class AttributionAdsService
 				$query->where('title', 'like', '%' . $filters->input('ad_title') . '%');
 				$query->orWhere('about_content', 'like', '%'.$filters->input('ad_title').'%');
 				$query->orWhere('about_project_content', 'like', '%'.$filters->input('ad_title').'%');
-				if ($roleUser === 2) {
-					$query->where('user_advisor_id', '=', auth()->id());
-				} else if ($roleUser === 3) {
-					$query->where('user_supervisor_id', '=', auth()->id());
-				} else {
-					$query->where('user_moderator_id', '=', auth()->id());
-				}
+
 			});
+			$adsByTitle->where('user_moderator_id', '=', auth()->id());
 			$adsByTitle->orderByDesc('created_at');
 			$attributionAds = $adsByTitle
 				->with($this->getEagerLoading())
