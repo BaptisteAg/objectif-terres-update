@@ -23,10 +23,10 @@ class SalesforceService
     protected $tokenRepository;
 
     protected $profileToRoleMapping = [
-    	// Customer community - membre
-    	'00ew0000001V7RJ' => 0,
+        // Customer community - membre
+        '00ew0000001V7RJAA0' => 0,
 		// Moderator
-        '00e1r000001td1k' => 1,
+        '00e1r000001td1kAAA' => 1,
 		// Super Admin
 		'00e20000001FEdPAAW' => 4
 		// .. TODO: complete
@@ -76,6 +76,11 @@ class SalesforceService
             "Email" => $data["email"],
             "LastName" => $data["name"],
             'FirstName' => $data["first_name"],
+            "Phone" => $data["phone"],
+            "MailingStreet" => $data["street"],
+            "MailingPostalCode" => $city->zip_code,
+            "MailingCity" => $city->name,
+            "MailingCountry" => Country::findOrFail($data["country_id"])->name_fr_fr,
         ]);
         /**
          * array:3 [
@@ -85,7 +90,7 @@ class SalesforceService
          * ]
          */
 
-        $user = $this->repository->create('User', [
+        /*$user = $this->repository->create('User', [
             'Email' => $data["email"],
             'Username' => $data["email"],
             "Alias" => substr($data["first_name"],0,1) . substr($data["name"],1,7),
@@ -105,12 +110,14 @@ class SalesforceService
             //"ProfileId" => "00e20000001Ue7l",
             // Customer community - membre
             "ProfileId" => "00ew0000001V7RJ",
+            // "PP Objectif Terres"
+            //"ProfileId" => "00e1q000000M3vz",
             "LanguageLocaleKey" => "fr",
             "ContactId" => $contact["id"]
         ]);
-        $this->repository->updateUserPassword($user["id"], $data["password"]);
+        $this->repository->updateUserPassword($user["id"], $data["password"]);*/
 
-        return $user;
+        return $contact;
     }
 
     /**
