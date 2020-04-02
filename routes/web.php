@@ -62,7 +62,7 @@ Route::prefix('mon-espace/recherches')->middleware('auth')->name('researches.')-
 });
 
 
-Route::middleware('auth')->name('user.')->namespace('users')->group(function () {
+Route::middleware('auth')->name('user.')->namespace('Users')->group(function () {
 	Route::prefix('mon-espace')->group(function (){
 		Route::get('/', 'UsersController@index')->name('index');
 		Route::get('mon-compte','UsersController@update')->name('update');
