@@ -146,14 +146,9 @@ class AttributionAdsService
 				$query->where('title', 'like', '%' . $filters->input('ad_title') . '%');
 				$query->orWhere('about_content', 'like', '%'.$filters->input('ad_title').'%');
 				$query->orWhere('about_project_content', 'like', '%'.$filters->input('ad_title').'%');
-				if ($roleUser === 2) {
-					$query->where('user_advisor_id', '=', auth()->id());
-				} else if ($roleUser === 3) {
-					$query->where('user_supervisor_id', '=', auth()->id());
-				} else {
-					$query->where('user_moderator_id', '=', auth()->id());
-				}
+
 			});
+			$adsByTitle->where('user_moderator_id', '=', auth()->id());
 			$adsByTitle->orderByDesc('created_at');
 			$attributionAds = $adsByTitle
 				->with($this->getEagerLoading())
@@ -253,13 +248,12 @@ class AttributionAdsService
 					->join('ads', 'attribution_ads.id', '=', 'ads.id')
 					->orderBy($filters->input('sort'), $filters->input('order'));
 
-//			TODO delete sort by ads title if client approved
-//			} else if ($filters->input('sort') === 'name') {
-//				$attributionAdsFiltered
-//					->select('attribution_ads.*')
-//					->join('ads as a1', 'attribution_ads.ad_id', '=', 'a1.id')
-//					->join('users', 'users.id', '=', 'a1.user_pp_id')
-//					->orderBy('first_name', $filters->input('order'));
+			} else if ($filters->input('sort') === 'name') {
+				$attributionAdsFiltered
+					->select('attribution_ads.*')
+					->join('ads as a1', 'attribution_ads.ad_id', '=', 'a1.id')
+					->join('users', 'users.id', '=', 'a1.user_pp_id')
+					->orderBy('first_name', $filters->input('order'));
 
 			} else if ($filters->input('sort') === 'ad_statuses.name') {
 				$attributionAdsFiltered

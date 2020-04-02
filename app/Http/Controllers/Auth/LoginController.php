@@ -50,7 +50,7 @@ class LoginController extends Saml2Controller
         $errors = $saml2Auth->acs();
 
         if (!empty($errors)) {
-	    dd($errors);
+	        dd($errors);
             logger()->error('Saml2 error_detail', ['error' => $saml2Auth->getLastErrorReason()]);
             session()->flash('saml2_error_detail', [$saml2Auth->getLastErrorReason()]);
 
@@ -115,7 +115,7 @@ class LoginController extends Saml2Controller
         if (!empty($errors)) {
             logger()->error('Saml2 error', $errors);
             session()->flash('saml2_error', $errors);
-            throw new \Exception("Could not log out : ".json_encode($errors));
+            //throw new \Exception("Could not log out : ".json_encode($errors));
         }
 
         auth()->logout();
