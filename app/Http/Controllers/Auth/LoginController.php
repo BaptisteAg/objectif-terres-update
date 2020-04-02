@@ -120,6 +120,6 @@ class LoginController extends Saml2Controller
 
         auth()->logout();
         session()->save();
-        //return redirect('/');
+        return redirect('/');
     }
 }
