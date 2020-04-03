@@ -49,6 +49,14 @@ class LocationService
         );
     }
 
+	public function searchDepartmentsAndRegions(string $q)
+	{
+		return array_merge(
+			$this->searchRegions($q),
+			$this->searchDepartments($q)
+		);
+	}
+
     public function addCitiesRanges(&$cities)
     {
         $groupsCriterias = [

@@ -24,13 +24,14 @@ class UserRequest extends FormRequest
 				\Illuminate\Validation\Rule::unique('users')->ignore($this->user()->id),
 			],
 			'first_name' => ['required', 'string', 'max:255'],
-			'phone' => ['string', 'min:10', 'max:255'],
-			'address' => ['string', 'min:5', 'required'],
+			'phone' => ['nullable','string', 'min:10', 'max:255'],
+			'address' => ['nullable','string', 'min:5'],
 			'civility' => ['required'],
 			'profile' => ['required'],
-			'city_id' => ['required'],
+			'city_id' => ['nullable', "integer"],
 			'current_password' => [ 'min:5'],
-			'password' => [ 'confirmed', 'min:5']
+			'password' => [ 'confirmed', 'min:5'],
+			'user_id'=>['integer']
 
 		];
 	}

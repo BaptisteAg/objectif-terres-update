@@ -6,7 +6,6 @@ use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\Department;
 use App\Models\Region;
-use App\Models\User;
 use App\Notifications\ModerationPpNotification;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
@@ -59,17 +58,6 @@ class AttributionAdsService
 		return $this->repository->findAllWherePublishedOnSinceMonths($numberOfMonths);
 	}
 
-	/**
-	 * Show all ads published and related to supervisor
-	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-	 */
-	public function findAllByUserSupervisor()
-	{
-		$attributionAds = AttributionAd::where('user_supervisor_id', '=', auth()->id())
-			->with($this->getEagerLoading())
-			->paginate(15);
-		return $attributionAds;
-	}
 
 	/**
 	 * @return int
@@ -139,13 +127,13 @@ class AttributionAdsService
 	 */
 	public function filter(Request $filters, int $roleUser)
 	{
-		//Return results if research ads by title
+		//Return results if research ads by keywords
 		$attributionAds = collect();
-		if (!is_null($filters->input('ad_title'))) {
+		if (!is_null($filters->input('ad_keywords'))) {
 			$adsByTitle = AttributionAd::whereHas('ad', function (Builder $query) use ($filters, $roleUser) {
-				$query->where('title', 'like', '%' . $filters->input('ad_title') . '%');
-				$query->orWhere('about_content', 'like', '%'.$filters->input('ad_title').'%');
-				$query->orWhere('about_project_content', 'like', '%'.$filters->input('ad_title').'%');
+				$query->where('title', 'like', '%' . $filters->input('ad_keywords') . '%');
+				$query->orWhere('about_content', 'like', '%' . $filters->input('ad_keywords') . '%');
+				$query->orWhere('about_project_content', 'like', '%' . $filters->input('ad_keywords') . '%');
 
 			});
 			$adsByTitle->where('user_moderator_id', '=', auth()->id());
@@ -157,29 +145,22 @@ class AttributionAdsService
 		}
 		//START QUERY
 		$attributionAdsFiltered = (new AttributionAd)->newQuery();
-
-		//First, filter attributions ads based on the role who is the user logged
-		if ($roleUser === 2) {
-			$attributionAdsFiltered->where('user_advisor_id', '=', auth()->id());
-		} else if ($roleUser === 3) {
-			$attributionAdsFiltered->where('user_supervisor_id', '=', auth()->id());
-		} else {
-			$attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
-		}
+		$attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
 
 		//Filter attribution ads based on their locations if requested
 
 		if ($filters->has('locations')) {
 			$locations = $filters->input('locations');
-			if (array_key_exists('cities', $locations)) {
-				if (!is_null($filters->input('radius_research'))) {
-					$cityIds = $this->locationService->getCitiesInRadius($locations['cities'], $filters->input('radius_research'));
-					$attributionAdsFiltered->filterLocations('ad.cities', $cityIds);
-				} else {
-					$attributionAdsFiltered->filterLocations('ad.cities', $locations['cities']);
-				}
-				//If one or more departments are selected, get all ads located in departments and cities in departments
-			}
+//			TODO delete if research by cities is not necessary anymore
+//			if (array_key_exists('cities', $locations)) {
+//				if (!is_null($filters->input('radius_research'))) {
+//					$cityIds = $this->locationService->getCitiesInRadius($locations['cities'], $filters->input('radius_research'));
+//					$attributionAdsFiltered->filterLocations('ad.cities', $cityIds);
+//				} else {
+//					$attributionAdsFiltered->filterLocations('ad.cities', $locations['cities']);
+//				}
+			//If one or more departments are selected, get all ads located in departments and cities in departments
+
 			if (array_key_exists('departments', $locations)) {
 				$departmentsCode = Department::whereIn('id', $locations['departments'])->get('code')->toArray();
 				$attributionAdsFiltered->filterLocations('ad.departments', $locations['departments']);
@@ -195,28 +176,6 @@ class AttributionAdsService
 				$attributionAdsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
 			}
 		}
-
-//		if ($filters->has('city_location_researches')) {
-//			if (!is_null($filters->input('radius_research'))) {
-//				$cityIds = $this->locationService->getCitiesInRadius($filters->input('city_location_researches'), $filters->input('radius_research'));
-//				$attributionAdsFiltered->filterLocations('ad.cities', $cityIds);
-//			} else {
-//				$attributionAdsFiltered->filterLocations('ad.cities', (array)$filters->input('city_location_researches'));
-//			}
-//		} //If one or more departments are selected, get all ads located in departments and cities in departments
-//		else if ($filters->has('departments_location_researches')) {
-//			$departmentsCode = Department::whereIn('id', $filters->input('departments_location_researches'))->get('code')->toArray();
-//			$attributionAdsFiltered->filterLocations('ad.departments', $filters->input('departments_location_researches'));
-//			$attributionAdsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
-//
-//		} //If one or more regions are selected, get all ads located in regions, all ads in departments inside regions and cities in departments
-//		else if ($filters->has('regions_location_researches')) {
-//			$regionsCodes = Region::whereIn('id', $filters->input('regions_location_researches'))->get('code')->toArray();
-//			$departmentsCode = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
-//			$attributionAdsFiltered->filterLocations('ad.regions', $filters->input('regions_location_researches'));
-//			$attributionAdsFiltered->filterSubLocations('ad.departments', $regionsCodes, 'departments.region_code');
-//			$attributionAdsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
-//		}
 		//If a range of submitting date is selected, filter attribution ads based on creation date
 		if (!is_null($filters->input('date_research_range'))) {
 			$dateFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_research_range'))->format('Y-m-d');
@@ -236,8 +195,6 @@ class AttributionAdsService
 		if ($filters->has('ad_type')) {
 			$attributionAdsFiltered->filterAdTypes($filters->input('ad_type'), 'ad.');
 		}
-		$attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
-
 
 		//Handling sort of research results
 		if ($filters->has('order') && $filters->has('sort')) {
@@ -271,7 +228,6 @@ class AttributionAdsService
 			$attributionAdsFiltered->orderByDesc('created_at');
 		}
 
-
 		$attributionAds = $attributionAdsFiltered
 			->with($this->getEagerLoading())
 			->paginate(15);
@@ -286,7 +242,6 @@ class AttributionAdsService
 	{
 		$attributionAd = $this->repository->find($attributionAdId);
 		//TODO if the pp want a support from Tdl, a special method as to be created.The moderator doesn't take part of the attribution process.
-
 		//If on the territory related to the ad, there is advisors dedicated to specific departments, the ad is automatically attributed to the advisor and we create a project related to the ad.
 		//$toAssignStatus = AdStatus::where('name', '=', 'Validée')->first();
 		//$attributionAd->ad_status_id = $toAssignStatus->id;

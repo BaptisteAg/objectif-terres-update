@@ -56,7 +56,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 	/**
 	 * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
 	 */
-	public function findAllExceptPP()
+	public function findAllExceptPPAndLoggedUser()
 	{
 		$users = $this->entity
 			->where("role", '>=', 1)

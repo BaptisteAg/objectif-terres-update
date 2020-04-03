@@ -16,7 +16,7 @@
 				<p class="has-text-white-ter">
 					<i class="far fa-bell has-text-white-ter"></i>
 					Vous avez<a style="text-decoration: none"
-								href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4&ad_title='])}}">
+								href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4'])}}">
 						<strong>{{$numberOfAdsToModerate}}
 							annonces</strong></a> à modérer !</p>
 			@else

@@ -28,7 +28,7 @@
 		</li>
 		<li class="{{ Route::current()->getName() == 'user.edit' ? 'is-active' : '' }}">
 			<a
-					href="{{route('user.edit')}}"><span class="icon is-small">
+					href="{{route('user.edit', auth()->user()->id)}}"><span class="icon is-small">
 											<i class="fas fa-user"></i></span>
 				<span>Mes informations</span>
 			</a>

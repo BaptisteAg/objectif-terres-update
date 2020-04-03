@@ -12,7 +12,7 @@
 					<div class="level-left">
 						<div>
 							<h1 class="title">Vos informations personnelles</h1>
-							<h2 class="subtitle"> Modifier si besoin les informations liées à votre compte</h2>
+							<h2 class="subtitle"> Modifiez si besoin les informations liées à votre compte</h2>
 						</div>
 					</div>
 				</nav>
@@ -348,7 +348,7 @@
 					<span v-if="isPasswordToChange">Annuler</span>
 					<span v-else>Modifier votre mot de passe</span>
 				</a>
-
+				<input type="hidden" value="{{$user->id}}" name="user_id">
 				<div class="field is-grouped is-grouped-centered">
 					<div class="control is-pulled-right">
 						<button type="submit" class="button is-link ">Enregistrer</button>

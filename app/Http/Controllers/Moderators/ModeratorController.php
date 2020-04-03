@@ -20,6 +20,8 @@ class ModeratorController extends Controller
 	protected $service;
 	protected $threadService;
 	protected $userService;
+	protected $adTypes;
+	protected $adTypesFaIcons;
 
 
 	/**
@@ -32,27 +34,35 @@ class ModeratorController extends Controller
 		$this->service = $attributionAdsService;
 		$this->threadService = $threadService;
 		$this->userService = $userService;
+		$this->adTypes = [
+			['name' => 'Offre foncière', 'value' => 'landOfferAd'],
+			['name' => 'Recherche foncière', 'value' => 'landSeekAd'],
+			['name' => 'Offre d\'emploi', 'value' => 'jobOfferAd'],
+			['name' => 'Recherche d\'emploi', 'value' => 'jobSeekAd'],
+		];
+		$this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access"];
 	}
 
 	/**
-	 * @param Request $request
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
 	public function index(Request $request)
 	{
+		$request->session()->forget('_old_input');
 		$cities = City::all();
 		$departments = Department::all();
 		$regions = Region::all();
 		$adStatuses = AdStatus::all();
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
-
 		$attributionAds = $this->service->findAllByUserModerator(auth()->user()->id);
 
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfAdsToModerate = $this->service->countAllAdsToModerateForLoggedModerator();
+		$adTypes = $this->adTypes;
+		$adTypesFaIcons =$this->adTypesFaIcons;
 
-		return view('pages.moderator.index', compact('cities', 'departments', 'regions', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
+		return view('pages.moderator.index', compact('adTypesFaIcons', 'adTypes','cities', 'departments', 'regions', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
 
 	}
 
@@ -63,7 +73,6 @@ class ModeratorController extends Controller
 	public function show(Request $request)
 	{
 		$request->flash();
-
 		$cities = City::all();
 		$departments = Department::all();
 		$regions = Region::all();
@@ -75,7 +84,10 @@ class ModeratorController extends Controller
 
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfAdsToModerate = $this->service->countAllAdsToModerateForLoggedModerator();
-		return view('pages.moderator.index', compact('cities', 'departments', 'regions', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
+		$adTypes = $this->adTypes;
+		$adTypesFaIcons =$this->adTypesFaIcons;
+
+		return view('pages.moderator.index', compact('adTypesFaIcons', 'adTypes', 'cities', 'departments', 'regions', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
 
 	}
 
@@ -85,7 +97,9 @@ class ModeratorController extends Controller
 	 */
 	public function help()
 	{
-		$users = json_encode($this->userService->findAllExceptPP()) ;
+		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser()) ;
 		return view('pages.moderator.help', compact('users'));
 	}
+
+
 }

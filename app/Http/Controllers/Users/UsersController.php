@@ -38,10 +38,12 @@ class UsersController extends Controller
 		return view('pages.users.show', compact('ads', 'user'));
 	}
 
-	public function edit()
+	public function edit(User $user)
 	{
+		if (auth()->user()->id != $user->id) {
+			abort(404);
+		}
 		$cities = City::all();
-		$user = auth()->user();
 		if ($user->zipCode) {
 			$cityData = [
 				'label' => $user->zipCode->name." (".$user->zipCode->zip_code.")",
@@ -52,16 +54,14 @@ class UsersController extends Controller
 
 			$user['citySelect'] = json_encode($cityData);
 		}
-
-
 		return view('pages.users.edit', compact('cities', 'user'));
 	}
 
 	public function update(UserRequest $request)
 	{
-
+		dd($request->input());
 		$data = $request->validated();
 		$user = $this->userService->update($data);
-		return redirect()->route('user.edit')->with('success', 'Votre profil a bien été mis à jour !');
+		return redirect()->route('user.edit', $data['user_id'])->with('success', 'Votre profil a bien été mis à jour !');
 	}
 }
