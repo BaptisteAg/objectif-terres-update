@@ -85,33 +85,20 @@
                             non
                         </div>
 
+
                         <div class="field">
                             {!! Form::label('land_seek[production_genres][]', 'Production(s) envisagée(s)*', ['class' => 'label']); !!}
 
-                            <div class="checkboxes-production-genre">
-                                <div class="columns">
-                                    @foreach($productionGenresWithOther as $i => $productionGenre)
-                                        <div class="column is-half">
-                                            <custom-checkbox
-                                                    name="land_seek[production_genres][]"
-                                                    input-value="{{$productionGenre["id"]}}"
-                                                    :disabled="isInputDisabled"
-                                                    v-model="formInput.productionGenres"
-                                                    ref="productionGenres">
-
-                                                <i class="fa fa-home"></i>
-                                                <span style="font-size:16px">
-                                                    {{ $productionGenre["name"] }}
-                                                </span>
-                                            </custom-checkbox>
-                                        </div>
-                                        @if($i % 2)
-                                        </div>
-                                        <div class="columns">
-                                        @endif
-                                    @endforeach
-                                </div>
-                            </div>
+                            @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_seek[production_genres][]', 'productionGenres' => $productionGenresWithOther])
+{{--                            <multi-select--}}
+{{--                                    :options="{{json_encode($productionGenresWithOther)}}"--}}
+{{--                                    group-values="children"--}}
+{{--                                    name="land_seek[production_genres][]"--}}
+{{--                                    v-model="formInput.productionGenres"--}}
+{{--                                    selected-count-text="productions sélectionnée(s)"--}}
+{{--                                    placeholder="Sélectionnez au moins une production"--}}
+{{--                                    ref="productionGenres">--}}
+{{--                            </multi-select>--}}
 
                             <p class="help is-danger" id="productionGenresError"
                                v-if="$v.formInput.productionGenres.$error">
@@ -132,7 +119,7 @@
                         </div>
 
                         <div class="field">
-                            {!! Form::label('land_seek[installation_type_id]', 'Vous êtes installé ou comptez vous installer...*', ['class' => 'label']); !!}
+                            {!! Form::label('land_seek[installation_type_id]', 'Vous êtes installé·e(s) ou comptez vous installer...*', ['class' => 'label']); !!}
 
                             <?php
                             $installationTypesFaIcons = ["fa-user", "fa-user-friends", "fa-users", "fa-times"]
@@ -186,7 +173,7 @@
 
                             <text-area-counter
                                     name="land_seek[experience_farming]"
-                                    :max-length=1000
+                                    :max-length=1500
                                     :disabled="isInputDisabled"
                                     ref="experienceFarming"
                                     v-model="formInput.experienceFarming"
@@ -202,7 +189,7 @@
             </section>
         </tab-content>
 
-        <tab-content title="Finalisation" icon="ti-share">
+        <tab-content title="C'est presque fini !" icon="ti-share">
             <section class="container">
                 <div class="columns">
                     <div class="column"></div>

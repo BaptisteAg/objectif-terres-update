@@ -23,6 +23,11 @@ class RequirementSeeder extends Seeder
                 "updated_at" => \Carbon\Carbon::now()
             ],
             [
+                "label" => "Sans",
+                "created_at" =>  \Carbon\Carbon::now(),
+                "updated_at" => \Carbon\Carbon::now()
+            ],
+            [
                 "label" => "Indifférent",
                 "created_at" =>  \Carbon\Carbon::now(),
                 "updated_at" => \Carbon\Carbon::now()

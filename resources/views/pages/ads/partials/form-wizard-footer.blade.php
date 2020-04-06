@@ -9,6 +9,13 @@
                 Précédent
               </wizard-button>
             </span>
+            <button tabindex="-1"
+                    type="button"
+                    class="wizard-btn button is-light"
+                    onclick="location.href = '/';"
+                    style="background-color: rgb(230, 230, 230); border-color: rgb(230, 230, 230); color: rgb(85, 85, 85);">
+                Annuler
+            </button>
         </div>
 
         <div class="wizard-footer-right">

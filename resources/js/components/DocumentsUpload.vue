@@ -9,7 +9,7 @@
                 maxFilesize: 15,
                 addRemoveLinks: true,
                 uploadMultiple: true,
-                acceptedFiles: 'image/*, application/pdf, application/msword',
+                acceptedFiles: 'image/*, .pdf, .doc, .docx',
                 dictFileTooBig: 'Fichier trop volumineux: {{filesize}}Mo. Maximum  {{maxFilesize}}Mo',
                 dictInvalidFileType: 'Type de fichier invalide. Acceptés : image, pdf, word',
                 dictResponseError: 'Erreur interne. Essayez plus tard.',

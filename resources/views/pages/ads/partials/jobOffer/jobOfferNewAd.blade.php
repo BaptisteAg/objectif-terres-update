@@ -11,7 +11,7 @@
 				<div class="columns">
 					<div class="column"></div>
 					<div class="column is-half">
-						@include('pages.ads.partials.inputs.zip_code', ['uri'=>'cities'])
+						@include('pages.ads.partials.inputs.zip_code', ['uri'=>'cities', 'label'=>"Code postal de l'offre"])
 					</div>
 					<div class="column"></div>
 				</div>
@@ -27,7 +27,7 @@
 							{!! Form::label('job_offer[offer_types][]', "Type d'offre", ['class' => 'label']); !!}
 
 							<?php
-							$offerTypesFaIcons = ["fa-user", "fa-user-friends", "fa-users"]
+							$offerTypesFaIcons = ["fa-user", "fa-user-friends", "fa-users", "fa-user"]
 							?>
 
 							<div class="columns">

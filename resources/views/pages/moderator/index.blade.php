@@ -236,7 +236,7 @@
 
 					<div class="columns">
 						<div class=" column is-one-third ">
-							<label class="label">Recherche par titre de l'annonce</label>
+							<label class="label">Recherche par mot clé</label>
 							<input name="ad_title" class="input" type="text" placeholder="Votre recherche..."
 								   value="{{old('ad_title')}}">
 						</div>

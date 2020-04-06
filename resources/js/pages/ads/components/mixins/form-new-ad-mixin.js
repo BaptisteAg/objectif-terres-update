@@ -148,14 +148,19 @@ export default {
             },
             documents: {
                 /**
-                 * Only one PDF file is admitted
+                 * Only one document file is admitted
                  *
                  * @param {array} documents
                  * @returns {boolean}
                  */
-                onePdf(documents) {
+                oneDocument(documents) {
+                    const documentTypes = [
+                        "application/msword",
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                        "application/pdf"
+                    ];
                     return documents.reduce((pdfCount, document) => {
-                        return pdfCount + (document.type === "application/pdf");
+                        return pdfCount + (documentTypes.includes(document.type));
                     }, 0) <= 1;
                 },
                 notCurrentlyUploading() {

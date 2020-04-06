@@ -5,7 +5,7 @@ namespace App\Notifications;
 use App\Models\Ad;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -22,7 +22,7 @@ class NewAdToModerateNotification extends Notification
 	 * @param Ad $ad
 	 * @param User $userPP
 	 */
-	public function __construct(Ad $ad, User $userPP)
+	public function __construct(Ad $ad, Authenticatable $userPP)
 	{
 		$this->ad = $ad;
 		$this->userPP = $userPP;

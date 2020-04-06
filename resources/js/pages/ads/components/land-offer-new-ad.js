@@ -79,7 +79,9 @@ export default {
         formInput: {
             //isBeneficiary: {required},
             //isActivityTransfer: {required},
-            bioCertifications: {required},
+            bioCertifications: {
+                required(values) { return values.length; }
+            },
             surface: {
                 required,
                 maxValue: maxValue(1000)
@@ -88,11 +90,14 @@ export default {
                 minLength: minLength(5),
                 maxLength: maxLength(1000),
             },
-            productionGenres: {},
+            productionGenres: {
+                required(values) { return values.length; }
+            },
             productionGenresWanted: {},
+            waterAccess: {required},
             waterAccessDescription: {
                 minLength: minLength(5),
-                maxLength: maxLength(1000),
+                maxLength: maxLength(200),
             },
             altitude: {required},
             offerGenres: {required},

@@ -28,8 +28,8 @@ class CreateAdsTable extends Migration
             $table->boolean('is_draft');
             $table->boolean('accept_share_contact_infos')->default(0);
             $table->string('title')->nullable();
-            $table->string('about_content', 1000)->nullable();
-            $table->string('about_project_content', 1000)->nullable();
+            $table->string('about_content', 1500)->nullable();
+            $table->string('about_project_content', 1500)->nullable();
             $table->unsignedInteger('project_id')->nullable();
 
             $table->index(["user_admin_id"], 'iix_ads_user_admin_id');
