@@ -17,14 +17,23 @@ class TestUserSeeder extends Seeder
 				'password' => Hash::make('test'),
 				'first_name' => 'Test',
 				'name' => 'Moderateur',
+				'role'=> 1
         ]);
 
 		\App\Models\User::create([
-				'email' => "pp@test.fr",
-				'password' => Hash::make('test'),
+				'email' => "pa@test.fr",
+				'password' => Hash::make('testtest'),
 				'first_name' => 'Test',
-				'name' => 'Porteur Projet',
+				'name' => 'Primo Accueillant',
 				'role'=> 2
         ]);
+
+		\App\Models\User::create([
+			'email' => "supervisor@test.fr",
+			'password' => Hash::make('testtest'),
+			'first_name' => 'Test',
+			'name' => 'Responsable Territorial',
+			'role'=> 3
+		]);
 	}
 }

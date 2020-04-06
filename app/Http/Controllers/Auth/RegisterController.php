@@ -78,7 +78,6 @@ class RegisterController extends Controller
 			'address' => ['string', 'min:5', 'required'],
 			'civility' => ['required'],
 			'profile' => ['required'],
-			'country_id' => ['required'],
 			'city_id' => ['required'],
             'password' => ['required', 'confirmed', 'min:5']
 		], [
@@ -92,10 +91,8 @@ class RegisterController extends Controller
 	 */
 	public function showRegistrationForm()
 	{
-		$countries = Country::all();
 		$cities = City::all();
-
-		return view('auth.register', compact('countries', 'cities'));
+		return view('auth.register', compact('cities'));
 	}
 
 

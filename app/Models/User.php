@@ -71,21 +71,28 @@ class User extends Authenticatable implements HasPresenter
 	use Notifiable;
 	use CanResetPassword;
 
-	const ROLES = [
-		0 => 'ROLE_PP',
-		1 => 'ROLE_PA',
-		2 => 'ROLE_MODERATOR',
-		3 => 'ROLE_AT',
-		4 => 'ROLE_ADMIN',
-	];
-
 	/**
 	 * The attributes that are mass assignable.
 	 *
 	 * @var array
 	 */
 	protected $fillable = [
-		'name', 'email', 'password', 'first_name', 'phone', 'address', 'city', 'zip_code_id', 'accept_communication', 'country_id', 'profile', 'civility', 'profile', 'other_profile', 'accept_share_contact_infos', 'role',
+		'name',
+		'email',
+		'password',
+		'first_name',
+		'phone',
+		'address',
+		'city',
+		'zip_code_id',
+		'accept_communication',
+		'country_id',
+		'profile',
+		'civility',
+		'profile',
+		'other_profile',
+		'accept_share_contact_infos',
+		'role',
 	];
 
 	/**

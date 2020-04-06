@@ -24,7 +24,6 @@ class Authenticate extends Middleware
                 session()->put('url.intended', $previousUrl);
                 session()->save();
             }
-
             return route('login');
         }
     }

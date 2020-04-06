@@ -24,7 +24,6 @@ class CreateAdsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->unsignedInteger('user_pp_id');
-            $table->unsignedInteger('user_admin_id')->nullable();
             $table->boolean('is_draft');
             $table->boolean('accept_share_contact_infos')->default(0);
             $table->string('title')->nullable();
@@ -32,17 +31,11 @@ class CreateAdsTable extends Migration
             $table->string('about_project_content', 1500)->nullable();
             $table->unsignedInteger('project_id')->nullable();
 
-            $table->index(["user_admin_id"], 'iix_ads_user_admin_id');
 
             $table->index(["user_pp_id"], 'ix_ads_user_lead_id');
 
             $table->index(["project_id"], 'fk_ads_2_idx');
             $table->timestamps();
-
-			$table->foreign('user_admin_id','iix_ads_user_admin_id' )
-				->references('id')
-				->on('users')
-				->onDelete('cascade');
 
 			$table->foreign('user_pp_id','ix_ads_user_lead_id' )
 				->references('id')

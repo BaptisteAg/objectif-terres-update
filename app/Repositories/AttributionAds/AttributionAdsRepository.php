@@ -6,6 +6,7 @@ use App\Models\Ad;
 use App\Models\AttributionAd;
 use App\Models\Department;
 use App\Models\Region;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
@@ -49,6 +50,17 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 			->orderByDesc('created_at')
 			->with($this->getEagerLoading())
 			->paginate(15);
+	}
+
+	/**
+	 * Get all attribution ads published since a specific number of months
+	 * @param int $monthsNumber
+	 * @return Builder[]|\Illuminate\Database\Eloquent\Collection
+	 */
+	public function findAllWherePublishedOnSinceMonths(int $monthsNumber){
+		return $this->entity
+			->whereDate("published_on", '=', Carbon::now()->subMonthsWithOverflow($monthsNumber) )
+			->get();
 	}
 
 	/**

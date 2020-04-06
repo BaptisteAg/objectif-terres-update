@@ -80,7 +80,7 @@
 			<div class="column"></div>
 		</div>
 	</div>
-	@include('components.supportTerreLiens')
+	@include('components.support-terre-liens')
 @endsection
 
 

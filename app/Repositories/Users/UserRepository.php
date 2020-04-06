@@ -30,9 +30,9 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 			$user = new User();
 			$user->fill($data);
 
-			if(isset($data['password'])) {
-                $user->password = Hash::make($data['password']);
-            }
+			if (isset($data['password'])) {
+				$user->password = Hash::make($data['password']);
+			}
 
 			$user->save();
 			return $user;
@@ -59,20 +59,18 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 	public function findAllExceptPP()
 	{
 		$users = $this->entity
-			->where([[
-				"role", '>=', 1],
-				["id", '!=', auth()->id()]])
+			->where("role", '>=', 1)
+			->where("id", '<>', auth()->user()->id)
 			->get();
 		return $users;
-
 	}
 
-    /**
-     * @param string $email
-     * @return mixed
-     */
-    public function findByEmail(string $email)
-    {
-        return $this->entity->where('email', $email)->first();
-    }
+	/**
+	 * @param string $email
+	 * @return mixed
+	 */
+	public function findByEmail(string $email)
+	{
+		return $this->entity->where('email', $email)->first();
+	}
 }

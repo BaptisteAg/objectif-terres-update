@@ -106,7 +106,7 @@
 						</div>
 						<div class="column ">
 							<div class="buttons">
-								<a href="{{route ('researches.index', $research->url)}}">
+								<a href="{{route ('researches.index', [ltrim($research->url, '?')])}}">
 									<button class="button is-link is-normal ">
 											<span class="icon is-small">
 											 <i class="fas fa-eye"></i>
@@ -155,11 +155,11 @@
 			<section class="section">
 				<pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
 			</section>
-			@include('components.sectionOrientationTerreLiens')
+			@include('components.section-orientation-terre-liens')
 		</div>
 
 	</section>
 
 	@include('components.partnering')
-	@include('components.supportTerreLiens')
+	@include('components.support-terre-liens')
 @endsection

@@ -45,7 +45,7 @@
                     </ad-type-select>
 
                     <new-land-seek-ad inline-template
-                                      v-show="adTypeSelected === 'land_seek'"
+                                      v-if="adTypeSelected === 'land_seek'"
                                       :is-input-disabled="adTypeSelected !== 'land_seek'"
                                       :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
                                       @input-enabled="setEnabledForm"
@@ -55,7 +55,7 @@
                     </new-land-seek-ad>
 
                     <new-land-offer-ad inline-template
-                                       v-show="adTypeSelected === 'land_offer'"
+                                       v-if="adTypeSelected === 'land_offer'"
                                        :is-input-disabled="adTypeSelected !== 'land_offer'"
                                        :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
                                        @input-enabled="setEnabledForm"
@@ -65,7 +65,7 @@
                     </new-land-offer-ad>
 
                     <new-job-seek-ad inline-template
-                                      v-show="adTypeSelected === 'job_seek'"
+                                      v-if="adTypeSelected === 'job_seek'"
                                       :is-input-disabled="adTypeSelected !== 'job_seek'"
                                       :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
                                       @input-enabled="setEnabledForm"
@@ -75,7 +75,7 @@
                     </new-job-seek-ad>
 
                     <new-job-offer-ad inline-template
-                                      v-show="adTypeSelected === 'job_offer'"
+                                      v-if="adTypeSelected === 'job_offer'"
                                       :is-input-disabled="adTypeSelected !== 'job_offer'"
                                       :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
                                       @input-enabled="setEnabledForm"

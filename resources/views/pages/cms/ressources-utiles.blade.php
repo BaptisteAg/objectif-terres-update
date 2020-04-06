@@ -277,7 +277,7 @@
 
     @include('components.partnering')
 
-    @include('components.supportTerreLiens')
+    @include('components.support-terre-liens')
 
 @endsection
 

@@ -62,7 +62,7 @@
                                    Réalisé du wwoofing ? Combien de temps ?
                                    Racontez-ici votre expérience du milieu agricole."
                                    for="about_content">
-                                Expérience dans le milieu agricole
+                                Expérience dans le milieu agricole*
                                 <i class="fas fa-info-circle has-text-info"></i>
                             </label>
 

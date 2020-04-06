@@ -14,32 +14,27 @@ class AdStatusSeeder extends Seeder
 	{
 		AdStatus::insert([
 			[
-				'name' => 'Validé',
+				'name' => 'Validée',
 				"created_at" => \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
 			],
 			[
-				'name' => 'A modifier',
+				'name' => 'En attente',
 				"created_at" => \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
 			],
 			[
-				'name'=> 'Refuser',
+				'name'=> 'Refusée',
 				"created_at" =>  \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
 			],
 			[
-				'name'=> 'A modérer',
+				'name'=> 'À modérer',
 				"created_at" =>  \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
 			],
 			[
-				'name'=> 'A assigner',
-				"created_at" =>  \Carbon\Carbon::now(),
-				"updated_at" => \Carbon\Carbon::now()
-			],
-			[
-				'name'=> 'Archivé',
+				'name'=> 'Archivée',
 				"created_at" =>  \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
 			],

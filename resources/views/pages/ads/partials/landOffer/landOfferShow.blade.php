@@ -9,7 +9,7 @@
 		</nav>
 		<h1 class="title has-text-link">{{$ad->title}}</h1>
 		@auth
-			@if(auth()->user()->role >= 2)
+			@if(auth()->user()->role >= 1)
 				@include('pages.ads.partials.moderator-options')
 			@endif
 
@@ -82,54 +82,54 @@
 										class="subtitle">{{$ad->landOfferAd->surface}} hectares</span></p>
 						</div>
 
-							<div class="content">
-								@if ($ad->landOfferAd->offerGenres->count() >=1)
+						<div class="content">
+							@if ($ad->landOfferAd->offerGenres->count() >=1)
 								<p>
 									<span class="is-size-5  has-text-black">Type d'offre : </span>
 									<span class="subtitle">
 									{{$ad->landOfferAd->offerGenres->pluck('name')->implode(', ') }}
 								</span>
 								</p>
-								@endif
-								@if($ad->landOfferAd->price)
-									<p><span class="is-size-5  has-text-black">Prix : </span>
-										<span class="subtitle ">{{ number_format($ad->landOfferAd->price, 0, ",", " " )}} €</span>
-									</p>
-								@endif
-								@if($ad->landOfferAd->rent_price)
-									<p>
-										<span class="is-size-5  has-text-black">Loyer mensuel : </span>
-										<span
-												class="subtitle ">{{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} €</span>
-									</p>
-								@endif
-							</div>
+							@endif
+							@if($ad->landOfferAd->price)
+								<p><span class="is-size-5  has-text-black">Prix : </span>
+									<span class="subtitle ">{{ number_format($ad->landOfferAd->price, 0, ",", " " )}} €</span>
+								</p>
+							@endif
+							@if($ad->landOfferAd->rent_price)
+								<p>
+									<span class="is-size-5  has-text-black">Loyer mensuel : </span>
+									<span
+											class="subtitle ">{{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} €</span>
+								</p>
+							@endif
+						</div>
 
+						<div class="content">
+							<p><span class="is-size-5 is-capitalized has-text-black">Altitude : </span><span
+										class="subtitle">{{$ad->landOfferAd->altitude}}m</span></p>
+						</div>
+
+
+						@if($ad->landOfferAd->water_access !== "" && $ad->landOfferAd->water_access !== null)
 							<div class="content">
-								<p><span class="is-size-5 is-capitalized has-text-black">Altitude : </span><span
-											class="subtitle">{{$ad->landOfferAd->altitude}}m</span></p>
+								<p>
+									<span class="is-size-5 is-capitalized has-text-black">Accès à l'eau : </span><span
+											class="subtitle">{{$ad->landOfferAd->water_access ? "Oui" : "Non"}}</span>
+								</p>
 							</div>
+						@endif
 
+						@if($ad->userPp->accept_share_contact_infos === 1)
+							<div class="content">
+								<p>
+									<span class="is-size-5 has-text-black">N° de téléphone du porteur de projet : </span>
+								</p>
+								<p><span class="subtitle">{{$ad->userPp->phone}}</span></p>
+							</div>
+						@endif
 
-							@if($ad->landOfferAd->water_access !== "" && $ad->landOfferAd->water_access !== null)
-								<div class="content">
-									<p>
-										<span class="is-size-5 is-capitalized has-text-black">Accès à l'eau : </span><span
-												class="subtitle">{{$ad->landOfferAd->water_access ? "Oui" : "Non"}}</span>
-									</p>
-								</div>
-							@endif
-
-							@if($ad->userPp->accept_share_contact_infos === 1)
-								<div class="content">
-									<p>
-										<span class="is-size-5 has-text-black">N° de téléphone du porteur de projet : </span>
-									</p>
-									<p><span class="subtitle">{{$ad->userPp->phone}}</span></p>
-								</div>
-							@endif
-
-							@include('pages.ads.partials.show-documents')
+						@include('pages.ads.partials.show-documents')
 					</div>
 
 					@include('pages.ads.partials.buttonsFavoriteAndMessage')
@@ -232,5 +232,4 @@
 
 </section>
 
-@include('components.partnering')
-@include('components.supportTerreLiens')
+@include('components.support-terre-liens')

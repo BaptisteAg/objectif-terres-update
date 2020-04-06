@@ -53,6 +53,13 @@ class LandSeekAd extends Model
     use ProductionableGenre;
     use OfferableGenre;
 
+	/**
+	 * @return BelongsTo
+	 */
+	public function ad()
+	{
+		return $this->belongsTo(Ad::class, 'ad_id', 'id');
+	}
     /**
      * @var array
      */
@@ -71,13 +78,7 @@ class LandSeekAd extends Model
         'rent_max'*/
     ];
 
-    /**
-     * @return HasOne
-     */
-    public function ad()
-    {
-        return $this->hasOne(Ad::class);
-    }
+
 
     /**
      * @return BelongsTo

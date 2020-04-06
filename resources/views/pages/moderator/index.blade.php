@@ -8,10 +8,10 @@
 		<h1 class="title is-2 has-text-link">Bienvenue sur votre espace modérateur <span
 					class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
 
-		@include('components.moderatorTabs')
+		@include('components.moderator-tabs')
 
-		<div class="notification has-background-info">
-			<button class="delete"></button>
+		<div id="notification-moderator" class="notification has-background-info">
+			<button id="close-notification-moderator" class="delete"></button>
 			@if($numberOfAdsToModerate >1)
 				<p class="has-text-white-ter">
 					<i class="far fa-bell has-text-white-ter"></i>
@@ -39,253 +39,10 @@
 				</a>
 			@endif
 		</div>
+
 		{{Form::open(['route'=>'moderator.show', 'method'=>'get'])}}
 		<div id="vue-form-moderator">
-
-			<research-form-moderator
-					inline-template
-					:old-input-selected="{{json_encode(old())}}"
-			>
-				<div>
-					<div class="columns">
-						<div class="column is-four-fifths">
-							<div class="columns">
-								<?php
-								$adTypes = [
-									['name' => 'Offre foncière', 'value' => 'landOfferAd'],
-									['name' => 'Recherche foncière', 'value' => 'landSeekAd'],
-									['name' => 'Offre d\'emploi', 'value' => 'jobOfferAd'],
-									['name' => 'Recherche d\'emploi', 'value' => 'jobSeekAd'],
-								];
-								$adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access"]
-								?>
-								@foreach($adTypes as $i => $adType)
-									<div class="column">
-										<custom-checkbox
-												name="ad_type[]"
-												input-value="{{$adType['value']}}"
-												v-model="adTypeSelected"
-												ref="typeSelected"
-												value="true"
-												:is-radio="false">
-											<i class="fa {{ $adTypesFaIcons[$i] }}"
-											   style="font-size: 30px;"></i><br><br>
-											<span style="font-size:16px">
-                                              {{$adType['name']}}
-                                            </span>
-										</custom-checkbox>
-									</div>
-								@endforeach
-							</div>
-							{{--							<div class="columns">--}}
-							{{--								<div class="column">--}}
-							{{--									<div @click="adTypeSelected('landOfferAd')"--}}
-							{{--										 class="button is-link is-fullwidth form-research-buttons">--}}
-							{{--											<span class="icon is-small  ">--}}
-							{{--												  <i class="fas fa-check"></i>--}}
-							{{--										</span>--}}
-							{{--										<span>Offre foncière</span>--}}
-							{{--									</div>--}}
-							{{--								</div>--}}
-							{{--								<div class="column">--}}
-							{{--									<div @click="adTypeSelected('landSeekAd')"--}}
-							{{--										 class="button is-link is-light is-fullwidth form-research-buttons">--}}
-							{{--											<span class="icon is-small is-hidden ">--}}
-							{{--												  <i class="fas fa-check"></i>--}}
-							{{--										</span>--}}
-							{{--										<span>Recherche foncière</span>--}}
-							{{--									</div>--}}
-							{{--								</div>--}}
-							{{--								<div class="column">--}}
-							{{--									<div @click="adTypeSelected('jobOfferAd')"--}}
-							{{--										 class="button is-link is-light is-fullwidth form-research-buttons">--}}
-							{{--											<span class="icon is-small is-hidden ">--}}
-							{{--												  <i class="fas fa-check"></i>--}}
-							{{--										</span>--}}
-							{{--										<span>Offre d'emploi</span>--}}
-							{{--									</div>--}}
-							{{--								</div>--}}
-							{{--								<div class="column">--}}
-							{{--									<div @click="adTypeSelected('jobSeekAd')"--}}
-							{{--										 class="button is-link is-light is-fullwidth form-research-buttons">--}}
-							{{--											<span class="icon is-small is-hidden ">--}}
-							{{--												  <i class="fas fa-check"></i>--}}
-							{{--										</span>--}}
-							{{--										<span>Recherche d'emploi</span>--}}
-							{{--									</div>--}}
-							{{--								</div>--}}
-							{{--							</div>--}}
-						</div>
-						{{--						<input type="hidden" v-bind:value="typeSelected" name="ad_type">--}}
-						<div class="column">
-							<div class="control has-icons-right ">
-								<label class="label"> Annonces soumises depuis le </label>
-								<date-picker
-										old-value= {{old('date_research_range')}}
-								></date-picker>
-							</div>
-						</div>
-					</div>
-					<div class="columns">
-						<div class="column is-one-third">
-							<div class="columns">
-								<div class="column is-half">
-									<div class="field">
-										<label class="label">Commune ou Code postal</label>
-										<autocomplete
-												name="citySelect"
-												id="citySelect"
-												placeholder="Saisissez les premiers caractères"
-												ref='citySelect'
-												src="/locations/cities"
-												v-model="citySelect">
-
-											<input type="hidden" name="city_location_researches" :value="zone.value.id"
-												   v-for="(zone,i) in citySelect">
-
-											<div class="tag autocomplete-input-tag is-info"
-												 v-for="(zone,i) in citySelect"
-												 @click="_ => citySelect.splice(i,1)">
-												@{{ zone.label }}
-												&nbsp;&nbsp;
-												<i class="fa fa-trash" style="cursor:pointer"></i>
-											</div>
-										</autocomplete>
-									</div>
-								</div>
-								<div class="column">
-									<div class="field">
-										<p class="label">Dans un rayon de </p>
-										<vue-slider
-												name="radius_research"
-												:old-data="{
-														'value' : {{json_encode(old('radius_research'))}},
-														'textValue' : {{json_encode(old('radius_research'))}}+'km'
-														}"
-												:data="{
-													0: '0km',
-													5: '5km',
-													10: '10km',
-													20: '20km',
-													50: '50km'
-												}"
-										></vue-slider>
-										<br>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="is-divider-vertical" data-content="OU"></div>
-						<div class="column is-one-third">
-							<label class="label">Départements</label>
-							<multi-select
-									:options="{{ json_encode($departments) }}"
-									:multiple="true"
-									v-model="departmentsSelected"
-									name="departments_location_researches[]"
-									selected-count-text="département(s) sélectionné(s)"
-									placeholder="Choississez un/des département(s)">
-							</multi-select>
-						</div>
-						<div class="is-divider-vertical" data-content="OU"></div>
-						<div class="column ">
-							<label class="label">Régions</label>
-							<multi-select
-									:options="{{ json_encode($regions) }}"
-									:multiple="true"
-									v-model="regionsSelected"
-									name="regions_location_researches[]"
-									selected-count-text="département(s) sélectionné(s)"
-									placeholder="Choississez un/des département(s)">
-							</multi-select>
-						</div>
-					</div>
-					<hr class="navbar-divider">
-					<div class="columns">
-						<div class="column is-half">
-							<p class="label has-text-centered">Statut de l'annonce</p>
-							<div class="columns is-mobile is-multiline is-centered">
-								@foreach($adStatuses as $adStatus)
-									<div class="column is-narrow has-text-centered">
-										<label class="checkbox">
-											<input name="ad_statuses[]" value="{{(int)$adStatus->id}}"
-												   type="checkbox" {{old('ad_statuses') && in_array((int)$adStatus->id,old('ad_statuses'))  ? ' checked' : '' }}>
-											{{$adStatus->name}}
-										</label>
-									</div>
-								@endforeach
-							</div>
-						</div>
-						<div class="column is-half">
-							<p class="label has-text-centered">Statut du projet</p>
-							<div class="columns  is-mobile is-multiline is-centered">
-								@foreach($projectStatuses as $projectStatus)
-									<div class="column is-narrow has-text-centered">
-										<label class="checkbox">
-											<input name="project_statuses[]" value="{{(int)$projectStatus->id}}"
-												   type="checkbox"
-													{{old('project_statuses') && in_array((int)$projectStatus->id,old('project_statuses'))  ? ' checked' : '' }}>
-											{{$projectStatus->name}}
-										</label>
-									</div>
-								@endforeach
-							</div>
-						</div>
-					</div>
-					<hr class="navbar-divider">
-
-					<div class="columns">
-						<div class=" column is-one-third ">
-							<label class="label">Recherche par mot clé</label>
-							<input name="ad_title" class="input" type="text" placeholder="Votre recherche..."
-								   value="{{old('ad_title')}}">
-						</div>
-
-						{{--						<div v-if="adType === 'land'" class=" column is-3">--}}
-						{{--							<label class="label">Système de production</label>--}}
-						{{--							<div class="select">--}}
-						{{--								<select name="production_genres">--}}
-						{{--									@foreach($productionGenres as $productionGenre)--}}
-						{{--										<option value="{{$productionGenre->id}}">{{$productionGenre->name}} </option>--}}
-						{{--									@endforeach--}}
-						{{--								</select>--}}
-						{{--							</div>--}}
-						{{--						</div>--}}
-						{{--						<div v-if="adType === 'land'" class="column is-4">--}}
-						{{--							<div class="field">--}}
-						{{--								<p class="label">Surface(en ha) </p>--}}
-						{{--								<vue-slider-range--}}
-						{{--										name-min="land_seek[surface_range_min]"--}}
-						{{--										name-max="land_seek[surface_range_max]"--}}
-						{{--										:data="{--}}
-						{{--													0: '0 ha',--}}
-						{{--													5: '5 ha',--}}
-						{{--													10: '10 ha',--}}
-						{{--													20: '20 ha',--}}
-						{{--													50: '50 ha'--}}
-						{{--												}"--}}
-						{{--										:value="0"--}}
-						{{--								></vue-slider-range>--}}
-						{{--							</div>--}}
-						{{--						</div>--}}
-						{{--						<div v-if="adType === 'job'" class="column is-4 has-text-center">--}}
-						{{--							<label class="label">Statut de l'emploi</label>--}}
-						{{--							<div class="select">--}}
-						{{--								<select name="projectStatus">--}}
-						{{--									@foreach($jobOfferTypes as $jobOfferType)--}}
-						{{--										<option value="{{$jobOfferType->id}}">{{$jobOfferType->name}} </option>--}}
-						{{--									@endforeach--}}
-						{{--								</select>--}}
-						{{--							</div>--}}
-						{{--						</div>--}}
-						<div class="column  ">
-							<button type="submit" class="button is-link is-large is-pulled-right">
-								<span>Filtrer</span>
-							</button>
-						</div>
-					</div>
-				</div>
-			</research-form-moderator>
+			@include('components.dashboard-filters')
 		</div>
 		{{Form::close()}}
 
@@ -293,7 +50,7 @@
 			<h1 class="title is-1 has-text-centered">Liste des annonces à modérer</h1>
 
 			@if (count($attributionAds) ==0)
-				<p class="has-text-centered">Vous n'avez pas d'annonce à modérer</p>
+				<p class="has-text-centered">Aucun résultat</p>
 			@else
 				<div class="table-container">
 					<table class="table is-striped is-hoverable is-fullwidth ">
@@ -311,14 +68,14 @@
 										<span>Date de soumission</span>
 									</a>
 								@else
-									<a href="{{ route('moderator.show') }}">
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}">
 										<i class="fas fa-arrow-up"></i>
 										<span>Date de soumission</span>
 									</a>
 								@endif
 							</th>
 							<th>
-								@if(request()->input('sort') !== 'title')
+									@if(request()->input('sort') !== 'title')
 									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">
 										<span>Titre de l'annonce</span>
 									</a>
@@ -328,7 +85,7 @@
 										<span>Titre de l'annonce</span>
 									</a>
 								@else
-									<a href="{{ route('moderator.show') }}">
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}">
 										<i class="fas fa-arrow-down"></i>
 										<span>Titre de l'annonce</span>
 									</a>
@@ -347,7 +104,7 @@
 										<span>Nom du porteur de projet</span>
 									</a>
 								@else
-									<a href="{{ route('moderator.show') }}">
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}">
 										<i class="fas fa-arrow-down"></i>
 										<span>Nom du porteur de projet</span>
 									</a>
@@ -366,29 +123,29 @@
 										<span>Statut de l'annonce</span>
 									</a>
 								@else
-									<a href="{{ route('moderator.show') }}">
+									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}">
 										<i class="fas fa-arrow-down"></i>
 										<span>Statut de l'annonce</span>
 									</a>
 								@endif
 							</th>
-							<th>
-								@if(request()->input('sort') !== 'project_statuses.name')
-									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'project_statuses.name'])) }}">
-										<span>Statut du projet</span>
-									</a>
-								@elseif(request()->input('sort') === 'project_statuses.name' && request()->input('order') === 'asc')
-									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'project_statuses.name'])) }}">
-										<i class="fas fa-arrow-up"></i>
-										<span>Statut du projet</span>
-									</a>
-								@else
-									<a href="{{ route('moderator.show') }}">
-										<i class="fas fa-arrow-down"></i>
-										<span>Statut du projet</span>
-									</a>
-								@endif
-							</th>
+{{--							<th>--}}
+{{--								@if(request()->input('sort') !== 'project_statuses.name')--}}
+{{--									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'project_statuses.name'])) }}">--}}
+{{--										<span>Statut du projet</span>--}}
+{{--									</a>--}}
+{{--								@elseif(request()->input('sort') === 'project_statuses.name' && request()->input('order') === 'asc')--}}
+{{--									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'project_statuses.name'])) }}">--}}
+{{--										<i class="fas fa-arrow-up"></i>--}}
+{{--										<span>Statut du projet</span>--}}
+{{--									</a>--}}
+{{--								@else--}}
+{{--									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}">--}}
+{{--										<i class="fas fa-arrow-down"></i>--}}
+{{--										<span>Statut du projet</span>--}}
+{{--									</a>--}}
+{{--								@endif--}}
+{{--							</th>--}}
 							<th></th>
 						</tr>
 						</thead>
@@ -408,7 +165,7 @@
 									@if(! is_null($attributionAd->ad->regionsList))
 										<p>Region(s) : {{$attributionAd->ad->regionsList}}</p>
 									@endif
-									@if(! is_null($attributionAd->ad->departmentList))
+									@if(! is_null($attributionAd->ad->departmentsList))
 										<p>Département(s) : {{$attributionAd->ad->departmentsList}}</p>
 									@endif
 									@if(! is_null($attributionAd->ad->citiesList))
@@ -416,39 +173,37 @@
 									@endif
 								</td>
 								<td>
-									@if($attributionAd->adStatus->name === "Validé")
+									@if($attributionAd->adStatus->name === "Validée")
 										<span class="tag is-success">{{$attributionAd->adStatus->name}}</span>
-									@elseif($attributionAd->adStatus->name ==="A modifier")
+									@elseif($attributionAd->adStatus->name ==="En attente")
 										<span class="tag is-warning is-light">{{$attributionAd->adStatus->name}}</span>
-									@elseif($attributionAd->adStatus->name === "Refuser")
+									@elseif($attributionAd->adStatus->name === "Refusée")
 										<span class="tag is-danger">{{$attributionAd->adStatus->name}}</span>
 
-									@elseif($attributionAd->adStatus->name === "A modérer")
+									@elseif($attributionAd->adStatus->name === "À modérer")
 										<span class="tag is-warning">{{$attributionAd->adStatus->name}}</span>
-									@elseif($attributionAd->adStatus->name === "A assigner")
-										<span class="tag is-primary">{{$attributionAd->adStatus->name}}</span>
 									@else
 										<span class="tag is-info">{{$attributionAd->adStatus->name}}</span>
 									@endif
 								</td>
-								<td>
-									@if(is_null($attributionAd->ad->project))
-										<span class="tag is-light">L'annonce n'a pas le statut de projet</span>
-									@else
-										@if($attributionAd->ad->project->projectStatus->name === "Accompagné")
-											<span class="tag is-success is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
-										@elseif($attributionAd->ad->project->projectStatus->name ==="Installé")
-											<span class="tag is-success is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
-										@elseif($attributionAd->ad->project->projectStatus->name === "A rappeler")
-											<span class="tag is-danger is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
+{{--								<td>--}}
+{{--									@if(is_null($attributionAd->ad->project))--}}
+{{--										<span class="tag is-light">L'annonce n'a pas le statut de projet</span>--}}
+{{--									@else--}}
+{{--										@if($attributionAd->ad->project->projectStatus->name === "Accompagné")--}}
+{{--											<span class="tag is-success is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
+{{--										@elseif($attributionAd->ad->project->projectStatus->name ==="Installé")--}}
+{{--											<span class="tag is-success is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
+{{--										@elseif($attributionAd->ad->project->projectStatus->name === "A rappeler")--}}
+{{--											<span class="tag is-danger is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
 
-										@elseif($attributionAd->ad->project->projectStatus->name === "Non accompagné")
-											<span class="tag is-warning is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
-										@else
-											<span class="tag is-info is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>
-										@endif
-									@endif
-								</td>
+{{--										@elseif($attributionAd->ad->project->projectStatus->name === "Non accompagné")--}}
+{{--											<span class="tag is-warning is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
+{{--										@else--}}
+{{--											<span class="tag is-info is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
+{{--										@endif--}}
+{{--									@endif--}}
+{{--								</td>--}}
 								<td><a href="{{route('ads.show', $attributionAd->ad->id)}}"><span><i
 													class="fas fa-search"></i></span> <span>Voir le détail</span></a>
 								</td>
@@ -457,11 +212,11 @@
 						</tbody>
 					</table>
 				</div>
-					<div class="columns is-mobile is-centered">
-						<div class="column is-half ">
-							{{ $attributionAds->appends(Request::all())->links() }}
-						</div>
+				<div class="columns is-mobile is-centered">
+					<div class="column is-half ">
+						{{ $attributionAds->appends(Request::all())->links() }}
 					</div>
+				</div>
 			@endif
 		</div>
 
@@ -473,7 +228,7 @@
 @section('script')
 
 	<script>
-        const vueThreads = new Vue({
+        const vueModerator = new Vue({
             el: '#vue-form-moderator',
             name: 'content'
         });
@@ -492,6 +247,12 @@
             });
 
         });
+
+        let deleteButton = document.querySelector('#close-notification-moderator');
+        deleteButton.addEventListener('click', function (e) {
+            let notification = document.querySelector('#notification-moderator');
+            notification.style.display = 'none';
+        })
 	</script>
 
 @endsection

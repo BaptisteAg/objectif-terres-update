@@ -7,12 +7,11 @@
 
 	<div class="section">
 		<h1 class="title is-2 has-text-link">Aide & ressources </h1>
-		@include('components.moderatorTabs')
+		@include('components.moderator-tabs')
 
 		<div class="container ">
 			<div class="content is-medium has-text-justified">
-				<p>Vous trouverez sur cette page une série de ressources utiles pour vous aider et
-					accompagner vos porteur de projets ou à utiliser le site d'Objectif Terres. Eget risus varius
+				<p>Vous trouverez sur cette page une série de ressources utiles pour vous aider à modérer les annonces ou à utiliser le site d'Objectif Terres. Eget risus varius
 					blandit sit amet non magna. Sed
 					posuere consectetur est at lobortis. Vestibulum id ligula porta felis euismod
 					semper. Duis mollis, est non commodo luctus, nisi erat porttitor.</p>
@@ -78,7 +77,7 @@
 				<h2 class="subtitle">
 					Démarrez une nouvelle discussion avec un ou plusieurs membres d'Objectif Terres
 				</h2>
-				<div id="vue-help-new-message-modal">
+				<div id="vue-moderator-help-new-message-modal">
 					<vue-threads inline-template>
 						<div>
 							<button class="open-modal-new-message button is-link is-large" type="button">
@@ -103,7 +102,7 @@
 						<div class="content">
 							<div class="columns is-mobile is-centered">
 								<div class="column is-three-quarters">
-									<h2 class="title is-2 has-text-link">Conseil sur la gestion de la modération</h2>
+									<h2 class="title is-2 has-text-link">Conseils sur la gestion de la modération</h2>
 									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cupiditate
 										debitis
 										deleniti dicta, error exercitationem fugit illo labore laudantium modi</p>
@@ -192,7 +191,7 @@
 @section('script')
 	<script>
         const vueThreads = new Vue({
-            el: '#vue-help-new-message-modal',
+            el: '#vue-moderator-help-new-message-modal',
             name: 'content'
         });
 

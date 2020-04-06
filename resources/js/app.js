@@ -31,9 +31,9 @@ require ('./pages/ads/new');
 require ('./pages/ads/show');
 // require('./pages/researches/researches');
 require('./pages/header');
-require('./pages/auth/register');
+require('./pages/auth/user-form');
 require('./pages/threads/threads');
-require('./pages/moderator/index');
+require('./pages/dashboard');
 require('./pages/video');
 require('./pages/cms/contact-us-form');
 //////////////
