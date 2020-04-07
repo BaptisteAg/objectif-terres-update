@@ -9,10 +9,11 @@
 					class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
 
 		@include('components.moderator-tabs')
-		@if($numberOfAdsToModerate !== 0 && $numberOfUnreadMessages !==0)
+		@if($numberOfAdsToModerate !== 0 || $numberOfUnreadMessages !==0)
 			<div id="notification-moderator" class="notification has-background-info">
 				<button id="close-notification-moderator" class="delete"></button>
-				@if($numberOfAdsToModerate >1)
+				@if($numberOfAdsToModerate === 0)
+				@elseif($numberOfAdsToModerate >1)
 					<p class="has-text-white-ter">
 						<i class="far fa-bell has-text-white-ter"></i>
 						Vous avez<a style="text-decoration: none"
@@ -24,7 +25,8 @@
 						<strong>{{$numberOfAdsToModerate}} annonce</strong> à modérer !</p>
 				@endif
 
-				@if($numberOfUnreadMessages > 1 )
+				@if($numberOfUnreadMessages === 0)
+				@elseif($numberOfUnreadMessages > 1 )
 					<a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i
 									class="fas fa-envelope "></i> Vous
 							avez <strong>{{$numberOfUnreadMessages}}
