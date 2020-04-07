@@ -203,30 +203,31 @@
 				<button type="submit" class="button is-link is-large ">
 					<span>Filtrer</span>
 				</button>
+				<br>
+				@if(Route::current()->getName() == 'moderator.show')
+					<a href="{{route('moderator.index')}}" class="">
+						<span class="icon has-text-danger is-marginless">
+  							<i class="fas fa-times"></i>
+						</span>
+						<span class="is-size-6">Réinitialiser</span>
+					</a>
+				@elseif (Route::current()->getName() == 'supervisor.show')
+					<a href="{{route('supervisor.index')}}" class=" ">
+						<span class="icon has-text-danger is-marginless">
+  							<i class="fas fa-times"></i>
+						</span>
+						<span class="is-size-6">Réinitialiser</span>
+					</a>
+				@elseif (Route::current()->getName() == 'advisor.show')
+					<a href="{{route('advisor.index')}}" class="  ">
+						<span class="icon has-text-danger is-marginless ">
+  							<i class="fas fa-times"></i>
+						</span>
+						<span class="is-size-6">Réinitialiser</span>
+					</a>
+				@endif
 			</div>
 		</div>
 		<hr class="navbar-divider">
-		@if(Route::current()->getName() == 'moderator.show')
-			<a href="{{route('moderator.index')}}" class="is-marginless is-pulled-right">
-						<span class="icon has-text-danger is-marginless">
-  							<i class="fas fa-times"></i>
-						</span>
-				<span class="is-size-6">Enlever tous les filtres</span>
-			</a>
-		@elseif (Route::current()->getName() == 'supervisor.show')
-			<a href="{{route('supervisor.index')}}" class=" is-marginless is-pulled-right">
-						<span class="icon has-text-danger is-marginless">
-  							<i class="fas fa-times"></i>
-						</span>
-				<span class="is-size-6">Enlever tous les filtres</span>
-			</a>
-		@elseif (Route::current()->getName() == 'advisor.show')
-			<a href="{{route('advisor.index')}}" class=" is-marginless is-pulled-right">
-						<span class="icon has-text-danger is-marginless is-pulled-right">
-  							<i class="fas fa-times"></i>
-						</span>
-				<span class="is-size-6">Enlever tous les filtres</span>
-			</a>
-		@endif
 	</div>
 </dashboard-form-filter>

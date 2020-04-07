@@ -1,16 +1,22 @@
 @section('title', $ad->title)
 <section class="section">
 	<div class="container ">
-		<nav class="breadcrumb" aria-label="breadcrumbs">
-			<ul>
-				<li><a href="#">Annonces</a></li>
-				<li><a href="#">Offres foncières</a></li>
-			</ul>
-		</nav>
+		@if( ! $ad->project()->exists())
+			<nav class="breadcrumb" aria-label="breadcrumbs">
+				<ul>
+					<li><a href="#">Annonces</a></li>
+					<li><a href="#">Offres foncières</a></li>
+				</ul>
+			</nav>
+		@endif
 		<h1 class="title has-text-link">{{$ad->title}}</h1>
 		@auth
 			@if(auth()->user()->role >= 1)
-				@include('pages.ads.partials.moderator-options')
+				@if($ad->project()->exists())
+					@include ('pages.ads.partials.attribution-project-options')
+				@else
+					@include('pages.ads.partials.moderator-options')
+				@endif
 			@endif
 
 			@if(auth()->user()->id === $ad->user_pp_id)

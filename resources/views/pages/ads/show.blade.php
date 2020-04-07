@@ -29,12 +29,12 @@
         buttons.forEach((button) => {
             button.addEventListener('click', function (event) {
                 event.preventDefault();
-                let modal = document.querySelector('.modal');
+                let modal = document.querySelector('div[data-type="modal-message"]');
                 let html = document.querySelector('html');
                 modal.classList.add('is-active');
                 html.classList.add('is-clipped');
 
-                modal.querySelector('.modal-background').addEventListener('click', function (e) {
+                modal.querySelector('div[data-type="modal-message-background"]').addEventListener('click', function (e) {
                     e.preventDefault();
                     modal.classList.remove('is-active');
                     html.classList.remove('is-clipped');
@@ -53,6 +53,25 @@
             notification.style.display = 'none';
 
         })
+
+       function showValidationSupervisorModal(){
+           let validationModal = document.querySelector('#modal-supervisor-validation');
+           let html = document.querySelector('html');
+           validationModal.classList.add('is-active');
+           html.classList.add('is-clipped');
+
+           validationModal.querySelector('#modal-supervisor-validation-background').addEventListener('click', function (e) {
+               e.preventDefault();
+               validationModal.classList.remove('is-active');
+               html.classList.remove('is-clipped');
+           });
+           validationModal.querySelector('#close-modal').addEventListener('click', function (e) {
+               e.preventDefault();
+               validationModal.classList.remove('is-active');
+               html.classList.remove('is-clipped');
+           });
+		}
+
 	</script>
 	@if(count($ad->images) > 1)
 		<script src="{{asset('/js/bulma-carousel.js')}}"></script>

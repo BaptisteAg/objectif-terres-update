@@ -60,9 +60,14 @@ class DatabaseSeeder extends Seeder
 					TestResearchSeeder::class,
 					TestResponseTemplateSeeder::class,
 				]);
-
+				if (app()->environment() === "local") {
+					$numberOfAds = 900;
+				}else{
+					$numberOfAds = 30;
+				}
+				$numberAdsPerCategory = $numberOfAds/3;
 				$projectIds = Project::all()->pluck('id')->toArray();
-				factory(Ad::class, 900)->create()->each(function (Ad $ad) use (&$queriesCount, &$projectIds) {
+				factory(Ad::class, $numberOfAds)->create()->each(function (Ad $ad) use (&$queriesCount, &$projectIds) {
 					$ad->attributionAd()->save(factory(AttributionAd::class)->make());
 					$ad->adNotes()->save(factory(AdNote::class)->make());
 					$ad->favoriteAds()->save(factory(FavoriteAd::class)->make());
@@ -76,11 +81,7 @@ class DatabaseSeeder extends Seeder
 				});
 				$adIds = Ad::all()->pluck("id")->toArray();
 
-				if (app()->environment() === "local") {
-					$numberAdsPerCategory = 300;
-				}else{
-					$numberAdsPerCategory= 10;
-				}
+
 				factory(LandOfferAd::class, $numberAdsPerCategory)->create()->each(function (LandOfferAd $landOfferAd) use (&$adIds) {
 
 					$cats = ['', 'Vend'];

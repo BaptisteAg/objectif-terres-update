@@ -10,30 +10,43 @@
 
 		@include('components.supervisor-tabs')
 
-		<div id="notification-supervisor" class="notification has-background-info">
-			<button id="close-notification-supervisor" class="delete"></button>
-			<p class="has-text-white-ter">
-				<i class="far fa-bell has-text-white-ter"></i>
-				Vous avez<a style="text-decoration: none"
-							href="/">
-					<strong>5
-						nouveaux porteurs de projets</strong></a> dans votre territoire !</p>
-			@if($numberOfUnreadMessages > 1 )
-				<a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i
-								class="fas fa-envelope "></i> Vous
-						avez <strong>{{$numberOfUnreadMessages}}
-							nouveaux messages
-							!</strong></p></a>
-
-			@else
-				<a style="text-decoration: none" href="{{route('threads.index')}}">
-					<p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez
-						<strong>{{$numberOfUnreadMessages}} nouveau message !</strong>
+		@if($numberOfNotAssignProject !== 0 && $numberOfUnreadMessages !==0)
+			<div id="notification-supervisor" class="notification has-background-info">
+				<button id="close-notification-supervisor" class="delete"></button>
+				@if($numberOfNotAssignProject>1)
+					<p class="has-text-white-ter">
+						<i class="far fa-bell has-text-white-ter"></i>
+						Vous avez<a style="text-decoration: none"
+									href="/">
+							<strong>{{$numberOfNotAssignProject}}
+								demandes d'accompagnement non assignées</strong></a> dans votre territoire !
 					</p>
-				</a>
-			@endif
-		</div>
+				@elseif ($numberOfNotAssignProject === 1)
+					<p class="has-text-white-ter">
+						<i class="far fa-bell has-text-white-ter"></i>
+						Vous avez<a style="text-decoration: none"
+									href="/">
+							<strong>{{$numberOfNotAssignProject}}
+								demandes d'accompagnement non assignée</strong></a> dans votre territoire !
+					</p>
+				@else
+				@endif
+				@if($numberOfUnreadMessages > 1 )
+					<a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i
+									class="fas fa-envelope "></i> Vous
+							avez <strong>{{$numberOfUnreadMessages}}
+								nouveaux messages
+								!</strong></p></a>
 
+				@else
+					<a style="text-decoration: none" href="{{route('threads.index')}}">
+						<p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez
+							<strong>{{$numberOfUnreadMessages}} nouveau message !</strong>
+						</p>
+					</a>
+				@endif
+			</div>
+		@endif
 		{{Form::open(['route'=>'supervisor.show', 'method'=>'get'])}}
 		<div id="vue-form-supervisor">
 			@include('components.dashboard-filters')
@@ -42,7 +55,7 @@
 
 		<div class="section">
 			<h1 class="title is-1 has-text-centered">Liste des demandes d'accompagnement dans votre territoire</h1>
-			@if (count($projectAds) ==0)
+			@if (count($projects) ==0)
 				<p class="has-text-centered">Aucun résultat</p>
 			@else
 				<div class="table-container">
@@ -125,47 +138,50 @@
 						</tr>
 						</thead>
 						<tbody>
-						@foreach($projectAds as $projectAd)
+						@foreach($projects as $project)
 							<tr>
-								<td>{{$projectAd->created_at->format("d/m/Y")}}</td>
+								<td>{{$project->created_at->format("d/m/Y")}}</td>
 								<td>
-									<a href="{{route('ads.show', $projectAd->ad->id)}}">{{$projectAd->ad->title}}</a>
+									<a href="{{route('ads.show', $project->ad->id)}}">{{$project->ad->title}}</a>
 								</td>
-								<td>{{$projectAd->ad->ad_type_full_name}}</td>
+								<td>{{$project->ad->ad_type_full_name}}</td>
 								<td>
-									<a href="{{route('user.show', $projectAd->ad->userPp->id)}}">{{$projectAd->ad->userPp->first_name}} {{$projectAd->ad->userPp->name}}</a>
+									<a href="{{route('user.show', $project->ad->userPp->id)}}">{{$project->ad->userPp->first_name}} {{$project->ad->userPp->name}}</a>
 								</td>
-								<td>{{$projectAd->ad->userPp->email}}</td>
+								<td>{{$project->ad->userPp->email}}</td>
 								<td>
-									@if(! is_null($projectAd->ad->regionsList))
-										<p>Region(s) : {{$projectAd->ad->regionsList}}</p>
+									@if(! is_null($project->ad->regionsList))
+										<p>Region(s) : {{$project->ad->regionsList}}</p>
 									@endif
-									@if(! is_null($projectAd->ad->departmentList))
-										<p>Département(s) : {{$projectAd->ad->departmentsList}}</p>
+									@if(! is_null($project->ad->departmentList))
+										<p>Département(s) : {{$project->ad->departmentsList}}</p>
 									@endif
-									@if(! is_null($projectAd->ad->citiesList))
-										<p>Communes(s) : {{$projectAd->ad->citiesList}}</p>
+									@if(! is_null($project->ad->citiesList))
+										<p>Communes(s) : {{$project->ad->citiesList}}</p>
 									@endif
 								</td>
 								<td>
-									@if(is_null($projectAd->ad->project))
+									@if(is_null($project->ad->project))
 										<span class="tag is-light">L'annonce n'a pas le statut de projet</span>
 									@else
-										@if($projectAd->projectStatus->name === "Accompagné")
-											<span class="tag is-success is-light">{{$projectAd->projectStatus->name}}</span>
-										@elseif($projectAd->projectStatus->name ==="Installé")
-											<span class="tag is-success is-light">{{$projectAd->projectStatus->name}}</span>
-										@elseif($projectAd->projectStatus->name === "A rappeler")
-											<span class="tag is-danger is-light">{{$projectAd->projectStatus->name}}</span>
-
-										@elseif($projectAd->projectStatus->name === "Non accompagné")
-											<span class="tag is-warning is-light">{{$projectAd->projectStatus->name}}</span>
+										@if($project->projectStatus->name === "Accompagné")
+											<span class="tag is-success is-light">{{$project->projectStatus->name}}</span>
+										@elseif($project->projectStatus->name ==="Installé")
+											<span class="tag is-success">{{$project->projectStatus->name}}</span>
+										@elseif($project->projectStatus->name === "A rappeler")
+											<span class="tag is-danger is-light">{{$project->projectStatus->name}}</span>
+										@elseif($project->projectStatus->name === "Non accompagné")
+											<span class="tag is-warning ">{{$project->projectStatus->name}}</span>
+										@elseif($project->projectStatus->name === "Idée")
+											<span class="tag is-primary ">{{$project->projectStatus->name}}</span>
+										@elseif($project->projectStatus->name === "Archivée")
+											<span class="tag is-info is-light">{{$project->projectStatus->name}}</span>
 										@else
-											<span class="tag is-info is-light">{{$projectAd->projectStatus->name}}</span>
+											<span class="tag is-info">{{$project->projectStatus->name}}</span>
 										@endif
 									@endif
 								</td>
-								<td><a href="{{route('ads.show', $projectAd->ad->id)}}"><span><i
+								<td><a href="{{route('ads.show', $project->ad->id)}}"><span><i
 													class="fas fa-search"></i></span> <span>Voir le détail</span></a>
 								</td>
 							</tr>
@@ -175,7 +191,7 @@
 				</div>
 				<div class="columns is-mobile is-centered">
 					<div class="column is-half ">
-						{{ $projectAds->appends(Request::all())->links() }}
+						{{ $projects->appends(Request::all())->links() }}
 					</div>
 				</div>
 			@endif

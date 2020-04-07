@@ -45,7 +45,7 @@
                 },
                 highlighted: {
                     to: new Date(Date.now()),
-                    from:this.oldValue ? new Date(dateFormatted) : d.setDate(d.getDate() -7),
+                    from:this.oldValue ? new Date(dateFormatted) : null,
                 }
             }
         },

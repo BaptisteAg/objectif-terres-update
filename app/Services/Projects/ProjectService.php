@@ -5,6 +5,7 @@ namespace App\Services\Projects;
 use App\Models\Department;
 use App\Models\Project;
 use App\Models\Region;
+use App\Repositories\Projects\ProjectsRepository;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -12,6 +13,13 @@ use Illuminate\Http\Request;
 
 class ProjectService
 {
+	protected $repository;
+
+
+	public function __construct(ProjectsRepository $projectsRepository)
+	{
+		$this->repository = $projectsRepository;
+	}
 
 	/**
 	 * Show all projects ads related to supervisor
@@ -38,8 +46,14 @@ class ProjectService
 	 */
 	public function showForSupervisor(Request $filters)
 	{
-		$projectAds = $this->filter($filters, auth()->user()->role);
-		return $projectAds;
+		$project = $this->filter($filters, auth()->user()->role);
+		return $project;
+	}
+
+
+	public function countNumberOfProjectsByStatusForLoggedUser($projectStatusId){
+		$numberOfProjects = $this->repository->findAllByUserIdAndUserRoleAndProjectStatusId(auth()->user()->id, auth()->user()->role,$projectStatusId)->count();
+		return $numberOfProjects;
 	}
 
 	/**
@@ -69,17 +83,17 @@ class ProjectService
 			return $projectAds;
 		}
 		//START QUERY
-		$projectAdsFiltered = (new Project())->newQuery();
+		$projectsFiltered = (new Project())->newQuery();
 
 		//First, filter attributions ads based on the role who is the user logged
 		if ($roleUser === 2) {
-			$projectAdsFiltered->whereHas('ad', function (Builder $query) use ($roleUser) {
+			$projectsFiltered->whereHas('ad', function (Builder $query) use ($roleUser) {
 				$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
 					$q->where('user_advisor_id', '=', auth()->id());
 				});
 			});
 		} else if ($roleUser === 3) {
-			$projectAdsFiltered->whereHas('ad', function (Builder $query) use ($roleUser) {
+			$projectsFiltered->whereHas('ad', function (Builder $query) use ($roleUser) {
 				$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
 					$q->where('user_supervisor_id', '=', auth()->id());
 				});
@@ -94,70 +108,70 @@ class ProjectService
 //			if (array_key_exists('cities', $locations)) {
 //				if (!is_null($filters->input('radius_research'))) {
 //					$cityIds = $this->locationService->getCitiesInRadius($locations['cities'], $filters->input('radius_research'));
-//					$projectAdsFiltered->filterLocations('ad.cities', $cityIds);
+//					$projectsFiltered->filterLocations('ad.cities', $cityIds);
 //				} else {
-//					$projectAdsFiltered->filterLocations('ad.cities', $locations['cities']);
+//					$projectsFiltered->filterLocations('ad.cities', $locations['cities']);
 //				}
 			//If one or more departments are selected, get all ads located in departments and cities in departments
 
 			if (array_key_exists('departments', $locations)) {
 				$departmentsCode = Department::whereIn('id', $locations['departments'])->get('code')->toArray();
-				$projectAdsFiltered->filterLocations('ad.departments', $locations['departments']);
-				$projectAdsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+				$projectsFiltered->filterLocations('ad.departments', $locations['departments']);
+				$projectsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
 
 				//If one or more regions are selected, get all ads located in regions, all ads in departments inside regions and cities in departments
 			}
 			if (array_key_exists('regions', $locations)) {
 				$regionsCodes = Region::whereIn('id', $locations['regions'])->get('code')->toArray();
 				$departmentsCode = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
-				$projectAdsFiltered->filterLocations('ad.regions', $locations['regions']);
-				$projectAdsFiltered->filterSubLocations('ad.departments', $regionsCodes, 'departments.region_code');
-				$projectAdsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+				$projectsFiltered->filterLocations('ad.regions', $locations['regions']);
+				$projectsFiltered->filterSubLocations('ad.departments', $regionsCodes, 'departments.region_code');
+				$projectsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
 			}
 		}
 		//If a range of submitting date is selected, filter attribution ads based on creation date
 		if (!is_null($filters->input('date_research_range'))) {
 			$dateFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_research_range'))->format('Y-m-d');
-			$projectAdsFiltered->where('created_at', '>=', $dateFormatted);
+			$projectsFiltered->where('created_at', '>=', $dateFormatted);
 		}
 		//If one or many project status are selected, filter  ads based on their project status
 		if ($filters->has('project_statuses')) {
-			$projectAdsFiltered->whereIn('project_status_id', $filters->input('project_statuses'));
+			$projectsFiltered->whereIn('project_status_id', $filters->input('project_statuses'));
 		}
 
 		//Filter ads based on their types if requested
 		if ($filters->has('ad_type')) {
-			$projectAdsFiltered->filterAdTypes($filters->input('ad_type'), 'ad.');
+			$projectsFiltered->filterAdTypes($filters->input('ad_type'), 'ad.');
 		}
 
 		//Handling sort of research results
 		if ($filters->has('order') && $filters->has('sort')) {
 			if ($filters->input('sort') === 'date') {
-				$projectAdsFiltered->orderBy('created_at', $filters->input('order'));
+				$projectsFiltered->orderBy('created_at', $filters->input('order'));
 			} else if ($filters->input('sort') === 'title') {
-				$projectAdsFiltered
+				$projectsFiltered
 					->join('ads', 'projects.id', '=', 'ads.id')
 					->orderBy($filters->input('sort'), $filters->input('order'));
 
 			} else if ($filters->input('sort') === 'name') {
-				$projectAdsFiltered
+				$projectsFiltered
 					->select('projects.*')
 					->join('ads as a1', 'projecsts.ad_id', '=', 'a1.id')
 					->join('users', 'users.id', '=', 'a1.user_pp_id')
 					->orderBy('first_name', $filters->input('order'));
 
 			} else if ($filters->input('sort') === 'project_statuses.name') {
-				$projectAdsFiltered
+				$projectsFiltered
 					->join('project_statuses', 'projects.project_status_id', '=', 'project_statuses.id')
 					->orderBy('name', $filters->input('order'));
 			}
 		} else {
-			$projectAdsFiltered->orderByDesc('created_at');
+			$projectsFiltered->orderByDesc('created_at');
 		}
-		$projectAds = $projectAdsFiltered
+		$projects = $projectsFiltered
 			->with($this->getEagerLoading())
 			->paginate(15);
-		return $projectAds;
+		return $projects;
 	}
 
 	/**
