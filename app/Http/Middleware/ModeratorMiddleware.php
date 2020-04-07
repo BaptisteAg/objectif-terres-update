@@ -17,7 +17,9 @@ class ModeratorMiddleware
 	 */
 	public function handle($request, Closure $next)
 	{
-		if (!auth()->check() || auth()->user()->role === 0) {
+		if (!auth()->check()) {
+			return redirect()->route('login');
+		} else if (auth()->user()->role === 0) {
 			abort(404);
 		} else {
 			if (auth()->user()->role < 1) {

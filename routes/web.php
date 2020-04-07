@@ -65,7 +65,8 @@ Route::prefix('mon-espace/recherches')->middleware('auth')->name('researches.')-
 Route::middleware('auth')->name('user.')->namespace('Users')->group(function () {
 	Route::prefix('mon-espace')->group(function (){
 		Route::get('/', 'UsersController@index')->name('index');
-		Route::get('mon-compte','UsersController@update')->name('update');
+		Route::get('mon-compte/{user}','UsersController@edit')->name('edit');
+		Route::post('mon-compte','UsersController@update')->name('update');
 	});
 	Route::prefix('porteur-de-projet')->group(function (){
 		Route::get('{user}', 'UsersController@show')->name('show');
@@ -90,6 +91,7 @@ Route::prefix('locations')->namespace('Locationables')->group(function () {
 	Route::get('/', 'LocationableController@locations');
 	Route::get('cities', 'LocationableController@cities');
 	Route::get('cities-and-departments', 'LocationableController@citiesAndDepartments');
+	Route::get('departments-and-regions', 'LocationableController@departmentsAndRegions');
 	Route::prefix('polygon')->group(function () {
 		Route::post('regions', 'LocationableController@regionsPolygon');
 	});
@@ -108,7 +110,6 @@ Route::middleware('moderator')->prefix('mon-espace-moderateur')->name('moderator
 	});
 
 });
-
 
 Route::middleware('supervisor')->prefix('mon-espace-responsable-territorial')->name('supervisor.')->namespace('Supervisors')->group(function () {
 	Route::get('/', 'SupervisorsController@index')->name('index');

@@ -82,7 +82,7 @@ class AdvisorsController extends Controller
 	 */
 	public function help()
 	{
-		$users = json_encode($this->userService->findAllExceptPP()) ;
+		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser()) ;
 		return view('pages.moderator.help', compact('users'));
 	}
 }

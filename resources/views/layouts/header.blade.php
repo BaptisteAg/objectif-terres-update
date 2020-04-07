@@ -12,9 +12,6 @@
 						<div class="level-item">
 							<a href="/" class="">Qui sommes nous ?</a>
 						</div>
-						<div class="level-item">
-							<a href="/" class="">Contactez-nous</a>
-						</div>
 					</div>
 					<div class="level-right">
 						@guest
@@ -236,7 +233,7 @@
 					</div>
 				</nav>
 				@if( Auth::check())
-					@if (Route::current()->getName() === 'ads.list' || Route::current()->getName() === 'researches.show' || Route::current()->getName() == 'favoriteAds.show' || Route::current()->getName() == 'messages.index'|| Route::current()->getName() == 'user.update' )
+					@if (Route::current()->getName() === 'ads.list'|| Route::current()->getName() === 'researches.show' || Route::current()->getName() == 'favoriteAds.show' || Route::current()->getName() == 'messages.index'|| Route::current()->getName() == 'user.update' )
 						@include('layouts.partials.users-tabs')
 					@endif
 				@endif

@@ -95,7 +95,6 @@ class AdService
 			}else {
 				$attributionAdData['user_moderator_id'] = User::where('role', '>=', '1')->get()->random()->id;
 			}
-
 			$attributionAdData['ad_status_id'] = $toModerateStatus->id;
 			$ad = $this->repository->create($data);
 			$attributionAdData['ad_id'] = $ad->id;

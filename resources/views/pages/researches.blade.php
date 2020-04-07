@@ -301,7 +301,7 @@
 	<script>
         document.querySelector('a#open-modal').addEventListener('click', function (event) {
             event.preventDefault();
-            let modal = document.querySelector('.modal');  // assuming you have only 1
+            let modal = document.querySelector('.modal');
             let html = document.querySelector('html');
             modal.classList.add('is-active');
             html.classList.add('is-clipped');

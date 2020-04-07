@@ -1,6 +1,6 @@
 @guest
-	<div class="modal">
-		<div class="modal-background"></div>
+	<div class="modal" data-type="modal-message">
+		<div class="modal-background" data-type="modal-message-background"></div>
 		<div class="modal-content">
 			<div class="card">
 				<div class="card-content">
@@ -28,8 +28,8 @@
 	</div>
 @else
 	{!! Form::open(['route' => 'threads.create', 'method'=>'post']) !!}
-	<div class="modal">
-		<div class="modal-background"></div>
+	<div class="modal" data-type ="modal-message">
+		<div class="modal-background" data-type ="modal-message-background"></div>
 		<div class="modal-content">
 			<div class="card">
 				<div class="card-content">
