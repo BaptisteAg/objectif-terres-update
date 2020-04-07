@@ -29,7 +29,7 @@
                         </div>
 
                         <div class="field">
-                            {!! Form::label('land_offer[surface]', 'Surface totale du foncier agricole*', [
+                            {!! Form::label('land_offer[surface]', 'Surface du foncier agricole*', [
                                 'class' => 'label has-tooltip-left',
                                 'data-tooltip' => '1ha = 10 000m²'
                             ]); !!}
@@ -67,12 +67,10 @@
 
                         <div class="field">
                             <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
-                                   data-tooltip="Décrivez la répartition de la SAU :
-                                   terres arables (qui peuvent être labourées ou cultivées),
+                                   data-tooltip="Décrivez la répartition de la Surface Agricole Utile (SAU) : terres arables (qui peuvent être labourées ou cultivées),
                                    surfaces toujours en herbe (prairies naturelles),
-                                   cultures pérennes (vignes, vergers)"
-                                   for="about_project_content">
-                                Description de la Surface Agricole Utile (SAU)
+                                   cultures pérennes (vignes, vergers)">
+                                Description du foncier agricole
                                 <i class="fas fa-info-circle has-text-info"></i>
                             </label>
 
@@ -83,102 +81,6 @@
                                     ref="sauDescription"
                                     v-model="formInput.sauDescription"
                                     :vuelidate="$v.formInput.sauDescription">
-                            </text-area-counter>
-                        </div>
-                    </div>
-                    <div class="column"></div>
-                </div>
-            </section>
-        </tab-content>
-
-        <tab-content title="Production Agricole" icon="ti-location-arrow">
-            <section class="container">
-                <div class="columns">
-                    <div class="column"></div>
-                    <div class="column is-half">
-                        <div class="field">
-                            {!! Form::label('land_offer[production_genres][]', 'Système de production en place', ['class' => 'label']); !!}
-
-                            <multi-select
-                                    :options="{{json_encode($productionGenres)}}"
-                                    group-values="children"
-                                    name="land_offer[production_genres][]"
-                                    v-model="formInput.productionGenres"
-                                    placeholder="Sélectionnez une ou plusieurs productions"
-                                    ref="productionGenres">
-                            </multi-select>
-
-                            {{--                            <p class="help is-danger" id="productionGenresError"--}}
-                            {{--                               v-if="$v.formInput.productionGenres.$error">--}}
-                            {{--                                Ce champ est requis.--}}
-                            {{--                            </p>--}}
-                        </div>
-
-                        <div class="field">
-                            {!! Form::label('land_offer[production_genres_wanted][]', 'Productions possibles sur la ferme', ['class' => 'label']); !!}
-
-                            <multi-select
-                                    :options="{{json_encode($productionGenres)}}"
-                                    group-values="children"
-                                    name="land_offer[production_genres_wanted][]"
-                                    v-model="formInput.productionGenresWanted"
-                                    placeholder="Sélectionnez une ou plusieurs productions"
-                                    ref="productionGenresWanted">
-                            </multi-select>
-                        </div>
-
-                        <div class="field">
-                            {!! Form::label('land_offer[bio_certifications][]', 'Certification des terres', ['class' => 'label']); !!}
-
-                            <multi-select
-                                    :options="{{json_encode($bioCertifications)}}"
-                                    group-values="children"
-                                    name="land_offer[bio_certifications][]"
-                                    v-model="formInput.bioCertifications"
-                                    :clear-other-values="{{json_encode($bioCertifications->filter(function ($v) {
-                                        return in_array($v->name, ['Aucune', 'En conversion']);
-                                    }))}}"
-                                    :show-icons="true"
-                                    placeholder="Sélectionnez une ou plusieurs certifications"
-                                    ref="bioCertifications">
-                            </multi-select>
-                        </div>
-
-                        <div class="field">
-                            {!! Form::label('land_offer[water_access]', "Accès à l'eau existant", ['class' => 'label']); !!}
-                            <div>
-                                <label>
-                                    {!! Form::radio('land_offer[water_access]', 1, null, [
-                                            'v-model' => 'formInput.waterAccess',
-                                            ':disabled' => 'isInputDisabled'
-                                        ]);
-                                    !!}
-                                    Oui
-                                </label>
-                                <label>
-                                    {!! Form::radio('land_offer[water_access]', 0, null, [
-                                            'v-model' => 'formInput.waterAccess',
-                                            ':disabled' => 'isInputDisabled'
-                                        ]);
-                                    !!}
-                                    Non
-                                </label>
-                            </div>
-                        </div>
-                        <div class="field" v-show="hasWaterAccess">
-                            <label for='land_offer[water_access_description]'
-                                   class="tooltip has-tooltip-left has-tooltip-multiline"
-                                   data-tooltip="Indiquez les modalités d'accès à l'eau, ainsi qu'un rapide descriptif (forage, réserve d'eau, canal d'irrigation, borne, etc.)..">
-                                Précisez votre accès à l'eau
-                                <i class="fas fa-info-circle has-text-info"></i>
-                            </label>
-                            <text-area-counter
-                                    name="land_offer[water_access_description]"
-                                    :max-length="1000"
-                                    :disabled="isInputDisabled"
-                                    ref="waterAccessDescription"
-                                    v-model="formInput.waterAccessDescription"
-                                    :vuelidate="$v.formInput.waterAccessDescription">
                             </text-area-counter>
                         </div>
 
@@ -195,6 +97,7 @@
                                             'v-model' => 'formInput.altitude',
                                             'class' => 'input',
                                             ':disabled'=>'isInputDisabled',
+                                            'ref' => 'altitude'
                                         ]) !!}
                                         <span class="icon is-small is-right" style="color: #4a4a4a;">
                                           m
@@ -206,6 +109,123 @@
                                 </div>
                                 <div class="column"></div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="column"></div>
+                </div>
+            </section>
+        </tab-content>
+
+        <tab-content title="Production Agricole" icon="ti-location-arrow">
+            <section class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-half">
+                        <div class="field">
+                            {!! Form::label('land_offer[production_genres][]', 'Production(s) en place*', [
+                                'class' => 'label tooltip has-tooltip-left has-tooltip-multiline',
+                                'data-tooltip' => "Sélectionner la ou les productions actuellement en cours sur la ferme ou le terrain."
+                            ]); !!}
+
+{{--                            <multi-select--}}
+{{--                                    :options="{{json_encode($productionGenres)}}"--}}
+{{--                                    group-values="children"--}}
+{{--                                    name="land_offer[production_genres][]"--}}
+{{--                                    v-model="formInput.productionGenres"--}}
+{{--                                    placeholder="Sélectionnez une ou plusieurs productions"--}}
+{{--                                    ref="productionGenres">--}}
+{{--                            </multi-select>--}}
+
+                            @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_offer[production_genres][]', 'productionGenres' => $productionGenres])
+                            <p class="help is-danger" v-if="$v.formInput.productionGenres.$error">
+                                Ce champ est requis.
+                            </p>
+                        </div>
+
+                        <div class="field">
+                            {!! Form::label('land_offer[production_genres_wanted][]', 'Production(s) possibles', [
+                                'class' => 'label tooltip has-tooltip-left has-tooltip-multiline',
+                                'data-tooltip' => 'Sélectionner les productions envisageables sur la ferme ou le terrain.'
+                            ]); !!}
+
+                            @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_offer[production_genres_wanted][]', 'inputName' => $productionGenres])
+{{--                            <multi-select--}}
+{{--                                    :options="{{json_encode($productionGenres)}}"--}}
+{{--                                    group-values="children"--}}
+{{--                                    name="land_offer[production_genres_wanted][]"--}}
+{{--                                    v-model="formInput.productionGenresWanted"--}}
+{{--                                    placeholder="Sélectionnez une ou plusieurs productions"--}}
+{{--                                    ref="productionGenresWanted">--}}
+{{--                            </multi-select>--}}
+                        </div>
+
+                        <div class="field">
+                            {!! Form::label('land_offer[bio_certifications][]', 'Certification des terres*', ['class' => 'label']); !!}
+
+                            <multi-select
+                                    :options="{{json_encode($bioCertifications)}}"
+                                    group-values="children"
+                                    name="land_offer[bio_certifications][]"
+                                    v-model="formInput.bioCertifications"
+                                    :clear-other-values="{{json_encode($bioCertifications->filter(function ($v) {
+                                        return in_array($v->name, ['Aucune', 'En conversion']);
+                                    }))}}"
+                                    :show-icons="true"
+                                    placeholder="Sélectionnez une ou plusieurs certifications"
+                                    ref="bioCertifications">
+                            </multi-select>
+                            <p class="help is-danger" v-if="$v.formInput.bioCertifications.$error">
+                                Ce champ est requis.
+                            </p>
+                        </div>
+
+                        <div class="field">
+                            {!! Form::label('land_offer[water_access]', "Accès à l'eau existant*", ['class' => 'label']); !!}
+                            <div>
+                                <label>
+                                    {!! Form::radio('land_offer[water_access]', 1, null, [
+                                            'ref' => 'waterAccess',
+                                            ':disabled' => 'isInputDisabled'
+                                        ]);
+                                    !!}
+                                    Oui
+                                </label>
+                                <label>
+                                    {!! Form::radio('land_offer[water_access]', 0, null, [
+                                            'v-model' => 'formInput.waterAccess',
+                                            ':disabled' => 'isInputDisabled'
+                                        ]);
+                                    !!}
+                                    Non
+                                </label>
+                                <label>
+                                    {!! Form::radio('land_offer[water_access]', -1, null, [
+                                            'v-model' => 'formInput.waterAccess',
+                                            ':disabled' => 'isInputDisabled'
+                                        ]);
+                                    !!}
+                                    Je ne sais pas
+                                </label>
+                            </div>
+                            <p class="help is-danger" v-if="$v.formInput.waterAccess.$error">
+                                Ce champ est requis.
+                            </p>
+                        </div>
+                        <div class="field" v-show="hasWaterAccess">
+                            <label for='land_offer[water_access_description]'
+                                   class="tooltip has-tooltip-left has-tooltip-multiline"
+                                   data-tooltip="Indiquez les modalités d'accès à l'eau, ainsi qu'un rapide descriptif (forage, réserve d'eau, canal d'irrigation, borne, etc.)..">
+                                Précisez votre accès à l'eau
+                                <i class="fas fa-info-circle has-text-info"></i>
+                            </label>
+                            <text-area-counter
+                                    name="land_offer[water_access_description]"
+                                    :max-length="200"
+                                    :disabled="isInputDisabled"
+                                    ref="waterAccessDescription"
+                                    v-model="formInput.waterAccessDescription"
+                                    :vuelidate="$v.formInput.waterAccessDescription">
+                            </text-area-counter>
                         </div>
                     </div>
                     <div class="column"></div>
@@ -373,8 +393,8 @@
                         <div class="field" v-if="isTestOffer">
                             <label for='land_offer[test_description]'
                                    class="has-tooltip-multiline has-tooltip-left"
-                                   data-tooltip="Décrivez les habitations présentes sur la ferme (nombre de pièces, surface, état, prix ou modalité de cession imaginé, etc.).">
-                                Description du test agricole
+                                   data-tooltip="Décrivez ici le cadre administratif du test agricole : statut, durée...">
+                                Modalité du test agricole
                                 <i class="fas fa-info-circle has-text-info"></i>
                             </label>
                             <text-area-counter

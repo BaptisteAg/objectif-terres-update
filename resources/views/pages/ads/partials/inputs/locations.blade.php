@@ -4,6 +4,7 @@
         <div class="column is-half-desktop is-8-mobile">
             <zone-select
                     name="locationable"
+                    label="{{$label ?? "Zones de recherche"}}"
                     radius-name="locationable_radius"
                     json-name="selected_zones"
                     ref="selectedZones"

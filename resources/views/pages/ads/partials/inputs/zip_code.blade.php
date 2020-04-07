@@ -1,5 +1,5 @@
 <div class="field">
-    {!! Form::label('locationable', 'Code postal du bien*', ['class' => 'label']); !!}
+    {!! Form::label('locationable', ($label ?? 'Code postal du bien').'*', ['class' => 'label']); !!}
     <div class="control">
         <autocomplete
                 id="land_offer_zone-autocomplete"

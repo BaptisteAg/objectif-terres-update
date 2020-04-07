@@ -2,7 +2,7 @@
     <div class="selected-zones card">
         <header class="card-header">
             <p class="card-header-title">
-                Zones de recherche
+                {{label}}
             </p>
         </header>
         <div class="card-content">
@@ -47,11 +47,12 @@
             </div>
         </div>
         <input type="hidden" :name="jsonName" :value="JSON.stringify(value)">
-        <div class="card-footer" v-show="hasCities">
+        <div class="card-footer">
             <div class="card-footer-item">
-                <div class="column">
+                <div class="column tooltip has-tooltip-left has-tooltip-multiline" data-tooltip="Sélectionnez une commune pour activer ce champ">
                     <p class="label">Dans un rayon de </p>
                     <vue-slider
+                            :disabled="!hasCities"
                             :name="radiusName"
                             :value="parseInt(radiusValue)"
                             :data="{
@@ -62,9 +63,9 @@
                                 50: '50km'
                             }"
                     ></vue-slider>
-                    <div style="margin-top: 40px;">
-                        Ce rayon s'appliquera à chaque commune et code postal de votre sélection
-                    </div>
+<!--                    <div style="margin-top: 40px;">-->
+<!--                        Ce rayon s'appliquera à chaque commune et code postal de votre sélection-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>
@@ -102,6 +103,10 @@
                 required: true
             },
             name: {
+                type: String,
+                required: true
+            },
+            label: {
                 type: String,
                 required: true
             },

@@ -1,6 +1,6 @@
 <div class="field">
     <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
-           data-tooltip="15mo maximum par document. Un seul PDF est autorisé. Formats acceptés : PDF, Microsoft Word, images">
+           data-tooltip="15Mo maximum par document. Un seul document de type PDF, DOC ou DOCX est autorisé">
         Documents
         <i class="fas fa-info-circle has-text-info"></i><br>
         <span style="font-weight:normal">
@@ -19,8 +19,8 @@
     <input type="hidden" name="documents" :value="JSON.stringify(formInput.documents)">
 
     <div>
-        <p class="help is-danger" v-show="!$v.formInput.documents.onePdf">
-            Vous ne pouvez déposer qu'un seul fichier PDF. Veuillez supprimer ceux que vous ne souhaitez pas conserver.
+        <p class="help is-danger" v-show="!$v.formInput.documents.oneDocument">
+            Vous ne pouvez déposer qu'un seul fichier PDF ou Word. Veuillez supprimer ceux que vous ne souhaitez pas conserver.
         </p>
         <p class="help is-danger" v-show="$v.formInput.documents.$error && !$v.formInput.documents.notCurrentlyUploading">
             Vous devez attendre la fin du téléversement de vos documents pour publier.

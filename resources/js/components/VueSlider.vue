@@ -1,6 +1,7 @@
 <template>
     <div>
         <vue-slider
+                :disabled="disabled"
                 v-model="sliderTextValue"
                 :adsorb="true"
                 :data="dataArray"
@@ -20,6 +21,7 @@
             VueSlider
         },
         props: {
+            disabled: Boolean,
             data: Object,
             oldData: {
                 type: Object,

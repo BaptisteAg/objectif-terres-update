@@ -28,6 +28,9 @@
 			<div class="column">
 				<div class="card">
 					<div class="card-content">
+						@foreach($ad->landOfferAd->offerGenres as $offerGenre)
+							<span class="tag is-primary is-medium">{{$offerGenre->name}}</span>
+						@endforeach
 						<div class="content">
 							@if(is_null($ad->published_on))
 								<p><span class="is-size-5  ">Annonce soumise le : </span><span

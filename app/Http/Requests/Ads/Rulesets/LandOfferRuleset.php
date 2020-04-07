@@ -16,7 +16,7 @@ class LandOfferRuleset implements RulesetInterface
             'land_offer.production_genres'                       => ['nullable', 'array'],
             'land_offer.production_genres_wanted'                => ['nullable', 'array'],
             'land_offer.bio_certifications'                      => ['required', 'array'],
-            'land_offer.water_access'                            => ['nullable', 'boolean'],
+            'land_offer.water_access'                            => ['nullable', 'numeric'],
             'land_offer.water_access_description'                => ['nullable', 'string'],
             'land_offer.altitude'                                => ['required', 'numeric'],
             'land_offer.has_buildings'                           => ['boolean'],
