@@ -18,34 +18,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="content">
-			<div class="tabs is-centered is-medium">
-				<ul>
-					<li><a href="{{route ('ads.list')}}"><span class="icon is-small">
-											<i class="far fa-newspaper" aria-hidden="true"></i></span>
-							<span>Mes annonces</span>
-						</a>
-					</li>
-					<li><a href="{{route('researches.show')}}" ><span class="icon is-small">
-											<i class="fas fa-save" aria-hidden="true"></i></span>
-							<span>Mes recherches sauvegardées</span>
-						</a>
-					</li>
-					<li><a href="{{route('favoriteAds.show')}}"><span class="icon is-small">
-											<i class="fas fa-star" aria-hidden="true"></i></span>
-							<span>Mes annonces favorites</span>
-						</a>
-					</li>
-					<li class="{{ Route::current()->getName() == 'threads.index' ? 'is-active' : '' }}">
-						<a
-								href="{{route('threads.index')}}"><span class="icon is-small">
-											<i class="fas fa-comments"></i></span>
-							<span>Ma messagerie</span>
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
+
+		@include('layouts.partials.users-tabs')
+
+
 	</div>
 
 	@include('components.partnering')

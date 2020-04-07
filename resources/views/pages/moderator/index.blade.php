@@ -9,37 +9,39 @@
 					class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
 
 		@include('components.moderator-tabs')
+		@if($numberOfAdsToModerate !== 0 || $numberOfUnreadMessages !==0)
+			<div id="notification-moderator" class="notification has-background-info">
+				<button id="close-notification-moderator" class="delete"></button>
+				@if($numberOfAdsToModerate === 0)
+				@elseif($numberOfAdsToModerate >1)
+					<p class="has-text-white-ter">
+						<i class="far fa-bell has-text-white-ter"></i>
+						Vous avez<a style="text-decoration: none"
+									href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4'])}}">
+							<strong>{{$numberOfAdsToModerate}}
+								annonces</strong></a> à modérer !</p>
+				@else
+					<p class="has-text-white-ter"><i class="far fa-bell has-text-white-ter"></i> Vous avez
+						<strong>{{$numberOfAdsToModerate}} annonce</strong> à modérer !</p>
+				@endif
 
-		<div id="notification-moderator" class="notification has-background-info">
-			<button id="close-notification-moderator" class="delete"></button>
-			@if($numberOfAdsToModerate >1)
-				<p class="has-text-white-ter">
-					<i class="far fa-bell has-text-white-ter"></i>
-					Vous avez<a style="text-decoration: none"
-								href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4&ad_title='])}}">
-						<strong>{{$numberOfAdsToModerate}}
-							annonces</strong></a> à modérer !</p>
-			@else
-				<p class="has-text-white-ter"><i class="far fa-bell has-text-white-ter"></i> Vous avez
-					<strong>{{$numberOfAdsToModerate}} annonce</strong> à modérer !</p>
-			@endif
+				@if($numberOfUnreadMessages === 0)
+				@elseif($numberOfUnreadMessages > 1 )
+					<a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i
+									class="fas fa-envelope "></i> Vous
+							avez <strong>{{$numberOfUnreadMessages}}
+								nouveaux messages
+								!</strong></p></a>
 
-			@if($numberOfUnreadMessages > 1 )
-				<a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i
-								class="fas fa-envelope "></i> Vous
-						avez <strong>{{$numberOfUnreadMessages}}
-							nouveaux messages
-							!</strong></p></a>
-
-			@else
-				<a style="text-decoration: none" href="{{route('threads.index')}}">
-					<p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez
-						<strong>{{$numberOfUnreadMessages}} nouveau message !</strong>
-					</p>
-				</a>
-			@endif
-		</div>
-
+				@else
+					<a style="text-decoration: none" href="{{route('threads.index')}}">
+						<p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez
+							<strong>{{$numberOfUnreadMessages}} nouveau message !</strong>
+						</p>
+					</a>
+				@endif
+			</div>
+		@endif
 		{{Form::open(['route'=>'moderator.show', 'method'=>'get'])}}
 		<div id="vue-form-moderator">
 			@include('components.dashboard-filters')
@@ -75,7 +77,7 @@
 								@endif
 							</th>
 							<th>
-									@if(request()->input('sort') !== 'title')
+								@if(request()->input('sort') !== 'title')
 									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">
 										<span>Titre de l'annonce</span>
 									</a>
@@ -129,23 +131,23 @@
 									</a>
 								@endif
 							</th>
-{{--							<th>--}}
-{{--								@if(request()->input('sort') !== 'project_statuses.name')--}}
-{{--									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'project_statuses.name'])) }}">--}}
-{{--										<span>Statut du projet</span>--}}
-{{--									</a>--}}
-{{--								@elseif(request()->input('sort') === 'project_statuses.name' && request()->input('order') === 'asc')--}}
-{{--									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'project_statuses.name'])) }}">--}}
-{{--										<i class="fas fa-arrow-up"></i>--}}
-{{--										<span>Statut du projet</span>--}}
-{{--									</a>--}}
-{{--								@else--}}
-{{--									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}">--}}
-{{--										<i class="fas fa-arrow-down"></i>--}}
-{{--										<span>Statut du projet</span>--}}
-{{--									</a>--}}
-{{--								@endif--}}
-{{--							</th>--}}
+							{{--							<th>--}}
+							{{--								@if(request()->input('sort') !== 'project_statuses.name')--}}
+							{{--									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'project_statuses.name'])) }}">--}}
+							{{--										<span>Statut du projet</span>--}}
+							{{--									</a>--}}
+							{{--								@elseif(request()->input('sort') === 'project_statuses.name' && request()->input('order') === 'asc')--}}
+							{{--									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'project_statuses.name'])) }}">--}}
+							{{--										<i class="fas fa-arrow-up"></i>--}}
+							{{--										<span>Statut du projet</span>--}}
+							{{--									</a>--}}
+							{{--								@else--}}
+							{{--									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}">--}}
+							{{--										<i class="fas fa-arrow-down"></i>--}}
+							{{--										<span>Statut du projet</span>--}}
+							{{--									</a>--}}
+							{{--								@endif--}}
+							{{--							</th>--}}
 							<th></th>
 						</tr>
 						</thead>
@@ -186,24 +188,24 @@
 										<span class="tag is-info">{{$attributionAd->adStatus->name}}</span>
 									@endif
 								</td>
-{{--								<td>--}}
-{{--									@if(is_null($attributionAd->ad->project))--}}
-{{--										<span class="tag is-light">L'annonce n'a pas le statut de projet</span>--}}
-{{--									@else--}}
-{{--										@if($attributionAd->ad->project->projectStatus->name === "Accompagné")--}}
-{{--											<span class="tag is-success is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
-{{--										@elseif($attributionAd->ad->project->projectStatus->name ==="Installé")--}}
-{{--											<span class="tag is-success is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
-{{--										@elseif($attributionAd->ad->project->projectStatus->name === "A rappeler")--}}
-{{--											<span class="tag is-danger is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
+								{{--								<td>--}}
+								{{--									@if(is_null($attributionAd->ad->project))--}}
+								{{--										<span class="tag is-light">L'annonce n'a pas le statut de projet</span>--}}
+								{{--									@else--}}
+								{{--										@if($attributionAd->ad->project->projectStatus->name === "Accompagné")--}}
+								{{--											<span class="tag is-success is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
+								{{--										@elseif($attributionAd->ad->project->projectStatus->name ==="Installé")--}}
+								{{--											<span class="tag is-success is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
+								{{--										@elseif($attributionAd->ad->project->projectStatus->name === "A rappeler")--}}
+								{{--											<span class="tag is-danger is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
 
-{{--										@elseif($attributionAd->ad->project->projectStatus->name === "Non accompagné")--}}
-{{--											<span class="tag is-warning is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
-{{--										@else--}}
-{{--											<span class="tag is-info is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
-{{--										@endif--}}
-{{--									@endif--}}
-{{--								</td>--}}
+								{{--										@elseif($attributionAd->ad->project->projectStatus->name === "Non accompagné")--}}
+								{{--											<span class="tag is-warning is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
+								{{--										@else--}}
+								{{--											<span class="tag is-info is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
+								{{--										@endif--}}
+								{{--									@endif--}}
+								{{--								</td>--}}
 								<td><a href="{{route('ads.show', $attributionAd->ad->id)}}"><span><i
 													class="fas fa-search"></i></span> <span>Voir le détail</span></a>
 								</td>

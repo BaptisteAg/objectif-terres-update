@@ -16,6 +16,7 @@ use App\Models\RefusalType;
 use App\Models\Requirement;
 use App\Models\ResponseTemplate;
 use App\Models\SurfaceRange;
+use App\Models\User;
 use App\Notifications\NewAdToModerateNotification;
 use App\Repositories\FavoriteAds\FavoriteAdRepository;
 use App\Services\Ads\AdService;
@@ -116,7 +117,6 @@ class AdsController extends Controller
 	 */
 	public function show(int $adId)
 	{
-
 		$ad = $this->adService->find($adId);
 		$userMessage = null;
 		$favoriteAdAlreadyExist = false;
@@ -126,7 +126,7 @@ class AdsController extends Controller
 		$refusalTypes = '';
 		$isAdToModerate = false;
 		$isLoggedUserModeratorAd = false;
-
+		$advisorUsers = [];
 
 		if (Auth::user()) {
 			if ($ad->attributionAd->adStatus->name === "À modérer") {
@@ -153,6 +153,9 @@ class AdsController extends Controller
 					$responseTemplates = ResponseTemplate::all();
 					$refusalTypes = RefusalType::all();
 				}
+				if (auth()->user()->role >=3){
+					$advisorUsers = User::all();
+				}
 				$threads = $this->threadService->findThreadAlreadyExist($adId);
 				$data = array(
 					"ad_id" => $adId,
@@ -165,8 +168,8 @@ class AdsController extends Controller
 
 		//Throw error 404 if a visitor try to show an ad is not validated
 		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validée" ;
-
-		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist', 'threads', 'threadsWithUnreadMessages', 'responseTemplates', 'refusalTypes', 'isAdToModerate', 'isLoggedUserModeratorAd'));
+		//TODO not display projects unless user logged is the author of the ad or the user logged is an supervisor or an advisor
+		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist', 'threads', 'threadsWithUnreadMessages', 'responseTemplates', 'refusalTypes', 'isAdToModerate', 'isLoggedUserModeratorAd', 'advisorUsers'));
 	}
 
 	/**

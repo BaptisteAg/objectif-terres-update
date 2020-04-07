@@ -8,6 +8,12 @@
 		@if(auth()->user()->role ===1)
 			@include('components.moderator-tabs')
 			<br>
+		@elseif(auth()->user()->role === 2)
+			@include('components.advisor-tabs')
+			<br>
+		@elseif(auth()->user()->role === 3)
+			@include('components.supervisor-tabs')
+			<br>
 		@endif
 		<div class="container ">
 			@if(count($threads)===0)

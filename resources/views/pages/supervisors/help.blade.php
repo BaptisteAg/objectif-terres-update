@@ -1,18 +1,17 @@
 @extends('default')
 
-@section('title', 'Espace aide & ressources ')
+@section('title', 'Espace aide & ressources | Objectifs Terres')
 
 
 @section('main-content')
 
 	<div class="section">
 		<h1 class="title is-2 has-text-link">Aide & ressources </h1>
-		@include('components.moderator-tabs')
+		@include('components.supervisor-tabs')
 
 		<div class="container ">
 			<div class="content is-medium has-text-justified">
-				<p>Vous trouverez sur cette page une série de ressources utiles pour vous aider et
-					accompagner vos primo-accueillants ou à utiliser le site d'Objectif Terres. Eget risus varius
+				<p>Vous trouverez sur cette page une série de ressources utiles pour vous aider à gérer votre territoire ou à utiliser le site d'Objectif Terres. Eget risus varius
 					blandit sit amet non magna. Sed
 					posuere consectetur est at lobortis. Vestibulum id ligula porta felis euismod
 					semper. Duis mollis, est non commodo luctus, nisi erat porttitor.</p>

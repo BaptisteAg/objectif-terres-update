@@ -2,7 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\ScopeAdTypesFilterable;
+use App\Models\Scopes\ScopeDataFilterable;
+use App\Models\Scopes\ScopeLocationFilterable;
+use App\Presenters\AdPresenter;
 use Illuminate\Database\Eloquent\Model;
+use McCool\LaravelAutoPresenter\Decoratable;
 
 /**
  * App\Models\Project
@@ -22,8 +27,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Project extends Model
+class Project extends Model implements Decoratable
 {
+	use ScopeLocationFilterable, ScopeAdTypesFilterable, ScopeDataFilterable;
     /**
      * @var array
      */
@@ -46,4 +52,13 @@ class Project extends Model
     {
         return $this->hasOne(Ad::class);
     }
+	/**
+	 * Get the presenter class.
+	 *
+	 * @return string
+	 */
+	public function getPresenterClass()
+	{
+		return AdPresenter::class;
+	}
 }

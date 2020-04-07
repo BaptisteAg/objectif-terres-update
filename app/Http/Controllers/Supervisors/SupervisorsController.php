@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Supervisors;
 
 use App\Http\Controllers\Controller;
-use App\Models\City;
-use App\Models\Department;
+use App\Models\AdStatus;
 use App\Models\JobOfferType;
 use App\Models\ProductionGenre;
 use App\Models\ProjectStatus;
-use App\Models\User;
-use App\Services\AttributionAds\AttributionAdsService;
+use App\Services\Projects\ProjectService;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
 use Illuminate\Http\Request;
@@ -18,44 +16,47 @@ use Illuminate\Http\Request;
 class SupervisorsController extends Controller
 {
 	protected $threadService;
-	protected $attributionAdService;
+	protected $projectService;
 	protected $userService;
+	protected $adTypes;
+	protected $adTypesFaIcons;
 
 	/**
 	 * AdvisorsController constructor.
-	 * @param AttributionAdsService $attributionAdsService
+	 * @param ProjectService $projectService
 	 * @param ThreadService $threadService
 	 * @param UserService $userService
 	 */
-	public function __construct(AttributionAdsService $attributionAdsService, ThreadService $threadService, UserService $userService)
+	public function __construct(ProjectService $projectService, ThreadService $threadService, UserService $userService)
 	{
-		$this->attributionAdService = $attributionAdsService;
+		$this->projectService = $projectService;
 		$this->threadService = $threadService;
 		$this->userService = $userService;
+		$this->adTypes = [
+			['name' => 'Offre foncière', 'value' => 'landOfferAd'],
+			['name' => 'Recherche foncière', 'value' => 'landSeekAd'],
+		];
+		$this->adTypesFaIcons = ["fa-home", "fa-home"];
 	}
 
 	/**
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
-	public function index()
+	public function index(Request $request)
 	{
-		$user = User::find(auth()->id());
-		if ($user->zipCode){
-			$regionCode = Department::where('code', $user->zipCode->department_code)->pluck('region_code')->first();
-			$departments = Department::where('region_code', $regionCode)->get();
-			$cities = City::where('department_code', $user->zipCode->department_code)->get();
-		}else{
-			$departments = Department::all();
-			$cities = City::all();
-		}
+		$request->session()->forget('_old_input');
 		$projectStatuses = ProjectStatus::all();
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
-
-		$attributionAds = $this->attributionAdService->findAllByUserSupervisor();
+		$projects = $this->projectService->findAllByUserSupervisor();
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
+		$adTypes = $this->adTypes;
+		$adTypesFaIcons = $this->adTypesFaIcons;
+		$notAssignProjectStatusId = ProjectStatus::where("name", '=', "Non accompagné")->first()->id;
+		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsByStatusForLoggedUser($notAssignProjectStatusId);
 
-		return view('pages.supervisors.index', compact('cities', 'departments', 'productionGenres', 'projectStatuses', 'attributionAds', 'jobOfferTypes', 'numberOfUnreadMessages'));
+
+		return view('pages.supervisors.index', compact('cities', 'adTypes', 'adTypesFaIcons', 'departments', 'productionGenres', 'projectStatuses', 'projects', 'jobOfferTypes', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
 	}
 
 
@@ -67,19 +68,18 @@ class SupervisorsController extends Controller
 	{
 		$request->flash();
 
-		$user = User::find(auth()->id());
-
-		$regionCode = Department::where('code', $user->zipCode->department_code)->pluck('region_code')->first();
-		$departments = Department::where('region_code', $regionCode)->get();
-
 		$projectStatuses = ProjectStatus::all();
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
 
-		$attributionAds = $this->attributionAdService->showForSupervisor($request);
+		$projects = $this->projectService->showForSupervisor($request);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
+		$adTypes = $this->adTypes;
+		$adTypesFaIcons = $this->adTypesFaIcons;
+		$notAssignProjectStatusId = ProjectStatus::where("name", '=', "Non accompagné")->first()->id;
+		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsByStatusForLoggedUser($notAssignProjectStatusId);
 
-		return view('pages.supervisors.index', compact('cities', 'departments', 'projectStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
+		return view('pages.supervisors.index', compact('cities', 'departments', 'projectStatuses', 'adTypes', 'adTypesFaIcons', 'productionGenres', 'jobOfferTypes', 'projects', 'numberOfUnreadMessages', 'numberOfAdsToModerate', 'numberOfNotAssignProject'));
 
 	}
 
@@ -89,7 +89,7 @@ class SupervisorsController extends Controller
 	 */
 	public function help()
 	{
-		$users = json_encode($this->userService->findAllExceptPP()) ;
-		return view('pages.moderator.help', compact('users'));
+		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
+		return view('pages.supervisors.help', compact('users'));
 	}
 }
