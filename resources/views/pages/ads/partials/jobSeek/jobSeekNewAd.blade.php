@@ -19,10 +19,6 @@
                         <div class="field">
                             {!! Form::label('job_seek[offer_types][]', "Quel type d'opportunité professionnelle recherchez-vous ?", ['class' => 'label']); !!}
 
-                            <?php
-                            $offerTypesFaIcons = ["fa-user", "fa-user-friends", "fa-users"]
-                            ?>
-
                             <div class="columns">
                                 @foreach($jobOfferTypes as $i => $offerType)
                                     <div class="column">
@@ -33,7 +29,7 @@
                                                 :disabled="isInputDisabled"
                                                 ref="offerTypes">
 
-                                            <i class="fa {{ $offerTypesFaIcons[$i] }}"
+                                            <i class="fa {{$offerType["icon"]}}"
                                                style="font-size: 30px;"></i><br><br>
                                             <span style="font-size:16px">
                                                 {{ $offerType["name"] }}
