@@ -8,7 +8,7 @@
             ref="formWizard">
 
         <tab-content title="Localisation" icon="ti-location-arrow">
-            @include('pages.ads.partials.inputs.locations')
+            @include('pages.ads.partials.inputs.locations', ['label' => 'Où souhaitez-vous travailler ?'])
         </tab-content>
 
         <tab-content title="Description" icon="ti-location-arrow">
@@ -18,10 +18,6 @@
                     <div class="column is-half">
                         <div class="field">
                             {!! Form::label('job_seek[offer_types][]', "Quel type d'opportunité professionnelle recherchez-vous ?", ['class' => 'label']); !!}
-
-                            <?php
-                            $offerTypesFaIcons = ["fa-user", "fa-user-friends", "fa-users"]
-                            ?>
 
                             <div class="columns">
                                 @foreach($jobOfferTypes as $i => $offerType)
@@ -33,7 +29,7 @@
                                                 :disabled="isInputDisabled"
                                                 ref="offerTypes">
 
-                                            <i class="fa {{ $offerTypesFaIcons[$i] }}"
+                                            <i class="fa {{$offerType["icon"]}}"
                                                style="font-size: 30px;"></i><br><br>
                                             <span style="font-size:16px">
                                                 {{ $offerType["name"] }}
@@ -95,16 +91,15 @@
             </section>
         </tab-content>
 
-        <tab-content title="Votre projet et vous" icon="ti-location-arrow">
+        <tab-content title="Expérience" icon="ti-location-arrow">
             <section class="container">
                 <div class="columns">
                     <div class="column"></div>
                     <div class="column is-half">
 
                         <?php
-                            $aboutFarmLabel = "Et si vous nous en disiez un peu plus sur votre projet ?";
-                            $aboutFarmTooltip = "Qu'est-ce que vous recherchez plus précisement ?
-                                Est-ce que cette recherche s'inscrit dans une volonté d'installation à plus long terme ? ";
+                            $aboutFarmLabel = "Et si vous nous en disiez un peu plus sur votre projet et vos attentes ?";
+                            $aboutFarmTooltip = "Que recherchez-vous plus précisement ? Cette recherche s'inscrit-elle dans une volonté d'installation à plus long terme ?";
                         ?>
                         @include('pages.ads.partials.inputs.about_project_content', ['title' => $aboutFarmLabel, 'tooltip' => $aboutFarmTooltip])
 

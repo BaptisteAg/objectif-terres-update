@@ -13,6 +13,11 @@ class ProductionGenreSeeder extends Seeder
     {
         \App\Models\ProductionGenre::insert([
             [
+                "name" => "Aucune",
+                "created_at" =>  \Carbon\Carbon::now(),
+                "updated_at" => \Carbon\Carbon::now()
+            ],
+            [
                 "name" => "Maraîchage",
                 "created_at" =>  \Carbon\Carbon::now(),
                 "updated_at" => \Carbon\Carbon::now()

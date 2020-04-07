@@ -19,7 +19,7 @@
 		@include('pages.ads.partials.jobOffer.jobOfferAdShow')
 	@endif
 	@if($ad->ad_type === 'jobSeek')
-		@include('pages.ads.partials.jobOffer.jobSeekAdShow')
+		@include('pages.ads.partials.jobSeek.jobSeekAdShow')
 	@endif
 @endsection
 

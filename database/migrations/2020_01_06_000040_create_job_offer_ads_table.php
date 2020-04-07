@@ -24,8 +24,8 @@ class CreateJobOfferAdsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->boolean('is_activity_transmission')->nullable();
-            $table->string('job_description', 1000);
-            $table->string('experience_farming', 1000);
+            $table->string('job_description', 1500);
+            $table->string('experience_farming', 1500);
 
             $table->unsignedInteger('ad_id');
 

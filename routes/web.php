@@ -86,7 +86,6 @@ Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->na
 	Route::post('envoi', 'MessagesController@create')->name('send');
 });
 
-
 Route::prefix('locations')->namespace('Locationables')->group(function () {
 	Route::get('/', 'LocationableController@locations');
 	Route::get('cities', 'LocationableController@cities');

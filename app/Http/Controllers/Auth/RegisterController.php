@@ -109,7 +109,7 @@ class RegisterController extends Controller
 
         event(new Registered($user = $this->create($request->all())));
 
-        //$this->guard()->login($user);
+        $this->guard()->login($user);
 
         return redirect(session('url.intended', '/'));
     }
@@ -122,11 +122,9 @@ class RegisterController extends Controller
 	 */
     protected function create(array $data)
     {
-    	//dd($data);
-    	//TODO delete the country_id if save user country is not necessary
-		$data['country_id'] = 75;
-        $salesForceUser = $this->salesForceService->registerPP($data);
-        $data["sf_id"] = $salesForceUser["id"];
+        //dd($data);
+        $salesForceContact = $this->salesForceService->registerPP($data);
+        $data["sf_id"] = $salesForceContact["id"];
 
 		$user = $this->userService->create($data);
 		return $user;

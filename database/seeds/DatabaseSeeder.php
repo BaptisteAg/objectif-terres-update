@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
 		});
 
 		DB::transaction(function () use (&$queriesCount) {
+
 			\Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__ . '/../sql/countries.sql'));
 			\Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__ . '/../sql/regions.sql'));
 			\Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__ . '/../sql/departments.sql'));
@@ -54,6 +55,8 @@ class DatabaseSeeder extends Seeder
 
 
 			if (app()->environment() === "local") {
+                $fakeAdsCount = env('SEED_ADS_COUNT', 0);
+
 				$this->call([
 					TestUserSeeder::class,
 					TestResponseTypeSeeder::class,
@@ -62,7 +65,7 @@ class DatabaseSeeder extends Seeder
 				]);
 
 				$projectIds = Project::all()->pluck('id')->toArray();
-				factory(Ad::class, 900)->create()->each(function (Ad $ad) use (&$queriesCount, &$projectIds) {
+				factory(Ad::class, $fakeAdsCount*3)->create()->each(function (Ad $ad) use (&$queriesCount, &$projectIds) {
 					$ad->attributionAd()->save(factory(AttributionAd::class)->make());
 					$ad->adNotes()->save(factory(AdNote::class)->make());
 					$ad->favoriteAds()->save(factory(FavoriteAd::class)->make());
@@ -75,7 +78,7 @@ class DatabaseSeeder extends Seeder
 					echo "\nAd ID saved : " . $ad->id . " (Queries : " . $queriesCount . ")";
 				});
 				$adIds = Ad::all()->pluck("id")->toArray();
-				factory(LandOfferAd::class, 300)->create()->each(function (LandOfferAd $landOfferAd) use (&$adIds) {
+				factory(LandOfferAd::class, $fakeAdsCount)->create()->each(function (LandOfferAd $landOfferAd) use (&$adIds) {
 
 					$cats = ['', 'Vend'];
 					$types = ['ferme', 'pâture', 'terrain', 'location', 'terre', 'petite structure'];
@@ -95,7 +98,7 @@ class DatabaseSeeder extends Seeder
 					);
 					$ad->save();
 				});
-				factory(LandSeekAd::class, 300)->create()->each(function (LandSeekAd $landSeekAd) use (&$adIds) {
+				factory(LandSeekAd::class, $fakeAdsCount)->create()->each(function (LandSeekAd $landSeekAd) use (&$adIds) {
 					$cats = ['', 'Recherche', 'A la recherche de'];
 					$types = ['ferme', 'pâture', 'terrain', 'location', 'terre', 'petite structure'];
 					$pours = ['petit élevage', 'élevage caprins', 'élevage ovins', 'élevages poulets', 'réinstallation', 'installation collective'];
@@ -115,7 +118,7 @@ class DatabaseSeeder extends Seeder
 					$ad->save();
 
 				});
-				factory(JobOfferAd::class, 300)->create()->each(function (JobOfferAd $jobAd) use (&$adIds) {
+				factory(JobOfferAd::class, $fakeAdsCount)->create()->each(function (JobOfferAd $jobAd) use (&$adIds) {
 					$cats = ['', 'Propose emploi', 'Recrutement', 'Urgent cherche', 'Opportunité'];
 					$types = ['éleveur', 'producteur', 'agent agricole', 'agriculteur'];
 					$pours = ['bio', 'laitier', 'élevage bovins', 'élevages poulets', 'réinstallation', 'installation collective'];

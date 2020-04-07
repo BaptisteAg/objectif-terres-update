@@ -78,7 +78,7 @@ Vue.component('new-ad', {
 
                 this.isSubmitting = false;
             } else {
-                if (!confirm('Êtes-vous sûr de la saisie de votre annonce?')) {
+                if (!confirm('Vous êtes sur le point de demander la pubication de votre annonce. Elle sera traitée sous 7 jours par un modérateur.')) {
                     this.isSubmitting = false;
                 } else {
                     this.isSubmitting = true;

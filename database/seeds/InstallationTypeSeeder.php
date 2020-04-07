@@ -13,7 +13,7 @@ class InstallationTypeSeeder extends Seeder
     public function run()
     {
         InstallationType::insert([
-            ['name' => 'Seul', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+            ['name' => 'Seul·e', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
             ['name' => 'En couple', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
             ['name' => 'En collectif', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
             ['name' => 'Indifférent', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
