@@ -23,7 +23,6 @@ class ModeratorController extends Controller
 	protected $adTypes;
 	protected $adTypesFaIcons;
 
-
 	/**
 	 * ModeratorController constructor.
 	 * @param AttributionAdsService $attributionAdsService

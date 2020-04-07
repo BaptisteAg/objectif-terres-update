@@ -53,7 +53,6 @@ class DatabaseSeeder extends Seeder
 				RefusalTypeSeeder::class,
 			]);
 
-
 			if (app()->environment() === "local") {
 				$fakeAdsCount = env('SEED_ADS_COUNT', 0);
 				$this->call([
@@ -77,7 +76,7 @@ class DatabaseSeeder extends Seeder
 					echo "\nAd ID saved : " . $ad->id . " (Queries : " . $queriesCount . ")";
 				});
 				$adIds = Ad::all()->pluck("id")->toArray();
-				factory(LandOfferAd::class, $fakeAdsCount)->create()->each(function (LandOfferAd $landOfferAd) use (&$adIds) {
+				factory(LandOfferAd::class, (int)$fakeAdsCount)->create()->each(function (LandOfferAd $landOfferAd) use (&$adIds) {
 					$cats = ['', 'Vend'];
 					$types = ['ferme', 'pâture', 'terrain', 'location', 'terre', 'petite structure'];
 					$pours = ['petit élevage', 'élevage caprins', 'élevage ovins', 'élevages poulets', 'réinstallation', 'installation collective'];
@@ -96,7 +95,7 @@ class DatabaseSeeder extends Seeder
 					);
 					$ad->save();
 				});
-				factory(LandSeekAd::class, $fakeAdsCount)->create()->each(function (LandSeekAd $landSeekAd) use (&$adIds) {
+				factory(LandSeekAd::class, (int)$fakeAdsCount)->create()->each(function (LandSeekAd $landSeekAd) use (&$adIds) {
 					$cats = ['', 'Recherche', 'A la recherche de'];
 					$types = ['ferme', 'pâture', 'terrain', 'location', 'terre', 'petite structure'];
 					$pours = ['petit élevage', 'élevage caprins', 'élevage ovins', 'élevages poulets', 'réinstallation', 'installation collective'];
@@ -116,7 +115,7 @@ class DatabaseSeeder extends Seeder
 					$ad->save();
 
 				});
-				factory(JobOfferAd::class, $fakeAdsCount)->create()->each(function (JobOfferAd $jobAd) use (&$adIds) {
+				factory(JobOfferAd::class, (int)$fakeAdsCount)->create()->each(function (JobOfferAd $jobAd) use (&$adIds) {
 					$cats = ['', 'Propose emploi', 'Recrutement', 'Urgent cherche', 'Opportunité'];
 					$types = ['éleveur', 'producteur', 'agent agricole', 'agriculteur'];
 					$pours = ['bio', 'laitier', 'élevage bovins', 'élevages poulets', 'réinstallation', 'installation collective'];
