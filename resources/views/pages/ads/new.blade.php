@@ -4,25 +4,25 @@
 
 @section('main-content')
     <section style="padding-top:50px;padding-bottom:100px;">
-        <div class="columns">
-            <div class="column"></div>
-            <div class="column is-half">
-                <div>
-                    <h2 class="title is-1">Publiez votre annonce</h2>
-                    <p>Vous avez un projet agricole ? Vous avez besoin d’aide ou d’un suivi sur mesure ?
-                        Vous avez une idée de projet mais il n’est pas encore finalisé ? Eget risus varius
-                        blandit sit amet non magna. Sed posuere consectetur est at lobortis.</p>
-                </div>
-                <br>
-                <div>
-                    <p class="has-text-grey">Pour nous permettre de vous valider votre annonce, veuillez nous en dire en
-                        peu plus…<br>
-                        Les champ marqués d'un astérisque (*) sont obligatoires
-                    </p>
-                </div>
-            </div>
-            <div class="column"></div>
-        </div>
+{{--        <div class="columns">--}}
+{{--            <div class="column"></div>--}}
+{{--            <div class="column is-half">--}}
+{{--                <div>--}}
+{{--                    <h2 class="title is-1">Publiez votre annonce</h2>--}}
+{{--                    <p>Vous avez un projet agricole ? Vous avez besoin d’aide ou d’un suivi sur mesure ?--}}
+{{--                        Vous avez une idée de projet mais il n’est pas encore finalisé ? Eget risus varius--}}
+{{--                        blandit sit amet non magna. Sed posuere consectetur est at lobortis.</p>--}}
+{{--                </div>--}}
+{{--                <br>--}}
+{{--                <div>--}}
+{{--                    <p class="has-text-grey">Pour nous permettre de vous valider votre annonce, veuillez nous en dire en--}}
+{{--                        peu plus…<br>--}}
+{{--                        Les champ marqués d'un astérisque (*) sont obligatoires--}}
+{{--                    </p>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="column"></div>--}}
+{{--        </div>--}}
         <div id="vue-render">
             @include('components.loader', ['text' => 'Chargement du formulaire'])
 
@@ -45,7 +45,7 @@
                     </ad-type-select>
 
                     <new-land-seek-ad inline-template
-                                      v-if="adTypeSelected === 'land_seek'"
+                                      v-show="adTypeSelected === 'land_seek'"
                                       :is-input-disabled="adTypeSelected !== 'land_seek'"
                                       :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
                                       @input-enabled="setEnabledForm"
@@ -55,7 +55,7 @@
                     </new-land-seek-ad>
 
                     <new-land-offer-ad inline-template
-                                       v-if="adTypeSelected === 'land_offer'"
+                                       v-show="adTypeSelected === 'land_offer'"
                                        :is-input-disabled="adTypeSelected !== 'land_offer'"
                                        :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
                                        @input-enabled="setEnabledForm"
@@ -65,7 +65,7 @@
                     </new-land-offer-ad>
 
                     <new-job-seek-ad inline-template
-                                      v-if="adTypeSelected === 'job_seek'"
+                                      v-show="adTypeSelected === 'job_seek'"
                                       :is-input-disabled="adTypeSelected !== 'job_seek'"
                                       :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
                                       @input-enabled="setEnabledForm"
@@ -75,7 +75,7 @@
                     </new-job-seek-ad>
 
                     <new-job-offer-ad inline-template
-                                      v-if="adTypeSelected === 'job_offer'"
+                                      v-show="adTypeSelected === 'job_offer'"
                                       :is-input-disabled="adTypeSelected !== 'job_offer'"
                                       :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
                                       @input-enabled="setEnabledForm"

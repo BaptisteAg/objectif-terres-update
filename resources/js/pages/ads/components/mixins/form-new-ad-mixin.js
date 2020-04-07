@@ -14,6 +14,13 @@ export default {
             uploading: false
         }
     },
+    computed: {
+        scrollToTop() {
+            var scroll = new SmoothScroll();
+            var anchor = document.querySelector('#vue-render');
+            return _ => scroll.animateScroll(anchor);
+        }
+    },
     mounted() {
         // Initiate correctly existing disabled status
         if (!this.isInputDisabled) {
@@ -34,6 +41,9 @@ export default {
         }
     },
     methods: {
+        nextStep() {
+            this.scrollToTop();
+        },
         setUploading(bool) {
             this.uploading = bool;
         },
