@@ -1,4 +1,4 @@
-<div id="job_ad_form">
+<div id="job_offer_ad_form">
 	<form-wizard
 			title=""
 			subtitle=""
@@ -26,25 +26,7 @@
 						<div class="field">
 							{!! Form::label('job_offer[offer_types][]', "Type d'offre", ['class' => 'label']); !!}
 
-							<div class="columns">
-								@foreach($jobOfferTypes as $i => $offerType)
-									<div class="column">
-										<custom-checkbox
-												name="job_offer[offer_types][]"
-												input-value="{{$offerType["id"]}}"
-												v-model="formInput.offerTypes"
-												:disabled="isInputDisabled"
-												ref="offerTypes">
-
-											<i class="fa {{$offerType["icon"]}}"
-											   style="font-size: 30px;"></i><br><br>
-											<span style="font-size:16px">
-                                                {{ $offerType["name"] }}
-                                            </span>
-										</custom-checkbox>
-									</div>
-								@endforeach
-							</div>
+							@include('pages.ads.partials.inputs.jobOfferTypes', ["name" => "job_offer[offer_types][]"])
 						</div>
 
 						<div class="field">
@@ -110,13 +92,38 @@
 						<div class="field">
 							{!! Form::label('land_offer[education_levels][]', 'Niveau de formation souhaité', ['class' => 'label']); !!}
 
-							<multi-select
-									:options="{{json_encode($educationLevels)}}"
-									name="job_offer[education_levels][]"
-									v-model="formInput.educationLevels"
-									placeholder="Sélectionnez un ou plusieurs niveaux"
-									ref="educationLevels">
-							</multi-select>
+{{--							<multi-select--}}
+{{--									:options="{{json_encode($educationLevels)}}"--}}
+{{--									name="job_offer[education_levels][]"--}}
+{{--									v-model="formInput.educationLevels"--}}
+{{--									placeholder="Sélectionnez un ou plusieurs niveaux"--}}
+{{--									ref="educationLevels">--}}
+{{--							</multi-select>--}}
+
+							<div class="columns">
+								@foreach($educationLevels as $i => $educationlevel)
+									<div class="column">
+										<custom-checkbox
+												name="job_offer[education_levels][]"
+												input-value="{{$educationlevel["id"]}}"
+												v-model="formInput.educationLevels"
+												:disabled="isInputDisabled"
+												ref="educationLevels">
+
+{{--											<i class="fa {{$educationlevel["icon"]}}"--}}
+{{--											   style="font-size: 30px;"></i><br><br>--}}
+											<span style="font-size:16px">
+													{{ $educationlevel["name"] }}
+												</span>
+										</custom-checkbox>
+
+									</div>
+									@if($i % 2)
+									</div>
+									<div class="columns">
+									@endif
+								@endforeach
+							</div>
 						</div>
 					</div>
 					<div class="column"></div>
@@ -131,12 +138,11 @@
 					<div class="column is-half">
 
 						<?php
-							$aboutFarmLabel = "Et si vous nous en disiez un peu plus sur votre ferme ?";
-							$aboutFarmTooltip = "Quelles sont les principales activités de la ferme ?
-													Ses spécificités ? Quels sont les statuts juridiques ?
+							$aboutFarmLabel = "Et si vous nous en disiez un peu plus sur la ferme ?";
+							$aboutFarmTooltip = "Quelles sont les principales activités de la ferme ? Ses spécificités ?
 													Les possibilités de logement sur place ?
 													Ex : ferme de 50 ha avec production de céréales ; l'objectif est de diversifier les activités par un atelier de porc plein air.
-													Ex : la ferme est en agriculture biologique depuis 2015. Un magasin de vente directe est implanté sur la ferme.";
+													Ex : la ferme est en agriculture biologique depuis 2015. Un magasin de vente directe est implanté sur la ferme. ";
 						?>
 						@include('pages.ads.partials.inputs.about_project_content', ['title' => $aboutFarmLabel, 'tooltip' => $aboutFarmTooltip])
 

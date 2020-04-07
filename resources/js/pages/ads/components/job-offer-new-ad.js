@@ -49,7 +49,7 @@ export default {
                 maxLength: maxLength(1000)
             },
             experienceFarming: {
-                required,
+                //required,
                 minLength: minLength(5),
                 maxLength: maxLength(1000)
             },
