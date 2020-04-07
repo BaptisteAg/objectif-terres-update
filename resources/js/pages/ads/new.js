@@ -96,7 +96,6 @@ Vue.component('new-ad', {
         onFormComplete() {
             const evt = new CustomEvent("submit", {"bubbles": true, "cancelable": true});
             this.$refs.form.dispatchEvent(evt);
-        },
-
+        }
     }
 });
