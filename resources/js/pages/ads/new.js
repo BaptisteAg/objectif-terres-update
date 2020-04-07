@@ -63,6 +63,7 @@ Vue.component('new-ad', {
         document.querySelectorAll('.affix-wizard-footer[data-move-to-ref]').forEach($affix => {
             const $container = this.$refs[$affix.dataset.moveToRef].$el;
             const $removedAffix = $affix.parentElement.removeChild($affix);
+            console.log($container, $removedAffix)
             $container.appendChild($removedAffix);
         });
     },

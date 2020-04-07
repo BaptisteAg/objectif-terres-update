@@ -33,10 +33,10 @@
                     :style="{display:loading ? 'none': 'block'}">
 
                 <form
-                        method="post"
-                        enctype="multipart/form-data"
-                        @submit="submit"
-                        ref="form">
+                    method="post"
+                    enctype="multipart/form-data"
+                    @submit="submit"
+                    ref="form">
 
                     {{ csrf_field() }}
 
