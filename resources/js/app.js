@@ -24,6 +24,7 @@ require('vue-pagination-2/dist/vue-pagination-2.min');
 
 //////////////
 // VENDORS
+window.SmoothScroll = require('smooth-scroll');
 
 //////////////
 // PAGES

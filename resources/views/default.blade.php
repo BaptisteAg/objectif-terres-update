@@ -67,7 +67,7 @@
 </script>
 <script>
     let closeNotification = document.querySelector('button[data-type=close-main-message]');
-    closeNotification.addEventListener('click', function (e) {
+	closeNotification && closeNotification.addEventListener('click', function (e) {
         let message = document.querySelector('article[data-type=main-message ]');
         message.style.display = 'none';
     })

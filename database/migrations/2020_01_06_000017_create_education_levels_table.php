@@ -24,6 +24,7 @@ class CreateEducationLevelsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
+            $table->string('icon');
             $table->timestamps();
         });
     }
