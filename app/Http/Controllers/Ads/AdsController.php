@@ -21,6 +21,7 @@ use App\Notifications\NewAdToModerateNotification;
 use App\Repositories\FavoriteAds\FavoriteAdRepository;
 use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
+use App\Services\Users\UserService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -34,12 +35,14 @@ class AdsController extends Controller
 	protected $adService;
 	protected $threadService;
 	protected $favoriteAdRepository;
+	protected $userService;
 
-	public function __construct(AdService $adService, ThreadService $threadService, FavoriteAdRepository $favoriteAdRepository)
+	public function __construct(AdService $adService, ThreadService $threadService, FavoriteAdRepository $favoriteAdRepository, UserService $userService)
 	{
 		$this->adService = $adService;
 		$this->threadService = $threadService;
 		$this->favoriteAdRepository = $favoriteAdRepository;
+		$this->userService = $userService;
 
 	}
 
@@ -154,7 +157,8 @@ class AdsController extends Controller
 					$refusalTypes = RefusalType::all();
 				}
 				if (auth()->user()->role >=3){
-					$advisorUsers = User::all();
+					//TODO display only advisors that are related to the supervisor
+					$advisorUsers = $this->userService->findAllAdvisorsAndSupervisors();
 				}
 				$threads = $this->threadService->findThreadAlreadyExist($adId);
 				$data = array(

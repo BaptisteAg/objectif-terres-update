@@ -96,6 +96,14 @@ class UserService
 	}
 
 	/**
+	 * @return mixed
+	 */
+	public function findAllAdvisorsAndSupervisors()
+	{
+		return $this->repository->findAllByRole('>=', 2);
+	}
+
+	/**
 	 * @param int $id
 	 * @return User
 	 */

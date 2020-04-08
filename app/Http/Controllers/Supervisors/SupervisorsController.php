@@ -92,4 +92,11 @@ class SupervisorsController extends Controller
 		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
 		return view('pages.supervisors.help', compact('users'));
 	}
+
+
+	public function attribute(Request $request)
+	{
+		$this->projectService->attributeProject($request);
+		return back()->with('success', 'Le projet à bien été attribué !');
+	}
 }

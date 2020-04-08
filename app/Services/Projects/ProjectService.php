@@ -2,9 +2,12 @@
 
 namespace App\Services\Projects;
 
+use App\Models\Ad;
+use App\Models\AttributionAd;
 use App\Models\Department;
 use App\Models\Project;
 use App\Models\Region;
+use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Repositories\Projects\ProjectsRepository;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,10 +17,12 @@ use Illuminate\Http\Request;
 class ProjectService
 {
 	protected $repository;
-	
-	public function __construct(ProjectsRepository $projectsRepository)
+	protected $attributionAdsRepository;
+
+	public function __construct(ProjectsRepository $projectsRepository, AttributionAdsRepository $attributionAdsRepository)
 	{
 		$this->repository = $projectsRepository;
+		$this->attributionAdsRepository = $attributionAdsRepository;
 	}
 
 	/**
@@ -57,6 +62,7 @@ class ProjectService
 
 	/**
 	 * @param Request $filters
+	 * @param int $roleUser
 	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
 	public function filter(Request $filters, int $roleUser)
@@ -162,6 +168,17 @@ class ProjectService
 			->with($this->getEagerLoading())
 			->paginate(15);
 		return $projects;
+	}
+
+
+	/**
+	 * @param Request $request
+	 */
+	public function attributeProject(Request $request)
+	{
+		$attributionAd = $this->attributionAdsRepository->findByAdId($request->input('ad_id'));
+		$attributionAd->user_advisor_id = $request->input('user_advisor_id');
+		$attributionAd->save();
 	}
 
 	/**

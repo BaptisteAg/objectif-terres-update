@@ -197,6 +197,11 @@
 						@endforeach
 					</div>
 				</div>
+				<div class="column is-3 ">
+					<label class="label">Recherche par mot clé</label>
+					<input name="ad_keywords" class="input" type="text" placeholder="Votre recherche..."
+						   value="{{old('ad_keywords')}}">
+				</div>
 			@endif
 			<div class="column is-1">
 				<br>

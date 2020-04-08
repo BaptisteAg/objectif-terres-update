@@ -73,4 +73,14 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 	{
 		return $this->entity->where('email', $email)->first();
 	}
+
+	/**
+	 * @param string $operator
+	 * @param int $roleNumber
+	 * @return mixed
+	 */
+	public function findAllByRole(string $operator, int $roleNumber)
+	{
+		return $this->entity->where('role', $operator, $roleNumber)->get();
+	}
 }

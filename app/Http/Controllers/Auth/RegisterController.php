@@ -75,7 +75,7 @@ class RegisterController extends Controller
             ],
 			'first_name' => ['required', 'string', 'max:255'],
 			'phone' => ['string', 'min:10', 'max:255'],
-			'address' => ['string', 'min:5', 'required'],
+			'street' => ['string', 'min:5', 'required'],
 			'civility' => ['required'],
 			'profile' => ['required'],
 			'city_id' => ['required'],
