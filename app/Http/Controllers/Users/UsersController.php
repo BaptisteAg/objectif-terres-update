@@ -59,7 +59,6 @@ class UsersController extends Controller
 
 	public function update(UserRequest $request)
 	{
-		dd($request->input());
 		$data = $request->validated();
 		$user = $this->userService->update($data);
 		return redirect()->route('user.edit', $data['user_id'])->with('success', 'Votre profil a bien été mis à jour !');

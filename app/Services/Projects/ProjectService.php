@@ -14,8 +14,7 @@ use Illuminate\Http\Request;
 class ProjectService
 {
 	protected $repository;
-
-
+	
 	public function __construct(ProjectsRepository $projectsRepository)
 	{
 		$this->repository = $projectsRepository;
@@ -38,7 +37,6 @@ class ProjectService
 		return $projectAds;
 	}
 
-
 	/**
 	 * Project ads filters for supervisor dashboard
 	 * @param Request $request
@@ -51,8 +49,9 @@ class ProjectService
 	}
 
 
-	public function countNumberOfProjectsByStatusForLoggedUser($projectStatusId){
-		$numberOfProjects = $this->repository->findAllByUserIdAndUserRoleAndProjectStatusId(auth()->user()->id, auth()->user()->role,$projectStatusId)->count();
+	public function countNumberOfProjectsByStatusForLoggedUser($projectStatusId)
+	{
+		$numberOfProjects = $this->repository->findAllByUserIdAndUserRoleAndProjectStatusId(auth()->user()->id, auth()->user()->role, $projectStatusId)->count();
 		return $numberOfProjects;
 	}
 
@@ -62,46 +61,10 @@ class ProjectService
 	 */
 	public function filter(Request $filters, int $roleUser)
 	{
-		//Return results if research ads by keywords
 		$projectAds = collect();
-		if (!is_null($filters->input('ad_keywords'))) {
-			$adsByTitle = Project::whereHas('ad', function (Builder $query) use ($filters, $roleUser) {
-				$query->where('title', 'like', '%' . $filters->input('ad_keywords') . '%');
-				$query->orWhere('about_content', 'like', '%' . $filters->input('ad_keywords') . '%');
-				$query->orWhere('about_project_content', 'like', '%' . $filters->input('ad_keywords') . '%');
-
-			});
-			$adsByTitle->whereHas('ad', function (Builder $query) use ($roleUser) {
-				$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
-					$q->where('user_supervisor_id', '=', auth()->id());
-				});
-			});
-			$adsByTitle->orderByDesc('created_at');
-			$projectAds = $adsByTitle
-				->with($this->getEagerLoading())
-				->paginate(15);
-			return $projectAds;
-		}
 		//START QUERY
 		$projectsFiltered = (new Project())->newQuery();
-
-		//First, filter attributions ads based on the role who is the user logged
-		if ($roleUser === 2) {
-			$projectsFiltered->whereHas('ad', function (Builder $query) use ($roleUser) {
-				$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
-					$q->where('user_advisor_id', '=', auth()->id());
-				});
-			});
-		} else if ($roleUser === 3) {
-			$projectsFiltered->whereHas('ad', function (Builder $query) use ($roleUser) {
-				$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
-					$q->where('user_supervisor_id', '=', auth()->id());
-				});
-			});
-		}
-
-		//Filter attribution ads based on their locations if requested
-
+		//Filter projetcs based on their locations if requested
 		if ($filters->has('locations')) {
 			$locations = $filters->input('locations');
 //			TODO delete if research by cities is not necessary anymore
@@ -116,17 +79,22 @@ class ProjectService
 
 			if (array_key_exists('departments', $locations)) {
 				$departmentsCode = Department::whereIn('id', $locations['departments'])->get('code')->toArray();
-				$projectsFiltered->filterLocations('ad.departments', $locations['departments']);
-				$projectsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+				$projectsFiltered->where(function (Builder $query) use ($locations, $departmentsCode) {
+					$query->filterLocations('ad.departments', $locations['departments']);
+					$query->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+				});
 
 				//If one or more regions are selected, get all ads located in regions, all ads in departments inside regions and cities in departments
 			}
 			if (array_key_exists('regions', $locations)) {
 				$regionsCodes = Region::whereIn('id', $locations['regions'])->get('code')->toArray();
 				$departmentsCode = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
-				$projectsFiltered->filterLocations('ad.regions', $locations['regions']);
-				$projectsFiltered->filterSubLocations('ad.departments', $regionsCodes, 'departments.region_code');
-				$projectsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+				$projectsFiltered->where(function (Builder $query) use ($locations, $regionsCodes, $departmentsCode) {
+					$query->filterLocations('ad.regions', $locations['regions']);
+					$query->filterSubLocations('ad.departments', $regionsCodes, 'departments.region_code');
+					$query->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+				});
+
 			}
 		}
 		//If a range of submitting date is selected, filter attribution ads based on creation date
@@ -139,11 +107,33 @@ class ProjectService
 			$projectsFiltered->whereIn('project_status_id', $filters->input('project_statuses'));
 		}
 
-		//Filter ads based on their types if requested
+		//Filter projects based on their types if requested
 		if ($filters->has('ad_type')) {
 			$projectsFiltered->filterAdTypes($filters->input('ad_type'), 'ad.');
 		}
 
+		//Filter projects by keywords
+		$projectsFiltered->whereHas('ad', function (Builder $query) use ($filters, $roleUser) {
+			$query->where('title', 'like', '%' . $filters->input('ad_keywords') . '%');
+			$query->orWhere('about_content', 'like', '%' . $filters->input('ad_keywords') . '%');
+			$query->orWhere('about_project_content', 'like', '%' . $filters->input('ad_keywords') . '%');
+
+		});
+
+		//Filter projects based on the role who is the user logged
+		if ($roleUser === 2) {
+			$projectsFiltered->whereHas('ad', function (Builder $query) use ($roleUser) {
+				$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
+					$q->where('user_advisor_id', '=', auth()->id());
+				});
+			});
+		} else if ($roleUser === 3) {
+			$projectsFiltered->whereHas('ad', function (Builder $query) use ($roleUser) {
+				$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
+					$q->where('user_supervisor_id', '=', auth()->id());
+				});
+			});
+		}
 		//Handling sort of research results
 		if ($filters->has('order') && $filters->has('sort')) {
 			if ($filters->input('sort') === 'date') {
