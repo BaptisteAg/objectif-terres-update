@@ -1,6 +1,7 @@
 <?php namespace App\Repositories\Ads;
 
 use App\Models\Ad;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
@@ -11,39 +12,38 @@ use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
  */
 class AdRepository extends AbstractRepository implements AdRepositoryInterface
 {
-    public function entity()
-    {
-        return Ad::class;
-    }
+	public function entity()
+	{
+		return Ad::class;
+	}
 
-    public function all($paginate = null)
-    {
-        return $this->entity
-            ->with($this->getEagerLoading())
-            ->get();
-    }
+	public function all($paginate = null)
+	{
+		return $this->entity
+			->with($this->getEagerLoading())
+			->get();
+	}
 
-    /**
-     * @param $id
-     * @return Ad
-     */
-    public function find($id)
-    {
-    	/** @var Ad $model */
-        $model = $this->entity
-            ->where(["id" => $id])
-            ->with($this->getEagerLoading())
-            ->first();
+	/**
+	 * @param $id
+	 * @return Ad
+	 */
+	public function find($id)
+	{
+		/** @var Ad $model */
+		$model = $this->entity
+			->where(["id" => $id])
+			->with($this->getEagerLoading())
+			->first();
 
-        if (!$model) {
-            throw (new ModelNotFoundException)->setModel(
-                get_class($this->entity->getModel()),
-                $id
-            );
-        }
-
-        return $model;
-    }
+		if (!$model) {
+			throw (new ModelNotFoundException)->setModel(
+				get_class($this->entity->getModel()),
+				$id
+			);
+		}
+		return $model;
+	}
 
 	/**
 	 * @param  $idUser
@@ -63,9 +63,36 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				$idUser
 			);
 		}
-
 		return $model;
 	}
+
+
+	/**
+	 * @param array $ids
+	 * @return mixed
+	 */
+	public function findAllByIds(array $ids)
+	{
+		return $this->entity
+			->whereIn('id', $ids)
+			->with([
+				'project',
+				'userPp',
+				'cities',
+				'cities.department',
+				'cities.department.region',
+				'departments',
+				'departments.region',
+				'regions',
+				'attributionAd',
+				'landSeekAd',
+				'landOfferAd',
+				'jobOfferAd',
+				'jobSeekAd'
+			])
+			->get();
+	}
+
 
 	/**
 	 * Creates an ad.
@@ -75,34 +102,35 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 * @return Ad
 	 * @throws \Throwable
 	 */
-    public function create(array $data): Ad
-    {
-        $ad = new Ad();
+	public function create(array $data): Ad
+	{
+		$ad = new Ad();
 
-        $ad->fill($data);
+		$ad->fill($data);
 
-        $ad->user_pp_id = auth()->user()->id;
-        $ad->is_draft = false;
-        $ad->save();
+		$ad->user_pp_id = auth()->user()->id;
+		$ad->is_draft = false;
+		$ad->save();
 
-        foreach (["cities", "departments", "regions"] as $locationableType) {
-            $locationables = $data["locationable"][$locationableType] ?? [];
-            if (count($locationables)) {
-            	if(isset($data["locationable_radius"])){
+		foreach (["cities", "departments", "regions"] as $locationableType) {
+			$locationables = $data["locationable"][$locationableType] ?? [];
+			if (count($locationables)) {
+				if (isset($data["locationable_radius"])) {
 					$ad->$locationableType()->attach($locationables, ["radius" => $data["locationable_radius"]]);
-				}else{
+				} else {
 					$ad->$locationableType()->attach($locationables);
 				}
 			}
-        }
-        if(isset($data["documents_ids"]) && is_array($data["documents_ids"])) {
-            foreach($data["documents_ids"] as $documentId) {
-                $ad->documents()->attach($documentId);
-            }
-        }
+		}
+		if (isset($data["documents_ids"]) && is_array($data["documents_ids"])) {
+			foreach ($data["documents_ids"] as $documentId) {
+				$ad->documents()->attach($documentId);
+			}
+		}
 
-        return $ad;
-    }
+		return $ad;
+	}
+
 	/**
 	 * Delete an  ad.
 	 *
@@ -117,26 +145,78 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
 	}
 
-    private function getEagerLoading()
-    {
-        return [
-            'documents',
-            'cities',
-            'cities.department',
-            'cities.department.region',
-            'departments',
-            'departments.region',
-            'regions',
+	/**
+	 * Get all ads related to a supervisor : attribution ads or projects located in one of the territories managed by the supervisor
+	 * @param array $data
+	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+	 */
+	public function findAllBySupervisorTerritories(array $data, array $dates = null)
+	{
+		$queryAds = Ad::whereNotNull('project_id')
+			->whereHas('attributionAd', function (Builder $query) {
+				$query->where('user_supervisor_id', '=', auth()->user()->id);
+			})
+			->orWhereHas('departments', function (Builder $query) use ($data) {
+				$query->whereIn('code', $data);
+			})
+			->orWhereHas('cities', function (Builder $query) use ($data) {
+				$query->whereIn('department_code', $data);
+			})
+			->where(function (Builder $query) use ($dates) {
+				if (!is_null($dates)) {
+					$query->whereHas('project', function (Builder $subQuery) use ($dates) {
+						$subQuery->where('created_at', '>=', $dates[0]);
+					});
+					$query->orWhereHas('attributionAd', function (Builder $subQuery) use ($dates) {
+						$subQuery->where('created_at', '>=', $dates[0]);
+					});
+				}
+			})
+			->with([
+				'project',
+				'userPp',
+				'cities',
+				'cities.department',
+				'cities.department.region',
+				'departments',
+				'departments.region',
+				'regions',
+				'attributionAd',
+				'landSeekAd',
+				'landOfferAd',
+				'jobOfferAd',
+				'jobSeekAd'
 
-            'threads',
-            'threads.messages',
-            'threads.users',
-            'threads.messages.senderUser',
+			]);
+		if (is_null($dates)) {
+			$ads = $queryAds->paginate(15);
+		} else {
+			$ads = $queryAds->get();
+		}
+		return $ads;
+	}
 
-            'landSeekAd',
-            'landSeekAd.buildings',
-            'landSeekAd.buildings.buildingType',
-            'landSeekAd.buildings.requirement',
+
+	private function getEagerLoading()
+	{
+		return [
+			'documents',
+			'cities',
+			'cities.department',
+			'cities.department.region',
+			'departments',
+			'departments.region',
+			'regions',
+
+			'threads',
+			'threads.messages',
+			'threads.users',
+			'threads.messages.senderUser',
+
+			'landSeekAd',
+			'landSeekAd.buildings',
+			'landSeekAd.buildings.buildingType',
+			'landSeekAd.buildings.requirement',
 
 			'landOfferAd',
 			'landOfferAd.productionGenres',
@@ -147,6 +227,6 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'jobOfferAd',
 			'jobOfferAd.educationLevels',
 			'jobOfferAd.jobOfferTypes',
-        ];
-    }
+		];
+	}
 }

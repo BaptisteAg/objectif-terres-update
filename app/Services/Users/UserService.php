@@ -112,4 +112,15 @@ class UserService
 		return $this->repository->findByEmail($email);
 	}
 
+	/**
+	 * @return array
+	 */
+	public function getAllDepartmentsInSupervisorTerritory(){
+		$supervisorLocationTerritoryCodes = [];
+		foreach (auth()->user()->departments as $department) {
+			array_push($supervisorLocationTerritoryCodes, $department->code);
+		}
+		return $supervisorLocationTerritoryCodes;
+	}
+
 }

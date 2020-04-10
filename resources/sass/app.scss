@@ -63,6 +63,10 @@ html {
   overflow: hidden;
 }
 
+[v-cloak] {
+  display: none;
+}
+
 // Leaflet / OpenStreetmap
 #my_osm_widget_map { /* use the same name as <div id=""> */
   width: 100vw; /* important! if you need full width display */
@@ -84,10 +88,10 @@ html {
 .page-link {
   font-size: 1.5rem;
 }
-  .is-current-page {
-    font-weight: bold;
-  }
 
+.is-current-page {
+  font-weight: bold;
+}
 
 
 // Vue-Multiselect
@@ -195,6 +199,6 @@ body .multiselect__tag {
 
 
 //VUe date-picker
-.vdp-datepicker__calendar{
-  right:0% ;
+.vdp-datepicker__calendar {
+  right: 0%;
 }

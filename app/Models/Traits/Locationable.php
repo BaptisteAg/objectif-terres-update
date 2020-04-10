@@ -24,4 +24,12 @@ trait Locationable
     {
         return $this->morphToMany('App\Models\Research', 'locationable_research');
     }
+
+	/**
+	 * @return MorphToMany
+	 */
+	public function users()
+	{
+		return $this->morphToMany('App\Models\User', 'locationable_user');
+	}
 }

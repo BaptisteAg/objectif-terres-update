@@ -30,11 +30,11 @@ window.SmoothScroll = require('smooth-scroll');
 // PAGES
 require ('./pages/ads/new');
 require ('./pages/ads/show');
-// require('./pages/researches/researches');
 require('./pages/header');
 require('./pages/auth/user-form');
 require('./pages/threads/threads');
 require('./pages/dashboard');
+require('./pages/supervisor/supervisor');
 require('./pages/video');
 require('./pages/cms/contact-us-form');
 //////////////

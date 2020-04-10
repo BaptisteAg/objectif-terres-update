@@ -42,7 +42,7 @@
 				<div class="column is-5 ">
 					<div class="columns is-mobile">
 						<div class="column ">
-							<div class="field">
+							<div v-cloak class="field">
 								<label class="label">Localisations (département ou région)</label>
 								<autocomplete
 										id="localisations"
@@ -100,7 +100,7 @@
 				<div class="column is-5 ">
 					<div class="columns is-mobile">
 						<div class="column ">
-							<div class="field">
+							<div v-cloak  class="field">
 								<label class="label">Localisations (département ou région)</label>
 								<autocomplete
 										id="localisations"
@@ -115,7 +115,7 @@
 											  data-tooltip="Retirer cette localisation">
 											<i class="fa fa-trash-alt" style="cursor:pointer;"></i>
 										</span>
-									<b>@{{helper.getLabel(location.value.type)}}</b> : @{{location.value.originalLabel}}
+									<b >@{{helper.getLabel(location.value.type)}}</b> : @{{location.value.originalLabel}}
 									<input type="hidden" :name="'locations['+location.value.type+'][]'"
 										   :value="location.value.id" v-if="location.value.id">
 									<template v-if="location.value.ids">

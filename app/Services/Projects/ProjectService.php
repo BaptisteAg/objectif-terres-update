@@ -2,10 +2,9 @@
 
 namespace App\Services\Projects;
 
-use App\Models\Ad;
-use App\Models\AttributionAd;
 use App\Models\Department;
 use App\Models\Project;
+use App\Models\ProjectStatus;
 use App\Models\Region;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Repositories\Projects\ProjectsRepository;
@@ -19,6 +18,11 @@ class ProjectService
 	protected $repository;
 	protected $attributionAdsRepository;
 
+	/**
+	 * ProjectService constructor.
+	 * @param ProjectsRepository $projectsRepository
+	 * @param AttributionAdsRepository $attributionAdsRepository
+	 */
 	public function __construct(ProjectsRepository $projectsRepository, AttributionAdsRepository $attributionAdsRepository)
 	{
 		$this->repository = $projectsRepository;
@@ -26,34 +30,9 @@ class ProjectService
 	}
 
 	/**
-	 * Show all projects ads related to supervisor
-	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+	 * @param $projectStatusId
+	 * @return int
 	 */
-	public function findAllByUserSupervisor()
-	{
-		$projectAds = Project::whereHas('ad', function (Builder $query) {
-			$query->whereHas('attributionAd', function (Builder $q) {
-				$q->where('user_supervisor_id', '=', auth()->user()->id);
-			});
-		})
-			->with($this->getEagerLoading())
-			->paginate(15);
-
-		return $projectAds;
-	}
-
-	/**
-	 * Project ads filters for supervisor dashboard
-	 * @param Request $request
-	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-	 */
-	public function showForSupervisor(Request $filters)
-	{
-		$project = $this->filter($filters, auth()->user()->role);
-		return $project;
-	}
-
-
 	public function countNumberOfProjectsByStatusForLoggedUser($projectStatusId)
 	{
 		$numberOfProjects = $this->repository->findAllByUserIdAndUserRoleAndProjectStatusId(auth()->user()->id, auth()->user()->role, $projectStatusId)->count();
@@ -177,6 +156,13 @@ class ProjectService
 	public function attributeProject(Request $request)
 	{
 		$attributionAd = $this->attributionAdsRepository->findByAdId($request->input('ad_id'));
+		//updating project status if it is non attribute to an advisor
+		$nonAttributedStatus = ProjectStatus::where('name', '=','Non accompagné')->first()->id;
+		$attributedStatus = ProjectStatus::where('name', '=','Accompagné')->first()->id;
+		if ($attributionAd->ad->project->project_status_id === $nonAttributedStatus) {
+			$attributionAd->ad->project->project_status_id = $attributedStatus;
+			$attributionAd->ad->project->save();
+		}
 		$attributionAd->user_advisor_id = $request->input('user_advisor_id');
 		$attributionAd->save();
 	}

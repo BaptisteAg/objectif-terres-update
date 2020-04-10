@@ -6,6 +6,7 @@ use App\Notifications\ResetPasswordNotification;
 use App\Presenters\UserPresenter;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use McCool\LaravelAutoPresenter\HasPresenter;
@@ -154,6 +155,33 @@ class User extends Authenticatable implements HasPresenter
 	public function getPresenterClass()
 	{
 		return UserPresenter::class;
+	}
+
+	/**
+	 * Get all cities 'location' for the user
+	 * @return MorphToMany
+	 */
+	public function cities()
+	{
+		return $this->morphedbyMany(City::class, 'locationable_user');
+	}
+
+	/**
+	 * Get all cities 'location' for the user
+	 * @return MorphToMany
+	 */
+	public function departments()
+	{
+		return $this->morphedbyMany(Department::class, 'locationable_user');
+	}
+
+	/**
+	 * Get all cities 'location' for the user
+	 * @return MorphToMany
+	 */
+	public function regions()
+	{
+		return $this->morphedbyMany(Region::class, 'locationable_user');
 	}
 
 

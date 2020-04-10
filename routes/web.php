@@ -116,6 +116,7 @@ Route::middleware('supervisor')->prefix('mon-espace-responsable-territorial')->n
 	Route::get('recherche', 'SupervisorsController@show')->name('show');
 	Route::get('aide-et-ressources', 'SupervisorsController@help')->name('help');
 	Route::post('attribution', 'SupervisorsController@attribute')->name('attribute');
+	Route::get('export', 'SupervisorsController@export')->name('export');
 });
 
 Route::middleware('advisor')->prefix('mon-espace-primo-accueillant')->name('advisor.')->namespace('Advisors')->group(function () {

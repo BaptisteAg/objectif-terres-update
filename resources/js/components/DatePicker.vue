@@ -1,6 +1,7 @@
 <template>
     <div class="control has-icon-right">
         <datepicker
+                @selected="pickDates"
                 :language="fr"
                 :monday-first="mondayFirst"
                 calendar-button-icon="fas fa-calendar-alt"
@@ -13,6 +14,8 @@
                 :highlighted="highlighted"
         >
         </datepicker>
+        <input type="hidden" :value ="highlighted.from" name="date_from">
+        <input type="hidden" :value ="highlighted.to" name="date_to">
         <span class="icon is-small is-right">
             <i class=" fa fa-calendar"></i>
         </span>
@@ -40,8 +43,7 @@
                 fr: fr,
                 mondayFirst: true,
                 disabledDates: {
-                    from: new Date(Date.now()),
-
+                    from:  new Date(Date.now()),
                 },
                 highlighted: {
                     to: new Date(Date.now()),
@@ -49,6 +51,11 @@
                 }
             }
         },
+        methods : {
+            pickDates(){
+                console.log(this.highlighted.from)
+            }
+        }
 
     }
 </script>
