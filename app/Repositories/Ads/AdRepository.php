@@ -148,6 +148,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	/**
 	 * Get all ads related to a supervisor : attribution ads or projects located in one of the territories managed by the supervisor
 	 * @param array $data
+	 * @param array|null $dates
 	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
 	public function findAllBySupervisorTerritories(array $data, array $dates = null)
@@ -167,10 +168,13 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			->where(function (Builder $query) use ($dates) {
 				if (!is_null($dates)) {
 					$query->whereHas('project', function (Builder $subQuery) use ($dates) {
-						$subQuery->whereBetween('created_at', [$dates[0], $dates[1]." 23:59:59"]);
+						$subQuery->whereBetween('created_at', [$dates[0], $dates[1] . " 23:59:59"]);
 					});
-					$query->orWhereHas('attributionAd', function (Builder $subQuery) use ($dates) {
-						$subQuery->whereBetween('created_at', [$dates[0], $dates[1]." 23:59:59"]);
+					$query->orWhere(function (Builder $subQuery) use ($dates) {
+						$subQuery->whereNull('project_id');
+						$subQuery->whereHas('attributionAd', function (Builder $q) use ($dates) {
+							$q->whereBetween('created_at', [$dates[0], $dates[1] . " 23:59:59"]);
+						});
 					});
 				}
 			})

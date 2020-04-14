@@ -204,7 +204,7 @@ class AdService
 	}
 
 	/**
-	 * @param array $adIds
+	 * @param array $dates
 	 * @return mixed
 	 */
 	public function findAllByUserSupervisorBetweenDates(array $dates)
@@ -260,14 +260,19 @@ class AdService
 			}
 		}
 		//If a range of submitting date is selected, filter attribution ads based on creation date
-		if (!is_null($filters->input('date_research_range'))) {
-			$dateFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_research_range'))->format('Y-m-d');
-			$adsFiltred->where(function (Builder $query) use ($dateFormatted) {
-				$query->whereHas('project', function (Builder $subQuery) use ($dateFormatted) {
-					$subQuery->where('created_at', '>=', $dateFormatted);
+		if (!is_null($filters->input('date_from')) && !is_null($filters->input('date_to'))) {
+			$dateStartFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_from'))->format('Y-m-d');
+			$dateEndFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_to'))->format('Y-m-d');
+			$adsFiltred->where(function (Builder $query) use ($dateStartFormatted, $dateEndFormatted) {
+				$query->whereHas('project', function (Builder $subQuery) use ($dateStartFormatted, $dateEndFormatted) {
+					$subQuery->whereBetween('created_at', [$dateStartFormatted, $dateEndFormatted . " 23:59:59"]);
 				});
-				$query->orWhereHas('attributionAd', function (Builder $subQuery) use ($dateFormatted) {
-					$subQuery->where('created_at', '>=', $dateFormatted);
+				$query->orWhere(function (Builder $subQuery) use ($dateStartFormatted, $dateEndFormatted) {
+					$subQuery->whereNull('project_id');
+					$subQuery->whereHas('attributionAd', function (Builder $q) use ($dateStartFormatted, $dateEndFormatted) {
+						$q->whereBetween('created_at', [$dateStartFormatted, $dateEndFormatted . " 23:59:59"]);
+
+					});
 				});
 			});
 		}

@@ -10,9 +10,7 @@
                          placeholder: "Séléctionner une plage de date"}'
         >
         </date-picker>
-        <p class="text-red-600 text-xs italic mt-1" v-if="errorMessage">
-            {{ errorMessage }}
-        </p>
+
         <input type="hidden" :value="formattedDate[0]" name="date_from">
         <input type="hidden" :value="formattedDate[1]" name="date_to">
         <span class="icon is-small is-right">
@@ -29,11 +27,18 @@
             DatePicker
         },
         props: {
-            oldValue: '',
+            oldValueSelected: '',
         },
         data() {
+            let oldValueFormatted = {};
+            if (this.oldValueSelected && this.oldValueSelected!== "null"){
+                 oldValueFormatted = JSON.parse(this.oldValueSelected);
+            }
             return {
-                date: null,
+                date: this.oldValueSelected ? {
+                    start: new Date(oldValueFormatted.start),
+                    end: new Date(oldValueFormatted.end)
+                } : null,
                 mode: 'range',
             }
         },

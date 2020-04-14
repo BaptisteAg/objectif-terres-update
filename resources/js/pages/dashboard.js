@@ -2,19 +2,19 @@ import MultiSelect from "../components/MultiSelect";
 import AjaxMultiSelect from "../components/AjaxMultiSelect";
 import VueSlider from "../components/VueSlider";
 import Autocomplete from '../components/Autocomplete'
-import DatePicker from "../components/DatePicker";
 import VueSliderRange from "../components/VueSliderRange";
 import CustomCheckbox from "../components/CustomCheckbox";
 import Vue from 'vue'
 import {LocationHelper} from "../helpers";
+import DateRange from "../components/DateRange";
 
 Vue.component('dashboard-form-filter',{
     components : {
         MultiSelect,
+        DateRange,
         VueSlider,
         AjaxMultiSelect,
         Autocomplete,
-        DatePicker,
         VueSliderRange,
         CustomCheckbox
     },
@@ -25,7 +25,6 @@ Vue.component('dashboard-form-filter',{
         const hasOld = Object.values(this.oldInputSelected).some(x => (x !== null && x !== ''));
         return {
             adTypeSelected:hasOld && this.oldInputSelected.ad_type ? this.oldInputSelected.ad_type : [],
-            dateSelected : hasOld? this.oldInputSelected.date_research_range : '',
             locations : hasOld && this.oldInputSelected.json_locations ?JSON.parse(this.oldInputSelected.json_locations)  : []
         }
     },

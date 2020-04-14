@@ -29,13 +29,11 @@
 				<div class="column is-one-fifth">
 					<div class="control has-icons-right ">
 						@if(Route::current()->getName() === 'moderator.index' &&  Route::current()->getName() === 'moderator.show')
-							<label class="label"> Annonces soumises depuis le </label>
+							<label class="label"> Date de soumission de l'annonce </label>
 						@else
-							<label class="label"> Demandes soumises depuis le </label>
+							<label class="label"> Date de soumission de la demande </label>
 						@endif
-						<date-picker
-								old-value= {{old('date_research_range')}}
-						></date-picker>
+						<date-range old-value-selected={{old('date-range-selected')}}></date-range>
 					</div>
 				</div>
 			@else
@@ -100,7 +98,7 @@
 				<div class="column is-5 ">
 					<div class="columns is-mobile">
 						<div class="column ">
-							<div v-cloak  class="field">
+							<div v-cloak class="field">
 								<label class="label">Localisations (département ou région)</label>
 								<autocomplete
 										id="localisations"
@@ -115,7 +113,7 @@
 											  data-tooltip="Retirer cette localisation">
 											<i class="fa fa-trash-alt" style="cursor:pointer;"></i>
 										</span>
-									<b >@{{helper.getLabel(location.value.type)}}</b> : @{{location.value.originalLabel}}
+									<b>@{{helper.getLabel(location.value.type)}}</b> : @{{location.value.originalLabel}}
 									<input type="hidden" :name="'locations['+location.value.type+'][]'"
 										   :value="location.value.id" v-if="location.value.id">
 									<template v-if="location.value.ids">
@@ -173,13 +171,11 @@
 				<div class="column is-one-fifth">
 					<div class="control has-icons-right ">
 						@if(Route::current()->getName() === 'moderator.index' &&  Route::current()->getName() === 'moderator.show')
-							<label class="label"> Annonces soumises depuis le </label>
+							<label class="label"> Date de soumission de l'annonce </label>
 						@else
-							<label class="label"> Demandes soumises depuis le </label>
+							<label class="label"> Date de soumission de la demande </label>
 						@endif
-						<date-picker
-								old-value= {{old('date_research_range')}}
-						></date-picker>
+						<date-range old-value-selected={{old('date-range-selected')}}></date-range>
 					</div>
 				</div>
 				<div class="column ">
