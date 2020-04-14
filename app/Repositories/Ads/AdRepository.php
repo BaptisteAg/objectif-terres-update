@@ -152,23 +152,25 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 */
 	public function findAllBySupervisorTerritories(array $data, array $dates = null)
 	{
-		$queryAds = Ad::whereNotNull('project_id')
-			->whereHas('attributionAd', function (Builder $query) {
+		$queryAds = Ad::where(function (Builder $builder) use ($data) {
+			$builder->whereNotNull('project_id');
+			$builder->whereHas('attributionAd', function (Builder $query) {
 				$query->where('user_supervisor_id', '=', auth()->user()->id);
-			})
-			->orWhereHas('departments', function (Builder $query) use ($data) {
+			});
+			$builder->orWhereHas('departments', function (Builder $query) use ($data) {
 				$query->whereIn('code', $data);
-			})
-			->orWhereHas('cities', function (Builder $query) use ($data) {
+			});
+			$builder->orWhereHas('cities', function (Builder $query) use ($data) {
 				$query->whereIn('department_code', $data);
-			})
+			});
+		})
 			->where(function (Builder $query) use ($dates) {
 				if (!is_null($dates)) {
 					$query->whereHas('project', function (Builder $subQuery) use ($dates) {
-						$subQuery->where('created_at', '>=', $dates[0]);
+						$subQuery->whereBetween('created_at', [$dates[0], $dates[1]." 23:59:59"]);
 					});
 					$query->orWhereHas('attributionAd', function (Builder $subQuery) use ($dates) {
-						$subQuery->where('created_at', '>=', $dates[0]);
+						$subQuery->whereBetween('created_at', [$dates[0], $dates[1]." 23:59:59"]);
 					});
 				}
 			})

@@ -47,7 +47,7 @@
 	@foreach($ads as $ad)
 		@if($ad->project()->exists())
 			<tr>
-				<td>{{$ad->created_at}}</td>
+				<td>{{$ad->project->created_at}}</td>
 				<td>{{$ad->title}}</td>
 				<td>{{$ad->ad_type_full_name}}</td>
 				<td>{{$ad->userPp->first_name}} {{$ad->userPp->name}}</td>

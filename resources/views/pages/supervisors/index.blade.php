@@ -64,7 +64,7 @@
 						</a>
 					</div>
 					{!! Form::open(['route' => 'supervisor.export', 'method' => 'get']) !!}
-					<div v-cloak  id="modal-supervisor-form-data" :class="isActive ? 'modal is-active': 'modal'">
+					<div v-cloak id="modal-supervisor-form-data" :class="isActive ? 'modal is-active': 'modal'">
 						<div id="modal-supervisor-form-data-background" class="modal-background"
 							 v-on:click="closeModal()"></div>
 						<div class="modal-content-validation">
@@ -78,10 +78,7 @@
 										<div class="columns is-mobile is-centered">
 											<div class="column">
 												<div class="control has-icons-right ">
-													<date-picker
-															old-value= {{""}}
-													></date-picker>
-
+													<date-range></date-range>
 												</div>
 											</div>
 										</div>
@@ -271,9 +268,7 @@
 @endsection
 
 @section('script')
-
 	<script>
-
         const vueSupervisorFilters = new Vue({
             el: '#vue-form-supervisor',
             name: 'content'
@@ -284,26 +279,11 @@
             name: 'content'
         });
 
-        // let buttons = document.querySelectorAll('.form-research-buttons');
-        // let icons = document.querySelectorAll('.form-research-buttons-icons')
-        //
-        // buttons.forEach(function (btn) {
-        //     btn.addEventListener('click', () => {
-        //         buttons.forEach(function (b) {
-        //             b.classList.add('is-light');
-        //             b.firstElementChild.classList.add('is-hidden')
-        //         });
-        //         btn.classList.remove('is-light');
-        //         btn.firstElementChild.classList.remove('is-hidden')
-        //     });
-        //
-        // });
-
         let deleteButton = document.querySelector('#close-notification-supervisor');
         deleteButton.addEventListener('click', function (e) {
             let notification = document.querySelector('#notification-supervisor');
             notification.style.display = 'none';
-        })
+        });
 	</script>
 
 @endsection

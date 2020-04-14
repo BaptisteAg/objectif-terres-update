@@ -1,9 +1,9 @@
-import DatePicker from "../../components/DatePicker";
+import DateRange from "../../components/DateRange";
 import Vue from 'vue'
 
 Vue.component('export-to-spreadsheet-form', {
     components: {
-        DatePicker,
+        DateRange
     },
     props : {
         oldInputSelected : ''

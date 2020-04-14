@@ -99,17 +99,24 @@ class SupervisorsController extends Controller
 
 	/**
 	 * Supervisor export data controller
-	 * @param array $projects
+	 * @param Request $request
 	 * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
 	 */
 	public function export(Request $request)
 	{
-		$dates = [
-			DateTime::createFromFormat('d/m/Y', (string)$request->input('date_research_range'))->format('Y-m-d')
-		];
+		if (is_null($request->input('date_from')) && is_null($request->input('date_from'))) {
+			return Excel::download(new SupervisorExport($this->adService->findAllByUserSupervisor()), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
 
-		$ads = $this->adService->findAllByUserSupervisorBetweenDates($dates);
-		return Excel::download(new SupervisorExport($ads), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
+		} else {
+			$dates = [
+				DateTime::createFromFormat('d/m/Y', (string)$request->input('date_from'))->format('Y-m-d'),
+				DateTime::createFromFormat('d/m/Y', (string)$request->input('date_to'))->format('Y-m-d')
+			];
+
+			$ads = $this->adService->findAllByUserSupervisorBetweenDates($dates);
+			return Excel::download(new SupervisorExport($ads), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
+		}
+
 	}
 
 
