@@ -28,8 +28,8 @@ $factory->define(User::class, function () {
 		'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
 		'address' => $faker->address,
 		'phone'=>$faker->phoneNumber,
-		'civility'=>$faker->numberBetween(0,2),
-		'profile'=>$faker->numberBetween(0,5),
+		'civility'=>$faker->numberBetween(1,3),
+		'profile'=>$faker->numberBetween(1,5),
 		'city'=>$city->name,
 		'accept_communication'=>$faker->boolean(20),
 		'accept_share_contact_infos' =>$faker->boolean(20),

@@ -33,7 +33,7 @@
         props: {
             calendarClass: String,
             inputClass: String,
-            oldValue : ''
+            oldValue : '',
         },
         data() {
             let date =this.oldValue.split('/');

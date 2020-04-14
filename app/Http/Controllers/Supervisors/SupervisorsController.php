@@ -104,10 +104,9 @@ class SupervisorsController extends Controller
 	 */
 	public function export(Request $request)
 	{
-		dd($request->input());
-		$dates = [];
-		array_push($dates, DateTime::createFromFormat('d/m/Y', (string)$request->input('date_research_range'))->format('Y-m-d')
-	);
+		$dates = [
+			DateTime::createFromFormat('d/m/Y', (string)$request->input('date_research_range'))->format('Y-m-d')
+		];
 
 		$ads = $this->adService->findAllByUserSupervisorBetweenDates($dates);
 		return Excel::download(new SupervisorExport($ads), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
