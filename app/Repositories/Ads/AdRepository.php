@@ -2,6 +2,7 @@
 
 use App\Models\Ad;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
@@ -68,29 +69,87 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
 
 	/**
-	 * @param array $ids
-	 * @return mixed
+	 * @param array $territoriesCode
+	 * @return \Illuminate\Support\Collection
 	 */
-	public function findAllByIds(array $ids)
+	public function allInTerritories(array $territoriesCode)
 	{
-		return $this->entity
-			->whereIn('id', $ids)
-			->with([
-				'project',
-				'userPp',
-				'cities',
-				'cities.department',
-				'cities.department.region',
-				'departments',
-				'departments.region',
-				'regions',
-				'attributionAd',
-				'landSeekAd',
-				'landOfferAd',
-				'jobOfferAd',
-				'jobSeekAd'
-			])
+		$models = $this->entity
+			->whereNull('project_id')
+			->where(function (Builder $query) use ($territoriesCode) {
+				$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
+					$query->whereIn('code', $territoriesCode);
+				});
+				$query->orWhereHas('cities', function (Builder $query) use ($territoriesCode) {
+					$query->whereIn('department_code', $territoriesCode);
+				});
+			})
 			->get();
+		if (!$models) {
+			throw (new ModelNotFoundException)->setModel(
+				get_class($this->entity->getModel()),
+				$territoriesCode
+			);
+		}
+		return $models;
+	}
+
+	/**
+	 * @param array $territoriesCode
+	 * @return Ad[]|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function allInTerritoriesGroupByUserPp(array $territoriesCode)
+	{
+		/** @var Ad $model */
+		$model = $this->entity
+			->select('user_pp_id')
+			->whereHas('departments', function (Builder $query) use ($territoriesCode) {
+				$query->whereIn('code', $territoriesCode);
+			})
+			->orWhereHas('cities', function (Builder $query) use ($territoriesCode) {
+				$query->whereIn('department_code', $territoriesCode);
+			})
+			->groupBy('user_pp_id')
+			->get();
+		if (!$model) {
+			throw (new ModelNotFoundException)->setModel(
+				get_class($this->entity->getModel()),
+				$territoriesCode
+			);
+		}
+		return $model;
+	}
+
+	/**
+	 * @param array $territoriesCode
+	 * @return Ad[]|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function allInTerritoriesByAdStatus(array $territoriesCode, int $adStatusId)
+	{
+		/** @var Ad $model */
+		$model = $this->entity
+			->whereNull('project_id')
+			->where(function (Builder $query) use ($territoriesCode) {
+				$query->whereHas('departments', function (Builder $subQuery) use ($territoriesCode) {
+					$subQuery->whereIn('code', $territoriesCode);
+				});
+				$query->orWhereHas('cities', function (Builder $subQuery) use ($territoriesCode) {
+					$subQuery->whereIn('department_code', $territoriesCode);
+				});
+			})
+			->where(function (Builder $query) use ($adStatusId) {
+				$query->whereHas('attributionAd', function (Builder $subQuery) use ($adStatusId) {
+					$subQuery->where('ad_status_id', '=', $adStatusId);
+				});
+			})
+			->get();
+		if (!$model) {
+			throw (new ModelNotFoundException)->setModel(
+				get_class($this->entity->getModel()),
+				$territoriesCode
+			);
+		}
+		return $model;
 	}
 
 
@@ -151,7 +210,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 * @param array|null $dates
 	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
-	public function findAllBySupervisorTerritories(array $data, array $dates = null)
+	public function findAllBySupervisorTerritoriesAndDates(array $data, array $dates = null)
 	{
 		$queryAds = Ad::where(function (Builder $builder) use ($data) {
 			$builder->whereNotNull('project_id');

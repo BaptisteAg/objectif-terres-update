@@ -35,4 +35,28 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 	}
 
 
+	/**
+	 * @param array $departmentCodes
+	 * @return \Illuminate\Database\Eloquent\Collection
+	 */
+	public function findAllInTerritories(array $departmentCodes)
+	{
+		return $this->entity
+			->whereHas('ad', function (Builder $query) use ($departmentCodes) {
+				$query->whereHas('departments', function (Builder $subQuery) use ($departmentCodes) {
+					$subQuery->whereIn('code', $departmentCodes);
+				})
+				->orWhereHas('cities', function (Builder $subQuery) use ($departmentCodes) {
+					$subQuery->whereIn('department_code', $departmentCodes);
+				});
+			})
+			->with([
+				'ad',
+				'ad.landSeekAd',
+				'ad.landOfferAd',
+			])
+			->get();
+	}
+
+
 }

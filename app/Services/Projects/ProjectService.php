@@ -6,10 +6,13 @@ use App\Models\Department;
 use App\Models\Project;
 use App\Models\ProjectStatus;
 use App\Models\Region;
+use App\Models\User;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Repositories\Projects\ProjectsRepository;
+use App\Services\Users\UserService;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 
@@ -17,16 +20,19 @@ class ProjectService
 {
 	protected $repository;
 	protected $attributionAdsRepository;
+	protected $userService;
 
 	/**
 	 * ProjectService constructor.
 	 * @param ProjectsRepository $projectsRepository
 	 * @param AttributionAdsRepository $attributionAdsRepository
+	 * @param UserService $userService
 	 */
-	public function __construct(ProjectsRepository $projectsRepository, AttributionAdsRepository $attributionAdsRepository)
+	public function __construct(ProjectsRepository $projectsRepository, AttributionAdsRepository $attributionAdsRepository, UserService $userService)
 	{
 		$this->repository = $projectsRepository;
 		$this->attributionAdsRepository = $attributionAdsRepository;
+		$this->userService = $userService;
 	}
 
 	/**
@@ -37,6 +43,39 @@ class ProjectService
 	{
 		$numberOfProjects = $this->repository->findAllByUserIdAndUserRoleAndProjectStatusId(auth()->user()->id, auth()->user()->role, $projectStatusId)->count();
 		return $numberOfProjects;
+	}
+
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Collection
+	 */
+	public function findAllProjectInSupervisorTerritories()
+	{
+		$supervisorDepartmentCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+		$projects = $this->repository->findAllInTerritories($supervisorDepartmentCodes);
+		return $projects;
+	}
+
+
+	/**
+	 * @param Collection $projects
+	 * @return array
+	 */
+	public function sortProjectsByCategories($projects)
+	{
+		$projectsByCategories = [
+			'landSeekAd' => 0,
+			'landOfferAd' => 0,
+		];
+		foreach ($projects as $project) {
+			if ($project->ad->landOfferAd()->exists()) {
+				$projectsByCategories['landOfferAd']++;
+			} else if ($project->ad->landSeekAd()->exists()) {
+				$projectsByCategories['landSeekAd']++;
+			}
+		}
+		return $projectsByCategories;
+
 	}
 
 	/**
@@ -157,8 +196,8 @@ class ProjectService
 	{
 		$attributionAd = $this->attributionAdsRepository->findByAdId($request->input('ad_id'));
 		//updating project status if it is non attribute to an advisor
-		$nonAttributedStatus = ProjectStatus::where('name', '=','Non accompagné')->first()->id;
-		$attributedStatus = ProjectStatus::where('name', '=','Accompagné')->first()->id;
+		$nonAttributedStatus = ProjectStatus::where('name', '=', 'Non accompagné')->first()->id;
+		$attributedStatus = ProjectStatus::where('name', '=', 'Accompagné')->first()->id;
 		if ($attributionAd->ad->project->project_status_id === $nonAttributedStatus) {
 			$attributionAd->ad->project->project_status_id = $attributedStatus;
 			$attributionAd->ad->project->save();

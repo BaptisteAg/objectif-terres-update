@@ -16,6 +16,7 @@ use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Services\Users\UserService;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -198,10 +199,10 @@ class AdService
 	public function findAllByUserSupervisor()
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
-		$ads = $this->repository->findAllBySupervisorTerritories($supervisorLocationTerritoryCodes);
+		$ads = $this->repository->findAllBySupervisorTerritoriesAndDates($supervisorLocationTerritoryCodes);
 		return $ads;
-
 	}
+
 
 	/**
 	 * @param array $dates
@@ -210,10 +211,69 @@ class AdService
 	public function findAllByUserSupervisorBetweenDates(array $dates)
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
-		$ads = $this->repository->findAllBySupervisorTerritories($supervisorLocationTerritoryCodes, $dates);
+		$ads = $this->repository->findAllBySupervisorTerritoriesAndDates($supervisorLocationTerritoryCodes, $dates);
 		return $ads;
 	}
 
+
+	/**
+	 * @return Collection $ads
+	 */
+	public function findAllAdsInSupervisorTerritories()
+	{
+		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+		$ads = $this->repository->allInTerritories($supervisorLocationTerritoryCodes);
+		return $ads;
+	}
+
+	/**
+	 * @return Ad[]|Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function findAllValidateAdsInSupervisorTerritories()
+	{
+		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+		$validateStatusId = AdStatus::where('name', '=', 'Validée')->first()->id;
+		$ads = $this->repository->allInTerritoriesByAdStatus($supervisorLocationTerritoryCodes, $validateStatusId);
+		return $ads;
+	}
+
+
+	/**
+	 * @return Ad[]|Builder|\Illuminate\Database\Eloquent\Model
+	 */
+	public function findAllAdsAndProjectsGroupByUserPp()
+	{
+		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+		$users = $this->repository->allInTerritoriesGroupByUserPp($supervisorLocationTerritoryCodes);
+		return $users;
+	}
+
+
+	/**
+	 * @param Collection $ads
+	 * @return array
+	 */
+	public function countAdsByCategories($ads)
+	{
+		$adsByCategories = [
+			'landSeekAd' => 0,
+			'landOfferAd' => 0,
+			'jobOfferAd' => 0,
+			'jobSeekAd' => 0
+		];
+		foreach ($ads as $ad) {
+			if ($ad->landOfferAd()->exists()) {
+				$adsByCategories['landOfferAd']++;
+			} else if ($ad->landSeekAd()->exists()) {
+				$adsByCategories['landSeekAd']++;
+			} else if ($ad->jobSeekAd()->exists()) {
+				$adsByCategories['jobSeekAd']++;
+			} else if ($ad->jobOfferAd()->exists()) {
+				$adsByCategories['jobOfferAd']++;
+			}
+		}
+		return $adsByCategories;
+	}
 
 	/**
 	 * Ad filters for supervisor dashboard

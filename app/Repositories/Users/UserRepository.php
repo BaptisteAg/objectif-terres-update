@@ -1,7 +1,7 @@
 <?php namespace App\Repositories\Users;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
@@ -83,4 +83,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 	{
 		return $this->entity->where('role', $operator, $roleNumber)->get();
 	}
+
+
+
 }

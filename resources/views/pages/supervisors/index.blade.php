@@ -10,7 +10,7 @@
 
 		@include('components.supervisor-tabs')
 
-		@if($numberOfNotAssignProject !== 0 && $numberOfUnreadMessages !==0)
+		@if($numberOfNotAssignProject !== 0 || $numberOfUnreadMessages !==0)
 			<div id="notification-supervisor" class="notification has-background-info">
 				<button id="close-notification-supervisor" class="delete"></button>
 				@if($numberOfNotAssignProject>1)
@@ -27,7 +27,7 @@
 						Vous avez<a style="text-decoration: none"
 									href="/">
 							<strong>{{$numberOfNotAssignProject}}
-								demandes d'accompagnement non assignée</strong></a> dans votre territoire !
+								demande d'accompagnement non assignée</strong></a> dans votre territoire !
 					</p>
 				@else
 				@endif
@@ -37,12 +37,13 @@
 							avez <strong>{{$numberOfUnreadMessages}}
 								nouveaux messages
 								!</strong></p></a>
-				@else
+				@elseif ($numberOfUnreadMessages === 1 )
 					<a style="text-decoration: none" href="{{route('threads.index')}}">
 						<p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez
 							<strong>{{$numberOfUnreadMessages}} nouveau message !</strong>
 						</p>
 					</a>
+				@else
 				@endif
 			</div>
 		@endif

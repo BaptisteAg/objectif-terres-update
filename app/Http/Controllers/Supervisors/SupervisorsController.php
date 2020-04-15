@@ -8,6 +8,7 @@ use App\Models\Ad;
 use App\Models\JobOfferType;
 use App\Models\ProductionGenre;
 use App\Models\ProjectStatus;
+use App\Models\User;
 use App\Services\Ads\AdService;
 use App\Services\Projects\ProjectService;
 use App\Services\Threads\ThreadService;
@@ -128,6 +129,25 @@ class SupervisorsController extends Controller
 	{
 		$this->projectService->attributeProject($request);
 		return back()->with('success', 'Le projet à bien été attribué !');
+	}
+
+
+	/**
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function report()
+	{
+		$ads = $this->adService->findAllAdsInSupervisorTerritories();
+		$numberOfAds = $ads->count();
+		$adsSortByCategories = $this->adService->countAdsByCategories($ads);
+		$numberOfValidateAds = $this->adService->findAllValidateAdsInSupervisorTerritories()->count();
+		$numberOfUsersPp = $this->adService->findAllAdsAndProjectsGroupByUserPp()->count();
+		$projects = $this->projectService->findAllProjectInSupervisorTerritories();
+		$numberOfProjects = $projects->count();
+		$projectsSortByCategories = $this->projectService->sortProjectsByCategories($projects);
+
+
+		return view('pages.supervisors.report', compact('numberOfAds', 'numberOfValidateAds', 'numberOfUsersPp', 'numberOfProjects', 'adsSortByCategories', 'projectsSortByCategories'));
 	}
 
 
