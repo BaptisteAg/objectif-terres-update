@@ -39,7 +39,7 @@ class ProjectService
 	 * @param $projectStatusId
 	 * @return int
 	 */
-	public function countNumberOfProjectsByStatusForLoggedUser($projectStatusId)
+	public function countNumberOfProjectsByStatusForLoggedUser($projectStatusId): int
 	{
 		$numberOfProjects = $this->repository->findAllByUserIdAndUserRoleAndProjectStatusId(auth()->user()->id, auth()->user()->role, $projectStatusId)->count();
 		return $numberOfProjects;
@@ -47,9 +47,9 @@ class ProjectService
 
 
 	/**
-	 * @return \Illuminate\Database\Eloquent\Collection
+	 * @return Collection
 	 */
-	public function findAllProjectInSupervisorTerritories()
+	public function findAllProjectInSupervisorTerritories(): Collection
 	{
 		$supervisorDepartmentCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
 		$projects = $this->repository->findAllInTerritories($supervisorDepartmentCodes);
@@ -61,7 +61,7 @@ class ProjectService
 	 * @param Collection $projects
 	 * @return array
 	 */
-	public function sortProjectsByCategories($projects)
+	public function countProjectsByCategories($projects): array
 	{
 		$projectsByCategories = [
 			'landSeekAd' => 0,
@@ -76,6 +76,46 @@ class ProjectService
 		}
 		return $projectsByCategories;
 
+	}
+
+
+	public function countProjectsByProjectStatus(Collection $projects): array
+	{
+		$numberOfProjectsByProjectsStatus = [
+			'A rappeler' => 0,
+			'Accompagné' => 0,
+			'Non accompagné' => 0,
+			'Idée' => 0,
+			'En recherche' => 0,
+			'Installé' => 0,
+			'Archivée' => 0,
+
+		];
+		foreach ($projects as $project) {
+			foreach ($numberOfProjectsByProjectsStatus as $key => $value) {
+				if ($key === $project->projectStatus->name) {
+					$numberOfProjectsByProjectsStatus[$key]++;
+				}
+			}
+		}
+		return $numberOfProjectsByProjectsStatus;
+	}
+
+
+	/**
+	 * @param Collection $projects
+	 * @return array
+	 */
+	public function calculatePercentageOfProjectsByProjectStatus(Collection $projects): array
+	{
+		$numberOfProjectsByProjectStatus = $this->countProjectsByProjectStatus($projects);
+		$sumOfProjects = array_sum($numberOfProjectsByProjectStatus);
+
+		$percentageOfProjectsByProjectsStatus = array_map(function ($number) use ($sumOfProjects) {
+			return round($number * 100 / $sumOfProjects);
+		}, $numberOfProjectsByProjectStatus);
+
+		return $percentageOfProjectsByProjectsStatus;
 	}
 
 	/**

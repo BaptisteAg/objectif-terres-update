@@ -43,12 +43,7 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 	{
 		return $this->entity
 			->whereHas('ad', function (Builder $query) use ($departmentCodes) {
-				$query->whereHas('departments', function (Builder $subQuery) use ($departmentCodes) {
-					$subQuery->whereIn('code', $departmentCodes);
-				})
-				->orWhereHas('cities', function (Builder $subQuery) use ($departmentCodes) {
-					$subQuery->whereIn('department_code', $departmentCodes);
-				});
+				$query->filterAdsTerritoryLocations($departmentCodes);
 			})
 			->with([
 				'ad',

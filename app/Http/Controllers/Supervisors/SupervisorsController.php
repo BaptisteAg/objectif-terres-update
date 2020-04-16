@@ -15,6 +15,7 @@ use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -107,23 +108,20 @@ class SupervisorsController extends Controller
 	{
 		if (is_null($request->input('date_from')) && is_null($request->input('date_from'))) {
 			return Excel::download(new SupervisorExport($this->adService->findAllByUserSupervisor()), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
-
 		} else {
 			$dates = [
 				DateTime::createFromFormat('d/m/Y', (string)$request->input('date_from'))->format('Y-m-d'),
 				DateTime::createFromFormat('d/m/Y', (string)$request->input('date_to'))->format('Y-m-d')
 			];
-
 			$ads = $this->adService->findAllByUserSupervisorBetweenDates($dates);
 			return Excel::download(new SupervisorExport($ads), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
 		}
-
 	}
 
 
 	/**
 	 * @param Request $request
-	 * @return \Illuminate\Http\RedirectResponse
+	 * @return RedirectResponse
 	 */
 	public function attribute(Request $request)
 	{
@@ -139,15 +137,16 @@ class SupervisorsController extends Controller
 	{
 		$ads = $this->adService->findAllAdsInSupervisorTerritories();
 		$numberOfAds = $ads->count();
-		$adsSortByCategories = $this->adService->countAdsByCategories($ads);
+		$numberOfAdsByCategories = $this->adService->countAdsByCategories($ads);
+		$percentageOfAdsByAdStatus = $this->adService->calculatePercentageOfAdsByAdStatus($ads);
 		$numberOfValidateAds = $this->adService->findAllValidateAdsInSupervisorTerritories()->count();
 		$numberOfUsersPp = $this->adService->findAllAdsAndProjectsGroupByUserPp()->count();
 		$projects = $this->projectService->findAllProjectInSupervisorTerritories();
 		$numberOfProjects = $projects->count();
-		$projectsSortByCategories = $this->projectService->sortProjectsByCategories($projects);
+		$numberOfProjectsByCategories = $this->projectService->countProjectsByCategories($projects);
+		$percentageOfProjectsByProjectStatus = $this->projectService->calculatePercentageOfProjectsByProjectStatus($projects);
 
-
-		return view('pages.supervisors.report', compact('numberOfAds', 'numberOfValidateAds', 'numberOfUsersPp', 'numberOfProjects', 'adsSortByCategories', 'projectsSortByCategories'));
+		return view('pages.supervisors.report', compact('numberOfAds', 'numberOfValidateAds', 'numberOfUsersPp', 'numberOfProjects', 'numberOfAdsByCategories', 'numberOfProjectsByCategories', 'percentageOfAdsByAdStatus', 'percentageOfProjectsByProjectStatus'));
 	}
 
 

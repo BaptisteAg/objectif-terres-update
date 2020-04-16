@@ -15,10 +15,12 @@ use App\Repositories\Ads\ProductionGenreRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Services\Users\UserService;
 use DateTime;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Routing\RouteCollectionBuilder;
 
 /**
  * Class AdService
@@ -69,6 +71,7 @@ class AdService
 	 * @param JobOfferAdRepository $jobOfferAdRepository
 	 * @param JobSeekAdRepository $jobSeekAdRepository
 	 * @param ProductionGenreRepository $productionGenreRepository
+	 * @param UserService $userService
 	 */
 	public function __construct(
 		AdRepository $repository,
@@ -156,9 +159,9 @@ class AdService
 
 	/**
 	 * @param $idUser
-	 * @return \App\Models\Ad[]|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 * @return Collection
 	 */
-	public function findAllByUser($idUser)
+	public function findAllByUser($idUser): Collection
 	{
 		$ads = $this->repository->allByIdUser($idUser);
 
@@ -194,9 +197,9 @@ class AdService
 
 	/**
 	 * Show all ads ads related to supervisor
-	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+	 * @return LengthAwarePaginator
 	 */
-	public function findAllByUserSupervisor()
+	public function findAllByUserSupervisor() : LengthAwarePaginator
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
 		$ads = $this->repository->findAllBySupervisorTerritoriesAndDates($supervisorLocationTerritoryCodes);
@@ -219,7 +222,7 @@ class AdService
 	/**
 	 * @return Collection $ads
 	 */
-	public function findAllAdsInSupervisorTerritories()
+	public function findAllAdsInSupervisorTerritories(): Collection
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
 		$ads = $this->repository->allInTerritories($supervisorLocationTerritoryCodes);
@@ -227,9 +230,9 @@ class AdService
 	}
 
 	/**
-	 * @return Ad[]|Builder|\Illuminate\Database\Eloquent\Model
+	 * @return Collection
 	 */
-	public function findAllValidateAdsInSupervisorTerritories()
+	public function findAllValidateAdsInSupervisorTerritories(): Collection
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
 		$validateStatusId = AdStatus::where('name', '=', 'Validée')->first()->id;
@@ -239,9 +242,9 @@ class AdService
 
 
 	/**
-	 * @return Ad[]|Builder|\Illuminate\Database\Eloquent\Model
+	 * @return Collection
 	 */
-	public function findAllAdsAndProjectsGroupByUserPp()
+	public function findAllAdsAndProjectsGroupByUserPp(): Collection
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
 		$users = $this->repository->allInTerritoriesGroupByUserPp($supervisorLocationTerritoryCodes);
@@ -253,9 +256,9 @@ class AdService
 	 * @param Collection $ads
 	 * @return array
 	 */
-	public function countAdsByCategories($ads)
+	public function countAdsByCategories(Collection $ads): array
 	{
-		$adsByCategories = [
+		$numberOfAdsByCategories = [
 			'landSeekAd' => 0,
 			'landOfferAd' => 0,
 			'jobOfferAd' => 0,
@@ -263,24 +266,64 @@ class AdService
 		];
 		foreach ($ads as $ad) {
 			if ($ad->landOfferAd()->exists()) {
-				$adsByCategories['landOfferAd']++;
+				$numberOfAdsByCategories['landOfferAd']++;
 			} else if ($ad->landSeekAd()->exists()) {
-				$adsByCategories['landSeekAd']++;
+				$numberOfAdsByCategories['landSeekAd']++;
 			} else if ($ad->jobSeekAd()->exists()) {
-				$adsByCategories['jobSeekAd']++;
+				$numberOfAdsByCategories['jobSeekAd']++;
 			} else if ($ad->jobOfferAd()->exists()) {
-				$adsByCategories['jobOfferAd']++;
+				$numberOfAdsByCategories['jobOfferAd']++;
 			}
 		}
-		return $adsByCategories;
+		return $numberOfAdsByCategories;
+	}
+
+
+	/**
+	 * @param Collection $ads
+	 * @return array
+	 */
+	public function countAdsByAdStatus(Collection $ads): array
+	{
+		$numberOfAdsByAdStatus = [
+			'Validée' => 0,
+			'En attente' => 0,
+			'Refusée' => 0,
+			'À modérer' => 0,
+			'Archivée' => 0
+		];
+		foreach ($ads as $ad) {
+			foreach ($numberOfAdsByAdStatus as $key => $value) {
+				if ($key === $ad->attributionAd->adStatus->name) {
+					$numberOfAdsByAdStatus[$key]++;
+				}
+			}
+		}
+		return $numberOfAdsByAdStatus;
+	}
+
+	/**
+	 * @param Collection $ads
+	 * @return array
+	 */
+	public function calculatePercentageOfAdsByAdStatus(Collection $ads): array
+	{
+		$numberOfAdsByAdStatus = $this->countAdsByAdStatus($ads);
+		$sumOfAds = array_sum($numberOfAdsByAdStatus);
+
+		$percentageOfAdsByAdStatus = array_map(function ($number) use ($sumOfAds) {
+			return round($number * 100 / $sumOfAds);
+		}, $numberOfAdsByAdStatus);
+
+		return $percentageOfAdsByAdStatus;
 	}
 
 	/**
 	 * Ad filters for supervisor dashboard
-	 * @param Request $request
-	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+	 * @param Request $filters
+	 * @return LengthAwarePaginator
 	 */
-	public function showForSupervisor(Request $filters)
+	public function showForSupervisor(Request $filters): LengthAwarePaginator
 	{
 		$ads = $this->filter($filters, auth()->user()->role);
 		return $ads;
@@ -289,9 +332,9 @@ class AdService
 	/**
 	 * @param Request $filters
 	 * @param int $roleUser
-	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+	 * @return LengthAwarePaginator
 	 */
-	public function filter(Request $filters, int $roleUser)
+	public function filter(Request $filters, int $roleUser): LengthAwarePaginator
 	{
 		$ads = collect();
 		//START QUERY

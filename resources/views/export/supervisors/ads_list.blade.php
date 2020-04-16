@@ -146,7 +146,13 @@
 						@endif
 					@endif
 				</td>
-				<td>{{$ad->jobOfferAd()->exists() ?$ad->jobOfferAd->jobOfferTypes->name : '' }}</td>
+				<td>
+					@if($ad->jobOfferAd()->exists())
+						@foreach($ad->jobOfferAd->jobOfferTypes as $offerType)
+							{{$offerType->name}}
+						@endforeach
+					@endif
+				</td>
 				<td>{{$ad->jobOfferAd()->exists() ?$ad->jobOfferAd->job_description : '' }}</td>
 				<td>{{$ad->jobOfferAd()->exists() ?$ad->jobOfferAd->experience_farming : '' }}</td>
 				<td>
