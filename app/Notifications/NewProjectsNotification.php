@@ -6,10 +6,11 @@ use App\Models\Ad;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewProjectsNotification extends Notification
+class NewProjectsNotification extends Notification implements ShouldQueue
 {
 	use Queueable;
 

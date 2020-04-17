@@ -27,25 +27,33 @@ class AdEvents
 	}
 
 
+
 	public function sendEmailAdsPublishedSince10DaysNotComplete()
 	{
 		$adsPublishedSince10DaysNotComplete = $this->service->findAllAdsPublishedSinceDaysAndNotComplete(10);
 		if ($adsPublishedSince10DaysNotComplete->isNotEmpty()) {
-
 			foreach ($adsPublishedSince10DaysNotComplete as $ad) {
 				$messageData = [
 					'ad_id' => $ad->id,
-					'supervisor_id' =>$ad->attributionAd->user_supervisor_id,
+					'supervisor_id' => $ad->attributionAd->user_supervisor_id,
 					'content' => 'Votre annonce est en ligne depuis 10 jours. Compléter les informations de votre annonce pour augmenter vos chances d\'avoir une réponse!'
 				];
-
-				try {
-					$this->threadService->create($messageData);
-				} catch (\Throwable $e) {
-
+				$thread = $this->threadService->findThreadAlreadyExist($ad->attributionAd->user_supervisor_id, $ad->id);
+				if (isset($thread)) {
+					$messageData['thread_id'] = $thread->id;
+					$messageData['sender_user_id'] = $ad->attributionAd->user_supervisor_id;
+					try {
+						$this->threadService->createMessage($messageData);
+					} catch (\Throwable $e) {
+						echo($e);
+					}
+				} else {
+					try {
+						$this->threadService->create($messageData);
+					} catch (\Throwable $e) {
+					}
 				}
 			}
 		}
-
 	}
 }

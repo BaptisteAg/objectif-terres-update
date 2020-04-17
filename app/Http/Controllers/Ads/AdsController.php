@@ -163,7 +163,7 @@ class AdsController extends Controller
 					//TODO display only advisors that are related to the supervisor
 					$advisorUsers = $this->userService->findAllAdvisorsAndSupervisors();
 				}
-				$threads = $this->threadService->findThreadAlreadyExist($adId);
+				$threads = [$this->threadService->findThreadAlreadyExist(auth()->user()->id,$adId)];
 				$data = array(
 					"ad_id" => $adId,
 					"user_id" => auth()->user()->id,
@@ -172,7 +172,6 @@ class AdsController extends Controller
 			}
 
 		}
-
 		//Throw error 404 if a visitor try to show an ad is not validated
 		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validée" ;
 		//TODO not display projects unless user logged is the author of the ad or the user logged is an supervisor or an advisor
@@ -197,11 +196,9 @@ class AdsController extends Controller
 	 */
 	public function delete(Ad $ad)
 	{
-
 		if ($ad->user_pp_id !== auth()->id()) {
 			abort(404);
 		}
-
 		$this->adService->delete($ad);
 		return back()->with('success', 'Votre annonce a bien été supprimée');
 	}

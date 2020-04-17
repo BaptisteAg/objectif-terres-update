@@ -21,8 +21,8 @@
                     <label class="label">Envoyer une réponse type</label>
                     <div class="field is-grouped">
                         <p class="control is-expanded">
-                        <span class="select is-fullwidth">
-                        <select v-model.trim="content">
+                        <span v-bind:class="[isLoading ?'select is-fullwidth is-loading ' : 'select is-fullwidth']">
+                        <select :disabled="isLoading"   v-model.trim="content">
                             <option disabled selected="selected">Choisissez votre réponse type...</option>
                             <option v-for="responseTemplate in responseTemplates">{{responseTemplate.content}}
                             </option>

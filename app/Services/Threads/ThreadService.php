@@ -64,6 +64,10 @@ class ThreadService
 
 	}
 
+	/**
+	 * @param int $adId
+	 * @return Thread
+	 */
 	public function findThreadsByAd(int $adId)
 	{
 		/** @var Thread $thread */
@@ -73,11 +77,15 @@ class ThreadService
 	}
 
 
-	public function findThreadAlreadyExist(int $adId)
+	/**
+	 * @param int $userId
+	 * @param int $adId
+	 */
+	public function findThreadAlreadyExist(int $userId, int $adId)
 	{
 		/** @var Thread $thread */
-		$threads = $this->repository->findThreadByLoggedUserAndAdId($adId);
-		return $threads;
+		$thread = $this->repository->findThreadByUserIdAndAdId($userId, $adId);
+		return $thread;
 
 	}
 
@@ -121,7 +129,7 @@ class ThreadService
 	/**
 	 * @return int
 	 */
-	public function countAllUnreadMessagesInThreadsByLoggedUser() : int
+	public function countAllUnreadMessagesInThreadsByLoggedUser(): int
 	{
 		$unreadMessage = $this->repository->findAllThreadsWithUnreadMessagesForUser(auth()->id());
 		return $unreadMessage->count();
@@ -233,16 +241,33 @@ class ThreadService
 			$user = User::find($user->id);
 
 			if ($user->id !== auth()->id()) {
-				$threadUser = new ReadMessage([
-					"message_id" => $message->id,
-					"user_id" => $user->id,
-				]);
-				$threadUser->save();
-				$user->notify(new NewMessageNotification([
-					'sender_name' => auth()->user()->name,
-					'sender_first_name' => auth()->user()->first_name,
-					'message_content' => $message->content
-				]));
+				if (isset($data['supervisor_id'])) {
+					//in case of an automatic message from the supervisor
+					$supervisor = User::find($data['supervisor_id']);
+					if ($user->id !== $data['supervisor_id']) {
+						$threadUser = new ReadMessage([
+							"message_id" => $message->id,
+							"user_id" => $user->id,
+						]);
+						$threadUser->save();
+						$user->notify(new NewMessageNotification([
+							'sender_name' => $supervisor->name,
+							'sender_first_name' => $supervisor->first_name,
+							'message_content' => $message->content
+						]));
+					}
+				} else {
+					$threadUser = new ReadMessage([
+						"message_id" => $message->id,
+						"user_id" => $user->id,
+					]);
+					$threadUser->save();
+					$user->notify(new NewMessageNotification([
+						'sender_name' => auth()->user()->name,
+						'sender_first_name' => auth()->user()->first_name,
+						'message_content' => $message->content
+					]));
+				}
 			}
 		}
 		return $message;
