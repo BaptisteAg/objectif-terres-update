@@ -18,6 +18,7 @@ use App\Models\ResponseTemplate;
 use App\Models\SurfaceRange;
 use App\Models\User;
 use App\Notifications\NewAdToModerateNotification;
+use App\Notifications\NewProjectsNotification;
 use App\Repositories\FavoriteAds\FavoriteAdRepository;
 use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
@@ -94,6 +95,8 @@ class AdsController extends Controller
 
 		/** @var $ad Ad $ad */
 		$ad = $this->adService->create($data);
+		//TODO if the new ad is a project, send a notification to the related supervisor. Otherwise, it's an ad, send a message to the related moderator
+//		$ad->attributionAd->userSupervisor->notify(new NewProjectsNotification($ad, auth()->user()));
 		$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
 
 
@@ -156,7 +159,7 @@ class AdsController extends Controller
 					$responseTemplates = ResponseTemplate::all();
 					$refusalTypes = RefusalType::all();
 				}
-				if (auth()->user()->role >=3){
+				if (auth()->user()->role >= 3) {
 					//TODO display only advisors that are related to the supervisor
 					$advisorUsers = $this->userService->findAllAdvisorsAndSupervisors();
 				}

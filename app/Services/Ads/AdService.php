@@ -110,6 +110,7 @@ class AdService
 			$userModerator = User::where('email', 'test.ot.moderateur@gmail.com')->first();
 			if ($userModerator) {
 				$attributionAdData['user_moderator_id'] = $userModerator->id;
+				$attributionAdData['user_supervisor_id'] = $userModerator->id;
 			} else {
 				$attributionAdData['user_moderator_id'] = User::where('role', '>=', '1')->get()->random()->id;
 			}
@@ -459,5 +460,20 @@ class AdService
 			])
 			->paginate(15);
 		return $ads;
+	}
+
+
+	public function findAllAdsPublishedSinceDaysAndNotComplete(int $numberOfDays) : Collection
+	{
+		$adsPublishedSinceDays = $this->repository->findAllPublishedSinceDays($numberOfDays);
+
+		$adsPublishedSinceDaysAndNotComplete = $adsPublishedSinceDays->mapWithKeys(function ($ad){
+			if(is_null($ad['about_content']) || is_null($ad['about_project_content'] )|| isset($ad['documents'])){
+				return [$ad['id']=> $ad];
+			}
+			return [];
+		});
+
+		return $adsPublishedSinceDaysAndNotComplete;
 	}
 }

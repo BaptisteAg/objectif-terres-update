@@ -42,9 +42,7 @@ class ThreadsController extends Controller
 	 */
 	public function create(ThreadRequest $request)
 	{
-
 		$this->service->create($request->validated());
-
 		return redirect()->back()->with('success',
 			"Votre message a bien été envoyé. Retrouvez tous vos messages dans la <a href='/mon-espace/messagerie'>messagerie</a>"
 		);

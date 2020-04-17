@@ -58,6 +58,7 @@ class AdPresenter extends BasePresenter
 		return \Carbon\Carbon::parse($this->wrappedObject->attributionAd->created_at)->format('d/m/Y');
 	}
 
+
 	public function is_today()
 	{
 		return \Carbon\Carbon::parse($this->wrappedObject->created_at)->isToday();
@@ -160,12 +161,7 @@ class AdPresenter extends BasePresenter
 
 	public function published_on()
 	{
-		if (is_null($this->wrappedObject->attributionAd->published_on)) {
-			return $this->wrappedObject->attributionAd->published_on;
-		} else {
-			return \Carbon\Carbon::parse($this->wrappedObject->attributionAd->published_on)->format('d/m/Y');
-		}
-
+		return \Carbon\Carbon::parse($this->wrappedObject->attributionAd->published_on)->format('d/m/Y');
 	}
 
 }

@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\AttributionAd;
+use App\Events\AttributionAdEvents;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 
@@ -13,9 +13,9 @@ class SendAdPublishedDateNotification implements ShouldQueue
 	/**
 	 * Create the event listener.
 	 *
-	 * @param AttributionAd $event
+	 * @param AttributionAdEvents $event
 	 */
-	public function __construct(AttributionAd $event)
+	public function __construct(AttributionAdEvents $event)
 	{
 		$this->event = $event;
 	}

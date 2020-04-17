@@ -8,7 +8,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class Moderation
+class ModerationEvents
 {
 	private $attributionAdsService;
 	use Dispatchable, InteractsWithSockets, SerializesModels;

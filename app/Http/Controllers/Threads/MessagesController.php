@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MessageRequest;
 use App\Models\Thread;
 use App\Models\User;
+use App\Notifications\NewMessageNotification;
 use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
@@ -73,6 +74,7 @@ class MessagesController extends Controller
 	{
 
 		$message = $this->threadService->createMessage($request->validated());
+
 		return response()->json((object)$message);
 	}
 

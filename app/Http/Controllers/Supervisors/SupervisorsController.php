@@ -53,6 +53,7 @@ class SupervisorsController extends Controller
 	 */
 	public function index(Request $request)
 	{
+
 		$request->session()->forget('_old_input');
 		$ads = $this->adService->findAllByUserSupervisor();
 		$projectStatuses = ProjectStatus::all();

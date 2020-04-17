@@ -54,7 +54,7 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 	}
 
 	/**
-	 * @param string  $threadId
+	 * @param string $threadId
 	 *
 	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
 	 */
@@ -62,7 +62,7 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 	{
 		/** @var Message $model */
 		$model = $this->entity
-			->where(['thread_id'=> $threadId])
+			->where(['thread_id' => $threadId])
 			->with($this->getEagerLoading())
 			->get();
 
@@ -75,10 +75,11 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 	 * @param $threadId
 	 * @return Message
 	 */
-	public function findAllUnreadMessagesByThread($threadId){
+	public function findAllUnreadMessagesByThread($threadId)
+	{
 		/** @var Message $model */
-		$model= $this->entity
-			->where(['thread_id'=> $threadId])
+		$model = $this->entity
+			->where(['thread_id' => $threadId])
 			->whereHas('unreadMessages', function (Builder $query) {
 				$query->where([
 					['user_id', '=', auth()->id()],
@@ -86,7 +87,7 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 				]);
 			})
 			->get();
-			return $model;
+		return $model;
 	}
 
 	/**
@@ -101,7 +102,11 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 	{
 		$message = new Message();
 		$message->fill($data);
-		$message->sender_user_id = auth()->user()->id;
+		if (isset($data['sender_user_id'])) {
+			$message->sender_user_id = $data['sender_user_id'];
+		} else {
+			$message->sender_user_id = auth()->user()->id;
+		}
 		$message->save();
 
 		return $message;
@@ -119,6 +124,7 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 
 		];
 	}
+
 	/**
 	 * @inheritDoc
 	 */

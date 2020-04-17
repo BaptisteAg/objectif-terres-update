@@ -1,6 +1,7 @@
 <?php namespace App\Repositories\Ads;
 
 use App\Models\Ad;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -57,7 +58,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			->where(["user_pp_id" => $idUser])
 			->with($this->getEagerLoading())
 			->get();
-		return $model;
+		return $models;
 	}
 
 
@@ -203,6 +204,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			})
 			->with([
 				'project',
+				'project.projectStatus',
 				'userPp',
 				'cities',
 				'cities.department',
@@ -211,6 +213,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				'departments.region',
 				'regions',
 				'attributionAd',
+				'attributionAd.adStatus',
 				'landSeekAd',
 				'landOfferAd',
 				'jobOfferAd',
@@ -225,6 +228,18 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		return $ads;
 	}
 
+	/**
+	 * @param int $numberOfDays
+	 * @return Collection
+	 */
+	public function findAllPublishedSinceDays(int $numberOfDays): Collection{
+		return $this->entity
+			->whereHas('attributionAd', function (Builder $query) use ($numberOfDays){
+				$query->whereDate('published_on', '=', Carbon::now()->subDays($numberOfDays));
+			})
+			->with('documents')
+			->get();
+	}
 
 	private function getEagerLoading()
 	{
@@ -256,6 +271,12 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'jobOfferAd',
 			'jobOfferAd.educationLevels',
 			'jobOfferAd.jobOfferTypes',
+			'jobSeekAd',
+			'project',
+			'project.projectStatus',
+			'attributionAd',
+			'attributionAd.adStatus',
+
 		];
 	}
 }
