@@ -51,7 +51,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 * @param  $idUser
 	 * @return Collection
 	 */
-	public function allByIdUser($idUser) : Collection
+	public function allByIdUser($idUser): Collection
 	{
 		/** @var Collection $model */
 		$models = $this->entity
@@ -66,7 +66,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 * @param array $territoriesCode
 	 * @return Collection
 	 */
-	public function allInTerritories(array $territoriesCode) : Collection
+	public function allInTerritories(array $territoriesCode): Collection
 	{
 		/** @var Collection $model */
 		$models = $this->entity
@@ -74,6 +74,14 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			->where(function (Builder $query) use ($territoriesCode) {
 				$query->filterAdsTerritoryLocations($territoriesCode);
 			})
+			->with([
+				'attributionAd',
+				'attributionAd.adStatus',
+				'landSeekAd',
+				'landOfferAd',
+				'jobOfferAd',
+				'jobSeekAd'
+			])
 			->get();
 		return $models;
 	}
@@ -82,7 +90,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 * @param array $territoriesCode
 	 * @return Collection
 	 */
-	public function allInTerritoriesGroupByUserPp(array $territoriesCode) : Collection
+	public function allInTerritoriesGroupByUserPp(array $territoriesCode): Collection
 	{
 		/** @var Collection $model */
 		$models = $this->entity
@@ -103,7 +111,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 * @param int $adStatusId
 	 * @return Collection
 	 */
-	public function allInTerritoriesByAdStatus(array $territoriesCode, int $adStatusId) : Collection
+	public function allInTerritoriesByAdStatus(array $territoriesCode, int $adStatusId): Collection
 	{
 		/** @var Collection $models */
 		$models = $this->entity
@@ -117,7 +125,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				});
 			})
 			->get();
-		return  $models;
+		return $models;
 	}
 
 
@@ -232,9 +240,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 * @param int $numberOfDays
 	 * @return Collection
 	 */
-	public function findAllPublishedSinceDays(int $numberOfDays): Collection{
+	public function findAllPublishedSinceDays(int $numberOfDays): Collection
+	{
 		return $this->entity
-			->whereHas('attributionAd', function (Builder $query) use ($numberOfDays){
+			->whereHas('attributionAd', function (Builder $query) use ($numberOfDays) {
 				$query->whereDate('published_on', '=', Carbon::now()->subDays($numberOfDays));
 			})
 			->with('documents')

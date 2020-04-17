@@ -65,9 +65,7 @@ class Message extends Model implements HasPresenter
 	 */
 	public function unreadMessages()
 	{
-		return $this->hasMany(ReadMessage::class)
-			->where([['is_read', '=',0],
-				['user_id', auth()->id()]]);
+		return $this->hasMany(ReadMessage::class);
 	}
 
 

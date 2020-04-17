@@ -49,6 +49,7 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 				'ad',
 				'ad.landSeekAd',
 				'ad.landOfferAd',
+				'projectStatus'
 			])
 			->get();
 	}

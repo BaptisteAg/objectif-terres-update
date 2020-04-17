@@ -56,7 +56,7 @@ class ThreadsController extends Controller
 		/** @var Collection $threads */
 		$threads = $this->service->findAllThreadsByLoggedUser();
 
-		$threadsWithUnreadMessages = $this->service->findThreadsByUnreadMessage();
+		$threadsWithUnreadMessages = $this->service->findThreadsWithUnreadMessages(auth()->id());
 		$users = null;
 		$responseTemplates = '';
 		if (auth()->user()->role >= 1) {
@@ -71,7 +71,7 @@ class ThreadsController extends Controller
 
 		/** @var Collection $threads */
 		$threads = $this->service->findAllThreadsByLoggedUser();
-		$threadsWithUnreadMessages = $this->service->findThreadsByUnreadMessage();
+		$threadsWithUnreadMessages = $this->service->findThreadsWithUnreadMessages(auth()->id());
 		return response()->json($threadsWithUnreadMessages);
 	}
 

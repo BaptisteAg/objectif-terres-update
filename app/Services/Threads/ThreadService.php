@@ -119,18 +119,12 @@ class ThreadService
 	}
 
 	/**
-	 * @param $threads
-	 * @return mixed
+	 * @return int
 	 */
-	public function countAllUnreadMessagesInThreadsByLoggedUser()
+	public function countAllUnreadMessagesInThreadsByLoggedUser() : int
 	{
-		$threads = $this->repository->findAllThreadsByLoggedUser();
-		$numberOfUnreadMessages = 0;
-		foreach ($threads as $thread) {
-			$numberOfUnreadMessages = $numberOfUnreadMessages + $this->messagesRepository->findAllUnreadMessagesByThread($thread->id)->count();
-		}
-
-		return $numberOfUnreadMessages;
+		$unreadMessage = $this->repository->findAllThreadsWithUnreadMessagesForUser(auth()->id());
+		return $unreadMessage->count();
 	}
 
 	/**
@@ -256,11 +250,11 @@ class ThreadService
 
 
 	/**
-	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 * @return Collection
 	 */
-	public function findThreadsByUnreadMessage()
+	public function findThreadsWithUnreadMessages(int $userId)
 	{
-		return $this->repository->findThreadsByUnreadMessages();
+		return $this->repository->findAllThreadsWithUnreadMessagesForUser($userId);
 	}
 
 	/**

@@ -63,14 +63,15 @@ class ProjectService
 	 */
 	public function countProjectsByCategories($projects): array
 	{
+
 		$projectsByCategories = [
 			'landSeekAd' => 0,
 			'landOfferAd' => 0,
 		];
 		foreach ($projects as $project) {
-			if ($project->ad->landOfferAd()->exists()) {
+			if (isset($project->ad->landOfferAd)) {
 				$projectsByCategories['landOfferAd']++;
-			} else if ($project->ad->landSeekAd()->exists()) {
+			} else if (isset($project->ad->landOfferAd)) {
 				$projectsByCategories['landSeekAd']++;
 			}
 		}

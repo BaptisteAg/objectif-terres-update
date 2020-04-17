@@ -3,6 +3,7 @@
 use App\Models\Thread;
 use App\Repositories\AbstractRepository;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 /**
  * Class ThreadRepository
@@ -85,19 +86,19 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 
 
 	/**
-	 * @param string $threadId
 	 *
-	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 * @param int $userId
+	 * @return Collection
 	 */
-	public function findThreadsByUnreadMessages()
+	public function findAllThreadsWithUnreadMessagesForUser(int $userId) : Collection
 	{
-		/** @var Thread $model */
+		/** @var Collection $threads */
 		$threads = auth()
 			->user()
 			->threads()
-			->whereHas('messages.unreadMessages', function (Builder $query) {
+			->whereHas('messages.unreadMessages', function (Builder $query) use($userId) {
 				$query->where([
-					['user_id', '=', auth()->id()],
+					['user_id', '=', $userId],
 					['is_read', '=', '0']
 				]);
 			})

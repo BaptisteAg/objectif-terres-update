@@ -266,13 +266,13 @@ class AdService
 			'jobSeekAd' => 0
 		];
 		foreach ($ads as $ad) {
-			if ($ad->landOfferAd()->exists()) {
+			if (isset($ad->landOfferAd)) {
 				$numberOfAdsByCategories['landOfferAd']++;
-			} else if ($ad->landSeekAd()->exists()) {
+			} else if (isset($ad->landSeekAd)) {
 				$numberOfAdsByCategories['landSeekAd']++;
-			} else if ($ad->jobSeekAd()->exists()) {
+			} else if (isset($ad->jobSeekAd)) {
 				$numberOfAdsByCategories['jobSeekAd']++;
-			} else if ($ad->jobOfferAd()->exists()) {
+			} else if (isset($ad->jobOfferAd)) {
 				$numberOfAdsByCategories['jobOfferAd']++;
 			}
 		}
