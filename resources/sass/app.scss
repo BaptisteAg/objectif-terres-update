@@ -63,6 +63,14 @@ html {
   overflow: hidden;
 }
 
+[v-cloak] {
+  display: none;
+}
+
+.level-item{
+  flex-shrink: 1;
+}
+
 // Leaflet / OpenStreetmap
 #my_osm_widget_map { /* use the same name as <div id=""> */
   width: 100vw; /* important! if you need full width display */
@@ -84,10 +92,10 @@ html {
 .page-link {
   font-size: 1.5rem;
 }
-  .is-current-page {
-    font-weight: bold;
-  }
 
+.is-current-page {
+  font-weight: bold;
+}
 
 
 // Vue-Multiselect
@@ -168,11 +176,11 @@ body .multiselect__tag {
 
 
 //Threads
-.box-thread-display {
-  margin-top: auto;
+.button-send-message{
+  margin-left: 85%;
 }
 
-//Research results
+//ResearchEvents results
 
 .research-price-and-surface-infos {
   margin-top: 45%;
@@ -195,6 +203,6 @@ body .multiselect__tag {
 
 
 //VUe date-picker
-.vdp-datepicker__calendar{
-  right:0% ;
+.vdp-datepicker__calendar {
+  right: 0%;
 }

@@ -10,7 +10,7 @@
 
 		@include('components.supervisor-tabs')
 
-		@if($numberOfNotAssignProject !== 0 && $numberOfUnreadMessages !==0)
+		@if($numberOfNotAssignProject !== 0 || $numberOfUnreadMessages !==0)
 			<div id="notification-supervisor" class="notification has-background-info">
 				<button id="close-notification-supervisor" class="delete"></button>
 				@if($numberOfNotAssignProject>1)
@@ -27,7 +27,7 @@
 						Vous avez<a style="text-decoration: none"
 									href="/">
 							<strong>{{$numberOfNotAssignProject}}
-								demandes d'accompagnement non assignée</strong></a> dans votre territoire !
+								demande d'accompagnement non assignée</strong></a> dans votre territoire !
 					</p>
 				@else
 				@endif
@@ -37,13 +37,13 @@
 							avez <strong>{{$numberOfUnreadMessages}}
 								nouveaux messages
 								!</strong></p></a>
-
-				@else
+				@elseif ($numberOfUnreadMessages === 1 )
 					<a style="text-decoration: none" href="{{route('threads.index')}}">
 						<p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez
 							<strong>{{$numberOfUnreadMessages}} nouveau message !</strong>
 						</p>
 					</a>
+				@else
 				@endif
 			</div>
 		@endif
@@ -53,51 +53,104 @@
 		</div>
 		{{Form::close()}}
 
+		<div id="supervisor-form-export-data">
+			<export-to-spreadsheet-form inline-template>
+				<div>
+					<div class="container is-fluid">
+						<a v-on:click="openModal()">
+							<span class="icon is-medium has-text-link">
+								<i class="fas fa-table fa-2x "></i>
+							</span>
+							<span>Exporter les données</span>
+						</a>
+					</div>
+					{!! Form::open(['route' => 'supervisor.export', 'method' => 'get']) !!}
+					<div v-cloak id="modal-supervisor-form-data" :class="isActive ? 'modal is-active': 'modal'">
+						<div id="modal-supervisor-form-data-background" class="modal-background"
+							 v-on:click="closeModal()"></div>
+						<div class="modal-content-validation">
+							<div class="card">
+								<div class="card-content">
+									<div class="content">
+										<p class="title is-3 has-text-centered has-text-link">Exportation des
+											données</p>
+										<p class="subtitle has-text-centered ">Veuillez séléctionner une plage de
+											date</p>
+										<div class="columns is-mobile is-centered">
+											<div class="column">
+												<div class="control has-icons-right ">
+													<date-range></date-range>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<footer class="card-footer">
+									<div class="buttons card-footer-item">
+										<button type="submit" class="button is-link">
+											<span>Télcharger</span>
+										</button>
+										<a class="button is-link is-light" v-on:click="closeModal()">
+											<span>Annuler</span>
+										</a>
+									</div>
+									<a v-on:click="closeModal()" id="close-modal" class="modal-close is-large"
+									   aria-label="close"></a>
+								</footer>
+							</div>
+						</div>
+					</div>
+					{{Form::close()}}
+				</div>
+			</export-to-spreadsheet-form>
+		</div>
 		<div class="section">
-			<h1 class="title is-1 has-text-centered">Liste des demandes d'accompagnement dans votre territoire</h1>
-			@if (count($projects) ==0)
+			<h1 class="title is-1 has-text-centered">Liste des annonces et demandes d'accompagnement sur votre
+				territoire</h1>
+			@if (count($ads) ==0)
 				<p class="has-text-centered">Aucun résultat</p>
 			@else
 				<div class="table-container">
 					<table class="table is-striped is-hoverable is-fullwidth ">
 						<thead>
 						<tr>
+							<th>Type</th>
 							<th>
 								@if(request()->input('sort') !== 'date')
 									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date'])) }}">
-										<span>Date de demande</span>
+										<span>Date</span>
 									</a>
 								@elseif(request()->input('sort') === 'date' && request()->input('order') === 'desc')
 									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'date'])) }}">
 										<i class="fas fa-arrow-down"></i>
-										<span>Date de demande</span>
+										<span>Date</span>
 									</a>
 								@else
 									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
 										<i class="fas fa-arrow-up"></i>
-										<span>Date de demande</span>
+										<span>Date</span>
 									</a>
 								@endif
 							</th>
 							<th>
 								@if(request()->input('sort') !== 'title')
 									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">
-										<span>Titre de la demande</span>
+										<span>Titre</span>
 									</a>
 								@elseif(request()->input('sort') === 'title' && request()->input('order') === 'asc')
 									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'title'])) }}">
 										<i class="fas fa-arrow-up"></i>
-										<span>Titre de la demande</span>
+										<span>Titre</span>
 									</a>
 								@else
 									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
 										<i class="fas fa-arrow-down"></i>
-										<span>Titre de la demande</span>
+										<span>Titre</span>
 									</a>
 								@endif
 
 							</th>
-							<th>Type de demande</th>
+							<th>Catégorie</th>
 							<th>
 								@if(request()->input('sort') !== 'name')
 									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'name'])) }}">
@@ -138,50 +191,63 @@
 						</tr>
 						</thead>
 						<tbody>
-						@foreach($projects as $project)
+						@foreach($ads as $ad)
 							<tr>
-								<td>{{$project->created_at->format("d/m/Y")}}</td>
 								<td>
-									<a href="{{route('ads.show', $project->ad->id)}}">{{$project->ad->title}}</a>
-								</td>
-								<td>{{$project->ad->ad_type_full_name}}</td>
-								<td>
-									<a href="{{route('user.show', $project->ad->userPp->id)}}">{{$project->ad->userPp->first_name}} {{$project->ad->userPp->name}}</a>
-								</td>
-								<td>{{$project->ad->userPp->email}}</td>
-								<td>
-									@if(! is_null($project->ad->regionsList))
-										<p>Region(s) : {{$project->ad->regionsList}}</p>
-									@endif
-									@if(! is_null($project->ad->departmentList))
-										<p>Département(s) : {{$project->ad->departmentsList}}</p>
-									@endif
-									@if(! is_null($project->ad->citiesList))
-										<p>Communes(s) : {{$project->ad->citiesList}}</p>
-									@endif
-								</td>
-								<td>
-									@if(is_null($project->ad->project))
-										<span class="tag is-light">L'annonce n'a pas le statut de projet</span>
+									@if($ad->project()->exists())
+										<span class="tag is-link">Demande d'accompagnement</span>
 									@else
-										@if($project->projectStatus->name === "Accompagné")
-											<span class="tag is-success is-light">{{$project->projectStatus->name}}</span>
-										@elseif($project->projectStatus->name ==="Installé")
-											<span class="tag is-success">{{$project->projectStatus->name}}</span>
-										@elseif($project->projectStatus->name === "A rappeler")
-											<span class="tag is-danger is-light">{{$project->projectStatus->name}}</span>
-										@elseif($project->projectStatus->name === "Non accompagné")
-											<span class="tag is-warning ">{{$project->projectStatus->name}}</span>
-										@elseif($project->projectStatus->name === "Idée")
-											<span class="tag is-primary ">{{$project->projectStatus->name}}</span>
-										@elseif($project->projectStatus->name === "Archivée")
-											<span class="tag is-info is-light">{{$project->projectStatus->name}}</span>
+										<span class="tag is-link is-light">Annonce</span>
+									@endif
+								</td>
+								<td>
+									@if($ad->project()->exists())
+										{{$ad->project->created_at->format("d/m/Y")}}
+									@else
+										{{$ad->attributionAd->created_at->format("d/m/Y")}}
+									@endif
+								</td>
+								<td>
+									<a href="{{route('ads.show', $ad->id)}}">{{$ad->title}}</a>
+								</td>
+								<td>{{$ad->ad_type_full_name}}</td>
+								<td>
+									<a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+								</td>
+								<td>{{$ad->userPp->email}}</td>
+								<td>
+									@if(! is_null($ad->regionsList))
+										<p>Region(s) : {{$ad->regionsList}}</p>
+									@endif
+									@if(! is_null($ad->departmentsList))
+										<p>Département(s) : {{$ad->departmentsList}}</p>
+									@endif
+									@if(! is_null($ad->citiesList))
+										<p>Communes(s) : {{$ad->citiesList}}</p>
+									@endif
+								</td>
+								<td>
+									@if(is_null($ad->project))
+
+									@else
+										@if($ad->project->projectStatus->name === "Accompagné")
+											<span class="tag is-success is-light">{{$ad->project->projectStatus->name}}</span>
+										@elseif($ad->project->projectStatus->name ==="Installé")
+											<span class="tag is-success">{{$ad->project->projectStatus->name}}</span>
+										@elseif($ad->project->projectStatus->name === "A rappeler")
+											<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
+										@elseif($ad->project->projectStatus->name === "Non accompagné")
+											<span class="tag is-warning ">{{$ad->project->projectStatus->name}}</span>
+										@elseif($ad->project->projectStatus->name === "Idée")
+											<span class="tag is-primary ">{{$ad->project->projectStatus->name}}</span>
+										@elseif($ad->project->projectStatus->name === "Archivée")
+											<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>
 										@else
-											<span class="tag is-info">{{$project->projectStatus->name}}</span>
+											<span class="tag is-info">{{$ad->project->projectStatus->name}}</span>
 										@endif
 									@endif
 								</td>
-								<td><a href="{{route('ads.show', $project->ad->id)}}"><span><i
+								<td><a href="{{route('ads.show', $ad->id)}}"><span><i
 													class="fas fa-search"></i></span> <span>Voir le détail</span></a>
 								</td>
 							</tr>
@@ -191,7 +257,7 @@
 				</div>
 				<div class="columns is-mobile is-centered">
 					<div class="column is-half ">
-						{{ $projects->appends(Request::all())->links() }}
+						{{ $ads->appends(Request::all())->links() }}
 					</div>
 				</div>
 			@endif
@@ -203,33 +269,22 @@
 @endsection
 
 @section('script')
-
 	<script>
-        const vueSupervisor = new Vue({
+        const vueSupervisorFilters = new Vue({
             el: '#vue-form-supervisor',
             name: 'content'
         });
 
-        let buttons = document.querySelectorAll('.form-research-buttons');
-        let icons = document.querySelectorAll('.form-research-buttons-icons')
-
-        buttons.forEach(function (btn) {
-            btn.addEventListener('click', () => {
-                buttons.forEach(function (b) {
-                    b.classList.add('is-light');
-                    b.firstElementChild.classList.add('is-hidden')
-                });
-                btn.classList.remove('is-light');
-                btn.firstElementChild.classList.remove('is-hidden')
-            });
-
+        const vueSupervisorExportForm = new Vue({
+            el: '#supervisor-form-export-data',
+            name: 'content'
         });
 
         let deleteButton = document.querySelector('#close-notification-supervisor');
         deleteButton.addEventListener('click', function (e) {
             let notification = document.querySelector('#notification-supervisor');
             notification.style.display = 'none';
-        })
+        });
 	</script>
 
 @endsection

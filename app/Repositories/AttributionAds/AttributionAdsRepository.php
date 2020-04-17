@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\Region;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
@@ -57,9 +58,10 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 	 * @param int $monthsNumber
 	 * @return Builder[]|\Illuminate\Database\Eloquent\Collection
 	 */
-	public function findAllWherePublishedOnSinceMonths(int $monthsNumber){
+	public function findAllWherePublishedOnSinceMonths(int $monthsNumber)
+	{
 		return $this->entity
-			->whereDate("published_on", '=', Carbon::now()->subMonthsWithOverflow($monthsNumber) )
+			->whereDate("published_on", '=', Carbon::now()->subMonthsWithOverflow($monthsNumber))
 			->get();
 	}
 
@@ -94,6 +96,27 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 			->mapToGroups(function ($attributionAd, $key) {
 				return [$attributionAd->userModerator->id => $attributionAd];
 			});
+	}
+
+
+	/**
+	 * @param int $adId
+	 * @return Builder|\Illuminate\Database\Eloquent\Model|object|null
+	 */
+	public function findByAdId(int $adId)
+	{
+		$model = $this->entity
+			->where('ad_id', '=', $adId)
+			->first();
+		if (!$model) {
+			throw (new ModelNotFoundException)->setModel(
+				get_class($this->entity->getModel()),
+				$adId
+			);
+		}
+
+		return $model;
+
 	}
 
 	/**

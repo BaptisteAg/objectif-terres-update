@@ -211,17 +211,17 @@
 								<div class="field">
 									<label class="label">Adresse* </label>
 									<p class="control has-icons-left">
-										<input id="address" class="input @error('address') is-danger @enderror"
+										<input id="street" class="input @error('street') is-danger @enderror"
 											   type="text"
-											   name="address" value="{{ old('address') }}" required
-											   autocomplete="address"
+											   name="street" value="{{ old('street') }}" required
+											   autocomplete="street"
 											   autofocus
 											   placeholder="Votre adresse ...">
 										<span class="icon is-small is-left">
 									<i class="fas fa-map-marker-alt"></i>
 								</span>
 									</p>
-									@error('address')
+									@error('street')
 									<article class="message is-danger" role="alert">
 										<div class="message-body">
 											{{ $message }}
@@ -249,9 +249,10 @@
 											 v-for="(zone,i) in citySelect"
 											 @click="_ => citySelect.splice(i,1)">
 											@{{ zone.label }}
-											&nbsp;&nbsp;
+											&nbsp;&nbsp
 											<i class="fa fa-trash" style="cursor:pointer"></i>
 										</div>
+										<input type="hidden" name="country_id" value="75">
 									</autocomplete>
 									@error('city_id')
 									<article class="message is-danger" role="alert">

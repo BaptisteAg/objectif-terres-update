@@ -6,6 +6,7 @@ use App\Models\Scopes\ScopeAdTypesFilterable;
 use App\Models\Scopes\ScopeDataFilterable;
 use App\Models\Scopes\ScopeLocationFilterable;
 use App\Presenters\AdPresenter;
+use App\Presenters\UserPresenter;
 use Illuminate\Database\Eloquent\Model;
 use McCool\LaravelAutoPresenter\Decoratable;
 
@@ -55,10 +56,10 @@ class Project extends Model implements Decoratable
 	/**
 	 * Get the presenter class.
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function getPresenterClass()
 	{
-		return AdPresenter::class;
+		return[ AdPresenter::class, UserPresenter::class];
 	}
 }

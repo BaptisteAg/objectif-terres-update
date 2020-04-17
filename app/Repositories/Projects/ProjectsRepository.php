@@ -34,4 +34,25 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 			->get();
 	}
 
+
+	/**
+	 * @param array $departmentCodes
+	 * @return \Illuminate\Database\Eloquent\Collection
+	 */
+	public function findAllInTerritories(array $departmentCodes)
+	{
+		return $this->entity
+			->whereHas('ad', function (Builder $query) use ($departmentCodes) {
+				$query->filterAdsTerritoryLocations($departmentCodes);
+			})
+			->with([
+				'ad',
+				'ad.landSeekAd',
+				'ad.landOfferAd',
+				'projectStatus'
+			])
+			->get();
+	}
+
+
 }

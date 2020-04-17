@@ -14,7 +14,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
 
 
 /**
- * App\Models\AttributionAd
+ * App\Models\AttributionAdEvents
  *
  * @property int $id
  * @property int $user_pp_id

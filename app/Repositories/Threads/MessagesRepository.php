@@ -4,6 +4,7 @@ use App\Models\Message;
 use App\Repositories\AbstractRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 /**
  * Class MessageRepository
@@ -54,7 +55,7 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 	}
 
 	/**
-	 * @param string  $threadId
+	 * @param string $threadId
 	 *
 	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
 	 */
@@ -62,7 +63,7 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 	{
 		/** @var Message $model */
 		$model = $this->entity
-			->where(['thread_id'=> $threadId])
+			->where(['thread_id' => $threadId])
 			->with($this->getEagerLoading())
 			->get();
 
@@ -75,10 +76,11 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 	 * @param $threadId
 	 * @return Message
 	 */
-	public function findAllUnreadMessagesByThread($threadId){
+	public function findAllUnreadMessagesByThread($threadId)
+	{
 		/** @var Message $model */
-		$model= $this->entity
-			->where(['thread_id'=> $threadId])
+		$model = $this->entity
+			->where(['thread_id' => $threadId])
 			->whereHas('unreadMessages', function (Builder $query) {
 				$query->where([
 					['user_id', '=', auth()->id()],
@@ -86,7 +88,27 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 				]);
 			})
 			->get();
-			return $model;
+		return $model;
+	}
+
+
+	/**
+	 * Find all unread messages for a user and
+	 * @param int $userId
+	 * @return Collection
+	 */
+	public function findAllUnreadMessagesByThreads(int $userId) : Collection
+	{
+		$models = $this->entity
+			->whereHas('unreadMessages', function (Builder $query) use ($userId){
+				$query->where('is_read', '=', 0);
+				$query->where('user_id', '=', $userId);
+			})
+			->select(['thread_id'])
+			->groupBy('thread_id')
+			->get();
+
+		return $models;
 	}
 
 	/**
@@ -101,7 +123,11 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 	{
 		$message = new Message();
 		$message->fill($data);
-		$message->sender_user_id = auth()->user()->id;
+		if (isset($data['sender_user_id'])) {
+			$message->sender_user_id = $data['sender_user_id'];
+		} else {
+			$message->sender_user_id = auth()->user()->id;
+		}
 		$message->save();
 
 		return $message;
@@ -119,6 +145,7 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 
 		];
 	}
+
 	/**
 	 * @inheritDoc
 	 */

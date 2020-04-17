@@ -1,7 +1,7 @@
 @auth
 	@if (auth()->user()->role >= 1)
 		<footer class="card-footer">
-			@if(count($threads) > 0 )
+			@if(! is_null($threads[0]))
 				<button onclick="window.location.href='#messages-display'" type="button"
 						class="card-footer-item button is-link is-fullwidth">
 					<span class="icon is-small">
@@ -21,7 +21,7 @@
 	@endif
 @elseif($ad->user_pp_id !== auth()->user()->id)
 	<footer class="card-footer">
-		@if(count($threads) >0 )
+		@if(! is_null($threads[0]) )
 			<p class="control">
 				<a href="#messages-display">
 					<button type="button" class="card-footer-item button is-link is-fullwidth">

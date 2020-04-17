@@ -38,7 +38,7 @@ class Department extends Model
      * @var array
      */
     protected $fillable = [
-        'region_code', 'code', 'name', 'slug'
+        'region_code', 'code', 'name', 'slug', 'id'
     ];
 
     /**

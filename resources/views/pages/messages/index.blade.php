@@ -70,24 +70,26 @@
 									>
 									</list-threads>
 								</div>
-								<div class="column box box-thread-display">
-									<header-message
-											v-bind:is-display="isDisplay"
-											v-model="messages"
-											:user-id="{{auth()->id()}}"
-									></header-message>
-									<display-message-content
-											v-model="messages"
-											:user-id="{{auth()->id()}}"
-									></display-message-content>
-									<form-message-reply
-											v-model="messages"
-											:user-id="{{auth()->id()}}"
-											:response-templates="{{json_encode($responseTemplates)}}"
-											@message-reply-success="onMessageReplySuccess"
-											v-bind:is-user-moderator="isUserModerator"
-									>
-									</form-message-reply>
+								<div class="column  box-thread-display">
+									<div class="box">
+										<header-message
+												v-bind:is-display="isDisplay"
+												v-model="messages"
+												:user-id="{{auth()->id()}}"
+										></header-message>
+										<display-message-content
+												v-model="messages"
+												:user-id="{{auth()->id()}}"
+										></display-message-content>
+										<form-message-reply
+												v-model="messages"
+												:user-id="{{auth()->id()}}"
+												:response-templates="{{json_encode($responseTemplates)}}"
+												@message-reply-success="onMessageReplySuccess"
+												v-bind:is-user-moderator="isUserModerator"
+										>
+										</form-message-reply>
+									</div>
 								</div>
 							</div>
 							@include('pages.messages.partials.newMessageModal')

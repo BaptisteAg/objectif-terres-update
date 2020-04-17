@@ -13,7 +13,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Notification;
 
-class Research
+class ResearchEvents
 {
 	private $researchService;
     use Dispatchable, InteractsWithSockets, SerializesModels;
