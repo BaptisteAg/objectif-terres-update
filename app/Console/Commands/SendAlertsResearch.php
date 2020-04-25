@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Events\Research;
+use App\Events\ResearchEvents;
 use App\Listeners\SendResearchNotification;
 use Illuminate\Console\Command;
 

@@ -19,7 +19,7 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-		'App\Events\Research'=> ['App\Listeners\SendResearchNotification'],
+		'App\Events\ResearchEvents' => ['App\Listeners\SendResearchNotification'],
     ];
 
     /**

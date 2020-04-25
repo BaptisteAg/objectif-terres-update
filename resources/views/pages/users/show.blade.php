@@ -95,9 +95,9 @@
 				<div class="level-left">
 					<div>
 						@if(count($ads) <=1)
-							<h1 class="title"> {{ count($ads) }} annonce soumise</h1>
+							<h1 class="title"> {{ count($ads) }} annonce ou projet soumis</h1>
 						@else
-							<h2 class="title"> {{ count($ads) }} annonces soumises</h2>
+							<h2 class="title"> {{ count($ads) }} annonces ou projets soumis</h2>
 						@endif
 					</div>
 				</div>
@@ -122,56 +122,46 @@
 										</figure>
 									</a>
 								</div>
-								<div class="column">@if($ad->landSeekAd)
-										<h1 class="title">
-											<a href="{{route('ads.show', $ad->id)}}">{{$ad->title}}</a>
-										</h1>
-										<p><span class=" has-text-grey-dark">Type d'annonce  :</span>
-											<span class="has-text-black">Recherche de foncier</span></p>
-									@elseif($ad->landOfferAd)
-										<h1 class="title">
-											<a href="{{route("ads.show", $ad->id)}}">{{$ad->title}}</a>
-										</h1>
-										<p><span class="has-text-grey-dark">Type d'annonce  :</span>
-											<span class="has-text-black">Offre de foncier</span></p>
-									@elseif($ad->jobOfferAd)
-										<h1 class="title">
-											<a href="{{route("ads.show", $ad->id)}}">
-												{{$ad->title}}
-											</a>
-										</h1>
-										<p><span class="has-text-grey-dark">Type d'annonce :</span>
-											<span class="has-text-black">Offre d'emploi</span></p>
-									@elseif($ad->jobSeekAd)
-										<h1 class="title">
-											<a href="{{route("ads.show", $ad->id)}}">
-												{{$ad->title}}
-											</a>
-										</h1>
-										<p><span class="has-text-grey-dark">Type d'annonces  :</span>
-											<span class="has-text-black">Recherche d'emploi</span></p>
+								<div class="column">
+									<h1 class="title">
+										<a href="{{route('ads.show', $ad->id)}}">{{$ad->title}}</a>
+									</h1>
+									@if(isset($ad->project))
+										<span class="tag is-primary">Demande d'accompagnement</span>
 									@endif
-
-									<p><span class="has-text-grey-dark">Localisations :</span>
+									<p>
+										<span class=" has-text-grey-dark">Type d'annonce  :</span>
+										<span class="has-text-black">{{$ad->ad_type_full_name}}</span>
+									</p>
+									<p>
+										<span class="has-text-grey-dark">Localisations :</span>
 										<span class="has-text-black">{{ $ad->regions->pluck('name')->implode(', ') }}</span>
 										<span class="has-text-black">{{ $ad->departments->pluck('name')->implode(', ') }}</span>
 										<span class="has-text-black">{{ $ad->cities->pluck('name')->implode(', ') }}</span>
 									</p>
-									<p><span class="has-text-grey-dark">Annonce créée le :</span> <span
-												class="has-text-black">{{ $ad->created_at }}</span>
+									<p>
+										@if(isset($ad->project))
+											<span class="has-text-grey-dark">Projet soumis le :</span>
+											<span class="has-text-black">{{ $ad->submitDate }}</span>
+										@else
+											@if(! is_null($ad->attributionAd->published_on ))
+												<span class="has-text-grey-dark">Annonce publié le :</span>
+												<span class="has-text-black">{{ $ad->published_on }}</span>
+											@else
+												<span class="has-text-grey-dark">Annonce soumise le :</span>
+												<span class="has-text-black">{{ $ad->submitDate }}</span>
+											@endif
+										@endif
 									</p>
-
-									<p><span class="has-text-grey-dark">Status de l'annonce : </span> <span
-												class="has-text-black">{{ $ad->attributionAd->adStatus->name }}</span>
+									<p>
+										@if(isset($ad->project))
+											<span class="has-text-grey-dark">Status du projet :</span>
+											<span class="has-text-black">{{ $ad->project->projectStatus->name }}</span>
+										@else
+											<span class="has-text-grey-dark">Status de l'annonce :</span>
+											<span class="has-text-black">{{ $ad->attributionAd->adStatus->name }}</span>
+										@endif
 									</p>
-
-									@if(! is_null($ad->project))
-										<p><span class="has-text-grey-dark">Status du projet : </span> <span
-													class="has-text-black">{{ $ad->project->projectStatus->name }}</span>
-										</p>
-									@endif
-
-
 								</div>
 							</div>
 						</div>
@@ -183,7 +173,11 @@
 											<span class="icon is-small">
 											 <i class="fas fa-eye"></i>
 											</span>
-											<span>Voir l'annonce</span>
+											@if(isset($ad->project))
+												<span>Voir le projet</span>
+											@else
+												<span>Voir l'annonce</span>
+											@endif
 										</button>
 									</a>
 								@endif
@@ -203,6 +197,12 @@
 								<article class="message is-link">
 									<div class="message-body">
 										Vous êtes le modérateur de cette annonce !
+									</div>
+								</article>
+							@elseif($ad->attributionAd->user_advisor_id === auth()->user()->id)
+								<article class="message is-link">
+									<div class="message-body">
+										Vous êtes le primo-accueilant pour ce projet !
 									</div>
 								</article>
 							@endif

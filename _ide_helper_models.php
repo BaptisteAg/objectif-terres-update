@@ -160,7 +160,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\AttributionAd
+ * App\Models\AttributionAdEvents
  *
  * @property int $id
  * @property int $ad_status_id
@@ -809,7 +809,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Research
+ * App\Models\ResearchEvents
  *
  * @property int $id
  * @property string $sf_id

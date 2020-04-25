@@ -4,12 +4,16 @@ use App\Models\Message;
 use App\Models\ReadMessage;
 use App\Models\Thread;
 use App\Models\ThreadUser;
+use App\Models\User;
+use App\Notifications\NewMessage;
+use App\Notifications\NewMessageNotification;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Threads\MessagesRepository;
 use App\Repositories\Threads\ThreadsRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Notification;
 
 /**
  * Class ThreadService
@@ -60,6 +64,10 @@ class ThreadService
 
 	}
 
+	/**
+	 * @param int $adId
+	 * @return Thread
+	 */
 	public function findThreadsByAd(int $adId)
 	{
 		/** @var Thread $thread */
@@ -69,11 +77,15 @@ class ThreadService
 	}
 
 
-	public function findThreadAlreadyExist(int $adId)
+	/**
+	 * @param int $userId
+	 * @param int $adId
+	 */
+	public function findThreadAlreadyExist(int $userId, int $adId)
 	{
 		/** @var Thread $thread */
-		$threads = $this->repository->findThreadByLoggedUserAndAdId($adId);
-		return $threads;
+		$thread = $this->repository->findThreadByUserIdAndAdId($userId, $adId);
+		return $thread;
 
 	}
 
@@ -115,18 +127,12 @@ class ThreadService
 	}
 
 	/**
-	 * @param $threads
-	 * @return mixed
+	 * @return int
 	 */
-	public function countAllUnreadMessagesInThreadsByLoggedUser()
+	public function countAllUnreadMessagesInThreadsByLoggedUser(): int
 	{
-		$threads = $this->repository->findAllThreadsByLoggedUser();
-		$numberOfUnreadMessages = 0;
-		foreach ($threads as $thread) {
-			$numberOfUnreadMessages = $numberOfUnreadMessages + $this->messagesRepository->findAllUnreadMessagesByThread($thread->id)->count();
-		}
-
-		return $numberOfUnreadMessages;
+		$unreadMessage = $this->repository->findAllThreadsWithUnreadMessagesForUser(auth()->id());
+		return $unreadMessage->count();
 	}
 
 	/**
@@ -135,7 +141,6 @@ class ThreadService
 	 */
 	public function create(array $data)
 	{
-
 		$threadData = Arr::only($data, [
 			"ad_id",
 			"title"
@@ -143,12 +148,20 @@ class ThreadService
 		$thread = $this->repository->create($threadData);
 		$threadParticipants = [];
 
-		//in case of new message send from the ad view
 		if (isset($data['ad_id'])) {
-			$threadParticipants = [
-				$this->adRepository->find($data["ad_id"])->user_pp_id,
-				auth()->id()
-			];
+			//in case of new automatic message send after 10 days since the publication of ad
+			if (isset($data['supervisor_id'])) {
+				$threadParticipants = [
+					$this->adRepository->find($data["ad_id"])->user_pp_id,
+					$data['supervisor_id']
+				];
+			} else {
+				//in case of new message send from the ad view
+				$threadParticipants = [
+					$this->adRepository->find($data["ad_id"])->user_pp_id,
+					auth()->id()
+				];
+			}
 			//in case of new message send from the user profil view, message is no related to a specific ad
 		} elseif (isset($data['user_pp_id'])) {
 			$threadParticipants = [
@@ -160,11 +173,11 @@ class ThreadService
 			$threadParticipants = [
 				auth()->id()
 			];
-			if (isset ($data['receivers_user_message'])){
+			if (isset ($data['receivers_user_message'])) {
 				foreach ($data['receivers_user_message'] as $receiverUserMessage) {
 					array_push($threadParticipants, (int)$receiverUserMessage);
 				}
-			}else {
+			} else {
 				abort(redirect()->back()->with('warning', 'Aucun interlocuteur séléctionné'));
 			}
 		}
@@ -175,21 +188,41 @@ class ThreadService
 			]);
 			$threadUser->save();
 		}
-
 		if (isset($data['content'])) {
 			$messageData = Arr::only($data, ["content"]);
-			$messageData["sender_user_id"] = auth()->id();
+			$messageData["sender_user_id"] = (isset($data['supervisor_id'])) ? $data['supervisor_id'] : auth()->id();
 			$messageData["thread_id"] = $thread->id;
-
 			$message = $this->messagesRepository->create($messageData);
 			foreach ($threadParticipants as $user_id) {
-				if ($user_id !== auth()->id()) {
-					$threadUser = new ReadMessage([
-						"message_id" => $message->id,
-						"user_id" => $user_id,
-					]);
-					$threadUser->save();
+				if (isset($data['supervisor_id'])) {
+					if ($user_id !== $data['supervisor_id']) {
+						$threadUser = new ReadMessage([
+							"message_id" => $message->id,
+							"user_id" => $user_id,
+						]);
+						$user = User::find($user_id);
+						$supervisor = User::find($data['supervisor_id']);
+						$user->notify(new NewMessageNotification([
+							'sender_name' => $supervisor->name,
+							'sender_first_name' => $supervisor->first_name,
+							'message_content' => $message->content
+						]));
+					}
+				} else {
+					if ($user_id !== auth()->id()) {
+						$threadUser = new ReadMessage([
+							"message_id" => $message->id,
+							"user_id" => $user_id,
+						]);
+						$user = User::find($user_id);
+						$user->notify(new NewMessageNotification([
+							'sender_name' => auth()->user()->name,
+							'sender_first_name' => auth()->user()->first_name,
+							'message_content' => $message->content
+						]));
+					}
 				}
+				$threadUser->save();
 			}
 		}
 	}
@@ -201,16 +234,40 @@ class ThreadService
 	 */
 	public function createMessage(array $data)
 	{
-		$test = $this->messagesRepository->create($data);
+		$messageCreated = $this->messagesRepository->create($data);
 
-		$message = $this->messagesRepository->find($test->id);
+		$message = $this->messagesRepository->find($messageCreated->id);
 		foreach ($message->thread->users as $user) {
+			$user = User::find($user->id);
+
 			if ($user->id !== auth()->id()) {
-				$threadUser = new ReadMessage([
-					"message_id" => $message->id,
-					"user_id" => $user->id,
-				]);
-				$threadUser->save();
+				if (isset($data['supervisor_id'])) {
+					//in case of an automatic message from the supervisor
+					$supervisor = User::find($data['supervisor_id']);
+					if ($user->id !== $data['supervisor_id']) {
+						$threadUser = new ReadMessage([
+							"message_id" => $message->id,
+							"user_id" => $user->id,
+						]);
+						$threadUser->save();
+						$user->notify(new NewMessageNotification([
+							'sender_name' => $supervisor->name,
+							'sender_first_name' => $supervisor->first_name,
+							'message_content' => $message->content
+						]));
+					}
+				} else {
+					$threadUser = new ReadMessage([
+						"message_id" => $message->id,
+						"user_id" => $user->id,
+					]);
+					$threadUser->save();
+					$user->notify(new NewMessageNotification([
+						'sender_name' => auth()->user()->name,
+						'sender_first_name' => auth()->user()->first_name,
+						'message_content' => $message->content
+					]));
+				}
 			}
 		}
 		return $message;
@@ -218,11 +275,11 @@ class ThreadService
 
 
 	/**
-	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 * @return Collection
 	 */
-	public function findThreadsByUnreadMessage()
+	public function findThreadsWithUnreadMessages(int $userId)
 	{
-		return $this->repository->findThreadsByUnreadMessages();
+		return $this->repository->findAllThreadsWithUnreadMessagesForUser($userId);
 	}
 
 	/**

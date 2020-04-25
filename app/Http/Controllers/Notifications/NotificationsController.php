@@ -29,7 +29,7 @@ class NotificationsController extends Controller
 			return redirect()->route($request->input('route'), $notification->data['ad_id']);
 		} else {
 			$notification->markAsRead();
-			return redirect()->route($request->input('route'), ['date_research_range=&citySelect=&radius_research=&ad_statuses[]=4&ad_title=']);
+			return redirect()->route($request->input('route'), ['citySelect=&radius_research=&ad_statuses[]=4&ad_title=']);
 		}
 	}
 }

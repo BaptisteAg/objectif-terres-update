@@ -6,6 +6,7 @@ use App\Notifications\ResetPasswordNotification;
 use App\Presenters\UserPresenter;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use McCool\LaravelAutoPresenter\HasPresenter;
@@ -115,6 +116,23 @@ class User extends Authenticatable implements HasPresenter
 		'email_verified_at' => 'datetime',
 	];
 
+	static $civilities = [
+		1 => "Madame",
+		2 => "Monsieur",
+		3 => "Autre",
+	];
+
+	static $profiles = [
+		1 => "un candidat à l’installation agricole",
+		2 => "une personne en recherche de travail ou d’expérience professionnelle dans le domaine agricole",
+		3 => "un agriculteur qui souhaite consolider sa ferme",
+		4 => "un agriculteur qui souhaite transmettre sa ferme",
+		5 => "un propriétaire foncier qui souhaite vendre ou louer sa terre",
+		6 => "autre",
+
+
+	];
+
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
@@ -162,4 +180,33 @@ class User extends Authenticatable implements HasPresenter
 	{
 		return UserPresenter::class;
 	}
+
+	/**
+	 * Get all cities 'location' for the user
+	 * @return MorphToMany
+	 */
+	public function cities()
+	{
+		return $this->morphedbyMany(City::class, 'locationable_user');
+	}
+
+	/**
+	 * Get all cities 'location' for the user
+	 * @return MorphToMany
+	 */
+	public function departments()
+	{
+		return $this->morphedbyMany(Department::class, 'locationable_user');
+	}
+
+	/**
+	 * Get all cities 'location' for the user
+	 * @return MorphToMany
+	 */
+	public function regions()
+	{
+		return $this->morphedbyMany(Region::class, 'locationable_user');
+	}
+
+
 }

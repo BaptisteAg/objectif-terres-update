@@ -4,104 +4,132 @@ namespace App\Services\Projects;
 
 use App\Models\Department;
 use App\Models\Project;
+use App\Models\ProjectStatus;
 use App\Models\Region;
+use App\Models\User;
+use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Repositories\Projects\ProjectsRepository;
+use App\Services\Users\UserService;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 
 class ProjectService
 {
 	protected $repository;
+	protected $attributionAdsRepository;
+	protected $userService;
 
-
-	public function __construct(ProjectsRepository $projectsRepository)
+	/**
+	 * ProjectService constructor.
+	 * @param ProjectsRepository $projectsRepository
+	 * @param AttributionAdsRepository $attributionAdsRepository
+	 * @param UserService $userService
+	 */
+	public function __construct(ProjectsRepository $projectsRepository, AttributionAdsRepository $attributionAdsRepository, UserService $userService)
 	{
 		$this->repository = $projectsRepository;
+		$this->attributionAdsRepository = $attributionAdsRepository;
+		$this->userService = $userService;
 	}
 
 	/**
-	 * Show all projects ads related to supervisor
-	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+	 * @param $projectStatusId
+	 * @return int
 	 */
-	public function findAllByUserSupervisor()
+	public function countNumberOfProjectsByStatusForLoggedUser($projectStatusId): int
 	{
-		$projectAds = Project::whereHas('ad', function (Builder $query) {
-			$query->whereHas('attributionAd', function (Builder $q) {
-				$q->where('user_supervisor_id', '=', auth()->user()->id);
-			});
-		})
-			->with($this->getEagerLoading())
-			->paginate(15);
-
-		return $projectAds;
-	}
-
-
-	/**
-	 * Project ads filters for supervisor dashboard
-	 * @param Request $request
-	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-	 */
-	public function showForSupervisor(Request $filters)
-	{
-		$project = $this->filter($filters, auth()->user()->role);
-		return $project;
-	}
-
-
-	public function countNumberOfProjectsByStatusForLoggedUser($projectStatusId){
-		$numberOfProjects = $this->repository->findAllByUserIdAndUserRoleAndProjectStatusId(auth()->user()->id, auth()->user()->role,$projectStatusId)->count();
+		$numberOfProjects = $this->repository->findAllByUserIdAndUserRoleAndProjectStatusId(auth()->user()->id, auth()->user()->role, $projectStatusId)->count();
 		return $numberOfProjects;
+	}
+
+
+	/**
+	 * @return Collection
+	 */
+	public function findAllProjectInSupervisorTerritories(): Collection
+	{
+		$supervisorDepartmentCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+		$projects = $this->repository->findAllInTerritories($supervisorDepartmentCodes);
+		return $projects;
+	}
+
+
+	/**
+	 * @param Collection $projects
+	 * @return array
+	 */
+	public function countProjectsByCategories($projects): array
+	{
+
+		$projectsByCategories = [
+			'landSeekAd' => 0,
+			'landOfferAd' => 0,
+		];
+		foreach ($projects as $project) {
+			if (isset($project->ad->landOfferAd)) {
+				$projectsByCategories['landOfferAd']++;
+			} else if (isset($project->ad->landOfferAd)) {
+				$projectsByCategories['landSeekAd']++;
+			}
+		}
+		return $projectsByCategories;
+
+	}
+
+
+	public function countProjectsByProjectStatus(Collection $projects): array
+	{
+		$numberOfProjectsByProjectsStatus = [
+			'A rappeler' => 0,
+			'Accompagné' => 0,
+			'Non accompagné' => 0,
+			'Idée' => 0,
+			'En recherche' => 0,
+			'Installé' => 0,
+			'Archivée' => 0,
+
+		];
+		foreach ($projects as $project) {
+			foreach ($numberOfProjectsByProjectsStatus as $key => $value) {
+				if ($key === $project->projectStatus->name) {
+					$numberOfProjectsByProjectsStatus[$key]++;
+				}
+			}
+		}
+		return $numberOfProjectsByProjectsStatus;
+	}
+
+
+	/**
+	 * @param Collection $projects
+	 * @return array
+	 */
+	public function calculatePercentageOfProjectsByProjectStatus(Collection $projects): array
+	{
+		$numberOfProjectsByProjectStatus = $this->countProjectsByProjectStatus($projects);
+		$sumOfProjects = array_sum($numberOfProjectsByProjectStatus);
+
+		$percentageOfProjectsByProjectsStatus = array_map(function ($number) use ($sumOfProjects) {
+			return round($number * 100 / $sumOfProjects);
+		}, $numberOfProjectsByProjectStatus);
+
+		return $percentageOfProjectsByProjectsStatus;
 	}
 
 	/**
 	 * @param Request $filters
+	 * @param int $roleUser
 	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
 	public function filter(Request $filters, int $roleUser)
 	{
-		//Return results if research ads by keywords
 		$projectAds = collect();
-		if (!is_null($filters->input('ad_keywords'))) {
-			$adsByTitle = Project::whereHas('ad', function (Builder $query) use ($filters, $roleUser) {
-				$query->where('title', 'like', '%' . $filters->input('ad_keywords') . '%');
-				$query->orWhere('about_content', 'like', '%' . $filters->input('ad_keywords') . '%');
-				$query->orWhere('about_project_content', 'like', '%' . $filters->input('ad_keywords') . '%');
-
-			});
-			$adsByTitle->whereHas('ad', function (Builder $query) use ($roleUser) {
-				$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
-					$q->where('user_supervisor_id', '=', auth()->id());
-				});
-			});
-			$adsByTitle->orderByDesc('created_at');
-			$projectAds = $adsByTitle
-				->with($this->getEagerLoading())
-				->paginate(15);
-			return $projectAds;
-		}
 		//START QUERY
 		$projectsFiltered = (new Project())->newQuery();
-
-		//First, filter attributions ads based on the role who is the user logged
-		if ($roleUser === 2) {
-			$projectsFiltered->whereHas('ad', function (Builder $query) use ($roleUser) {
-				$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
-					$q->where('user_advisor_id', '=', auth()->id());
-				});
-			});
-		} else if ($roleUser === 3) {
-			$projectsFiltered->whereHas('ad', function (Builder $query) use ($roleUser) {
-				$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
-					$q->where('user_supervisor_id', '=', auth()->id());
-				});
-			});
-		}
-
-		//Filter attribution ads based on their locations if requested
-
+		//Filter projetcs based on their locations if requested
 		if ($filters->has('locations')) {
 			$locations = $filters->input('locations');
 //			TODO delete if research by cities is not necessary anymore
@@ -116,17 +144,22 @@ class ProjectService
 
 			if (array_key_exists('departments', $locations)) {
 				$departmentsCode = Department::whereIn('id', $locations['departments'])->get('code')->toArray();
-				$projectsFiltered->filterLocations('ad.departments', $locations['departments']);
-				$projectsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+				$projectsFiltered->where(function (Builder $query) use ($locations, $departmentsCode) {
+					$query->filterLocations('ad.departments', $locations['departments']);
+					$query->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+				});
 
 				//If one or more regions are selected, get all ads located in regions, all ads in departments inside regions and cities in departments
 			}
 			if (array_key_exists('regions', $locations)) {
 				$regionsCodes = Region::whereIn('id', $locations['regions'])->get('code')->toArray();
 				$departmentsCode = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
-				$projectsFiltered->filterLocations('ad.regions', $locations['regions']);
-				$projectsFiltered->filterSubLocations('ad.departments', $regionsCodes, 'departments.region_code');
-				$projectsFiltered->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+				$projectsFiltered->where(function (Builder $query) use ($locations, $regionsCodes, $departmentsCode) {
+					$query->filterLocations('ad.regions', $locations['regions']);
+					$query->filterSubLocations('ad.departments', $regionsCodes, 'departments.region_code');
+					$query->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+				});
+
 			}
 		}
 		//If a range of submitting date is selected, filter attribution ads based on creation date
@@ -139,11 +172,33 @@ class ProjectService
 			$projectsFiltered->whereIn('project_status_id', $filters->input('project_statuses'));
 		}
 
-		//Filter ads based on their types if requested
+		//Filter projects based on their types if requested
 		if ($filters->has('ad_type')) {
 			$projectsFiltered->filterAdTypes($filters->input('ad_type'), 'ad.');
 		}
 
+		//Filter projects by keywords
+		$projectsFiltered->whereHas('ad', function (Builder $query) use ($filters, $roleUser) {
+			$query->where('title', 'like', '%' . $filters->input('ad_keywords') . '%');
+			$query->orWhere('about_content', 'like', '%' . $filters->input('ad_keywords') . '%');
+			$query->orWhere('about_project_content', 'like', '%' . $filters->input('ad_keywords') . '%');
+
+		});
+
+		//Filter projects based on the role who is the user logged
+		if ($roleUser === 2) {
+			$projectsFiltered->whereHas('ad', function (Builder $query) use ($roleUser) {
+				$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
+					$q->where('user_advisor_id', '=', auth()->id());
+				});
+			});
+		} else if ($roleUser === 3) {
+			$projectsFiltered->whereHas('ad', function (Builder $query) use ($roleUser) {
+				$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
+					$q->where('user_supervisor_id', '=', auth()->id());
+				});
+			});
+		}
 		//Handling sort of research results
 		if ($filters->has('order') && $filters->has('sort')) {
 			if ($filters->input('sort') === 'date') {
@@ -172,6 +227,24 @@ class ProjectService
 			->with($this->getEagerLoading())
 			->paginate(15);
 		return $projects;
+	}
+
+
+	/**
+	 * @param Request $request
+	 */
+	public function attributeProject(Request $request)
+	{
+		$attributionAd = $this->attributionAdsRepository->findByAdId($request->input('ad_id'));
+		//updating project status if it is non attribute to an advisor
+		$nonAttributedStatus = ProjectStatus::where('name', '=', 'Non accompagné')->first()->id;
+		$attributedStatus = ProjectStatus::where('name', '=', 'Accompagné')->first()->id;
+		if ($attributionAd->ad->project->project_status_id === $nonAttributedStatus) {
+			$attributionAd->ad->project->project_status_id = $attributedStatus;
+			$attributionAd->ad->project->save();
+		}
+		$attributionAd->user_advisor_id = $request->input('user_advisor_id');
+		$attributionAd->save();
 	}
 
 	/**

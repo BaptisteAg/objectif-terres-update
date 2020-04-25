@@ -144,9 +144,10 @@ class AttributionAdsService
 		}
 
 		//If a range of submitting date is selected, filter attribution ads based on creation date
-		if (!is_null($filters->input('date_research_range'))) {
-			$dateFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_research_range'))->format('Y-m-d');
-			$attributionAdsFiltered->where('attribution_ads.created_at', '>=', $dateFormatted);
+		if (!is_null($filters->input('date_from')) && !is_null($filters->input('date_to'))) {
+			$dateStartFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_from'))->format('Y-m-d');
+			$dateEndFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_to'))->format('Y-m-d');
+			$attributionAdsFiltered->whereBetween('attribution_ads.created_at', [$dateStartFormatted,$dateEndFormatted." 23:59:59" ]);
 		}
 
 		//If one or many ad status are selected, filter attribution ads based on their status

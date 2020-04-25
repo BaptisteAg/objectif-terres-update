@@ -18,9 +18,11 @@ use App\Models\ResponseTemplate;
 use App\Models\SurfaceRange;
 use App\Models\User;
 use App\Notifications\NewAdToModerateNotification;
+use App\Notifications\NewProjectsNotification;
 use App\Repositories\FavoriteAds\FavoriteAdRepository;
 use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
+use App\Services\Users\UserService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -36,12 +38,14 @@ class AdsController extends Controller
 	protected $adService;
 	protected $threadService;
 	protected $favoriteAdRepository;
+	protected $userService;
 
-	public function __construct(AdService $adService, ThreadService $threadService, FavoriteAdRepository $favoriteAdRepository)
+	public function __construct(AdService $adService, ThreadService $threadService, FavoriteAdRepository $favoriteAdRepository, UserService $userService)
 	{
 		$this->adService = $adService;
 		$this->threadService = $threadService;
 		$this->favoriteAdRepository = $favoriteAdRepository;
+		$this->userService = $userService;
 
 	}
 
@@ -101,6 +105,8 @@ class AdsController extends Controller
 
 		/** @var $ad Ad $ad */
 		$ad = $this->adService->requestPublishing($data);
+		//TODO if the new ad is a project, send a notification to the related supervisor. Otherwise, it's an ad, send a message to the related moderator
+//		$ad->attributionAd->userSupervisor->notify(new NewProjectsNotification($ad, auth()->user()));
 		$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
 
 
@@ -175,10 +181,11 @@ class AdsController extends Controller
 					$responseTemplates = ResponseTemplate::all();
 					$refusalTypes = RefusalType::all();
 				}
-				if (auth()->user()->role >=3){
-					$advisorUsers = User::all();
+				if (auth()->user()->role >= 3) {
+					//TODO display only advisors that are related to the supervisor
+					$advisorUsers = $this->userService->findAllAdvisorsAndSupervisors();
 				}
-				$threads = $this->threadService->findThreadAlreadyExist($adId);
+				$threads = [$this->threadService->findThreadAlreadyExist(auth()->user()->id,$adId)];
 				$data = array(
 					"ad_id" => $adId,
 					"user_id" => auth()->user()->id,
@@ -187,7 +194,6 @@ class AdsController extends Controller
 			}
 
 		}
-
 		//Throw error 404 if a visitor try to show an ad is not validated
 		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validée" ;
 		//TODO not display projects unless user logged is the author of the ad or the user logged is an supervisor or an advisor
@@ -212,11 +218,9 @@ class AdsController extends Controller
 	 */
 	public function delete(Ad $ad)
 	{
-
 		if ($ad->user_pp_id !== auth()->id()) {
 			abort(404);
 		}
-
 		$this->adService->delete($ad);
 		return back()->with('success', 'Votre annonce a bien été supprimée');
 	}

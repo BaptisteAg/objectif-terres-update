@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\Moderation;
+use App\Events\ModerationEvents;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 
@@ -13,9 +13,9 @@ class SendModerationNotification implements ShouldQueue
 	/**
 	 * Create the event listener.
 	 *
-	 * @param Moderation $event
+	 * @param ModerationEvents $event
 	 */
-	public function __construct(Moderation $event)
+	public function __construct(ModerationEvents $event)
 	{
 		$this->event = $event;
 	}

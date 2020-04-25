@@ -82,7 +82,6 @@ class Thread extends Model implements HasPresenter
 		return $this->belongsToMany(User::class, 'thread_users')->withTimestamps();
 	}
 
-
 	/**
 	 * Get the presenter class.
 	 *

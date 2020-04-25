@@ -29,20 +29,18 @@
 				<div class="column is-one-fifth">
 					<div class="control has-icons-right ">
 						@if(Route::current()->getName() === 'moderator.index' &&  Route::current()->getName() === 'moderator.show')
-							<label class="label"> Annonces soumises depuis le </label>
+							<label class="label"> Date de soumission de l'annonce </label>
 						@else
-							<label class="label"> Demandes soumises depuis le </label>
+							<label class="label"> Date de soumission de la demande </label>
 						@endif
-						<date-picker
-								old-value= {{old('date_research_range')}}
-						></date-picker>
+						<date-range old-value-selected={{old('date-range-selected')}}></date-range>
 					</div>
 				</div>
 			@else
 				<div class="column is-5 ">
 					<div class="columns is-mobile">
 						<div class="column ">
-							<div class="field">
+							<div v-cloak class="field">
 								<label class="label">Localisations (département ou région)</label>
 								<autocomplete
 										id="localisations"
@@ -100,7 +98,7 @@
 				<div class="column is-5 ">
 					<div class="columns is-mobile">
 						<div class="column ">
-							<div class="field">
+							<div v-cloak class="field">
 								<label class="label">Localisations (département ou région)</label>
 								<autocomplete
 										id="localisations"
@@ -173,13 +171,11 @@
 				<div class="column is-one-fifth">
 					<div class="control has-icons-right ">
 						@if(Route::current()->getName() === 'moderator.index' &&  Route::current()->getName() === 'moderator.show')
-							<label class="label"> Annonces soumises depuis le </label>
+							<label class="label"> Date de soumission de l'annonce </label>
 						@else
-							<label class="label"> Demandes soumises depuis le </label>
+							<label class="label"> Date de soumission de la demande </label>
 						@endif
-						<date-picker
-								old-value= {{old('date_research_range')}}
-						></date-picker>
+						<date-range old-value-selected={{old('date-range-selected')}}></date-range>
 					</div>
 				</div>
 				<div class="column ">
@@ -196,6 +192,11 @@
 							</div>
 						@endforeach
 					</div>
+				</div>
+				<div class="column is-3 ">
+					<label class="label">Recherche par mot clé</label>
+					<input name="ad_keywords" class="input" type="text" placeholder="Votre recherche..."
+						   value="{{old('ad_keywords')}}">
 				</div>
 			@endif
 			<div class="column is-1">

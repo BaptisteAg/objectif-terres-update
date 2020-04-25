@@ -59,6 +59,24 @@
 							</form>
 						</div>
 					</article>
+				@elseif(isset($notification->data['is_project']))
+					<article class="message is-info">
+						<div class="message-header">
+							<p>Nouvelle demande d'accompagnement</p>
+						</div>
+						<div class="message-body">
+							Un nouveau projet vient d'être créé par
+							<a href="{{route('user.show', $notification->data['user_pp_id'])}}">{{$notification->data['user_pp_first_name']}} {{$notification->data['user_pp_name']}}</a>.
+
+							<form action="{{route('notification.update', $notification->id)}}" method="POST">
+								@csrf
+								@method('PATCH')
+								<input type="hidden" value="ads.show" name="route">
+								<br>
+								<input type="submit" class="button is-link " value="@lang('Voir le détail du projet')">
+							</form>
+						</div>
+					</article>
 				@else
 					<article class="message is-info">
 						<div class="message-header">

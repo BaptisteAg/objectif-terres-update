@@ -1,6 +1,6 @@
 @auth
 	@if( $ad->user_pp_id !== auth()->user()->id)
-		@if(count($threads) <= 0)
+		@if(is_null($threads[0]))
 			@if(auth()->user()->role >= 1)
 				<div class="content">
 					<div class="columns is-mobile is-centered">

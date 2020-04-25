@@ -10,12 +10,13 @@ class JobSeekAdRepository extends AbstractRepository
         return JobSeekAd::class;
     }
 
-    /**
-     * Creates an ad.
-     *
-     * @param int
-     * @param array
-     */
+	/**
+	 * Creates an ad.
+	 *
+	 * @param int
+	 * @param array
+	 * @return JobSeekAd
+	 */
     public function create(array $data): JobSeekAd
     {
         $jobOfferAd = new JobSeekAd();
