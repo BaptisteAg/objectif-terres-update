@@ -81,14 +81,14 @@ class AdService
 	 * @return mixed
 	 * @throws \Throwable
 	 */
-    public function create($data)
+    public function requestPublishing(array $data)
     {
         $ad =  DB::transaction(function() use($data) {
 
         	$attributionAdData = [];
         	$toModerateStatus = AdStatus::where('name', '=', 'À modérer')->first();
 
-        	// Temporary : should be attributed by territory sored in Salesforce. If there is many moderators, one is pick randomly
+        	// Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
 			$userModerator = User::where('email', 'test.ot.moderateur@gmail.com')->first();
 			if ($userModerator){
 				$attributionAdData['user_moderator_id'] = $userModerator->id;
@@ -103,22 +103,52 @@ class AdService
 			$adData = $data[$data["ad_type"]];
             $adData["ad_id"] = $ad->id;
 
-            if ($data["ad_type"] === "land_seek") {
-                $landSeekAd = $this->landSeekAdRepository->create($adData);
-            }
-            else if ($data["ad_type"] === "land_offer") {
-                $landOfferAd = $this->landOfferAdRepository->create($adData);
-            }
-            else if ($data["ad_type"] === "job_offer") {
-                $jobOfferAd = $this->jobOfferAdRepository->create($adData);
-            }
-            else if ($data["ad_type"] === "job_seek") {
-                $jobSeekAd = $this->jobSeekAdRepository->create($adData);
-            }
+            $this->storeSubAd($data["ad_type"], $adData);
+
             return $ad;
         });
 
         return $ad;
+    }
+
+    /**
+     * Create the ad without requesting to publish it
+     *
+     * @param array $data
+     * @return mixed
+     * @throws \Throwable
+     */
+    public function create(array $data)
+    {
+        $ad =  DB::transaction(function() use($data) {
+
+            $ad = $this->repository->create($data);
+
+            $adData = $data[$data["ad_type"]];
+            $adData["ad_id"] = $ad->id;
+
+            $this->storeSubAd($data["ad_type"], $adData);
+
+            return $ad;
+        });
+
+        return $ad;
+    }
+
+    protected function storeSubAd(string $adType, array $data)
+    {
+        if ($adType === "land_seek") {
+            $landSeekAd = $this->landSeekAdRepository->create($data);
+        }
+        else if ($adType === "land_offer") {
+            $landOfferAd = $this->landOfferAdRepository->create($data);
+        }
+        else if ($adType === "job_offer") {
+            $jobOfferAd = $this->jobOfferAdRepository->create($data);
+        }
+        else if ($adType === "job_seek") {
+            $jobSeekAd = $this->jobSeekAdRepository->create($data);
+        }
     }
 
 	/**

@@ -34,6 +34,8 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $ads
+ * @property-read int|null $ads_count
  * @property-read \App\Models\Country|null $country
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
@@ -146,6 +148,11 @@ class User extends Authenticatable implements HasPresenter
 		return $this->belongsToMany(Thread::class, 'thread_users')->withTimestamps();
 	}
 
+	public function ads()
+    {
+        return $this->hasMany(Ad::class, 'user_pp_id', 'id');
+    }
+
 	/**
 	 * Get the presenter class.
 	 *
@@ -155,6 +162,4 @@ class User extends Authenticatable implements HasPresenter
 	{
 		return UserPresenter::class;
 	}
-
-
 }

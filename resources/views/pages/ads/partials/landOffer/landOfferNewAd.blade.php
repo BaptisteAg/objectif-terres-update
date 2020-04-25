@@ -38,7 +38,7 @@
                             <div class="columns">
                                 <div class="column is-half">
                                     <div class="control has-icons-right">
-                                        {!! Form::number('land_offer[surface]', null, [
+                                        {!! Form::text('land_offer[surface]', null, [
                                             'class' => 'input',
                                             ':disabled'=>'isInputDisabled',
                                             'v-model' => 'formInput.surface',
@@ -56,11 +56,14 @@
                                         <p class="help is-danger" v-if="!$v.formInput.surface.required">
                                             Ce champ est requis.
                                         </p>
+                                        <p class="help is-danger" v-if="!$v.formInput.surface.numeric">
+                                            Veuillez saisir un nombre.
+                                        </p>
                                     </template>
                                 </div>
                                 <div class="column is-half">
                                     <p v-if="formInput.surface">
-                                        = @{{ (formInput.surface*10000).toLocaleString() }}m²
+                                        = @{{ isNaN(formInput.surface) ? 0 : (formInput.surface*10000).toLocaleString() }}m²
                                     </p>
                                 </div>
                             </div>
@@ -94,7 +97,7 @@
                             <div class="columns">
                                 <div class="column is-half">
                                     <div class="control has-icons-right">
-                                        {!! Form::number('land_offer[altitude]',null, [
+                                        {!! Form::text('land_offer[altitude]',null, [
                                             'v-model' => 'formInput.altitude',
                                             'class' => 'input',
                                             ':disabled'=>'isInputDisabled',
@@ -104,9 +107,14 @@
                                           m
                                         </span>
                                     </div>
-                                    <p class="help is-danger" v-if="$v.formInput.altitude.$error ">
-                                        Ce champ est requis.
-                                    </p>
+                                    <template v-if="$v.formInput.altitude.$error">
+                                        <p class="help is-danger" v-if="$v.formInput.altitude.required ">
+                                            Ce champ est requis.
+                                        </p>
+                                        <p class="help is-danger" v-if="!$v.formInput.altitude.numeric">
+                                            Veuillez saisir un nombre.
+                                        </p>
+                                    </template>
                                 </div>
                                 <div class="column"></div>
                             </div>
@@ -185,6 +193,7 @@
                             <div>
                                 <label>
                                     {!! Form::radio('land_offer[water_access]', 1, null, [
+                                            'v-model' => 'formInput.waterAccess',
                                             'ref' => 'waterAccess',
                                             ':disabled' => 'isInputDisabled'
                                         ]);
@@ -351,7 +360,7 @@
                                     ]); !!}
 
                                     <div class="control has-icons-right">
-                                        {!! Form::number('land_offer[price]', old('land_offer[price]'), [
+                                        {!! Form::text('land_offer[price]', old('land_offer[price]'), [
                                             'class' => 'input',
                                             'ref' => 'price',
                                             'v-model' => 'formInput.price',
@@ -362,9 +371,14 @@
                                         </span>
                                     </div>
 
-                                    <p class="help is-danger" v-if="$v.formInput.price.$error">
-                                        Ce champ est requis.
-                                    </p>
+                                    <template v-if="$v.formInput.price.$error">
+                                        <p class="help is-danger" v-if="$v.formInput.price.required">
+                                            Ce champ est requis.
+                                        </p>
+                                        <p class="help is-danger" v-if="!$v.formInput.price.numeric">
+                                            Veuillez saisir un nombre.
+                                        </p>
+                                    </template>
                                 </div>
                             </div>
                             <div class="column is-half" v-if="isRentOffer">
@@ -374,7 +388,7 @@
                                     ]); !!}
 
                                     <div class="control has-icons-right">
-                                        {!! Form::number('land_offer[rent_price]', old('land_offer[rent_price]'), [
+                                        {!! Form::text('land_offer[rent_price]', old('land_offer[rent_price]'), [
                                             'class' => 'input',
                                             'ref' => 'rentPrice',
                                             'v-model' => 'formInput.rentPrice',
@@ -384,9 +398,14 @@
                                           €
                                         </span>
                                     </div>
-                                    <p class="help is-danger" v-if="$v.formInput.rentPrice.$error">
-                                        Ce champ est requis.
-                                    </p>
+                                    <template v-if="$v.formInput.rentPrice.$error">
+                                        <p class="help is-danger" v-if="$v.formInput.rentPrice.required">
+                                            Ce champ est requis.
+                                        </p>
+                                        <p class="help is-danger" v-if="!$v.formInput.rentPrice.numeric">
+                                            Veuillez saisir un nombre.
+                                        </p>
+                                    </template>
                                 </div>
                             </div>
                         </div>

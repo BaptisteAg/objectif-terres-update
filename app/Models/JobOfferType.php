@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $name
+ * @property string $icon
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $Researches
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferType newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferType query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferType whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferType whereIcon($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferType whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferType whereUpdatedAt($value)

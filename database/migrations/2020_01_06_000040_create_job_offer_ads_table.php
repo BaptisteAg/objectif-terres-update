@@ -25,7 +25,7 @@ class CreateJobOfferAdsTable extends Migration
             $table->increments('id');
             $table->boolean('is_activity_transmission')->nullable();
             $table->string('job_description', 1500);
-            $table->string('experience_farming', 1500);
+            $table->string('experience_farming', 1500)->nullable();
 
             $table->unsignedInteger('ad_id');
 

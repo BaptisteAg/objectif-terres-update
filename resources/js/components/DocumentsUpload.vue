@@ -27,11 +27,24 @@
             @vdropzone-removed-file="onRemoveUploadedDocument">
 
         <div class="dropzone-custom-content">
-            <div class="subtitle">Cliquez ici pour déposer des fichiers</div>
+            <div class="subtitle"><i class='fas fa-cloud'></i> Cliquez ici pour déposer des fichiers</div>
             <h3 class="dropzone-custom-title">Vous pouvez également glisser-déposer</h3>
         </div>
     </vue-dropzone>
 </template>
+
+<style>
+    .vue-dropzone>.dz-preview .dz-error-mark, .vue-dropzone>.dz-preview .dz-success-mark {
+        top: 15%;
+    }
+    .dropzone .dz-preview .dz-error-message {
+        top: 85px;
+        opacity:1;
+    }
+    .dropzone.dz-started .dz-message {
+        display: block !important;
+    }
+</style>
 
 <script>
     import vue2Dropzone from 'vue2-dropzone'
@@ -99,8 +112,7 @@
                 this.$emit('input', this.value.filter(document =>
                     document.name !== removedFile.name && document.name !== removedFile.size
                 ));
-            },
-
+            }
         }
     }
 </script>

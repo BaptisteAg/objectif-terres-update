@@ -4,6 +4,13 @@ import {maxLength, minLength, required} from "vuelidate/lib/validators";
 // Whitelist of html form inputs
 const INPUT_TAGS = ['input', 'textarea', 'select'];
 
+
+const scrollToTop = (() => {
+    var scroll = new SmoothScroll();
+    var anchor = document.querySelector('#vue-render');
+    return _ => scroll.animateScroll(anchor);
+})();
+
 export default {
     props: {
         oldValues: Object,
@@ -12,13 +19,6 @@ export default {
     data() {
         return {
             uploading: false
-        }
-    },
-    computed: {
-        scrollToTop() {
-            var scroll = new SmoothScroll();
-            var anchor = document.querySelector('#vue-render');
-            return _ => scroll.animateScroll(anchor);
         }
     },
     mounted() {
@@ -42,7 +42,7 @@ export default {
     },
     methods: {
         nextStep() {
-            this.scrollToTop();
+            scrollToTop();
         },
         setUploading(bool) {
             this.uploading = bool;

@@ -28,6 +28,8 @@ use Illuminate\Support\Facades\Request;
 
 class AdsController extends Controller
 {
+    public const PUBLISHED_AD_LIMIT_PER_USER = 3;
+
 	/**
 	 * @var AdService
 	 */
@@ -85,16 +87,25 @@ class AdsController extends Controller
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
 	 * @throws \Throwable
 	 */
-	public function store(AdRequest $request)
+	public function requestPublishing(AdRequest $request)
 	{
-		$data = $request->validated();
+        if (auth()->user()->ads()->count() >= self::PUBLISHED_AD_LIMIT_PER_USER) {
+            return $this->store($request)
+                ->withErrors(
+                    "Vous ne pouvez publier que ". self::PUBLISHED_AD_LIMIT_PER_USER ." annonces en même temps. 
+                    Votre annonce a été sauvegardée mais ne sera pas soumise à modération."
+                );
+        }
+
+        $data = $request->validated();
 
 		/** @var $ad Ad $ad */
-		$ad = $this->adService->create($data);
+		$ad = $this->adService->requestPublishing($data);
 		$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
 
 
-		return redirect()->route('ads.show', [$ad->id])->with('success', 'Votre annonce a bien été soumise à modération. Vous receverez une réponse très bientôt ! ');
+		return redirect()->route('ads.show', [$ad->id])
+            ->with('success', 'Votre annonce a bien été soumise à modération. Vous receverez une réponse très bientôt ! ');
 	}
 
 	/**
@@ -102,14 +113,25 @@ class AdsController extends Controller
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
 	 * @throws \Throwable
 	 */
-	public function saveDraft(Request $request)
+	public function save(AdRequest $request)
 	{
-		$data = $request->all();
-
-		$ad = $this->adService->create($data);
-
-		return redirect()->route('ads.show', [$ad->id]);
+        return $this->store($request)
+            ->with('success', 'Votre annonce a bien été sauvegardée.');
 	}
+
+    /**
+     * @param AdRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
+     */
+    protected function store(AdRequest $request)
+    {
+        $data = $request->validated();
+
+        $ad = $this->adService->create($data);
+
+        return redirect()->route('ads.show', [$ad->id]);
+    }
 
 	/**
 	 * @param int $adId
