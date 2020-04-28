@@ -85,17 +85,13 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 	 * @param int $statusId
 	 * @return AttributionAd[]|Builder[]|\Illuminate\Database\Eloquent\Collection
 	 */
-	public function findAllByStatusIdGroupByModerators(int $statusId)
+	public function findAllByStatusId(int $statusId)
 	{
 		return $this->entity
 			->whereHas('adStatus', function (Builder $query) use ($statusId) {
-
 				$query->where('id', '=', $statusId);
 			})
-			->get()
-			->mapToGroups(function ($attributionAd, $key) {
-				return [$attributionAd->userModerator->id => $attributionAd];
-			});
+			->get();
 	}
 
 

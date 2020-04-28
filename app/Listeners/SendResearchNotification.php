@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\ResearchEvents;
+use App\Events\ResearchAlertEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 
@@ -15,7 +15,7 @@ class SendResearchNotification implements ShouldQueue
 	 *
 	 * @return void
 	 */
-	public function __construct(ResearchEvents $event)
+	public function __construct(ResearchAlertEvent $event)
 	{
 		$this->event = $event;
 	}

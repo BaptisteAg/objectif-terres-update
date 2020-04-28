@@ -140,6 +140,23 @@
                 return LocationHelper;
             }
         },
+        watch: {
+            value(locations) {
+                let uniqueLocations = [];
+                let indexesToRemove = [];
+
+                locations.forEach((location,i) => {
+                    if(uniqueLocations.includes(location.label)) {
+                        indexesToRemove.push(i);
+                    }
+                    uniqueLocations.push(location.label);
+                });
+
+                indexesToRemove.forEach(indexToRemove => {
+                    this.value.splice(indexToRemove, 1);
+                })
+            }
+        },
         methods: {
         }
     }

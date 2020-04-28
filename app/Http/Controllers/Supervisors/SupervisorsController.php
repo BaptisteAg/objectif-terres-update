@@ -53,7 +53,6 @@ class SupervisorsController extends Controller
 	 */
 	public function index(Request $request)
 	{
-
 		$request->session()->forget('_old_input');
 		$ads = $this->adService->findAllByUserSupervisor();
 		$projectStatuses = ProjectStatus::all();
@@ -87,7 +86,6 @@ class SupervisorsController extends Controller
 		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsByStatusForLoggedUser($notAssignProjectStatusId);
 
 		return view('pages.supervisors.index', compact('cities', 'departments', 'projectStatuses', 'adTypes', 'adTypesFaIcons', 'productionGenres', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'numberOfAdsToModerate', 'numberOfNotAssignProject'));
-
 	}
 
 	/**

@@ -14,8 +14,9 @@
 Route::get('/', 'HomePage\HomePageController@show')->name('home');
 
 Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
-	Route::middleware('auth')->get('creer', 'AdsController@create')->name('create');
-	Route::middleware('auth')->post('creer', 'AdsController@store')->name('store');
+	Route::middleware(['auth'])->get('creer', 'AdsController@create')->name('create');
+	Route::middleware(['auth'])->post('creer', 'AdsController@requestPublishing')->name('store');
+	Route::middleware('auth')->post('sauvegarder', 'AdsController@save')->name('save');
 	Route::middleware('auth')->get('liste-mes-annonces', 'AdsController@list')->name('list');
 	Route::get('{id}', 'AdsController@show')->name('show');
 	Route::middleware('auth')->get('supprimer/{ad}', 'AdsController@delete')->name('delete');

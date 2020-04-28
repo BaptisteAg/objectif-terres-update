@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Listeners\SendModerationNotification;
+use App\Jobs\NotifyOverdueModeration;
 use Illuminate\Console\Command;
 
 class SendAlertsModeration extends Command
@@ -21,15 +21,15 @@ class SendAlertsModeration extends Command
      */
     protected $description = 'Send an alert to moderator if a an ad isn\'t moderate since a week';
 
-    protected $sendModerationNotification;
+    protected $job;
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct(SendModerationNotification $sendModerationNotification)
+    public function __construct(NotifyOverdueModeration $job)
     {
-    	$this->sendModerationNotification = $sendModerationNotification;
+    	$this->job = $job;
         parent::__construct();
     }
 
@@ -40,6 +40,6 @@ class SendAlertsModeration extends Command
      */
     public function handle()
     {
-        $this->sendModerationNotification->alertModeration();
+        $this->job->handle();
     }
 }

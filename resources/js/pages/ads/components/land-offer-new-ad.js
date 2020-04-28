@@ -1,10 +1,21 @@
 import FormNewAdMixin from "./mixins/form-new-ad-mixin";
-import {maxLength, maxValue, minLength, required} from 'vuelidate/lib/validators'
+import {maxLength, maxValue, minLength, required, decimal } from 'vuelidate/lib/validators'
 import TextAreaCounter from "../../../components/TextAreaCounter";
 import Autocomplete from '../../../components/Autocomplete'
 import MultiSelect from "../../../components/MultiSelect";
 import DocumentsUpload from "../../../components/DocumentsUpload"
 import CustomCheckbox from "../../../components/CustomCheckbox"
+
+const numberNormalizer = function (inputName) {
+    return function (v) {
+        if(!v) {
+            return;
+        }
+        v = v.replace(",",".");
+
+        this.formInput[inputName] = v;
+    };
+};
 
 export default {
     components: {
@@ -75,6 +86,12 @@ export default {
     methods: {
 
     },
+    watch: {
+        'formInput.surface': numberNormalizer('surface'),
+        'formInput.altitude': numberNormalizer('altitude'),
+        'formInput.price': numberNormalizer('price'),
+        'formInput.rentPrice': numberNormalizer('rentPrice'),
+    },
     validations: {
         formInput: {
             //isBeneficiary: {required},
@@ -84,6 +101,7 @@ export default {
             },
             surface: {
                 required,
+                decimal,
                 maxValue: maxValue(1000)
             },
             sauDescription: {
@@ -99,14 +117,19 @@ export default {
                 minLength: minLength(5),
                 maxLength: maxLength(200),
             },
-            altitude: {required},
+            altitude: {
+                decimal,
+                required
+            },
             offerGenres: {required},
             price: {
+                decimal,
                 required(v) {
                     return this.isSaleOffer ? !!v : true
                 }
             },
             rentPrice: {
+                decimal,
                 required(v) {
                     return this.isRentOffer ? !!v : true
                 }
