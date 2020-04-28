@@ -99,14 +99,14 @@ class AdService
 	 * @return mixed
 	 * @throws \Throwable
 	 */
-    public function requestPublishing(array $data)
-    {
-        $ad =  DB::transaction(function() use($data) {
+	public function requestPublishing(array $data)
+	{
+		$ad = DB::transaction(function () use ($data) {
 
 			$attributionAdData = [];
-			$toModerateStatus = AdStatus::where('name', '=', 'À modérer')->first();
+			$pendingModerationStatus = AdStatus::where('id', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
 
-        	// Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
+			// Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
 			$userModerator = User::where('email', 'test.ot.moderateur@gmail.com')->first();
 			if ($userModerator) {
 				$attributionAdData['user_moderator_id'] = $userModerator->id;
@@ -114,7 +114,7 @@ class AdService
 			} else {
 				$attributionAdData['user_moderator_id'] = User::where('role', '>=', '1')->get()->random()->id;
 			}
-			$attributionAdData['ad_status_id'] = $toModerateStatus->id;
+			$attributionAdData['ad_status_id'] = $pendingModerationStatus->id;
 			$ad = $this->repository->create($data);
 			$attributionAdData['ad_id'] = $ad->id;
 			$this->attributionAdsRepository->create($attributionAdData);
@@ -122,53 +122,50 @@ class AdService
 			$adData = $data[$data["ad_type"]];
 			$adData["ad_id"] = $ad->id;
 
-            $this->storeSubAd($data["ad_type"], $adData);
+			$this->storeSubAd($data["ad_type"], $adData);
 
-            return $ad;
-        });
+			return $ad;
+		});
 
 		return $ad;
 	}
 
-    /**
-     * Create the ad without requesting to publish it
-     *
-     * @param array $data
-     * @return mixed
-     * @throws \Throwable
-     */
-    public function create(array $data)
-    {
-        $ad =  DB::transaction(function() use($data) {
+	/**
+	 * Create the ad without requesting to publish it
+	 *
+	 * @param array $data
+	 * @return mixed
+	 * @throws \Throwable
+	 */
+	public function create(array $data)
+	{
+		$ad = DB::transaction(function () use ($data) {
 
-            $ad = $this->repository->create($data);
+			$ad = $this->repository->create($data);
 
-            $adData = $data[$data["ad_type"]];
-            $adData["ad_id"] = $ad->id;
+			$adData = $data[$data["ad_type"]];
+			$adData["ad_id"] = $ad->id;
 
-            $this->storeSubAd($data["ad_type"], $adData);
+			$this->storeSubAd($data["ad_type"], $adData);
 
-            return $ad;
-        });
+			return $ad;
+		});
 
-        return $ad;
-    }
+		return $ad;
+	}
 
-    protected function storeSubAd(string $adType, array $data)
-    {
-        if ($adType === "land_seek") {
-            $landSeekAd = $this->landSeekAdRepository->create($data);
-        }
-        else if ($adType === "land_offer") {
-            $landOfferAd = $this->landOfferAdRepository->create($data);
-        }
-        else if ($adType === "job_offer") {
-            $jobOfferAd = $this->jobOfferAdRepository->create($data);
-        }
-        else if ($adType === "job_seek") {
-            $jobSeekAd = $this->jobSeekAdRepository->create($data);
-        }
-    }
+	protected function storeSubAd(string $adType, array $data)
+	{
+		if ($adType === "land_seek") {
+			$landSeekAd = $this->landSeekAdRepository->create($data);
+		} else if ($adType === "land_offer") {
+			$landOfferAd = $this->landOfferAdRepository->create($data);
+		} else if ($adType === "job_offer") {
+			$jobOfferAd = $this->jobOfferAdRepository->create($data);
+		} else if ($adType === "job_seek") {
+			$jobSeekAd = $this->jobSeekAdRepository->create($data);
+		}
+	}
 
 	/**
 	 * @param int $id
@@ -233,7 +230,7 @@ class AdService
 	 * Show all ads ads related to supervisor
 	 * @return LengthAwarePaginator
 	 */
-	public function findAllByUserSupervisor() : LengthAwarePaginator
+	public function findAllByUserSupervisor(): LengthAwarePaginator
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$ads = $this->repository->findAllBySupervisorTerritoriesAndDates($supervisorLocationTerritoryCodes);
@@ -269,7 +266,7 @@ class AdService
 	public function findAllValidateAdsInSupervisorTerritories(): Collection
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$validateStatusId = AdStatus::where('name', '=', 'Validée')->first()->id;
+		$validateStatusId = AdStatus::where('name', '=', AdStatus::APPROVE_ID)->first()->id;
 		$ads = $this->repository->allInTerritoriesByAdStatus($supervisorLocationTerritoryCodes, $validateStatusId);
 		return $ads;
 	}
@@ -496,13 +493,13 @@ class AdService
 	}
 
 
-	public function findAllAdsPublishedSinceDaysAndNotComplete(int $numberOfDays) : Collection
+	public function findAllAdsPublishedSinceDaysAndNotComplete(int $numberOfDays): Collection
 	{
 		$adsPublishedSinceDays = $this->repository->findAllPublishedSinceDays($numberOfDays);
 
-		$adsPublishedSinceDaysAndNotComplete = $adsPublishedSinceDays->mapWithKeys(function ($ad){
-			if(is_null($ad['about_content']) || is_null($ad['about_project_content'] )|| isset($ad['documents'])){
-				return [$ad['id']=> $ad];
+		$adsPublishedSinceDaysAndNotComplete = $adsPublishedSinceDays->mapWithKeys(function ($ad) {
+			if (is_null($ad['about_content']) || is_null($ad['about_project_content']) || isset($ad['documents'])) {
+				return [$ad['id'] => $ad];
 			}
 			return [];
 		});

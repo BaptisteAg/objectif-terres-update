@@ -23,7 +23,6 @@ class TestResearchSeeder extends Seeder
             $research->adStatuses()->save(AdStatus::inRandomOrder()->first());
 			$research->adStatuses()->save(AdStatus::inRandomOrder()->first());
             $research->projectStatuses()->save(ProjectStatus::inRandomOrder()->first());
-            $research->jobOfferTypes()->save(JobOfferType::inRandomOrder()->first());
             $research->offerGenres()->save(OfferGenre::inRandomOrder()->first());
             $research->bioCertifications()->save(BioCertification::inRandomOrder()->first())->make();
             $research->productionGenres()->save(ProductionGenre::inRandomOrder()->first());

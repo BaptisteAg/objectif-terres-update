@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ads;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
+use App\Models\AdStatus;
 use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
 use App\Models\BuildingType;
@@ -157,7 +158,7 @@ class AdsController extends Controller
 		$advisorUsers = [];
 
 		if (Auth::user()) {
-			if ($ad->attributionAd->adStatus->name === "À modérer") {
+			if ($ad->attributionAd->adStatus->id === AdStatus::PENDING_MODERATION_STATUS_ID) {
 				$isAdToModerate = true;
 			}
 			if (auth()->user()->id === $ad->attributionAd->user_moderator_id) {
@@ -185,7 +186,8 @@ class AdsController extends Controller
 					//TODO display only advisors that are related to the supervisor
 					$advisorUsers = $this->userService->findAllAdvisorsAndSupervisors();
 				}
-				$threads = [$this->threadService->findThreadAlreadyExist(auth()->user()->id,$adId)];
+
+				$threads = $this->threadService->findThreadAlreadyExist(auth()->user()->id,$adId);
 				$data = array(
 					"ad_id" => $adId,
 					"user_id" => auth()->user()->id,
@@ -194,6 +196,7 @@ class AdsController extends Controller
 			}
 
 		}
+
 		//Throw error 404 if a visitor try to show an ad is not validated
 		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validée" ;
 		//TODO not display projects unless user logged is the author of the ad or the user logged is an supervisor or an advisor

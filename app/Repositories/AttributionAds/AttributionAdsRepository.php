@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 /**
@@ -85,6 +86,7 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 	 * @param int $statusId
 	 * @return AttributionAd[]|Builder[]|\Illuminate\Database\Eloquent\Collection
 	 */
+
 	public function findAllByStatusId(int $statusId)
 	{
 		return $this->entity
@@ -110,7 +112,6 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 				$adId
 			);
 		}
-
 		return $model;
 
 	}
@@ -132,7 +133,6 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 			'ad.departments',
 			'ad.departments.region',
 			'ad.regions',
-
 			'ad.landSeekAd',
 			'ad.landOfferAd',
 			'ad.jobOfferAd',

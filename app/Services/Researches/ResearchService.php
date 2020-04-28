@@ -12,6 +12,7 @@ use App\Services\Locations\LocationService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class ResearchService
@@ -22,6 +23,11 @@ class ResearchService
 	protected $repository;
 	protected $locationService;
 
+	/**
+	 * ResearchService constructor.
+	 * @param ResearchRepository $repository
+	 * @param LocationService $locationService
+	 */
 	public function __construct(ResearchRepository $repository, LocationService $locationService)
 	{
 		$this->repository = $repository;
@@ -29,6 +35,11 @@ class ResearchService
 	}
 
 
+	/**
+	 * @param Request $request
+	 * @return mixed
+	 * @throws \Throwable
+	 */
 	public function create(Request $request)
 	{
 		$url = (url()->previous());
@@ -53,6 +64,10 @@ class ResearchService
 		return $research;
 	}
 
+	/**
+	 * @param int $id
+	 * @return Builder|\Illuminate\Database\Eloquent\Model
+	 */
 	public function find(int $id)
 	{
 		$research = $this->repository->find($id);
@@ -60,17 +75,23 @@ class ResearchService
 		return $research;
 	}
 
+	/**
+	 * @param int $id
+	 * @return Builder|\Illuminate\Database\Eloquent\Model
+	 */
 	public function findAllByUser(int $id)
 	{
 		$researches = $this->repository->findAllByUser($id);
-
 		return $researches;
 	}
 
-	public function findNewRelatedAds()
+	/**
+	 * @return array
+	 */
+	public function findNewRelatedAds() : array
 	{
 		$researches = $this->repository->findAllResearchesWithAlertActive();
-		$newAdsInResearch = [];
+		$researchesWithNewAds = [];
 		foreach ($researches as $research) {
 			$ads = collect();
 			$adsFilter = (new Ad)->newQuery();
@@ -141,9 +162,8 @@ class ResearchService
 			if ($research->bioCertifications()->exists()) {
 				$adsFilter->filterWhereHasIn($research->bioCertifications()->pluck('bio_certifications.id')->toArray(), $research->ad_type . '.bioCertifications', 'bio_certifications.id');
 			}
-
 			if ($research->jobOfferTypes()->exists()) {
-				$adsFilter->filterWhereHasIn($research->jobOfferTypes()->pluck('job_offer_types.id'), $research->ad_type . '.jobOfferTypes', 'job_offer_types.id');
+				$adsFilter->filterWhereHasIn($research->jobOfferTypes()->pluck('job_offer_types.id')->toArray(), $research->ad_type . '.jobOfferTypes', 'job_offer_types.id');
 			}
 
 			$adsFilter->whereHas('attributionAd', function (Builder $query) use ($research) {
@@ -152,13 +172,13 @@ class ResearchService
 			$newAds = $adsFilter->get();
 
 			if (!$newAds->isEmpty()) {
-				$newAdsInResearch[$research->id] = $newAds;
+				$researchesWithNewAds[$research->id] = $newAds;
 				$research->updated_at = Carbon::now();
 				$research->save();
 			}
 		}
 
-		return $newAdsInResearch;
+		return $researchesWithNewAds;
 	}
 
 	public function index(Request $filters)
@@ -265,7 +285,7 @@ class ResearchService
 
 		$adsFilter->filterAdTypes(array($adsTypeSelected), '');
 		// TODO show only ads approved by moderators
-		$validatedStatus = AdStatus::where('name', '=', 'Validée')->first();
+		$validatedStatus = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first();
 		$adsFilter->filterWhereHasWhere($validatedStatus->id, 'attributionAd', '=', 'ad_status_id');
 
 

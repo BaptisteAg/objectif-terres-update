@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Researches;
 
+use App\Jobs\NotifyCreationAlertResearch;
 use App\Models\Research;
 use App\Http\Controllers\Controller;
-use App\Listeners\SendResearchNotification;
 use App\Services\Researches\ResearchService;
 use Illuminate\Http\Request;
 
@@ -14,10 +14,10 @@ class ResearchesController extends Controller
 	private $researchService;
 	private $researchNotification;
 
-	public function __construct(ResearchService $researchService, SendResearchNotification $researchNotification)
+	public function __construct(ResearchService $researchService, NotifyCreationAlertResearch $notifyCreationAlertResearch)
 	{
 		$this->researchService = $researchService;
-		$this->researchNotification = $researchNotification;
+		$this->researchNotification = $notifyCreationAlertResearch;
 	}
 
 	public function index(Request $request)
@@ -71,7 +71,7 @@ class ResearchesController extends Controller
 
 	public function notificationCreateAlert(Request $request)
 	{
-		$this->researchNotification->newAlertResearch($request->input('research'));
+		$this->researchNotification->handle($request->input('research'));
 		return back()->with('success', 'Une alerte a bien été créée. Un email de confirmation vous a été envoyé !');
 	}
 

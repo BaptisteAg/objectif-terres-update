@@ -10,13 +10,13 @@ use Illuminate\Notifications\Notification;
 class ResearchNotification extends Notification implements ShouldQueue
 {
 	use Queueable;
+	protected $data;
 
 	/**
 	 * Create a new notification instance.
-	 * @param object
-	 * @return void
+	 * @param array $data
 	 */
-	public function __construct(object $data)
+	public function __construct(array $data)
 	{
 		$this->data = $data;
 	}
@@ -40,9 +40,9 @@ class ResearchNotification extends Notification implements ShouldQueue
 	 */
 	public function toMail($notifiable)
 	{
-		$subject = $this->data->subject;
-		$message = $this->data->message;
-		$url = url('/recherches/recherche/' . $this->data->url);
+		$subject = $this->data['subject'];
+		$message = $this->data['message'];
+		$url = url('/recherches/recherche/' . $this->data['url']);
 
 		return (new MailMessage)
 			->subject($subject)

@@ -2,7 +2,6 @@
 namespace App\Http\Controllers\HomePage;
 
 use App\Http\Controllers\Controller;
-use App\Models\Ad;
 use App\Models\City;
 use App\Models\Department;
 use App\Models\Region;

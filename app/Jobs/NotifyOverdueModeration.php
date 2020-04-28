@@ -23,11 +23,12 @@ class NotifyOverdueModeration implements ShouldQueue
     private $moderationService;
     private $userRepository;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
+	/**
+	 * Create a new job instance.
+	 *
+	 * @param UserRepository $userRepository
+	 * @param ModerationService $moderationService
+	 */
     public function __construct(UserRepository $userRepository, ModerationService $moderationService)
     {
         $this->userRepository = $userRepository;
