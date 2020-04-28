@@ -2,14 +2,14 @@
 
 namespace App\Events;
 
-use App\Notifications\PublishedOnNotification;
+use App\Notifications\PublishedAdNotification;
 use App\Services\AttributionAds\AttributionAdsService;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Notification;
 
-class AttributionAdEvents
+class AttributionAdEvent
 {
 	protected $service;
 	use Dispatchable, InteractsWithSockets, SerializesModels;
@@ -39,7 +39,7 @@ class AttributionAdEvents
 			//TODO the url is the link to the modification ad form
 			$data['url'] = '/annonces/' . $attributionAd->ad->id;
 			Notification::route('mail', $attributionAd->ad->userPp->email)
-				->notify(new PublishedOnNotification($data));
+				->notify(new PublishedAdNotification($data));
 		}
 	}
 
@@ -56,7 +56,7 @@ class AttributionAdEvents
 			//TODO the url is the link to the modification ad form
 			$data['url'] = '/annonces/' . $attributionAd->ad->id;
 			Notification::route('mail', $attributionAd->ad->userPp->email)
-				->notify(new PublishedOnNotification($data));
+				->notify(new PublishedAdNotification($data));
 		}
 
 	}

@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\AdEvents;
+use App\Events\AdEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 
@@ -15,7 +15,7 @@ class SendCompleteAdDataNotification implements ShouldQueue
 	 *
 	 * @param
 	 */
-	public function __construct(AdEvents $adEvents)
+	public function __construct(AdEvent $adEvents)
 	{
 		$this->events = $adEvents;
 	}

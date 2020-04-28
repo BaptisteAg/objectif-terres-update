@@ -72,7 +72,6 @@ class NewAdToModerateNotification extends Notification implements ShouldQueue
 			'user_pp_id' => $this->userPP->id,
 			'user_pp_first_name' => $this->userPP->first_name,
 			'user_pp_name' => $this->userPP->name,
-
 		];
 	}
 }

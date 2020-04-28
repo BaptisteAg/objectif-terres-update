@@ -51,7 +51,7 @@ class ProjectService
 	 */
 	public function findAllProjectInSupervisorTerritories(): Collection
 	{
-		$supervisorDepartmentCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+		$supervisorDepartmentCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$projects = $this->repository->findAllInTerritories($supervisorDepartmentCodes);
 		return $projects;
 	}

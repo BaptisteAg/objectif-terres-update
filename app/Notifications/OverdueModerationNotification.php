@@ -6,24 +6,25 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Collection;
 
-class ModerationNotification extends Notification implements ShouldQueue
+class OverdueModerationNotification extends Notification implements ShouldQueue
 {
 	use Queueable;
 
 	protected $data;
-	protected $adsToModerateByModerator;
+	protected $attributions;
 
 	/**
 	 * Create a new notification instance.
 	 *
 	 * @param string $data
-	 * @param object $adsToModerateByModerator
+	 * @param object $attributions
 	 */
-	public function __construct(string $data, object $adsToModerateByModerator)
+	public function __construct(string $data, Collection $attributions)
 	{
 		$this->data = $data;
-		$this->adsToModerateByModerator = $adsToModerateByModerator;
+		$this->attributions = $attributions;
 	}
 
 	/**
@@ -65,13 +66,9 @@ class ModerationNotification extends Notification implements ShouldQueue
 	 */
 	public function toArray($notifiable)
 	{
-		$listOfAdsId = '';
-		foreach ($this->adsToModerateByModerator as $attributionAd){
-			$listOfAdsId = $listOfAdsId.$attributionAd->id.' ';
-		}
 		return [
-			'number_of_ads_to_moderate' => $this->adsToModerateByModerator->count(),
-			'ads_id' => $listOfAdsId,
+			'number_of_ads_to_moderate' => $this->attributions->count(),
+			'attribution_ids' => $this->attributions->pluck('id')->toArray(),
 		];
 	}
 }

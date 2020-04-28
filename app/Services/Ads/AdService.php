@@ -235,7 +235,7 @@ class AdService
 	 */
 	public function findAllByUserSupervisor() : LengthAwarePaginator
 	{
-		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$ads = $this->repository->findAllBySupervisorTerritoriesAndDates($supervisorLocationTerritoryCodes);
 		return $ads;
 	}
@@ -247,7 +247,7 @@ class AdService
 	 */
 	public function findAllByUserSupervisorBetweenDates(array $dates)
 	{
-		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$ads = $this->repository->findAllBySupervisorTerritoriesAndDates($supervisorLocationTerritoryCodes, $dates);
 		return $ads;
 	}
@@ -258,7 +258,7 @@ class AdService
 	 */
 	public function findAllAdsInSupervisorTerritories(): Collection
 	{
-		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$ads = $this->repository->allInTerritories($supervisorLocationTerritoryCodes);
 		return $ads;
 	}
@@ -268,7 +268,7 @@ class AdService
 	 */
 	public function findAllValidateAdsInSupervisorTerritories(): Collection
 	{
-		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$validateStatusId = AdStatus::where('name', '=', 'Validée')->first()->id;
 		$ads = $this->repository->allInTerritoriesByAdStatus($supervisorLocationTerritoryCodes, $validateStatusId);
 		return $ads;
@@ -280,7 +280,7 @@ class AdService
 	 */
 	public function findAllAdsAndProjectsGroupByUserPp(): Collection
 	{
-		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$users = $this->repository->allInTerritoriesGroupByUserPp($supervisorLocationTerritoryCodes);
 		return $users;
 	}
@@ -438,7 +438,7 @@ class AdService
 				$q->where('user_advisor_id', '=', auth()->id());
 			});
 		} else if ($roleUser === 3) {
-			$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+			$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 			$adsFiltred->where(function (Builder $query) use ($supervisorLocationTerritoryCodes) {
 				$query->whereNotNull('project_id');
 				$query->whereHas('attributionAd', function (Builder $q) {

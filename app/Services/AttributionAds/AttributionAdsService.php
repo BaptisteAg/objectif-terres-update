@@ -69,24 +69,6 @@ class AttributionAdsService
 		return $this->repository->findAllByUserIdAndStatusId($toModerateStatus->id, auth()->user()->id)->count();
 	}
 
-	/**
-	 * Get all ads grouped by moderator id and not moderated since more than a week
-	 * @return array
-	 */
-	public function findAllAdsToModerateByModerators()
-	{
-		$toModerateStatus = AdStatus::where('name', '=', 'À modérer')->first();
-		$allAdsToModerateGroupByModerators = $this->repository->findAllByStatusIdGroupByModerators($toModerateStatus->id);
-
-		foreach ($allAdsToModerateGroupByModerators as $allAdsToModerateByModerator) {
-			foreach ($allAdsToModerateByModerator as $key => $attributionAd) {
-				if ($attributionAd->created_at >= Carbon::now()->subWeek()) {
-					unset($allAdsToModerateByModerator[$key]);
-				}
-			}
-		}
-		return $allAdsToModerateGroupByModerators;
-	}
 
 	/**
 	 * Attribution ads filters for moderators dashboard
