@@ -265,7 +265,7 @@ class ResearchService
 
 		$adsFilter->filterAdTypes(array($adsTypeSelected), '');
 		// TODO show only ads approved by moderators
-		$validatedStatus = AdStatus::where('name', '=', 'Validée')->first();
+		$validatedStatus = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first();
 		$adsFilter->filterWhereHasWhere($validatedStatus->id, 'attributionAd', '=', 'ad_status_id');
 
 

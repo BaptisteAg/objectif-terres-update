@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 /**
@@ -85,7 +86,7 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 	 * @param int $statusId
 	 * @return AttributionAd[]|Builder[]|\Illuminate\Database\Eloquent\Collection
 	 */
-	public function findAllByStatusIdGroupByModerators(int $statusId)
+	public function findAllByStatusIdGroupByModerators(int $statusId) : Collection
 	{
 		return $this->entity
 			->whereHas('adStatus', function (Builder $query) use ($statusId) {
@@ -93,9 +94,7 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 				$query->where('id', '=', $statusId);
 			})
 			->get()
-			->mapToGroups(function ($attributionAd, $key) {
-				return [$attributionAd->userModerator->id => $attributionAd];
-			});
+			->groupBy('userModerator.id');
 	}
 
 

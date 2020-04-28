@@ -33,6 +33,12 @@ class AdStatus extends Model
         'name'
     ];
 
+    public const APPROVE_ID = 1;
+    public const PENDING_ID = 2;
+    public const REFUSE_ID = 3;
+	public const PENDING_MODERATION_STATUS_ID = 4;
+	public const ARCHIVE_ID = 5;
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

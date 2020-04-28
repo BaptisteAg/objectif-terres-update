@@ -104,7 +104,7 @@ class AdService
 		$ad = DB::transaction(function () use ($data) {
 
 			$attributionAdData = [];
-			$toModerateStatus = AdStatus::where('name', '=', 'À modérer')->first();
+			$pendingModerationStatus = AdStatus::where('id', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
 
 			// Temporary : should be attributed by territory sored in Salesforce. If there is many moderators, one is pick randomly
 			$userModerator = User::where('email', 'test.ot.moderateur@gmail.com')->first();
@@ -114,7 +114,7 @@ class AdService
 			} else {
 				$attributionAdData['user_moderator_id'] = User::where('role', '>=', '1')->get()->random()->id;
 			}
-			$attributionAdData['ad_status_id'] = $toModerateStatus->id;
+			$attributionAdData['ad_status_id'] = $pendingModerationStatus->id;
 			$ad = $this->repository->create($data);
 			$attributionAdData['ad_id'] = $ad->id;
 			$this->attributionAdsRepository->create($attributionAdData);
@@ -236,7 +236,7 @@ class AdService
 	public function findAllValidateAdsInSupervisorTerritories(): Collection
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
-		$validateStatusId = AdStatus::where('name', '=', 'Validée')->first()->id;
+		$validateStatusId = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first()->id;
 		$ads = $this->repository->allInTerritoriesByAdStatus($supervisorLocationTerritoryCodes, $validateStatusId);
 		return $ads;
 	}

@@ -1,6 +1,6 @@
 @auth
 	@if( $ad->user_pp_id !== auth()->user()->id)
-		@if(is_null($threads[0]))
+		@if(sizeof($threads) == 0)
 			@if(auth()->user()->role >= 1)
 				<div class="content">
 					<div class="columns is-mobile is-centered">
@@ -110,7 +110,7 @@
 			</div>
 		@endif
 	@else
-		@if(count($threads) <= 0)
+		@if(sizeof($threads) <= 0)
 			<div class="content">
 				<div class="columns is-mobile is-centered">
 					<div class="column is-half">

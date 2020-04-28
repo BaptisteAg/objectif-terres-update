@@ -74,6 +74,7 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 	 *
 	 * @param int $adId
 	 * @param int $userId
+	 * @return Thread
 	 */
 	public function findThreadByUserIdAndAdId(int $userId, int $adId)
 	{
@@ -84,8 +85,7 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 				$query->where('sender_user_id', '=', $userId);
 			})
 			->with($this->getEagerLoading())
-			->first();
-
+			->get();
 		return $model;
 	}
 

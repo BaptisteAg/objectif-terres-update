@@ -65,8 +65,8 @@ class AttributionAdsService
 	 */
 	public function countAllAdsToModerateForLoggedModerator()
 	{
-		$toModerateStatus = AdStatus::where('name', '=', 'À modérer')->first();
-		return $this->repository->findAllByUserIdAndStatusId($toModerateStatus->id, auth()->user()->id)->count();
+		$pendingModerationStatus = AdStatus::where('id', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
+		return $this->repository->findAllByUserIdAndStatusId($pendingModerationStatus->id, auth()->user()->id)->count();
 	}
 
 	/**
@@ -75,8 +75,8 @@ class AttributionAdsService
 	 */
 	public function findAllAdsToModerateByModerators()
 	{
-		$toModerateStatus = AdStatus::where('name', '=', 'À modérer')->first();
-		$allAdsToModerateGroupByModerators = $this->repository->findAllByStatusIdGroupByModerators($toModerateStatus->id);
+		$pendingModerationStatus = AdStatus::where('name', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
+		$allAdsToModerateGroupByModerators = $this->repository->findAllByStatusIdGroupByModerators($pendingModerationStatus->id);
 
 		foreach ($allAdsToModerateGroupByModerators as $allAdsToModerateByModerator) {
 			foreach ($allAdsToModerateByModerator as $key => $attributionAd) {
@@ -215,13 +215,13 @@ class AttributionAdsService
 		$attributionAd = $this->repository->find($attributionAdId);
 		//TODO if the pp want a support from Tdl, a special method as to be created.The moderator doesn't take part of the attribution process.
 		//If on the territory related to the ad, there is advisors dedicated to specific departments, the ad is automatically attributed to the advisor and we create a project related to the ad.
-		//$toAssignStatus = AdStatus::where('name', '=', 'Validée')->first();
+		//$toAssignStatus = AdStatus::where('id', '=',AdStatus::APPROVE_ID)->first();
 		//$attributionAd->ad_status_id = $toAssignStatus->id;
 		//$supportStatus = ProjectStatus::where('name', '=', 'Accompagné')->first();
 		//$attributionAd->ad->project()->create(['project_status_id'=> $supportStatus]);
 
 		//Else, by default, the ad is attributed to an supervisor based on his territory saved in Salesforce . If there is many supervisors, one supervisor is pick randomly.
-		//$toAssignStatus = AdStatus::where('name', '=', 'Validée')->first();
+		//$toAssignStatus = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first();
 		//$attributionAd->ad_status_id = $toAssignStatus->id;
 		//$supportStatus = ProjectStatus::where('name', '=', 'Non accompagné')->first();
 		//$attributionAd->ad->project()->create(['project_status_id'=> $supportStatus]);
@@ -229,7 +229,7 @@ class AttributionAdsService
 		//$attributionAd->user_supervisor_id = $supervisor->id;
 
 		//If the pp doesn't need a support from Tdl, the ad is validated and published
-		$validateStatus = AdStatus::where('name', '=', 'Validée')->first();
+		$validateStatus = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first();
 		$attributionAd->ad_status_id = $validateStatus->id;
 		$attributionAd->published_on = Carbon::now();
 		$data = [
@@ -254,8 +254,8 @@ class AttributionAdsService
 	public function modifyAd(int $attributionAdId)
 	{
 		$attributionAd = $this->repository->find($attributionAdId);
-		$toModifyStatus = AdStatus::where('name', '=', 'En attente')->first();
-		$attributionAd->ad_status_id = $toModifyStatus->id;
+		$pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_ID)->first();
+		$attributionAd->ad_status_id = $pendingStatus->id;
 		$attributionAd->save();
 
 		$ad = $this->adRepository->find($attributionAd->ad->id);
@@ -275,7 +275,7 @@ class AttributionAdsService
 	public function rejectAd(array $data)
 	{
 		$attributionAd = $this->repository->find($data['attribution_ad_id']);
-		$rejectStatus = AdStatus::where('name', '=', 'Refusée')->first();
+		$rejectStatus = AdStatus::where('id', '=', AdStatus::REFUSE_ID)->first();
 		$attributionAd->ad_status_id = $rejectStatus->id;
 		$attributionAd->refusal_type_id = $data['refusal_type_id'];
 		$attributionAd->save();

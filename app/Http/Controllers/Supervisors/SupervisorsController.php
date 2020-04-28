@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Supervisors;
 
 use App\Exports\Supervisors\SupervisorExport;
 use App\Http\Controllers\Controller;
-use App\Models\Ad;
 use App\Models\JobOfferType;
 use App\Models\ProductionGenre;
 use App\Models\ProjectStatus;
-use App\Models\User;
 use App\Services\Ads\AdService;
 use App\Services\Projects\ProjectService;
 use App\Services\Threads\ThreadService;
@@ -53,7 +51,6 @@ class SupervisorsController extends Controller
 	 */
 	public function index(Request $request)
 	{
-
 		$request->session()->forget('_old_input');
 		$ads = $this->adService->findAllByUserSupervisor();
 		$projectStatuses = ProjectStatus::all();
