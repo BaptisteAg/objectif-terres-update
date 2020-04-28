@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AdStatus extends Model
 {
+    public const PENDING_MODERATION_ID = 4;
+
     /**
      * @var array
      */

@@ -10,7 +10,7 @@
 	@yield('head-script')
 	<link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
-<body>
+<body lang="fr-FR">
 
 @include('layouts.header')
 

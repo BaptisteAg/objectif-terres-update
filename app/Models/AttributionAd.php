@@ -11,7 +11,7 @@ use McCool\LaravelAutoPresenter\Decoratable;
 use McCool\LaravelAutoPresenter\HasPresenter;
 
 /**
- * App\Models\AttributionAdEvents
+ * App\Models\AttributionAd
  *
  * @property int $id
  * @property int|null $user_advisor_id

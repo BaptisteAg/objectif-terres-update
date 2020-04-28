@@ -115,14 +115,11 @@ class UserService
 	/**
 	 * @return array
 	 */
-	public function getAllDepartmentsInSupervisorTerritory(){
+	public function getCurrentUserTerritoryDepartments(){
 		$supervisorLocationTerritoryCodes = [];
 		foreach (auth()->user()->departments as $department) {
 			array_push($supervisorLocationTerritoryCodes, $department->code);
 		}
 		return $supervisorLocationTerritoryCodes;
 	}
-
-
-
 }

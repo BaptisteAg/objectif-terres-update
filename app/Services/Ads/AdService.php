@@ -99,14 +99,14 @@ class AdService
 	 * @return mixed
 	 * @throws \Throwable
 	 */
-	public function create($data)
+	public function requestPublishing(array $data)
 	{
 		$ad = DB::transaction(function () use ($data) {
 
 			$attributionAdData = [];
 			$pendingModerationStatus = AdStatus::where('id', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
 
-			// Temporary : should be attributed by territory sored in Salesforce. If there is many moderators, one is pick randomly
+			// Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
 			$userModerator = User::where('email', 'test.ot.moderateur@gmail.com')->first();
 			if ($userModerator) {
 				$attributionAdData['user_moderator_id'] = $userModerator->id;
@@ -122,19 +122,49 @@ class AdService
 			$adData = $data[$data["ad_type"]];
 			$adData["ad_id"] = $ad->id;
 
-			if ($data["ad_type"] === "land_seek") {
-				$landSeekAd = $this->landSeekAdRepository->create($adData);
-			} else if ($data["ad_type"] === "land_offer") {
-				$landOfferAd = $this->landOfferAdRepository->create($adData);
-			} else if ($data["ad_type"] === "job_offer") {
-				$jobOfferAd = $this->jobOfferAdRepository->create($adData);
-			} else if ($data["ad_type"] === "job_seek") {
-				$jobSeekAd = $this->jobSeekAdRepository->create($adData);
-			}
+			$this->storeSubAd($data["ad_type"], $adData);
+
 			return $ad;
 		});
 
 		return $ad;
+	}
+
+	/**
+	 * Create the ad without requesting to publish it
+	 *
+	 * @param array $data
+	 * @return mixed
+	 * @throws \Throwable
+	 */
+	public function create(array $data)
+	{
+		$ad = DB::transaction(function () use ($data) {
+
+			$ad = $this->repository->create($data);
+
+			$adData = $data[$data["ad_type"]];
+			$adData["ad_id"] = $ad->id;
+
+			$this->storeSubAd($data["ad_type"], $adData);
+
+			return $ad;
+		});
+
+		return $ad;
+	}
+
+	protected function storeSubAd(string $adType, array $data)
+	{
+		if ($adType === "land_seek") {
+			$landSeekAd = $this->landSeekAdRepository->create($data);
+		} else if ($adType === "land_offer") {
+			$landOfferAd = $this->landOfferAdRepository->create($data);
+		} else if ($adType === "job_offer") {
+			$jobOfferAd = $this->jobOfferAdRepository->create($data);
+		} else if ($adType === "job_seek") {
+			$jobSeekAd = $this->jobSeekAdRepository->create($data);
+		}
 	}
 
 	/**
@@ -200,9 +230,9 @@ class AdService
 	 * Show all ads ads related to supervisor
 	 * @return LengthAwarePaginator
 	 */
-	public function findAllByUserSupervisor() : LengthAwarePaginator
+	public function findAllByUserSupervisor(): LengthAwarePaginator
 	{
-		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$ads = $this->repository->findAllBySupervisorTerritoriesAndDates($supervisorLocationTerritoryCodes);
 		return $ads;
 	}
@@ -214,7 +244,7 @@ class AdService
 	 */
 	public function findAllByUserSupervisorBetweenDates(array $dates)
 	{
-		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$ads = $this->repository->findAllBySupervisorTerritoriesAndDates($supervisorLocationTerritoryCodes, $dates);
 		return $ads;
 	}
@@ -225,7 +255,7 @@ class AdService
 	 */
 	public function findAllAdsInSupervisorTerritories(): Collection
 	{
-		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$ads = $this->repository->allInTerritories($supervisorLocationTerritoryCodes);
 		return $ads;
 	}
@@ -235,8 +265,8 @@ class AdService
 	 */
 	public function findAllValidateAdsInSupervisorTerritories(): Collection
 	{
-		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
-		$validateStatusId = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first()->id;
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
+		$validateStatusId = AdStatus::where('name', '=', AdStatus::APPROVE_ID)->first()->id;
 		$ads = $this->repository->allInTerritoriesByAdStatus($supervisorLocationTerritoryCodes, $validateStatusId);
 		return $ads;
 	}
@@ -247,7 +277,7 @@ class AdService
 	 */
 	public function findAllAdsAndProjectsGroupByUserPp(): Collection
 	{
-		$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$users = $this->repository->allInTerritoriesGroupByUserPp($supervisorLocationTerritoryCodes);
 		return $users;
 	}
@@ -405,7 +435,7 @@ class AdService
 				$q->where('user_advisor_id', '=', auth()->id());
 			});
 		} else if ($roleUser === 3) {
-			$supervisorLocationTerritoryCodes = $this->userService->getAllDepartmentsInSupervisorTerritory();
+			$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 			$adsFiltred->where(function (Builder $query) use ($supervisorLocationTerritoryCodes) {
 				$query->whereNotNull('project_id');
 				$query->whereHas('attributionAd', function (Builder $q) {
@@ -463,13 +493,13 @@ class AdService
 	}
 
 
-	public function findAllAdsPublishedSinceDaysAndNotComplete(int $numberOfDays) : Collection
+	public function findAllAdsPublishedSinceDaysAndNotComplete(int $numberOfDays): Collection
 	{
 		$adsPublishedSinceDays = $this->repository->findAllPublishedSinceDays($numberOfDays);
 
-		$adsPublishedSinceDaysAndNotComplete = $adsPublishedSinceDays->mapWithKeys(function ($ad){
-			if(is_null($ad['about_content']) || is_null($ad['about_project_content'] )|| isset($ad['documents'])){
-				return [$ad['id']=> $ad];
+		$adsPublishedSinceDaysAndNotComplete = $adsPublishedSinceDays->mapWithKeys(function ($ad) {
+			if (is_null($ad['about_content']) || is_null($ad['about_project_content']) || isset($ad['documents'])) {
+				return [$ad['id'] => $ad];
 			}
 			return [];
 		});

@@ -24,17 +24,17 @@ class CreateLandOfferAdsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->boolean('accept_use_zip_code')->default(1);
-            $table->integer('surface');
+            $table->float('surface');
             $table->string('sau_description', 1500)->nullable();
             $table->boolean('water_access')->nullable();
             $table->string('water_access_description', 1500)->nullable();
-            $table->integer('altitude');
+            $table->float('altitude');
             $table->boolean('has_buildings')->nullable();
             $table->string('buildings_description', 1500)->nullable();
             $table->boolean('has_houses')->nullable();
             $table->string('houses_description', 1500)->nullable();
-            $table->integer('price')->nullable();
-            $table->integer('rent_price')->nullable();
+            $table->float('price')->nullable();
+            $table->float('rent_price')->nullable();
             $table->string('test_description', 1500)->nullable();
 
             $table->unsignedInteger('ad_id');

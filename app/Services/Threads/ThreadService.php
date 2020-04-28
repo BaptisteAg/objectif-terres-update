@@ -80,10 +80,11 @@ class ThreadService
 	/**
 	 * @param int $userId
 	 * @param int $adId
+	 * @return Collection
 	 */
 	public function findThreadAlreadyExist(int $userId, int $adId)
 	{
-		/** @var Thread $thread */
+		/** @var Collection $thread */
 		$thread = $this->repository->findThreadByUserIdAndAdId($userId, $adId);
 		return $thread;
 
