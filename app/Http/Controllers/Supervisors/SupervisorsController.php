@@ -86,7 +86,7 @@ class SupervisorsController extends Controller
 		$notAssignProjectStatusId = ProjectStatus::where("name", '=', "Non accompagné")->first()->id;
 		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsByStatusForLoggedUser($notAssignProjectStatusId);
 
-		return view('pages.supervisors.index', compact(  'projectStatuses', 'adTypes', 'adTypesFaIcons', 'productionGenres', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'numberOfAdsToModerate', 'numberOfNotAssignProject'));
+		return view('pages.supervisors.index', compact(  'projectStatuses', 'adTypes', 'adTypesFaIcons', 'productionGenres', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
 	}
 
 	/**
