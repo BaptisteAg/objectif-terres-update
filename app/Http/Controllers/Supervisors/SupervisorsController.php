@@ -141,7 +141,7 @@ class SupervisorsController extends Controller
 		$percentageOfAdsByAdStatus = $this->adService->calculatePercentageOfAdsByAdStatus($ads);
 		$numberOfValidateAds = $this->adService->findAllValidateAdsInSupervisorTerritories()->count();
 		$numberOfUsersPp = $this->adService->findAllAdsAndProjectsGroupByUserPp()->count();
-		$projects = $this->projectService->findAllProjectInSupervisorTerritories();
+		$projects = $this->projectService->findAllProjectBySupervisor();
 		$numberOfProjects = $projects->count();
 		$numberOfProjectsByCategories = $this->projectService->countProjectsByCategories($projects);
 		$percentageOfProjectsByProjectStatus = $this->projectService->calculatePercentageOfProjectsByProjectStatus($projects);
