@@ -94,7 +94,7 @@ class ProjectService
 		$numberOfProjectsByProjectsStatus = [
 			'A rappeler' => 0,
 			'Accompagné' => 0,
-			'Non accompagné' => 0,
+			'Non assigné' => 0,
 			'Idée' => 0,
 			'En recherche' => 0,
 			'Installé' => 0,
@@ -249,7 +249,7 @@ class ProjectService
 	{
 		$attributionAd = $this->attributionAdsRepository->findByAdId($request->input('ad_id'));
 		//updating project status if it is non attribute to an advisor
-		$nonAttributedStatus = ProjectStatus::where('name', '=', 'Non accompagné')->first()->id;
+		$nonAttributedStatus = ProjectStatus::where('name', '=', 'Non assigné')->first()->id;
 		$attributedStatus = ProjectStatus::where('name', '=', 'Accompagné')->first()->id;
 		if ($attributionAd->ad->project->project_status_id === $nonAttributedStatus) {
 			$attributionAd->ad->project->project_status_id = $attributedStatus;

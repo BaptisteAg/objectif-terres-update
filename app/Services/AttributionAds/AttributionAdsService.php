@@ -205,7 +205,7 @@ class AttributionAdsService
 		//Else, by default, the ad is attributed to an supervisor based on his territory saved in Salesforce . If there is many supervisors, one supervisor is pick randomly.
 		//$toAssignStatus = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first();
 		//$attributionAd->ad_status_id = $toAssignStatus->id;
-		//$supportStatus = ProjectStatus::where('name', '=', 'Non accompagné')->first();
+		//$supportStatus = ProjectStatus::where('name', '=', 'Non assigné')->first();
 		//$attributionAd->ad->project()->create(['project_status_id'=> $supportStatus]);
 		//$supervisor = User::where('role', '=', 3)->inRandomOrder()->first();
 		//$attributionAd->user_supervisor_id = $supervisor->id;

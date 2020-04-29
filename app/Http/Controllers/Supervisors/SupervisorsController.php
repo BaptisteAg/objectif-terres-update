@@ -62,7 +62,7 @@ class SupervisorsController extends Controller
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
-		$notAssignProjectStatusId = ProjectStatus::where("name", '=', "Non accompagné")->first()->id;
+		$notAssignProjectStatusId = ProjectStatus::where("name", '=', "Non assigné")->first()->id;
 		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsByStatusForLoggedUser($notAssignProjectStatusId);
 
 		return view('pages.supervisors.index', compact('adTypes', 'adTypesFaIcons', 'productionGenres', 'projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
@@ -83,7 +83,7 @@ class SupervisorsController extends Controller
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
-		$notAssignProjectStatusId = ProjectStatus::where("name", '=', "Non accompagné")->first()->id;
+		$notAssignProjectStatusId = ProjectStatus::where("name", '=', "Non assigné")->first()->id;
 		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsByStatusForLoggedUser($notAssignProjectStatusId);
 
 		return view('pages.supervisors.index', compact(  'projectStatuses', 'adTypes', 'adTypesFaIcons', 'productionGenres', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));

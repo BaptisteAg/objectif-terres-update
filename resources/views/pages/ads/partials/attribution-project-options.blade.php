@@ -12,7 +12,7 @@
 					<span class="tag is-success is-medium">{{$ad->project->projectStatus->name}}</span>
 				@elseif($ad->project->projectStatus->name === "A rappeler")
 					<span class="tag is-danger is-light is-medium">{{$ad->project->projectStatus->name}}</span>
-				@elseif($ad->project->projectStatus->name === "Non accompagné")
+				@elseif($ad->project->projectStatus->name === "Non assigné")
 					<span class="tag is-warning is-medium">{{$ad->project->projectStatus->name}}</span>
 				@elseif($ad->project->projectStatus->name === "Idée")
 					<span class="tag is-primary is-medium">{{$ad->project->projectStatus->name}}</span>
@@ -30,7 +30,7 @@
 					<strong>{{$ad->attributionAd->userSupervisor->first_name}} {{$ad->attributionAd->userSupervisor->name}}</strong>.
 				</p>
 			@endif
-			@if($ad->project->projectStatus->name !== "Non accompagné")
+			@if($ad->project->projectStatus->name !== "Non assigné")
 				@if(isset($ad->attributionAd->user_advisor_id))
 					<p class="">Cette demande est attribuée à
 						<strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>.
@@ -38,7 +38,7 @@
 				@endif
 			@endif
 		@else
-			@if($ad->project->projectStatus->name === "Non accompagné")
+			@if($ad->project->projectStatus->name === "Non assigné")
 				<p class="">Vous souhaitez attribuer cette demande à un primo-accueillant ?</p>
 			@else
 				<p class="">Cette demande est attribuée à
