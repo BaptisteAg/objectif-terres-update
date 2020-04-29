@@ -4,11 +4,8 @@ namespace App\Http\Controllers\Advisors;
 
 use App\Http\Controllers\Controller;
 use App\Models\City;
-use App\Models\Department;
 use App\Models\JobOfferType;
-use App\Models\ProductionGenre;
 use App\Models\ProjectStatus;
-use App\Models\Region;
 use App\Services\Advisors\AdvisorsService;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
@@ -42,23 +39,22 @@ class AdvisorsController extends Controller
 	}
 
 	/**
+	 * @param Request $request
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
-	public function index()
+	public function index(Request $request)
 	{
-		$cities = City::all();
-		$departments = Department::all();
-		$regions = Region::all();
+		$request->session()->forget('_old_input');
 		$projectStatuses = ProjectStatus::all();
-		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
-		$ads = $this->service->findAllByUserAdvisor();
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
+
+		$ads = $this->service->findAllByUserAdvisor();
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfNewProject = 3;
 
-		return view('pages.advisors.index', compact('cities', 'departments', 'regions',  'productionGenres', 'projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'adTypes', 'adTypesFaIcons', 'numberOfNewProject'));
+		return view('pages.advisors.index', compact(  'projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'adTypes', 'adTypesFaIcons', 'numberOfNewProject'));
 	}
 
 
@@ -70,18 +66,15 @@ class AdvisorsController extends Controller
 	{
 		$request->flash();
 
-		$cities = City::all();
-		$departments = Department::all();
-		$regions = Region::all();
 		$projectStatuses = ProjectStatus::all();
-		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
-		$attributionAds = $this->attributionAdService->showForAdvisors($request);
-		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 
-		return view('pages.advisors.index', compact('cities', 'departments', 'regions', 'projectStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate', 'adTypesFaIcons', 'adTypes'));
+		$ads = $this->service->showForAdvisor($request);
+		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
+		$numberOfNewProject = 3;
+		return view('pages.advisors.index', compact( 'projectStatuses',  'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'numberOfAdsToModerate', 'adTypesFaIcons', 'adTypes', 'numberOfNewProject'));
 
 	}
 
@@ -92,6 +85,16 @@ class AdvisorsController extends Controller
 	public function help()
 	{
 		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser()) ;
-		return view('pages.moderator.help', compact('users'));
+		return view('pages.advisors.help', compact('users'));
+	}
+
+
+	/**
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function registerNewUserPp()
+	{
+		$cities = City::all();
+		return view('pages.advisors.register-new-user-pp', compact('cities'));
 	}
 }

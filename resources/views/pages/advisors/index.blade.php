@@ -50,18 +50,24 @@
 		{{Form::open(['route'=>'advisor.show', 'method'=>'get'])}}
 		<div id="vue-form-advisor">
 			@include('components.dashboard-filters')
-			<div class="columns">
-				<div class="column is-full">
-					<button class="button is-link is-rounded">Rounded</button>
-					<button class="button is-info is-rounded is-pulled-right">Rounded</button>
+			<div class="columns  ">
+				<div class="column is-1  ">
+					<button class="button is-medium is-link is-rounded">
+						 <span class="icon">
+						  <i class="fas fa-table"></i>
+						</span>
+						<span>Exporter</span>
+					</button>
+				</div>
+				<div class="column is-1">
+					<a href="{{route('advisor.createNewPp')}}" class="button is-medium is-light is-rounded ">
+						<span class="icon">
+							<i class="fas fa-user-plus"></i>
+						</span>
+						<span>Ajouter un PP</span>
+					</a>
 				</div>
 			</div>
-
-			{{--		<div class="columns">--}}
-			{{--			<div class="column is-full has-background-primary">--}}
-
-			{{--			</div>--}}
-			{{--		</div>--}}
 		</div>
 		{{Form::close()}}
 

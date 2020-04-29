@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Services\Advisors;
+
 use App\Repositories\Ads\AdRepository;
+use App\Services\Ads\AdService;
 use App\Services\Users\UserService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Request;
 
 
 /**
@@ -14,16 +17,19 @@ class AdvisorsService
 {
 	protected $repository;
 	protected $userService;
+	protected $adService;
 
 	/**
 	 * AdvisorsService constructor.
 	 * @param AdRepository $adRepository
 	 * @param UserService $userService
+	 * @param AdService $adService
 	 */
-	public function __construct(AdRepository $adRepository, UserService $userService)
+	public function __construct(AdRepository $adRepository, UserService $userService, AdService $adService)
 	{
 		$this->repository = $adRepository;
 		$this->userService = $userService;
+		$this->adService = $adService;
 	}
 
 	/**
@@ -34,6 +40,16 @@ class AdvisorsService
 	{
 		$advisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$ads = $this->repository->findAllByUserTerritoriesAndDates($advisorLocationTerritoryCodes);
+		return $ads;
+	}
+
+	/**
+	 * @param Request $filters
+	 * @return LengthAwarePaginator
+	 */
+	public function showForAdvisor(Request $filters): LengthAwarePaginator
+	{
+		$ads = $this->adService->filter($filters, auth()->user()->role);
 		return $ads;
 	}
 
