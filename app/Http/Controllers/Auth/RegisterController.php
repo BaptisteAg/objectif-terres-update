@@ -8,6 +8,7 @@ use App\Services\Salesforce\SalesforceService;
 use App\Models\City;
 use App\Models\Country;
 use App\Services\Users\UserService;
+use Auth;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
@@ -74,7 +75,7 @@ class RegisterController extends Controller
                 app(SalesforceUniqueEmail::class)
             ],
 			'first_name' => ['required', 'string', 'max:255'],
-			'phone' => ['string', 'min:10', 'max:255'],
+			'phone' => ['sometimes','string', 'max:30'],
 			'street' => ['string', 'min:5', 'required'],
 			'civility' => ['required'],
 			'profile' => ['required'],
@@ -105,7 +106,6 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-		dd( 'ee');
 		$this->validator($request->all())->validate();
 
 		event(new Registered($user = $this->create($request->all())));

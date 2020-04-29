@@ -159,9 +159,9 @@
 								</div>
 								<div class="level-item has-text-centered ">
 									<div>
-										<p class="title has-text-danger">{{$percentageOfProjectsByProjectStatus['Non accompagné']}}
+										<p class="title has-text-danger">{{$percentageOfProjectsByProjectStatus['Non assigné']}}
 											%</p>
-										<p class="heading ">non accompagné</p>
+										<p class="heading ">Non assigné</p>
 									</div>
 								</div>
 								<div class="level-item has-text-centered ">

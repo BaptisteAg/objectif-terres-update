@@ -236,7 +236,7 @@
 											<span class="tag is-success">{{$ad->project->projectStatus->name}}</span>
 										@elseif($ad->project->projectStatus->name === "A rappeler")
 											<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->name === "Non accompagné")
+										@elseif($ad->project->projectStatus->name === "Non assigné")
 											<span class="tag is-warning ">{{$ad->project->projectStatus->name}}</span>
 										@elseif($ad->project->projectStatus->name === "Idée")
 											<span class="tag is-primary ">{{$ad->project->projectStatus->name}}</span>

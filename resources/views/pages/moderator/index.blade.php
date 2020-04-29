@@ -199,7 +199,7 @@
 								{{--										@elseif($attributionAd->ad->project->projectStatus->name === "A rappeler")--}}
 								{{--											<span class="tag is-danger is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
 
-								{{--										@elseif($attributionAd->ad->project->projectStatus->name === "Non accompagné")--}}
+								{{--										@elseif($attributionAd->ad->project->projectStatus->name === "Non assigné")--}}
 								{{--											<span class="tag is-warning is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
 								{{--										@else--}}
 								{{--											<span class="tag is-info is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
