@@ -66,7 +66,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 * @param array $territoriesCode
 	 * @return Collection
 	 */
-	public function allInTerritories(array $territoriesCode): Collection
+	public function allAdsInTerritories(array $territoriesCode): Collection
 	{
 		/** @var Collection $model */
 		$models = $this->entity

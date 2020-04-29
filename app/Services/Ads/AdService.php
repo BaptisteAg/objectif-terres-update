@@ -254,7 +254,7 @@ class AdService
 	public function findAllAdsInSupervisorTerritories(): Collection
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$ads = $this->repository->allInTerritories($supervisorLocationTerritoryCodes);
+		$ads = $this->repository->allAdsInTerritories($supervisorLocationTerritoryCodes);
 		return $ads;
 	}
 
@@ -437,7 +437,7 @@ class AdService
 			$adsFiltred->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
 				$q->where('user_advisor_id', '=', auth()->id());
 			});
-		} else if ($roleUser === 3) {
+		} else if ($roleUser >= 3) {
 			$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 			$adsFiltred->where(function (Builder $query) use ($supervisorLocationTerritoryCodes) {
 				$query->whereNotNull('project_id');

@@ -9,7 +9,7 @@
 	</div>
 	@include('components.supervisor-tabs')
 
-	@if ($numberOfAds == 0 or $numberOfProjects == 0 )
+	@if ($numberOfAds == 0 and $numberOfProjects == 0 )
 
 		<div class="columns is-mobile is-centered">
 			<div class ="column is-half">
@@ -80,6 +80,7 @@
 			</div>
 		</div>
 		<section class="section">
+			@if ($numberOfAds >0)
 			<div class="columns is-mobile is-centered">
 				<div class="column is-two-thirds">
 					<div class="box">
@@ -123,8 +124,10 @@
 					</div>
 				</div>
 			</div>
+			@endif
 			<br>
 			<br>
+			@if ($numberOfProjects >0)
 			<div class="columns is-mobile is-centered">
 				<div class="column is-two-thirds">
 					<div class="column">
@@ -187,6 +190,7 @@
 					</div>
 				</div>
 			</div>
+			@endif
 		</section>
 	@endif
 
