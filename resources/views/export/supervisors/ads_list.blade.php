@@ -75,7 +75,7 @@
 						<p>Communes(s) : {{$ad->citiesList}}</p>
 					@endif
 				</td>
-				<td>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</td>
+				<td>{{$ad->attributionAd->userAdvisor->first_name ?? ''}} {{$ad->attributionAd->userAdvisor->name ?? ''}}</td>
 				<td style="width: auto">{{$ad->about_project_content}}</td>
 				<td>{{$ad->about_content}}</td>
 				<td>{{$ad->landOfferAd()->exists() ?$ad->landOfferAd->surface : '' }}</td>
