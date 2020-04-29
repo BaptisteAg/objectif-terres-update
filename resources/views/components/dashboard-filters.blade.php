@@ -179,7 +179,7 @@
 					</div>
 				</div>
 				<div class="column ">
-					<p class="label has-text-centered">Statut du projet</p>
+					<p class="label has-text-centered">Statut de l'accompagnement</p>
 					<div class="columns is-mobile is-multiline is-centered">
 						@foreach($projectStatuses as $projectStatus)
 							<div class="column is-narrow has-text-centered">

@@ -264,7 +264,7 @@ class AdService
 	public function findAllValidateAdsInSupervisorTerritories(): Collection
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$validateStatusId = AdStatus::where('name', '=', AdStatus::APPROVE_ID)->first()->id;
+		$validateStatusId = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first()->id;
 		$ads = $this->repository->allInTerritoriesByAdStatus($supervisorLocationTerritoryCodes, $validateStatusId);
 		return $ads;
 	}

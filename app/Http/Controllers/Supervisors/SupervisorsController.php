@@ -42,8 +42,10 @@ class SupervisorsController extends Controller
 		$this->adTypes = [
 			['name' => 'Offre foncière', 'value' => 'landOfferAd'],
 			['name' => 'Recherche foncière', 'value' => 'landSeekAd'],
+			['name' => 'Offre d\'emploi', 'value' => 'jobOfferAd'],
+			['name' => 'Recherche d\'emploi', 'value' => 'jobSeekAd'],
 		];
-		$this->adTypesFaIcons = ["fa-home", "fa-home"];
+		$this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access"];
 	}
 
 	/**
