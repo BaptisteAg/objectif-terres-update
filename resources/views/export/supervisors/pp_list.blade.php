@@ -23,13 +23,33 @@
 		<tr>
 			<td>{{$ad->userPp->name}} </td>
 			<td>{{$ad->userPp->first_name}}</td>
-			<td>{{App\Models\User::$civilities[$ad->userPP->civility]}}</td>
-			<td>{{$ad->userPP->phone}}</td>
+			<td>
+				@if(isset($ad->userPP->civility))
+					{{App\Models\User::$civilities[$ad->userPP->civility]}}
+				@else
+				@endif
+			</td>
+			<td>
+				@if(isset($ad->userPP->phone))
+					{{$ad->userPP->phone}}
+				@else
+				@endif
+			</td>
 			<td>{{$ad->userPP->email}}</td>
 			<td>{{$ad->userPP->address}}</td>
 			<td>{{$ad->userPP->city}}</td>
-			<td>{{{App\Models\User::$profiles[$ad->userPP->profile]}}}</td>
-			<td>{{$ad->userPP->other_profile}}</td>
+			<td>
+				@if(isset($ad->userPP->profile))
+					{{{App\Models\User::$profiles[$ad->userPP->profile]}}}
+				@else
+				@endif
+			</td>
+			<td>
+				@if(isset($ad->userPP->other_profile))
+					{{$ad->userPP->other_profile}}
+				@else
+				@endif
+			</td>
 			<td>
 				@if($ad->userPP->accept_communication === 1 )
 					oui

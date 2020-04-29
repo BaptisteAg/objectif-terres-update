@@ -224,28 +224,28 @@ class AdService
     }
 
 
-    /**
-     * Show all ads ads related to supervisor
-     * @return LengthAwarePaginator
-     */
-    public function findAllByUserSupervisor(): LengthAwarePaginator
-    {
-        $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-        $ads = $this->repository->findAllBySupervisorTerritoriesAndDates($supervisorLocationTerritoryCodes);
-        return $ads;
-    }
+	/**
+	 * Show all ads ads related to supervisor
+	 * @return LengthAwarePaginator
+	 */
+	public function findAllByUserSupervisor(): LengthAwarePaginator
+	{
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
+		$ads = $this->repository->findAllByUserTerritoriesAndDates($supervisorLocationTerritoryCodes);
+		return $ads;
+	}
 
 
-    /**
-     * @param array $dates
-     * @return mixed
-     */
-    public function findAllByUserSupervisorBetweenDates(array $dates)
-    {
-        $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-        $ads = $this->repository->findAllBySupervisorTerritoriesAndDates($supervisorLocationTerritoryCodes, $dates);
-        return $ads;
-    }
+	/**
+	 * @param array $dates
+	 * @return mixed
+	 */
+	public function findAllByUserSupervisorBetweenDates(array $dates)
+	{
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
+		$ads = $this->repository->findAllByUserTerritoriesAndDates($supervisorLocationTerritoryCodes, $dates);
+		return $ads;
+	}
 
 
     /**
@@ -258,16 +258,16 @@ class AdService
         return $ads;
     }
 
-    /**
-     * @return Collection
-     */
-    public function findAllValidateAdsInSupervisorTerritories(): Collection
-    {
-        $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-        $validateStatusId = AdStatus::where('name', '=', AdStatus::APPROVE_ID)->first()->id;
-        $ads = $this->repository->allInTerritoriesByAdStatus($supervisorLocationTerritoryCodes, $validateStatusId);
-        return $ads;
-    }
+	/**
+	 * @return Collection
+	 */
+	public function findAllValidateAdsInSupervisorTerritories(): Collection
+	{
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
+		$validateStatusId = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first()->id;
+		$ads = $this->repository->allInTerritoriesByAdStatus($supervisorLocationTerritoryCodes, $validateStatusId);
+		return $ads;
+	}
 
 
     /**
