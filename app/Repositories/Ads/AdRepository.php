@@ -94,15 +94,22 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	{
 		/** @var Collection $model */
 		$models = $this->entity
-			->select('user_pp_id')
-			->whereHas('departments', function (Builder $query) use ($territoriesCode) {
-				$query->whereIn('code', $territoriesCode);
+			->where(function (Builder $query) {
+				$query->whereNotNull('project_id');
+				$query->whereHas('attributionAd', function (Builder $query) {
+					$query->where('user_supervisor_id', '=', auth()->user()->id);
+				});
 			})
-			->orWhereHas('cities', function (Builder $query) use ($territoriesCode) {
-				$query->whereIn('department_code', $territoriesCode);
+			->orWhere(function (Builder $query) use($territoriesCode) {
+				$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
+					$query->whereIn('code', $territoriesCode);
+				});
+				$query->orWhereHas('cities', function (Builder $query) use ($territoriesCode) {
+					$query->whereIn('department_code', $territoriesCode);
+				});
 			})
-			->groupBy('user_pp_id')
-			->get();
+			->get()
+			->groupBy('user_pp_id');
 		return $models;
 	}
 

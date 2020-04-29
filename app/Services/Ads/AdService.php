@@ -280,7 +280,6 @@ class AdService
 		return $users;
 	}
 
-
 	/**
 	 * @param Collection $ads
 	 * @return array
