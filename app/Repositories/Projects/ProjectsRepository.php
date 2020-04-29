@@ -54,5 +54,26 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 			->get();
 	}
 
+	/**
+	 * @param array $departmentCodes
+	 * @return \Illuminate\Database\Eloquent\Collection
+	 */
+	public function findAllByUserSupervisor(int $userId)
+	{
+		return $this->entity
+			->whereHas('ad', function (Builder $query) use ($userId)  {
+				$query->whereHas('attributionAd', function (Builder $q) use ($userId){
+					$q->where('user_supervisor_id', '=', $userId);
+				});
+			})
+			->with([
+				'ad',
+				'ad.landSeekAd',
+				'ad.landOfferAd',
+				'projectStatus'
+			])
+			->get();
+	}
+
 
 }

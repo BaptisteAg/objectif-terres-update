@@ -56,6 +56,15 @@ class ProjectService
 		return $projects;
 	}
 
+	/**
+	 * @return Collection
+	 */
+	public function findAllProjectBySupervisor(): Collection
+	{
+		$projects = $this->repository->findAllByUserSupervisor(auth()->user()->id);
+		return $projects;
+	}
+
 
 	/**
 	 * @param Collection $projects
@@ -112,6 +121,9 @@ class ProjectService
 		$numberOfProjectsByProjectStatus = $this->countProjectsByProjectStatus($projects);
 		$sumOfProjects = array_sum($numberOfProjectsByProjectStatus);
 
+		if ($sumOfProjects == 0){
+			return [];
+		}
 		$percentageOfProjectsByProjectsStatus = array_map(function ($number) use ($sumOfProjects) {
 			return round($number * 100 / $sumOfProjects);
 		}, $numberOfProjectsByProjectStatus);
