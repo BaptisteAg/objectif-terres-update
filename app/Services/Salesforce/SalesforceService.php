@@ -2,6 +2,7 @@
 
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Department;
 use App\Models\User;
 use App\Repositories\SalesForce\SalesForceRepository;
 use App\Repositories\Users\UserRepository;
@@ -123,41 +124,50 @@ class SalesforceService
     /**
      * Right after a successful login, this method receives the retrieved
      * Saml2 User from Salesforce; it then retrieve or create a corresponding
-     * local user.
+     * local user and updates its properties if a sync is needed
      *
      * @param \Aacotroneo\Saml2\Saml2User $samlUser
      * @return User
      * @throws \Throwable
      */
-    public function getUserFromSaml(\Aacotroneo\Saml2\Saml2User $samlUser) : User
+    public function getSyncedLocalUserFromSaml(\Aacotroneo\Saml2\Saml2User $samlUser) : User
     {
         $this->apiAuthenticationRefresh();
 
         $email = $samlUser->getAttribute('email')[0];
         $sfId = $samlUser->getAttribute('userId')[0];
 
-        /** @var User $user */
-        $user = $this->userRepository->findByEmail($email);
+        /** @var User $localUser */
+        $user = $this->repository->find('User', $sfId, ['FirstName', 'LastName', 'ProfileId']);
+        $localUser = $this->userRepository->findByEmail($email);
 
         // Reverse user creation : if no user has been found, then we'll create it on the fly
         // to allow every salesforce-only user to pass the registration form
-        if(!$user) {
-            $salesforceUser = $this->repository->find('User', $sfId, ['FirstName', 'LastName', 'ProfileId']);
-
-			$user = $this->userRepository->create([
-				'first_name' => $salesforceUser["FirstName"],
-				'name' => $salesforceUser["LastName"],
-				'email' => $email,
-				'role' => $this->getRoleFromProfileId($salesforceUser["ProfileId"])
+        if(!$localUser) {
+			$localUser = $this->userRepository->create([
+				'first_name' => $user["FirstName"],
+				'name' => $user["LastName"],
+				'email' => $email
 			]);
         }
 
-        if($user->sf_id != $sfId) {
-            $user->sf_id = $sfId;
-            $user->save();
+        // Sync SF ID
+        if($localUser->sf_id != $sfId) {
+            $localUser->sf_id = $sfId;
         }
 
-        return $user;
+        // Sync role
+        if($localUser->role !== $this->getRoleFromUser($user)) {
+            $localUser->role = $this->getRoleFromUser($user);
+        }
+
+        // Sync territory
+        $newDepartmentIds = Department::all()->pluck('id')->toArray();
+        $localUser->departments()->sync($newDepartmentIds);
+
+        $localUser->save();
+
+        return $localUser;
     }
 
     /**
@@ -183,8 +193,8 @@ class SalesforceService
         }
     }
 
-    protected function getRoleFromProfileId($profileId)
+    protected function getRoleFromUser($user)
     {
-        return $this->profileToRoleMapping[$profileId] ?? 0;
+        return $this->profileToRoleMapping[$user["ProfileId"]] ?? 0;
     }
 }

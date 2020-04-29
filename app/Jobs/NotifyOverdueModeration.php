@@ -64,7 +64,7 @@ class NotifyOverdueModeration implements ShouldQueue
                     return $notification->data->attribution_ids;
                 });
 
-            $notRecentlyNotifiedAttributionIds = array_intersect(
+            $notRecentlyNotifiedAttributionIds = array_diff(
                 $recentlyNotifiedAttributionIds->toArray(),
                 $attributions->pluck('id')->toArray()
             );
