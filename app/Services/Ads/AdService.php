@@ -2,7 +2,6 @@
 
 use App\Models\Ad;
 use App\Models\AdStatus;
-use App\Models\AttributionAd;
 use App\Models\Department;
 use App\Models\Region;
 use App\Models\User;
@@ -20,7 +19,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\Routing\RouteCollectionBuilder;
 
 /**
  * Class AdService
@@ -233,7 +231,7 @@ class AdService
 	public function findAllByUserSupervisor(): LengthAwarePaginator
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$ads = $this->repository->findAllBySupervisorTerritoriesAndDates($supervisorLocationTerritoryCodes);
+		$ads = $this->repository->findAllByUserTerritoriesAndDates($supervisorLocationTerritoryCodes);
 		return $ads;
 	}
 
@@ -245,7 +243,7 @@ class AdService
 	public function findAllByUserSupervisorBetweenDates(array $dates)
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$ads = $this->repository->findAllBySupervisorTerritoriesAndDates($supervisorLocationTerritoryCodes, $dates);
+		$ads = $this->repository->findAllByUserTerritoriesAndDates($supervisorLocationTerritoryCodes, $dates);
 		return $ads;
 	}
 
@@ -266,7 +264,7 @@ class AdService
 	public function findAllValidateAdsInSupervisorTerritories(): Collection
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$validateStatusId = AdStatus::where('name', '=', AdStatus::APPROVE_ID)->first()->id;
+		$validateStatusId = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first()->id;
 		$ads = $this->repository->allInTerritoriesByAdStatus($supervisorLocationTerritoryCodes, $validateStatusId);
 		return $ads;
 	}
@@ -430,25 +428,23 @@ class AdService
 			});
 		}
 		//Filter ads based on the role of the logged user
-		if ($roleUser === 2) {
-			$adsFiltred->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
-				$q->where('user_advisor_id', '=', auth()->id());
-			});
-		} else if ($roleUser === 3) {
-			$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-			$adsFiltred->where(function (Builder $query) use ($supervisorLocationTerritoryCodes) {
-				$query->whereNotNull('project_id');
-				$query->whereHas('attributionAd', function (Builder $q) {
+		$userLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
+		$adsFiltred->where(function (Builder $query) use ($userLocationTerritoryCodes, $roleUser) {
+			$query->whereNotNull('project_id');
+			$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
+				if ($roleUser == 3) {
 					$q->where('user_supervisor_id', '=', auth()->id());
-				});
-				$query->orWhereHas('departments', function (Builder $query) use ($supervisorLocationTerritoryCodes) {
-					$query->whereIn('code', $supervisorLocationTerritoryCodes);
-				});
-				$query->orWhereHas('cities', function (Builder $query) use ($supervisorLocationTerritoryCodes) {
-					$query->whereIn('department_code', $supervisorLocationTerritoryCodes);
-				});
+				} else if ($roleUser == 2) {
+					$q->where('user_advisor_id', '=', auth()->id());
+				}
 			});
-		}
+			$query->orWhereHas('departments', function (Builder $query) use ($userLocationTerritoryCodes) {
+				$query->whereIn('code', $userLocationTerritoryCodes);
+			});
+			$query->orWhereHas('cities', function (Builder $query) use ($userLocationTerritoryCodes) {
+				$query->whereIn('department_code', $userLocationTerritoryCodes);
+			});
+		});
 		//Handling sort of research results
 		if ($filters->has('order') && $filters->has('sort')) {
 			if ($filters->input('sort') === 'date') {

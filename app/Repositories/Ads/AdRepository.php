@@ -179,16 +179,21 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
 	/**
 	 * Get all ads related to a supervisor : attribution ads or projects located in one of the territories managed by the supervisor
+	 * @param int $role
 	 * @param array $territoryCodes
 	 * @param array|null $dates
 	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
-	public function findAllBySupervisorTerritoriesAndDates(array $territoryCodes, array $dates = null)
+	public function findAllByUserTerritoriesAndDates(array $territoryCodes, array $dates = null)
 	{
 		$queryAds = Ad::where(function (Builder $builder) use ($territoryCodes) {
 			$builder->whereNotNull('project_id');
 			$builder->whereHas('attributionAd', function (Builder $query) {
-				$query->where('user_supervisor_id', '=', auth()->user()->id);
+				if (auth()->user()->role == 2) {
+					$query->where('user_advisor_id', '=', auth()->user()->id);
+				} else if (auth()->user()->role >= 3) {
+					$query->where('user_supervisor_id', '=', auth()->user()->id);
+				}
 			});
 			$builder->orWhereHas('departments', function (Builder $query) use ($territoryCodes) {
 				$query->whereIn('code', $territoryCodes);
