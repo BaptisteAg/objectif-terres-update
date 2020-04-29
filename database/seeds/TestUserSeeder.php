@@ -29,7 +29,8 @@ class TestUserSeeder extends Seeder
         ]);
 
 		\App\Models\User::create([
-			'email' => "supervisor@test.fr",
+		    'sf_id' => "005w00000050WFY",
+			'email' => "gael@kaffein.agency",
 			'password' => Hash::make('testtest'),
 			'first_name' => 'Test',
 			'name' => 'Responsable Territorial',
