@@ -30,12 +30,13 @@
             oldValueSelected: '',
         },
         data() {
+            const hasOldDate = this.oldValueSelected && this.oldValueSelected !== "null";
             let oldValueFormatted = {};
-            if (this.oldValueSelected && this.oldValueSelected!== "null"){
+            if (hasOldDate){
                  oldValueFormatted = JSON.parse(this.oldValueSelected);
             }
             return {
-                date: this.oldValueSelected ? {
+                date: hasOldDate ? {
                     start: new Date(oldValueFormatted.start),
                     end: new Date(oldValueFormatted.end)
                 } : null,
@@ -44,7 +45,7 @@
         },
         computed: {
             formattedDate() {
-                if (this.date === null) {
+                if (!this.date || !this.date.start || !this.date.end) {
                     return []
                 } else {
                     return [this.date.start.toLocaleDateString(), this.date.end.toLocaleDateString()]
