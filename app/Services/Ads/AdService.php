@@ -392,6 +392,7 @@ class AdService
 			}
 		}
 
+
 		//If a range of submitting date is selected, filter attribution ads based on creation date
 		if (!is_null($filters->input('date_from')) && !is_null($filters->input('date_to'))) {
 			$dateStartFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_from'))->format('Y-m-d');
