@@ -9,7 +9,11 @@
 		<h1 class="title has-text-link">{{$ad->title}}</h1>
 		@auth
 			@if(auth()->user()->role >= 1)
-				@include('pages.ads.partials.moderator-options')
+				@if($ad->project()->exists())
+					@include ('pages.ads.partials.attribution-project-options')
+				@else
+					@include('pages.ads.partials.moderator-options')
+				@endif
 			@endif
 
 			@if(auth()->user()->id === $ad->user_pp_id)

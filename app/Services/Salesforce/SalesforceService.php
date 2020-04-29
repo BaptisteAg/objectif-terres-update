@@ -26,10 +26,10 @@ class SalesforceService
     protected $profileToRoleMapping = [
         // Customer community - membre
         '00ew0000001V7RJAA0' => 0,
-		// Moderator
+		// Moderator ( Chatter External User )
         '00e1r000001td1kAAA' => 1,
 		// Super Admin
-		'00e20000001FEdPAAW' => 4
+		'00e20000001FEdPAAW' => 4,
 		// .. TODO: complete
 	];
 
