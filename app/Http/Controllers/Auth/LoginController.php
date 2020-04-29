@@ -70,7 +70,7 @@ class LoginController extends Saml2Controller
             'saml_name_id' => $samlUser->getNameId(),
         ]);
 
-		$user = $this->salesforceService->getUserFromSaml($samlUser);
+		$user = $this->salesforceService->getSyncedLocalUserFromSaml($samlUser);
 
         auth()->login($user);
         session()->flash('success', "Vous avez bien été identifié.");
