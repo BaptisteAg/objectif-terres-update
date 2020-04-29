@@ -62,7 +62,7 @@
 				<td>{{$ad->attributionAd->created_at}}</td>
 				<td>{{$ad->title}}</td>
 				<td>{{$ad->ad_type_full_name}}</td>
-				<td>{{$ad->userPp->first_name}} {{$ad->userPp->name}}</td>
+				<td>{{$ad->userPp->first_name ?: ''}} {{$ad->userPp->name ?: ''}}</td>
 				<td>{{$ad->userPP->email}}</td>
 				<td>
 					@if(! is_null($ad->regionsList))
