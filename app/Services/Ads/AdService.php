@@ -233,7 +233,7 @@ class AdService
 	public function findAllByUserSupervisor(): LengthAwarePaginator
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$ads = $this->repository->findAllBySupervisorTerritoriesAndDates($supervisorLocationTerritoryCodes);
+		$ads = $this->repository->findAllByUserTerritoriesAndDates($supervisorLocationTerritoryCodes);
 		return $ads;
 	}
 
@@ -245,7 +245,7 @@ class AdService
 	public function findAllByUserSupervisorBetweenDates(array $dates)
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$ads = $this->repository->findAllBySupervisorTerritoriesAndDates($supervisorLocationTerritoryCodes, $dates);
+		$ads = $this->repository->findAllByUserTerritoriesAndDates($supervisorLocationTerritoryCodes, $dates);
 		return $ads;
 	}
 
