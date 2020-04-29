@@ -41,9 +41,11 @@
 			@if($ad->project->projectStatus->name === "Non accompagné")
 				<p class="">Vous souhaitez attribuer cette demande à un primo-accueillant ?</p>
 			@else
-				<p class="">Cette demande est attribuée à
-					<strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>.
-				</p>
+				@if(isset($ad->attributionAd->user_advisor_id))
+					<p class="">Cette demande est attribuée à
+						<strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>.
+					</p>
+				@endif
 				<p>Vous souhaitez attribuer cette demande à un autre primo-accueillant ?</p>
 			@endif
 		@endif

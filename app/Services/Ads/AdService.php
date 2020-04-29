@@ -432,25 +432,23 @@ class AdService
 		}
 
 		//Filter ads based on the role of the logged user
-		if ($roleUser === 2) {
-			$adsFiltred->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
-				$q->where('user_advisor_id', '=', auth()->id());
-			});
-		} else if ($roleUser >= 3) {
-			$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-			$adsFiltred->where(function (Builder $query) use ($supervisorLocationTerritoryCodes) {
-				$query->whereNotNull('project_id');
-				$query->whereHas('attributionAd', function (Builder $q) {
+
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
+		$adsFiltred->where(function (Builder $query) use ($supervisorLocationTerritoryCodes, $roleUser) {
+			$query->whereNotNull('project_id');
+			$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
+				if ($roleUser === 2) {
+					$q->where('user_advisor_id', '=', auth()->id());
+				} elseif ($roleUser >= 3)
 					$q->where('user_supervisor_id', '=', auth()->id());
-				});
-				$query->orWhereHas('departments', function (Builder $query) use ($supervisorLocationTerritoryCodes) {
-					$query->whereIn('code', $supervisorLocationTerritoryCodes);
-				});
-				$query->orWhereHas('cities', function (Builder $query) use ($supervisorLocationTerritoryCodes) {
-					$query->whereIn('department_code', $supervisorLocationTerritoryCodes);
-				});
 			});
-		}
+			$query->orWhereHas('departments', function (Builder $query) use ($supervisorLocationTerritoryCodes) {
+				$query->whereIn('code', $supervisorLocationTerritoryCodes);
+			});
+			$query->orWhereHas('cities', function (Builder $query) use ($supervisorLocationTerritoryCodes) {
+				$query->whereIn('department_code', $supervisorLocationTerritoryCodes);
+			});
+		});
 
 		// Sort results
 		if ($filters->has('order') && $filters->has('sort')) {

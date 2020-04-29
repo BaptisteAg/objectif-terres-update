@@ -18,7 +18,6 @@
 					@include('pages.ads.partials.moderator-options')
 				@endif
 			@endif
-
 			@if(auth()->user()->id === $ad->user_pp_id)
 				@include('pages.ads.partials.ad-status-message-display')
 			@endif
