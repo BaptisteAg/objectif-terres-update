@@ -24,32 +24,50 @@
 			@endif
 
 		</p>
-		@if($ad->project->projectStatus->name === "Non accompagné")
-			<p class="">Vous souhaitez attribuer cette demande à un primo-accueillant ?</p>
+		@if($ad->attributionAd->user_supervisor_id !== auth()->id())
+			@if(isset($ad->attributionAd->user_supervisor_id))
+				<p class="">Le responsable territorial de cette demande est
+					<strong>{{$ad->attributionAd->userSupervisor->first_name}} {{$ad->attributionAd->userSupervisor->name}}</strong>.
+				</p>
+			@endif
+			@if($ad->project->projectStatus->name !== "Non accompagné")
+				@if(isset($ad->attributionAd->user_advisor_id))
+					<p class="">Cette demande est attribuée à
+						<strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>.
+					</p>
+				@endif
+			@endif
 		@else
-			<p class="">Cette demande est attribuée à
-				<strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>.
-			</p>
-			<p>Vous souhaitez attribuer cette demande à un autre primo-accueillant ?</p>
+			@if($ad->project->projectStatus->name === "Non accompagné")
+				<p class="">Vous souhaitez attribuer cette demande à un primo-accueillant ?</p>
+			@else
+				<p class="">Cette demande est attribuée à
+					<strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>.
+				</p>
+				<p>Vous souhaitez attribuer cette demande à un autre primo-accueillant ?</p>
+			@endif
 		@endif
 	</div>
 	<br>
-	<div class="columns is-centered ">
-		<div class="column is-half has-text-centered ">
-			<div class="field">
-				<label class="label">Séléctionnez une personne parmi les primo-accueilants de votre territoire</label>
-				<div class="select">
-					<select name="user_advisor_id" onchange="showValidationSupervisorModal()">
-						<option selected class="has-text-grey-light">Veuillez choisir...</option>
-						@foreach ($advisorUsers as $advisor)
-							<option value="{{$advisor->id}}">{{$advisor->first_name}} {{$advisor->name}}</option>
-						@endforeach
-					</select>
+	@if($ad->attributionAd->user_supervisor_id === auth()->id())
+		<div class="columns is-centered ">
+			<div class="column is-half has-text-centered ">
+				<div class="field">
+					<label class="label">Séléctionnez une personne parmi les primo-accueilants de votre
+						territoire</label>
+					<div class="select">
+						<select name="user_advisor_id" onchange="showValidationSupervisorModal()">
+							<option selected class="has-text-grey-light">Veuillez choisir...</option>
+							@foreach ($advisorUsers as $advisor)
+								<option value="{{$advisor->id}}">{{$advisor->first_name}} {{$advisor->name}}</option>
+							@endforeach
+						</select>
+					</div>
+					<input value="{{$ad->id}}" name="ad_id" type="hidden">
 				</div>
-				<input value="{{$ad->id}}" name="ad_id" type="hidden">
 			</div>
 		</div>
-	</div>
+	@endif
 	<br>
 </div>
 <div id="modal-supervisor-validation" class="modal">
