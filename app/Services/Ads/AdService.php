@@ -392,21 +392,13 @@ class AdService
 			}
 		}
 
-
 		//If a range of submitting date is selected, filter attribution ads based on creation date
 		if (!is_null($filters->input('date_from')) && !is_null($filters->input('date_to'))) {
 			$dateStartFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_from'))->format('Y-m-d');
 			$dateEndFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_to'))->format('Y-m-d');
 			$adsFiltred->where(function (Builder $query) use ($dateStartFormatted, $dateEndFormatted) {
-				$query->whereHas('project', function (Builder $subQuery) use ($dateStartFormatted, $dateEndFormatted) {
+				$query->whereHas('attributionAd', function (Builder $subQuery) use ($dateStartFormatted, $dateEndFormatted) {
 					$subQuery->whereBetween('created_at', [$dateStartFormatted, $dateEndFormatted . " 23:59:59"]);
-				});
-				$query->orWhere(function (Builder $subQuery) use ($dateStartFormatted, $dateEndFormatted) {
-					$subQuery->whereNull('project_id');
-					$subQuery->whereHas('attributionAd', function (Builder $q) use ($dateStartFormatted, $dateEndFormatted) {
-						$q->whereBetween('created_at', [$dateStartFormatted, $dateEndFormatted . " 23:59:59"]);
-
-					});
 				});
 			});
 		}
@@ -454,15 +446,8 @@ class AdService
 		// Sort results
 		if ($filters->has('order') && $filters->has('sort')) {
 			if ($filters->input('sort') === 'date') {
-					$adsFiltred
-						->select('ads.*')
-						->leftJoin('projects as p', 'p.id', 'ads.project_id')
-						->orderBy('p.created_at', $filters->input('order'))
-
-						->select('ads.*')
-						->leftJoin('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
-						->orderBy('a.created_at', $filters->input('order'));
-
+				$adsFiltred->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
+					->orderBy('a.created_at', $filters->input('order'));
 
 			} else if ($filters->input('sort') === 'title') {
 				$adsFiltred
@@ -481,7 +466,8 @@ class AdService
 					->orderBy('name', $filters->input('order'));
 			}
 		} else {
-			$adsFiltred->orderByDesc('created_at');
+			$adsFiltred->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
+				->orderByDesc('a.created_at');
 		}
 
 		return $adsFiltred

@@ -221,7 +221,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 						});
 					});
 				}
-			})
+			});
+			$queryAds->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
+			->orderByDesc('a.created_at')
 			->with([
 				'project',
 				'project.projectStatus',

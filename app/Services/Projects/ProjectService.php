@@ -94,7 +94,7 @@ class ProjectService
 		$numberOfProjectsByProjectsStatus = [
 			'A rappeler' => 0,
 			'Accompagné' => 0,
-			'Non accompagné' => 0,
+			'Non assigné' => 0,
 			'Idée' => 0,
 			'En recherche' => 0,
 			'Installé' => 0,
@@ -121,7 +121,7 @@ class ProjectService
 		$numberOfProjectsByProjectStatus = $this->countProjectsByProjectStatus($projects);
 		$sumOfProjects = array_sum($numberOfProjectsByProjectStatus);
 
-		if ($sumOfProjects == 0){
+		if ($sumOfProjects == 0) {
 			return [];
 		}
 		$percentageOfProjectsByProjectsStatus = array_map(function ($number) use ($sumOfProjects) {
@@ -249,10 +249,10 @@ class ProjectService
 	{
 		$attributionAd = $this->attributionAdsRepository->findByAdId($request->input('ad_id'));
 		//updating project status if it is non attribute to an advisor
-		$nonAttributedStatus = ProjectStatus::where('name', '=', 'Non accompagné')->first()->id;
-		$attributedStatus = ProjectStatus::where('name', '=', 'Accompagné')->first()->id;
-		if ($attributionAd->ad->project->project_status_id === $nonAttributedStatus) {
-			$attributionAd->ad->project->project_status_id = $attributedStatus;
+		$unassistedStatus = ProjectStatus::where('id', '=', ProjectStatus::UNASSISTED_ID)->first()->id;
+		$assistedStatus = ProjectStatus::where('id', '=', ProjectStatus::ASSISTING_ID)->first()->id;
+		if ($attributionAd->ad->project->project_status_id === $unassistedStatus) {
+			$attributionAd->ad->project->project_status_id = $assistedStatus;
 			$attributionAd->ad->project->save();
 		}
 		$attributionAd->user_advisor_id = $request->input('user_advisor_id');

@@ -28,6 +28,8 @@ class SalesforceService
         '00ew0000001V7RJAA0' => 0,
 		// Moderator ( Chatter External User )
         '00e1r000001td1kAAA' => 1,
+        // Responsable territorial - Supervisor ( Customer community - Resp. Territorial )
+        '00e1q000000M41YAAS' => 3,
 		// Super Admin
 		'00e20000001FEdPAAW' => 4,
 		// .. TODO: complete

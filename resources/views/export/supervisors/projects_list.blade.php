@@ -45,13 +45,13 @@
 
 	<tbody>
 	@foreach($ads as $ad)
-		@if($ad->project()->exists())
+		@if(isset($ad->project))
 			<tr>
 				<td>{{$ad->project->created_at}}</td>
-				<td>{{$ad->title}}</td>
+				<td>{{$ad->title ?? ''}}</td>
 				<td>{{$ad->ad_type_full_name}}</td>
-				<td>{{$ad->userPp->first_name}} {{$ad->userPp->name}}</td>
-				<td>{{$ad->userPP->email}}</td>
+				<td>{{$ad->userPp->first_name ?? ''}} {{$ad->userPp->name ?? ''}}</td>
+				<td>{{$ad->userPP->email ?? ''}}</td>
 				<td>
 					@if(! is_null($ad->regionsList))
 						<p>Region(s) : {{$ad->regionsList}}</p>
@@ -63,14 +63,14 @@
 						<p>Communes(s) : {{$ad->citiesList}}</p>
 					@endif
 				</td>
-				<td>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</td>
-				<td>{{$ad->attributionAd->userSupervisor->first_name}} {{$ad->attributionAd->userSupervisor->name}}</td>
-				<td style="width: auto">{{$ad->about_project_content}}</td>
-				<td>{{$ad->about_content}}</td>
-				<td>{{$ad->landOfferAd()->exists() ?$ad->landOfferAd->surface : '' }}</td>
-				<td>{{$ad->landOfferAd()->exists() ?$ad->landOfferAd->sau_description : '' }}</td>
+				<td>{{$ad->attributionAd->userAdvisor->first_name ?? '' }} {{ $ad->attributionAd->userAdvisor->name ?? ''}}</td>
+				<td>{{$ad->attributionAd->userSupervisor->first_name ?? ''}} {{ $ad->attributionAd->userSupervisor->name ?? ''}}</td>
+				<td style="width: auto">{{$ad->about_project_content ?? ''}}</td>
+				<td>{{$ad->about_content ?? ''}}</td>
+				<td>{{$ad->landOfferAd->surface ?? '' }}</td>
+				<td>{{$ad->landOfferAd->sau_description ?? '' }}</td>
 				<td>
-					@if($ad->landOfferAd()->exists())
+					@if(isset($ad->landOfferAd))
 						@if($ad->landOfferAd->water_access === 1)
 							oui
 						@else
@@ -78,13 +78,31 @@
 						@endif
 					@endif
 				</td>
-				<td>{{$ad->landOfferAd()->exists() ?$ad->landOfferAd->water_access_description : '' }}</td>
-				<td>{{$ad->landOfferAd()->exists() ?$ad->landOfferAd->altitude : '' }}</td>
-				<td>{{$ad->landOfferAd()->exists() ?$ad->landOfferAd->productionGenres->pluck('name')->implode(', ')  : '' }}</td>
-				<td>{{$ad->landOfferAd()->exists() ?$ad->landOfferAd->productionGenresPossible->pluck('name')->implode(', ') : '' }}</td>
-				<td>{{$ad->landOfferAd()->exists() ?$ad->landOfferAd->bioCertifications->pluck('name')->implode(', ') : '' }}</td>
+				<td>{{$ad->landOfferAd->water_access_description ?? '' }}</td>
+				<td>{{$ad->landOfferAd->altitude ?? '' }}</td>
 				<td>
-					@if($ad->landOfferAd()->exists())
+					@if(isset($ad->landOfferAd))
+						@if(isset($ad->landOfferAd->productionGenres))
+							{{$ad->landOfferAd->productionGenres->pluck('name')->implode(', ')}}
+						@endif
+					@endif
+				</td>
+				<td>
+					@if(isset($ad->landOfferAd))
+						@if(isset($ad->landOfferAd->productionGenresPossible))
+							{{$ad->landOfferAd->productionGenresPossible->pluck('name')->implode(', ')}}
+						@endif
+					@endif
+				</td>
+				<td>
+					@if(isset($ad->landOfferAd))
+						@if(isset($ad->landOfferAd->bioCertifications))
+							{{$ad->landOfferAd->bioCertifications->pluck('name')->implode(', ')}}
+						@endif
+					@endif
+				</td>
+				<td>
+					@if(isset($ad->landOfferAd))
 						@if($ad->landOfferAd->has_buildings === 1)
 							oui
 						@else
@@ -92,9 +110,9 @@
 						@endif
 					@endif
 				</td>
-				<td>{{$ad->landOfferAd()->exists() ?$ad->landOfferAd->buildings_description : '' }}</td>
+				<td>{{$ad->landOfferAd->buildings_description ?? '' }}</td>
 				<td>
-					@if($ad->landOfferAd()->exists())
+					@if(isset($ad->landOfferAd))
 						@if($ad->landOfferAd->has_houses === 1)
 							oui
 						@else
@@ -102,21 +120,34 @@
 						@endif
 					@endif
 				</td>
-				<td>{{$ad->landOfferAd()->exists() ?$ad->landOfferAd->houses_description : '' }}</td>
-				<td>{{$ad->landOfferAd()->exists() ?$ad->landOfferAd->offerGenres->pluck('name')->implode(', ') : '' }}</td>
-				<td>{{$ad->landOfferAd()->exists() ?$ad->landOfferAd->price : '' }}</td>
-				<td>{{$ad->landOfferAd()->exists() ?$ad->landOfferAd->rent_price : '' }}</td>
-				<td>{{$ad->landOfferAd()->exists() ?$ad->landOfferAd->test_description : '' }}</td>
-				<td>{{$ad->landSeekAd()->exists() ?'entre '.$ad->landSeekAd->surface_range_min. ' et '.$ad->landSeekAd->surface_range_max  : '' }}</td>
-				<td>@if($ad->landSeekAd()->exists())
-						@if($ad->landSeekAd->buildings)
+				<td>{{$ad->landOfferAd->houses_description ?? '' }}</td>
+				<td>
+					@if(isset($ad->landOfferAd))
+						@if(isset($ad->landOfferAd->offerGenres))
+							{{$ad->landOfferAd->offerGenres->pluck('name')->implode(', ')}}
+						@endif
+					@endif
+				</td>
+				<td>{{$ad->landOfferAd->price ?? '' }}</td>
+				<td>{{$ad->landOfferAd->rent_price ?? '' }}</td>
+				<td>{{$ad->landOfferAd->test_description ?? '' }}</td>
+				<td>
+					@if(isset($ad->landSeekAd))
+						@if(isset($ad->landSeekAd->surface_range_min) and isset($ad->landSeekAd->surface_range_max))
+							{{'entre '.$ad->landSeekAd->surface_range_min. ' et '.$ad->landSeekAd->surface_range_max }}
+						@endif
+					@endif
+				</td>
+				<td>
+					@if(isset($ad->landSeekAd))
+						@if(isset($ad->landSeekAd->buildings))
 							@foreach($ad->landSeekAd->buildings as $building)
 								{{ $building->buildingType->label }} : {{ $building->requirement->label }}<br>
 							@endforeach
 						@endif
 					@endif
 				</td>
-				<td>@if($ad->landSeekAd()->exists())
+				<td>@if(isset($ad->landSeekAd))
 						@if($ad->landSeekAd->is_bio === 1)
 							oui
 						@else
@@ -124,11 +155,15 @@
 						@endif
 					@endif
 				</td>
-				<td>{{$ad->landSeekAd()->exists() ?$ad->landSeekAd->offerGenres->pluck('name')->implode(', ') : '' }}</td>
-				<td>{{$ad->landSeekAd()->exists() ?$ad->landSeekAd->installationType->name : '' }}</td>
-				<td>{{$ad->landSeekAd()->exists() ?$ad->landSeekAd->experience_farming : '' }}</td>
-
-
+				<td>
+					@if(isset($ad->landSeekAd))
+						@if($ad->landSeekAd->offerGenres)
+							{{$ad->landSeekAd->offerGenres->pluck('name')->implode(', ')}}
+						@endif
+					@endif
+				</td>
+				<td>{{$ad->landSeekAd->installationType->name ?? '' }}</td>
+				<td>{{$ad->landSeekAd->experience_farming ?? '' }}</td>
 			</tr>
 		@else
 		@endif

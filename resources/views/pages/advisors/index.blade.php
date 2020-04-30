@@ -93,7 +93,7 @@
 										<span>Date</span>
 									</a>
 								@else
-									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
+									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
 										<i class="fas fa-arrow-up"></i>
 										<span>Date</span>
 									</a>
@@ -110,7 +110,7 @@
 										<span>Titre</span>
 									</a>
 								@else
-									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
+									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
 										<i class="fas fa-arrow-down"></i>
 										<span>Titre</span>
 									</a>
@@ -129,7 +129,7 @@
 										<span>Nom du porteur de projet</span>
 									</a>
 								@else
-									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
+									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
 										<i class="fas fa-arrow-down"></i>
 										<span>Nom du porteur de projet</span>
 									</a>
@@ -148,7 +148,7 @@
 										<span>Statut du projet</span>
 									</a>
 								@else
-									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
+									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
 										<i class="fas fa-arrow-down"></i>
 										<span>Statut du projet</span>
 									</a>
@@ -168,11 +168,7 @@
 									@endif
 								</td>
 								<td>
-									@if($ad->project()->exists())
-										{{$ad->project->created_at->format("d/m/Y")}}
-									@else
 										{{$ad->attributionAd->created_at->format("d/m/Y")}}
-									@endif
 								</td>
 								<td>
 									<a href="{{route('ads.show', $ad->id)}}">{{$ad->title}}</a>
@@ -203,7 +199,7 @@
 											<span class="tag is-success">{{$ad->project->projectStatus->name}}</span>
 										@elseif($ad->project->projectStatus->name === "A rappeler")
 											<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->name === "Non accompagné")
+										@elseif($ad->project->projectStatus->name === "Non assigné")
 											<span class="tag is-warning ">{{$ad->project->projectStatus->name}}</span>
 										@elseif($ad->project->projectStatus->name === "Idée")
 											<span class="tag is-primary ">{{$ad->project->projectStatus->name}}</span>

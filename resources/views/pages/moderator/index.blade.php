@@ -70,7 +70,7 @@
 										<span>Date de soumission</span>
 									</a>
 								@else
-									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}">
+									<a href="{{ route('moderator.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
 										<i class="fas fa-arrow-up"></i>
 										<span>Date de soumission</span>
 									</a>
@@ -87,7 +87,7 @@
 										<span>Titre de l'annonce</span>
 									</a>
 								@else
-									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}">
+									<a href="{{ route('moderator.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
 										<i class="fas fa-arrow-down"></i>
 										<span>Titre de l'annonce</span>
 									</a>
@@ -106,7 +106,7 @@
 										<span>Nom du porteur de projet</span>
 									</a>
 								@else
-									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}">
+									<a href="{{ route('moderator.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
 										<i class="fas fa-arrow-down"></i>
 										<span>Nom du porteur de projet</span>
 									</a>
@@ -125,7 +125,7 @@
 										<span>Statut de l'annonce</span>
 									</a>
 								@else
-									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}">
+									<a href="{{ route('moderator.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
 										<i class="fas fa-arrow-down"></i>
 										<span>Statut de l'annonce</span>
 									</a>
@@ -199,7 +199,7 @@
 								{{--										@elseif($attributionAd->ad->project->projectStatus->name === "A rappeler")--}}
 								{{--											<span class="tag is-danger is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
 
-								{{--										@elseif($attributionAd->ad->project->projectStatus->name === "Non accompagné")--}}
+								{{--										@elseif($attributionAd->ad->project->projectStatus->name === "Non assigné")--}}
 								{{--											<span class="tag is-warning is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
 								{{--										@else--}}
 								{{--											<span class="tag is-info is-light">{{$attributionAd->ad->project->projectStatus->name}}</span>--}}
