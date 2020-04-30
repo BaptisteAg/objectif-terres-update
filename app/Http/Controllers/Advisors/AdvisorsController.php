@@ -9,7 +9,9 @@ use App\Models\ProjectStatus;
 use App\Services\Advisors\AdvisorsService;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class AdvisorsController extends Controller
@@ -76,7 +78,7 @@ class AdvisorsController extends Controller
 		$ads = $this->service->showForAdvisor($request);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfNewProject = 3;
-		return view('pages.advisors.index', compact( 'projectStatuses',  'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'numberOfAdsToModerate', 'adTypesFaIcons', 'adTypes', 'numberOfNewProject'));
+		return view('pages.advisors.index', compact( 'projectStatuses',  'jobOfferTypes', 'ads', 'numberOfUnreadMessages',  'adTypesFaIcons', 'adTypes', 'numberOfNewProject'));
 
 	}
 
@@ -98,5 +100,9 @@ class AdvisorsController extends Controller
 	{
 		$cities = City::all();
 		return view('pages.advisors.register-new-user-pp', compact('cities'));
+	}
+
+	public function export(){
+		return Excel::download(new SupervisorExport($this->adService->findAllByUserSupervisor()), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
 	}
 }

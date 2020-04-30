@@ -454,7 +454,16 @@ class AdService
 		// Sort results
 		if ($filters->has('order') && $filters->has('sort')) {
 			if ($filters->input('sort') === 'date') {
-				$adsFiltred->orderBy('created_at', $filters->input('order'));
+					$adsFiltred
+						->select('ads.*')
+						->leftJoin('projects as p', 'p.id', 'ads.project_id')
+						->orderBy('p.created_at', $filters->input('order'))
+
+						->select('ads.*')
+						->leftJoin('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
+						->orderBy('a.created_at', $filters->input('order'));
+
+
 			} else if ($filters->input('sort') === 'title') {
 				$adsFiltred
 					->orderBy($filters->input('sort'), $filters->input('order'));
