@@ -11,19 +11,19 @@
 					<ul>
 						<li class="is-active">
 							<a>
-								<span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
+								<span class="icon is-small"><i class="fas fa-user"></i></span>
 								<span>Profil</span>
 							</a>
 						</li>
 						<li>
 							<a>
-								<span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
+								<span class="icon is-small"><i class="fas fa-seedling"></i></span>
 								<span>Projet</span>
 							</a>
 						</li>
 						<li>
 							<a>
-								<span class="icon is-small"><i class="fas fa-film" aria-hidden="true"></i></span>
+								<span class="icon is-small"><i class="fas fa-newspaper"></i></span>
 								<span>Annonces</span>
 							</a>
 						</li>
