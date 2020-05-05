@@ -51,9 +51,9 @@ class LoginController extends Controller
             return response()->json(['error' => "Email not provided"]);
         }
 
-        if($salesforceService->emailExists($request->get('email'), 'User')) {
+        /*if($salesforceService->emailExists($request->get('email'), 'User')) {
             return response()->json(['redirect' => '/connexion/sso']);
-        }
+        }*/
 
         return response()->json(['redirect' => false]);
     }
