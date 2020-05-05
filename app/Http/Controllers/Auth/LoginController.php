@@ -2,124 +2,89 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Aacotroneo\Saml2\Http\Controllers\Saml2Controller;
-use Aacotroneo\Saml2\Saml2Auth;
+use App\Http\Controllers\Controller;
 use App\Services\Salesforce\SalesforceService;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
-class LoginController extends Saml2Controller
+/**
+ * This controller needs to exists because we never explicitly logout from salesforce
+ *
+ * Class LegacyLoginController
+ * @package App\Http\Controllers\Auth
+ */
+class LoginController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles authenticating users for the application and
+    | redirecting them to your home screen. The controller uses a trait
+    | to conveniently provide its functionality to your applications.
+    |
+    */
+
+    use AuthenticatesUsers;
+
     /**
-     * @var SalesforceService
+     * Where to redirect users after login.
+     *
+     * @var string
      */
-    protected $salesforceService;
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(SalesforceService $salesForceService)
+    public function __construct()
     {
-        $this->middleware('guest')->except(["salesforceLogout", "sls"]);
-        $this->salesforceService = $salesForceService;
+        $this->middleware('guest')->except('logout');
     }
 
-
-    /**
-     * Initiate a login request.
-     *
-     * @throws \Exception
-     */
-    public function salesforceLogin()
+    public function checkpoint(Request $request, SalesforceService $salesforceService)
     {
-        $saml2Auth = new Saml2Auth(Saml2Auth::loadOneLoginAuthFromIpdConfig('salesforce'));
-        return $saml2Auth->login('/');
-    }
-
-    /**
-     * Process an incoming saml2 assertion request.
-     * This method is triggered right after a successful login
-     *
-     * @param Saml2Auth $saml2Auth
-     * @param $idpName
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
-     * @throws \Throwable
-     */
-    public function acs(Saml2Auth $saml2Auth, $idpName)
-    {
-        $errors = $saml2Auth->acs();
-
-        if (!empty($errors)) {
-	        dd($errors);
-            logger()->error('Saml2 error_detail', ['error' => $saml2Auth->getLastErrorReason()]);
-            session()->flash('saml2_error_detail', [$saml2Auth->getLastErrorReason()]);
-
-            logger()->error('Saml2 error', $errors);
-            session()->flash('saml2_error', $errors);
-            return redirect(config('saml2_settings.errorRoute'));
+        if(!$request->has('email')) {
+            return response()->json(['error' => "Email not provided"]);
         }
 
-        $samlUser = $saml2Auth->getSaml2User();
-
-        // TODO: Implement preventing reuse of a $messageId to stop replay attacks
-        // Problem : no expiration date is passed by salesforce
-        $messageId = $saml2Auth->getLastMessageId();
-
-        session()->put([
-            'saml_session_index' => $samlUser->getSessionIndex(),
-            'saml_name_id' => $samlUser->getNameId(),
-        ]);
-
-		$user = $this->salesforceService->getSyncedLocalUserFromSaml($samlUser);
-
-        auth()->login($user);
-        session()->flash('success', "Vous avez bien été identifié.");
-
-        $intended = session('url.intended');
-        if($intended) {
-            return redirect($intended);
+        if($salesforceService->emailExists($request->get('email'), 'User')) {
+            return response()->json(['redirect' => '/connexion/sso']);
         }
 
-        return redirect('/');
-    }
-
-
-    /**
-     * Initiate a logout request across all the SSO infrastructure.
-     *
-     * @throws \OneLogin\Saml2\Error
-     * @throws \Exception
-     */
-    public function salesforceLogout()
-    {
-        $returnTo = route('saml2_sls', 'salesforce');
-        $nameId = session('saml_name_id');
-        $sessionIndex = session('saml_session_index');
-
-        $saml2Auth = new Saml2Auth(Saml2Auth::loadOneLoginAuthFromIpdConfig('salesforce'));
-        return $saml2Auth->logout($returnTo, $nameId, $sessionIndex); //will actually end up in the sls endpoint
+        return response()->json(['redirect' => false]);
     }
 
     /**
-     * Process an incoming saml2 logout request.
-     * Disconnected from Salesforce, the user is then disconnected locally
+     * DEPRECATED : login happens externally by SSO
      *
-     * @param Saml2Auth $saml2Auth
-     * @param $idpName
-     * @return \Illuminate\Http\Response
-     * @throws \Exception
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function sls(Saml2Auth $saml2Auth, $idpName)
+    /*public function showLoginForm()
     {
-        $errors = $saml2Auth->sls($idpName, config('saml2_settings.retrieveParametersFromServer'));
-        if (!empty($errors)) {
-            logger()->error('Saml2 error', $errors);
-            session()->flash('saml2_error', $errors);
-            //throw new \Exception("Could not log out : ".json_encode($errors));
+        // Get URLs
+        $previousUrl = url()->previous();
+        $urlBase = url()->to('/');
+
+        // Set the previous url that we came from to redirect to after successful login but only if is internal
+        if (($previousUrl != $urlBase . '/connexion') && (substr($previousUrl, 0, strlen($urlBase)) === $urlBase)) {
+            session()->put('url.intended', $previousUrl);
         }
 
-        auth()->logout();
-        session()->save();
-        return redirect('/');
+        return view('auth.login');
+    }*/
+
+    /**
+     * DEPRECATED
+     *
+     * @param Request $request
+     * @param $user
+     */
+    public function authenticated(Request $request, $user)
+    {
+        session()->put('role', $user::ROLES[$user->role]);
     }
 }

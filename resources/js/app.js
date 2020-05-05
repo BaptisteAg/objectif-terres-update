@@ -31,6 +31,7 @@ window.SmoothScroll = require('smooth-scroll');
 require ('./pages/ads/new');
 require ('./pages/ads/show');
 require('./pages/header');
+require('./pages/auth/login-form');
 require('./pages/auth/user-form');
 require('./pages/threads/threads');
 require('./pages/dashboard');

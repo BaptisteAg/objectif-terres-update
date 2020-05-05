@@ -9,13 +9,13 @@
 ### Les rôles
 Liste des termes utilisées les différents rôles des utilisteurs du site Objectif Terres : 
 
-`pp` = porteur de projet
+`pp` = porteur de projet, qui peut créer des annonces ou des demandes d'accompagnement
 
-`advisor` = primo-accueillant
+`advisor` = primo-accueillant qui traite les demandes d'accompagnement
 
-`supervisor` = responsable territorial
+`supervisor` = responsable territorial qui suit l'activité de son territoire et assigne les demandes d'accompagnement
 
-`admin` = administrateur
+`admin` = administrateur qui édite le contenu CMS et la liste des utilisateurs
 
 ### Les models
 Traduction des principaux models utilisés : 
