@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Advisors;
 
+
+use App\Exports\Advisors\AdvisorsExport;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\JobOfferType;
@@ -10,13 +12,16 @@ use App\Services\Advisors\AdvisorsService;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
 use Carbon\Carbon;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 
 class AdvisorsController extends Controller
 {
-	protected $service;
+	protected $advisorsService;
 	protected $threadService;
 	protected $userService;
 	protected $adTypes;
@@ -30,7 +35,7 @@ class AdvisorsController extends Controller
 	 */
 	public function __construct(AdvisorsService $advisorsService, ThreadService $threadService, UserService $userService)
 	{
-		$this->service = $advisorsService;
+		$this->advisorsService = $advisorsService;
 		$this->threadService = $threadService;
 		$this->userService = $userService;
 		$this->adTypes = [
@@ -44,7 +49,7 @@ class AdvisorsController extends Controller
 
 	/**
 	 * @param Request $request
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 * @return Factory|View
 	 */
 	public function index(Request $request)
 	{
@@ -54,7 +59,7 @@ class AdvisorsController extends Controller
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
 
-		$ads = $this->service->findAllByUserAdvisor();
+		$ads = $this->advisorsService->findAllByUserAdvisor(true);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfNewProject = 3;
 
@@ -64,7 +69,7 @@ class AdvisorsController extends Controller
 
 	/**
 	 * @param Request $request
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 * @return Factory|View
 	 */
 	public function show(Request $request)
 	{
@@ -75,7 +80,7 @@ class AdvisorsController extends Controller
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
 
-		$ads = $this->service->showForAdvisor($request);
+		$ads = $this->advisorsService->showForAdvisor($request);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfNewProject = 3;
 		return view('pages.advisors.index', compact( 'projectStatuses',  'jobOfferTypes', 'ads', 'numberOfUnreadMessages',  'adTypesFaIcons', 'adTypes', 'numberOfNewProject'));
@@ -84,7 +89,7 @@ class AdvisorsController extends Controller
 
 	/**
 	 * Advisors help area controller
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 * @return Factory|View
 	 */
 	public function help()
 	{
@@ -92,9 +97,8 @@ class AdvisorsController extends Controller
 		return view('pages.advisors.help', compact('users'));
 	}
 
-
 	/**
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 * @return Factory|View
 	 */
 	public function registerNewUserPp()
 	{
@@ -102,7 +106,17 @@ class AdvisorsController extends Controller
 		return view('pages.advisors.register-new-user-pp', compact('cities'));
 	}
 
+	/**
+	 * @return Factory|View
+	 */
+	public function assistRequest(){
+		return view('pages.advisors.request-dashboard');
+	}
+
+	/**
+	 * @return BinaryFileResponse
+	 */
 	public function export(){
-		return Excel::download(new SupervisorExport($this->adService->findAllByUserSupervisor()), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
+		return Excel::download(new AdvisorsExport($this->advisorsService->findAllByUserAdvisor(false)), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
 	}
 }

@@ -226,12 +226,13 @@ class AdService
 
 	/**
 	 * Show all ads ads related to supervisor
-	 * @return LengthAwarePaginator
+	 * @param bool $toPaginate
+	 * @return LengthAwarePaginator|Collection
 	 */
-	public function findAllByUserSupervisor(): LengthAwarePaginator
+	public function findAllByUserSupervisor(bool $toPaginate)
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$ads = $this->repository->findAllByUserTerritoriesAndDates($supervisorLocationTerritoryCodes);
+		$ads = $this->repository->allInTerritories($supervisorLocationTerritoryCodes, $toPaginate);
 		return $ads;
 	}
 
@@ -240,7 +241,7 @@ class AdService
 	 * @param array $dates
 	 * @return mixed
 	 */
-	public function findAllByUserSupervisorBetweenDates(array $dates)
+	public function findAllByUserSupervisorBetweenDates(array $dates) : Collection
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$ads = $this->repository->findAllByUserTerritoriesAndDates($supervisorLocationTerritoryCodes, $dates);
@@ -276,7 +277,7 @@ class AdService
 	public function findAllAdsAndProjectsGroupByUserPp(): Collection
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$users = $this->repository->allInTerritoriesGroupByUserPp($supervisorLocationTerritoryCodes);
+		$users = $this->repository->allInTerritories($supervisorLocationTerritoryCodes, false)->groupBy('user_pp_id');
 		return $users;
 	}
 
@@ -466,7 +467,11 @@ class AdService
 					->orderBy('name', $filters->input('order'));
 			}
 		} else {
-			$adsFiltred->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
+			/**TODO find a way to group results first with projects and then ads. Each group has to be order by attribution_ads.created_at **/
+			$adsFiltred
+				->leftJoin('projects as p', 'p.id', '=', 'ads.project_id')
+				->orderByDesc('p.created_at')
+				->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
 				->orderByDesc('a.created_at');
 		}
 

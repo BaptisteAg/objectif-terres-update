@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Exports\Supervisors;
+namespace App\Exports;
 
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromView;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithTitle;
-use Maatwebsite\Excel\Events\AfterSheet;
 
 class PpExport implements FromView,  WithTitle, ShouldAutoSize
 {
@@ -14,10 +14,10 @@ class PpExport implements FromView,  WithTitle, ShouldAutoSize
 
 	/**
 	 * ProjectExport constructor.
-	 * @param object $ads
+	 * @param  $ads
 	 */
-	public function __construct(object $ads){
-		$this->ads = $ads;
+	public function __construct(Collection $ads){
+		$this->ads = $ads->unique('user_pp_id');
 	}
 
 	/**
@@ -25,7 +25,7 @@ class PpExport implements FromView,  WithTitle, ShouldAutoSize
 	 */
 	public function view(): View
 	{
-		return view('export.supervisors.pp_list', [
+		return view('export.pp_list', [
 			'ads' => $this->ads
 		]);
 	}

@@ -6,6 +6,7 @@ use App\Repositories\Ads\AdRepository;
 use App\Services\Ads\AdService;
 use App\Services\Users\UserService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 
@@ -34,12 +35,13 @@ class AdvisorsService
 
 	/**
 	 * Show all ads ads related to advisors
-	 * @return LengthAwarePaginator
+	 * @param bool $toPaginate
+	 * @return LengthAwarePaginator|Collection
 	 */
-	public function findAllByUserAdvisor(): LengthAwarePaginator
+	public function findAllByUserAdvisor(bool $toPaginate)
 	{
 		$advisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$ads = $this->repository->findAllByUserTerritoriesAndDates($advisorLocationTerritoryCodes);
+		$ads = $this->repository->allInTerritories($advisorLocationTerritoryCodes, $toPaginate);
 		return $ads;
 	}
 

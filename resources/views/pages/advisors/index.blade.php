@@ -52,12 +52,12 @@
 			@include('components.dashboard-filters')
 			<div class="columns  ">
 				<div class="column is-1  ">
-					<button class="button is-medium is-link is-rounded">
+					<a href="{{route('advisor.export')}}" class="button is-medium is-link is-rounded">
 						 <span class="icon">
 						  <i class="fas fa-table"></i>
 						</span>
 						<span>Exporter</span>
-					</button>
+					</a>
 				</div>
 				<div class="column is-1">
 					<a href="{{route('advisor.createNewPp')}}" class="button is-medium is-light is-rounded ">
@@ -93,7 +93,7 @@
 										<span>Date</span>
 									</a>
 								@else
-									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
+									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
 										<i class="fas fa-arrow-up"></i>
 										<span>Date</span>
 									</a>
@@ -110,7 +110,7 @@
 										<span>Titre</span>
 									</a>
 								@else
-									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
+									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
 										<i class="fas fa-arrow-down"></i>
 										<span>Titre</span>
 									</a>
@@ -129,7 +129,7 @@
 										<span>Nom du porteur de projet</span>
 									</a>
 								@else
-									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
+									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
 										<i class="fas fa-arrow-down"></i>
 										<span>Nom du porteur de projet</span>
 									</a>
@@ -168,7 +168,7 @@
 									@endif
 								</td>
 								<td>
-										{{$ad->attributionAd->created_at->format("d/m/Y")}}
+									{{$ad->attributionAd->created_at->format("d/m/Y")}}
 								</td>
 								<td>
 									<a href="{{route('ads.show', $ad->id)}}">{{$ad->title}}</a>
@@ -210,8 +210,18 @@
 										@endif
 									@endif
 								</td>
-								<td><a href="{{route('ads.show', $ad->id)}}"><span><i
-													class="fas fa-search"></i></span> <span>Voir le détail</span></a>
+								<td>
+									@if($ad->attributionAd->user_advisor_id === auth()->id())
+										<a href="{{route('advisor.assistRequest')}}">
+											<span><i class="fas fa-hands-helping"></i></span>
+											<span>Suivi de l'accompagnement</span>
+										</a>
+									@else
+										<a href="{{route('ads.show', $ad->id)}}">
+											<span><i class="fas fa-search"></i></span>
+											<span>Voir le détail</span>
+										</a>
+									@endif
 								</td>
 							</tr>
 						@endforeach

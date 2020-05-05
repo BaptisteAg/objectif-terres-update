@@ -2,6 +2,7 @@
 
 namespace App\Services\Projects;
 
+use App\Jobs\NotifySupportRequestAttribution;
 use App\Models\Department;
 use App\Models\Project;
 use App\Models\ProjectStatus;
@@ -21,18 +22,21 @@ class ProjectService
 	protected $repository;
 	protected $attributionAdsRepository;
 	protected $userService;
+	protected $notification;
 
 	/**
 	 * ProjectService constructor.
 	 * @param ProjectsRepository $projectsRepository
 	 * @param AttributionAdsRepository $attributionAdsRepository
 	 * @param UserService $userService
+	 * @param NotifySupportRequestAttribution $notification
 	 */
-	public function __construct(ProjectsRepository $projectsRepository, AttributionAdsRepository $attributionAdsRepository, UserService $userService)
+	public function __construct(ProjectsRepository $projectsRepository, AttributionAdsRepository $attributionAdsRepository, UserService $userService, NotifySupportRequestAttribution $notification)
 	{
 		$this->repository = $projectsRepository;
 		$this->attributionAdsRepository = $attributionAdsRepository;
 		$this->userService = $userService;
+		$this->notification = $notification;
 	}
 
 	/**
@@ -257,6 +261,9 @@ class ProjectService
 		}
 		$attributionAd->user_advisor_id = $request->input('user_advisor_id');
 		$attributionAd->save();
+		$this->notification->handle($attributionAd->ad->id);
+
+
 	}
 
 	/**

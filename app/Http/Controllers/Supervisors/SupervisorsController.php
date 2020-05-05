@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Supervisors;
 
-use App\Exports\Supervisors\SupervisorExport;
+use App\Exports\Supervisors\SupervisorsExport;
 use App\Http\Controllers\Controller;
 use App\Models\JobOfferType;
 use App\Models\ProductionGenre;
@@ -55,7 +55,7 @@ class SupervisorsController extends Controller
 	public function index(Request $request)
 	{
 		$request->session()->forget('_old_input');
-		$ads = $this->adService->findAllByUserSupervisor();
+		$ads = $this->adService->findAllByUserSupervisor(true);
 		$projectStatuses = ProjectStatus::all();
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
@@ -107,17 +107,16 @@ class SupervisorsController extends Controller
 	public function export(Request $request)
 	{
 		if (is_null($request->input('date_from')) && is_null($request->input('date_from'))) {
-			return Excel::download(new SupervisorExport($this->adService->findAllByUserSupervisor()), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
+			return Excel::download(new SupervisorsExport($this->adService->findAllByUserSupervisor(false)), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
 		} else {
 			$dates = [
 				DateTime::createFromFormat('d/m/Y', (string)$request->input('date_from'))->format('Y-m-d'),
 				DateTime::createFromFormat('d/m/Y', (string)$request->input('date_to'))->format('Y-m-d')
 			];
 			$ads = $this->adService->findAllByUserSupervisorBetweenDates($dates);
-			return Excel::download(new SupervisorExport($ads), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
+			return Excel::download(new SupervisorsExport($ads), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
 		}
 	}
-
 
 	/**
 	 * @param Request $request
@@ -126,7 +125,7 @@ class SupervisorsController extends Controller
 	public function attribute(Request $request)
 	{
 		$this->projectService->attributeProject($request);
-		return back()->with('success', 'Le projet à bien été attribué !');
+		return back()->with('success', 'La demande d\'accompagnement a bien été attribué !');
 	}
 
 

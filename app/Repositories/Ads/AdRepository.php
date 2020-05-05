@@ -2,6 +2,7 @@
 
 use App\Models\Ad;
 use Carbon\Carbon;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -46,95 +47,6 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		}
 		return $model;
 	}
-
-	/**
-	 * @param  $idUser
-	 * @return Collection
-	 */
-	public function allByIdUser($idUser): Collection
-	{
-		/** @var Collection $model */
-		$models = $this->entity
-			->where(["user_pp_id" => $idUser])
-			->with($this->getEagerLoading())
-			->get();
-		return $models;
-	}
-
-
-	/**
-	 * @param array $territoriesCode
-	 * @return Collection
-	 */
-	public function allAdsInTerritories(array $territoriesCode): Collection
-	{
-		/** @var Collection $model */
-		$models = $this->entity
-			->whereNull('project_id')
-			->where(function (Builder $query) use ($territoriesCode) {
-				$query->filterAdsTerritoryLocations($territoriesCode);
-			})
-			->with([
-				'attributionAd',
-				'attributionAd.adStatus',
-				'landSeekAd',
-				'landOfferAd',
-				'jobOfferAd',
-				'jobSeekAd'
-			])
-			->get();
-		return $models;
-	}
-
-	/**
-	 * @param array $territoriesCode
-	 * @return Collection
-	 */
-	public function allInTerritoriesGroupByUserPp(array $territoriesCode): Collection
-	{
-		/** @var Collection $model */
-		$models = $this->entity
-			->where(function (Builder $query) {
-				$query->whereNotNull('project_id');
-				$query->whereHas('attributionAd', function (Builder $query) {
-					$query->where('user_supervisor_id', '=', auth()->user()->id);
-				});
-			})
-			->orWhere(function (Builder $query) use($territoriesCode) {
-				$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
-					$query->whereIn('code', $territoriesCode);
-				});
-				$query->orWhereHas('cities', function (Builder $query) use ($territoriesCode) {
-					$query->whereIn('department_code', $territoriesCode);
-				});
-			})
-			->get()
-			->groupBy('user_pp_id');
-		return $models;
-	}
-
-	/**
-	 * @param array $territoriesCode
-	 * @param int $adStatusId
-	 * @return Collection
-	 */
-	public function allInTerritoriesByAdStatus(array $territoriesCode, int $adStatusId): Collection
-	{
-		/** @var Collection $models */
-		$models = $this->entity
-			->whereNull('project_id')
-			->where(function (Builder $query) use ($territoriesCode) {
-				$query->filterAdsterritoryLocations($territoriesCode);
-			})
-			->where(function (Builder $query) use ($adStatusId) {
-				$query->whereHas('attributionAd', function (Builder $subQuery) use ($adStatusId) {
-					$subQuery->where('ad_status_id', '=', $adStatusId);
-				});
-			})
-			->get();
-		return $models;
-	}
-
 
 	/**
 	 * Creates an ad.
@@ -184,14 +96,118 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		$ad->delete();
 	}
 
+
 	/**
-	 * Get all ads related to a supervisor : attribution ads or projects located in one of the territories managed by the supervisor
-	 * @param int $role
+	 * @param  $idUser
+	 * @return Collection
+	 */
+	public function allByIdUser($idUser): Collection
+	{
+		/** @var Collection $model */
+		$models = $this->entity
+			->where(["user_pp_id" => $idUser])
+			->with($this->getEagerLoading())
+			->get();
+		return $models;
+	}
+
+
+	/**
+	 * @param array $territoriesCode
+	 * @return Collection
+	 */
+	public function allAdsInTerritories(array $territoriesCode): Collection
+	{
+		/** @var Collection $model */
+		$models = $this->entity
+			->whereNull('project_id')
+			->where(function (Builder $query) use ($territoriesCode) {
+				$query->filterAdsTerritoryLocations($territoriesCode);
+			})
+			->with([
+				'attributionAd',
+				'attributionAd.adStatus',
+				'landSeekAd',
+				'landOfferAd',
+				'jobOfferAd',
+				'jobSeekAd'
+			])
+			->get();
+		return $models;
+	}
+
+	/**
+	 * Find all ads (simple ads or projects) in user (supervisor or advisor) territories
+	 * @param array $territoriesCode
+	 * @param bool $toPaginate
+	 * @return LengthAwarePaginator|Builder[]|Collection
+	 */
+	public function allInTerritories(array $territoriesCode, bool $toPaginate)
+	{
+		/** @var Collection $model */
+		$models = $this->entity
+			->where(function (Builder $query) {
+				$query->whereNotNull('project_id');
+				$query->whereHas('attributionAd', function (Builder $query) {
+					if (auth()->user()->role == 2) {
+						$query->where('user_advisor_id', '=', auth()->user()->id);
+					} else if (auth()->user()->role >= 3) {
+						$query->where('user_supervisor_id', '=', auth()->user()->id);
+					}
+				});
+			})
+			->orWhere(function (Builder $query) use ($territoriesCode) {
+				$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
+					$query->whereIn('code', $territoriesCode);
+				});
+				$query->orWhereHas('cities', function (Builder $query) use ($territoriesCode) {
+					$query->whereIn('department_code', $territoriesCode);
+				});
+			});
+		$models
+			/**TODO find a way to group results first with projects and then ads. Each group has to be order by attribution_ads.created_at **/
+			->leftJoin('projects as p', 'p.id', '=', 'ads.project_id')
+			->orderByDesc('p.created_at')
+			->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
+			->orderByDesc('a.created_at')
+			->with($this->getEagerLoadingForDashboards());
+		if ($toPaginate) {
+			$ads = $models->paginate(15);
+		} else {
+			$ads = $models->get();
+		}
+		return $ads;
+	}
+
+	/**
+	 * @param array $territoriesCode
+	 * @param int $adStatusId
+	 * @return Collection
+	 */
+	public function allInTerritoriesByAdStatus(array $territoriesCode, int $adStatusId): Collection
+	{
+		/** @var Collection $models */
+		$models = $this->entity
+			->whereNull('project_id')
+			->where(function (Builder $query) use ($territoriesCode) {
+				$query->filterAdsterritoryLocations($territoriesCode);
+			})
+			->where(function (Builder $query) use ($adStatusId) {
+				$query->whereHas('attributionAd', function (Builder $subQuery) use ($adStatusId) {
+					$subQuery->where('ad_status_id', '=', $adStatusId);
+				});
+			})
+			->get();
+		return $models;
+	}
+
+	/**
+	 * Get all ads (projects and ads) related to a supervisor or an advisor submitted between dates
 	 * @param array $territoryCodes
 	 * @param array|null $dates
-	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+	 * @return Builder[]|Collection
 	 */
-	public function findAllByUserTerritoriesAndDates(array $territoryCodes, array $dates = null)
+	public function findAllByUserTerritoriesAndDates(array $territoryCodes, array $dates)
 	{
 		$queryAds = Ad::where(function (Builder $builder) use ($territoryCodes) {
 			$builder->whereNotNull('project_id');
@@ -210,43 +226,18 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			});
 		})
 			->where(function (Builder $query) use ($dates) {
-				if (!is_null($dates)) {
-					$query->whereHas('project', function (Builder $subQuery) use ($dates) {
-						$subQuery->whereBetween('created_at', [$dates[0], $dates[1] . " 23:59:59"]);
+				$query->whereHas('project', function (Builder $subQuery) use ($dates) {
+					$subQuery->whereBetween('created_at', [$dates[0], $dates[1] . " 23:59:59"]);
+				});
+				$query->orWhere(function (Builder $subQuery) use ($dates) {
+					$subQuery->whereNull('project_id');
+					$subQuery->whereHas('attributionAd', function (Builder $q) use ($dates) {
+						$q->whereBetween('created_at', [$dates[0], $dates[1] . " 23:59:59"]);
 					});
-					$query->orWhere(function (Builder $subQuery) use ($dates) {
-						$subQuery->whereNull('project_id');
-						$subQuery->whereHas('attributionAd', function (Builder $q) use ($dates) {
-							$q->whereBetween('created_at', [$dates[0], $dates[1] . " 23:59:59"]);
-						});
-					});
-				}
+				});
 			});
-			$queryAds->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
-			->orderByDesc('a.created_at')
-			->with([
-				'project',
-				'project.projectStatus',
-				'userPp',
-				'cities',
-				'cities.department',
-				'cities.department.region',
-				'departments',
-				'departments.region',
-				'regions',
-				'attributionAd',
-				'attributionAd.adStatus',
-				'landSeekAd',
-				'landOfferAd',
-				'jobOfferAd',
-				'jobSeekAd'
+		$ads = $queryAds->with($this->getEagerLoadingForDashboards())->get();
 
-			]);
-		if (is_null($dates)) {
-			$ads = $queryAds->paginate(15);
-		} else {
-			$ads = $queryAds->get();
-		}
 		return $ads;
 	}
 
@@ -300,6 +291,27 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'attributionAd',
 			'attributionAd.adStatus',
 
+		];
+	}
+
+	private function getEagerLoadingForDashboards()
+	{
+		return [
+			'project',
+			'project.projectStatus',
+			'userPp',
+			'cities',
+			'cities.department',
+			'cities.department.region',
+			'departments',
+			'departments.region',
+			'regions',
+			'attributionAd',
+			'attributionAd.adStatus',
+			'landSeekAd',
+			'landOfferAd',
+			'jobOfferAd',
+			'jobSeekAd'
 		];
 	}
 }
