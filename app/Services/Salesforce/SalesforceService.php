@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\User;
 use App\Repositories\SalesForce\SalesForceRepository;
 use App\Repositories\Users\UserRepository;
+use Illuminate\Support\Facades\Hash;
 use Omniphx\Forrest\Repositories\TokenRepository;
 
 class SalesforceService
@@ -84,6 +85,7 @@ class SalesforceService
             "MailingPostalCode" => $city->zip_code,
             "MailingCity" => $city->name,
             "MailingCountry" => Country::findOrFail($data["country_id"])->name_fr_fr,
+            "OT_Password__c" => Hash::make($data["password"])
         ]);
         /**
          * array:3 [
@@ -176,11 +178,11 @@ class SalesforceService
      * @param string $email
      * @return bool
      */
-    public function emailExists(string $email) : bool
+    public function emailExists(string $email, string $object) : bool
     {
         $this->apiAuthenticationRefresh();
 
-        return !!$this->repository->findWhere('Contact', [
+        return !!$this->repository->findWhere($object, [
             'Email' => $email
         ]);
     }

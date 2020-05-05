@@ -54,15 +54,15 @@
 </div>
 
 @include('layouts.footer')
+<script>
+	window.csrf_token = "{{ csrf_token() }}"
+</script>
 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 <script>
-    window.csrf_token = "{{ csrf_token() }}"
-</script>
-<script>
     const vueHeader = new Vue({
         el: '#vue-header',
-        name: 'content'
+        name: 'header-search'
     });
 </script>
 <script>

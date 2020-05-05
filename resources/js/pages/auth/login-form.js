@@ -1,0 +1,61 @@
+import Vue from 'vue'
+
+Vue.component('login-form', {
+    components: {},
+    props: {
+        oldValues: {
+            type: Object
+        },
+    },
+    data() {
+        return {
+            email: this.oldValues.email || '',
+            hasPassedCheckpoint: !!this.oldValues.email,
+            isLoading: false
+        }
+    },
+    methods: {
+        onValidate(event) {
+            event.preventDefault();
+
+            if(!this.email) {
+                alert("Veuillez saisir votre adresse email")
+                return;
+            }
+
+            if(this.hasPassedCheckpoint) {
+                event.target.submit()
+                return;
+            }
+
+            let formData = new FormData;
+            formData.append('_token', window.csrf_token);
+            formData.append('email', this.email);
+
+            this.isLoading = true;
+
+            fetch('/connexion/checkpoint', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.error) {
+                        console.log(result.error)
+                        alert("Une erreur imprévue a eu lieu.");
+                        this.isLoading = false;
+                    }
+                    else if(result.redirect && result.redirect !== '') {
+                        location.href = result.redirect;
+                    }
+                    else {
+                        this.hasPassedCheckpoint = true;
+                        this.isLoading = false;
+                    }
+                })
+        },
+        onEmailChange(event) {
+            this.hasPassedCheckpoint = false;
+        }
+    }
+});
