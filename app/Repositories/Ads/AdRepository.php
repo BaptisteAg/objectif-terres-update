@@ -258,6 +258,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	private function getEagerLoading()
 	{
 		return [
+			'userPp',
 			'documents',
 			'cities',
 			'cities.department',

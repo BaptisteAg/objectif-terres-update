@@ -4,7 +4,7 @@
 		<p class="title is-2 has-text-centered">Suivi de la demande d'accompagnement</p>
 		<p class="subtitle has-text-black ">Statut actuel de la demande :
 			@if(is_null($ad->project))
-				<span class="tag is-light">L'annonce n'a pas le statut de projet</span>
+				<span class="tag is-light">L'annonce n'a pas de statut</span>
 			@else
 				@if($ad->project->projectStatus->name === "Accompagné")
 					<span class="tag is-success is-light is-medium">{{$ad->project->projectStatus->name}}</span>

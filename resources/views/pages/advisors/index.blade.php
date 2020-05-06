@@ -140,17 +140,17 @@
 							<th>
 								@if(request()->input('sort') !== 'project_statuses.name')
 									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'project_statuses.name'])) }}">
-										<span>Statut du projet</span>
+										<span>Statut de la demande</span>
 									</a>
 								@elseif(request()->input('sort') === 'project_statuses.name' && request()->input('order') === 'asc')
 									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'project_statuses.name'])) }}">
 										<i class="fas fa-arrow-up"></i>
-										<span>Statut du projet</span>
+										<span>Statut de la demande</span>
 									</a>
 								@else
 									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
 										<i class="fas fa-arrow-down"></i>
-										<span>Statut du projet</span>
+										<span>Statut de la demande</span>
 									</a>
 								@endif
 							</th>
@@ -212,7 +212,7 @@
 								</td>
 								<td>
 									@if($ad->attributionAd->user_advisor_id === auth()->id())
-										<a href="{{route('advisor.assistRequest')}}">
+										<a href="{{route('advisor.assistRequest', $ad->id)}}">
 											<span><i class="fas fa-hands-helping"></i></span>
 											<span>Suivi de l'accompagnement</span>
 										</a>

@@ -5,14 +5,18 @@ namespace App\Http\Controllers\Advisors;
 
 use App\Exports\Advisors\AdvisorsExport;
 use App\Http\Controllers\Controller;
+use App\Models\Ad;
 use App\Models\City;
 use App\Models\JobOfferType;
 use App\Models\ProjectStatus;
+use App\Models\ResponseTemplate;
+use App\Services\Ads\AdService;
 use App\Services\Advisors\AdvisorsService;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
@@ -24,6 +28,7 @@ class AdvisorsController extends Controller
 	protected $advisorsService;
 	protected $threadService;
 	protected $userService;
+	protected $adService;
 	protected $adTypes;
 	protected $adTypesFaIcons;
 
@@ -32,11 +37,13 @@ class AdvisorsController extends Controller
 	 * @param AdvisorsService $advisorsService
 	 * @param ThreadService $threadService
 	 * @param UserService $userService
+	 * @param AdService $adService
 	 */
-	public function __construct(AdvisorsService $advisorsService, ThreadService $threadService, UserService $userService)
+	public function __construct(AdvisorsService $advisorsService, ThreadService $threadService, UserService $userService, AdService $adService)
 	{
 		$this->advisorsService = $advisorsService;
 		$this->threadService = $threadService;
+		$this->adService = $adService;
 		$this->userService = $userService;
 		$this->adTypes = [
 			['name' => 'Offre foncière', 'value' => 'landOfferAd'],
@@ -63,7 +70,7 @@ class AdvisorsController extends Controller
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfNewProject = 3;
 
-		return view('pages.advisors.index', compact(  'projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'adTypes', 'adTypesFaIcons', 'numberOfNewProject'));
+		return view('pages.advisors.index', compact('projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'adTypes', 'adTypesFaIcons', 'numberOfNewProject'));
 	}
 
 
@@ -83,7 +90,7 @@ class AdvisorsController extends Controller
 		$ads = $this->advisorsService->showForAdvisor($request);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfNewProject = 3;
-		return view('pages.advisors.index', compact( 'projectStatuses',  'jobOfferTypes', 'ads', 'numberOfUnreadMessages',  'adTypesFaIcons', 'adTypes', 'numberOfNewProject'));
+		return view('pages.advisors.index', compact('projectStatuses', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'adTypesFaIcons', 'adTypes', 'numberOfNewProject'));
 
 	}
 
@@ -93,7 +100,7 @@ class AdvisorsController extends Controller
 	 */
 	public function help()
 	{
-		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser()) ;
+		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
 		return view('pages.advisors.help', compact('users'));
 	}
 
@@ -107,16 +114,33 @@ class AdvisorsController extends Controller
 	}
 
 	/**
+	 * @param int $adId
 	 * @return Factory|View
 	 */
-	public function assistRequest(){
-		return view('pages.advisors.request-dashboard');
+	public function assistRequest(int $adId)
+	{
+		$ad = $this->adService->find($adId);
+		$responseTemplates = ResponseTemplate::all();
+		$thread = $this->advisorsService->findSupportRequestThread($ad->id);
+		$supportRequestStatuses = $this->advisorsService->allAvailableSupportRequestStatusForAdvisors();
+		return view('pages.advisors.support-request-dashboard', compact('ad', 'supportRequestStatuses', 'responseTemplates', 'thread'));
+	}
+
+	/**
+	 * @param Request $request
+	 * @return RedirectResponse
+	 */
+	public function updateSupportRequestStatus(Request $request)
+	{
+		$this->advisorsService->updateSupportRequestStatus($request->input());
+		return back()->with('success', 'Le statut a bien été mis à jour !');
 	}
 
 	/**
 	 * @return BinaryFileResponse
 	 */
-	public function export(){
+	public function export()
+	{
 		return Excel::download(new AdvisorsExport($this->advisorsService->findAllByUserAdvisor(false)), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
 	}
 }

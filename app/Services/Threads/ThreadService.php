@@ -285,7 +285,7 @@ class ThreadService
 
 	/**
 	 * @param int $adId
-	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 * @return Collection
 	 */
 	public function findThreadsByUnreadMessageAndAdId(int $adId)
 	{
