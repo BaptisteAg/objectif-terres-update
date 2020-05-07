@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Throwable;
 
 
 class AdvisorsController extends Controller
@@ -116,13 +117,17 @@ class AdvisorsController extends Controller
 	/**
 	 * @param int $adId
 	 * @return Factory|View
+	 * @throws Throwable
 	 */
 	public function assistRequest(int $adId)
 	{
 		$ad = $this->adService->find($adId);
 		$responseTemplates = ResponseTemplate::all();
 		$thread = $this->advisorsService->findSupportRequestThread($ad->id);
-		$supportRequestStatuses = $this->advisorsService->allAvailableSupportRequestStatusForAdvisors();
+		if(! isset($thread)){
+			$thread = $this->advisorsService->createSupportRequestThread($ad->id);
+		}
+		$supportRequestStatuses = $this->advisorsService->findAllAvailableSupportRequestStatusForAdvisors();
 		return view('pages.advisors.support-request-dashboard', compact('ad', 'supportRequestStatuses', 'responseTemplates', 'thread'));
 	}
 

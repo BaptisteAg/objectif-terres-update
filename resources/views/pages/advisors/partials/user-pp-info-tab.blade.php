@@ -15,6 +15,7 @@
 					<i class="fas fa-map-marker-alt"></i>
 				</span>
 				{{$ad->userPp->address}}
+				{{$ad->userPp->city}}
 			</div>
 			<div class="column has-text-centered">
 				<p>

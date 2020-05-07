@@ -3,16 +3,17 @@
 namespace App\Services\Advisors;
 
 use App\Models\Ad;
-use App\Models\Project;
 use App\Models\ProjectStatus;
 use App\Models\Thread;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Threads\ThreadsRepository;
 use App\Services\Ads\AdService;
+use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Throwable;
 
 
 /**
@@ -24,6 +25,7 @@ class AdvisorsService
 	protected $repository;
 	protected $userService;
 	protected $adService;
+	protected $threadService;
 	protected $threadRepository;
 
 	/**
@@ -32,12 +34,14 @@ class AdvisorsService
 	 * @param UserService $userService
 	 * @param AdService $adService
 	 * @param ThreadsRepository $threadRepository
+	 * @param ThreadService $threadService
 	 */
-	public function __construct(AdRepository $adRepository, UserService $userService, AdService $adService, ThreadsRepository $threadRepository)
+	public function __construct(AdRepository $adRepository, UserService $userService, AdService $adService, ThreadsRepository $threadRepository, ThreadService $threadService)
 	{
 		$this->repository = $adRepository;
 		$this->userService = $userService;
 		$this->adService = $adService;
+		$this->threadService = $threadService;
 		$this->threadRepository = $threadRepository;
 	}
 
@@ -66,7 +70,7 @@ class AdvisorsService
 	/**
 	 * @return Collection
 	 */
-	public function allAvailableSupportRequestStatusForAdvisors() : Collection
+	public function findAllAvailableSupportRequestStatusForAdvisors() : Collection
 	{
 		$unavailableSupportRequestStatusesForAdvisors = [
 			ProjectStatus::ASSISTING_ID,
@@ -88,12 +92,28 @@ class AdvisorsService
 
 	/**
 	 * @param int $adId
-	 * @return Thread
+	 * @return Thread| null
 	 */
-	public function findSupportRequestThread(int $adId) : Thread
+	public function findSupportRequestThread(int $adId)
 	{
 		/** @var Thread $thread */
 		$thread = $this->threadRepository->findThreadByUserIdAndAdId(auth()->id(),$adId)->first();
+		return $thread;
+	}
+
+	/**
+	 * @param int $adId
+	 * @return Thread|null
+	 * @throws Throwable
+	 */
+	public function createSupportRequestThread(int $adId)
+	{
+		$threadData = [
+			'ad_id'=> $adId,
+			'advisor_id'=> auth()->user()->id
+		];
+		$this->threadService->create($threadData);
+		$thread = $this->findSupportRequestThread($adId);
 		return $thread;
 	}
 

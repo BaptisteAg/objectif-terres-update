@@ -55,6 +55,7 @@
             value: {},
             userId: {},
             isDisplay: '',
+            activeThreadId : '',
         },
         data() {
             return {

@@ -81,8 +81,8 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 		/** @var Thread $model */
 		$model = $this->entity
 			->where(['ad_id' => $adId])
-			->whereHas('messages', function (Builder $query) use ($userId) {
-				$query->where('sender_user_id', '=', $userId);
+			->whereHas('users', function (Builder $query) use ($userId) {
+				$query->where('thread_users.user_id', '=', $userId);
 			})
 			->with($this->getEagerLoading())
 			->get();

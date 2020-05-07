@@ -2,11 +2,18 @@
 
 @section ('title', 'Espace de suivi')
 
+@section('head-script')
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
+@endsection
+
 @section('main-content')
 	<section class="section">
 		<h1 class="title is-2 has-text-link">Suivi de l'accompagnement </h1>
 		<div id="advisor-support-request-dashboard">
-			<support-request-dashboard inline-template>
+			<support-request-dashboard
+					inline-template
+					:thread='{{ $thread->id }}'
+			>
 				<div class="columns">
 					<div class="column is-half">
 						<div class="card">
@@ -32,11 +39,11 @@
 									</li>
 								</ul>
 							</div>
-							<div v-show="tabsOpen.infoTabOpen === 'user-pp-info-tab'" class=" user-info">
+							<div v-show="tabsOpen.infoTabOpen === 'user-pp-info-tab'" class=" user-info-tab">
 								@include('pages.advisors.partials.user-pp-info-tab')
 							</div>
 							<div v-show="tabsOpen.infoTabOpen === 'support-request-info-tab'"
-								 class="support-request-info">
+								 class="support-request-info-tab">
 								@include('pages.advisors.partials.support-request-info-tab')
 							</div>
 
@@ -66,57 +73,40 @@
 									</li>
 								</ul>
 							</div>
-							<div class="card-content">
-								<div class="content">
-									<div id="messages-display" class="content">
-										<h3 class=" title is-3 has-text-link has-text-centered">Votre fil de discusion
-											au sujet de cet accompagnement </h3>
-									</div>
-									<div id="advisor-support-request-thread">
-										<vue-threads
-												inline-template
-												v-bind:is-display-in-thread-page=false
-												v-bind:is-user-ad-owner=false
-												init-thread='{{ $thread->id }}'
-												:user-logged-id="{{auth()->id()}}"
-												:user-role="{{auth()->user()->role}}"
-										>
-											<div>
-												<div class="columns is-vcentered " v-if="initialLoading === true">
-													<div class="column is-7">
-														<div id="loading" class="is-pulled-right">
-														</div>
-													</div>
-												</div>
-												<div class="columns" v-else-if="initialLoading === false">
-													<div class="column box ">
-														<header-message
-																v-bind:is-display="isDisplay"
-																v-model="messages"
-																:user-id="{{auth()->id()}}"
-														></header-message>
-														<display-message-content
-																v-model="messages"
-																:user-id="{{auth()->id()}}"
-														></display-message-content>
-														<form-message-reply
-																v-model="messages"
-																:user-id="{{auth()->id()}}"
-																@message-reply-success="onMessageReplySuccess"
-																v-bind:is-user-moderator="isUserModerator"
-																:response-templates="{{json_encode($responseTemplates)}}"
-														>
-														</form-message-reply>
-													</div>
-												</div>
-											</div>
-										</vue-threads>
+							<div v-show="tabsOpen.supportTabOpen === 'support-request-thread-tab'"
+								 class="support-request-thread-tab">
+								@include('pages.advisors.partials.support-request-thread-tab')
+							</div>
+							<div v-show="tabsOpen.supportTabOpen === 'support-request-documents-tab'"
+								 class="support-request-documents-tab">
+								<div class="card-content">
+									<h3 class=" title is-3 has-text-link has-text-centered">Listes de documents
+									</h3>
+									<p class="subtitle">Retrouvez ici l'ensemble des documents concernant le suivi de
+										cette demande d'accomapgnement</p>
+
+									<div class="content">
+										<div class="buttons">
+											<button class="button is-link is-light">
+											<span class="icon is-small">
+											<i class="fas fa-file"></i>
+											</span>
+												<span>rapport-entretien.pdf</span>
+											</button>
+										</div>
+										<div class="buttons">
+											<button class="button is-link is-light">
+											<span class="icon is-small">
+											<i class="fas fa-image"></i>
+											</span>
+												<span>photo-terrain.png</span>
+											</button>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 
 			</support-request-dashboard>
 		</div>
@@ -124,24 +114,17 @@
 @endsection
 
 @section('script')
+
 	<script>
         const vueAdvisorSupportRequestDashboard = new Vue({
             el: '#advisor-support-request-dashboard',
             name: 'content'
         });
 	</script>
-
-	<script>
-        const vueAdvisorThread = new Vue({
-            el: '#advisor-support-request-thread',
-            name: 'sub-content'
-        })
-	</script>
-
 	@if(count($ad->images) > 1)
 		<script src="{{asset('/js/bulma-carousel.js')}}"></script>
 		<script>
-            const carousel = bulmaCarousel.attach('#support-request-dashboard-ad-images', {
+            const carouselSupportRequestDashboard = bulmaCarousel.attach('#support-request-dashboard-ad-images', {
                 slidesToScroll: 1,
                 slidesToShow: 1,
                 loop: true,

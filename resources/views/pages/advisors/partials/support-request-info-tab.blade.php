@@ -52,7 +52,7 @@
 					</p>
 					@if(isset($ad->landSeekAd))
 						<p>
-							<span class="is-italic">Dans un rayon de (en km)</span>:{{$ad->locationable_radius ?? 'Non renseigné'}}
+							<span class="is-italic">Dans un rayon de (en km)</span>:{{$ad->landSeekAd->locationable_radius ?? 'Non renseigné'}}
 						</p>
 					@endif
 
@@ -131,9 +131,10 @@
 			<p>
 				<span class="is-italic">Bâtiments recherchés</span> :
 				@if(isset($ad->landSeekAd->buildings))
-					@if(isset($ad->landSeekAd->buildings->buildingType))
-						{{$ad->landSeekAd->buildings->buildingType->pluck('label')->implode(', ') }}
-					@endif
+					@foreach($ad->landSeekAd->buildings as $building)
+						<span class="is-lowercase">{{ $building->buildingType->label }} : {{ $building->requirement->label }}</span>
+						{{ $loop->last ? ' ' : ',' }}
+					@endforeach
 				@else
 					Non renseignés
 				@endif
@@ -151,7 +152,7 @@
 				@if($ad->landSeekAd->offerGenres->count() > 0)
 					{{$ad->landSeekAd->offerGenres->pluck('name')->implode(', ') }}
 				@else
-					Non renseignées
+					Aucune
 				@endif
 			</p>
 			<p>
@@ -165,45 +166,68 @@
 		</p>
 	</div>
 	<footer class="card-footer">
-
-		<div class="card-footer-item has-text-centered">
+		<div class="card-footer-item">
 			<div>
 				<div class="content">
-					<h5 class="has-text-centered">Statut de la demande </h5>
-					<h6 class=" has-text-centered">Statut actuel de la demande :
-						@if($ad->project->projectStatus->id === \App\Models\ProjectStatus::ASSISTING_ID)
-							<span class="tag is-success is-light">{{$ad->project->projectStatus->name}}</span>
-						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ESTABLISHING_ID)
-							<span class="tag is-success">{{$ad->project->projectStatus->name}}</span>
-						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::CALLING_BACK_ID)
-							<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
-						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::UNASSISTED_ID)
-							<span class="tag is-warning ">{{$ad->project->projectStatus->name}}</span>
-						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::HAVING_IDEA_ID)
-							<span class="tag is-primary ">{{$ad->project->projectStatus->name}}</span>
-						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ARCHIVE_ID)
-							<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>
-						@else
-							<span class="tag is-info">{{$ad->project->projectStatus->name}}</span>
-						@endif
-					</h6>
-					<p class="has-text-centered">Pour mettre à jour le statut de la demande,
-						séléctionnez une option : </p>
-				</div>
-				{!! Form::open(['route' => 'advisor.updateSupportRequestStatus', 'method'=>'post']) !!}
-				<div class="select">
-					<select name="support_request_status" v-on:change="showValidationModal()">
-						<option selected class="has-text-grey-light">Veuillez choisir...</option>
-						@foreach ($supportRequestStatuses as $supportRequestStatus)
-							<option value="{{$supportRequestStatus->id}}">{{$supportRequestStatus->name}}</option>
+					<h5 class="has-text-centered">Documents uploader par le porteur de projet</h5>
+					@if(isset($ad->documents))
+						@foreach($ad->documents as $document)
+							<div class="buttons is-centered">
+								<a href="/" download="{{$document->path}}">
+									<button class="button is-link is-light">
+											<span class="icon is-small">
+												@if(strstr($document->type,'/',true) === "image")
+													<i class="fas fa-image"></i>
+												@endif
+
+											</span>
+										<span>{{$document->name}}</span>
+									</button>
+								</a>
+							</div>
 						@endforeach
-					</select>
-					<input value="{{$ad->id}}" name="ad_id" type="hidden">
+					@endif
 				</div>
-				@include('pages.advisors.partials.validation-modal')
-				{!! Form::close() !!}
 			</div>
 		</div>
+		{{--		<div class="card-footer-item has-text-centered">--}}
+		{{--			<div>--}}
+		{{--				<div class="content">--}}
+		{{--					<h5 class="has-text-centered">Statut de la demande </h5>--}}
+		{{--					<h6 class=" has-text-centered">Statut actuel de la demande :--}}
+		{{--						@if($ad->project->projectStatus->id === \App\Models\ProjectStatus::ASSISTING_ID)--}}
+		{{--							<span class="tag is-success is-light">{{$ad->project->projectStatus->name}}</span>--}}
+		{{--						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ESTABLISHING_ID)--}}
+		{{--							<span class="tag is-success">{{$ad->project->projectStatus->name}}</span>--}}
+		{{--						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::CALLING_BACK_ID)--}}
+		{{--							<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>--}}
+		{{--						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::UNASSISTED_ID)--}}
+		{{--							<span class="tag is-warning ">{{$ad->project->projectStatus->name}}</span>--}}
+		{{--						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::HAVING_IDEA_ID)--}}
+		{{--							<span class="tag is-primary ">{{$ad->project->projectStatus->name}}</span>--}}
+		{{--						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ARCHIVE_ID)--}}
+		{{--							<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>--}}
+		{{--						@else--}}
+		{{--							<span class="tag is-info">{{$ad->project->projectStatus->name}}</span>--}}
+		{{--						@endif--}}
+		{{--					</h6>--}}
+		{{--					<p class="has-text-centered">Pour mettre à jour le statut de la demande,--}}
+		{{--						séléctionnez une option : </p>--}}
+		{{--				</div>--}}
+		{{--				{!! Form::open(['route' => 'advisor.updateSupportRequestStatus', 'method'=>'post']) !!}--}}
+		{{--				<div class="select">--}}
+		{{--					<select name="support_request_status" v-on:change="showValidationModal()">--}}
+		{{--						<option selected class="has-text-grey-light">Veuillez choisir...</option>--}}
+		{{--						@foreach ($supportRequestStatuses as $supportRequestStatus)--}}
+		{{--							<option value="{{$supportRequestStatus->id}}">{{$supportRequestStatus->name}}</option>--}}
+		{{--						@endforeach--}}
+		{{--					</select>--}}
+		{{--					<input value="{{$ad->id}}" name="ad_id" type="hidden">--}}
+		{{--				</div>--}}
+		{{--				@include('pages.advisors.partials.validation-modal')--}}
+		{{--				{!! Form::close() !!}--}}
+		{{--			</div>--}}
+		{{--		</div>--}}
 	</footer>
 
 </div>
