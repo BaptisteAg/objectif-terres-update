@@ -333,15 +333,15 @@ class AdService
 	public function countAdsByAdStatus(Collection $ads): array
 	{
 		$numberOfAdsByAdStatus = [
-			'Validée' => 0,
-			'En attente' => 0,
-			'Refusée' => 0,
-			'À modérer' => 0,
-			'Archivée' => 0
+			AdStatus::APPROVE_ID => 0,
+			AdStatus::PENDING_ID => 0,
+			AdStatus::REFUSE_ID => 0,
+			AdStatus::PENDING_MODERATION_STATUS_ID => 0,
+			AdStatus::ARCHIVE_ID => 0
 		];
 		foreach ($ads as $ad) {
 			foreach ($numberOfAdsByAdStatus as $key => $value) {
-				if ($key === $ad->attributionAd->adStatus->name) {
+				if ($key === $ad->attributionAd->adStatus->id) {
 					$numberOfAdsByAdStatus[$key]++;
 				}
 			}
@@ -370,7 +370,7 @@ class AdService
 		//START QUERY
 		$adsFiltred = (new Ad())->newQuery();
 
-		//Filter projetcs based on their locations if requested
+		//Filter projects based on their locations if requested
 		if ($filters->has('locations')) {
 			$locations = $filters->input('locations');
 			//If one or more departments are selected, get all ads located in departments and cities in departments
@@ -401,6 +401,20 @@ class AdService
 				$query->whereHas('attributionAd', function (Builder $subQuery) use ($dateStartFormatted, $dateEndFormatted) {
 					$subQuery->whereBetween('created_at', [$dateStartFormatted, $dateEndFormatted . " 23:59:59"]);
 				});
+			});
+		}
+
+		//If one or many support stgaes are selected, filter  ads based on their support stages
+		if ($filters->has('support_stages')) {
+			$adsFiltred->whereHas('project', function (Builder $query) use ($filters) {
+				$query->whereIn('support_stage_id', $filters->input('support_stages'));
+			});
+		}
+
+		//If one or many support states are selected, filter  ads based on their support states
+		if ($filters->has('support_states')) {
+			$adsFiltred->whereHas('project', function (Builder $query) use ($filters) {
+				$query->whereIn('support_state_id', $filters->input('support_states'));
 			});
 		}
 

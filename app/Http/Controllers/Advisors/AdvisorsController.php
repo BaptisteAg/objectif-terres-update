@@ -10,6 +10,8 @@ use App\Models\City;
 use App\Models\JobOfferType;
 use App\Models\ProjectStatus;
 use App\Models\ResponseTemplate;
+use App\Models\SupportStage;
+use App\Models\SupportState;
 use App\Services\Ads\AdService;
 use App\Services\Advisors\AdvisorsService;
 use App\Services\Threads\ThreadService;
@@ -62,6 +64,8 @@ class AdvisorsController extends Controller
 	public function index(Request $request)
 	{
 		$request->session()->forget('_old_input');
+		$supportStages = SupportStage::all();
+		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
 		$jobOfferTypes = JobOfferType::all();
 		$adTypes = $this->adTypes;
@@ -69,9 +73,8 @@ class AdvisorsController extends Controller
 
 		$ads = $this->advisorsService->findAllByUserAdvisor(true);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
-		$numberOfNewProject = 3;
-
-		return view('pages.advisors.index', compact('projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'adTypes', 'adTypesFaIcons', 'numberOfNewProject'));
+		$numberOfProjectToHandle = $this->advisorsService->findAllBySupportStageAndSupportState(SupportStage::FIRST_CONTACT_ID, SupportState::TO_HANDLE_ID)->count();
+		return view('pages.advisors.index', compact('supportStages', 'supportStates','projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'adTypes', 'adTypesFaIcons', 'numberOfProjectToHandle'));
 	}
 
 
@@ -83,6 +86,8 @@ class AdvisorsController extends Controller
 	{
 		$request->flash();
 
+		$supportStages = SupportStage::all();
+		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
 		$jobOfferTypes = JobOfferType::all();
 		$adTypes = $this->adTypes;
@@ -90,8 +95,8 @@ class AdvisorsController extends Controller
 
 		$ads = $this->advisorsService->showForAdvisor($request);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
-		$numberOfNewProject = 3;
-		return view('pages.advisors.index', compact('projectStatuses', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'adTypesFaIcons', 'adTypes', 'numberOfNewProject'));
+		$numberOfProjectToHandle = $this->advisorsService->findAllBySupportStageAndSupportState(SupportStage::FIRST_CONTACT_ID, SupportState::TO_HANDLE_ID);
+		return view('pages.advisors.index', compact('supportStages', 'supportStates','projectStatuses', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'adTypesFaIcons', 'adTypes', 'numberOfProjectToHandle'));
 
 	}
 
@@ -119,7 +124,7 @@ class AdvisorsController extends Controller
 	 * @return Factory|View
 	 * @throws Throwable
 	 */
-	public function assistRequest(int $adId)
+	public function showSupport(int $adId)
 	{
 		$ad = $this->adService->find($adId);
 		$responseTemplates = ResponseTemplate::all();
@@ -127,17 +132,19 @@ class AdvisorsController extends Controller
 		if(! isset($thread)){
 			$thread = $this->advisorsService->createSupportRequestThread($ad->id);
 		}
-		$supportRequestStatuses = $this->advisorsService->findAllAvailableSupportRequestStatusForAdvisors();
-		return view('pages.advisors.support-request-dashboard', compact('ad', 'supportRequestStatuses', 'responseTemplates', 'thread'));
+		$supportStages = SupportStage::all();
+		$supportStates = SupportState::all();
+		$projectStatuses = ProjectStatus::all();
+		return view('pages.advisors.support-dashboard', compact('ad', 'supportRequestStatuses', 'responseTemplates', 'thread', 'supportStates', 'supportStages', 'projectStatuses'));
 	}
 
 	/**
 	 * @param Request $request
 	 * @return RedirectResponse
 	 */
-	public function updateSupportRequestStatus(Request $request)
+	public function updateSupport(Request $request)
 	{
-		$this->advisorsService->updateSupportRequestStatus($request->input());
+		$this->advisorsService->updateSupport($request->input());
 		return back()->with('success', 'Le statut a bien été mis à jour !');
 	}
 

@@ -23,21 +23,21 @@ class CreateProjectsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-			$table->unsignedInteger('support_stages_id')->nullable();
-			$table->unsignedInteger('support_states_id')->nullable();
+			$table->unsignedInteger('support_stage_id')->nullable();
+			$table->unsignedInteger('support_state_id')->nullable();
 			$table->unsignedInteger('project_status_id')->nullable();
 
-            $table->index(["support_stages_id"], 'fk_projects_1_idx');
-            $table->index(["support_states_id"], 'fk_projects_2_idx');
+            $table->index(["support_stage_id"], 'fk_projects_1_idx');
+            $table->index(["support_state_id"], 'fk_projects_2_idx');
             $table->index(["project_status_id"], 'fk_projects_3_idx');
             $table->timestamps();
 
-            $table->foreign('support_stages_id', 'fk_projects_1_idx')
+            $table->foreign('support_stage_id', 'fk_projects_1_idx')
                 ->references('id')->on('support_stages')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
 
-            $table->foreign('support_states_id', 'fk_projects_2_idx')
+            $table->foreign('support_state_id', 'fk_projects_2_idx')
                 ->references('id')->on('support_states')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');

@@ -9,40 +9,25 @@ class ProjectStatusSeeder extends Seeder {
 	public function run(){
 		ProjectStatus::insert([
 			[
-				'name'=> 'A rappeler',
+				'name'=> 'En émergence',
 				"created_at" =>  \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
 			],
 			[
-				'name'=> 'Accompagné',
+				'name'=> 'En cours',
 				"created_at" =>  \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
 			],
 			[
-				'name'=> 'Non assigné',
+				'name'=> 'Abandonné',
 				"created_at" =>  \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
 			],
 			[
-				'name'=> 'Idée',
+				'name'=> 'Abouti',
 				"created_at" =>  \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
-			],
-			[
-				'name'=> 'En recherche',
-				"created_at" =>  \Carbon\Carbon::now(),
-				"updated_at" => \Carbon\Carbon::now()
-			],
-			[
-				'name'=> 'Installé',
-				"created_at" =>  \Carbon\Carbon::now(),
-				"updated_at" => \Carbon\Carbon::now()
-			],
-			[
-				'name'=> 'Archivée',
-				"created_at" =>  \Carbon\Carbon::now(),
-				"updated_at" => \Carbon\Carbon::now()
-			],
+			]
 
 		]);
 	}

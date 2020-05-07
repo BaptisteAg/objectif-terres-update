@@ -10,24 +10,24 @@
 
 		@include('components.advisor-tabs')
 
-		@if($numberOfNewProject !== 0 || $numberOfUnreadMessages !==0)
+		@if($numberOfProjectToHandle !== 0 || $numberOfUnreadMessages !==0)
 			<div id="notification-advisor" class="notification has-background-info">
 				<button id="close-notification-advisor" class="delete"></button>
-				@if($numberOfNewProject> 1)
+				@if($numberOfProjectToHandle> 1)
 					<p class="has-text-white-ter">
 						<i class="far fa-bell has-text-white-ter"></i>
 						Vous avez<a style="text-decoration: none"
 									href="/">
-							<strong>{{$numberOfNewProject}}
-								nouvelles demandes d'accompagnement</strong></a> !
+							<strong>{{$numberOfProjectToHandle}}
+								 demandes d'accompagnement à traiter ! </strong></a> !
 					</p>
-				@elseif ($numberOfNewProject === 1)
+				@elseif ($numberOfProjectToHandle === 1)
 					<p class="has-text-white-ter">
 						<i class="far fa-bell has-text-white-ter"></i>
 						Vous avez<a style="text-decoration: none"
 									href="/">
-							<strong>{{$numberOfNewProject}}
-								nouvelle demande d'accompagnement </strong></a>!
+							<strong>{{$numberOfProjectToHandle}}
+								 demande d'accompagnement à traiter! </strong></a>!
 					</p>
 				@else
 				@endif
@@ -140,17 +140,17 @@
 							<th>
 								@if(request()->input('sort') !== 'project_statuses.name')
 									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'project_statuses.name'])) }}">
-										<span>Statut de la demande</span>
+										<span>Avancement du projet</span>
 									</a>
 								@elseif(request()->input('sort') === 'project_statuses.name' && request()->input('order') === 'asc')
 									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'project_statuses.name'])) }}">
 										<i class="fas fa-arrow-up"></i>
-										<span>Statut de la demande</span>
+										<span>Avancement du projet</span>
 									</a>
 								@else
 									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
 										<i class="fas fa-arrow-down"></i>
-										<span>Statut de la demande</span>
+										<span>Avancement du projet</span>
 									</a>
 								@endif
 							</th>
@@ -191,28 +191,23 @@
 								</td>
 								<td>
 									@if(is_null($ad->project))
-
 									@else
-										@if($ad->project->projectStatus->name === "Accompagné")
-											<span class="tag is-success is-light">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->name ==="Installé")
-											<span class="tag is-success">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->name === "A rappeler")
-											<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->name === "Non assigné")
-											<span class="tag is-warning ">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->name === "Idée")
-											<span class="tag is-primary ">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->name === "Archivée")
-											<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>
-										@else
+										@if($ad->project->projectStatus->id === \App\Models\ProjectStatus::EMERGING_ID)
 											<span class="tag is-info">{{$ad->project->projectStatus->name}}</span>
+										@elseif($ad->project->projectStatus->id ===\App\Models\ProjectStatus::IN_PROGRESSING_ID)
+											<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>
+										@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ABANDONED_ID)
+											<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
+										@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ACCOMPLISHED_ID)
+											<span class="tag is-success ">{{$ad->project->projectStatus->name}}</span>
+										@else
+											<span class="tag is-warning">Pas de statut définis</span>
 										@endif
 									@endif
 								</td>
 								<td>
 									@if($ad->attributionAd->user_advisor_id === auth()->id())
-										<a href="{{route('advisor.assistRequest', $ad->id)}}">
+										<a href="{{route('advisor.showSupport', $ad->id)}}">
 											<span><i class="fas fa-hands-helping"></i></span>
 											<span>Suivi de l'accompagnement</span>
 										</a>

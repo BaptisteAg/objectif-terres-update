@@ -7,14 +7,14 @@
 					<span class="icon">
 						<i class="fas fa-envelope"></i>
 					</span>
-					{{$ad->userPp->email}}
+					{{$ad->userPp->email ?? 'Non renseigné'}}
 				</p>
 			</div>
 			<div class="column has-text-centered">
 				<span class="icon">
 					<i class="fas fa-map-marker-alt"></i>
 				</span>
-				{{$ad->userPp->address}}
+				{{$ad->userPp->address ?? 'Adresse non renseignée'}}
 				{{$ad->userPp->city}}
 			</div>
 			<div class="column has-text-centered">

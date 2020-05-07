@@ -299,6 +299,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	{
 		return [
 			'project',
+			'project.supportStage',
+			'project.supportState',
 			'project.projectStatus',
 			'userPp',
 			'cities',

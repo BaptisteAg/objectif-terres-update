@@ -127,8 +127,8 @@ Route::middleware('advisor')->prefix('mon-espace-primo-accueillant')->name('advi
 	Route::get('recherche', 'AdvisorsController@show')->name('show');
 	Route::get('création-compte-pp','AdvisorsController@registerNewUserPp')->name('createNewPp');
 	Route::get('export', 'AdvisorsController@export')->name('export');
-	Route::get('espace-suivi/{id}', 'AdvisorsController@assistRequest')->name('assistRequest');
-	Route::post('mise-a-jour-statut', 'AdvisorsController@updateSupportRequestStatus')->name('updateSupportRequestStatus');
+	Route::get('espace-suivi/{id}', 'AdvisorsController@showSupport')->name('showSupport');
+	Route::post('mise-a-jour-statut', 'AdvisorsController@updateSupport')->name('updateSupport');
 });
 
 Route::middleware('auth')->prefix('notification')->name('notification.')->namespace('Notifications')->group(function () {

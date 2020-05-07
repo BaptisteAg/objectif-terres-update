@@ -10,6 +10,9 @@
 	</thead>
 	<tr style="border-bottom: solid #000000 2px">
 		<th style="background-color: #bdbdbd; width: auto">Date de la demande</th>
+		<th style="background-color: #bdbdbd; width: auto">Stade de l'accompagnement</th>
+		<th style="background-color: #bdbdbd; width: auto">Etat de la demande</th>
+		<th style="background-color: #bdbdbd; width: auto">Avancement du projet</th>
 		<th style="background-color: #bdbdbd; width: auto">Titre du projet</th>
 		<th style="background-color: #bdbdbd; width: auto">Type de projet</th>
 		<th style="background-color: #bdbdbd; width: auto">Nom du porteur de projet</th>
@@ -48,6 +51,9 @@
 		@if(isset($ad->project))
 			<tr>
 				<td>{{$ad->project->created_at}}</td>
+				<td>{{$ad->project->supportStage->name ?? ''}}</td>
+				<td>{{$ad->project->supportState->name ?? ''}}</td>
+				<td>{{$ad->project->projectStatus->name ?? ''}}</td>
 				<td>{{$ad->title ?? ''}}</td>
 				<td>{{$ad->ad_type_full_name}}</td>
 				<td>{{$ad->userPp->first_name ?? ''}} {{$ad->userPp->name ?? ''}}</td>

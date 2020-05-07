@@ -6,6 +6,7 @@ use App\Models\Ad;
 use App\Models\ProjectStatus;
 use App\Models\Thread;
 use App\Repositories\Ads\AdRepository;
+use App\Repositories\Projects\ProjectsRepository;
 use App\Repositories\Threads\ThreadsRepository;
 use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
@@ -27,6 +28,7 @@ class AdvisorsService
 	protected $adService;
 	protected $threadService;
 	protected $threadRepository;
+	protected $projectRepository;
 
 	/**
 	 * AdvisorsService constructor.
@@ -35,14 +37,16 @@ class AdvisorsService
 	 * @param AdService $adService
 	 * @param ThreadsRepository $threadRepository
 	 * @param ThreadService $threadService
+	 * @param ProjectsRepository $projectsRepository
 	 */
-	public function __construct(AdRepository $adRepository, UserService $userService, AdService $adService, ThreadsRepository $threadRepository, ThreadService $threadService)
+	public function __construct(AdRepository $adRepository, UserService $userService, AdService $adService, ThreadsRepository $threadRepository, ThreadService $threadService, ProjectsRepository $projectsRepository)
 	{
 		$this->repository = $adRepository;
 		$this->userService = $userService;
 		$this->adService = $adService;
 		$this->threadService = $threadService;
 		$this->threadRepository = $threadRepository;
+		$this->projectRepository= $projectsRepository;
 	}
 
 	/**
@@ -68,25 +72,20 @@ class AdvisorsService
 	}
 
 	/**
-	 * @return Collection
-	 */
-	public function findAllAvailableSupportRequestStatusForAdvisors() : Collection
-	{
-		$unavailableSupportRequestStatusesForAdvisors = [
-			ProjectStatus::ASSISTING_ID,
-			ProjectStatus::UNASSISTED_ID
-		];
-		$supportRequestStatuses = ProjectStatus::whereNotIn('id', $unavailableSupportRequestStatusesForAdvisors)->get();
-		return $supportRequestStatuses;
-	}
-
-	/**
 	 * @param array $data
 	 */
-	public function updateSupportRequestStatus(array $data)
+	public function updateSupport(array $data)
 	{
 		$ad = Ad::find($data['ad_id']);
-		$ad->project->project_status_id = $data['support_request_status'];
+		if(isset($data['support_stage'])){
+			$ad->project->support_stage_id = $data['support_stage'];
+
+		}elseif(isset($data['support_state'])){
+			$ad->project->support_state_id = $data['support_state'];
+
+		}elseif(isset($data['project_status'])){
+			$ad->project->project_status_id = $data['project_status'];
+		}
 		$ad->project->save();
 	}
 
@@ -99,6 +98,17 @@ class AdvisorsService
 		/** @var Thread $thread */
 		$thread = $this->threadRepository->findThreadByUserIdAndAdId(auth()->id(),$adId)->first();
 		return $thread;
+	}
+
+	/**
+	 * @param int $supportStageId
+	 * @param int $supportStateId
+	 * @return mixed
+	 */
+	public function findAllBySupportStageAndSupportState(int $supportStageId, int $supportStateId)
+	{
+		$projects = $this->projectRepository->findAllByUserIdAndUserRoleAndSupportStageIdAndSupportStateId(auth()->user()->id, auth()->user()->role, $supportStageId, $supportStateId);
+		return $projects;
 	}
 
 	/**

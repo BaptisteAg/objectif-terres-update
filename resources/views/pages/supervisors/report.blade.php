@@ -12,18 +12,19 @@
 	@if ($numberOfAds == 0 and $numberOfProjects == 0 )
 
 		<div class="columns is-mobile is-centered">
-			<div class ="column is-half">
-				<p class="has-text-centered">Il n'y a pas d'annonces ou de demande d'accompagnement sur votre territoire.</p>
+			<div class="column is-half">
+				<p class="has-text-centered">Il n'y a pas d'annonces ou de demande d'accompagnement sur votre
+					territoire.</p>
 			</div>
 		</div>
 	@else
 		<div class="columns is-mobile is-centered is-variable is-8 ">
-				<div class="column is-2 ">
-					<div class="box has-background-link">
-						<p class="title has-text-white">{{$numberOfUsersPp}}</p>
-						<p class="heading has-text-white">porteurs de projet</p>
-					</div>
+			<div class="column is-2 ">
+				<div class="box has-background-link">
+					<p class="title has-text-white">{{$numberOfUsersPp}}</p>
+					<p class="heading has-text-white">porteurs de projet</p>
 				</div>
+			</div>
 			<div class="column is-2">
 				<div class="box has-background-info">
 					<p class="title has-text-white">{{$numberOfAds}}</p>
@@ -81,115 +82,99 @@
 		</div>
 		<section class="section">
 			@if ($numberOfAds >0)
-			<div class="columns is-mobile is-centered">
-				<div class="column is-two-thirds">
-					<div class="box">
-						<h3 class="title is-4 has-text-centered ">Répartition des annonces par statut</h3>
-						<nav class="level is-mobile">
-							<div class="level-item has-text-centered">
-								<div>
-									<p class="title is-1 has-text-success ">{{$percentageOfAdsByAdStatus['Validée']}}
-										%</p>
-									<p class="heading has-text-success"> validées</p>
-								</div>
-
-							</div>
-						</nav>
-						<nav class="level is-mobile">
-							<div class="level-item has-text-centered">
-								<div>
-									<p class="title has-text-primary">{{$percentageOfAdsByAdStatus['En attente']}} %</p>
-									<p class="heading ">en attentes de modification </p>
-								</div>
-							</div>
-							<div class="level-item has-text-centered ">
-								<div>
-									<p class="title has-text-warning">{{$percentageOfAdsByAdStatus['À modérer']}} %</p>
-									<p class="heading h">en attente de modération</p>
-								</div>
-							</div>
-							<div class="level-item has-text-centered ">
-								<div>
-									<p class="title has-text-danger">{{$percentageOfAdsByAdStatus['Refusée']}} %</p>
-									<p class="heading ">refusées</p>
-								</div>
-							</div>
-							<div class="level-item has-text-centered ">
-								<div>
-									<p class="title has-text-info">{{$percentageOfAdsByAdStatus['Archivée']}} % </p>
-									<p class="heading ">archivées</p>
-								</div>
-							</div>
-						</nav>
-					</div>
-				</div>
-			</div>
-			@endif
-			<br>
-			<br>
-			@if ($numberOfProjects >0)
-			<div class="columns is-mobile is-centered">
-				<div class="column is-two-thirds">
-					<div class="column">
+				<div class="columns is-mobile is-centered">
+					<div class="column is-two-thirds">
 						<div class="box">
-							<h3 class="title is-4 has-text-centered ">Répartition des demandes d'accompagnement par statut</h3>
+							<h3 class="title is-4 has-text-centered ">Répartition des annonces par statut</h3>
 							<nav class="level is-mobile">
 								<div class="level-item has-text-centered">
 									<div>
-										<p class="title is-1 has-text-success ">{{$percentageOfProjectsByProjectStatus['Installé']}}
+										<p class="title is-1 has-text-success ">{{$percentageOfAdsByAdStatus[\App\Models\AdStatus::APPROVE_ID]}}
 											%</p>
-										<p class="heading has-text-success"> installé</p>
+										<p class="heading has-text-success"> validées</p>
 									</div>
+
 								</div>
 							</nav>
 							<nav class="level is-mobile">
 								<div class="level-item has-text-centered">
 									<div>
-										<p class="title has-text-primary">{{$percentageOfProjectsByProjectStatus['Installé']}}
+										<p class="title has-text-primary">{{$percentageOfAdsByAdStatus[\App\Models\AdStatus::PENDING_ID]}}
 											%</p>
-										<p class="heading ">accompagné </p>
+										<p class="heading ">en attentes de modification </p>
 									</div>
 								</div>
 								<div class="level-item has-text-centered ">
 									<div>
-										<p class="title has-text-warning">{{$percentageOfProjectsByProjectStatus['Accompagné']}}
+										<p class="title has-text-warning">{{$percentageOfAdsByAdStatus[\App\Models\AdStatus::PENDING_MODERATION_STATUS_ID]}}
 											%</p>
-										<p class="heading ">a rappeler</p>
+										<p class="heading h">en attente de modération</p>
 									</div>
 								</div>
 								<div class="level-item has-text-centered ">
 									<div>
-										<p class="title has-text-danger">{{$percentageOfProjectsByProjectStatus['Non assigné']}}
+										<p class="title has-text-danger">{{$percentageOfAdsByAdStatus[\App\Models\AdStatus::REFUSE_ID]}}
 											%</p>
-										<p class="heading ">Non assigné</p>
+										<p class="heading ">refusées</p>
 									</div>
 								</div>
 								<div class="level-item has-text-centered ">
 									<div>
-										<p class="title has-text-grey">{{$percentageOfProjectsByProjectStatus['En recherche']}}
+										<p class="title has-text-info">{{$percentageOfAdsByAdStatus[\App\Models\AdStatus::ARCHIVE_ID]}}
 											% </p>
-										<p class="heading ">en recherche</p>
-									</div>
-								</div>
-								<div class="level-item has-text-centered ">
-									<div>
-										<p class="title has-text-link">{{$percentageOfProjectsByProjectStatus['Idée']}}
-											% </p>
-										<p class="heading ">idée</p>
-									</div>
-								</div>
-								<div class="level-item has-text-centered ">
-									<div>
-										<p class="title has-text-info">{{$percentageOfProjectsByProjectStatus['Archivée']}}
-											% </p>
-										<p class="heading ">archivée</p>
+										<p class="heading ">archivées</p>
 									</div>
 								</div>
 							</nav>
 						</div>
 					</div>
 				</div>
-			</div>
+			@endif
+			<br>
+			<br>
+			@if ($numberOfProjects >0)
+				<div class="columns is-mobile is-centered">
+					<div class="column is-two-thirds">
+						<div class="column">
+							<div class="box">
+								<h3 class="title is-4 has-text-centered ">Répartition des projets par avancement
+									statut</h3>
+								<nav class="level is-mobile">
+									<div class="level-item has-text-centered">
+										<div>
+											<p class="title is-1 has-text-success ">{{$percentageOfProjectsByProjectStatus[\App\Models\ProjectStatus::ACCOMPLISHED_ID]}}
+												%</p>
+											<p class="heading has-text-success"> abouti</p>
+										</div>
+									</div>
+								</nav>
+								<nav class="level is-mobile">
+									<div class="level-item has-text-centered">
+										<div>
+											<p class="title has-text-primary">{{$percentageOfProjectsByProjectStatus[\App\Models\ProjectStatus::IN_PROGRESSING_ID]}}
+												%</p>
+											<p class="heading ">en cours </p>
+										</div>
+									</div>
+									<div class="level-item has-text-centered ">
+										<div>
+											<p class="title has-text-danger">{{$percentageOfProjectsByProjectStatus[\App\Models\ProjectStatus::ABANDONED_ID]}}
+												%</p>
+											<p class="heading ">abandonné</p>
+										</div>
+									</div>
+									<div class="level-item has-text-centered ">
+										<div>
+											<p class="title has-text-info">{{$percentageOfProjectsByProjectStatus[\App\Models\ProjectStatus::EMERGING_ID]}}
+												% </p>
+											<p class="heading ">en émergence</p>
+										</div>
+									</div>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
 			@endif
 		</section>
 	@endif

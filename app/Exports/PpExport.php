@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromView;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -14,9 +13,9 @@ class PpExport implements FromView,  WithTitle, ShouldAutoSize
 
 	/**
 	 * ProjectExport constructor.
-	 * @param  $ads
+	 * @param  object $ads
 	 */
-	public function __construct(Collection $ads){
+	public function __construct(object $ads){
 		$this->ads = $ads->unique('user_pp_id');
 	}
 

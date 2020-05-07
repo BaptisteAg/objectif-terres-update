@@ -26,13 +26,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ProjectStatus extends Model
 {
-	public const CALLING_BACK_ID = 1;
-	public const ASSISTING_ID = 2;
-	public const UNASSISTED_ID = 3;
-	public const HAVING_IDEA_ID = 4;
-	public const RESEARCHING_ID = 5;
-	public const ESTABLISHING_ID = 6;
-	public const ARCHIVE_ID = 7;
+	public const EMERGING_ID = 1;
+	public const IN_PROGRESSING_ID = 2;
+	public const ABANDONED_ID = 3;
+	public const ACCOMPLISHED_ID = 4;
 
     /**
      * @var array

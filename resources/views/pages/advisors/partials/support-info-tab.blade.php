@@ -38,6 +38,27 @@
 				<p><span class="is-italic">Catégorie</span>
 					: {{$ad->ad_type_full_name ?? "Non renseignée"}} </p>
 
+				<p><span class="is-italic">Stade de l'accompagnement</span>
+					: {{$ad->project->supportStage->name ?? "Non renseignée"}} </p>
+
+				<p><span class="is-italic">État de la demande</span>
+					: {{$ad->project->supportState->name ?? "Non définis"}} </p>
+
+				<p><span class="is-italic">Avancement du projet</span>
+					:
+						@if($ad->project->projectStatus->id === \App\Models\ProjectStatus::EMERGING_ID)
+							<span class="tag is-info">{{$ad->project->projectStatus->name}}</span>
+						@elseif($ad->project->projectStatus->id ===\App\Models\ProjectStatus::IN_PROGRESSING_ID)
+							<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>
+						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ABANDONED_ID)
+							<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
+						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ACCOMPLISHED_ID)
+							<span class="tag is-success ">{{$ad->project->projectStatus->name}}</span>
+						@else
+							<span class="tag is-warning">Pas de statut définis</span>
+						@endif
+				</p>
+
 				@if(isset($ad->landOfferAd))
 					<p><span class="is-italic">Localisations</span>:
 				@else
@@ -170,7 +191,7 @@
 			<div>
 				<div class="content">
 					<h5 class="has-text-centered">Documents uploader par le porteur de projet</h5>
-					@if(isset($ad->documents))
+					@if($ad->documents->count() >0)
 						@foreach($ad->documents as $document)
 							<div class="buttons is-centered">
 								<a href="/" download="{{$document->path}}">
@@ -186,48 +207,12 @@
 								</a>
 							</div>
 						@endforeach
+						@else
+						<p class="">Aucun document n'a uploadé par le porteur de projet  </p>
 					@endif
 				</div>
 			</div>
 		</div>
-		{{--		<div class="card-footer-item has-text-centered">--}}
-		{{--			<div>--}}
-		{{--				<div class="content">--}}
-		{{--					<h5 class="has-text-centered">Statut de la demande </h5>--}}
-		{{--					<h6 class=" has-text-centered">Statut actuel de la demande :--}}
-		{{--						@if($ad->project->projectStatus->id === \App\Models\ProjectStatus::ASSISTING_ID)--}}
-		{{--							<span class="tag is-success is-light">{{$ad->project->projectStatus->name}}</span>--}}
-		{{--						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ESTABLISHING_ID)--}}
-		{{--							<span class="tag is-success">{{$ad->project->projectStatus->name}}</span>--}}
-		{{--						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::CALLING_BACK_ID)--}}
-		{{--							<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>--}}
-		{{--						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::UNASSISTED_ID)--}}
-		{{--							<span class="tag is-warning ">{{$ad->project->projectStatus->name}}</span>--}}
-		{{--						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::HAVING_IDEA_ID)--}}
-		{{--							<span class="tag is-primary ">{{$ad->project->projectStatus->name}}</span>--}}
-		{{--						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ARCHIVE_ID)--}}
-		{{--							<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>--}}
-		{{--						@else--}}
-		{{--							<span class="tag is-info">{{$ad->project->projectStatus->name}}</span>--}}
-		{{--						@endif--}}
-		{{--					</h6>--}}
-		{{--					<p class="has-text-centered">Pour mettre à jour le statut de la demande,--}}
-		{{--						séléctionnez une option : </p>--}}
-		{{--				</div>--}}
-		{{--				{!! Form::open(['route' => 'advisor.updateSupportRequestStatus', 'method'=>'post']) !!}--}}
-		{{--				<div class="select">--}}
-		{{--					<select name="support_request_status" v-on:change="showValidationModal()">--}}
-		{{--						<option selected class="has-text-grey-light">Veuillez choisir...</option>--}}
-		{{--						@foreach ($supportRequestStatuses as $supportRequestStatus)--}}
-		{{--							<option value="{{$supportRequestStatus->id}}">{{$supportRequestStatus->name}}</option>--}}
-		{{--						@endforeach--}}
-		{{--					</select>--}}
-		{{--					<input value="{{$ad->id}}" name="ad_id" type="hidden">--}}
-		{{--				</div>--}}
-		{{--				@include('pages.advisors.partials.validation-modal')--}}
-		{{--				{!! Form::close() !!}--}}
-		{{--			</div>--}}
-		{{--		</div>--}}
 	</footer>
 
 </div>

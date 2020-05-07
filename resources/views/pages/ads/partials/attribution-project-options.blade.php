@@ -2,52 +2,53 @@
 <div class="box has-text-centered">
 	<div class="container">
 		<p class="title is-2 has-text-centered">Suivi de la demande d'accompagnement</p>
-		<p class="subtitle has-text-black ">Statut actuel de la demande :
-			@if(is_null($ad->project))
-				<span class="tag is-light">L'annonce n'a pas de statut</span>
-			@else
-				@if($ad->project->projectStatus->name === "Accompagné")
-					<span class="tag is-success is-light is-medium">{{$ad->project->projectStatus->name}}</span>
-				@elseif($ad->project->projectStatus->name ==="Installé")
-					<span class="tag is-success is-medium">{{$ad->project->projectStatus->name}}</span>
-				@elseif($ad->project->projectStatus->name === "A rappeler")
-					<span class="tag is-danger is-light is-medium">{{$ad->project->projectStatus->name}}</span>
-				@elseif($ad->project->projectStatus->name === "Non assigné")
-					<span class="tag is-warning is-medium">{{$ad->project->projectStatus->name}}</span>
-				@elseif($ad->project->projectStatus->name === "Idée")
-					<span class="tag is-primary is-medium">{{$ad->project->projectStatus->name}}</span>
-				@elseif($ad->project->projectStatus->name === "Archivée")
-					<span class="tag is-info is-light is-medium">{{$ad->project->projectStatus->name}}</span>
-				@else
-					<span class="tag is-info is-medium">{{$ad->project->projectStatus->name}}</span>
-				@endif
-			@endif
-
-		</p>
+		{{--		<p class="subtitle has-text-black ">Statut actuel de la demande :--}}
+		{{--			@if(is_null($ad->project))--}}
+		{{--				<span class="tag is-light">L'annonce n'a pas de statut</span>--}}
+		{{--			@else--}}
+		{{--				@if($ad->project->projectStatus->name === "Accompagné")--}}
+		{{--					<span class="tag is-success is-light is-medium">{{$ad->project->projectStatus->name}}</span>--}}
+		{{--				@elseif($ad->project->projectStatus->name ==="Installé")--}}
+		{{--					<span class="tag is-success is-medium">{{$ad->project->projectStatus->name}}</span>--}}
+		{{--				@elseif($ad->project->projectStatus->name === "A rappeler")--}}
+		{{--					<span class="tag is-danger is-light is-medium">{{$ad->project->projectStatus->name}}</span>--}}
+		{{--				@elseif($ad->project->projectStatus->name === "Non assigné")--}}
+		{{--					<span class="tag is-warning is-medium">{{$ad->project->projectStatus->name}}</span>--}}
+		{{--				@elseif($ad->project->projectStatus->name === "Idée")--}}
+		{{--					<span class="tag is-primary is-medium">{{$ad->project->projectStatus->name}}</span>--}}
+		{{--				@elseif($ad->project->projectStatus->name === "Archivée")--}}
+		{{--					<span class="tag is-info is-light is-medium">{{$ad->project->projectStatus->name}}</span>--}}
+		{{--				@else--}}
+		{{--					<span class="tag is-info is-medium">{{$ad->project->projectStatus->name}}</span>--}}
+		{{--				@endif--}}
+		{{--			@endif--}}
+		{{--		</p>--}}
 		@if($ad->attributionAd->user_supervisor_id !== auth()->id())
 			@if(isset($ad->attributionAd->user_supervisor_id))
 				<p class="">Le responsable territorial de cette demande est
 					<strong>{{$ad->attributionAd->userSupervisor->first_name}} {{$ad->attributionAd->userSupervisor->name}}</strong>.
 				</p>
 			@endif
-			@if($ad->project->projectStatus->name !== "Non assigné")
-				@if(isset($ad->attributionAd->user_advisor_id))
-					<p class="">Cette demande est attribuée à
-						<strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>.
-					</p>
-				@endif
+
+			@if(isset($ad->attributionAd->user_advisor_id))
+				<p class="">Cette demande est attribuée à
+					<strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>.
+				</p>
+
 			@endif
 		@else
-			@if($ad->project->projectStatus->name === "Non assigné")
-				<p class="">Vous souhaitez attribuer cette demande à un primo-accueillant ?</p>
-			@else
-				@if(isset($ad->attributionAd->user_advisor_id))
-					<p class="">Cette demande est attribuée à
-						<strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>.
-					</p>
-				@endif
+			@if(isset($ad->attributionAd->user_advisor_id))
+				<p class="">Cette demande est attribuée à
+					<strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>.
+				</p>
 				<p>Vous souhaitez attribuer cette demande à un autre primo-accueillant ?</p>
+			@else
+				<div class="notification is-danger is-light">
+					Cette demande d'accompagnement n'a pas été encore attribuée à un primo-accueillant !
+				</div>
+				<p class="">Vous souhaitez attribuer cette demande ?</p>
 			@endif
+
 		@endif
 	</div>
 	<br>

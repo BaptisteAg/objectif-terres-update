@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\JobOfferType;
 use App\Models\ProductionGenre;
 use App\Models\ProjectStatus;
+use App\Models\SupportStage;
+use App\Models\SupportState;
 use App\Services\Ads\AdService;
 use App\Services\Projects\ProjectService;
 use App\Services\Threads\ThreadService;
@@ -56,16 +58,18 @@ class SupervisorsController extends Controller
 	{
 		$request->session()->forget('_old_input');
 		$ads = $this->adService->findAllByUserSupervisor(true);
+		$supportStages = SupportStage::all();
+		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
-		$notAssignProjectStatusId = ProjectStatus::where("id", '=', ProjectStatus::UNASSISTED_ID)->first()->id;
-		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsByStatusForLoggedUser($notAssignProjectStatusId);
+		$firstContactSupportStage = SupportStage::where("id", '=', SupportStage::FIRST_CONTACT_ID)->first()->id;
+		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsBySupportStageForLoggedUser($firstContactSupportStage);
 
-		return view('pages.supervisors.index', compact('adTypes', 'adTypesFaIcons', 'productionGenres', 'projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
+		return view('pages.supervisors.index', compact('adTypes', 'adTypesFaIcons', 'productionGenres', 'supportStages', 'supportStates', 'projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
 	}
 
 
@@ -77,16 +81,18 @@ class SupervisorsController extends Controller
 	{
 		$request->flash();
 		$ads = $this->adService->showForSupervisor($request);
+		$supportStages = SupportStage::all();
+		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
-		$notAssignProjectStatusId = ProjectStatus::where("id", '=', ProjectStatus::UNASSISTED_ID)->first()->id;
-		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsByStatusForLoggedUser($notAssignProjectStatusId);
+		$firstContactSupportStage = SupportStage::where("id", '=', SupportStage::FIRST_CONTACT_ID)->first()->id;
+		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsBySupportStageForLoggedUser($firstContactSupportStage);
 
-		return view('pages.supervisors.index', compact(  'projectStatuses', 'adTypes', 'adTypesFaIcons', 'productionGenres', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
+		return view('pages.supervisors.index', compact(  'projectStatuses','supportStages', 'supportStates', 'adTypes', 'adTypesFaIcons', 'productionGenres', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
 	}
 
 	/**
@@ -141,11 +147,10 @@ class SupervisorsController extends Controller
 		$numberOfValidateAds = $this->adService->findAllValidateAdsInSupervisorTerritories()->count();
 		$numberOfUsersPp = $this->adService->findAllAdsAndProjectsGroupByUserPp()->count();
 
-		$projects = $this->projectService->findAllProjectBySupervisor();
+		$projects = $this->projectService->findAllProjectsBySupervisor();
 		$numberOfProjects = $projects->count();
 		$numberOfProjectsByCategories = $this->projectService->countProjectsByCategories($projects);
 		$percentageOfProjectsByProjectStatus = $this->projectService->calculatePercentageOfProjectsByProjectStatus($projects);
-
 		return view('pages.supervisors.report', compact('numberOfAds', 'numberOfValidateAds', 'numberOfUsersPp', 'numberOfProjects', 'numberOfAdsByCategories', 'numberOfProjectsByCategories', 'percentageOfAdsByAdStatus', 'percentageOfProjectsByProjectStatus'));
 	}
 

@@ -173,17 +173,17 @@
 							<th>
 								@if(request()->input('sort') !== 'project_statuses.name')
 									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'project_statuses.name'])) }}">
-										<span>Statut de l'accompagnement</span>
+										<span>Avancement projet</span>
 									</a>
 								@elseif(request()->input('sort') === 'project_statuses.name' && request()->input('order') === 'asc')
 									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'project_statuses.name'])) }}">
 										<i class="fas fa-arrow-up"></i>
-										<span>Statut de l'accompagnement</span>
+										<span>Avancement projet</span>
 									</a>
 								@else
 									<a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
 										<i class="fas fa-arrow-down"></i>
-										<span>Statut de l'accompagnement</span>
+										<span>Avancement projet</span>
 									</a>
 								@endif
 							</th>
@@ -224,22 +224,17 @@
 								</td>
 								<td>
 									@if(is_null($ad->project))
-
 									@else
-										@if($ad->project->projectStatus->name === "Accompagné")
-											<span class="tag is-success is-light">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->name ==="Installé")
-											<span class="tag is-success">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->name === "A rappeler")
-											<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->name === "Non assigné")
-											<span class="tag is-warning ">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->name === "Idée")
-											<span class="tag is-primary ">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->name === "Archivée")
-											<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>
-										@else
+										@if($ad->project->projectStatus->id === \App\Models\ProjectStatus::EMERGING_ID)
 											<span class="tag is-info">{{$ad->project->projectStatus->name}}</span>
+										@elseif($ad->project->projectStatus->id ===\App\Models\ProjectStatus::IN_PROGRESSING_ID)
+											<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>
+										@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ABANDONED_ID)
+											<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
+										@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ACCOMPLISHED_ID)
+											<span class="tag is-success ">{{$ad->project->projectStatus->name}}</span>
+										@else
+											<span class="tag is-warning">Pas de statut définis</span>
 										@endif
 									@endif
 								</td>

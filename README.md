@@ -46,14 +46,20 @@ Traduction des principaux models utilisés :
 
 `Project` = projet en lien avec une demande d'accompagnement
 
+`ProjectStatus` = avancement du projet
+
 `Research` = recherche enregistrée
 
 `ResponseTemplate` = réponse type utilisé par le personnel de Terre de Lien
 
+`SupportStage` = stade de l'accompagnement
+
+`SupportState` = état de la demande
+
 `Thread` = fil de discussion
 
 `User` = utilisateur du site (tous roles confondus)
- 
+
  
 
 

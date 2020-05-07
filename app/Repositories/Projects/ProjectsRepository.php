@@ -14,15 +14,40 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 	}
 
 	/**
-	 * @param int $statusId
 	 * @param int $userId
+	 * @param int $userRole
+	 * @param int $supportStageId
 	 * @return Builder[]|\Illuminate\Database\Eloquent\Collection
 	 */
-	public function findAllByUserIdAndUserRoleAndProjectStatusId(int $userId, int $userRole, int $projectStatusId)
+	public function findAllByUserIdAndUserRoleAndSupportStageId(int $userId, int $userRole, int $supportStageId)
 	{
 		return $this->entity
-			->where(["project_status_id" => $projectStatusId])
-			->whereHas('ad', function (Builder $query) use ($userRole, $projectStatusId, $userId) {
+			->where(["support_stage_id" => $supportStageId])
+			->whereHas('ad', function (Builder $query) use ($userRole, $supportStageId, $userId) {
+				$query->whereHas('attributionAd', function (Builder $q) use ($userId, $userRole) {
+					if ($userRole === 2) {
+						$q->where('user_advisor_id', '=', $userId);
+					} elseif ($userRole === 3) {
+						$q->where('user_supervisor_id', '=', $userId);
+					}
+				});
+			})
+			->get();
+	}
+
+	/**
+	 * @param int $userId
+	 * @param int $userRole
+	 * @param int $supportStageId
+	 * @param int $supportStateId
+	 * @return mixed
+	 */
+	public function findAllByUserIdAndUserRoleAndSupportStageIdAndSupportStateId(int $userId, int $userRole, int $supportStageId, int $supportStateId)
+	{
+		return $this->entity
+			->where(["support_stage_id" => $supportStageId])
+			->where(["support_state_id" => $supportStateId])
+			->whereHas('ad', function (Builder $query) use ($userId, $supportStageId, $supportStateId, $userRole) {
 				$query->whereHas('attributionAd', function (Builder $q) use ($userId, $userRole) {
 					if ($userRole === 2) {
 						$q->where('user_advisor_id', '=', $userId);
@@ -70,7 +95,9 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 				'ad',
 				'ad.landSeekAd',
 				'ad.landOfferAd',
-				'projectStatus'
+				'supportStage',
+				'supportState',
+				'projectStatus',
 			])
 			->get();
 	}
