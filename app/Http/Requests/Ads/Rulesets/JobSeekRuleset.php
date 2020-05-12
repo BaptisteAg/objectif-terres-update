@@ -1,10 +1,10 @@
 <?php namespace App\Http\Requests\Ads\Rulesets;
 
-use App\Http\Requests\Rulesets\RulesetInterface;
+use App\Http\Requests\Ads\RulesetInterface;
 
 class JobSeekRuleset implements RulesetInterface
 {
-    public function get(): array
+    public function get(bool $isSupportRequest): array
     {
         //dd(request()->all());
         return [

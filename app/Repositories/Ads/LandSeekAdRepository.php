@@ -23,6 +23,7 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
         $landSeekAd = new LandSeekAd();
 
         $productionGenres = $data["production_genres"] ?? [];
+        $offerGenres = $data["offer_genres"] ?? [];
         $buildings = $data["buildings"] ?? [];
 
         if(in_array('other', $productionGenres)) {
@@ -33,6 +34,10 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
         $landSeekAd->fill($data);
 
         $landSeekAd->save();
+
+        if (count($offerGenres)) {
+            $landSeekAd->offerGenres()->attach($offerGenres);
+        }
 
         if (count($productionGenres)) {
             $landSeekAd->productionGenres()->attach($productionGenres);

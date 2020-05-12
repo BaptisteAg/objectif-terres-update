@@ -1,12 +1,12 @@
 <?php namespace App\Http\Requests\Ads\Rulesets;
 
-use App\Http\Requests\Rulesets\RulesetInterface;
+use App\Http\Requests\Ads\RulesetInterface;
 use App\Rules\HasProductionGenre;
 use App\Rules\HasZone;
 
 class LandOfferRuleset implements RulesetInterface
 {
-    public function get(): array
+    public function get(bool $isSupportRequest): array
     {
         //dd(request()->all());
         return [

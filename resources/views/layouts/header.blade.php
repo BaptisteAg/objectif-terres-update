@@ -201,15 +201,15 @@
 									<a class="navbar-item">Contact</a>
 								</div>
 							</div>
-							<a class="navbar-item">Orientation & accompagnement</a>
+							<a class="navbar-item">Témoignages & chiffres clés</a>
 						</div>
 						<div class="navbar-end">
 							<div class="navbar-item">
 								<div class="buttons">
 									<a class="navbar-item">Ressources utiles</a>
-									<a class="navbar-item">Témoignages & chiffres clés</a>
+									<a class="navbar-item button is-bordered" href="/accompagnement/creer">Être accompagné</a>
 
-									@auth
+									@if(false)
 										@if(auth()->user()->role === 1 )
 											<a href="{{ route('moderator.index') }}" class="button is-bordered">Espace
 												modérateur</a>
@@ -224,7 +224,7 @@
 												annonce</a>
 										@endif
 									@else
-										<a href="{{ route('ads.create') }}" class="button is-bordered">Déposer une
+										<a href="{{ route('ads.create') }}" class="navbar-item button is-bordered">Déposer une
 											annonce</a>
 									@endauth
 								</div>

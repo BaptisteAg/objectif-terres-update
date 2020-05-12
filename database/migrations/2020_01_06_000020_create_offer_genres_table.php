@@ -24,7 +24,9 @@ class CreateOfferGenresTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
+            $table->string('icon');
             $table->string('land_offer_label');
+            $table->boolean('land_seek_display');
             $table->timestamps();
         });
     }

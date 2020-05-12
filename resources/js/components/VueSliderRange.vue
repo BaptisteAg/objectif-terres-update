@@ -1,12 +1,12 @@
 <template>
     <div>
         <vue-slider
-            v-model="selectedMinMaxLabels"
-            :adsorb="true"
-            :data="Object.values(data)"
-            :marks="true"
-            :height="10"
-            :enable-cross="false"
+                v-model="selectedMinMaxLabels"
+                :adsorb="true"
+                :data="Object.values(data)"
+                :marks="true"
+                :height="10"
+                :enable-cross="false"
         ></vue-slider>
         <input type="hidden" :name="nameMin" :value="selectedMinMaxValues[0]">
         <input type="hidden" :name="nameMax" :value="selectedMinMaxValues[1]">
@@ -16,12 +16,13 @@
 <script>
     import VueSlider from 'vue-slider-component'
     import 'vue-slider-component/theme/default.css'
-    export default  {
+
+    export default {
         components: {
             VueSlider
         },
-        props:{
-            data : Object,
+        props: {
+            data: Object,
             nameMin: String,
             nameMax: String,
             value: {
@@ -30,13 +31,13 @@
             }
         },
         data: function () {
-            if(Array.isArray(this.value) && this.value.length) {
+            if (Array.isArray(this.value) && this.value.length) {
                 return {
-                    selectedMinMaxLabels: this.value,
-                    selectedMinMaxValues: [
-                        _.findKey(this.data, this.value[0]),
-                        _.findKey(this.data, this.value[1])
+                    selectedMinMaxLabels: [
+                        this.data[this.value[0]],
+                        this.data[this.value[1]]
                     ],
+                    selectedMinMaxValues: this.value,
                 }
             }
 

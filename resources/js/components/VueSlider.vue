@@ -29,11 +29,18 @@
             },
             name: String,
             value: {
-                type: Number,
+                type: String,
                 required: false
             }
         },
         data: function () {
+            if(this.value) {
+                return {
+                    sliderTextValue: this.data[this.value],
+                    sliderValue: this.value,
+                }
+            }
+
             const hasOld = this.oldData && Object.values(this.oldData).some(x => x);
             return {
                 sliderTextValue: hasOld ? this.oldData.textValue : "",

@@ -1,5 +1,8 @@
-import FormNewAdMixin from "./mixins/form-new-ad-mixin";
 import {maxLength, minLength, required} from 'vuelidate/lib/validators'
+import baseValidations from './base-validations'
+
+import FormNewAdMixin from "./mixins/form-new-ad-mixin";
+
 import TextAreaCounter from "../../../components/TextAreaCounter";
 import CustomCheckbox from "../../../components/CustomCheckbox"
 import Autocomplete from '../../../components/Autocomplete'
@@ -39,14 +42,16 @@ export default {
             }
         }
     },
-    validations: {
-        formInput: {
-            experienceFarming: {
-                required,
-                minLength: minLength(5),
-                maxLength: maxLength(1000)
-            },
+    validations() {
+        return {
+            formInput: {
+                ...baseValidations.formInput,
+                experienceFarming: {
+                    required,
+                    minLength: minLength(5),
+                    maxLength: maxLength(1000)
+                },
+            }
         }
     }
-
 };

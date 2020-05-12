@@ -1,8 +1,11 @@
 import {maxLength, minLength, numeric, minValue, required} from 'vuelidate/lib/validators'
+import baseValidations from './base-validations'
 
 import FormNewAdMixin from './mixins/form-new-ad-mixin'
+
 import TextAreaCounter from "../../../components/TextAreaCounter";
 import VueSliderRange from "../../../components/VueSliderRange";
+import VueSlider from "../../../components/VueSlider";
 import ZoneSelect from '../../../components/ZoneSelect'
 import AdTypeSelect from '../../../components/AdTypeSelect'
 import MultiSelect from "../../../components/MultiSelect";
@@ -16,6 +19,7 @@ export default Vue.extend({
         AdTypeSelect,
         ZoneSelect,
         VueSliderRange,
+        VueSlider,
         MultiSelect,
         CustomCheckbox,
         TextAreaCounter,
@@ -25,11 +29,19 @@ export default Vue.extend({
         const v = this.oldValues;
         const hasOld = Object.keys(v).length;
 
+        const extraFormInput = this.isSupportRequest ? {
+            offerGenres: hasOld ? v.land_seek.offer_genres : [],
+            //maxRent: hasOld ? v.land_seek.rent_max : '',
+        } : {};
+
         return {
             formInput: {
                 selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
-                surfaceRangeMin : hasOld ? v.land_seek.surface_range_min : 0,
-                surfaceRangeMax : hasOld ? v.land_seek.surface_range_max : 0,
+                surfaceRangeMin : hasOld ? v.land_seek.surface_range_min : '0',
+                surfaceRangeMax : hasOld ? v.land_seek.surface_range_max : '1000000',
+                landDescription: hasOld ? (v.land_seek.land_description || '') : '',
+                rentMax : hasOld ? v.land_seek.rent_max : '0',
+                priceMax : hasOld ? v.land_seek.price_max : '200000',
                 productionGenres: hasOld ? v.land_seek.production_genres : [],
                 productionTypeAdd: hasOld ? v.land_seek.production_type_add : '',
                 installationTypeId: hasOld ? v.land_seek.installation_type_id : '',
@@ -39,9 +51,7 @@ export default Vue.extend({
                 title: hasOld ? v.title : '',
                 documents: hasOld ? JSON.parse(v.documents) : [],
                 chartConfirmation: false,
-                //offerGenre: hasOld ? v.land_seek.offer_genre_id : '',
-                //minRent: hasOld ? v.land_seek.rent_min : '',
-                //maxRent: hasOld ? v.land_seek.rent_max : '',
+                ...extraFormInput
             }
         }
     },
@@ -59,23 +69,34 @@ export default Vue.extend({
     },
     methods: {
     },
-    validations: {
-        formInput: {
-            surfaceRangeMax: {
-                minValue: minValue(5)
-            },
-            productionGenres: {required},
-            installationTypeId: {required},
-            minRent: {numeric},
-            maxRent: {numeric},
-            experienceFarming: {
-                minLength: minLength(5),
-                maxLength: maxLength(1000),
-            },
-            chartConfirmation: {
-                checked(v) {
-                    return !!v
-                }
+    validations() {
+        const extraValidations = this.isSupportRequest ? {
+            offerGenres: {required},
+        } : {};
+
+        return {
+            formInput: {
+                ...baseValidations.formInput,
+                surfaceRangeMax: {
+                    minValue: minValue(5)
+                },
+                landDescription: {
+                    minLength: minLength(5),
+                    maxLength: maxLength(1000),
+                },
+                productionGenres: {required},
+                installationTypeId: {required},
+                rentMax: {numeric},
+                experienceFarming: {
+                    minLength: minLength(5),
+                    maxLength: maxLength(1000),
+                },
+                chartConfirmation: {
+                    checked(v) {
+                        return !!v
+                    }
+                },
+                ...extraValidations
             }
         }
     }

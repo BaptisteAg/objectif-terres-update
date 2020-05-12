@@ -35,6 +35,7 @@ class AdvisorsController extends Controller
 			['name' => 'Offre foncière', 'value' => 'landOfferAd'],
 			['name' => 'Recherche foncière', 'value' => 'landSeekAd'],
 		];
+		// TODO : remove ?
 		$this->adTypesFaIcons = ["fa-home", "fa-home"];
 	}
 

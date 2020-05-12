@@ -70,12 +70,10 @@ class LandSeekAd extends Model
         'is_bio',
         'production_type_add',
         'experience_farming',
+        'land_description',
         'surface_range_min',
-        'surface_range_max',
-        /*'has_farm_buildings',
-        'has_houses',
-        'rent_min',
-        'rent_max'*/
+        'rent_max',
+        'price_max',
     ];
 
 

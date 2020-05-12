@@ -1,4 +1,4 @@
-<div id="land_seek_form">
+<div id="land_seek_form" class="form-container">
     <form-wizard
             title=""
             subtitle=""
@@ -18,7 +18,14 @@
                     <div class="column"></div>
                     <div class="column is-half">
                         <div class="field">
-                            {!! Form::label('land_seek[surface_range][]', 'Surface recherchée* (en hectares)', ['class' => 'label']); !!}
+
+                            <label for="land_seek[surface_range_min]"
+                                   class='label has-tooltip has-tooltip-left'
+                                   data-tooltip="Faites glisser les curseurs pour définir la surface recherchée">
+
+                                Surface recherchée* (en hectares),
+                                <i class="fas fa-info-circle has-text-info"></i>
+                            </label>
                             <vue-slider-range
                                     ref="surfaceRangeMax"
                                     name-min="land_seek[surface_range_min]"
@@ -37,7 +44,24 @@
                         <br>
 
                         <div class="field">
-                            {!! Form::label('land_seek_farms_and_buildings', 'Habitation(s) et bâti(s)', ['class' => 'label']); !!}
+                            <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
+                                   data-tooltip="Décrivez le type de surface agricole : altitude, type de terre, besoin en eau, certification...">
+                                Description du terrain recherché
+                                <i class="fas fa-info-circle has-text-info"></i>
+                            </label>
+
+                            <text-area-counter
+                                    name="land_seek[land_description]"
+                                    :max-length=1500
+                                    :disabled="isInputDisabled"
+                                    ref="landDescription"
+                                    v-model="formInput.landDescription"
+                                    :vuelidate="$v.formInput.landDescription">
+                            </text-area-counter>
+                        </div>
+
+                        <div class="field">
+                            {!! Form::label('land_seek_farms_and_buildings', 'Description du terrain recherché', ['class' => 'label']); !!}
 
                             <table class="table">
                                 <thead>
@@ -65,6 +89,73 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        @if(!empty($isSupportRequest))
+                            <div class="field">
+                                <label for="land_seek[offer_genres][]"
+                                        class='label has-tooltip has-tooltip-left'
+                                        data-tooltip=" Si vous ne savez pas cochez les deux">
+
+                                    Accès au foncier souhaité*,
+                                    <i class="fas fa-info-circle has-text-info"></i>
+                                </label>
+
+                                <div class="columns">
+                                    @foreach($offerGenres as $i => $offerGenre)
+                                        @if($offerGenre["land_seek_display"])
+                                            <div class="column">
+                                                <custom-checkbox
+                                                        name="land_seek[offer_genres][]"
+                                                        input-value="{{$offerGenre["id"]}}"
+                                                        v-model="formInput.offerGenres"
+                                                        :disabled="isInputDisabled"
+                                                        ref="offerGenres">
+
+                                                    <i class="fa {{ $offerGenre["icon"] }}"
+                                                       style="font-size: 30px;"></i><br><br>
+                                                    <span style="font-size:16px">
+                                                        {{ $offerGenre["name"] }}
+                                                    </span>
+                                                </custom-checkbox>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
+
+                                <p id="offerGenreIdError" class="help is-danger" v-if="$v.formInput.offerGenres.$error">
+                                    Ce champ est requis.
+                                </p>
+                            </div>
+
+                            <div class="field" v-show="formInput.offerGenres.includes('1')">
+                                {!! Form::label('land_seek[rent_max]', 'Loyer maximum (en €)', ['class' => 'label']); !!}
+                                {!! Form::text('land_seek[rent_max]',
+                                          null,
+                                          ['min'=>1,
+                                          'class' => 'input',
+                                          'ref' => 'rentMax',
+                                          'v-model.trim' => 'formInput.rentMax',
+                                          ':disabled' => 'isInputDisabled'] ) !!}
+
+                                <p class="help is-danger" v-if="!$v.formInput.rentMax.numeric">Veuillez saisir des chiffres.</p>
+                            </div>
+
+                            <div class="field" v-show="formInput.offerGenres.includes('2')">
+                                {!! Form::label('land_seek[price_max]', 'Achat : Prix maximum', ['class' => 'label']); !!}
+
+                                <vue-slider
+                                    name="land_seek[price_max]"
+                                    :data="{
+                                        '50000' : '< 50 000€',
+                                        '100000' : '100 000 €',
+                                        '200000' : '200 000 €',
+                                        '300000' : '300 000 €',
+                                        '10000000' : '> 300 000 €',
+                                    }"
+                                    v-model="formInput.priceMax">
+                                </vue-slider>
+                            </div>
+                        @endif
                     </div>
                     <div class="column"></div>
                 </div>
@@ -122,10 +213,6 @@
                         <div class="field">
                             {!! Form::label('land_seek[installation_type_id]', 'Vous êtes installé·e(s) ou comptez vous installer...*', ['class' => 'label']); !!}
 
-                            <?php
-                            $installationTypesFaIcons = ["fa-user", "fa-user-friends", "fa-users", "fa-times"]
-                            ?>
-
                             <div class="columns">
                                 @foreach($installationTypes as $i => $installationType)
                                     <div class="column">
@@ -137,7 +224,7 @@
                                                 ref="installationTypeId"
                                                 :is-radio="true">
 
-                                            <i class="fa {{ $installationTypesFaIcons[$i] }}"
+                                            <i class="fa {{ $installationType["icon"] }}"
                                                style="font-size: 30px;"></i><br><br>
                                             <span style="font-size:16px">
                                                 {{ $installationType["name"] }}

@@ -4,7 +4,10 @@
         <div class="column"></div>
         <div class="column is-half">
             <div class="field" v-if="displaySelection">
-                <label class="label">Quel type d'annonce souhaitez-vous publier ?</label>
+
+                <label class="label" v-if="isSupportRequest">De quel accompagnement avez-vous besoin ?</label>
+                <label class="label" v-else>Quel type d'annonce souhaitez-vous publier ?</label>
+
                 <div class="columns adTypes">
                     <div class="column adType"
                          v-for="(adType,adTypeValue) in adTypes"
@@ -69,6 +72,10 @@
             name: {
                 type: String,
                 required: true
+            },
+            isSupportRequest: {
+                type: Boolean,
+                required: true
             }
         },
         data() {
@@ -78,6 +85,17 @@
         },
         computed: {
             adTypes() {
+                let extraAdTypes = this.isSupportRequest ? {} : {
+                    job_seek: {
+                        label: "Je cherche une opportunité professionnelle",
+                        icon: "fa-universal-access"
+                    },
+                    job_offer: {
+                        label: "Je propose une opportunité professionnelle",
+                        icon: "fa-universal-access"
+                    }
+                };
+
                 return {
                     land_seek: {
                         label: "Je cherche du foncier agricole",
@@ -87,14 +105,7 @@
                         label: "Je propose du foncier agricole",
                         icon: "fa-home"
                     },
-                    job_seek: {
-                        label: "Je cherche une opportunité professionnelle",
-                        icon: "fa-universal-access"
-                    },
-                    job_offer: {
-                        label: "Je propose une opportunité professionnelle",
-                        icon: "fa-universal-access"
-                    }
+                    ...extraAdTypes
                 }
             },
             currentAdType() {
