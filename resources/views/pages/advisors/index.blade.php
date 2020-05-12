@@ -206,17 +206,10 @@
 									@endif
 								</td>
 								<td>
-									@if($ad->attributionAd->user_advisor_id === auth()->id())
-										<a href="{{route('advisor.showSupport', $ad->id)}}">
-											<span><i class="fas fa-hands-helping"></i></span>
-											<span>Suivi de l'accompagnement</span>
-										</a>
-									@else
-										<a href="{{route('ads.show', $ad->id)}}">
-											<span><i class="fas fa-search"></i></span>
-											<span>Voir le détail</span>
-										</a>
-									@endif
+									<a href="{{route('advisor.showSupport', $ad->id)}}">
+										<span><i class="fas fa-hands-helping"></i></span>
+										<span>Suivi de l'accompagnement</span>
+									</a>
 								</td>
 							</tr>
 						@endforeach

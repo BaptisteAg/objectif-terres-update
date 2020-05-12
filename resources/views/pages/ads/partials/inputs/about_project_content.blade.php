@@ -13,7 +13,7 @@
 
     <text-area-counter
             name="about_project_content"
-            :max-length="1000"
+            :max-length="1500"
             :disabled="isInputDisabled"
             ref="aboutProject"
             v-model="formInput.aboutProject"

@@ -23,9 +23,9 @@ class CreateBuildingsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('number')->nullable();
-            $table->string('surface')->nullable();
-            $table->integer('price')->nullable();
+            $table->string('description', 1500)->nullable();
+            $table->float('surface')->nullable();
+            //$table->integer('price')->nullable();
             $table->timestamps();
         });
     }

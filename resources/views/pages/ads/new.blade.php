@@ -1,6 +1,10 @@
 @extends('default')
 
-@section('title', 'Publier une nouvelle annonce')
+@if(!empty($isSupportRequest))
+    @section('title', 'Demander un accompagnement')
+@else
+    @section('title', 'Publier une nouvelle annonce')
+@endif
 
 @section('main-content')
     <section style="padding-top:50px;padding-bottom:100px;">
@@ -29,6 +33,7 @@
             <new-ad id="new-ad"
                     inline-template
                     :old-ad-type-selected="'{{old('ad_type')}}'"
+                    :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
                     style="display:none"
                     :style="{display:loading ? 'none': 'block'}">
 
@@ -40,14 +45,20 @@
 
                     {{ csrf_field() }}
 
+                    @if(!empty($isSupportRequest))
+                        <input type="hidden" name="is_support_request" value="1">
+                    @endif
+
                     <ad-type-select v-model="adTypeSelected"
-                                    name="ad_type">
+                                    name="ad_type"
+                                    :is-support-request="{{empty($isSupportRequest)?'false':'true'}}">
                     </ad-type-select>
 
                     <new-land-seek-ad inline-template
                                       v-show="adTypeSelected === 'land_seek'"
                                       :is-input-disabled="adTypeSelected !== 'land_seek'"
                                       :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
+                                      :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
                                       @input-enabled="setEnabledForm"
                                       @form-complete="onFormComplete"
                                       ref="land_seek">
@@ -58,31 +69,34 @@
                                        v-show="adTypeSelected === 'land_offer'"
                                        :is-input-disabled="adTypeSelected !== 'land_offer'"
                                        :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
+                                       :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
                                        @input-enabled="setEnabledForm"
                                        @form-complete="onFormComplete"
                                        ref="land_offer">
                         @include('pages.ads.partials.landOffer.landOfferNewAd')
                     </new-land-offer-ad>
 
-                    <new-job-seek-ad inline-template
-                                      v-show="adTypeSelected === 'job_seek'"
-                                      :is-input-disabled="adTypeSelected !== 'job_seek'"
-                                      :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
-                                      @input-enabled="setEnabledForm"
-                                      @form-complete="onFormComplete"
-                                      ref="job_seek">
-                        @include('pages.ads.partials.jobSeek.jobSeekNewAd')
-                    </new-job-seek-ad>
+                    @if(empty($isSupportRequest))
+                        <new-job-seek-ad inline-template
+                                          v-show="adTypeSelected === 'job_seek'"
+                                          :is-input-disabled="adTypeSelected !== 'job_seek'"
+                                          :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
+                                          @input-enabled="setEnabledForm"
+                                          @form-complete="onFormComplete"
+                                          ref="job_seek">
+                            @include('pages.ads.partials.jobSeek.jobSeekNewAd')
+                        </new-job-seek-ad>
 
-                    <new-job-offer-ad inline-template
-                                      v-show="adTypeSelected === 'job_offer'"
-                                      :is-input-disabled="adTypeSelected !== 'job_offer'"
-                                      :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
-                                      @input-enabled="setEnabledForm"
-                                      @form-complete="onFormComplete"
-                                      ref="job_offer">
-                        @include('pages.ads.partials.jobOffer.jobOfferNewAd')
-                    </new-job-offer-ad>
+                        <new-job-offer-ad inline-template
+                                          v-show="adTypeSelected === 'job_offer'"
+                                          :is-input-disabled="adTypeSelected !== 'job_offer'"
+                                          :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
+                                          @input-enabled="setEnabledForm"
+                                          @form-complete="onFormComplete"
+                                          ref="job_offer">
+                            @include('pages.ads.partials.jobOffer.jobOfferNewAd')
+                        </new-job-offer-ad>
+                    @endif
 
 
                 </form>

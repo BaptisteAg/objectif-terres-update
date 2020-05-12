@@ -6,7 +6,6 @@ use App\Http\Requests\Ads\Rulesets\JobOfferRuleset;
 use App\Http\Requests\Ads\Rulesets\JobSeekRuleset;
 use App\Http\Requests\Ads\Rulesets\LandOfferRuleset;
 use App\Http\Requests\Ads\Rulesets\LandSeekRuleset;
-use App\Http\Requests\Rulesets\RulesetInterface;
 use App\Rules\HasZone;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -31,6 +30,7 @@ class AdRequest extends FormRequest
     {
         $rules = [
             'ad_type'                       => "required",
+            'is_support_request'            => "required",
             'land_seek'                     => ['nullable', 'array'],
             'land_offer'                    => ['nullable', 'array'],
             'job_offer'                     => ['nullable', 'array'],
@@ -57,7 +57,7 @@ class AdRequest extends FormRequest
 
         /** @var RulesetInterface $ruleset */
         $ruleset = app($rulesetsByAdType[$this->get('ad_type')]);
-        $rules = array_merge($rules, $ruleset->get());
+        $rules = array_merge($rules, $ruleset->get($this->boolean("is_support_request")));
 
         return $rules;
     }

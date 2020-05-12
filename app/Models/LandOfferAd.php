@@ -72,6 +72,16 @@ class LandOfferAd extends Model
         return $this->belongsTo(Ad::class);
     }
 
+    public function building()
+    {
+        return $this->belongsTo(Building::class);
+    }
+
+    public function house()
+    {
+        return $this->belongsTo(House::class);
+    }
+
 
     /**
      * @var array
@@ -86,22 +96,16 @@ class LandOfferAd extends Model
         'altitude',
         'has_buildings',
         'has_houses',
-        'buildings_description',
-        'houses_description',
         'price',
         'rent_price',
         'test_description',
+        'building_id',
+        'house_id',
 
-        //'confirm_price_fermage',
-        //'is_call_for_application_community',
-        //'is_call_for_application_terre_de_liens',
-        //'is_call_for_application_test_area',
-        //'land_price',
-        //'house_price',
-        //'building_price',
-        //'is_beneficiary',
-        //'building_id',
-        //'house_id',
-        //'land_id',
+        'is_beneficiary',
+        'is_activity_transfer',
+        'is_call_for_application_community',
+        'is_call_for_application_terre_de_liens',
+        'is_call_for_application_test_area',
     ];
 }

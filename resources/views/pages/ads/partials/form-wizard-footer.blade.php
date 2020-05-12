@@ -27,7 +27,11 @@
                 <wizard-button
                         class="button is-primary"
                         :style="props.fillButtonStyle">
-                    Demander la publication
+                    @if(!empty($isSupportRequest))
+                        Soumettre la demande
+                    @else
+                        Demander la publication
+                    @endif
                 </wizard-button>
             </span>
             <span @click="props.nextTab" @keyup.enter="props.nextTab" role="button" tabindex="0" v-else>

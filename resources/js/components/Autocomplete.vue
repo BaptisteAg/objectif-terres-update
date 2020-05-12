@@ -124,7 +124,7 @@
                             }
 
                             // Saint etienne ne déclenche pas la liste
-                            console.log("ppl");
+                            console.log(JSON.stringify(results));
 
                             this.$awesomplete.list = results;
                             this.$awesomplete.evaluate();

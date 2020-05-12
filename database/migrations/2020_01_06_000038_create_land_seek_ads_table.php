@@ -23,13 +23,18 @@ class CreateLandSeekAdsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+
+            $table->unsignedInteger('ad_id');
+            $table->unsignedInteger('installation_type_id')->nullable();
+
             $table->boolean('is_bio')->nullable();
             $table->string('production_type_add')->nullable();
+            $table->text('land_description')->nullable();
             $table->text('experience_farming')->nullable();
-            $table->unsignedInteger('ad_id');
 			$table->integer('surface_range_min')->nullable();
 			$table->integer('surface_range_max')->nullable();
-            $table->unsignedInteger('installation_type_id')->nullable();
+			$table->integer('price_max')->nullable();
+			$table->integer('rent_max')->nullable();
 
             $table->index(["installation_type_id"], 'fk_land_seek_ads_2_idx');
             $table->index(["ad_id"], 'fk_land_seek_ads_1_idx');
@@ -45,16 +50,6 @@ class CreateLandSeekAdsTable extends Migration
                 ->onUpdate('restrict');
 
             $table->timestamps();
-
-            /*$table->unsignedInteger('offer_genre_id')->nullable();
-            $table->boolean('has_farm_buildings')->nullable();
-            $table->boolean('has_houses')->nullable();
-            $table->index(["offer_genre_id"], 'fk_land_seek_ads_3_idx');
-
-            $table->foreign('offer_genre_id', 'fk_land_seek_ads_3_idx')
-                ->references('id')->on('offer_genres')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');*/
         });
     }
 

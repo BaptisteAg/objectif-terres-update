@@ -54,13 +54,15 @@
                     <vue-slider
                             :disabled="!hasCities"
                             :name="radiusName"
-                            :value="parseInt(radiusValue)"
+                            :value="radiusValue"
                             :data="{
-                                0: '0km',
-                                5: '5km',
-                                10: '10km',
-                                20: '20km',
-                                50: '50km'
+                                '0': '0km',
+                                '5': '5km',
+                                '10': '10km',
+                                '20': '20km',
+                                '50': '50km',
+                                '80': '80km',
+                                '100': '100km'
                             }"
                     ></vue-slider>
 <!--                    <div style="margin-top: 40px;">-->

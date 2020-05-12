@@ -27,62 +27,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
 
-class AdsController extends Controller
+class AdsController extends BaseController
 {
     public const PUBLISHED_AD_LIMIT_PER_USER = 3;
 
 	/**
-	 * @var AdService
-	 */
-	protected $adService;
-	protected $threadService;
-	protected $favoriteAdRepository;
-	protected $userService;
-
-	public function __construct(AdService $adService, ThreadService $threadService, FavoriteAdRepository $favoriteAdRepository, UserService $userService)
-	{
-		$this->adService = $adService;
-		$this->threadService = $threadService;
-		$this->favoriteAdRepository = $favoriteAdRepository;
-		$this->userService = $userService;
-
-	}
-
-	/**
+     * Display the ad creation form
 	 * @return \Illuminate\View\View
 	 */
 	public function create()
 	{
-		$surfaceRanges = SurfaceRange::all();
-		$installationTypes = InstallationType::all();
-		$bioCertifications = BioCertification::all();
-		$jobOfferTypes = JobOfferType::all();
-		$offerGenres = OfferGenre::all();
-		$agriculturalActivities = AgriculturalActivity::all();
-		$educationLevels = EducationLevel::all();
-		$buildingTypes = BuildingType::all();
-		$requirements = Requirement::all();
-		$productionGenres = $this->adService->getProductionGenresFlattened();
-		$productionGenresWithOther = clone $this->adService->getProductionGenresFlattened()
-			->concat([[
-				'id' => 'other',
-				'name' => 'Autre',
-				'children' => []
-			]]);
-
-		return view('pages.ads.new', compact(
-			'installationTypes',
-			'surfaceRanges',
-			'bioCertifications',
-			'jobOfferTypes',
-			'offerGenres',
-			'educationLevels',
-			'productionGenres',
-			'productionGenresWithOther',
-			'agriculturalActivities',
-			'buildingTypes',
-			'requirements'
-		));
+		return view('pages.ads.new', $this->getCreateFormVars());
 	}
 
 	/**
@@ -123,20 +78,6 @@ class AdsController extends Controller
         return $this->store($request)
             ->with('success', 'Votre annonce a bien été sauvegardée.');
 	}
-
-    /**
-     * @param AdRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Throwable
-     */
-    protected function store(AdRequest $request)
-    {
-        $data = $request->validated();
-
-        $ad = $this->adService->create($data);
-
-        return redirect()->route('ads.show', [$ad->id]);
-    }
 
 	/**
 	 * @param int $adId
@@ -225,4 +166,18 @@ class AdsController extends Controller
 		$this->adService->delete($ad);
 		return back()->with('success', 'Votre annonce a bien été supprimée');
 	}
+
+    /**
+     * @param AdRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
+     */
+    protected function store(AdRequest $request)
+    {
+        $data = $request->validated();
+
+        $ad = $this->adService->create($data);
+
+        return redirect()->route('ads.show', [$ad->id]);
+    }
 }

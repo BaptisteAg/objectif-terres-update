@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\OfferGenre;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class OfferGenreSeeder extends Seeder
@@ -13,9 +14,27 @@ class OfferGenreSeeder extends Seeder
     public function run()
     {
         OfferGenre::insert([
-            ['name' => 'Acquisition', "land_offer_label" => 'A la vente', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => 'Location', "land_offer_label" => 'En location', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => 'Test Agricole', "land_offer_label" => 'Pour du test agricole', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+            [
+                'name' => 'Achat',
+                "icon" => "fa-user",
+                "land_offer_label" => 'A la vente',
+                "land_seek_display" => 1,
+                "created_at" => Carbon::now(), "updated_at" => Carbon::now()
+            ],
+            [
+                'name' => 'Location',
+                "icon" => "fa-user-friends",
+                "land_offer_label" => 'En location',
+                "land_seek_display" => 1,
+                "created_at" => Carbon::now(), "updated_at" => Carbon::now()
+            ],
+            [
+                'name' => 'Test Agricole',
+                "icon" => "fa-users",
+                "land_offer_label" => 'Pour du test agricole',
+                "land_seek_display" => 0,
+                "created_at" => Carbon::now(), "updated_at" => Carbon::now()
+            ],
         ]);
     }
 }

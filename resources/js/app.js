@@ -14,11 +14,6 @@ import VueFormWizard from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 Vue.use(VueFormWizard);
 
-// Choose a deep merge strategy for the vuelidate properties
-Vue.config.optionMergeStrategies.validations = function (toVal, fromVal) {
-    return _.merge({}, fromVal, toVal);
-
-};
 
 require('vue-pagination-2/dist/vue-pagination-2.min');
 

@@ -1,20 +1,13 @@
 import Vue from "vue";
-import {maxLength, minLength, required} from "vuelidate/lib/validators";
 
 // Whitelist of html form inputs
 const INPUT_TAGS = ['input', 'textarea', 'select'];
-
-
-const scrollToTop = (() => {
-    var scroll = new SmoothScroll();
-    var anchor = document.querySelector('#vue-render');
-    return _ => scroll.animateScroll(anchor);
-})();
 
 export default {
     props: {
         oldValues: Object,
         isInputDisabled: Boolean,
+        isSupportRequest: Boolean
     },
     data() {
         return {
@@ -42,7 +35,20 @@ export default {
     },
     methods: {
         nextStep() {
-            scrollToTop();
+            const smoothScroll = new SmoothScroll();
+
+            const anchorElement = [].slice.call(
+                document.querySelectorAll('.form-container')
+            ).find(element => element.style.display !== "none");
+
+
+            // Monkey patch for smoothScroll.js
+            // Without this check, it bugs when attempting to scroll to the same current position
+            // and indefinetly scroll
+            const topPositionRelativeToWindow = Math.abs(anchorElement.getBoundingClientRect().top);
+            if(parseInt(topPositionRelativeToWindow) > 0) {
+                smoothScroll.animateScroll(anchorElement);
+            }
         },
         setUploading(bool) {
             this.uploading = bool;
@@ -137,46 +143,4 @@ export default {
             });
         }
     },
-    validations: {
-        formInput: {
-            selectedZones: {
-                hasZone(zones) { return zones.length; }
-            },
-            aboutProject: {
-                minLength: minLength(5),
-                maxLength: maxLength(1000),
-                required
-            },
-            aboutContent: {
-                minLength: minLength(5),
-                maxLength: maxLength(1000),
-                required
-            },
-            title: {
-                required,
-                minLength: minLength(5),
-            },
-            documents: {
-                /**
-                 * Only one document file is admitted
-                 *
-                 * @param {array} documents
-                 * @returns {boolean}
-                 */
-                oneDocument(documents) {
-                    const documentTypes = [
-                        "application/msword",
-                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                        "application/pdf"
-                    ];
-                    return documents.reduce((pdfCount, document) => {
-                        return pdfCount + (documentTypes.includes(document.type));
-                    }, 0) <= 1;
-                },
-                notCurrentlyUploading() {
-                    return !this.uploading;
-                }
-            }
-        }
-    }
 };

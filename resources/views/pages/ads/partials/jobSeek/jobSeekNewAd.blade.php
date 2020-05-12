@@ -1,4 +1,4 @@
-<div id="job_seek_ad_form">
+<div id="job_seek_ad_form" class="form-container">
     <form-wizard
             title=""
             subtitle=""

@@ -37,7 +37,7 @@ class Building extends Model
      * @var array
      */
     protected $fillable = [
-        'number', 'surface', 'price'
+        'description', 'surface'
     ];
 
     /**

@@ -54,7 +54,9 @@ class AdvisorsController extends Controller
 			['name' => 'Offre d\'emploi', 'value' => 'jobOfferAd'],
 			['name' => 'Recherche d\'emploi', 'value' => 'jobSeekAd'],
 		];
-		$this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access"];
+
+        // TODO : remove ?
+        $this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access"];
 	}
 
 	/**

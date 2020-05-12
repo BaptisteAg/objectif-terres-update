@@ -15,7 +15,8 @@ Vue.component('new-ad', {
         AdTypeSelect
     },
     props: {
-        oldAdTypeSelected: String
+        oldAdTypeSelected: String,
+        isSupportRequest: Boolean
     },
     data() {
         return {
@@ -63,7 +64,6 @@ Vue.component('new-ad', {
         document.querySelectorAll('.affix-wizard-footer[data-move-to-ref]').forEach($affix => {
             const $container = this.$refs[$affix.dataset.moveToRef].$el;
             const $removedAffix = $affix.parentElement.removeChild($affix);
-            console.log($container, $removedAffix)
             $container.appendChild($removedAffix);
         });
     },
@@ -79,7 +79,11 @@ Vue.component('new-ad', {
 
                 this.isSubmitting = false;
             } else {
-                if (!confirm('Vous êtes sur le point de demander la pubication de votre annonce. Elle sera traitée sous 7 jours par un modérateur.')) {
+                const text = this.isSupportRequest ?
+                    'Vous êtes sur le point de soumettre une demande d\'accompagnement. Elle sera traitée sous 7 jours par un primo-accueillant.' :
+                    'Vous êtes sur le point de demander la pubication de votre annonce. Elle sera traitée sous 7 jours par un modérateur.';
+
+                if (!confirm(text)) {
                     this.isSubmitting = false;
                 } else {
                     this.isSubmitting = true;

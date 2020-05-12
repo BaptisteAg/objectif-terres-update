@@ -51,31 +51,11 @@ class LoginController extends Controller
             return response()->json(['error' => "Email not provided"]);
         }
 
-        /*if($salesforceService->emailExists($request->get('email'), 'User')) {
+        if($salesforceService->emailExists($request->get('email'), 'User')) {
             return response()->json(['redirect' => '/connexion/sso']);
-        }*/
+        }
 
         return response()->json(['redirect' => false]);
     }
-
-    /**
-     * DEPRECATED : login happens externally by SSO
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    /*public function showLoginForm()
-    {
-        // Get URLs
-        $previousUrl = url()->previous();
-        $urlBase = url()->to('/');
-
-        // Set the previous url that we came from to redirect to after successful login but only if is internal
-        if (($previousUrl != $urlBase . '/connexion') && (substr($previousUrl, 0, strlen($urlBase)) === $urlBase)) {
-            session()->put('url.intended', $previousUrl);
-        }
-
-        return view('auth.login');
-    }*/
-
 
 }

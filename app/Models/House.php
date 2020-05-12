@@ -36,13 +36,13 @@ class House extends Model
      * @var array
      */
     protected $fillable = [
-        'number', 'surface', 'price'
+        'description', 'surface'
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\hasOne
      */
-    public function landOfferAds()
+    public function landOfferAd()
     {
         return $this->hasOne(LandOfferAd::class);
     }
