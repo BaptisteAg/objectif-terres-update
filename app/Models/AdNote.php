@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * App\Models\AdNote
  *
  * @property int $id
- * @property string $content
+ * @property string $value
  * @property int $user_id
  * @property string|null $contact_name
  * @property int $ad_id
+ * @property int $project_data_key
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Ad $ad
@@ -40,7 +41,7 @@ class AdNote extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'ad_id', 'content', 'user_id', 'contact_name'
+		'ad_id', 'value', 'user_id', 'contact_name', 'project_data_key_id'
 	];
 
 	/**
@@ -58,4 +59,14 @@ class AdNote extends Model
 	{
 		return $this->belongsTo(User::class);
 	}
+
+	/**
+	 * @return BelongsTo
+	 */
+	public function projectDataKey()
+	{
+		return $this->belongsTo(ProjectDataKey::class);
+	}
+
+
 }

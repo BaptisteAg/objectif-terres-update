@@ -9,17 +9,22 @@
 @section('main-content')
 	<section class="section">
 		<h1 class="title is-2 has-text-link">Suivi de l'accompagnement </h1>
-		@if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
-			<p>Vous êtes le primo-accueillant pour cette demande !</p>
+		@if(!is_null($ad->attributionAd->userAdvisor))
+			@if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
+				<p>Vous êtes le primo-accueillant pour cette demande !</p>
+			@else
+				<p>Cette demande est attribuée
+					à {{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}
+					.</p>
+			@endif
 		@else
-			<p>Cette demande est attribuée
-				à {{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}
-				.</p>
+			<p>Cette demande n'a pas été encore attribuée à un primo-accueillant</p>
 		@endif
 		<div id="advisor-support-request-dashboard">
 			<support-request-dashboard
 					inline-template
 					:thread='{{ $thread->id }}'
+					:ad-id="{{$ad->id}}"
 			>
 				<div>
 					{!! Form::open(['route' => 'advisor.updateSupport', 'method'=>'post']) !!}
@@ -97,8 +102,8 @@
 												<span>Profil porteur de projet</span>
 											</a>
 										</li>
-										<li :class="{ 'is-active' : tabsOpen.infoTabOpen === 'support-request-info-tab'}">
-											<a v-on:click="openInfoTab('support-request-info-tab')">
+										<li :class="{ 'is-active' : tabsOpen.infoTabOpen === 'support-info-tab'}">
+											<a v-on:click="openInfoTab('support-info-tab')">
 												<span class="icon is-small"><i class="fas fa-hands-helping"></i></span>
 												<span>Demande d'accompagnement</span>
 											</a>
@@ -114,8 +119,8 @@
 								<div v-show="tabsOpen.infoTabOpen === 'user-pp-info-tab'" class=" user-info-tab">
 									@include('pages.advisors.partials.user-pp-info-tab')
 								</div>
-								<div v-show="tabsOpen.infoTabOpen === 'support-request-info-tab'"
-									 class="support-request-info-tab">
+								<div v-show="tabsOpen.infoTabOpen === 'support-info-tab'"
+									 class="support-info-tab">
 									@include('pages.advisors.partials.support-info-tab')
 								</div>
 
@@ -125,58 +130,38 @@
 							<div class="card">
 								<div class="tabs is-toggle is-fullwidth">
 									<ul>
-										<li :class="{ 'is-active' : tabsOpen.supportTabOpen === 'support-request-notes-tab'}">
-											<a v-on:click="openSupportTab('support-request-notes-tab')">
+										<li :class="{ 'is-active' : tabsOpen.supportTabOpen === 'support-notes-tab'}">
+											<a v-on:click="openSupportTab('support-notes-tab')">
 												<span class="icon is-small"><i class="fas fa-sticky-note"></i></span>
 												<span>Notes</span>
 											</a>
 										</li>
-										<li :class="{ 'is-active' : tabsOpen.supportTabOpen === 'support-request-thread-tab'}">
-											<a v-on:click="openSupportTab('support-request-thread-tab')">
+										<li :class="{ 'is-active' : tabsOpen.supportTabOpen === 'support-thread-tab'}">
+											<a v-on:click="openSupportTab('support-thread-tab')">
 												<span class="icon is-small"><i class="fas fa-comments"></i></span>
 												<span>Messages</span>
 											</a>
 										</li>
-										<li :class="{ 'is-active' : tabsOpen.supportTabOpen === 'support-request-documents-tab'}">
-											<a v-on:click="openSupportTab('support-request-documents-tab')">
+										<li :class="{ 'is-active' : tabsOpen.supportTabOpen === 'support-documents-tab'}">
+											<a v-on:click="openSupportTab('support-documents-tab')">
 												<span class="icon is-small"><i class="fas fa-paperclip"></i></span>
 												<span>Documents</span>
 											</a>
 										</li>
 									</ul>
 								</div>
-								<div v-show="tabsOpen.supportTabOpen === 'support-request-thread-tab'"
-									 class="support-request-thread-tab">
+								<div v-show="tabsOpen.supportTabOpen === 'support-notes-tab'"
+									 class="support-notes-tab">
+									@include('pages.advisors.partials.support-notes-tab')
+								</div>
+								<div v-show="tabsOpen.supportTabOpen === 'support-thread-tab'"
+									 class="support-thread-tab">
 									@include('pages.advisors.partials.support-thread-tab')
 								</div>
-								<div v-show="tabsOpen.supportTabOpen === 'support-request-documents-tab'"
-									 class="support-request-documents-tab">
-									<div class="card-content">
-										<h3 class=" title is-3 has-text-link has-text-centered">Listes de documents
-										</h3>
-										<p class="subtitle">Retrouvez ici l'ensemble des documents concernant le suivi
-											de
-											cette demande d'accomapgnement</p>
+								<div v-show="tabsOpen.supportTabOpen === 'support-documents-tab'"
+									 class="support-documents-tab">
+									@include('pages.advisors.partials.support-documents-tab')
 
-										<div class="content">
-											<div class="buttons">
-												<button class="button is-link is-light">
-											<span class="icon is-small">
-											<i class="fas fa-file"></i>
-											</span>
-													<span>rapport-entretien.pdf</span>
-												</button>
-											</div>
-											<div class="buttons">
-												<button class="button is-link is-light">
-											<span class="icon is-small">
-											<i class="fas fa-image"></i>
-											</span>
-													<span>photo-terrain.png</span>
-												</button>
-											</div>
-										</div>
-									</div>
 								</div>
 							</div>
 						</div>

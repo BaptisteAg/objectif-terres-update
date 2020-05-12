@@ -5,6 +5,7 @@ namespace App\Services\Advisors;
 use App\Models\Ad;
 use App\Models\ProjectStatus;
 use App\Models\Thread;
+use App\Repositories\AdNotes\AdNotesRepository;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Projects\ProjectsRepository;
 use App\Repositories\Threads\ThreadsRepository;
@@ -12,6 +13,7 @@ use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Throwable;
@@ -29,6 +31,7 @@ class AdvisorsService
 	protected $threadService;
 	protected $threadRepository;
 	protected $projectRepository;
+	protected $adNotesRepository;
 
 	/**
 	 * AdvisorsService constructor.
@@ -38,8 +41,9 @@ class AdvisorsService
 	 * @param ThreadsRepository $threadRepository
 	 * @param ThreadService $threadService
 	 * @param ProjectsRepository $projectsRepository
+	 * @param AdNotesRepository $adNotesRepository
 	 */
-	public function __construct(AdRepository $adRepository, UserService $userService, AdService $adService, ThreadsRepository $threadRepository, ThreadService $threadService, ProjectsRepository $projectsRepository)
+	public function __construct(AdRepository $adRepository, UserService $userService, AdService $adService, ThreadsRepository $threadRepository, ThreadService $threadService, ProjectsRepository $projectsRepository, AdNotesRepository $adNotesRepository)
 	{
 		$this->repository = $adRepository;
 		$this->userService = $userService;
@@ -47,6 +51,7 @@ class AdvisorsService
 		$this->threadService = $threadService;
 		$this->threadRepository = $threadRepository;
 		$this->projectRepository= $projectsRepository;
+		$this->adNotesRepository = $adNotesRepository;
 	}
 
 	/**
@@ -125,6 +130,34 @@ class AdvisorsService
 		$this->threadService->create($threadData);
 		$thread = $this->findSupportRequestThread($adId);
 		return $thread;
+	}
+
+	/**
+	 * @param Request $request
+	 */
+	public function createNote(Request $request)
+	{
+		try {
+			$this->adNotesRepository->create($request->all());
+		} catch (Throwable $e) {
+			dd($e);
+		}
+
+	}
+
+
+	/**
+	 * @param Request $request
+	 * @return Builder[]|Collection
+	 */
+	public function findNotesByProjectDataKey(Request $request)
+	{
+		$data = [
+			'ad_id' => $request->input('ad_id'),
+			'project_data_key_id' => $request->input('project_data_key_id')
+		];
+		$notes = $this->adNotesRepository->findAllByProjectDataKeyAndAdId($data);
+		return $notes;
 	}
 
 
