@@ -37,14 +37,13 @@ Vue.component('vue-threads',{
             setInterval(_ => this.onThreadClick(this.activeThread), 15000);
             this.onThreadClick(this.activeThread);
 
-            if(this.userRole >=1){
+            if(this.userRole ===1){
                 this.isUserModerator = true;
             }
         }
     },
     methods : {
         onThreadClick(threadId) {
-
             fetch('/mon-espace/messagerie/' + threadId)
                 .then(response => response.json())
                 .then(results => {

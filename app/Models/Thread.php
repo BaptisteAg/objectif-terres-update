@@ -68,7 +68,6 @@ class Thread extends Model implements HasPresenter
 			);
 	}
 
-
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */

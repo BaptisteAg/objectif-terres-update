@@ -1,5 +1,8 @@
 <template>
     <div class="display-message">
+        <template v-if="value.length === 0">
+            <p class="has-text-centered">Ce fil de discussion ne contient pas encore de messages! </p>
+        </template>
         <template v-if="value" v-for="message in value">
             <template v-if="message.sender_user_id === userId">
                 <div class=" message-sended">
@@ -51,7 +54,7 @@
 <style lang="scss">
     .display-message {
         overflow-x: hidden;
-        max-height: 700px;
+        max-height: 500px;
     }
 
     .message-sender {

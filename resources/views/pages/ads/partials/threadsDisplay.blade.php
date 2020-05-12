@@ -52,8 +52,7 @@
 			@endif
 		@else
 			<div id="messages-display" class="content">
-				<h3 class=" title is-3 has-text-link has-text-centered">Votre fil de discusion au sujet de cette
-					annonce </h3>
+				<h3 class=" title is-3 has-text-link has-text-centered">Votre fil de discusion </h3>
 			</div>
 			<div id="vue-messages">
 				<vue-threads
@@ -98,8 +97,9 @@
 										v-model="messages"
 										:user-id="{{auth()->id()}}"
 										@message-reply-success="onMessageReplySuccess"
-										v-bind:is-user-moderator="isUserModerator"
-										:response-templates = "{{json_encode($responseTemplates)}}"
+										v-bind::show-response-type="isUserModerator"
+										v-bind:active-thread-id="activeThread"
+										:response-templates="{{json_encode($responseTemplates)}}"
 								>
 								</form-message-reply>
 							</div>
@@ -118,8 +118,7 @@
 							<article class="media">
 								<div class="media-content">
 									<div class="content has-text-centered ">
-										<p class="has-text-centered is-size-4">Vous n'avez pas encore reçu de messages
-											concernant cette annonce</p>
+										<p class="has-text-centered is-size-4">Vous n'avez pas encore reçu de messages</p>
 									</div>
 								</div>
 							</article>
@@ -129,7 +128,7 @@
 			</div>
 		@else
 			<div id="messages-display" class="content">
-				<h3 class="title is-3 has-text-link has-text-centered">Vos messages reçus pour votre annonce</h3>
+				<h3 class="title is-3 has-text-link has-text-centered">Vos messages reçus </h3>
 			</div>
 			<div id="vue-messages">
 				<vue-threads
@@ -174,6 +173,7 @@
 										v-model="messages"
 										:user-id="{{auth()->id()}}"
 										@message-reply-success="onMessageReplySuccess"
+										v-bind:active-thread-id="activeThread"
 								>
 								</form-message-reply>
 							</div>

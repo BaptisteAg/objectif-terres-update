@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Supervisors;
 
-use App\Exports\Supervisors\SupervisorExport;
+use App\Exports\Supervisors\SupervisorsExport;
 use App\Http\Controllers\Controller;
 use App\Models\JobOfferType;
 use App\Models\ProductionGenre;
 use App\Models\ProjectStatus;
+use App\Models\SupportStage;
+use App\Models\SupportState;
 use App\Services\Ads\AdService;
 use App\Services\Projects\ProjectService;
 use App\Services\Threads\ThreadService;
@@ -55,17 +57,19 @@ class SupervisorsController extends Controller
 	public function index(Request $request)
 	{
 		$request->session()->forget('_old_input');
-		$ads = $this->adService->findAllByUserSupervisor();
+		$ads = $this->adService->findAllByUserSupervisor(true);
+		$supportStages = SupportStage::all();
+		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
-		$notAssignProjectStatusId = ProjectStatus::where("name", '=', "Non assigné")->first()->id;
-		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsByStatusForLoggedUser($notAssignProjectStatusId);
+		$firstContactSupportStage = SupportStage::where("id", '=', SupportStage::FIRST_CONTACT_ID)->first()->id;
+		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsBySupportStageForLoggedUser($firstContactSupportStage);
 
-		return view('pages.supervisors.index', compact('adTypes', 'adTypesFaIcons', 'productionGenres', 'projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
+		return view('pages.supervisors.index', compact('adTypes', 'adTypesFaIcons', 'productionGenres', 'supportStages', 'supportStates', 'projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
 	}
 
 
@@ -77,16 +81,18 @@ class SupervisorsController extends Controller
 	{
 		$request->flash();
 		$ads = $this->adService->showForSupervisor($request);
+		$supportStages = SupportStage::all();
+		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
-		$notAssignProjectStatusId = ProjectStatus::where("name", '=', "Non assigné")->first()->id;
-		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsByStatusForLoggedUser($notAssignProjectStatusId);
+		$firstContactSupportStage = SupportStage::where("id", '=', SupportStage::FIRST_CONTACT_ID)->first()->id;
+		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsBySupportStageForLoggedUser($firstContactSupportStage);
 
-		return view('pages.supervisors.index', compact(  'projectStatuses', 'adTypes', 'adTypesFaIcons', 'productionGenres', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
+		return view('pages.supervisors.index', compact(  'projectStatuses','supportStages', 'supportStates', 'adTypes', 'adTypesFaIcons', 'productionGenres', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
 	}
 
 	/**
@@ -107,17 +113,16 @@ class SupervisorsController extends Controller
 	public function export(Request $request)
 	{
 		if (is_null($request->input('date_from')) && is_null($request->input('date_from'))) {
-			return Excel::download(new SupervisorExport($this->adService->findAllByUserSupervisor()), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
+			return Excel::download(new SupervisorsExport($this->adService->findAllByUserSupervisor(false)), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
 		} else {
 			$dates = [
 				DateTime::createFromFormat('d/m/Y', (string)$request->input('date_from'))->format('Y-m-d'),
 				DateTime::createFromFormat('d/m/Y', (string)$request->input('date_to'))->format('Y-m-d')
 			];
 			$ads = $this->adService->findAllByUserSupervisorBetweenDates($dates);
-			return Excel::download(new SupervisorExport($ads), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
+			return Excel::download(new SupervisorsExport($ads), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
 		}
 	}
-
 
 	/**
 	 * @param Request $request
@@ -126,7 +131,7 @@ class SupervisorsController extends Controller
 	public function attribute(Request $request)
 	{
 		$this->projectService->attributeProject($request);
-		return back()->with('success', 'Le projet à bien été attribué !');
+		return back()->with('success', 'La demande d\'accompagnement a bien été attribué !');
 	}
 
 
@@ -142,11 +147,10 @@ class SupervisorsController extends Controller
 		$numberOfValidateAds = $this->adService->findAllValidateAdsInSupervisorTerritories()->count();
 		$numberOfUsersPp = $this->adService->findAllAdsAndProjectsGroupByUserPp()->count();
 
-		$projects = $this->projectService->findAllProjectBySupervisor();
+		$projects = $this->projectService->findAllProjectsBySupervisor();
 		$numberOfProjects = $projects->count();
 		$numberOfProjectsByCategories = $this->projectService->countProjectsByCategories($projects);
 		$percentageOfProjectsByProjectStatus = $this->projectService->calculatePercentageOfProjectsByProjectStatus($projects);
-
 		return view('pages.supervisors.report', compact('numberOfAds', 'numberOfValidateAds', 'numberOfUsersPp', 'numberOfProjects', 'numberOfAdsByCategories', 'numberOfProjectsByCategories', 'percentageOfAdsByAdStatus', 'percentageOfProjectsByProjectStatus'));
 	}
 

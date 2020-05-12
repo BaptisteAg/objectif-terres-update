@@ -156,7 +156,14 @@ class ThreadService
 					$this->adRepository->find($data["ad_id"])->user_pp_id,
 					$data['supervisor_id']
 				];
-			} else {
+			} elseif (isset($data['advisor_id'])){
+				//in case of new thread created in advisor's support request dashboard
+				$threadParticipants = [
+					$this->adRepository->find($data["ad_id"])->user_pp_id,
+					$data['advisor_id']
+				];
+			}
+			else {
 				//in case of new message send from the ad view
 				$threadParticipants = [
 					$this->adRepository->find($data["ad_id"])->user_pp_id,
@@ -285,7 +292,7 @@ class ThreadService
 
 	/**
 	 * @param int $adId
-	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+	 * @return Collection
 	 */
 	public function findThreadsByUnreadMessageAndAdId(int $adId)
 	{

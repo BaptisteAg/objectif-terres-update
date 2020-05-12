@@ -40,8 +40,24 @@ class Project extends Model implements Decoratable
      * @var array
      */
     protected $fillable = [
-        'project_status_id'
+        'support_stage_id','support_state_id','project_status_id'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function supportStage()
+    {
+        return $this->belongsTo(SupportStage::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function supportState()
+    {
+        return $this->belongsTo(SupportState::class);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

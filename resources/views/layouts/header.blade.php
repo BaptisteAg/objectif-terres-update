@@ -215,7 +215,7 @@
 												modérateur</a>
 										@elseif(auth()->user()->role === 2)
 											<a href="{{ route('advisor.index') }}" class="button is-bordered">Espace
-												primo-acceuillant</a>
+												primo-accueillant</a>
 										@elseif (auth()->user()->role >= 3)
 											<a href="{{ route('supervisor.index') }}" class="button is-bordered">Espace
 												responsable territorial</a>

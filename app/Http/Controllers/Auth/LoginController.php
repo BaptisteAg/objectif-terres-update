@@ -77,14 +77,5 @@ class LoginController extends Controller
         return view('auth.login');
     }*/
 
-    /**
-     * DEPRECATED
-     *
-     * @param Request $request
-     * @param $user
-     */
-    public function authenticated(Request $request, $user)
-    {
-        session()->put('role', $user::ROLES[$user->role]);
-    }
+
 }

@@ -40,9 +40,10 @@ class UsersController extends Controller
 
 	public function edit(User $user)
 	{
-		if (auth()->user()->id != $user->id) {
+		if (auth()->user()->id != $user->id && auth() ->user()->role != 2) {
 			abort(404);
 		}
+
 		$cities = City::all();
 		if ($user->zipCode) {
 			$cityData = [

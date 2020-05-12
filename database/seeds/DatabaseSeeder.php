@@ -46,6 +46,8 @@ class DatabaseSeeder extends Seeder
 				BioCertificationSeeder::class,
 				JobOfferTypeSeeder::class,
 				OfferGenreSeeder::class,
+				SupportStageSeeder::class,
+				SupportStateSeeder::class,
 				ProjectStatusSeeder::class,
 				ProjectSeeder::class,
 				AdStatusSeeder::class,

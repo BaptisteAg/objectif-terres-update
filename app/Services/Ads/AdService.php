@@ -226,12 +226,13 @@ class AdService
 
 	/**
 	 * Show all ads ads related to supervisor
-	 * @return LengthAwarePaginator
+	 * @param bool $toPaginate
+	 * @return LengthAwarePaginator|Collection
 	 */
-	public function findAllByUserSupervisor(): LengthAwarePaginator
+	public function findAllByUserSupervisor(bool $toPaginate)
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$ads = $this->repository->findAllByUserTerritoriesAndDates($supervisorLocationTerritoryCodes);
+		$ads = $this->repository->allInTerritories($supervisorLocationTerritoryCodes, $toPaginate);
 		return $ads;
 	}
 
@@ -240,7 +241,7 @@ class AdService
 	 * @param array $dates
 	 * @return mixed
 	 */
-	public function findAllByUserSupervisorBetweenDates(array $dates)
+	public function findAllByUserSupervisorBetweenDates(array $dates) : Collection
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$ads = $this->repository->findAllByUserTerritoriesAndDates($supervisorLocationTerritoryCodes, $dates);
@@ -276,7 +277,7 @@ class AdService
 	public function findAllAdsAndProjectsGroupByUserPp(): Collection
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$users = $this->repository->allInTerritoriesGroupByUserPp($supervisorLocationTerritoryCodes);
+		$users = $this->repository->allInTerritories($supervisorLocationTerritoryCodes, false)->groupBy('user_pp_id');
 		return $users;
 	}
 
@@ -332,15 +333,15 @@ class AdService
 	public function countAdsByAdStatus(Collection $ads): array
 	{
 		$numberOfAdsByAdStatus = [
-			'Validée' => 0,
-			'En attente' => 0,
-			'Refusée' => 0,
-			'À modérer' => 0,
-			'Archivée' => 0
+			AdStatus::APPROVE_ID => 0,
+			AdStatus::PENDING_ID => 0,
+			AdStatus::REFUSE_ID => 0,
+			AdStatus::PENDING_MODERATION_STATUS_ID => 0,
+			AdStatus::ARCHIVE_ID => 0
 		];
 		foreach ($ads as $ad) {
 			foreach ($numberOfAdsByAdStatus as $key => $value) {
-				if ($key === $ad->attributionAd->adStatus->name) {
+				if ($key === $ad->attributionAd->adStatus->id) {
 					$numberOfAdsByAdStatus[$key]++;
 				}
 			}
@@ -369,7 +370,7 @@ class AdService
 		//START QUERY
 		$adsFiltred = (new Ad())->newQuery();
 
-		//Filter projetcs based on their locations if requested
+		//Filter projects based on their locations if requested
 		if ($filters->has('locations')) {
 			$locations = $filters->input('locations');
 			//If one or more departments are selected, get all ads located in departments and cities in departments
@@ -392,22 +393,28 @@ class AdService
 			}
 		}
 
-
 		//If a range of submitting date is selected, filter attribution ads based on creation date
 		if (!is_null($filters->input('date_from')) && !is_null($filters->input('date_to'))) {
 			$dateStartFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_from'))->format('Y-m-d');
 			$dateEndFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_to'))->format('Y-m-d');
 			$adsFiltred->where(function (Builder $query) use ($dateStartFormatted, $dateEndFormatted) {
-				$query->whereHas('project', function (Builder $subQuery) use ($dateStartFormatted, $dateEndFormatted) {
+				$query->whereHas('attributionAd', function (Builder $subQuery) use ($dateStartFormatted, $dateEndFormatted) {
 					$subQuery->whereBetween('created_at', [$dateStartFormatted, $dateEndFormatted . " 23:59:59"]);
 				});
-				$query->orWhere(function (Builder $subQuery) use ($dateStartFormatted, $dateEndFormatted) {
-					$subQuery->whereNull('project_id');
-					$subQuery->whereHas('attributionAd', function (Builder $q) use ($dateStartFormatted, $dateEndFormatted) {
-						$q->whereBetween('created_at', [$dateStartFormatted, $dateEndFormatted . " 23:59:59"]);
+			});
+		}
 
-					});
-				});
+		//If one or many support stgaes are selected, filter  ads based on their support stages
+		if ($filters->has('support_stages')) {
+			$adsFiltred->whereHas('project', function (Builder $query) use ($filters) {
+				$query->whereIn('support_stage_id', $filters->input('support_stages'));
+			});
+		}
+
+		//If one or many support states are selected, filter  ads based on their support states
+		if ($filters->has('support_states')) {
+			$adsFiltred->whereHas('project', function (Builder $query) use ($filters) {
+				$query->whereIn('support_state_id', $filters->input('support_states'));
 			});
 		}
 
@@ -433,30 +440,30 @@ class AdService
 		}
 
 		//Filter ads based on the role of the logged user
-		if ($roleUser === 2) {
-			$adsFiltred->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
-				$q->where('user_advisor_id', '=', auth()->id());
-			});
-		} else if ($roleUser >= 3) {
-			$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-			$adsFiltred->where(function (Builder $query) use ($supervisorLocationTerritoryCodes) {
-				$query->whereNotNull('project_id');
-				$query->whereHas('attributionAd', function (Builder $q) {
+
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
+		$adsFiltred->where(function (Builder $query) use ($supervisorLocationTerritoryCodes, $roleUser) {
+			$query->whereNotNull('project_id');
+			$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
+				if ($roleUser === 2) {
+					$q->where('user_advisor_id', '=', auth()->id());
+				} elseif ($roleUser >= 3)
 					$q->where('user_supervisor_id', '=', auth()->id());
-				});
-				$query->orWhereHas('departments', function (Builder $query) use ($supervisorLocationTerritoryCodes) {
-					$query->whereIn('code', $supervisorLocationTerritoryCodes);
-				});
-				$query->orWhereHas('cities', function (Builder $query) use ($supervisorLocationTerritoryCodes) {
-					$query->whereIn('department_code', $supervisorLocationTerritoryCodes);
-				});
 			});
-		}
+			$query->orWhereHas('departments', function (Builder $query) use ($supervisorLocationTerritoryCodes) {
+				$query->whereIn('code', $supervisorLocationTerritoryCodes);
+			});
+			$query->orWhereHas('cities', function (Builder $query) use ($supervisorLocationTerritoryCodes) {
+				$query->whereIn('department_code', $supervisorLocationTerritoryCodes);
+			});
+		});
 
 		// Sort results
 		if ($filters->has('order') && $filters->has('sort')) {
 			if ($filters->input('sort') === 'date') {
-				$adsFiltred->orderBy('created_at', $filters->input('order'));
+				$adsFiltred->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
+					->orderBy('a.created_at', $filters->input('order'));
+
 			} else if ($filters->input('sort') === 'title') {
 				$adsFiltred
 					->orderBy($filters->input('sort'), $filters->input('order'));
@@ -474,7 +481,12 @@ class AdService
 					->orderBy('name', $filters->input('order'));
 			}
 		} else {
-			$adsFiltred->orderByDesc('created_at');
+			/**TODO find a way to group results first with projects and then ads. Each group has to be order by attribution_ads.created_at **/
+			$adsFiltred
+				->leftJoin('projects as p', 'p.id', '=', 'ads.project_id')
+				->orderByDesc('p.created_at')
+				->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
+				->orderByDesc('a.created_at');
 		}
 
 		return $adsFiltred

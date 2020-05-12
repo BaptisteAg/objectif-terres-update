@@ -2,11 +2,13 @@
 
 namespace App\Exports\Supervisors;
 
-use App\Exports\Supervisors\AdsExport;
+use App\Exports\AdsExport;
+use App\Exports\PpExport;
+use App\Exports\ProjectExport;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class SupervisorExport implements WithMultipleSheets
+class SupervisorsExport implements WithMultipleSheets
 {
 	use Exportable;
 
