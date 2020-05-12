@@ -2,7 +2,9 @@
 
 namespace App\Services\Projects;
 
+use App\Jobs\NotifySupportRequestAttribution;
 use App\Models\Department;
+use App\Models\LandSeekAd;
 use App\Models\Project;
 use App\Models\ProjectStatus;
 use App\Models\Region;
@@ -21,27 +23,30 @@ class ProjectService
 	protected $repository;
 	protected $attributionAdsRepository;
 	protected $userService;
+	protected $notification;
 
 	/**
 	 * ProjectService constructor.
 	 * @param ProjectsRepository $projectsRepository
 	 * @param AttributionAdsRepository $attributionAdsRepository
 	 * @param UserService $userService
+	 * @param NotifySupportRequestAttribution $notification
 	 */
-	public function __construct(ProjectsRepository $projectsRepository, AttributionAdsRepository $attributionAdsRepository, UserService $userService)
+	public function __construct(ProjectsRepository $projectsRepository, AttributionAdsRepository $attributionAdsRepository, UserService $userService, NotifySupportRequestAttribution $notification)
 	{
 		$this->repository = $projectsRepository;
 		$this->attributionAdsRepository = $attributionAdsRepository;
 		$this->userService = $userService;
+		$this->notification = $notification;
 	}
 
 	/**
-	 * @param $projectStatusId
+	 * @param int $supportStageId
 	 * @return int
 	 */
-	public function countNumberOfProjectsByStatusForLoggedUser($projectStatusId): int
+	public function countNumberOfProjectsBySupportStageForLoggedUser(int $supportStageId): int
 	{
-		$numberOfProjects = $this->repository->findAllByUserIdAndUserRoleAndProjectStatusId(auth()->user()->id, auth()->user()->role, $projectStatusId)->count();
+		$numberOfProjects = $this->repository->findAllByUserIdAndUserRoleAndSupportStageId(auth()->user()->id, auth()->user()->role, $supportStageId)->count();
 		return $numberOfProjects;
 	}
 
@@ -49,17 +54,7 @@ class ProjectService
 	/**
 	 * @return Collection
 	 */
-	public function findAllProjectInSupervisorTerritories(): Collection
-	{
-		$supervisorDepartmentCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$projects = $this->repository->findAllInTerritories($supervisorDepartmentCodes);
-		return $projects;
-	}
-
-	/**
-	 * @return Collection
-	 */
-	public function findAllProjectBySupervisor(): Collection
+	public function findAllProjectsBySupervisor(): Collection
 	{
 		$projects = $this->repository->findAllByUserSupervisor(auth()->user()->id);
 		return $projects;
@@ -72,7 +67,6 @@ class ProjectService
 	 */
 	public function countProjectsByCategories($projects): array
 	{
-
 		$projectsByCategories = [
 			'landSeekAd' => 0,
 			'landOfferAd' => 0,
@@ -89,21 +83,21 @@ class ProjectService
 	}
 
 
+	/**
+	 * @param Collection $projects
+	 * @return array
+	 */
 	public function countProjectsByProjectStatus(Collection $projects): array
 	{
 		$numberOfProjectsByProjectsStatus = [
-			'A rappeler' => 0,
-			'Accompagné' => 0,
-			'Non assigné' => 0,
-			'Idée' => 0,
-			'En recherche' => 0,
-			'Installé' => 0,
-			'Archivée' => 0,
-
+			ProjectStatus::EMERGING_ID => 0,
+			ProjectStatus::IN_PROGRESSING_ID => 0,
+			ProjectStatus::ABANDONED_ID => 0,
+			ProjectStatus::ACCOMPLISHED_ID => 0,
 		];
 		foreach ($projects as $project) {
 			foreach ($numberOfProjectsByProjectsStatus as $key => $value) {
-				if ($key === $project->projectStatus->name) {
+				if ($key === $project->projectStatus->id) {
 					$numberOfProjectsByProjectsStatus[$key]++;
 				}
 			}
@@ -121,7 +115,7 @@ class ProjectService
 		$numberOfProjectsByProjectStatus = $this->countProjectsByProjectStatus($projects);
 		$sumOfProjects = array_sum($numberOfProjectsByProjectStatus);
 
-		if ($sumOfProjects == 0){
+		if ($sumOfProjects == 0) {
 			return [];
 		}
 		$percentageOfProjectsByProjectsStatus = array_map(function ($number) use ($sumOfProjects) {
@@ -144,14 +138,6 @@ class ProjectService
 		//Filter projetcs based on their locations if requested
 		if ($filters->has('locations')) {
 			$locations = $filters->input('locations');
-//			TODO delete if research by cities is not necessary anymore
-//			if (array_key_exists('cities', $locations)) {
-//				if (!is_null($filters->input('radius_research'))) {
-//					$cityIds = $this->locationService->getCitiesInRadius($locations['cities'], $filters->input('radius_research'));
-//					$projectsFiltered->filterLocations('ad.cities', $cityIds);
-//				} else {
-//					$projectsFiltered->filterLocations('ad.cities', $locations['cities']);
-//				}
 			//If one or more departments are selected, get all ads located in departments and cities in departments
 
 			if (array_key_exists('departments', $locations)) {
@@ -248,15 +234,19 @@ class ProjectService
 	public function attributeProject(Request $request)
 	{
 		$attributionAd = $this->attributionAdsRepository->findByAdId($request->input('ad_id'));
-		//updating project status if it is non attribute to an advisor
-		$nonAttributedStatus = ProjectStatus::where('name', '=', 'Non assigné')->first()->id;
-		$attributedStatus = ProjectStatus::where('name', '=', 'Accompagné')->first()->id;
-		if ($attributionAd->ad->project->project_status_id === $nonAttributedStatus) {
-			$attributionAd->ad->project->project_status_id = $attributedStatus;
-			$attributionAd->ad->project->save();
-		}
+		/** TODO delete after refactoring project_statuses_table */
+//		//updating project status if it is non attribute to an advisor
+//		$unassistedStatus = ProjectStatus::where('id', '=', ProjectStatus::UNASSISTED_ID)->first()->id;
+//		$assistedStatus = ProjectStatus::where('id', '=', ProjectStatus::ASSISTING_ID)->first()->id;
+//		if ($attributionAd->ad->project->project_status_id === $unassistedStatus) {
+//			$attributionAd->ad->project->project_status_id = $assistedStatus;
+//			$attributionAd->ad->project->save();
+//		}
 		$attributionAd->user_advisor_id = $request->input('user_advisor_id');
 		$attributionAd->save();
+		$this->notification->handle($attributionAd->ad->id);
+
+
 	}
 
 	/**
@@ -268,6 +258,8 @@ class ProjectService
 			'ad',
 			'ad.attributionAd',
 			'ad.userPp',
+			'supportStage',
+			'supportState',
 			'projectStatus',
 			'ad.cities',
 			'ad.cities.department',

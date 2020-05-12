@@ -21,7 +21,7 @@ class TestUserSeeder extends Seeder
         ]);
 
         \App\Models\User::create([
-            'email' => "pa@test.fr",
+            'email' => "test.ot.primo",
             'password' => Hash::make('testtest'),
             'first_name' => 'Test',
             'name' => 'Primo Accueillant',

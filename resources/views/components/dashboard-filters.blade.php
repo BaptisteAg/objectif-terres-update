@@ -37,7 +37,7 @@
 					</div>
 				</div>
 			@else
-				<div class="column is-5 ">
+				<div class="column is-3 ">
 					<div class="columns is-mobile">
 						<div class="column ">
 							<div v-cloak class="field">
@@ -88,6 +88,16 @@
 						{{--							<br>--}}
 						{{--						</div>--}}
 						{{--					</div>--}}
+					</div>
+				</div>
+				<div class="column is-2">
+					<div class="control has-icons-right ">
+						@if(Route::current()->getName() === 'moderator.index' &&  Route::current()->getName() === 'moderator.show')
+							<label class="label"> Date de soumission de l'annonce </label>
+						@else
+							<label class="label"> Date de soumission de la demande </label>
+						@endif
+						<date-range old-value-selected={{old('date-range-selected')}}></date-range>
 					</div>
 				</div>
 			@endif
@@ -168,18 +178,38 @@
 						   value="{{old('ad_keywords')}}">
 				</div>
 			@else
-				<div class="column is-one-fifth">
-					<div class="control has-icons-right ">
-						@if(Route::current()->getName() === 'moderator.index' &&  Route::current()->getName() === 'moderator.show')
-							<label class="label"> Date de soumission de l'annonce </label>
-						@else
-							<label class="label"> Date de soumission de la demande </label>
-						@endif
-						<date-range old-value-selected={{old('date-range-selected')}}></date-range>
+				<div class="column ">
+					<p class="label has-text-centered">Stade dans l'accompagnement</p>
+					<div class="columns is-mobile is-multiline is-centered">
+						@foreach($supportStages as $supportStage)
+							<div class="column is-narrow has-text-centered">
+								<label class="checkbox">
+									<input name="support_stages[]" value="{{(int)$supportStage->id}}"
+										   type="checkbox"
+											{{old('support_stages') && in_array((int)$supportStage->id,old('support_stages'))  ? ' checked' : '' }}>
+									{{$supportStage->name}}
+								</label>
+							</div>
+						@endforeach
 					</div>
 				</div>
 				<div class="column ">
-					<p class="label has-text-centered">Statut de l'accompagnement</p>
+					<p class="label has-text-centered">État de la demande</p>
+					<div class="columns is-mobile is-multiline is-centered">
+						@foreach($supportStates as $supportState)
+							<div class="column is-narrow has-text-centered">
+								<label class="checkbox">
+									<input name="support_states[]" value="{{(int)$supportState->id}}"
+										   type="checkbox"
+											{{old('support_states') && in_array((int)$supportState->id,old('support_states'))  ? ' checked' : '' }}>
+									{{$supportState->name}}
+								</label>
+							</div>
+						@endforeach
+					</div>
+				</div>
+				<div class="column ">
+					<p class="label has-text-centered">Avancement du projet</p>
 					<div class="columns is-mobile is-multiline is-centered">
 						@foreach($projectStatuses as $projectStatus)
 							<div class="column is-narrow has-text-centered">
@@ -193,7 +223,7 @@
 						@endforeach
 					</div>
 				</div>
-				<div class="column is-3 ">
+				<div class="column is-2 ">
 					<label class="label">Recherche par mot clé</label>
 					<input name="ad_keywords" class="input" type="text" placeholder="Votre recherche..."
 						   value="{{old('ad_keywords')}}">

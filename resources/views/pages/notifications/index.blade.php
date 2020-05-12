@@ -36,7 +36,7 @@
 			</div>
 		@else
 			@foreach ($user->unreadNotifications as $notification)
-				@if(isset($notification->data['number_of_ads_to_moderate']))
+				@if($notification->type == \App\Notifications\OverdueModerationNotification::class)
 					<article class="message is-info">
 						<div class="message-header">
 							<p>Des annonces sont en attente de modération ! </p>
@@ -59,7 +59,7 @@
 							</form>
 						</div>
 					</article>
-				@elseif(isset($notification->data['is_project']))
+				@elseif($notification->type == \App\Notifications\NewProjectsNotification::class)
 					<article class="message is-info">
 						<div class="message-header">
 							<p>Nouvelle demande d'accompagnement</p>
@@ -77,7 +77,7 @@
 							</form>
 						</div>
 					</article>
-				@else
+				@elseif ($notification->type == \App\Notifications\NewAdToModerateNotification::class)
 					<article class="message is-info">
 						<div class="message-header">
 							<p>Nouvelle demande de modération</p>
@@ -92,6 +92,25 @@
 								<input type="hidden" value="ads.show" name="route">
 								<br>
 								<input type="submit" class="button is-link " value="@lang('Modérer l\'annonce')">
+							</form>
+						</div>
+					</article>
+				@elseif ($notification->type == \App\Notifications\SupportRequestAttributionNotification::class)
+					<article class="message is-info">
+						<div class="message-header">
+							<p>Nouvelle attribution d'une demande d'accompagnement</p>
+						</div>
+						<div class="message-body">
+							Une demande d'accompagnement vient de vous être attribuée. Elle a été soumise par
+							<a href="{{route('user.show', $notification->data['user_pp_id'])}}">{{$notification->data['user_pp_first_name']}} {{$notification->data['user_pp_name']}}</a>.
+
+							<form action="{{route('notification.update', $notification->id)}}" method="POST">
+								@csrf
+								@method('PATCH')
+								<input type="hidden" value="ads.show" name="route">
+								<br>
+								<input type="submit" class="button is-link "
+									   value="@lang('Consulter la demande d\'accompagnement')">
 							</form>
 						</div>
 					</article>

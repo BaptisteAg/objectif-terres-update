@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Exports\Supervisors;
+namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\FromView;
 use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithTitle;
-use Maatwebsite\Excel\Events\AfterSheet;
 
-class ProjectExport implements FromView,  WithTitle
+class AdsExport implements FromView,  WithTitle
 {
 	protected $ads;
 
 	/**
-	 * ProjectExport constructor.
+	 * AdsExport constructor.
 	 * @param object $ads
 	 */
 	public function __construct(object $ads){
@@ -25,7 +23,7 @@ class ProjectExport implements FromView,  WithTitle
 	 */
 	public function view(): View
 	{
-		return view('export.supervisors.projects_list', [
+		return view('export.ads_list', [
 			'ads' => $this->ads
 		]);
 	}
@@ -35,7 +33,6 @@ class ProjectExport implements FromView,  WithTitle
 	 */
 	public function title(): string
 	{
-		return 'Liste demandes accompagnement';
+		return 'Liste des annonces';
 	}
-
 }

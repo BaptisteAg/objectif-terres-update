@@ -4,10 +4,14 @@
 
 use App\Models\Project;
 use App\Models\ProjectStatus;
+use App\Models\SupportStage;
+use App\Models\SupportState;
 use Faker\Generator as Faker;
 
 $factory->define(Project::class, function (Faker $faker) {
     return [
-        'project_status_id' => 3,//ProjectStatus::all()->random(),
+		'support_stage_id' => SupportStage::FIRST_RECEPTION_ID,
+		'support_state_id' => SupportState::HANDLE_ID,
+		'project_status_id' => ProjectStatus::EMERGING_ID,
     ];
 });

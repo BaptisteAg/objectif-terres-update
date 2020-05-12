@@ -30,6 +30,7 @@ require('./pages/auth/login-form');
 require('./pages/auth/user-form');
 require('./pages/threads/threads');
 require('./pages/dashboard');
+require('./pages/advisors/advisors');
 require('./pages/supervisor/supervisor');
 require('./pages/video');
 require('./pages/cms/contact-us-form');

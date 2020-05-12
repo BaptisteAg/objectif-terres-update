@@ -129,8 +129,6 @@ class User extends Authenticatable implements HasPresenter
 		4 => "un agriculteur qui souhaite transmettre sa ferme",
 		5 => "un propriétaire foncier qui souhaite vendre ou louer sa terre",
 		6 => "autre",
-
-
 	];
 
 	/**

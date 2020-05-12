@@ -199,14 +199,15 @@ class AttributionAdsService
 		//If on the territory related to the ad, there is advisors dedicated to specific departments, the ad is automatically attributed to the advisor and we create a project related to the ad.
 		//$toAssignStatus = AdStatus::where('id', '=',AdStatus::APPROVE_ID)->first();
 		//$attributionAd->ad_status_id = $toAssignStatus->id;
-		//$supportStatus = ProjectStatus::where('name', '=', 'Accompagné')->first();
-		//$attributionAd->ad->project()->create(['project_status_id'=> $supportStatus]);
+		//$supportStage = SupportStage::where('id', '=', SupportStage::FIRST_CONTACT_ID)->first();
+		//$supportState = SupportState::where('id', '=', SupportStage::TO_HANDLE_ID)->first();
+		//$attributionAd->ad->project()->create(['support_stage_id'=> $supportStage, 'support_state_id' => $supportState]);
 
 		//Else, by default, the ad is attributed to an supervisor based on his territory saved in Salesforce . If there is many supervisors, one supervisor is pick randomly.
 		//$toAssignStatus = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first();
 		//$attributionAd->ad_status_id = $toAssignStatus->id;
-		//$supportStatus = ProjectStatus::where('name', '=', 'Non assigné')->first();
-		//$attributionAd->ad->project()->create(['project_status_id'=> $supportStatus]);
+		//$unassistedStatus = ProjectStatus::where('id', '=', ProjectStatus::UNASSISTED_ID)->first();
+		//$attributionAd->ad->project()->create(['project_status_id'=> $unassistedStatus]);
 		//$supervisor = User::where('role', '=', 3)->inRandomOrder()->first();
 		//$attributionAd->user_supervisor_id = $supervisor->id;
 
