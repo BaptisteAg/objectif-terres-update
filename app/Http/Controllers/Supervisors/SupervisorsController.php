@@ -6,6 +6,7 @@ use App\Exports\Supervisors\SupervisorsExport;
 use App\Http\Controllers\Controller;
 use App\Models\JobOfferType;
 use App\Models\ProductionGenre;
+use App\Models\ProjectDataKey;
 use App\Models\ProjectStatus;
 use App\Models\SupportStage;
 use App\Models\SupportState;
@@ -92,7 +93,7 @@ class SupervisorsController extends Controller
 		$firstContactSupportStage = SupportStage::where("id", '=', SupportStage::FIRST_CONTACT_ID)->first()->id;
 		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsBySupportStageForLoggedUser($firstContactSupportStage);
 
-		return view('pages.supervisors.index', compact(  'projectStatuses','supportStages', 'supportStates', 'adTypes', 'adTypesFaIcons', 'productionGenres', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
+		return view('pages.supervisors.index', compact('projectStatuses', 'supportStages', 'supportStates', 'adTypes', 'adTypesFaIcons', 'productionGenres', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
 	}
 
 	/**
@@ -154,5 +155,27 @@ class SupervisorsController extends Controller
 		return view('pages.supervisors.report', compact('numberOfAds', 'numberOfValidateAds', 'numberOfUsersPp', 'numberOfProjects', 'numberOfAdsByCategories', 'numberOfProjectsByCategories', 'percentageOfAdsByAdStatus', 'percentageOfProjectsByProjectStatus'));
 	}
 
+
+	/**
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function projectKeysDataEdit()
+	{
+		$allProjectDataKeys = ProjectDataKey::all();
+		return view('pages.supervisors.project-data-keys-edit', compact('allProjectDataKeys'));
+	}
+
+	/**
+	 * @param Request $request
+	 * @return RedirectResponse
+	 */
+	public function projectDataKeysUpdate(Request $request)
+	{
+		if (empty($request->input('project_data_key_name')) && empty($request->input('project_data_key_id'))) {
+			return back()->with('warning', 'Aucun titre d\'indicateur saisi');
+		}
+		$this->projectService->updateProjectDataKey($request);
+		return back()->with('success', 'La liste des indicateurs a bien été mise à jour !');
+	}
 
 }

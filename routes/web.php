@@ -14,17 +14,17 @@
 Route::get('/', 'HomePage\HomePageController@show')->name('home');
 
 Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
-    Route::middleware(['auth'])->get('creer', 'AdsController@create')->name('create');
-    Route::middleware(['auth'])->post('creer', 'AdsController@requestPublishing')->name('store');
-    Route::middleware('auth')->post('sauvegarder', 'AdsController@save')->name('save');
-    Route::middleware('auth')->get('liste-mes-annonces', 'AdsController@list')->name('list');
-    Route::get('{id}', 'AdsController@show')->name('show');
-    Route::middleware('auth')->get('supprimer/{ad}', 'AdsController@delete')->name('delete');
+	Route::middleware(['auth'])->get('creer', 'AdsController@create')->name('create');
+	Route::middleware(['auth'])->post('creer', 'AdsController@requestPublishing')->name('store');
+	Route::middleware('auth')->post('sauvegarder', 'AdsController@save')->name('save');
+	Route::middleware('auth')->get('liste-mes-annonces', 'AdsController@list')->name('list');
+	Route::get('{id}', 'AdsController@show')->name('show');
+	Route::middleware('auth')->get('supprimer/{ad}', 'AdsController@delete')->name('delete');
 });
 Route::prefix('accompagnement')->name('support-request.')->namespace('Ads')->group(function () {
-    Route::middleware(['auth'])->get('creer', 'SupportRequestsController@create')->name('create');
-    Route::middleware(['auth'])->post('creer', 'SupportRequestsController@submitRequest')->name('store');
-    Route::middleware('auth')->post('sauvegarder', 'SupportRequestsController@save')->name('save');
+	Route::middleware(['auth'])->get('creer', 'SupportRequestsController@create')->name('create');
+	Route::middleware(['auth'])->post('creer', 'SupportRequestsController@submitRequest')->name('store');
+	Route::middleware('auth')->post('sauvegarder', 'SupportRequestsController@save')->name('save');
 });
 
 Route::name('cms.')->namespace('Cms')->group(function () {
@@ -69,12 +69,12 @@ Route::prefix('mon-espace/recherches')->middleware('auth')->name('researches.')-
 
 
 Route::middleware('auth')->name('user.')->namespace('Users')->group(function () {
-	Route::prefix('mon-espace')->group(function (){
+	Route::prefix('mon-espace')->group(function () {
 		Route::get('/', 'UsersController@index')->name('index');
-		Route::get('mon-compte/{user}','UsersController@edit')->name('edit');
-		Route::post('mon-compte','UsersController@update')->name('update');
+		Route::get('mon-compte/{user}', 'UsersController@edit')->name('edit');
+		Route::post('mon-compte', 'UsersController@update')->name('update');
 	});
-	Route::prefix('porteur-de-projet')->group(function (){
+	Route::prefix('porteur-de-projet')->group(function () {
 		Route::get('{user}', 'UsersController@show')->name('show');
 	});
 });
@@ -124,16 +124,20 @@ Route::middleware('supervisor')->prefix('mon-espace-responsable-territorial')->n
 	Route::post('attribution', 'SupervisorsController@attribute')->name('attribute');
 	Route::get('export', 'SupervisorsController@export')->name('export');
 	Route::get('rapports-et-indicateurs', 'SupervisorsController@report')->name('report');
+	Route::get('administration-indicateurs', 'SupervisorsController@projectKeysDataEdit')->name('projectDataKeysEdit');
+	Route::post('mise-a-jour-indicateur', 'SupervisorsController@projectDataKeysUpdate')->name('projectDataKeysUpdate');
 });
 
 Route::middleware('advisor')->prefix('mon-espace-primo-accueillant')->name('advisor.')->namespace('Advisors')->group(function () {
 	Route::get('/', 'AdvisorsController@index')->name('index');
 	Route::get('aide-et-ressources', 'AdvisorsController@help')->name('help');
 	Route::get('recherche', 'AdvisorsController@show')->name('show');
-	Route::get('création-compte-pp','AdvisorsController@registerNewUserPp')->name('createNewPp');
+	Route::get('création-compte-pp', 'AdvisorsController@registerNewUserPp')->name('createNewPp');
 	Route::get('export', 'AdvisorsController@export')->name('export');
 	Route::get('espace-suivi/{id}', 'AdvisorsController@showSupport')->name('showSupport');
 	Route::post('mise-a-jour-statut', 'AdvisorsController@updateSupport')->name('updateSupport');
+	Route::post('creation-note', 'AdvisorsController@createNote')->name('createNote');
+	Route::post('liste-notes-indicateurs', 'AdvisorsController@showAllNotesByProjectDataKey')->name('showAllNotesByProjectDataKey');
 });
 
 Route::middleware('auth')->prefix('notification')->name('notification.')->namespace('Notifications')->group(function () {

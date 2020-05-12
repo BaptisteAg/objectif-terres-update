@@ -1,9 +1,5 @@
 <div class="card-content">
 	<div class="content">
-		<div  class="content">
-			<h3 class=" title is-3 has-text-link has-text-centered">Votre fil de discusion
-			</h3>
-		</div>
 		<div class="columns is-vcentered " v-if="initialLoading === true">
 			<div class="column is-7">
 				<div id="loading" class="is-pulled-right">
