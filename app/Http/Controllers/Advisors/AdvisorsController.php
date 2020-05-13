@@ -141,7 +141,7 @@ class AdvisorsController extends Controller
 		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
 		$projectDataKeys = ProjectDataKey::all();
-		return view('pages.advisors.support-dashboard', compact('ad', 'supportRequestStatuses', 'responseTemplates', 'thread', 'supportStates', 'supportStages', 'projectStatuses', 'projectDataKeys'));
+		return view('pages.advisors.support-dashboard', compact('ad', 'responseTemplates', 'thread', 'supportStates', 'supportStages', 'projectStatuses', 'projectDataKeys'));
 	}
 
 	/**
