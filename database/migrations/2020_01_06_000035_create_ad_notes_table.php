@@ -38,7 +38,7 @@ class CreateAdNotesTable extends Migration
 			$table->foreign('project_data_key_id','fk_lead_ad_notes_1_idx' )
 				->references('id')
 				->on('project_data_keys')
-				->onDelete('cascade');
+				->onDelete('set null');
 
 			$table->foreign('user_id','fk_lead_ad_notes_2_idx' )
 				->references('id')

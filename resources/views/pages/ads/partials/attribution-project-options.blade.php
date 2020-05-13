@@ -8,11 +8,17 @@
 					<strong>{{$ad->attributionAd->userSupervisor->first_name}} {{$ad->attributionAd->userSupervisor->name}}</strong>.
 				</p>
 			@endif
-
 			@if(isset($ad->attributionAd->user_advisor_id))
 				<p class="">Cette demande est attribuée à
 					<strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>.
 				</p>
+				<br>
+					<a href="{{route('advisor.showSupport', $ad->id)}}" class="button is-link ">
+										<span class="icon is-small">
+										  <i class="fas fa-search"></i>
+										</span>
+						<span>Accéder à l'espace de suivi</span>
+					</a>
 
 			@endif
 		@else

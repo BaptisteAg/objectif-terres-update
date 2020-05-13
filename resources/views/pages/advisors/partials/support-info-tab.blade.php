@@ -188,33 +188,4 @@
 			<span class="is-italic">Plus d'informations sur la demande : </span>{{$ad->about_project_content?? "Non renseigné"}}
 		</p>
 	</div>
-	<footer class="card-footer">
-		<div class="card-footer-item">
-			<div>
-				<div class="content">
-					<h5 class="has-text-centered">Documents uploader par le porteur de projet</h5>
-					@if($ad->documents->count() >0)
-						@foreach($ad->documents as $document)
-							<div class="buttons is-centered">
-								<a href="/" download="{{$document->path}}">
-									<button class="button is-link is-light">
-											<span class="icon is-small">
-												@if(strstr($document->type,'/',true) === "image")
-													<i class="fas fa-image"></i>
-												@endif
-
-											</span>
-										<span>{{$document->name}}</span>
-									</button>
-								</a>
-							</div>
-						@endforeach
-					@else
-						<p class="">Aucun document n'a uploadé par le porteur de projet </p>
-					@endif
-				</div>
-			</div>
-		</div>
-	</footer>
-
 </div>

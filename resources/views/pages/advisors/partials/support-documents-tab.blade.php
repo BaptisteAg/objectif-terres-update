@@ -1,24 +1,27 @@
 <div class="card-content ">
-		<p class="subtitle">Retrouvez ici l'ensemble des documents concernant le suivi
-			de
-			cette demande d'accomapgnement</p>
-
+	<div>
 		<div class="content">
-			<div class="buttons">
-				<button class="button is-link is-light">
+			<h5 class="has-text-centered">Documents téléversés par le porteur de projet</h5>
+			@if($ad->documents->count() >0)
+				@foreach($ad->documents as $document)
+					<div class="buttons ">
+						<a href="/" download="{{$document->path}}">
+							<button class="button is-link is-light">
 											<span class="icon is-small">
-											<i class="fas fa-file"></i>
+												@if(strstr($document->type,'/',true) === "image")
+													<i class="fas fa-image"></i>
+												@endif
+
 											</span>
-					<span>rapport-entretien.pdf</span>
-				</button>
-			</div>
-			<div class="buttons">
-				<button class="button is-link is-light">
-											<span class="icon is-small">
-											<i class="fas fa-image"></i>
-											</span>
-					<span>photo-terrain.png</span>
-				</button>
-			</div>
+								<span>{{$document->name}}</span>
+							</button>
+						</a>
+					</div>
+				@endforeach
+			@else
+				<p class="">Aucun document n'a uploadé par le porteur de projet </p>
+			@endif
 		</div>
+	</div>
+
 </div>

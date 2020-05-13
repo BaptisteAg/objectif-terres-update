@@ -49,8 +49,6 @@ class AdNotesRepository extends AbstractRepository implements AdNotesRepositoryI
 			->orderByDesc('created_at')
 			->with('user')
 			->get();
-
-
 	}
 
 }
