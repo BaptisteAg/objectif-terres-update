@@ -179,7 +179,7 @@
 										{{$ad->attributionAd->created_at->format("d/m/Y")}}
 									</td>
 									<td>
-										<a href="{{route('ads.show', $ad->id)}}">{{$ad->title}}</a>
+										<a href="{{route('advisor.showSupport', $ad->id)}}">{{$ad->title}}</a>
 									</td>
 									<td>{{$ad->ad_type_full_name}}</td>
 									<td>

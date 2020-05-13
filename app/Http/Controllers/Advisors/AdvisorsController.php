@@ -163,6 +163,7 @@ class AdvisorsController extends Controller
 	 */
 	public function updateSupport(Request $request)
 	{
+		dd($request->input());
 		$this->advisorsService->updateSupport($request->input());
 		return back()->with('success', 'Le statut a bien été mis à jour !');
 	}

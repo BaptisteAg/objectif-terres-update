@@ -1,31 +1,31 @@
 <div class="card-content">
 	<div class="columns">
 		<div class="column is-half " style="border-right: 1px solid #DBDBDB;">
-			
+
 			@if(is_null($ad->adNotes) or $ad->adNotes->whereNull('project_data_key_id')->count() ===0)
 				<p>Aucune note n'a été rédigée concernant cette demande</p>
 			@else
 				<div style=" overflow-x: hidden; max-height: 400px;">
 					@foreach($ad->adNotes->whereNull('project_data_key_id')->sortByDesc('created_at') as $note)
-							<div class="card has-background-white-ter"
-								 style="border: 2px solid transparent; border-radius: 12px; margin : 5px; margin-right : 10px; ">
-								<div class="card-content">
-									<div class="content">
-										<p>
-											{{$note->value}}
-										</p>
-									</div>
-									<p class=" is-6">
-										Note rédigée par
-										<strong>{{$note->user->first_name}} {{$note->user->name}}</strong>
+						<div class="card has-background-white-ter"
+							 style="border: 2px solid transparent; border-radius: 12px; margin : 5px; margin-right : 10px; ">
+							<div class="card-content">
+								<div class="content">
+									<p>
+										{{$note->value}}
 									</p>
-									<time>Le {{$note->created_at->format("d/m/Y")}}</time>
-									<br>
-									<p class="is-size-7 is-pulled-right has-text-link"><span class="icon"><i
-													class="fas fa-trash-alt"></i></span><span>Supprimer</span></p>
 								</div>
+								<p class=" is-6">
+									Note rédigée par
+									<strong>{{$note->user->first_name}} {{$note->user->name}}</strong>
+								</p>
+								<time>Le {{$note->created_at->format("d/m/Y")}}</time>
+								<br>
+								<p class="is-size-7 is-pulled-right has-text-link"><span class="icon"><i
+												class="fas fa-trash-alt"></i></span><span>Supprimer</span></p>
 							</div>
-							<br>
+						</div>
+						<br>
 					@endforeach
 				</div>
 			@endif
@@ -56,6 +56,22 @@
 				<p class="has-text-centered title is-5">Indicateurs concernant cette demande</p>
 				<p class="">Séléctionnez un des indicateurs pour le consulter/modifier </p>
 			</div>
+{{--			@foreach($projectDataKeys as $projectDataKey)--}}
+{{--				<div class="columns">--}}
+{{--					<div class="column is-half">--}}
+{{--						<p>{{$projectDataKey->name}}</p>--}}
+{{--					</div>--}}
+{{--					<div class="column">--}}
+{{--						@foreach($ad->adNotes->whereNotNull('project_data_key_id') as $note)--}}
+{{--							@if($note->project_data_key_id === $projectDataKey->id)--}}
+{{--								<input name="{{$projectDataKey->name}}" class="input" type="text" value="{{$note->value}}" placeholder="Text input">--}}
+{{--							@else--}}
+{{--								<input name="{{$projectDataKey->name}}" class="input" type="text"  placeholder="Saissir...">--}}
+{{--							@endif--}}
+{{--						@endforeach--}}
+{{--					</div>--}}
+{{--				</div>--}}
+{{--			@endforeach--}}
 			<div class="field">
 				<div class="control  has-text-centered">
 					<div class="select">
