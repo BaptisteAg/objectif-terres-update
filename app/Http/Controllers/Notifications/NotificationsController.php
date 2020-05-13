@@ -27,6 +27,10 @@ class NotificationsController extends Controller
 			$notification->markAsRead();
 			$notification->delete();
 			return redirect()->route($request->input('route'), $notification->data['ad_id']);
+		} elseif ($request->input('route') === 'advisor.showSupport') {
+			$notification->markAsRead();
+			$notification->delete();
+			return redirect()->route($request->input('route'), $notification->data['ad_id']);
 		} else {
 			$notification->markAsRead();
 			return redirect()->route($request->input('route'), ['citySelect=&radius_research=&ad_statuses[]=4&ad_title=']);

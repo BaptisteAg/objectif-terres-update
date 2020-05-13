@@ -99,13 +99,6 @@
 						</p>
 					<p>Statut actuel de l'annonce : <span
 								class="has-text-link">{{$ad->attributionAd->adStatus->name}}</span></p>
-					<p>Statut actuel du projet :
-						@if(is_null($ad->project))
-							<span class="has-text-link">L'annonce n'a pas le status de projet</span>
-						@else
-							<span class="has-text-link">{{$ad->project->projectStatus->name}}</span>
-						@endif
-					</p>
 					<br>
 				</div>
 			</div>

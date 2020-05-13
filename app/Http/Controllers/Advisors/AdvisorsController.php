@@ -134,6 +134,7 @@ class AdvisorsController extends Controller
 		$ad = $this->adService->find($adId);
 		$responseTemplates = ResponseTemplate::all();
 		$thread = $this->advisorsService->findSupportRequestThread($ad->id);
+		$listUserAds = $this->adService->findAllAdsByUser($ad->user_pp_id);
 		if (!isset($thread)) {
 			$thread = $this->advisorsService->createSupportRequestThread($ad->id);
 		}
@@ -141,7 +142,19 @@ class AdvisorsController extends Controller
 		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
 		$projectDataKeys = ProjectDataKey::all();
-		return view('pages.advisors.support-dashboard', compact('ad', 'responseTemplates', 'thread', 'supportStates', 'supportStages', 'projectStatuses', 'projectDataKeys'));
+
+			if (!auth()->user()->unreadNotifications->isEmpty()) {
+				$notifications = auth()->user()->unreadNotifications;
+				foreach ($notifications as $notification){
+					if(array_key_exists('ad_id', $notification->data) && $notification->data['ad_id'] === $ad->id){
+						$notification->markAsRead();
+						$notification->delete();
+					}
+				}
+			}
+
+
+		return view('pages.advisors.support-dashboard', compact('ad', 'responseTemplates', 'thread', 'listUserAds', 'supportStates', 'supportStages', 'projectStatuses', 'projectDataKeys'));
 	}
 
 	/**

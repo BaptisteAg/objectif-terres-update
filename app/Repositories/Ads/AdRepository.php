@@ -98,6 +98,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
 
 	/**
+	 * Find all ads and projects by user id
 	 * @param  $idUser
 	 * @return Collection
 	 */
@@ -106,6 +107,22 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		/** @var Collection $model */
 		$models = $this->entity
 			->where(["user_pp_id" => $idUser])
+			->with($this->getEagerLoading())
+			->get();
+		return $models;
+	}
+
+	/**
+	 * Find all ads by user id
+	 * @param  $idUser
+	 * @return Collection
+	 */
+	public function allAdsByIdUser($idUser): Collection
+	{
+		/** @var Collection $model */
+		$models = $this->entity
+			->where(["user_pp_id" => $idUser])
+			->whereNull('project_id')
 			->with($this->getEagerLoading())
 			->get();
 		return $models;
@@ -282,14 +299,14 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'landOfferAd.productionGenresPossible',
 			'landOfferAd.bioCertifications',
 			'landOfferAd.offerGenres',
-            'landOfferAd.building',
-            'landOfferAd.building.description',
-            'landOfferAd.building.surface',
-            'landOfferAd.building.offerGenres',
-            'landOfferAd.house',
-            'landOfferAd.house.description',
-            'landOfferAd.house.surface',
-            'landOfferAd.house.offerGenres',
+			'landOfferAd.building',
+			'landOfferAd.building.description',
+			'landOfferAd.building.surface',
+			'landOfferAd.building.offerGenres',
+			'landOfferAd.house',
+			'landOfferAd.house.description',
+			'landOfferAd.house.surface',
+			'landOfferAd.house.offerGenres',
 
 			'jobOfferAd',
 			'jobOfferAd.educationLevels',

@@ -8,14 +8,16 @@
 						@foreach($ad->images as $document)
 							<div class="card">
 								<div class="card-image">
-									<figure class="image is-2by1">
-										@if($document->path === "0")
-											<img src="https://picsum.photos/480/320" alt="picsum">
-										@else
-											<img src="{{URL::asset($document->path)}}"
-												 alt="Placeholder image">
-										@endif
-									</figure>
+									<a href="{{route('ads.show', $ad->id)}}">
+										<figure class="image is-2by1">
+											@if($document->path === "0")
+												<img src="https://picsum.photos/480/320" alt="picsum">
+											@else
+												<img src="{{URL::asset($document->path)}}"
+													 alt="Placeholder image">
+											@endif
+										</figure>
+									</a>
 								</div>
 							</div>
 						@endforeach
@@ -46,17 +48,17 @@
 
 				<p><span class="is-italic">Avancement du projet</span>
 					:
-						@if($ad->project->projectStatus->id === \App\Models\ProjectStatus::EMERGING_ID)
-							<span class="tag is-info">{{$ad->project->projectStatus->name}}</span>
-						@elseif($ad->project->projectStatus->id ===\App\Models\ProjectStatus::IN_PROGRESSING_ID)
-							<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>
-						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ABANDONED_ID)
-							<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
-						@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ACCOMPLISHED_ID)
-							<span class="tag is-success ">{{$ad->project->projectStatus->name}}</span>
-						@else
-							<span class="tag is-warning">Pas de statut définis</span>
-						@endif
+					@if($ad->project->projectStatus->id === \App\Models\ProjectStatus::EMERGING_ID)
+						<span class="tag is-info">{{$ad->project->projectStatus->name}}</span>
+					@elseif($ad->project->projectStatus->id ===\App\Models\ProjectStatus::IN_PROGRESSING_ID)
+						<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>
+					@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ABANDONED_ID)
+						<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
+					@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ACCOMPLISHED_ID)
+						<span class="tag is-success ">{{$ad->project->projectStatus->name}}</span>
+					@else
+						<span class="tag is-warning">Pas de statut définis</span>
+					@endif
 				</p>
 
 				@if(isset($ad->landOfferAd))
@@ -207,8 +209,8 @@
 								</a>
 							</div>
 						@endforeach
-						@else
-						<p class="">Aucun document n'a uploadé par le porteur de projet  </p>
+					@else
+						<p class="">Aucun document n'a uploadé par le porteur de projet </p>
 					@endif
 				</div>
 			</div>

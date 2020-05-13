@@ -2,12 +2,11 @@
 	<div class="columns">
 		<div class="column is-half " style="border-right: 1px solid #DBDBDB;">
 			
-			@if(is_null($ad->adNotes))
+			@if(is_null($ad->adNotes) or $ad->adNotes->whereNull('project_data_key_id')->count() ===0)
 				<p>Aucune note n'a été rédigée concernant cette demande</p>
 			@else
 				<div style=" overflow-x: hidden; max-height: 400px;">
-					@foreach($ad->adNotes->sortByDesc('created_at') as $note)
-						@if(is_null($note->project_data_key_id))
+					@foreach($ad->adNotes->whereNull('project_data_key_id')->sortByDesc('created_at') as $note)
 							<div class="card has-background-white-ter"
 								 style="border: 2px solid transparent; border-radius: 12px; margin : 5px; margin-right : 10px; ">
 								<div class="card-content">
@@ -27,7 +26,6 @@
 								</div>
 							</div>
 							<br>
-						@endif
 					@endforeach
 				</div>
 			@endif

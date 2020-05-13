@@ -29,10 +29,10 @@ use Illuminate\Support\Facades\Request;
 
 class AdsController extends BaseController
 {
-    public const PUBLISHED_AD_LIMIT_PER_USER = 3;
+	public const PUBLISHED_AD_LIMIT_PER_USER = 3;
 
 	/**
-     * Display the ad creation form
+	 * Display the ad creation form
 	 * @return \Illuminate\View\View
 	 */
 	public function create()
@@ -47,15 +47,15 @@ class AdsController extends BaseController
 	 */
 	public function requestPublishing(AdRequest $request)
 	{
-        if (auth()->user()->ads()->count() >= self::PUBLISHED_AD_LIMIT_PER_USER) {
-            return $this->store($request)
-                ->withErrors(
-                    "Vous ne pouvez publier que ". self::PUBLISHED_AD_LIMIT_PER_USER ." annonces en même temps. 
+		if (auth()->user()->ads()->count() >= self::PUBLISHED_AD_LIMIT_PER_USER) {
+			return $this->store($request)
+				->withErrors(
+					"Vous ne pouvez publier que " . self::PUBLISHED_AD_LIMIT_PER_USER . " annonces en même temps. 
                     Votre annonce a été sauvegardée mais ne sera pas soumise à modération."
-                );
-        }
+				);
+		}
 
-        $data = $request->validated();
+		$data = $request->validated();
 
 		/** @var $ad Ad $ad */
 		$ad = $this->adService->requestPublishing($data);
@@ -63,7 +63,7 @@ class AdsController extends BaseController
 
 
 		return redirect()->route('ads.show', [$ad->id])
-            ->with('success', 'Votre annonce a bien été soumise à modération. Vous receverez une réponse très bientôt ! ');
+			->with('success', 'Votre annonce a bien été soumise à modération. Vous receverez une réponse très bientôt ! ');
 	}
 
 	/**
@@ -73,8 +73,8 @@ class AdsController extends BaseController
 	 */
 	public function save(AdRequest $request)
 	{
-        return $this->store($request)
-            ->with('success', 'Votre annonce a bien été sauvegardée.');
+		return $this->store($request)
+			->with('success', 'Votre annonce a bien été sauvegardée.');
 	}
 
 	/**
@@ -122,9 +122,19 @@ class AdsController extends BaseController
 				if (auth()->user()->role >= 3) {
 					//TODO display only advisors that are related to the supervisor
 					$advisorUsers = $this->userService->findAllAdvisorsAndSupervisors();
+					//TODO refactor and create a method to make notification related to ad as read
+					if (!auth()->user()->unreadNotifications->isEmpty()) {
+						$notifications = auth()->user()->unreadNotifications;
+						foreach ($notifications as $notification){
+							if(array_key_exists('ad_id', $notification->data) && $notification->data['ad_id'] === $ad->id){
+								$notification->markAsRead();
+								$notification->delete();
+							}
+						}
+					}
 				}
 
-				$threads = $this->threadService->findThreadAlreadyExist(auth()->user()->id,$adId);
+				$threads = $this->threadService->findThreadAlreadyExist(auth()->user()->id, $adId);
 				$data = array(
 					"ad_id" => $adId,
 					"user_id" => auth()->user()->id,
@@ -165,17 +175,17 @@ class AdsController extends BaseController
 		return back()->with('success', 'Votre annonce a bien été supprimée');
 	}
 
-    /**
-     * @param AdRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Throwable
-     */
-    protected function store(AdRequest $request)
-    {
-        $data = $request->validated();
+	/**
+	 * @param AdRequest $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 * @throws \Throwable
+	 */
+	protected function store(AdRequest $request)
+	{
+		$data = $request->validated();
 
-        $ad = $this->adService->create($data);
+		$ad = $this->adService->create($data);
 
-        return redirect()->route('ads.show', [$ad->id]);
-    }
+		return redirect()->route('ads.show', [$ad->id]);
+	}
 }

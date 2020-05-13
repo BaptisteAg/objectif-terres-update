@@ -2,27 +2,6 @@
 <div class="box has-text-centered">
 	<div class="container">
 		<p class="title is-2 has-text-centered">Suivi de la demande d'accompagnement</p>
-		{{--		<p class="subtitle has-text-black ">Statut actuel de la demande :--}}
-		{{--			@if(is_null($ad->project))--}}
-		{{--				<span class="tag is-light">L'annonce n'a pas de statut</span>--}}
-		{{--			@else--}}
-		{{--				@if($ad->project->projectStatus->name === "Accompagné")--}}
-		{{--					<span class="tag is-success is-light is-medium">{{$ad->project->projectStatus->name}}</span>--}}
-		{{--				@elseif($ad->project->projectStatus->name ==="Installé")--}}
-		{{--					<span class="tag is-success is-medium">{{$ad->project->projectStatus->name}}</span>--}}
-		{{--				@elseif($ad->project->projectStatus->name === "A rappeler")--}}
-		{{--					<span class="tag is-danger is-light is-medium">{{$ad->project->projectStatus->name}}</span>--}}
-		{{--				@elseif($ad->project->projectStatus->name === "Non assigné")--}}
-		{{--					<span class="tag is-warning is-medium">{{$ad->project->projectStatus->name}}</span>--}}
-		{{--				@elseif($ad->project->projectStatus->name === "Idée")--}}
-		{{--					<span class="tag is-primary is-medium">{{$ad->project->projectStatus->name}}</span>--}}
-		{{--				@elseif($ad->project->projectStatus->name === "Archivée")--}}
-		{{--					<span class="tag is-info is-light is-medium">{{$ad->project->projectStatus->name}}</span>--}}
-		{{--				@else--}}
-		{{--					<span class="tag is-info is-medium">{{$ad->project->projectStatus->name}}</span>--}}
-		{{--				@endif--}}
-		{{--			@endif--}}
-		{{--		</p>--}}
 		@if($ad->attributionAd->user_supervisor_id !== auth()->id())
 			@if(isset($ad->attributionAd->user_supervisor_id))
 				<p class="">Le responsable territorial de cette demande est
@@ -60,9 +39,14 @@
 						territoire</label>
 					<div class="select">
 						<select name="user_advisor_id" onchange="showValidationSupervisorModal()">
-							<option selected class="has-text-grey-light">Veuillez choisir...</option>
+							<option disabled selected hidden class="has-text-grey-light">Veuillez choisir...</option>
 							@foreach ($advisorUsers as $advisor)
-								<option value="{{$advisor->id}}">{{$advisor->first_name}} {{$advisor->name}}</option>
+								@if(isset($ad->attributionAd->userAdvisor) and $ad->attributionAd->user_advisor_id === $advisor->id )
+									<option disabled
+											value="{{$advisor->id}}">{{$advisor->first_name}} {{$advisor->name}}</option>
+								@else
+									<option value="{{$advisor->id}}">{{$advisor->first_name}} {{$advisor->name}}</option>
+								@endif
 							@endforeach
 						</select>
 					</div>
