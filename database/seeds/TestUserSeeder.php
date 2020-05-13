@@ -36,13 +36,6 @@ class TestUserSeeder extends Seeder
         ]);
 
         \App\Models\User::create([
-            'email' => "test.ot.resp.territorial@gmail.com",
-            'password' => Hash::make('crif9bf1'),
-            'first_name' => 'Test Responsable',
-            'name' => 'Territorial',
-            'role' => 3
-        ]);
-        \App\Models\User::create([
             'email' => "test.ot.responsable.territorial@gmail.com",
             'password' => Hash::make('crif9bf1'),
             'first_name' => 'Test Responsable',
