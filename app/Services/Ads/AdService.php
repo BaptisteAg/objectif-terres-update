@@ -3,7 +3,9 @@
 use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\Department;
+use App\Models\ProjectStatus;
 use App\Models\Region;
+use App\Models\SupportStage;
 use App\Models\User;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Ads\JobOfferAdRepository;
@@ -12,6 +14,7 @@ use App\Repositories\Ads\LandOfferAdRepository;
 use App\Repositories\Ads\LandSeekAdRepository;
 use App\Repositories\Ads\ProductionGenreRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
+use App\Services\Projects\ProjectService;
 use App\Services\Users\UserService;
 use DateTime;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -59,8 +62,12 @@ class AdService
 	 * @var UserService
 	 */
 	protected $userService;
+    /**
+     * @var ProjectService
+     */
+    protected $projectService;
 
-	/**
+    /**
 	 * AdService constructor.
 	 * @param AdRepository $repository
 	 * @param AttributionAdsRepository $attributionAdsRepository
@@ -79,7 +86,8 @@ class AdService
 		JobOfferAdRepository $jobOfferAdRepository,
 		JobSeekAdRepository $jobSeekAdRepository,
 		ProductionGenreRepository $productionGenreRepository,
-		UserService $userService
+		UserService $userService,
+        ProjectService $projectService
 	)
 	{
 		$this->repository = $repository;
@@ -90,6 +98,7 @@ class AdService
 		$this->jobSeekAdRepository = $jobSeekAdRepository;
 		$this->productionGenreRepository = $productionGenreRepository;
 		$this->userService = $userService;
+		$this->projectService = $projectService;
 	}
 
 	/**
@@ -97,23 +106,41 @@ class AdService
 	 * @return mixed
 	 * @throws \Throwable
 	 */
-	public function requestPublishing(array $data)
+	public function requestPublishing(array $data, bool $isSupportRequest = false)
 	{
-		$ad = DB::transaction(function () use ($data) {
+		$ad = DB::transaction(function () use ($data, $isSupportRequest) {
+
+            $ad = $this->repository->create($data);
 
 			$attributionAdData = [];
-			$pendingModerationStatus = AdStatus::where('id', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
 
-			// Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
-			$userModerator = User::where('email', 'test.ot.moderateur@gmail.com')->first();
-			if ($userModerator) {
-				$attributionAdData['user_moderator_id'] = $userModerator->id;
-				$attributionAdData['user_supervisor_id'] = $userModerator->id;
-			} else {
-				$attributionAdData['user_moderator_id'] = User::where('role', '>=', '1')->get()->random()->id;
-			}
-			$attributionAdData['ad_status_id'] = $pendingModerationStatus->id;
-			$ad = $this->repository->create($data);
+			if($isSupportRequest) {
+                $pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_ID)->first();
+                // Temporary : should be attributed by territory stored in Salesforce. If there is many supervisors, one is picked randomly
+                $userModerator = User::where('email', 'test.ot.moderateur@gmail.com')->first();
+                if (!$userModerator) {
+                    throw new \Exception('A moderator could not be found for an attribution');
+                }
+                $attributionAdData['user_supervisor_id'] = $userModerator->id;
+
+                // Create a project for this ad
+                $this->projectService->create([
+                    "ad_id" => $ad->id,
+                    'support_stage_id' => SupportStage::FIRST_RECEPTION_ID,
+                    'project_status_id' => ProjectStatus::EMERGING_ID,
+                ]);
+            }
+			else {
+                $pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
+                // Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
+                $userModerator = User::where('email', 'test.ot.moderateur@gmail.com')->first();
+                if (!$userModerator) {
+                    throw new \Exception('A moderator could not be found for an attribution');
+                }
+                $attributionAdData['user_moderator_id'] = $userModerator->id;
+            }
+
+			$attributionAdData['ad_status_id'] = $pendingStatus->id;
 			$attributionAdData['ad_id'] = $ad->id;
 			$this->attributionAdsRepository->create($attributionAdData);
 

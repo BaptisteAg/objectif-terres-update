@@ -59,8 +59,6 @@ class AdsController extends BaseController
 
 		/** @var $ad Ad $ad */
 		$ad = $this->adService->requestPublishing($data);
-		//TODO if the new ad is a project, send a notification to the related supervisor. Otherwise, it's an ad, send a message to the related moderator
-//		$ad->attributionAd->userSupervisor->notify(new NewProjectsNotification($ad, auth()->user()));
 		$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
 
 

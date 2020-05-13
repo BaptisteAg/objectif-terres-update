@@ -49,7 +49,6 @@ class DatabaseSeeder extends Seeder
 				SupportStageSeeder::class,
 				SupportStateSeeder::class,
 				ProjectStatusSeeder::class,
-				ProjectSeeder::class,
 				AdStatusSeeder::class,
 				EducationLevelSeeder::class,
 				RefusalTypeSeeder::class,
@@ -63,6 +62,7 @@ class DatabaseSeeder extends Seeder
 					TestResponseTypeSeeder::class,
 					TestResearchSeeder::class,
 					TestResponseTemplateSeeder::class,
+                    TestProjectSeeder::class,
 				]);
 				$projectIds = Project::all()->pluck('id')->toArray();
 				factory(Ad::class, $fakeAdsCount * 3)->create()->each(function (Ad $ad) use (&$queriesCount, &$projectIds) {
