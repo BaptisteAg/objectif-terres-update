@@ -5,10 +5,11 @@ namespace App\Exports\Supervisors;
 use App\Exports\AdsExport;
 use App\Exports\PpExport;
 use App\Exports\ProjectExport;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class SupervisorsExport implements WithMultipleSheets
+class SupervisorsExport implements WithMultipleSheets, ShouldQueue
 {
 	use Exportable;
 

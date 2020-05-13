@@ -57,6 +57,10 @@
        function showValidationSupervisorModal(){
            let validationModal = document.querySelector('#modal-supervisor-validation');
            let html = document.querySelector('html');
+           let listAdvisorUsers = document.getElementById("list_advisor_users");
+           let advisorUserSelected = listAdvisorUsers.options[listAdvisorUsers.selectedIndex].text;
+           let spanAdvisorSelected = document.querySelector('#user_advisor_selected');
+           spanAdvisorSelected.innerHTML = advisorUserSelected;
            validationModal.classList.add('is-active');
            html.classList.add('is-clipped');
 
@@ -71,6 +75,14 @@
                html.classList.remove('is-clipped');
            });
 		}
+
+        function sendResponseTemplateMessage() {
+            let listResponseTemplates = document.getElementById("response_templates_list");
+            let responseTemplateSelected = listResponseTemplates.options[listResponseTemplates.selectedIndex].text;
+            let textareaMessage = document.querySelector('#textearea_message');
+            console.log(textareaMessage);
+            textareaMessage.value = responseTemplateSelected;
+        }
 
 	</script>
 	@if(count($ad->images) > 1)
