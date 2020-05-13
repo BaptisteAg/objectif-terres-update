@@ -108,8 +108,8 @@
 												<span>Demande d'accompagnement</span>
 											</a>
 										</li>
-										<li>
-											<a>
+										<li :class="{ 'is-active' : tabsOpen.infoTabOpen === 'support-pp-ads-tab'}">
+											<a  v-on:click="openInfoTab('support-pp-ads-tab')">
 												<span class="icon is-small"><i class="fas fa-newspaper"></i></span>
 												<span>Annonces</span>
 											</a>
@@ -122,6 +122,10 @@
 								<div v-show="tabsOpen.infoTabOpen === 'support-info-tab'"
 									 class="support-info-tab">
 									@include('pages.advisors.partials.support-info-tab')
+								</div>
+								<div v-show="tabsOpen.infoTabOpen === 'support-pp-ads-tab'"
+									 class="support-pp-ads-tab">
+									@include('pages.advisors.partials.support-pp-ads-tab')
 								</div>
 
 							</div>
@@ -189,5 +193,6 @@
                 navigation: true,
             });
 		</script>
+
 	@endif
 @endsection

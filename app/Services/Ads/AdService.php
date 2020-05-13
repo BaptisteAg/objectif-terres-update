@@ -103,7 +103,8 @@ class AdService
     }
 
 	/**
-	 * @param $data
+	 * @param array $data
+	 * @param bool $isSupportRequest
 	 * @return mixed
 	 * @throws \Throwable
 	 */
@@ -214,12 +215,25 @@ class AdService
 	}
 
 	/**
+	 * Find all ads and projects created by to user
 	 * @param $idUser
 	 * @return Collection
 	 */
 	public function findAllByUser($idUser): Collection
 	{
 		$ads = $this->repository->allByIdUser($idUser);
+
+		return $ads;
+	}
+
+	/**
+	 * Find all ads created by user
+	 * @param $idUser
+	 * @return Collection
+	 */
+	public function findAllAdsByUser($idUser): Collection
+	{
+		$ads = $this->repository->allAdsByIdUser($idUser);
 
 		return $ads;
 	}
