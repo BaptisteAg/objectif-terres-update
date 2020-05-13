@@ -18,7 +18,7 @@ class SalesforceService
     /**
      * @var UserRepository
      */
-    protected $userRepository;
+    protected $localUserRepository;
     /**
      * @var TokenRepository|null
      */
@@ -39,7 +39,7 @@ class SalesforceService
     public function __construct(SalesForceRepository $repository, UserRepository $userRepository)
     {
         $this->repository = $repository;
-        $this->userRepository = $userRepository;
+        $this->localUserRepository = $userRepository;
     }
 
     /**
@@ -55,19 +55,9 @@ class SalesforceService
 
         $city = City::findOrFail($data["city_id"]);
 
-        /*
-         * array:3 [
-              "id" => "0011q00000XA0LIAA1"
-              "success" => true
-              "errors" => []
-            ]
-         */
-        /*$account = $this->repository->create('Account', [
-            "Name" => $data["first_name"] . " " . $data["name"],
-            "Description" => "Compte Objectif Terre",
-        ]);*/
 
         /**
+         * example response :
          * array:3 [
          * "id" => "0031q00000RVzsRAAT"
          * "success" => true
@@ -87,6 +77,39 @@ class SalesforceService
             "MailingCountry" => Country::findOrFail($data["country_id"])->name_fr_fr,
             "OT_Password__c" => Hash::make($data["password"])
         ]);
+
+        return $contact;
+    }
+
+    /**
+     * Used for testing only, it allows the remote creation of a user for roles > 0
+     * @param $data
+     */
+    public function createPortalUser($data)
+    {
+        $this->apiAuthenticationRefresh();
+
+        /**
+         * array:3 [
+         * "id" => "0031q00000RVzsRAAT"
+         * "success" => true
+         * "errors" => []
+         * ]
+         */
+        $contact = $this->repository->create('Contact', [
+            // Account global donné par Youssouf
+            "AccountId" => "0012000000o2X3TAAU",
+            "Email" => $data["email"],
+            "LastName" => $data["lastName"],
+            'FirstName' => $data["firstName"],
+            //"Phone" => $data["phone"],
+            //"MailingStreet" => $data["street"],
+            //"MailingPostalCode" => $city->zip_code,
+            //"MailingCity" => $city->name,
+            //"MailingCountry" => Country::findOrFail($data["country_id"])->name_fr_fr,
+            //"OT_Password__c" => Hash::make($data["password"])
+        ]);
+
         /**
          * array:3 [
          * "id" => "0051q000003fRgJAAU"
@@ -94,35 +117,27 @@ class SalesforceService
          * "errors" => []
          * ]
          */
-
-        /*$user = $this->repository->create('User', [
+        $user = $this->repository->create('User', [
             'Email' => $data["email"],
             'Username' => $data["email"],
-            "Alias" => substr($data["first_name"],0,1) . substr($data["name"],1,7),
-            'FirstName' => $data["first_name"],
-            "LastName" => $data["name"],
-            "Phone" => $data["phone"],
-            "Street" =>$data["address"],
-            "PostalCode" => $city->zip_code,
-            "City" => $city->name,
-            "Country" => Country::findOrFail($data["country_id"])->name_fr_fr,
+            "Alias" => substr($data["firstName"],0,1) . substr($data["lastName"],1,7),
+            'FirstName' => $data["firstName"],
+            "LastName" => $data["lastName"],
+            //"Phone" => $data["phone"],
+            //"Street" =>$data["address"],
+            //"PostalCode" => $city->zip_code,
+            //"City" => $city->name,
+            //"Country" => Country::findOrFail($data["country_id"])->name_fr_fr,
             "TimeZoneSidKey" => "Europe/Paris",
             "LocaleSidKey" => "fr_FR",
             "EmailEncodingKey" => "UTF-8",
-            // Chatter Free
-            //"ProfileId" => "00e20000001clYf",
-            // Chatter External
-            //"ProfileId" => "00e20000001Ue7l",
             // Customer community - membre
             "ProfileId" => "00ew0000001V7RJ",
-            // "PP Objectif Terres"
-            //"ProfileId" => "00e1q000000M3vz",
             "LanguageLocaleKey" => "fr",
-            "ContactId" => $contact["id"]
+            "ContactId" => $contact["id"],
+            "Role_Objectif_Terre__c" => $data["role"]."-".implode('_', $data["departments"])
         ]);
-        $this->repository->updateUserPassword($user["id"], $data["password"]);*/
-
-        return $contact;
+        $this->repository->updateUserPassword($user["id"], $data["password"]);
     }
 
     /**
@@ -142,13 +157,13 @@ class SalesforceService
         $sfId = $samlUser->getAttribute('userId')[0];
 
         /** @var User $localUser */
-        $user = $this->repository->find('User', $sfId, ['FirstName', 'LastName', 'ProfileId']);
-        $localUser = $this->userRepository->findByEmail($email);
+        $user = $this->repository->find('User', $sfId, ['FirstName', 'LastName', 'ProfileId', 'Role_Objectif_Terre__c']);
+        $localUser = $this->localUserRepository->findByEmail($email);
 
         // Reverse user creation : if no user has been found, then we'll create it on the fly
         // to allow every salesforce-only user to pass the registration form
         if(!$localUser) {
-			$localUser = $this->userRepository->create([
+			$localUser = $this->localUserRepository->create([
 				'first_name' => $user["FirstName"],
 				'name' => $user["LastName"],
 				'email' => $email
@@ -199,6 +214,10 @@ class SalesforceService
 
     protected function getRoleFromUser($user)
     {
+        if(!empty($user["Role_Objectif_Terre__c"])) {
+            return explode('-', $user["Role_Objectif_Terre__c"])[0];
+        }
+
         return $this->profileToRoleMapping[$user["ProfileId"]] ?? 0;
     }
 }

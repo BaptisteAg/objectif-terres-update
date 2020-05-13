@@ -40,14 +40,20 @@ class ProjectService
 		$this->notification = $notification;
 	}
 
+	public function create(array $data)
+    {
+        return $this->repository->create($data);
+    }
+
 	/**
 	 * @param int $supportStageId
 	 * @return int
 	 */
 	public function countNumberOfProjectsBySupportStageForLoggedUser(int $supportStageId): int
 	{
-		$numberOfProjects = $this->repository->findAllByUserIdAndUserRoleAndSupportStageId(auth()->user()->id, auth()->user()->role, $supportStageId)->count();
-		return $numberOfProjects;
+		return $this->repository->findAllByUserIdAndUserRoleAndSupportStageId(
+		    auth()->user()->id, auth()->user()->role, $supportStageId
+        )->count();
 	}
 
 

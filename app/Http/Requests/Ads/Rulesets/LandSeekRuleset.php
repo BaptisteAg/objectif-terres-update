@@ -13,7 +13,7 @@ class LandSeekRuleset implements RulesetInterface
 
         if($isSupportRequest) {
             $extraValidations = [
-                'land_offer.offer_genres' => ['required', 'array'],
+                'land_seek.offer_genres' => ['required', 'array'],
             ];
         }
 

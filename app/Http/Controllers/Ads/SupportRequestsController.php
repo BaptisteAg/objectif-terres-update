@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Ads;
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
 use App\Notifications\NewAdToModerateNotification;
+use App\Notifications\NewProjectsNotification;
 
 class SupportRequestsController extends BaseController
 {
@@ -31,10 +32,9 @@ class SupportRequestsController extends BaseController
         $data = $request->validated();
 
         /** @var $ad Ad $ad */
-        $ad = $this->adService->requestPublishing($data);
-        //TODO if the new ad is a project, send a notification to the related supervisor. Otherwise, it's an ad, send a message to the related moderator
-//		$ad->attributionAd->userSupervisor->notify(new NewProjectsNotification($ad, auth()->user()));
-        $ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
+        $ad = $this->adService->requestPublishing($data, true);
+        // send a notification to the related supervisor
+        $ad->attributionAd->userSupervisor->notify(new NewProjectsNotification($ad, auth()->user()));
 
 
         return redirect()->route('ads.show', [$ad->id])
