@@ -19,6 +19,13 @@ class TestUserSeeder extends Seeder
             'name' => 'Moderateur',
             'role' => 1
         ]);
+        \App\Models\User::create([
+            'email' => "test.ot.moderateur2@gmail.com",
+            'password' => Hash::make('crif9bf1'),
+            'first_name' => 'Test',
+            'name' => 'Moderateur 2',
+            'role' => 1
+        ]);
 
         \App\Models\User::create([
             'email' => "test.ot.primo.accueillant@gmail.com",
@@ -33,6 +40,13 @@ class TestUserSeeder extends Seeder
             'password' => Hash::make('crif9bf1'),
             'first_name' => 'Test Responsable',
             'name' => 'Territorial',
+            'role' => 3
+        ]);
+        \App\Models\User::create([
+            'email' => "test.ot.responsable.territorial@gmail.com",
+            'password' => Hash::make('crif9bf1'),
+            'first_name' => 'Test Responsable',
+            'name' => 'Territorial 2',
             'role' => 3
         ]);
     }
