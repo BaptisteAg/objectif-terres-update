@@ -51,63 +51,125 @@
 				</div>
 			@endif
 		@else
-			<div id="messages-display" class="content">
-				<h3 class=" title is-3 has-text-link has-text-centered">Votre fil de discusion </h3>
-			</div>
-			<div id="vue-messages">
-				<vue-threads
-						inline-template
-						v-bind:is-display-in-thread-page=false
-						v-bind:is-user-ad-owner=false
-						init-thread='{{ $threads[0]->id }}'
-						:user-logged-id="{{auth()->id()}}"
-						:user-role="{{auth()->user()->role}}"
-				>
-					<div>
-						<div class="columns is-vcentered " v-if="initialLoading === true">
-							<div class="column is-7">
-								<div id="loading" class="is-pulled-right">
+			@if(auth()->user()->role >= 1)
+				<div id="messages-display" class="content">
+					<h3 class=" title is-3 has-text-link has-text-centered">Votre fil de discusion </h3>
+				</div>
+				<div id="vue-messages">
+					<vue-threads
+							inline-template
+							v-bind:is-display-in-thread-page=false
+							v-bind:is-user-ad-owner=false
+							init-thread='{{ $threads[0]->id }}'
+							:user-logged-id="{{auth()->id()}}"
+							:user-role="{{auth()->user()->role}}"
+					>
+						<div>
+							<div class="columns is-vcentered " v-if="initialLoading === true">
+								<div class="column is-7">
+									<div id="loading" class="is-pulled-right">
+									</div>
+								</div>
+							</div>
+							<div class="columns" v-else-if="initialLoading === false">
+								<div class="column is-one-quarter" v-if="isUserAdOwner">
+									<list-threads
+											:threads="{{json_encode($threads)}}"
+											:number-of-unread-messages="0"
+											v-model="messages"
+											v-bind:is-display="isDisplay"
+											v-bind:is-user-logged-ad-owner="isUserAdOwner"
+											:user-id="{{auth()->id()}}"
+											@on-thread-click="onThreadClick"
+									>
+									</list-threads>
+								</div>
+								<div class="column box ">
+									<header-message
+											v-bind:is-display="isDisplay"
+											v-model="messages"
+											:user-id="{{auth()->id()}}"
+									></header-message>
+									<display-message-content
+											v-model="messages"
+											:user-id="{{auth()->id()}}"
+									></display-message-content>
+									<form-message-reply
+											v-model="messages"
+											:user-id="{{auth()->id()}}"
+											@message-reply-success="onMessageReplySuccess"
+											v-bind::show-response-type="isUserModerator"
+											v-bind:active-thread-id="activeThread"
+											:show-response-type="true"
+											:response-templates="{{json_encode($responseTemplates)}}"
+									>
+									</form-message-reply>
 								</div>
 							</div>
 						</div>
-						<div class="columns" v-else-if="initialLoading === false">
-							<div class="column is-one-quarter" v-if="isUserAdOwner">
-								<list-threads
-										:threads="{{json_encode($threads)}}"
-										:number-of-unread-messages="0"
-										v-model="messages"
-										v-bind:is-display="isDisplay"
-										v-bind:is-user-logged-ad-owner="isUserAdOwner"
-										:user-id="{{auth()->id()}}"
-										@on-thread-click="onThreadClick"
-								>
-								</list-threads>
+
+					</vue-threads>
+				</div>
+			@else
+				<div id="messages-display" class="content">
+					<h3 class=" title is-3 has-text-link has-text-centered">Votre fil de discusion </h3>
+				</div>
+				<div id="vue-messages">
+					<vue-threads
+							inline-template
+							v-bind:is-display-in-thread-page=false
+							v-bind:is-user-ad-owner=false
+							init-thread='{{ $threads[0]->id }}'
+							:user-logged-id="{{auth()->id()}}"
+							:user-role="{{auth()->user()->role}}"
+					>
+						<div>
+							<div class="columns is-vcentered " v-if="initialLoading === true">
+								<div class="column is-7">
+									<div id="loading" class="is-pulled-right">
+									</div>
+								</div>
 							</div>
-							<div class="column box ">
-								<header-message
-										v-bind:is-display="isDisplay"
-										v-model="messages"
-										:user-id="{{auth()->id()}}"
-								></header-message>
-								<display-message-content
-										v-model="messages"
-										:user-id="{{auth()->id()}}"
-								></display-message-content>
-								<form-message-reply
-										v-model="messages"
-										:user-id="{{auth()->id()}}"
-										@message-reply-success="onMessageReplySuccess"
-										v-bind::show-response-type="isUserModerator"
-										v-bind:active-thread-id="activeThread"
-										:response-templates="{{json_encode($responseTemplates)}}"
-								>
-								</form-message-reply>
+							<div class="columns" v-else-if="initialLoading === false">
+								<div class="column is-one-quarter" v-if="isUserAdOwner">
+									<list-threads
+											:threads="{{json_encode($threads)}}"
+											:number-of-unread-messages="0"
+											v-model="messages"
+											v-bind:is-display="isDisplay"
+											v-bind:is-user-logged-ad-owner="isUserAdOwner"
+											:user-id="{{auth()->id()}}"
+											@on-thread-click="onThreadClick"
+									>
+									</list-threads>
+								</div>
+								<div class="column box ">
+									<header-message
+											v-bind:is-display="isDisplay"
+											v-model="messages"
+											:user-id="{{auth()->id()}}"
+									></header-message>
+									<display-message-content
+											v-model="messages"
+											:user-id="{{auth()->id()}}"
+									></display-message-content>
+									<form-message-reply
+											v-model="messages"
+											:user-id="{{auth()->id()}}"
+											@message-reply-success="onMessageReplySuccess"
+											v-bind::show-response-type="isUserModerator"
+											v-bind:active-thread-id="activeThread"
+											:show-response-type="false"
+											:response-templates="{{json_encode($responseTemplates)}}"
+									>
+									</form-message-reply>
+								</div>
 							</div>
 						</div>
-					</div>
 
-				</vue-threads>
-			</div>
+					</vue-threads>
+				</div>
+			@endif
 		@endif
 	@else
 		@if(sizeof($threads) <= 0)
@@ -118,7 +180,8 @@
 							<article class="media">
 								<div class="media-content">
 									<div class="content has-text-centered ">
-										<p class="has-text-centered is-size-4">Vous n'avez pas encore reçu de messages</p>
+										<p class="has-text-centered is-size-4">Vous n'avez pas encore reçu de
+											messages</p>
 									</div>
 								</div>
 							</article>

@@ -38,7 +38,7 @@
 					<label class="label">Séléctionnez une personne parmi les primo-accueilants de votre
 						territoire</label>
 					<div class="select">
-						<select name="user_advisor_id" onchange="showValidationSupervisorModal()">
+						<select id="list_advisor_users" name="user_advisor_id" onchange="showValidationSupervisorModal()">
 							<option disabled selected hidden class="has-text-grey-light">Veuillez choisir...</option>
 							@foreach ($advisorUsers as $advisor)
 								@if(isset($ad->attributionAd->userAdvisor) and $ad->attributionAd->user_advisor_id === $advisor->id )
@@ -64,6 +64,7 @@
 			<div class="card-content">
 				<div class="content">
 					<p class="title is-3 has-text-centered has-text-link">Vous êtes sûre de votre choix ?</p>
+					<p>Vous êtes sur le point d'attribuer l'annonce à <span class="has-text-weight-bold" id="user_advisor_selected"></span></p>
 				</div>
 			</div>
 			<footer class="card-footer">

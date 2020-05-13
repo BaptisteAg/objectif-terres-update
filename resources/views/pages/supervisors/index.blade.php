@@ -88,7 +88,7 @@
 								<footer class="card-footer">
 									<div class="buttons card-footer-item">
 										<button type="submit" class="button is-link">
-											<span>Télcharger</span>
+											<span>Télécharger</span>
 										</button>
 										<a class="button is-link is-light" v-on:click="closeModal()">
 											<span>Annuler</span>

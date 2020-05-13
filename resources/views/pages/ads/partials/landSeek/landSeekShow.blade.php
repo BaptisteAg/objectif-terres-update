@@ -101,15 +101,7 @@
 								</p>
 							@endif
 						</div>
-						{{--<div class="content">
-							@if(count($ad->landSeekAd->priceRanges))
-								<p><span class="is-size-4  ad-show-feature-label">Prix recherché : </span>
-									@foreach($ad->landSeekAd->priceRanges as $priceRange)
-										<span class="subtitle ad-show-feature-label">{{$priceRange->price }}€</span><br>
-									@endforeach
-								</p>
-							@endif
-						</div>--}}
+
 						@if($ad->userPp->accept_share_contact_infos === 1)
 							<div class="content">
 								<p>
