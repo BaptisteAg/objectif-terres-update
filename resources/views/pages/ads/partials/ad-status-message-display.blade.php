@@ -1,4 +1,19 @@
-@if(! $ad->attributionAd and $ad->is_draft === 0)
+@if($ad->project)
+	@if($ad->attributionAd->user_advisor_id)
+		<article class="message is-success">
+			<div class="message-body">
+				Votre demande d'accompagnement est prise en compte par un primo Accueillant.
+			</div>
+		</article>
+	@else
+		<article class="message is-success">
+			<div class="message-body">
+
+				Votre demande d'accompagnement est en attente d'être assignée à un primo-accueillant par un responsable territorial.
+			</div>
+		</article>
+	@endif
+@elseif(! $ad->attributionAd and $ad->is_draft === 0)
 	<article class="message is-success">
 		<div class="message-body">
 			Votre annonce n'as pas encore été soumise, finaliser la création de votre annonce !

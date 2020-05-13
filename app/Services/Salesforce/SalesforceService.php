@@ -176,7 +176,7 @@ class SalesforceService
         }
 
         // Sync role
-        if($localUser->role !== $this->getRoleFromUser($user)) {
+        if((string)$localUser->role !== $this->getRoleFromUser($user)) {
             $localUser->role = $this->getRoleFromUser($user);
         }
 

@@ -38,6 +38,6 @@ class SupportRequestsController extends BaseController
 
 
         return redirect()->route('ads.show', [$ad->id])
-            ->with('success', 'Votre annonce a bien été soumise à modération. Vous receverez une réponse très bientôt ! ');
+            ->with('success', 'Votre demande a bien été soumise. Vous receverez une réponse très bientôt ! ');
     }
 }

@@ -75,7 +75,7 @@ class RegisterController extends Controller
                 app(SalesforceUniqueEmail::class)
             ],
 			'first_name' => ['required', 'string', 'max:255'],
-			'phone' => ['sometimes','string', 'max:30'],
+			'phone' => ['nullable','string', 'max:30'],
 			'street' => ['string', 'min:5', 'required'],
 			'civility' => ['required'],
 			'profile' => ['required'],

@@ -24,7 +24,7 @@ class CreateAttributionAdsTable extends Migration
 			$table->engine = 'InnoDB';
 			$table->increments('id');
 			$table->unsignedInteger('user_advisor_id')->nullable();
-			$table->unsignedInteger('user_moderator_id');
+			$table->unsignedInteger('user_moderator_id')->nullable();
 			$table->unsignedInteger('user_supervisor_id')->nullable();
 			$table->boolean('to_call_back')->nullable();
 			$table->text('short_description')->nullable();

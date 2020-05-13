@@ -116,10 +116,10 @@
 						<span class="is-italic">Bâtiments</span> :
 						@if(isset($ad->landOfferAd->has_houses) and isset($ad->landOfferAd->has_buildings))
 							@if(isset($ad->landOfferAd->has_houses))
-								{{$ad->landOffer->has_houses ? 'Avec habitation' : 'Sans habitation'}}
+								{{$ad->landOfferAd->has_houses ? 'Avec habitation' : 'Sans habitation'}}
 							@endif
 							@if(isset($ad->landOfferAd->has_buildings))
-								{{$ad->landOffer->has_buildings ? ' Avec bâtiments agricoles' : 'Sans bâtiments agricoles'}}
+								{{$ad->landOfferAd->has_buildings ? ' Avec bâtiments agricoles' : 'Sans bâtiments agricoles'}}
 							@endif
 						@else
 							Non renseignés
