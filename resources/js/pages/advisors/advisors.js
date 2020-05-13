@@ -2,6 +2,7 @@ import Vue from 'vue';
 import DisplayMessageContent from "../threads/components/DisplayMessageContent";
 import FormMessageReply from "../threads/components/FormMessageReply";
 import DocumentsUpload from "../../components/DocumentsUpload";
+import axios from "axios";
 
 Vue.component('support-request-dashboard', {
     components: {
@@ -10,8 +11,8 @@ Vue.component('support-request-dashboard', {
         DocumentsUpload,
     },
     props: {
-        oldInputSelected: '',
         thread: '',
+        adId : '',
     },
     data() {
         return {
@@ -20,10 +21,12 @@ Vue.component('support-request-dashboard', {
             initialLoading : true,
             messagesLoading : true,
             tabsOpen: {
-                infoTabOpen: 'support-request-info-tab',
-                supportTabOpen: 'support-request-thread-tab',
+                infoTabOpen: 'support-info-tab',
+                supportTabOpen: 'support-notes-tab',
             },
             showModal: false,
+            projectDataKeyId : '',
+            notes : [],
         }
     },
     mounted() {
@@ -62,6 +65,21 @@ Vue.component('support-request-dashboard', {
         onMessageReplySuccess(message) {
             this.messages.push(message)
         },
+        getAllNotesByProjectDataKey(e) {
+            this.isLoading = true;
+            axios.post('/mon-espace-primo-accueillant/liste-notes-indicateurs', {
+                ad_id: this.adId,
+                project_data_key_id:this.projectDataKeyId
+            })
+                .then(response => {
+                    console.log(response.data)
+                     this.notes = response.data;
+                     this.isLoading = false;
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
     },
 
 });

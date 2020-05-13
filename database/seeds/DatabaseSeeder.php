@@ -52,6 +52,7 @@ class DatabaseSeeder extends Seeder
 				AdStatusSeeder::class,
 				EducationLevelSeeder::class,
 				RefusalTypeSeeder::class,
+				ProjectDataKeySeeder::class,
 			]);
 
 			if (app()->environment() === "local") {

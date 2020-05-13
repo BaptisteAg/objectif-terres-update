@@ -23,22 +23,29 @@ class CreateAdNotesTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->text('content');
-            $table->unsignedInteger('user_id');
-            $table->string('contact_name')->nullable();
-            $table->unsignedInteger('ad_id');
+			$table->unsignedInteger('ad_id');
+			$table->unsignedInteger('user_id');
+			$table->unsignedInteger('project_data_key_id')->nullable();
+			$table->text('value');
+			$table->string('contact_name')->nullable();
 
-            $table->index(["user_id"], 'ix_lead_ad_note_user_id');
+            $table->index(["project_data_key_id"], 'fk_lead_ad_notes_1_idx');
+            $table->index(["user_id"], 'fk_lead_ad_notes_2_idx');
+            $table->index(["ad_id"], 'fk_lead_ad_notes_3_idx');
 
-            $table->index(["ad_id"], 'fk_lead_ad_notes_1_idx');
             $table->timestamps();
 
-			$table->foreign('user_id','ix_lead_ad_note_user_id' )
+			$table->foreign('project_data_key_id','fk_lead_ad_notes_1_idx' )
+				->references('id')
+				->on('project_data_keys')
+				->onDelete('cascade');
+
+			$table->foreign('user_id','fk_lead_ad_notes_2_idx' )
 				->references('id')
 				->on('users')
 				->onDelete('cascade');
 
-            $table->foreign('ad_id', 'fk_lead_ad_notes_1_idx')
+            $table->foreign('ad_id', 'fk_lead_ad_notes_3_idx')
                 ->references('id')->on('ads')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

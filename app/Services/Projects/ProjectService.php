@@ -16,6 +16,7 @@ use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 class ProjectService
@@ -87,7 +88,6 @@ class ProjectService
 		return $projectsByCategories;
 
 	}
-
 
 	/**
 	 * @param Collection $projects
@@ -251,8 +251,38 @@ class ProjectService
 		$attributionAd->user_advisor_id = $request->input('user_advisor_id');
 		$attributionAd->save();
 		$this->notification->handle($attributionAd->ad->id);
+	}
 
+	//TODO Create a ProjectDataKeyService and ProjectDataKeyRepository ?
 
+	public function updateProjectDataKey(Request $request)
+	{
+
+		if (!empty($request->input('project_data_key_id'))) {
+			$this->deleteProjectDataKey($request);
+		} else {
+			$this->createProjectDataKey($request);
+		}
+	}
+
+	/**
+	 * @param Request $request
+	 */
+	public function createProjectDataKey(Request $request)
+	{
+		DB::table('project_data_keys')->updateOrInsert(
+			['name' => $request->input('project_data_key_name')]
+		);
+	}
+
+	/**
+	 * @param Request $request
+	 */
+	public function deleteProjectDataKey(Request $request)
+	{
+		DB::table('project_data_keys')
+			->where('id', '=', $request->input('project_data_key_id'))
+			->delete();
 	}
 
 	/**

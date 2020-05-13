@@ -6,8 +6,10 @@ namespace App\Http\Controllers\Advisors;
 use App\Exports\Advisors\AdvisorsExport;
 use App\Http\Controllers\Controller;
 use App\Models\Ad;
+use App\Models\AdNote;
 use App\Models\City;
 use App\Models\JobOfferType;
+use App\Models\ProjectDataKey;
 use App\Models\ProjectStatus;
 use App\Models\ResponseTemplate;
 use App\Models\SupportStage;
@@ -18,6 +20,7 @@ use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -55,8 +58,8 @@ class AdvisorsController extends Controller
 			['name' => 'Recherche d\'emploi', 'value' => 'jobSeekAd'],
 		];
 
-        // TODO : remove ?
-        $this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access"];
+		// TODO : remove ?
+		$this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access"];
 	}
 
 	/**
@@ -76,7 +79,7 @@ class AdvisorsController extends Controller
 		$ads = $this->advisorsService->findAllByUserAdvisor(true);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfProjectToHandle = $this->advisorsService->findAllBySupportStageAndSupportState(SupportStage::FIRST_CONTACT_ID, SupportState::TO_HANDLE_ID)->count();
-		return view('pages.advisors.index', compact('supportStages', 'supportStates','projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'adTypes', 'adTypesFaIcons', 'numberOfProjectToHandle'));
+		return view('pages.advisors.index', compact('supportStages', 'supportStates', 'projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'adTypes', 'adTypesFaIcons', 'numberOfProjectToHandle'));
 	}
 
 
@@ -98,7 +101,7 @@ class AdvisorsController extends Controller
 		$ads = $this->advisorsService->showForAdvisor($request);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfProjectToHandle = $this->advisorsService->findAllBySupportStageAndSupportState(SupportStage::FIRST_CONTACT_ID, SupportState::TO_HANDLE_ID);
-		return view('pages.advisors.index', compact('supportStages', 'supportStates','projectStatuses', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'adTypesFaIcons', 'adTypes', 'numberOfProjectToHandle'));
+		return view('pages.advisors.index', compact('supportStages', 'supportStates', 'projectStatuses', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'adTypesFaIcons', 'adTypes', 'numberOfProjectToHandle'));
 
 	}
 
@@ -131,13 +134,14 @@ class AdvisorsController extends Controller
 		$ad = $this->adService->find($adId);
 		$responseTemplates = ResponseTemplate::all();
 		$thread = $this->advisorsService->findSupportRequestThread($ad->id);
-		if(! isset($thread)){
+		if (!isset($thread)) {
 			$thread = $this->advisorsService->createSupportRequestThread($ad->id);
 		}
 		$supportStages = SupportStage::all();
 		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
-		return view('pages.advisors.support-dashboard', compact('ad', 'supportRequestStatuses', 'responseTemplates', 'thread', 'supportStates', 'supportStages', 'projectStatuses'));
+		$projectDataKeys = ProjectDataKey::all();
+		return view('pages.advisors.support-dashboard', compact('ad', 'supportRequestStatuses', 'responseTemplates', 'thread', 'supportStates', 'supportStages', 'projectStatuses', 'projectDataKeys'));
 	}
 
 	/**
@@ -156,5 +160,33 @@ class AdvisorsController extends Controller
 	public function export()
 	{
 		return Excel::download(new AdvisorsExport($this->advisorsService->findAllByUserAdvisor(false)), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
+	}
+
+	/**
+	 * @param Request $request
+	 * @return RedirectResponse
+	 */
+	public function createNote(Request $request)
+	{
+		if (is_null($request->input('value'))) {
+			return back()->with('warning', 'Votre note est vide !');
+		}
+		$this->advisorsService->createNote($request);
+		return back()->with('success', 'Votre note a bien été créée');
+	}
+
+	/**
+	 * @param Request $request
+	 * @return JsonResponse
+	 */
+	public function showAllNotesByProjectDataKey(Request $request)
+	{
+		$notes = $this->advisorsService->findNotesByProjectDataKey($request)->map(function (AdNote $note){
+			$noteArray = $note->toArray();
+			$noteArray['created_at'] = $note->created_at->format('d/m/Y');
+			return $noteArray;
+		});
+
+		return response()->json($notes);
 	}
 }

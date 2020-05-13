@@ -68,7 +68,6 @@ class ThreadsController extends Controller
 
 	public function refreshUnreadMessages()
 	{
-
 		/** @var Collection $threads */
 		$threads = $this->service->findAllThreadsByLoggedUser();
 		$threadsWithUnreadMessages = $this->service->findThreadsWithUnreadMessages(auth()->id());

@@ -19,7 +19,7 @@
 						Vous avez<a style="text-decoration: none"
 									href="/">
 							<strong>{{$numberOfProjectToHandle}}
-								 demandes d'accompagnement à traiter ! </strong></a> !
+								demandes d'accompagnement à traiter ! </strong></a> !
 					</p>
 				@elseif ($numberOfProjectToHandle === 1)
 					<p class="has-text-white-ter">
@@ -27,7 +27,7 @@
 						Vous avez<a style="text-decoration: none"
 									href="/">
 							<strong>{{$numberOfProjectToHandle}}
-								 demande d'accompagnement à traiter! </strong></a>!
+								demande d'accompagnement à traiter! </strong></a>!
 					</p>
 				@else
 				@endif
@@ -154,65 +154,80 @@
 									</a>
 								@endif
 							</th>
-							<th></th>
+							<th style="width: 100px;"></th>
 						</tr>
 						</thead>
 						<tbody>
 						@foreach($ads as $ad)
-							<tr>
-								<td>
-									@if($ad->project()->exists())
-										<span class="tag is-link">Demande d'accompagnement</span>
-									@else
-										<span class="tag is-link is-light">Annonce</span>
+							@if(!is_null($ad->attributionAd->userAdvisor))
+								@if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
+									<tr class="has-background-grey-lighter">
+								@else
+									<tr>
+								@endif
+							@else
+								<tr>
 									@endif
-								</td>
-								<td>
-									{{$ad->attributionAd->created_at->format("d/m/Y")}}
-								</td>
-								<td>
-									<a href="{{route('ads.show', $ad->id)}}">{{$ad->title}}</a>
-								</td>
-								<td>{{$ad->ad_type_full_name}}</td>
-								<td>
-									<a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
-								</td>
-								<td>{{$ad->userPp->email}}</td>
-								<td>
-									@if(! is_null($ad->regionsList))
-										<p>Region(s) : {{$ad->regionsList}}</p>
-									@endif
-									@if(! is_null($ad->departmentsList))
-										<p>Département(s) : {{$ad->departmentsList}}</p>
-									@endif
-									@if(! is_null($ad->citiesList))
-										<p>Communes(s) : {{$ad->citiesList}}</p>
-									@endif
-								</td>
-								<td>
-									@if(is_null($ad->project))
-									@else
-										@if($ad->project->projectStatus->id === \App\Models\ProjectStatus::EMERGING_ID)
-											<span class="tag is-info">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->id ===\App\Models\ProjectStatus::IN_PROGRESSING_ID)
-											<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ABANDONED_ID)
-											<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ACCOMPLISHED_ID)
-											<span class="tag is-success ">{{$ad->project->projectStatus->name}}</span>
+									<td>
+										@if($ad->project()->exists())
+											<span class="tag is-link">Demande d'accompagnement</span>
 										@else
-											<span class="tag is-warning">Pas de statut définis</span>
+											<span class="tag is-link is-light">Annonce</span>
 										@endif
-									@endif
-								</td>
-								<td>
-									<a href="{{route('advisor.showSupport', $ad->id)}}">
-										<span><i class="fas fa-hands-helping"></i></span>
-										<span>Suivi de l'accompagnement</span>
-									</a>
-								</td>
-							</tr>
-						@endforeach
+									</td>
+									<td>
+										{{$ad->attributionAd->created_at->format("d/m/Y")}}
+									</td>
+									<td>
+										<a href="{{route('ads.show', $ad->id)}}">{{$ad->title}}</a>
+									</td>
+									<td>{{$ad->ad_type_full_name}}</td>
+									<td>
+										<a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+									</td>
+									<td>{{$ad->userPp->email}}</td>
+									<td>
+										@if(! is_null($ad->regionsList))
+											<p>Region(s) : {{$ad->regionsList}}</p>
+										@endif
+										@if(! is_null($ad->departmentsList))
+											<p>Département(s) : {{$ad->departmentsList}}</p>
+										@endif
+										@if(! is_null($ad->citiesList))
+											<p>Communes(s) : {{$ad->citiesList}}</p>
+										@endif
+									</td>
+									<td>
+										@if(is_null($ad->project))
+										@else
+											@if($ad->project->projectStatus->id === \App\Models\ProjectStatus::EMERGING_ID)
+												<span class="tag is-info">{{$ad->project->projectStatus->name}}</span>
+											@elseif($ad->project->projectStatus->id ===\App\Models\ProjectStatus::IN_PROGRESSING_ID)
+												<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>
+											@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ABANDONED_ID)
+												<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
+											@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ACCOMPLISHED_ID)
+												<span class="tag is-success ">{{$ad->project->projectStatus->name}}</span>
+											@else
+												<span class="tag is-warning">Pas de statut définis</span>
+											@endif
+										@endif
+									</td>
+									<td>
+										@if(! is_null($ad->project))
+											<a href="{{route('advisor.showSupport', $ad->id)}}">
+												<span><i class="fas fa-hands-helping"></i></span>
+												<span>Suivi </span>
+											</a>
+										@else
+											<a href="{{route('ads.show', $ad->id)}}">
+												<span><i class="fas fa-search"></i></span>
+												<span>Voir le détail</span>
+											</a>
+										@endif
+									</td>
+								</tr>
+								@endforeach
 						</tbody>
 					</table>
 				</div>
