@@ -2,13 +2,11 @@
 
 namespace App\Jobs;
 
-use App\Models\AttributionAd;
 use App\Models\User;
 use App\Notifications\OverdueModerationNotification;
 use App\Notifications\PublishedAdNotification;
 use App\Repositories\Users\UserRepository;
 use App\Services\AttributionAds\AttributionAdsService;
-use App\Services\ModerationService;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

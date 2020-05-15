@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $name
+ * @property boolean $is_public
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AdNote[] $adNotes
@@ -28,7 +29,7 @@ class ProjectDataKey extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name', 'is_public'
     ];
 
     /**

@@ -22,5 +22,16 @@ trait ScopeDataFilterable
 		});
 	}
 
+	function scopeFilterWhereHasLandSeekAdOrWhereHasLandOfferAd(Builder $query, string $landSeekAdColumn, string $landOfferAdColumn, string $operator, string $value){
+		$query->where(function (Builder $query) use ($landSeekAdColumn, $landOfferAdColumn, $operator, $value) {
+			$query->whereHas('landSeekAd', function (Builder $subQuery) use ($landSeekAdColumn, $operator, $value) {
+				$subQuery->where($landSeekAdColumn, $operator, $value);
+			})
+				->orWhereHas('landOfferAd', function (Builder $subQuery) use ( $landOfferAdColumn, $operator, $value) {
+					$subQuery->where($landOfferAdColumn, $operator, $value);
+				});
+		});
+	}
+
 
 }

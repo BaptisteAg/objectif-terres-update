@@ -125,7 +125,8 @@ Route::middleware('supervisor')->prefix('mon-espace-responsable-territorial')->n
 	Route::get('export', 'SupervisorsController@export')->name('export');
 	Route::get('rapports-et-indicateurs', 'SupervisorsController@report')->name('report');
 	Route::get('administration-indicateurs', 'SupervisorsController@projectKeysDataEdit')->name('projectDataKeysEdit');
-	Route::post('mise-a-jour-indicateur', 'SupervisorsController@projectDataKeysUpdate')->name('projectDataKeysUpdate');
+	Route::post('creation-indicateur', 'SupervisorsController@projectDataKeysCreate')->name('projectDataKeysCreate');
+	Route::post('suppression-indicateur', 'SupervisorsController@projectDataKeyDelete')->name('projectDataKeyDelete');
 });
 
 Route::middleware('advisor')->prefix('mon-espace-primo-accueillant')->name('advisor.')->namespace('Advisors')->group(function () {
@@ -137,7 +138,8 @@ Route::middleware('advisor')->prefix('mon-espace-primo-accueillant')->name('advi
 	Route::get('espace-suivi/{id}', 'AdvisorsController@showSupport')->name('showSupport');
 	Route::post('mise-a-jour-statut', 'AdvisorsController@updateSupport')->name('updateSupport');
 	Route::post('creation-note', 'AdvisorsController@createNote')->name('createNote');
-	Route::post('liste-notes-indicateurs', 'AdvisorsController@showAllNotesByProjectDataKey')->name('showAllNotesByProjectDataKey');
+	Route::post('suppression-note', 'AdvisorsController@deleteNote')->name('deleteNote');
+	Route::post('modification-valeurs-indicateurs', 'AdvisorsController@updateProjectDataKeysValues')->name('updateProjectDataKeysValues');
 });
 
 Route::middleware('auth')->prefix('notification')->name('notification.')->namespace('Notifications')->group(function () {

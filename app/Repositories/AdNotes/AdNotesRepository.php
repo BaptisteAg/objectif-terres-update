@@ -2,6 +2,8 @@
 
 
 use App\Models\AdNote;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
@@ -39,7 +41,7 @@ class AdNotesRepository extends AbstractRepository implements AdNotesRepositoryI
 
 	/**
 	 * @param array $data
-	 * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+	 * @return \Illuminate\Database\Eloquent\Builder[]|Collection
 	 */
 	public function findAllByProjectDataKeyAndAdId(array $data)
 	{
@@ -49,6 +51,25 @@ class AdNotesRepository extends AbstractRepository implements AdNotesRepositoryI
 			->orderByDesc('created_at')
 			->with('user')
 			->get();
+	}
+
+
+	/**
+	 * @param int $adId
+	 * @return Collection
+	 */
+	public function findAllNotesWithPublicProjectDatKeysByAdId(int $adId)
+	{
+		/** @var Collection $notes $notes */
+		$notes =  $this->entity
+			->where("ad_id", "=",$adId)
+			->whereNotNull('project_data_key_id')
+			->whereHas('projectDataKey', function (Builder $query){
+				$query->where('is_public', '=', 1);
+			})
+			->with('projectDataKey')
+			->get();
+		return $notes;
 	}
 
 }

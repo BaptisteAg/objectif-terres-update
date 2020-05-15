@@ -25,7 +25,10 @@ Vue.component('dashboard-form-filter',{
         const hasOld = Object.values(this.oldInputSelected).some(x => (x !== null && x !== ''));
         return {
             adTypeSelected:hasOld && this.oldInputSelected.ad_type ? this.oldInputSelected.ad_type : [],
-            locations : hasOld && this.oldInputSelected.json_locations ?JSON.parse(this.oldInputSelected.json_locations)  : []
+            locations : hasOld && this.oldInputSelected.json_locations ?JSON.parse(this.oldInputSelected.json_locations)  : [],
+            selectedProductions: hasOld ? this.oldInputSelected.production_genres : [],
+            selectedBioCertifications: hasOld ? this.oldInputSelected.bio_certifications : [],
+            isMoreFiltersOpen: false,
         }
     },
     computed: {

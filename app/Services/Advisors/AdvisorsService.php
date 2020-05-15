@@ -3,7 +3,7 @@
 namespace App\Services\Advisors;
 
 use App\Models\Ad;
-use App\Models\ProjectStatus;
+use App\Models\AdNote;
 use App\Models\Thread;
 use App\Repositories\AdNotes\AdNotesRepository;
 use App\Repositories\Ads\AdRepository;
@@ -16,6 +16,8 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 
 
@@ -50,7 +52,7 @@ class AdvisorsService
 		$this->adService = $adService;
 		$this->threadService = $threadService;
 		$this->threadRepository = $threadRepository;
-		$this->projectRepository= $projectsRepository;
+		$this->projectRepository = $projectsRepository;
 		$this->adNotesRepository = $adNotesRepository;
 	}
 
@@ -82,13 +84,13 @@ class AdvisorsService
 	public function updateSupport(array $data)
 	{
 		$ad = Ad::find($data['ad_id']);
-		if(isset($data['support_stage'])){
+		if (isset($data['support_stage'])) {
 			$ad->project->support_stage_id = $data['support_stage'];
 
-		}elseif(isset($data['support_state'])){
+		} elseif (isset($data['support_state'])) {
 			$ad->project->support_state_id = $data['support_state'];
 
-		}elseif(isset($data['project_status'])){
+		} elseif (isset($data['project_status'])) {
 			$ad->project->project_status_id = $data['project_status'];
 		}
 		$ad->project->save();
@@ -101,7 +103,7 @@ class AdvisorsService
 	public function findSupportRequestThread(int $adId)
 	{
 		/** @var Thread $thread */
-		$thread = $this->threadRepository->findThreadByUserIdAndAdId(auth()->id(),$adId)->first();
+		$thread = $this->threadRepository->findThreadByUserIdAndAdId(auth()->id(), $adId)->first();
 		return $thread;
 	}
 
@@ -124,8 +126,8 @@ class AdvisorsService
 	public function createSupportRequestThread(int $adId)
 	{
 		$threadData = [
-			'ad_id'=> $adId,
-			'advisor_id'=> auth()->user()->id
+			'ad_id' => $adId,
+			'advisor_id' => auth()->user()->id
 		];
 		$this->threadService->create($threadData);
 		$thread = $this->findSupportRequestThread($adId);
@@ -145,19 +147,68 @@ class AdvisorsService
 
 	}
 
+	/**
+	 * @param Request $request
+	 * @throws Throwable
+	 */
+	public function updateProjectDataKeysValues(Request $request)
+	{
+		$newProjectDataKeyValues = array_filter($request->input('project_data_key'));
+
+		$previousValues = $this->adNotesRepository->findAllNotesWithPublicProjectDatKeysByAdId($request->input('ad_id'));
+
+		$previousValues->filter(function ($note) use ($request, &$newProjectDataKeyValues) {
+			if (array_key_exists($note->project_data_key_id, $newProjectDataKeyValues)) {
+				if ($note->value != $newProjectDataKeyValues[$note->project_data_key_id]) {
+					$note->value = $newProjectDataKeyValues[$note->project_data_key_id];
+					$note->user_id = $request->input('user_id');
+					$note->save();
+				}
+				unset($newProjectDataKeyValues[$note->project_data_key_id]);
+			}
+		});
+		if (count($newProjectDataKeyValues) > 0) {
+			foreach ($newProjectDataKeyValues as $key => $value) {
+				$data = Arr::only($request->input(), [
+					"ad_id",
+					"user_id"
+				]);
+				$data['value'] = $value;
+				$data['project_data_key_id'] = $key;
+				$this->adNotesRepository->create($data);
+			}
+		}
+	}
 
 	/**
 	 * @param Request $request
 	 * @return Builder[]|Collection
 	 */
-	public function findNotesByProjectDataKey(Request $request)
+	public function findNotesByProjectDataKey(array $data)
 	{
-		$data = [
-			'ad_id' => $request->input('ad_id'),
-			'project_data_key_id' => $request->input('project_data_key_id')
-		];
 		$notes = $this->adNotesRepository->findAllByProjectDataKeyAndAdId($data);
 		return $notes;
+	}
+
+	/**
+	 * @param int $adId
+	 * @return Builder[]|Collection
+	 */
+	public function allNotesWithPublicProjectDatKeysByAdId(int $adId): Collection
+	{
+		$notes = $this->adNotesRepository->findAllNotesWithPublicProjectDatKeysByAdId($adId);
+		return $notes;
+	}
+
+
+	/**
+	 * @param Request $request
+	 * @throws \Exception
+	 */
+	public function deleteNote(Request $request)
+	{
+		$note = AdNote::find($request->input('ad_note_id'));
+		$note->delete();
 	}
 
 

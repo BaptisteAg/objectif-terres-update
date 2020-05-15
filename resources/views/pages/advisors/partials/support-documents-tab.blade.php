@@ -19,8 +19,13 @@
 					</div>
 				@endforeach
 			@else
-				<p class="">Aucun document n'a uploadé par le porteur de projet </p>
+				<p class="">Aucun document n'a été uploadé par le porteur de projet </p>
 			@endif
+		</div>
+		<div class="is-divider"></div>
+		<div class="content">
+			<h5 class="has-text-centered">Documents téléversés par l'accompagnant</h5>
+			<p class="">Aucun document n'a été uploadé  </p>
 		</div>
 	</div>
 

@@ -63,12 +63,12 @@ class AdService
 	 * @var UserService
 	 */
 	protected $userService;
-    /**
-     * @var ProjectsRepository
-     */
-    protected $projectRepository;
+	/**
+	 * @var ProjectsRepository
+	 */
+	protected $projectRepository;
 
-    /**
+	/**
 	 * AdService constructor.
 	 * @param AdRepository $repository
 	 * @param AttributionAdsRepository $attributionAdsRepository
@@ -87,20 +87,20 @@ class AdService
 		JobOfferAdRepository $jobOfferAdRepository,
 		JobSeekAdRepository $jobSeekAdRepository,
 		ProductionGenreRepository $productionGenreRepository,
-        ProjectsRepository $projectRepository,
+		ProjectsRepository $projectRepository,
 		UserService $userService
 	)
-    {
-        $this->repository = $repository;
-        $this->attributionAdsRepository = $attributionAdsRepository;
-        $this->landSeekAdRepository = $landSeekAdRepository;
-        $this->landOfferAdRepository = $landOfferAdRepository;
-        $this->jobOfferAdRepository = $jobOfferAdRepository;
-        $this->jobSeekAdRepository = $jobSeekAdRepository;
-        $this->productionGenreRepository = $productionGenreRepository;
-        $this->userService = $userService;
-        $this->projectRepository = $projectRepository;
-    }
+	{
+		$this->repository = $repository;
+		$this->attributionAdsRepository = $attributionAdsRepository;
+		$this->landSeekAdRepository = $landSeekAdRepository;
+		$this->landOfferAdRepository = $landOfferAdRepository;
+		$this->jobOfferAdRepository = $jobOfferAdRepository;
+		$this->jobSeekAdRepository = $jobSeekAdRepository;
+		$this->productionGenreRepository = $productionGenreRepository;
+		$this->userService = $userService;
+		$this->projectRepository = $projectRepository;
+	}
 
 	/**
 	 * @param array $data
@@ -114,32 +114,31 @@ class AdService
 
 			$attributionAdData = [];
 
-			if($isSupportRequest) {
-                $pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_ID)->first();
-                $advisor = User::where('role', '3')->inRandomOrder()->first();
-                if (!$advisor) {
-                    throw new \Exception('A supervisor could not be found for an attribution');
-                }
-                $attributionAdData['user_supervisor_id'] = $advisor->id;
+			if ($isSupportRequest) {
+				$pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_ID)->first();
+				$advisor = User::where('role', '3')->inRandomOrder()->first();
+				if (!$advisor) {
+					throw new \Exception('A supervisor could not be found for an attribution');
+				}
+				$attributionAdData['user_supervisor_id'] = $advisor->id;
 
-                // Create a project for this ad
-                $project = $this->projectRepository->create([
-                    'support_stage_id' => SupportStage::FIRST_RECEPTION_ID,
-                    'project_status_id' => ProjectStatus::EMERGING_ID,
-                ]);
-                $data["project_id"] = $project->id;
-            }
-			else {
-                $pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
-                // Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
-                $moderator = User::where('email', 'test.ot.moderateur@gmail.com')->first();
-                if (!$moderator) {
-                    throw new \Exception('A moderator could not be found for an attribution');
-                }
-                $attributionAdData['user_moderator_id'] = $moderator->id;
-            }
+				// Create a project for this ad
+				$project = $this->projectRepository->create([
+					'support_stage_id' => SupportStage::FIRST_RECEPTION_ID,
+					'project_status_id' => ProjectStatus::EMERGING_ID,
+				]);
+				$data["project_id"] = $project->id;
+			} else {
+				$pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
+				// Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
+				$moderator = User::where('email', 'test.ot.moderateur@gmail.com')->first();
+				if (!$moderator) {
+					throw new \Exception('A moderator could not be found for an attribution');
+				}
+				$attributionAdData['user_moderator_id'] = $moderator->id;
+			}
 
-            $ad = $this->repository->create($data);
+			$ad = $this->repository->create($data);
 
 			$attributionAdData['ad_status_id'] = $pendingStatus->id;
 			$attributionAdData['ad_id'] = $ad->id;
@@ -282,7 +281,7 @@ class AdService
 	 * @param array $dates
 	 * @return mixed
 	 */
-	public function findAllByUserSupervisorBetweenDates(array $dates) : Collection
+	public function findAllByUserSupervisorBetweenDates(array $dates): Collection
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$ads = $this->repository->findAllByUserTerritoriesAndDates($supervisorLocationTerritoryCodes, $dates);
@@ -411,6 +410,60 @@ class AdService
 		//START QUERY
 		$adsFiltred = (new Ad())->newQuery();
 
+		//Additional filters  : filter by surface range
+		if ($filters->has('surfaces_research')) {
+			if (!is_null($filters->input('surfaces_research'))) {
+				$adsFiltred->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('surface_range_max', 'surface', '<=', $filters->input('surfaces_research'));
+			}
+		}
+		//Additional filters  : filter by min_price
+		if ($filters->has('price_min')) {
+			if (!is_null($filters->input('price_min'))) {
+				$adsFiltred->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('price_max', 'price', '>=', $filters->input('price_min'));
+			}
+		}
+		//Additional filters  : filter by max_price
+		if ($filters->has('price_max')) {
+			if (!is_null($filters->input('price_max'))) {
+				$adsFiltred->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('price_max', 'price', '<=', $filters->input('price_max'));
+			}
+		}
+		//Additional filters  : filter by production_genres
+		if ($filters->has('production_genres')) {
+			if (!is_null($filters->input('production_genres'))) {
+				$adsFiltred->where(function (Builder $query) use ($filters) {
+					$query->whereHas('landSeekAd.productionGenres', function (Builder $query) use ($filters) {
+						$query->whereIn('production_genres.id', $filters->input('production_genres'));
+					})
+						->orWhereHas('landOfferAd.productionGenres', function (Builder $query) use ($filters) {
+							$query->whereIn('production_genres.id', $filters->input('production_genres'));
+						})
+						->orWhereHas('landSeekAd.productionGenresPossible', function (Builder $query) use ($filters) {
+							$query->whereIn('production_genres.id', $filters->input('production_genres'));
+						})
+						->orWhereHas('landOfferAd.productionGenresPossible', function (Builder $query) use ($filters) {
+							$query->whereIn('production_genres.id', $filters->input('production_genres'));
+						});
+				});
+			}
+		}
+		//Additional filters  : filter by bio_certification
+		if ($filters->has('bio_certifications')) {
+			if (!is_null($filters->input('bio_certifications'))) {
+				$adsFiltred->where(function (Builder $query) use ($filters) {
+					$query->whereHas('landOfferAd.bioCertifications', function (Builder $query) use ($filters) {
+						$query->whereIn('bio_certifications.id', $filters->input('bio_certifications'));
+					});
+				});
+			}
+		}
+
+		if ($filters->has('ads_show') && (!$filters->has('projects_show'))) {
+			$adsFiltred->whereNull('project_id');
+		} elseif ($filters->has('projects_show') && (!$filters->has('ads_show'))) {
+			$adsFiltred->whereNotNull('project_id');
+		}
+
 		//Filter projects based on their locations if requested
 		if ($filters->has('locations')) {
 			$locations = $filters->input('locations');
@@ -481,7 +534,6 @@ class AdService
 		}
 
 		//Filter ads based on the role of the logged user
-
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$adsFiltred->where(function (Builder $query) use ($supervisorLocationTerritoryCodes, $roleUser) {
 			$query->whereNotNull('project_id');

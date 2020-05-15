@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Notifications\OverdueModerationNotification;
 use App\Notifications\ResearchNotification;
 use App\Repositories\Users\UserRepository;
-use App\Services\ModerationService;
 use App\Services\Researches\ResearchService;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
