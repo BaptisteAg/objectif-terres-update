@@ -28,8 +28,7 @@ Vue.component('support-request-dashboard', {
                 supportTabOpen: 'support-notes-tab',
             },
             showModal: false,
-            projectDataKeyId: '',
-            notes: [],
+
         }
     },
     mounted() {
@@ -71,21 +70,7 @@ Vue.component('support-request-dashboard', {
         onMessageReplySuccess(message) {
             this.messages.push(message)
         },
-        getAllNotesByProjectDataKey(e) {
-            this.isLoading = true;
-            axios.post('/mon-espace-primo-accueillant/liste-notes-indicateurs', {
-                ad_id: this.adId,
-                project_data_key_id: this.projectDataKeyId
-            })
-                .then(response => {
-                    console.log(response.data)
-                    this.notes = response.data;
-                    this.isLoading = false;
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-        }
+
     },
 
 });

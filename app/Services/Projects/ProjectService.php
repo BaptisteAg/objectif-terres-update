@@ -4,11 +4,10 @@ namespace App\Services\Projects;
 
 use App\Jobs\NotifySupportRequestAttribution;
 use App\Models\Department;
-use App\Models\LandSeekAd;
 use App\Models\Project;
+use App\Models\ProjectDataKey;
 use App\Models\ProjectStatus;
 use App\Models\Region;
-use App\Models\User;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Repositories\Projects\ProjectsRepository;
 use App\Services\Users\UserService;
@@ -42,9 +41,9 @@ class ProjectService
 	}
 
 	public function create(array $data)
-    {
-        return $this->repository->create($data);
-    }
+	{
+		return $this->repository->create($data);
+	}
 
 	/**
 	 * @param int $supportStageId
@@ -53,8 +52,8 @@ class ProjectService
 	public function countNumberOfProjectsBySupportStageForLoggedUser(int $supportStageId): int
 	{
 		return $this->repository->findAllByUserIdAndUserRoleAndSupportStageId(
-		    auth()->user()->id, auth()->user()->role, $supportStageId
-        )->count();
+			auth()->user()->id, auth()->user()->role, $supportStageId
+		)->count();
 	}
 
 
@@ -240,38 +239,23 @@ class ProjectService
 	public function attributeProject(Request $request)
 	{
 		$attributionAd = $this->attributionAdsRepository->findByAdId($request->input('ad_id'));
-		/** TODO delete after refactoring project_statuses_table */
-//		//updating project status if it is non attribute to an advisor
-//		$unassistedStatus = ProjectStatus::where('id', '=', ProjectStatus::UNASSISTED_ID)->first()->id;
-//		$assistedStatus = ProjectStatus::where('id', '=', ProjectStatus::ASSISTING_ID)->first()->id;
-//		if ($attributionAd->ad->project->project_status_id === $unassistedStatus) {
-//			$attributionAd->ad->project->project_status_id = $assistedStatus;
-//			$attributionAd->ad->project->save();
-//		}
 		$attributionAd->user_advisor_id = $request->input('user_advisor_id');
 		$attributionAd->save();
 		$this->notification->handle($attributionAd->ad->id);
 	}
 
-	//TODO Create a ProjectDataKeyService and ProjectDataKeyRepository ?
-
-	public function updateProjectDataKey(Request $request)
-	{
-
-		if (!empty($request->input('project_data_key_id'))) {
-			$this->deleteProjectDataKey($request);
-		} else {
-			$this->createProjectDataKey($request);
-		}
-	}
+	//TODO Create a ProjectDataKeyService and ProjectDataKeyRepository for the 2 above methods ?
 
 	/**
 	 * @param Request $request
 	 */
 	public function createProjectDataKey(Request $request)
 	{
-		DB::table('project_data_keys')->updateOrInsert(
-			['name' => $request->input('project_data_key_name')]
+		ProjectDataKey::updateOrCreate(
+			[
+				'name' => $request->input('project_data_key_name'),
+				'is_public' => $request->input('is_project_data_key_public')
+			]
 		);
 	}
 

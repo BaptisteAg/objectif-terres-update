@@ -46,20 +46,6 @@
 				<p><span class="is-italic">État de la demande</span>
 					: {{$ad->project->supportState->name ?? "Non définis"}} </p>
 
-				<p><span class="is-italic">Avancement du projet</span>
-					:
-					@if($ad->project->projectStatus->id === \App\Models\ProjectStatus::EMERGING_ID)
-						<span class="tag is-info">{{$ad->project->projectStatus->name}}</span>
-					@elseif($ad->project->projectStatus->id ===\App\Models\ProjectStatus::IN_PROGRESSING_ID)
-						<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>
-					@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ABANDONED_ID)
-						<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
-					@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ACCOMPLISHED_ID)
-						<span class="tag is-success ">{{$ad->project->projectStatus->name}}</span>
-					@else
-						<span class="tag is-warning">Pas de statut définis</span>
-					@endif
-				</p>
 
 				@if(isset($ad->landOfferAd))
 					<p><span class="is-italic">Localisations</span>:

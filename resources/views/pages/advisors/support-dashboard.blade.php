@@ -11,10 +11,10 @@
 		<h1 class="title is-2 has-text-link">Suivi de l'accompagnement </h1>
 		@if(!is_null($ad->attributionAd->userAdvisor))
 			@if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
-				<p>Vous êtes le primo-accueillant pour cette demande !</p>
+				<p class="has-text-weight-bold">Vous êtes le primo-accueillant pour cette demande !</p>
 			@else
 				<p>Cette demande est attribuée
-					à {{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}.</p>
+					à <span class="has-text-weight-bold">{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</span>.</p>
 			@endif
 		@else
 			<p>Cette demande n'a pas été encore attribuée à un primo-accueillant</p>
@@ -134,13 +134,13 @@
 										<li :class="{ 'is-active' : tabsOpen.infoTabOpen === 'user-pp-info-tab'}">
 											<a v-on:click="openInfoTab('user-pp-info-tab')">
 												<span class="icon is-small"><i class="fas fa-user"></i></span>
-												<span>Profil porteur de projet</span>
+												<span>Profil du porteur de projet</span>
 											</a>
 										</li>
 										<li :class="{ 'is-active' : tabsOpen.infoTabOpen === 'support-info-tab'}">
 											<a v-on:click="openInfoTab('support-info-tab')">
 												<span class="icon is-small"><i class="fas fa-hands-helping"></i></span>
-												<span>Demande d'accompagnement</span>
+												<span>Son projet</span>
 											</a>
 										</li>
 										<li :class="{ 'is-active' : tabsOpen.infoTabOpen === 'support-pp-ads-tab'}">

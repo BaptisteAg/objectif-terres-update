@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Supervisors;
 
 use App\Exports\Supervisors\SupervisorsExport;
 use App\Http\Controllers\Controller;
+use App\Models\BioCertification;
 use App\Models\JobOfferType;
 use App\Models\ProductionGenre;
 use App\Models\ProjectDataKey;
@@ -62,15 +63,17 @@ class SupervisorsController extends Controller
 		$supportStages = SupportStage::all();
 		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
-		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
+		$productionGenres = ProductionGenre::all();
+		$bioCertifications = BioCertification::all();
+
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
 		$firstContactSupportStage = SupportStage::where("id", '=', SupportStage::FIRST_CONTACT_ID)->first()->id;
 		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsBySupportStageForLoggedUser($firstContactSupportStage);
 
-		return view('pages.supervisors.index', compact('adTypes', 'adTypesFaIcons', 'productionGenres', 'supportStages', 'supportStates', 'projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
+		return view('pages.supervisors.index', compact('adTypes', 'adTypesFaIcons', 'supportStages', 'supportStates', 'projectStatuses', 'ads', 'jobOfferTypes', 'productionGenres', 'bioCertifications', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
 	}
 
 
@@ -87,13 +90,16 @@ class SupervisorsController extends Controller
 		$projectStatuses = ProjectStatus::all();
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
+		$productionGenres = ProductionGenre::all();
+		$bioCertifications = BioCertification::all();
+
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
 		$firstContactSupportStage = SupportStage::where("id", '=', SupportStage::FIRST_CONTACT_ID)->first()->id;
 		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsBySupportStageForLoggedUser($firstContactSupportStage);
 
-		return view('pages.supervisors.index', compact('projectStatuses', 'supportStages', 'supportStates', 'adTypes', 'adTypesFaIcons', 'productionGenres', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
+		return view('pages.supervisors.index', compact('projectStatuses', 'supportStages', 'supportStates', 'adTypes', 'adTypesFaIcons', 'productionGenres', 'jobOfferTypes','productionGenres', 'bioCertifications', 'ads', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
 	}
 
 	/**
@@ -169,12 +175,24 @@ class SupervisorsController extends Controller
 	 * @param Request $request
 	 * @return RedirectResponse
 	 */
-	public function projectDataKeysUpdate(Request $request)
+	public function projectDataKeysCreate(Request $request)
 	{
-		if (empty($request->input('project_data_key_name')) && empty($request->input('project_data_key_id'))) {
-			return back()->with('warning', 'Aucun titre d\'indicateur saisi');
+		if (empty($request->input('project_data_key_name')) && empty($request->input('is_project_data_key_public'))) {
+			return back()->with('error', 'Erreur dans la création d\'un nouvel indicateur, veuillez réessayer.');
 		}
-		$this->projectService->updateProjectDataKey($request);
+		$this->projectService->createProjectDataKey($request);
+		return back()->with('success', 'La liste des indicateurs a bien été mise à jour !');
+	}
+
+	/**
+	 * @param Request $request
+	 * @return RedirectResponse
+	 */
+	public function projectDataKeyDelete(Request $request){
+		if (empty($request->input('project_data_key_id'))) {
+			return back()->with('error', 'Aucun indicateur a été choisi');
+		}
+		$this->projectService->deleteProjectDataKey($request);
 		return back()->with('success', 'La liste des indicateurs a bien été mise à jour !');
 	}
 

@@ -8,7 +8,6 @@ use App\Notifications\OverdueModerationNotification;
 use App\Notifications\PublishedAdNotification;
 use App\Repositories\Users\UserRepository;
 use App\Services\AttributionAds\AttributionAdsService;
-use App\Services\ModerationService;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
