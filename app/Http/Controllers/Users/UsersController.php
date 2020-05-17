@@ -25,7 +25,7 @@ class UsersController extends Controller
 
 	public function index()
 	{
-		return view('pages.auth.index');
+		return view('pages.users.index');
 
 	}
 
@@ -38,7 +38,7 @@ class UsersController extends Controller
 		return view('pages.users.show', compact('ads', 'user'));
 	}
 
-	public function edit(User $user)
+	public function edit()
 	{
 		if (auth()->user()->id != $user->id && auth() ->user()->role != 2) {
 			abort(404);

@@ -17,14 +17,18 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
 	Route::middleware(['auth'])->get('creer', 'AdsController@create')->name('create');
 	Route::middleware(['auth'])->post('creer', 'AdsController@requestPublishing')->name('store');
 	Route::middleware('auth')->post('sauvegarder', 'AdsController@save')->name('save');
-	Route::middleware('auth')->get('liste-mes-annonces', 'AdsController@list')->name('list');
+	Route::middleware('auth')->get('mes-annonces', 'AdsController@list')->name('list');
 	Route::get('{id}', 'AdsController@show')->name('show');
 	Route::middleware('auth')->get('supprimer/{ad}', 'AdsController@delete')->name('delete');
 });
 Route::prefix('accompagnement')->name('support-request.')->namespace('Ads')->group(function () {
+	Route::middleware([])->get('demarrer', 'SupportRequestsController@start')->name('start');
+	Route::middleware([])->post('demarrer', 'SupportRequestsController@processStart')->name('process-start');
 	Route::middleware(['auth'])->get('creer', 'SupportRequestsController@create')->name('create');
 	Route::middleware(['auth'])->post('creer', 'SupportRequestsController@submitRequest')->name('store');
-	Route::middleware('auth')->post('sauvegarder', 'SupportRequestsController@save')->name('save');
+	Route::middleware(['auth'])->post('sauvegarder', 'SupportRequestsController@save')->name('save');
+
+    Route::middleware(['auth'])->get('suivi', 'SupportRequestsController@show')->name('show');
 });
 
 Route::name('cms.')->namespace('Cms')->group(function () {
@@ -71,10 +75,10 @@ Route::prefix('mon-espace/recherches')->middleware('auth')->name('researches.')-
 Route::middleware('auth')->name('user.')->namespace('Users')->group(function () {
 	Route::prefix('mon-espace')->group(function () {
 		Route::get('/', 'UsersController@index')->name('index');
-		Route::get('mon-compte/{user}', 'UsersController@edit')->name('edit');
+		Route::get('mon-compte', 'UsersController@edit')->name('edit');
 		Route::post('mon-compte', 'UsersController@update')->name('update');
 	});
-	Route::prefix('porteur-de-projet')->group(function () {
+	Route::prefix('utilisateurs')->group(function () {
 		Route::get('{user}', 'UsersController@show')->name('show');
 	});
 });
@@ -114,7 +118,6 @@ Route::middleware('moderator')->prefix('mon-espace-moderateur')->name('moderator
 		Route::post('modification', 'AttributionAdsController@modifyAd')->name('modifyAd');
 		Route::post('refus', 'AttributionAdsController@rejectAd')->name('rejectAd');
 	});
-
 });
 
 Route::middleware('supervisor')->prefix('mon-espace-responsable-territorial')->name('supervisor.')->namespace('Supervisors')->group(function () {

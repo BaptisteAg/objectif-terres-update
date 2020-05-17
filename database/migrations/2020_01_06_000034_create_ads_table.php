@@ -30,6 +30,7 @@ class CreateAdsTable extends Migration
             $table->string('about_content', 1500)->nullable();
             $table->string('about_project_content', 1500)->nullable();
             $table->unsignedInteger('project_id')->nullable();
+            $table->string('support_request_text', 1000)->nullable();
 
             $table->index(["user_pp_id"], 'ix_ads_user_lead_id');
 

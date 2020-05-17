@@ -33,13 +33,20 @@ class SalesforceService
         '00e1q000000M41YAAS' => 3,
 		// Super Admin
 		'00e20000001FEdPAAW' => 4,
-		// .. TODO: complete
+		// .. TODO: remove completely
 	];
 
     public function __construct(SalesForceRepository $repository, UserRepository $userRepository)
     {
         $this->repository = $repository;
         $this->localUserRepository = $userRepository;
+
+        /** @var TokenRepository $forrestToken */
+        $forrestToken = app('forrest_token');
+
+        if(!$forrestToken->has()) {
+            $this->repository->authenticate();
+        }
     }
 
     /**
@@ -51,8 +58,6 @@ class SalesforceService
      */
     public function registerPP($data)
     {
-        $this->apiAuthenticationRefresh();
-
         $city = City::findOrFail($data["city_id"]);
 
 
@@ -87,8 +92,6 @@ class SalesforceService
      */
     public function createPortalUser($data)
     {
-        $this->apiAuthenticationRefresh();
-
         /**
          * array:3 [
          * "id" => "0031q00000RVzsRAAT"
@@ -151,8 +154,6 @@ class SalesforceService
      */
     public function getSyncedLocalUserFromSaml(\Aacotroneo\Saml2\Saml2User $samlUser) : User
     {
-        $this->apiAuthenticationRefresh();
-
         $email = $samlUser->getAttribute('email')[0];
         $sfId = $samlUser->getAttribute('userId')[0];
 
@@ -195,21 +196,9 @@ class SalesforceService
      */
     public function emailExists(string $email, string $object) : bool
     {
-        $this->apiAuthenticationRefresh();
-
         return !!$this->repository->findWhere($object, [
             'Email' => $email
         ]);
-    }
-
-    protected function apiAuthenticationRefresh()
-    {
-        /** @var TokenRepository $forrestToken */
-        $forrestToken = app('forrest_token');
-
-        if(!$forrestToken->has()) {
-            $this->repository->authenticate();
-        }
     }
 
     protected function getRoleFromUser($user)

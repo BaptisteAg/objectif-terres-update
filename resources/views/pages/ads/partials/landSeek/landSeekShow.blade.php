@@ -2,7 +2,7 @@
 	<div class="container ">
 		<nav class="breadcrumb" aria-label="breadcrumbs">
 			<ul>
-				<li><a href="#">Annonces</a></li>
+				<li><a href="#"><?=empty($isSupportRequest) ? 'Annonces' : 'Accompagnement'?></a></li>
 				<li><a href="#">Recherches foncières</a></li>
 			</ul>
 		</nav>

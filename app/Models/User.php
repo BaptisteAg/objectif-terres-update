@@ -37,9 +37,15 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $ads
  * @property-read int|null $ads_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\City[] $cities
+ * @property-read int|null $cities_count
  * @property-read \App\Models\Country|null $country
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Department[] $departments
+ * @property-read int|null $departments_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
+ * @property-read int|null $regions_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
  * @property-read int|null $threads_count
  * @property-read \App\Models\City|null $zipCode
@@ -166,7 +172,12 @@ class User extends Authenticatable implements HasPresenter
 
 	public function ads()
     {
-        return $this->hasMany(Ad::class, 'user_pp_id', 'id');
+        return $this->hasMany(Ad::class, 'user_pp_id', 'id')->whereNull('project_id');
+    }
+
+	public function supportRequests()
+    {
+        return $this->hasMany(Ad::class, 'user_pp_id', 'id')->whereNotNull('project_id');
     }
 
 	/**

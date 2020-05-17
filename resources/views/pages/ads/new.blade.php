@@ -47,6 +47,7 @@
 
                     @if(!empty($isSupportRequest))
                         <input type="hidden" name="is_support_request" value="1">
+                        <input type="hidden" name="support_request_text" value="{{ session('support_request.text') }}">
                     @endif
 
                     <ad-type-select v-model="adTypeSelected"

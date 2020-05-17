@@ -12,6 +12,15 @@ class TestUserSeeder extends Seeder
     public function run()
     {
         factory(\App\Models\User::class, 20)->create();
+
+        \App\Models\User::create([
+            'email' => "test.ot.porteur.projet@gmail.com",
+            'password' => Hash::make('crif9bf1'),
+            'first_name' => 'Test',
+            'name' => 'PP',
+            'role' => 0
+        ]);
+
         \App\Models\User::create([
             'email' => "test.ot.moderateur@gmail.com",
             'password' => Hash::make('crif9bf1'),
@@ -39,7 +48,7 @@ class TestUserSeeder extends Seeder
             'email' => "test.ot.responsable.territorial@gmail.com",
             'password' => Hash::make('crif9bf1'),
             'first_name' => 'Test Responsable',
-            'name' => 'Territorial 2',
+            'name' => 'Territorial',
             'role' => 3
         ]);
     }

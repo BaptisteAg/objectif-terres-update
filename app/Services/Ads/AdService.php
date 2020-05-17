@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\ProjectStatus;
 use App\Models\Region;
 use App\Models\SupportStage;
+use App\Models\SupportState;
 use App\Models\User;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Ads\JobOfferAdRepository;
@@ -102,6 +103,15 @@ class AdService
 		$this->projectRepository = $projectRepository;
 	}
 
+    /**
+     * @param User $user
+     * @return User|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|Ad|null
+     */
+    public function getUserSupportRequest(User $user)
+    {
+        return $user->supportRequests()->first();
+    }
+
 	/**
 	 * @param array $data
 	 * @param bool $isSupportRequest
@@ -122,21 +132,23 @@ class AdService
 				}
 				$attributionAdData['user_supervisor_id'] = $advisor->id;
 
-				// Create a project for this ad
-				$project = $this->projectRepository->create([
-					'support_stage_id' => SupportStage::FIRST_RECEPTION_ID,
-					'project_status_id' => ProjectStatus::EMERGING_ID,
-				]);
-				$data["project_id"] = $project->id;
-			} else {
-				$pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
-				// Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
-				$moderator = User::where('email', 'test.ot.moderateur@gmail.com')->first();
-				if (!$moderator) {
-					throw new \Exception('A moderator could not be found for an attribution');
-				}
-				$attributionAdData['user_moderator_id'] = $moderator->id;
-			}
+                // Create a project for this ad
+                $project = $this->projectRepository->create([
+                    'support_stage_id' => SupportStage::FIRST_RECEPTION_ID,
+                    'support_state_id' => SupportState::TO_HANDLE_ID,
+                    'project_status_id' => ProjectStatus::EMERGING_ID,
+                ]);
+                $data["project_id"] = $project->id;
+            }
+			else {
+                $pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
+                // Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
+                $moderator = User::where('email', 'test.ot.moderateur@gmail.com')->first();
+                if (!$moderator) {
+                    throw new \Exception('A moderator could not be found for an attribution');
+                }
+                $attributionAdData['user_moderator_id'] = $moderator->id;
+            }
 
 			$ad = $this->repository->create($data);
 

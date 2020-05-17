@@ -10,9 +10,8 @@ use Illuminate\Database\Eloquent\Relations\hasOne;
  * App\Models\Building
  *
  * @property int $id
- * @property int|null $number
- * @property string|null $surface
- * @property int|null $price
+ * @property string|null $description
+ * @property float|null $surface
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\LandOfferAd $landOfferAd
@@ -22,9 +21,8 @@ use Illuminate\Database\Eloquent\Relations\hasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereSurface($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereUpdatedAt($value)
  * @mixin \Eloquent

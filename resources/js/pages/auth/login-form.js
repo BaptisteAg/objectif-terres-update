@@ -19,7 +19,7 @@ Vue.component('login-form', {
             event.preventDefault();
 
             if(!this.email) {
-                alert("Veuillez saisir votre adresse email")
+                alert("Veuillez saisir votre adresse email");
                 return;
             }
 
@@ -41,9 +41,7 @@ Vue.component('login-form', {
                 .then(response => response.json())
                 .then(result => {
                     if (result.error) {
-                        console.log(result.error)
-                        alert("Une erreur imprévue a eu lieu.");
-                        this.isLoading = false;
+                        this.loginErrorHandler(result.error)
                     }
                     else if(result.redirect && result.redirect !== '') {
                         location.href = result.redirect;
@@ -53,9 +51,16 @@ Vue.component('login-form', {
                         this.isLoading = false;
                     }
                 })
+                .catch(error => this.loginErrorHandler(error))
         },
         onEmailChange(event) {
             this.hasPassedCheckpoint = false;
+        },
+        loginErrorHandler(error) {
+            console.log("checkpoint error :", error);
+            alert("Une erreur imprévue a eu lieu.");
+            this.isLoading = false;
         }
-    }
+
+}
 });

@@ -22,7 +22,6 @@ class ResearchesController extends Controller
 
 	public function index(Request $request)
 	{
-
 		list ($ads, $adsType) = $this->researchService->index($request);
 		$request->flash();
 		return view('pages.researches', compact('ads', 'adsType'));
@@ -30,11 +29,9 @@ class ResearchesController extends Controller
 
 	public function store(Request $request)
 	{
-
 		$research = $this->researchService->create($request);
 
 		return redirect()->route('researches.show');
-
 	}
 
 	public function show()
@@ -56,7 +53,6 @@ class ResearchesController extends Controller
 		}
 		$this->researchService->destroy($research);
 		return back()->with('success', 'La recherche a bien été supprimée.');
-
 	}
 
 	public function deleteAlert(Research $research)
@@ -66,7 +62,6 @@ class ResearchesController extends Controller
 		}
 		$this->researchService->deleteAlert($research);
 		return back()->with('success', 'L\'alerte a bien été supprimée');
-
 	}
 
 	public function notificationCreateAlert(Request $request)

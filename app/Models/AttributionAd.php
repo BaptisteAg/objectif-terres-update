@@ -15,7 +15,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  *
  * @property int $id
  * @property int|null $user_advisor_id
- * @property int $user_moderator_id
+ * @property int|null $user_moderator_id
  * @property int|null $user_supervisor_id
  * @property int|null $to_call_back
  * @property string|null $short_description
@@ -32,9 +32,10 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \App\Models\PpType $ppType
  * @property-read \App\Models\RefusalType|null $refusalType
  * @property-read \App\Models\User|null $userAdvisor
- * @property-read \App\Models\User $userModerator
+ * @property-read \App\Models\User|null $userModerator
  * @property-read \App\Models\User|null $userSupervisor
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterAdTypes($adTypesFilters, $relationTableName)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterAdsTerritoryLocations($territoriesCode)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterLocations($relationshipName, $locationableIds)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterWhereHasIn($data, $relationNameTable, $columnName)

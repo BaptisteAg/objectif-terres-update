@@ -4,7 +4,7 @@
 		@if( ! $ad->project()->exists())
 			<nav class="breadcrumb" aria-label="breadcrumbs">
 				<ul>
-					<li><a href="#">Annonces</a></li>
+					<li><a href="#"><a href="#"><?=empty($isSupportRequest) ? 'Annonces' : 'Accompagnement'?></a></li>
 					<li><a href="#">Offres foncières</a></li>
 				</ul>
 			</nav>

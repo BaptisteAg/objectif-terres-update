@@ -49,6 +49,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read int|null $threads_count
  * @property-read \App\Models\User $userPp
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterAdTypes($adTypesFilters, $relationTableName)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterAdsTerritoryLocations($territoriesCode)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterLocations($relationshipName, $locationableIds)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterWhereHasIn($data, $relationNameTable, $columnName)
@@ -82,7 +83,8 @@ class Ad extends Model implements HasPresenter
         'title',
         'about_content',
         'about_project_content',
-        'accept_share_contact_infos'
+        'accept_share_contact_infos',
+        'support_request_text'
     ];
 
     /**

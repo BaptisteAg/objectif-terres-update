@@ -1,3 +1,7 @@
+function getAll(selector) {
+    return document.querySelectorAll(selector)
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Get all "navbar-burger" elements
     const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
@@ -20,7 +24,24 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-
 });
 
+// Dropdowns
+var $dropdowns = getAll('.dropdown:not(.is-hoverable)');
 
+if ($dropdowns.length > 0) {
+    $dropdowns.forEach(function ($el) {
+        $el.addEventListener('click', function (event) {
+            $el.classList.toggle('is-active');
+        });
+    });
+
+    document.addEventListener('click', function (event) {
+        if(event.target.closest('.dropdown')) {
+            return
+        }
+        $dropdowns.forEach(function ($el) {
+            $el.classList.remove('is-active');
+        });
+    });
+}
