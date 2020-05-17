@@ -42,8 +42,6 @@
         <div class="column">
             <div class="field">
                 <label class="checkbox">
-
-
                     <input type="checkbox" name="has_pics" value="1" {{ old('has_pics') === "1" ? ' checked' : '' }}>
                     Avec photos
                 </label>

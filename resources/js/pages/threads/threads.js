@@ -37,7 +37,7 @@ Vue.component('vue-threads',{
             setInterval(_ => this.onThreadClick(this.activeThread), 15000);
             this.onThreadClick(this.activeThread);
 
-            if(this.userRole ===1){
+            if(this.userRole >=1){
                 this.isUserModerator = true;
             }
         }

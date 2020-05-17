@@ -6,7 +6,7 @@ use App\Models\AttributionAd;
 use App\Models\User;
 use App\Notifications\OverdueModerationNotification;
 use App\Repositories\Users\UserRepository;
-use App\Services\ModerationService;
+use App\Services\Moderation\ModerationService;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

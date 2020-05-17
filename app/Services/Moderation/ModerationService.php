@@ -1,7 +1,6 @@
-<?php namespace App\Services;
+<?php namespace App\Services\Moderation;
 
 use App\Models\AdStatus;
-use App\Models\AttributionAd;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use Carbon\Carbon;
@@ -26,7 +25,7 @@ class ModerationService
      */
     public function findAllOverdueAttributionsByModeratorId()
     {
-        $pendingStatusId = AdStatus::PENDING_MODERATION_ID;
+        $pendingStatusId = AdStatus::PENDING_MODERATION_STATUS_ID;
 
         $attributionsByModeratorId = $this->repository->findAllByStatusId($pendingStatusId)->groupBy('userModerator.id');
 

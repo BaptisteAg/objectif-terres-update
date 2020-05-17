@@ -26,6 +26,28 @@
 				</div>
 			</div>
 			@if(Route::current()->getName() == 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
+			@else
+				<div class="column is-2">
+					<p class="label has-text-centered">Type</p>
+					<div class="columns is-mobile is-multiline is-centered">
+						<div class="column is-narrow has-text-centered">
+							<label class="checkbox">
+								<input name="ads_show" value="true"
+									   type="checkbox" {{old('ads_show')  ? ' checked' : '' }}>
+								Annonces
+							</label>
+						</div>
+						<div class="column is-narrow has-text-centered">
+							<label class="checkbox">
+								<input name="projects_show" value="true"
+									   type="checkbox" {{old('projects_show') ? ' checked' : '' }}>
+								Accompagnements
+							</label>
+						</div>
+					</div>
+				</div>
+			@endif
+			@if(Route::current()->getName() == 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
 				<div class="column is-one-fifth">
 					<div class="control has-icons-right ">
 						@if(Route::current()->getName() === 'moderator.index' &&  Route::current()->getName() === 'moderator.show')
@@ -103,7 +125,7 @@
 			@endif
 		</div>
 		<hr class="navbar-divider">
-		<div class="columns ">
+		<div class="columns  ">
 			@if(Route::current()->getName() == 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
 				<div class="column is-5 ">
 					<div class="columns is-mobile">
@@ -229,12 +251,22 @@
 						   value="{{old('ad_keywords')}}">
 				</div>
 			@endif
-			<div class="column is-1">
+			<div class="column is-1 ">
 				<br>
 				<button type="submit" class="button is-link is-large ">
+					<span class="icon">
+					  <i class="fas fa-filter"></i>
+					</span>
 					<span>Filtrer</span>
 				</button>
-				<br>
+				@if(Route::current()->getName() != 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
+					<p style="margin-bottom: 10px"></p>
+					<span v-on:click='isMoreFiltersOpen = !isMoreFiltersOpen'
+						  class=" has-text-info has-text-weight-semibold ">
+						Plus de critères
+					</span>
+					<br>
+				@endif
 				@if(Route::current()->getName() == 'moderator.show')
 					<a href="{{route('moderator.index')}}" class="">
 						<span class="icon has-text-danger is-marginless">
@@ -243,6 +275,7 @@
 						<span class="is-size-6">Réinitialiser</span>
 					</a>
 				@elseif (Route::current()->getName() == 'supervisor.show')
+					<p style="margin-top: 10px"></p>
 					<a href="{{route('supervisor.index')}}" class=" ">
 						<span class="icon has-text-danger is-marginless">
   							<i class="fas fa-times"></i>
@@ -250,6 +283,7 @@
 						<span class="is-size-6">Réinitialiser</span>
 					</a>
 				@elseif (Route::current()->getName() == 'advisor.show')
+					<p style="margin-top: 10px"></p>
 					<a href="{{route('advisor.index')}}" class="  ">
 						<span class="icon has-text-danger is-marginless ">
   							<i class="fas fa-times"></i>
@@ -260,5 +294,69 @@
 			</div>
 		</div>
 		<hr class="navbar-divider">
+		@if(Route::current()->getName() != 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
+			<div v-if="isMoreFiltersOpen">
+				<div class="columns">
+					<div class="column is-one-third">
+						<div class="field">
+							{{ form::label('price_min', 'Prix minimum', ['class' => 'label']) }}
+							{{ form::number('price_min', '', ['min' => '0', 'pattern' => "([0-9]{1,3}).([0-9]{1,3})", 'class'=>'input', ]) }}
+						</div>
+						<div class="field">
+							{{ form::label('price_max', 'Prix maximum', ['class' => 'label']) }}
+							{{ form::number('price_max', '', ['min' => '0', 'class' => 'input',]) }}
+						</div>
+					</div>
+					<div class="column is-one-third">
+						<div class="field" style="margin-top: 40px">
+							<p class="label">Surface maximale (ha)</p>
+							<vue-slider
+									name="surfaces_research"
+									:old-data="{
+											'value' : {{json_encode(old('surfaces_research'))}},
+											'textValue' : {{json_encode(old('surfaces_research'))}}
+											}"
+									:data="{
+                        0: '0',
+                        5: '5',
+                        10: '10',
+                        20: '20',
+                        50: '50',
+                        100 : '100',
+                        '+100' : '+100',
+                    }"
+									:values="['0', '>100']"></vue-slider>
+							<br>
+						</div>
+					</div>
+
+					<div class="column">
+						<div class="field">
+							{!! Form::label('production_genres', 'Système de production en place', ['class' => 'label']); !!}
+							<multi-select
+									:options="{{ json_encode($productionGenres) }}"
+									name="production_genres[]"
+									v-model="selectedProductions"
+									selected-count-text="production(s) sélectionné(s)"
+									placeholder="Choississez">
+							</multi-select>
+						</div>
+						<div class="field">
+							{!! Form::label('bio_certifications', 'Systèmes de production bio ', ['class' => 'label']); !!}
+							<multi-select
+									:options="{{ json_encode($bioCertifications) }}"
+									:multiple="true"
+									name="bio_certifications[]"
+									v-model="selectedBioCertifications"
+									selected-count-text="production(s) bio sélectionné(s)"
+									placeholder="Choississez">
+							</multi-select>
+						</div>
+					</div>
+				</div>
+				<hr class="navbar-divider">
+			</div>
+		@endif
+
 	</div>
 </dashboard-form-filter>

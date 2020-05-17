@@ -11,11 +11,10 @@
 		<h1 class="title is-2 has-text-link">Suivi de l'accompagnement </h1>
 		@if(!is_null($ad->attributionAd->userAdvisor))
 			@if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
-				<p>Vous êtes le primo-accueillant pour cette demande !</p>
+				<p class="has-text-weight-bold">Vous êtes le primo-accueillant pour cette demande !</p>
 			@else
 				<p>Cette demande est attribuée
-					à {{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}
-					.</p>
+					à <span class="has-text-weight-bold">{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</span>.</p>
 			@endif
 		@else
 			<p>Cette demande n'a pas été encore attribuée à un primo-accueillant</p>
@@ -30,15 +29,27 @@
 					{!! Form::open(['route' => 'advisor.updateSupport', 'method'=>'post']) !!}
 					<div class="columns ">
 						<div class="column "></div>
-						<div class="column is-2 ">
-							<div class="field">
+						<div class="column is-3 ">
+							<div class="content">
+								<p class=" has-text-centered">Stade de l'accompagnement :
+									@if(isset($ad->project->supportStage))
+										<span class="tag is-light">{{$ad->project->supportStage->name}}</span>
+									@else
+										<span class="tag is-light">Non définis</span>
+									@endif
+									<span v-on:click='isSupportStageSelectOpen = !isSupportStageSelectOpen'
+										  class="icon has-text-info">
+											<i class="fas fa-pen"></i>
+									</span>
+								</p>
+							</div>
+							<div v-show="isSupportStageSelectOpen === true" class="field">
 								<div class="control has-text-centered">
 									<div class="select  ">
 										<select name="support_stage" v-on:change="showValidationModal()">
-											<option disabled selected hidden>Stade de l'accompagnement</option>
 											@foreach ($supportStages as $supportStage)
 												@if(isset($ad->project->supportStage) and $supportStage->id === $ad->project->supportStage->id)
-													<option disabled
+													<option disabled selected
 															value="{{$supportStage->id}}">{{$supportStage->name}}</option>
 												@else
 													<option value="{{$supportStage->id}}">{{$supportStage->name}}</option>
@@ -50,14 +61,26 @@
 							</div>
 						</div>
 						<div class="column is-2">
-							<div class="field">
+							<div class="content">
+								<p class=" has-text-centered">État de la demande :
+									@if(isset($ad->project->supportState))
+										<span class="tag is-light">{{$ad->project->supportState->name}}</span>
+									@else
+										<span class="tag is-light">Non définis</span>
+									@endif
+									<span v-on:click='isSupportStateSelectOpen = !isSupportStateSelectOpen'
+										  class="icon has-text-info">
+								<i class="fas fa-pen"></i>
+								</span>
+								</p>
+							</div>
+							<div v-show="isSupportStateSelectOpen === true" class="field">
 								<div class="control  has-text-centered">
 									<div class="select">
 										<select name="support_state" v-on:change="showValidationModal()">
-											<option disabled selected hidden>État de la demande</option>
 											@foreach ($supportStates as $supportState)
 												@if(isset($ad->project->supportState) and $supportState->id === $ad->project->supportState->id)
-													<option disabled
+													<option disabled selected
 															value="{{$supportState->id}}">{{$supportState->name}}</option>
 												@else
 													<option value="{{$supportState->id}}">{{$supportState->name}}</option>
@@ -68,15 +91,27 @@
 								</div>
 							</div>
 						</div>
-						<div class="column is-2">
-							<div class="field">
+						<div class="column is-3">
+							<div class="content">
+								<p class=" has-text-centered">Avancement du projet :
+									@if(isset($ad->project->projectStatus))
+										<span class="tag is-light">{{$ad->project->projectStatus->name}}</span>
+									@else
+										<span class="tag is-light">Non définis</span>
+									@endif
+									<span v-on:click='isProjectStatusSelectOpen = !isProjectStatusSelectOpen'
+										  class="icon has-text-info">
+								<i class="fas fa-pen"></i>
+								</span>
+								</p>
+							</div>
+							<div v-show="isProjectStatusSelectOpen === true" class="field">
 								<div class="control  has-text-centered">
 									<div class="select ">
 										<select name="project_status" v-on:change="showValidationModal()">
-											<option disabled selected hidden>Avancement du projet</option>
 											@foreach ($projectStatuses as $projectStatus)
 												@if(isset($ad->project->projectStatus) and $projectStatus->id === $ad->project->projectStatus->id)
-													<option disabled
+													<option disabled selected
 															value="{{$projectStatus->id}}">{{$projectStatus->name}}</option>
 												@else
 													<option value="{{$projectStatus->id}}">{{$projectStatus->name}}</option>
@@ -99,17 +134,17 @@
 										<li :class="{ 'is-active' : tabsOpen.infoTabOpen === 'user-pp-info-tab'}">
 											<a v-on:click="openInfoTab('user-pp-info-tab')">
 												<span class="icon is-small"><i class="fas fa-user"></i></span>
-												<span>Profil porteur de projet</span>
+												<span>Profil du porteur de projet</span>
 											</a>
 										</li>
 										<li :class="{ 'is-active' : tabsOpen.infoTabOpen === 'support-info-tab'}">
 											<a v-on:click="openInfoTab('support-info-tab')">
 												<span class="icon is-small"><i class="fas fa-hands-helping"></i></span>
-												<span>Demande d'accompagnement</span>
+												<span>Son projet</span>
 											</a>
 										</li>
-										<li>
-											<a>
+										<li :class="{ 'is-active' : tabsOpen.infoTabOpen === 'support-pp-ads-tab'}">
+											<a v-on:click="openInfoTab('support-pp-ads-tab')">
 												<span class="icon is-small"><i class="fas fa-newspaper"></i></span>
 												<span>Annonces</span>
 											</a>
@@ -122,6 +157,10 @@
 								<div v-show="tabsOpen.infoTabOpen === 'support-info-tab'"
 									 class="support-info-tab">
 									@include('pages.advisors.partials.support-info-tab')
+								</div>
+								<div v-show="tabsOpen.infoTabOpen === 'support-pp-ads-tab'"
+									 class="support-pp-ads-tab">
+									@include('pages.advisors.partials.support-pp-ads-tab')
 								</div>
 
 							</div>
@@ -189,5 +228,6 @@
                 navigation: true,
             });
 		</script>
+
 	@endif
 @endsection

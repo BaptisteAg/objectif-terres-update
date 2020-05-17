@@ -7,8 +7,10 @@ use App\Exports\Advisors\AdvisorsExport;
 use App\Http\Controllers\Controller;
 use App\Models\Ad;
 use App\Models\AdNote;
+use App\Models\BioCertification;
 use App\Models\City;
 use App\Models\JobOfferType;
+use App\Models\ProductionGenre;
 use App\Models\ProjectDataKey;
 use App\Models\ProjectStatus;
 use App\Models\ResponseTemplate;
@@ -73,13 +75,15 @@ class AdvisorsController extends Controller
 		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
 		$jobOfferTypes = JobOfferType::all();
+		$productionGenres = ProductionGenre::all();
+		$bioCertifications = BioCertification::all();
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
 
 		$ads = $this->advisorsService->findAllByUserAdvisor(true);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfProjectToHandle = $this->advisorsService->findAllBySupportStageAndSupportState(SupportStage::FIRST_CONTACT_ID, SupportState::TO_HANDLE_ID)->count();
-		return view('pages.advisors.index', compact('supportStages', 'supportStates', 'projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'adTypes', 'adTypesFaIcons', 'numberOfProjectToHandle'));
+		return view('pages.advisors.index', compact('supportStages', 'supportStates', 'projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'adTypes', 'adTypesFaIcons', 'numberOfProjectToHandle', 'productionGenres', 'bioCertifications'));
 	}
 
 
@@ -95,13 +99,15 @@ class AdvisorsController extends Controller
 		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
 		$jobOfferTypes = JobOfferType::all();
+		$productionGenres = ProductionGenre::all();
+		$bioCertifications = BioCertification::all();
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
 
 		$ads = $this->advisorsService->showForAdvisor($request);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
-		$numberOfProjectToHandle = $this->advisorsService->findAllBySupportStageAndSupportState(SupportStage::FIRST_CONTACT_ID, SupportState::TO_HANDLE_ID);
-		return view('pages.advisors.index', compact('supportStages', 'supportStates', 'projectStatuses', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'adTypesFaIcons', 'adTypes', 'numberOfProjectToHandle'));
+		$numberOfProjectToHandle = $this->advisorsService->findAllBySupportStageAndSupportState(SupportStage::FIRST_CONTACT_ID, SupportState::TO_HANDLE_ID)->count();
+		return view('pages.advisors.index', compact('supportStages', 'supportStates', 'projectStatuses', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'adTypesFaIcons', 'adTypes', 'numberOfProjectToHandle', 'productionGenres', 'bioCertifications'));
 
 	}
 
@@ -134,14 +140,26 @@ class AdvisorsController extends Controller
 		$ad = $this->adService->find($adId);
 		$responseTemplates = ResponseTemplate::all();
 		$thread = $this->advisorsService->findSupportRequestThread($ad->id);
+		$listUserAds = $this->adService->findAllAdsByUser($ad->user_pp_id);
 		if (!isset($thread)) {
 			$thread = $this->advisorsService->createSupportRequestThread($ad->id);
 		}
 		$supportStages = SupportStage::all();
 		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
-		$projectDataKeys = ProjectDataKey::all();
-		return view('pages.advisors.support-dashboard', compact('ad', 'responseTemplates', 'thread', 'supportStates', 'supportStages', 'projectStatuses', 'projectDataKeys'));
+		$publicProjectDataKeys = ProjectDataKey::where('is_public', '=', 1)->get();
+		$currentProjectKeyDataValues = $this->advisorsService->allNotesWithPublicProjectDatKeysByAdId($ad->id);
+
+			if (!auth()->user()->unreadNotifications->isEmpty()) {
+				$notifications = auth()->user()->unreadNotifications;
+				foreach ($notifications as $notification){
+					if(array_key_exists('ad_id', $notification->data) && $notification->data['ad_id'] === $ad->id){
+						$notification->markAsRead();
+						$notification->delete();
+					}
+				}
+			}
+		return view('pages.advisors.support-dashboard', compact('ad', 'responseTemplates', 'thread', 'listUserAds', 'supportStates', 'supportStages', 'projectStatuses', 'publicProjectDataKeys', 'currentProjectKeyDataValues'));
 	}
 
 	/**
@@ -175,18 +193,20 @@ class AdvisorsController extends Controller
 		return back()->with('success', 'Votre note a bien été créée');
 	}
 
-	/**
-	 * @param Request $request
-	 * @return JsonResponse
-	 */
-	public function showAllNotesByProjectDataKey(Request $request)
-	{
-		$notes = $this->advisorsService->findNotesByProjectDataKey($request)->map(function (AdNote $note){
-			$noteArray = $note->toArray();
-			$noteArray['created_at'] = $note->created_at->format('d/m/Y');
-			return $noteArray;
-		});
 
-		return response()->json($notes);
+	public function updateProjectDataKeysValues(Request $request){
+
+		$this->advisorsService->updateProjectDataKeysValues($request);
+		return back()->with('success', 'L\'indicateur a bien été modifié');
 	}
+
+
+	public function deleteNote(Request $request)
+	{
+		$this->advisorsService->deleteNote($request);
+		return back()->with('success', 'La note a été supprimée');
+	}
+
+
+
 }

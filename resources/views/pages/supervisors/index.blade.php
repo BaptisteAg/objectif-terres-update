@@ -88,7 +88,7 @@
 								<footer class="card-footer">
 									<div class="buttons card-footer-item">
 										<button type="submit" class="button is-link">
-											<span>Télcharger</span>
+											<span>Télécharger</span>
 										</button>
 										<a class="button is-link is-light" v-on:click="closeModal()">
 											<span>Annuler</span>
@@ -111,138 +111,242 @@
 				<p class="has-text-centered">Aucun résultat</p>
 			@else
 				<div class="table-container">
-					<table class="table is-striped is-hoverable is-fullwidth ">
+					<table class="table is-bordered  is-striped is-narrow is-hoverable is-fullwidth "
+						   style="border :2px solid #dbdbdb">
 						<thead>
 						<tr>
-							<th>Type</th>
-							<th>
-								@if(request()->input('sort') !== 'date')
-									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date'])) }}">
-										<span>Date</span>
-									</a>
-								@elseif(request()->input('sort') === 'date' && request()->input('order') === 'desc')
-									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'date'])) }}">
-										<i class="fas fa-arrow-down"></i>
-										<span>Date</span>
-									</a>
-								@else
-									<a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
-										<i class="fas fa-arrow-up"></i>
-										<span>Date</span>
-									</a>
-								@endif
+							<th colspan="5" class="has-text-centered  " style="border-right :2px solid #dbdbdb">Profil
+								et nature de la
+								demande
 							</th>
-							<th>
-								@if(request()->input('sort') !== 'title')
-									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">
-										<span>Titre</span>
-									</a>
-								@elseif(request()->input('sort') === 'title' && request()->input('order') === 'asc')
-									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'title'])) }}">
-										<i class="fas fa-arrow-up"></i>
-										<span>Titre</span>
-									</a>
-								@else
-									<a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
-										<i class="fas fa-arrow-down"></i>
-										<span>Titre</span>
-									</a>
-								@endif
-
+							<th colspan="4" class="has-text-centered" style="border-right :2px solid #dbdbdb">Suivi de
+								l'accompagnement
 							</th>
-							<th>Catégorie</th>
-							<th>
+							<th style="border-bottom: none;"></th>
+						</tr>
+						<tr>
+							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">Catégorie</th>
+							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">
 								@if(request()->input('sort') !== 'name')
-									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'name'])) }}">
+									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'name'])) }}">
 										<span>Nom du porteur de projet</span>
 									</a>
 								@elseif(request()->input('sort') === 'name' && request()->input('order') === 'asc')
-									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'name'])) }}">
+									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'name'])) }}">
 										<i class="fas fa-arrow-up"></i>
 										<span>Nom du porteur de projet</span>
 									</a>
 								@else
-									<a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
+									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
 										<i class="fas fa-arrow-down"></i>
 										<span>Nom du porteur de projet</span>
 									</a>
 								@endif
 							</th>
-							<th>Adresse mail</th>
-							<th>Localisation(s)</th>
-							<th>
+							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">
 								@if(request()->input('sort') !== 'project_statuses.name')
-									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'project_statuses.name'])) }}">
-										<span>Avancement projet</span>
+									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'project_statuses.name'])) }}">
+										<span>Avancement du projet</span>
 									</a>
 								@elseif(request()->input('sort') === 'project_statuses.name' && request()->input('order') === 'asc')
-									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'project_statuses.name'])) }}">
+									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'project_statuses.name'])) }}">
 										<i class="fas fa-arrow-up"></i>
-										<span>Avancement projet</span>
+										<span>Avancement du projet</span>
 									</a>
 								@else
-									<a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
+									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
 										<i class="fas fa-arrow-down"></i>
-										<span>Avancement projet</span>
+										<span>Avancement du projet</span>
 									</a>
 								@endif
 							</th>
-							<th></th>
+
+							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">
+								Localisation(s)
+							</th>
+							<th class="has-text-weight-semibold"
+								style="border-right :2px solid #dbdbdb; border-bottom :3px solid #dbdbdb">
+								@if(request()->input('sort') !== 'title')
+									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">
+										<span>Titre</span>
+									</a>
+								@elseif(request()->input('sort') === 'title' && request()->input('order') === 'asc')
+									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'title'])) }}">
+										<i class="fas fa-arrow-up"></i>
+										<span>Titre</span>
+									</a>
+								@else
+									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
+										<i class="fas fa-arrow-down"></i>
+										<span>Titre</span>
+									</a>
+								@endif
+							</th>
+
+
+							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">
+								@if(request()->input('sort') !== 'date')
+									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date'])) }}">
+										<span>Date</span>
+									</a>
+								@elseif(request()->input('sort') === 'date' && request()->input('order') === 'desc')
+									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'date'])) }}">
+										<i class="fas fa-arrow-down"></i>
+										<span>Date</span>
+									</a>
+								@else
+									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
+										<i class="fas fa-arrow-up"></i>
+										<span>Date</span>
+									</a>
+								@endif
+							</th>
+
+							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">Statut</th>
+							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">Stade de
+								l'accompagnement
+							</th>
+							<th class="has-text-weight-semibold"
+								style="border-right :2px solid #dbdbdb;  border-bottom :3px solid #dbdbdb">Etat de la
+								demande
+							</th>
+
+							<th class="has-text-weight-semibold"
+								style="width: 142px; border-width: 0px;  border-bottom :3px solid #dbdbdb "></th>
 						</tr>
 						</thead>
 						<tbody>
 						@foreach($ads as $ad)
-							<tr>
-								<td>
-									@if($ad->project()->exists())
-										<span class="tag is-link">Demande d'accompagnement</span>
-									@else
-										<span class="tag is-link is-light">Annonce</span>
-									@endif
-								</td>
-								<td>
-										{{$ad->attributionAd->created_at->format("d/m/Y")}}
-								</td>
-								<td>
-									<a href="{{route('ads.show', $ad->id)}}">{{$ad->title}}</a>
-								</td>
-								<td>{{$ad->ad_type_full_name}}</td>
-								<td>
-									<a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
-								</td>
-								<td>{{$ad->userPp->email}}</td>
-								<td>
-									@if(! is_null($ad->regionsList))
-										<p>Region(s) : {{$ad->regionsList}}</p>
-									@endif
-									@if(! is_null($ad->departmentsList))
-										<p>Département(s) : {{$ad->departmentsList}}</p>
-									@endif
-									@if(! is_null($ad->citiesList))
-										<p>Communes(s) : {{$ad->citiesList}}</p>
-									@endif
-								</td>
-								<td>
-									@if(is_null($ad->project))
-									@else
-										@if($ad->project->projectStatus->id === \App\Models\ProjectStatus::EMERGING_ID)
-											<span class="tag is-info">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->id ===\App\Models\ProjectStatus::IN_PROGRESSING_ID)
-											<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ABANDONED_ID)
-											<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
-										@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ACCOMPLISHED_ID)
-											<span class="tag is-success ">{{$ad->project->projectStatus->name}}</span>
+								<tr>
+									<td>
+										@if(!is_null($ad->project))
+											<span class="icon is-medium  has-text-link has-tooltip-right" data-tooltip="C'est une demande d'accompagnement">
+											  <i class="fas fa-lg fa-hands-helping"></i>
+											</span>
 										@else
-											<span class="tag is-warning">Pas de statut définis</span>
+											<span class="icon is-medium  has-text-link has-tooltip-right" data-tooltip="C'est une annonce">
+											  <i class="fas fa-lg fa-newspaper"></i>
+											</span>
 										@endif
-									@endif
-								</td>
-								<td><a href="{{route('ads.show', $ad->id)}}"><span><i
-													class="fas fa-search"></i></span> <span>Voir le détail</span></a>
-								</td>
-							</tr>
-						@endforeach
+										{{$ad->ad_type_full_name}}
+										<br>
+									</td>
+									<td>
+										<a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+									</td>
+									<td>
+										@if(is_null($ad->project))
+											<span>-</span>
+										@else
+											@if(!is_null($ad->project->projectStatus))
+												@if($ad->project->projectStatus->id === \App\Models\ProjectStatus::EMERGING_ID)
+													<span class="tag is-info">{{$ad->project->projectStatus->name}}</span>
+												@elseif($ad->project->projectStatus->id ===\App\Models\ProjectStatus::IN_PROGRESSING_ID)
+													<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>
+												@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ABANDONED_ID)
+													<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
+												@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ACCOMPLISHED_ID)
+													<span class="tag is-success ">{{$ad->project->projectStatus->name}}</span>
+												@endif
+											@else
+												<span class="tag is-warning">Non définis</span>
+											@endif
+										@endif
+									</td>
+									<td>
+										@if(! is_null($ad->regionsList))
+											<p>Region(s) : {{$ad->regionsList}}</p>
+										@endif
+										@if(! is_null($ad->departmentsList))
+											<p>Département(s) : {{$ad->departmentsList}}</p>
+										@endif
+										@if(! is_null($ad->citiesList))
+											<p>Communes(s) : {{$ad->citiesList}}</p>
+										@endif
+									</td>
+									<td style="border-right:2px solid #dbdbdb">
+										@if(is_null($ad->project))
+											<a href="{{route('ads.show', $ad->id)}}">{{$ad->title}}</a>
+
+										@else
+											<a href="{{route('advisor.showSupport', $ad->id)}}">{{$ad->title}}</a>
+
+										@endif
+									</td>
+									<td>
+										{{$ad->attributionAd->created_at->format("d/m/Y")}}
+									</td>
+									<td>
+										@if(!is_null($ad->project_id))
+											@if(isset($ad->attributionAd->userAdvisor))
+												Attribué
+												à {{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}
+											@else
+												<span class="tag is-danger is-light">Non attribué</span>
+											@endif
+										@else
+											-
+										@endif
+									</td>
+									<td>
+										@if(is_null($ad->project))
+											<span>-</span>
+										@else
+											@if(!is_null($ad->project->supportStage))
+												@if($ad->project->supportStage->id === \App\Models\SupportStage::FIRST_CONTACT_ID)
+													<span class="tag is-info">{{$ad->project->supportStage->name}}</span>
+												@elseif($ad->project->supportStage->id ===\App\Models\SupportStage::FIRST_RECEPTION_ID)
+													<span class="tag is-info is-light">{{$ad->project->supportStage->name}}</span>
+												@elseif($ad->project->supportStage->id === \App\Models\SupportStage::ACCOMPANYING_ID)
+													<span class="tag is-success is-light">{{$ad->project->supportStage->name}}</span>
+												@endif
+											@else
+												<span class="tag is-warning">Non définis</span>
+											@endif
+										@endif
+									</td>
+									<td style="border-right:2px solid #dbdbdb">
+										@if(is_null($ad->project))
+											<span>-</span>
+										@else
+											@if(!is_null($ad->project->supportState))
+												@if($ad->project->supportState->id === \App\Models\SupportState::TO_HANDLE_ID)
+													<span class="tag is-info">{{$ad->project->supportState->name}}</span>
+												@elseif($ad->project->supportState->id ===\App\Models\SupportState::HANDLE_ID)
+													<span class="tag is-success is-light">{{$ad->project->supportState->name}}</span>
+												@elseif($ad->project->supportState->id === \App\Models\SupportState::PENDING_ID)
+													<span class="tag is-info is-light">{{$ad->project->supportState->name}}</span>
+												@elseif($ad->project->supportState->id === \App\Models\SupportState::ARCHIVE_ID)
+													<span class="tag is-light ">{{$ad->project->supportState->name}}</span>
+												@endif
+											@else
+												<span class="tag is-warning">Non définis</span>
+											@endif
+										@endif
+									</td>
+
+									<td>
+										@if(! is_null($ad->project))
+											@if(isset($ad->attributionAd->userAdvisor))
+												<a href="{{route('ads.show', $ad->id)}}">
+													<span><i class="fas fa-search"></i></span>
+													<span>Voir le détail</span>
+												</a>
+											@else
+												<a href="{{route('ads.show', $ad->id)}}">
+													<span><i class="fas fa-hands-helping"></i></span>
+													<span>Attribuer un primo-accueillant</span>
+												</a>
+											@endif
+										@else
+											<a href="{{route('ads.show', $ad->id)}}">
+												<span><i class="fas fa-search"></i></span>
+												<span>Voir le détail</span>
+											</a>
+										@endif
+									</td>
+								</tr>
+								@endforeach
 						</tbody>
 					</table>
 				</div>

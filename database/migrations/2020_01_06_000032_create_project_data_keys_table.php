@@ -24,6 +24,7 @@ class CreateProjectDataKeysTable extends Migration
 			$table->engine = 'InnoDB';
 			$table->increments('id');
 			$table->string('name');
+			$table->boolean('is_public')->default(1);
 			$table->timestamps();
 		});
     }

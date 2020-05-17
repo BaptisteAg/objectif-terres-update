@@ -127,7 +127,7 @@
                                 </p>
                             </div>
 
-                            <div class="field" v-show="formInput.offerGenres.includes('1')">
+                            <div class="field" v-show="formInput.offerGenres.includes('2')">
                                 {!! Form::label('land_seek[rent_max]', 'Loyer maximum (en €)', ['class' => 'label']); !!}
                                 {!! Form::text('land_seek[rent_max]',
                                           null,
@@ -140,7 +140,7 @@
                                 <p class="help is-danger" v-if="!$v.formInput.rentMax.numeric">Veuillez saisir des chiffres.</p>
                             </div>
 
-                            <div class="field" v-show="formInput.offerGenres.includes('2')">
+                            <div class="field" v-show="formInput.offerGenres.includes('1')">
                                 {!! Form::label('land_seek[price_max]', 'Achat : Prix maximum', ['class' => 'label']); !!}
 
                                 <vue-slider

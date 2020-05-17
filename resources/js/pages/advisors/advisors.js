@@ -12,21 +12,23 @@ Vue.component('support-request-dashboard', {
     },
     props: {
         thread: '',
-        adId : '',
+        adId: '',
     },
     data() {
         return {
-            messages : [],
+            messages: [],
             activeThread: this.thread || null,
-            initialLoading : true,
-            messagesLoading : true,
+            initialLoading: true,
+            messagesLoading: true,
+            isSupportStageSelectOpen: false,
+            isSupportStateSelectOpen: false,
+            isProjectStatusSelectOpen: false,
             tabsOpen: {
                 infoTabOpen: 'support-info-tab',
                 supportTabOpen: 'support-notes-tab',
             },
             showModal: false,
-            projectDataKeyId : '',
-            notes : [],
+
         }
     },
     mounted() {
@@ -48,6 +50,9 @@ Vue.component('support-request-dashboard', {
         },
         showValidationModal() {
             this.showModal = true;
+            this.isSupportStageSelectOpen = false;
+            this.isSupportStateSelectOpen = false;
+            this.isProjectStatusSelectOpen = false;
         },
         closeValidationModal() {
             this.showModal = false;
@@ -65,21 +70,7 @@ Vue.component('support-request-dashboard', {
         onMessageReplySuccess(message) {
             this.messages.push(message)
         },
-        getAllNotesByProjectDataKey(e) {
-            this.isLoading = true;
-            axios.post('/mon-espace-primo-accueillant/liste-notes-indicateurs', {
-                ad_id: this.adId,
-                project_data_key_id:this.projectDataKeyId
-            })
-                .then(response => {
-                    console.log(response.data)
-                     this.notes = response.data;
-                     this.isLoading = false;
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-        }
+
     },
 
 });
