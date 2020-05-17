@@ -7,15 +7,14 @@
                           :disabled="disabled"
                           :maxlength="maxLength"
                           :placeholder="placeholder"
-                          v-bind:value="value"
                           v-on:input="onInput"
-                >{{ value }}</textarea>
+                >{{ text }}</textarea>
             <p class="text-area-counter-value is-size-7" :style="{color:color}">
-                {{ value.length }}/ {{ maxLength}}
+                {{ text.length }}/ {{ maxLength}}
             </p>
         </div>
 
-        <div v-show="vuelidate.$error">
+        <div v-if="vuelidate" v-show="vuelidate.$error">
             <p class="help is-danger" v-show="!vuelidate.minLength">
                 Le contenu doit faire au minimum
                 {{vuelidate.$params.minLength.min}} caractères.
@@ -55,9 +54,13 @@
                 default: ''
             },
             vuelidate: {
-                type: Object,
-                required: true
+                type: Object
             },
+        },
+        data() {
+            return {
+                text : this.value
+            };
         },
         computed: {
             remainingCount() {
@@ -76,8 +79,12 @@
         },
         methods: {
             onInput(event) {
-                this.vuelidate.$touch();
-                this.$emit("input", event.target.value);
+                if(this.vuelidate) {
+                    this.vuelidate.$touch();
+                }
+                const text = event.target.value;
+                this.text = text;
+                this.$emit("input", text);
             }
         }
     }

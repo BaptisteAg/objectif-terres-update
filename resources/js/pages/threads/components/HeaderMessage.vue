@@ -17,7 +17,7 @@
 
                     <template v-else>
                             <template v-for="(user, index) in value[0].thread.users">
-                                <a target="_blank" :href="'/porteur-de-projet/' + user.id">  <p class=" title is-5 has-text-centered is-marginless" v-if="user.id !==userId"> {{user.first_name}} <span class="is-uppercase">{{user.name}}</span></p></a>
+                                <a target="_blank" :href="'/utilisateurs/' + user.id">  <p class=" title is-5 has-text-centered is-marginless" v-if="user.id !==userId"> {{user.first_name}} <span class="is-uppercase">{{user.name}}</span></p></a>
                             </template>
                     </template>
 

@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\ProjectStatus;
 use App\Models\Region;
 use App\Models\SupportStage;
+use App\Models\SupportState;
 use App\Models\User;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Ads\JobOfferAdRepository;
@@ -102,6 +103,15 @@ class AdService
         $this->projectRepository = $projectRepository;
     }
 
+    /**
+     * @param User $user
+     * @return User|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|Ad|null
+     */
+    public function getUserSupportRequest(User $user)
+    {
+        return $user->supportRequests()->first();
+    }
+
 	/**
 	 * @param $data
 	 * @return mixed
@@ -124,6 +134,7 @@ class AdService
                 // Create a project for this ad
                 $project = $this->projectRepository->create([
                     'support_stage_id' => SupportStage::FIRST_RECEPTION_ID,
+                    'support_state_id' => SupportState::TO_HANDLE_ID,
                     'project_status_id' => ProjectStatus::EMERGING_ID,
                 ]);
                 $data["project_id"] = $project->id;

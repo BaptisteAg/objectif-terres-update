@@ -11,7 +11,9 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  *
  * @property int $id
  * @property string $name
+ * @property string $icon
  * @property string $land_offer_label
+ * @property int $land_seek_display
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandOfferAd[] $landOfferAds
@@ -20,8 +22,10 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereIcon($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereLandOfferLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereLandSeekDisplay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereUpdatedAt($value)
  * @mixin \Eloquent

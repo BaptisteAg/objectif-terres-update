@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int|null $is_activity_transmission
  * @property string $job_description
- * @property string $experience_farming
+ * @property string|null $experience_farming
  * @property int $ad_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at

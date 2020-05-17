@@ -30,7 +30,6 @@ class AdRequest extends FormRequest
     {
         $rules = [
             'ad_type'                       => "required",
-            'is_support_request'            => "required",
             'land_seek'                     => ['nullable', 'array'],
             'land_offer'                    => ['nullable', 'array'],
             'job_offer'                     => ['nullable', 'array'],
@@ -45,7 +44,10 @@ class AdRequest extends FormRequest
 
             'documents_ids'                 => ['nullable', 'array'],
 
-            'accept_share_contact_infos'    => ['nullable', 'boolean']
+            'accept_share_contact_infos'    => ['nullable', 'boolean'],
+
+            'is_support_request'            => ['nullable', 'boolean'],
+            'support_request_text'          => ['nullable', 'string', 'max:1000'],
         ];
 
         $rulesetsByAdType = [

@@ -62,13 +62,13 @@
 		<div class="columns">
 		<div class=" column is-half">
 			<div class="columns">
-				<div class="column is-one-third "><a href="{{url('/')}}">Mentions légales</a> </div>
+				<div class="column is-one-third "><a href="/mentions-legales">Mentions légales</a> </div>
 				<div class="column "><a href="{{url('/')}}">Politique de cookie</a></div>
 				<div class="column  "><a href="{{url('/')}}">Conditions d'utilisation</a></div>
 			</div>
 		</div>
 			<div class="column has-text-right">
-				<p>©2019 - Terre de Liens | All right reserved</p>
+				<p>©<?=date('Y')?> - Terre de Liens | All right reserved</p>
 			</div>
 		</div>
 	</div>

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $name
+ * @property string $icon
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\JobOfferAd[] $jobOfferAds
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EducationLevel newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EducationLevel query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EducationLevel whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EducationLevel whereIcon($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EducationLevel whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EducationLevel whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EducationLevel whereUpdatedAt($value)

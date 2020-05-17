@@ -2,6 +2,7 @@
 //////////////
 // LODASH
 _ = require('lodash');
+
 //////////////
 // VUE
 window.Vue = require('vue');
@@ -23,6 +24,7 @@ window.SmoothScroll = require('smooth-scroll');
 
 //////////////
 // PAGES
+require('./pages/support-request-start');
 require ('./pages/ads/new');
 require ('./pages/ads/show');
 require('./pages/header');

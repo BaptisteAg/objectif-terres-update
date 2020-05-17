@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * App\Models\ResearchEvents
+ * App\Models\Research
  *
  * @property int $id
  * @property int $user_id

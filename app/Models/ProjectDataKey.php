@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AdNote[] $adNotes
- * @property-read int|null $adNotes_count
+ * @property-read int|null $ad_notes_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey query()

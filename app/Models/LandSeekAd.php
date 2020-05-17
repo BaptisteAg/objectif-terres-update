@@ -14,13 +14,16 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * App\Models\LandSeekAd
  *
  * @property int $id
+ * @property int $ad_id
+ * @property int|null $installation_type_id
  * @property int|null $is_bio
  * @property string|null $production_type_add
+ * @property string|null $land_description
  * @property string|null $experience_farming
- * @property int $ad_id
  * @property int|null $surface_range_min
  * @property int|null $surface_range_max
- * @property int|null $installation_type_id
+ * @property int|null $price_max
+ * @property int|null $rent_max
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Ad $ad
@@ -42,7 +45,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereInstallationTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereIsBio($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereLandDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd wherePriceMax($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereProductionTypeAdd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereRentMax($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereSurfaceRangeMax($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereSurfaceRangeMin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereUpdatedAt($value)

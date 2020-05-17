@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\Department $department
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $researches
  * @property-read int|null $researches_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read int|null $users_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City query()

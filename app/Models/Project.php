@@ -14,12 +14,17 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * App\Models\Project
  *
  * @property int $id
+ * @property int|null $support_stage_id
+ * @property int|null $support_state_id
  * @property int|null $project_status_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Ad $ad
  * @property-read \App\Models\ProjectStatus|null $projectStatus
+ * @property-read \App\Models\SupportStage|null $supportStage
+ * @property-read \App\Models\SupportState|null $supportState
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterAdTypes($adTypesFilters, $relationTableName)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterAdsTerritoryLocations($territoriesCode)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterLocations($relationshipName, $locationableIds)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterWhereHasIn($data, $relationNameTable, $columnName)
@@ -30,6 +35,8 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereProjectStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereSupportStageId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereSupportStateId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUpdatedAt($value)
  * @mixin \Eloquent
  */

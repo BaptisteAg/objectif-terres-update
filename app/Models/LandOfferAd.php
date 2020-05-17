@@ -15,24 +15,31 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  *
  * @property int $id
  * @property int $accept_use_zip_code
- * @property int $surface
+ * @property float $surface
  * @property string|null $sau_description
  * @property int|null $water_access
  * @property string|null $water_access_description
- * @property int $altitude
+ * @property float $altitude
  * @property int|null $has_buildings
- * @property string|null $buildings_description
  * @property int|null $has_houses
- * @property string|null $houses_description
- * @property int|null $price
- * @property int|null $rent_price
+ * @property float|null $price
+ * @property float|null $rent_price
  * @property string|null $test_description
  * @property int $ad_id
+ * @property int|null $building_id
+ * @property int|null $house_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $is_beneficiary
+ * @property int|null $is_activity_transfer
+ * @property int|null $is_call_for_application_community
+ * @property int|null $is_call_for_application_terre_de_liens
+ * @property int|null $is_call_for_application_test_area
  * @property-read \App\Models\Ad $ad
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BioCertification[] $bioCertifications
  * @property-read int|null $bio_certifications_count
+ * @property-read \App\Models\Building|null $building
+ * @property-read \App\Models\House|null $house
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OfferGenre[] $offerGenres
  * @property-read int|null $offer_genres_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenres
@@ -45,12 +52,17 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereAcceptUseZipCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereAdId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereAltitude($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereBuildingsDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereBuildingId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereHasBuildings($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereHasHouses($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereHousesDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereHouseId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereIsActivityTransfer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereIsBeneficiary($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereIsCallForApplicationCommunity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereIsCallForApplicationTerreDeLiens($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereIsCallForApplicationTestArea($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereRentPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereSauDescription($value)

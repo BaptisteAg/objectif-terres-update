@@ -77,67 +77,19 @@ class AdsController extends BaseController
             ->with('success', 'Votre annonce a bien été sauvegardée.');
 	}
 
-	/**
-	 * @param int $adId
-	 * @return Factory|\Illuminate\View\View
-	 */
-	public function show(int $adId)
+    /**
+     * @param int $adId
+     * @return Factory|\Illuminate\View\View
+     * @throws \Exception
+     */
+	public function show($adId)
 	{
-		$ad = $this->adService->find($adId);
-		$userMessage = null;
-		$favoriteAdAlreadyExist = false;
-		$threads = [];
-		$threadsWithUnreadMessages = null;
-		$responseTemplates = '';
-		$refusalTypes = '';
-		$isAdToModerate = false;
-		$isLoggedUserModeratorAd = false;
-		$advisorUsers = [];
-
-		if (Auth::user()) {
-			if ($ad->attributionAd->adStatus->id === AdStatus::PENDING_MODERATION_STATUS_ID) {
-				$isAdToModerate = true;
-			}
-			if (auth()->user()->id === $ad->attributionAd->user_moderator_id) {
-				$isLoggedUserModeratorAd = true;
-				$responseTemplates = ResponseTemplate::all();
-				$refusalTypes = RefusalType::all();
-				//set to read if notification about moderation task about the ad exist
-				if (!auth()->user()->unreadNotifications->isEmpty()) {
-					$notification = auth()->user()->unreadNotifications()->where('data->ad_id', $ad->id)->first();
-					if (!is_null($notification)) {
-						$notification->markAsRead();
-						$notification->delete();
-					}
-				}
-			}
-			if (auth()->user()->id === $ad->user_pp_id) {
-				$threads = $this->threadService->findThreadsByAd($adId);
-				$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
-			} else {
-				if (auth()->user()->role >= 1) {
-					$responseTemplates = ResponseTemplate::all();
-					$refusalTypes = RefusalType::all();
-				}
-				if (auth()->user()->role >= 3) {
-					//TODO display only advisors that are related to the supervisor
-					$advisorUsers = $this->userService->findAllAdvisorsAndSupervisors();
-				}
-
-				$threads = $this->threadService->findThreadAlreadyExist(auth()->user()->id,$adId);
-				$data = array(
-					"ad_id" => $adId,
-					"user_id" => auth()->user()->id,
-				);
-				$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
-			}
-
-		}
+        $ad = $this->adService->find($adId);
 
 		//Throw error 404 if a visitor try to show an ad is not validated
 		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validée" ;
 		//TODO not display projects unless user logged is the author of the ad or the user logged is an supervisor or an advisor
-		return view('pages.ads.show', compact('ad', 'userMessage', 'favoriteAdAlreadyExist', 'threads', 'threadsWithUnreadMessages', 'responseTemplates', 'refusalTypes', 'isAdToModerate', 'isLoggedUserModeratorAd', 'advisorUsers'));
+		return view('pages.ads.show', $this->getShowVars($ad));
 	}
 
 	/**

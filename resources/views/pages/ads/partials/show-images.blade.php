@@ -6,7 +6,7 @@
                     <div class="card-image">
                         <figure class="image is-2by1">
                             @if($document->path === "0")
-                                <img src="https://picsum.photos/480/320" alt="picsum">
+                                <img src="/images/placeholder-ad.png" alt="picsum">
                             @else
                                 <img src="{{URL::asset($document->path)}}" alt="Placeholder image">
                             @endif

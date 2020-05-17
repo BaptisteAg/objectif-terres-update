@@ -1,6 +1,6 @@
 @extends ('default')
 
-@section ('title', 'Consulter la liste de vos annonces favorites')
+@section ('title', 'Consulter la liste de vos annonces')
 
 @section('main-content')
 	<section class="section">
@@ -32,7 +32,7 @@
 													@endif
 												@endforeach
 											@else
-												<img src="https://picsum.photos/256/256">
+												<img src="/images/placeholder-ad.png">
 											@endif
 										</figure>
 									</a>
@@ -205,9 +205,6 @@
 			</section>
 
 			@include('components.section-orientation-terre-liens')
-			@include('components.partnering')
-			@include('components.support-terre-liens')
-
 		</div>
 	</section>
 @endsection

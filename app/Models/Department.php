@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\Region $region
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $researches
  * @property-read int|null $researches_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read int|null $users_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department query()
