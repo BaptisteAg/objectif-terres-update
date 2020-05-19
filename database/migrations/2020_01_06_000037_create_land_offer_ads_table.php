@@ -28,7 +28,7 @@ class CreateLandOfferAdsTable extends Migration
             $table->string('sau_description', 1500)->nullable();
             $table->boolean('water_access')->nullable();
             $table->string('water_access_description', 1500)->nullable();
-            $table->float('altitude');
+            $table->float('altitude')->nullable();
             $table->boolean('has_buildings')->nullable();
             $table->boolean('has_houses')->nullable();
             $table->float('price')->nullable();
