@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Omniphx\Forrest\Exceptions\SalesforceException;
 
 class RegisterController extends Controller
 {
@@ -108,9 +109,15 @@ class RegisterController extends Controller
     {
 		$this->validator($request->all())->validate();
 
-		event(new Registered($user = $this->create($request->all())));
-
-        $this->guard()->login($user);
+        try
+        {
+            event(new Registered($user = $this->create($request->all())));
+            $this->guard()->login($user);
+        }
+        catch(SalesforceException $exception)
+        {
+            return back()->withInput()->withErrors(json_decode($exception->getMessage())[0]->message);
+        }
 
         return redirect(session('url.intended', '/'));
     }
@@ -124,6 +131,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         //dd($data);
+
         $salesForceContact = $this->salesForceService->registerPP($data);
         $data["sf_id"] = $salesForceContact["id"];
 

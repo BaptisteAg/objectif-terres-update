@@ -14,7 +14,7 @@ Vue.component('user-form', {
     data() {
         return {
             optionProfileSelected: this.oldValues.profile || '',
-            citySelect: this.oldValues.citySelect ? [JSON.parse(this.oldValues.citySelect)] : [],
+            citySelect: this.oldValues.citySelect ? JSON.parse(this.oldValues.citySelect) : [],
             isPasswordToChange: false,
         }
     },
@@ -22,6 +22,5 @@ Vue.component('user-form', {
         show_password_inputs() {
             this.isPasswordToChange = this.isPasswordToChange !== true;
         }
-
     }
 });
