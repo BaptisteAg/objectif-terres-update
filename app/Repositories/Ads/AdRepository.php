@@ -107,7 +107,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		/** @var Collection $model */
 		$models = $this->entity
 			->where(["user_pp_id" => $idUser])
-            ->whereNull('project_id')
+			->whereNull('project_id')
 			->with($this->getEagerLoading())
 			->get();
 		return $models;
@@ -136,7 +136,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 */
 	public function allAdsInTerritories(array $territoriesCode): Collection
 	{
-		/** @var Collection $model */
+		/** @var Collection $models */
 		$models = $this->entity
 			->whereNull('project_id')
 			->where(function (Builder $query) use ($territoriesCode) {
@@ -186,6 +186,48 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			/**TODO find a way to group results first with projects and then ads. Each group has to be order by attribution_ads.created_at **/
 			->leftJoin('projects as p', 'p.id', '=', 'ads.project_id')
 			->orderByDesc('p.created_at')
+			->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
+			->orderByDesc('a.created_at')
+			->with($this->getEagerLoadingForDashboards());
+		if ($toPaginate) {
+			$ads = $models->paginate(15);
+		} else {
+			$ads = $models->get();
+		}
+		return $ads;
+	}
+
+	/**
+	 * Find all  projects in user (supervisor or advisor) territories
+	 * @param array $territoriesCode
+	 * @param bool $toPaginate
+	 * @return LengthAwarePaginator|Builder[]|Collection
+	 */
+	public function allProjectsInTerritories(array $territoriesCode, bool $toPaginate)
+	{
+		/** @var Collection $model */
+		$models = $this->entity
+			->where(function (Builder $query) {
+				$query->whereHas('attributionAd', function (Builder $query) {
+					if (auth()->user()->role == 2) {
+						$query->where('user_advisor_id', '=', auth()->user()->id);
+					} else if (auth()->user()->role >= 3) {
+						$query->where('user_supervisor_id', '=', auth()->user()->id);
+					}
+				});
+				$query->whereNotNull('project_id');
+			})
+			->orWhere(function (Builder $query) use ($territoriesCode) {
+				$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
+					$query->whereIn('code', $territoriesCode);
+				});
+				$query->orWhereHas('cities', function (Builder $query) use ($territoriesCode) {
+					$query->whereIn('department_code', $territoriesCode);
+				});
+				$query->whereNotNull('project_id');
+			});
+
+		$models
 			->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
 			->orderByDesc('a.created_at')
 			->with($this->getEagerLoadingForDashboards());

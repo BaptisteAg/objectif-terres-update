@@ -170,7 +170,7 @@
 								@endif
 							</th>
 
-							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">Statut</th>
+							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">Suivi par</th>
 							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">Stade de
 								l'accompagnement
 							</th>

@@ -141,8 +141,14 @@ Route::middleware('advisor')->prefix('mon-espace-primo-accueillant')->name('advi
 	Route::get('espace-suivi/{id}', 'AdvisorsController@showSupport')->name('showSupport');
 	Route::post('mise-a-jour-statut', 'AdvisorsController@updateSupport')->name('updateSupport');
 	Route::post('creation-note', 'AdvisorsController@createNote')->name('createNote');
+	Route::post('edition-note', 'AdvisorsController@editNote')->name('editNote');
 	Route::post('suppression-note', 'AdvisorsController@deleteNote')->name('deleteNote');
 	Route::post('modification-valeurs-indicateurs', 'AdvisorsController@updateProjectDataKeysValues')->name('updateProjectDataKeysValues');
+});
+
+Route::middleware('advisor')->prefix('gestion-reponse-types')->name('responseTemplates.')->namespace('ResponseTemplates')->group(function(){
+	Route::get('/', 'ResponseTemplatesController@index')->name('index');
+	Route::post('/creer', 'ResponseTemplatesController@create')->name('create');
 });
 
 Route::middleware('auth')->prefix('notification')->name('notification.')->namespace('Notifications')->group(function () {

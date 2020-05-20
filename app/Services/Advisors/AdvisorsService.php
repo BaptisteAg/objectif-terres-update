@@ -15,6 +15,7 @@ use App\Services\Users\UserService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -65,6 +66,18 @@ class AdvisorsService
 	{
 		$advisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$ads = $this->repository->allInTerritories($advisorLocationTerritoryCodes, $toPaginate);
+		return $ads;
+	}
+
+	/**
+	 * Show all ads that are supports related to advisors
+	 * @param bool $toPaginate
+	 * @return LengthAwarePaginator|Collection
+	 */
+	public function findAllSupportsByUserAdvisor(bool $toPaginate)
+	{
+		$advisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
+		$ads = $this->repository->allProjectsInTerritories($advisorLocationTerritoryCodes, $toPaginate);
 		return $ads;
 	}
 
@@ -148,6 +161,38 @@ class AdvisorsService
 	}
 
 	/**
+	 * @param array $data
+	 * @return AdNote|Model
+	 */
+	public function editNote(array $data)
+	{
+		try {
+			$note = AdNote::findOrNew($data['ad_note_id']);
+			if($note->value !== $data['value']){
+				$note->update($data);
+				session(['success' => 'La note a bien été modifiée']);
+			}else{
+				session(['warning' => 'Le contenu de la note n\'a pas été modifié']);
+			}
+		}
+		catch (\Exception $e) {
+			session(['warning' => 'Une erreur s\'est produite, veuillez réessayer']);
+		}
+
+	}
+
+	/**
+	 * @param Request $request
+	 * @throws \Exception
+	 */
+	public function deleteNote(Request $request)
+	{
+		$note = AdNote::find($request->input('ad_note_id'));
+		$note->delete();
+	}
+
+
+	/**
 	 * @param Request $request
 	 * @throws Throwable
 	 */
@@ -201,15 +246,6 @@ class AdvisorsService
 	}
 
 
-	/**
-	 * @param Request $request
-	 * @throws \Exception
-	 */
-	public function deleteNote(Request $request)
-	{
-		$note = AdNote::find($request->input('ad_note_id'));
-		$note->delete();
-	}
 
 
 }

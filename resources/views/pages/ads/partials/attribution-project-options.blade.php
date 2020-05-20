@@ -69,7 +69,7 @@
 		<div class="card">
 			<div class="card-content">
 				<div class="content">
-					<p class="title is-3 has-text-centered has-text-link">Vous êtes sûre de votre choix ?</p>
+					<p class="title is-3 has-text-centered has-text-link">Confirmez-vous votre choix ?</p>
 					<p>Vous êtes sur le point d'attribuer l'annonce à <span class="has-text-weight-bold" id="user_advisor_selected"></span></p>
 				</div>
 			</div>

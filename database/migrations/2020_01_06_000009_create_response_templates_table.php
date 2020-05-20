@@ -23,7 +23,7 @@ class CreateResponseTemplatesTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('name');
+            $table->string('title');
             $table->text('content');
             $table->timestamps();
         });

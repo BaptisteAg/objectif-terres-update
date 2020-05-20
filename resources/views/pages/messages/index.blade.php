@@ -71,6 +71,7 @@
 									</list-threads>
 								</div>
 								<div class="column  box-thread-display">
+
 									<div class="box">
 										<header-message
 												v-bind:active-thread-id = "activeThread"
@@ -87,7 +88,7 @@
 												:user-id="{{auth()->id()}}"
 												:response-templates="{{json_encode($responseTemplates)}}"
 												@message-reply-success="onMessageReplySuccess"
-												v-bind::show-response-type="isUserModerator"
+												v-bind:show-response-type="isUserModerator"
 												v-bind:active-thread-id = "activeThread"
 										>
 										</form-message-reply>

@@ -174,4 +174,40 @@
 			<span class="is-italic">Plus d'informations sur la demande : </span>{{$ad->about_project_content?? "Non renseigné"}}
 		</p>
 	</div>
+	<div class="is-divider"></div>
+	<div class="column">
+		{!! Form::open(['route' => 'advisor.updateProjectDataKeysValues', 'method'=>'post']) !!}
+		<div class="content">
+			<p class="has-text-centered title is-5">Indicateurs concernant cette demande</p>
+		</div>
+		@foreach($publicProjectDataKeys as $publicProjectDataKey)
+			<div class="columns">
+				<div class="column is-one-third">
+					<p>{{$publicProjectDataKey->name}}</p>
+				</div>
+				<div class="column">
+					@if(!is_null($currentProjectKeyDataValues->where('project_data_key_id',$publicProjectDataKey->id  )->first()))
+						<input name="project_data_key[{{$publicProjectDataKey->id}}]" class="input" type="text"
+							   value="{{$currentProjectKeyDataValues->where('project_data_key_id',$publicProjectDataKey->id  )->first()->value}}"
+							   placeholder="Saisir...">
+					@else
+						<input name="project_data_key[{{$publicProjectDataKey->id}}]" class="input" type="text"
+							   placeholder="Saisir...">
+					@endif
+				</div>
+			</div>
+		@endforeach
+
+		<div class="control">
+			<input type="hidden" name="ad_id" value="{{$ad->id}}">
+			<input type="hidden" name="user_id" value="{{auth()->id()}}">
+			<button class="button is-link">
+						 <span class="icon is-small">
+						  <i class="fas fa-save"></i>
+						</span>
+				<span>Sauvegarder</span>
+			</button>
+		</div>
+		{!! Form::close() !!}
+	</div>
 </div>

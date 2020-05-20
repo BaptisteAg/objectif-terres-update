@@ -80,7 +80,7 @@ class AdvisorsController extends Controller
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
 
-		$ads = $this->advisorsService->findAllByUserAdvisor(true);
+		$ads = $this->advisorsService->findAllSupportsByUserAdvisor(true);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfProjectToHandle = $this->advisorsService->findAllBySupportStageAndSupportState(SupportStage::FIRST_CONTACT_ID, SupportState::TO_HANDLE_ID)->count();
 		return view('pages.advisors.index', compact('supportStages', 'supportStates', 'projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'adTypes', 'adTypesFaIcons', 'numberOfProjectToHandle', 'productionGenres', 'bioCertifications'));
@@ -193,7 +193,33 @@ class AdvisorsController extends Controller
 		return back()->with('success', 'Votre note a bien été créée');
 	}
 
+	/**
+	 * @param Request $request
+	 * @return RedirectResponse
+	 */
+	public function editNote(Request $request)
+	{
+		$this->advisorsService->editNote($request->input());
+		return back();
+	}
 
+	/**
+	 * @param Request $request
+	 * @return RedirectResponse
+	 * @throws \Exception
+	 */
+	public function deleteNote(Request $request)
+	{
+		$this->advisorsService->deleteNote($request);
+		return back()->with('success', 'La note a été supprimée');
+	}
+
+
+	/**
+	 * @param Request $request
+	 * @return RedirectResponse
+	 * @throws Throwable
+	 */
 	public function updateProjectDataKeysValues(Request $request){
 
 		$this->advisorsService->updateProjectDataKeysValues($request);
@@ -201,11 +227,6 @@ class AdvisorsController extends Controller
 	}
 
 
-	public function deleteNote(Request $request)
-	{
-		$this->advisorsService->deleteNote($request);
-		return back()->with('success', 'La note a été supprimée');
-	}
 
 
 

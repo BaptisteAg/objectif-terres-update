@@ -21,7 +21,8 @@
 									<div class="control">
 										<div class="tags has-addons">
 											<span class="tag is-medium is-light"><span>{{$projectDataKey->name}}</span>
-												<span class="icon has-text-info has-tooltip-bottom" data-tooltip="{{$projectDataKey->is_public === 1 ? "Cet indicateur est public" : "Cet indicateur est privé"}}">
+												<span class="icon has-text-info has-tooltip-bottom"
+													  data-tooltip="{{$projectDataKey->is_public === 1 ? "Cet indicateur est public" : "Cet indicateur est privé"}}">
 												  <i class="fas fa-info-circle"></i>
 												</span>
 											</span>
@@ -73,8 +74,11 @@
 								</div>
 								<div class="field">
 									<p class="control">
-										<button type="submit" class="button is-success ">
-											Ajouter
+										<button class="button is-link" type="submit">
+											 <span class="icon is-small">
+											<i class="fas fa-plus-circle"></i>
+											</span>
+											<span>Ajouter un nouvel indicateur</span>
 										</button>
 									</p>
 								</div>

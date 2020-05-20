@@ -123,6 +123,12 @@ abstract class BaseController extends Controller
                 }
             }
             if ($user->id === $ad->user_pp_id) {
+				if($user->role >=2){
+					$responseTemplates = ResponseTemplate::all();
+					if($user->role >=3){
+						$advisorUsers = $this->userService->findAllAdvisorsAndSupervisors();
+					}
+				}
                 $threads = $this->threadService->findThreadsByAd($ad->id);
                 $threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
             } else {
@@ -132,9 +138,9 @@ abstract class BaseController extends Controller
                 }
                 if ($user->role >= 3) {
                     //TODO display only advisors that are related to the supervisor
+					$responseTemplates = ResponseTemplate::all();
                     $advisorUsers = $this->userService->findAllAdvisorsAndSupervisors();
                 }
-
                 $threads = $this->threadService->findThreadAlreadyExist($user->id, $ad->id);
                 $data = array(
                     "ad_id" => $ad->id,

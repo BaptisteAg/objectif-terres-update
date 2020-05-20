@@ -55,7 +55,7 @@
 
 											@if(auth()->user()->role >= 2 )
 												<a href="{{route('advisor.index')}}" class="dropdown-item">
-													Espace Primo-Accueillant
+													Espace primo-accueillant
 												</a>
 											@endif
 

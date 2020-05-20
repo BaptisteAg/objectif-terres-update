@@ -72,6 +72,8 @@
 							<div class="card">
 								<div class="card-content">
 									<div class="content">
+										<a v-on:click="closeModal()" id="close-modal" class="modal-close is-large"
+										   aria-label="close" style="position : relative; float: right; background-color: rgba(10, 10, 10, 0.2); right: 0px; top:0px;"></a>
 										<p class="title is-3 has-text-centered has-text-link">Exportation des
 											données</p>
 										<p class="subtitle has-text-centered ">Veuillez séléctionner une plage de
@@ -94,8 +96,6 @@
 											<span>Annuler</span>
 										</a>
 									</div>
-									<a v-on:click="closeModal()" id="close-modal" class="modal-close is-large"
-									   aria-label="close"></a>
 								</footer>
 							</div>
 						</div>
@@ -202,7 +202,7 @@
 								@endif
 							</th>
 
-							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">Statut</th>
+							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">Suivi par</th>
 							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">Stade de
 								l'accompagnement
 							</th>
@@ -217,14 +217,22 @@
 						</thead>
 						<tbody>
 						@foreach($ads as $ad)
+							@if(!is_null($ad->project))
+								@if(auth()->id() === $ad->attributionAd->user_supervisor_id and is_null($ad->attributionAd->userAdvisor))
+									<tr style="border: 4px solid red">
+								@endif
+							@else
 								<tr>
+									@endif
 									<td>
 										@if(!is_null($ad->project))
-											<span class="icon is-medium  has-text-link has-tooltip-right" data-tooltip="C'est une demande d'accompagnement">
+											<span class="icon is-medium  has-text-link has-tooltip-right"
+												  data-tooltip="C'est une demande d'accompagnement">
 											  <i class="fas fa-lg fa-hands-helping"></i>
 											</span>
 										@else
-											<span class="icon is-medium  has-text-link has-tooltip-right" data-tooltip="C'est une annonce">
+											<span class="icon is-medium  has-text-link has-tooltip-right"
+												  data-tooltip="C'est une annonce">
 											  <i class="fas fa-lg fa-newspaper"></i>
 											</span>
 										@endif
@@ -279,10 +287,9 @@
 									<td>
 										@if(!is_null($ad->project_id))
 											@if(isset($ad->attributionAd->userAdvisor))
-												Attribué
-												à {{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}
+												{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}
 											@else
-												<span class="tag is-danger is-light">Non attribué</span>
+												<span class="tag is-danger">Non attribué</span>
 											@endif
 										@else
 											-
