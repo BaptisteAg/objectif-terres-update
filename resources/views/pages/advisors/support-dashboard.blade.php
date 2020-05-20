@@ -14,7 +14,9 @@
 				<p class="has-text-weight-bold">Vous êtes le primo-accueillant pour cette demande !</p>
 			@else
 				<p>Cette demande est attribuée
-					à <span class="has-text-weight-bold">{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</span>.</p>
+					à
+					<span class="has-text-weight-bold">{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</span>.
+				</p>
 			@endif
 		@else
 			<p>Cette demande n'a pas été encore attribuée à un primo-accueillant</p>
@@ -37,10 +39,13 @@
 									@else
 										<span class="tag is-light">Non définis</span>
 									@endif
-									<span v-on:click='isSupportStageSelectOpen = !isSupportStageSelectOpen'
-										  class="icon has-text-info">
+									<a>
+										<span v-on:click='isSupportStageSelectOpen = !isSupportStageSelectOpen'
+											  class="icon has-text-info">
 											<i class="fas fa-pen"></i>
 									</span>
+									</a>
+
 								</p>
 							</div>
 							<div v-show="isSupportStageSelectOpen === true" class="field">
@@ -68,10 +73,12 @@
 									@else
 										<span class="tag is-light">Non définis</span>
 									@endif
+									<a>
 									<span v-on:click='isSupportStateSelectOpen = !isSupportStateSelectOpen'
 										  class="icon has-text-info">
-								<i class="fas fa-pen"></i>
-								</span>
+									<i class="fas fa-pen"></i>
+									</span>
+									</a>
 								</p>
 							</div>
 							<div v-show="isSupportStateSelectOpen === true" class="field">
@@ -99,10 +106,13 @@
 									@else
 										<span class="tag is-light">Non définis</span>
 									@endif
-									<span v-on:click='isProjectStatusSelectOpen = !isProjectStatusSelectOpen'
-										  class="icon has-text-info">
-								<i class="fas fa-pen"></i>
-								</span>
+									<a>
+										<span v-on:click='isProjectStatusSelectOpen = !isProjectStatusSelectOpen'
+											  class="icon has-text-info">
+										<i class="fas fa-pen"></i>
+									</span>
+									</a>
+
 								</p>
 							</div>
 							<div v-show="isProjectStatusSelectOpen === true" class="field">

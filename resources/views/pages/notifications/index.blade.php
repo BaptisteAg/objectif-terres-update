@@ -65,7 +65,7 @@
 							<p>Nouvelle demande d'accompagnement</p>
 						</div>
 						<div class="message-body">
-							Un nouveau projet vient d'être créé par
+							Une nouvelle demande d'accompagnemetn  vient d'être créée par
 							<a href="{{route('user.show', $notification->data['user_pp_id'])}}">{{$notification->data['user_pp_first_name']}} {{$notification->data['user_pp_name']}}</a>.
 
 							<form action="{{route('notification.update', $notification->id)}}" method="POST">
@@ -110,7 +110,7 @@
 								<input type="hidden" value="advisor.showSupport" name="route">
 								<br>
 								<input type="submit" class="button is-link "
-									   value="@lang('Voir le suivi d\'accompagnement')">
+									   value="@lang('Espace de suivi')">
 							</form>
 						</div>
 					</article>

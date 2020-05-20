@@ -33,6 +33,17 @@
                         </span>
                         </p>
                     </div>
+                    <div class="field is-grouped">
+                        <p class="control is-expanded">
+                            <a href="/gestion-reponse-types">
+										<span class="icon">
+										<i class="fas fa-plus"></i>
+									</span>
+                                <span>Créer une nouvelle réponse type</span>
+                            </a>
+
+                        </p>
+                    </div>
                     <br>
                     <p class="control ">
                         <button class="button is-link button-send-message">
@@ -70,7 +81,7 @@
                 e.preventDefault();
                 axios.post('/mon-espace/messagerie/envoi', {
                     content: this.content,
-                    thread_id:this.activeThreadId
+                    thread_id: this.activeThreadId
                 })
                     .then(response => {
                         const message = response.data;

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\ResponseTemplate
  *
  * @property int $id
- * @property string $name
+ * @property string $title
  * @property string $content
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -28,7 +28,7 @@ class ResponseTemplate extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'content'
+        'title', 'content'
     ];
 
 }

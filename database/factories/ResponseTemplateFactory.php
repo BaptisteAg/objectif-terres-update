@@ -7,7 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(ResponseTemplate::class, function (Faker $faker) {
     return [
-        'name' => $faker->word,
+        'title' => $faker->word,
         'content' => $faker->text(50)
     ];
 });

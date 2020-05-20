@@ -28,6 +28,7 @@ Vue.component('support-request-dashboard', {
                 supportTabOpen: 'support-notes-tab',
             },
             showModal: false,
+            noteToModify:'',
 
         }
     },
@@ -70,6 +71,9 @@ Vue.component('support-request-dashboard', {
         onMessageReplySuccess(message) {
             this.messages.push(message)
         },
+        modifyNote(noteId){
+            this.noteToModify = noteId;
+        }
 
     },
 

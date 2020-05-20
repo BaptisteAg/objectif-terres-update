@@ -39,8 +39,14 @@
 						</div>
 						<div class="column is-narrow has-text-centered">
 							<label class="checkbox">
-								<input name="projects_show" value="true"
-									   type="checkbox" {{old('projects_show') ? ' checked' : '' }}>
+								@if(Route::current()->getName() == 'advisor.index' )
+									<input name="projects_show" value="true"
+										   type="checkbox" checked>
+								@else
+									<input name="projects_show" value="true"
+										   type="checkbox" {{old('projects_show') ? ' checked' : '' }}>
+								@endif
+
 								Accompagnements
 							</label>
 						</div>

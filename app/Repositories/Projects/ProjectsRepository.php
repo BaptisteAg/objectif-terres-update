@@ -4,6 +4,7 @@ namespace App\Repositories\Projects;
 
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 class ProjectsRepository extends AbstractRepository implements ProjectsRepositoryInterface
@@ -62,21 +63,35 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 
 	/**
 	 * @param array $departmentCodes
+	 * @param int $userId
+	 * @param bool $toPaginate
 	 * @return \Illuminate\Database\Eloquent\Collection
 	 */
-	public function findAllInTerritories(array $departmentCodes)
+	public function findAllInTerritoriesAndUserAdvisor(array $departmentCodes, int $userId, bool $toPaginate)
 	{
-		return $this->entity
+		$models = $this->entity
 			->whereHas('ad', function (Builder $query) use ($departmentCodes) {
 				$query->filterAdsTerritoryLocations($departmentCodes);
+			})
+			->orWhereHas('ad', function (Builder $query) use ($userId)  {
+				$query->whereHas('attributionAd', function (Builder $q) use ($userId){
+					$q->where('user_advisor_id', '=', $userId);
+				});
 			})
 			->with([
 				'ad',
 				'ad.landSeekAd',
 				'ad.landOfferAd',
-				'projectStatus'
-			])
-			->get();
+				'supportStage',
+				'supportState',
+				'projectStatus',
+			]);
+			if ($toPaginate) {
+				$projects = $models->paginate(15);
+			} else {
+				$projects = $models->get();
+			}
+		return $projects;
 	}
 
 	/**

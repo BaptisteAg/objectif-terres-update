@@ -25,7 +25,15 @@
 		<div class="is-divider"></div>
 		<div class="content">
 			<h5 class="has-text-centered">Documents téléversés par l'accompagnant</h5>
-			<p class="">Aucun document n'a été uploadé  </p>
+			<p class="">Aucun document n'a été uploadé</p>
+			<div  class=" has-text-centered">
+			<button class="button is-link ">
+				<span class="icon">
+				<i class="fas fa-file-upload"></i>
+				</span>
+				<span>Téléverser un document</span>
+			</button>
+			</div>
 		</div>
 	</div>
 

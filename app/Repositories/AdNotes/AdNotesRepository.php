@@ -16,6 +16,9 @@ use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 class AdNotesRepository extends AbstractRepository implements AdNotesRepositoryInterface
 {
 
+	/**
+	 * @return string
+	 */
 	public function entity()
 	{
 		return AdNote::class;
