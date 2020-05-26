@@ -226,8 +226,18 @@ class AdvisorsController extends Controller
 		return back()->with('success', 'L\'indicateur a bien été modifié');
 	}
 
+	/**
+	 * @param Request $request
+	 * @return RedirectResponse
+	 */
+	public function uploadDocuments(Request $request)
+	{
+		if(($request->input('documents')) == '[]'){
+			return back()->with('warning', 'Aucun document n\'a été déposé');
+		}
 
+		$this->advisorsService->uploadDocument($request->input());
 
-
-
+		return back()->with('success', 'Votre document a bien été téléversé');
+	}
 }

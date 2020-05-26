@@ -124,7 +124,21 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		$models = $this->entity
 			->where(["user_pp_id" => $idUser])
 			->whereNull('project_id')
-			->with($this->getEagerLoading())
+			->with([
+				'attributionAd',
+				'attributionAd.adStatus',
+				'landSeekAd',
+				'landOfferAd',
+				'jobOfferAd',
+				'jobSeekAd',
+				'cities',
+				'cities.department',
+				'cities.department.region',
+				'departments',
+				'departments.region',
+				'regions',
+				'documents'
+			])
 			->get();
 		return $models;
 	}
@@ -319,7 +333,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	{
 		return [
 			'userPp',
+			'adNotes',
+			'adNotes.user',
 			'documents',
+			'documents.user',
 			'cities',
 			'cities.department',
 			'cities.department.region',
@@ -357,8 +374,13 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'jobSeekAd',
 			'project',
 			'project.projectStatus',
+			'project.supportState',
+			'project.supportStage',
+
 			'attributionAd',
+			'attributionAd.userAdvisor',
 			'attributionAd.adStatus',
+
 
 		];
 	}

@@ -245,6 +245,18 @@ class AdvisorsService
 		return $notes;
 	}
 
+	/**
+	 * @param array $data
+	 */
+	public function uploadDocument(array $data)
+	{
+		$ad = $this->repository->find($data['ad_id']);
+		if (isset($data["documents_ids"]) && is_array($data["documents_ids"])) {
+			foreach ($data["documents_ids"] as $documentId) {
+				$ad->documents()->attach($documentId);
+			}
+		}
+	}
 
 
 

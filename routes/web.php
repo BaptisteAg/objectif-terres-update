@@ -144,6 +144,7 @@ Route::middleware('advisor')->prefix('mon-espace-primo-accueillant')->name('advi
 	Route::post('edition-note', 'AdvisorsController@editNote')->name('editNote');
 	Route::post('suppression-note', 'AdvisorsController@deleteNote')->name('deleteNote');
 	Route::post('modification-valeurs-indicateurs', 'AdvisorsController@updateProjectDataKeysValues')->name('updateProjectDataKeysValues');
+	Route::post('ajout-document', 'AdvisorsController@uploadDocuments')->name('uploadDocuments');
 });
 
 Route::middleware('advisor')->prefix('gestion-reponse-types')->name('responseTemplates.')->namespace('ResponseTemplates')->group(function(){

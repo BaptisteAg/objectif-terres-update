@@ -25,7 +25,7 @@ class CreateDocumentablesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('document_id');
             $table->unsignedInteger('documentable_id');
-            $table->string('documentable_type')->comment('tables référentes : ads et ad_note');
+            $table->string('documentable_type')->comment('tables référentes : ads et projects');
 
             $table->index(["document_id"], 'fk_documentable_1');
             $table->timestamps();

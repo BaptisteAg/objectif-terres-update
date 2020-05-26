@@ -143,7 +143,7 @@ class AdPresenter extends BasePresenter
 	public function images()
 	{
 		return $this->wrappedObject->documents->filter(function ($document) {
-			return $this->documentIsImage($document);
+			return $document->user_id == $this->wrappedObject->user_pp_id;
 		});
 	}
 
@@ -151,6 +151,20 @@ class AdPresenter extends BasePresenter
 	{
 		return $this->wrappedObject->documents->filter(function ($document) {
 			return !$this->documentIsImage($document);
+		});
+	}
+
+	public function documentsUploadedByUser()
+	{
+		return $this->wrappedObject->documents->filter(function ($document) {
+			return $document->user_id === $this->wrappedObject->user_pp_id;
+		});
+	}
+
+	public function documentsUploadedByAdvisors()
+	{
+		return $this->wrappedObject->documents->filter(function ($document) {
+			return $document->user_id !== $this->wrappedObject->user_pp_id;
 		});
 	}
 
