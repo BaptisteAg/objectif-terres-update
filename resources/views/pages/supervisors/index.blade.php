@@ -219,7 +219,7 @@
 						@foreach($ads as $ad)
 							@if(!is_null($ad->project))
 								@if(auth()->id() === $ad->attributionAd->user_supervisor_id and is_null($ad->attributionAd->userAdvisor))
-									<tr style="border: 4px solid red">
+									<tr style="background-color: mistyrose">
 								@endif
 							@else
 								<tr>
