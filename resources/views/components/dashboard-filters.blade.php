@@ -187,7 +187,9 @@
 					</div>
 				</div>
 				<div class="column is-4 ">
-					<p class="label has-text-centered">Statut de l'annonce</p>
+					<p class="label has-text-centered  ">
+						Statut de l'annonce
+					</p>
 					<div class="columns is-mobile is-multiline is-centered">
 						@foreach($adStatuses as $adStatus)
 							<div class="column is-narrow has-text-centered">
@@ -207,7 +209,11 @@
 				</div>
 			@else
 				<div class="column ">
-					<p class="label has-text-centered">Stade dans l'accompagnement</p>
+					<p class="label has-text-centered has-tooltip-multiline has-tooltip-top "
+					   data-tooltip="...">
+						Stade dans l'accompagnement
+						<i class="fas fa-info-circle has-text-info"></i>
+					</p>
 					<div class="columns is-mobile is-multiline is-centered">
 						@foreach($supportStages as $supportStage)
 							<div class="column is-narrow has-text-centered">

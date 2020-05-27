@@ -110,6 +110,18 @@
 			@if (count($ads) ==0)
 				<p class="has-text-centered">Aucun résultat</p>
 			@else
+				<div class="content">
+					@if(request()->input('toPaginate') == 'true')
+						<a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">
+							<span>Afficher l'intégralité de la liste</span>
+						</a>
+					@else
+						<a href="{{ route('supervisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
+							<span>Paginer la liste</span>
+						</a>
+					@endif
+				</div>
+
 				<div class="table-container">
 					<table class="table is-bordered  is-striped is-narrow is-hoverable is-fullwidth "
 						   style="border :2px solid #dbdbdb">
@@ -128,16 +140,16 @@
 							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">Catégorie</th>
 							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">
 								@if(request()->input('sort') !== 'name')
-									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'name'])) }}">
+									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'name'])) }}">
 										<span>Nom du porteur de projet</span>
 									</a>
 								@elseif(request()->input('sort') === 'name' && request()->input('order') === 'asc')
-									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'name'])) }}">
+									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'name'])) }}">
 										<i class="fas fa-arrow-up"></i>
 										<span>Nom du porteur de projet</span>
 									</a>
 								@else
-									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
+									<a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
 										<i class="fas fa-arrow-down"></i>
 										<span>Nom du porteur de projet</span>
 									</a>
@@ -145,16 +157,16 @@
 							</th>
 							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">
 								@if(request()->input('sort') !== 'project_statuses.name')
-									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'project_statuses.name'])) }}">
+									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'project_statuses.name'])) }}">
 										<span>Avancement du projet</span>
 									</a>
 								@elseif(request()->input('sort') === 'project_statuses.name' && request()->input('order') === 'asc')
-									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'project_statuses.name'])) }}">
+									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'project_statuses.name'])) }}">
 										<i class="fas fa-arrow-up"></i>
 										<span>Avancement du projet</span>
 									</a>
 								@else
-									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
+									<a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
 										<i class="fas fa-arrow-down"></i>
 										<span>Avancement du projet</span>
 									</a>
@@ -167,16 +179,16 @@
 							<th class="has-text-weight-semibold"
 								style="border-right :2px solid #dbdbdb; border-bottom :3px solid #dbdbdb">
 								@if(request()->input('sort') !== 'title')
-									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">
+									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">
 										<span>Titre</span>
 									</a>
 								@elseif(request()->input('sort') === 'title' && request()->input('order') === 'asc')
-									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'title'])) }}">
+									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'title'])) }}">
 										<i class="fas fa-arrow-up"></i>
 										<span>Titre</span>
 									</a>
 								@else
-									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
+									<a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
 										<i class="fas fa-arrow-down"></i>
 										<span>Titre</span>
 									</a>
@@ -186,16 +198,16 @@
 
 							<th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">
 								@if(request()->input('sort') !== 'date')
-									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date'])) }}">
+									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date'])) }}">
 										<span>Date</span>
 									</a>
 								@elseif(request()->input('sort') === 'date' && request()->input('order') === 'desc')
-									<a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'date'])) }}">
+									<a href="{{ route('supervisor.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'date'])) }}">
 										<i class="fas fa-arrow-down"></i>
 										<span>Date</span>
 									</a>
 								@else
-									<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
+									<a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
 										<i class="fas fa-arrow-up"></i>
 										<span>Date</span>
 									</a>
@@ -240,7 +252,11 @@
 										<br>
 									</td>
 									<td>
-										<a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+										@if(is_null($ad->project))
+											<a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+										@else
+											<a href="{{route('advisor.showSupport', $ad->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+										@endif
 									</td>
 									<td>
 										@if(is_null($ad->project))
@@ -357,11 +373,13 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="columns is-mobile is-centered">
-					<div class="column is-half ">
-						{{ $ads->appends(Request::all())->links() }}
+				@if($ads instanceof \Illuminate\Pagination\LengthAwarePaginator)
+					<div class="columns is-mobile is-centered">
+						<div class="column is-half ">
+							{{ $ads->appends(Request::all())->links() }}
+						</div>
 					</div>
-				</div>
+				@endif
 			@endif
 		</div>
 

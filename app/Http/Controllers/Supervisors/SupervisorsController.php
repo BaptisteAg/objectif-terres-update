@@ -59,7 +59,7 @@ class SupervisorsController extends Controller
 	public function index(Request $request)
 	{
 		$request->session()->forget('_old_input');
-		$ads = $this->adService->findAllByUserSupervisor(true);
+		$ads = $this->adService->findAllByUserSupervisor(false);
 		$supportStages = SupportStage::all();
 		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
@@ -88,7 +88,6 @@ class SupervisorsController extends Controller
 		$supportStages = SupportStage::all();
 		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
-		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
 		$productionGenres = ProductionGenre::all();
 		$bioCertifications = BioCertification::all();

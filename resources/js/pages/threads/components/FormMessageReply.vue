@@ -110,7 +110,7 @@
             documents: function(){
                 if(this.documents.length > 0){
                   setTimeout( ()=> {
-                      this.$emit('on-thread-click', this.activeThreadId)
+                      this.$emit('on-upload-success', this.activeThreadId)
                       this.openDocumentUpload = false;
                       this.documents = [];
                   },1500)

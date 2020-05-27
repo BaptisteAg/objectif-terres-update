@@ -7,20 +7,35 @@
 @endsection
 
 @section('main-content')
-	<section class="section">
-		<h1 class="title is-2 has-text-link">Suivi de l'accompagnement </h1>
-		@if(!is_null($ad->attributionAd->userAdvisor))
-			@if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
-				<p class="has-text-weight-bold">Vous êtes le primo-accueillant pour cette demande !</p>
+	@include('components.advisor-tabs')
+
+	<section class="section " style="padding-top: 0px">
+		<div class="content">
+			<a href="{{URL::previous()}}">
+				<span class="icon is-small"><i class="fas fa-arrow-left"></i></span>
+				<span>Retour</span>
+			</a>
+		</div>
+		<div class="content">
+			<h1 class="title is-1 has-text-link">Suivi de {{$ad->userPP->first_name}} {{$ad->userPP->name}} </h1>
+			<h3 class="subtitle is-3 ">{{$ad->title}}</h3>
+			@if(!is_null($ad->attributionAd->userAdvisor))
+				@if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
+					<p class="has-text-weight-bold">Vous êtes le primo-accueillant pour cette demande !</p>
+				@else
+					<p>Cette demande est attribuée
+						à
+						<span class="has-text-weight-bold">{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</span>.
+					</p>
+				@endif
 			@else
-				<p>Cette demande est attribuée
-					à
-					<span class="has-text-weight-bold">{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</span>.
-				</p>
+				<p>Cette demande n'a pas été encore attribuée à un primo-accueillant</p>
 			@endif
-		@else
-			<p>Cette demande n'a pas été encore attribuée à un primo-accueillant</p>
-		@endif
+		</div>
+
+
+
+
 		<div id="advisor-support-request-dashboard">
 			<support-request-dashboard
 					inline-template

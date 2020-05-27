@@ -60,17 +60,23 @@
 										class="subtitle">Recherche de foncier</span></p>
 
 						</div>
-						@if($ad->landSeekAd->surface_range_max)
-							<div class="content">
-								<p>
-									<span class="is-size-5  ad-show-feature-label">Surface recherchée : </span>
-									<span class="subtitle ad-show-feature-label">
-										De {{$ad->landSeekAd->surface_range_min}}<small>ha</small>
-										à {{$ad->landSeekAd->surface_range_max}}<small>ha</small>
-									</span><br>
-								</p>
-							</div>
-						@endif
+						<div class="content">
+							<p>
+								<span class="is-size-5 is-capitalized ad-show-feature-label">Surface recherchée (en ha)</span>
+								:
+								@if(isset($ad->landSeekAd->surface_range_min) and isset($ad->landSeekAd->surface_range_max))
+									<span class="subtitle">Entre {{$ad->landSeekAd->surface_range_min}}
+									et {{$ad->landSeekAd->surface_range_max}}</span>
+								@elseif(isset($ad->landSeekAd->surface_range_min))
+									<span class="subtitle">{{$ad->landSeekAd->surface_range_min}}</span>
+								@elseif(isset($ad->landSeekAd->surface_range_max))
+									<span class="subtitle">{{$ad->landSeekAd->surface_range_max}}</span>
+								@else
+									Non renseignée
+								@endif
+							</p>
+						</div>
+
 						<div class="content">
 							@if(count($ad->cities))
 								<p>

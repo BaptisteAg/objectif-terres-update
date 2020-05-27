@@ -82,12 +82,12 @@ class AdvisorsService
 	}
 
 	/**
-	 * @param Request $filters
-	 * @return LengthAwarePaginator
+	 * @param Request $request
 	 */
-	public function showForAdvisor(Request $filters): LengthAwarePaginator
+	public function showForAdvisor(Request $request)
 	{
-		$ads = $this->adService->filter($filters, auth()->user()->role);
+		$toPaginate = $request->has('toPaginate')? true : false;
+		$ads = $this->adService->filter($request, auth()->user()->role, $toPaginate);
 		return $ads;
 	}
 

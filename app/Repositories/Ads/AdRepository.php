@@ -107,8 +107,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		/** @var Collection $model */
 		$models = $this->entity
 			->where(["user_pp_id" => $idUser])
-			->whereNull('project_id')
-			->with($this->getEagerLoading())
+			->where('is_draft',0)
+			->with($this->getEagerLoadingForDashboards())
 			->get();
 		return $models;
 	}

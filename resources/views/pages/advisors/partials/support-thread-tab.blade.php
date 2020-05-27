@@ -17,7 +17,7 @@
 						v-bind:active-thread-id = "activeThread"
 						:user-id="{{auth()->id()}}"
 						@message-reply-success="onMessageReplySuccess"
-						@on-thread-click="onThreadClick"
+						@on-upload-success="refreshThread"
 						:show-response-type="true"
 						:response-templates="{{json_encode($responseTemplates)}}"
 				>

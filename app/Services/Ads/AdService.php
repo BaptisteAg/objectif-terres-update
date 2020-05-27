@@ -406,18 +406,20 @@ class AdService
 	 * @param Request $filters
 	 * @return LengthAwarePaginator
 	 */
-	public function showForSupervisor(Request $filters): LengthAwarePaginator
+	public function showForSupervisor(Request $request)
 	{
-		$ads = $this->filter($filters, auth()->user()->role);
+		$toPaginate = $request->has('toPaginate')? true : false;
+		$ads = $this->filter($request, auth()->user()->role, $toPaginate);
 		return $ads;
 	}
 
 	/**
 	 * @param Request $filters
 	 * @param int $roleUser
-	 * @return LengthAwarePaginator
+	 * @param bool $toPaginate
+	 * @return LengthAwarePaginator|Builder[]|Collection
 	 */
-	public function filter(Request $filters, int $roleUser): LengthAwarePaginator
+	public function filter(Request $filters, int $roleUser, bool $toPaginate)
 	{
 		//START QUERY
 		$adsFiltred = (new Ad())->newQuery();
@@ -594,8 +596,7 @@ class AdService
 				->orderByDesc('a.created_at');
 		}
 
-		return $adsFiltred
-			->with([
+		$adsFiltred->with([
 				'project',
 				'userPp',
 				'cities',
@@ -609,8 +610,12 @@ class AdService
 				'landOfferAd',
 				'jobOfferAd',
 				'jobSeekAd'
-			])
-			->paginate(15);
+			]);
+			if($toPaginate == true){
+				return $adsFiltred->paginate(15);
+			}else{
+				return $adsFiltred->get();
+			}
 	}
 
 

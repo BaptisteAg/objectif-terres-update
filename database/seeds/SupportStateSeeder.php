@@ -27,7 +27,7 @@ class SupportStateSeeder extends Seeder
 				"updated_at" => \Carbon\Carbon::now()
 			],
 			[
-				'name' => ' À Archiver',
+				'name' => ' À Archiver ?',
 				"created_at" => \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
 			],

@@ -1,6 +1,6 @@
 <div class="card-content ">
 	<h4 class="title is-4 has-text-centered">{{$ad->title ?? ""}}</h4>
-	<div class="columns">
+	<div class="columns is-desktop is-vcentered">
 		<div class="column is-three-fifths ">
 			<div id="slider-container">
 				<div id="support-request-dashboard-ad-images" class="carousel">
@@ -60,9 +60,11 @@
 						@endif
 					</p>
 					@if(isset($ad->landSeekAd))
-						<p>
-							<span class="is-italic">Dans un rayon de (en km)</span>:{{$ad->landSeekAd->locationable_radius ?? 'Non renseigné'}}
-						</p>
+						@if($ad->locationable_radius)
+							<p>
+								<span class="is-italic">Dans un rayon de (en km)</span>: {{$ad->locationable_radius }}
+							</p>
+						@endif
 					@endif
 
 					@if(isset($ad->landOfferAd))
@@ -74,6 +76,10 @@
 							@if(isset($ad->landSeekAd->surface_range_min) and isset($ad->landSeekAd->surface_range_max))
 								Entre {{$ad->landSeekAd->surface_range_min}}
 								et {{$ad->landSeekAd->surface_range_max}}
+							@elseif(isset($ad->landSeekAd->surface_range_min))
+								{{$ad->landSeekAd->surface_range_min}}
+							@elseif(isset($ad->landSeekAd->surface_range_max))
+								{{$ad->landSeekAd->surface_range_max}}
 							@else
 								Non renseignée
 							@endif
@@ -116,6 +122,12 @@
 				</div>
 			</div>
 
+			@if(isset($ad->landOfferAd))
+				<p>
+					<span class="is-italic">Accès à l'eau</span> :
+					{{$ad->waterAccess}}
+				</p>
+			@endif
 			<p>
 				<span class="is-italic">Productions en place</span> :
 				@if($ad->landOfferAd->productionGenres->count() > 0)
@@ -139,7 +151,7 @@
 		@if(isset($ad->landSeekAd))
 			<p>
 				<span class="is-italic">Bâtiments recherchés</span> :
-				@if(isset($ad->landSeekAd->buildings))
+				@if($ad->landSeekAd->buildings->count() >0)
 					@foreach($ad->landSeekAd->buildings as $building)
 						<span class="is-lowercase">{{ $building->buildingType->label }} : {{ $building->requirement->label }}</span>
 						{{ $loop->last ? ' ' : ',' }}
@@ -153,15 +165,15 @@
 				@if(isset($ad->landSeekAd->is_bio))
 					{{$ad->landSeekAd->is_bio ? 'Oui' : 'Non'}}
 				@else
-					Non renseignée
+					Ne sais pas
 				@endif
 			</p>
 			<p>
 				<span class="is-italic">Productions envisagées</span> :
-				@if($ad->landSeekAd->offerGenres->count() > 0)
-					{{$ad->landSeekAd->offerGenres->pluck('name')->implode(', ') }}
+				@if($ad->landSeekAd->productionGenres->count() > 0)
+					{{$ad->landSeekAd->productionGenres->pluck('name')->implode(', ') }}
 				@else
-					Aucune
+					Non renseignées
 				@endif
 			</p>
 			<p>

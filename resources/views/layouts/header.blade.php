@@ -252,7 +252,7 @@
 					</div>
 				</div>
 			</nav>
-			@if( Auth::check())
+			@if( Auth::check() and auth()->user()->role <1)
 				@if (Route::current()->getName() === 'ads.list'||
 					Route::current()->getName() === 'researches.show' ||
 					Route::current()->getName() === 'favoriteAds.show' ||

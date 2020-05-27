@@ -16,17 +16,17 @@
 					<p class="has-text-white-ter">
 						<i class="far fa-bell has-text-white-ter"></i>
 						Vous avez<a style="text-decoration: none"
-									href="/">
+									href="#dashboard-advisor">
 							<strong>{{$numberOfProjectToHandle}}
-								demandes d'accompagnement à traiter ! </strong></a> !
+								demandes d'accompagnement à traiter ! </strong></a>
 					</p>
 				@elseif ($numberOfProjectToHandle === 1)
 					<p class="has-text-white-ter">
 						<i class="far fa-bell has-text-white-ter"></i>
 						Vous avez<a style="text-decoration: none"
-									href="/">
+									href="#dashboard-advisor">
 							<strong>{{$numberOfProjectToHandle}}
-								demande d'accompagnement à traiter! </strong></a>!
+								demande d'accompagnement à traiter! </strong></a>
 					</p>
 				@else
 				@endif
@@ -78,7 +78,18 @@
 			@if (count($ads) ==0)
 				<p class="has-text-centered">Aucun résultat</p>
 			@else
-				<div class="table-container">
+				<div class="content">
+					@if(request()->has('toPaginate'))
+						<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">
+							<span>Afficher l'intégralité de la liste</span>
+						</a>
+					@else
+						<a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
+							<span>Paginer la liste</span>
+						</a>
+					@endif
+				</div>
+				<div id="dashboard-advisor" class="table-container">
 					<table class="table is-bordered  is-striped is-narrow is-hoverable is-fullwidth "
 						   style="border :2px solid #dbdbdb">
 						<thead>
@@ -210,7 +221,11 @@
 										<br>
 									</td>
 									<td>
-										<a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+										@if(is_null($ad->project))
+											<a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+										@else
+											<a href="{{route('advisor.showSupport', $ad->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+										@endif
 									</td>
 									<td>
 										@if(is_null($ad->project))
@@ -332,11 +347,13 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="columns is-mobile is-centered">
-					<div class="column is-half ">
-						{{ $ads->appends(Request::all())->links() }}
+				@if($ads instanceof \Illuminate\Pagination\LengthAwarePaginator)
+					<div class="columns is-mobile is-centered">
+						<div class="column is-half ">
+							{{ $ads->appends(Request::all())->links() }}
+						</div>
 					</div>
-				</div>
+				@endif
 			@endif
 		</div>
 

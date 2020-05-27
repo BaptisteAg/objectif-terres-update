@@ -10,8 +10,13 @@
 											<span class="icon is-small">
 												@if(strstr($document->type,'/',true) === "image")
 													<i class="fas fa-image"></i>
+												@elseif($document->type === "application/pdf")
+													<i class="fa fa-file-pdf"></i>
+												@elseif($document->type === "application/msword")
+													<i class="fa fa-file-alt"></i>
+												@else
+													<i class="fa fa-file"></i>
 												@endif
-
 											</span>
 								<span>{{$document->name}}</span>
 							</button>
@@ -32,13 +37,18 @@
 							<div class="column is-6 has-text-centered">
 
 								<a href="{{'/'.$document->path}}" download="{{$document->name}}">
-
 									<button class="button is-link is-light">
-											<span class="icon is-small">
-												@if(strstr($document->type,'/',true) === "image")
-													<i class="fas fa-image"></i>
-												@endif
-											</span>
+										<span class="icon is-small">
+											@if(strstr($document->type,'/',true) === "image")
+												<i class="fas fa-image"></i>
+											@elseif($document->type === "application/pdf")
+												<i class="fa fa-file-pdf"></i>
+											@elseif($document->type === "application/msword")
+												<i class="fa fa-file-alt"></i>
+											@else
+												<i class="fa fa-file"></i>
+											@endif
+										</span>
 										<span>{{$document->name}}</span>
 									</button>
 								</a>
