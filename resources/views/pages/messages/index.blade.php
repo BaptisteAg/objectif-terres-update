@@ -88,6 +88,7 @@
 												:user-id="{{auth()->id()}}"
 												:response-templates="{{json_encode($responseTemplates)}}"
 												@message-reply-success="onMessageReplySuccess"
+												@on-thread-click="onThreadClick"
 												v-bind:show-response-type="isUserModerator"
 												v-bind:active-thread-id = "activeThread"
 										>

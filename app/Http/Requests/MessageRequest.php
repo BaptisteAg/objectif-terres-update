@@ -14,7 +14,7 @@ class MessageRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'content' => ['required', 'string', 'max:1000'],
+			'content' => ['nullable', 'string', 'max:10000'],
 			'thread_id' => ['required', 'integer'],
 		];
 	}

@@ -8,6 +8,8 @@ use App\Models\Thread;
 use App\Models\User;
 use App\Notifications\NewMessageNotification;
 use App\Services\Ads\AdService;
+use App\Services\Documents\DocumentService;
+use App\Services\Documents\DocumentServiceInterface;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
 use Carbon\Carbon;
@@ -25,18 +27,21 @@ class MessagesController extends Controller
 	 */
 	protected $adService;
 	protected $userService;
+	protected $documentService;
 
 	/**
 	 * MessagesController constructor.
 	 * @param ThreadService $threadService
 	 * @param AdService $adService
 	 * @param UserService $userService
+	 * @param DocumentServiceInterface $documentService
 	 */
-	public function __construct(ThreadService $threadService, AdService $adService, UserService $userService)
+	public function __construct(ThreadService $threadService, AdService $adService, UserService $userService, DocumentServiceInterface $documentService)
 	{
 		$this->threadService = $threadService;
 		$this->adService = $adService;
 		$this->userService = $userService;
+		$this->documentService = $documentService;
 	}
 
 
@@ -57,7 +62,7 @@ class MessagesController extends Controller
 		$messages = $this->threadService->findAllByThread($thread->id);
 		$this->threadService->setToReadAllUnreadMessagesInThread($thread->id);
 		foreach ($messages as $key => $message) {
-			$date =  Carbon::parse($message->created_at);
+			$date = Carbon::parse($message->created_at);
 			$messages[$key]['day_posted'] = $date->format('d/m/Y');
 			$messages[$key]['time_posted'] = $date->format('H:i');
 		}
@@ -67,6 +72,7 @@ class MessagesController extends Controller
 
 	/**
 	 * @param MessageRequest $request
+	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 * @throws \Throwable
 	 */
@@ -77,5 +83,46 @@ class MessagesController extends Controller
 
 		return response()->json((object)$message);
 	}
+
+
+	/**
+	 * @param Request $request
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \Throwable
+	 */
+	public function uploadDocuments(Request $request)
+	{
+		$files = $request->file('file');
+		$type = $request->get('type');
+
+		if (!is_array($files)) {
+			$files = array_filter([$files]);
+		}
+
+		if (!count($files) || !$type) {
+			return response()->json('Paramètres incorrects.');
+		}
+
+		$documents = [];
+		foreach ($files as $file) {
+			$documents[] = $this->documentService->create($file, $request->get('type'));
+		}
+
+		$documentsIds = [];
+		foreach ($documents as $document){
+			$documentsIds[] = $document->id;
+		}
+
+		$data = [
+			'content' => '',
+			'thread_id'=> $request->get('thread_id'),
+			'sender_user_id'=> auth()->id(),
+			'documents_ids'=>$documentsIds
+		];
+		$this->threadService->createMessage($data);
+		return response()->json($documents);
+	}
+
+
 
 }

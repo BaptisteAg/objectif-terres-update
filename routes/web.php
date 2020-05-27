@@ -95,6 +95,9 @@ Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->na
 	Route::post('creer', 'ThreadsController@create')->name('create');
 	Route::get('{thread}', 'MessagesController@show')->name('show');
 	Route::post('envoi', 'MessagesController@create')->name('send');
+	Route::post('upload', 'MessagesController@uploadDocuments')->name('upload');
+//	Route::get('{type}/{filename}', 'MessagesController@show')->name('show');
+
 });
 
 Route::prefix('locations')->namespace('Locationables')->group(function () {

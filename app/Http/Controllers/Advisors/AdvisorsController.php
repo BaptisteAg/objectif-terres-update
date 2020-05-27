@@ -238,6 +238,6 @@ class AdvisorsController extends Controller
 
 		$this->advisorsService->uploadDocument($request->input());
 
-		return back()->with('success', 'Votre document a bien été téléversé');
+		return back()->with('success', 'Vos documents ont bien été téléversés');
 	}
 }

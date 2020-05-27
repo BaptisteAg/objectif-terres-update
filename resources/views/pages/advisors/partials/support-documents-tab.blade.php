@@ -56,6 +56,8 @@
 				<div class=" has-text-centered">
 					{!! Form::open(['route' => 'advisor.uploadDocuments', 'method'=>'post']) !!}
 					<documents-upload
+							url="/documents/upload"
+							type="ads"
 							name="documents"
 							v-model="documents"
 							@uploading="setUploading"
