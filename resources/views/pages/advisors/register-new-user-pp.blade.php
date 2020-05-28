@@ -6,7 +6,6 @@
 
 	<div id="vue-register-form" class="section">
 		<h1 class="title is-2 has-text-link">Création d'un nouveau compte porteur de projet</h1>
-		@include('components.advisor-tabs')
 		<user-form id="register-form"
 				   inline-template
 				   :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}">

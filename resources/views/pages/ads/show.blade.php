@@ -25,6 +25,7 @@
 
 @section('script')
 	<script>
+		@if(auth()->user()->role>=1 )
         let buttons = document.querySelectorAll('#open-modal-message');
         buttons.forEach((button) => {
             button.addEventListener('click', function (event) {
@@ -53,28 +54,32 @@
             notification.style.display = 'none';
 
         })
+		@endif
 
-       function showValidationSupervisorModal(){
-           let validationModal = document.querySelector('#modal-supervisor-validation');
-           let html = document.querySelector('html');
-           let listAdvisorUsers = document.getElementById("list_advisor_users");
-           let advisorUserSelected = listAdvisorUsers.options[listAdvisorUsers.selectedIndex].text;
-           let spanAdvisorSelected = document.querySelector('#user_advisor_selected');
-           spanAdvisorSelected.innerHTML = advisorUserSelected;
-           validationModal.classList.add('is-active');
-           html.classList.add('is-clipped');
+		@if(auth()->user()->role>=1)
+        function showValidationSupervisorModal() {
+            let validationModal = document.querySelector('#modal-supervisor-validation');
+            let html = document.querySelector('html');
+            let listAdvisorUsers = document.getElementById("list_advisor_users");
+            let advisorUserSelected = listAdvisorUsers.options[listAdvisorUsers.selectedIndex].text;
+            let spanAdvisorSelected = document.querySelector('#user_advisor_selected');
+            spanAdvisorSelected.innerHTML = advisorUserSelected;
+            validationModal.classList.add('is-active');
+            html.classList.add('is-clipped');
 
-           validationModal.querySelector('#modal-supervisor-validation-background').addEventListener('click', function (e) {
-               e.preventDefault();
-               validationModal.classList.remove('is-active');
-               html.classList.remove('is-clipped');
-           });
-           validationModal.querySelector('#close-modal').addEventListener('click', function (e) {
-               e.preventDefault();
-               validationModal.classList.remove('is-active');
-               html.classList.remove('is-clipped');
-           });
-		}
+            validationModal.querySelector('#modal-supervisor-validation-background').addEventListener('click', function (e) {
+                e.preventDefault();
+                validationModal.classList.remove('is-active');
+                html.classList.remove('is-clipped');
+            });
+            validationModal.querySelector('#close-modal').addEventListener('click', function (e) {
+                e.preventDefault();
+                validationModal.classList.remove('is-active');
+                html.classList.remove('is-clipped');
+            });
+        }
+
+		@endif
 
         function sendResponseTemplateMessage() {
             let listResponseTemplates = document.getElementById("response_templates_list");
@@ -102,11 +107,11 @@
             el: '#vue-messages',
             name: 'content'
         });
-
-        const VueModerationModal = new Vue({
-            el: "#vue-moderation-modal",
-            name: 'content'
-        })
-
+		@if(auth()->user()->role >= 1 and !$ad->project()->exists())
+			const VueModerationModal = new Vue({
+					el: "#vue-moderation-modal",
+					name: 'content'
+				})
+		@endif
 	</script>
 @endsection

@@ -4,16 +4,6 @@
 
 @section('main-content')
 	<div class="section">
-		@if(auth()->user()->role >= 3)
-			@include('components.supervisor-tabs')
-		@elseif(auth()->user()->role >=2)
-			@include('components.advisor-tabs')
-
-		@elseif(auth()->user()->role >=1)
-			@include('components.moderator-tabs')
-		@else
-			@include('layouts.partials.users-tabs')
-		@endif
 
 		<div class="section">
 			<div class="columns is-mobile is-centered">
@@ -108,7 +98,7 @@
 				@foreach ($ads as $ad)
 					<div class="columns ">
 						<div class="column is-three-quarters ">
-							<div class="columns">
+							<div class="columns is-vcentered">
 								<div class="column is-two-quarter ">
 									<div id="slider-container">
 										<div id="ads-user-images" class="carousel">
@@ -186,17 +176,26 @@
 										<p>
 											<span class="has-text-grey-dark">Stade de l'accompagnement :</span>
 											<span class="has-text-black">{{$ad->project->supportStage->name ?? 'Non définis' }}</span>
+											<span class="has-tooltip-right" data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">
+											<i class="fas fa-info-circle has-text-info "></i>
+											</span>
 										</p>
 										<p>
 											<span class="has-text-grey-dark">Etat de la demande :</span>
 											<span class="has-text-black">{{ $ad->project->supportState->name ?? 'Non définis' }}</span>
+											<span class="has-tooltip-right" data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">
+											<i class="fas fa-info-circle has-text-info "></i>
+											</span>
 										</p>
 										<p>
-											<span class="has-text-grey-dark">Status du projet :</span>
+											<span class="has-text-grey-dark">Statut du projet :</span>
 											<span class="has-text-black">{{ $ad->project->projectStatus->name ?? 'Non définis' }}</span>
+											<span class="has-tooltip-right" data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">
+											<i class="fas fa-info-circle has-text-info "></i>
+											</span>
 										</p>
 									@else
-										<span class="has-text-grey-dark">Status de l'annonce :</span>
+										<span class="has-text-grey-dark">Statut de l'annonce :</span>
 										<span class="has-text-black">{{ $ad->attributionAd->adStatus->name?? 'Non définis' }}</span>
 									@endif
 

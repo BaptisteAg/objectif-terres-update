@@ -51,12 +51,12 @@ class NewAdToModerateNotification extends Notification implements ShouldQueue
 		$url = url('/annonces/'.$this->ad->id);
 		return (new MailMessage)
 			->from(env('MAIL_FROM_ADDRESS'), "Administration | Objectif Terres")
-			->subject('Nouvelle demande de modération !')
+			->subject('MODEREZ l\'annonce n°'.$this->ad->id.']')
 			->greeting('Bonjour,')
-			->line('Vous avez reçu une nouvelle demande de modération pour une annonce postée par '. $this->userPP->first_name.' '.$this->userPP->name.' .')
+			->line('L\'annonce "'.$this->ad->title .'" de '. $this->userPP->first_name.' '.$this->userPP->name.' attend d’être modérée par vos soins.')
 			->action('Modérer l\'annonce', $url)
-			->line('A bientôt sur Objectif Terres !')
-			->salutation('Cordialement, L\'équipe d\'Objectif Terres');
+			->line('A bientôt,')
+			->salutation('L\'équipe d\'Objectif Terres');
 	}
 
 	/**

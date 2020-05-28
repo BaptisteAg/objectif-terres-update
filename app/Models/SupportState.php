@@ -27,7 +27,17 @@ class SupportState extends Model
 	public const TO_HANDLE_ID = 1;
 	public const HANDLE_ID = 2;
 	public const PENDING_ID = 3;
-	public const ARCHIVE_ID = 4;
+	public const TO_ARCHIVE_ID = 4;
+	public const ARCHIVE_ID = 5;
+
+
+	public const TOOLTIPS = [
+		self::TO_HANDLE_ID => "À traiter = le porteur de projet attend une réponse de votre part",
+		self::HANDLE_ID => "Traité = vous avez déjà répondu à la sollicitation ",
+		self::PENDING_ID => "En attente = l’accompagnement est en cours, vous attendez de nouvelles informations du porteur de projet ",
+		self::TO_ARCHIVE_ID => "À Archiver ? = accompagnement en attente depuis plus de 6 mois ",
+		self::ARCHIVE_ID=>"Archivé = l’accompagnement est terminé"
+		];
 
 	/**
 	 * @var array

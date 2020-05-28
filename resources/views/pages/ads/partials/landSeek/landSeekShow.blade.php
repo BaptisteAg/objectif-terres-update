@@ -196,7 +196,6 @@
 			<h3 class="title is-3">Description du projet</h3>
 			<p> {{nl2br(e($ad->about_project_content))}}</p>
 		</div>
-
 		<div class="content">
 			<h3 class="title is-3">A propos du porteur de projet</h3>
 			<p> {{nl2br(e($ad->about_content))}}</p>

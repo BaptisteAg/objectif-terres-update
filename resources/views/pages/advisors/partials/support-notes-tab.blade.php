@@ -104,7 +104,7 @@
 			{!! Form::open(['route' => 'advisor.createNote', 'method'=>'post']) !!}
 			<div class="field">
 				<label class=" label has-text-black"> Écrire une note</label>
-				<p class="is-italic">Ces notes sont internes. Le porteur de projet n’y a pas accès</p>
+				<p class="is-italic">Ces notes sont internes. Le porteur de projet n’y a pas accès.</p>
 				<br>
 				<div class="field ">
 					<div class="control is-expanded">

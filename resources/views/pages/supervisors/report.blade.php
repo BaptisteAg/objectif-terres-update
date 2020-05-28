@@ -7,8 +7,6 @@
 	<div class="section">
 		<h1 class="title is-2 has-text-link">Rapports et indicateurs</h1>
 	</div>
-	@include('components.supervisor-tabs')
-
 	@if ($numberOfAds == 0 and $numberOfProjects == 0 )
 
 		<div class="columns is-mobile is-centered">

@@ -30,7 +30,6 @@ Vue.component('support-request-dashboard', {
             noteToModify:'',
             documents:[],
             uploading: false,
-
         }
     },
     mounted() {

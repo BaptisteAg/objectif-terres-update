@@ -7,7 +7,6 @@
 @endsection
 
 @section('main-content')
-	@include('components.advisor-tabs')
 
 	<section class="section " style="padding-top: 0px">
 		<div class="content">
@@ -50,7 +49,7 @@
 							<div class="content">
 								<p class=" has-text-centered">Stade de l'accompagnement :
 									@if(isset($ad->project->supportStage))
-										<span class="tag is-light">{{$ad->project->supportStage->name}}</span>
+										<span class="tag is-light has-tooltip-top" data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">{{$ad->project->supportStage->name}}</span>
 									@else
 										<span class="tag is-light">Non définis</span>
 									@endif
@@ -72,7 +71,7 @@
 													<option disabled selected
 															value="{{$supportStage->id}}">{{$supportStage->name}}</option>
 												@else
-													<option value="{{$supportStage->id}}">{{$supportStage->name}}</option>
+													<option class="has-tooltip-left" data-tooltip="salut" value="{{$supportStage->id}}">{{$supportStage->name}}</option>
 												@endif
 											@endforeach
 										</select>
@@ -84,7 +83,7 @@
 							<div class="content">
 								<p class=" has-text-centered">État de la demande :
 									@if(isset($ad->project->supportState))
-										<span class="tag is-light">{{$ad->project->supportState->name}}</span>
+										<span class="tag is-light has-tooltip-top" data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
 									@else
 										<span class="tag is-light">Non définis</span>
 									@endif
@@ -117,7 +116,7 @@
 							<div class="content">
 								<p class=" has-text-centered">Avancement du projet :
 									@if(isset($ad->project->projectStatus))
-										<span class="tag is-light">{{$ad->project->projectStatus->name}}</span>
+										<span class="tag is-light has-tooltip-top" data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">{{$ad->project->projectStatus->name}}</span>
 									@else
 										<span class="tag is-light">Non définis</span>
 									@endif

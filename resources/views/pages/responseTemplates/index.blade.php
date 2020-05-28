@@ -4,14 +4,6 @@
 
 @section('main-content')
 
-	@if(auth()->user()->role >= 3)
-		@include('components.supervisor-tabs')
-	@elseif(auth()->user()->role >=2)
-		@include('components.advisor-tabs')
-	@else
-		@include('components.moderator-tabs')
-	@endif
-
 	<div class="section " style="padding-top: 0px">
 		<h1 class="title is-2 has-text-link">Gestion des réponses types </h1>
 		{{Form::open(['route'=>'responseTemplates.create', 'method'=>'post'])}}

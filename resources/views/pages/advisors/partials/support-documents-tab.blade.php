@@ -68,6 +68,7 @@
 					<documents-upload
 							url="/documents/upload"
 							type="ads"
+							:extra-data="{}"
 							name="documents"
 							v-model="documents"
 							@uploading="setUploading"

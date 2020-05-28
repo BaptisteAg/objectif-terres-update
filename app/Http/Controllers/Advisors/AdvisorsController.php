@@ -138,6 +138,10 @@ class AdvisorsController extends Controller
 	public function showSupport(int $adId)
 	{
 		$ad = $this->adService->find($adId);
+		if(!$ad->project()->exists()){
+			abort(404);
+		}
+
 		$responseTemplates = ResponseTemplate::all();
 		$thread = $this->advisorsService->findSupportRequestThread($ad->id);
 		$listUserAds = $this->adService->findAllAdsByUser($ad->user_pp_id);

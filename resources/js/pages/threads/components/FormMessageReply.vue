@@ -106,14 +106,14 @@
                 openDocumentUpload: false,
             }
         },
-        watch : {
-            documents: function(){
-                if(this.documents.length > 0){
-                  setTimeout( ()=> {
-                      this.$emit('on-upload-success', this.activeThreadId)
-                      this.openDocumentUpload = false;
-                      this.documents = [];
-                  },1500)
+        watch: {
+            documents: function () {
+                if (this.documents.length > 0) {
+                    setTimeout(() => {
+                        this.$emit('on-upload-success', this.activeThreadId)
+                        this.openDocumentUpload = false;
+                        this.documents = [];
+                    }, 1500)
                 }
             }
         },
