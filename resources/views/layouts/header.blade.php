@@ -64,10 +64,10 @@
 													Espace modérateur
 												</a>
 											@endif
-{{--											<hr class="dropdown-divider">--}}
-{{--											<a href="#" class="dropdown-item">--}}
-{{--												Autre lien séparé--}}
-{{--											</a>--}}
+											{{--											<hr class="dropdown-divider">--}}
+											{{--											<a href="#" class="dropdown-item">--}}
+											{{--												Autre lien séparé--}}
+											{{--											</a>--}}
 										</div>
 									</div>
 								</div>
@@ -119,73 +119,73 @@
 			<header-page id="header-page" inline-template
 						 :old-search-values="{{json_encode(old())}}">
 				{!! Form::open(['route' => 'researches.index', 'method' => 'get']) !!}
-					<div class="container-custom has-background-grey-lighter">
-						<div class="columns">
-							<div class="column is-1">
-								<a href="{{url ('/')}}">
-									<figure class="image is-128x128">
-										<img class="is-rounded" src="http://placehold.it/200x200" alt="">
-									</figure>
-								</a>
+				<div class="container-custom has-background-grey-lighter">
+					<div class="columns">
+						<div class="column is-1">
+							<a href="{{url ('/')}}">
+								<figure class="image is-128x128">
+									<img class="is-rounded" src="http://placehold.it/200x200" alt="">
+								</figure>
+							</a>
+						</div>
+						<div class="column is-4">
+							<a href="{{url ('/')}}">
+								<h3 class="title">Objectif Terres</h3>
+							</a>
+							<h4 class="subtitle">Réalisez votre projet agricole.</h4>
+							<p>Une initiative Terre de Liens</p>
+						</div>
+						<div class="column is-2" style="padding-top: 38px;">
+							<div style="display:inline-block; padding-top: 7px;">
+								<p>Je</p>
 							</div>
-							<div class="column is-4">
-								<a href="{{url ('/')}}">
-									<h3 class="title">Objectif Terres</h3>
-								</a>
-								<h4 class="subtitle">Réalisez votre projet agricole.</h4>
-								<p>Une initiative Terre de Liens</p>
+							<div class="select">
+								<label for="select"></label>
+								{{ Form::select('offer_type',
+									['OfferAd' => 'Cherche ', 'SeekAd' => 'Propose'],
+									null,
+									['v-model' => 'offerTypeSelected']
+								) }}
 							</div>
-							<div class="column is-2" style="padding-top: 38px;">
-								<div style="display:inline-block; padding-top: 7px;">
-									<p>Je</p>
-								</div>
-								<div class="select">
-									<label for="select"></label>
-									{{ Form::select('offer_type',
-										['OfferAd' => 'Cherche ', 'SeekAd' => 'Propose'],
-										null,
-										['v-model' => 'offerTypeSelected']
-									) }}
-								</div>
 
-								<div class="select">
-									<label for="select"></label>
-									{{ Form::select('ad_category',
-										['land' => 'une terre ', 'job' => 'un emploi'],
-										null,
-										['v-model' => 'adCategorySelected']
-									) }}
-								</div>
+							<div class="select">
+								<label for="select"></label>
+								{{ Form::select('ad_category',
+									['land' => 'une terre ', 'job' => 'un emploi'],
+									null,
+									['v-model' => 'adCategorySelected']
+								) }}
 							</div>
-							<div class="column is-3" style="padding-top: 38px;">
-								<div style="display:inline-block; padding-top: 2px;">
-									<p>ici : </p>
-								</div>
-								<div style="display:inline-block">
-									<multi-select
-											:options="{{ $regionsWithAll }}"
-											v-model="selectedRegions"
-											:multiple="true"
-											name="regions_location_researches_ids[]"
-											selected-count-text="région(s) sélectionnée(s)"
-											placeholder="Choississez une/des région(s)">
-									</multi-select>
-								</div>
+						</div>
+						<div class="column is-3" style="padding-top: 38px;">
+							<div style="display:inline-block; padding-top: 2px;">
+								<p>ici : </p>
 							</div>
-							<div class="column is-2" style="padding-top: 38px;">
-								{!! Form::submit('Rechercher', ['class' => 'button']) !!}<br>
-								<a href="#" @click="more_criteria()">Plus de critère</a>
+							<div style="display:inline-block">
+								<multi-select
+										:options="{{ $regionsWithAll }}"
+										v-model="selectedRegions"
+										:multiple="true"
+										name="regions_location_researches_ids[]"
+										selected-count-text="région(s) sélectionnée(s)"
+										placeholder="Choississez une/des région(s)">
+								</multi-select>
 							</div>
+						</div>
+						<div class="column is-2" style="padding-top: 38px;">
+							{!! Form::submit('Rechercher', ['class' => 'button']) !!}<br>
+							<a href="#" @click="more_criteria()">Plus de critère</a>
 						</div>
 					</div>
-					<div v-show="isFormOpen" class="has-ba" style="display : none">
-						<div class="container-custom" v-if="adCategorySelected === 'job'">
-							@include('layouts.partials.headerJobResearch')
-						</div>
-						<div class="container-custom" v-if="adCategorySelected === 'land'">
-							@include('layouts.partials.headerLandResearch')
-						</div>
+				</div>
+				<div v-show="isFormOpen" class="has-ba" style="display : none">
+					<div class="container-custom" v-if="adCategorySelected === 'job'">
+						@include('layouts.partials.headerJobResearch')
 					</div>
+					<div class="container-custom" v-if="adCategorySelected === 'land'">
+						@include('layouts.partials.headerLandResearch')
+					</div>
+				</div>
 				{!! Form::close() !!}
 			</header-page>
 		</div>
@@ -227,7 +227,8 @@
 						<div class="navbar-item">
 							<div class="buttons">
 								<a class="navbar-item">Ressources utiles</a>
-								<a class="navbar-item button is-bordered" href="/accompagnement/demarrer">Être accompagné</a>
+								<a class="navbar-item button is-bordered" href="/accompagnement/demarrer">Être
+									accompagné</a>
 
 								@if(false)
 									@if(auth()->user()->role === 1 )
@@ -244,7 +245,8 @@
 											annonce</a>
 									@endif
 								@else
-									<a href="{{ route('ads.create') }}" class="navbar-item button is-bordered">Déposer une
+									<a href="{{ route('ads.create') }}" class="navbar-item button is-bordered">Déposer
+										une
 										annonce</a>
 								@endauth
 							</div>
@@ -252,15 +254,26 @@
 					</div>
 				</div>
 			</nav>
-			@if( Auth::check())
+			@if( Auth::check() and auth()->user()->role <1)
 				@if (Route::current()->getName() === 'ads.list'||
 					Route::current()->getName() === 'researches.show' ||
+					Route::current()->getName() === 'ads.show' ||
 					Route::current()->getName() === 'favoriteAds.show' ||
 					Route::current()->getName() === 'messages.index'||
 					Route::current()->getName() === 'user.update' ||
 					strpos(Route::current()->getName(), 'threads.') === 0 ||
 					Route::current()->getName() === 'support-request.show')
 					@include('layouts.partials.users-tabs')
+				@endif
+			@endif
+			<br>
+			@if( Auth::check() and auth()->user()->role >=1)
+				@if(auth()->user()->role ==1)
+					@include('components.moderator-tabs')
+				@elseif(auth()->user()->role ==2)
+					@include('components.advisor-tabs')
+				@elseif(auth()->user()->role >=3)
+					@include('components.supervisor-tabs')
 				@endif
 			@endif
 		</div>

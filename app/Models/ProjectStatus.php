@@ -31,26 +31,33 @@ class ProjectStatus extends Model
 	public const ABANDONED_ID = 3;
 	public const ACCOMPLISHED_ID = 4;
 
-    /**
-     * @var array
-     */
-    protected $fillable = [
-        'name'
-    ];
+	public const TOOLTIPS = [
+		self::EMERGING_ID => "En émergence = projet au stade des premières idées/réflexions ",
+		self::IN_PROGRESSING_ID => "En cours = projet abouti en phase opérationnelle (recherche de terres, de candidats, etc.) ",
+		self::ABANDONED_ID => "Abandonné = projet d’installation ou de transmission finalement avorté ",
+		self::ACCOMPLISHED_ID => "Abouti = l’installation ou la transmission est effective !"
+	];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
-     */
-    public function researches()
-    {
-        return $this->belongsToMany(Research::class)->withTimestamps();
-    }
+	/**
+	 * @var array
+	 */
+	protected $fillable = [
+		'name'
+	];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function projects()
-    {
-        return $this->hasMany(Project::class);
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+	 */
+	public function researches()
+	{
+		return $this->belongsToMany(Research::class)->withTimestamps();
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function projects()
+	{
+		return $this->hasMany(Project::class);
+	}
 }

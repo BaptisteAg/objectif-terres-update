@@ -5,21 +5,27 @@ Vue.component('export-to-spreadsheet-form', {
     components: {
         DateRange
     },
-    props : {
-        oldInputSelected : ''
+    props: {
+        oldInputSelected: ''
     },
     data() {
         return {
-            isActive : false
+            isActive: false
         }
     },
     methods: {
-        openModal(){
+        openModal() {
             this.isActive = true;
         },
 
-        closeModal(){
+        closeModal() {
             this.isActive = false
+        },
+        closeModalAfterSubmit() {
+            setTimeout(() => {
+                this.closeModal()
+            }, 1500)
+
         }
     }
 });

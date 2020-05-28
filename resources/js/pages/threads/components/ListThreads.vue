@@ -2,10 +2,10 @@
     <div>
         <div class="content" v-if="isDisplay">
             <template v-if="numberThreadsUnreadMessages <=1">
-                <p>{{numberThreadsUnreadMessages}} discussion non lu</p>
+                <p>{{numberThreadsUnreadMessages}} discussion non lue</p>
             </template>
             <template v-else>
-                <p>{{numberThreadsUnreadMessages}} discussions non lus</p>
+                <p>{{numberThreadsUnreadMessages}} discussions non lues</p>
             </template>
             <button v-if="isUserModerator" @click="onNewThreadClick" class="open-modal-new-message button is-link"
                     type="button">

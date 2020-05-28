@@ -55,7 +55,7 @@
 						<div class="content">
 							<p>
 								<span class="is-size-5 is-capitalized has-text-black">Catégorie : </span>
-								<span class="subtitle">Proposition opportunité professionnelle</span>
+								<span class="subtitle">Recherche d'emploi</span>
 							</p>
 						</div>
 						<div class="content">

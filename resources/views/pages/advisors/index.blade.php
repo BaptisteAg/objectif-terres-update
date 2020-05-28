@@ -7,8 +7,6 @@
 	<div class="section">
 		<h1 class="title is-2 has-text-link">Bienvenue sur votre espace primo-accueillant <span
 					class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
-
-		@include('components.advisor-tabs')
 		@if($numberOfProjectToHandle !== 0 || $numberOfUnreadMessages !==0)
 			<div id="notification-advisor" class="notification has-background-info">
 				<button id="close-notification-advisor" class="delete"></button>
@@ -16,17 +14,17 @@
 					<p class="has-text-white-ter">
 						<i class="far fa-bell has-text-white-ter"></i>
 						Vous avez<a style="text-decoration: none"
-									href="/">
+									href="#dashboard-advisor">
 							<strong>{{$numberOfProjectToHandle}}
-								demandes d'accompagnement à traiter ! </strong></a> !
+								demandes d'accompagnement à traiter ! </strong></a>
 					</p>
 				@elseif ($numberOfProjectToHandle === 1)
 					<p class="has-text-white-ter">
 						<i class="far fa-bell has-text-white-ter"></i>
 						Vous avez<a style="text-decoration: none"
-									href="/">
+									href="#dashboard-advisor">
 							<strong>{{$numberOfProjectToHandle}}
-								demande d'accompagnement à traiter! </strong></a>!
+								demande d'accompagnement à traiter! </strong></a>
 					</p>
 				@else
 				@endif
@@ -78,7 +76,26 @@
 			@if (count($ads) ==0)
 				<p class="has-text-centered">Aucun résultat</p>
 			@else
-				<div class="table-container">
+				<div class="content">
+					@if(request()->input('toPaginate') == 'true')
+						<a href="{{ route('advisor.show', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">
+							<span>Afficher l'intégralité de la liste</span>
+						</a>
+					@elseif(request()->has('projects_show') )
+						<a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
+							<span>Paginer la liste</span>
+						</a>
+					@elseif(request()->has('ads_show') )
+						<a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
+							<span>Paginer la liste</span>
+						</a>
+					@else
+						<a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true', 'projects_show'=>'true'])) }}">
+							<span>Paginer la liste</span>
+						</a>
+					@endif
+				</div>
+				<div id="dashboard-advisor" class="table-container">
 					<table class="table is-bordered  is-striped is-narrow is-hoverable is-fullwidth "
 						   style="border :2px solid #dbdbdb">
 						<thead>
@@ -210,7 +227,11 @@
 										<br>
 									</td>
 									<td>
-										<a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+										@if(is_null($ad->project))
+											<a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+										@else
+											<a href="{{route('advisor.showSupport', $ad->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+										@endif
 									</td>
 									<td>
 										@if(is_null($ad->project))
@@ -218,13 +239,17 @@
 										@else
 											@if(!is_null($ad->project->projectStatus))
 												@if($ad->project->projectStatus->id === \App\Models\ProjectStatus::EMERGING_ID)
-													<span class="tag is-info">{{$ad->project->projectStatus->name}}</span>
+													<span class="tag is-info has-tooltip-bottom "
+														  data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">{{$ad->project->projectStatus->name}}</span>
 												@elseif($ad->project->projectStatus->id ===\App\Models\ProjectStatus::IN_PROGRESSING_ID)
-													<span class="tag is-info is-light">{{$ad->project->projectStatus->name}}</span>
+													<span class="tag is-info has-tooltip-bottom "
+														  data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">{{$ad->project->projectStatus->name}}</span>
 												@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ABANDONED_ID)
-													<span class="tag is-danger is-light">{{$ad->project->projectStatus->name}}</span>
+													<span class="tag is-danger is-light has-tooltip-bottom "
+														  data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">{{$ad->project->projectStatus->name}}</span>
 												@elseif($ad->project->projectStatus->id === \App\Models\ProjectStatus::ACCOMPLISHED_ID)
-													<span class="tag is-success ">{{$ad->project->projectStatus->name}}</span>
+													<span class="tag is-success has-tooltip-bottom "
+														  data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">{{$ad->project->projectStatus->name}}</span>
 												@endif
 											@else
 												<span class="tag is-warning">Non définis</span>
@@ -277,11 +302,14 @@
 										@else
 											@if(!is_null($ad->project->supportStage))
 												@if($ad->project->supportStage->id === \App\Models\SupportStage::FIRST_CONTACT_ID)
-													<span class="tag is-info">{{$ad->project->supportStage->name}}</span>
+													<span class="tag is-info has-tooltip-bottom"
+														  data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">{{$ad->project->supportStage->name}}</span>
 												@elseif($ad->project->supportStage->id ===\App\Models\SupportStage::FIRST_RECEPTION_ID)
-													<span class="tag is-info is-light">{{$ad->project->supportStage->name}}</span>
+													<span class="tag is-info is-light has-tooltip-bottom"
+														  data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">{{$ad->project->supportStage->name}}</span>
 												@elseif($ad->project->supportStage->id === \App\Models\SupportStage::ACCOMPANYING_ID)
-													<span class="tag is-success is-light">{{$ad->project->supportStage->name}}</span>
+													<span class="tag is-succes is-light has-tooltip-bottom"
+														  data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">{{$ad->project->supportStage->name}}</span>
 												@endif
 											@else
 												<span class="tag is-warning">Non définis</span>
@@ -294,13 +322,20 @@
 										@else
 											@if(!is_null($ad->project->supportState))
 												@if($ad->project->supportState->id === \App\Models\SupportState::TO_HANDLE_ID)
-													<span class="tag is-info">{{$ad->project->supportState->name}}</span>
+													<span class="tag is-info has-tooltip-bottom"
+														  data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
 												@elseif($ad->project->supportState->id ===\App\Models\SupportState::HANDLE_ID)
-													<span class="tag is-success is-light">{{$ad->project->supportState->name}}</span>
+													<span class="tag is-success is-light has-tooltip-bottom"
+														  data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
 												@elseif($ad->project->supportState->id === \App\Models\SupportState::PENDING_ID)
-													<span class="tag is-info is-light">{{$ad->project->supportState->name}}</span>
+													<span class="tag is-info is-light has-tooltip-bottom"
+														  data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
 												@elseif($ad->project->supportState->id === \App\Models\SupportState::ARCHIVE_ID)
-													<span class="tag is-light ">{{$ad->project->supportState->name}}</span>
+													<span class="tag is-light has-tooltip-bottom"
+														  data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
+												@elseif($ad->project->supportState->id === \App\Models\SupportState::TO_ARCHIVE_ID)
+													<span class="tag is-link is-light has-tooltip-bottom"
+														  data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
 												@endif
 											@else
 												<span class="tag is-warning">Non définis</span>
@@ -332,11 +367,13 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="columns is-mobile is-centered">
-					<div class="column is-half ">
-						{{ $ads->appends(Request::all())->links() }}
+				@if($ads instanceof \Illuminate\Pagination\LengthAwarePaginator)
+					<div class="columns is-mobile is-centered">
+						<div class="column is-half ">
+							{{ $ads->appends(Request::all())->links() }}
+						</div>
 					</div>
-				</div>
+				@endif
 			@endif
 		</div>
 

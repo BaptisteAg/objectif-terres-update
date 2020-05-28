@@ -1,37 +1,34 @@
 <div class="card-content ">
 	<div class="content">
-		<h4 class="title is-4 has-text-centered">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</h4>
+		<h4 class="title is-4 has-text-centered"><a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a> </h4>
 		<div class="columns">
 			<div class="column has-text-centered">
 				<p>
 					<span class="icon">
 						<i class="fas fa-envelope"></i>
 					</span>
-					{{$ad->userPp->email ?? 'Non renseigné'}}
+					{{$ad->userPp->email ?? 'Adresse mail non renseignée'}}
 				</p>
 			</div>
 			<div class="column has-text-centered">
 				<span class="icon">
 					<i class="fas fa-map-marker-alt"></i>
 				</span>
-				{{$ad->userPp->address ?? 'Adresse non renseignée'}}
-				{{$ad->userPp->city}}
+				{{$ad->userPp->street ?? 'Adresse non renseignée'}}
+				<br>
+				{{$ad->userPp->zipCode->zip_code ?? 'Code postal non renseignée'}} {{$ad->userPp->city ?? 'Ville non renseignée'}}
 			</div>
 			<div class="column has-text-centered">
 				<p>
 					<span class="icon">
 						<i class="fas fa-phone"></i>
 					</span>
-					@if(is_null($ad->userPp->phone))
-						Numéro de téléphone non renseigné
-					@else
-						{{$ad->userPp->phone}}
-					@endif
+					{{$ad->userPp->phone ?? "Numéro de téléphone non renseigné"}}
 				</p>
 			</div>
 		</div>
-		<p><span class="is-italic">Civilité</span> : {{$ad->userPp->civility?? ''}}</p>
-		<p><span class="is-italic">Type de porteur de projet</span> : {{$ad->userPp->profile?? ''}}</p>
+		<p><span class="is-italic">Civilité</span> : {{$ad->userPp->civility?? 'Non renseignée'}}</p>
+		<p><span class="is-italic">Type de porteur de projet</span> : {{$ad->userPp->profile?? 'Non renseigné'}}</p>
 		@if($ad->userPp->accept_communication)
 			<p>Cet utilisateur a accepté de recevoir les communications de Terre de Liens. </p>
 		@else
@@ -39,9 +36,10 @@
 				Liens. </p>
 		@endif
 		@if(isset($ad->landSeekAd))
-			<p><span class="is-italic">Expérience dans le domaine agricole </span> : {{$ad->landSeekAd->experience_farming ?? ""}}</p>
+			<p><span class="is-italic">Expérience dans le domaine agricole </span> : {{$ad->landSeekAd->experience_farming ?? "Non renseigné"}}</p>
 		@endif
-		<p><span class="is-italic">Plus d'informations sur la personne </span> : {{$ad->about_content ?? ""}}</p>
+		<p><span class="is-italic">Plus d'informations sur la personne </span> : {{$ad->about_content ?? "Non renseigné"}}</p>
+		<p>Nombre d'annonces soumises : {{$listUserAds->count()}}</p>
 		<p>Membre depuis le <strong>{{$ad->userPp->created_at}}</strong></p>
 		<div class="columns">
 			<div class="column is-2">

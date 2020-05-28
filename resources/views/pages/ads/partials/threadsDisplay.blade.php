@@ -98,6 +98,7 @@
 											v-model="messages"
 											:user-id="{{auth()->id()}}"
 											@message-reply-success="onMessageReplySuccess"
+											@on-upload-success="onThreadClick"
 											v-bind::show-response-type="isUserModerator"
 											v-bind:active-thread-id="activeThread"
 											:show-response-type="true"
@@ -157,6 +158,7 @@
 											v-model="messages"
 											:user-id="{{auth()->id()}}"
 											@message-reply-success="onMessageReplySuccess"
+											@on-upload-success="onThreadClick"
 											v-bind::show-response-type="isUserModerator"
 											v-bind:active-thread-id="activeThread"
 											:show-response-type="false"
@@ -235,7 +237,8 @@
 								<form-message-reply
 										v-model="messages"
 										:user-id="{{auth()->id()}}"
-										@message-reply-success="onMessageReplySuccess"
+										@on-upload-success="onMessageReplySuccess"
+										@on-thread-click="onThreadClick"
 										v-bind:active-thread-id="activeThread"
 								>
 								</form-message-reply>

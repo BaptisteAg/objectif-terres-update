@@ -130,6 +130,11 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 		}
 		$message->save();
 
+		if (isset($data["documents_ids"]) && is_array($data["documents_ids"])) {
+			foreach ($data["documents_ids"] as $documentId) {
+				$message->documents()->attach($documentId);
+			}
+		}
 		return $message;
 	}
 
@@ -142,6 +147,7 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 			'thread',
 			'thread.ad',
 			'thread.users',
+			'documents',
 
 		];
 	}

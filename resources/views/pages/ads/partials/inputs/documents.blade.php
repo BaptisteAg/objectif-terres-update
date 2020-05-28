@@ -10,6 +10,8 @@
 
     <documents-upload
             name="documents"
+            type="ads"
+            url='/documents/upload'
             v-model="formInput.documents"
             @uploading="setUploading"
             ref="documents">

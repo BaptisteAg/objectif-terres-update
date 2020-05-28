@@ -82,12 +82,12 @@ class AdvisorsService
 	}
 
 	/**
-	 * @param Request $filters
-	 * @return LengthAwarePaginator
+	 * @param Request $request
 	 */
-	public function showForAdvisor(Request $filters): LengthAwarePaginator
+	public function showForAdvisor(Request $request)
 	{
-		$ads = $this->adService->filter($filters, auth()->user()->role);
+		$toPaginate = $request->has('toPaginate')? true : false;
+		$ads = $this->adService->filter($request, auth()->user()->role, $toPaginate);
 		return $ads;
 	}
 
@@ -245,6 +245,18 @@ class AdvisorsService
 		return $notes;
 	}
 
+	/**
+	 * @param array $data
+	 */
+	public function uploadDocument(array $data)
+	{
+		$ad = $this->repository->find($data['ad_id']);
+		if (isset($data["documents_ids"]) && is_array($data["documents_ids"])) {
+			foreach ($data["documents_ids"] as $documentId) {
+				$ad->documents()->attach($documentId);
+			}
+		}
+	}
 
 
 

@@ -7,8 +7,6 @@
 	<div class="section">
 		<h1 class="title is-2 has-text-link">Bienvenue sur votre espace modérateur <span
 					class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
-
-		@include('components.moderator-tabs')
 		@if($numberOfAdsToModerate !== 0 || $numberOfUnreadMessages !==0)
 			<div id="notification-moderator" class="notification has-background-info">
 				<button id="close-notification-moderator" class="delete"></button>
@@ -49,8 +47,7 @@
 		{{Form::close()}}
 
 		<div class="section">
-			<h1 class="title is-1 has-text-centered">Liste des annonces à modérer</h1>
-
+			<h1 class="title is-1 has-text-centered">Liste des annonces attribuées</h1>
 			@if (count($attributionAds) ==0)
 				<p class="has-text-centered">Aucun résultat</p>
 			@else
@@ -58,7 +55,6 @@
 					<table class="table is-striped is-hoverable is-fullwidth ">
 						<thead>
 						<tr>
-
 							<th>
 								@if(request()->input('sort') !== 'date')
 									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date'])) }}">
@@ -175,16 +171,25 @@
 									@endif
 								</td>
 								<td>
-									@if($attributionAd->adStatus->id === \App\Models\AdStatus::APPROVE_ID)
-										<span class="tag is-success">{{$attributionAd->adStatus->name}}</span>
-									@elseif($attributionAd->adStatus->id ===\App\Models\AdStatus::PENDING_ID)
-										<span class="tag is-warning is-light">{{$attributionAd->adStatus->name}}</span>
-									@elseif($attributionAd->adStatus->id === \App\Models\AdStatus::REFUSE_ID)
-										<span class="tag is-danger">{{$attributionAd->adStatus->name}}</span>
-									@elseif($attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID)
-										<span class="tag is-warning">{{$attributionAd->adStatus->name}}</span>
+									@if(!is_null($attributionAd->adStatus))
+										@if($attributionAd->adStatus->id === \App\Models\AdStatus::APPROVE_ID)
+											<span class="tag is-success has-tooltip-bottom"
+												  data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
+										@elseif($attributionAd->adStatus->id ===\App\Models\AdStatus::PENDING_ID)
+											<span class="tag is-warning is-light has-tooltip-bottom"
+												  data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
+										@elseif($attributionAd->adStatus->id === \App\Models\AdStatus::REFUSE_ID)
+											<span class="tag is-danger has-tooltip-bottom"
+												  data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
+										@elseif($attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID)
+											<span class="tag is-warning has-tooltip-bottom"
+												  data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
+										@else
+											<span class="tag is-info has-tooltip-bottom"
+												  data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
+										@endif
 									@else
-										<span class="tag is-info">{{$attributionAd->adStatus->name}}</span>
+										Non définis
 									@endif
 								</td>
 								{{--								<td>--}}

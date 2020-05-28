@@ -7,20 +7,34 @@
 @endsection
 
 @section('main-content')
-	<section class="section">
-		<h1 class="title is-2 has-text-link">Suivi de l'accompagnement </h1>
-		@if(!is_null($ad->attributionAd->userAdvisor))
-			@if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
-				<p class="has-text-weight-bold">Vous êtes le primo-accueillant pour cette demande !</p>
+
+	<section class="section " style="padding-top: 0px">
+		<div class="content">
+			<a href="{{URL::previous()}}">
+				<span class="icon is-small"><i class="fas fa-arrow-left"></i></span>
+				<span>Retour</span>
+			</a>
+		</div>
+		<div class="content">
+			<h1 class="title is-1 has-text-link">Suivi de {{$ad->userPP->first_name}} {{$ad->userPP->name}} </h1>
+			<h3 class="subtitle is-3 ">{{$ad->title}}</h3>
+			@if(!is_null($ad->attributionAd->userAdvisor))
+				@if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
+					<p class="has-text-weight-bold">Vous êtes le primo-accueillant pour cette demande !</p>
+				@else
+					<p>Cette demande est attribuée
+						à
+						<span class="has-text-weight-bold">{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</span>.
+					</p>
+				@endif
 			@else
-				<p>Cette demande est attribuée
-					à
-					<span class="has-text-weight-bold">{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</span>.
-				</p>
+				<p>Cette demande n'a pas été encore attribuée à un primo-accueillant</p>
 			@endif
-		@else
-			<p>Cette demande n'a pas été encore attribuée à un primo-accueillant</p>
-		@endif
+		</div>
+
+
+
+
 		<div id="advisor-support-request-dashboard">
 			<support-request-dashboard
 					inline-template
@@ -35,7 +49,7 @@
 							<div class="content">
 								<p class=" has-text-centered">Stade de l'accompagnement :
 									@if(isset($ad->project->supportStage))
-										<span class="tag is-light">{{$ad->project->supportStage->name}}</span>
+										<span class="tag is-light has-tooltip-top" data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">{{$ad->project->supportStage->name}}</span>
 									@else
 										<span class="tag is-light">Non définis</span>
 									@endif
@@ -57,7 +71,7 @@
 													<option disabled selected
 															value="{{$supportStage->id}}">{{$supportStage->name}}</option>
 												@else
-													<option value="{{$supportStage->id}}">{{$supportStage->name}}</option>
+													<option class="has-tooltip-left" data-tooltip="salut" value="{{$supportStage->id}}">{{$supportStage->name}}</option>
 												@endif
 											@endforeach
 										</select>
@@ -69,7 +83,7 @@
 							<div class="content">
 								<p class=" has-text-centered">État de la demande :
 									@if(isset($ad->project->supportState))
-										<span class="tag is-light">{{$ad->project->supportState->name}}</span>
+										<span class="tag is-light has-tooltip-top" data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
 									@else
 										<span class="tag is-light">Non définis</span>
 									@endif
@@ -102,7 +116,7 @@
 							<div class="content">
 								<p class=" has-text-centered">Avancement du projet :
 									@if(isset($ad->project->projectStatus))
-										<span class="tag is-light">{{$ad->project->projectStatus->name}}</span>
+										<span class="tag is-light has-tooltip-top" data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">{{$ad->project->projectStatus->name}}</span>
 									@else
 										<span class="tag is-light">Non définis</span>
 									@endif

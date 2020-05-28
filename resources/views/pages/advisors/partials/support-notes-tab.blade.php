@@ -3,7 +3,7 @@
 		<div class="column is-12 ">
 
 			@if(is_null($ad->adNotes) or $ad->adNotes->whereNull('project_data_key_id')->count() ===0)
-				<p>Aucune note n'a été rédigée concernant cette demande</p>
+				<p>Aucune note n'a été rédigée concernant cette demande.</p>
 			@else
 				<div style=" overflow-x: hidden; max-height: 500px;">
 					@foreach($ad->adNotes->whereNull('project_data_key_id') as $note)
@@ -104,6 +104,8 @@
 			{!! Form::open(['route' => 'advisor.createNote', 'method'=>'post']) !!}
 			<div class="field">
 				<label class=" label has-text-black"> Écrire une note</label>
+				<p class="is-italic">Ces notes sont internes. Le porteur de projet n’y a pas accès.</p>
+				<br>
 				<div class="field ">
 					<div class="control is-expanded">
 						<input type="hidden" name="ad_id" value="{{$ad->id}}">

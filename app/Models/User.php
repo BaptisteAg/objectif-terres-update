@@ -19,7 +19,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property string $name
  * @property string $first_name
  * @property string|null $phone
- * @property string|null $address
+ * @property string|null $street
  * @property string|null $city
  * @property int|null $civility
  * @property int|null $profile
@@ -54,7 +54,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAcceptCommunication($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAcceptShareContactInfos($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereStreet($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCivility($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCountryId($value)
@@ -91,7 +91,7 @@ class User extends Authenticatable implements HasPresenter
 		'password',
 		'first_name',
 		'phone',
-		'address',
+		'street',
 		'city',
 		'zip_code_id',
 		'accept_communication',

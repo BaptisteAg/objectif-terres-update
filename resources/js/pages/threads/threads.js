@@ -29,7 +29,6 @@ Vue.component('vue-threads',{
             isUserLoggedAdOwner : this.isUserLoggedAdOwner,
             isUserModerator: false,
             usersSelected : []
-
         }
     },
     mounted(){

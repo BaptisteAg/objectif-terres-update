@@ -4,7 +4,7 @@
 
 @section('main-content')
 	<div class="section">
-		@include('components.moderator-tabs')
+
 		<div class="section">
 			<div class="columns is-mobile is-centered">
 				<div class="column is-half ">
@@ -50,19 +50,15 @@
 											<span class="icon">
 										   <i class="fas fa-envelope"></i>
 										</span>
-											{{$user->email}}
+											{{$user->email ?? "Adresse mail non renseignée"}}
 										</p>
 									</div>
 									<div class="column has-text-centered">
 											<span class="icon">
 										   <i class="fas fa-map-marker-alt"></i>
 										</span>
-										{{$user->address}}
-										@if(is_null($user->country))
-											<p>Pays non renseigné</p>
-										@else
-											<p>{{$user->country->name_fr_fr}}</p>
-										@endif
+										{{$user->street ?? "Adresse non renseignée "}}
+										<p>{{$user->city ?? "Ville non renseignée"}}</p>
 
 									</div>
 									<div class="column has-text-centered">
@@ -70,11 +66,7 @@
 											<span class="icon">
 										   <i class="fas fa-phone"></i>
 										</span>
-											@if(is_null($user->phone))
-												Numéro de téléphone non renseigné
-											@else
-												{{$user->phone}}
-											@endif
+											{{$user->phone ?? "Numéro de téléphone non renseigné"}}
 										</p>
 									</div>
 								</div>
@@ -95,9 +87,9 @@
 				<div class="level-left">
 					<div>
 						@if(count($ads) <=1)
-							<h1 class="title"> {{ count($ads) }} annonce ou projet soumis</h1>
+							<h1 class="title"> {{ count($ads) }} annonce ou demande d'accompagnement soumis</h1>
 						@else
-							<h2 class="title"> {{ count($ads) }} annonces ou projets soumis</h2>
+							<h2 class="title"> {{ count($ads) }} annonces ou demandes d'accompagnement soumis</h2>
 						@endif
 					</div>
 				</div>
@@ -106,31 +98,57 @@
 				@foreach ($ads as $ad)
 					<div class="columns ">
 						<div class="column is-three-quarters ">
-							<div class="columns">
-								<div class="column is-one-quarter ">
-									<a href="{{route("ads.show", $ad->id)}}">
-										<figure class="image is-5by4">
-											@if(count($ad->documents) > 0)
-												@foreach($ad->documents as $document)
-													@if(strpos($document->type, "image") !== false)
-														<img src="{{asset($document->path)}}">
-													@endif
+							<div class="columns is-vcentered">
+								<div class="column is-two-quarter ">
+									<div id="slider-container">
+										<div id="ads-user-images" class="carousel">
+											@if($ad->hasImages)
+												@foreach($ad->images as $document)
+													<div class="card">
+														<div class="card-image">
+															<a href="{{route('ads.show', $ad->id)}}">
+																<figure class="image is-16by9">
+																	@if($document->path === "0")
+																		<img src="https://picsum.photos/480/320"
+																			 alt="picsum">
+																	@else
+																		<img src="{{URL::asset($document->path)}}"
+																			 alt="Placeholder image">
+																	@endif
+																</figure>
+															</a>
+														</div>
+													</div>
 												@endforeach
 											@else
-												<img src="https://picsum.photos/256/256">
+												<div class="card carousel-item  ad-carousel">
+													<div class="card-image">
+														<a href="{{route('ads.show', $ad->id)}}">
+															<figure class="image is-16by9">
+																<img src="/images/placeholder-ad.png">
+															</figure>
+														</a>
+													</div>
+												</div>
 											@endif
-										</figure>
-									</a>
+										</div>
+									</div>
 								</div>
 								<div class="column">
 									<h1 class="title">
 										<a href="{{route('ads.show', $ad->id)}}">{{$ad->title}}</a>
 									</h1>
-									@if(isset($ad->project))
-										<span class="tag is-primary">Demande d'accompagnement</span>
-									@endif
 									<p>
-										<span class=" has-text-grey-dark">Type d'annonce  :</span>
+										@if(isset($ad->project))
+											<span class="tag is-link">Demande d'accompagnement</span>
+										@else
+											<span class="tag is-primary">Annonce</span>
+										@endif
+									</p>
+									<br>
+
+									<p>
+										<span class=" has-text-grey-dark">Type  :</span>
 										<span class="has-text-black">{{$ad->ad_type_full_name}}</span>
 									</p>
 									<p>
@@ -142,7 +160,7 @@
 									<p>
 										@if(isset($ad->project))
 											<span class="has-text-grey-dark">Projet soumis le :</span>
-											<span class="has-text-black">{{ $ad->submitDate }}</span>
+											<span class="has-text-black">{{ $ad->submitDate?? 'Non définis' }}</span>
 										@else
 											@if(! is_null($ad->attributionAd->published_on ))
 												<span class="has-text-grey-dark">Annonce publié le :</span>
@@ -154,30 +172,54 @@
 										@endif
 									</p>
 									<p>
-										@if(isset($ad->project))
-											<span class="has-text-grey-dark">Status du projet :</span>
-											<span class="has-text-black">{{ $ad->project->projectStatus->name }}</span>
-										@else
-											<span class="has-text-grey-dark">Status de l'annonce :</span>
-											<span class="has-text-black">{{ $ad->attributionAd->adStatus->name }}</span>
-										@endif
-									</p>
+									@if(isset($ad->project))
+										<p>
+											<span class="has-text-grey-dark">Stade de l'accompagnement :</span>
+											<span class="has-text-black">{{$ad->project->supportStage->name ?? 'Non définis' }}</span>
+											<span class="has-tooltip-right" data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">
+											<i class="fas fa-info-circle has-text-info "></i>
+											</span>
+										</p>
+										<p>
+											<span class="has-text-grey-dark">Etat de la demande :</span>
+											<span class="has-text-black">{{ $ad->project->supportState->name ?? 'Non définis' }}</span>
+											<span class="has-tooltip-right" data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">
+											<i class="fas fa-info-circle has-text-info "></i>
+											</span>
+										</p>
+										<p>
+											<span class="has-text-grey-dark">Statut du projet :</span>
+											<span class="has-text-black">{{ $ad->project->projectStatus->name ?? 'Non définis' }}</span>
+											<span class="has-tooltip-right" data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">
+											<i class="fas fa-info-circle has-text-info "></i>
+											</span>
+										</p>
+									@else
+										<span class="has-text-grey-dark">Statut de l'annonce :</span>
+										<span class="has-text-black">{{ $ad->attributionAd->adStatus->name?? 'Non définis' }}</span>
+									@endif
+
 								</div>
 							</div>
 						</div>
 						<div class="column ">
 							<div class="buttons">
-								@if($ad->is_draft === 0)
+								@if(isset($ad->project))
+									<a href="{{route("advisor.showSupport", $ad->id)}}">
+										<button class="button is-link is-medium ">
+									<span class="icon is-small">
+											<i class="fas fa-hands-helping"></i>
+											</span>
+											<span>Espace de suivi</span>
+										</button>
+									</a>
+								@else
 									<a href="{{route("ads.show", $ad->id)}}">
 										<button class="button is-link is-medium ">
 											<span class="icon is-small">
 											 <i class="fas fa-eye"></i>
 											</span>
-											@if(isset($ad->project))
-												<span>Voir le projet</span>
-											@else
-												<span>Voir l'annonce</span>
-											@endif
+											<span>Voir l'annonce</span>
 										</button>
 									</a>
 								@endif
@@ -255,4 +297,19 @@
 
         })
 	</script>
+@endsection
+@section('js')
+	@if(count($ad->images) > 1)
+		<script src="{{asset('/js/bulma-carousel.js')}}"></script>
+		<script>
+            const carouselUserShow = bulmaCarousel.attach('#ads-user-images', {
+                slidesToScroll: 1,
+                slidesToShow: 1,
+                loop: true,
+                navigation: true,
+            });
+		</script>
+
+	@endif
+
 @endsection

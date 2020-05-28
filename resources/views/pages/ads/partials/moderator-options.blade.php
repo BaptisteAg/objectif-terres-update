@@ -11,23 +11,38 @@
 					<p class="title is-2 has-text-centered">Modération de l'annonce</p>
 					<p class="subtitle has-text-black">Retrouvez ici les diférentes options pour la modération de cette
 						annonce </p>
-					<p>Statut actuel de l'annonce : {{$ad->attributionAd->adStatus->name}}</p>
+					@if(! is_null($ad->attributionAd->adStatus))
+						<p>Statut actuel de l'annonce :
+							<span class="has-tooltip-right"  data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$ad->attributionAd->adStatus->id]}}"> {{$ad->attributionAd->adStatus->name}}
+							<i class="fas fa-info-circle has-text-info"></i>
+							</span>
+						</p>
+					@endif
 					<br>
 				</div>
 				<div class="columns is-mobile is-centered is-vcentered">
 					<div class="column is-3  is-centered">
 						<button @click="showModerationModal('acceptAd')" class="button is-link ">
-							Valider l'annonce
+							 <span class="icon is-small">
+      							<i class="fas fa-check"></i>
+   							 </span>
+							<span>Valider l'annonce</span>
 						</button>
 					</div>
 					<div class="column is-5  is-centered">
 						<button @click="showModerationModal('modifyAd')" class="button">
-							Demander la modification de l'annonce
+							 <span class="icon is-small">
+      							<i class="fas fa-pen"></i>
+   							 </span>
+							<span>Demander la modification de l'annonce</span>
 						</button>
 					</div>
 					<div class="column is-3 is-centered">
 						<button @click="showModerationModal('rejectAd')" class="button is-danger">
-							Refuser l'annonce
+							 <span class="icon is-small">
+      							<i class="fas fa-times"></i>
+   							 </span>
+							<span>Refuser l'annonce</span>
 						</button>
 					</div>
 				</div>
@@ -49,9 +64,10 @@
 					<p class="title is-2 has-text-centered">Modération de l'annonce</p>
 					<p class="subtitle is-6 has-text-black">Vous avez déjà modérée l'annonce ! </p>
 					<div class="content is-medium">
-						<p class="title is-5 is-spaced" >Statut actuel de l'annonce : <strong>{{$ad->attributionAd->adStatus->name}}</strong></p>
+						<p class="title is-5 is-spaced">Statut actuel de l'annonce :
+							<strong>{{$ad->attributionAd->adStatus->name}}</strong></p>
 					</div>
-					<p class="has-text-centered" >Vous souhaitez modifier votre choix ? </p>
+					<p class="has-text-centered">Vous souhaitez modifier votre choix ? </p>
 				</div>
 				<br>
 				<div class="columns is-mobile is-centered is-vcentered">
@@ -93,10 +109,10 @@
 				<div class="container">
 					<p class="title is-2 has-text-centered">Modération de l'annonce</p>
 					<br>
-						<p class="subtitle has-text-black">L'annonce est modérée
-							par
-							<strong>{{$ad->attributionAd->userModerator->first_name}} {{$ad->attributionAd->userModerator->name}}</strong>
-						</p>
+					<p class="subtitle has-text-black">L'annonce est modérée
+						par
+						<strong>{{$ad->attributionAd->userModerator->first_name}} {{$ad->attributionAd->userModerator->name}}</strong>
+					</p>
 					<p>Statut actuel de l'annonce : <span
 								class="has-text-link">{{$ad->attributionAd->adStatus->name}}</span></p>
 					<br>

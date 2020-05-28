@@ -6,8 +6,6 @@
 @section('main-content')
 	<div class="section">
 		<h1 class="title is-2 has-text-link">Administration des indicateurs </h1>
-		@include('components.supervisor-tabs')
-
 		<section class="section">
 			<div class="columns is-mobile is-centered">
 				<div class="column is-half">

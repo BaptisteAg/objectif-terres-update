@@ -3,11 +3,11 @@
 		:old-input-selected="{{json_encode(old())}}"
 >
 	<div>
-		<div class="columns">
+		<div class="columns is-desktop is-vcentered">
 			<div class="column ">
-				<div class="columns">
+				<div class="columns is-desktop is-vcentered">
 					@foreach($adTypes as $i => $adType)
-						<div class="column">
+						<div class="column is-desktop is-vcentered">
 							<custom-checkbox
 									name="ad_type[]"
 									input-value="{{$adType['value']}}"
@@ -131,7 +131,7 @@
 			@endif
 		</div>
 		<hr class="navbar-divider">
-		<div class="columns  ">
+		<div class="columns is-desktop is-vcentered ">
 			@if(Route::current()->getName() == 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
 				<div class="column is-5 ">
 					<div class="columns is-mobile">
@@ -187,7 +187,13 @@
 					</div>
 				</div>
 				<div class="column is-4 ">
-					<p class="label has-text-centered">Statut de l'annonce</p>
+					<p class="label has-text-centered has-tooltip-multiline has-tooltip-top "
+					   data-tooltip="
+					   {{implode(PHP_EOL,\App\Models\AdStatus::TOOLTIPS)}}
+							   ">
+						Statut de l'annonce
+						<i class="fas fa-info-circle has-text-info"></i>
+					</p>
 					<div class="columns is-mobile is-multiline is-centered">
 						@foreach($adStatuses as $adStatus)
 							<div class="column is-narrow has-text-centered">
@@ -207,7 +213,13 @@
 				</div>
 			@else
 				<div class="column ">
-					<p class="label has-text-centered">Stade dans l'accompagnement</p>
+					<p class="label has-text-centered has-tooltip-multiline has-tooltip-top "
+					   data-tooltip="
+					   {{implode(PHP_EOL,\App\Models\SupportStage::TOOLTIPS)}}
+							   ">
+						Stade dans l'accompagnement
+						<i class="fas fa-info-circle has-text-info"></i>
+					</p>
 					<div class="columns is-mobile is-multiline is-centered">
 						@foreach($supportStages as $supportStage)
 							<div class="column is-narrow has-text-centered">
@@ -222,7 +234,13 @@
 					</div>
 				</div>
 				<div class="column ">
-					<p class="label has-text-centered">État de la demande</p>
+					<p class="label has-text-centered has-tooltip-multiline has-tooltip-top "
+					   data-tooltip="
+					  {{implode(PHP_EOL, \App\Models\SupportState::TOOLTIPS)}}
+							   ">
+						État de la demande
+						<i class="fas fa-info-circle has-text-info"></i>
+					</p>
 					<div class="columns is-mobile is-multiline is-centered">
 						@foreach($supportStates as $supportState)
 							<div class="column is-narrow has-text-centered">
@@ -237,7 +255,13 @@
 					</div>
 				</div>
 				<div class="column ">
-					<p class="label has-text-centered">Avancement du projet</p>
+					<p class="label has-text-centered has-tooltip-multiline has-tooltip-top "
+					   data-tooltip="
+					  {{implode(PHP_EOL, \App\Models\ProjectStatus::TOOLTIPS)}}
+							   ">
+						Avancement du projet
+						<i class="fas fa-info-circle has-text-info"></i>
+					</p>
 					<div class="columns is-mobile is-multiline is-centered">
 						@foreach($projectStatuses as $projectStatus)
 							<div class="column is-narrow has-text-centered">
@@ -300,7 +324,8 @@
 			</div>
 		</div>
 		<hr class="navbar-divider">
-		@if(Route::current()->getName() != 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
+		@if(Route::current()->getName() == 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
+		@else
 			<div v-if="isMoreFiltersOpen">
 				<div class="columns">
 					<div class="column is-one-third">

@@ -217,16 +217,16 @@
 						<div class="field">
 							<label class="label">Adresse</label>
 							<p class="control has-icons-left">
-								<input id="address" class="input @error('address') is-danger @enderror" type="text"
-									   name="address" value="{{ old('address')? old('address') : $user->address }}"
-									   autocomplete="address"
+								<input id="street" class="input @error('street') is-danger @enderror" type="text"
+									   name="street" value="{{ old('street')? old('street') : $user->street }}"
+									   autocomplete="street"
 									   autofocus
 									   placeholder="Votre adresse ...">
 								<span class="icon is-small is-left">
 									<i class="fas fa-map-marker-alt"></i>
 								</span>
 							</p>
-							@error('address')
+							@error('street')
 							<article class="message is-danger" role="alert">
 								<div class="message-body">
 									{{ $message }}
