@@ -4,6 +4,7 @@
 
 @section('main-content')
 
+
 	<div class="section">
 		<h1 class="title is-2 has-text-link">Bienvenue sur votre espace primo-accueillant <span
 					class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>

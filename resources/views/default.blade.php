@@ -14,7 +14,7 @@
 
 @include('layouts.header')
 
-<div class="columns">
+<div class="columns" style="margin:5px">
 	<div class="column is-one-fifth"></div>
 	<div class="column is-three-fifths">
 		@foreach($errors->all() as $message)

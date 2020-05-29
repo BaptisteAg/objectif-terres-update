@@ -15,10 +15,8 @@ use App\Services\Users\UserService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 use Throwable;
 
 
@@ -83,6 +81,7 @@ class AdvisorsService
 
 	/**
 	 * @param Request $request
+	 * @return LengthAwarePaginator|Builder[]|Collection
 	 */
 	public function showForAdvisor(Request $request)
 	{
@@ -162,7 +161,7 @@ class AdvisorsService
 
 	/**
 	 * @param array $data
-	 * @return AdNote|Model
+	 * @return void
 	 */
 	public function editNote(array $data)
 	{
@@ -226,7 +225,7 @@ class AdvisorsService
 	}
 
 	/**
-	 * @param Request $request
+	 * @param array $data
 	 * @return Builder[]|Collection
 	 */
 	public function findNotesByProjectDataKey(array $data)
@@ -254,6 +253,20 @@ class AdvisorsService
 		if (isset($data["documents_ids"]) && is_array($data["documents_ids"])) {
 			foreach ($data["documents_ids"] as $documentId) {
 				$ad->documents()->attach($documentId);
+			}
+		}
+	}
+
+
+	public function handleSupportDashboardNotifications()
+	{
+		if (!auth()->user()->unreadNotifications->isEmpty()) {
+			$notifications = auth()->user()->unreadNotifications;
+			foreach ($notifications as $notification) {
+				if (array_key_exists('ad_id', $notification->data) && $notification->data['ad_id'] === $ad->id) {
+					$notification->markAsRead();
+					$notification->delete();
+				}
 			}
 		}
 	}

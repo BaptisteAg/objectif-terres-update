@@ -63,6 +63,12 @@
 						<p><span class="is-italic">Surface (en ha)</span> :
 							{{$ad->landOfferAd->surface ?? "Non renseignée"}}
 						</p>
+						@if ($ad->landOfferAd->offerGenres->count() > 0)
+							<p>
+								<span class="is-italic">Type d'offre : </span>
+								{{$ad->landOfferAd->offerGenres->pluck('name')->implode(', ') }}
+							</p>
+						@endif
 					@elseif(isset($ad->landSeekAd))
 						<p><span class="is-italic">Surface recherchée (en ha)</span> :
 							@if(isset($ad->landSeekAd->surface_range_min) and isset($ad->landSeekAd->surface_range_max))
@@ -77,12 +83,6 @@
 							@endif
 						</p>
 					@endif
-					<a href="{{route('ads.show', $ad->id)}}" class="button is-link ">
-										<span class="icon is-small">
-										  <i class="fas fa-search"></i>
-										</span>
-						<span>Voir le détail</span>
-					</a>
 			</div>
 		</div>
 	</div>
@@ -90,13 +90,21 @@
 		@if(isset($ad->landOfferAd))
 			<div class="columns">
 				<div class="column is-3">
-					<p><span class="is-italic">Prix (en € )</span> :
-						{{$ad->landOfferAd->price ? number_format($ad->landOfferAd->price, 2, ',', ' '): "Non renseignée"}}
-					</p>
+					@if(! is_null($ad->landOfferAd->price))
+						<p><span class="is-italic">Prix (en € )</span> :
+							{{$ad->landOfferAd->price ?  number_format($ad->landOfferAd->price, 0, ",", " " ): "Non renseignée"}}
+						</p>
+					@endif
+					@if(! is_null($ad->landOfferAd->rent_price))
+						<p><span class="is-italic">Loyer (en € )</span> :
+							{{$ad->landOfferAd->rent_price ?  number_format($ad->landOfferAd->rent_price, 0, ",", " " ): "Non renseigné"}}
+						</p>
+					@endif
 				</div>
 				<div class="column is-3">
 					<p><span class="is-italic">Altitude (en m)</span> :
-						{{$ad->landOfferAd->altitude ?? "Non renseignée"}} </p>
+						{{$ad->landOfferAd->altitude ?? "Non renseignée"}}
+					</p>
 				</div>
 				<div class="column">
 					<p>
