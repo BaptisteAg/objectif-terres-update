@@ -1,11 +1,9 @@
 <?php namespace App\Services\Users;
 
-
 use App\Models\City;
 use App\Models\User;
 use App\Repositories\Users\UserRepository;
 use Illuminate\Support\Facades\Hash;
-
 
 /**
  * Class UserService
@@ -27,6 +25,11 @@ class UserService
 	{
 		$this->repository = $repository;
 	}
+
+	public function exists(string $email)
+    {
+        return $this->repository->findByEmail($email);
+    }
 
 	/**
 	 * @param array $data
