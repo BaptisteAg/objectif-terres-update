@@ -22,7 +22,7 @@ class CreateMessagesTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
 			$table->engine = 'InnoDB';
 			$table->increments('id');
-			$table->text('content');
+			$table->text('content')->nullable();
 			$table->unsignedInteger('thread_id');
 			$table->unsignedInteger('sender_user_id');
 

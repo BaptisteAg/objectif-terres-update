@@ -2,7 +2,6 @@ import Vue from 'vue';
 import DisplayMessageContent from "../threads/components/DisplayMessageContent";
 import FormMessageReply from "../threads/components/FormMessageReply";
 import DocumentsUpload from "../../components/DocumentsUpload";
-import axios from "axios";
 
 Vue.component('support-request-dashboard', {
     components: {
@@ -29,7 +28,8 @@ Vue.component('support-request-dashboard', {
             },
             showModal: false,
             noteToModify:'',
-
+            documents:[],
+            uploading: false,
         }
     },
     mounted() {
@@ -73,8 +73,19 @@ Vue.component('support-request-dashboard', {
         },
         modifyNote(noteId){
             this.noteToModify = noteId;
+        },
+        setUploading(bool) {
+            this.uploading = bool;
+        },
+    },
+    validations(){
+        return {
+            documents: {
+                notCurrentlyUploading() {
+                    return !this.uploading;
+                }
+            }
         }
-
     },
 
 });

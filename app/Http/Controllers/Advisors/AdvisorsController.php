@@ -80,7 +80,7 @@ class AdvisorsController extends Controller
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
 
-		$ads = $this->advisorsService->findAllSupportsByUserAdvisor(true);
+		$ads = $this->advisorsService->findAllSupportsByUserAdvisor(false);
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfProjectToHandle = $this->advisorsService->findAllBySupportStageAndSupportState(SupportStage::FIRST_CONTACT_ID, SupportState::TO_HANDLE_ID)->count();
 		return view('pages.advisors.index', compact('supportStages', 'supportStates', 'projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'adTypes', 'adTypesFaIcons', 'numberOfProjectToHandle', 'productionGenres', 'bioCertifications'));
@@ -138,6 +138,10 @@ class AdvisorsController extends Controller
 	public function showSupport(int $adId)
 	{
 		$ad = $this->adService->find($adId);
+		if(!$ad->project()->exists()){
+			abort(404);
+		}
+
 		$responseTemplates = ResponseTemplate::all();
 		$thread = $this->advisorsService->findSupportRequestThread($ad->id);
 		$listUserAds = $this->adService->findAllAdsByUser($ad->user_pp_id);
@@ -226,8 +230,18 @@ class AdvisorsController extends Controller
 		return back()->with('success', 'L\'indicateur a bien été modifié');
 	}
 
+	/**
+	 * @param Request $request
+	 * @return RedirectResponse
+	 */
+	public function uploadDocuments(Request $request)
+	{
+		if(($request->input('documents')) == '[]'){
+			return back()->with('warning', 'Aucun document n\'a été déposé');
+		}
 
+		$this->advisorsService->uploadDocument($request->input());
 
-
-
+		return back()->with('success', 'Vos documents ont bien été téléversés');
+	}
 }

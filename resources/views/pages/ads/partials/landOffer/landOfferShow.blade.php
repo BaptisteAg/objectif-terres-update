@@ -111,16 +111,19 @@
 						</div>
 
 						<div class="content">
-							<p><span class="is-size-5 is-capitalized has-text-black">Altitude : </span><span
-										class="subtitle">{{$ad->landOfferAd->altitude}}m</span></p>
+							<p><span class="is-size-5 is-capitalized has-text-black">Altitude : </span>
+								@if($ad->landOfferAd->altitude)
+									<span class="subtitle">{{$ad->landOfferAd->altitude }}m</span>
+								@else
+									<span class="subtitle">Non renseignée</span>
+								@endif
+							</p>
 						</div>
-
-
-						@if($ad->landOfferAd->water_access !== "" && $ad->landOfferAd->water_access !== null)
+						@if($ad->landOfferAd )
 							<div class="content">
 								<p>
 									<span class="is-size-5 is-capitalized has-text-black">Accès à l'eau : </span><span
-											class="subtitle">{{$ad->landOfferAd->water_access ? "Oui" : "Non"}}</span>
+											class="subtitle">{{$ad->waterAccess}}</span>
 								</p>
 							</div>
 						@endif

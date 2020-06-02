@@ -46,11 +46,12 @@ class RegisterController extends Controller
      */
     protected $salesForceService;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @param UserService $userService
+	 * @param SalesforceService $salesForceService
+	 */
     public function __construct(UserService $userService, SalesforceService $salesForceService)
     {
         $this->middleware('guest');

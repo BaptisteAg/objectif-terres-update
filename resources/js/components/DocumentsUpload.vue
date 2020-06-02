@@ -3,7 +3,7 @@
             :id="'dropzone' + _uid"
             ref="dropzone"
             :options="{
-                url: '/documents/upload',
+                url: this.url,
                 thumbnailWidth: 150,
                 maxFiles: 15,
                 maxFilesize: 15,
@@ -63,6 +63,12 @@
                 type: String,
                 required: true
             },
+            url: String,
+            type : String,
+            extraData: {
+                type: Object,
+                default: {}
+            }
         },
         data() {
             return {}
@@ -89,7 +95,14 @@
              */
             onBeforeDocumentsUpload(files, xhr, formData) {
                 formData.append('_token', window.csrf_token);
-                formData.append('type', 'ads');
+                formData.append('type', this.type);
+
+                if(this.extraData) {
+                    _.forEach(this.extraData, (value, key) => {
+                        formData.append(key, value);
+                    })
+                }
+
                 this.$emit('uploading', true);
             },
             /**
@@ -98,6 +111,7 @@
             onSuccessDocumentsUpload(files, documents) {
                 if (documents.length) {
                     this.$emit('input', this.value.concat(documents));
+
                 }
                 this.$emit('uploading', false);
             },

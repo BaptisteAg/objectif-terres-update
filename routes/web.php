@@ -95,6 +95,9 @@ Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->na
 	Route::post('creer', 'ThreadsController@create')->name('create');
 	Route::get('{thread}', 'MessagesController@show')->name('show');
 	Route::post('envoi', 'MessagesController@create')->name('send');
+	Route::post('upload', 'MessagesController@uploadDocuments')->name('upload');
+//	Route::get('{type}/{filename}', 'MessagesController@show')->name('show');
+
 });
 
 Route::prefix('locations')->namespace('Locationables')->group(function () {
@@ -144,6 +147,7 @@ Route::middleware('advisor')->prefix('mon-espace-primo-accueillant')->name('advi
 	Route::post('edition-note', 'AdvisorsController@editNote')->name('editNote');
 	Route::post('suppression-note', 'AdvisorsController@deleteNote')->name('deleteNote');
 	Route::post('modification-valeurs-indicateurs', 'AdvisorsController@updateProjectDataKeysValues')->name('updateProjectDataKeysValues');
+	Route::post('ajout-document', 'AdvisorsController@uploadDocuments')->name('uploadDocuments');
 });
 
 Route::middleware('advisor')->prefix('gestion-reponse-types')->name('responseTemplates.')->namespace('ResponseTemplates')->group(function(){

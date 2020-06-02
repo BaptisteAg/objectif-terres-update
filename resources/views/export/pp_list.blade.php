@@ -33,7 +33,7 @@
 					{{$ad->userPP->phone?? ''}}
 			</td>
 			<td>{{$ad->userPP->email?? ""}}</td>
-			<td>{{$ad->userPP->address ?? ""}}</td>
+			<td>{{$ad->userPP->street ?? ""}}</td>
 			<td>{{$ad->userPP->city?? ""}}</td>
 			<td>
 				@if(isset($ad->userPP->profile))

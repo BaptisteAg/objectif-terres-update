@@ -7,8 +7,6 @@
 
 	<div class="section">
 		<h1 class="title is-2 has-text-link">Aide & ressources </h1>
-		@include('components.moderator-tabs')
-
 		<div class="container ">
 			<div class="content is-medium has-text-justified">
 				<p>Vous trouverez sur cette page une série de ressources utiles pour vous aider et

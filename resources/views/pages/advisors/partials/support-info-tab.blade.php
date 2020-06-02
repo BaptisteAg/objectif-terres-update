@@ -1,6 +1,6 @@
 <div class="card-content ">
 	<h4 class="title is-4 has-text-centered">{{$ad->title ?? ""}}</h4>
-	<div class="columns">
+	<div class="columns is-desktop is-vcentered">
 		<div class="column is-three-fifths ">
 			<div id="slider-container">
 				<div id="support-request-dashboard-ad-images" class="carousel">
@@ -39,14 +39,6 @@
 					: {{$ad->submitDate ?? "Non renseignée"}} </p>
 				<p><span class="is-italic">Catégorie</span>
 					: {{$ad->ad_type_full_name ?? "Non renseignée"}} </p>
-
-				<p><span class="is-italic">Stade de l'accompagnement</span>
-					: {{$ad->project->supportStage->name ?? "Non renseignée"}} </p>
-
-				<p><span class="is-italic">État de la demande</span>
-					: {{$ad->project->supportState->name ?? "Non définis"}} </p>
-
-
 				@if(isset($ad->landOfferAd))
 					<p><span class="is-italic">Localisations</span>:
 				@else
@@ -60,9 +52,11 @@
 						@endif
 					</p>
 					@if(isset($ad->landSeekAd))
-						<p>
-							<span class="is-italic">Dans un rayon de (en km)</span>:{{$ad->landSeekAd->locationable_radius ?? 'Non renseigné'}}
-						</p>
+						@if($ad->locationable_radius)
+							<p>
+								<span class="is-italic">Dans un rayon de (en km)</span>: {{$ad->locationable_radius }}
+							</p>
+						@endif
 					@endif
 
 					@if(isset($ad->landOfferAd))
@@ -74,6 +68,10 @@
 							@if(isset($ad->landSeekAd->surface_range_min) and isset($ad->landSeekAd->surface_range_max))
 								Entre {{$ad->landSeekAd->surface_range_min}}
 								et {{$ad->landSeekAd->surface_range_max}}
+							@elseif(isset($ad->landSeekAd->surface_range_min))
+								{{$ad->landSeekAd->surface_range_min}}
+							@elseif(isset($ad->landSeekAd->surface_range_max))
+								{{$ad->landSeekAd->surface_range_max}}
 							@else
 								Non renseignée
 							@endif
@@ -93,7 +91,8 @@
 			<div class="columns">
 				<div class="column is-3">
 					<p><span class="is-italic">Prix (en € )</span> :
-						{{$ad->landOfferAd->price ?? "Non renseignée"}} </p>
+						{{$ad->landOfferAd->price ? number_format($ad->landOfferAd->price, 2, ',', ' '): "Non renseignée"}}
+					</p>
 				</div>
 				<div class="column is-3">
 					<p><span class="is-italic">Altitude (en m)</span> :
@@ -115,7 +114,21 @@
 					</p>
 				</div>
 			</div>
-
+			<p>
+				<span class="is-italic">Transfert d'activité</span> :
+				@if($ad->landOfferAd->is_activity_transfert)
+					@if($ad->landOfferAd->is_activity_transfert == 1)
+						Oui
+					@else
+						Non
+					@endif
+				@else
+					Non renseigné
+				@endif
+			</p><p>
+				<span class="is-italic">Accès à l'eau existant</span> :
+				{{$ad->waterAccess}}
+			</p>
 			<p>
 				<span class="is-italic">Productions en place</span> :
 				@if($ad->landOfferAd->productionGenres->count() > 0)
@@ -133,35 +146,74 @@
 				@endif
 			</p>
 			<p>
-				<span class="is-italic">Description SAU : </span>{{$ad->sau_description?? "Non renseigné"}}
-			</p>
+				<span class="is-italic">Certification bio des terres :  </span>
+				<br>
+				@foreach($ad->landOfferAd->bioCertifications as $bioCertification)
+					@if(!$bioCertification->icon == "")
+						<span class=" has-tooltip-bottom" style="margin-right: 5px; margin-left: 5px"
+							  data-tooltip="{{$bioCertification->name}}">
+							<img src="{{ $bioCertification->icon }}" alt="{{$bioCertification->name}}">
+						</span>
+					@else
+						<span>{{$bioCertification->name}}</span>
+		@endif
+		@endforeach
+		<p>
+			<span class="is-italic">Description SAU : </span>{{$ad->landOfferAd->sau_description?? "Non renseigné"}}
+		</p>
 		@endif
 		@if(isset($ad->landSeekAd))
 			<p>
 				<span class="is-italic">Bâtiments recherchés</span> :
-				@if(isset($ad->landSeekAd->buildings))
+				@if($ad->landSeekAd->buildings->count() >0)
 					@foreach($ad->landSeekAd->buildings as $building)
 						<span class="is-lowercase">{{ $building->buildingType->label }} : {{ $building->requirement->label }}</span>
-						{{ $loop->last ? ' ' : ',' }}
+						{{ $loop->last ? '': ',' }}
 					@endforeach
 				@else
 					Non renseignés
 				@endif
 			</p>
 			<p>
-				<span class="is-italic">Installation en bio</span> :
+				<span class="is-italic">Accès au foncier </span> :
+				@if($ad->landSeekAd->offerGenres->count() >0)
+					@foreach($ad->landSeekAd->offerGenres as $offerGenres)
+						<span>{{ $offerGenres->name }}</span>
+						{{ $loop->last ? '': ',' }}
+					@endforeach
+				@else
+					Non renseignés
+				@endif
+			</p>
+
+			<p>
+				<span class="is-italic">Budget maximum</span> :
+				@if(isset($ad->landSeekAd->price_max))
+					@if($ad->landSeekAd->price_max > 300000)
+						Plus de 300 000 €
+					@else
+						Jusqu'à {{number_format($ad->landSeekAd->price_max, 2, ',', ' ')}} €
+					@endif
+				@elseif(isset($ad->landSeekAd->rent_max))
+					Jusqu'à {{number_format($ad->landSeekAd->rent_max, 2, ',', ' ')}} €/mois
+				@else
+					Non renseigné
+				@endif
+			</p>
+			<p>
+				<span class="is-italic">Projet en AB</span> :
 				@if(isset($ad->landSeekAd->is_bio))
 					{{$ad->landSeekAd->is_bio ? 'Oui' : 'Non'}}
 				@else
-					Non renseignée
+					Ne sais pas
 				@endif
 			</p>
 			<p>
 				<span class="is-italic">Productions envisagées</span> :
-				@if($ad->landSeekAd->offerGenres->count() > 0)
-					{{$ad->landSeekAd->offerGenres->pluck('name')->implode(', ') }}
+				@if($ad->landSeekAd->productionGenres->count() > 0)
+					{{$ad->landSeekAd->productionGenres->pluck('name')->implode(', ') }}
 				@else
-					Aucune
+					Non renseignées
 				@endif
 			</p>
 			<p>

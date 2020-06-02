@@ -77,7 +77,11 @@ class AdPresenter extends BasePresenter
 
 	public function locationable_radius()
 	{
-		return $this->wrappedObject->cities[0]->pivot->radius;
+		$locationRadius = null;
+		if (!is_null($this->wrappedObject->cities[0]->pivot->radius)) {
+			$locationRadius = $this->wrappedObject->cities[0]->pivot->radius;
+		}
+		return $locationRadius;
 	}
 
 	public function regionsList()
@@ -143,7 +147,7 @@ class AdPresenter extends BasePresenter
 	public function images()
 	{
 		return $this->wrappedObject->documents->filter(function ($document) {
-			return $this->documentIsImage($document);
+			return $document->user_id == $this->wrappedObject->user_pp_id;
 		});
 	}
 
@@ -151,6 +155,20 @@ class AdPresenter extends BasePresenter
 	{
 		return $this->wrappedObject->documents->filter(function ($document) {
 			return !$this->documentIsImage($document);
+		});
+	}
+
+	public function documentsUploadedByUser()
+	{
+		return $this->wrappedObject->documents->filter(function ($document) {
+			return $document->user_id === $this->wrappedObject->user_pp_id;
+		});
+	}
+
+	public function documentsUploadedByAdvisors()
+	{
+		return $this->wrappedObject->documents->filter(function ($document) {
+			return $document->user_id !== $this->wrappedObject->user_pp_id;
 		});
 	}
 
@@ -162,6 +180,23 @@ class AdPresenter extends BasePresenter
 	public function published_on()
 	{
 		return \Carbon\Carbon::parse($this->wrappedObject->attributionAd->published_on)->format('d/m/Y');
+	}
+
+	public function waterAccess()
+	{
+		$waterAccess = null;
+		if ($this->wrappedObject->landOfferAd) {
+			if (isset($this->wrappedObject->landOfferAd->water_access)) {
+				if ($this->wrappedObject->landOfferAd->water_access == true) {
+					$waterAccess = "Oui";
+				} else {
+					$waterAccess = "Non";
+				}
+			} else {
+				$waterAccess = "Ne sais pas";
+			}
+		}
+		return $waterAccess;
 	}
 
 }

@@ -11,6 +11,32 @@
                                   placeholder="Votre message..."/>
                     </div>
                     <br>
+                    <div class="field is-grouped">
+                        <p class="control is-expanded has-text-link"
+                           v-on:click="openDocumentUpload = !openDocumentUpload" style="cursor: pointer">
+										<span class="icon">
+										<i class="fas fa-paperclip"></i>
+									</span>
+                            <span>Envoyer un fichier</span>
+                        </p>
+                    </div>
+                    <div v-if="openDocumentUpload">
+                        <documents-upload
+                                name="documents"
+                                type="message"
+                                url="/mon-espace/messagerie/upload"
+                                :extra-data="{thread_id: this.activeThreadId }"
+                                v-model="documents"
+                                @uploading="setUploading"
+                                ref="documents">
+                        </documents-upload>
+                        <div>
+                            <p class="help is-danger"
+                               v-show="$v.documents.$error && !$v.documents.notCurrentlyUploading">
+                                Vous devez attendre la fin du téléversement de vos documents pour envoyer votre message.
+                            </p>
+                        </div>
+                    </div>
                     <div v-if='showResponseType === false ' class="control ">
                         <button class="button is-link button-send-message">
 						 <span class="icon is-small">
@@ -41,12 +67,11 @@
 									</span>
                                 <span>Créer une nouvelle réponse type</span>
                             </a>
-
                         </p>
                     </div>
                     <br>
                     <p class="control ">
-                        <button class="button is-link button-send-message">
+                        <button class="button is-link button-send-message" :disabled="isLoading">
 						 <span class="icon is-small">
 						  <i class="fas fa-paper-plane "></i>
 						</span>
@@ -61,9 +86,13 @@
 </template>
 
 <script>
-    import axios from 'axios'
+    import axios from 'axios';
+    import DocumentsUpload from "../../../components/DocumentsUpload";
 
     export default {
+        components: {
+            DocumentsUpload
+        },
         props: {
             responseTemplates: '',
             showResponseType: Boolean,
@@ -72,7 +101,20 @@
         data() {
             return {
                 content: '',
-                isLoading: false
+                isLoading: false,
+                documents: [],
+                openDocumentUpload: false,
+            }
+        },
+        watch: {
+            documents: function () {
+                if (this.documents.length > 0) {
+                    setTimeout(() => {
+                        this.$emit('on-upload-success', this.activeThreadId)
+                        this.openDocumentUpload = false;
+                        this.documents = [];
+                    }, 1500)
+                }
             }
         },
         methods: {
@@ -81,7 +123,7 @@
                 e.preventDefault();
                 axios.post('/mon-espace/messagerie/envoi', {
                     content: this.content,
-                    thread_id: this.activeThreadId
+                    thread_id: this.activeThreadId,
                 })
                     .then(response => {
                         const message = response.data;
@@ -92,7 +134,19 @@
                     .catch(error => {
                         console.log(error)
                     })
+            },
+            setUploading(bool) {
+                this.isLoading = bool;
+            },
+        },
+        validations() {
+            return {
+                documents: {
+                    notCurrentlyUploading() {
+                        return !this.isLoading;
+                    }
+                }
             }
-        }
+        },
     }
 </script>

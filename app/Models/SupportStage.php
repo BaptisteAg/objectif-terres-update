@@ -28,6 +28,13 @@ class SupportStage extends Model
 	public const FIRST_RECEPTION_ID = 2;
 	public const ACCOMPANYING_ID = 3;
 
+
+	public const TOOLTIPS = [
+		self::FIRST_CONTACT_ID=>"Premier-contact = première sollicitation/message du porteur de projet ",
+		self::FIRST_RECEPTION_ID =>"Primo-accueil = première réponse apportée au porteur de projet ",
+		self::ACCOMPANYING_ID =>"Accompagnement = plusieurs échanges avec le porteur de projet ",
+	];
+
 	/**
 	 * @var array
 	 */

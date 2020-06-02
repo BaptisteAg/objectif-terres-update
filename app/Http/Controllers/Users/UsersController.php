@@ -17,18 +17,29 @@ class UsersController extends Controller
 	protected $adService;
 	protected $userService;
 
+	/**
+	 * UsersController constructor.
+	 * @param AdService $adService
+	 * @param UserService $userService
+	 */
 	public function __construct(AdService $adService, UserService $userService)
 	{
 		$this->adService = $adService;
 		$this->userService = $userService;
 	}
 
+	/**
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
 	public function index()
 	{
 		return view('pages.users.index');
-
 	}
 
+	/**
+	 * @param User $user
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
 	public function show(User $user)
 	{
 		if (auth()->user()->role < 1) {
@@ -38,12 +49,15 @@ class UsersController extends Controller
 		return view('pages.users.show', compact('ads', 'user'));
 	}
 
-	public function edit()
+	/**
+	 * @param User $user
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function edit(User $user)
 	{
 		if (auth()->user()->id != $user->id && auth() ->user()->role != 2) {
 			abort(404);
 		}
-
 		$cities = City::all();
 		if ($user->zipCode) {
 			$cityData = [
@@ -58,6 +72,10 @@ class UsersController extends Controller
 		return view('pages.users.edit', compact('cities', 'user'));
 	}
 
+	/**
+	 * @param UserRequest $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function update(UserRequest $request)
 	{
 		$data = $request->validated();

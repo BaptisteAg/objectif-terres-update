@@ -5,16 +5,7 @@
 @section('main-content')
 	<div class="section">
 		<h1 class="title has-text-link">Bienvenue sur votre messagerie</h1>
-		@if(auth()->user()->role ===1)
-			@include('components.moderator-tabs')
-			<br>
-		@elseif(auth()->user()->role === 2)
-			@include('components.advisor-tabs')
-			<br>
-		@elseif(auth()->user()->role === 3)
-			@include('components.supervisor-tabs')
-			<br>
-		@endif
+
 		<div class="container ">
 			@if(count($threads)===0)
 				<div class="content">
@@ -88,6 +79,7 @@
 												:user-id="{{auth()->id()}}"
 												:response-templates="{{json_encode($responseTemplates)}}"
 												@message-reply-success="onMessageReplySuccess"
+												@on-upload-success="onThreadClick"
 												v-bind:show-response-type="isUserModerator"
 												v-bind:active-thread-id = "activeThread"
 										>
