@@ -21,8 +21,18 @@
 										<div class="column">
 											<p class="title is-4">{{$user->first_name}} {{$user->name}}</p>
 										</div>
-										<div class="column is-offset-1">
-											@if(auth()->user()->id !== $user->id)
+										<div class="column is-offset-4">
+											@if(auth()->user()->id == $user->id or auth()->user()->role >= 2)
+												<a href="{{route('user.edit', $user->id)}}">
+													<button class="button is-link "
+															type="button">
+														 <span class="icon is-small">
+															<i class="fa fa-user-edit" aria-hidden="true"></i>
+														</span>
+														<span>Modifier le profil</span>
+													</button>
+												</a>
+											@else
 												<div id="vue-contact-user-modal">
 													<vue-threads inline-template>
 														<div>
@@ -87,9 +97,9 @@
 				<div class="level-left">
 					<div>
 						@if(count($ads) <=1)
-							<h1 class="title"> {{ count($ads) }} annonce ou demande d'accompagnement soumis</h1>
+							<h1 class="title"> {{ count($ads) }} annonce ou demande d'accompagnement soumise</h1>
 						@else
-							<h2 class="title"> {{ count($ads) }} annonces ou demandes d'accompagnement soumis</h2>
+							<h2 class="title"> {{ count($ads) }} annonces ou demandes d'accompagnement soumises</h2>
 						@endif
 					</div>
 				</div>
@@ -176,21 +186,24 @@
 										<p>
 											<span class="has-text-grey-dark">Stade de l'accompagnement :</span>
 											<span class="has-text-black">{{$ad->project->supportStage->name ?? 'Non définis' }}</span>
-											<span class="has-tooltip-right" data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">
+											<span class="has-tooltip-right"
+												  data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">
 											<i class="fas fa-info-circle has-text-info "></i>
 											</span>
 										</p>
 										<p>
 											<span class="has-text-grey-dark">Etat de la demande :</span>
 											<span class="has-text-black">{{ $ad->project->supportState->name ?? 'Non définis' }}</span>
-											<span class="has-tooltip-right" data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">
+											<span class="has-tooltip-right"
+												  data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">
 											<i class="fas fa-info-circle has-text-info "></i>
 											</span>
 										</p>
 										<p>
 											<span class="has-text-grey-dark">Statut du projet :</span>
 											<span class="has-text-black">{{ $ad->project->projectStatus->name ?? 'Non définis' }}</span>
-											<span class="has-tooltip-right" data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">
+											<span class="has-tooltip-right"
+												  data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">
 											<i class="fas fa-info-circle has-text-info "></i>
 											</span>
 										</p>
@@ -262,10 +275,11 @@
 
 @section('script')
 	<script>
+				@if(auth()->user()->id != $user->id and auth()->user()->role < 2)
         const vueThreads = new Vue({
-            el: '#vue-contact-user-modal',
-            name: 'content'
-        });
+                el: '#vue-contact-user-modal',
+                name: 'content'
+            });
 
         let buttons = document.querySelectorAll('.open-modal-new-message');
         buttons.forEach((button) => {
@@ -296,6 +310,8 @@
             notification.style.display = 'none';
 
         })
+		@endif
+
 	</script>
 @endsection
 @section('js')

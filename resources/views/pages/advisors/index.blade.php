@@ -4,10 +4,11 @@
 
 @section('main-content')
 
+
 	<div class="section">
 		<h1 class="title is-2 has-text-link">Bienvenue sur votre espace primo-accueillant <span
 					class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
-		@if($numberOfProjectToHandle !== 0 || $numberOfUnreadMessages !==0)
+		@if($numberOfProjectToHandle !== 0 || $numberOfUnreadMessages !== 0)
 			<div id="notification-advisor" class="notification has-background-info">
 				<button id="close-notification-advisor" class="delete"></button>
 				@if($numberOfProjectToHandle> 1)

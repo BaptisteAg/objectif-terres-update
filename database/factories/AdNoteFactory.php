@@ -5,10 +5,12 @@
 use App\Models\Ad;
 use App\Models\AdNote;
 use App\Models\ProjectDataKey;
+use App\Models\ProjectDataValue;
 use App\Models\User;
 use Faker\Generator as Faker;
 
 $factory->define(AdNote::class, function (Faker $faker) {
+
     return [
         'value' => $faker->text(500),
         'user_id' => User::all()->random(),

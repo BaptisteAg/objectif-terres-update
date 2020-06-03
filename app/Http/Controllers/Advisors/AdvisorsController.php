@@ -4,25 +4,9 @@ namespace App\Http\Controllers\Advisors;
 
 
 use App\Exports\Advisors\AdvisorsExport;
-use App\Http\Controllers\Controller;
-use App\Models\Ad;
-use App\Models\AdNote;
-use App\Models\BioCertification;
 use App\Models\City;
-use App\Models\JobOfferType;
-use App\Models\ProductionGenre;
-use App\Models\ProjectDataKey;
-use App\Models\ProjectStatus;
-use App\Models\ResponseTemplate;
-use App\Models\SupportStage;
-use App\Models\SupportState;
-use App\Services\Ads\AdService;
-use App\Services\Advisors\AdvisorsService;
-use App\Services\Threads\ThreadService;
-use App\Services\Users\UserService;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -31,39 +15,8 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Throwable;
 
 
-class AdvisorsController extends Controller
+class AdvisorsController extends BaseController
 {
-	protected $advisorsService;
-	protected $threadService;
-	protected $userService;
-	protected $adService;
-	protected $adTypes;
-	protected $adTypesFaIcons;
-
-	/**
-	 * AdvisorsController constructor.
-	 * @param AdvisorsService $advisorsService
-	 * @param ThreadService $threadService
-	 * @param UserService $userService
-	 * @param AdService $adService
-	 */
-	public function __construct(AdvisorsService $advisorsService, ThreadService $threadService, UserService $userService, AdService $adService)
-	{
-		$this->advisorsService = $advisorsService;
-		$this->threadService = $threadService;
-		$this->adService = $adService;
-		$this->userService = $userService;
-		$this->adTypes = [
-			['name' => 'Offre foncière', 'value' => 'landOfferAd'],
-			['name' => 'Recherche foncière', 'value' => 'landSeekAd'],
-			['name' => 'Offre d\'emploi', 'value' => 'jobOfferAd'],
-			['name' => 'Recherche d\'emploi', 'value' => 'jobSeekAd'],
-		];
-
-		// TODO : remove ?
-		$this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access"];
-	}
-
 	/**
 	 * @param Request $request
 	 * @return Factory|View
@@ -71,19 +24,10 @@ class AdvisorsController extends Controller
 	public function index(Request $request)
 	{
 		$request->session()->forget('_old_input');
-		$supportStages = SupportStage::all();
-		$supportStates = SupportState::all();
-		$projectStatuses = ProjectStatus::all();
-		$jobOfferTypes = JobOfferType::all();
-		$productionGenres = ProductionGenre::all();
-		$bioCertifications = BioCertification::all();
-		$adTypes = $this->adTypes;
-		$adTypesFaIcons = $this->adTypesFaIcons;
-
 		$ads = $this->advisorsService->findAllSupportsByUserAdvisor(false);
-		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
-		$numberOfProjectToHandle = $this->advisorsService->findAllBySupportStageAndSupportState(SupportStage::FIRST_CONTACT_ID, SupportState::TO_HANDLE_ID)->count();
-		return view('pages.advisors.index', compact('supportStages', 'supportStates', 'projectStatuses', 'ads', 'jobOfferTypes', 'numberOfUnreadMessages', 'adTypes', 'adTypesFaIcons', 'numberOfProjectToHandle', 'productionGenres', 'bioCertifications'));
+		$vars = $this->getAdvisorDashboardVars();
+		$vars['ads'] = $ads;
+		return view('pages.advisors.index', $vars);
 	}
 
 
@@ -94,20 +38,10 @@ class AdvisorsController extends Controller
 	public function show(Request $request)
 	{
 		$request->flash();
-
-		$supportStages = SupportStage::all();
-		$supportStates = SupportState::all();
-		$projectStatuses = ProjectStatus::all();
-		$jobOfferTypes = JobOfferType::all();
-		$productionGenres = ProductionGenre::all();
-		$bioCertifications = BioCertification::all();
-		$adTypes = $this->adTypes;
-		$adTypesFaIcons = $this->adTypesFaIcons;
-
 		$ads = $this->advisorsService->showForAdvisor($request);
-		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
-		$numberOfProjectToHandle = $this->advisorsService->findAllBySupportStageAndSupportState(SupportStage::FIRST_CONTACT_ID, SupportState::TO_HANDLE_ID)->count();
-		return view('pages.advisors.index', compact('supportStages', 'supportStates', 'projectStatuses', 'jobOfferTypes', 'ads', 'numberOfUnreadMessages', 'adTypesFaIcons', 'adTypes', 'numberOfProjectToHandle', 'productionGenres', 'bioCertifications'));
+		$vars = $this->getAdvisorDashboardVars();
+		$vars['ads'] = $ads;
+		return view('pages.advisors.index', $vars);
 
 	}
 
@@ -138,32 +72,19 @@ class AdvisorsController extends Controller
 	public function showSupport(int $adId)
 	{
 		$ad = $this->adService->find($adId);
-		if(!$ad->project()->exists()){
+		if (!$ad->project()->exists()) {
 			abort(404);
 		}
-
-		$responseTemplates = ResponseTemplate::all();
 		$thread = $this->advisorsService->findSupportRequestThread($ad->id);
-		$listUserAds = $this->adService->findAllAdsByUser($ad->user_pp_id);
 		if (!isset($thread)) {
 			$thread = $this->advisorsService->createSupportRequestThread($ad->id);
 		}
-		$supportStages = SupportStage::all();
-		$supportStates = SupportState::all();
-		$projectStatuses = ProjectStatus::all();
-		$publicProjectDataKeys = ProjectDataKey::where('is_public', '=', 1)->get();
-		$currentProjectKeyDataValues = $this->advisorsService->allNotesWithPublicProjectDatKeysByAdId($ad->id);
+		$this->advisorsService->handleSupportDashboardNotifications();
 
-			if (!auth()->user()->unreadNotifications->isEmpty()) {
-				$notifications = auth()->user()->unreadNotifications;
-				foreach ($notifications as $notification){
-					if(array_key_exists('ad_id', $notification->data) && $notification->data['ad_id'] === $ad->id){
-						$notification->markAsRead();
-						$notification->delete();
-					}
-				}
-			}
-		return view('pages.advisors.support-dashboard', compact('ad', 'responseTemplates', 'thread', 'listUserAds', 'supportStates', 'supportStages', 'projectStatuses', 'publicProjectDataKeys', 'currentProjectKeyDataValues'));
+		$vars = $this->getSupportDashboardVars($ad);
+		$vars['ad'] = $ad;
+		$vars['thread'] = $thread;
+		return view('pages.advisors.support-dashboard', $vars);
 	}
 
 	/**
@@ -224,7 +145,8 @@ class AdvisorsController extends Controller
 	 * @return RedirectResponse
 	 * @throws Throwable
 	 */
-	public function updateProjectDataKeysValues(Request $request){
+	public function updateProjectDataKeysValues(Request $request)
+	{
 
 		$this->advisorsService->updateProjectDataKeysValues($request);
 		return back()->with('success', 'L\'indicateur a bien été modifié');
@@ -236,7 +158,7 @@ class AdvisorsController extends Controller
 	 */
 	public function uploadDocuments(Request $request)
 	{
-		if(($request->input('documents')) == '[]'){
+		if (($request->input('documents')) == '[]') {
 			return back()->with('warning', 'Aucun document n\'a été déposé');
 		}
 

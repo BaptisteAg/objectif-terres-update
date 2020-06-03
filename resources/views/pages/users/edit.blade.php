@@ -1,5 +1,5 @@
 @extends('default')
-@section('title', 'Mon compte | Objectif Terres')
+@section('title', 'Mon compte')
 
 @section('main-content')
 

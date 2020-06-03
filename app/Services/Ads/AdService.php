@@ -103,14 +103,14 @@ class AdService
 		$this->projectRepository = $projectRepository;
 	}
 
-    /**
-     * @param User $user
-     * @return User|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|Ad|null
-     */
-    public function getUserSupportRequest(User $user)
-    {
-        return $user->supportRequests()->first();
-    }
+	/**
+	 * @param User $user
+	 * @return User|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|Ad|null
+	 */
+	public function getUserSupportRequest(User $user)
+	{
+		return $user->supportRequests()->first();
+	}
 
 	/**
 	 * @param array $data
@@ -132,23 +132,22 @@ class AdService
 				}
 				$attributionAdData['user_supervisor_id'] = $advisor->id;
 
-                // Create a project for this ad
-                $project = $this->projectRepository->create([
-                    'support_stage_id' => SupportStage::FIRST_RECEPTION_ID,
-                    'support_state_id' => SupportState::TO_HANDLE_ID,
-                    'project_status_id' => ProjectStatus::EMERGING_ID,
-                ]);
-                $data["project_id"] = $project->id;
-            }
-			else {
-                $pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
-                // Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
-                $moderator = User::where('email', 'test.ot.moderateur@gmail.com')->first();
-                if (!$moderator) {
-                    throw new \Exception('A moderator could not be found for an attribution');
-                }
-                $attributionAdData['user_moderator_id'] = $moderator->id;
-            }
+				// Create a project for this ad
+				$project = $this->projectRepository->create([
+					'support_stage_id' => SupportStage::FIRST_RECEPTION_ID,
+					'support_state_id' => SupportState::TO_HANDLE_ID,
+					'project_status_id' => ProjectStatus::EMERGING_ID,
+				]);
+				$data["project_id"] = $project->id;
+			} else {
+				$pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
+				// Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
+				$moderator = User::where('email', 'test.ot.moderateur@gmail.com')->first();
+				if (!$moderator) {
+					throw new \Exception('A moderator could not be found for an attribution');
+				}
+				$attributionAdData['user_moderator_id'] = $moderator->id;
+			}
 
 			$ad = $this->repository->create($data);
 
@@ -392,9 +391,11 @@ class AdService
 			AdStatus::ARCHIVE_ID => 0
 		];
 		foreach ($ads as $ad) {
-			foreach ($numberOfAdsByAdStatus as $key => $value) {
-				if ($key === $ad->attributionAd->adStatus->id) {
-					$numberOfAdsByAdStatus[$key]++;
+			if (!is_null($ad->attributionAd)) {
+				foreach ($numberOfAdsByAdStatus as $key => $value) {
+					if ($key === $ad->attributionAd->adStatus->id) {
+						$numberOfAdsByAdStatus[$key]++;
+					}
 				}
 			}
 		}
@@ -408,7 +409,7 @@ class AdService
 	 */
 	public function showForSupervisor(Request $request)
 	{
-		$toPaginate = $request->has('toPaginate')? true : false;
+		$toPaginate = $request->has('toPaginate') ? true : false;
 		$ads = $this->filter($request, auth()->user()->role, $toPaginate);
 		return $ads;
 	}
@@ -597,25 +598,25 @@ class AdService
 		}
 
 		$adsFiltred->with([
-				'project',
-				'userPp',
-				'cities',
-				'cities.department',
-				'cities.department.region',
-				'departments',
-				'departments.region',
-				'regions',
-				'attributionAd',
-				'landSeekAd',
-				'landOfferAd',
-				'jobOfferAd',
-				'jobSeekAd'
-			]);
-			if($toPaginate == true){
-				return $adsFiltred->paginate(15);
-			}else{
-				return $adsFiltred->get();
-			}
+			'project',
+			'userPp',
+			'cities',
+			'cities.department',
+			'cities.department.region',
+			'departments',
+			'departments.region',
+			'regions',
+			'attributionAd',
+			'landSeekAd',
+			'landOfferAd',
+			'jobOfferAd',
+			'jobSeekAd'
+		]);
+		if ($toPaginate == true) {
+			return $adsFiltred->paginate(15);
+		} else {
+			return $adsFiltred->get();
+		}
 	}
 
 

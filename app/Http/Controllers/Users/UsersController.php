@@ -11,6 +11,7 @@ use App\Services\Ads\AdService;
 use App\Services\Users\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response;
 
 class UsersController extends Controller
 {
@@ -55,21 +56,27 @@ class UsersController extends Controller
 	 */
 	public function edit(User $user)
 	{
-		if (auth()->user()->id != $user->id && auth() ->user()->role != 2) {
-			abort(404);
-		}
-		$cities = City::all();
-		if ($user->zipCode) {
-			$cityData = [
-				'label' => $user->zipCode->name." (".$user->zipCode->zip_code.")",
-				'value'=>['id' => $user->zipCode->id,
-					'name' => $user->zipCode->name,
-					'type' => 'cities',
-					'zip_code' => $user->zipCode->zip_code]];
 
-			$user['citySelect'] = json_encode($cityData);
+		if (auth()->user()->role == 0) {
+			if (auth()->user()->id != $user->id) {
+				abort(404);
+			}
+		} elseif (auth()->user()->role < 2) {
+			return New Response(view('pages.errors.unauthorized')->with('role', 'primo-accueillants'));
+		} else {
+			$cities = City::all();
+			if ($user->zipCode) {
+				$cityData = [
+					'label' => $user->zipCode->name . " (" . $user->zipCode->zip_code . ")",
+					'value' => ['id' => $user->zipCode->id,
+						'name' => $user->zipCode->name,
+						'type' => 'cities',
+						'zip_code' => $user->zipCode->zip_code]];
+
+				$user['citySelect'] = json_encode($cityData);
+			}
+			return view('pages.users.edit', compact('cities', 'user'));
 		}
-		return view('pages.users.edit', compact('cities', 'user'));
 	}
 
 	/**
