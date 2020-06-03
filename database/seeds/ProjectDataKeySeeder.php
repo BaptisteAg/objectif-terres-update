@@ -9,6 +9,7 @@ class ProjectDataKeySeeder extends Seeder {
 	public function run(){
 		ProjectDataKey::insert([
 			[
+				'id' => 1,
 				'name'=> 'Parents agriculteurs',
 				"created_at" =>  \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()

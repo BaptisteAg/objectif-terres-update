@@ -43,7 +43,7 @@ class AdNote extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'ad_id', 'value', 'user_id', 'contact_name', 'project_data_key_id'
+		'ad_id', 'value', 'user_id', 'contact_name', 'project_data_key_id', 'project_data_value_id'
 	];
 
 	/**
@@ -70,5 +70,11 @@ class AdNote extends Model
 		return $this->belongsTo(ProjectDataKey::class);
 	}
 
-
+	/**
+	 * @return BelongsTo
+	 */
+	public function projectDataValue()
+	{
+		return $this->belongsTo(ProjectDataValue::class);
+	}
 }

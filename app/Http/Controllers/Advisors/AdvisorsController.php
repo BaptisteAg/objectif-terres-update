@@ -41,7 +41,7 @@ class AdvisorsController extends BaseController
 		$ads = $this->advisorsService->showForAdvisor($request);
 		$vars = $this->getAdvisorDashboardVars();
 		$vars['ads'] = $ads;
-		return view('pages.advisors.index', $ads);
+		return view('pages.advisors.index', $vars);
 
 	}
 
