@@ -1,0 +1,29 @@
+// Vue-Multiselect
+body .multiselect__option--highlight {
+  background: $blue;
+
+  &::after {
+    background: $blue;
+  }
+}
+
+body .multiselect__tag {
+  background: $blue;
+}
+
+
+.slider-pagination {
+  bottom: -40px;
+
+  .slider-page {
+    box-shadow: 0 2px 5px #808080;
+  }
+}
+
+.some-buttons {
+  margin-top: 20px;
+}
+
+.slider {
+  overflow: hidden !important;
+}

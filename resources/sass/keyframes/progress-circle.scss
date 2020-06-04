@@ -7,7 +7,7 @@ $size: 150px;
 
 //Create how many steps
 $howManySteps: 10; //this needs to be even.
-//for fun try using 20 and changine in the HTML the data-percentage to 15 or 85
+//for fun try using 20 and changing in the HTML the data-percentage to 15 or 85
 
 .progress {
     width: $size;
@@ -87,7 +87,7 @@ $howManySteps: 10; //this needs to be even.
     }
 }
 
-/* This for loop creates the 	necessary css animation names
+/* This for loop creates the necessary css animation names
 Due to the split circle of progress-left and progress right, we must use the animations on each side.
 */
 @for $i from 1 through $howManySteps {

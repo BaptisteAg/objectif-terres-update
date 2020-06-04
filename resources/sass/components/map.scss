@@ -1,0 +1,15 @@
+// Leaflet / OpenStreetmap
+#my_osm_widget_map { /* use the same name as <div id=""> */
+  width: 100vw; /* important! if you need full width display */
+  height: 400px;
+  margin: 0;
+  border-radius: 5px;
+  z-index: 1;
+  /* ... */
+}
+
+[data-tooltip]:not(.is-disabled).has-tooltip-multiline::before,
+[data-tooltip]:not(.is-loading).has-tooltip-multiline::before,
+[data-tooltip]:not([disabled]).has-tooltip-multiline::before {
+  white-space: pre-line;
+}
