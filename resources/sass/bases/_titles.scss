@@ -1,0 +1,89 @@
+/*
+--------------------
+TITLES H1, H2, H3, H4, H5, H6
+--------------------
+*/
+
+h1, h2, h3, h4, h5 {
+  line-height: 1.125em;
+  margin: 0.75em 0;
+}
+
+@media (max-width: 799px) {
+  h1, h2, h3, h4, h5, h6 { text-align: center; }
+}
+
+/* ----- H1 ----- */
+
+h1 {
+  font-family: "Bebas Neue", "Source Sans Pro", sans-serif;
+  letter-spacing: 0.025em;
+  font-weight: normal;
+}
+
+@media (min-width: 500px) {
+  h1 { font-size: 4em; }
+}
+
+@media (max-width: 499px) {
+  h1 { font-size: calc(0.106 * 100vw); }
+}
+
+/* ----- H2 ----- */
+
+h2 {
+  font-family: "Bebas Neue", "Source Sans Pro", sans-serif;
+  letter-spacing: 0.025em;
+  font-weight: normal;
+}
+
+@media (min-width: 500px) {
+  h2 { font-size: 3.5em; }
+}
+
+@media (max-width: 499px) {
+  h2 { font-size: calc(0.1 * 100vw); }
+}
+
+/* ----- H3 ----- */
+
+h3 {
+  font-family: 'Kalam', cursive;
+  margin: 1em 0 0.5em;
+  font-weight: normal;
+}
+
+@media (min-width: 500px) {
+  h3 { font-size: 2.5em; }
+}
+
+@media (max-width: 499px) {
+  h3 { font-size: calc(0.08 * 100vw); }
+}
+
+/* ----- H4 ----- */
+
+h4 {
+  font-family: "Bebas Neue", "Source Sans Pro", sans-serif;
+  letter-spacing: 0.025em;
+  font-weight: normal;
+  font-size: 1.75em;
+}
+
+/* ----- H5 ----- */
+
+h5 {
+  font-family: 'Kalam', cursive;
+  letter-spacing: 0.03em;
+  font-size: 1.5em;
+  margin: 1em 0 0.5em;
+}
+
+/* ----- H6 ----- */
+
+h6 {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1em;
+  margin: 1em 0;
+}

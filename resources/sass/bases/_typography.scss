@@ -1,0 +1,78 @@
+p {
+  margin: 0.5em 0;
+  line-height: 1.5em;
+}
+
+/*
+--------------------
+TEXT COLOR
+--------------------
+*/
+
+.text_color, .text_green { color: $success; }
+.text_blue { color: $primary; }
+.text_red { color:$danger; }
+.text_yellow { color: $warning; }
+
+.text_charcoal { color: $charcoal; }
+.text_cream { color: $cream; }
+.text_pearl { color: $pearl; }
+.text_white { color: $white; }
+
+
+
+/*
+--------------------
+TEXT SIZE
+--------------------
+*/
+
+.text_size.small {
+  font-size: 0.75em;
+}
+
+.text_size.x-small {
+  font-size: 0.5em;
+}
+
+.text_size.large {
+  font-size: 1.5em;
+}
+
+.text_size.x-large {
+  font-size: 2em;
+}
+/*
+--------------------
+TEXT ON PHOTO
+--------------------
+*/
+
+.text_on-photo {
+  text-shadow: 0 0 4em #311102,1px 1px 2em #311102,1px 1px 1em #311102,-1px -1px 1px rgba(0,0,0,0.5),1px 1px 1px rgba(0,0,0,0.5);
+  position: relative;
+  z-index: 3;
+}
+
+.text_on-photo,
+.text_on-photo > *{
+  color: $white !important;
+}
+
+
+/*
+--------------------
+EXERGUE
+--------------------
+*/
+
+.exergue {
+  font-size: 2em;
+  color: $warning-dark;
+  border-style: solid;
+  border-width: 0 0.125em;
+  padding: 0.5em 1.5em;
+  margin: 2em -1.5em;
+  border-color: $warning;
+}
+

@@ -9,6 +9,8 @@
 	</title>
 	@yield('head-script')
 	<link rel="stylesheet" href="{{ asset('css/app.css') }}">
+	<link href="https://fonts.googleapis.com/css?family=Bebas+Neue|Kalam:700|Source+Sans+Pro&display=swap"
+		  rel="stylesheet">
 </head>
 <body lang="fr-FR">
 

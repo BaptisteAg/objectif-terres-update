@@ -1,0 +1,44 @@
+
+a {
+  display: inline;
+  padding: 0 0.2em;
+  transition: all 0.2s;
+  color: $primary;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+a:hover,
+a:focus {
+  color: $white;
+  background-color: $primary;
+  text-decoration: none;
+}
+
+a:active {
+  color: $white;
+  background-color: $primary;
+  text-decoration: none;
+}
+
+a > i,
+a > svg {
+  text-decoration: none;
+  margin-left: 0.25em;
+}
+
+[class*="bg-d"] a { color: $white}
+[class*="bg-d"] a:hover, [class*="bg-d"] a:focus { color: $primary; background-color: $white; }
+[class*="bg-d"] a:active { color: $white}
+
+/*
+--------------------
+IMG LINK
+--------------------
+pour des images-liens
+*/
+
+.img-link {
+  display: inline-block;
+  padding: 0.2em;
+}
