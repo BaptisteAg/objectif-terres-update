@@ -1,0 +1,189 @@
+/*
+==========================================================
+==========================================================
+VIGNETTE
+==========================================================
+==========================================================
+*/
+
+/*
+--------------------
+VIGNETTE
+--------------------
+*/
+
+.vignette {
+    display: block;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+/*
+--------------------
+VIGNETTE type ROUND
+--------------------
+Format pour afficher des portraits et des avatars
+*/
+
+.vignette.round {
+    border-radius: 50%;
+}
+
+/*
+--------------------
+VIGNETTE type SOLO
+--------------------
+Image de contenu non situÃ© dans une tuile. Ces rÃ¨gles rÃ©gentent surtout son comportement sur petits Ã©crans
+*/
+
+.vignette.solo {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (min-width: 800px) {
+    .vignette.solo {
+        width: 80%;
+    }
+}
+
+@media (max-width: 799px) {
+    .vignette.solo {
+        position: relative;
+        width: 30%;
+    }
+}
+
+@media (max-width: 499px) {
+    .vignette.solo {
+        width: 50%;
+    }
+}
+
+/*
+--------------------
+VIGNETTE type PHOTO
+--------------------
+*/
+
+.vignette.photo::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.2;
+    transition: all 0.2s ease-in-out;
+    background: url("http://tdlui.semaphore-communication.fr/img/trames/motif_rayure_black.png") repeat;
+    opacity: 0.15;
+}
+
+.vignette.photo::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 0.2s ease-in-out;
+}
+
+.vignette.photo::after {
+    background: linear-gradient(rgba(206, 71, 10, 0) 0%, rgba(206, 71, 10, 0.1) 25%, rgba(206, 71, 10, 0.3) 75%, rgba(1, 50, 73, 0.3) 100%);
+    z-index: 1;
+}
+
+a:hover > .vignette.photo::before,
+a:focus > .vignette.photo::before {
+    opacity: 0.1;
+}
+
+a:hover .vignette.photo::after,
+a:focus .vignette.photo::after {
+    opacity: 0.5;
+}
+
+.vignette.photo > *:not(.vignette__image) {
+    z-index: 2;
+}
+
+
+/*
+--------------------
+VIGNETTE CREDIT
+--------------------
+*/
+
+.vignette__credit {
+    position: absolute;
+    transition: opacity 0.2s ease-in-out;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 0.5em;
+    text-align: right;
+    font-size: 0.75rem;
+    color: #fff;
+    text-shadow: 1px 1px 3px #013249, -1px -1px 3px #013249;
+    background: linear-gradient(rgba(1, 50, 73, 0), rgba(1, 50, 73, 0.3));
+}
+
+.vignette__credit { opacity: 0; }
+*:hover > .vignette > .vignette__credit { opacity: 1; }
+
+/*
+--------------------
+VIGNETTE RATIO
+--------------------
+*/
+
+[class*="vignette__ratio"] {
+    background-color: #579ea5;
+}
+
+.vignette__ratio_1-1 { padding-top: 100%; }
+.vignette__ratio_4-3 { padding-top: 75%; }
+.vignette__ratio_2-1 { padding-top: 50%; }
+
+
+[class*="vignette__ratio"] > .vignette__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/*
+--------------------
+VIGNETTE IMAGE WRAP
+--------------------
+*/
+
+.vignette__image-wrap {
+    position: relative;
+    overflow: hidden;
+    z-index: 0 !important;
+}
+
+/*
+--------------------
+VIGNETTE IMAGE
+--------------------
+*/
+
+.vignette__image {
+    display: block;
+    position: relative;
+    width: 100%;
+    max-width: initial;
+    margin-left: 0;
+    margin-top: 0;
+    z-index: 0;
+    transition: all 0.2s ease-out;
+}

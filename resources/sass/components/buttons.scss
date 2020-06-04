@@ -48,7 +48,7 @@ BUTTON
 .button__label {
   font-size: 1.25em;
   line-height: 1.125em;
-  font-family: "Bebas Neue", "Source Sans Pro", sans-serif;
+  font-family: $font-family-sans-serif-title;
 }
 
 /* ----- Wrap (optionnal) ----- */
@@ -242,7 +242,7 @@ BASIC'S VARIATIONS
 input.button.basic {
   font-size: 1.5em;
   padding: 0.625em 1.042em 0.542em;
-  font-family: "Bebas Neue", "Source Sans Pro", sans-serif;
+  font-family: $font-family-sans-serif-title;
   line-height: 0.9375em;
 }
 
