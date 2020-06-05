@@ -3,42 +3,34 @@ $body-bg: #f8fafc;
 
 // Typography
 $font-family-sans-serif: 'Nunito', sans-serif;
+$font-family-sans-serif-title: "Bebas Neue", "Source Sans Pro", sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
-
-// Colors
-$blue: #3490dc;
-$indigo: #6574cd;
-$purple: #9561e2;
-$pink: #f66d9b;
-$red: #e3342f;
-$orange: #f6993f;
-$yellow: #ffed4a;
-$green: #38c172;
-$teal: #4dc0b5;
-$cyan: #6cb2eb;
 
 //margin
 $has_margin: 90px auto;
 
 
-//Theme
+//Colors Theme
 
-$primary : #579ea5;
-$secondary : #42767a;
-$blue-bright : #00c3d6;
+$primary: #579ea5;
+$secondary: #42767a;
+$blue-bright: #00c3d6;
 
-$success : #7da237;
-$success-dark : #466b32 ;
-$success-bright : #82c700;
+$success: #7da237;
+$success-dark: #466b32 ;
+$success-bright: #82c700;
 
-$warning : #db9500;
-$warning-dark : #a86e00 ;
-$warning-bright : #ffad00;
+$warning: #db9500;
+$warning-dark: #a86e00 ;
+$warning-bright: #ffad00;
+$warning-orange: #b34818;
 
-$danger : #a41515 ;
-$danger-dark : #75160c ;
-$danger-bright : #e10000;
+
+$danger: #a41515 ;
+$danger-dark: #75160c ;
+$danger-bright: #e10000;
+$danger-darken-orange: #85170f;
 
 $night : rgba(1, 50, 73, 1);
 $charcoal : #33383d;

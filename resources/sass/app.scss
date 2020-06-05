@@ -46,7 +46,9 @@
 @import 'components/date_picker';
 @import "components/loader";
 @import 'components/youtube-video';
+@import "components/tuile";
 @import 'components/form';
+@import "components/vignette";
 
 // Pages
 @import "pages/ads/ads";
@@ -58,6 +60,7 @@
 @import "pages/cms/contactez-nous";
 @import 'pages/research/research';
 @import 'pages/threads/threads';
+
 
 // Keyframes
 @import "keyframes/progress-circle";

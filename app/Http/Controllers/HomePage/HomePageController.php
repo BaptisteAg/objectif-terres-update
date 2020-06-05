@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\HomePage;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ad;
 use App\Models\City;
 use App\Models\Department;
 use App\Models\Region;
@@ -28,7 +29,7 @@ class HomePageController extends Controller
 //		$secondAd = $this->adService->find(22);
 //		array_push($ads, $secondAd);
 
-		$ads = $adService->findAll();
+		$ads = Ad::latest()->take(2)->get();
 
 		$adsCountByRegionId = [];
 

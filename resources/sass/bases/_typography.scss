@@ -10,9 +10,11 @@ TEXT COLOR
 */
 
 .text_color, .text_green { color: $success; }
-.text_blue { color: $primary; }
-.text_red { color:$danger; }
-.text_yellow { color: $warning; }
+.text_primary { color: $primary; }
+.text_danger { color:$danger; }
+.text_danger_orange { color: $danger-darken-orange; }
+.text_warning { color: $warning; }
+.text_warning_orange { color: $warning-orange; }
 
 .text_charcoal { color: $charcoal; }
 .text_cream { color: $cream; }

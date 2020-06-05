@@ -16,7 +16,7 @@ h1, h2, h3, h4, h5 {
 /* ----- H1 ----- */
 
 h1 {
-  font-family: "Bebas Neue", "Source Sans Pro", sans-serif;
+  font-family: $font-family-sans-serif-title;
   letter-spacing: 0.025em;
   font-weight: normal;
 }
@@ -32,7 +32,7 @@ h1 {
 /* ----- H2 ----- */
 
 h2 {
-  font-family: "Bebas Neue", "Source Sans Pro", sans-serif;
+  font-family: $font-family-sans-serif-title;
   letter-spacing: 0.025em;
   font-weight: normal;
 }
@@ -64,7 +64,7 @@ h3 {
 /* ----- H4 ----- */
 
 h4 {
-  font-family: "Bebas Neue", "Source Sans Pro", sans-serif;
+  font-family: $font-family-sans-serif-title;
   letter-spacing: 0.025em;
   font-weight: normal;
   font-size: 1.75em;
