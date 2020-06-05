@@ -1,0 +1,33 @@
+
+/*
+--------------------
+NUMBER STICKER
+--------------------
+*/
+
+.number-sticker {
+  display: inline-block;
+  font-size: 0.75rem;
+  min-width: 2em;
+  height: 2em;
+  padding: 0.25em;
+  box-sizing: border-box;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 1.25em;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: bold;
+  background-color: #a41515;
+  color: #ffffff;
+}
+
+.number-sticker-wrap {
+  position: relative;
+}
+
+.number-sticker-wrap > .number-sticker {
+  position: absolute;
+  z-index: 2;
+  left: calc(100% - 1em);
+  top: calc(100% - 1.6em);
+}
