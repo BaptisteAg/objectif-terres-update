@@ -1,4 +1,4 @@
-<div class="columns ">
+<div class="columns  ">
     @include('layouts.partials.headerResearchLocation')
     <div class="column ">
         <div class="field">
