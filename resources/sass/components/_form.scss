@@ -1,0 +1,38 @@
+/*
+--------------------
+FORM INPUT FIELD
+--------------------
+*/
+
+.form-field {
+
+  border-bottom-style: solid !important;
+  border-bottom-width: 0.2em !important;
+  transition: all 0.2s !important;
+  text-overflow: ellipsis;
+  border-bottom-color: $primary !important;
+  background-color: $pearl !important;
+  border-radius: 0 !important;
+}
+
+.form-field.select:not(.is-multiple):not(.is-loading)::after {
+  border-color: $primary !important;
+  border-radius: 0 !important;
+}
+
+.bg-l-pearl .form-field {
+  border-top-color: $white !important;
+  background-color: $white !important;
+}
+
+.form-fieldset .form-field {
+  background-color: $white !important;
+}
+
+.form-field:active {
+  border-bottom-color: #1e626b !important;
+}
+
+::placeholder {
+  color: $mouse !important;
+}

@@ -1,5 +1,9 @@
 
 a {
+  cursor: pointer;
+}
+
+a:not(.without-styles) {
   display: inline;
   padding: 0 0.2em;
   transition: all 0.2s;
