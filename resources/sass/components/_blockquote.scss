@@ -1,0 +1,60 @@
+/*
+-----------------------------
+QUOTATIONS
+*/
+
+blockquote {
+    position: relative;
+    display: inline-block;
+    padding: 1em 2em;
+    background-color: rgba(0, 0, 0, 0.05);
+    font-size: 1.125em;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 1.5em;
+}
+
+blockquote.light {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+blockquote:before,
+blockquote:after {
+    font-family: 'Kalam', cursive;
+    display: block;
+    position: absolute;
+    font-size: 4em;
+    color: #7da237;
+}
+
+blockquote.light:before,
+blockquote.light:after {
+    color: #ffffff;
+}
+
+blockquote:before {
+    content: "“";
+    top: 0.125em;
+    left: -0.3em;
+}
+
+blockquote:after {
+    content: "„";
+    bottom: 0.125em;
+    right: -0.3em;
+}
+
+blockquote > * {
+    font-style: italic;
+}
+
+blockquote.light > * {
+    color: #ffffff;
+}
+
+blockquote > cite {
+    font-size: 0.75em;
+    font-weight: bold;
+    color: #7da237;
+}
