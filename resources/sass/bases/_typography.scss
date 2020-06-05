@@ -9,17 +9,17 @@ TEXT COLOR
 --------------------
 */
 
-.text_color, .text_green { color: $success; }
-.text_primary { color: $primary; }
-.text_danger { color:$danger; }
-.text_danger_orange { color: $danger-darken-orange; }
-.text_warning { color: $warning; }
-.text_warning_orange { color: $warning-orange; }
+.text_color, .text_green { color: $success !important; }
+.text_primary { color: $primary !important; }
+.text_danger { color:$danger !important; }
+.text_danger_orange { color: $danger-darken-orange !important; }
+.text_warning { color: $warning !important; }
+.text_warning_orange { color: $warning-orange !important; }
 
-.text_charcoal { color: $charcoal; }
-.text_cream { color: $cream; }
-.text_pearl { color: $pearl; }
-.text_white { color: $white; }
+.text_charcoal { color: $charcoal !important; }
+.text_cream { color: $cream !important; }
+.text_pearl { color: $pearl !important; }
+.text_white { color: $white !important; }
 
 
 

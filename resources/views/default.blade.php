@@ -13,6 +13,7 @@
 		  rel="stylesheet">
 	<link rel="icon" type="image/png" href="/images/favicon/favicon-32x32.png" />
 	<link rel="icon" href="/images/favicon/favicon.ico"/>
+	<script src="https://kit.fontawesome.com/c97506cdaa.js" crossorigin="anonymous"></script>
 </head>
 <body lang="fr-FR">
 

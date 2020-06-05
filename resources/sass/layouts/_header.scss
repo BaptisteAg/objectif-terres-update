@@ -43,7 +43,7 @@ HEADER SITE CONTENT
   font-weight: normal;
   text-transform: uppercase;
   line-height: 1em;
-  color: #ffffff;
+  color: $white;
 }
 
 /* ----- HEADER SITE BASELINE ----- */
@@ -54,7 +54,7 @@ HEADER SITE CONTENT
   letter-spacing: 0.025em;
   line-height: 1.125em;
   font-weight: normal;
-  color: #ffffff;
+  color: $white;
 }
 
 .header-site.is-shrinked .header-site__baseline {
@@ -103,7 +103,7 @@ HEADER SITE CONTENT
 
 }
 
-@media (min-width: 800px)  and (max-width: 1199px) {
+@media (min-width: 800px) and (max-width: 1199px) {
 
   .is-expanded .header-site__title {
     font-size: calc(0.09 * 100vw);
@@ -142,6 +142,41 @@ HEADER SITE CONTENT
   .header-site__logo {
     display: none;
   }
+  /*
+--------------------
+LOGO
+--------------------
+*/
+
+  .logo_TdL {
+    width: 10rem;
+    border-radius: 50%;
+  }
+
+  .logo.vertical { width: 8em; }
+  .logo.horizontal { width: 15em; }
+
+  .logo:hover,
+  .logo:focus {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .logo > img,
+  .logo > svg {
+    display: block;
+    width: 100%;
+  }
+
+  .logos {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .logos > li {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+
 
   .is-expanded .header-site__container {
     padding-top: 5em !important;
@@ -240,12 +275,16 @@ MENU
   display: flex;
   list-style: none;
   margin: 0 !important;
-  padding: 0 !important;
   font-size: 0.875em;
   align-items: center;
 }
-.menu-container{
+
+.menu-container {
   background-color: $danger;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 !important;
 }
 
 @media (max-width: 799px) {
@@ -268,7 +307,8 @@ MENU
 
 .menu__link {
   text-decoration: none;
-  display: inline-block
+  display: inline-block;
+  padding: 0.75em;
 }
 
 @media (min-width: 800px) {
@@ -298,6 +338,8 @@ MENU
   background-color: transparent !important;
 }
 
+
+
 /*
 --------------------
 MENU SITE
@@ -305,7 +347,8 @@ MENU SITE
 */
 
 .menu-site {
-    width: 100%;
+  width: 100%;
+  justify-content: center;
 }
 
 
@@ -354,7 +397,7 @@ MENU SITE
 }
 
 .menu-site > li.secondary > .menu__link {
-  background-color: #b34818;
+  background-color: $warning-orange;
 }
 
 .menu-site > li.secondary > .menu__link:hover,
@@ -371,3 +414,271 @@ MENU SITE
     padding: 0.5rem;
   }
 }
+
+/*
+--------------------
+SOUS-MENU
+--------------------
+*/
+
+.menu-submenu {
+  flex-direction: column;
+  align-items: stretch;
+  font-family: "Bebas Neue", "Source Sans Pro", sans-serif;
+}
+
+.menu-submenu:not(.tiles) > li {
+  text-align: center;
+}
+
+.menu-submenu > li.tile {
+  font-size: 1em;
+  text-align: left;
+}
+
+.menu-submenu > li > .menu__link {
+  display: block;
+  padding: 0.75rem 1rem;
+}
+
+/* theme */
+
+.menu-submenu > li > .menu__link {
+  color: $success;
+}
+.menu-submenu > li > .menu__link_danger {
+  color: $danger;
+}
+
+
+.bg-green_light > .menu-submenu > li > .menu__link {
+  color: $white;
+}
+
+.menu-submenu > li > .menu__link:hover,
+.menu-submenu > li > .menu__link:focus {
+  background-color: rgba(125, 162, 55, 0.15);
+}
+
+.bg-green_light > .menu-submenu > li > .menu__link:hover,
+.bg-green_light > .menu-submenu > li > .menu__link:focus {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+
+/*
+--------------------
+MENU BUTTONS
+--------------------
+Exception/variation basÃ©e sur la class .list
+*/
+
+.menu-buttons {
+  align-items: center;
+}
+
+.menu-buttons.list > li {
+  margin: 0.25em;
+}
+
+/*
+--------------------
+BUBBLE
+--------------------
+*/
+
+@media (min-width: 700px) {
+  .bubble-wrap {
+    position: relative;
+  }
+}
+
+.bubble {
+  display: none;
+}
+
+.bubble-wrap:hover .bubble.is-visible {
+  display:block;
+}
+
+.bubble.is-visible {
+  display: none;
+}
+
+.bubble {
+  position: absolute;
+  padding: 0;
+  z-index: 5;
+}
+
+@media (min-width: 700px) {
+
+  .bubble {
+    top: calc(100% + 0.75em);
+    width: 20em;
+    left: calc(50% - 10em);
+  }
+
+  .bubble.fluid {
+    width: auto;
+    min-width: 100%;
+    left: calc(50% - 4em);
+  }
+
+}
+
+@media (max-width: 699px) {
+  .bubble {
+    width: 80vw;
+    left: 10vw;
+    margin-top: 1rem;
+  }
+}
+
+
+/*
+--------------------
+BUBBLE SHAPE
+--------------------
+*/
+
+@media (min-width: 700px) {
+
+  .bubble {
+    &::before{
+      content: "";
+      position: absolute;
+      width: 1em;
+      height: 1em;
+      left: calc(50% - 0.5em);
+      transform: rotate(45deg);
+      top: -0.25em;
+      z-index: 0;
+      background-color: $success;
+    }
+    &_danger::before {
+    background-color: $danger;
+  }
+  }
+
+}
+
+
+.bubble__container {
+  position: relative;
+  border-radius: 0.25em;
+  overflow: hidden;
+  border: solid 2px $success;
+  background-color: $white;
+  z-index: 2;
+  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.25);
+
+  &_danger {
+    border: solid 2px $danger;
+  }
+}
+
+
+/*
+--------------------
+BUBBLE POSITION
+--------------------
+*/
+
+@media (min-width: 700px) {
+
+  .bubble.left {
+    right: -2em;
+    left: initial;
+  }
+  .bubble.right {
+    left: -2em;
+  }
+
+  .bubble.left:before {
+    left: calc(100% - 3.7em);
+  }
+  .bubble.right:before {
+    left: 2.7em;
+  }
+
+}
+
+/*
+--------------------
+SCROLLABLE BUBBLE
+--------------------
+*/
+
+.bubble__scrollable-wrap {
+  position: relative;
+}
+
+.bubble__scrollable {
+  height: 50vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.bubble__scrollable-wrap:before,
+.bubble__scrollable-wrap:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 0.5em;
+  left: 0;
+  z-index: 2;
+}
+
+/* ----- theme ----- */
+
+.bubble__scrollable-wrap:before {
+  top: 0;
+  background: linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+.bubble__scrollable-wrap:after {
+  bottom: 0;
+  background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+}
+
+.bubble__container.bg-success_light .bubble__scrollable-wrap:before {
+  background: linear-gradient(rgba(125, 162, 55, 1), rgba(125, 162, 55, 0));
+}
+
+.bubble__container.bg-success_light .bubble__scrollable-wrap:after {
+  background: linear-gradient(rgba(125, 162, 55, 0), rgba(125, 162, 55, 1));
+}
+
+.bubble__container.bg-danger_light .bubble__scrollable-wrap:before {
+  background: linear-gradient(rgba(164, 21, 21, 1), rgba(164, 21, 21, 0));
+}
+
+.bubble__container.bg-danger_light .bubble__scrollable-wrap:after {
+  background: linear-gradient(rgba(164, 21, 21, 0), rgba(164, 21, 21, 1));
+}
+
+/*
+--------------------
+BUBBLE CONTENT
+--------------------
+*/
+
+.bubble__title {
+  padding: 1rem 0.75rem 0.75rem;
+  font-size: 1.5em;
+  line-height: 1em;
+  margin: 0;
+}
+
+.bubble__container.bg-green_light .bubble__title {
+  color: $white;
+}
+
+.bubble__content {
+  padding: 1rem 0.75rem 0.75rem;
+}
+
+
+
+
