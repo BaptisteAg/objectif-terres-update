@@ -11,6 +11,8 @@
 	<link rel="stylesheet" href="{{ asset('css/app.css') }}">
 	<link href="https://fonts.googleapis.com/css?family=Bebas+Neue|Kalam:700|Source+Sans+Pro&display=swap"
 		  rel="stylesheet">
+	<link rel="icon" type="image/png" href="/images/favicon/favicon-32x32.png" />
+	<link rel="icon" href="/images/favicon/favicon.ico"/>
 </head>
 <body lang="fr-FR">
 

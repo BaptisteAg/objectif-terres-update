@@ -24,20 +24,12 @@
 @import 'bases/titles';
 @import 'bases/links';
 @import 'bases/backgrounds';
+@import 'bases/helpers';
 
-// Loader
-@import "components/loader";
-
-// Pages
-@import "pages/ads/ads";
-@import "pages/cms/qui-sommes-nous";
-@import "pages/cms/minstaller-comme-paysan";
-@import "pages/cms/louer-vendre-mes-terres";
-@import "pages/cms/ceder-ma-ferme";
-@import "pages/cms/ceder-mes-terres";
-@import "pages/cms/contactez-nous";
-@import 'pages/research/research';
-@import 'pages/threads/threads';
+//Layouts
+@import 'layouts/header';
+@import 'layouts/footer';
+@import 'layouts/navigation';
 
 // Components
 @import 'components/buttons';
@@ -52,7 +44,20 @@
 @import 'components/notification_sticker';
 @import 'components/autocomplete';
 @import 'components/date_picker';
+@import "components/loader";
 @import 'components/youtube-video';
+@import 'components/form';
+
+// Pages
+@import "pages/ads/ads";
+@import "pages/cms/qui-sommes-nous";
+@import "pages/cms/minstaller-comme-paysan";
+@import "pages/cms/louer-vendre-mes-terres";
+@import "pages/cms/ceder-ma-ferme";
+@import "pages/cms/ceder-mes-terres";
+@import "pages/cms/contactez-nous";
+@import 'pages/research/research';
+@import 'pages/threads/threads';
 
 // Keyframes
 @import "keyframes/progress-circle";
