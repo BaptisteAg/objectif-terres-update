@@ -28,23 +28,23 @@
                                     <figure class="image vignette__image-wrap vignette__ratio_4-3">
                                         <img class="vignette__image" src="{{url('/images/vignette/photo_02_4-3_600.jpg')}}" alt="Placeholder image">
                                     </figure>
-                                    <div class="card-content has-text-centered tile__container">
-                                        <div class="content text_danger_orange tile__content">
-                                            <h4 class="title is-4 tile__title">{{$ad->title}}</h4>
-                                            <div class="tile__intro">
-                                                <p>{{ \Illuminate\Support\Str::limit($ad->about_project_content, 200, $end='...') }}</p>
-                                            </div>
-                                            <p class="button-wrap">
+
+                                </div>
+                            <div class="card-content has-text-centered tile__container">
+                                <div class="content text_danger_orange tile__content">
+                                    <h4 class="title is-4 tile__title">{{$ad->title}}</h4>
+                                    <div class="tile__intro">
+                                        <p>{{ \Illuminate\Support\Str::limit($ad->about_project_content, 200, $end='...') }}</p>
+                                    </div>
+                                    <p class="button-wrap">
                                         <span class="button round small warning read-more">
                                             <span class="button__icon">
                                                 <i class="fas fa-arrow-right" aria-hidden="true"></i>
                                             </span>
                                         </span>
-                                            </p>
-                                        </div>
-                                    </div>
+                                    </p>
                                 </div>
-
+                            </div>
                         </a>
                     </div>
                 @endforeach
