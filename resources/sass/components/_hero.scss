@@ -106,3 +106,10 @@ HERO
     }
 
 }
+
+
+section.hero .container {
+    @media screen and (max-width: 1023px){
+        width: calc(100% - 6em);
+    }
+}

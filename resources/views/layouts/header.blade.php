@@ -290,14 +290,14 @@
 							</div>
 							<div class="column is-4 ">
 								<a class="without-link-styles" href="{{route ('home')}}">
-									<h1 class="title is-1 m-b-0">Objectif Terres</h1>
+									<h1 class="title is-1 mb-0">Objectif Terres</h1>
 								</a>
-								<h4 class=" text_green m-t-5">Réalisez votre projet agricole.</h4>
+								<h4 class=" text_green mt-5">Réalisez votre projet agricole.</h4>
 								<p>Une initiative Terre de Liens</p>
 							</div>
-							<div class="column is-2 has-text-centered p-t-40">
+							<div class="column is-2 has-text-centered pt-40">
 								<div style="display:inline-block; padding-top: 7px;">
-									<p class="p-r-10">Je</p>
+									<p class="pr-10">Je</p>
 								</div>
 								<div class="select form-field">
 									<label for="select"></label>
@@ -318,7 +318,7 @@
 									) }}
 								</div>
 							</div>
-							<div class="column is-2  p-t-40">
+							<div class="column is-2  pt-40">
 								<div style="display:inline-block; padding-top: 2px;">
 									<p>ici : </p>
 								</div>
@@ -333,7 +333,7 @@
 									</multi-select>
 								</div>
 							</div>
-							<div class="column has-text-centered  p-t-40 " style="padding-top: 38px;">
+							<div class="column has-text-centered  pt-40 " style="padding-top: 38px;">
 								{!! Form::submit('Rechercher', ['class' => ' button basic primary']) !!}<br>
 								<a class="has-text-left" href="#" @click="more_criteria()">Plus de critère</a>
 							</div>
