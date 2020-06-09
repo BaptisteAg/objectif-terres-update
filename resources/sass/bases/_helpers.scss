@@ -15,7 +15,6 @@ $spaceamounts: (0,5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 75, 80, 100); // Ad
 $sides: (top, bottom, left, right); // Leave this variable alone
 $breakpoints: (xs: 0, sm: $mobile, md: $tablet, lg: $desktop, xl: $widescreen);
 
-
 @each $space in $spaceamounts {
     @each $side in $sides {
         @each $breakpoint-name, $breakpoint-value in $breakpoints {
