@@ -1,4 +1,4 @@
-<div class="column">
+<div class="column is-half-mobile">
 	<div class="field">
 		<label class="label">Choississez un départments</label>
 		<multi-select

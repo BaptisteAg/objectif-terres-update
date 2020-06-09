@@ -17,8 +17,13 @@ NUMBER STICKER
   line-height: 1.25em;
   font-family: "Source Sans Pro", sans-serif;
   font-weight: bold;
-  background-color: #a41515;
-  color: #ffffff;
+  background-color: $danger;
+  color: $white;
+}
+
+.number-sticker-alternative{
+  background-color: $white;
+  color: $danger;
 }
 
 .number-sticker-wrap {
