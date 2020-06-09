@@ -514,7 +514,7 @@ BUBBLE
 @media (min-width: 700px) {
 
   .bubble {
-    top: calc(100% + 0.75em);
+    top: calc(50% + 0.75em);
     width: 20em;
     left: calc(50% - 10em);
   }
@@ -531,7 +531,6 @@ BUBBLE
   .bubble {
     width: 80vw;
     left: 10vw;
-    margin-top: 1rem;
   }
 }
 

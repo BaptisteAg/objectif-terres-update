@@ -12,7 +12,7 @@ FORM INPUT FIELD
   text-overflow: ellipsis;
   border-bottom-color: $primary !important;
   background-color: $pearl !important;
-  border-radius: 0 !important;
+  border-radius: $radius !important;
 }
 
 .form-field.select:not(.is-multiple):not(.is-loading)::after {

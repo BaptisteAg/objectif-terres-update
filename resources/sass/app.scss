@@ -1,6 +1,12 @@
 ///////////////
+
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+
 //import framework bulma
 @import '~bulma/bulma';
 @import '~bulma-accordion/dist/css/bulma-accordion';
@@ -14,9 +20,6 @@
 
 // Animate
 @import url('https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css');
-
-// Variables
-@import 'variables';
 
 //Bases
 @import 'bases/global';
@@ -43,7 +46,7 @@
 @import 'components/multiselect';
 @import 'components/notification_sticker';
 @import 'components/autocomplete';
-@import 'components/date_picker';
+@import 'components/date-picker';
 @import "components/loader";
 @import 'components/youtube-video';
 @import "components/tuile";
@@ -53,6 +56,7 @@
 @import "components/hero";
 @import "components/cta";
 @import "components/blockquote";
+@import "components/input";
 
 
 // Pages

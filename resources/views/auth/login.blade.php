@@ -7,10 +7,9 @@
         <div class="container">
             <div class="columns is-mobile is-centered">
                 <div class="column is-half">
-                    <h1 class="title is-2 has-text-centered has-text-link">Connexion </h1>
-                    <h2 class="subtitle has-text-centered">Identifiez-vous pour accéder à votre compte Objectif
+                    <h1 class="title is-2 has-text-centered text_primary">Connexion </h1>
+                    <h2 class="subtitle has-text-centered text_charcoal">Identifiez-vous pour accéder à votre compte Objectif
                         Terres </h2>
-
                     <login-form
                             :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
                             inline-template>
@@ -71,7 +70,7 @@
 
                         <div class="field is-grouped">
                             <div class="control">
-                                <button type="submit" class="button is-link" :disabled="isLoading">
+                                <button type="submit" class="button basic primary form-button" :disabled="isLoading">
                                     <template v-if="isLoading">
                                         Chargement&nbsp;&nbsp;&nbsp;
                                         <span class="icon is-small right">

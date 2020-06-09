@@ -37,6 +37,12 @@ BUTTON
   cursor: pointer;
 }
 
+@media (max-width: 799px) {
+  .button {
+    font-size: 1em;
+  }
+}
+
 /* ----- Icon (optionnal) ----- */
 
 .button__icon {
@@ -48,7 +54,7 @@ BUTTON
 .button__label {
   font-size: 1.25em;
   line-height: 1.125em;
-  font-family: $font-family-sans-serif-title;
+  font-family: $family-sans-serif-title;
 }
 
 /* ----- Wrap (optionnal) ----- */
@@ -60,10 +66,21 @@ BUTTON
 
 /* ----- Size (optionnal) ----- */
 
-.button.x-large { font-size: 1.75em;; }
-.button.large { font-size: 1.5em; }
-.button.small { font-size: 1em; }
-.button.x-small { font-size: 0.75em; }
+.button.x-large {
+  font-size: 1.75em;;
+}
+
+.button.large {
+  font-size: 1.5em;
+}
+
+.button.small {
+  font-size: 1em;
+}
+
+.button.x-small {
+  font-size: 0.75em;
+}
 
 /*
 --------------------
@@ -94,10 +111,18 @@ THEME (necessary)
   border-color: $blue-bright;
 }
 
-.button.primary.icon { color: $primary; }
+.button.primary.icon {
+  color: $primary;
+}
+
 .button.primary.icon:hover,
-.button.primary.icon:focus { color: $secondary; }
-.button.primary.icon:active { color: $blue-bright; }
+.button.primary.icon:focus {
+  color: $secondary;
+}
+
+.button.primary.icon:active {
+  color: $blue-bright;
+}
 
 /* secondary */
 
@@ -124,10 +149,18 @@ THEME (necessary)
   border-color: $blue-bright;
 }
 
-.button.secondary.icon { color: $white; }
+.button.secondary.icon {
+  color: $white;
+}
+
 .button.secondary.icon:hover,
-.button.secondary.icon:focus { color: $white; }
-.button.secondary.icon:active { color: $white; }
+.button.secondary.icon:focus {
+  color: $white;
+}
+
+.button.secondary.icon:active {
+  color: $white;
+}
 
 /* Success */
 
@@ -154,10 +187,18 @@ THEME (necessary)
   border-color: $success-bright;
 }
 
-.button.success.icon { color: $success; }
+.button.success.icon {
+  color: $success;
+}
+
 .button.success.icon:hover,
-.button.success.icon:focus { color: $success-dark; }
-.button.success.icon:active { color: $success-bright; }
+.button.success.icon:focus {
+  color: $success-dark;
+}
+
+.button.success.icon:active {
+  color: $success-bright;
+}
 
 /* Warning */
 
@@ -184,10 +225,18 @@ THEME (necessary)
   border-color: $warning-bright;
 }
 
-.button.warning.icon { color: $warning; }
+.button.warning.icon {
+  color: $warning;
+}
+
 .button.warning.icon:hover,
-.button.warning.icon:focus { color: $warning-dark; }
-.button.warning.icon:active { color: $warning-bright; }
+.button.warning.icon:focus {
+  color: $warning-dark;
+}
+
+.button.warning.icon:active {
+  color: $warning-bright;
+}
 
 /* Danger */
 
@@ -214,10 +263,18 @@ THEME (necessary)
   border-color: $danger-bright;
 }
 
-.button.danger.icon { color: $danger; }
+.button.danger.icon {
+  color: $danger;
+}
+
 .button.danger.icon:hover,
-.button.danger.icon:focus { color: $danger-dark; }
-.button.danger.icon:active { color: $danger-bright; }
+.button.danger.icon:focus {
+  color: $danger-dark;
+}
+
+.button.danger.icon:active {
+  color: $danger-bright;
+}
 
 /*
 --------------------
@@ -242,14 +299,31 @@ BASIC'S VARIATIONS
 input.button.basic {
   font-size: 1.5em;
   padding: 0.625em 1.042em 0.542em;
-  font-family: $font-family-sans-serif-title;
+  font-family: $family-sans-serif-title;
   line-height: 0.9375em;
 }
 
-input.button.basic.x-large { font-size: 2.1em; }
-input.button.basic.large { font-size: 1.8em; }
-input.button.basic.small { font-size: 1.2em; }
-input.button.basic.x-small { font-size: 0.9em; }
+@media (max-width: 799px){
+  input.button.basic {
+    font-size: 1em;
+  }
+}
+
+input.button.basic.x-large {
+  font-size: 2.1em;
+}
+
+input.button.basic.large {
+  font-size: 1.8em;
+}
+
+input.button.basic.small {
+  font-size: 1.2em;
+}
+
+input.button.basic.x-small {
+  font-size: 0.9em;
+}
 
 
 .button.basic > .button__icon:first-child {
@@ -299,10 +373,21 @@ ROUND'S VARIATION
   font-family: "Source Sans Pro", sans-serif;
 }
 
-.button.round.x-large { font-size: 2.1em; }
-.button.round.large { font-size: 1.8em; }
-.button.round.small { font-size: 1.2em; }
-.button.round.x-small { font-size: 0.9em; }
+.button.round.x-large {
+  font-size: 2.1em;
+}
+
+.button.round.large {
+  font-size: 1.8em;
+}
+
+.button.round.small {
+  font-size: 1.2em;
+}
+
+.button.round.x-small {
+  font-size: 0.9em;
+}
 
 .button.round > .button__icon {
   display: block;
@@ -377,6 +462,17 @@ button:focus span.button.expand {
 DROPDOWN BUTTON
 --------------------
 */
-.button-dropdown{
+.button-dropdown {
   font-size: 1em !important;
+}
+
+
+/*
+--------------------
+FORM INPUT BUTTON
+--------------------
+*/
+
+.form-button{
+  font-family: $family-sans-serif-title;
 }
