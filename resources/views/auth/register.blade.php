@@ -9,10 +9,10 @@
 			<div class="container">
 				<div class="columns is-mobile is-centered">
 					<div class="column is-two-thirds">
-						<h1 class="title is-2 has-text-centered has-text-link">Inscription </h1>
-						<h2 class="subtitle has-text-centered">Créez votre compte pour profiter des services d'Objectif
+						<h1 class="title is-2 has-text-centered text_primary">Inscription </h1>
+						<h2 class="subtitle has-text-centered text_charcoal">Créez votre compte pour profiter des services d'Objectif
 							Terres </h2>
-						<p class="is-size-7">Les champs marqués d'un astérisque <strong>(*)</strong> sont obligatoires.
+						<p class="is-size-7 text_charcoal">Les champs marqués d'un astérisque <strong>(*)</strong> sont obligatoires.
 						</p>
 						<br>
 						{!! Form::open(['route'=>'register']) !!}
@@ -347,7 +347,7 @@
 						<br>
 						<div class="field is-grouped is-grouped-centered">
 							<div class="control is-pulled-right">
-								<button type="submit" class="button is-link is-size-3">Valider</button>
+								<button type="submit" class="button basic primary form-button is-size-3">Valider</button>
 							</div>
 						</div>
 						{!! Form::close() !!}

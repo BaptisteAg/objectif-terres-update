@@ -1,0 +1,48 @@
+// Vue-Multiselect
+.multiselect__input,
+.multiselect__single {
+  border-radius: 0px;
+  border-bottom: 0.2em solid $primary !important;
+}
+
+
+body .multiselect__option--highlight {
+  background: $primary;
+
+  &::after {
+    background: $primary;
+  }
+}
+
+body .multiselect__tag {
+  background: $white;
+  color: $success;
+  font-family: $family-sans-serif-title;
+  text-transform: uppercase;
+
+}
+
+body .multiselect__tag-icon:hover {
+  background: none;
+}
+
+.multiselect__tag-icon::after{
+  color: $success-dark !important
+}
+
+
+.slider-pagination {
+  bottom: -40px;
+
+  .slider-page {
+    box-shadow: 0 2px 5px #808080;
+  }
+}
+
+.some-buttons {
+  margin-top: 20px;
+}
+
+.slider {
+  overflow: hidden !important;
+}

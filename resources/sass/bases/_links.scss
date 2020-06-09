@@ -12,6 +12,17 @@ a:not(.without-link-styles) {
   text-decoration: underline;
 }
 
+a.without-link-styles{
+  text-decoration: none;
+  color: inherit;
+
+  &:hover{
+    background: none;
+    text-decoration: none;
+  }
+
+}
+
 a:hover,
 a:focus {
   color: $white;

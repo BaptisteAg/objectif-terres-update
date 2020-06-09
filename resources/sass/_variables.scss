@@ -2,12 +2,13 @@
 $body-bg: #f8fafc;
 
 // Typography
-$font-family-sans-serif: 'Nunito', sans-serif;
-$font-family-sans-serif-title: "Bebas Neue", "Source Sans Pro", sans-serif;
+$family-sans-serif: 'Nunito', sans-serif;
+$family-sans-serif-title: "Bebas Neue", "Source Sans Pro", sans-serif;
+$family-sans-serif-title-second: 'Kalam', cursive;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
-// Colors
+// Bulma Colors
 $blue: #3490dc;
 $indigo: #6574cd;
 $purple: #9561e2;
@@ -65,4 +66,9 @@ $desktop: 960px + (2 * $gap);
 $widescreen: 1152px + (2 * $gap);
 // 1344px container + 4rem
 $fullhd: 1344px + (2 * $gap);
+
+
+// Bulma input
+$radius : 0px ;
+$input-border-color : $primary ;
 
