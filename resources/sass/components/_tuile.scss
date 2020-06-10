@@ -8,6 +8,7 @@ TILES (liste de tuile)
     margin: 0 -0.5em;
     flex-wrap: wrap;
     overflow: hidden;
+    box-shadow: none;
 }
 
 .tiles:first-child {
@@ -500,4 +501,29 @@ TILE type ICON-LABEL
     line-height: 1em;
     text-transform: none;
     margin: 0;
+}
+
+
+/*
+--------------------
+LIST
+--------------------
+*/
+
+.custom-list {
+    list-style: none;
+    padding: 0.5em 0;
+    display: flex;
+    margin: 0;
+    flex-wrap: wrap;
+}
+
+.custom-list_v {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.custom-list > li {
+    margin: 0;
+    margin-bottom: 0.2em;
 }

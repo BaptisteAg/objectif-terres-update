@@ -4,7 +4,7 @@
             <nav class="level ">
                 <div class="level-left">
                     <div class="level-item">
-                        <a href="/" class="button button basic secondary without-link-styles">
+                        <a href="/" class="button button basic secondary ">
                             <span class="button__label">Nous soutenir</span>
                         </a>
                     </div>
@@ -14,11 +14,11 @@
                             <div class="bubble__container bubble__container_danger ">
                                 <ul class="custom-menu menu-submenu">
                                     <li>
-                                        <a class="menu__link menu__link_danger without-link-styles"
+                                        <a class="menu__link menu__link_danger "
                                            href="">Le mouvement Terre de Liens</a>
                                     </li>
                                     <li>
-                                        <a class="menu__link menu__link_danger without-link-styles"
+                                        <a class="menu__link menu__link_danger "
                                            href="">A propos d'Objectif Terre</a>
                                     </li>
                                 </ul>
@@ -64,20 +64,20 @@
                                         <div class="dropdown-content" onclick="">
                                             @if(auth()->user()->role >= 3 )
                                                 <a href="{{route('supervisor.index')}}"
-                                                   class="dropdown-item without-link-styles text_charcoal ">
+                                                   class="dropdown-item  text_charcoal ">
                                                     Espace responsable territorial
                                                 </a>
                                             @endif
                                             @if(auth()->user()->role >= 2 )
                                                 <a href="{{route('advisor.index')}}"
-                                                   class="dropdown-item without-link-styles text_charcoal">
+                                                   class="dropdown-item  text_charcoal">
                                                     Espace primo-accueillant
                                                 </a>
                                             @endif
 
                                             @if(auth()->user()->role >= 1 )
                                                 <a href="{{route('moderator.index')}}"
-                                                   class="dropdown-item without-link-styles text_charcoal">
+                                                   class="dropdown-item  text_charcoal">
                                                     Espace modérateur
                                                 </a>
                                             @endif
@@ -88,7 +88,7 @@
                         </div>
                         <div class="level-item bubble-wrap">
                             <p class="button__wrap">
-                                <a href="#" class="button round small secondary without-link-styles"
+                                <a href="#" class="button round small secondary "
                                    title="Accéder aux applis Terre de liens">
                                     <span class="button__icon"><i class="fas fa-th"></i></span>
                                 </a>
@@ -218,7 +218,7 @@
                         <div class="level-item">
                             <p class="button__wrap">
                                 <a href="{{route('favoriteAds.show')}}"
-                                   class="button round small secondary without-link-styles" title="Annonces favorites">
+                                   class="button round small secondary " title="Annonces favorites">
                                     <span class="button__icon"><i class="fas fa-star" aria-hidden="true"></i></span>
                                 </a>
                             </p>
@@ -226,7 +226,7 @@
                         <div class="level-item">
                             <p class="button__wrap">
                                 <a href="{{route('researches.show')}}"
-                                   class="button round small secondary without-link-styles" title="Mes recherches">
+                                   class="button round small secondary " title="Mes recherches">
                                     <span class="button__icon"><i class="fas fa-save" aria-hidden="true"></i></span>
                                 </a>
                             </p>
@@ -234,7 +234,7 @@
                         <div class="level-item">
                             <p class="button__wrap">
                                 <a href="{{route('notification.index')}}"
-                                   class="button round small secondary number-sticker-wrap without-link-styles"
+                                   class="button round small secondary number-sticker-wrap "
                                    title="Consulter mes notifications">
                                     <span class="button__icon"><i class="fas fa-bell"></i></span>
                                     @unless(auth()->user()->unreadNotifications->isEmpty())
@@ -246,7 +246,7 @@
                         <div class="level-item ">
                             <p class="button__wrap ">
                                 <a href="{{route('threads.index')}}"
-                                   class="button round small secondary number-sticker-wrap without-link-styles"
+                                   class="button round small secondary number-sticker-wrap "
                                    title="Consulter mes messages">
                                     <span class="button__icon"><i class="fas fa-envelope"></i></span>
                                     @if($numberOfUnreadMessages >=0)
@@ -259,7 +259,7 @@
                         <div class="level-item">
                             <p class="button__wrap">
                                 <a href="{{route('user.index')}}"
-                                   class="button round small secondary without-link-styles" title="Gérer mon profil">
+                                   class="button round small secondary " title="Gérer mon profil">
                                     <span class="button__icon"><i class="fas fa-user"></i></span>
                                 </a>
                             </p>
@@ -380,7 +380,7 @@
                                                 <div class="columns is-mobile is-vcentered is-multiline">
                                                     <div class="column  is-1-desktop is-one-fifth-tablet is-half-mobile">
                                                         <figure class="image is-square">
-                                                            <a class="without-link-styles logo logo_TdL"
+                                                            <a class=" logo logo_TdL"
                                                                href="{{route ('home')}}">
                                                                 <img class="is-rounded"
                                                                      src="/images/logo/logo_TdL_cartouche_blanc-rouge_500.png"
@@ -389,8 +389,8 @@
                                                         </figure>
                                                     </div>
                                                     <div class="column is-4-desktop is-four-fifths-tablet is-half-mobile ">
-                                                        <h1 class="title is-1 mb-0 mt-5">
-                                                            <a class="without-link-styles" href="{{route ('home')}}">
+                                                        <h1 class="title is-1 mb-0">
+                                                            <a class="text_charcoal" href="{{route ('home')}}">
                                                                 Objectif Terres
                                                             </a>
                                                         </h1>
@@ -504,20 +504,20 @@
                                                                 <div class="dropdown-content">
                                                                     @if(auth()->user()->role >= 3 )
                                                                         <a href="{{route('supervisor.index')}}"
-                                                                           class="dropdown-item without-link-styles text_charcoal ">
+                                                                           class="dropdown-item  text_charcoal ">
                                                                             Espace responsable territorial
                                                                         </a>
                                                                     @endif
                                                                     @if(auth()->user()->role >= 2 )
                                                                         <a href="{{route('advisor.index')}}"
-                                                                           class="dropdown-item without-link-styles text_charcoal">
+                                                                           class="dropdown-item  text_charcoal">
                                                                             Espace primo-accueillant
                                                                         </a>
                                                                     @endif
 
                                                                     @if(auth()->user()->role >= 1 )
                                                                         <a href="{{route('moderator.index')}}"
-                                                                           class="dropdown-item without-link-styles text_charcoal">
+                                                                           class="dropdown-item  text_charcoal">
                                                                             Espace modérateur
                                                                         </a>
                                                                     @endif
@@ -529,7 +529,7 @@
                                                 <div class="level-item">
                                                     <div class="bubble-wrap">
                                                         <a href="#"
-                                                           class="button round small danger without-link-styles"
+                                                           class="button round small danger "
                                                            title="Accéder aux applis Terre de liens">
 																<span class="button__icon"><i
                                                                             class="fas fa-th"></i></span>
@@ -673,7 +673,7 @@
                                                     <div>
                                                         <p class="button__wrap">
                                                             <a href="{{route('notification.index')}}"
-                                                               class="button round small danger number-sticker-wrap without-link-styles"
+                                                               class="button round small danger number-sticker-wrap "
                                                                title="Consulter mes notifications">
 															<span class="button__icon"><i
                                                                         class="fas fa-bell"></i></span>
@@ -686,7 +686,7 @@
                                                     <div>
                                                         <p class="button__wrap ">
                                                             <a href="{{route('threads.index')}}"
-                                                               class="button round small danger number-sticker-wrap without-link-styles"
+                                                               class="button round small danger number-sticker-wrap "
                                                                title="Consulter mes messages">
 														<span class="button__icon"><i
                                                                     class="fas fa-envelope"></i></span>
@@ -699,7 +699,7 @@
                                                     <div>
                                                         <p class="button__wrap">
                                                             <a href="{{route('user.index')}}"
-                                                               class="button round small danger without-link-styles"
+                                                               class="button round small danger "
                                                                title="Gérer mon profil">
 															<span class="button__icon"><i
                                                                         class="fas fa-user"></i></span>
@@ -733,14 +733,14 @@
                                         @endguest
                                         <div class="top-bar__1__CTA has-text-centered">
                                             <div class="mb-10">
-                                                <a href="#" class="button basic success without-link-styles">
+                                                <a href="#" class="button basic success ">
                                                     <span class="button__icon"></span><i
                                                             class="fas fa-hand-holding-heart"></i>
                                                     <span class="button__label">Nous soutenir</span>
                                                 </a>
                                             </div>
                                             <div class="">
-                                                <a class="button basic secondary without-link-styles"
+                                                <a class="button basic secondary "
                                                    href="/qui-sommes-nous"><span
                                                             class="button__label">Qui sommes-nous ?</span></a>
                                             </div>
@@ -758,28 +758,28 @@
                                                 </a>
                                             </li>
                                             <li class="bubble-wrap">
-                                                <a href="#" class="menu__link without-link-styles">
+                                                <a href="#" class="menu__link ">
                                                     Je souhaite
                                                 </a>
                                                 <div class="bubble is-visible fluid bubble_danger">
                                                     <div class="bubble__container bubble__container_danger ">
                                                         <ul class="custom-menu menu-submenu">
                                                             <li>
-                                                                <a class="menu__link menu__link_danger without-link-styles"
+                                                                <a class="menu__link menu__link_danger "
                                                                    href="/louer-vendre-mes-terres">m'installer
                                                                     paysan</a>
                                                             </li>
                                                             <li>
-                                                                <a class="menu__link menu__link_danger without-link-styles"
+                                                                <a class="menu__link menu__link_danger "
                                                                    href="/ceder-ma-ferme">trouver une terre ou des
                                                                     financements</a>
                                                             </li>
                                                             <li>
-                                                                <a class="menu__link menu__link_danger without-link-styles"
+                                                                <a class="menu__link menu__link_danger "
                                                                    href="/trouver-un-emploi">transmettre ma ferme</a>
                                                             </li>
                                                             <li>
-                                                                <a class="menu__link menu__link_danger without-link-styles"
+                                                                <a class="menu__link menu__link_danger "
                                                                    href="/confier-mes-terres">faire une donation ou un
                                                                     leg à Terre
                                                                     de Liens</a>
@@ -789,33 +789,33 @@
                                                 </div>
                                             </li>
                                             <li class="bubble-wrap">
-                                                <a href="#" class="menu__link without-link-styles">
+                                                <a href="#" class="menu__link ">
                                                     Je suis
                                                 </a>
                                                 <div class="bubble is-visible fluid bubble_danger">
                                                     <div class="bubble__container bubble__container_danger ">
                                                         <ul class="custom-menu menu-submenu">
                                                             <li>
-                                                                <a class="menu__link menu__link_danger without-link-styles"
+                                                                <a class="menu__link menu__link_danger "
                                                                    href="">en reconversion professionnelle avec un
                                                                     projet
                                                                     d'installation</a>
                                                             </li>
                                                             <li>
-                                                                <a class="menu__link menu__link_danger without-link-styles"
+                                                                <a class="menu__link menu__link_danger "
                                                                    href="">un candidat à l'installation en recherche de
                                                                     terres</a>
                                                             </li>
                                                             <li>
-                                                                <a class="menu__link menu__link_danger without-link-styles"
+                                                                <a class="menu__link menu__link_danger "
                                                                    href="">un paysan (bientôt) à la retraite</a>
                                                             </li>
                                                             <li>
-                                                                <a class="menu__link menu__link_danger without-link-styles"
+                                                                <a class="menu__link menu__link_danger "
                                                                    href="">un propriétaire de foncier</a>
                                                             </li>
                                                             <li>
-                                                                <a class="menu__link menu__link_danger without-link-styles"
+                                                                <a class="menu__link menu__link_danger "
                                                                    href="">une collectivité </a>
                                                             </li>
                                                         </ul>
@@ -823,42 +823,42 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <a class="menu__link without-link-styles" href="#">Questions
+                                                <a class="menu__link " href="#">Questions
                                                     fréquentes</a>
                                             </li>
                                             <li>
-                                                <a class="menu__link without-link-styles" href="#">Première visite ?</a>
+                                                <a class="menu__link " href="#">Première visite ?</a>
                                             </li>
                                             <li class="secondary">
                                                 <a href="/accompagnement/demarrer"
-                                                   class="menu__link without-link-styles">Être
+                                                   class="menu__link ">Être
                                                     accompagné</a>
                                             </li>
                                             <li class="secondary">
                                                 @if(Auth::check())
                                                     @if(auth()->user()->role === 1 )
                                                         <a href="{{ route('moderator.index') }}"
-                                                           class="menu__link without-link-styles">Espace
+                                                           class="menu__link ">Espace
                                                             modérateur</a>
                                                     @elseif(auth()->user()->role === 2)
                                                         <a href="{{ route('advisor.index') }}"
-                                                           class="menu__link without-link-styles">Espace
+                                                           class="menu__link ">Espace
                                                             primo-accueillant</a>
 
                                                     @elseif (auth()->user()->role >= 3)
                                                         <a href="{{ route('supervisor.index') }}"
-                                                           class="menu__link without-link-styles">Espace
+                                                           class="menu__link ">Espace
                                                             responsable territorial</a>
                                                     @else
                                                         <a href="{{ route('ads.create') }}"
-                                                           class="menu__link without-link-styles">Déposer
+                                                           class="menu__link ">Déposer
                                                             une
                                                             annonce</a>
 
                                                     @endif
                                                 @else
                                                     <a href="{{ route('ads.create') }}"
-                                                       class="menu__link without-link-styles">Déposer
+                                                       class="menu__link ">Déposer
                                                         une
                                                         annonce</a>
                                                 @endif

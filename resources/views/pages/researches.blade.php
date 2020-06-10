@@ -33,11 +33,11 @@
 										<footer class="card-footer">
 											<div class="buttons card-footer-item">
 												<a href="{{route('login')}}">
-													<button class="button is-link">
+													<button class="button basic primary">
 														<span>Se connecter</span></button>
 												</a>
 												<a href="{{route('register')}}">
-													<button class="button is-link is-light">
+													<button class="button basic secondary">
 														<span>S'inscrire</span></button>
 												</a>
 											</div>
@@ -72,7 +72,6 @@
 													<button type="submit" class="button is-link">
 														Valider
 													</button>
-
 												</div>
 												<button id="close-modal" class="modal-close is-large"
 														aria-label="close"></button>
@@ -144,6 +143,86 @@
 					</div>
 				</div>
 			</nav>
+			<ul class="list list_v tiles">
+				<li class="tile tile_text-image_h">
+					<a class="tile__link">
+						<div class="vignette photo">
+							<div class="vignette__image-wrap vignette__ratio_2-1">
+								<img src="http://tdlui.semaphore-communication.fr/img/vignettes/ferme01.jpg"
+									 class="vignette__image"/>
+							</div>
+							<ul class="custom-tags custom-list custom-list_v x-large">
+								<li class="custom-tag success">
+									<i class="fas fa-map-marker-alt"></i> Loire (42)
+								</li>
+								<li class="custom-tag warning">
+									<i class="fas fa-piggy-bank"></i> 350 000 €
+								</li>
+								<li class="custom-tag danger">
+									<i class="fas fa-arrows-alt-h"></i> 25 ha
+								</li>
+							</ul>
+						</div>
+						<div class="tile__content large">
+							<p class="tile__pre-title">
+								<span class="tile__date">Publié aujourd'hui</span>
+							</p>
+							<p class="tile__title">Lorem titre de l’annonce qui apparaîtra ici l'Oust
+							</p>
+							<div class="tile__intro">
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+									eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+									ad minim veniam.</p>
+							</div>
+							<p class="button__wrap">
+            <span class="button round small warning read-more">
+              <span class="button__icon"><i class="fas fa-arrow-right"></i></span>
+            </span>
+							</p>
+						</div>
+					</a>
+				</li>
+				<li class="tile tile_text-image_h">
+					<a class="tile__link">
+						<div class="vignette photo">
+							<div class="vignette__image-wrap vignette__ratio_2-1">
+								<img src="http://tdlui.semaphore-communication.fr/img/vignettes/ferme01.jpg"
+									 class="vignette__image"/>
+							</div>
+							<ul class="custom-tags custom-list custom-list_v x-large">
+								<li class="custom-tag success">
+									<i class="fas fa-map-marker-alt"></i> Maine-et-Loire (49)
+								</li>
+								<li class="custom-tag warning">
+									<i class="fas fa-piggy-bank"></i> 350 000 €
+								</li>
+								<li class="custom-tag danger">
+									<i class="fas fa-arrows-h"></i> 25 ha
+								</li>
+							</ul>
+							<p class="vignette__credit">Crédit photo Jeanne Cianovitch</p>
+						</div>
+						<div class="tile__content large">
+							<p class="tile__pre-title">
+								<span class="tile__date">Publié aujourd'hui</span>
+							</p>
+							<p class="tile__title">Lorem titre de l’annonce qui apparaîtra ici l'Oust
+							</p>
+							<div class="tile__intro">
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+									eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+									ad minim veniam.</p>
+							</div>
+							<p class="button__wrap">
+            <span class="button round small warning read-more">
+              <span class="button__icon"><i class="fas fa-arrow-right"></i></span>
+            </span>
+							</p>
+						</div>
+					</a>
+				</li>
+			</ul>
+
 			<section class="section">
 				@foreach($ads as $ad)
 					<div class="columns">
@@ -215,52 +294,6 @@
 					</div>
 				</div>
 
-				{{--				@if($ads->lastPage() > 1)--}}
-				{{--					<nav class="pagination is-centered" role="navigation" aria-label="pagination">--}}
-				{{--						<ul class="pagination-list">--}}
-				{{--							<li>--}}
-				{{--								<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => 1])) }}"--}}
-				{{--								   class="{{ $ads->currentPage() === 1 ?'pagination-link is-current-page' : 'pagination-link' }}"--}}
-				{{--								   aria-label="Goto page 1">1</a>--}}
-				{{--							</li>--}}
-				{{--							<li class="{{ $ads->lastPage() > 6 }}"><span class="pagination-ellipsis">&hellip;</span>--}}
-				{{--							</li>--}}
-				{{--							@if($ads->lastPage() >= 3)--}}
-				{{--								@if($ads->lastPage()<=10)--}}
-				{{--									<li>--}}
-				{{--										<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => $ads->currentPage()-1])) }}"--}}
-				{{--										   class="pagination-link is-current-page' "--}}
-				{{--										   aria-label="Goto page {{ $ads->currentPage()-1 }}"><< Précédent</a>--}}
-				{{--									</li>--}}
-				{{--									<li>--}}
-				{{--										<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => $ads->currentPage()])) }}"--}}
-				{{--										   class="{{ ((int)request()->input('page') === $ads->currentPage()) ? ' pagination-link is-current-page' : 'pagination-link' }}"--}}
-				{{--										   aria-label="Goto page {{ $ads->currentPage() }}">{{ $ads->currentPage() }}</a>--}}
-				{{--									</li>--}}
-				{{--									<li>--}}
-				{{--										<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => $ads->currentPage() + 1])) }}"--}}
-				{{--										   class="pagination-link is-current-page' "--}}
-				{{--										   aria-label="Goto page {{ $ads->currentPage()+1 }}">Suivant >></a>--}}
-				{{--									</li>--}}
-				{{--								@else--}}
-				{{--									@for($i = 2; $i <= $ads->lastPage()-1; $i++)--}}
-				{{--										<li>--}}
-				{{--											<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => $i])) }}"--}}
-				{{--											   class="{{ ((int)request()->input('page') === $i) ? ' pagination-link is-current-page' : 'pagination-link' }}"--}}
-				{{--											   aria-label="Goto page {{ $i }}">{{ $i }}</a>--}}
-				{{--										</li>--}}
-				{{--									@endfor--}}
-				{{--								@endif--}}
-				{{--							@endif--}}
-				{{--							<li><span class="pagination-ellipsis">&hellip;</span></li>--}}
-				{{--							<li>--}}
-				{{--								<a href="{{ route('researches.index', array_merge(Request::all(), ['page' => $ads->lastPage()])) }}"--}}
-				{{--								   class="{{ ($ads->currentPage() == $ads->lastPage()) ? ' pagination-link is-current-page' : 'pagination-link' }}"--}}
-				{{--								   aria-label="Goto page {{ $ads->lastPage() }}">{{ $ads->lastPage() }}</a>--}}
-				{{--							</li>--}}
-				{{--						</ul>--}}
-				{{--					</nav>--}}
-				{{--				@endif--}}
 			</section>
 			@if($adsType === 'landOfferAd' || $adsType === 'landSeekAd')
 				<section class="section">

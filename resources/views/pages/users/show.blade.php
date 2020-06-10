@@ -22,7 +22,7 @@
 										</div>
 										<div class="column is-offset-4">
 											@if(auth()->user()->id == $user->id or auth()->user()->role >= 2)
-												<a class="without-link-styles" href="{{route('user.edit', $user->id)}}">
+												<a class="" href="{{route('user.edit', $user->id)}}">
 													<button class="button basic primary "
 															type="button">
 														 <span class="icon is-small">

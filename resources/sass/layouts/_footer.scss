@@ -56,3 +56,16 @@ BOTTOM BAR 2
   color: #ffffff;
   background-color: #85170f;
 }
+
+/*
+--------------------
+FOOTER SITE
+--------------------
+*/
+
+@media (min-width: 700px) {
+    .footer-site__title {
+        min-height: 2em;
+    }
+}
+

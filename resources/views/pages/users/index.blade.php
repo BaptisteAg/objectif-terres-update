@@ -19,7 +19,7 @@
 		<section class="section">
 			<div class="columns is-mobile is-centered ">
 				<div class="column is-3 ">
-					<a class="without-link-styles" href="{{route("ads.list")}}">
+					<a class="" href="{{route("ads.list")}}">
 						<div class="card custom-card ">
 							<div class="card-content">
 								<div class="media">
@@ -43,7 +43,7 @@
 
 				</div>
 				<div class="column is-3">
-					<a class="without-link-styles" href="{{route("researches.show")}}">
+					<a class="" href="{{route("researches.show")}}">
 						<div class="card custom-card">
 							<div class="card-content">
 								<div class="media">
@@ -67,7 +67,7 @@
 
 				</div>
 				<div class="column is-3">
-					<a class="without-link-styles" href="{{route("favoriteAds.show")}}">
+					<a class="" href="{{route("favoriteAds.show")}}">
 						<div class="card custom-card">
 							<div class="card-content">
 								<div class="media">
@@ -92,7 +92,7 @@
 			</div>
 			<div class="columns is-mobile is-centered mt-10">
 				<div class="column is-3">
-					<a class="without-link-styles" href="{{route('threads.index')}}">
+					<a class="" href="{{route('threads.index')}}">
 						<div class="card custom-card">
 							<div class="card-content">
 								<div class="media">
@@ -115,7 +115,7 @@
 					</a>
 				</div>
 				<div class="column is-3">
-					<a class="without-link-styles" href="{{route('user.edit')}}">
+					<a class="" href="{{route('user.edit')}}">
 						<div class="card custom-card">
 							<div class="card-content">
 								<div class="media">
@@ -139,7 +139,7 @@
 
 				</div>
 				<div class="column is-3">
-					<a class="without-link-styles" href="{{route('notification.index')}}">
+					<a class="" href="{{route('notification.index')}}">
 						<div class="card custom-card">
 							<div class="card-content">
 								<div class="media">

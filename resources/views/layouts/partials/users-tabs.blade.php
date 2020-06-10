@@ -2,7 +2,7 @@
 	<ul>
 		@if(auth()->user()->supportRequests()->count())
 			<li class="{{ Route::current()->getName() === 'support-request.show' ? 'is-active' : '' }}">
-				<a class="without-link-styles" href="{{route ('support-request.show')}}">
+				<a class="" href="{{route ('support-request.show')}}">
 					<span class="icon is-small">
 						<i class="fas fa-rocket" aria-hidden="true"></i>
 					</span>
@@ -12,7 +12,7 @@
 		@endif
 		@if(auth()->user()->ads()->count())
 			<li class="{{ Route::current()->getName() === 'ads.list' ? 'is-active' : '' }}">
-				<a class="without-link-styles" href="{{route ('ads.list')}}">
+				<a class="" href="{{route ('ads.list')}}">
 					<span class="icon is-small">
 						<i class="fas fa-newspaper" aria-hidden="true"></i>
 					</span>
@@ -21,7 +21,7 @@
 			</li>
 		@endif
 		<li class="{{Route::current()->getName() === 'researches.show' ? 'is-active' : '' }}">
-			<a class="without-link-styles" href="{{route('researches.show')}}">
+			<a class="" href="{{route('researches.show')}}">
 				<span class="icon is-small">
 					<i class="fas fa-save" aria-hidden="true"></i>
 				</span>
@@ -29,7 +29,7 @@
 			</a>
 		</li>
 		<li class="{{ Route::current()->getName() == 'favoriteAds.show' ? 'is-active' : '' }}">
-			<a class="without-link-styles" href="{{route('favoriteAds.show')}}">
+			<a class="" href="{{route('favoriteAds.show')}}">
 				<span class="icon is-small">
 					<i class="fas fa-star" aria-hidden="true"></i>
 				</span>
@@ -37,7 +37,7 @@
 			</a>
 		</li>
 		<li class="{{ Route::current()->getName() == 'threads.index' ? 'is-active' : '' }}">
-			<a class="without-link-styles" href="{{route('threads.index')}}">
+			<a class="" href="{{route('threads.index')}}">
 				<span class="icon is-small">
 					<i class="fas fa-comments"></i>
 				</span>
@@ -45,7 +45,7 @@
 			</a>
 		</li>
 		<li class="{{ Route::current()->getName() == 'user.edit' ? 'is-active' : '' }}">
-			<a class="without-link-styles" href="{{route('user.edit')}}">
+			<a class="" href="{{route('user.edit')}}">
 				<span class="icon is-small">
 					<i class="fas fa-user"></i>
 				</span>

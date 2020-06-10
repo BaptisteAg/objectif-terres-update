@@ -187,3 +187,19 @@ VIGNETTE IMAGE
     z-index: 0;
     transition: all 0.2s ease-out;
 }
+
+/*
+--------------------
+VIGNETTE AND TAGS
+--------------------
+*/
+
+.vignette > .custom-tags{
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    z-index: 3;
+    background-color: transparent;
+}

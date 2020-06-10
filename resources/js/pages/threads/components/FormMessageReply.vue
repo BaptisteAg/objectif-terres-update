@@ -12,7 +12,7 @@
                     </div>
                     <br>
                     <div class="field is-grouped">
-                        <a class="without-link-styles">
+                        <a class="">
                             <p class="control is-expanded text_primary has-text-underline"
                                v-on:click="openDocumentUpload = !openDocumentUpload" style="cursor: pointer">
 										<span class="icon">

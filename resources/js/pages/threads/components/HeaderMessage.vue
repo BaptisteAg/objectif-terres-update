@@ -16,7 +16,7 @@
                     </template>
                     <template v-else>
                             <template v-for="(user, index) in value[0].thread.users">
-                                <a class="without-link-styles" target="_blank" :href="'/utilisateurs/' + user.id">  <p class="has-text-centered  text-style-title__primary" v-if="user.id !==userId"> {{user.first_name}} <span class="is-uppercase">{{user.name}}</span></p></a>
+                                <a class="" target="_blank" :href="'/utilisateurs/' + user.id">  <p class="has-text-centered  text-style-title__primary" v-if="user.id !==userId"> {{user.first_name}} <span class="is-uppercase">{{user.name}}</span></p></a>
                             </template>
                     </template>
 
@@ -27,7 +27,7 @@
                     <template v-if="value[0].thread.ad !== null">
                         <div class="content" v-if="isDisplay">
                             <div class="buttons is-centered ">
-                                <a target="_blank" :href="'/annonces/' + value[0].thread.ad.id" class="without-link-styles">
+                                <a target="_blank" :href="'/annonces/' + value[0].thread.ad.id" class="">
                                     <button class="button basic secondary">
 											<span class="icon is-small">
 											 <i class="fas fa-eye"></i>
