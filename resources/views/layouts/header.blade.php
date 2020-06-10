@@ -265,7 +265,7 @@
                             </p>
                         </div>
                         <div class="level-item">
-                            <a class="dropdown-item " href="{{ route('logout') }}"
+                            <a class=" " href="{{ route('logout') }}"
                                onclick="event.preventDefault();
 												 document.getElementById('logout-form').submit();">
 							<span class="icon">
