@@ -29,3 +29,7 @@
 ::placeholder {
   color: $mouse !important;
 }
+
+.select select {
+    border-color: transparent;
+}
