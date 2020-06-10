@@ -4,6 +4,7 @@ namespace App\Services\Advisors;
 
 use App\Models\Ad;
 use App\Models\AdNote;
+use App\Models\ProjectDataKey;
 use App\Models\Thread;
 use App\Repositories\AdNotes\AdNotesRepository;
 use App\Repositories\Ads\AdRepository;
@@ -85,7 +86,7 @@ class AdvisorsService
 	 */
 	public function showForAdvisor(Request $request)
 	{
-		$toPaginate = $request->has('toPaginate')? true : false;
+		$toPaginate = $request->has('toPaginate') ? true : false;
 		$ads = $this->adService->filter($request, auth()->user()->role, $toPaginate);
 		return $ads;
 	}
@@ -167,14 +168,13 @@ class AdvisorsService
 	{
 		try {
 			$note = AdNote::findOrNew($data['ad_note_id']);
-			if($note->value !== $data['value']){
+			if ($note->value !== $data['value']) {
 				$note->update($data);
 				session(['success' => 'La note a bien été modifiée']);
-			}else{
+			} else {
 				session(['warning' => 'Le contenu de la note n\'a pas été modifié']);
 			}
-		}
-		catch (\Exception $e) {
+		} catch (\Exception $e) {
 			session(['warning' => 'Une erreur s\'est produite, veuillez réessayer']);
 		}
 
@@ -197,22 +197,33 @@ class AdvisorsService
 	 */
 	public function updateProjectDataKeysValues(Request $request)
 	{
-		$newProjectDataKeyValues = array_filter($request->input('project_data_key'));
+		$requestProjectDataKeyValues = array_filter($request->input('project_data_key'));
 
 		$previousValues = $this->adNotesRepository->findAllNotesWithPublicProjectDatKeysByAdId($request->input('ad_id'));
 
-		$previousValues->filter(function ($note) use ($request, &$newProjectDataKeyValues) {
-			if (array_key_exists($note->project_data_key_id, $newProjectDataKeyValues)) {
-				if ($note->value != $newProjectDataKeyValues[$note->project_data_key_id]) {
-					$note->value = $newProjectDataKeyValues[$note->project_data_key_id];
+		$previousValues->filter(function ($note) use ($request, &$requestProjectDataKeyValues) {
+			if (array_key_exists($note->project_data_key_id, $requestProjectDataKeyValues)) {
+				if ($note->value != $requestProjectDataKeyValues[$note->project_data_key_id]) {
+					$note->value = $requestProjectDataKeyValues[$note->project_data_key_id];
 					$note->user_id = $request->input('user_id');
 					$note->save();
+
+					$projectDataKey = ProjectDataKey::whereId($note->project_data_key_id)->with('projectDataValues')->first();
+
+					if ($projectDataKey->projectDataValues->count() > 0) {
+						$projectDataKey->projectDataValues->filter(function ($projectDataValue) use ($note, $requestProjectDataKeyValues) {
+							if ($projectDataValue->value === $requestProjectDataKeyValues[$note->project_data_key_id]) {
+								$note->projectDataValue()->associate($projectDataValue->id);
+								$note->save();
+							}
+						});
+					}
 				}
-				unset($newProjectDataKeyValues[$note->project_data_key_id]);
+				unset($requestProjectDataKeyValues[$note->project_data_key_id]);
 			}
 		});
-		if (count($newProjectDataKeyValues) > 0) {
-			foreach ($newProjectDataKeyValues as $key => $value) {
+		if (count($requestProjectDataKeyValues) > 0) {
+			foreach ($requestProjectDataKeyValues as $key => $value) {
 				$data = Arr::only($request->input(), [
 					"ad_id",
 					"user_id"
@@ -270,7 +281,6 @@ class AdvisorsService
 			}
 		}
 	}
-
 
 
 }

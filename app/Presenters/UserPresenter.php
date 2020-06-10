@@ -33,7 +33,7 @@ class UserPresenter extends BasePresenter
 
 	}
 
-	public function civility()
+	public function civilityFullName()
 	{
 		if ($this->wrappedObject->civility === 1) {
 			return 'Madame';

@@ -3,7 +3,7 @@
 @section ('title', 'Rechercher parmis les annonces postées sur Objectif Terres')
 
 @section('main-content')
-	<section class="section">
+	<section class="section pt-0">
 		<div class="container">
 			<nav class="level">
 				<div class="level-left">
@@ -97,7 +97,7 @@
 						@else
 							<h1 class="title">Recherche d'emploi</h1>
 						@endif
-						<h2 class="subtitle">{{ ($ads->total()) }} annonces trouvées</h2>
+						<h2 class="subtitle text_success">{{ ($ads->total()) }} annonces trouvées</h2>
 					</div>
 				</div>
 				<div class="level-right">

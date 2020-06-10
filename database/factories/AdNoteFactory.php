@@ -16,6 +16,5 @@ $factory->define(AdNote::class, function (Faker $faker) {
         'user_id' => User::all()->random(),
         'contact_name' => $faker->name,
         'ad_id' => Ad::all()->random(),
-		'project_data_key_id'=>ProjectDataKey::all()->random(),
     ];
 });

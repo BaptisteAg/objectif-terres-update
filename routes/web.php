@@ -54,14 +54,14 @@ Route::get('/register', 'Salesforces\SalesForceAuthController@register');
 
 Route::prefix('recherches')->name('researches.')->namespace('Researches')->group(function () {
 	Route::get('recherche', 'ResearchesController@index')->name('index');
-
-	Route::middleware('auth')->group(function () {
-		Route::post('sauvegarde', 'ResearchesController@store')->name('store');
-		Route::get('liste', 'ResearchesController@show')->name('show');
-		Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
-		Route::get('supprimer-alerte/{id}', 'ResearchesController@deleteAlert')->name('deleteAlert');
-		Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
-	});
+//
+//	Route::middleware('auth')->group(function () {
+//		Route::post('sauvegarde', 'ResearchesController@store')->name('store');
+//		Route::get('liste', 'ResearchesController@show')->name('show');
+//		Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
+//		Route::get('supprimer-alerte/{id}', 'ResearchesController@deleteAlert')->name('deleteAlert');
+//		Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
+//	});
 });
 Route::prefix('mon-espace/recherches')->middleware('auth')->name('researches.')->namespace('Researches')->group(function () {
 	Route::post('sauvegarde', 'ResearchesController@store')->name('store');

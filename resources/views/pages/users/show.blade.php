@@ -3,8 +3,7 @@
 @section('title', 'Profil de '. $user->first_name.' '.$user->name )
 
 @section('main-content')
-	<div class="section">
-
+	<div class="section pt-0">
 		<div class="section">
 			<div class="columns is-mobile is-centered">
 				<div class="column is-half ">
@@ -12,19 +11,19 @@
 						<div class="card-content">
 							<div class="media">
 								<div class="media-left">
-										<span class="icon is-large">
+										<span class="icon is-large text_primary" style="height: 4rem">
 										   <i class="fas fas fa-3x fa-user"></i>
 										</span>
 								</div>
 								<div class="media-content">
 									<div class="columns">
 										<div class="column">
-											<p class="title is-4">{{$user->first_name}} {{$user->name}}</p>
+											<p class="text_size is-size-3">{{$user->first_name}} {{$user->name}}</p>
 										</div>
 										<div class="column is-offset-4">
 											@if(auth()->user()->id == $user->id or auth()->user()->role >= 2)
-												<a href="{{route('user.edit', $user->id)}}">
-													<button class="button is-link "
+												<a class="without-link-styles" href="{{route('user.edit', $user->id)}}">
+													<button class="button basic primary "
 															type="button">
 														 <span class="icon is-small">
 															<i class="fa fa-user-edit" aria-hidden="true"></i>

@@ -1,0 +1,7 @@
+[data-tooltip]:not(.is-disabled).has-tooltip-active::after, [data-tooltip]:not(.is-disabled).has-tooltip-active::before, [data-tooltip]:not(.is-disabled):focus::after, [data-tooltip]:not(.is-disabled):focus::before, [data-tooltip]:not(.is-disabled):hover::after, [data-tooltip]:not(.is-disabled):hover::before, [data-tooltip]:not(.is-loading).has-tooltip-active::after, [data-tooltip]:not(.is-loading).has-tooltip-active::before, [data-tooltip]:not(.is-loading):focus::after, [data-tooltip]:not(.is-loading):focus::before, [data-tooltip]:not(.is-loading):hover::after, [data-tooltip]:not(.is-loading):hover::before, [data-tooltip]:not([disabled]).has-tooltip-active::after, [data-tooltip]:not([disabled]).has-tooltip-active::before, [data-tooltip]:not([disabled]):focus::after, [data-tooltip]:not([disabled]):focus::before, [data-tooltip]:not([disabled]):hover::after, [data-tooltip]:not([disabled]):hover::before {
+  opacity: 1;
+  -webkit-transition: all 0s 1s linear;
+  -moz-transition: all 0s 1s linear;
+  -o-transition: all 0s 1s linear;
+  transition: all 0s 1s linear;
+}

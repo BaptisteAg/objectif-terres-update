@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $name
  * @property boolean $is_public
+ * @property boolean $immutable
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AdNote[] $adNotes
@@ -29,7 +30,7 @@ class ProjectDataKey extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'is_public'
+        'name', 'is_public', 'immutable'
     ];
 
     /**
@@ -39,4 +40,12 @@ class ProjectDataKey extends Model
     {
         return $this->hasMany(AdNote::class);
     }
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function projectDataValues()
+	{
+		return $this->hasMany(ProjectDataValue::class);
+	}
 }

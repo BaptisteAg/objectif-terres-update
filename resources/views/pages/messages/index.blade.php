@@ -3,13 +3,12 @@
 @section ('title', 'Consulter la liste de vos messages')
 
 @section('main-content')
-	<div class="section">
-		<h1 class="title has-text-link">Bienvenue sur votre messagerie</h1>
-
-		<div class="container ">
+	<div class="section pt-0">
+		<h1 class="page__title">Bienvenue sur votre messagerie</h1>
+		<div class="container mt-50">
 			@if(count($threads)===0)
 				<div class="content">
-					<p class="subtitle has-text-centered">Vous n'avez pas encore reçu de messages ! </p>
+					<p class="page__subtitle has-text-centered">Vous n'avez pas encore reçu de messages !</p>
 				</div>
 				@if(auth()->user()->role >= 1 )
 					<div id="vue-messages">
@@ -17,10 +16,10 @@
 							<div>
 								<div class="columns is-centered is-mobile">
 									<div class="column is-2">
-										<button class="open-modal-new-message button is-link" type="button">
+										<button class="open-modal-new-message button basic primary" type="button">
 											<span class="icon is-small">
-								<i class="fa fa-paper-plane" aria-hidden="true"></i>
-								</span>
+											<i class="fa fa-paper-plane" aria-hidden="true"></i>
+											</span>
 											<span> Envoyer un message</span>
 										</button>
 									</div>
@@ -62,10 +61,9 @@
 									</list-threads>
 								</div>
 								<div class="column  box-thread-display">
-
 									<div class="box">
 										<header-message
-												v-bind:active-thread-id = "activeThread"
+												v-bind:active-thread-id="activeThread"
 												v-bind:is-display="isDisplay"
 												v-model="messages"
 												:user-id="{{auth()->id()}}"
@@ -81,7 +79,7 @@
 												@message-reply-success="onMessageReplySuccess"
 												@on-upload-success="onThreadClick"
 												v-bind:show-response-type="isUserModerator"
-												v-bind:active-thread-id = "activeThread"
+												v-bind:active-thread-id="activeThread"
 										>
 										</form-message-reply>
 									</div>

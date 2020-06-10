@@ -3,20 +3,14 @@
 @section ('title', 'Consulter la liste de vos annonces favorites')
 
 @section('main-content')
-	<section class="section">
+	<section class="section pt-0">
 		<div class="container">
-			<nav class="level">
-				<div class="level-left">
-					<div>
-						<h1 class="title">Liste des annonces favorites</h1>
-						@if(count($favoriteAds) <=1)
-							<h2 class="subtitle"> {{ count($favoriteAds) }} annonce favorite.</h2>
-						@else
-							<h2 class="subtitle"> {{ count($favoriteAds) }} annonces favorites.</h2>
-						@endif
-					</div>
-				</div>
-			</nav>
+			<h1 class="page__title">Liste des annonces favorites</h1>
+			@if(count($favoriteAds) <=1)
+				<h2 class="page__subtitle"> {{ count($favoriteAds) }} annonce favorite.</h2>
+			@else
+				<h2 class="page__subtitle"> {{ count($favoriteAds) }} annonces favorites.</h2>
+			@endif
 			<section class="section">
 				@foreach ($favoriteAds as $favoriteAd)
 					<div class="columns ">
@@ -84,14 +78,14 @@
 								</a>
 							</div>
 							<a href="{{route ('favoriteAds.destroy', $favoriteAd->id)}}">
-							<div class="buttons ">
-								<button class="button is-danger is-medium is-light">
+								<div class="buttons ">
+									<button class="button is-danger is-medium is-light">
 												<span class="icon has-text-danger">
 												  <i class="fas fa-ban"></i>
 												</span>
-									<span>Retirer l'annonce des favoris</span>
-								</button>
-							</div>
+										<span>Retirer l'annonce des favoris</span>
+									</button>
+								</div>
 							</a>
 						</div>
 					</div>
@@ -100,7 +94,8 @@
 							@if($favoriteAd->ad->threadAlreadyExist)
 								<article class="message is-success">
 									<div class="message-body">
-										<a href="{{route('threads.index')}}">Vous avez déjà envoyé un message au porteur de projet. Consulter votre messagerie !</a>
+										<a href="{{route('threads.index')}}">Vous avez déjà envoyé un message au porteur
+											de projet. Consulter votre messagerie !</a>
 									</div>
 								</article>
 							@else

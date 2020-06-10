@@ -254,7 +254,8 @@ class ProjectService
 		ProjectDataKey::updateOrCreate(
 			[
 				'name' => $request->input('project_data_key_name'),
-				'is_public' => $request->input('is_project_data_key_public')
+				'is_public' => $request->input('is_project_data_key_public'),
+				'immutable' => 0
 			]
 		);
 	}

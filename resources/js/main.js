@@ -33,8 +33,8 @@ if ($dropdowns.length > 0) {
 
     $dropdowns.forEach(function ($el) {
         $el.addEventListener('click', function (event) {
-            console.log(event)
-            $el.classList.toggle('is-active');
+            $el.classList.toggle('is-active')
+            $el.classList.toggle('is-active')
         });
     });
 

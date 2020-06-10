@@ -7,29 +7,28 @@
                 <div class="column is-one-third"></div>
                 <div class="column ">
                     <template v-if="value[0].thread.title">
-                        <p class="title is-5 has-text-centered">{{value[0].thread.title}}</p>
+                        <p class="has-text-centered  text-style-title__primary">{{value[0].thread.title}}</p>
                         <template v-for="(user, index) in value[0].thread.users">
                             <p class=" is-marginless subtitle is-6 has-text-centered has-text-grey"
                                v-if="user.id !==userId">
                                 {{user.first_name}} {{user.name}}</p>
                         </template>
                     </template>
-
                     <template v-else>
                             <template v-for="(user, index) in value[0].thread.users">
-                                <a target="_blank" :href="'/utilisateurs/' + user.id">  <p class=" title is-5 has-text-centered is-marginless" v-if="user.id !==userId"> {{user.first_name}} <span class="is-uppercase">{{user.name}}</span></p></a>
+                                <a class="without-link-styles" target="_blank" :href="'/utilisateurs/' + user.id">  <p class="has-text-centered  text-style-title__primary" v-if="user.id !==userId"> {{user.first_name}} <span class="is-uppercase">{{user.name}}</span></p></a>
                             </template>
                     </template>
 
                     <template v-if="value[0].thread.ad !== null">
-                       <p class="subtitle is-6 has-text-centered">{{value[0].thread.ad.title}}</p>
+                       <p class=" is-6 has-text-centered">{{value[0].thread.ad.title}}</p>
                     </template>
                     <br>
                     <template v-if="value[0].thread.ad !== null">
                         <div class="content" v-if="isDisplay">
                             <div class="buttons is-centered ">
-                                <a target="_blank" :href="'/annonces/' + value[0].thread.ad.id">
-                                    <button class="button is-link ">
+                                <a target="_blank" :href="'/annonces/' + value[0].thread.ad.id" class="without-link-styles">
+                                    <button class="button basic secondary">
 											<span class="icon is-small">
 											 <i class="fas fa-eye"></i>
 											</span>
