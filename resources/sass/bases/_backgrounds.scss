@@ -61,6 +61,9 @@ BACKGROUNDS
   background-color: $danger-bright !important;
   color: $white;
 }
+.bd-danger-light {
+  background-color: lighten($danger, 90%)  !important;
+}
 .bg-d-warning {
   background-color: $warning !important;
   color: $white;

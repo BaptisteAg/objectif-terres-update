@@ -69,7 +69,7 @@
                                             </div>
                                             <footer class="card-footer">
                                                 <div class="buttons card-footer-item">
-                                                    <button type="submit" class="button is-link">
+                                                    <button type="submit" class="button basic primary form-button">
                                                         Valider
                                                     </button>
                                                 </div>
@@ -150,9 +150,8 @@
                     <ul class="list list_v tiles">
                         <li class="tile tile_text-image_h">
                             <a class="tile__link" href="{{route('ads.show',  $ad->id)}}">
-                                <div class="vignette photo">
-                                    <figure class="image is-2by1 pt-0">
-                                        <div class="vignette__image-wrap vignette__ratio_2-1">
+                                <div class="vignette photo is-flex">
+                                        <div class="vignette__image-wrap is-flex">
                                             @if($ad->hasImages)
                                                 @if($ad->images[0]->path ==="0")
                                                     @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
@@ -176,7 +175,6 @@
                                                 @endif
                                             @endif
                                         </div>
-                                    </figure>
                                     <ul class="custom-tags custom-list custom-list_v x-large">
                                         <li class="custom-tag success">
                                             <i class="fas fa-map-marker-alt"></i>
