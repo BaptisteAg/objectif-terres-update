@@ -366,16 +366,16 @@ MENU CORPORATE
 }
 
 @media (min-width: 800px) {
-  .menu-corporate > li > .button.secundary {
+  .menu-corporate > li > .button.secondary {
     background-color: transparent !important;
   }
 
-  .menu-corporate > li > .button.secundary:hover,
-  .menu-corporate > li > .button.secundary:focus {
+  .menu-corporate > li > .button.secondary:hover,
+  .menu-corporate > li > .button.secondary:focus {
     background-color: #42767a !important;
   }
 
-  .menu-corporate > li > .button.secundary:active {
+  .menu-corporate > li > .button.secondary:active {
     background-color: #0098a6 !important;
   }
 
@@ -396,7 +396,7 @@ MENU CORPORATE
     margin-bottom: 0.5em !important;
   }
 
-  .menu-corporate > li > .button.secundary {
+  .menu-corporate > li > .button.secondary {
     border-color: #ffffff !important;
   }
 
@@ -500,27 +500,27 @@ MENU SITE
 
 /* ----- MENU SITE SECUNDARY LINKS ----- */
 
-.menu-site .secundary > .menu__link {
+.menu-site .secondary > .menu__link {
   padding: 0.25em 0.5em;
   margin: 0.25em !important;
   font-size: 1.75em;
 }
 
-.menu-site > li.secundary > .menu__link {
+.menu-site > li.secondary > .menu__link {
   background-color: #b34818;
 }
 
-.menu-site > li.secundary > .menu__link:hover,
-.menu-site > li.secundary > .menu__link:focus {
+.menu-site > li.secondary > .menu__link:hover,
+.menu-site > li.secondary > .menu__link:focus {
   background-color: #cc5121;
 }
 
-.menu-site > li.secundary > .menu__link:active {
+.menu-site > li.secondary > .menu__link:active {
   background-color: #ea5f28;
 }
 
 @media (max-width: 799px) {
-  .menu-site > .menu__item.menu__secundary > .menu__link {
+  .menu-site > .menu__item.menu__secondary > .menu__link {
     padding: 0.5rem;
   }
 }

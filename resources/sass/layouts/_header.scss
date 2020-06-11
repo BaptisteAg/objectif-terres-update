@@ -309,6 +309,7 @@ MENU
   text-decoration: none;
   display: inline-block;
   padding: 0.75em;
+    line-height: 1.3;
 }
 
 @media (min-width: 800px) {
@@ -449,6 +450,9 @@ SOUS-MENU
 .menu-submenu > li > .menu__link_danger {
   color: $danger;
 }
+.menu-submenu > li > .menu__link_primary {
+    color: $primary-dark;
+}
 
 
 .bg-green_light > .menu-submenu > li > .menu__link {
@@ -527,6 +531,30 @@ BUBBLE
 
 }
 
+@media (min-width: $desktop +1) {
+    .menu-site .bubble {
+        width: 250px;
+        top: calc(50% + 2.65em);
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+@media (min-width: 800px) and (max-width: $desktop) {
+    .menu-site .bubble {
+        width: 190px;
+        left: 50%;
+        top: calc(50% + 2.65em);
+        transform: translateX(-50%);
+    }
+}
+
+@media (min-width: 800px) and (max-width: 936px) {
+    .menu-site .bubble {
+        top: calc(50% + 3.7em);
+    }
+}
+
 @media (max-width: 699px) {
   .bubble {
     width: 80vw;
@@ -558,6 +586,9 @@ BUBBLE SHAPE
     &_danger::before {
     background-color: $danger;
   }
+    &_primary::before {
+        background-color: $primary;
+    }
   }
 
 }
@@ -574,6 +605,9 @@ BUBBLE SHAPE
 
   &_danger {
     border: solid 2px $danger;
+  }
+  &_primary {
+    border: solid 2px $primary-dark;
   }
 }
 
@@ -680,4 +714,14 @@ BUBBLE CONTENT
 
 
 
+/*
+--------------------
+CUSTOM CONTENT
+--------------------
+*/
 
+header .level .bubble {
+    top: calc(50% + 1.5em);
+    left: 50%;
+    transform: translateX(-50%);
+}
