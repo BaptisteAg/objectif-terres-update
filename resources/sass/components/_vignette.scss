@@ -98,13 +98,13 @@ VIGNETTE type PHOTO
     z-index: 10;
 }
 
-a:hover > .vignette.photo::before,
-a:focus > .vignette.photo::before {
+.tile__link:hover > .vignette.photo::before,
+.tile__link:focus > .vignette.photo::before {
     opacity: 0.1;
 }
 
-a:hover .vignette.photo::after,
-a:focus .vignette.photo::after {
+.tile__link:hover .vignette.photo::after,
+.tile__link:focus .vignette.photo::after {
     opacity: 0.5;
 }
 
