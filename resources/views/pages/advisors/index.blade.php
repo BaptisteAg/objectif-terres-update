@@ -3,9 +3,7 @@
 @section ('title', 'Mon espace primo-accueillant')
 
 @section('main-content')
-
-
-	<div class="section">
+	<div class="section pt-0">
 		<h1 class="title is-2 has-text-link">Bienvenue sur votre espace primo-accueillant <span
 					class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
 		@if($numberOfProjectToHandle !== 0 || $numberOfUnreadMessages !== 0)
