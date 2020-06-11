@@ -64,14 +64,14 @@
 							</div>
 							<div v-show="isSupportStageSelectOpen === true" class="field">
 								<div class="control has-text-centered">
-									<div class="select  ">
-										<select name="support_stage" v-on:change="showValidationModal()">
+									<div class="select">
+										<select name="support_stage">
 											@foreach ($supportStages as $supportStage)
 												@if(isset($ad->project->supportStage) and $supportStage->id === $ad->project->supportStage->id)
 													<option disabled selected
 															value="{{$supportStage->id}}">{{$supportStage->name}}</option>
 												@else
-													<option class="has-tooltip-left" data-tooltip="salut" value="{{$supportStage->id}}">{{$supportStage->name}}</option>
+													<option value="{{$supportStage->id}}">{{$supportStage->name}}</option>
 												@endif
 											@endforeach
 										</select>

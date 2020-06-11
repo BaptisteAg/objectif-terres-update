@@ -1,62 +1,67 @@
 ///////////////
 
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url("https://fonts.googleapis.com/css?family=Nunito");
 
 // Variables
-@import 'variables';
+@import "variables";
 
 
 //import framework bulma
-@import '~bulma/bulma';
-@import '~bulma-accordion/dist/css/bulma-accordion';
-@import '~bulma-tooltip/dist/css/bulma-tooltip.min.css';
-@import '~bulma-divider/dist/css/bulma-divider.min.css';
+@import "~bulma/bulma";
+@import "~bulma-accordion/dist/css/bulma-accordion";
+@import "~bulma-tooltip/dist/css/bulma-tooltip.min.css";
+@import "~bulma-divider/dist/css/bulma-divider.min.css";
 //import Awesomplete
-@import '~awesomplete/awesomplete.css';
+@import "~awesomplete/awesomplete.css";
 
 // Themify
-@import url('https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css');
+@import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
 
 // Animate
-@import url('https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css');
+@import url("https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css");
 
 //Bases
-@import 'bases/global';
-@import 'bases/typography';
-@import 'bases/titles';
-@import 'bases/links';
-@import 'bases/backgrounds';
-@import 'bases/helpers';
+@import "bases/global";
+@import "bases/typography";
+@import "bases/titles";
+@import "bases/links";
+@import "bases/backgrounds";
+@import "bases/helpers";
 
 //Layouts
-@import 'layouts/header';
-@import 'layouts/footer';
-@import 'layouts/navigation';
+@import "layouts/header";
+@import "layouts/footer";
+@import "layouts/navigation";
 
 // Components
-@import 'components/buttons';
-@import 'components/step-guide';
-@import 'components/carrousel-large';
-@import 'components/downloadPDF';
-@import 'components/video';
-@import 'components/testimony';
-@import 'components/map';
-@import 'components/pagination';
-@import 'components/multiselect';
-@import 'components/notification_sticker';
-@import 'components/autocomplete';
-@import 'components/date-picker';
+@import "components/buttons";
+@import "components/step-guide";
+@import "components/carrousel-large";
+@import "components/downloadPDF";
+@import "components/video";
+@import "components/testimony";
+@import "components/map";
+@import "components/pagination";
+@import "components/multiselect";
+@import "components/notification_sticker";
+@import "components/autocomplete";
+@import "components/date-picker";
 @import "components/loader";
-@import 'components/youtube-video';
+@import "components/youtube-video";
 @import "components/tuile";
-@import 'components/form';
+@import "components/form";
 @import "components/vignette";
-@import 'components/sticker';
+@import "components/sticker";
 @import "components/hero";
 @import "components/cta";
 @import "components/blockquote";
 @import "components/input";
+@import "components/card";
+@import "components/tooltip";
+@import "components/messages";
+@import "components/dropzone";
+@import "components/tags";
 
 
 // Pages
@@ -67,8 +72,8 @@
 @import "pages/cms/ceder-ma-ferme";
 @import "pages/cms/ceder-mes-terres";
 @import "pages/cms/contactez-nous";
-@import 'pages/research/research';
-@import 'pages/threads/threads';
+@import "pages/research/research";
+@import "pages/threads/threads";
 
 
 // Keyframes

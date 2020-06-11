@@ -27,7 +27,7 @@
 				</p>
 			</div>
 		</div>
-		<p><span class="is-italic">Civilité</span> : {{$ad->userPp->civility?? 'Non renseignée'}}</p>
+		<p><span class="is-italic">Civilité</span> : {{$ad->userPp->civilityFullName?? 'Non renseignée'}}</p>
 		<p><span class="is-italic">Type de porteur de projet</span> : {{$ad->userPp->profile?? 'Non renseigné'}}</p>
 		@if($ad->userPp->accept_communication)
 			<p>Cet utilisateur a accepté de recevoir les communications de Terre de Liens. </p>

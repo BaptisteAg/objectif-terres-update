@@ -1,0 +1,130 @@
+/*
+--------------------
+TAGS POSITION
+--------------------
+*/
+
+.custom-tags.right {
+  right: 0;
+  left: initial;
+}
+
+.custom-tags.bottom {
+  bottom: 0;
+  top: initial;
+}
+
+/*
+--------------------
+TAG
+--------------------
+*/
+
+.custom-tag {
+  display: inline-block;
+  padding: 0.125em 0.25em 0.0625em;
+  margin: 0.25em;
+  color: #7da237;
+  background-color: #ffffff;
+  text-transform: uppercase;
+  font-family: "Bebas Neue", "Source Sans Pro", sans-serif;
+  letter-spacing: 0.025em;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.list > li.custom-tag {
+  margin: 0.25em;
+}
+
+/*
+--------------------
+TAG SIZES
+--------------------
+*/
+
+@media (min-width: 700px) {
+
+  .custom-tags.large,
+  .custom-tag.large {
+    font-size: 1.25em;
+  }
+
+  .custom-tags.x-large,
+  .custom-tag.x-large {
+    font-size: 1.5em;
+  }
+
+}
+
+/*
+--------------------
+TAG CLIQUABLE
+--------------------
+*/
+
+a.custom-tag {
+  color: #ffffff;
+  background-color: #579ea5;
+}
+
+a.custom-tag:hover, a.custom-tag:focus { background-color: #42767a; }
+a.custom-tag:active { background-color: #0098a6; }
+
+/*
+--------------------
+TAG type ICON
+--------------------
+*/
+
+.custom-tag_icon {
+  display: block;
+  margin: 0.125em;
+  padding: 0.125em;
+  font-size: 2em;
+  background-color: transparent;
+}
+
+.text_on-photo .custom-tag_icon {
+  text-shadow: 0 0 4em rgba(1, 50, 73, 0.5);
+}
+
+
+.list > li.custom-tag_icon:first-child { margin-left: 0.5em; }
+.list > li.custom-tag_icon:last-child { margin-right: 0.5em; }
+
+/*
+--------------------
+TAG THEMES
+--------------------
+*/
+
+.custom-tag.info {
+  color: #ffffff;
+  background-color: #579ea5;
+}
+
+.custom-tag.success {
+  color: #ffffff;
+  background-color: #7da237;
+}
+
+.custom-tag.warning {
+  color: #ffffff;
+  background-color: #db9500;
+}
+
+.custom-tag.danger {
+  color: #ffffff;
+  background-color: #a41515;
+}
+
+/*
+--------------------
+TAG with a icon in it
+--------------------
+*/
+
+.custom-tag > .icon {
+  margin-left: 0.25em;
+}

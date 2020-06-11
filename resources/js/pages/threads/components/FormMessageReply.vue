@@ -12,20 +12,22 @@
                     </div>
                     <br>
                     <div class="field is-grouped">
-                        <p class="control is-expanded has-text-link"
-                           v-on:click="openDocumentUpload = !openDocumentUpload" style="cursor: pointer">
+                        <a class="">
+                            <p class="control is-expanded text_primary has-text-underline"
+                               v-on:click="openDocumentUpload = !openDocumentUpload" style="cursor: pointer">
 										<span class="icon">
 										<i class="fas fa-paperclip"></i>
 									</span>
-                            <span>Envoyer un fichier</span>
-                        </p>
+                                <span>Envoyer un fichier</span>
+                            </p>
+                        </a>
+
                     </div>
                     <div v-if="openDocumentUpload">
                         <documents-upload
                                 name="documents"
                                 type="message"
-                                url="/mon-espace/messagerie/upload"
-                                :extra-data="{thread_id: this.activeThreadId }"
+                                url="/mon-espace/messagerie/upload" :extra-data="{thread_id: this.activeThreadId }"
                                 v-model="documents"
                                 @uploading="setUploading"
                                 ref="documents">
@@ -71,7 +73,7 @@
                     </div>
                     <br>
                     <p class="control ">
-                        <button class="button is-link button-send-message" :disabled="isLoading">
+                        <button class="button basic form-button primary button-send-message" :disabled="isLoading">
 						 <span class="icon is-small">
 						  <i class="fas fa-paper-plane "></i>
 						</span>

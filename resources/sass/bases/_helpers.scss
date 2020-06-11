@@ -48,3 +48,14 @@ $breakpoints: (xs: 0, sm: $mobile, md: $tablet, lg: $desktop, xl: $widescreen);
         }
     }
 }
+
+
+/*
+--------------------
+TYPO HELPERS
+--------------------
+*/
+
+.has-text-underline{
+    text-decoration: underline;
+}

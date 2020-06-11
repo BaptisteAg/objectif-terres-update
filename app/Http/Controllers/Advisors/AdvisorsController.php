@@ -147,7 +147,6 @@ class AdvisorsController extends BaseController
 	 */
 	public function updateProjectDataKeysValues(Request $request)
 	{
-
 		$this->advisorsService->updateProjectDataKeysValues($request);
 		return back()->with('success', 'L\'indicateur a bien été modifié');
 	}

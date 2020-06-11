@@ -51,32 +51,24 @@ class UsersController extends Controller
 	}
 
 	/**
-	 * @param User $user
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
-	public function edit(User $user)
+	public function edit()
 	{
+		$user = auth()->user();
+		$cities = City::all();
+		if ($user->zipCode) {
+			$cityData = [
+				'label' => $user->zipCode->name . " (" . $user->zipCode->zip_code . ")",
+				'value' => ['id' => $user->zipCode->id,
+					'name' => $user->zipCode->name,
+					'type' => 'cities',
+					'zip_code' => $user->zipCode->zip_code]];
 
-		if (auth()->user()->role == 0) {
-			if (auth()->user()->id != $user->id) {
-				abort(404);
-			}
-		} elseif (auth()->user()->role < 2) {
-			return New Response(view('pages.errors.unauthorized')->with('role', 'primo-accueillants'));
-		} else {
-			$cities = City::all();
-			if ($user->zipCode) {
-				$cityData = [
-					'label' => $user->zipCode->name . " (" . $user->zipCode->zip_code . ")",
-					'value' => ['id' => $user->zipCode->id,
-						'name' => $user->zipCode->name,
-						'type' => 'cities',
-						'zip_code' => $user->zipCode->zip_code]];
-
-				$user['citySelect'] = json_encode($cityData);
-			}
-			return view('pages.users.edit', compact('cities', 'user'));
+			$user['citySelect'] = json_encode([$cityData]);
 		}
+		return view('pages.users.edit', compact('cities', 'user'));
+
 	}
 
 	/**

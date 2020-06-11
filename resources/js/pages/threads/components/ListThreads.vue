@@ -7,7 +7,7 @@
             <template v-else>
                 <p>{{numberThreadsUnreadMessages}} discussions non lues</p>
             </template>
-            <button v-if="isUserModerator" @click="onNewThreadClick" class="open-modal-new-message button is-link"
+            <button v-if="isUserModerator" @click="onNewThreadClick" class="open-modal-new-message button primary basic"
                     type="button">
 								 <span class="icon is-small">
 								<i class="fa fa-plus" aria-hidden="true"></i>
@@ -29,7 +29,7 @@
                             <a @click="onThreadClick(thread.id)">
                                 <template v-for="threadUnreadMessages in threadsUnreadMessages">
                                     <span v-if="threadUnreadMessages.id === thread.id "
-                                          class="icon has-text-danger">
+                                          class="icon text_danger">
                                     <i class="fas fa-circle has-"></i>
                                     </span>
                                 </template>
@@ -43,7 +43,7 @@
                                 <a @click="onThreadClick(thread.id)">
                                     <template v-for="threadUnreadMessages in threadsUnreadMessages">
                                             <span v-if="threadUnreadMessages.id === thread.id "
-                                                  class="icon has-text-danger">
+                                                  class="icon text_danger">
                                             <i class="fas fa-circle has-"></i>
                                             </span>
                                     </template>
@@ -58,7 +58,7 @@
                                 <a @click="onThreadClick(thread.id)">
                                     <template v-for="threadUnreadMessages in threadsUnreadMessages">
                                     <span v-if="threadUnreadMessages.id === thread.id "
-                                          class="icon has-text-danger">
+                                          class="icon text_danger">
                                     <i class="fas fa-circle"></i>
                                     </span>
                                     </template>
@@ -73,7 +73,7 @@
                             <a @click="onThreadClick(thread.id)">
                                 <template v-for="threadUnreadMessages in threadsUnreadMessages">
                                     <span v-if="threadUnreadMessages.id === thread.id"
-                                          class="icon has-text-danger">
+                                          class="icon text_danger">
                                     <i class="fas fa-circle"></i>
                                     </span>
                                 </template>
@@ -87,7 +87,7 @@
                         <a @click="onThreadClick(thread.id)">
                             <template v-for="threadUnreadMessages in threadsUnreadMessages">
                                             <span v-if="threadUnreadMessages.id === thread.id "
-                                                  class="icon has-text-danger">
+                                                  class="icon text_danger">
                                             <i class="fas fa-circle has-"></i>
                                             </span>
                             </template>

@@ -25,7 +25,7 @@ class CreateProjectDataKeysTable extends Migration
 			$table->increments('id');
 			$table->string('name');
 			$table->boolean('is_public')->default(1);
-			$table->boolean('is_unalterable')->default(1);
+			$table->boolean('immutable')->default(1);
 			$table->timestamps();
 		});
     }

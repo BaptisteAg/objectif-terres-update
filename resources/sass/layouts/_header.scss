@@ -271,7 +271,7 @@ MENU
 --------------------
 */
 
-.menu {
+.custom-menu {
   display: flex;
   list-style: none;
   margin: 0 !important;
@@ -279,7 +279,7 @@ MENU
   align-items: center;
 }
 
-.menu-container {
+.custom-menu-container {
   background-color: $danger;
   display: flex;
   justify-content: space-between;
@@ -288,18 +288,18 @@ MENU
 }
 
 @media (max-width: 799px) {
-  .menu {
+  .custom-menu {
     flex-direction: column;
   }
 }
 
 /* ----- menu item ----- */
 
-.menu > li {
+.custom-menu > li {
   margin: 0;
 }
 
-.menu > li.separator {
+.custom-menu > li.separator {
   flex-grow: 1;
 }
 

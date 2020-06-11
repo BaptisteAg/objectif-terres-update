@@ -101,3 +101,25 @@ h6 {
   font-size: 1em;
   margin: 1em 0;
 }
+
+/*
+--------------------
+PAGE TITLES AND SUBTITLES
+--------------------
+*/
+.page {
+  &__title {
+    text-align: center;
+    margin-bottom: 0px;
+  }
+
+  &__subtitle {
+    color: $success;
+    text-align: center;
+    font-size: 2em;
+    margin-top: 0.2em;
+    margin-bottom: 1em;
+  }
+}
+
+

@@ -1,31 +1,32 @@
 @extends('default')
 
 @section('title')
-	{{ $ad->title }}
+    {{ $ad->title }}
 @endsection
 
 @section('head-script')
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
 @endsection
 
 @section('main-content')
-	@if($ad->ad_type === 'landSeek')
-		@include('pages.ads.partials.landSeek.landSeekShow')
-	@endif
-	@if($ad->ad_type === 'landOffer')
-		@include('pages.ads.partials.landOffer.landOfferShow')
-	@endif
-	@if($ad->ad_type === 'jobOffer')
-		@include('pages.ads.partials.jobOffer.jobOfferAdShow')
-	@endif
-	@if($ad->ad_type === 'jobSeek')
-		@include('pages.ads.partials.jobSeek.jobSeekAdShow')
-	@endif
+    @if($ad->ad_type === 'landSeek')
+        @include('pages.ads.partials.landSeek.landSeekShow')
+    @endif
+    @if($ad->ad_type === 'landOffer')
+        @include('pages.ads.partials.landOffer.landOfferShow')
+    @endif
+    @if($ad->ad_type === 'jobOffer')
+        @include('pages.ads.partials.jobOffer.jobOfferAdShow')
+    @endif
+    @if($ad->ad_type === 'jobSeek')
+        @include('pages.ads.partials.jobSeek.jobSeekAdShow')
+    @endif
 @endsection
 
 @section('script')
-	<script>
-		@if(auth()->user()->role>=1 )
+    <script>
+                @auth
+                @if(auth()->user()->role>=1 )
         let buttons = document.querySelectorAll('#open-modal-message');
         buttons.forEach((button) => {
             button.addEventListener('click', function (event) {
@@ -54,9 +55,9 @@
             notification.style.display = 'none';
 
         })
-		@endif
 
-		@if(auth()->user()->role>=1)
+        @endif
+        @if(auth()->user()->role>=1)
         function showValidationSupervisorModal() {
             let validationModal = document.querySelector('#modal-supervisor-validation');
             let html = document.querySelector('html');
@@ -79,8 +80,8 @@
             });
         }
 
-		@endif
-
+        @endif
+        @endauth
         function sendResponseTemplateMessage() {
             let listResponseTemplates = document.getElementById("response_templates_list");
             let responseTemplateSelected = listResponseTemplates.options[listResponseTemplates.selectedIndex].text;
@@ -89,29 +90,31 @@
             textareaMessage.value = responseTemplateSelected;
         }
 
-	</script>
-	@if(count($ad->images) > 1)
-		<script src="{{asset('/js/bulma-carousel.js')}}"></script>
-		<script>
+    </script>
+    @if(count($ad->images) > 1)
+        <script src="{{asset('/js/bulma-carousel.js')}}"></script>
+        <script>
             const carousel = bulmaCarousel.attach('#ad-images', {
                 slidesToScroll: 1,
                 slidesToShow: 1,
                 loop: true,
                 navigation: true,
             });
-		</script>
-	@endif
+        </script>
+    @endif
 
-	<script>
+    <script>
         const vueThreads = new Vue({
             el: '#vue-messages',
             name: 'content'
         });
-		@if(auth()->user()->role >= 1 and !$ad->project()->exists())
-			const VueModerationModal = new Vue({
-					el: "#vue-moderation-modal",
-					name: 'content'
-				})
-		@endif
-	</script>
+         @auth()
+          @if(auth()->user()->role >= 1 and !$ad->project()->exists())
+        const VueModerationModal = new Vue({
+                el: "#vue-moderation-modal",
+                name: 'content'
+            })
+        @endif
+        @endauth
+    </script>
 @endsection

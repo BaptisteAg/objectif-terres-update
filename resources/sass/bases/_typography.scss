@@ -9,8 +9,9 @@ TEXT COLOR
 --------------------
 */
 
-.text_color, .text_green { color: $success !important; }
+.text_color, .text_success { color: $success !important; }
 .text_primary { color: $primary !important; }
+.text_secondary { color: $secondary !important; }
 .text_danger { color:$danger !important; }
 .text_danger_orange { color: $danger-darken-orange !important; }
 .text_warning { color: $warning !important; }
@@ -42,7 +43,7 @@ TEXT SIZE
 }
 
 .text_size.x-large {
-  font-size: 2em;
+  font-size: 3em;
 }
 /*
 --------------------
@@ -77,4 +78,28 @@ EXERGUE
   margin: 2em -1.5em;
   border-color: $warning;
 }
+
+/*
+--------------------
+TEXT FONT
+--------------------
+*/
+
+
+.text-style-title{
+  margin-bottom: 0.5em;
+  font-size: 1.25em;
+  line-height: 1.25em;
+  font-weight: bold;
+  font-family: $family-sans-serif-title;
+}
+.text-style-title__primary{
+  margin-bottom: 0.5em;
+  font-size: 1.50em;
+  line-height: 1.25em;
+  font-weight: bold;
+  font-family: $family-sans-serif-title;
+  color : $primary
+}
+
 

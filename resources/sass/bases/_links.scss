@@ -31,7 +31,7 @@ a.custom-link > svg {
 
 [class*="bg-d"] a { color: $white}
 [class*="bg-d"] a:hover, [class*="bg-d"] a:focus { color: $primary; background-color: $white;}
-[class*="bg-d"] a:hover:not(.button), [class*="bg-d"] a:focus:not(.button) { padding: 0 5px }
+//[class*="bg-d"] a:hover:not(.button), [class*="bg-d"] a:focus:not(.button) { padding: 0 5px }
 [class*="bg-d"] a:active { color: $white}
 
 /*

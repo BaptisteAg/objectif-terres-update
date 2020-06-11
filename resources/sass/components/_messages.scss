@@ -1,0 +1,40 @@
+.display-message {
+  overflow-x: hidden;
+  max-height: 500px;
+}
+
+.message-sender {
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  float: right;
+  background-color: $primary;
+  margin-right: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  &:first-child {
+    border-top-left-radius: 15px;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: 15px;
+  }
+}
+
+.message-receiver {
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: $pearl;
+  margin-right: 0px;
+  float: left;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 15px;
+  padding-right: 15px;
+}
+
+.message-receiver-content {
+  margin-left: 12px
+}

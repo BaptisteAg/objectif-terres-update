@@ -12,7 +12,7 @@
                         <a class="" href="/qui-sommes-nous">Qui sommes nous ?</a>
                         <div class="bubble is-visible fluid bubble_danger">
                             <div class="bubble__container bubble__container_danger ">
-                                <ul class="menu menu-submenu">
+                                <ul class="custom-menu menu-submenu">
                                     <li>
                                         <a class="menu__link menu__link_danger "
                                            href="">Le mouvement Terre de Liens</a>
@@ -42,12 +42,10 @@
                     @else
                         <div class="level-item">
                             @if(auth()->user()->role === 0 )
-                                <a class="navbar-item button is-bordered" href="{{route('user.index')}}">
-									<span class="icon">
+                                <span class="icon">
 										<i class="far fa-user"></i>
 									</span>
-                                    <span>Bonjour, ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
-                                </a>
+                                <span>Bonjour, {{ Auth::user()->name }}, {{Auth::user()->first_name}}</span>
                             @else
                                 <div class="dropdown">
                                     <div class="dropdown-trigger">
@@ -63,7 +61,7 @@
                                         </button>
                                     </div>
                                     <div class="dropdown-menu" id="header-dropdown-menu" role="menu">
-                                        <div class="dropdown-content">
+                                        <div class="dropdown-content" onclick="">
                                             @if(auth()->user()->role >= 3 )
                                                 <a href="{{route('supervisor.index')}}"
                                                    class="dropdown-item  text_charcoal ">
@@ -99,7 +97,7 @@
                                 <div class="bubble__container">
                                     <div class="bubble__scrollable-wrap">
                                         <div class="bubble__scrollable">
-                                            <ul class="menu menu-submenu tiles">
+                                            <ul class="custom-menu menu-submenu tiles">
                                                 <li class="tile_icon-label">
                                                     <a href="#" class="menu__link tile__link"
                                                        title="Accéder aux applis Terre de liens">
@@ -198,7 +196,9 @@
                                                 </li>
                                                 <li class="tile_icon-label">
                                                     <a href="#" class="menu__link tile__link"
-                                                       title="Consulter mes messages">
+                                                       title="Centre
+                                                                de
+                                                                ressources">
                                                                             <span class="tile__icon"><i
                                                                                         class="fad fa-books"></i></span>
                                                         <div class="tile__content">
@@ -214,6 +214,22 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="level-item">
+                            <p class="button__wrap">
+                                <a href="{{route('favoriteAds.show')}}"
+                                   class="button round small secondary " title="Annonces favorites">
+                                    <span class="button__icon"><i class="fas fa-star" aria-hidden="true"></i></span>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="level-item">
+                            <p class="button__wrap">
+                                <a href="{{route('researches.show')}}"
+                                   class="button round small secondary " title="Mes recherches">
+                                    <span class="button__icon"><i class="fas fa-save" aria-hidden="true"></i></span>
+                                </a>
+                            </p>
                         </div>
                         <div class="level-item">
                             <p class="button__wrap">
@@ -249,7 +265,7 @@
                             </p>
                         </div>
                         <div class="level-item">
-                            <a class="dropdown-item " href="{{ route('logout') }}"
+                            <a class=" " href="{{ route('logout') }}"
                                onclick="event.preventDefault();
 												 document.getElementById('logout-form').submit();">
 							<span class="icon">
@@ -360,7 +376,7 @@
                                         <header-page id="header-page" inline-template
                                                      :old-search-values="{{json_encode(old())}}">
                                             {!! Form::open(['route' => 'researches.index', 'method' => 'get']) !!}
-                                            <div class="container-custom bg-trame_champs_dark">
+                                            <div class="container-custom bg-trame_champs_dark mb-5">
                                                 <div class="columns is-mobile is-vcentered is-multiline">
                                                     <div class="column  is-1-desktop is-one-fifth-tablet is-half-mobile">
                                                         <figure class="image is-square">
@@ -374,16 +390,16 @@
                                                     </div>
                                                     <div class="column is-4-desktop is-four-fifths-tablet is-half-mobile ">
                                                         <h1 class="title is-1 mb-0">
-                                                            <a class="text_green" href="{{route ('home')}}">
+                                                            <a class="text_charcoal" href="{{route ('home')}}">
                                                                 Objectif Terres
                                                             </a>
                                                         </h1>
 
-                                                        <h4 class=" text_green mt-5">Réalisez votre projet
+                                                        <h4 class=" text_success mt-5">Réalisez votre projet
                                                             agricole.</h4>
                                                         <p>Une initiative Terre de Liens</p>
                                                     </div>
-                                                    <div class="column is-2-desktop is-one-thrid-tablet has-text-centered pt-40">
+                                                    <div class="column is-3-desktop is-one-thrid-tablet has-text-centered pt-40">
                                                         <div style="display:inline-block; padding-top: 7px;">
                                                             <p class="pr-10">Je</p>
                                                         </div>
@@ -407,7 +423,7 @@
                                                             ) }}
                                                         </div>
                                                     </div>
-                                                    <div class="column is-2-desktop is-one-third-tablet  pt-40">
+                                                    <div class="column is-2-desktop is-one-third-tablet pt-40">
                                                         <div style="display:inline-block; padding-top: 2px;">
                                                             <p>ici : </p>
                                                         </div>
@@ -422,7 +438,7 @@
                                                             </multi-select>
                                                         </div>
                                                     </div>
-                                                    <div class="column is-3-tablet has-text-centered  pt-40  "
+                                                    <div class="column is-2-tablet has-text-centered pt-40"
                                                          style="padding-top: 38px;">
                                                         {!! Form::submit('Rechercher', ['class' => ' button basic primary']) !!}
                                                         <br>
@@ -466,7 +482,7 @@
 														<span class="icon">
 															<i class="far fa-user"></i>
 														</span>
-                                                            <span>Bonjour, ({{ Auth::user()->name }}, {{Auth::user()->first_name}})</span>
+                                                            <span>Bonjour, ({{ Auth::user()->first_name }} {{Auth::user()->name}})</span>
                                                         </a>
                                                     @else
                                                         <div class="dropdown">
@@ -522,7 +538,7 @@
                                                             <div class="bubble__container">
                                                                 <div class="bubble__scrollable-wrap">
                                                                     <div class="bubble__scrollable">
-                                                                        <ul class="menu menu-submenu ">
+                                                                        <ul class="custom-menu menu-submenu ">
                                                                             <li class="tile_icon-label">
                                                                                 <a href="#"
                                                                                    class="menu__link tile__link"
@@ -734,8 +750,8 @@
 
                                 </section>
                                 <section class="fw-section top-bar__2">
-                                    <div class="container is-fluid menu-container ">
-                                        <ul class="menu menu-site ">
+                                    <div class="container is-fluid custom-menu-container ">
+                                        <ul class="custom-menu menu-site ">
                                             <li>
                                                 <a href="{{route('home')}}" class="menu__link">
                                                     <i class="fas fa-home"></i>
@@ -747,7 +763,7 @@
                                                 </a>
                                                 <div class="bubble is-visible fluid bubble_danger">
                                                     <div class="bubble__container bubble__container_danger ">
-                                                        <ul class="menu menu-submenu">
+                                                        <ul class="custom-menu menu-submenu">
                                                             <li>
                                                                 <a class="menu__link menu__link_danger "
                                                                    href="/louer-vendre-mes-terres">m'installer
@@ -778,7 +794,7 @@
                                                 </a>
                                                 <div class="bubble is-visible fluid bubble_danger">
                                                     <div class="bubble__container bubble__container_danger ">
-                                                        <ul class="menu menu-submenu">
+                                                        <ul class="custom-menu menu-submenu">
                                                             <li>
                                                                 <a class="menu__link menu__link_danger "
                                                                    href="">en reconversion professionnelle avec un
@@ -842,25 +858,12 @@
                                                     @endif
                                                 @else
                                                     <a href="{{ route('ads.create') }}"
-                                                       class="menu__link without-link-styles">Déposer
+                                                       class="menu__link ">Déposer
                                                         une
                                                         annonce</a>
                                                 @endif
                                             </li>
                                         </ul>
-
-                                        @if( Auth::check() and auth()->user()->role <=1)
-                                            @if (Route::current()->getName() === 'ads.list'||
-                                                Route::current()->getName() === 'researches.show' ||
-                                                Route::current()->getName() === 'ads.show' ||
-                                                Route::current()->getName() === 'favoriteAds.show' ||
-                                                Route::current()->getName() === 'messages.index'||
-                                                Route::current()->getName() === 'user.update' ||
-                                                strpos(Route::current()->getName(), 'threads.') === 0 ||
-                                                Route::current()->getName() === 'support-request.show')
-                                                @include('layouts.partials.users-tabs')
-                                            @endif
-                                        @endif
                                         <br>
                                     </div>
                                 </section>
@@ -870,17 +873,17 @@
                 </div>
             </div>
         </div>
-
-        @if( Auth::check() and auth()->user()->role >=1)
-            @if(auth()->user()->role ==1)
-                @include('components.moderator-tabs')
-            @elseif(auth()->user()->role ==2)
-                @include('components.advisor-tabs')
-            @elseif(auth()->user()->role >=3)
-                @include('components.supervisor-tabs')
+        <div class="mt-25">
+            @if( Auth::check() and auth()->user()->role >=1)
+                @if(auth()->user()->role ==1)
+                    @include('components.moderator-tabs')
+                @elseif(auth()->user()->role ==2)
+                    @include('components.advisor-tabs')
+                @elseif(auth()->user()->role >=3)
+                    @include('components.supervisor-tabs')
+                @endif
             @endif
-        @endif
-
+        </div>
     </div>
 </header>
 
