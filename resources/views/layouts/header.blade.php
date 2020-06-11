@@ -4,21 +4,23 @@
             <nav class="level ">
                 <div class="level-left">
                     <div class="level-item">
-                        <a href="/" class="button button basic secondary ">
+                        <a href="/" class="button basic secondary ">
                             <span class="button__label">Nous soutenir</span>
                         </a>
                     </div>
                     <div class="bubble-wrap level-item">
-                        <a class="" href="/qui-sommes-nous">Qui sommes nous ?</a>
-                        <div class="bubble is-visible fluid bubble_danger">
-                            <div class="bubble__container bubble__container_danger ">
+                        <a class="button basic primary" href="/qui-sommes-nous">
+                            <span class="button__label">Qui sommes nous ?</span>
+                        </a>
+                        <div class="bubble is-visible fluid bubble_primary">
+                            <div class="bubble__container bubble__container_primary ">
                                 <ul class="custom-menu menu-submenu">
                                     <li>
-                                        <a class="menu__link menu__link_danger "
+                                        <a class="menu__link menu__link_primary "
                                            href="">Le mouvement Terre de Liens</a>
                                     </li>
                                     <li>
-                                        <a class="menu__link menu__link_danger "
+                                        <a class="menu__link menu__link_primary "
                                            href="">A propos d'Objectif Terre</a>
                                     </li>
                                 </ul>
@@ -399,7 +401,7 @@
                                                             agricole.</h4>
                                                         <p>Une initiative Terre de Liens</p>
                                                     </div>
-                                                    <div class="column is-3-desktop is-one-thrid-tablet has-text-centered pt-40">
+                                                    <div class="column is-3-desktop is-one-third-tablet has-text-centered pt-40">
                                                         <div style="display:inline-block; padding-top: 7px;">
                                                             <p class="pr-10">Je</p>
                                                         </div>
@@ -412,7 +414,7 @@
                                                             ) }}
                                                         </div>
 
-                                                        <div class="select">
+                                                        <div class="select form-field">
                                                             <label for="select form-field"></label>
                                                             {{ Form::select('ad_category',
                                                                 ['land' => 'une terre ', 'job' => 'un emploi'],
@@ -438,7 +440,7 @@
                                                             </multi-select>
                                                         </div>
                                                     </div>
-                                                    <div class="column is-2-tablet has-text-centered pt-40"
+                                                    <div class="column is-2-desktop is-one-third-tablet has-text-centered pt-40"
                                                          style="padding-top: 38px;">
                                                         {!! Form::submit('Rechercher', ['class' => ' button basic primary']) !!}
                                                         <br>
