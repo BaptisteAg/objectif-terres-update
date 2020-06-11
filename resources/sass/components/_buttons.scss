@@ -59,9 +59,13 @@ BUTTON
 
 /* ----- Wrap (optionnal) ----- */
 
-.button-wrap {
+.button__wrap {
   margin: 1em 0;
   margin-bottom: 1em;
+
+  &_right{
+    text-align: right;
+  }
 }
 
 /* ----- Size (optionnal) ----- */
@@ -419,7 +423,7 @@ READ MORE'S VARIATION
   display: block;
 }
 
-.button-wrap > .button.read-more {
+.button__wrap > .button.read-more {
   top: -0.75em;
 }
 

@@ -75,10 +75,9 @@ VIGNETTE type PHOTO
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;
-    opacity: 0.2;
+    z-index: 10;
     transition: all 0.2s ease-in-out;
-    background: url("http://tdlui.semaphore-communication.fr/img/trames/motif_rayure_black.png") repeat;
+    background: url("public/images/trames/motif_rayure_black.png") repeat;
     opacity: 0.15;
 }
 
@@ -91,11 +90,12 @@ VIGNETTE type PHOTO
     width: 100%;
     height: 100%;
     transition: all 0.2s ease-in-out;
+    z-index: 40;
 }
 
 .vignette.photo::after {
     background: linear-gradient(rgba(206, 71, 10, 0) 0%, rgba(206, 71, 10, 0.1) 25%, rgba(206, 71, 10, 0.3) 75%, rgba(1, 50, 73, 0.3) 100%);
-    z-index: 1;
+    z-index: 10;
 }
 
 a:hover > .vignette.photo::before,
@@ -200,6 +200,7 @@ VIGNETTE AND TAGS
     left: 0;
     margin-top: 1em;
     margin-bottom: 1em;
-    z-index: 3;
     background-color: transparent;
+    z-index : 50 !important;
 }
+

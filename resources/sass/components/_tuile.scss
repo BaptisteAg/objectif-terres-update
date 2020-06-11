@@ -322,7 +322,7 @@ TILE type TEXT-MEDIA
     transform: rotate(45deg);
     font-size: 1.5em;
     background-color: #ffffff;
-    z-index: 2;
+    z-index: 100;
     transition: background-color 0.2s ease-in-out;
 }
 
