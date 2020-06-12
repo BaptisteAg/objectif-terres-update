@@ -37,7 +37,7 @@ BUTTON
   cursor: pointer;
 }
 
-@media (max-width: 799px) {
+@media (max-width: $tablet - 1) {
   .button {
     font-size: 1em;
   }
@@ -307,7 +307,7 @@ input.button.basic {
   line-height: 0.9375em;
 }
 
-@media (max-width: 799px){
+@media (max-width: $tablet - 1){
   input.button.basic {
     font-size: 1em;
   }

@@ -1,6 +1,6 @@
 <div class="columns is-mobile is-multiline">
    @include('layouts.partials.headerResearchLocation')
-    <div class="column is-half-mobile ">
+    <div class="column is-full-mobile is-half-tablet ">
         {{ Form::label('jobOfferType', 'Choisissez un statut', ['class' => 'label']) }}
         <div class="select">
             {{ Form::select('jobOfferType', $jobOfferTypes->pluck('name'), null, ['placeholder' => 'statut de job']) }}

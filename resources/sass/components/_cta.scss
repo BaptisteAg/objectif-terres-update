@@ -76,21 +76,21 @@ CTA SOUTIEN
     font-size: 0.8em;
 }
 
-@media (min-width: 800px) {
+@media (min-width: $tablet) {
     .CTA_soutien .section__container {
         width: 50% !important;
         left: 50%;
     }
 }
 
-@media (min-width: 600px) and (max-width: 799px) {
+@media (min-width: 600px) and (max-width: $tablet - 1) {
     .CTA_soutien .section__container {
         width: 60% !important;
         left: 35%;
     }
 }
 
-@media (max-width: 799px) {
+@media (max-width: $tablet - 1) {
     .CTA_soutien .section__container {
         margin-top: -2em;
     }

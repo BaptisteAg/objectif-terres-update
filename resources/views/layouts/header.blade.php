@@ -33,12 +33,12 @@
                     @guest
                         <div class="level-item">Bienvenue !</div>
                         <div class="level-item">
-                            <a href="{{ route('login') }}">Connectez-vous</a>
+                            <a class="link-header" href="{{ route('login') }}">Connectez-vous</a>
                         </div>
                         <div class="level-item">ou</div>
                         @if (Route::has('register'))
                             <div class="level-item">
-                                <a href="{{ route('register') }}">Créez un compte</a>
+                                <a class="link-header" href="{{ route('register') }}">Créez un compte</a>
                             </div>
                         @endif
                     @else
@@ -266,8 +266,8 @@
                                 </a>
                             </p>
                         </div>
-                        <div class="level-item">
-                            <a class=" " href="{{ route('logout') }}"
+                        <div class="level-item logout">
+                            <a class="link-header" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
 												 document.getElementById('logout-form').submit();">
 							<span class="icon">
@@ -299,8 +299,8 @@
                 <div id="main-nav__splash__container">
                     <div class="main-nav__content">
                         <div id="vue-header">
-                            <section id="above-top-bar-mobile" class="mt-80 pb-30 ">
-                                <div class="columns is-mobile is-centered">
+                            <section id="above-top-bar-mobile">
+                                <div class="columns is-mobile is-centered mt-10 mt-sm-30">
                                     <div class="column is-half">
                                         <p class="menu-search__title has-text-centered">Recherche</p>
                                     </div>
@@ -352,14 +352,13 @@
                                             <div class="has-text-centered">
                                                 {!! Form::submit('Rechercher', ['class' => ' button basic primary']) !!}
                                                 <br>
-                                                <a class="has-text-left" href="#" @click="more_criteria()"
-                                                   onclick="extendHeaderMobileContainer()">Plus de
-                                                    critère</a>
+                                                <a class="is-block mt-5" href="#" @click="more_criteria()"
+                                                   onclick="extendHeaderMobileContainer()">Plus de critères</a>
                                             </div>
 
                                         </div>
                                     </div>
-                                    <div v-if="isFormOpen" class="has-ba" style="display : none">
+                                    <div v-show="isFormOpen" class="has-ba mb-15" style="display : none">
                                         <div class="container-custom bg-l-pearl"
                                              v-if="adCategorySelected === 'job'">
                                             @include('layouts.partials.headerJobResearch')
@@ -444,9 +443,7 @@
                                                          style="padding-top: 38px;">
                                                         {!! Form::submit('Rechercher', ['class' => ' button basic primary']) !!}
                                                         <br>
-                                                        <a class="has-text-left" href="#" @click="more_criteria()">Plus
-                                                            de
-                                                            critère</a>
+                                                        <a class="has-text-left" href="#" @click="more_criteria()">Plus de critères</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -468,9 +465,9 @@
                                             <div class="text_white mb-20 has-text-weight-bold">
                                                 <div class="level-item">Bienvenue !</div>
                                                 <div class="level-item">
-                                                    <a href="{{ route('login') }}">Connectez-vous </a>
+                                                    <a class="link-header" href="{{ route('login') }}">Connectez-vous </a>
                                                     @if(Route::has('register'))
-                                                        <span>  ou  </span>
+                                                        <span class="mr-5 ml-5">ou</span>
                                                         <a href="{{ route('register') }}"> Créez un compte</a>
                                                     @endif
                                                 </div>
@@ -712,7 +709,7 @@
                                                 <div class="level-item">
                                                     <div class="has-text-centered">
 
-                                                        <a class="dropdown-item " href="{{ route('logout') }}"
+                                                        <a class="dropdown-item link-header" href="{{ route('logout') }}"
                                                            onclick="event.preventDefault();
 												 document.getElementById('logout-form').submit();">
 												<span class="icon">

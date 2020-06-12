@@ -59,3 +59,58 @@ INPUT TYPE CHECKBOX
 --------------------
 */
 
+label.checkbox {
+    display: flex;
+    align-items: center;
+    margin: 0.25em 1em 0.25em 0;
+    input {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        -o-appearance: none;
+        appearance: none;
+        height: 20px;
+        width: 20px;
+        transition: all 0.15s ease-out 0s;
+        background: #cbd1d8;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        display: inline-block;
+        margin-right: 0.5rem;
+        outline: none;
+        &:hover {
+            background: #9faab7;
+        }
+        &:checked {
+            background: $primary;
+            &::before {
+                height: 20px;
+                width: 20px;
+                position: absolute;
+                content: '✔';
+                display: inline-block;
+                font-size: 22px;
+                text-align: center;
+                line-height: 20px;
+            }
+        }
+    }
+}
+
+/*
+--------------------
+INPUT SLIDER
+--------------------
+*/
+
+.vue-slider {
+    .vue-slider-dot-tooltip-inner {
+        border-color: $primary ;
+        background-color: $primary;
+    }
+
+    .vue-slider-process {
+        background-color: $primary;
+    }
+}

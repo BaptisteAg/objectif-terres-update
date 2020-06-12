@@ -28,7 +28,7 @@ body .multiselect__tag {
   color: $success;
   font-family: $family-sans-serif-title;
   text-transform: uppercase;
-
+  white-space: initial;
 }
 
 body .multiselect__tag-icon:hover {
