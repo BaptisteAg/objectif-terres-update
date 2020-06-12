@@ -1,7 +1,7 @@
 <div class="columns is-mobile is-multiline  ">
 	@include('layouts.partials.headerResearchLocation')
-	<div class="column is-half-mobile">
-		<div class="field">
+	<div class="column is-full-mobile is-half-tablet">
+		<div class="field is-flex">
 			@foreach ($offerGenres as $offerGenre)
 				<label class="checkbox">
 					<input type="checkbox" name="offer_genres[]"
@@ -40,41 +40,39 @@
 	</div>
 
 	<div class="column" v-if="offerTypeSelected === 'OfferAd'">
-		<div class="column ">
-			<div class="field">
-				<label class="checkbox">
-					<input type="checkbox" name="has_pics" value="1" {{ old('has_pics') === "1" ? ' checked' : '' }}>
-					Avec photos
-				</label>
-				<label class="checkbox">
-					<input type="checkbox" name="has_buildings"
-						   value="1" {{ old('has_buildings') === "1" ? ' checked' : '' }}>
-					Habitation
-				</label>
-			</div>
+        <div class="field is-flex">
+            <label class="checkbox">
+                <input type="checkbox" name="has_pics" value="1" {{ old('has_pics') === "1" ? ' checked' : '' }}>
+                Avec photos
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="has_buildings"
+                       value="1" {{ old('has_buildings') === "1" ? ' checked' : '' }}>
+                Habitation
+            </label>
+        </div>
 
-			<div class="field">
-				{!! Form::label('production_genres', 'Choisissez des types de production', ['class' => 'label']); !!}
-				<multi-select
-						:options="{{ json_encode($productionGenres) }}"
-						v-model="selectedProductions"
-						name="production_genres[]"
-						selected-count-text="production(s) sélectionné(s)"
-						placeholder="Choississez">
-				</multi-select>
-			</div>
-			<div class="field">
-				{!! Form::label('bio_certification', 'Choisissez des systèmes de production bio ou aucun', ['class' => 'label']); !!}
-				<multi-select
-						:options="{{ json_encode($bioCertifications) }}"
-						:multiple="true"
-						v-model="selectedBioCertifications"
-						name="bio_certifications[]"
-						selected-count-text="production(s) bio sélectionné(s)"
-						placeholder="Choississez">
-				</multi-select>
-			</div>
-		</div>
-	</div>
+        <div class="field">
+            {!! Form::label('production_genres', 'Choisissez des types de production', ['class' => 'label']); !!}
+            <multi-select
+                    :options="{{ json_encode($productionGenres) }}"
+                    v-model="selectedProductions"
+                    name="production_genres[]"
+                    selected-count-text="production(s) sélectionné(s)"
+                    placeholder="Choississez">
+            </multi-select>
+        </div>
+        <div class="field">
+            {!! Form::label('bio_certification', 'Choisissez des systèmes de production bio ou aucun', ['class' => 'label']); !!}
+            <multi-select
+                    :options="{{ json_encode($bioCertifications) }}"
+                    :multiple="true"
+                    v-model="selectedBioCertifications"
+                    name="bio_certifications[]"
+                    selected-count-text="production(s) bio sélectionné(s)"
+                    placeholder="Choississez">
+            </multi-select>
+        </div>
+    </div>
 </div>
 

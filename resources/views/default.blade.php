@@ -109,11 +109,13 @@
     let div = document.getElementById('main-nav__splash__transform-container');
     function extendHeaderMobileContainer() {
         if(div.style.height.length === 0) {
-            div.style.height = '300vh';
-            div.style.width = '300vh';
+            div.style.height = '400vh';
+            div.style.width = '320vh';
+            div.style.marginTop = "60px";
         } else {
             div.style.height = '';
             div.style.width = '';
+            div.style.marginTop = '';
         }
     }
 </script>

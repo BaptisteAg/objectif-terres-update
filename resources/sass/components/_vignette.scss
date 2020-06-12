@@ -42,13 +42,13 @@ Image de contenu non situÃ© dans une tuile. Ces rÃ¨gles rÃ©gentent surtout
     margin-right: auto;
 }
 
-@media (min-width: 800px) {
+@media (min-width: $tablet) {
     .vignette.solo {
         width: 80%;
     }
 }
 
-@media (max-width: 799px) {
+@media (max-width: $tablet - 1) {
     .vignette.solo {
         position: relative;
         width: 30%;

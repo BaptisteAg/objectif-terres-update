@@ -30,8 +30,10 @@ a.custom-link > svg {
   margin-left: 0.25em;
 }
 
-[class*="bg-d"] a { color: $white}
-[class*="bg-d"] a:hover, [class*="bg-d"] a:focus { color: $primary; background-color: $white;}
+[class*="bg-d"] a { color: $white; }
+[class*="bg-d"] a.link-header { text-decoration: underline; padding: 0 5px }
+[class*="bg-d"] a:hover, [class*="bg-d"] a:focus { color: $primary; background-color: $white; }
+[class*="bg-d"] a.link-header:hover, [class*="bg-d"] a.link-header:focus { text-decoration: none; }
 //[class*="bg-d"] a:hover:not(.button), [class*="bg-d"] a:focus:not(.button) { padding: 0 5px }
 [class*="bg-d"] a:active { color: $white}
 
