@@ -163,6 +163,8 @@ class AdService
 			return $ad;
 		});
 
+
+
 		return $ad;
 	}
 
@@ -287,6 +289,17 @@ class AdService
 		return $ads;
 	}
 
+	/**
+	 * Show all ads ads related to supervisor
+	 * @param bool $toPaginate
+	 * @return LengthAwarePaginator|Collection
+	 */
+	public function findAllNotAssignedProjectsByUserSupervisor(bool $toPaginate)
+	{
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
+		$ads = $this->repository->allNotAssignedProjectsInTerritories($supervisorLocationTerritoryCodes, $toPaginate);
+		return $ads;
+	}
 
 	/**
 	 * @param array $dates
@@ -473,10 +486,25 @@ class AdService
 			}
 		}
 
+		//Filter result by types : display ads or projects or both
 		if ($filters->has('ads_show') && (!$filters->has('projects_show'))) {
 			$adsFiltred->whereNull('project_id');
 		} elseif ($filters->has('projects_show') && (!$filters->has('ads_show'))) {
 			$adsFiltred->whereNotNull('project_id');
+		}
+
+		//Filter results by project attribution status
+		if ($filters->has('project_attribution')) {
+			$adsFiltred->whereNotNull('project_id');
+			$adsFiltred->where(function (Builder $builder) use ($filters) {
+				$builder->whereHas('attributionAd', function (Builder $subBuilder) use ($filters) {
+					if (in_array('true', $filters->input('project_attribution'))) {
+						$subBuilder->whereNotNull('user_advisor_id');
+					} elseif (in_array('false', $filters->input('project_attribution'))) {
+						$subBuilder->whereNull('user_advisor_id');
+					}
+				});
+			});
 		}
 
 		//Filter projects based on their locations if requested

@@ -2,14 +2,14 @@
 <section class="section">
 	<div class="container ">
 		@if( ! $ad->project()->exists())
-			<nav class="breadcrumb" aria-label="breadcrumbs">
+			<nav class="breadcrumb text_primary" aria-label="breadcrumbs">
 				<ul>
-					<li><a href="#"><a href="#"><?=empty($isSupportRequest) ? 'Annonces' : 'Accompagnement'?></a></li>
-					<li><a href="#">Offres foncières</a></li>
+					<li><a href="#" class="custom-link"><?=empty($isSupportRequest) ? 'Annonces' : 'Accompagnement'?></a></li>
+					<li><a href="#" class="custom-link">Offres foncières</a></li>
 				</ul>
 			</nav>
 		@endif
-		<h1 class="title has-text-link">{{$ad->title}}</h1>
+		<h1 class="page__title">{{$ad->title}}</h1>
 		@auth
 			@if(auth()->user()->role >= 1)
 				@if($ad->project()->exists())
@@ -28,15 +28,15 @@
 				<div class="card">
 					<div class="card-content">
 						@foreach($ad->landOfferAd->offerGenres as $offerGenre)
-							<span class="tag is-primary is-medium">{{$offerGenre->name}}</span>
+							<span class="custom-tag info">{{$offerGenre->name}}</span>
 						@endforeach
 						<div class="content">
-							@if(is_null($ad->published_on))
-								<p><span class="is-size-5  ">Annonce soumise le : </span><span
+							@if($ad->is_draft)
+								<p><span class="is-size-5  has-text-black ">Annonce soumise le : </span><span
 											class="subtitle">{{ $ad->created_at}}</span>
 								</p>
 							@else
-								<p><span class="is-size-5 ">Publié le  : </span><span
+								<p><span class="is-size-5  has-text-black ">Publié le  : </span><span
 											class="subtitle">{{ $ad->published_on}}</span>
 								</p>
 							@endif

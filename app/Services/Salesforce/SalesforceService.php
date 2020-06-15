@@ -40,13 +40,6 @@ class SalesforceService
     {
         $this->repository = $repository;
         $this->localUserRepository = $userRepository;
-
-        /** @var TokenRepository $forrestToken */
-        $forrestToken = app('forrest_token');
-
-        if(!$forrestToken->has()) {
-            $this->repository->authenticate();
-        }
     }
 
     /**
@@ -58,6 +51,8 @@ class SalesforceService
      */
     public function registerPP($data)
     {
+    	$this->repository->authenticate();
+
         $city = City::findOrFail($data["city_id"]);
 
 
@@ -92,6 +87,8 @@ class SalesforceService
      */
     public function createPortalUser($data)
     {
+		$this->repository->authenticate();
+
         /**
          * array:3 [
          * "id" => "0031q00000RVzsRAAT"
@@ -154,6 +151,8 @@ class SalesforceService
      */
     public function getSyncedLocalUserFromSaml(\Aacotroneo\Saml2\Saml2User $samlUser) : User
     {
+		$this->repository->authenticate();
+
         $email = $samlUser->getAttribute('email')[0];
         $sfId = $samlUser->getAttribute('userId')[0];
 
@@ -196,6 +195,8 @@ class SalesforceService
      */
     public function emailExists(string $email, string $object) : bool
     {
+		$this->repository->authenticate();
+
         return !!$this->repository->findWhere($object, [
             'Email' => $email
         ]);

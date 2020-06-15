@@ -25,8 +25,7 @@
 
 @section('script')
     <script>
-                @auth
-                @if(auth()->user()->role>=1 )
+
         let buttons = document.querySelectorAll('#open-modal-message');
         buttons.forEach((button) => {
             button.addEventListener('click', function (event) {
@@ -56,8 +55,8 @@
 
         })
 
-        @endif
-        @if(auth()->user()->role>=1)
+        @auth()
+        @if(auth()->user()->role >= 1)
         function showValidationSupervisorModal() {
             let validationModal = document.querySelector('#modal-supervisor-validation');
             let html = document.querySelector('html');
@@ -82,6 +81,7 @@
 
         @endif
         @endauth
+
         function sendResponseTemplateMessage() {
             let listResponseTemplates = document.getElementById("response_templates_list");
             let responseTemplateSelected = listResponseTemplates.options[listResponseTemplates.selectedIndex].text;
@@ -108,8 +108,8 @@
             el: '#vue-messages',
             name: 'content'
         });
-         @auth()
-          @if(auth()->user()->role >= 1 and !$ad->project()->exists())
+                @auth()
+                @if(auth()->user()->role >= 1 and !$ad->project()->exists())
         const VueModerationModal = new Vue({
                 el: "#vue-moderation-modal",
                 name: 'content'

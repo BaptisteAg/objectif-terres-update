@@ -220,19 +220,19 @@
                         <div class="columns is-mobile is-multiline is-centered">
                             <div class="column is-narrow has-text-centered">
                                 <label class="checkbox">
-                                    <input name="project_attribution" value="true"
-                                           type="checkbox" {{old('project_attribution')  ? ' checked' : '' }}>
+                                    <input name="project_attribution[]" value="true"
+                                           type="checkbox" {{old('project_attribution') && in_array('true',old('project_attribution'))  ? ' checked' : '' }}>
                                     Attribué
                                 </label>
                             </div>
                             <div class="column is-narrow has-text-centered">
                                 <label class="checkbox">
-                                    @if(Route::current()->getName() == 'advisor.index' )
-                                        <input name="project_attribution" value="true"
-                                               type="checkbox" checked>
+                                    @if(Route::current()->getName() == 'supervisor.index' )
+                                        <input name="project_attribution[]" value="false" checked
+                                               type="checkbox" {{old('project_attribution') && in_array('false',old('project_attribution')) ? ' checked' : '' }}>
                                     @else
-                                        <input name="project_attribution" value="true"
-                                               type="checkbox" {{old('project_attribution') ? ' checked' : '' }}>
+                                        <input name="project_attribution[]" value="false"
+                                               type="checkbox" {{old('project_attribution') && in_array('false',old('project_attribution')) ? ' checked' : '' }}>
                                     @endif
                                     Non attribué
                                 </label>

@@ -10,6 +10,7 @@ use App\Notifications\ModerationPpNotification;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Services\Locations\LocationService;
+use App\Services\Users\UserService;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,28 +27,61 @@ class AttributionAdsService
 	protected $repository;
 	protected $adRepository;
 	protected $locationService;
+	protected $userService;
 
 	/**
 	 * AttributionAdsService constructor.
 	 * @param AttributionAdsRepository $attributionAdsRepository
 	 * @param AdRepository $adRepository
+	 * @param LocationService $locationService
+	 * @param UserService $userService
 	 */
-	public function __construct(AttributionAdsRepository $attributionAdsRepository, AdRepository $adRepository, LocationService $locationService)
+	public function __construct(AttributionAdsRepository $attributionAdsRepository, AdRepository $adRepository, LocationService $locationService, UserService $userService)
 	{
 		$this->repository = $attributionAdsRepository;
 		$this->adRepository = $adRepository;
 		$this->locationService = $locationService;
+		$this->userService = $userService;
 	}
 
 	/**
-	 * @param int $idUser
 	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
-	public function findAllByUserModerator(int $idUser)
+	public function findAllByUserModeratorTerritories()
 	{
-		return $this->repository->findAllByModeratorId($idUser);
+		$moderatorLocationTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
+		return $this->repository->findAllByModeratorIdAndTerritories($moderatorLocationTerritoriesCodes);
 	}
 
+	/**
+	 * @param int $adId
+	 * @return bool
+	 */
+	public function moderatorIsChargeOfAdModeration(int $adId): bool
+	{
+		$moderatorIsChargeOfAdModeration = false;
+		$moderatorLocationTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
+		$ad = $this->adRepository->find($adId);
+		$adDepartmentsCodes = [];
+		$adDepartmentsCodesInCities = [];
+
+		if($ad->departments->count() > 0){
+			$adDepartmentsCodes =  $ad->departments->map(function ($item)  {
+				return $item['code'];
+			});
+		}
+		if($ad->cities->count() > 0){
+			$adDepartmentsCodesInCities = $ad->cities->map(function ($item)  {
+				return $item['department_code'];
+			});
+		}
+		$adTerritoriesCodes = array_unique(array_merge($adDepartmentsCodes,$adDepartmentsCodesInCities->toArray()), SORT_REGULAR);
+		$intersectTerritoriesCodes = array_intersect($adTerritoriesCodes, $moderatorLocationTerritoriesCodes);
+		if(count($intersectTerritoriesCodes) >0) {
+			$moderatorIsChargeOfAdModeration = true;
+		}
+		return $moderatorIsChargeOfAdModeration;
+	}
 
 	/**
 	 * Find all attributions ads published since specific number of month
@@ -129,7 +163,7 @@ class AttributionAdsService
 		if (!is_null($filters->input('date_from')) && !is_null($filters->input('date_to'))) {
 			$dateStartFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_from'))->format('Y-m-d');
 			$dateEndFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_to'))->format('Y-m-d');
-			$attributionAdsFiltered->whereBetween('attribution_ads.created_at', [$dateStartFormatted,$dateEndFormatted." 23:59:59" ]);
+			$attributionAdsFiltered->whereBetween('attribution_ads.created_at', [$dateStartFormatted, $dateEndFormatted . " 23:59:59"]);
 		}
 
 		//If one or many ad status are selected, filter attribution ads based on their status
@@ -181,7 +215,20 @@ class AttributionAdsService
 		} else {
 			$attributionAdsFiltered->orderByDesc('created_at');
 		}
+		//Filter ads baased on moderation attribution and moderator territories
+		$moderatorTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
+		$attributionAdsFiltered->orWhere(function (Builder $query) use ($moderatorTerritoriesCodes) {
+			$query->whereHas('ad', function (Builder $subQuery) use ($moderatorTerritoriesCodes) {
+				$subQuery->whereHas('departments', function (Builder $q) use ($moderatorTerritoriesCodes) {
+					$q->whereIn('code', $moderatorTerritoriesCodes);
+				});
+				$subQuery->orWhereHas('cities', function (Builder $q) use ($moderatorTerritoriesCodes) {
+					$q->whereIn('department_code', $moderatorTerritoriesCodes);
+				});
+			});
+		});
+
 		$attributionAds = $attributionAdsFiltered
 			->with($this->getEagerLoading())
 			->paginate(15);

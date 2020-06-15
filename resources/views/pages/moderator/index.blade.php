@@ -185,19 +185,19 @@
                                     <td>
                                         @if(!is_null($attributionAd->adStatus))
                                             @if($attributionAd->adStatus->id === \App\Models\AdStatus::APPROVE_ID)
-                                                <span class="tag is-success has-tooltip-bottom"
+                                                <span class="custom-tag success has-tooltip-bottom"
                                                       data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
                                             @elseif($attributionAd->adStatus->id ===\App\Models\AdStatus::PENDING_ID)
-                                                <span class="tag is-warning is-light has-tooltip-bottom"
+                                                <span class="custom-tag primary has-tooltip-bottom"
                                                       data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
                                             @elseif($attributionAd->adStatus->id === \App\Models\AdStatus::REFUSE_ID)
-                                                <span class="tag is-danger has-tooltip-bottom"
+                                                <span class="custom-tag info  has-tooltip-bottom"
                                                       data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
                                             @elseif($attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID)
-                                                <span class="tag is-warning has-tooltip-bottom"
+                                                <span class="custom-tag danger has-tooltip-bottom"
                                                       data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
                                             @else
-                                                <span class="tag is-info has-tooltip-bottom"
+                                                <span class="custom-tag has-tooltip-bottom"
                                                       data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
                                             @endif
                                         @else

@@ -50,9 +50,29 @@
                                 {{message.sender_user.name}} </p>
                             <div class="content message-receiver ">
                                 <div class="message-receiver-content">
-                                    <p class="has-text-black">
-                                        {{message.content}}
-                                    </p>
+                                    <div v-if="message.documents.length >0">
+                                        <template v-for=" document in message.documents">
+                                            <a :href="'/'+document.path" :download="document.name">
+                                                <template v-if="document.type.includes('image')">
+                                                    <img :src="'/'+document.path" width="180px" :alt="document.name" style="margin-right:5px">
+                                                </template>
+                                                <template v-else>
+                                                    <button class="button is-link is-light" style="margin-bottom: 5px">
+                                                    <span class="icon is-small">
+                                                        <i class="fas fa-file"></i>
+                                                    </span>
+                                                        <span>{{document.name}}</span>
+                                                    </button>
+                                                </template>
+                                            </a>
+                                        </template>
+                                    </div>
+                                    <div v-else>
+                                        <p class="has-text-black">
+                                            {{message.content}}
+                                        </p>
+                                    </div>
+
                                     <div v-if="!message.day_posted" id="loading"
                                          style="height : 30px; width : 30px"></div>
                                     <time class="has-text-black is-size-7">Le {{message.day_posted}} à

@@ -15,6 +15,7 @@ class NewAdToModerateNotification extends Notification implements ShouldQueue
 	use Queueable;
 
 	protected $ad;
+	/** @var User|Authenticatable  */
 	protected $userPP;
 
 	/**

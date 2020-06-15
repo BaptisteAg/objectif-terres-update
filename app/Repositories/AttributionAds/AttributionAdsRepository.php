@@ -42,13 +42,23 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 	}
 
 	/**
-	 * @param $userId
+	 * @param array $territoriesCodes
 	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
-	public function findAllByModeratorId($userId)
+	public function findAllByModeratorIdAndTerritories(array $territoriesCodes)
 	{
 		return $this->entity
-			->where(["user_moderator_id" => $userId])
+			->where(["user_moderator_id" => auth()->id()])
+			->orWhere(function (Builder $query) use ($territoriesCodes) {
+				$query->whereHas('ad', function (Builder $subQuery) use ($territoriesCodes) {
+					$subQuery->whereHas('departments', function (Builder $builder) use ($territoriesCodes) {
+						$builder->whereIn('code', $territoriesCodes);
+					});
+					$subQuery->orWhereHas('cities', function (Builder $builder) use ($territoriesCodes) {
+						$builder->whereIn('department_code', $territoriesCodes);
+					});
+				});
+			})
 			->orderByDesc('created_at')
 			->with($this->getEagerLoading())
 			->paginate(15);

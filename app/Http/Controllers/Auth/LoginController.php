@@ -45,17 +45,17 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function checkpoint(Request $request, SalesforceService $salesforceService)
-    {
-        if(!$request->has('email')) {
-            return response()->json(['error' => "Email not provided"]);
-        }
-
-        if($salesforceService->emailExists($request->get('email'), 'User')) {
-            return response()->json(['redirect' => '/connexion/sso']);
-        }
-
-        return response()->json(['redirect' => false]);
-    }
+//    public function checkpoint(Request $request, SalesforceService $salesforceService)
+//    {
+//        if(!$request->has('email')) {
+//            return response()->json(['error' => "Email not provided"]);
+//        }
+//
+//        if($salesforceService->emailExists($request->get('email'), 'User')) {
+//            return response()->json(['redirect' => '/connexion/sso']);
+//        }
+//
+//        return response()->json(['redirect' => false]);
+//    }
 
 }

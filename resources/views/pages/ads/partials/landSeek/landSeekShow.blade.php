@@ -25,12 +25,12 @@
 				<div class="card">
 					<div class="card-content">
 						<div class="content">
-							@if(is_null($ad->published_on))
-								<p><span class="is-size-5 ">Annonce soumise le : </span><span
+							@if($ad->is_draft)
+								<p><span class="is-size-5  has-text-black ">Annonce soumise le : </span><span
 											class="subtitle">{{ $ad->created_at}}</span>
 								</p>
 							@else
-								<p><span class="is-size-5  ">Publié le  : </span><span
+								<p><span class="is-size-5  has-text-black ">Publié le  : </span><span
 											class="subtitle">{{ $ad->published_on}}</span>
 								</p>
 							@endif

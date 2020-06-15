@@ -25,7 +25,7 @@
 							<span class="tag is-primary is-medium">{{$offerType->name}}</span>
 						@endforeach
 						<div class="content">
-							@if(is_null($ad->published_on))
+							@if($ad->is_draft)
 								<p><span class="is-size-5  has-text-black ">Annonce soumise le : </span><span
 											class="subtitle">{{ $ad->created_at}}</span>
 								</p>

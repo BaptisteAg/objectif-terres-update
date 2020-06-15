@@ -16,18 +16,19 @@
                             <h3 class="title is-3 has-text-centered has-text-black ">Êtes-vous sûre de vouloir valider
                                 cette annonce ?</h3>
                         </template>
-                    </div>
-                    <div class="card-content" v-if="moderationChoice !== 'acceptAd'">
-                        <h5 class="has-text-link is-size-5">Justifier votre choix en envoyant un message au porteur de
-                            projet
-                        </h5>
-                        <br>
-                        <div class="container">
-                            <div class="field">
-                                <div v-if="isRejectedChoice" class="field">
-                                    <label class="label has-text-left" >Choisir un motif de
-                                        refus</label>
-                                    <p class="control is-expanded">
+
+                        <div v-if="moderationChoice !== 'acceptAd'">
+                            <h5 class="has-text-link is-size-5">Justifier votre choix en envoyant un message au porteur
+                                de
+                                projet
+                            </h5>
+                            <br>
+                            <div class="container">
+                                <div class="field">
+                                    <div v-if="isRejectedChoice" class="field">
+                                        <label class="label has-text-left">Choisir un motif de
+                                            refus</label>
+                                        <p class="control is-expanded">
                                     <span class="select is-fullwidth">
                                         <select @change="setSelectOptionId">
                                             <option disabled selected="selected">Choisissez...</option>
@@ -36,27 +37,29 @@
                                             </option>
                                         </select>
                                     </span>
-                                    </p>
-                                </div>
-                                <div v-if="moderationChoice === 'modifyAd'" class="field">
-                                    <label class="label has-text-left" >Envoyer un message type</label>
-                                    <p class="control is-expanded">
+                                        </p>
+                                    </div>
+                                    <div v-if="moderationChoice === 'modifyAd'" class="field">
+                                        <label class="label has-text-left">Envoyer un message type</label>
+                                        <p class="control is-expanded">
                                     <span class="select is-fullwidth">
-                                        <select v-model.trim="content" @change="setSelectOptionId">
+                                        <select @change="setSelectOptionId">
                                             <option disabled selected="selected">Choisissez...</option>
                                             <option v-for="selectOption in selectOptions" :data-id="selectOption.id"
-                                                    :value="selectOption.content">{{selectOption.name}}
+                                                    :value="selectOption.content">
+                                                {{selectOption.content}}
                                             </option>
                                         </select>
                                     </span>
-                                    </p>
-                                </div>
-                                <div class="field">
-                                    <label class="label has-text-left">Votre message </label>
-                                    <div class="control">
+                                        </p>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label has-text-left">Votre message </label>
+                                        <div class="control">
                                     <textarea v-model="content" required name="content"
                                               class="textarea is-medium"
                                               placeholder="Votre message..."></textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -71,10 +74,10 @@
                     </template>
                     <footer class="card-footer">
                         <div class="buttons card-footer-item">
-                            <button class="button is-link">
+                            <button class="button form-button basic primary">
                                 <span>Valider</span>
                             </button>
-                            <button @click="$emit('close')" class="button is-link is-light">
+                            <button @click="$emit('close')" class="button form-button basic secondary">
                                 <span>Annuler</span></button>
                         </div>
                         <button id="close-modal" class="modal-close is-large" aria-label="close"
