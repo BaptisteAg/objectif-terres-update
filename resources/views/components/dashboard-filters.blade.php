@@ -30,14 +30,14 @@
                 <div class="column is-2">
                     <p class="label has-text-centered">Type</p>
                     <div class="columns is-mobile is-multiline is-centered">
-                        <div class="column is-narrow has-text-centered">
+                        <div class="column pr-0 pl-0 is-narrow has-text-centered">
                             <label class="checkbox">
                                 <input name="ads_show" value="true"
                                        type="checkbox" {{old('ads_show')  ? ' checked' : '' }}>
                                 Annonces
                             </label>
                         </div>
-                        <div class="column is-narrow has-text-centered">
+                        <div class="column is-narrow pr-0 pl-0 has-text-centered">
                             <label class="checkbox">
                                 @if(Route::current()->getName() == 'advisor.index' )
                                     <input name="projects_show" value="true"
@@ -214,34 +214,7 @@
                            value="{{old('ad_keywords')}}">
                 </div>
             @else
-                @if(Route::current()->getName() == 'supervisor.index' || Route::current()->getName() == 'supervisor.show')
-                    <div class="column is-2">
-                        <p class="label has-text-centered">Suivi</p>
-                        <div class="columns is-mobile is-multiline is-centered">
-                            <div class="column is-narrow has-text-centered">
-                                <label class="checkbox">
-                                    <input name="project_attribution[]" value="true"
-                                           type="checkbox" {{old('project_attribution') && in_array('true',old('project_attribution'))  ? ' checked' : '' }}>
-                                    Attribué
-                                </label>
-                            </div>
-                            <div class="column is-narrow has-text-centered">
-                                <label class="checkbox">
-                                    @if(Route::current()->getName() == 'supervisor.index' )
-                                        <input name="project_attribution[]" value="false" checked
-                                               type="checkbox" {{old('project_attribution') && in_array('false',old('project_attribution')) ? ' checked' : '' }}>
-                                    @else
-                                        <input name="project_attribution[]" value="false"
-                                               type="checkbox" {{old('project_attribution') && in_array('false',old('project_attribution')) ? ' checked' : '' }}>
-                                    @endif
-                                    Non attribué
-                                </label>
-                            </div>
-
-                        </div>
-                    </div>
-                @endif
-                <div class="column  ">
+                <div class="column">
                     <p class="label has-text-centered has-tooltip-multiline has-tooltip-top "
                        data-tooltip="
 					   {{implode(PHP_EOL,\App\Models\SupportStage::TOOLTIPS)}}
@@ -251,7 +224,7 @@
                     </p>
                     <div class="columns is-mobile is-multiline is-centered">
                         @foreach($supportStages as $supportStage)
-                            <div class="column is-narrow has-text-centered">
+                            <div class="column is-narrow pl-0 pr-0 has-text-centered">
                                 <label class="checkbox">
                                     <input name="support_stages[]" value="{{(int)$supportStage->id}}"
                                            type="checkbox"
@@ -272,7 +245,7 @@
                     </p>
                     <div class="columns is-mobile is-multiline is-centered">
                         @foreach($supportStates as $supportState)
-                            <div class="column is-narrow has-text-centered">
+                            <div class="column is-narrow pl-0 pr-0 has-text-centered">
                                 <label class="checkbox">
                                     <input name="support_states[]" value="{{(int)$supportState->id}}"
                                            type="checkbox"
@@ -293,7 +266,7 @@
                     </p>
                     <div class="columns is-mobile is-multiline is-centered">
                         @foreach($projectStatuses as $projectStatus)
-                            <div class="column is-narrow has-text-centered">
+                            <div class="column is-narrow pl-0 pr-0 has-text-centered">
                                 <label class="checkbox">
                                     <input name="project_statuses[]" value="{{(int)$projectStatus->id}}"
                                            type="checkbox"
@@ -311,9 +284,36 @@
                 </div>
 
             @endif
+                @if(Route::current()->getName() == 'supervisor.index' || Route::current()->getName() == 'supervisor.show')
+                    <div class="column is-2">
+                        <p class="label has-text-centered">Suivi</p>
+                        <div class="columns is-mobile is-multiline is-centered">
+                            <div class="column is-narrow pl-0 pr-0 has-text-centered">
+                                <label class="checkbox">
+                                    <input name="project_attribution[]" value="true"
+                                           type="checkbox" {{old('project_attribution') && in_array('true',old('project_attribution'))  ? ' checked' : '' }}>
+                                    Attribué
+                                </label>
+                            </div>
+                            <div class="column is-narrow pl-0 pr-0 has-text-centered">
+                                <label class="checkbox">
+                                    @if(Route::current()->getName() == 'supervisor.index' )
+                                        <input name="project_attribution[]" value="false" checked
+                                               type="checkbox" {{old('project_attribution') && in_array('false',old('project_attribution')) ? ' checked' : '' }}>
+                                    @else
+                                        <input name="project_attribution[]" value="false"
+                                               type="checkbox" {{old('project_attribution') && in_array('false',old('project_attribution')) ? ' checked' : '' }}>
+                                    @endif
+                                    Non attribué
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                @endif
             <div class="column is-1 ">
                 <br>
-                <button type="submit" class="button is-link is-large ">
+                <button type="submit" class="button basic form-button primary ">
 					<span class="icon">
 					  <i class="fas fa-filter"></i>
 					</span>
@@ -321,10 +321,10 @@
                 </button>
                 @if(Route::current()->getName() != 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
                     <p style="margin-bottom: 10px"></p>
-                    <span v-on:click='isMoreFiltersOpen = !isMoreFiltersOpen'
-                          class=" has-text-info has-text-weight-semibold ">
+                    <a v-on:click='isMoreFiltersOpen = !isMoreFiltersOpen'
+                          class=" text_primary has-text-weight-semibold ">
 						Plus de critères
-					</span>
+					</a>
                     <br>
                 @endif
                 @if(Route::current()->getName() == 'moderator.show')

@@ -9,6 +9,35 @@
 @endsection
 
 @section('main-content')
+    @auth
+        @if(auth()->user()->role >= 1 )
+            @if (session()->has('supervisor_dashboard_url'))
+                <div class="content ml-80 mt-30">
+                    <a class="text_size large"
+                       href="{{route('supervisor.show', Session::get('supervisor_dashboard_url') )}}">
+                        <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
+                        <span>Retour </span>
+                    </a>
+                </div>
+            @elseif(session()->has('moderator_dashboard_url'))
+                <div class="content ml-80 mt-30">
+                    <a class="text_size large"
+                       href="{{route('moderator.show', Session::get('moderator_dashboard_url') )}}">
+                        <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
+                        <span>Retour </span>
+                    </a>
+                </div>
+            @else
+                <div class="content ml-80 mt-30">
+                    <a class="text_size large" href="{{URL::previous()}}">
+                        <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
+                        <span>Retour </span>
+                    </a>
+                </div>
+            @endif
+        @endif
+    @endauth
+
     @if($ad->ad_type === 'landSeek')
         @include('pages.ads.partials.landSeek.landSeekShow')
     @endif

@@ -10,10 +10,18 @@
 
     <section class="section " style="padding-top: 0px">
         <div class="content">
-            <a href="{{URL::previous()}}">
-                <span class="icon is-small"><i class="fas fa-arrow-left"></i></span>
-                <span>Retour</span>
-            </a>
+            @if (session()->has('advisor_dashboard_url'))
+                <a href="{{route('advisor.show', Session::get('advisor_dashboard_url') )}}">
+                    <span class="icon is-small"><i class="fas fa-arrow-left"></i></span>
+                    <span>Retour</span>
+                </a>
+            @else
+                <a href="{{URL::previous()}}">
+                    <span class="icon is-small"><i class="fas fa-arrow-left"></i></span>
+                    <span>Retour</span>
+                </a>
+            @endif
+
         </div>
         <div class="content">
             <h1 class="title is-1 has-text-link">Suivi de {{$ad->userPP->first_name}} {{$ad->userPP->name}} </h1>
@@ -78,7 +86,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="column is-2">
+                        <div class="column is-3">
                             <div class="content">
                                 <p class=" has-text-centered">État de la demande :
                                     @if(isset($ad->project->supportState))

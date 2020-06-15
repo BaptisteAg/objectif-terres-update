@@ -18,12 +18,12 @@ Vue.component('login-form', {
         onValidate(event) {
             event.preventDefault();
 
-            if(!this.email) {
+            if (!this.email) {
                 alert("Veuillez saisir votre adresse email");
                 return;
             }
 
-            if(this.hasPassedCheckpoint) {
+            if (this.hasPassedCheckpoint) {
                 event.target.submit()
                 return;
             }
@@ -33,27 +33,22 @@ Vue.component('login-form', {
             formData.append('email', this.email);
 
             this.isLoading = true;
-            this.hasPassedCheckpoint = true;
-            this.isLoading = false;
-
-            // fetch('/connexion/checkpoint', {
-            //     method: 'POST',
-            //     body: formData
-            // })
-            //     .then(response => response.json())
-            //     .then(result => {
-            //         if (result.error) {
-            //             this.loginErrorHandler(result.error)
-            //         }
-            //         else if(result.redirect && result.redirect !== '') {
-            //             location.href = result.redirect;
-            //         }
-            //         else {
-            //             this.hasPassedCheckpoint = true;
-            //             this.isLoading = false;
-            //         }
-            //     })
-            //     .catch(error => this.loginErrorHandler(error))
+            fetch('/connexion/checkpoint', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.error) {
+                        this.loginErrorHandler(result.error)
+                    } else if (result.redirect && result.redirect !== '') {
+                        location.href = result.redirect;
+                    } else {
+                        this.hasPassedCheckpoint = true;
+                        this.isLoading = false;
+                    }
+                })
+                .catch(error => this.loginErrorHandler(error))
         },
         onEmailChange(event) {
             this.hasPassedCheckpoint = false;
@@ -64,5 +59,5 @@ Vue.component('login-form', {
             this.isLoading = false;
         }
 
-}
+    }
 });

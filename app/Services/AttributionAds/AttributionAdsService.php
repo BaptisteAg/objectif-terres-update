@@ -60,24 +60,28 @@ class AttributionAdsService
 	public function moderatorIsChargeOfAdModeration(int $adId): bool
 	{
 		$moderatorIsChargeOfAdModeration = false;
-		$moderatorLocationTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$ad = $this->adRepository->find($adId);
+		if (auth()->user()->id == $ad->attributionAd->user_moderator_id) {
+			return $moderatorIsChargeOfAdModeration = true;
+		}
+
+		$moderatorLocationTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$adDepartmentsCodes = [];
 		$adDepartmentsCodesInCities = [];
 
-		if($ad->departments->count() > 0){
-			$adDepartmentsCodes =  $ad->departments->map(function ($item)  {
+		if ($ad->departments->count() > 0) {
+			$adDepartmentsCodes = $ad->departments->map(function ($item) {
 				return $item['code'];
 			});
 		}
-		if($ad->cities->count() > 0){
-			$adDepartmentsCodesInCities = $ad->cities->map(function ($item)  {
+		if ($ad->cities->count() > 0) {
+			$adDepartmentsCodesInCities = $ad->cities->map(function ($item) {
 				return $item['department_code'];
 			});
 		}
-		$adTerritoriesCodes = array_unique(array_merge($adDepartmentsCodes,$adDepartmentsCodesInCities->toArray()), SORT_REGULAR);
+		$adTerritoriesCodes = array_unique(array_merge($adDepartmentsCodes, $adDepartmentsCodesInCities->toArray()), SORT_REGULAR);
 		$intersectTerritoriesCodes = array_intersect($adTerritoriesCodes, $moderatorLocationTerritoriesCodes);
-		if(count($intersectTerritoriesCodes) >0) {
+		if (count($intersectTerritoriesCodes) > 0) {
 			$moderatorIsChargeOfAdModeration = true;
 		}
 		return $moderatorIsChargeOfAdModeration;
@@ -176,12 +180,40 @@ class AttributionAdsService
 		}
 
 		//Filter attribution ads if research ads by keywords
+
 		if (!is_null($filters->input('ad_keywords'))) {
 			$attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
-				$query->where('title', 'like', '%' . $filters->input('ad_keywords') . '%');
-				$query->orWhere('about_content', 'like', '%' . $filters->input('ad_keywords') . '%');
-				$query->orWhere('about_project_content', 'like', '%' . $filters->input('ad_keywords') . '%');
+				$query->where(function (Builder $query) use ($filters) {
+					$query->where('title', 'like', '%' . $filters->input('ad_keywords') . '%');
+					$query->orWhere('about_content', 'like', '%' . $filters->input('ad_keywords') . '%');
+					$query->orWhere('about_project_content', 'like', '%' . $filters->input('ad_keywords') . '%');
+					$query->orWhere(function (Builder $subQuery) use ($filters) {
+						$subQuery->whereHas('landOfferAd', function (Builder $q) use ($filters) {
+							$q->where('sau_description', 'like', '%' . $filters->input('ad_keywords') . '%');
+							$q->orWhere('water_access_description', 'like', '%' . $filters->input('ad_keywords') . '%');
+							$q->orWhere('test_description', 'like', '%' . $filters->input('ad_keywords') . '%');
+							$q->orWhere(function (Builder $q) use ($filters) {
+								$q->whereHas('building', function (Builder $r) use ($filters) {
+									$r->where('description', 'like', '%' . $filters->input('ad_keywords') . '%');
+
+								});
+								$q->orWhereHas('house', function (Builder $r) use ($filters) {
+									$r->where('description', 'like', '%' . $filters->input('ad_keywords') . '%');
+								});
+							});
+
+						});
+					});
+					$query->orWhere(function (Builder $subQuery) use ($filters) {
+						$subQuery->whereHas('landSeekAd', function (Builder $q) use ($filters) {
+							$q->where('experience_farming', 'like', '%' . $filters->input('ad_keywords') . '%');
+							$q->orWhere('land_description', 'like', '%' . $filters->input('ad_keywords') . '%');
+						});
+					});
+
+				});
 			});
+
 		}
 
 		//Handling sort of research results

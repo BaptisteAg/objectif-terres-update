@@ -48,6 +48,8 @@ class ModeratorController extends Controller
 	public function index(Request $request)
 	{
 		$request->session()->forget('_old_input');
+		$request->session()->forget('moderator_dashboard_url');
+
 		$cities = City::all();
 		$departments = Department::all();
 		$regions = Region::all();
@@ -72,6 +74,8 @@ class ModeratorController extends Controller
 	public function show(Request $request)
 	{
 		$request->flash();
+		$request->session()->put('moderator_dashboard_url', $request->all());
+
 		$cities = City::all();
 		$departments = Department::all();
 		$regions = Region::all();

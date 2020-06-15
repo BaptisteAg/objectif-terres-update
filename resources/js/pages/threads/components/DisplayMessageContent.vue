@@ -18,7 +18,7 @@
                                                 <img :src="'/'+document.path" width="180px" :alt="document.name" style="margin-right:5px">
                                             </template>
                                             <template v-else>
-                                                <button class="button is-link is-light" style="margin-bottom: 5px">
+                                                <button class="button basic small secondary" style="margin-bottom: 5px">
                                                     <span class="icon is-small">
                                                         <i class="fas fa-file"></i>
                                                     </span>
@@ -57,7 +57,7 @@
                                                     <img :src="'/'+document.path" width="180px" :alt="document.name" style="margin-right:5px">
                                                 </template>
                                                 <template v-else>
-                                                    <button class="button is-link is-light" style="margin-bottom: 5px">
+                                                    <button class="button basic small secondary" style="margin-bottom: 5px">
                                                     <span class="icon is-small">
                                                         <i class="fas fa-file"></i>
                                                     </span>

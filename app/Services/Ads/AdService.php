@@ -164,7 +164,6 @@ class AdService
 		});
 
 
-
 		return $ad;
 	}
 
@@ -573,18 +572,43 @@ class AdService
 				$query->where('title', 'like', '%' . $filters->input('ad_keywords') . '%');
 				$query->orWhere('about_content', 'like', '%' . $filters->input('ad_keywords') . '%');
 				$query->orWhere('about_project_content', 'like', '%' . $filters->input('ad_keywords') . '%');
+				$query->orWhere(function (Builder $subQuery) use ($filters) {
+					$subQuery->whereHas('landOfferAd', function (Builder $q) use ($filters) {
+						$q->where('sau_description', 'like', '%' . $filters->input('ad_keywords') . '%');
+						$q->orWhere('water_access_description', 'like', '%' . $filters->input('ad_keywords') . '%');
+						$q->orWhere('test_description', 'like', '%' . $filters->input('ad_keywords') . '%');
+						$q->orWhere(function (Builder $q) use ($filters) {
+							$q->whereHas('building', function (Builder $r) use ($filters) {
+								$r->where('description', 'like', '%' . $filters->input('ad_keywords') . '%');
+
+							});
+							$q->orWhereHas('house', function (Builder $r) use ($filters) {
+								$r->where('description', 'like', '%' . $filters->input('ad_keywords') . '%');
+							});
+						});
+
+					});
+				});
+				$query->orWhere(function (Builder $subQuery) use ($filters) {
+					$subQuery->whereHas('landSeekAd', function (Builder $q) use ($filters) {
+						$q->where('experience_farming', 'like', '%' . $filters->input('ad_keywords') . '%');
+						$q->orWhere('land_description', 'like', '%' . $filters->input('ad_keywords') . '%');
+					});
+				});
+
 			});
 		}
 
 		//Filter ads based on the role of the logged user
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$adsFiltred->where(function (Builder $query) use ($supervisorLocationTerritoryCodes, $roleUser) {
-			$query->whereNotNull('project_id');
+//			$query->whereNotNull('project_id');
 			$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
+				$q->where('user_moderator_id', '=', auth()->id());
 				if ($roleUser === 2) {
-					$q->where('user_advisor_id', '=', auth()->id());
+					$q->orWhere('user_advisor_id', '=', auth()->id());
 				} elseif ($roleUser >= 3)
-					$q->where('user_supervisor_id', '=', auth()->id());
+					$q->orWhere('user_supervisor_id', '=', auth()->id());
 			});
 			$query->orWhereHas('departments', function (Builder $query) use ($supervisorLocationTerritoryCodes) {
 				$query->whereIn('code', $supervisorLocationTerritoryCodes);

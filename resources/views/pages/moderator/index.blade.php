@@ -1,43 +1,49 @@
 @extends ('default')
 
 @section ('title', 'Mon espace modérateur')
-
 @section('main-content')
     <div class="section pt-0">
         <h1 class="title is-2 has-text-link">Bienvenue sur votre espace modérateur <span
                     class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
-        @if($numberOfAdsToModerate !== 0 || $numberOfUnreadMessages !==0)
-            <div id="notification-moderator" class="notification has-background-info">
-                <button id="close-notification-moderator" class="delete"></button>
-                @if($numberOfAdsToModerate === 0)
-                @elseif($numberOfAdsToModerate >1)
-                    <p class="has-text-white-ter">
-                        <i class="far fa-bell has-text-white-ter"></i>
-                        Vous avez<a style="text-decoration: none"
-                                    href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4'])}}">
-                            <strong>{{$numberOfAdsToModerate}}
-                                annonces</strong></a> à modérer !</p>
-                @else
-                    <p class="has-text-white-ter"><i class="far fa-bell has-text-white-ter"></i> Vous avez
-                        <strong>{{$numberOfAdsToModerate}} annonce</strong> à modérer !</p>
-                @endif
 
-                @if($numberOfUnreadMessages === 0)
-                @elseif($numberOfUnreadMessages > 1 )
-                    <a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i
-                                    class="fas fa-envelope "></i> Vous
-                            avez <strong>{{$numberOfUnreadMessages}}
-                                nouveaux messages
-                                !</strong></p></a>
+        @if(! auth()->user()->notifications->isEmpty())
+            @if($numberOfAdsToModerate !== 0 || $numberOfUnreadMessages !==0)
+                <div id="notification-moderator" class="notification has-background-info">
+                    <button id="close-notification-moderator" class="delete"></button>
+                    @if($numberOfAdsToModerate === 0)
+                    @elseif($numberOfAdsToModerate >1)
+                        <p class="has-text-white-ter">
+                            <i class="far fa-bell has-text-white-ter"></i>
+                            Vous avez<a style="text-decoration: none"
+                                        href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4'])}}">
+                                <strong>{{$numberOfAdsToModerate}}
+                                    annonces</strong></a> à modérer !</p>
+                    @else
+                        <p class="has-text-white-ter">
+                            <i class="far fa-bell has-text-white-ter"></i>
+                            Vous avez<a style="text-decoration: none"
+                                        href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4'])}}">
+                                <strong>{{$numberOfAdsToModerate}} annonce</strong>
+                            </a>à modérer !</p>
+                    @endif
 
-                @else
-                    <a style="text-decoration: none" href="{{route('threads.index')}}">
-                        <p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez
-                            <strong>{{$numberOfUnreadMessages}} nouveau message !</strong>
-                        </p>
-                    </a>
-                @endif
-            </div>
+                    @if($numberOfUnreadMessages === 0)
+                    @elseif($numberOfUnreadMessages > 1 )
+                        <a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i
+                                        class="fas fa-envelope "></i> Vous
+                                avez <strong>{{$numberOfUnreadMessages}}
+                                    nouveaux messages
+                                    !</strong></p></a>
+
+                    @else
+                        <a style="text-decoration: none" href="{{route('threads.index')}}">
+                            <p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez
+                                <strong>{{$numberOfUnreadMessages}} nouveau message !</strong>
+                            </p>
+                        </a>
+                    @endif
+                </div>
+            @endif
         @endif
         {{Form::open(['route'=>'moderator.show', 'method'=>'get'])}}
         <div id="vue-form-moderator">
@@ -45,13 +51,14 @@
         </div>
         {{Form::close()}}
 
+
         <div class="section">
             <h1 class="title is-1 has-text-centered">Liste des annonces attribuées</h1>
-            @if (count($attributionAds) ==0)
+            @if (count($attributionAds) == 0)
                 <p class="has-text-centered">Aucun résultat</p>
             @else
                 <div class="table-container">
-                    <table class="table is-striped is-hoverable is-fullwidth ">
+                    <table id="moderator-list-ads" class="table is-striped is-hoverable is-fullwidth ">
                         <thead>
                         <tr>
                             <th>

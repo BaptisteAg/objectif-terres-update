@@ -35,6 +35,7 @@ class SupervisorsController extends BaseController
 	public function index(Request $request)
 	{
 		$request->session()->forget('_old_input');
+		$request->session()->forget('supervisor_dashboard_url');
 		$ads = $this->adService->findAllNotAssignedProjectsByUserSupervisor(false);
 		$vars = $this->getSupervisorDashboardVars();
 		$vars['ads'] = $ads;
@@ -50,6 +51,7 @@ class SupervisorsController extends BaseController
 	public function show(Request $request)
 	{
 		$request->flash();
+		$request->session()->put('supervisor_dashboard_url', $request->all());
 		$ads = $this->adService->showForSupervisor($request);
 		$vars = $this->getSupervisorDashboardVars();
 		$vars['ads'] = $ads;

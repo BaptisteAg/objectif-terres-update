@@ -1,5 +1,5 @@
 @section('title', $ad->title)
-<section class="section">
+<section class="section pt-0">
 	<div class="container ">
 		<nav class="breadcrumb" aria-label="breadcrumbs">
 			<ul>
@@ -55,7 +55,7 @@
 						<div class="content">
 							<p>
 								<span class="is-size-5 is-capitalized has-text-black">Catégorie : </span>
-								<span class="subtitle">Recherche d'emploi</span>
+								<span class="subtitle">{{$ad->ad_type_full_name}}</span>
 							</p>
 						</div>
 						<div class="content">
@@ -136,12 +136,12 @@
 
 		<div class="content">
 			<h3 class="title is-3">Description du projet</h3>
-			<p> {{$ad->about_project_content}}</p>
+			<p> {!! nl2br($ad->about_project_content ?? "") !!}</p>
 		</div>
 
 		<div class="content">
 			<h3 class="title is-3">A propos</h3>
-			<p> {{$ad->about_content}}</p>
+			<p>  {!! nl2br($ad->about_content ?? "") !!}</p>
 		</div>
 
 		<div class="section">
