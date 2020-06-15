@@ -33,7 +33,7 @@
 
     label {
         font-size: 30px;
-        font-family: $font-family-sans-serif;
+        font-family: $family-sans-serif;
     }
 
     .adTypes-container {
@@ -48,7 +48,7 @@
         border-radius: 4px;
         padding: 20px;
         font-size: 20px;
-        font-family: $font-family-sans-serif;
+        font-family: $family-sans-serif;
         cursor: pointer;
         margin: 0 10px;
         text-align: center;

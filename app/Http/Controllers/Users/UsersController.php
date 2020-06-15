@@ -11,6 +11,7 @@ use App\Services\Ads\AdService;
 use App\Services\Users\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response;
 
 class UsersController extends Controller
 {
@@ -50,26 +51,24 @@ class UsersController extends Controller
 	}
 
 	/**
-	 * @param User $user
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
-	public function edit(User $user)
+	public function edit()
 	{
-		if (auth()->user()->id != $user->id && auth() ->user()->role != 2) {
-			abort(404);
-		}
+		$user = auth()->user();
 		$cities = City::all();
 		if ($user->zipCode) {
 			$cityData = [
-				'label' => $user->zipCode->name." (".$user->zipCode->zip_code.")",
-				'value'=>['id' => $user->zipCode->id,
+				'label' => $user->zipCode->name . " (" . $user->zipCode->zip_code . ")",
+				'value' => ['id' => $user->zipCode->id,
 					'name' => $user->zipCode->name,
 					'type' => 'cities',
 					'zip_code' => $user->zipCode->zip_code]];
 
-			$user['citySelect'] = json_encode($cityData);
+			$user['citySelect'] = json_encode([$cityData]);
 		}
 		return view('pages.users.edit', compact('cities', 'user'));
+
 	}
 
 	/**

@@ -1,208 +1,97 @@
+///////////////
+
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url("https://fonts.googleapis.com/css?family=Nunito");
+
 // Variables
-@import 'variables';
+@import "variables";
+
+
 //import framework bulma
-@import '~bulma/bulma';
-@import '~bulma-accordion/dist/css/bulma-accordion';
-@import '~bulma-tooltip/dist/css/bulma-tooltip.min.css';
-@import '~bulma-divider/dist/css/bulma-divider.min.css';
+@import "~bulma/bulma";
+@import "~bulma-accordion/dist/css/bulma-accordion";
+@import "~bulma-tooltip/dist/css/bulma-tooltip.min.css";
+@import "~bulma-divider/dist/css/bulma-divider.min.css";
 //import Awesomplete
-@import '~awesomplete/awesomplete.css';
+@import "~awesomplete/awesomplete.css";
+
 // Themify
-@import url('https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css');
+@import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
+
 // Animate
-@import url('https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css');
-///////////////
-// Loader
-@import "loader";
-///////////////
-// Pages
-@import "ads";
-@import "pages/qui-sommes-nous";
-@import "pages/minstaller-comme-paysan";
-@import "pages/louer-vendre-mes-terres";
-@import "pages/ceder-ma-ferme";
-@import "pages/ceder-mes-terres";
-@import "pages/contactez-nous";
+@import url("https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css");
+
+//Bases
+@import "bases/global";
+@import "bases/typography";
+@import "bases/titles";
+@import "bases/links";
+@import "bases/backgrounds";
+@import "bases/helpers";
+
+//Layouts
+@import "layouts/header";
+@import "layouts/footer";
+@import "layouts/navigation";
+
 // Components
-@import 'components/step-guide';
-@import 'components/carrousel-large';
-@import 'components/downloadPDF';
-@import 'components/video';
-@import 'components/testimony';
+@import "components/buttons";
+@import "components/step-guide";
+@import "components/carrousel-large";
+@import "components/downloadPDF";
+@import "components/video";
+@import "components/testimony";
+@import "components/map";
+@import "components/pagination";
+@import "components/multiselect";
+@import "components/notification_sticker";
+@import "components/autocomplete";
+@import "components/date-picker";
+@import "components/loader";
+@import "components/youtube-video";
+@import "components/tuile";
+@import "components/form";
+@import "components/vignette";
+@import "components/sticker";
+@import "components/hero";
+@import "components/cta";
+@import "components/blockquote";
+@import "components/input";
+@import "components/card";
+@import "components/tooltip";
+@import "components/messages";
+@import "components/dropzone";
+@import "components/tags";
+
+
+// Pages
+@import "pages/ads/ads";
+@import "pages/cms/qui-sommes-nous";
+@import "pages/cms/minstaller-comme-paysan";
+@import "pages/cms/louer-vendre-mes-terres";
+@import "pages/cms/ceder-ma-ferme";
+@import "pages/cms/ceder-mes-terres";
+@import "pages/cms/contactez-nous";
+@import "pages/research/research";
+@import "pages/threads/threads";
+
+
 // Keyframes
 @import "keyframes/progress-circle";
 /////////////////
-// Global scss
-.container-custom {
-  padding: 0.5rem 2rem;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-.container {
-  max-width: 1055px;
-}
-
-.title {
-  font-family: $font-family-sans-serif;
-}
-
-.control.has-icons-left .icon, .control.has-icons-right .icon {
-  right: 0;
-}
-
-.has_margin {
-  margin: $has_margin;
-}
-
-.overflow-hidden {
-  overflow: hidden;
-}
-
-[v-cloak] {
-  display: none;
-}
-
-.level-item{
-  flex-shrink: 1;
-}
-
-// Leaflet / OpenStreetmap
-#my_osm_widget_map { /* use the same name as <div id=""> */
-  width: 100vw; /* important! if you need full width display */
-  height: 400px;
-  margin: 0;
-  border-radius: 5px;
-  z-index: 1;
-  /* ... */
-}
-
-[data-tooltip]:not(.is-disabled).has-tooltip-multiline::before,
-[data-tooltip]:not(.is-loading).has-tooltip-multiline::before,
-[data-tooltip]:not([disabled]).has-tooltip-multiline::before {
-  white-space: pre-line;
-}
-
-//Pagination
-
-.page-link {
-  font-size: 1.5rem;
-}
-
-.is-current-page {
-  font-weight: bold;
-}
 
 
-// Vue-Multiselect
-body .multiselect__option--highlight {
-  background: $blue;
-
-  &::after {
-    background: $blue;
-  }
-}
-
-body .multiselect__tag {
-  background: $blue;
-}
 
 
-.slider-pagination {
-  bottom: -40px;
-
-  .slider-page {
-    box-shadow: 0 2px 5px #808080;
-  }
-}
-
-.some-buttons {
-  margin-top: 20px;
-}
-
-.slider {
-  overflow: hidden !important;
-}
-
-//Dot notification
-
-.notification-container {
-  position: relative;
-
-  i {
-    color: #fff;
-  }
-}
-
-.notification-counter {
-  position: absolute;
-  top: -2px;
-  left: 12px;
-
-  background-color: rgba(212, 19, 13, 1);
-  color: #fff;
-  border-radius: 3px;
-  padding: 1px 3px;
-  font: 10px Verdana;
-}
 
 
-//Spinner
-#loading {
-  width: 50px;
-  height: 50px;
-  border: 3px solid hsl(0, 0%, 95%);
-  border-radius: 50%;
-  border-top-color: hsl(204, 86%, 53%);
-  animation: spin 1s ease-in-out infinite;
-  -webkit-animation: spin 1s ease-in-out infinite;
-}
-
-@keyframes spin {
-  to {
-    -webkit-transform: rotate(360deg);
-  }
-}
-
-@-webkit-keyframes spin {
-  to {
-    -webkit-transform: rotate(360deg);
-  }
-}
 
 
-//Threads
-.button-send-message{
-  margin-left: 85%;
-}
-
-//ResearchEvents results
-
-.research-price-and-surface-infos {
-  margin-top: 45%;
-}
 
 
-// Autocomplete bulma tags
-.tag.autocomplete-input-tag.is-info {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  font-size: 15px;
-  text-align: left;
-  color: #000;
-  background: #fff;
-  border: 1px solid #dbdbdb;
-}
 
 
-//VUe date-picker
-.vdp-datepicker__calendar {
-  right: 0%;
-}
+
+
+
+

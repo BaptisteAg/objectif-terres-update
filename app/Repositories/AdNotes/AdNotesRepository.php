@@ -2,6 +2,7 @@
 
 
 use App\Models\AdNote;
+use App\Models\ProjectDataKey;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -36,6 +37,16 @@ class AdNotesRepository extends AbstractRepository implements AdNotesRepositoryI
 			$adNote = new AdNote();
 			$adNote->fill($data);
 			$adNote->save();
+
+			$projectDataKey = ProjectDataKey::whereId($data['project_data_key_id'])->with('projectDataValues')->first();
+			if ($projectDataKey->projectDataValues->count() > 0) {
+				$projectDataKey->projectDataValues->filter(function ($projectDataValue) use ($data, $adNote) {
+					if ($projectDataValue->value === $data['value']) {
+						$adNote->projectDataValue()->associate($projectDataValue->id);
+						$adNote->save();
+					}
+				});
+			}
 			return $adNote;
 		});
 		return $adNote;
@@ -50,7 +61,7 @@ class AdNotesRepository extends AbstractRepository implements AdNotesRepositoryI
 	{
 		return $this->entity
 			->where("ad_id", "=", $data['ad_id'])
-			->where("project_data_key_id", "=",$data['project_data_key_id'])
+			->where("project_data_key_id", "=", $data['project_data_key_id'])
 			->orderByDesc('created_at')
 			->with('user')
 			->get();
@@ -64,10 +75,10 @@ class AdNotesRepository extends AbstractRepository implements AdNotesRepositoryI
 	public function findAllNotesWithPublicProjectDatKeysByAdId(int $adId)
 	{
 		/** @var Collection $notes $notes */
-		$notes =  $this->entity
-			->where("ad_id", "=",$adId)
+		$notes = $this->entity
+			->where("ad_id", "=", $adId)
 			->whereNotNull('project_data_key_id')
-			->whereHas('projectDataKey', function (Builder $query){
+			->whereHas('projectDataKey', function (Builder $query) {
 				$query->where('is_public', '=', 1);
 			})
 			->with('projectDataKey')

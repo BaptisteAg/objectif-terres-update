@@ -326,10 +326,10 @@
 						<br>
 						<div class="field is-grouped is-grouped-centered">
 							<div class="control ">
-								<button type="submit" class="button is-link is-size-3">Valider</button>
+								<button type="submit" class="form-button button basic primary is-size-3">Valider</button>
 							</div>
 							<div class="control ">
-								<a href="{{url()->previous()}}" class="button is-light is-size-3">Retour</a>
+								<a href="{{url()->previous()}}" class="button basic secondary is-size-3">Retour</a>
 							</div>
 						</div>
 						{!! Form::close() !!}

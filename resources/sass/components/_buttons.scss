@@ -1,0 +1,482 @@
+/*
+==========================================================
+==========================================================
+BUTTON
+==========================================================
+==========================================================
+*/
+
+/*
+--------------------
+BUTTON RESET
+--------------------
+*/
+
+button {
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+/*
+--------------------
+BUTTON
+--------------------
+*/
+
+.button {
+  display: inline-flex;
+  box-sizing: border-box;
+  font-size: 1.25em;
+  text-align: center;
+  text-decoration: none;
+  line-height: 1.125em;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+@media (max-width: $tablet - 1) {
+  .button {
+    font-size: 1em;
+  }
+}
+
+/* ----- Icon (optionnal) ----- */
+
+.button__icon {
+  transition: all 0.2s;
+}
+
+/* ----- Label (optionnal) ----- */
+
+.button__label {
+  font-size: 1.25em;
+  line-height: 1.125em;
+  font-family: $family-sans-serif-title;
+}
+
+/* ----- Wrap (optionnal) ----- */
+
+.button__wrap {
+  margin: 1em 0;
+  margin-bottom: 1em;
+
+  &_right{
+    text-align: right;
+  }
+}
+
+/* ----- Size (optionnal) ----- */
+
+.button.x-large {
+  font-size: 1.75em;;
+}
+
+.button.large {
+  font-size: 1.5em;
+}
+
+.button.small {
+  font-size: 1em;
+}
+
+.button.x-small {
+  font-size: 0.75em;
+}
+
+/*
+--------------------
+THEME (necessary)
+--------------------
+*/
+
+/* Primary */
+
+.button.primary.basic,
+.button.primary.round > .button__icon {
+  color: white;
+  background-color: $primary;
+  border-color: $primary;
+}
+
+.button.primary.basic:hover,
+.button.primary.basic:focus,
+.button.primary.round:hover > .button__icon,
+.button.primary.round:focus > .button__icon {
+  background-color: $secondary;
+  border-color: $secondary;
+}
+
+.button.primary.basic:active,
+.button.primary.round:active > .button__icon {
+  background-color: $blue-bright;
+  border-color: $blue-bright;
+}
+
+.button.primary.icon {
+  color: $primary;
+}
+
+.button.primary.icon:hover,
+.button.primary.icon:focus {
+  color: $secondary;
+}
+
+.button.primary.icon:active {
+  color: $blue-bright;
+}
+
+/* secondary */
+
+.button.secondary.basic,
+.button.secondary.round > .button__icon {
+  color: $secondary;
+  background-color: $white;
+  border-color: $primary;
+}
+
+.button.secondary.basic:hover,
+.button.secondary.basic:focus,
+.button.secondary.round:hover > .button__icon,
+.button.secondary.round:focus > .button__icon {
+  color: $white;
+  border-color: $secondary;
+  background-color: $secondary;
+}
+
+.button.secondary.basic:active,
+.button.secondary.round:active > .button__icon {
+  color: $white;
+  background-color: $blue-bright;
+  border-color: $blue-bright;
+}
+
+.button.secondary.icon {
+  color: $white;
+}
+
+.button.secondary.icon:hover,
+.button.secondary.icon:focus {
+  color: $white;
+}
+
+.button.secondary.icon:active {
+  color: $white;
+}
+
+/* Success */
+
+.button.success.basic,
+.button.success.round > .button__icon {
+  color: $white;
+  background-color: $success;
+  border-color: $success;
+}
+
+.button.success.basic:hover,
+.button.success.basic:focus,
+.button.success.round:hover > .button__icon,
+.button.success.round:focus > .button__icon {
+  color: $white;
+  border-color: $success-dark;
+  background-color: $success-dark;
+}
+
+.button.success.basic:active,
+.button.success.round:active > .button__icon {
+  color: $white;
+  background-color: $success-bright;
+  border-color: $success-bright;
+}
+
+.button.success.icon {
+  color: $success;
+}
+
+.button.success.icon:hover,
+.button.success.icon:focus {
+  color: $success-dark;
+}
+
+.button.success.icon:active {
+  color: $success-bright;
+}
+
+/* Warning */
+
+.button.warning.basic,
+.button.warning.round > .button__icon {
+  color: $white;
+  background-color: $warning;
+  border-color: $warning;
+}
+
+.button.warning.basic:hover,
+.button.warning.basic:focus,
+.button.warning.round:hover > .button__icon,
+.button.warning.round:focus > .button__icon {
+  color: $white;
+  border-color: $warning-dark;
+  background-color: $warning-dark;
+}
+
+.button.warning.basic:active,
+.button.warning.round:active > .button__icon {
+  color: $white;
+  background-color: $warning-bright;
+  border-color: $warning-bright;
+}
+
+.button.warning.icon {
+  color: $warning;
+}
+
+.button.warning.icon:hover,
+.button.warning.icon:focus {
+  color: $warning-dark;
+}
+
+.button.warning.icon:active {
+  color: $warning-bright;
+}
+
+/* Danger */
+
+.button.danger.basic,
+.button.danger.round > .button__icon {
+  color: $white;
+  background-color: $danger;
+  border-color: $danger;
+}
+
+.button.danger.basic:hover,
+.button.danger.basic:focus,
+.button.danger.round:hover > .button__icon,
+.button.danger.round:focus > .button__icon {
+  color: $white;
+  border-color: $danger-dark;
+  background-color: $danger-dark;
+}
+
+.button.danger.basic:active,
+.button.danger.round:active > .button__icon {
+  color: $white;
+  background-color: $danger-bright;
+  border-color: $danger-bright;
+}
+
+.button.danger.icon {
+  color: $danger;
+}
+
+.button.danger.icon:hover,
+.button.danger.icon:focus {
+  color: $danger-dark;
+}
+
+.button.danger.icon:active {
+  color: $danger-bright;
+}
+
+/*
+--------------------
+BASIC'S VARIATIONS
+--------------------
+*/
+
+.button.basic {
+  padding: 0.75em 1.25em 0.65em;
+  border-style: solid;
+  border-width: 0.1em;
+}
+
+.button.basic.small {
+  padding: 0.5em 0.875em 0.45em;
+}
+
+.button.basic.x-small {
+  padding: 0.35em 0.625em 0.325em;
+}
+
+input.button.basic {
+  font-size: 1.5em;
+  padding: 0.625em 1.042em 0.542em;
+  font-family: $family-sans-serif-title;
+  line-height: 0.9375em;
+}
+
+@media (max-width: $tablet - 1){
+  input.button.basic {
+    font-size: 1em;
+  }
+}
+
+input.button.basic.x-large {
+  font-size: 2.1em;
+}
+
+input.button.basic.large {
+  font-size: 1.8em;
+}
+
+input.button.basic.small {
+  font-size: 1.2em;
+}
+
+input.button.basic.x-small {
+  font-size: 0.9em;
+}
+
+
+.button.basic > .button__icon:first-child {
+  margin-right: 0.75em;
+}
+
+.button.basic > .button__icon:last-child {
+  margin-left: 0.75em;
+}
+
+/*
+--------------------
+ICON'S VARIATIONS
+--------------------
+*/
+
+.button.icon {
+  background-color: transparent !important;
+  padding: 0.5em;
+}
+
+/* ----- BUTTON ICON TIGHT ----- */
+/* Pour afficher dans un tag par exemple */
+
+.button.icon.tight {
+  padding: 0;
+}
+
+.button.tight > i,
+.button.tight > svg {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+/*
+--------------------
+ROUND'S VARIATION
+--------------------
+*/
+
+.button.round {
+  font-size: 1.5em;
+  background-color: transparent !important;
+  padding: 0;
+  border: none !important;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.button.round.x-large {
+  font-size: 2.1em;
+}
+
+.button.round.large {
+  font-size: 1.8em;
+}
+
+.button.round.small {
+  font-size: 1.2em;
+}
+
+.button.round.x-small {
+  font-size: 0.9em;
+}
+
+.button.round > .button__icon {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 2px;
+}
+
+.button.round > .button__icon > i,
+.button.round > .button__icon > svg {
+  position: absolute;
+  top: calc(50% - 0.5em);
+  left: calc(50% - 0.5em);
+  width: 1em;
+  transition: all 0.2s;
+}
+
+/*
+--------------------
+READ MORE'S VARIATION
+--------------------
+*/
+
+.button.read-more {
+  display: block;
+}
+
+.button__wrap > .button.read-more {
+  top: -0.75em;
+}
+
+.button.read-more:hover > .button__icon > i,
+.button.read-more:hover > .button__icon > svg,
+.button.read-more:focus > .button__icon > i,
+.button.read-more:focus > .button__icon > svg,
+a:hover .button.read-more > .button__icon > i,
+a:hover .button.read-more > .button__icon > svg,
+a:focus .button.read-more > .button__icon > i,
+a:focus .button.read-more > .button__icon > svg {
+  transform: rotate(45deg);
+}
+
+/*
+--------------------
+EXPAND VARIATION
+--------------------
+*/
+
+.button.expand:hover,
+.button.expand:focus,
+a:hover span.button.expand,
+a:focus span.button.expand,
+button:hover span.button.expand,
+button:focus span.button.expand {
+  transform: rotate(90deg) !important;
+}
+
+.is-expanded .button.expand {
+  transform: rotate(0deg);
+}
+
+.is-shrinked .button.expand {
+  transform: rotate(180deg);
+}
+
+/*
+--------------------
+DROPDOWN BUTTON
+--------------------
+*/
+.button-dropdown {
+  font-size: 1em !important;
+}
+
+
+/*
+--------------------
+FORM INPUT BUTTON
+--------------------
+*/
+
+.form-button{
+  font-family: $family-sans-serif-title;
+}

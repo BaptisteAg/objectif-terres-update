@@ -1,0 +1,50 @@
+
+a {
+  cursor: pointer;
+  color : $primary
+}
+
+a.custom-link {
+  display: inline;
+  padding: 0 0.2em;
+  transition: all 0.2s;
+  color: $primary;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+
+a.custom-link:hover,
+a.custom-link:focus,
+a.custom-link:active {
+  color: $white;
+  background-color: $primary;
+  text-decoration: none;
+  padding: 0 5px;
+}
+
+
+a.custom-link > i,
+a.custom-link > svg {
+  text-decoration: none;
+  margin-left: 0.25em;
+}
+
+[class*="bg-d"] a { color: $white; }
+[class*="bg-d"] a.link-header { text-decoration: underline; padding: 0 5px }
+[class*="bg-d"] a:hover, [class*="bg-d"] a:focus { color: $primary; background-color: $white; }
+[class*="bg-d"] a.link-header:hover, [class*="bg-d"] a.link-header:focus { text-decoration: none; }
+//[class*="bg-d"] a:hover:not(.button), [class*="bg-d"] a:focus:not(.button) { padding: 0 5px }
+[class*="bg-d"] a:active { color: $white}
+
+/*
+--------------------
+IMG LINK
+--------------------
+pour des images-liens
+*/
+
+.img-link {
+  display: inline-block;
+  padding: 0.2em;
+}

@@ -13,68 +13,52 @@
 
 @section('main-content')
 	<div id="my_osm_widget_map"></div>
-	<section class="section is-medium">
-		<div class="has-text-centered">
-			<h2 class="title is-1">Dernières annonces foncières publiées</h2>
-			<p>ASTUCE : <a href="{{url('/')}}">Créez votre compte gratuit</a> pour visualiser directement les annonces
-				de votre région !</p>
-		</div>
-		<div class="columns">
-			@foreach ($ads as $ad)
-				<div class="column is-half ">
-					<div class="card">
-						<div class="card-image">
-							<figure class="image is-4by3">
-								<a href="{{route("ads.show", $ad->id)}}">
-									<img src="https://picsum.photos/900/660" alt="Placeholder image">
-								</a>
-							</figure>
+	<section class="section">
+        <div class="container">
+            <div class="has-text-centered ">
+                <h2 class="title is-1 text_warning_orange">Dernières annonces foncières publiées</h2>
+                <p>ASTUCE : <a href="{{url('/')}}">Créez votre compte gratuit</a> pour visualiser directement les annonces
+                    de votre région !</p>
+            </div>
+            <div class="columns">
+                @foreach ($ads as $ad)
+                    <div class="column is-half tile tile_image">
+                        <a href="{{route("ads.show", $ad->id)}}" class="tile__link card">
+                                <div class="card-image vignette photo">
+                                    <figure class="image vignette__image-wrap vignette__ratio_4-3">
+                                        <img class="vignette__image" src="{{url('/images/vignette/photo_02_4-3_600.jpg')}}" alt="Placeholder image">
+                                    </figure>
 
-						</div>
-						<div class="card-content has-text-centered">
-							<div class="media">
-								<div class="media-content has-text-centered">
-
-									@if($ad->landSeekAd)
-										<a href="{{route("ads.show", $ad->id)}}"><p
-													class="title is-4">{{$ad->landSeekAd->title}}</p></a>
-									@endif
-									@if($ad->landOfferAd)
-										<a href="{{route("ads.show", $ad->id)}}"><p
-													class="title is-4">{{$ad->landOfferAd->title}}</p></a>
-									@endif
-									@if($ad->jobOfferAd)
-										<a href="{{route("ads.show", $ad->id)}}"><p
-													class="title is-4">{{$ad->jobOfferAd->title}}</p></a>
-									@endif
-
-								</div>
-							</div>
-							<div class="content">
-								{{ \Illuminate\Support\Str::limit($ad->about_project_content, 200, $end='...') }}
-							</div>
-							<a href="{{route('ads.show', $ad->id)}}">
-								<button class="button is-link">
-									<span class="icon is-small">
-											 <i class="fas fa-eye"></i>
-											</span>
-									<span>Voir l'annonce</span>
-								</button>
-							</a>
-						</div>
-					</div>
-				</div>
-			@endforeach
-		</div>
-		<div class="columns is-centered">
-			<div class="column is-half has-text-centered">
-				<button class="button is-link is-medium">Toutes les annonces foncières</button>
-			</div>
-		</div>
+                                </div>
+                            <div class="card-content has-text-centered tile__container">
+                                <div class="content text_danger_orange tile__content">
+                                    <h4 class="title is-4 tile__title">{{$ad->title}}</h4>
+                                    <div class="tile__intro">
+                                        <p>{{ \Illuminate\Support\Str::limit($ad->about_project_content, 200, $end='...') }}</p>
+                                    </div>
+                                    <p class="button-wrap">
+                                        <span class="button round small warning read-more">
+                                            <span class="button__icon">
+                                                <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                                            </span>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+            <div class="columns is-centered">
+                <div class="column is-half has-text-centered">
+                    <button class="button is-link is-medium">Toutes les annonces foncières</button>
+                </div>
+            </div>
+        </div>
 	</section>
 	<section class="section">
 		<div class="has-text-centered">
-			<h2 class="title is-1">Offres d'emploi les plus consultés</h2>
+			<h2 class="title is-1 text_warning_orange">Offres d'emploi les plus consultés</h2>
 			<div class="columns is-centered">
 				@for ($i = 0; $i < 3; $i++)
 					<div class="column is-one-quarter">

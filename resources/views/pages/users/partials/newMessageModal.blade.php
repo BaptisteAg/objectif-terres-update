@@ -23,7 +23,7 @@
 			</div>
 			<footer class="card-footer">
 				<div class="buttons card-footer-item">
-					<button type="submit" class="button is-link">
+					<button type="submit" class="button basic primary form-button">
 						<span>Envoyer</span></button>
 				</div>
 				<button id="close-modal" class="modal-close is-large" aria-label="close"></button>

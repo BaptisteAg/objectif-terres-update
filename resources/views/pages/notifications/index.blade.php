@@ -3,8 +3,8 @@
 @section ('title', 'Mes notifications')
 
 @section('main-content')
-	<div class="section">
-		<h1 class="title is-2 has-text-link">Vos notifications</h1>
+	<div class="section pt-0">
+		<h1 class="page__title">Vos notifications</h1>
 		@if(! $user->readNotifications->isEmpty())
 			@foreach ($user->readNotifications as $notification)
 				@if(isset($notification->data['number_of_ads_to_moderate']))

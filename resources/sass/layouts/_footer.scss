@@ -1,0 +1,71 @@
+
+/*
+==========================================================
+==========================================================
+FOOTER
+==========================================================
+==========================================================
+*/
+
+/*
+--------------------
+MENU INTERSITE
+--------------------
+*/
+
+@media (min-width: $tablet) {
+  .menu-intersites .menu__link {
+    padding: 1em 1.25em;
+  }
+}
+
+@media (max-width: $tablet - 1) {
+  .menu-intersites {
+    align-items: flex-end;
+  }
+
+  .bottom-bar_2 > .menu-intersites {
+    align-items: flex-start;
+    padding: 2em;
+  }
+}
+
+
+.menu-intersites .menu__link {
+  color: #ffffff;
+}
+
+/*
+--------------------
+BOTTOM BAR 1
+--------------------
+*/
+
+.bottom-bar_1 {
+  color: #ffffff;
+  background-color: #a41515;
+}
+
+/*
+--------------------
+BOTTOM BAR 2
+--------------------
+*/
+
+.bottom-bar_2 {
+  color: #ffffff;
+  background-color: #85170f;
+}
+
+/*
+--------------------
+FOOTER SITE
+--------------------
+*/
+
+@media (min-width: 700px) {
+    .footer-site__title {
+        min-height: 2em;
+    }
+}
+

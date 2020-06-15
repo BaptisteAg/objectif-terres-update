@@ -2,11 +2,13 @@
 $body-bg: #f8fafc;
 
 // Typography
-$font-family-sans-serif: 'Nunito', sans-serif;
+$family-sans-serif: 'Nunito', sans-serif;
+$family-sans-serif-title: "Bebas Neue", "Source Sans Pro", sans-serif;
+$family-sans-serif-title-second: 'Kalam', cursive;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
-// Colors
+// Bulma Colors
 $blue: #3490dc;
 $indigo: #6574cd;
 $purple: #9561e2;
@@ -20,4 +22,53 @@ $cyan: #6cb2eb;
 
 //margin
 $has_margin: 90px auto;
+
+
+//Colors Theme
+
+$primary: #579ea5;
+$secondary: #42767a;
+$blue-bright: #00c3d6;
+
+$success: #7da237;
+$success-dark: #466b32 ;
+$success-bright: #82c700;
+
+$warning: #db9500;
+$warning-dark: #a86e00 ;
+$warning-bright: #ffad00;
+$warning-orange: #b34818;
+
+
+$danger: #a41515 ;
+$danger-dark: #75160c ;
+$danger-bright: #e10000;
+$danger-darken-orange: #85170f;
+
+$night : rgba(1, 50, 73, 1);
+$charcoal : #33383d;
+$mouse : #999a9f;
+$cream : #eae6cf;
+$pearl : #f5f5f5;
+$white : #ffffff;
+
+
+// Responsiveness
+
+// The container horizontal gap, which acts as the offset for breakpoints
+$gap: 32px;
+$mobile: 480px;
+// 960, 1152, and 1344 have been chosen because they are divisible by both 12 and 16
+$tablet: 769px;
+// 960px container + 4rem
+$desktop: 960px + (2 * $gap);
+// 1152px container + 4rem
+$widescreen: 1152px + (2 * $gap);
+// 1344px container + 4rem
+$fullhd: 1344px + (2 * $gap);
+
+
+// Bulma input
+$radius : 0px ;
+$input-border-color : $primary ;
 

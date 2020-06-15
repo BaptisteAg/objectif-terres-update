@@ -17,93 +17,49 @@ use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 
-class SupervisorsController extends Controller
+class SupervisorsController extends BaseController
 {
-	protected $threadService;
-	protected $projectService;
-	protected $userService;
-	protected $adTypes;
-	protected $adTypesFaIcons;
-	protected $adService;
-
-	/**
-	 * AdvisorsController constructor.
-	 * @param ProjectService $projectService
-	 * @param ThreadService $threadService
-	 * @param UserService $userService
-	 */
-	public function __construct(ProjectService $projectService, ThreadService $threadService, UserService $userService, AdService $adService)
-	{
-		$this->projectService = $projectService;
-		$this->threadService = $threadService;
-		$this->userService = $userService;
-		$this->adService = $adService;
-		$this->adTypes = [
-			['name' => 'Offre foncière', 'value' => 'landOfferAd'],
-			['name' => 'Recherche foncière', 'value' => 'landSeekAd'],
-			['name' => 'Offre d\'emploi', 'value' => 'jobOfferAd'],
-			['name' => 'Recherche d\'emploi', 'value' => 'jobSeekAd'],
-		];
-		$this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access"];
-	}
 
 	/**
 	 * @param Request $request
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 * @return Factory|View
 	 */
 	public function index(Request $request)
 	{
 		$request->session()->forget('_old_input');
 		$ads = $this->adService->findAllByUserSupervisor(false);
-		$supportStages = SupportStage::all();
-		$supportStates = SupportState::all();
-		$projectStatuses = ProjectStatus::all();
-		$jobOfferTypes = JobOfferType::all();
-		$productionGenres = ProductionGenre::all();
-		$bioCertifications = BioCertification::all();
+		$vars = $this->getSupervisorDashboardVars();
+		$vars['ads'] = $ads;
 
-		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
-		$adTypes = $this->adTypes;
-		$adTypesFaIcons = $this->adTypesFaIcons;
-		$firstContactSupportStage = SupportStage::where("id", '=', SupportStage::FIRST_CONTACT_ID)->first()->id;
-		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsBySupportStageForLoggedUser($firstContactSupportStage);
-
-		return view('pages.supervisors.index', compact('adTypes', 'adTypesFaIcons', 'supportStages', 'supportStates', 'projectStatuses', 'ads', 'jobOfferTypes', 'productionGenres', 'bioCertifications', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
+		return view('pages.supervisors.index', $vars);
 	}
 
 
 	/**
 	 * @param Request $request
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 * @return Factory|View
 	 */
 	public function show(Request $request)
 	{
 		$request->flash();
 		$ads = $this->adService->showForSupervisor($request);
-		$supportStages = SupportStage::all();
-		$supportStates = SupportState::all();
-		$projectStatuses = ProjectStatus::all();
-		$jobOfferTypes = JobOfferType::all();
-		$productionGenres = ProductionGenre::all();
-		$bioCertifications = BioCertification::all();
+		$vars = $this->getSupervisorDashboardVars();
+		$vars['ads'] = $ads;
 
-		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
-		$adTypes = $this->adTypes;
-		$adTypesFaIcons = $this->adTypesFaIcons;
-		$firstContactSupportStage = SupportStage::where("id", '=', SupportStage::FIRST_CONTACT_ID)->first()->id;
-		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsBySupportStageForLoggedUser($firstContactSupportStage);
-
-		return view('pages.supervisors.index', compact('projectStatuses', 'supportStages', 'supportStates', 'adTypes', 'adTypesFaIcons', 'productionGenres', 'jobOfferTypes','productionGenres', 'bioCertifications', 'ads', 'numberOfUnreadMessages', 'numberOfNotAssignProject'));
+		return view('pages.supervisors.index', $vars);
 	}
 
 	/**
 	 * Supervisors help area controller
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 * @return Factory|View
 	 */
 	public function help()
 	{
@@ -114,7 +70,7 @@ class SupervisorsController extends Controller
 	/**
 	 * Supervisor export data controller
 	 * @param Request $request
-	 * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+	 * @return BinaryFileResponse
 	 */
 	public function export(Request $request)
 	{
@@ -142,27 +98,19 @@ class SupervisorsController extends Controller
 
 
 	/**
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 * @return Factory|View
 	 */
 	public function report()
 	{
 		$ads = $this->adService->findAllAdsInSupervisorTerritories();
-		$numberOfAds = $ads->count();
-		$numberOfAdsByCategories = $this->adService->countAdsByCategories($ads);
-		$percentageOfAdsByAdStatus = $this->adService->calculatePercentageOfAdsByAdStatus($ads);
-		$numberOfValidateAds = $this->adService->findAllValidateAdsInSupervisorTerritories()->count();
-		$numberOfUsersPp = $this->adService->findAllAdsAndProjectsGroupByUserPp()->count();
-
 		$projects = $this->projectService->findAllProjectsBySupervisor();
-		$numberOfProjects = $projects->count();
-		$numberOfProjectsByCategories = $this->projectService->countProjectsByCategories($projects);
-		$percentageOfProjectsByProjectStatus = $this->projectService->calculatePercentageOfProjectsByProjectStatus($projects);
-		return view('pages.supervisors.report', compact('numberOfAds', 'numberOfValidateAds', 'numberOfUsersPp', 'numberOfProjects', 'numberOfAdsByCategories', 'numberOfProjectsByCategories', 'percentageOfAdsByAdStatus', 'percentageOfProjectsByProjectStatus'));
+		$vars = $this->getSupervisorReportVars($ads, $projects);
+		return view('pages.supervisors.report', $vars);
 	}
 
 
 	/**
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 * @return Factory|View
 	 */
 	public function projectKeysDataEdit()
 	{
@@ -187,7 +135,8 @@ class SupervisorsController extends Controller
 	 * @param Request $request
 	 * @return RedirectResponse
 	 */
-	public function projectDataKeyDelete(Request $request){
+	public function projectDataKeyDelete(Request $request)
+	{
 		if (empty($request->input('project_data_key_id'))) {
 			return back()->with('error', 'Aucun indicateur a été choisi');
 		}

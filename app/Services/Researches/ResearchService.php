@@ -200,6 +200,7 @@ class ResearchService
 		}
 
 		//If request, filter by departments locations and all locations related to the departments selected
+		$adsFilter->whereNull('project_id');
 		if ($filters->has('cities_location_researches_ids')) {
 			if (!is_null($filters->input('radius_research'))) {
 				$cityIds = $this->locationService->getCitiesInRadius($filters->input('cities_location_researches_ids'), $filters->input('radius_research'));

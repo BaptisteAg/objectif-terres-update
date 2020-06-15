@@ -82,11 +82,12 @@
 								</div>
 							@endif
 						@endif
-						<div class="content">
-							<p><span class="is-size-5 is-capitalized has-text-black">Surface : </span><span
-										class="subtitle">{{$ad->landOfferAd->surface}} hectares</span></p>
-						</div>
-
+						@if(! is_null($ad->landOfferAd->surface))
+							<div class="content">
+								<p><span class="is-size-5 is-capitalized has-text-black">Surface : </span><span
+											class="subtitle">{{$ad->landOfferAd->surface}} hectares</span></p>
+							</div>
+						@endif
 						<div class="content">
 							@if ($ad->landOfferAd->offerGenres->count() >=1)
 								<p>

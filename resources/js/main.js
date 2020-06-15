@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if ($navbarBurgers.length > 0) {
 
         // Add a click event on each of them
-        $navbarBurgers.forEach( el => {
+        $navbarBurgers.forEach(el => {
             el.addEventListener('click', () => {
 
                 // Get the target from the "data-target" attribute
@@ -30,18 +30,43 @@ document.addEventListener('DOMContentLoaded', () => {
 var $dropdowns = getAll('.dropdown:not(.is-hoverable)');
 
 if ($dropdowns.length > 0) {
+
     $dropdowns.forEach(function ($el) {
         $el.addEventListener('click', function (event) {
-            $el.classList.toggle('is-active');
+            $el.classList.toggle('is-active')
+            $el.classList.toggle('is-active')
         });
     });
 
     document.addEventListener('click', function (event) {
-        if(event.target.closest('.dropdown')) {
+        if (event.target.closest('.dropdown')) {
             return
         }
         $dropdowns.forEach(function ($el) {
             $el.classList.remove('is-active');
         });
     });
+}
+
+
+window.initDropdowns = function () {
+// Dropdowns
+    var $dropdowns = getAll('.dropdown:not(.is-hoverable)');
+
+    if ($dropdowns.length > 0) {
+        $dropdowns.forEach(function ($el) {
+            $el.addEventListener('click', function (event) {
+                $el.classList.toggle('is-active');
+            });
+        });
+
+        document.addEventListener('click', function (event) {
+            if (event.target.closest('.dropdown')) {
+                return
+            }
+            $dropdowns.forEach(function ($el) {
+                $el.classList.remove('is-active');
+            });
+        });
+    }
 }

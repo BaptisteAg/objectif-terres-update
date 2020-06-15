@@ -5,7 +5,7 @@
 		<div class="modal-content">
 			<div class="card">
 				<div class="card-content">
-					<h3 class="title is-3 has-text-centered has-text-black ">Créer une nouvelle discussion </h3>
+					<h3 class=" has-text-centered ">Créer une nouvelle discussion </h3>
 				</div>
 				<div class="card-content">
 					<div class="container">
@@ -42,7 +42,7 @@
 				</div>
 				<footer class="card-footer">
 					<div class="buttons card-footer-item">
-						<button type="submit" class="button is-link">
+						<button type="submit" class="button basic primary form-button">
 							<span>Envoyer</span></button>
 					</div>
 					<button id="close-modal" class="modal-close is-large" aria-label="close"></button>

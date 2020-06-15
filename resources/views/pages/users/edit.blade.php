@@ -1,24 +1,18 @@
 @extends('default')
-@section('title', 'Mon compte | Objectif Terres')
+@section('title', 'Mon compte')
 
 @section('main-content')
 
-	<div id="vue-update-user-form" class="section">
+	<div id="vue-update-user-form" class="section  pt-0">
 		<user-form id="update-form"
 				   inline-template
 				   :old-values="{{$user }}">
 			<div class="container">
-				<nav class="level">
-					<div class="level-left">
-						<div>
-							<h1 class="title">Vos informations personnelles</h1>
-							<h2 class="subtitle"> Modifiez si besoin les informations liées à votre compte</h2>
-						</div>
-					</div>
-				</nav>
+							<h1 class="page__title">Vos informations personnelles</h1>
+							<h2 class="page__subtitle"> Modifiez si besoin les informations liées à votre compte</h2>
 				{!! Form::open(['route'=>'user.update', 'method'=>'post']) !!}
 				@csrf
-				<div class="columns">
+				<div class="columns mt-50">
 					<div class="column is-two-fifths">
 						<div class="field">
 							<label class="label">Nom</label>
@@ -186,7 +180,7 @@
 							@enderror
 						</div>
 					</div>
-					<div v-if="optionProfileSelected === '6'" class="column is-half">
+					<div v-if="optionProfileSelected == '6'" class="column is-half">
 						<div class="field">
 							<label class="label">Situation autre </label>
 							<p class="control has-icons-left has-icons-right">
@@ -344,14 +338,14 @@
 					</div>
 				</div>
 				<br>
-				<a @click="show_password_inputs()" class="button is-link is-outlined">
+				<a @click="show_password_inputs()" >
 					<span v-if="isPasswordToChange">Annuler</span>
 					<span v-else>Modifier votre mot de passe</span>
 				</a>
 				<input type="hidden" value="{{$user->id}}" name="user_id">
 				<div class="field is-grouped is-grouped-centered">
 					<div class="control is-pulled-right">
-						<button type="submit" class="button is-link ">Enregistrer</button>
+						<button type="submit" class="button basic primary form-button">Enregistrer</button>
 					</div>
 				</div>
 				{!! Form::close() !!}
