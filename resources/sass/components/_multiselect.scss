@@ -1,8 +1,17 @@
 // Vue-Multiselect
 .multiselect__input,
 .multiselect__single {
-  border-radius: 0px;
-  border-bottom: 0.2em solid $primary !important;
+  //border-radius: 0px;
+  //border-bottom: 0.2em solid $primary !important;
+}
+
+.multiselect__tags {
+    border-radius: 0 !important;
+    border-bottom: 0.25em solid $primary !important;
+    background-color: $pearl !important;
+    .multiselect__placeholder {
+        color: $mouse;
+    }
 }
 
 
@@ -19,7 +28,7 @@ body .multiselect__tag {
   color: $success;
   font-family: $family-sans-serif-title;
   text-transform: uppercase;
-
+  white-space: initial;
 }
 
 body .multiselect__tag-icon:hover {
@@ -45,4 +54,41 @@ body .multiselect__tag-icon:hover {
 
 .slider {
   overflow: hidden !important;
+}
+
+.multiselect__option--selected {
+    background-color: $primary-light !important;
+    &.multiselect__option--highlight {
+        color: $mouse !important;
+        &::after {
+            background-color: $danger !important;
+        }
+    }
+}
+.multiselect__select {
+    position: relative;
+    &::before {
+        border: 3px solid $primary !important;
+        border-radius: 2px;
+        border-right: 0 !important;
+        border-top: 0 !important;
+        display: block;
+        height: 0.625em;
+        margin-top: -0.2em !important;
+        pointer-events: none;
+        position: absolute !important;
+        top: 50% !important;
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+        -webkit-transform-origin: center;
+        transform-origin: center;
+        width: 0.625em;
+        right: initial !important;
+        left: 40%;
+    }
+}
+.multiselect--active {
+    .multiselect__select::before {
+        margin-top: -0.5em !important;
+    }
 }

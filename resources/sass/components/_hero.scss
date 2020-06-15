@@ -17,14 +17,14 @@ HERO
     padding: 0;
 }
 
-@media (min-width: 800px) {
+@media (min-width: $tablet) {
     .hero {
         font-size: 1.5em;
         min-height: 20em;
     }
 }
 
-@media (max-width: 799px) {
+@media (max-width: $tablet - 1) {
     .hero {
         min-height: 12.5em;
     }
@@ -56,7 +56,7 @@ HERO
     left: 0;
 }
 
-@media (min-width: 800px) {
+@media (min-width: $tablet) {
 
     .hero .vignette__image-wrap {
         width: 170%;
@@ -72,7 +72,7 @@ HERO
 
 }
 
-@media (max-width: 799px) {
+@media (max-width: $tablet - 1) {
 
     .hero .vignette__image-wrap {
         width: 240%;
@@ -93,7 +93,7 @@ HERO
     padding-top: 5em;
 }
 
-@media (min-width: 800px) {
+@media (min-width: $tablet) {
 
     .hero__container {
         position: relative;
