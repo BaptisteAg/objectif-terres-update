@@ -48,7 +48,6 @@ class NotifyOverdueModeration implements ShouldQueue
         foreach ($overdueAttributionsByModeratorId as $moderatorId => $attributions) {
             /** @var User $moderatorToNotify */
             $moderatorToNotify = $this->userRepository->find($moderatorId);
-
             // If a recent notification about these ads already exists, we'll skip the process
             // It's important to fetch only the recent notifications, otherwise the fetch will be increasingly slower
             // TODO : schedule database notifications cleaning once a month
@@ -61,14 +60,14 @@ class NotifyOverdueModeration implements ShouldQueue
                 ])
                 ->get()
                 ->flatMap(function (DatabaseNotification $notification) {
-                    return $notification->data->attribution_ids;
-                });
+                    return $notification->data['attribution_ids'];
+                })
+				->toArray();
 
             $notRecentlyNotifiedAttributionIds = array_diff(
-                $recentlyNotifiedAttributionIds->toArray(),
-                $attributions->pluck('id')->toArray()
+				$recentlyNotifiedAttributionIds,
+				$attributions->pluck('id')->toArray()
             );
-
             if (!count($notRecentlyNotifiedAttributionIds)) {
                 continue;
             }

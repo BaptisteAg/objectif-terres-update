@@ -22,7 +22,9 @@ use App\Repositories\FavoriteAds\FavoriteAdRepository;
 use App\Services\Ads\AdService;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
@@ -47,13 +49,18 @@ class AdsController extends BaseController
 	 */
 	public function requestPublishing(AdRequest $request)
 	{
-		if (auth()->user()->ads()->count() >= self::PUBLISHED_AD_LIMIT_PER_USER) {
+		$numberOfAdsPublishedToday = auth()->user()->ads()->whereHas('attributionAd', function (Builder $builder) {
+			$builder->where('created_at', '=', Carbon::now());
+		})->count();
+
+		if ($numberOfAdsPublishedToday >= self::PUBLISHED_AD_LIMIT_PER_USER) {
 			return $this->store($request)
 				->withErrors(
 					"Vous ne pouvez publier que " . self::PUBLISHED_AD_LIMIT_PER_USER . " annonces en même temps. 
                     Votre annonce a été sauvegardée mais ne sera pas soumise à modération."
 				);
 		}
+
 
 		$data = $request->validated();
 
@@ -73,18 +80,18 @@ class AdsController extends BaseController
 	 */
 	public function save(AdRequest $request)
 	{
-		return $this->store($request)
+		return $this->store($request, 1)
 			->with('success', 'Votre annonce a bien été sauvegardée.');
 	}
 
-    /**
-     * @param int $adId
-     * @return Factory|\Illuminate\View\View
-     * @throws \Exception
-     */
+	/**
+	 * @param int $adId
+	 * @return Factory|\Illuminate\View\View
+	 * @throws \Exception
+	 */
 	public function show($adId)
 	{
-        $ad = $this->adService->find($adId);
+		$ad = $this->adService->find($adId);
 
 		//Throw error 404 if a visitor try to show an ad is not validated
 		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validée" ;
@@ -122,11 +129,16 @@ class AdsController extends BaseController
 	 * @return \Illuminate\Http\RedirectResponse
 	 * @throws \Throwable
 	 */
-	protected function store(AdRequest $request)
+	protected function store(AdRequest $request, $isDraft = 0)
 	{
 		$data = $request->validated();
 
 		$ad = $this->adService->create($data);
+
+		if ($isDraft) {
+			$ad->is_draft = 1;
+			$ad->save();
+		}
 
 		return redirect()->route('ads.show', [$ad->id]);
 	}

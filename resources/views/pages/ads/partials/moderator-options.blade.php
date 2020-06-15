@@ -22,7 +22,7 @@
 				</div>
 				<div class="columns is-mobile is-centered is-vcentered">
 					<div class="column is-3  is-centered">
-						<button @click="showModerationModal('acceptAd')" class="button is-link ">
+						<button @click="showModerationModal('acceptAd')" class="button form-button basic success ">
 							 <span class="icon is-small">
       							<i class="fas fa-check"></i>
    							 </span>
@@ -30,7 +30,7 @@
 						</button>
 					</div>
 					<div class="column is-5  is-centered">
-						<button @click="showModerationModal('modifyAd')" class="button">
+						<button @click="showModerationModal('modifyAd')" class="button form-button basic warning">
 							 <span class="icon is-small">
       							<i class="fas fa-pen"></i>
    							 </span>
@@ -38,7 +38,7 @@
 						</button>
 					</div>
 					<div class="column is-3 is-centered">
-						<button @click="showModerationModal('rejectAd')" class="button is-danger">
+						<button @click="showModerationModal('rejectAd')" class="button form-button basic danger">
 							 <span class="icon is-small">
       							<i class="fas fa-times"></i>
    							 </span>
@@ -62,32 +62,32 @@
 			<div class="box has-text-centered">
 				<div class="container">
 					<p class="title is-2 has-text-centered">Modération de l'annonce</p>
-					<p class="subtitle is-6 has-text-black">Vous avez déjà modérée l'annonce ! </p>
+					<p class="subtitle is-6 has-text-black">L'annonce a déjà été modérée!  </p>
 					<div class="content is-medium">
 						<p class="title is-5 is-spaced">Statut actuel de l'annonce :
 							<strong>{{$ad->attributionAd->adStatus->name}}</strong></p>
 					</div>
-					<p class="has-text-centered">Vous souhaitez modifier votre choix ? </p>
+					<p class="has-text-centered">Vous souhaitez modifier ce choix ? </p>
 				</div>
 				<br>
 				<div class="columns is-mobile is-centered is-vcentered">
 					@if ($ad->attributionAd->adStatus->name !== "Validée")
 						<div class="column is-3  is-centered">
-							<button @click="showModerationModal('acceptAd')" class="button is-link ">
+							<button @click="showModerationModal('acceptAd')" class="button form-button basic success ">
 								Valider l'annonce
 							</button>
 						</div>
 					@endif
 					@if($ad->attributionAd->adStatus->name !== "En attente")
 						<div class="column is-5  is-centered">
-							<button @click="showModerationModal('modifyAd')" class="button">
+							<button @click="showModerationModal('modifyAd')" class="button form-button basic warning">
 								Demander la modification de l'annonce
 							</button>
 						</div>
 					@endif
 					@if ($ad->attributionAd->adStatus->name !== "Refusée")
 						<div class="column is-3 is-centered">
-							<button @click="showModerationModal('rejectAd')" class="button is-danger">
+							<button @click="showModerationModal('rejectAd')" class="button form-button basic danger">
 								Refuser l'annonce
 							</button>
 						</div>

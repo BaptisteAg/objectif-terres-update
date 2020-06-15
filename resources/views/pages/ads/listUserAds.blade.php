@@ -7,9 +7,9 @@
         <div class="container">
             <h1 class="page__title">Liste de mes annonces</h1>
             @if(count($ads) <=1)
-                <h2 class="page__subtitle"> {{ count($ads) }} annonce publiée.</h2>
+                <h2 class="page__subtitle"> {{ count($ads) }} annonce crée</h2>
             @else
-                <h2 class="page__subtitle"> {{ count($ads) }} annonces publiées.</h2>
+                <h2 class="page__subtitle"> {{ count($ads) }} annonces crées</h2>
             @endif
             <section class="section">
                 @foreach ($ads as $ad)
@@ -141,93 +141,97 @@
                                             @endif
                                         </p>
                                     </div>
-
                                     @if(! $ad->attributionAd and $ad->is_draft === 0)
-                                        <article class="message is-success">
-                                            <div class="message-body">
-                                                Votre annonce n'as pas encore été soumise, finaliser la création de votre annonce !
-                                            </div>
-                                        </article>
-
-                                    @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::APPROVE_ID)
-                                        <article class="message is-success">
-                                            <div class="message-body">
-                                                Votre annonce  a été validée et est en ligne depuis le {{$ad->published_on}} !
-                                            </div>
-                                        </article>
-                                    @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_ID)
                                         <article class="message is-warning">
                                             <div class="message-body">
-                                                Votre annonce nécessite quelques modifications, <a
-                                                        href="{{route('threads.index')}}">consulter votre messagerie</a>
-                                                pour
-                                                plus d'informations !
-                                            </div>
-                                        </article>
-                                    @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::REFUSE_ID)
-                                        <article class="message is-danger">
-                                            <div class="message-body">
-                                                Votre annonce a été réfusée, <a href="{{route('threads.index')}}">consulter
-                                                    votre
-                                                    messagerie</a> pour plus d'informations !
-                                            </div>
-                                        </article>
-                                    @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::ARCHIVE_ID)
-                                        <article class="message is-message">
-                                            <div class="message-body">
-                                                Votre annonce a été archivée !
+                                                Votre annonce est en mode brouillon, elle n'as pas été encore soumise à modération !
                                             </div>
                                         </article>
                                     @else
-                                        <article class="message is-message">
-                                            <div class="message-body">
-                                                Votre annonce n'as pas été encore approuvée et publiée !
-                                            </div>
-                                        </article>
-                                    @endif
-                                    <p class="button__wrap button__wrap_right">
-                                        @if($ad->attributionAd and $ad->attributionAd->adStatus->id === \App\Models\AdStatus::APPROVE_ID )
-                                            <a href="{{route("ads.show", $ad->id)}}">
-                                                <button class="button basic  small warning mr-20">
-											<span class="icon is-small">
-											<i class="fas fa-eye text_white"></i>
-											</span>
-                                                    <span>Voir votre annonce</span>
-                                                </button>
-                                            </a>
-                                        @elseif($ad->is_draft === 1)
-                                            <a href="{{route("ads.show", $ad->id)}}">
-                                                <button class="button basic  small warning mr-20">
-											<span class="icon is-small">
-											<i class="fas fa-eye text_white"></i>
-											</span>
-                                                    <span>Aperçu de l'annonce</span>
-                                                </button>
-                                            </a>
+                                        @if($ad->attributionAd->adStatus->id === \App\Models\AdStatus::APPROVE_ID)
+                                            <article class="message is-success">
+                                                <div class="message-body">
+                                                    Votre annonce  a été validée et est en ligne depuis le {{$ad->published_on}} !
+                                                </div>
+                                            </article>
+                                        @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_ID)
+                                            <article class="message is-warning">
+                                                <div class="message-body">
+                                                    Votre annonce nécessite quelques modifications, <a
+                                                            href="{{route('threads.index')}}">consulter votre
+                                                        messagerie</a>
+                                                    pour
+                                                    plus d'informations !
+                                                </div>
+                                            </article>
                                         @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::REFUSE_ID)
+                                            <article class="message is-danger">
+                                                <div class="message-body">
+                                                    Votre annonce a été réfusée, <a href="{{route('threads.index')}}">consulter
+                                                        votre
+                                                        messagerie</a> pour plus d'informations !
+                                                </div>
+                                            </article>
+                                        @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::ARCHIVE_ID)
+                                            <article class="message is-message">
+                                                <div class="message-body">
+                                                    Votre annonce a été archivée !
+                                                </div>
+                                            </article>
                                         @else
-                                            <a href="{{route("ads.show", $ad->id)}}">
-                                                <button class="button basic  small warning mr-20">
+                                            <article class="message is-message">
+                                                <div class="message-body">
+                                                    Votre annonce n'as pas été encore approuvée et publiée !
+                                                </div>
+                                            </article>
+                                        @endif
+                                    @endif
+
+                                    @if( $ad->attributionAd and $ad->is_draft != 1)
+                                        <p class="button__wrap button__wrap_right">
+                                            @if($ad->attributionAd and $ad->attributionAd->adStatus->id === \App\Models\AdStatus::APPROVE_ID )
+                                                <a href="{{route("ads.show", $ad->id)}}">
+                                                    <button class="button basic  small warning mr-20">
 											<span class="icon is-small">
 											<i class="fas fa-eye text_white"></i>
 											</span>
-                                                    <span>Voir votre annonce</span>
-                                                </button>
-                                            </a>
-                                        @endif
-                                        @if($ad->attributionAd and $ad->attributionAd->adStatus->id === 3 )
-                                        @else
-                                            <a>
-                                                <button class="button basic small danger">
+                                                        <span>Voir votre annonce</span>
+                                                    </button>
+                                                </a>
+                                            @elseif($ad->is_draft === 1)
+                                                <a href="{{route("ads.show", $ad->id)}}">
+                                                    <button class="button basic  small warning mr-20">
+											<span class="icon is-small">
+											<i class="fas fa-eye text_white"></i>
+											</span>
+                                                        <span>Aperçu de l'annonce</span>
+                                                    </button>
+                                                </a>
+                                            @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::REFUSE_ID)
+                                            @else
+                                                <a href="{{route("ads.show", $ad->id)}}">
+                                                    <button class="button basic small warning mr-20">
+											<span class="icon is-small">
+											<i class="fas fa-eye text_white"></i>
+											</span>
+                                                        <span>Voir votre annonce</span>
+                                                    </button>
+                                                </a>
+                                            @endif
+                                            @if($ad->attributionAd and $ad->attributionAd->adStatus->id === 3 )
+                                            @else
+                                                <a>
+                                                    <button class="button basic small danger">
 												<span class="icon text_white">
 												  <i class="fas fa-trash"></i>
 												</span>
-                                                    <span>Supprimer votre annonce</span>
-                                                </button>
-                                            </a>
-                                        @endif
+                                                        <span>Supprimer votre annonce</span>
+                                                    </button>
+                                                </a>
+                                            @endif
 
-                                    </p>
+                                        </p>
+                                    @endif
                                 </div>
                             </div>
                         </li>

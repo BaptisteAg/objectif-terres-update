@@ -24,6 +24,8 @@ class AdvisorsController extends BaseController
 	public function index(Request $request)
 	{
 		$request->session()->forget('_old_input');
+		$request->session()->forget('advisor_dashboard_url');
+
 		$ads = $this->advisorsService->findAllSupportsByUserAdvisor(false);
 		$vars = $this->getAdvisorDashboardVars();
 		$vars['ads'] = $ads;
@@ -38,6 +40,7 @@ class AdvisorsController extends BaseController
 	public function show(Request $request)
 	{
 		$request->flash();
+		$request->session()->put('advisor_dashboard_url', $request->all());
 		$ads = $this->advisorsService->showForAdvisor($request);
 		$vars = $this->getAdvisorDashboardVars();
 		$vars['ads'] = $ads;

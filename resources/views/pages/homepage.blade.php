@@ -64,8 +64,8 @@
 					<div class="column is-one-quarter">
 						<div class="card">
 							<div class="card-image">
-								<figure class="image is-4by3">
-									<img src="https://picsum.photos/200/300" alt="Placeholder image">
+								<figure class="image is-3by2">
+									<img src="/images/placeholder-ad.png" alt="picsum">
 								</figure>
 							</div>
 							<div class="card-content">
@@ -99,8 +99,8 @@
 					<div class="column has-text-centered">
 						<div class="card">
 							<div class="card-image">
-								<figure class="image is-4by3">
-									<img src="https://picsum.photos/200/300" alt="Placeholder image">
+								<figure class="image is-3by2">
+									<img src="/images/placeholder-ad.png" alt="picsum">
 								</figure>
 							</div>
 							<div class="card-content">

@@ -443,7 +443,8 @@
                                                          style="padding-top: 38px;">
                                                         {!! Form::submit('Rechercher', ['class' => ' button basic primary']) !!}
                                                         <br>
-                                                        <a class="has-text-left" href="#" @click="more_criteria()">Plus de critères</a>
+                                                        <a class="has-text-left" href="#" @click="more_criteria()">Plus
+                                                            de critères</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -465,7 +466,8 @@
                                             <div class="text_white mb-20 has-text-weight-bold">
                                                 <div class="level-item">Bienvenue !</div>
                                                 <div class="level-item">
-                                                    <a class="link-header" href="{{ route('login') }}">Connectez-vous </a>
+                                                    <a class="link-header"
+                                                       href="{{ route('login') }}">Connectez-vous </a>
                                                     @if(Route::has('register'))
                                                         <span class="mr-5 ml-5">ou</span>
                                                         <a href="{{ route('register') }}"> Créez un compte</a>
@@ -709,7 +711,8 @@
                                                 <div class="level-item">
                                                     <div class="has-text-centered">
 
-                                                        <a class="dropdown-item link-header" href="{{ route('logout') }}"
+                                                        <a class="dropdown-item link-header"
+                                                           href="{{ route('logout') }}"
                                                            onclick="event.preventDefault();
 												 document.getElementById('logout-form').submit();">
 												<span class="icon">
@@ -872,8 +875,8 @@
                 </div>
             </div>
         </div>
-        <div class="mt-25">
-            @if( Auth::check() and auth()->user()->role >=1)
+        @if( Auth::check() and auth()->user()->role >=1)
+            <div class="mt-25">
                 @if(auth()->user()->role ==1)
                     @include('components.moderator-tabs')
                 @elseif(auth()->user()->role ==2)
@@ -881,8 +884,8 @@
                 @elseif(auth()->user()->role >=3)
                     @include('components.supervisor-tabs')
                 @endif
-            @endif
-        </div>
+            </div>
+        @endif
     </div>
 </header>
 
