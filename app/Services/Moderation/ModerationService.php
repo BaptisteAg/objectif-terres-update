@@ -9,33 +9,36 @@ use Illuminate\Database\Eloquent\Collection;
 class ModerationService
 {
 
-    /**
-     * AttributionAdsService constructor.
-     * @param AttributionAdsRepository $attributionAdsRepository
-     * @param AdRepository $adRepository
-     */
-    public function __construct(AttributionAdsRepository $attributionAdsRepository)
-    {
-        $this->repository = $attributionAdsRepository;
-    }
+	/**
+	 * AttributionAdsService constructor.
+	 * @param AttributionAdsRepository $attributionAdsRepository
+	 * @param AdRepository $adRepository
+	 */
+	public function __construct(AttributionAdsRepository $attributionAdsRepository)
+	{
+		$this->repository = $attributionAdsRepository;
+	}
 
-    /**
-     * Get all ads grouped by moderator id and not moderated since more than a week
-     * @return Collection
-     */
-    public function findAllOverdueAttributionsByModeratorId()
-    {
-        $pendingStatusId = AdStatus::PENDING_MODERATION_STATUS_ID;
+	/**
+	 * Get all ads grouped by moderator id and not moderated since more than a week
+	 * @return array
+	 */
+	public function findAllOverdueAttributionsByModeratorId()
+	{
+		$pendingStatusId = AdStatus::PENDING_MODERATION_STATUS_ID;
 
-        $attributionsByModeratorId = $this->repository->findAllByStatusId($pendingStatusId)->groupBy('userModerator.id');
+		$attributionsByModeratorId = $this->repository->findAllByStatusId($pendingStatusId)->groupBy('userModerator.id');
 
-        foreach ($attributionsByModeratorId as &$attributions) {
-            foreach ($attributions as $attributionId => $attribution) {
-                if ($attribution->created_at >= Carbon::now()->subWeek()) {
-                    unset($attributions[$attributionId]);
-                }
-            }
-        }
-        return array_filter($attributionsByModeratorId);
-    }
+		foreach ($attributionsByModeratorId as &$attributions) {
+			foreach ($attributions as $attributionId => $attribution) {
+				if ($attribution->created_at >= Carbon::now()->subWeek()) {
+					unset($attributions[$attributionId]);
+				}
+			}
+		}
+		$attributionsByModeratorId->filter(function ($value) {
+			return !is_null($value);
+		});
+		return $attributionsByModeratorId;
+	}
 }

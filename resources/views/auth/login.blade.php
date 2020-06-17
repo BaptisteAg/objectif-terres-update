@@ -87,7 +87,7 @@
                             </div>
                             @if (Route::has('password.request'))
                                 <div class="control" v-show="hasPassedCheckpoint">
-                                    <a href="{{ route('password.request') }}" class="button is-link is-light">
+                                    <a href="{{ route('password.request') }}" class="button basic secondary form-button">
                                         Mot de
                                         passe
                                         oublié ?</a>
@@ -100,7 +100,7 @@
                     <div class="section">
                         <h4 class="title is-4 has-text-centered">Vous n'avez pas encore de compte ?</h4>
                         <p class="has-text-centered">
-                            <a class="button is-bordered" href="{{route('register')}}">Créer un compte</a>
+                            <a class="button is-bordered basic secondary form-button" href="{{route('register')}}">Créer un compte</a>
                         </p>
                     </div>
                 </div>

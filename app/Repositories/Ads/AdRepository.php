@@ -48,6 +48,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		return $model;
 	}
 
+
 	/**
 	 * Creates an ad.
 	 *
@@ -107,7 +108,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		/** @var Collection $model */
 		$models = $this->entity
 			->where(["user_pp_id" => $idUser])
-			->where('is_draft',0)
+			->where('is_draft', 0)
 			->with($this->getEagerLoadingForDashboards())
 			->get();
 		return $models;
@@ -211,6 +212,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		return $ads;
 	}
 
+
 	/**
 	 * Find all  projects in user (supervisor or advisor) territories
 	 * @param array $territoriesCode
@@ -239,6 +241,54 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 					$query->whereIn('department_code', $territoriesCode);
 				});
 				$query->whereNotNull('project_id');
+			});
+
+		$models
+			->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
+			->orderByDesc('a.created_at')
+			->with($this->getEagerLoadingForDashboards());
+		if ($toPaginate) {
+			$ads = $models->paginate(15);
+		} else {
+			$ads = $models->get();
+		}
+		return $ads;
+	}
+
+	/**
+	 * Find all not assigned projects in user (supervisor or advisor) territories
+	 * @param array $territoriesCode
+	 * @param bool $toPaginate
+	 * @return LengthAwarePaginator|Builder[]|Collection
+	 */
+	public function allNotAssignedProjectsInTerritories(array $territoriesCode, bool $toPaginate)
+	{
+		/** @var Collection $model */
+		$models = $this->entity
+			->where(function (Builder $query) {
+				$query->whereHas('attributionAd', function (Builder $subQuery) {
+					$subQuery->whereNull('user_advisor_id');
+					if (auth()->user()->role == 2) {
+						$subQuery->where('user_advisor_id', '=', auth()->user()->id);
+					} else if (auth()->user()->role >= 3) {
+						$subQuery->where('user_supervisor_id', '=', auth()->user()->id);
+					}
+				});
+				$query->whereNotNull('project_id');
+
+			})
+			->orWhere(function (Builder $query) use ($territoriesCode) {
+				$query->whereHas('departments', function (Builder $subQuery) use ($territoriesCode) {
+					$subQuery->whereIn('code', $territoriesCode);
+				});
+				$query->orWhereHas('cities', function (Builder $subQuery) use ($territoriesCode) {
+					$subQuery->whereIn('department_code', $territoriesCode);
+				});
+				$query->whereNotNull('project_id');
+
+				$query->whereHas('attributionAd', function (Builder $subQuery) {
+					$subQuery->whereNull('user_advisor_id');
+				});
 			});
 
 		$models

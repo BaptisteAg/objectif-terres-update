@@ -73,11 +73,7 @@
 						</div>
 						<div class="content">
 							<p><span class="is-size-5 is-capitalized has-text-black">Catégorie : </span>
-								@if($ad->jobAd->is_offer === 1)
-									<span class="subtitle">Proposition opportunité professionnelle</span>
-								@else
-									<span class="subtitle">Recherche opportunité professionnelle</span>
-								@endif
+									<span class="subtitle">{{$ad->ad_type_full_name}}</span>
 							</p>
 						</div>
 						<div class="content">

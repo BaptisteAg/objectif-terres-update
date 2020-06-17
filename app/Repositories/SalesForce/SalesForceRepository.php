@@ -2,6 +2,7 @@
 
 use Omniphx\Forrest\Authentications\UserPasswordSoap;
 use Omniphx\Forrest\Providers\Laravel\Facades\Forrest;
+use Omniphx\Forrest\Repositories\TokenRepository;
 
 class SalesForceRepository
 {
@@ -104,6 +105,11 @@ class SalesForceRepository
 
     public function authenticate()
     {
-        $this->forrest->authenticate();
+		/** @var TokenRepository $forrestToken */
+        $forrestToken = app('forrest_token');
+
+		if(!$forrestToken->has()) {
+			$this->forrest->authenticate();
+		}
     }
 }

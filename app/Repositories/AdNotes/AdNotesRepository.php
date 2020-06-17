@@ -38,15 +38,18 @@ class AdNotesRepository extends AbstractRepository implements AdNotesRepositoryI
 			$adNote->fill($data);
 			$adNote->save();
 
-			$projectDataKey = ProjectDataKey::whereId($data['project_data_key_id'])->with('projectDataValues')->first();
-			if ($projectDataKey->projectDataValues->count() > 0) {
-				$projectDataKey->projectDataValues->filter(function ($projectDataValue) use ($data, $adNote) {
-					if ($projectDataValue->value === $data['value']) {
-						$adNote->projectDataValue()->associate($projectDataValue->id);
-						$adNote->save();
-					}
-				});
+			if (isset($data['project_data_key_id'])) {
+				$projectDataKey = ProjectDataKey::whereId($data['project_data_key_id'])->with('projectDataValues')->first();
+				if ($projectDataKey->projectDataValues->count() > 0) {
+					$projectDataKey->projectDataValues->filter(function ($projectDataValue) use ($data, $adNote) {
+						if ($projectDataValue->value === $data['value']) {
+							$adNote->projectDataValue()->associate($projectDataValue->id);
+							$adNote->save();
+						}
+					});
+				}
 			}
+
 			return $adNote;
 		});
 		return $adNote;

@@ -74,7 +74,7 @@ class LandSeekAd extends Model
         'installation_type_id',
         'offer_type_id',
         'is_bio',
-        'production_type_add',
+        'production_type_ad',
         'experience_farming',
         'land_description',
         'surface_range_min',
