@@ -1,6 +1,6 @@
 <div class="columns is-mobile is-multiline  ">
 	@include('layouts.partials.headerResearchLocation')
-	<div class="column is-full-mobile is-half-tablet">
+	<div class="column is-full-mobile is-half-tablet is-one-third-desktop">
 		<div class="field is-flex">
 			@foreach ($offerGenres as $offerGenre)
 				<label class="checkbox">
@@ -39,7 +39,7 @@
 
 	</div>
 
-	<div class="column" v-if="offerTypeSelected === 'OfferAd'">
+	<div class="column if-full-mobile is-one-third-desktop" v-if="offerTypeSelected === 'OfferAd'">
         <div class="field is-flex">
             <label class="checkbox">
                 <input type="checkbox" name="has_pics" value="1" {{ old('has_pics') === "1" ? ' checked' : '' }}>
