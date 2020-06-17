@@ -214,7 +214,7 @@
 											@if(isset($ad->project))
                                                 Projet soumis le : {{ $ad->submitDate?? 'Date non renseignée' }}
                                             @else
-                                                @if(! is_null($ad->attributionAd->published_on ))
+                                                @if(! is_null($ad->attributionAd))
                                                     Annonce publié le : {{ $ad->published_on }}
                                                 @else
                                                     Annonce soumise le : {{ $ad->submitDate }}

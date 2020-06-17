@@ -16,7 +16,7 @@
 									 	<span class="icon is-small">
 										<i class="fas fa-reply"></i>
 										</span>
-												<span> Contacter le porteur de projet</span>
+												<span> Répondre à l'annonce</span>
 											</button>
 										</div>
 									</div>

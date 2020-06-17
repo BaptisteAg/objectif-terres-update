@@ -1,5 +1,5 @@
 @section('title', $ad->title)
-<section class="section">
+<section class="section pt-0">
 	<div class="container ">
 		<nav class="breadcrumb" aria-label="breadcrumbs">
 			<ul>
@@ -25,7 +25,7 @@
 							<span class="tag is-primary is-medium">{{$offerType->name}}</span>
 						@endforeach
 						<div class="content">
-							@if(is_null($ad->published_on))
+							@if($ad->is_draft)
 								<p><span class="is-size-5  has-text-black ">Annonce soumise le : </span><span
 											class="subtitle">{{ $ad->created_at}}</span>
 								</p>
@@ -54,7 +54,7 @@
 						<div class="content">
 							<p>
 								<span class="is-size-5 is-capitalized has-text-black">Catégorie : </span>
-								<span class="subtitle">Offre d'emplois</span>
+								<span class="subtitle">{{$ad->ad_type_full_name}}</span>
 							</p>
 						</div>
 
@@ -126,18 +126,18 @@
 		@if($ad->jobOfferAd->job_description)
 			<div class="content">
 				<h3 class="title is-3">Description de l'offre d'emploi</h3>
-				<p> {{$ad->jobOfferAd->job_description}}</p>
+				<p>  {!! nl2br($ad->jobOfferAd->job_description ?? "") !!}</p>
 			</div>
 		@endif
 
 		<div class="content">
 			<h3 class="title is-3">Description de la ferme</h3>
-			<p> {{$ad->about_project_content}}</p>
+			<p> {!! nl2br($ad->about_project_content ?? "") !!} </p>
 		</div>
 
 		<div class="content">
 			<h3 class="title is-3">A propos du porteur de projet</h3>
-			<p> {{$ad->about_content}}</p>
+			<p> {!! nl2br($ad->about_content ?? "") !!}</p>
 		</div>
 
 		<div class="section">

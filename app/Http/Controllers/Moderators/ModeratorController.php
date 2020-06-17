@@ -48,20 +48,22 @@ class ModeratorController extends Controller
 	public function index(Request $request)
 	{
 		$request->session()->forget('_old_input');
+		$request->session()->forget('moderator_dashboard_url');
+
 		$cities = City::all();
 		$departments = Department::all();
 		$regions = Region::all();
 		$adStatuses = AdStatus::all();
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
-		$attributionAds = $this->service->findAllByUserModerator(auth()->user()->id);
+		$attributionAds = $this->service->findAllByUserModeratorTerritories();
 
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfAdsToModerate = $this->service->countAllAdsToModerateForLoggedModerator();
 		$adTypes = $this->adTypes;
-		$adTypesFaIcons =$this->adTypesFaIcons;
+		$adTypesFaIcons = $this->adTypesFaIcons;
 
-		return view('pages.moderator.index', compact('adTypesFaIcons', 'adTypes','cities', 'departments', 'regions', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
+		return view('pages.moderator.index', compact('adTypesFaIcons', 'adTypes', 'cities', 'departments', 'regions', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
 
 	}
 
@@ -72,6 +74,8 @@ class ModeratorController extends Controller
 	public function show(Request $request)
 	{
 		$request->flash();
+		$request->session()->put('moderator_dashboard_url', $request->all());
+
 		$cities = City::all();
 		$departments = Department::all();
 		$regions = Region::all();
@@ -84,7 +88,7 @@ class ModeratorController extends Controller
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfAdsToModerate = $this->service->countAllAdsToModerateForLoggedModerator();
 		$adTypes = $this->adTypes;
-		$adTypesFaIcons =$this->adTypesFaIcons;
+		$adTypesFaIcons = $this->adTypesFaIcons;
 
 		return view('pages.moderator.index', compact('adTypesFaIcons', 'adTypes', 'cities', 'departments', 'regions', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
 
@@ -96,7 +100,7 @@ class ModeratorController extends Controller
 	 */
 	public function help()
 	{
-		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser()) ;
+		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
 		return view('pages.moderator.help', compact('users'));
 	}
 

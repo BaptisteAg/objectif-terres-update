@@ -16,6 +16,9 @@
         <span class="icon is-small is-right">
             <i class=" fa fa-calendar"></i>
         </span>
+        <a v-if="date" class="text_danger" v-on:click="removeDates()">
+            <span>Effacer</span>
+        </a>
     </div>
 </template>
 
@@ -32,8 +35,8 @@
         data() {
             const hasOldDate = this.oldValueSelected && this.oldValueSelected !== "null";
             let oldValueFormatted = {};
-            if (hasOldDate){
-                 oldValueFormatted = JSON.parse(this.oldValueSelected);
+            if (hasOldDate) {
+                oldValueFormatted = JSON.parse(this.oldValueSelected);
             }
             return {
                 date: hasOldDate ? {
@@ -51,6 +54,11 @@
                     return [this.date.start.toLocaleDateString(), this.date.end.toLocaleDateString()]
                 }
             },
+        },
+        methods:{
+            removeDates(){
+                this.date = null
+            }
         }
     }
 </script>

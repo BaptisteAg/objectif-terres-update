@@ -9,6 +9,35 @@
 @endsection
 
 @section('main-content')
+    @auth
+        @if(auth()->user()->role >= 1 )
+            @if (session()->has('supervisor_dashboard_url'))
+                <div class="content ml-80 mt-30">
+                    <a class="text_size large"
+                       href="{{route('supervisor.show', Session::get('supervisor_dashboard_url') )}}">
+                        <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
+                        <span>Retour </span>
+                    </a>
+                </div>
+            @elseif(session()->has('moderator_dashboard_url'))
+                <div class="content ml-80 mt-30">
+                    <a class="text_size large"
+                       href="{{route('moderator.show', Session::get('moderator_dashboard_url') )}}">
+                        <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
+                        <span>Retour </span>
+                    </a>
+                </div>
+            @else
+                <div class="content ml-80 mt-30">
+                    <a class="text_size large" href="{{URL::previous()}}">
+                        <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
+                        <span>Retour </span>
+                    </a>
+                </div>
+            @endif
+        @endif
+    @endauth
+
     @if($ad->ad_type === 'landSeek')
         @include('pages.ads.partials.landSeek.landSeekShow')
     @endif
@@ -25,8 +54,7 @@
 
 @section('script')
     <script>
-                @auth
-                @if(auth()->user()->role>=1 )
+
         let buttons = document.querySelectorAll('#open-modal-message');
         buttons.forEach((button) => {
             button.addEventListener('click', function (event) {
@@ -56,8 +84,8 @@
 
         })
 
-        @endif
-        @if(auth()->user()->role>=1)
+        @auth()
+        @if(auth()->user()->role >= 1)
         function showValidationSupervisorModal() {
             let validationModal = document.querySelector('#modal-supervisor-validation');
             let html = document.querySelector('html');
@@ -82,6 +110,7 @@
 
         @endif
         @endauth
+
         function sendResponseTemplateMessage() {
             let listResponseTemplates = document.getElementById("response_templates_list");
             let responseTemplateSelected = listResponseTemplates.options[listResponseTemplates.selectedIndex].text;
@@ -108,8 +137,8 @@
             el: '#vue-messages',
             name: 'content'
         });
-         @auth()
-          @if(auth()->user()->role >= 1 and !$ad->project()->exists())
+                @auth()
+                @if(auth()->user()->role >= 1 and !$ad->project()->exists())
         const VueModerationModal = new Vue({
                 el: "#vue-moderation-modal",
                 name: 'content'

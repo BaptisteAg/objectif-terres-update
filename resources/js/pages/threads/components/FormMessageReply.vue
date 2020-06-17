@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div v-if='showResponseType === false ' class="control ">
-                        <button class="button is-link button-send-message">
+                        <button class="button basic primary form-button button-send-message">
 						 <span class="icon is-small">
 						  <i class="fas fa-paper-plane"></i>
 						</span>

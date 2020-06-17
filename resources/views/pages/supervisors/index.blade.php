@@ -8,42 +8,44 @@
         <h1 class="title is-2 has-text-link">Bienvenue sur votre espace responsable territorial <span
                     class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
 
-        @if($numberOfNotAssignProject !== 0 || $numberOfUnreadMessages !==0)
-            <div id="notification-supervisor" class="notification has-background-info">
-                <button id="close-notification-supervisor" class="delete"></button>
-                @if($numberOfNotAssignProject>1)
-                    <p class="has-text-white-ter">
-                        <i class="far fa-bell has-text-white-ter"></i>
-                        Vous avez<a style="text-decoration: none"
-                                    href="/">
-                            <strong>{{$numberOfNotAssignProject}}
-                                demandes d'accompagnement non assignées</strong></a> dans votre territoire !
-                    </p>
-                @elseif ($numberOfNotAssignProject === 1)
-                    <p class="has-text-white-ter">
-                        <i class="far fa-bell has-text-white-ter"></i>
-                        Vous avez<a style="text-decoration: none"
-                                    href="/">
-                            <strong>{{$numberOfNotAssignProject}}
-                                demande d'accompagnement non assignée</strong></a> dans votre territoire !
-                    </p>
-                @else
-                @endif
-                @if($numberOfUnreadMessages > 1 )
-                    <a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i
-                                    class="fas fa-envelope "></i> Vous
-                            avez <strong>{{$numberOfUnreadMessages}}
-                                nouveaux messages
-                                !</strong></p></a>
-                @elseif ($numberOfUnreadMessages === 1 )
-                    <a style="text-decoration: none" href="{{route('threads.index')}}">
-                        <p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez
-                            <strong>{{$numberOfUnreadMessages}} nouveau message !</strong>
+        @if(! auth()->user()->notifications->isEmpty())
+            @if($numberOfNotAssignProject !== 0 || $numberOfUnreadMessages !==0)
+                <div id="notification-supervisor" class="notification has-background-info">
+                    <button id="close-notification-supervisor" class="delete"></button>
+                    @if($numberOfNotAssignProject>1)
+                        <p class="has-text-white-ter">
+                            <i class="far fa-bell has-text-white-ter"></i>
+                            Vous avez<a style="text-decoration: none"
+                                        href="/">
+                                <strong>{{$numberOfNotAssignProject}}
+                                    demandes d'accompagnement non assignées</strong></a> dans votre territoire !
                         </p>
-                    </a>
-                @else
-                @endif
-            </div>
+                    @elseif ($numberOfNotAssignProject === 1)
+                        <p class="has-text-white-ter">
+                            <i class="far fa-bell has-text-white-ter"></i>
+                            Vous avez<a style="text-decoration: none"
+                                        href="/">
+                                <strong>{{$numberOfNotAssignProject}}
+                                    demande d'accompagnement non assignée</strong></a> dans votre territoire !
+                        </p>
+                    @else
+                    @endif
+                    @if($numberOfUnreadMessages > 1 )
+                        <a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i
+                                        class="fas fa-envelope "></i> Vous
+                                avez <strong>{{$numberOfUnreadMessages}}
+                                    nouveaux messages
+                                    !</strong></p></a>
+                    @elseif ($numberOfUnreadMessages === 1 )
+                        <a style="text-decoration: none" href="{{route('threads.index')}}">
+                            <p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez
+                                <strong>{{$numberOfUnreadMessages}} nouveau message !</strong>
+                            </p>
+                        </a>
+                    @else
+                    @endif
+                </div>
+            @endif
         @endif
         {{Form::open(['route'=>'supervisor.show', 'method'=>'get'])}}
         <div id="vue-form-supervisor">

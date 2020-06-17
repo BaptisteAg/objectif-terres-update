@@ -19,7 +19,7 @@
 
 @include('layouts.header')
 
-@auth()
+@if(!$errors->isEmpty() or Session::has('success') or Session::has('warning') or Session::has('info') )
 	<div class="columns" style="margin:5px">
 		<div class="column is-one-fifth"></div>
 		<div class="column is-three-fifths">
@@ -78,7 +78,7 @@
 			@endif
 		</div>
 	</div>
-@endauth
+@endif
 
 <div id="app">
 	@yield('main-content')

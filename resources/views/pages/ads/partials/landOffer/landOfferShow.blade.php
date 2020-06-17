@@ -1,15 +1,15 @@
 @section('title', $ad->title)
-<section class="section">
+<section class="section pt-0">
 	<div class="container ">
 		@if( ! $ad->project()->exists())
-			<nav class="breadcrumb" aria-label="breadcrumbs">
+			<nav class="breadcrumb text_primary" aria-label="breadcrumbs">
 				<ul>
-					<li><a href="#"><a href="#"><?=empty($isSupportRequest) ? 'Annonces' : 'Accompagnement'?></a></li>
-					<li><a href="#">Offres foncières</a></li>
+					<li><a href="#" class="custom-link"><?=empty($isSupportRequest) ? 'Annonces' : 'Accompagnement'?></a></li>
+					<li><a href="#" class="custom-link">Offres foncières</a></li>
 				</ul>
 			</nav>
 		@endif
-		<h1 class="title has-text-link">{{$ad->title}}</h1>
+		<h1 class="page__title">{{$ad->title}}</h1>
 		@auth
 			@if(auth()->user()->role >= 1)
 				@if($ad->project()->exists())
@@ -28,15 +28,15 @@
 				<div class="card">
 					<div class="card-content">
 						@foreach($ad->landOfferAd->offerGenres as $offerGenre)
-							<span class="tag is-primary is-medium">{{$offerGenre->name}}</span>
+							<span class="custom-tag info">{{$offerGenre->name}}</span>
 						@endforeach
 						<div class="content">
-							@if(is_null($ad->published_on))
-								<p><span class="is-size-5  ">Annonce soumise le : </span><span
+							@if($ad->is_draft)
+								<p><span class="is-size-5  has-text-black ">Annonce soumise le : </span><span
 											class="subtitle">{{ $ad->created_at}}</span>
 								</p>
 							@else
-								<p><span class="is-size-5 ">Publié le  : </span><span
+								<p><span class="is-size-5  has-text-black ">Publié le  : </span><span
 											class="subtitle">{{ $ad->published_on}}</span>
 								</p>
 							@endif
@@ -63,7 +63,7 @@
 						</div>
 						<div class="content">
 							<p><span class="is-size-5 is-capitalized has-text-black">Catégorie : </span><span
-										class="subtitle">Offre de foncier</span></p>
+										class="subtitle">{{$ad->ad_type_full_name}}</span></p>
 						</div>
 						@if($ad->landOfferAd->accept_use_zip_code)
 							@if($ad->cities->count())
@@ -209,28 +209,28 @@
 		</div>
 		<div class="content">
 			<h3 class="title is-3">Description du projet</h3>
-			<p> {!! nl2br(e($ad->about_project_content))!!}</p>
+			<p>  {!! nl2br($ad->about_project_content ??"") !!}</p>
 		</div>
 		<div class="content">
 			<h3 class="title is-3">A propos du porteur de projet</h3>
-			<p> {!! nl2br(e($ad->about_content))!!}</p>
+			<p> {!! nl2br($ad->about_content ?? "") !!}</p>
 		</div>
 		@if($ad->landOfferAd->sau_description)
 			<div class="content">
 				<h3 class="title is-3">Description SAU</h3>
-				<p> {!! nl2br(e($ad->landOfferAd->sau_description))!!}</p>
+				<p>  {!! nl2br($ad->landOffer->sau_description ?? "") !!}</p>
 			</div>
 		@endif
 		@if($ad->landOfferAd->water_access_description)
 			<div class="content">
 				<h3 class="title is-3">Description de l'accès à l'eau</h3>
-				<p> {!! nl2br(e($ad->landOfferAd->water_access_description))!!}</p>
+				<p> {!! nl2br($ad->landOfferAd->water_access_description ??"") !!}</p>
 			</div>
 		@endif
 		@if($ad->landOfferAd->test_description)
 			<div class="content">
 				<h3 class="title is-3">Description du test agricole</h3>
-				<p> {!! nl2br(e($ad->landOfferAd->test_description))!!}</p>
+				<p>  {!! nl2br($ad->landOfferAd->test_description ?? "") !!}</p>
 			</div>
 		@endif
 
