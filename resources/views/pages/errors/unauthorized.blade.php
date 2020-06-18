@@ -7,7 +7,7 @@
 		<p class="has-text-centered">Seuls les {{$role}} peuvent accéder à cette page.</p>
 		<br>
 		<div class=" has-text-centered">
-			<a class="button is-medium is-link " href="{{route('home')}}">Retour à la page d'accueil</a>
+			<a class="button is-medium basic primary  " href="{{route('home')}}">Retour à la page d'accueil</a>
 		</div>
 	</section>
 @endsection

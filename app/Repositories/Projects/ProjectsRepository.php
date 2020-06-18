@@ -102,6 +102,9 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 	{
 		return $this->entity
 			->whereHas('ad', function (Builder $query) use ($userId)  {
+				$query->whereHas('userPp', function(Builder $subQuery){
+					$subQuery->whereNull('deleted_at');
+				});
 				$query->whereHas('attributionAd', function (Builder $q) use ($userId){
 					$q->where('user_supervisor_id', '=', $userId);
 				});

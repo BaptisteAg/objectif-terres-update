@@ -1,23 +1,26 @@
 @auth
 	@if (auth()->user()->role >= 1)
-		<footer class="card-footer">
-			@if(count($threads))
-				<button onclick="window.location.href='#messages-display'" type="button"
-						class="card-footer-item button is-link is-fullwidth">
+		@if($ad->user_pp_id == auth()->user()->id)
+		@else
+			<footer class="card-footer">
+				@if(count($threads))
+					<button onclick="window.location.href='#messages-display'" type="button"
+							class="card-footer-item button is-link is-fullwidth">
 					<span class="icon is-small">
 											<i class="fas fa-reply"></i>
 											</span>
-					<span> Voir votre fil de discussion </span>
-				</button>
-			@else
-				<button id="open-modal-message" type="button"
-						class="card-footer-item button is-link is-fullwidth">
+						<span> Voir votre fil de discussion </span>
+					</button>
+				@else
+					<button id="open-modal-message" type="button"
+							class="card-footer-item button is-link is-fullwidth">
 										 <span class="icon is-small">
 											<i class="fas fa-reply"></i>
 										</span>
-					<span> Répondre à l'annonce</span>
-				</button>
-		</footer>
+						<span> Répondre à l'annonce</span>
+					</button>
+			</footer>
+		@endif
 	@endif
 @elseif($ad->user_pp_id !== auth()->user()->id)
 	<footer class="card-footer">

@@ -214,6 +214,16 @@ class AdService
 
 		return $ad;
 	}
+	/**
+	 * @param int $id
+	 * @return \App\Models\Ad
+	 */
+	public function findWithTrashedUser(int $id)
+	{
+		$ad = $this->repository->findWithTrashedUser($id);
+
+		return $ad;
+	}
 
 	/**
 	 * @return \App\Models\Ad[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|mixed
@@ -598,11 +608,12 @@ class AdService
 
 			});
 		}
-
 		//Filter ads based on the role of the logged user
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$adsFiltred->where(function (Builder $query) use ($supervisorLocationTerritoryCodes, $roleUser) {
-//			$query->whereNotNull('project_id');
+			$query->whereHas('userPp', function(Builder $subQuery){
+				$subQuery->whereNull('deleted_at');
+			});
 			$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
 				$q->where('user_moderator_id', '=', auth()->id());
 				if ($roleUser === 2) {
@@ -651,7 +662,9 @@ class AdService
 
 		$adsFiltred->with([
 			'project',
-			'userPp',
+			'userPp'=> function( $query){
+				$query->withTrashed();
+			},
 			'cities',
 			'cities.department',
 			'cities.department.region',

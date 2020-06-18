@@ -6,6 +6,7 @@ use App\Models\Ad;
 use App\Models\AdNote;
 use App\Models\ProjectDataKey;
 use App\Models\Thread;
+use App\Models\User;
 use App\Repositories\AdNotes\AdNotesRepository;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Projects\ProjectsRepository;
@@ -269,17 +270,35 @@ class AdvisorsService
 	}
 
 
-	public function handleSupportDashboardNotifications()
+	/**
+	 * @param int $adId
+	 */
+	public function handleSupportDashboardNotifications(int $adId)
 	{
 		if (!auth()->user()->unreadNotifications->isEmpty()) {
 			$notifications = auth()->user()->unreadNotifications;
 			foreach ($notifications as $notification) {
-				if (array_key_exists('ad_id', $notification->data) && $notification->data['ad_id'] === $ad->id) {
+				if (array_key_exists('ad_id', $notification->data) && $notification->data['ad_id'] === $adId) {
 					$notification->markAsRead();
 					$notification->delete();
 				}
 			}
 		}
+	}
+
+	/**
+	 * @param int $UserId
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function blockUser(int $UserId)
+	{
+		$userPp = User::find($UserId);
+		try {
+			$userPp->delete();
+		} catch (\Exception $e) {
+			return back()->with('warning', 'Une erreur est survenue, veuillez réessayer ');
+		}
+
 	}
 
 

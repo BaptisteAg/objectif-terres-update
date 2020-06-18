@@ -107,7 +107,7 @@
             </export-to-spreadsheet-form>
         </div>
         <div class="section">
-            <h1 class="title is-1 has-text-centered">Liste des annonces et demandes d'accompagnement sur votre
+            <h1 class="title is-1 has-text-centered">Activités sur votre
                 territoire</h1>
             @if (count($ads) ==0)
                 <p class="has-text-centered">Aucun résultat</p>
@@ -254,7 +254,11 @@
                                         <br>
                                     </td>
                                     <td>
+                                        @if(is_null($ad->project))
                                         <a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+                                        @else
+                                            <a href="{{route('advisor.showSupport', $ad->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+                                        @endif
                                     </td>
                                     <td>
                                         @if(is_null($ad->project))

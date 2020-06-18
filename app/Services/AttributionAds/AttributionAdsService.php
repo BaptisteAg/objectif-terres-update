@@ -247,11 +247,21 @@ class AttributionAdsService
 		} else {
 			$attributionAdsFiltered->orderByDesc('created_at');
 		}
-		//Filter ads baased on moderation attribution and moderator territories
+		//Filter ads based on moderation attribution and moderator territories
 		$moderatorTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
+		$attributionAdsFiltered->where(function (Builder $query) {
+			$query->where("user_moderator_id", '=', auth()->id());
+			$query->whereHas('ad', function (Builder $q) {
+				$q->whereHas('userPp', function (Builder $builder) {
+					$builder->whereNull('deleted_at');
+				});
+			});
+		});
 		$attributionAdsFiltered->orWhere(function (Builder $query) use ($moderatorTerritoriesCodes) {
 			$query->whereHas('ad', function (Builder $subQuery) use ($moderatorTerritoriesCodes) {
+				$subQuery->whereHas('userPp', function (Builder $q) {
+					$q->whereNull('deleted_at');
+				});
 				$subQuery->whereHas('departments', function (Builder $q) use ($moderatorTerritoriesCodes) {
 					$q->whereIn('code', $moderatorTerritoriesCodes);
 				});

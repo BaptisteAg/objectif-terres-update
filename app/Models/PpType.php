@@ -31,11 +31,5 @@ class PpType extends Model
         'name'
     ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function attributionAds()
-    {
-        return $this->hasMany(AttributionAd::class, 'lead_type_id');
-    }
+
 }

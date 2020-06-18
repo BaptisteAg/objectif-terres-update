@@ -7,6 +7,7 @@ use App\Presenters\UserPresenter;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use McCool\LaravelAutoPresenter\HasPresenter;
@@ -79,6 +80,7 @@ class User extends Authenticatable implements HasPresenter
 {
 	use Notifiable;
 	use CanResetPassword;
+	use SoftDeletes;
 
 	/**
 	 * The attributes that are mass assignable.
@@ -102,6 +104,8 @@ class User extends Authenticatable implements HasPresenter
 		'other_profile',
 		'accept_share_contact_infos',
 		'role',
+		'is_blocked',
+		'deleted_at '
 	];
 
 	/**

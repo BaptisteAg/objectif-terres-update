@@ -12,16 +12,18 @@
 						v-model="messages"
 						:user-id="{{auth()->id()}}"
 				></display-message-content>
-				<form-message-reply
-						v-model="messages"
-						v-bind:active-thread-id = "activeThread"
-						:user-id="{{auth()->id()}}"
-						@message-reply-success="onMessageReplySuccess"
-						@on-upload-success="refreshThread"
-						:show-response-type="true"
-						:response-templates="{{json_encode($responseTemplates)}}"
-				>
-				</form-message-reply>
+				@if(! $ad->userPp->trashed())
+					<form-message-reply
+							v-model="messages"
+							v-bind:active-thread-id="activeThread"
+							:user-id="{{auth()->id()}}"
+							@message-reply-success="onMessageReplySuccess"
+							@on-upload-success="refreshThread"
+							:show-response-type="true"
+							:response-templates="{{json_encode($responseTemplates)}}"
+					>
+					</form-message-reply>
+				@endif
 			</div>
 		</div>
 	</div>

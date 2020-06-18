@@ -27,8 +27,9 @@ Vue.component('support-request-dashboard', {
                 supportTabOpen: 'support-notes-tab',
             },
             showModal: false,
-            noteToModify:'',
-            documents:[],
+            showUserBlockedValidationModal: false,
+            noteToModify: '',
+            documents: [],
             uploading: false,
         }
     },
@@ -58,6 +59,7 @@ Vue.component('support-request-dashboard', {
         closeValidationModal() {
             this.showModal = false;
         },
+
         refreshThread(threadId) {
             fetch('/mon-espace/messagerie/' + threadId)
                 .then(response => response.json())
@@ -71,14 +73,14 @@ Vue.component('support-request-dashboard', {
         onMessageReplySuccess(message) {
             this.messages.push(message)
         },
-        modifyNote(noteId){
+        modifyNote(noteId) {
             this.noteToModify = noteId;
         },
         setUploading(bool) {
             this.uploading = bool;
         },
     },
-    validations(){
+    validations() {
         return {
             documents: {
                 notCurrentlyUploading() {

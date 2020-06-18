@@ -16,7 +16,7 @@
         <span class="icon is-small is-right">
             <i class=" fa fa-calendar"></i>
         </span>
-        <a v-if="date" class="text_danger" v-on:click="removeDates()">
+        <a v-if="date" class="text_danger is-pulled-right" v-on:click="removeDates()">
             <span>Effacer</span>
         </a>
     </div>

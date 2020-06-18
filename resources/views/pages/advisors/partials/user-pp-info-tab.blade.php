@@ -1,6 +1,12 @@
 <div class="card-content ">
 	<div class="content">
-		<h4 class="title is-4 has-text-centered"><a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a> </h4>
+		@if(! $ad->userPp->trashed())
+			<h4 class="title is-4 has-text-centered"><a
+						href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+			</h4>
+		@else
+			<h4 class="title is-4 has-text-centered">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</h4>
+		@endif
 		<div class="columns">
 			<div class="column has-text-centered">
 				<p>
@@ -28,7 +34,8 @@
 			</div>
 		</div>
 		<p><span class="is-italic">Civilité</span> : {{$ad->userPp->civilityFullName?? 'Non renseignée'}}</p>
-		<p><span class="is-italic">Type de porteur de projet</span> : {{$ad->userPp->profile?? 'Non renseigné'}}</p>
+		<p><span class="is-italic">Type de porteur de projet</span> : {{$ad->userPp->profile?? 'Non renseigné'}}
+		</p>
 		@if($ad->userPp->accept_communication)
 			<p>Cet utilisateur a accepté de recevoir les communications de Terre de Liens. </p>
 		@else
@@ -36,37 +43,45 @@
 				Liens. </p>
 		@endif
 		@if(isset($ad->landSeekAd))
-			<p><span class="is-italic">Expérience dans le domaine agricole </span> : {{$ad->landSeekAd->experience_farming ?? "Non renseigné"}}</p>
+			<p><span class="is-italic">Expérience dans le domaine agricole </span>
+				: {{$ad->landSeekAd->experience_farming ?? "Non renseigné"}}</p>
 		@endif
-		<p><span class="is-italic">Plus d'informations sur la personne </span> : {{$ad->about_content ?? "Non renseigné"}}</p>
+		<p><span class="is-italic">Plus d'informations sur la personne </span>
+			: {{$ad->about_content ?? "Non renseigné"}}</p>
 		<p>Nombre d'annonces soumises : {{$listUserAds->count()}}</p>
 		<p>Membre depuis le <strong>{{$ad->userPp->created_at}}</strong></p>
-		<div class="columns">
-			<div class="column is-2">
-				<a href="{{route('user.edit', $ad->userPp)}}">
+		@if(! $ad->userPp->trashed())
+			<div class="columns ">
+				<div class="column is-2">
+					<a href="{{route('user.edit', $ad->userPp)}}">
 					<span class="icon  has-text-link">
 						<i class="fas fa-user-edit "></i>
 					</span>
-					<span>Modifier </span>
-				</a>
-			</div>
-			<div class="column is-2">
-				<a>
+						<span>Modifier </span>
+					</a>
+				</div>
+				<div class="column is-2">
+					<a>
 					<span class="icon  has-text-link">
 						<i class="fas fa-table "></i>
 					</span>
-					<span>Exporter </span>
-				</a>
+						<span>Exporter </span>
+					</a>
+				</div>
+				<div class="column is-2">
+					{!! Form::open(['route'=>'advisor.blockUser']) !!}
+					<input type="hidden" name="user_pp_id" value="{{$ad->userPp->id}}">
+					<a @click="showUserBlockedValidationModal = true">
+						<span class="icon  has-text-link">
+							<i class="fas fa-ban"></i>
+						</span>
+						<span>Bloquer </span>
+					</a>
+					@include('pages.advisors.partials.block-user-confiramtion-modal')
+					{!! Form::close() !!}
+				</div>
 			</div>
-			<div class="column is-2">
-				<a>
-					<span class="icon  has-text-link">
-						<i class="fas fa-ban"></i>
-					</span>
-					<span>Bloquer </span>
-				</a>
-			</div>
-
-		</div>
+		@endif
 	</div>
 </div>
+
