@@ -166,7 +166,8 @@ Route::post('connexion', 'Auth\LoginController@login')->name('login');
 Route::post('connexion/checkpoint', 'Auth\LoginController@checkpoint')->name('checkpoint');
 Route::get('connexion/sso', 'Auth\SalesforceLoginController@salesforceLogin')->name('login.sso');
 //Route::post('login', 'Auth\SalesforceLoginController@login')->name('login');
-Route::post('deconnexion', 'Auth\SalesforceLoginController@salesforceLogout')->name('logout');
+//Route::post('deconnexion', 'Auth\SalesforceLoginController@salesforceLogout')->name('logout');
+Route::post('deconnexion', 'Auth\LoginController@logout')->name('logout');
 
 // Registration Routes...
 Route::get('inscription', 'Auth\RegisterController@showRegistrationForm')->name('register');
