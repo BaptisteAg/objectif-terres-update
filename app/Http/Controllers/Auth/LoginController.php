@@ -60,9 +60,9 @@ class LoginController extends Controller
             return response()->json(['redirect' => false]);
         }
 
-        if($salesforceService->emailExists($email, 'User')) {
+        /*if($salesforceService->emailExists($email, 'User')) {
             return response()->json(['redirect' => '/connexion/sso']);
-        }
+        }*/
 
         return response()->json(['redirect' => false]);
     }
