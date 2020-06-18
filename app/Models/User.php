@@ -102,6 +102,7 @@ class User extends Authenticatable implements HasPresenter
 		'other_profile',
 		'accept_share_contact_infos',
 		'role',
+		'origin',
 	];
 
 	/**

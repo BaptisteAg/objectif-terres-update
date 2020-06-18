@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Services\Salesforce\SalesforceService;
+use App\Services\Users\UserService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,6 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
-
     use AuthenticatesUsers;
 
     /**
@@ -45,15 +45,24 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function checkpoint(Request $request, SalesforceService $salesforceService)
-    {
+    public function checkpoint(
+        Request $request,
+        SalesforceService $salesforceService,
+        UserService $userService
+    ){
         if(!$request->has('email')) {
             return response()->json(['error' => "Email not provided"]);
         }
 
-//        if($salesforceService->emailExists($request->get('email'), 'User')) {
-//            return response()->json(['redirect' => '/connexion/sso']);
-//        }
+        $email = $request->get('email');
+
+        if($userService->exists($email)) {
+            return response()->json(['redirect' => false]);
+        }
+
+        if($salesforceService->emailExists($email, 'User')) {
+            return response()->json(['redirect' => '/connexion/sso']);
+        }
 
         return response()->json(['redirect' => false]);
     }
