@@ -890,7 +890,7 @@
                                                     accompagné</a>
                                             </li>
                                             <li class="secondary">
-                                                @if(Auth::check())
+{{--                                                @if(Auth::check())
                                                     @if(auth()->user()->role === 1 )
                                                         <a href="{{ route('moderator.index') }}"
                                                            class="menu__link ">Espace
@@ -911,12 +911,12 @@
                                                             annonce</a>
 
                                                     @endif
-                                                @else
+                                                @else--}}
                                                     <a href="{{ route('ads.create') }}"
                                                        class="menu__link ">Déposer
                                                         une
                                                         annonce</a>
-                                                @endif
+{{--                                            @endif--}}
                                             </li>
                                         </ul>
                                         <br>
