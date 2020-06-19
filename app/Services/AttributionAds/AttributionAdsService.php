@@ -72,18 +72,20 @@ class AttributionAdsService
 		if ($ad->departments->count() > 0) {
 			$adDepartmentsCodes = $ad->departments->map(function ($item) {
 				return $item['code'];
-			});
+			})->toArray();
 		}
 		if ($ad->cities->count() > 0) {
 			$adDepartmentsCodesInCities = $ad->cities->map(function ($item) {
 				return $item['department_code'];
-			});
+			})->toArray();
 		}
-		$adTerritoriesCodes = array_unique(array_merge($adDepartmentsCodes, $adDepartmentsCodesInCities->toArray()), SORT_REGULAR);
+		$adTerritoriesCodes = array_merge($adDepartmentsCodes, $adDepartmentsCodesInCities);
 		$intersectTerritoriesCodes = array_intersect($adTerritoriesCodes, $moderatorLocationTerritoriesCodes);
+
 		if (count($intersectTerritoriesCodes) > 0) {
 			$moderatorIsChargeOfAdModeration = true;
 		}
+
 		return $moderatorIsChargeOfAdModeration;
 	}
 
