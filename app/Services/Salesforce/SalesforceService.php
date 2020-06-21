@@ -75,6 +75,7 @@ class SalesforceService
             "MailingPostalCode" => $city->zip_code,
             "MailingCity" => $city->name,
             "MailingCountry" => Country::findOrFail($data["country_id"])->name_fr_fr,
+            "LeadSource" => "Petites annonces",
             "OT_Password__c" => Hash::make($data["password"])
         ]);
 
