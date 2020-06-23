@@ -9,17 +9,21 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $name
- * @property boolean $is_public
- * @property boolean $immutable
+ * @property int $is_public
+ * @property int $immutable
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AdNote[] $adNotes
  * @property-read int|null $ad_notes_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProjectDataValue[] $projectDataValues
+ * @property-read int|null $project_data_values_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey whereImmutable($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey whereIsPublic($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey whereUpdatedAt($value)
  * @mixin \Eloquent

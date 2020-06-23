@@ -15,7 +15,7 @@ $factory->define(Ad::class, function () {
 	$randomDateUpdated = \Carbon\Carbon::make($randomDateCreated)->add(rand(0,352).' days');
 
 	return [
-        'user_pp_id' => User::all()->random(),
+        'user_pp_id' => User::where('role', '=', 0 )->inRandomOrder()->first(),
 		'about_content' => implode("", $faker->paragraphs()),
 		'about_project_content' => implode("", $faker->paragraphs()),
 		'created_at' => $randomDateCreated,

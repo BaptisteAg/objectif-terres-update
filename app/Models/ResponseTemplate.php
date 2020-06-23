@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ResponseTemplate whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ResponseTemplate whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ResponseTemplate whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ResponseTemplate whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ResponseTemplate whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ResponseTemplate whereUpdatedAt($value)
  * @mixin \Eloquent
  */

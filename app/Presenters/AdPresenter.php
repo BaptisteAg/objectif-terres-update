@@ -78,7 +78,7 @@ class AdPresenter extends BasePresenter
 	public function locationable_radius()
 	{
 		$locationRadius = null;
-		if (!is_null($this->wrappedObject->cities[0]->pivot->radius)) {
+		if (!empty($this->wrappedObject->cities[0]->pivot->radius)) {
 			$locationRadius = $this->wrappedObject->cities[0]->pivot->radius;
 		}
 		return $locationRadius;

@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $code
  * @property string $name
  * @property string $slug
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $ads
  * @property-read int|null $ads_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Department[] $departments
@@ -24,9 +26,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Region extends Model

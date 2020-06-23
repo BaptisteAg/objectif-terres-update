@@ -10,11 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\JobSeekAd
  *
- * @property int $id
- * @property string $experience_farming
- * @property int $ad_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Ad $ad
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EducationLevel[] $educationLevels
  * @property-read int|null $education_levels_count
@@ -25,11 +20,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobSeekAd newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobSeekAd newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobSeekAd query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobSeekAd whereAdId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobSeekAd whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobSeekAd whereExperienceFarming($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobSeekAd whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobSeekAd whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class JobSeekAd extends Model
