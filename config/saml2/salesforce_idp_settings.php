@@ -33,8 +33,8 @@ return $settings = array(
 
         // Usually x509cert and privateKey of the SP are provided by files placed at
         // the certs folder. But we can also provide them with the following parameters
-        'x509cert' => file_get_contents(__DIR__.'/../../certs/saml_salesforce_cert.pem'),
-        'privateKey' => file_get_contents(__DIR__.'/../../certs/saml_salesforce_key.pem'),
+        'x509cert' => file_get_contents(__DIR__.'/../../certs/salesforce_api.pem'),
+        'privateKey' => file_get_contents(__DIR__.'/../../certs/salesforce_api.key'),
 
         // Identifier (URI) of the SP entity.
         // Leave blank to use the '{idpName}_metadata' route, e.g. 'test_metadata'.
@@ -77,12 +77,12 @@ return $settings = array(
         ),
 
         // Public x509 certificate of the IdP
-        'x509cert' => env('SAML2_'.$this_idp_env_id.'_IDP_x509'),
+        'x509cert' => '',
         /*
          *  Instead of use the whole x509cert you can use a fingerprint
          *  (openssl x509 -noout -fingerprint -in "idp.crt" to generate it)
          */
-        'certFingerprint' => '3b12d02fda229fc1d9d8b73350d7a87bdb24eae0',
+        'certFingerprint' => '87c6a10dadf2fa24cf42ee41d12870f84db3b2f0',
     ),
 
     /***

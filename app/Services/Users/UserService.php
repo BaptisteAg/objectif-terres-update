@@ -53,10 +53,6 @@ class UserService
 			$data['city'] = $city->name;
 		}
 
-		foreach ($data as $item => $value) {
-			$data[$item] = $value;
-		}
-
 		return $this->repository->create($data);
 
 	}

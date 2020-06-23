@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands;
 
-use Barryvdh\LaravelIdeHelper;
+use App\Models\Spip\Auteur;
+use App\Models\User;
+use App\Services\Spip\SpipService;
+use App\Services\Users\UserService;
 use Illuminate\Console\Command;
-use Illuminate\Database\Console\Migrations\FreshCommand;
-use Illuminate\Database\Console\Seeds\SeedCommand;
 
 class SpipMigrate extends Command
 {
@@ -14,25 +15,34 @@ class SpipMigrate extends Command
      *
      * @var string
      */
-    protected $signature = 'spip:migrate
-                            {--C|composer : run composer install}
-                            {--N|npm : run npm install}';
+    protected $signature = 'spip:migrate';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Resets the app as a fresh install';
+    protected $description = 'Imports terredeliens.org users and ads';
+    /**
+     * @var SpipService
+     */
+    protected $spipService;
+    /**
+     * @var UserService
+     */
+    private $userService;
 
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(SpipService $spipService, UserService $userService)
     {
         parent::__construct();
+
+        $this->spipService = $spipService;
+        $this->userService = $userService;
 
     }
 
@@ -42,19 +52,26 @@ class SpipMigrate extends Command
      */
     public function handle()
     {
-        if($this->option('composer')) {
-            exec('composer install');
-        }
-        if($this->option('npm')) {
-            exec('npm install');
-        }
+        // Checking ads with more than 1 attached user, which should not be imported
+        //$articles = $this->spipService->getAllAdsWithUsers();
+        //dd($articles->filter(function ($a) {return $a->auteurs->count() > 1;})->map(function ($a) {return $a->auteurs->pluck("email");}));
 
-        $this->call(FreshCommand::class);
-        $this->call(SeedCommand::class);
+        $spipAdsByUser = $this->spipService->getAllUsersWithAds();
 
-        exec('npm run '.(env('APP_ENV') === 'production' ? 'production' : 'dev'));
+        $userCount = $spipAdsByUser->count();
+        $adCount = $spipAdsByUser->pluck('articles')->flatten()->count();
 
-        exec('php artisan view:clear ');
-        exec('php artisan cache:clear');
+        print_r("Found $userCount users and $adCount ads.\n");
+
+        $spipAdsByUser->each(function (Auteur $auteur) {
+            User::where('email', $auteur->email)->delete();
+            //dd($auteur->email, $auteur->bio, $auteur->id_auteur);
+
+            //dd($this->spipService->getLocalUserMapping($auteur));
+
+            $this->userService->create(
+                $this->spipService->getLocalUserMapping($auteur)
+            );
+        });
     }
 }

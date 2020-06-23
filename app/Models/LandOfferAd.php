@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string|null $sau_description
  * @property int|null $water_access
  * @property string|null $water_access_description
- * @property float $altitude
+ * @property float|null $altitude
  * @property int|null $has_buildings
  * @property int|null $has_houses
  * @property float|null $price

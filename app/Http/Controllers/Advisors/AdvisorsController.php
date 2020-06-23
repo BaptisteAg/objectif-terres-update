@@ -82,7 +82,7 @@ class AdvisorsController extends BaseController
 		if (!isset($thread)) {
 			$thread = $this->advisorsService->createSupportRequestThread($ad->id);
 		}
-		$this->advisorsService->handleSupportDashboardNotifications();
+		$this->advisorsService->handleSupportDashboardNotifications($ad);
 
 		$vars = $this->getSupportDashboardVars($ad);
 		$vars['ad'] = $ad;

@@ -24,18 +24,6 @@ class SalesforceService
      */
     protected $tokenRepository;
 
-    protected $profileToRoleMapping = [
-        // Customer community - membre
-        '00ew0000001V7RJAA0' => 0,
-		// Moderator ( Chatter External User )
-        '00e1r000001td1kAAA' => 1,
-        // Responsable territorial - Supervisor ( Customer community - Resp. Territorial )
-        '00e1q000000M41YAAS' => 3,
-		// Super Admin
-		'00e20000001FEdPAAW' => 4,
-		// .. TODO: remove completely
-	];
-
     public function __construct(SalesForceRepository $repository, UserRepository $userRepository)
     {
         $this->repository = $repository;
@@ -75,6 +63,7 @@ class SalesforceService
             "MailingPostalCode" => $city->zip_code,
             "MailingCity" => $city->name,
             "MailingCountry" => Country::findOrFail($data["country_id"])->name_fr_fr,
+            "LeadSource" => "Petites annonces",
             "OT_Password__c" => Hash::make($data["password"])
         ]);
 
@@ -175,14 +164,20 @@ class SalesforceService
             $localUser->sf_id = $sfId;
         }
 
+        $roleAndDepartments = explode('-', $user["Role_Objectif_Terre__c"]);
+        $role = $roleAndDepartments[0];
+        $departments = explode('_', $roleAndDepartments[1]);
+
         // Sync role
-        if((string)$localUser->role !== $this->getRoleFromUser($user)) {
-            $localUser->role = $this->getRoleFromUser($user);
+        if((string)$localUser->role !== $role) {
+            $localUser->role = $role;
         }
 
-        // Sync territory
-        $newDepartmentIds = Department::all()->pluck('id')->toArray();
-        $localUser->departments()->sync($newDepartmentIds);
+        // Sync user territory only for roles > 0
+        if($role > 0) {
+            $newDepartmentIds = Department::whereIn('code', $departments)->pluck('id');
+            $localUser->departments()->sync($newDepartmentIds);
+        }
 
         $localUser->save();
 
@@ -200,14 +195,5 @@ class SalesforceService
         return !!$this->repository->findWhere($object, [
             'Email' => $email
         ]);
-    }
-
-    protected function getRoleFromUser($user)
-    {
-        if(!empty($user["Role_Objectif_Terre__c"])) {
-            return explode('-', $user["Role_Objectif_Terre__c"])[0];
-        }
-
-        return $this->profileToRoleMapping[$user["ProfileId"]] ?? 0;
     }
 }
