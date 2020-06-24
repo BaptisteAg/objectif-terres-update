@@ -3,6 +3,10 @@
 @section('title', 'Espace aide & ressources ')
 
 
+@section('header')
+	@include('components.moderator-tabs')
+@endsection
+
 @section('main-content')
 
 	<div class="section">

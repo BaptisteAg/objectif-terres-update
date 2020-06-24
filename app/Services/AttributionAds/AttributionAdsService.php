@@ -293,8 +293,7 @@ class AttributionAdsService
 		//$attributionAd->user_supervisor_id = $supervisor->id;
 
 		//If the pp doesn't need a support from Tdl, the ad is validated and published
-		$validateStatus = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first();
-		$attributionAd->ad_status_id = $validateStatus->id;
+		$attributionAd->ad_status_id = AdStatus::APPROVE_ID;
 		$attributionAd->published_on = Carbon::now();
 		$data = [
 			'message' => 'Votre annonce a été validée par l\'équipe d\'Objectif Terres et est désormais publiée ! ',

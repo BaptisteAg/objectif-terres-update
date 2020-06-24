@@ -10,6 +10,13 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\JobOfferAd
  *
+ * @property int $id
+ * @property int|null $is_activity_transmission
+ * @property string $job_description
+ * @property string|null $experience_farming
+ * @property int $ad_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Ad $ad
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AgriculturalActivity[] $agriculturalActivity
  * @property-read int|null $agricultural_activity_count
@@ -22,6 +29,13 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereAdId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereExperienceFarming($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereIsActivityTransmission($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereJobDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class JobOfferAd extends Model

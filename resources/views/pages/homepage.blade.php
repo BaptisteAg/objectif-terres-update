@@ -177,48 +177,135 @@
 	</script>
 
 	<script>
-        let map = L.map('my_osm_widget_map', { /* use the same name as your <div id=""> */
-            center: [46.290552, 2.771017], /* set GPS Coordinates */
-            zoom: 5, /* define the zoom level */
-            zoomControl: true, /* false = no zoom control buttons displayed */
-            scrollWheelZoom: false /* false = scrolling zoom on the map is locked */
-        });
+		var map = L.map('my_osm_widget_map', { /* use the same name as your <div id=""> */
+			center: [46.290552, 2.771017], /* set GPS Coordinates */
+			zoom: 5, /* define the zoom level */
+			zoomControl: true, /* false = no zoom control buttons displayed */
+			scrollWheelZoom: false /* false = scrolling zoom on the map is locked */
+		});
+
+		function setupLocationPolygon(polygonData, options, callback) {
+			var polygon = L.geoJSON(polygonData.geojson, {
+				smoothFactor: options.smoothFactor || 0,
+				style: {
+					color: '#b34818'
+				}
+			});
+
+			polygon.addTo(map);
+
+			polygon.bindTooltip(polygonData.ads_count.toString(),
+					{permanent: true, direction: "center", className: 'leaflet-tooltip '+options.className}
+			).openTooltip();
+
+			polygon.addEventListener('mouseover', _ => {
+				polygon._tooltip._contentNode.classList.add('leaflet-tooltip-mouseover')
+			});
+			polygon.addEventListener('mouseout', _ => {
+				polygon._tooltip._contentNode.classList.remove('leaflet-tooltip-mouseover')
+			});
+
+			if(_.isFunction(callback)) {
+				callback(polygon);
+			}
+
+			return polygon
+		}
+
+		function enableRegions(form, callback) {
+			var formData = new FormData(form);
+			formData.append('_token', "{{ csrf_token() }}");
+
+			fetch('/locations/polygon/regions', {
+				headers: headers,
+				method: 'POST',
+				body: formData
+			})
+			.then(response => response.json())
+			.then(regionsPolygonData => {
+				callback(regionsPolygonData);
+
+				regionsPolygonData.forEach(polygonData => {
+					setupLocationPolygon(polygonData, {
+						smoothFactor : 2
+					}, function (polygon) {
+						polygon.addEventListener('click', _ => {
+							location.href = "/recherche?offer_type="+
+									formData.get('offer_type')+
+									"&ad_category="+
+									formData.get('ad_category')+
+									'&regions_location_researches_ids[]='+polygonData.region_id;
+						});
+
+					})
+				})
+			})
+		}
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWlja2l3YXkiLCJhIjoiY2s0YmE0NHZqMDZrejNrcGlxeWJmNHRtdCJ9.In4xuZz8wYnXmDX5jrrhCg', { /* set your personal MapBox Access Token */
-            maxZoom: 20, /* zoom limit of the map */
-            id: 'mapbox.light' /* mapbox.light / dark / streets / outdoors / satellite */
+            maxZoom: 18, /* zoom limit of the map */
+            id: 'mapbox.satellite' /* mapbox.light / dark / streets / outdoors / satellite */
         }).addTo(map);
 
-        //L.marker([46.290552, 2.771017]).addTo(mymap); /* set your location's GPS Coordinates : [LAT,LON] */
+		var headers = new Headers();
+		headers.append('pragma', 'no-cache');
+		headers.append('cache-control', 'no-cache');
 
-        let formData = new FormData;
-		@foreach($adsCountByRegionId as $regionId => $adCount)
-        formData.append('ads_count_by_region_id[{{$regionId}}]', '{{$adCount}}');
-		@endforeach
-        formData.append('_token', "{{ csrf_token() }}");
+		fetch('/locations/polygon/france', {
+			headers: headers,
+			method: 'GET',
+		})
+		.then(response => response.json())
+		.then(francePolygonData => {
+			var francePolygon = setupLocationPolygon(francePolygonData, {
+				className: "leaflet-tooltip-big",
+				smoothFactor : 2
+			});
 
-        fetch('/locations/polygon/regions', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.json())
-            .then(polygonsData => {
-                polygonsData.forEach(polygonData => {
-                    const polygon = L.geoJSON(polygonData.geojson, {
-                        smoothFactor: 2
-                    });
+			var popup = L.popup({
+				closeOnClick: false,
+				autoClose: false,
+				direction: top,
+				maxWidth : 560
+			}).setContent(`
+				<form id="leaflet-preform" action="/recherche">
+					<div class="select form-field">
+						<select name="offer_type">
+							<option value="OfferAd">Je cherche</option>
+							<option value="SeekAd">Je propose</option>
+						</select>
+					</div>
+					<div class="select form-field">
+						<select name="ad_category">
+							<option value="land">une terre</option>
+							<option value="job">un emploi</option>
+						</select>
+					</div>
+					<button class="button is-normal basic primary">ok</button>
+				</form>
+			`);
+			francePolygon.bindPopup(popup).openPopup();
 
-                    polygon.addTo(map);
+			var form = document.getElementById("leaflet-preform");
 
-                    polygon.bindTooltip(polygonData.ads_count,
-                        {permanent: true, direction: "center"}
-                    ).openTooltip();
+			form.addEventListener('submit', function (event) {
+				event.preventDefault();
 
-                    polygon.addEventListener('click', _ => {
-                        console.log("polygon click");
-                    });
-                })
-            })
+				form.querySelector('button').innerHTML = '<i class="fa fa-spinner fa-spin" style="font-size:25px;margin-top:8px;"></i>';
+
+				enableRegions(form, function (regionsPolygonData) {
+					if(!regionsPolygonData.length) {
+						alert("Désolé, il n'y a pas d'annonce de ce type pour l'instant.");
+						form.querySelector('button').innerHTML = "ok";
+						return;
+					}
+
+					map.removeLayer(francePolygon);
+				})
+			})
+		});
+
+
 	</script>
 
 @endsection

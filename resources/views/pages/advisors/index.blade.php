@@ -2,6 +2,10 @@
 
 @section ('title', 'Mon espace primo-accueillant')
 
+@section('header')
+    @include('components.advisor-tabs')
+@endsection
+
 @section('main-content')
     <div class="section pt-0">
         <h1 class="title is-2 has-text-link">Bienvenue sur votre espace primo-accueillant <span

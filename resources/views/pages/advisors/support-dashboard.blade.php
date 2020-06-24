@@ -6,6 +6,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
 @endsection
 
+@section('header')
+    @include('components.advisor-tabs')
+@endsection
+
 @section('main-content')
 
     <section class="section " style="padding-top: 0px">
