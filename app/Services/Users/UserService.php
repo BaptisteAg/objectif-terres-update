@@ -1,6 +1,9 @@
 <?php namespace App\Services\Users;
 
+use App\Models\Ad;
 use App\Models\City;
+use App\Models\Department;
+use App\Models\Region;
 use App\Models\User;
 use App\Repositories\Users\UserRepository;
 use Illuminate\Support\Facades\Hash;
@@ -121,4 +124,14 @@ class UserService
 		}
 		return $supervisorLocationTerritoryCodes;
 	}
+
+    public function findRandomByRoleAndRegion(int $roleId, int $regionId)
+    {
+        $regionsCodes = Region::whereIn('id', [$regionId])->get('code')->toArray();
+
+        return User::filterSubLocations('departments', $regionsCodes, 'departments.region_code')
+            ->where('role', $roleId)
+            ->inRandomOrder()
+            ->first();
+    }
 }
