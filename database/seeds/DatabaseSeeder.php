@@ -2,6 +2,7 @@
 
 use App\Models\Ad;
 use App\Models\AdNote;
+use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\BioCertification;
 use App\Models\Department;
@@ -12,6 +13,7 @@ use App\Models\LandSeekAd;
 use App\Models\ProductionGenre;
 use App\Models\Project;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -66,7 +68,7 @@ class DatabaseSeeder extends Seeder
             ]);
 
             //$departmentCodes = [01, 07, 19, 22, 23, 26, 35, 38, 42, 69, 74, 87];
-            $departmentCodes = [69, 01];
+            $departmentCodes = [69, 77];
 
             $departments = Department::whereIn('code', $departmentCodes)->get();
 
@@ -101,8 +103,6 @@ class DatabaseSeeder extends Seeder
         $types = ['ferme', 'pâture', 'terrain', 'location', 'terre', 'petite structure'];
         $pours = ['petit élevage', 'élevage caprins', 'élevage ovins', 'élevages poulets', 'réinstallation', 'installation collective'];
         $extra = ['', 'urgent', 'avec ou sans habitation', 'avec parcelle constructible'];
-
-        print_r("Generating sub land offer ad\n");
 
         $landOfferAd->bioCertifications()->save(BioCertification::inRandomOrder()->first());
         $landOfferAd->productionGenres()->save(ProductionGenre::inRandomOrder()->first());
@@ -171,7 +171,9 @@ class DatabaseSeeder extends Seeder
 
     private function createAttributionAd(Ad $ad, $isSupportRequest)
     {
-        $attributionAd = $ad->attributionAd()->save(factory(AttributionAd::class)->create(["ad_status_id" => $isSupportRequest ? 2 : 4]));
+        $attributionAd = $ad->attributionAd()->save(factory(AttributionAd::class)->create([
+            "ad_status_id" => $isSupportRequest ? AdStatus::PENDING_ID : array_rand([AdStatus::PENDING_MODERATION_STATUS_ID, AdStatus::APPROVE_ID])
+        ]));
         // Support requests
         if ($isSupportRequest) {
             $attributionAd->update([
@@ -183,7 +185,8 @@ class DatabaseSeeder extends Seeder
         // Ads
         else {
             $attributionAd->update([
-                "user_moderator_id" => User::where('role', '=', '1')->inRandomOrder()->first()->id
+                "user_moderator_id" => User::where('role', '=', '1')->inRandomOrder()->first()->id,
+                "published_on" => $attributionAd->ad_status_id == AdStatus::APPROVE_ID ? Carbon::now() : NULL
             ]);
         }
     }

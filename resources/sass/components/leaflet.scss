@@ -1,0 +1,38 @@
+.leaflet-tooltip {
+  border-radius:30px;
+  color: #7da237;
+  font-family: "Kalam", cursive;
+  font-size: 23px;
+  padding: 1px 13px;
+
+
+  &.leaflet-tooltip-mouseover {
+    color: #a41515;
+    animation: leaflet-bounce 0.7s ease infinite;
+  }
+
+  &.leaflet-tooltip-big {
+    border-radius: 40px;
+    font-size: 43px;
+    padding: 0px 23px;
+    margin-top: 30px;
+  }
+}
+
+.leaflet-popup-close-button {
+  display:none;
+}
+
+#leaflet-preform {
+  font-size: 1.5em;
+
+  button {
+    padding: 21px 14px;
+  }
+}
+
+@keyframes leaflet-bounce{
+  from {top: 0px;}
+  50%  {top: -10px;}
+  to   {top: 0px;}
+}

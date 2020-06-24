@@ -7,9 +7,21 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 /**
  * App\Models\ReadMessage
  *
+ * @property int $id
+ * @property int $message_id
+ * @property int $user_id
+ * @property int $is_read
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReadMessage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReadMessage newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReadMessage query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReadMessage whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReadMessage whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReadMessage whereIsRead($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReadMessage whereMessageId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReadMessage whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReadMessage whereUserId($value)
  * @mixin \Eloquent
  */
 

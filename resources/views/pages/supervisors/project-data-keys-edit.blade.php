@@ -3,6 +3,10 @@
 @section('title', 'Administration des indicateurs | Objectifs Terres')
 
 
+@section('header')
+    @include('components.supervisor-tabs')
+@endsection
+
 @section('main-content')
     <div class="section">
         <h1 class="title is-2 text_primary ">Administration des indicateurs </h1>

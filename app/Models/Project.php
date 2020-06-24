@@ -26,7 +26,7 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * @property-read \App\Models\ProjectStatus|null $projectStatus
  * @property-read \App\Models\SupportStage|null $supportStage
  * @property-read \App\Models\SupportState|null $supportState
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterAdTypes($adTypesFilters, $relationTableName)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterAdTypes($adTypesFilters, $relationTableName = '')
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterAdsTerritoryLocations($territoriesCode)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterLocations($relationshipName, $locationableIds)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)

@@ -31,45 +31,7 @@ class HomePageController extends Controller
 
 		$ads = Ad::latest()->take(2)->get();
 
-		$adsCountByRegionId = [];
-
-		foreach($ads as $ad) {
-            if(count($ad->cities)) {
-                    /** @var City $city */
-                    foreach($ad->cities as $city) {
-                        if($city->department && $city->department->region) {
-                            if(!isset($adsCountByRegionId[$city->department->region->id])) {
-                                $adsCountByRegionId[$city->department->region->id] = 1;
-                            }
-                            $adsCountByRegionId[$city->department->region->id]++;
-                        }
-                    }
-                }
-
-            if(count($ad->departments)) {
-                /** @var Department $department */
-                foreach($ad->departments as $department) {
-                    if($department->region) {
-                        if(!isset($adsCountByRegionId[$department->region->id])) {
-                            $adsCountByRegionId[$department->region->id] = 1;
-                        }
-                        $adsCountByRegionId[$department->region->id]++;
-                    }
-                }
-            }
-
-		    if(count($ad->regions)) {
-                /** @var Region $foundRegion */
-                foreach($ad->regions as $region) {
-                    if(!isset($adsCountByRegionId[$region->id])) {
-                        $adsCountByRegionId[$region->id] = 1;
-                    }
-                    $adsCountByRegionId[$region->id]++;
-                }
-            }
-        }
-
-		return view('pages.homepage', compact('ads', 'adsCountByRegionId'));
+		return view('pages.homepage', compact('ads'));
 
 	}
 }

@@ -76,6 +76,8 @@ namespace App\Models\Spip;
  * @property string $champtitre1
  * @property string $champtitre2
  * @property string $champtitre3
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Spip\Auteur[] $auteurs
+ * @property-read int|null $auteurs_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Spip\Article newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Spip\Article newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Spip\Article query()

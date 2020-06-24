@@ -12,7 +12,13 @@ use McCool\LaravelAutoPresenter\HasPresenter;
 /**
  * App\Models\Thread
  *
- * @property-read \App\Models\Ad $ad
+ * @property int $id
+ * @property string|null $title
+ * @property int $is_private
+ * @property int|null $ad_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Ad|null $ad
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Message[] $messages
  * @property-read int|null $messages_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Message[] $unreadMessages
@@ -22,6 +28,12 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread whereAdId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread whereIsPrivate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Thread extends Model implements HasPresenter
