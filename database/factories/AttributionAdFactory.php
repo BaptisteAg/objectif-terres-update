@@ -4,8 +4,6 @@
 
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
-use App\Models\PpType;
-use App\Models\RefusalType;
 use App\Models\User;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
