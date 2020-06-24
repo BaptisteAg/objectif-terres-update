@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\ScopeLocationFilterable;
 use App\Notifications\ResetPasswordNotification;
 use App\Presenters\UserPresenter;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -52,6 +53,9 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
  * @property-read int|null $threads_count
  * @property-read \App\Models\City|null $zipCode
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User filterAdsTerritoryLocations($territoriesCode)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User filterLocations($relationshipName, $locationableIds)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
@@ -83,6 +87,7 @@ class User extends Authenticatable implements HasPresenter
 {
 	use Notifiable;
 	use CanResetPassword;
+	use ScopeLocationFilterable;
 
 	/**
 	 * The attributes that are mass assignable.
