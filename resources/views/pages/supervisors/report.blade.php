@@ -2,6 +2,11 @@
 
 @section ('title', 'Rapports et indicateurs')
 
+
+@section('header')
+	@include('components.supervisor-tabs')
+@endsection
+
 @section('main-content')
 
 	<div class="section">

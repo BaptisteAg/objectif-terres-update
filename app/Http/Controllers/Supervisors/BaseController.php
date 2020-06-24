@@ -61,6 +61,7 @@ abstract class BaseController
 		$productionGenres = ProductionGenre::all();
 		$bioCertifications = BioCertification::all();
 
+
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;

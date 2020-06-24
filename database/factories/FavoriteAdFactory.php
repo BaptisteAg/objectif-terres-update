@@ -9,7 +9,7 @@ use Faker\Generator as Faker;
 
 $factory->define(FavoriteAd::class, function (Faker $faker) {
     return [
-        'ad_id' => Ad::all()->random(),
-        'user_id' => User::all()->random(),
+        'ad_id' => Ad::inRandomOrder()->first(),
+        'user_id' => User::inRandomOrder()->first(),
     ];
 });

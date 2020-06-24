@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Department;
 use App\Models\Region;
+use App\Services\Ads\AdService;
 use App\Services\Locations\LocationService;
 use GuzzleHttp\Client;
 use Illuminate\Database\Query\Builder;
@@ -67,21 +68,38 @@ class LocationableController extends Controller
 		);
 	}
 
-	public function regionsPolygon(Request $request)
-	{
-		$adsCountByRegionId = $request->get('ads_count_by_region_id');
-		/** @var Region[] $regions */
-		$regions = Region::whereIn('id', array_keys($adsCountByRegionId))->get();
+    public function regionsPolygon(Request $request, AdService $adService)
+    {
+        if ($request->has('ad_category') && $request->has('offer_type')) {
+            $selectedAdType = $request->input('ad_category') . $request->input('offer_type');
+        } else {
+            abort('Aucune catégorie d\'annonce séléctionnée');
+        }
 
-		$json = [];
+        $adsCountByRegionId = $adService->getPublishedAdsCountByRegionId($selectedAdType);
 
-		foreach ($regions as $region) {
-			$geoPolygon = $this->service->getLocationGeoPolygon($region->name);
-			$geoPolygon->id = $region->id;
-			$geoPolygon->ads_count = $adsCountByRegionId[$region->id];
-			$json[] = $geoPolygon;
-		}
+        /** @var Region[] $regions */
+        $regions = Region::whereIn('id', array_keys($adsCountByRegionId))->get();
 
-		return response()->json($json);
-	}
+        $json = [];
+
+        foreach ($regions as $region) {
+            $geoPolygon = $this->service->getLocationGeoPolygon($region->name);
+            $geoPolygon->region_id = $region->id;
+            $geoPolygon->ads_count = $adsCountByRegionId[$region->id];
+            $json[] = $geoPolygon;
+        }
+
+        return response()->json($json);
+    }
+
+    public function france(AdService $adService)
+    {
+        $adsCount = $adService->getPublishedAdsCount();
+
+        $geoPolygon = $this->service->getLocationGeoPolygon('France métropolitaine');
+        $geoPolygon->ads_count = $adsCount;
+
+        return response()->json($geoPolygon);
+    }
 }

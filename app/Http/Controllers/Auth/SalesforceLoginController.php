@@ -50,7 +50,7 @@ class SalesforceLoginController extends Saml2Controller
         $errors = $saml2Auth->acs();
 
         if (!empty($errors)) {
-	        dd($errors);
+	        dd($errors, $saml2Auth->getMetadata());
             logger()->error('Saml2 error_detail', ['error' => $saml2Auth->getLastErrorReason()]);
             session()->flash('saml2_error_detail', [$saml2Auth->getLastErrorReason()]);
 

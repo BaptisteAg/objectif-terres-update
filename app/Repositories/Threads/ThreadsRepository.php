@@ -159,7 +159,9 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 	{
 		return [
 			'ad',
-			'users',
+			'users' => function ($query) {
+				$query->withTrashed();
+			},
 
 		];
 	}

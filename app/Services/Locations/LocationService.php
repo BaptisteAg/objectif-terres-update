@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\DB;
 
 class LocationService
 {
+    /**
+     * @param string $zipCode
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|City|null
+     */
+    public function findByZipCode(string $zipCode)
+    {
+        return City::where('zip_code', $zipCode)->first();
+    }
+
     public function getLocationGeoPolygon(string $q)
     {
         $cacheKey = 'geopolygon-'.$q;
@@ -211,25 +220,25 @@ class LocationService
 	 */
 	public function getCitiesInRadius ($cityId, $radius){
 		$city = City::whereId($cityId)->first();
-		$cities = DB::select('
-								SELECT id FROM (
-									SELECT *, 
-										(
-											(
-												(
-													acos(
-														sin(( '.(float)$city->gps_lat.' * pi() / 180))
-														*
-														sin(( `gps_lat` * pi() / 180)) + cos(( '.(float)$city->gps_lat.' * pi() /180 ))
-														*
-														cos(( `gps_lat` * pi() / 180)) * cos((( '.(float)$city->gps_lng.' - `gps_lng`) * pi()/180)))
-												) * 180/pi()
-											) * 60 * 1.1515 * 1.609344
-										)
-									as distance FROM `cities`
-								) myTable
-								WHERE distance <= '.(int)$radius.';
-								');
+		$cities = DB::select(
+		    'SELECT id FROM (
+                SELECT *,
+                    (
+                        (
+                            (
+                                acos(
+                                    sin(( '.(float)$city->gps_lat.' * pi() / 180))
+                                    *
+                                    sin(( `gps_lat` * pi() / 180)) + cos(( '.(float)$city->gps_lat.' * pi() /180 ))
+                                    *
+                                    cos(( `gps_lat` * pi() / 180)) * cos((( '.(float)$city->gps_lng.' - `gps_lng`) * pi()/180)))
+                            ) * 180/pi()
+                        ) * 60 * 1.1515 * 1.609344
+                    )
+                as distance FROM `cities`
+            ) myTable
+            WHERE distance <= '.(int)$radius.';'
+        );
 		return array_column($cities, 'id');
 	}
 

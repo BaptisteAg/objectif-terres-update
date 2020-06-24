@@ -72,18 +72,20 @@ class AttributionAdsService
 		if ($ad->departments->count() > 0) {
 			$adDepartmentsCodes = $ad->departments->map(function ($item) {
 				return $item['code'];
-			});
+			})->toArray();
 		}
 		if ($ad->cities->count() > 0) {
 			$adDepartmentsCodesInCities = $ad->cities->map(function ($item) {
 				return $item['department_code'];
-			});
+			})->toArray();
 		}
-		$adTerritoriesCodes = array_unique(array_merge($adDepartmentsCodes, $adDepartmentsCodesInCities->toArray()), SORT_REGULAR);
+		$adTerritoriesCodes = array_merge($adDepartmentsCodes, $adDepartmentsCodesInCities);
 		$intersectTerritoriesCodes = array_intersect($adTerritoriesCodes, $moderatorLocationTerritoriesCodes);
+
 		if (count($intersectTerritoriesCodes) > 0) {
 			$moderatorIsChargeOfAdModeration = true;
 		}
+
 		return $moderatorIsChargeOfAdModeration;
 	}
 
@@ -128,6 +130,30 @@ class AttributionAdsService
 		$attributionAds = collect();
 		//START QUERY
 		$attributionAdsFiltered = (new AttributionAd)->newQuery();
+
+		//Filter ads based on moderation attribution and moderator territories
+		$moderatorTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
+		$attributionAdsFiltered->where(function (Builder $query) {
+			$query->where("user_moderator_id", '=', auth()->id());
+			$query->whereHas('ad', function (Builder $q) {
+				$q->whereHas('userPp', function (Builder $builder) {
+					$builder->whereNull('deleted_at');
+				});
+			});
+		});
+		$attributionAdsFiltered->orWhere(function (Builder $query) use ($moderatorTerritoriesCodes) {
+			$query->whereHas('ad', function (Builder $subQuery) use ($moderatorTerritoriesCodes) {
+				$subQuery->whereHas('userPp', function (Builder $q) {
+					$q->whereNull('deleted_at');
+				});
+				$subQuery->whereHas('departments', function (Builder $q) use ($moderatorTerritoriesCodes) {
+					$q->whereIn('code', $moderatorTerritoriesCodes);
+				});
+				$subQuery->orWhereHas('cities', function (Builder $q) use ($moderatorTerritoriesCodes) {
+					$q->whereIn('department_code', $moderatorTerritoriesCodes);
+				});
+			});
+		});
 
 		//Filter attribution ads based on their locations if requested
 		if ($filters->has('locations')) {
@@ -247,30 +273,6 @@ class AttributionAdsService
 		} else {
 			$attributionAdsFiltered->orderByDesc('created_at');
 		}
-		//Filter ads based on moderation attribution and moderator territories
-		$moderatorTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$attributionAdsFiltered->where(function (Builder $query) {
-			$query->where("user_moderator_id", '=', auth()->id());
-			$query->whereHas('ad', function (Builder $q) {
-				$q->whereHas('userPp', function (Builder $builder) {
-					$builder->whereNull('deleted_at');
-				});
-			});
-		});
-		$attributionAdsFiltered->orWhere(function (Builder $query) use ($moderatorTerritoriesCodes) {
-			$query->whereHas('ad', function (Builder $subQuery) use ($moderatorTerritoriesCodes) {
-				$subQuery->whereHas('userPp', function (Builder $q) {
-					$q->whereNull('deleted_at');
-				});
-				$subQuery->whereHas('departments', function (Builder $q) use ($moderatorTerritoriesCodes) {
-					$q->whereIn('code', $moderatorTerritoriesCodes);
-				});
-				$subQuery->orWhereHas('cities', function (Builder $q) use ($moderatorTerritoriesCodes) {
-					$q->whereIn('department_code', $moderatorTerritoriesCodes);
-				});
-			});
-		});
-
 		$attributionAds = $attributionAdsFiltered
 			->with($this->getEagerLoading())
 			->paginate(15);
@@ -301,8 +303,7 @@ class AttributionAdsService
 		//$attributionAd->user_supervisor_id = $supervisor->id;
 
 		//If the pp doesn't need a support from Tdl, the ad is validated and published
-		$validateStatus = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first();
-		$attributionAd->ad_status_id = $validateStatus->id;
+		$attributionAd->ad_status_id = AdStatus::APPROVE_ID;
 		$attributionAd->published_on = Carbon::now();
 		$data = [
 			'message' => 'Votre annonce a été validée par l\'équipe d\'Objectif Terres et est désormais publiée ! ',

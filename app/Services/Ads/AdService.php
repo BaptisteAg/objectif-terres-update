@@ -2,6 +2,7 @@
 
 use App\Models\Ad;
 use App\Models\AdStatus;
+use App\Models\City;
 use App\Models\Department;
 use App\Models\ProjectStatus;
 use App\Models\Region;
@@ -16,7 +17,6 @@ use App\Repositories\Ads\LandSeekAdRepository;
 use App\Repositories\Ads\ProductionGenreRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Repositories\Projects\ProjectsRepository;
-use App\Services\Projects\ProjectService;
 use App\Services\Users\UserService;
 use DateTime;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -120,48 +120,48 @@ class AdService
 	 */
 	public function requestPublishing(array $data, bool $isSupportRequest = false)
 	{
-		$ad = DB::transaction(function () use ($data, $isSupportRequest) {
+		$attributionAdData = [];
 
-			$attributionAdData = [];
+		if ($isSupportRequest) {
+			// Create a project for this ad
+			$project = $this->projectRepository->create([
+				'support_stage_id' => SupportStage::FIRST_RECEPTION_ID,
+				'support_state_id' => SupportState::TO_HANDLE_ID,
+				'project_status_id' => ProjectStatus::EMERGING_ID,
+			]);
+			$data["project_id"] = $project->id;
+		}
 
-			if ($isSupportRequest) {
-				$pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_ID)->first();
-				$advisor = User::where('role', '3')->inRandomOrder()->first();
-				if (!$advisor) {
-					throw new \Exception('A supervisor could not be found for an attribution');
-				}
-				$attributionAdData['user_supervisor_id'] = $advisor->id;
+		$ad = $this->repository->create($data);
 
-				// Create a project for this ad
-				$project = $this->projectRepository->create([
-					'support_stage_id' => SupportStage::FIRST_RECEPTION_ID,
-					'support_state_id' => SupportState::TO_HANDLE_ID,
-					'project_status_id' => ProjectStatus::EMERGING_ID,
-				]);
-				$data["project_id"] = $project->id;
-			} else {
-				$pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
-				// Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
-				$moderator = User::where('email', 'test.ot.moderateur@gmail.com')->first();
-				if (!$moderator) {
-					throw new \Exception('A moderator could not be found for an attribution');
-				}
-				$attributionAdData['user_moderator_id'] = $moderator->id;
+		$adRandomRegionId = array_rand($this->getAdRegionIds($ad));
+
+		if ($isSupportRequest) {
+			$pendingStatus = AdStatus::PENDING_ID;
+			$advisor = $this->userService->findRandomByRoleAndRegion(3, $adRandomRegionId);
+			if (!$advisor) {
+				throw new \Exception('A supervisor could not be found for an attribution');
 			}
+			$attributionAdData['user_supervisor_id'] = $advisor->id;
 
-			$ad = $this->repository->create($data);
+		} else {
+			$pendingStatus = AdStatus::PENDING_MODERATION_STATUS_ID;
+			// Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
+			$moderator = $this->userService->findRandomByRoleAndRegion(1, $adRandomRegionId);
+			if (!$moderator) {
+				throw new \Exception('A moderator could not be found for an attribution');
+			}
+			$attributionAdData['user_moderator_id'] = $moderator->id;
+		}
 
-			$attributionAdData['ad_status_id'] = $pendingStatus->id;
-			$attributionAdData['ad_id'] = $ad->id;
-			$this->attributionAdsRepository->create($attributionAdData);
+		$attributionAdData['ad_status_id'] = $pendingStatus;
+		$attributionAdData['ad_id'] = $ad->id;
+		$this->attributionAdsRepository->create($attributionAdData);
 
-			$adData = $data[$data["ad_type"]];
-			$adData["ad_id"] = $ad->id;
+		$adData = $data[$data["ad_type"]];
+		$adData["ad_id"] = $ad->id;
 
-			$this->storeSubAd($data["ad_type"], $adData);
-
-			return $ad;
-		});
+		$this->storeSubAd($data["ad_type"], $adData);
 
 
 		return $ad;
@@ -211,16 +211,6 @@ class AdService
 	public function find(int $id)
 	{
 		$ad = $this->repository->find($id);
-
-		return $ad;
-	}
-	/**
-	 * @param int $id
-	 * @return \App\Models\Ad
-	 */
-	public function findWithTrashedUser(int $id)
-	{
-		$ad = $this->repository->findWithTrashedUser($id);
 
 		return $ad;
 	}
@@ -306,6 +296,7 @@ class AdService
 	public function findAllNotAssignedProjectsByUserSupervisor(bool $toPaginate)
 	{
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
+
 		$ads = $this->repository->allNotAssignedProjectsInTerritories($supervisorLocationTerritoryCodes, $toPaginate);
 		return $ads;
 	}
@@ -330,6 +321,17 @@ class AdService
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$ads = $this->repository->allAdsInTerritories($supervisorLocationTerritoryCodes);
 		return $ads;
+	}
+
+	/**
+	 * @param int $id
+	 * @return \App\Models\Ad
+	 */
+	public function findWithTrashedUser(int $id)
+	{
+		$ad = $this->repository->findWithTrashedUser($id);
+
+		return $ad;
 	}
 
 	/**
@@ -444,8 +446,14 @@ class AdService
 	 */
 	public function filter(Request $filters, int $roleUser, bool $toPaginate)
 	{
+		//TODO move this method to the related repository
 		//START QUERY
 		$adsFiltred = (new Ad())->newQuery();
+
+		//Remove all trashed users
+		$adsFiltred->whereHas('userPp', function(Builder $query){
+			$query->whereNull('deleted_at');
+		});
 
 		//Additional filters  : filter by surface range
 		if ($filters->has('surfaces_research')) {
@@ -522,7 +530,7 @@ class AdService
 			//If one or more departments are selected, get all ads located in departments and cities in departments
 			if (array_key_exists('departments', $locations)) {
 				$departmentsCode = Department::whereIn('id', $locations['departments'])->get('code')->toArray();
-				$adsFiltred->where(function (Builder $query) use ($locations, $departmentsCode) {
+				$adsFiltred->where(function (Ad $query) use ($locations, $departmentsCode) {
 					$query->filterLocations('departments', $locations['departments']);
 					$query->filterSubLocations('cities', $departmentsCode, 'cities.department_code');
 				});
@@ -531,7 +539,7 @@ class AdService
 			if (array_key_exists('regions', $locations)) {
 				$regionsCodes = Region::whereIn('id', $locations['regions'])->get('code')->toArray();
 				$departmentsCode = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
-				$adsFiltred->where(function (Builder $query) use ($locations, $regionsCodes, $departmentsCode) {
+				$adsFiltred->where(function (Ad $query) use ($locations, $regionsCodes, $departmentsCode) {
 					$query->filterLocations('regions', $locations['regions']);
 					$query->filterSubLocations('departments', $regionsCodes, 'departments.region_code');
 					$query->filterSubLocations('cities', $departmentsCode, 'cities.department_code');
@@ -608,12 +616,11 @@ class AdService
 
 			});
 		}
+
 		//Filter ads based on the role of the logged user
 		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$adsFiltred->where(function (Builder $query) use ($supervisorLocationTerritoryCodes, $roleUser) {
-			$query->whereHas('userPp', function(Builder $subQuery){
-				$subQuery->whereNull('deleted_at');
-			});
+//			$query->whereNotNull('project_id');
 			$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
 				$q->where('user_moderator_id', '=', auth()->id());
 				if ($roleUser === 2) {
@@ -662,9 +669,7 @@ class AdService
 
 		$adsFiltred->with([
 			'project',
-			'userPp'=> function( $query){
-				$query->withTrashed();
-			},
+			'userPp',
 			'cities',
 			'cities.department',
 			'cities.department.region',
@@ -697,5 +702,60 @@ class AdService
 		});
 
 		return $adsPublishedSinceDaysAndNotComplete;
+	}
+
+	public function getPublishedAdsCountByRegionId($selectedAdType)
+	{
+		$adsCountByRegionId = [];
+
+		foreach ($this->repository->findAllPublishedWithLocations($selectedAdType) as $ad) {
+			$regionIds = $this->getAdRegionIds($ad);
+
+			foreach ($regionIds as $regionId) {
+				if (!isset($adsCountByRegionId[$regionId])) {
+					$adsCountByRegionId[$regionId] = 0;
+				}
+				$adsCountByRegionId[$regionId]++;
+			}
+		}
+
+		return $adsCountByRegionId;
+	}
+
+	public function getAdRegionIds(Ad $ad)
+	{
+		$regionIds = [];
+
+		if (count($ad->cities)) {
+			/** @var City $city */
+			foreach ($ad->cities as $city) {
+				if ($city->department && $city->department->region) {
+					$regionIds[] = $city->department->region->id;
+				}
+			}
+		}
+
+		if (count($ad->departments)) {
+			/** @var Department $department */
+			foreach ($ad->departments as $department) {
+				if ($department->region) {
+					$regionIds[] = $department->region->id;
+				}
+			}
+		}
+
+		if (count($ad->regions)) {
+			/** @var Region $foundRegion */
+			foreach ($ad->regions as $region) {
+				$regionIds[] = $region->id;
+			}
+		}
+
+		return array_unique($regionIds);
+	}
+
+	public function getPublishedAdsCount()
+	{
+		return $this->repository->countAllPublished();
 	}
 }

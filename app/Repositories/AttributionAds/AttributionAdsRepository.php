@@ -51,6 +51,7 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 			->where(function (Builder $query) {
 				$query->where("user_moderator_id", '=', auth()->id());
 				$query->whereHas('ad', function (Builder $q) {
+					$q->whereNull('project_id');
 					$q->whereHas('userPp', function (Builder $builder) {
 						$builder->whereNull('deleted_at');
 					});
@@ -58,6 +59,7 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 			})
 			->orWhere(function (Builder $query) use ($territoriesCodes) {
 				$query->whereHas('ad', function (Builder $subQuery) use ($territoriesCodes) {
+					$subQuery->whereNull('project_id');
 					$subQuery->whereHas('userPp', function (Builder $q) {
 						$q->whereNull('deleted_at');
 					});

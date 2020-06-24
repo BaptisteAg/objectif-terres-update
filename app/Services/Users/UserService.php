@@ -1,11 +1,12 @@
 <?php namespace App\Services\Users;
 
-
+use App\Models\Ad;
 use App\Models\City;
+use App\Models\Department;
+use App\Models\Region;
 use App\Models\User;
 use App\Repositories\Users\UserRepository;
 use Illuminate\Support\Facades\Hash;
-
 
 /**
  * Class UserService
@@ -28,6 +29,11 @@ class UserService
 		$this->repository = $repository;
 	}
 
+	public function exists(string $email)
+	{
+		return $this->repository->findByEmail($email);
+	}
+
 	/**
 	 * @param array $data
 	 * @return User
@@ -48,10 +54,6 @@ class UserService
 			$city = City::find($data['city_id']);
 			$data['zip_code_id'] = $city->id;
 			$data['city'] = $city->name;
-		}
-
-		foreach ($data as $item => $value) {
-			$data[$item] = $value;
 		}
 
 		return $this->repository->create($data);
@@ -115,11 +117,23 @@ class UserService
 	/**
 	 * @return array
 	 */
-	public function getCurrentUserTerritoryDepartments(){
+	public function getCurrentUserTerritoryDepartments(): array
+	{
 		$supervisorLocationTerritoryCodes = [];
 		foreach (auth()->user()->departments as $department) {
 			array_push($supervisorLocationTerritoryCodes, $department->code);
 		}
 		return $supervisorLocationTerritoryCodes;
+	}
+
+
+	public function findRandomByRoleAndRegion(int $roleId, int $regionId)
+	{
+		$regionsCodes = Region::whereIn('id', [$regionId])->get('code')->toArray();
+
+		return User::filterSubLocations('departments', $regionsCodes, 'departments.region_code')
+			->where('role', $roleId)
+			->inRandomOrder()
+			->first();
 	}
 }

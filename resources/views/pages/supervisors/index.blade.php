@@ -2,6 +2,10 @@
 
 @section ('title', 'Mon espace responsable territorial')
 
+@section('header')
+    @include('components.supervisor-tabs')
+@endsection
+
 @section('main-content')
 
     <div class="section pt-0">

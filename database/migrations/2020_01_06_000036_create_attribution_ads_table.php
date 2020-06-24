@@ -27,7 +27,7 @@ class CreateAttributionAdsTable extends Migration
 			$table->unsignedInteger('user_moderator_id')->nullable();
 			$table->unsignedInteger('user_supervisor_id')->nullable();
 			$table->unsignedInteger('ad_id');
-			$table->unsignedInteger('ad_status_id');
+			$table->unsignedInteger('ad_status_id')->nullable();
 			$table->unsignedInteger('refusal_type_id')->nullable();
 			$table->timestamp('published_on')->nullable();
 			$table->timestamp('archived_at')->nullable();

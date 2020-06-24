@@ -6,9 +6,14 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
 @endsection
 
+
 <?php
 /** @var \App\Models\Ad $ad * */
 ?>
+@section('header')
+	@include('components.advisor-tabs')
+@endsection
+
 
 @section('main-content')
 

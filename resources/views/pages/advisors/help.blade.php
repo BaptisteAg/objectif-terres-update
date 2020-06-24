@@ -2,6 +2,9 @@
 
 @section('title', 'Espace aide & ressources ')
 
+@section('header')
+	@include('components.advisor-tabs')
+@endsection
 
 @section('main-content')
 

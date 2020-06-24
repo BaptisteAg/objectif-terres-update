@@ -30,11 +30,12 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \App\Models\User|null $userAdvisor
  * @property-read \App\Models\User|null $userModerator
  * @property-read \App\Models\User|null $userSupervisor
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterAdTypes($adTypesFilters, $relationTableName)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterAdTypes($adTypesFilters, $relationTableName = '')
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterAdsTerritoryLocations($territoriesCode)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterLocations($relationshipName, $locationableIds)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterWhereHasIn($data, $relationNameTable, $columnName)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterWhereHasLandSeekAdOrWhereHasLandOfferAd($landSeekAdColumn, $landOfferAdColumn, $operator, $value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd filterWhereHasWhere($data, $relationNameTable, $operator, $columnName)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd newQuery()

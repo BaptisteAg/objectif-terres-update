@@ -63,6 +63,7 @@ class ThreadsController extends Controller
 			$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
 			$responseTemplates = ResponseTemplate::all();
 		}
+
 		return view('pages.messages.index', compact('threads', 'users', 'threadsWithUnreadMessages', 'responseTemplates'));
 	}
 

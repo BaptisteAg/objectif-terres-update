@@ -22,7 +22,6 @@ use App\Services\Ads\AdService;
 use App\Services\AttributionAds\AttributionAdsService;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
-use Illuminate\Support\Facades\Auth;
 
 
 abstract class BaseController extends Controller
@@ -96,6 +95,7 @@ abstract class BaseController extends Controller
 		);
 	}
 
+
 	/**
 	 * Get all the vars needed to display an ad
 	 *
@@ -119,11 +119,12 @@ abstract class BaseController extends Controller
 
 		/** @var User $user */
 		$user = auth()->user();
-		if(isset($user)){
+		if (isset($user)) {
 			$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad->id);
 		}
 
-		if ($user && $user->role >= 1 && $ad->is_draft != 1 ) {
+
+		if ($user && $user->role >= 1 && $ad->is_draft != 1) {
 			if ($ad->attributionAd->adStatus->id === AdStatus::PENDING_MODERATION_STATUS_ID) {
 				$isAdToModerate = true;
 			}

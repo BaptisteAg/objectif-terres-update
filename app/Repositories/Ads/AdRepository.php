@@ -1,6 +1,7 @@
 <?php namespace App\Repositories\Ads;
 
 use App\Models\Ad;
+use App\Models\AttributionAd;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,7 +24,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	public function all($paginate = null)
 	{
 		return $this->entity
-			->with($this->getEagerLoading())
+			->with($this->getFullEagerLoading())
 			->get();
 	}
 
@@ -36,7 +37,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		/** @var Ad $model */
 		$model = $this->entity
 			->where(["id" => $id])
-			->with($this->getEagerLoading())
+			->with($this->getFullEagerLoading())
 			->first();
 
 		if (!$model) {
@@ -57,7 +58,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		/** @var Ad $model */
 		$model = $this->entity
 			->where(["id" => $id])
-			->with($this->getEagerLoadingForDashboards())
+			->with($this->getDashboardsEagerLoading())
 			->first();
 
 		if (!$model) {
@@ -130,7 +131,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		$models = $this->entity
 			->where(["user_pp_id" => $idUser])
 			->where('is_draft', 0)
-			->with($this->getEagerLoadingForDashboards())
+			->with($this->getDashboardsEagerLoading())
 			->get();
 		return $models;
 	}
@@ -160,7 +161,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				'departments.region',
 				'regions',
 				'documents',
-				'userPp'=> function ($query){
+				'userPp' => function ($query) {
 					$query->withTrashed();
 				}
 			])
@@ -179,7 +180,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		$models = $this->entity
 			->whereNull('project_id')
 			->where(function (Builder $query) use ($territoriesCode) {
-				$query->whereHas('userPp', function(Builder $subQuery){
+				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
 				});
 				$query->filterAdsTerritoryLocations($territoriesCode);
@@ -208,7 +209,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		$models = $this->entity
 			->where(function (Builder $query) {
 				$query->whereNotNull('project_id');
-				$query->whereHas('userPp', function(Builder $subQuery){
+				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
 				});
 				$query->whereHas('attributionAd', function (Builder $query) {
@@ -220,7 +221,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				});
 			})
 			->orWhere(function (Builder $query) use ($territoriesCode) {
-				$query->whereHas('userPp', function(Builder $subQuery){
+				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
 				});
 				$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
@@ -236,7 +237,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			->orderByDesc('p.created_at')
 			->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
 			->orderByDesc('a.created_at')
-			->with($this->getEagerLoadingForDashboards());
+			->with($this->getDashboardsEagerLoading());
 		if ($toPaginate) {
 			$ads = $models->paginate(15);
 		} else {
@@ -264,13 +265,14 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 						$subQuery->where('user_supervisor_id', '=', auth()->user()->id);
 					}
 				});
-				$query->whereHas('userPp', function(Builder $subQuery){
+				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
 				});
 				$query->whereNotNull('project_id');
 			})
 			->orWhere(function (Builder $query) use ($territoriesCode) {
-				$query->whereHas('userPp', function(Builder $subQuery){
+				$query->whereNotNull('project_id');
+				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
 				});
 				$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
@@ -280,13 +282,13 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 					$query->whereIn('department_code', $territoriesCode);
 				});
 
-				$query->whereNotNull('project_id');
+
 			});
 
 		$models
 			->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
 			->orderByDesc('a.created_at')
-			->with($this->getEagerLoadingForDashboards());
+			->with($this->getDashboardsEagerLoading());
 		if ($toPaginate) {
 			$ads = $models->paginate(15);
 		} else {
@@ -306,7 +308,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		/** @var Collection $model */
 		$models = $this->entity
 			->where(function (Builder $query) {
-				$query->whereHas('userPp', function(Builder $subQuery){
+				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
 				});
 				$query->whereHas('attributionAd', function (Builder $subQuery) {
@@ -321,7 +323,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
 			})
 			->orWhere(function (Builder $query) use ($territoriesCode) {
-				$query->whereHas('userPp', function(Builder $subQuery){
+				$query->whereNotNull('project_id');
+				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
 				});
 				$query->whereHas('departments', function (Builder $subQuery) use ($territoriesCode) {
@@ -330,7 +333,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				$query->orWhereHas('cities', function (Builder $subQuery) use ($territoriesCode) {
 					$subQuery->whereIn('department_code', $territoriesCode);
 				});
-				$query->whereNotNull('project_id');
+
 
 				$query->whereHas('attributionAd', function (Builder $subQuery) {
 					$subQuery->whereNull('user_advisor_id');
@@ -340,7 +343,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		$models
 			->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
 			->orderByDesc('a.created_at')
-			->with($this->getEagerLoadingForDashboards());
+			->with($this->getDashboardsEagerLoading());
 		if ($toPaginate) {
 			$ads = $models->paginate(15);
 		} else {
@@ -359,10 +362,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		/** @var Collection $models */
 		$models = $this->entity
 			->whereNull('project_id')
-			->where(function (Builder $query) use ($territoriesCode) {
+			->where(function (Ad $query) use ($territoriesCode) {
 				$query->filterAdsterritoryLocations($territoriesCode);
 			})
-			->where(function (Builder $query) use ($adStatusId) {
+			->where(function (Ad $query) use ($adStatusId) {
 				$query->whereHas('attributionAd', function (Builder $subQuery) use ($adStatusId) {
 					$subQuery->where('ad_status_id', '=', $adStatusId);
 				});
@@ -381,7 +384,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	{
 		$queryAds = Ad::where(function (Builder $query) use ($territoryCodes) {
 			$query->whereNotNull('project_id');
-			$query->whereHas('userPp', function(Builder $subQuery){
+			$query->whereHas('userPp', function (Builder $subQuery) {
 				$subQuery->whereNull('deleted_at');
 			});
 			$query->whereHas('attributionAd', function (Builder $subQuery) {
@@ -399,7 +402,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			});
 		})
 			->where(function (Builder $query) use ($dates) {
-				$query->whereHas('userPp', function(Builder $subQuery){
+				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
 				});
 				$query->whereHas('project', function (Builder $subQuery) use ($dates) {
@@ -412,7 +415,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 					});
 				});
 			});
-		$ads = $queryAds->with($this->getEagerLoadingForDashboards())->get();
+		$ads = $queryAds->with($this->getDashboardsEagerLoading())->get();
 
 		return $ads;
 	}
@@ -431,20 +434,34 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			->get();
 	}
 
-	private function getEagerLoading()
+	public function findAllPublishedWithLocations($selectedAdType): Collection
 	{
-		return [
+		return $this->entity
+			->whereHas('attributionAd', function (Builder $query) {
+				$query->whereNotNull('published_on');
+			})
+			->filterAdTypes([$selectedAdType])
+			->with($this->getLocationEagerLoading())
+			->get();
+	}
+
+	public function countAllPublished()
+	{
+		return $this->entity
+			->whereHas('attributionAd', function (Builder $query) {
+				$query->whereNotNull('published_on');
+			})
+			->count();
+	}
+
+	private function getFullEagerLoading()
+	{
+		return array_merge([
 			'userPp',
 			'adNotes',
 			'adNotes.user',
 			'documents',
 			'documents.user',
-			'cities',
-			'cities.department',
-			'cities.department.region',
-			'departments',
-			'departments.region',
-			'regions',
 
 			'threads',
 			'threads.messages',
@@ -474,41 +491,46 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'jobOfferAd.educationLevels',
 			'jobOfferAd.jobOfferTypes',
 			'jobSeekAd',
-			'project',
-			'project.projectStatus',
-			'project.supportState',
-			'project.supportStage',
 
-			'attributionAd',
 			'attributionAd.userAdvisor',
-			'attributionAd.adStatus',
-
-
-		];
+		], $this->getLocationEagerLoading(), $this->getAttributionEagerLoading());
 	}
 
-	private function getEagerLoadingForDashboards()
+	private function getDashboardsEagerLoading()
+	{
+		return array_merge([
+			'userPp' => function($query){
+			$query->withTrashed();
+			},
+			'landSeekAd',
+			'landOfferAd',
+			'jobOfferAd',
+			'jobSeekAd'
+		], $this->getLocationEagerLoading(), $this->getAttributionEagerLoading());
+	}
+
+	private function getLocationEagerLoading()
 	{
 		return [
-			'project',
-			'project.supportStage',
-			'project.supportState',
-			'project.projectStatus',
-			'userPp'=> function( $query){
-				$query->withTrashed();
-			},
 			'cities',
 			'cities.department',
 			'cities.department.region',
 			'departments',
 			'departments.region',
 			'regions',
-			'attributionAd',
-			'attributionAd.adStatus',
-			'landSeekAd',
-			'landOfferAd',
-			'jobOfferAd',
-			'jobSeekAd'
 		];
 	}
+
+	private function getAttributionEagerLoading()
+	{
+		return [
+			'project',
+			'project.supportStage',
+			'project.supportState',
+			'project.projectStatus',
+			'attributionAd',
+			'attributionAd.adStatus',
+		];
+	}
+
 }

@@ -1,6 +1,10 @@
 @extends('default')
 @section('title', 'Création d\'un PP')
 
+@section('header')
+	@include('components.advisor-tabs')
+@endsection
+
 @section('main-content')
 
 

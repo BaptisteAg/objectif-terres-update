@@ -18,6 +18,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Arr;
 use Throwable;
 
@@ -270,12 +271,11 @@ class AdvisorsService
 	}
 
 
-	/**
-	 * @param int $adId
-	 */
-	public function handleSupportDashboardNotifications(int $adId)
+
+	public function handleSupportDashboardNotifications(Ad $ad)
 	{
 		if (!auth()->user()->unreadNotifications->isEmpty()) {
+		    /** @var Notification[] $notifications */
 			$notifications = auth()->user()->unreadNotifications;
 			foreach ($notifications as $notification) {
 				if (array_key_exists('ad_id', $notification->data) && $notification->data['ad_id'] === $adId) {

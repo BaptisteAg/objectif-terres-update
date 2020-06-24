@@ -133,8 +133,9 @@ class RegisterController extends Controller
     {
         //dd($data);
 
-        $salesForceContact = $this->salesForceService->registerPP($data);
-        $data["sf_id"] = $salesForceContact["id"];
+        //$salesForceContact = $this->salesForceService->registerPP($data);
+        //$data["sf_id"] = $salesForceContact["id"];
+        $data["sf_id"] = 0;
 
 		$user = $this->userService->create($data);
 		return $user;
