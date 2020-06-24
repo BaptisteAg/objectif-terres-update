@@ -1,6 +1,9 @@
 <?php namespace App\Repositories\FavoriteAds;
 
+use App\Models\Ad;
 use App\Models\FavoriteAd;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
@@ -53,12 +56,17 @@ class FavoriteAdRepository extends AbstractRepository implements FavoriteAdRepos
 	/**
 	 * Find a Favorite ad by the user id.
 	 * @param $id
-	 * @return FavoriteAd
+	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Collection
 	 */
 	public function findAllByUserId(int $id)
 	{
 		$model = $this->entity
-			->where("user_id" , $id)
+			->where("user_id", $id)
+			->whereHas('ad', function (Builder $query) {
+				$query->whereHas('userPp', function (Builder $builder) {
+					$builder->whereNull('deleted_at');
+				});
+			})
 			->get();
 
 		if (!$model) {
@@ -115,7 +123,6 @@ class FavoriteAdRepository extends AbstractRepository implements FavoriteAdRepos
 		return $favoriteAd->delete();
 
 	}
-
 
 
 }
