@@ -68,8 +68,9 @@
 		<div id="advisor-support-request-dashboard">
 			<support-request-dashboard
 					inline-template
-					:thread='{{ $thread->id }}'
+					:thread='{{ $thread->id ?? 'undefined' }}'
 					:ad-id="{{$ad->id}}"
+					v-bind:is-user-advisor-in-charge="{{auth()->id() === $ad->attributionAd->user_advisor_id ? 'true' : 'false'}}"
 			>
 				<div>
 					{!! Form::open(['route' => 'advisor.updateSupport', 'method'=>'post']) !!}

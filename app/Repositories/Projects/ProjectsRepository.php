@@ -73,8 +73,8 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 			->whereHas('ad', function (Builder $query) use ($departmentCodes) {
 				$query->filterAdsTerritoryLocations($departmentCodes);
 			})
-			->orWhereHas('ad', function (Builder $query) use ($userId)  {
-				$query->whereHas('attributionAd', function (Builder $q) use ($userId){
+			->orWhereHas('ad', function (Builder $query) use ($userId) {
+				$query->whereHas('attributionAd', function (Builder $q) use ($userId) {
 					$q->where('user_advisor_id', '=', $userId);
 				});
 			})
@@ -86,11 +86,11 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 				'supportState',
 				'projectStatus',
 			]);
-			if ($toPaginate) {
-				$projects = $models->paginate(15);
-			} else {
-				$projects = $models->get();
-			}
+		if ($toPaginate) {
+			$projects = $models->paginate(15);
+		} else {
+			$projects = $models->get();
+		}
 		return $projects;
 	}
 
@@ -98,15 +98,26 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 	 * @param array $departmentCodes
 	 * @return \Illuminate\Database\Eloquent\Collection
 	 */
-	public function findAllByUserSupervisor(int $userId)
+	public function findAllByUserTerritories(int $userId, array $territoriesCode)
 	{
 		return $this->entity
-			->whereHas('ad', function (Builder $query) use ($userId)  {
-				$query->whereHas('userPp', function(Builder $subQuery){
+			->whereHas('ad', function (Builder $query) use ($userId, $territoriesCode) {
+				$query->whereNotNull('project_id');
+				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
 				});
-				$query->whereHas('attributionAd', function (Builder $q) use ($userId){
-					$q->where('user_supervisor_id', '=', $userId);
+				$query->where(function (Builder $builder) use ($userId) {
+					$builder->whereHas('attributionAd', function (Builder $q) use ($userId) {
+						$q->where('user_supervisor_id', '=', $userId);
+					});
+				});
+				$query->orWhere(function (Builder $builder) use ($territoriesCode) {
+					$builder->whereHas('departments', function (Builder $subQuery) use ($territoriesCode) {
+						$subQuery->whereIn('code', $territoriesCode);
+					});
+					$builder->orWhereHas('cities', function (Builder $subQuery) use ($territoriesCode) {
+						$subQuery->whereIn('department_code', $territoriesCode);
+					});
 				});
 			})
 			->with([

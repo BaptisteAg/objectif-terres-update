@@ -1,82 +1,82 @@
 @extends('default')
 
 @section('title')
-	{{ $ad->title }}
+    {{ $ad->title }}
 @endsection
 
 @section('head-script')
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
 @endsection
 
 @section('main-content')
-	@auth
-		@if(auth()->user()->role >= 1 )
-			@if (session()->has('supervisor_dashboard_url'))
-				<div class="content ml-80 mt-30">
-					<a class="text_size large"
-					   href="{{route('supervisor.show', Session::get('supervisor_dashboard_url') )}}">
-						<span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-						<span>Retour </span>
-					</a>
-				</div>
-			@elseif(session()->has('moderator_dashboard_url'))
-				<div class="content ml-80 mt-30">
-					<a class="text_size large"
-					   href="{{route('moderator.show', Session::get('moderator_dashboard_url') )}}">
-						<span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-						<span>Retour </span>
-					</a>
-				</div>
-			@else
-				@if(auth()->user()->role === 1)
-					<div class="content ml-80 mt-30">
-						<a class="text_size large" href="{{route('moderator.index')}}">
-							<span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-							<span>Aller sur votre espace modérateur </span>
-						</a>
-					</div>
-				@elseif(auth()->user()->role === 2 )
-					<div class="content ml-80 mt-30">
-						<a class="text_size large" href="{{route('supervisor.index')}}">
-							<span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-							<span>Aller sur votre espace responsable territorial </span>
-						</a>
-					</div>
-				@elseif(auth()->user()->role === 3)
-					<div class="content ml-80 mt-30">
-						<a class="text_size large" href="{{route('advisor.index')}}">
-							<span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-							<span>Aller sur votre espace primo-accueillant </span>
-						</a>
-					</div>
-				@else
-					<div class="content ml-80 mt-30">
-						<a class="text_size large" href="{{URL::previous()}}">
-							<span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-							<span>Retour </span>
-						</a>
-					</div>
-				@endif
-			@endif
-		@endif
-	@endauth
+    @auth
+        @if(auth()->user()->role >= 1 )
+            @if (session()->has('supervisor_dashboard_url'))
+                <div class="content ml-80 mt-30">
+                    <a class="text_size large"
+                       href="{{route('supervisor.show', Session::get('supervisor_dashboard_url') )}}">
+                        <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
+                        <span>Retour </span>
+                    </a>
+                </div>
+            @elseif(session()->has('moderator_dashboard_url'))
+                <div class="content ml-80 mt-30">
+                    <a class="text_size large"
+                       href="{{route('moderator.show', Session::get('moderator_dashboard_url') )}}">
+                        <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
+                        <span>Retour </span>
+                    </a>
+                </div>
+            @else
+                @if(auth()->user()->role === 1)
+                    <div class="content ml-80 mt-30">
+                        <a class="text_size large" href="{{route('moderator.index')}}">
+                            <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
+                            <span>Aller sur votre espace modérateur </span>
+                        </a>
+                    </div>
+                @elseif(auth()->user()->role === 2 )
+                    <div class="content ml-80 mt-30">
+                        <a class="text_size large" href="{{route('advisor.index')}}">
+                            <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
+                            <span>Aller sur votre espace primo-accueillant </span>
+                        </a>
+                    </div>
+                @elseif(auth()->user()->role === 3)
+                    <div class="content ml-80 mt-30">
+                        <a class="text_size large" href="{{route('supervisor.index')}}">
+                            <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
+                            <span>Aller sur votre espace responsable territorial </span>
+                        </a>
+                    </div>
+                @else
+                    <div class="content ml-80 mt-30">
+                        <a class="text_size large" href="{{URL::previous()}}">
+                            <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
+                            <span>Retour </span>
+                        </a>
+                    </div>
+                @endif
+            @endif
+        @endif
+    @endauth
 
-	@if($ad->ad_type === 'landSeek')
-		@include('pages.ads.partials.landSeek.landSeekShow')
-	@endif
-	@if($ad->ad_type === 'landOffer')
-		@include('pages.ads.partials.landOffer.landOfferShow')
-	@endif
-	@if($ad->ad_type === 'jobOffer')
-		@include('pages.ads.partials.jobOffer.jobOfferAdShow')
-	@endif
-	@if($ad->ad_type === 'jobSeek')
-		@include('pages.ads.partials.jobSeek.jobSeekAdShow')
-	@endif
+    @if($ad->ad_type === 'landSeek')
+        @include('pages.ads.partials.landSeek.landSeekShow')
+    @endif
+    @if($ad->ad_type === 'landOffer')
+        @include('pages.ads.partials.landOffer.landOfferShow')
+    @endif
+    @if($ad->ad_type === 'jobOffer')
+        @include('pages.ads.partials.jobOffer.jobOfferAdShow')
+    @endif
+    @if($ad->ad_type === 'jobSeek')
+        @include('pages.ads.partials.jobSeek.jobSeekAdShow')
+    @endif
 @endsection
 
 @section('script')
-	<script>
+    <script>
 
         let buttons = document.querySelectorAll('#open-modal-message');
         buttons.forEach((button) => {
@@ -107,8 +107,8 @@
 
         })
 
-		@auth()
-		@if(auth()->user()->role >= 1)
+        @auth()
+        @if(auth()->user()->role >= 1)
         function showValidationSupervisorModal() {
             let validationModal = document.querySelector('#modal-supervisor-validation');
             let html = document.querySelector('html');
@@ -131,8 +131,8 @@
             });
         }
 
-		@endif
-		@endauth
+        @endif
+        @endauth
 
         function sendResponseTemplateMessage() {
             let listResponseTemplates = document.getElementById("response_templates_list");
@@ -142,31 +142,31 @@
             textareaMessage.value = responseTemplateSelected;
         }
 
-	</script>
-	@if(count($ad->images) > 1)
-		<script src="{{asset('/js/bulma-carousel.js')}}"></script>
-		<script>
+    </script>
+    @if(count($ad->images) > 1)
+        <script src="{{asset('/js/bulma-carousel.js')}}"></script>
+        <script>
             const carousel = bulmaCarousel.attach('#ad-images', {
                 slidesToScroll: 1,
                 slidesToShow: 1,
                 loop: true,
                 navigation: true,
             });
-		</script>
-	@endif
+        </script>
+    @endif
 
-	<script>
+    <script>
         const vueThreads = new Vue({
             el: '#vue-messages',
             name: 'content'
         });
-				@auth()
-				@if(auth()->user()->role >= 1 and !$ad->project()->exists())
+                @auth()
+                @if(auth()->user()->role >= 1 and !$ad->project()->exists())
         const VueModerationModal = new Vue({
                 el: "#vue-moderation-modal",
                 name: 'content'
             })
-		@endif
-		@endauth
-	</script>
+        @endif
+        @endauth
+    </script>
 @endsection

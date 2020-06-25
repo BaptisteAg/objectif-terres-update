@@ -7,7 +7,7 @@
                 :max-date='new Date(Date.now())'
                 :is-required=true
                 :input-props='{
-                         placeholder: "Séléctionner une plage de date"}'
+                         placeholder: "Sélectionner une plage de dates"}'
         >
         </date-picker>
 

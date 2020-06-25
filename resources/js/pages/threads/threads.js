@@ -5,8 +5,8 @@ import FormMessageReply from "./components/FormMessageReply";
 import ListThreads from "./components/ListThreads";
 import MultiSelect from "../../components/MultiSelect";
 
-Vue.component('vue-threads',{
-    components :{
+Vue.component('vue-threads', {
+    components: {
         ListThreads,
         HeaderMessage,
         DisplayMessageContent,
@@ -14,40 +14,42 @@ Vue.component('vue-threads',{
         MultiSelect
     },
     props: {
-        initThread : '',
-        isDisplayInThreadPage : Boolean,
-        isUserAdOwner : Boolean,
-        userRole : '',
+        initThread: '',
+        isDisplayInThreadPage: Boolean,
+        isUserAdOwner: Boolean,
+        userRole: '',
     },
     data() {
         return {
-            messages : [],
-            activeThread: this.initThread || null,
-            initialLoading : true,
-            messagesLoading : true,
-            isDisplay : this.isDisplayInThreadPage,
-            isUserLoggedAdOwner : this.isUserLoggedAdOwner,
+            messages: [],
+            activeThreadId: this.initThread || null,
+            activeThread: {},
+            initialLoading: true,
+            messagesLoading: true,
+            isDisplay: this.isDisplayInThreadPage,
+            isUserLoggedAdOwner: this.isUserLoggedAdOwner,
             isUserModerator: false,
-            usersSelected : []
+            usersSelected: []
         }
     },
-    mounted(){
-        if(this.initThread) {
-            setInterval(_ => this.onThreadClick(this.activeThread), 15000);
-            this.onThreadClick(this.activeThread);
+    mounted() {
+        if (this.initThread) {
+            setInterval(_ => this.onThreadClick(this.activeThreadId), 15000);
+            this.onThreadClick(this.activeThreadId);
 
-            if(this.userRole >=1){
+            if (this.userRole >= 1) {
                 this.isUserModerator = true;
             }
         }
     },
-    methods : {
+    methods: {
         onThreadClick(threadId) {
             fetch('/mon-espace/messagerie/' + threadId)
                 .then(response => response.json())
                 .then(results => {
-                    this.messages = results;
-                    this.activeThread = threadId;
+                    this.messages = results.messages;
+                    this.activeThreadId = results.thread.id;
+                    this.activeThread = results.thread;
                     this.initialLoading = false;
                     this.messagesLoading = false;
                 })
@@ -56,7 +58,7 @@ Vue.component('vue-threads',{
             this.messages.push(message)
         },
 
-        onNewThreadClick(){
+        onNewThreadClick() {
             this.$refs.newMessageModal.classList.add('is-active')
         }
     },

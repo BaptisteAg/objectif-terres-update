@@ -1,9 +1,7 @@
 <template>
     <div>
         <div v-if="activeThreadId" class="content">
-            <div v-if="this.value[0].thread.ad !== null && this.value[0].thread.ad.user_pp.deleted_at">
-            </div>
-            <div v-else>
+            <div>
                 <form @submit="formSubmit">
 
                     <label id="reply-input-label" for="reply-input" class=" label has-text-black"> Répondre</label>
@@ -88,6 +86,7 @@
                     </div>
                 </form>
             </div>
+
         </div>
     </div>
 

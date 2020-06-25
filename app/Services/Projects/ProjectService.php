@@ -62,7 +62,8 @@ class ProjectService
 	 */
 	public function findAllProjectsBySupervisor(): Collection
 	{
-		$projects = $this->repository->findAllByUserSupervisor(auth()->user()->id);
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
+		$projects = $this->repository->findAllByUserTerritories(auth()->id(), $supervisorLocationTerritoryCodes);
 		return $projects;
 	}
 
@@ -82,6 +83,8 @@ class ProjectService
 				$projectsByCategories['landOfferAd']++;
 			} else if (isset($project->ad->landOfferAd)) {
 				$projectsByCategories['landSeekAd']++;
+			}else{
+				dd($project);
 			}
 		}
 		return $projectsByCategories;

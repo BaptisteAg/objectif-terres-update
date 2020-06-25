@@ -139,7 +139,7 @@
 
         /* When the checkbox is checked, add a blue background */
         input:checked ~ .cradio-checkmark {
-          background-color: #2196F3;
+          background-color: $primary;
           color: #fff;
         }
       }
@@ -148,5 +148,5 @@
 }
 
 .subtitle {
-  color: #3490dc;
+  color: $charcoal;
 }

@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 /**
  * Class AdService
@@ -151,7 +152,7 @@ class AdService
 			if (!$moderator) {
 				throw new \Exception('A moderator could not be found for an attribution');
 			}
-			$attributionAdData['user_moderator_id'] = $moderator->id;
+			$attributionAdData['user_moderator_id'] = 25;
 		}
 
 		$attributionAdData['ad_status_id'] = $pendingStatus;
@@ -232,9 +233,10 @@ class AdService
 	 */
 	public function findAllByUser($idUser): Collection
 	{
-		$ads = $this->repository->allByIdUser($idUser);
-
-		return $ads;
+		if (auth()->user()->role === 1) {
+			return $ads = $this->repository->allAdsByIdUser($idUser);
+		}
+		return $ads = $this->repository->allByIdUser($idUser);
 	}
 
 	/**
@@ -451,9 +453,18 @@ class AdService
 		$adsFiltred = (new Ad())->newQuery();
 
 		//Remove all trashed users
-		$adsFiltred->whereHas('userPp', function(Builder $query){
+		$adsFiltred->whereHas('userPp', function (Builder $query) {
 			$query->whereNull('deleted_at');
 		});
+
+
+		if (Route::currentRouteName() === "advisor.show") {
+			//Remove all support request that are not attributed to anyone by the supervisor in advisors dashboard
+			$adsFiltred->whereHas('attributionAd', function (Builder $query) {
+				$query->whereNotNull('user_advisor_id');
+			});
+		}
+
 
 		//Additional filters  : filter by surface range
 		if ($filters->has('surfaces_research')) {
@@ -530,7 +541,7 @@ class AdService
 			//If one or more departments are selected, get all ads located in departments and cities in departments
 			if (array_key_exists('departments', $locations)) {
 				$departmentsCode = Department::whereIn('id', $locations['departments'])->get('code')->toArray();
-				$adsFiltred->where(function (Ad $query) use ($locations, $departmentsCode) {
+				$adsFiltred->where(function (Builder $query) use ($locations, $departmentsCode) {
 					$query->filterLocations('departments', $locations['departments']);
 					$query->filterSubLocations('cities', $departmentsCode, 'cities.department_code');
 				});
@@ -539,7 +550,7 @@ class AdService
 			if (array_key_exists('regions', $locations)) {
 				$regionsCodes = Region::whereIn('id', $locations['regions'])->get('code')->toArray();
 				$departmentsCode = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
-				$adsFiltred->where(function (Ad $query) use ($locations, $regionsCodes, $departmentsCode) {
+				$adsFiltred->where(function (Builder $query) use ($locations, $regionsCodes, $departmentsCode) {
 					$query->filterLocations('regions', $locations['regions']);
 					$query->filterSubLocations('departments', $regionsCodes, 'departments.region_code');
 					$query->filterSubLocations('cities', $departmentsCode, 'cities.department_code');

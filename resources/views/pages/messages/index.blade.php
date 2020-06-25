@@ -63,7 +63,8 @@
 								<div class="column  box-thread-display">
 									<div class="box">
 										<header-message
-												v-bind:active-thread-id="activeThread"
+												v-bind:active-thread-id="activeThreadId"
+												v-bind:active-thread = "activeThread"
 												v-bind:is-display="isDisplay"
 												v-model="messages"
 												:user-id="{{auth()->id()}}"
@@ -79,7 +80,7 @@
 												@message-reply-success="onMessageReplySuccess"
 												@on-upload-success="onThreadClick"
 												v-bind:show-response-type="isUserModerator"
-												v-bind:active-thread-id="activeThread"
+												v-bind:active-thread-id="activeThreadId"
 										>
 										</form-message-reply>
 									</div>

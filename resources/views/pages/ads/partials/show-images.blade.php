@@ -1,14 +1,14 @@
-<div id="slider-container" class="column is-two-thirds ">
+<div id="slider-container" class="column is-half ">
     <div id="ad-images" class="carousel">
         @if($ad->hasImages)
             @foreach($ad->images as $document)
                 <div class="card">
                     <div class="card-image">
-                        <figure class="image is-2by1">
+                        <figure >
                             @if($document->path === "0")
-                                <img src="/images/placeholder-ad.png" alt="picsum">
+                                <img class="custom-carousel-image-size" src="/images/placeholder-ad.png" alt="picsum" >
                             @else
-                                <img src="{{URL::asset($document->path)}}" alt="Placeholder image">
+                                <img class="custom-carousel-image-size" src="{{URL::asset($document->path)}}" alt="Placeholder image" >
                             @endif
                         </figure>
                     </div>
@@ -17,7 +17,7 @@
         @else
             <div class="card carousel-item  ad-carousel">
                 <div class="card-image">
-                    <figure class="image is-2by1">
+                    <figure class=" image is-16by9 ">
                         <img src="/images/placeholder-ad.png">
                     </figure>
                 </div>

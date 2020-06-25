@@ -10,7 +10,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Project::class, function (Faker $faker) {
     return [
-		'support_stage_id' => SupportStage::FIRST_RECEPTION_ID,
+		'support_stage_id' => SupportStage::FIRST_CONTACT_ID,
 		'support_state_id' => SupportState::HANDLE_ID,
 		'project_status_id' => ProjectStatus::EMERGING_ID,
     ];

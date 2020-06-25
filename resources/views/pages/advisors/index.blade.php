@@ -75,7 +75,6 @@
             </div>
         </div>
         {{Form::close()}}
-
         <div class="section">
             <h1 class="title is-1 has-text-centered">Activités sur votre
                 territoire</h1>

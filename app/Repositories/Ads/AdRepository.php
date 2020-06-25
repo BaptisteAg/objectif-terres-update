@@ -259,6 +259,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		$models = $this->entity
 			->where(function (Builder $query) {
 				$query->whereHas('attributionAd', function (Builder $subQuery) {
+					$subQuery->whereNotNull('user_advisor_id');
 					if (auth()->user()->role == 2) {
 						$subQuery->where('user_advisor_id', '=', auth()->user()->id);
 					} else if (auth()->user()->role >= 3) {
@@ -272,6 +273,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			})
 			->orWhere(function (Builder $query) use ($territoriesCode) {
 				$query->whereNotNull('project_id');
+				$query->whereHas('attributionAd', function (Builder $subQuery) {
+					$subQuery->whereNotNull('user_advisor_id');
+				});
 				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
 				});
@@ -362,10 +366,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		/** @var Collection $models */
 		$models = $this->entity
 			->whereNull('project_id')
-			->where(function (Ad $query) use ($territoriesCode) {
+			->where(function (Builder $query) use ($territoriesCode) {
 				$query->filterAdsterritoryLocations($territoriesCode);
 			})
-			->where(function (Ad $query) use ($adStatusId) {
+			->where(function (Builder $query) use ($adStatusId) {
 				$query->whereHas('attributionAd', function (Builder $subQuery) use ($adStatusId) {
 					$subQuery->where('ad_status_id', '=', $adStatusId);
 				});
@@ -499,8 +503,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	private function getDashboardsEagerLoading()
 	{
 		return array_merge([
-			'userPp' => function($query){
-			$query->withTrashed();
+			'userPp' => function ($query) {
+				$query->withTrashed();
 			},
 			'landSeekAd',
 			'landOfferAd',

@@ -123,11 +123,13 @@ abstract class BaseController extends Controller
 			$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad->id);
 		}
 
-
-		if ($user && $user->role >= 1 && $ad->is_draft != 1) {
-			if ($ad->attributionAd->adStatus->id === AdStatus::PENDING_MODERATION_STATUS_ID) {
-				$isAdToModerate = true;
+		if ($user && $user->role >= 1 && isset($ad->attributionAd->ad_status_id) ) {
+			if (!isset($ad->project)) {
+				if ($ad->attributionAd->adStatus->id === AdStatus::PENDING_MODERATION_STATUS_ID) {
+					$isAdToModerate = true;
+				}
 			}
+
 			if ($moderatorInChargeOfModeration) {
 				$isLoggedUserModeratorAd = true;
 				$responseTemplates = ResponseTemplate::all();
@@ -142,6 +144,7 @@ abstract class BaseController extends Controller
 				}
 			}
 			if ($user->id === $ad->user_pp_id) {
+
 				if ($user->role >= 2) {
 					$responseTemplates = ResponseTemplate::all();
 					if ($user->role >= 3) {
@@ -167,9 +170,7 @@ abstract class BaseController extends Controller
 				);
 				$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
 			}
-
 		}
-
 		return compact(
 			'ad',
 			'userMessage',

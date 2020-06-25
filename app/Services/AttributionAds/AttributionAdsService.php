@@ -130,30 +130,36 @@ class AttributionAdsService
 		$attributionAds = collect();
 		//START QUERY
 		$attributionAdsFiltered = (new AttributionAd)->newQuery();
-
 		//Filter ads based on moderation attribution and moderator territories
 		$moderatorTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$attributionAdsFiltered->where(function (Builder $query) {
-			$query->where("user_moderator_id", '=', auth()->id());
-			$query->whereHas('ad', function (Builder $q) {
-				$q->whereHas('userPp', function (Builder $builder) {
-					$builder->whereNull('deleted_at');
+		$attributionAdsFiltered->where(function (Builder $query) use ($moderatorTerritoriesCodes) {
+			$query->where(function (Builder $subQuery) {
+				$subQuery->whereNotNull('ad_status_id');
+				$subQuery->where("user_moderator_id", '=', auth()->id());
+				$subQuery->whereHas('ad', function (Builder $q) {
+					$q->whereNull('project_id');
+					$q->whereHas('userPp', function (Builder $builder) {
+						$builder->whereNull('deleted_at');
+					});
+				});
+			});
+			$query->orWhere(function (Builder $subQuery) use ($moderatorTerritoriesCodes) {
+				$subQuery->whereNotNull('ad_status_id');
+				$subQuery->whereHas('ad', function (Builder $subQuery) use ($moderatorTerritoriesCodes) {
+					$subQuery->whereNull('project_id');
+					$subQuery->whereHas('userPp', function (Builder $q) {
+						$q->whereNull('deleted_at');
+					});
+					$subQuery->whereHas('departments', function (Builder $q) use ($moderatorTerritoriesCodes) {
+						$q->whereIn('code', $moderatorTerritoriesCodes);
+					});
+					$subQuery->orWhereHas('cities', function (Builder $q) use ($moderatorTerritoriesCodes) {
+						$q->whereIn('department_code', $moderatorTerritoriesCodes);
+					});
 				});
 			});
 		});
-		$attributionAdsFiltered->orWhere(function (Builder $query) use ($moderatorTerritoriesCodes) {
-			$query->whereHas('ad', function (Builder $subQuery) use ($moderatorTerritoriesCodes) {
-				$subQuery->whereHas('userPp', function (Builder $q) {
-					$q->whereNull('deleted_at');
-				});
-				$subQuery->whereHas('departments', function (Builder $q) use ($moderatorTerritoriesCodes) {
-					$q->whereIn('code', $moderatorTerritoriesCodes);
-				});
-				$subQuery->orWhereHas('cities', function (Builder $q) use ($moderatorTerritoriesCodes) {
-					$q->whereIn('department_code', $moderatorTerritoriesCodes);
-				});
-			});
-		});
+
 
 		//Filter attribution ads based on their locations if requested
 		if ($filters->has('locations')) {
@@ -198,8 +204,10 @@ class AttributionAdsService
 
 		//If one or many ad status are selected, filter attribution ads based on their status
 		if ($filters->has('ad_statuses')) {
+
 			$attributionAdsFiltered->whereIn('ad_status_id', $filters->input('ad_statuses'));
 		}
+
 		//Filter ads based on their types if requested
 		if ($filters->has('ad_type')) {
 			$attributionAdsFiltered->filterAdTypes($filters->input('ad_type'), 'ad.');

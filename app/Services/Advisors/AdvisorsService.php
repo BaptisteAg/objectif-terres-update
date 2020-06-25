@@ -123,6 +123,15 @@ class AdvisorsService
 	}
 
 	/**
+	 * @param array $data
+	 * @return Thread
+	 */
+	public function findThreadAdvisorInChargeOfSupportRequest(array $data){
+		$thread = $this->threadRepository->findThreadByUserIdAndAdId($data['user_id'], $data['ad_id'])->first();
+		return $thread;
+	}
+
+	/**
 	 * @param int $supportStageId
 	 * @param int $supportStateId
 	 * @return mixed
@@ -142,7 +151,8 @@ class AdvisorsService
 	{
 		$threadData = [
 			'ad_id' => $adId,
-			'advisor_id' => auth()->user()->id
+			'advisor_id' => auth()->user()->id,
+//			'content' => 'Bonjour. Je suis ' . auth()->user()->first_name . ' ' . auth()->user()->name . ', membre de l\'équipe Terre de Liens. Je vais vous accompagner pour la réalisation de votre projet. Vous pouvez utiliser cette messagerie pour me contacter dès que vous le souhaitez.',
 		];
 		$this->threadService->create($threadData);
 		$thread = $this->findSupportRequestThread($adId);
@@ -271,11 +281,10 @@ class AdvisorsService
 	}
 
 
-
 	public function handleSupportDashboardNotifications(Ad $ad)
 	{
 		if (!auth()->user()->unreadNotifications->isEmpty()) {
-		    /** @var Notification[] $notifications */
+			/** @var Notification[] $notifications */
 			$notifications = auth()->user()->unreadNotifications;
 			foreach ($notifications as $notification) {
 				if (array_key_exists('ad_id', $notification->data) && $notification->data['ad_id'] === $adId) {

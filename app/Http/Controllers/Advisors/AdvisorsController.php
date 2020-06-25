@@ -80,9 +80,24 @@ class AdvisorsController extends BaseController
 			abort(404);
 		}
 		$thread = $this->advisorsService->findSupportRequestThread($ad->id);
-		if (!isset($thread)) {
+		if (!isset($thread) && auth()->id() === $ad->attributionAd->user_advisor_id) {
 			$thread = $this->advisorsService->createSupportRequestThread($ad->id);
 		}
+
+		if (auth()->id() === $ad->attributionAd->user_advisor_id) {
+			$thread = $this->advisorsService->findSupportRequestThread($ad->id);
+			if (!isset($thread)) {
+				$thread = $this->advisorsService->createSupportRequestThread($ad->id);
+			}
+		} else {
+			$data = [
+				'user_id' => $ad->attributionAd->user_advisor_id,
+				'ad_id' => $ad->id,
+			];
+			$thread = $this->advisorsService->findThreadAdvisorInChargeOfSupportRequest($data);
+		}
+
+
 		$this->advisorsService->handleSupportDashboardNotifications($ad);
 
 		$vars = $this->getSupportDashboardVars($ad);

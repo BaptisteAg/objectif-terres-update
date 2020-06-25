@@ -81,8 +81,8 @@
                                            style="position : relative; float: right; background-color: rgba(10, 10, 10, 0.2); right: 0px; top:0px;"></a>
                                         <p class="title is-3 has-text-centered has-text-link">Exportation des
                                             données</p>
-                                        <p class="subtitle has-text-centered ">Veuillez séléctionner une plage de
-                                            date</p>
+                                        <p class="subtitle has-text-centered ">Veuillez sélectionner une plage de
+                                            dates</p>
                                         <div class="columns is-mobile is-centered">
                                             <div class="column">
                                                 <div class="control has-icons-right ">

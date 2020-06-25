@@ -12,11 +12,13 @@ Vue.component('support-request-dashboard', {
     props: {
         thread: '',
         adId: '',
+        isUserAdvisorInCharge: Boolean,
+
     },
     data() {
         return {
             messages: [],
-            activeThread: this.thread || null,
+            activeThreadId: this.thread || null,
             initialLoading: true,
             messagesLoading: true,
             isSupportStageSelectOpen: false,
@@ -31,12 +33,13 @@ Vue.component('support-request-dashboard', {
             noteToModify: '',
             documents: [],
             uploading: false,
+            userAdvisorInCharge: this.isUserAdvisorInCharge,
         }
     },
     mounted() {
         if (this.thread) {
-            setInterval(_ => this.refreshThread(this.activeThread), 15000);
-            this.refreshThread(this.activeThread);
+            setInterval(_ => this.refreshThread(this.activeThreadId), 15000);
+            this.refreshThread(this.activeThreadId);
         }
     },
     methods: {
@@ -64,8 +67,8 @@ Vue.component('support-request-dashboard', {
             fetch('/mon-espace/messagerie/' + threadId)
                 .then(response => response.json())
                 .then(results => {
-                    this.messages = results;
-                    this.activeThread = threadId;
+                    this.messages = results.messages;
+                    this.activeThreadId = threadId;
                     this.initialLoading = false;
                     this.messagesLoading = false;
                 })
