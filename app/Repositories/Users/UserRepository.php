@@ -65,14 +65,14 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 		return $users;
 	}
 
-	/**
-	 * @param string $email
-	 * @return mixed
-	 */
-	public function findByEmail(string $email)
-	{
-		return $this->entity->where('email', $email)->first();
-	}
+    /**
+     * @param string $email
+     * @return mixed
+     */
+    public function findByEmail(string $email)
+    {
+        return $this->entity->where('email', $email)->first();
+    }
 
 	/**
 	 * @param string $operator

@@ -72,18 +72,20 @@ class AttributionAdsService
 		if ($ad->departments->count() > 0) {
 			$adDepartmentsCodes = $ad->departments->map(function ($item) {
 				return $item['code'];
-			});
+			})->toArray();
 		}
 		if ($ad->cities->count() > 0) {
 			$adDepartmentsCodesInCities = $ad->cities->map(function ($item) {
 				return $item['department_code'];
-			});
+			})->toArray();
 		}
-		$adTerritoriesCodes = array_unique(array_merge($adDepartmentsCodes, $adDepartmentsCodesInCities->toArray()), SORT_REGULAR);
+		$adTerritoriesCodes = array_merge($adDepartmentsCodes, $adDepartmentsCodesInCities);
 		$intersectTerritoriesCodes = array_intersect($adTerritoriesCodes, $moderatorLocationTerritoriesCodes);
+
 		if (count($intersectTerritoriesCodes) > 0) {
 			$moderatorIsChargeOfAdModeration = true;
 		}
+
 		return $moderatorIsChargeOfAdModeration;
 	}
 
@@ -291,8 +293,7 @@ class AttributionAdsService
 		//$attributionAd->user_supervisor_id = $supervisor->id;
 
 		//If the pp doesn't need a support from Tdl, the ad is validated and published
-		$validateStatus = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first();
-		$attributionAd->ad_status_id = $validateStatus->id;
+		$attributionAd->ad_status_id = AdStatus::APPROVE_ID;
 		$attributionAd->published_on = Carbon::now();
 		$data = [
 			'message' => 'Votre annonce a été validée par l\'équipe d\'Objectif Terres et est désormais publiée ! ',

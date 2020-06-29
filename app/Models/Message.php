@@ -12,7 +12,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * App\Models\Message
  *
  * @property int $id
- * @property string $content
+ * @property string|null $content
  * @property int $thread_id
  * @property int $sender_user_id
  * @property \Illuminate\Support\Carbon|null $created_at

@@ -52,8 +52,8 @@ Route::prefix('documents')->name('documents.')->namespace('Documents')->group(fu
 
 Route::get('/register', 'Salesforces\SalesForceAuthController@register');
 
-Route::prefix('recherches')->name('researches.')->namespace('Researches')->group(function () {
-	Route::get('recherche', 'ResearchesController@index')->name('index');
+Route::prefix('recherche')->name('researches.')->namespace('Researches')->group(function () {
+	Route::get('/', 'ResearchesController@index')->name('index');
 //
 //	Route::middleware('auth')->group(function () {
 //		Route::post('sauvegarde', 'ResearchesController@store')->name('store');
@@ -107,6 +107,7 @@ Route::prefix('locations')->namespace('Locationables')->group(function () {
 	Route::get('departments-and-regions', 'LocationableController@departmentsAndRegions');
 	Route::prefix('polygon')->group(function () {
 		Route::post('regions', 'LocationableController@regionsPolygon');
+		Route::get('france', 'LocationableController@france');
 	});
 });
 
@@ -167,6 +168,7 @@ Route::post('connexion/checkpoint', 'Auth\LoginController@checkpoint')->name('ch
 Route::get('connexion/sso', 'Auth\SalesforceLoginController@salesforceLogin')->name('login.sso');
 //Route::post('login', 'Auth\SalesforceLoginController@login')->name('login');
 Route::post('deconnexion', 'Auth\SalesforceLoginController@salesforceLogout')->name('logout');
+//Route::post('deconnexion', 'Auth\LoginController@logout')->name('logout');
 
 // Registration Routes...
 Route::get('inscription', 'Auth\RegisterController@showRegistrationForm')->name('register');

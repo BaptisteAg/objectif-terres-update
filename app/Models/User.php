@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\ScopeLocationFilterable;
 use App\Notifications\ResetPasswordNotification;
 use App\Presenters\UserPresenter;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -29,6 +30,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string|null $password
+ * @property string|null $origin
  * @property int|null $country_id
  * @property int|null $zip_code_id
  * @property int $role
@@ -46,15 +48,19 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
  * @property-read int|null $regions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $supportRequests
+ * @property-read int|null $support_requests_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
  * @property-read int|null $threads_count
  * @property-read \App\Models\City|null $zipCode
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User filterAdsTerritoryLocations($territoriesCode)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User filterLocations($relationshipName, $locationableIds)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAcceptCommunication($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAcceptShareContactInfos($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereStreet($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCivility($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCountryId($value)
@@ -64,6 +70,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereOrigin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereOtherProfile($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePhone($value)
@@ -71,6 +78,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereSfId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereStreet($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereZipCodeId($value)
  * @mixin \Eloquent
@@ -79,6 +87,7 @@ class User extends Authenticatable implements HasPresenter
 {
 	use Notifiable;
 	use CanResetPassword;
+	use ScopeLocationFilterable;
 
 	/**
 	 * The attributes that are mass assignable.
@@ -102,6 +111,7 @@ class User extends Authenticatable implements HasPresenter
 		'other_profile',
 		'accept_share_contact_infos',
 		'role',
+		'origin',
 	];
 
 	/**

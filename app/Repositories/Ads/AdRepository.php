@@ -1,6 +1,7 @@
 <?php namespace App\Repositories\Ads;
 
 use App\Models\Ad;
+use App\Models\AttributionAd;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,7 +24,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	public function all($paginate = null)
 	{
 		return $this->entity
-			->with($this->getEagerLoading())
+			->with($this->getFullEagerLoading())
 			->get();
 	}
 
@@ -36,7 +37,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		/** @var Ad $model */
 		$model = $this->entity
 			->where(["id" => $id])
-			->with($this->getEagerLoading())
+			->with($this->getFullEagerLoading())
 			->first();
 
 		if (!$model) {
@@ -109,7 +110,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		$models = $this->entity
 			->where(["user_pp_id" => $idUser])
 			->where('is_draft', 0)
-			->with($this->getEagerLoadingForDashboards())
+			->with($this->getDashboardsEagerLoading())
 			->get();
 		return $models;
 	}
@@ -203,7 +204,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			->orderByDesc('p.created_at')
 			->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
 			->orderByDesc('a.created_at')
-			->with($this->getEagerLoadingForDashboards());
+			->with($this->getDashboardsEagerLoading());
 		if ($toPaginate) {
 			$ads = $models->paginate(15);
 		} else {
@@ -246,7 +247,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		$models
 			->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
 			->orderByDesc('a.created_at')
-			->with($this->getEagerLoadingForDashboards());
+			->with($this->getDashboardsEagerLoading());
 		if ($toPaginate) {
 			$ads = $models->paginate(15);
 		} else {
@@ -294,7 +295,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		$models
 			->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
 			->orderByDesc('a.created_at')
-			->with($this->getEagerLoadingForDashboards());
+			->with($this->getDashboardsEagerLoading());
 		if ($toPaginate) {
 			$ads = $models->paginate(15);
 		} else {
@@ -313,10 +314,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		/** @var Collection $models */
 		$models = $this->entity
 			->whereNull('project_id')
-			->where(function (Builder $query) use ($territoriesCode) {
+			->where(function (Ad $query) use ($territoriesCode) {
 				$query->filterAdsterritoryLocations($territoriesCode);
 			})
-			->where(function (Builder $query) use ($adStatusId) {
+			->where(function (Ad $query) use ($adStatusId) {
 				$query->whereHas('attributionAd', function (Builder $subQuery) use ($adStatusId) {
 					$subQuery->where('ad_status_id', '=', $adStatusId);
 				});
@@ -360,7 +361,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 					});
 				});
 			});
-		$ads = $queryAds->with($this->getEagerLoadingForDashboards())->get();
+		$ads = $queryAds->with($this->getDashboardsEagerLoading())->get();
 
 		return $ads;
 	}
@@ -379,20 +380,34 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			->get();
 	}
 
-	private function getEagerLoading()
+	public function findAllPublishedWithLocations($selectedAdType): Collection
 	{
-		return [
+		return $this->entity
+			->whereHas('attributionAd', function (Builder $query) {
+				$query->whereNotNull('published_on');
+			})
+            ->filterAdTypes([$selectedAdType])
+            ->with($this->getLocationEagerLoading())
+			->get();
+	}
+
+    public function countAllPublished()
+    {
+        return $this->entity
+            ->whereHas('attributionAd', function (Builder $query) {
+                $query->whereNotNull('published_on');
+            })
+            ->count();
+    }
+
+	private function getFullEagerLoading()
+	{
+		return array_merge([
 			'userPp',
 			'adNotes',
 			'adNotes.user',
 			'documents',
 			'documents.user',
-			'cities',
-			'cities.department',
-			'cities.department.region',
-			'departments',
-			'departments.region',
-			'regions',
 
 			'threads',
 			'threads.messages',
@@ -422,39 +437,43 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'jobOfferAd.educationLevels',
 			'jobOfferAd.jobOfferTypes',
 			'jobSeekAd',
-			'project',
-			'project.projectStatus',
-			'project.supportState',
-			'project.supportStage',
 
-			'attributionAd',
-			'attributionAd.userAdvisor',
-			'attributionAd.adStatus',
-
-
-		];
+            'attributionAd.userAdvisor',
+		], $this->getLocationEagerLoading(), $this->getAttributionEagerLoading());
 	}
 
-	private function getEagerLoadingForDashboards()
+	private function getDashboardsEagerLoading()
 	{
-		return [
-			'project',
-			'project.supportStage',
-			'project.supportState',
-			'project.projectStatus',
-			'userPp',
-			'cities',
-			'cities.department',
-			'cities.department.region',
-			'departments',
-			'departments.region',
-			'regions',
-			'attributionAd',
-			'attributionAd.adStatus',
+		return array_merge([
+            'userPp',
 			'landSeekAd',
 			'landOfferAd',
 			'jobOfferAd',
 			'jobSeekAd'
-		];
+        ], $this->getLocationEagerLoading(), $this->getAttributionEagerLoading());
 	}
+
+	private function getLocationEagerLoading()
+    {
+        return [
+            'cities',
+            'cities.department',
+            'cities.department.region',
+            'departments',
+            'departments.region',
+            'regions',
+        ];
+    }
+
+    private function getAttributionEagerLoading()
+    {
+        return [
+            'project',
+            'project.supportStage',
+            'project.supportState',
+            'project.projectStatus',
+            'attributionAd',
+            'attributionAd.adStatus',
+        ];
+    }
 }

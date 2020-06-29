@@ -1,6 +1,11 @@
 @extends ('default')
 
 @section ('title', 'Mon espace modérateur')
+
+@section('header')
+    @include('components.moderator-tabs')
+@endsection
+
 @section('main-content')
     <div class="section pt-0">
         <h1 class="title is-2 has-text-link">Bienvenue sur votre espace modérateur <span

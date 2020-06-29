@@ -3,6 +3,10 @@
 @section('title', 'Espace aide & ressources | Objectifs Terres')
 
 
+@section('header')
+	@include('components.supervisor-tabs')
+@endsection
+
 @section('main-content')
 
 	<div class="section">

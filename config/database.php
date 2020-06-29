@@ -3,7 +3,6 @@
 use Illuminate\Support\Str;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Database Connection Name
@@ -61,6 +60,15 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
+        ],
+
+        'mysql_spip' => [
+            'driver'    => env('DB_CONNECTION_SPIP'),
+            'host'      => env('DB_HOST_SPIP'),
+            'port'      => env('DB_PORT_SPIP'),
+            'database'  => env('DB_DATABASE_SPIP'),
+            'username'  => env('DB_USERNAME_SPIP'),
+            'password'  => env('DB_PASSWORD_SPIP'),
         ],
 
         'pgsql' => [

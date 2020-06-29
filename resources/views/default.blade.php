@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,7 +17,46 @@
 </head>
 <body lang="fr-FR">
 
-@include('layouts.header')
+<header>
+	<div>
+		@include('layouts.header.top-bar')
+
+		<a href="{{route('home')}}" class="main-nav__logo logo">
+			<img src="/images/logo/logo_TdL_cartouche_blanc-rouge_500.png" alt="logo-terre-de-liens"/>
+		</a>
+		<input type="checkbox" id="main-nav__toggler"/>
+		<div id="main-nav__hamburger">
+			<div id="main-nav__hamburger__line" class="button__icon"></div>
+		</div>
+		<div id="main-nav__splash__wrap">
+			<div id="main-nav__splash__transform-container" class="bg-trame_champs_dark">
+				<div id="main-nav__splash__container">
+					<div class="main-nav__content">
+						<div id="vue-header">
+
+							@include('layouts.header.search-mobile')
+
+							<div class="top-bar">
+								<section class="fw-section top-bar__1">
+
+									@include('layouts.header.banner-desktop')
+
+									@include('layouts.header.banner-mobile')
+
+								</section>
+
+								@include("layouts.header.main-menu")
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		@yield('header')
+	</div>
+</header>
 
 @if(!$errors->isEmpty() or Session::has('success') or Session::has('warning') or Session::has('info') )
 	<div class="columns" style="margin:5px">
@@ -119,6 +158,8 @@
         }
     }
 </script>
+
+<script data-jsd-embedded data-key="6cc7e1b1-ff31-49eb-93bf-0016d2cab165" data-base-url="https://jsd-widget.atlassian.com" src="https://jsd-widget.atlassian.com/assets/embed.js"></script>
 
 @yield('script')
 
