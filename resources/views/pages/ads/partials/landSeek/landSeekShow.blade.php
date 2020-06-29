@@ -2,8 +2,8 @@
     <div class="container ">
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
-                <li><a href="#"><?=empty($isSupportRequest) ? 'Annonces' : 'Accompagnement'?></a></li>
-                <li><a href="#">Recherches foncières</a></li>
+                <li><a class="breadcrumb__link" href="#"><?=empty($isSupportRequest) ? 'Annonces' : 'Accompagnement'?></a></li>
+                <li><a class="breadcrumb__link" href="#">Recherches foncières</a></li>
             </ul>
         </nav>
         <h1 class="title has-text-link">{{$ad->title}}</h1>
