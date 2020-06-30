@@ -55,8 +55,11 @@ BOTTOM BAR 2
 .bottom-bar_2 {
   color: #ffffff;
   background-color: #85170f;
-    position: relative;
-    z-index: 1;
+  position: relative;
+  z-index: 1;
+    .menu-intersites {
+        align-items: center;
+    }
 }
 
 /*

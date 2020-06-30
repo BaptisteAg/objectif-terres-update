@@ -1,7 +1,7 @@
 <footer>
     <section class="bg-d-danger bg-trame_champs_dark">
         <div class="container is-full-width pt-50 pb-80">
-            <div class="columns has-text-centered is-multiline">
+            <div class="columns has-text-centered is-multiline is-marginless">
                 <div class="column is-one-fifth-desktop is-half-tablet">
                     <h6 class="title is-6 text_white footer-site__title">NOS AUTRES SITES</h6>
                     <p><a class="" href="{{ url('/') }}">Terres de liens</a></p>
@@ -19,7 +19,7 @@
                         <a href="{{ url('/') }}" class="button round small secondary"><span class="button__icon"><i class="fab fa-linkedin-in" aria-hidden="true"></i></span></a>
                     </div>
                 </div>
-                <div class="column pl-xl-50 pr-xl-50 is-half-touch">
+                <div class="column pl-xl-50 pr-xl-50">
                     <h6 class="title is-6 text_white footer-site__title">NEWSLETTER TERRE DE LIENS</h6>
                     <p>On l’appelle newsletter, mais c’est beaucoup plus ! Abonnez-vous pour suivre notre mouvement.</p>
                     <div class="columns is-gapless is-mobile">

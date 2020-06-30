@@ -1,0 +1,101 @@
+/*
+--------------------
+ACCORDEON
+--------------------
+*/
+
+.accordions .accordion {
+  .accordion-header {
+    background-color: $white;
+    border: 2px solid $primary;
+    color: $primary;
+    p {
+      font-size: 1.5em;
+      line-height: 1.5em;
+    }
+    button.toggle {
+      background: none;
+      width: 1.5em;
+      font-size: 1.5em;
+      height: 1.5em;
+      line-height: 1.5em;
+      max-height: 1.5em;
+      max-width: 1.5em;
+      min-height: 1.5em;
+      min-width: 1.5em;
+      &::before {
+        content: "\f078";
+        font-family: "FontAwesome", serif;
+        top: 0;
+        color: $primary;
+        transition: all 0.2s ease-in-out;
+      }
+    }
+  }
+  &:hover .accordion-header {
+    background-color: $secondary;
+    color: white;
+    border-color: $secondary;
+    .toggle::before {
+      color: $white;
+      transform: rotate(-90deg);
+      transition: all 0.2s ease-in-out;
+    }
+  }
+  &.is-active {
+    .accordion-header {
+      background-color: $primary;
+      color: $white;
+      .toggle::before {
+        content: "\f106";
+        color: $white;
+      }
+    }
+    .accordion-body {
+      background-color: rgba(0, 0, 0, 0.04);
+      .accordion-content {
+        padding: 2em;
+      }
+    }
+    &:hover .accordion-header {
+      background-color: $secondary;
+      .toggle::before {
+        transform: rotate(90deg);
+        transition: all 0.2s ease-in-out;
+      }
+    }
+  }
+  &:not(:last-child) {
+    margin-bottom: .5em;
+  }
+}
+
+
+
+.accordion__button > .button__icon {
+  transition: all 0.2s ease-in-out;
+}
+
+.accordion__container {
+  transition: all 0.2s ease-in-out;
+}
+
+.accordion__content {
+  background-color: rgba(0, 0, 0, 0.04);
+  padding: 2em;
+}
+
+.is-shrinked > .accordion__container {
+  height: 0;
+  opacity: 0;
+}
+
+.is-shrinked > .button.accordion__button {
+  color: #579ea5;
+  background-color: #ffffff;
+}
+
+.is-shrinked > .button.accordion__button:hover,
+.is-shrinked > .button.accordion__button:focus {
+  color: #ffffff;
+}
