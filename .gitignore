@@ -8,7 +8,7 @@
 .env
 .env.backup
 .phpunit.result.cache
-Homestead.json
+Homestead.jsongit
 Homestead.yaml
 npm-debug.log
 yarn-error.log
@@ -17,4 +17,4 @@ _ide_helper.php
 .phpstorm.meta.php
 public/.htaccess
 public/.htpasswd
-
+.editorconfig

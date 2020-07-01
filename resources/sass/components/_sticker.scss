@@ -6,7 +6,7 @@ NUMBER STICKER
 */
 
 .number-sticker {
-  display: inline-block;
+  //display: inline-block;
   font-size: 0.75rem;
   min-width: 2em;
   height: 2em;
@@ -19,6 +19,9 @@ NUMBER STICKER
   font-weight: bold;
   background-color: $danger;
   color: $white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .number-sticker-alternative{

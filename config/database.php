@@ -63,7 +63,7 @@ return [
         ],
 
         'mysql_spip' => [
-            'driver'    => env('DB_CONNECTION_SPIP'),
+            'driver'    => env('DB_CONNECTION_SPIP', 'mysql'),
             'host'      => env('DB_HOST_SPIP'),
             'port'      => env('DB_PORT_SPIP'),
             'database'  => env('DB_DATABASE_SPIP'),

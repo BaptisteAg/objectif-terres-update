@@ -61,18 +61,47 @@
         @endif
     @endauth
 
-    @if($ad->ad_type === 'landSeek')
-        @include('pages.ads.partials.landSeek.landSeekShow')
-    @endif
-    @if($ad->ad_type === 'landOffer')
-        @include('pages.ads.partials.landOffer.landOfferShow')
-    @endif
-    @if($ad->ad_type === 'jobOffer')
-        @include('pages.ads.partials.jobOffer.jobOfferAdShow')
-    @endif
-    @if($ad->ad_type === 'jobSeek')
-        @include('pages.ads.partials.jobSeek.jobSeekAdShow')
-    @endif
+    <section class="section pt-0 ads-content">
+        <div class="container">
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                    <li class="breadcrumb__home">
+                        <a href="/" class="breadcrumb__link"><i class="fas fa-home"></i></a>
+                    </li>
+                    <li><a class="breadcrumb__link" href="#"><?=empty($isSupportRequest) ? 'Annonces' : 'Accompagnement'?></a></li>
+                    <li><a class="breadcrumb__link" href="#">{{$ad->ad_type_full_name}}</a></li>
+                    <li><span class="breadcrumb__link">{{$ad->title}}</span></li>
+                </ul>
+            </nav>
+            <h1 class="title is-1 has-text-link has-text-centered">{{$ad->title}}</h1>
+            @auth
+                @if(auth()->user()->role >= 1)
+                    @if($ad->project()->exists())
+                        @include ('pages.ads.partials.attribution-project-options')
+                    @else
+                        @include('pages.ads.partials.moderator-options')
+                    @endif
+                @endif
+                @if(auth()->user()->id === $ad->user_pp_id)
+                    @include('pages.ads.partials.ad-status-message-display')
+                @endif
+            @endauth
+            <div class="ads-content">
+                @if($ad->ad_type === 'landSeek')
+                    @include('pages.ads.partials.landSeek.landSeekShow')
+                @endif
+                @if($ad->ad_type === 'landOffer')
+                    @include('pages.ads.partials.landOffer.landOfferShow')
+                @endif
+                @if($ad->ad_type === 'jobOffer')
+                    @include('pages.ads.partials.jobOffer.jobOfferAdShow')
+                @endif
+                @if($ad->ad_type === 'jobSeek')
+                    @include('pages.ads.partials.jobSeek.jobSeekAdShow')
+                @endif
+            </div>
+        </div>
+    </section>
 @endsection
 
 @section('script')
@@ -143,17 +172,18 @@
         }
 
     </script>
-    @if(count($ad->images) > 1)
+{{--    @if(count($ad->images) > 1)--}}
         <script src="{{asset('/js/bulma-carousel.js')}}"></script>
         <script>
             const carousel = bulmaCarousel.attach('#ad-images', {
                 slidesToScroll: 1,
                 slidesToShow: 1,
                 loop: true,
-                navigation: true,
+                navigationSwipe: true,
+                pagination: true,
             });
         </script>
-    @endif
+{{--    @endif--}}
 
     <script>
         const vueThreads = new Vue({

@@ -3,8 +3,8 @@
 	<div class="container ">
 		<nav class="breadcrumb" aria-label="breadcrumbs">
 			<ul>
-				<li><a href="#">Annonces</a></li>
-				<li><a href="#">Opportunités professionnelles</a></li>
+				<li><a class="breadcrumb__link" href="#">Annonces</a></li>
+				<li><a class="breadcrumb__link" href="#">Opportunités professionnelles</a></li>
 			</ul>
 		</nav>
 		<h1 class="title has-text-link">{{$ad->title}}</h1>
