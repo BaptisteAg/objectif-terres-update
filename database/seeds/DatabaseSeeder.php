@@ -172,7 +172,7 @@ class DatabaseSeeder extends Seeder
     private function createAttributionAd(Ad $ad, $isSupportRequest)
     {
         $attributionAd = $ad->attributionAd()->save(factory(AttributionAd::class)->create([
-            "ad_status_id" => $isSupportRequest ? AdStatus::PENDING_ID : array_rand([AdStatus::PENDING_MODERATION_STATUS_ID, AdStatus::APPROVE_ID])
+            "ad_status_id" => $isSupportRequest ? NULL : collect([AdStatus::PENDING_MODERATION_STATUS_ID, AdStatus::APPROVE_ID])->random()
         ]));
         // Support requests
         if ($isSupportRequest) {

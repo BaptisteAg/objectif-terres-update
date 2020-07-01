@@ -6,14 +6,15 @@ use App\Jobs\NotifySupportRequestAttribution;
 use App\Models\Department;
 use App\Models\Project;
 use App\Models\ProjectDataKey;
-use App\Models\ProjectStatus;
 use App\Models\Region;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Repositories\Projects\ProjectsRepository;
+use App\Services\AttributionAds\AttributionAdsService;
 use App\Services\Users\UserService;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -24,6 +25,7 @@ class ProjectService
 	protected $attributionAdsRepository;
 	protected $userService;
 	protected $notification;
+	protected $attributionAdsService;
 
 	/**
 	 * ProjectService constructor.
@@ -31,13 +33,15 @@ class ProjectService
 	 * @param AttributionAdsRepository $attributionAdsRepository
 	 * @param UserService $userService
 	 * @param NotifySupportRequestAttribution $notification
+	 * @param AttributionAdsService $attributionAdsService
 	 */
-	public function __construct(ProjectsRepository $projectsRepository, AttributionAdsRepository $attributionAdsRepository, UserService $userService, NotifySupportRequestAttribution $notification)
+	public function __construct(ProjectsRepository $projectsRepository, AttributionAdsRepository $attributionAdsRepository, UserService $userService, NotifySupportRequestAttribution $notification, AttributionAdsService $attributionAdsService)
 	{
 		$this->repository = $projectsRepository;
 		$this->attributionAdsRepository = $attributionAdsRepository;
 		$this->userService = $userService;
 		$this->notification = $notification;
+		$this->attributionAdsService = $attributionAdsService;
 	}
 
 	public function create(array $data)
@@ -60,75 +64,78 @@ class ProjectService
 	/**
 	 * @return Collection
 	 */
-	public function findAllProjectsBySupervisor(): Collection
+	public function findAllProjectsInSupervisorTerritories(): Collection
 	{
-		$projects = $this->repository->findAllByUserSupervisor(auth()->user()->id);
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
+		$projects = $this->repository->findAllByUserTerritories(auth()->id(), $supervisorLocationTerritoryCodes);
 		return $projects;
 	}
 
-
 	/**
 	 * @param Collection $projects
-	 * @return array
+	 * @param bool $getProjectsCreatedSinceLastYear
+	 * @return Collection
 	 */
-	public function countProjectsByCategories($projects): array
+	public function filterProjectsByCreationYear(Collection $projects, bool $getProjectsCreatedSinceLastYear): Collection
 	{
-		$projectsByCategories = [
-			'landSeekAd' => 0,
-			'landOfferAd' => 0,
-		];
-		foreach ($projects as $project) {
-			if (isset($project->ad->landOfferAd)) {
-				$projectsByCategories['landOfferAd']++;
-			} else if (isset($project->ad->landOfferAd)) {
-				$projectsByCategories['landSeekAd']++;
-			}
-		}
-		return $projectsByCategories;
-
-	}
-
-	/**
-	 * @param Collection $projects
-	 * @return array
-	 */
-	public function countProjectsByProjectStatus(Collection $projects): array
-	{
-		$numberOfProjectsByProjectsStatus = [
-			ProjectStatus::EMERGING_ID => 0,
-			ProjectStatus::IN_PROGRESSING_ID => 0,
-			ProjectStatus::ABANDONED_ID => 0,
-			ProjectStatus::ACCOMPLISHED_ID => 0,
-		];
-		foreach ($projects as $project) {
-			foreach ($numberOfProjectsByProjectsStatus as $key => $value) {
-				if ($key === $project->projectStatus->id) {
-					$numberOfProjectsByProjectsStatus[$key]++;
+		$onlyProjectCreatedLastYear = $projects->filter(function ($project) use ($getProjectsCreatedSinceLastYear) {
+			$date = Carbon::parse($project->created_at);
+			if (!$getProjectsCreatedSinceLastYear) {
+				if ($date->isBetween(Carbon::now()->startOfYear()->subYear(), Carbon::now()->endOfYear()->subYear())) {
+					return $project;
+				}
+				if ($date->isBetween(Carbon::now()->startOfYear(), Carbon::now())) {
+					return $project;
+				}
+			} else {
+				if ($date->isBetween(Carbon::now()->startOfYear(), Carbon::now())) {
+					return $project;
 				}
 			}
-		}
-		return $numberOfProjectsByProjectsStatus;
-	}
 
+		});
+		return $groupPublishedAdsByYears = $onlyProjectCreatedLastYear->mapToGroups(function ($project, $key) {
+			$date = Carbon::parse($project->created_at);
+			return [$date->year => $project];
+		});
+	}
 
 	/**
 	 * @param Collection $projects
-	 * @return array
+	 * @return Collection
 	 */
-	public function calculatePercentageOfProjectsByProjectStatus(Collection $projects): array
+	public function groupAllProjectsInYearByMonth(Collection $projects): Collection
 	{
-		$numberOfProjectsByProjectStatus = $this->countProjectsByProjectStatus($projects);
-		$sumOfProjects = array_sum($numberOfProjectsByProjectStatus);
-
-		if ($sumOfProjects == 0) {
-			return [];
-		}
-		$percentageOfProjectsByProjectsStatus = array_map(function ($number) use ($sumOfProjects) {
-			return round($number * 100 / $sumOfProjects);
-		}, $numberOfProjectsByProjectStatus);
-
-		return $percentageOfProjectsByProjectsStatus;
+		$listOfMonthInYear = $this->attributionAdsService->getListOfMonthInYear();
+		$projectsInYear = $projects->filter(function ($project, $key) {
+			$date = Carbon::parse($project->created_at);
+			if ($date->isBetween(Carbon::now()->startOfYear(), Carbon::now()->endOfYear())) {
+				return $project;
+			}
+		});
+		$projectsByMonthInYear = $projectsInYear->mapToGroups(function ($project, $key) {
+			$date = Carbon::parse($project->created_at);
+			return [$date->localeMonth => $project];
+		});
+		return $listOfMonthInYear->merge($projectsByMonthInYear);
 	}
+
+	/**
+	 * @param Collection $projects
+	 * @param string $columnName
+	 * @param bool $getProjectsCreatedSinceLastYear
+	 * @return Collection
+	 */
+	public function groupProjectsByStatus(Collection $projects, string $columnName, bool $getProjectsCreatedSinceLastYear): Collection
+	{
+		$projectsCreatedLastYear = $this->filterProjectsByCreationYear($projects, $getProjectsCreatedSinceLastYear);
+		return $projectsBySupportStage = $projectsCreatedLastYear->map(function ($item) use ($columnName) {
+			return $item->mapToGroups(function ($project) use ($columnName) {
+				return [$project[$columnName] => $project];
+			});
+		});
+	}
+
 
 	/**
 	 * @param Request $filters

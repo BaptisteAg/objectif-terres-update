@@ -17,11 +17,8 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property int|null $user_advisor_id
  * @property int|null $user_moderator_id
  * @property int|null $user_supervisor_id
- * @property int|null $to_call_back
- * @property string|null $short_description
  * @property int $ad_id
  * @property int $ad_status_id
- * @property int|null $pp_type_id
  * @property int|null $refusal_type_id
  * @property string|null $published_on
  * @property string|null $archived_at
@@ -29,7 +26,6 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Ad $ad
  * @property-read \App\Models\AdStatus $adStatus
- * @property-read \App\Models\PpType $ppType
  * @property-read \App\Models\RefusalType|null $refusalType
  * @property-read \App\Models\User|null $userAdvisor
  * @property-read \App\Models\User|null $userModerator
@@ -110,14 +106,6 @@ class AttributionAd extends Model implements Decoratable
 	public function adStatus()
 	{
 		return $this->belongsTo(AdStatus::class);
-	}
-
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function ppType()
-	{
-		return $this->belongsTo(PpType::class, 'lead_type_id');
 	}
 
 	/**

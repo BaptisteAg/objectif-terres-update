@@ -97,7 +97,6 @@
                             <span>{{thread.title}}</span>
                         </a>
                     </template>
-
                 </li>
             </ul>
         </aside>

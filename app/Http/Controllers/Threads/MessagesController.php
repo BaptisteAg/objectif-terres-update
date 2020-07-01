@@ -51,22 +51,24 @@ class MessagesController extends Controller
 	 */
 	public function show(Thread $thread)
 	{
-		$loggedUserIsParticipant = $thread->users->first(function (User $user) {
-			return auth()->id() === $user->id;
-		});
-
-		if (!$loggedUserIsParticipant) {
-			abort(404);
-		}
+//		$loggedUserIsParticipant = $thread->users->first(function (User $user) {
+//			return auth()->id() === $user->id;
+//		});
+//
+//		if (!$loggedUserIsParticipant) {
+//			abort(404);
+//		}
 
 		$messages = $this->threadService->findAllByThread($thread->id);
+		$thread = $this->threadService->find($thread->id);
 		$this->threadService->setToReadAllUnreadMessagesInThread($thread->id);
 		foreach ($messages as $key => $message) {
 			$date = Carbon::parse($message->created_at);
 			$messages[$key]['day_posted'] = $date->format('d/m/Y');
 			$messages[$key]['time_posted'] = $date->format('H:i');
 		}
-		return response()->json($messages);
+
+		return response()->json(['thread' => $thread, 'messages' => $messages]);
 	}
 
 
@@ -109,20 +111,19 @@ class MessagesController extends Controller
 		}
 
 		$documentsIds = [];
-		foreach ($documents as $document){
+		foreach ($documents as $document) {
 			$documentsIds[] = $document->id;
 		}
 
 		$data = [
 			'content' => '',
-			'thread_id'=> $request->get('thread_id'),
-			'sender_user_id'=> auth()->id(),
-			'documents_ids'=>$documentsIds
+			'thread_id' => $request->get('thread_id'),
+			'sender_user_id' => auth()->id(),
+			'documents_ids' => $documentsIds
 		];
 		$this->threadService->createMessage($data);
 		return response()->json($documents);
 	}
-
 
 
 }

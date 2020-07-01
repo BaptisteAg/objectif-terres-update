@@ -8,6 +8,7 @@ use App\Models\ResponseTemplate;
 use App\Repositories\ResponseTemplates\ResponseTemplatesRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\URL;
 
 class ResponseTemplatesController extends Controller
 {

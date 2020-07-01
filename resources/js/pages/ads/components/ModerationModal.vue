@@ -38,6 +38,14 @@
                                         </select>
                                     </span>
                                         </p>
+                                        <p class="control is-expanded">
+                                            <a href="/gestion-reponse-types">
+                                                <span class="icon">
+                                                    <i class="fas fa-plus"></i>
+                                                </span>
+                                                <span>Créer une nouvelle réponse type</span>
+                                            </a>
+                                        </p>
                                     </div>
                                     <div v-if="moderationChoice === 'modifyAd'" class="field">
                                         <label class="label has-text-left">Envoyer un message type</label>
@@ -51,6 +59,14 @@
                                             </option>
                                         </select>
                                     </span>
+                                        </p>
+                                        <p class="control is-expanded">
+                                            <a href="/gestion-reponse-types">
+                                                <span class="icon">
+                                                    <i class="fas fa-plus"></i>
+                                                </span>
+                                                <span>Créer une nouvelle réponse type</span>
+                                            </a>
                                         </p>
                                     </div>
                                     <div class="field">

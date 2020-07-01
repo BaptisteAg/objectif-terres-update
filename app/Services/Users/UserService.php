@@ -30,9 +30,9 @@ class UserService
 	}
 
 	public function exists(string $email)
-    {
-        return $this->repository->findByEmail($email);
-    }
+	{
+		return $this->repository->findByEmail($email);
+	}
 
 	/**
 	 * @param array $data
@@ -117,7 +117,8 @@ class UserService
 	/**
 	 * @return array
 	 */
-	public function getCurrentUserTerritoryDepartments(){
+	public function getCurrentUserTerritoryDepartments(): array
+	{
 		$supervisorLocationTerritoryCodes = [];
 		foreach (auth()->user()->departments as $department) {
 			array_push($supervisorLocationTerritoryCodes, $department->code);
@@ -125,13 +126,14 @@ class UserService
 		return $supervisorLocationTerritoryCodes;
 	}
 
-    public function findRandomByRoleAndRegion(int $roleId, int $regionId)
-    {
-        $regionsCodes = Region::whereIn('id', [$regionId])->get('code')->toArray();
 
-        return User::filterSubLocations('departments', $regionsCodes, 'departments.region_code')
-            ->where('role', $roleId)
-            ->inRandomOrder()
-            ->first();
-    }
+	public function findRandomByRoleAndRegion(int $roleId, int $regionId)
+	{
+		$regionsCodes = Region::whereIn('id', [$regionId])->get('code')->toArray();
+
+		return User::filterSubLocations('departments', $regionsCodes, 'departments.region_code')
+			->where('role', $roleId)
+			->inRandomOrder()
+			->first();
+	}
 }
