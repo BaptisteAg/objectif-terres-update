@@ -140,7 +140,7 @@ class AdService
             $pendingStatus = AdStatus::PENDING_ID;
             $advisor = $this->userService->findRandomByRoleAndRegion(3, $adRandomRegionId);
             if (!$advisor) {
-                throw new \Exception('A supervisor could not be found for an attribution');
+                throw new \Exception("Aucun responsable n'a été trouvé dans votre région. Veuillez sauvegarder votre demande et nous contacter.");
             }
             $attributionAdData['user_supervisor_id'] = $advisor->id;
 
@@ -149,7 +149,7 @@ class AdService
             // Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
             $moderator = $this->userService->findRandomByRoleAndRegion(1, $adRandomRegionId);
             if (!$moderator) {
-                throw new \Exception('A moderator could not be found for an attribution');
+                throw new \Exception("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
             }
             $attributionAdData['user_moderator_id'] = $moderator->id;
         }
