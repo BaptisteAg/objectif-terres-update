@@ -81,8 +81,8 @@
                                            style="position : relative; float: right; background-color: rgba(10, 10, 10, 0.2); right: 0px; top:0px;"></a>
                                         <p class="title is-3 has-text-centered has-text-link">Exportation des
                                             données</p>
-                                        <p class="subtitle has-text-centered ">Veuillez séléctionner une plage de
-                                            date</p>
+                                        <p class="subtitle has-text-centered ">Veuillez sélectionner une plage de
+                                            dates</p>
                                         <div class="columns is-mobile is-centered">
                                             <div class="column">
                                                 <div class="control has-icons-right ">
@@ -111,7 +111,7 @@
             </export-to-spreadsheet-form>
         </div>
         <div class="section">
-            <h1 class="title is-1 has-text-centered">Liste des annonces et demandes d'accompagnement sur votre
+            <h1 class="title is-1 has-text-centered">Activités sur votre
                 territoire</h1>
             @if (count($ads) ==0)
                 <p class="has-text-centered">Aucun résultat</p>
@@ -258,7 +258,11 @@
                                         <br>
                                     </td>
                                     <td>
+                                        @if(is_null($ad->project))
                                         <a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+                                        @else
+                                            <a href="{{route('advisor.showSupport', $ad->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+                                        @endif
                                     </td>
                                     <td>
                                         @if(is_null($ad->project))

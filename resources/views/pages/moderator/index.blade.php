@@ -99,7 +99,6 @@
                                         <span>Titre de l'annonce</span>
                                     </a>
                                 @endif
-
                             </th>
                             <th>Type d'annonce</th>
                             <th>

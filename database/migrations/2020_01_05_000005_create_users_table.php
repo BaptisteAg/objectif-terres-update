@@ -18,8 +18,6 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-
-
         Schema::create($this->tableName, function (Blueprint $table) {
 			$table->increments('id');
 			$table->string('sf_id')->nullable();
@@ -40,6 +38,7 @@ class CreateUsersTable extends Migration
 			$table->unsignedSmallInteger('country_id')->nullable();
 			$table->unsignedInteger('zip_code_id')->nullable();
 			$table->unsignedInteger('role')->default(0);
+			$table->softDeletes();
 			$table->rememberToken();
 			$table->timestamps();
 

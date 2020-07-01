@@ -3,14 +3,14 @@
 		<p class="has-text-centered">Cette personne n'a pas déposer d'annonces.</p>
 	@else
 		<div style="overflow-x: hidden; max-height: 700px">
-		@foreach($listUserAds as $userAd)
+			@foreach($listUserAds as $userAd)
 				<h4 class="title is-4 has-text-centered">{{$userAd->title ?? ""}}</h4>
 				<div class="columns">
 					<div class="column is-three-fifths ">
 						@if($userAd->hasImages)
 							<div class="card">
 								<div class="card-image">
-									<a href="{{route('ads.show', $userAd->id)}}">
+									@if($userAd->userPp->trashed())
 										<figure class="image is-4by1">
 											@if($userAd->images->first()->path === "0")
 												<img src="https://picsum.photos/480/320" alt="picsum">
@@ -19,17 +19,45 @@
 													 alt="Placeholder image">
 											@endif
 										</figure>
-									</a>
+									@else
+										@if($userAd->userPp->trashed())
+											<figure class="image is-4by1">
+												@if($userAd->images->first()->path === "0")
+													<img src="https://picsum.photos/480/320" alt="picsum">
+												@else
+													<img src="{{URL::asset($userAd->images->first()->path)}}"
+														 alt="Placeholder image">
+												@endif
+											</figure>
+										@else
+											<a href="{{route('ads.show', $userAd->id)}}">
+												<figure class="image is-4by1">
+													@if($userAd->images->first()->path === "0")
+														<img src="https://picsum.photos/480/320" alt="picsum">
+													@else
+														<img src="{{URL::asset($userAd->images->first()->path)}}"
+															 alt="Placeholder image">
+													@endif
+												</figure>
+											</a>
+										@endif
+									@endif
 								</div>
 							</div>
 						@else
 							<div class="card ">
 								<div class="card-image">
-									<a href="{{route('ads.show', $userAd->id)}}">
+									@if($userAd->userPp->trashed())
 										<figure class="image is-2by1">
 											<img src="/images/placeholder-ad.png">
 										</figure>
-									</a>
+									@else
+										<a href="{{route('ads.show', $userAd->id)}}">
+											<figure class="image is-2by1">
+												<img src="/images/placeholder-ad.png">
+											</figure>
+										</a>
+									@endif
 								</div>
 							</div>
 						@endif
@@ -77,21 +105,22 @@
 										<span class="is-italic">Dans un rayon de (en km)</span>:{{$userAd->landSeekAd->locationable_radius ?? 'Non renseigné'}}
 									</p>
 								@endif
-
-								<a href="{{route('ads.show', $userAd->id)}}" class="button is-link ">
+								@if(! $userAd->userPp->trashed())
+									<a href="{{route('ads.show', $userAd->id)}}" class="button is-link ">
 										<span class="icon is-small">
 										  <i class="fas fa-search"></i>
 										</span>
-									<span>Voir le détail</span>
-								</a>
+										<span>Voir le détail</span>
+									</a>
+								@endif
 						</div>
 					</div>
 				</div>
 				@if(! $loop->last)
 					<div class="is-divider"></div>
 				@endif
-			<br>
-		@endforeach
+				<br>
+			@endforeach
 		</div>
 	@endif
 </div>

@@ -27,6 +27,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\URL;
 
 
 class AdsController extends BaseController
@@ -92,10 +93,14 @@ class AdsController extends BaseController
 	public function show($adId)
 	{
 		$ad = $this->adService->find($adId);
+		if (!isset($ad->userPp)) {
+			return view('pages.errors.unavailable-page', ['message' => "Contacter un administrateur du site pour plus d'informations"]);
+		}
 
 		//Throw error 404 if a visitor try to show an ad is not validated
 		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validée" ;
 		//TODO not display projects unless user logged is the author of the ad or the user logged is an supervisor or an advisor
+		session()->put('url.intended', URL::current());
 		return view('pages.ads.show', $this->getShowVars($ad));
 	}
 

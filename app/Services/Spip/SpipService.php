@@ -22,7 +22,7 @@ class SpipService
 
     public function __construct(DatabaseManager $db, UserRepository $userRepository)
     {
-        $this->db = $db->connection('mysql_spip');
+//        $this->db = $db->connection('mysql_spip');
         $this->localUserRepository = $userRepository;
     }
 
