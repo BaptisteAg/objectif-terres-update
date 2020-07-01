@@ -297,11 +297,11 @@
 
 {{--	@include('components.cardVideo')--}}
 
-    <section class="hero has_margin">
-        <div class="hero-body block-video">
-            @include('components.video')
-        </div>
-    </section>
+{{--    <section class="hero has_margin">--}}
+{{--        <div class="hero-body block-video">--}}
+{{--            @include('components.video')--}}
+{{--        </div>--}}
+{{--    </section>--}}
 
 {{--	<section class="section">--}}
 {{--		<div class="container has-text-centered ">--}}
@@ -340,6 +340,16 @@
 {{--	</section>--}}
 
 	@include('components.faqAccordion')
+
+    <section class="section test">
+        <div id="rss-feed" class="container">
+            <iframe width="600" height="700" src="https://rss.app/embed/v1/2cSv0gj4DTvhYuDe" frameBorder="0"></iframe>
+            <homepage-components inline-template>
+                <rss-feed></rss-feed>
+            </homepage-components>
+        </div>
+    </section>
+
 	@include('components.partnering')
 	@include('components.support-terre-liens')
 
@@ -360,7 +370,11 @@
             navigation: true,
 
         });
-	</script>
+        const vueHomepage = new Vue({
+            el: '#rss-feed',
+        });
+
+    </script>
 
 	<script>
 		var map = L.map('my_osm_widget_map', { /* use the same name as your <div id=""> */
@@ -370,7 +384,13 @@
 			scrollWheelZoom: false /* false = scrolling zoom on the map is locked */
 		});
 
-		function setupLocationPolygon(polygonData, options, callback) {
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWlja2l3YXkiLCJhIjoiY2s0YmE0NHZqMDZrejNrcGlxeWJmNHRtdCJ9.In4xuZz8wYnXmDX5jrrhCg', { /* set your personal MapBox Access Token */
+            maxZoom: 18, /* zoom limit of the map */
+            id: 'mapbox.satellite' /* mapbox.light / dark / streets / outdoors / satellite */
+        }).addTo(map);
+
+
+        function setupLocationPolygon(polygonData, options, callback) {
 			var polygon = L.geoJSON(polygonData.geojson, {
 				smoothFactor: options.smoothFactor || 0,
 				style: {
@@ -427,11 +447,6 @@
 				})
 			})
 		}
-
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWlja2l3YXkiLCJhIjoiY2s0YmE0NHZqMDZrejNrcGlxeWJmNHRtdCJ9.In4xuZz8wYnXmDX5jrrhCg', { /* set your personal MapBox Access Token */
-            maxZoom: 18, /* zoom limit of the map */
-            id: 'mapbox.satellite' /* mapbox.light / dark / streets / outdoors / satellite */
-        }).addTo(map);
 
 		var headers = new Headers();
 		headers.append('pragma', 'no-cache');

@@ -1,4 +1,4 @@
-<section class="section pt-0">
+<!--<section class="section pt-0">
     <div class="container ">
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
@@ -6,22 +6,22 @@
                 <li><a class="breadcrumb__link" href="#">Recherches foncières</a></li>
             </ul>
         </nav>
-        <h1 class="title has-text-link">{{$ad->title}}</h1>
-        @auth
-            @if(auth()->user()->role >= 1)
-                @if($ad->project()->exists())
-                    @include ('pages.ads.partials.attribution-project-options')
-                @else
-                    @include('pages.ads.partials.moderator-options')
-                @endif
-            @endif
-            @if(auth()->user()->id === $ad->user_pp_id)
-                @include('pages.ads.partials.ad-status-message-display')
-            @endif
-        @endauth
-        <div class="columns ">
+        <h1 class="title is-2 has-text-link">{{$ad->title}}</h1> -->
+{{--        @auth--}}
+{{--            @if(auth()->user()->role >= 1)--}}
+{{--                @if($ad->project()->exists())--}}
+{{--                    @include ('pages.ads.partials.attribution-project-options')--}}
+{{--                @else--}}
+{{--                    @include('pages.ads.partials.moderator-options')--}}
+{{--                @endif--}}
+{{--            @endif--}}
+{{--            @if(auth()->user()->id === $ad->user_pp_id)--}}
+{{--                @include('pages.ads.partials.ad-status-message-display')--}}
+{{--            @endif--}}
+{{--        @endauth--}}
+        <div class="columns is-multiline mb-50">
             @include('pages.ads.partials.show-images')
-            <div class="column">
+            <div class="column is-one-third">
                 <div class="card">
                     <div class="card-content">
                         <div class="content">
@@ -213,8 +213,8 @@
             @include('pages.ads.partials.threadsDisplay')
         </div>
 
-    </div>
-</section>
+<!--    </div>
+</section> -->
 
 @include('components.support-terre-liens')
 

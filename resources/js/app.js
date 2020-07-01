@@ -36,6 +36,7 @@ require('./pages/advisors/advisors');
 require('./pages/supervisor/supervisor');
 require('./pages/video');
 require('./pages/cms/contact-us-form');
+require('./pages/homepage/homepage');
 //////////////
 // GLOBAL
 require('./main.js');
