@@ -6,7 +6,7 @@
         <div class="columns is-desktop is-vcentered">
             <div class="column ">
                 <div class="columns is-desktop is-vcentered">
-                    @foreach($adTypes as $i => $adType)
+                @foreach($adTypes as $i => $adType)
                         <div class="column is-desktop is-vcentered">
                             <custom-checkbox
                                     name="ad_type[]"

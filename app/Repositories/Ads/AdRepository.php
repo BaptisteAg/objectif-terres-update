@@ -191,7 +191,14 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				'landSeekAd',
 				'landOfferAd',
 				'jobOfferAd',
-				'jobSeekAd'
+				'jobSeekAd',
+				'departments',
+				'departments.region',
+				'regions',
+				'cities',
+				'cities.department'
+
+
 			])
 			->get();
 		return $models;
@@ -372,8 +379,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			->where(function (Builder $query) use ($adStatusId) {
 				$query->whereHas('attributionAd', function (Builder $subQuery) use ($adStatusId) {
 					$subQuery->where('ad_status_id', '=', $adStatusId);
+					$subQuery->whereNotNull('published_on');
 				});
 			})
+			->with('attributionAd')
 			->get();
 		return $models;
 	}

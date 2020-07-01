@@ -12,9 +12,10 @@ use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Services\Locations\LocationService;
 use App\Services\Users\UserService;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 
 
@@ -400,5 +401,18 @@ class AttributionAdsService
 			'ad.landOfferAd',
 			'ad.jobOfferAd'
 		];
+	}
+
+	/**
+	 * @return \Illuminate\Support\Collection
+	 */
+	public function getListOfMonthInYear(): Collection
+	{
+		$period = CarbonPeriod::create(Carbon::now()->startOfYear(), '1 month', Carbon::now()->endOfYear());
+		$listOfMonth = collect();
+		foreach ($period as $date) {
+			$listOfMonth[$date->localeMonth] = collect();
+		}
+		return $listOfMonth;
 	}
 }

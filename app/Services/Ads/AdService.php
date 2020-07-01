@@ -17,11 +17,14 @@ use App\Repositories\Ads\LandSeekAdRepository;
 use App\Repositories\Ads\ProductionGenreRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Repositories\Projects\ProjectsRepository;
+use App\Services\AttributionAds\AttributionAdsService;
 use App\Services\Users\UserService;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use DateTime;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -71,6 +74,11 @@ class AdService
 	protected $projectRepository;
 
 	/**
+	 * @var AttributionAdsService
+	 */
+	protected $attributionAdsService;
+
+	/**
 	 * AdService constructor.
 	 * @param AdRepository $repository
 	 * @param AttributionAdsRepository $attributionAdsRepository
@@ -79,7 +87,9 @@ class AdService
 	 * @param JobOfferAdRepository $jobOfferAdRepository
 	 * @param JobSeekAdRepository $jobSeekAdRepository
 	 * @param ProductionGenreRepository $productionGenreRepository
+	 * @param ProjectsRepository $projectRepository
 	 * @param UserService $userService
+	 * @param AttributionAdsService $attributionAdsService
 	 */
 	public function __construct(
 		AdRepository $repository,
@@ -90,7 +100,8 @@ class AdService
 		JobSeekAdRepository $jobSeekAdRepository,
 		ProductionGenreRepository $productionGenreRepository,
 		ProjectsRepository $projectRepository,
-		UserService $userService
+		UserService $userService,
+		AttributionAdsService $attributionAdsService
 	)
 	{
 		$this->repository = $repository;
@@ -102,6 +113,7 @@ class AdService
 		$this->productionGenreRepository = $productionGenreRepository;
 		$this->userService = $userService;
 		$this->projectRepository = $projectRepository;
+		$this->attributionAdsService = $attributionAdsService;
 	}
 
 	/**
@@ -347,6 +359,33 @@ class AdService
 		return $ads;
 	}
 
+	/**
+	 * @return Collection
+	 */
+	public function groupAllValidatedAdsInYearByMonth(Collection $ads): Collection
+	{
+		$validatedAds = $ads->filter(function ($ads, $key) {
+			if ($ads->attributionAd->ad_status_id === AdStatus::APPROVE_ID) {
+				return $ads;
+			}
+		});
+		$validatedAdsByMonthInYear = [];
+		$listOfMonthInYear = $this->attributionAdsService->getListOfMonthInYear();
+		if (!empty($validatedAds)) {
+			$validatedAdsInYear = $validatedAds->filter(function ($ad, $key) {
+				$date = Carbon::parse($ad->attributionAd->published_on);
+				if ($date->isBetween(Carbon::now()->startOfYear(), Carbon::now()->endOfYear())) {
+					return $ad;
+				}
+			});
+			$validatedAdsByMonthInYear = $validatedAdsInYear->mapToGroups(function ($ad, $key) {
+				$date = Carbon::parse($ad->attributionAd->published_on);
+				return [$date->localeMonth => $ad];
+			});
+		}
+		return $listOfMonthInYear->merge($validatedAdsByMonthInYear);
+	}
+
 
 	/**
 	 * @return Collection
@@ -360,47 +399,90 @@ class AdService
 
 	/**
 	 * @param Collection $ads
-	 * @return array
+	 * @return Collection
 	 */
-	public function countAdsByCategories(Collection $ads): array
+	public function groupAdsBySupervisorDepartments(Collection $ads)
 	{
-		$numberOfAdsByCategories = [
-			'landSeekAd' => 0,
-			'landOfferAd' => 0,
-			'jobOfferAd' => 0,
-			'jobSeekAd' => 0
-		];
-		foreach ($ads as $ad) {
-			if (isset($ad->landOfferAd)) {
-				$numberOfAdsByCategories['landOfferAd']++;
-			} else if (isset($ad->landSeekAd)) {
-				$numberOfAdsByCategories['landSeekAd']++;
-			} else if (isset($ad->jobSeekAd)) {
-				$numberOfAdsByCategories['jobSeekAd']++;
-			} else if (isset($ad->jobOfferAd)) {
-				$numberOfAdsByCategories['jobOfferAd']++;
-			}
-		}
-		return $numberOfAdsByCategories;
+		$adsPublished = $this->filterAdsByPublishedYear($ads);
+		$userDepartmentsNames = auth()->user()->departments->pluck('name')->flip()->map(function ($item) {
+			return collect([]);
+		});
+
+		return $adsPublishedByTerritories = $adsPublished->map(function ($item) use ($userDepartmentsNames) {
+			$adsPerDepartment = $item->mapToGroups(function ($ad, $key) {
+				if (!empty($ad->departments)) {
+					foreach ($ad->departments as $department) {
+						return [$department->name => $ad];
+					}
+				}
+				if (!empty($ad->cities)) {
+					foreach ($ad->cities as $city) {
+						return [$city->department->name => $ad];
+					}
+				}
+			});
+			return $adsPerDepartment->union($userDepartmentsNames);
+		});
+
 	}
 
 	/**
 	 * @param Collection $ads
-	 * @return array
+	 * @return Collection
 	 */
-	public function calculatePercentageOfAdsByAdStatus(Collection $ads): array
+	public function groupAdsBySupervisorRegions(Collection $ads)
 	{
-		$numberOfAdsByAdStatus = $this->countAdsByAdStatus($ads);
-		$sumOfAds = array_sum($numberOfAdsByAdStatus);
+		$adsPublished = $this->filterAdsByPublishedYear($ads);
+		$userRegionsNames = auth()->user()->regions->pluck('name')->flip()->map(function ($item) {
+			return collect([]);
+		});
+		return $adsPublishedByTerritories = $adsPublished->map(function ($item) use ($userRegionsNames) {
+			$adsPerRegion = $item->mapToGroups(function ($ad, $key) {
+				if (!empty($ad->regions)) {
+					foreach ($ad->regions as $region) {
+						return [$region->name => $ad];
+					}
+				}
+				if (!empty($ad->departments)) {
+					foreach ($ad->departments as $department) {
+						return [$department->region->name => $ad];
+					}
+				}
+				if (!empty($ad->cities)) {
+					foreach ($ad->cities as $city) {
+						return [$city->department->region->name => $ad];
+					}
+				}
+			});
+			return $adsPerRegion->union($userRegionsNames);
+		});
+	}
 
-		if ($sumOfAds == 0) {
-			return [];
-		}
-		$percentageOfAdsByAdStatus = array_map(function ($number) use ($sumOfAds) {
-			return round($number * 100 / $sumOfAds);
-		}, $numberOfAdsByAdStatus);
+	/**
+	 * @param Collection $ads
+	 * @return Collection
+	 */
+	public function filterAdsByPublishedYear(Collection $ads)
+	{
+		$onlyAdsPublished = $ads->filter(function ($ad, $key) {
+			if (!empty($ad->attributionAd)) {
+				if (!is_null($ad->attributionAd->published_on)) {
+					$date = Carbon::parse($ad->attributionAd->published_on);
+					if ($date->isBetween(Carbon::now()->startOfYear()->subYear(), Carbon::now()->endOfYear()->subYear())) {
+						return $ad;
+					}
+					if ($date->isBetween(Carbon::now()->startOfYear(), Carbon::now())) {
+						return $ad;
+					}
+				}
 
-		return $percentageOfAdsByAdStatus;
+			}
+		});
+
+		return $groupPublishedAdsByYears = $onlyAdsPublished->mapToGroups(function ($ad, $key) {
+			$date = Carbon::parse($ad->attributionAd->published_on);
+			return [$date->year => $ad];
+		});
 	}
 
 	/**
@@ -410,11 +492,9 @@ class AdService
 	public function countAdsByAdStatus(Collection $ads): array
 	{
 		$numberOfAdsByAdStatus = [
-			AdStatus::APPROVE_ID => 0,
-			AdStatus::PENDING_ID => 0,
+			AdStatus::ARCHIVE_ID => 0,
 			AdStatus::REFUSE_ID => 0,
 			AdStatus::PENDING_MODERATION_STATUS_ID => 0,
-			AdStatus::ARCHIVE_ID => 0
 		];
 		foreach ($ads as $ad) {
 			if (!is_null($ad->attributionAd)) {
@@ -705,14 +785,12 @@ class AdService
 	{
 		$adsPublishedSinceDays = $this->repository->findAllPublishedSinceDays($numberOfDays);
 
-		$adsPublishedSinceDaysAndNotComplete = $adsPublishedSinceDays->mapWithKeys(function ($ad) {
+		return $adsPublishedSinceDays->mapWithKeys(function ($ad) {
 			if (is_null($ad['about_content']) || is_null($ad['about_project_content']) || isset($ad['documents'])) {
 				return [$ad['id'] => $ad];
 			}
 			return [];
 		});
-
-		return $adsPublishedSinceDaysAndNotComplete;
 	}
 
 	public function getPublishedAdsCountByRegionId($selectedAdType)

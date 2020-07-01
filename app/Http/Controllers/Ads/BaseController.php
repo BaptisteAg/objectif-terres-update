@@ -123,13 +123,13 @@ abstract class BaseController extends Controller
 			$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad->id);
 		}
 
-		if ($user && $user->role >= 1 && isset($ad->attributionAd->ad_status_id) ) {
+		if ($user && $user->role >= 1) {
+			$responseTemplates = ResponseTemplate::all();
 			if (!isset($ad->project)) {
 				if ($ad->attributionAd->adStatus->id === AdStatus::PENDING_MODERATION_STATUS_ID) {
 					$isAdToModerate = true;
 				}
 			}
-
 			if ($moderatorInChargeOfModeration) {
 				$isLoggedUserModeratorAd = true;
 				$responseTemplates = ResponseTemplate::all();

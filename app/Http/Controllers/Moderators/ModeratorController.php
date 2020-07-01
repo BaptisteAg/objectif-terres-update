@@ -15,33 +15,8 @@ use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
 use Illuminate\Http\Request;
 
-class ModeratorController extends Controller
+class ModeratorController extends BaseController
 {
-	protected $service;
-	protected $threadService;
-	protected $userService;
-	protected $adTypes;
-	protected $adTypesFaIcons;
-
-	/**
-	 * ModeratorController constructor.
-	 * @param AttributionAdsService $attributionAdsService
-	 * @param ThreadService $threadService
-	 */
-	public function __construct(AttributionAdsService $attributionAdsService, ThreadService $threadService, UserService $userService)
-	{
-		$this->service = $attributionAdsService;
-		$this->threadService = $threadService;
-		$this->userService = $userService;
-		$this->adTypes = [
-			['name' => 'Offre foncière', 'value' => 'landOfferAd'],
-			['name' => 'Recherche foncière', 'value' => 'landSeekAd'],
-			['name' => 'Offre d\'emploi', 'value' => 'jobOfferAd'],
-			['name' => 'Recherche d\'emploi', 'value' => 'jobSeekAd'],
-		];
-		$this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access"];
-	}
-
 	/**
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
@@ -49,21 +24,9 @@ class ModeratorController extends Controller
 	{
 		$request->session()->forget('_old_input');
 		$request->session()->forget('moderator_dashboard_url');
-
-		$cities = City::all();
-		$departments = Department::all();
-		$regions = Region::all();
-		$adStatuses = AdStatus::all();
-		$productionGenres = ProductionGenre::all();
-		$jobOfferTypes = JobOfferType::all();
-		$attributionAds = $this->service->findAllByUserModeratorTerritories();
-
-		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
-		$numberOfAdsToModerate = $this->service->countAllAdsToModerateForLoggedModerator();
-		$adTypes = $this->adTypes;
-		$adTypesFaIcons = $this->adTypesFaIcons;
-
-		return view('pages.moderator.index', compact('adTypesFaIcons', 'adTypes', 'cities', 'departments', 'regions', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
+		$vars = $this->getModeratorDashboardVars();
+		$vars['attributionAds'] = $this->service->findAllByUserModeratorTerritories();
+		return view('pages.moderator.index', $vars);
 
 	}
 
@@ -75,22 +38,9 @@ class ModeratorController extends Controller
 	{
 		$request->flash();
 		$request->session()->put('moderator_dashboard_url', $request->all());
-
-		$cities = City::all();
-		$departments = Department::all();
-		$regions = Region::all();
-		$adStatuses = AdStatus::all();
-		$productionGenres = ProductionGenre::all();
-		$jobOfferTypes = JobOfferType::all();
-
-		$attributionAds = $this->service->showForModerators($request);
-
-		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
-		$numberOfAdsToModerate = $this->service->countAllAdsToModerateForLoggedModerator();
-		$adTypes = $this->adTypes;
-		$adTypesFaIcons = $this->adTypesFaIcons;
-
-		return view('pages.moderator.index', compact('adTypesFaIcons', 'adTypes', 'cities', 'departments', 'regions', 'adStatuses', 'productionGenres', 'jobOfferTypes', 'attributionAds', 'numberOfUnreadMessages', 'numberOfAdsToModerate'));
+		$vars = $this->getModeratorDashboardVars();
+		$vars['attributionAds'] = $this->service->showForModerators($request);
+		return view('pages.moderator.index', $vars);
 
 	}
 
