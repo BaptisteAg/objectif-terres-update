@@ -6,7 +6,7 @@
         <div class="columns is-desktop is-vcentered">
             <div class="column ">
                 <div class="columns is-desktop is-vcentered">
-                    @foreach($adTypes as $i => $adType)
+                @foreach($adTypes as $i => $adType)
                         <div class="column is-desktop is-vcentered">
                             <custom-checkbox
                                     name="ad_type[]"
@@ -334,17 +334,17 @@
 						</span>
                         <span class="is-size-6">Réinitialiser</span>
                     </a>
-                @elseif (Route::current()->getName() == 'supervisor.show')
+                @elseif (Route::current()->getName() == 'supervisor.show' && !empty(request()->all()))
                     <p style="margin-top: 10px"></p>
-                    <a href="{{route('supervisor.index')}}" class=" ">
+                    <a href="{{route('supervisor.show')}}" class=" ">
 						<span class="icon has-text-danger is-marginless">
   							<i class="fas fa-times"></i>
 						</span>
                         <span class="is-size-6">Réinitialiser</span>
                     </a>
-                @elseif (Route::current()->getName() == 'advisor.show')
+                @elseif (Route::current()->getName() === 'advisor.show' && !empty(request()->all()))
                     <p style="margin-top: 10px"></p>
-                    <a href="{{route('advisor.index')}}" class="  ">
+                    <a href="{{route('advisor.show')}}" class="  ">
 						<span class="icon has-text-danger is-marginless ">
   							<i class="fas fa-times"></i>
 						</span>

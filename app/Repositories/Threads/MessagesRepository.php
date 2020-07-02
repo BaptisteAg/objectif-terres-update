@@ -5,6 +5,7 @@ use App\Repositories\AbstractRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use function foo\func;
 
 /**
  * Class MessageRepository
@@ -97,10 +98,10 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 	 * @param int $userId
 	 * @return Collection
 	 */
-	public function findAllUnreadMessagesByThreads(int $userId) : Collection
+	public function findAllUnreadMessagesByThreads(int $userId): Collection
 	{
 		$models = $this->entity
-			->whereHas('unreadMessages', function (Builder $query) use ($userId){
+			->whereHas('unreadMessages', function (Builder $query) use ($userId) {
 				$query->where('is_read', '=', 0);
 				$query->where('user_id', '=', $userId);
 			})
@@ -142,13 +143,19 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 	private function getEagerLoading()
 	{
 		return [
-			'senderUser',
+			'senderUser' => function ($query) {
+				$query->withTrashed();
+			},
 			'unreadMessages',
 			'thread',
 			'thread.ad',
-			'thread.users',
+			'thread.ad.userPp' => function ($query) {
+				$query->withTrashed();
+			},
+			'thread.users' => function ($query) {
+				$query->withTrashed();
+			},
 			'documents',
-
 		];
 	}
 

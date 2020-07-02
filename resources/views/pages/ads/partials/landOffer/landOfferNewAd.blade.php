@@ -640,7 +640,7 @@
                                              '0' => 'Pour le compte d\'une autre personne'],
                                               old('land_offer[is_beneficiary]'),
                                               [
-                                                  'placeholder' => 'Veuillez séléctionner...',
+                                                  'placeholder' => 'Veuillez sélectionner...',
                                                   ':disabled' => 'isInputDisabled',
                                                   'aria-describedby'=>'isBeneficiaryError'
                                       ]); !!}

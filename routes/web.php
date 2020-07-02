@@ -149,9 +149,10 @@ Route::middleware('advisor')->prefix('mon-espace-primo-accueillant')->name('advi
 	Route::post('suppression-note', 'AdvisorsController@deleteNote')->name('deleteNote');
 	Route::post('modification-valeurs-indicateurs', 'AdvisorsController@updateProjectDataKeysValues')->name('updateProjectDataKeysValues');
 	Route::post('ajout-document', 'AdvisorsController@uploadDocuments')->name('uploadDocuments');
+	Route::post('bloquer-utlisateur', 'AdvisorsController@blockUser')->name('blockUser');
 });
 
-Route::middleware('advisor')->prefix('gestion-reponse-types')->name('responseTemplates.')->namespace('ResponseTemplates')->group(function(){
+Route::middleware('moderator')->prefix('gestion-reponse-types')->name('responseTemplates.')->namespace('ResponseTemplates')->group(function(){
 	Route::get('/', 'ResponseTemplatesController@index')->name('index');
 	Route::post('/creer', 'ResponseTemplatesController@create')->name('create');
 });

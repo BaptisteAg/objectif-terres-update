@@ -49,6 +49,27 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		return $model;
 	}
 
+	/**
+	 * @param $id
+	 * @return Ad
+	 */
+	public function findWithTrashedUser($id)
+	{
+		/** @var Ad $model */
+		$model = $this->entity
+			->where(["id" => $id])
+			->with($this->getDashboardsEagerLoading())
+			->first();
+
+		if (!$model) {
+			throw (new ModelNotFoundException)->setModel(
+				get_class($this->entity->getModel()),
+				$id
+			);
+		}
+		return $model;
+	}
+
 
 	/**
 	 * Creates an ad.
@@ -139,7 +160,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				'departments',
 				'departments.region',
 				'regions',
-				'documents'
+				'documents',
+				'userPp' => function ($query) {
+					$query->withTrashed();
+				}
 			])
 			->get();
 		return $models;
@@ -156,6 +180,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		$models = $this->entity
 			->whereNull('project_id')
 			->where(function (Builder $query) use ($territoriesCode) {
+				$query->whereHas('userPp', function (Builder $subQuery) {
+					$subQuery->whereNull('deleted_at');
+				});
 				$query->filterAdsTerritoryLocations($territoriesCode);
 			})
 			->with([
@@ -164,7 +191,14 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				'landSeekAd',
 				'landOfferAd',
 				'jobOfferAd',
-				'jobSeekAd'
+				'jobSeekAd',
+				'departments',
+				'departments.region',
+				'regions',
+				'cities',
+				'cities.department'
+
+
 			])
 			->get();
 		return $models;
@@ -182,6 +216,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		$models = $this->entity
 			->where(function (Builder $query) {
 				$query->whereNotNull('project_id');
+				$query->whereHas('userPp', function (Builder $subQuery) {
+					$subQuery->whereNull('deleted_at');
+				});
 				$query->whereHas('attributionAd', function (Builder $query) {
 					if (auth()->user()->role == 2) {
 						$query->where('user_advisor_id', '=', auth()->user()->id);
@@ -191,6 +228,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				});
 			})
 			->orWhere(function (Builder $query) use ($territoriesCode) {
+				$query->whereHas('userPp', function (Builder $subQuery) {
+					$subQuery->whereNull('deleted_at');
+				});
 				$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
 					$query->whereIn('code', $territoriesCode);
 				});
@@ -225,23 +265,35 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		/** @var Collection $model */
 		$models = $this->entity
 			->where(function (Builder $query) {
-				$query->whereHas('attributionAd', function (Builder $query) {
+				$query->whereHas('attributionAd', function (Builder $subQuery) {
+					$subQuery->whereNotNull('user_advisor_id');
 					if (auth()->user()->role == 2) {
-						$query->where('user_advisor_id', '=', auth()->user()->id);
+						$subQuery->where('user_advisor_id', '=', auth()->user()->id);
 					} else if (auth()->user()->role >= 3) {
-						$query->where('user_supervisor_id', '=', auth()->user()->id);
+						$subQuery->where('user_supervisor_id', '=', auth()->user()->id);
 					}
+				});
+				$query->whereHas('userPp', function (Builder $subQuery) {
+					$subQuery->whereNull('deleted_at');
 				});
 				$query->whereNotNull('project_id');
 			})
 			->orWhere(function (Builder $query) use ($territoriesCode) {
+				$query->whereNotNull('project_id');
+				$query->whereHas('attributionAd', function (Builder $subQuery) {
+					$subQuery->whereNotNull('user_advisor_id');
+				});
+				$query->whereHas('userPp', function (Builder $subQuery) {
+					$subQuery->whereNull('deleted_at');
+				});
 				$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
 					$query->whereIn('code', $territoriesCode);
 				});
 				$query->orWhereHas('cities', function (Builder $query) use ($territoriesCode) {
 					$query->whereIn('department_code', $territoriesCode);
 				});
-				$query->whereNotNull('project_id');
+
+
 			});
 
 		$models
@@ -267,6 +319,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		/** @var Collection $model */
 		$models = $this->entity
 			->where(function (Builder $query) {
+				$query->whereHas('userPp', function (Builder $subQuery) {
+					$subQuery->whereNull('deleted_at');
+				});
 				$query->whereHas('attributionAd', function (Builder $subQuery) {
 					$subQuery->whereNull('user_advisor_id');
 					if (auth()->user()->role == 2) {
@@ -279,13 +334,17 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
 			})
 			->orWhere(function (Builder $query) use ($territoriesCode) {
+				$query->whereNotNull('project_id');
+				$query->whereHas('userPp', function (Builder $subQuery) {
+					$subQuery->whereNull('deleted_at');
+				});
 				$query->whereHas('departments', function (Builder $subQuery) use ($territoriesCode) {
 					$subQuery->whereIn('code', $territoriesCode);
 				});
 				$query->orWhereHas('cities', function (Builder $subQuery) use ($territoriesCode) {
 					$subQuery->whereIn('department_code', $territoriesCode);
 				});
-				$query->whereNotNull('project_id');
+
 
 				$query->whereHas('attributionAd', function (Builder $subQuery) {
 					$subQuery->whereNull('user_advisor_id');
@@ -314,14 +373,16 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		/** @var Collection $models */
 		$models = $this->entity
 			->whereNull('project_id')
-			->where(function (Ad $query) use ($territoriesCode) {
+			->where(function (Builder $query) use ($territoriesCode) {
 				$query->filterAdsterritoryLocations($territoriesCode);
 			})
-			->where(function (Ad $query) use ($adStatusId) {
+			->where(function (Builder $query) use ($adStatusId) {
 				$query->whereHas('attributionAd', function (Builder $subQuery) use ($adStatusId) {
 					$subQuery->where('ad_status_id', '=', $adStatusId);
+					$subQuery->whereNotNull('published_on');
 				});
 			})
+			->with('attributionAd')
 			->get();
 		return $models;
 	}
@@ -334,23 +395,29 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 */
 	public function findAllByUserTerritoriesAndDates(array $territoryCodes, array $dates)
 	{
-		$queryAds = Ad::where(function (Builder $builder) use ($territoryCodes) {
-			$builder->whereNotNull('project_id');
-			$builder->whereHas('attributionAd', function (Builder $query) {
+		$queryAds = Ad::where(function (Builder $query) use ($territoryCodes) {
+			$query->whereNotNull('project_id');
+			$query->whereHas('userPp', function (Builder $subQuery) {
+				$subQuery->whereNull('deleted_at');
+			});
+			$query->whereHas('attributionAd', function (Builder $subQuery) {
 				if (auth()->user()->role == 2) {
-					$query->where('user_advisor_id', '=', auth()->user()->id);
+					$subQuery->where('user_advisor_id', '=', auth()->user()->id);
 				} else if (auth()->user()->role >= 3) {
-					$query->where('user_supervisor_id', '=', auth()->user()->id);
+					$subQuery->where('user_supervisor_id', '=', auth()->user()->id);
 				}
 			});
-			$builder->orWhereHas('departments', function (Builder $query) use ($territoryCodes) {
-				$query->whereIn('code', $territoryCodes);
+			$query->orWhereHas('departments', function (Builder $subQuery) use ($territoryCodes) {
+				$subQuery->whereIn('code', $territoryCodes);
 			});
-			$builder->orWhereHas('cities', function (Builder $query) use ($territoryCodes) {
-				$query->whereIn('department_code', $territoryCodes);
+			$query->orWhereHas('cities', function (Builder $subQuery) use ($territoryCodes) {
+				$subQuery->whereIn('department_code', $territoryCodes);
 			});
 		})
 			->where(function (Builder $query) use ($dates) {
+				$query->whereHas('userPp', function (Builder $subQuery) {
+					$subQuery->whereNull('deleted_at');
+				});
 				$query->whereHas('project', function (Builder $subQuery) use ($dates) {
 					$subQuery->whereBetween('created_at', [$dates[0], $dates[1] . " 23:59:59"]);
 				});
@@ -386,19 +453,19 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			->whereHas('attributionAd', function (Builder $query) {
 				$query->whereNotNull('published_on');
 			})
-            ->filterAdTypes([$selectedAdType])
-            ->with($this->getLocationEagerLoading())
+			->filterAdTypes([$selectedAdType])
+			->with($this->getLocationEagerLoading())
 			->get();
 	}
 
-    public function countAllPublished()
-    {
-        return $this->entity
-            ->whereHas('attributionAd', function (Builder $query) {
-                $query->whereNotNull('published_on');
-            })
-            ->count();
-    }
+	public function countAllPublished()
+	{
+		return $this->entity
+			->whereHas('attributionAd', function (Builder $query) {
+				$query->whereNotNull('published_on');
+			})
+			->count();
+	}
 
 	private function getFullEagerLoading()
 	{
@@ -438,42 +505,45 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'jobOfferAd.jobOfferTypes',
 			'jobSeekAd',
 
-            'attributionAd.userAdvisor',
+			'attributionAd.userAdvisor',
 		], $this->getLocationEagerLoading(), $this->getAttributionEagerLoading());
 	}
 
 	private function getDashboardsEagerLoading()
 	{
 		return array_merge([
-            'userPp',
+			'userPp' => function ($query) {
+				$query->withTrashed();
+			},
 			'landSeekAd',
 			'landOfferAd',
 			'jobOfferAd',
 			'jobSeekAd'
-        ], $this->getLocationEagerLoading(), $this->getAttributionEagerLoading());
+		], $this->getLocationEagerLoading(), $this->getAttributionEagerLoading());
 	}
 
 	private function getLocationEagerLoading()
-    {
-        return [
-            'cities',
-            'cities.department',
-            'cities.department.region',
-            'departments',
-            'departments.region',
-            'regions',
-        ];
-    }
+	{
+		return [
+			'cities',
+			'cities.department',
+			'cities.department.region',
+			'departments',
+			'departments.region',
+			'regions',
+		];
+	}
 
-    private function getAttributionEagerLoading()
-    {
-        return [
-            'project',
-            'project.supportStage',
-            'project.supportState',
-            'project.projectStatus',
-            'attributionAd',
-            'attributionAd.adStatus',
-        ];
-    }
+	private function getAttributionEagerLoading()
+	{
+		return [
+			'project',
+			'project.supportStage',
+			'project.supportState',
+			'project.projectStatus',
+			'attributionAd',
+			'attributionAd.adStatus',
+		];
+	}
+
 }

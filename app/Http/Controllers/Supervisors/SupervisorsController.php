@@ -105,7 +105,7 @@ class SupervisorsController extends BaseController
 	public function report()
 	{
 		$ads = $this->adService->findAllAdsInSupervisorTerritories();
-		$projects = $this->projectService->findAllProjectsBySupervisor();
+		$projects = $this->projectService->findAllProjectsInSupervisorTerritories();
 		$vars = $this->getSupervisorReportVars($ads, $projects);
 		return view('pages.supervisors.report', $vars);
 	}

@@ -253,7 +253,7 @@
                     @if(!is_null($currentProjectData))
                         @if($publicProjectDataKey->projectDataValues->count() >0)
                             <div class="select is-fullwidth">
-                                <select name="project_data_key[{{$publicProjectDataKey->id}}]">
+                                <select {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]">
                                     <option selected disabled>Veuillez choisir...</option>
                                     @foreach ($publicProjectDataKey->projectDataValues as $projectDataValue)
                                         @if(isset($currentProjectData->projectDataValue))
@@ -270,16 +270,15 @@
                                     @endforeach
                                 </select>
                             </div>
-
                         @else
-                            <input name="project_data_key[{{$publicProjectDataKey->id}}]" class="input" type="text"
+                            <input {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]" class="input" type="text"
                                    value="{{$currentProjectKeyDataValues->where('project_data_key_id',$publicProjectDataKey->id  )->first()->value}}"
                                    placeholder="Saisir...">
                         @endif
                     @else
                         @if($publicProjectDataKey->projectDataValues->count() >0)
                             <div class="select  is-fullwidth">
-                                <select name="project_data_key[{{$publicProjectDataKey->id}}]">
+                                <select {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]">
                                     <option selected disabled >Veuillez choisir...</option>
                                     @foreach ($publicProjectDataKey->projectDataValues as $projectDataValue)
                                         <option value="{{$projectDataValue->value}}">{{$projectDataValue->value}}</option>
@@ -287,7 +286,7 @@
                                 </select>
                             </div>
                         @else
-                            <input name="project_data_key[{{$publicProjectDataKey->id}}]" class="input" type="text"
+                            <input {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]" class="input" type="text"
                                    placeholder="Saisir...">
                         @endif
                     @endif
@@ -298,7 +297,7 @@
         <div class="control">
             <input type="hidden" name="ad_id" value="{{$ad->id}}">
             <input type="hidden" name="user_id" value="{{auth()->id()}}">
-            <button class="button is-link">
+            <button {{$ad->userPp->trashed()? 'disabled' : ''}} class="button is-link">
 						 <span class="icon is-small">
 						  <i class="fas fa-save"></i>
 						</span>

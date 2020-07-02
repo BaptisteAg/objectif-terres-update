@@ -48,9 +48,23 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 	public function findAllByModeratorIdAndTerritories(array $territoriesCodes)
 	{
 		return $this->entity
-			->where(["user_moderator_id" => auth()->id()])
+			->where(function (Builder $query) {
+				$query->where("user_moderator_id", '=', auth()->id());
+				$query->whereNotNull('ad_status_id');
+				$query->whereHas('ad', function (Builder $q) {
+					$q->whereNull('project_id');
+					$q->whereHas('userPp', function (Builder $builder) {
+						$builder->whereNull('deleted_at');
+					});
+				});
+			})
 			->orWhere(function (Builder $query) use ($territoriesCodes) {
 				$query->whereHas('ad', function (Builder $subQuery) use ($territoriesCodes) {
+					$subQuery->whereNotNull('ad_status_id');
+					$subQuery->whereNull('project_id');
+					$subQuery->whereHas('userPp', function (Builder $q) {
+						$q->whereNull('deleted_at');
+					});
 					$subQuery->whereHas('departments', function (Builder $builder) use ($territoriesCodes) {
 						$builder->whereIn('code', $territoriesCodes);
 					});

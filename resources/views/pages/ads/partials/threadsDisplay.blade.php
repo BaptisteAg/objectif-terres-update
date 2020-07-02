@@ -100,7 +100,7 @@
 											@message-reply-success="onMessageReplySuccess"
 											@on-upload-success="onThreadClick"
 											v-bind::show-response-type="isUserModerator"
-											v-bind:active-thread-id="activeThread"
+											v-bind:active-thread-id="activeThreadId"
 											:show-response-type="true"
 											:response-templates="{{json_encode($responseTemplates)}}"
 									>
@@ -160,7 +160,7 @@
 											@message-reply-success="onMessageReplySuccess"
 											@on-upload-success="onThreadClick"
 											v-bind::show-response-type="isUserModerator"
-											v-bind:active-thread-id="activeThread"
+											v-bind:active-thread-id="activeThreadId"
 											:show-response-type="false"
 											:response-templates="{{json_encode($responseTemplates)}}"
 									>
@@ -239,7 +239,7 @@
 										:user-id="{{auth()->id()}}"
 										@on-upload-success="onMessageReplySuccess"
 										@on-thread-click="onThreadClick"
-										v-bind:active-thread-id="activeThread"
+										v-bind:active-thread-id="activeThreadId"
 								>
 								</form-message-reply>
 							</div>

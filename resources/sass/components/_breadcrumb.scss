@@ -1,0 +1,31 @@
+/*
+--------------------
+BREADCRUMBS
+--------------------
+*/
+
+.breadcrumb {
+  padding: 1em 0;
+  font-size: 0.875em;
+  flex-wrap: wrap;
+
+  &__home {
+    align-self: center;
+  }
+  li:not(:first-child):before {
+    content: ">";
+    margin: 0 0.5em;
+    color: #579ea5;
+  }
+
+  a.breadcrumb__link {
+    color: $primary;
+    padding: 0 0.2em;
+    &:hover,
+    &:focus,
+    &:active {
+      text-decoration: underline;
+    }
+  }
+}
+

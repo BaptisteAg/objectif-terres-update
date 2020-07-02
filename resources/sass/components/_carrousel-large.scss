@@ -1,14 +1,22 @@
 .carousel-large{
-    position: relative;
-    padding: 0px;
+  position: relative;
+  padding: 0;
+  max-height: 700px;
+  .card-content{
+    padding:0;
+  }
+  .slider{
     max-height: 700px;
-    .card-content{
-        padding:0px;
-    }
-    .slider{
-        max-height: 700px;
-    }
-    .media{
-        max-height: 700px;
-    }
+  }
+  .media{
+    max-height: 700px;
+  }
+}
+
+
+.carousel {
+  position: relative;
+  .slider {
+    position: initial;
+  }
 }

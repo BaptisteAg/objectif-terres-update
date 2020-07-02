@@ -65,7 +65,7 @@
 							<p>Nouvelle demande d'accompagnement</p>
 						</div>
 						<div class="message-body">
-							Une nouvelle demande d'accompagnemetn  vient d'être créée par
+							Une nouvelle demande d'accompagnement  vient d'être créée par
 							<a href="{{route('user.show', $notification->data['user_pp_id'])}}">{{$notification->data['user_pp_first_name']}} {{$notification->data['user_pp_name']}}</a>.
 
 							<form action="{{route('notification.update', $notification->id)}}" method="POST">

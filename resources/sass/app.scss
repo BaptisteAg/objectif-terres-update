@@ -5,7 +5,6 @@
 // Variables
 @import "variables";
 
-
 //import framework bulma
 @import "~bulma/bulma";
 @import "~bulma-accordion/dist/css/bulma-accordion";
@@ -37,6 +36,7 @@
 @import "components/buttons";
 @import "components/step-guide";
 @import "components/carrousel-large";
+@import "components/carousel";
 @import "components/downloadPDF";
 @import "components/video";
 @import "components/testimony";
@@ -61,8 +61,9 @@
 @import "components/messages";
 @import "components/dropzone";
 @import "components/tags";
+@import "components/breadcrumb";
 @import "components/leaflet";
-
+@import "components/accordion";
 
 // Pages
 @import "pages/ads/ads";
@@ -74,7 +75,6 @@
 @import "pages/cms/contactez-nous";
 @import "pages/research/research";
 @import "pages/threads/threads";
-
 
 // Keyframes
 @import "keyframes/progress-circle";

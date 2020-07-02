@@ -53,6 +53,15 @@ class ThreadService
 		$this->messagesRepository = $messagesRepository;
 	}
 
+	/**
+	 * @param int $threadId
+	 * @return Thread
+	 */
+	public function find(int $threadId)
+	{
+		return $this->repository->find($threadId);
+	}
+
 
 	/**
 	 * @return Thread[]
@@ -100,7 +109,6 @@ class ThreadService
 
 		foreach ($allMessagesInThread as $message) {
 			$date = Carbon::parse($message->created_at)->format('m/d/Y');
-
 		}
 
 		return $allMessagesInThread;
@@ -156,14 +164,13 @@ class ThreadService
 					$this->adRepository->find($data["ad_id"])->user_pp_id,
 					$data['supervisor_id']
 				];
-			} elseif (isset($data['advisor_id'])){
+			} elseif (isset($data['advisor_id'])) {
 				//in case of new thread created in advisor's support request dashboard
 				$threadParticipants = [
 					$this->adRepository->find($data["ad_id"])->user_pp_id,
 					$data['advisor_id']
 				];
-			}
-			else {
+			} else {
 				//in case of new message send from the ad view
 				$threadParticipants = [
 					$this->adRepository->find($data["ad_id"])->user_pp_id,

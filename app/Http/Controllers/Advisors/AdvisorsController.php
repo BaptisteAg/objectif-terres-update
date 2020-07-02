@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Advisors;
 
 use App\Exports\Advisors\AdvisorsExport;
 use App\Models\City;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
@@ -74,14 +75,29 @@ class AdvisorsController extends BaseController
 	 */
 	public function showSupport(int $adId)
 	{
-		$ad = $this->adService->find($adId);
+		$ad = $this->adService->findWithTrashedUser($adId);
 		if (!$ad->project()->exists()) {
 			abort(404);
 		}
 		$thread = $this->advisorsService->findSupportRequestThread($ad->id);
-		if (!isset($thread)) {
+		if (!isset($thread) && auth()->id() === $ad->attributionAd->user_advisor_id) {
 			$thread = $this->advisorsService->createSupportRequestThread($ad->id);
 		}
+
+		if (auth()->id() === $ad->attributionAd->user_advisor_id) {
+			$thread = $this->advisorsService->findSupportRequestThread($ad->id);
+			if (!isset($thread)) {
+				$thread = $this->advisorsService->createSupportRequestThread($ad->id);
+			}
+		} else {
+			$data = [
+				'user_id' => $ad->attributionAd->user_advisor_id,
+				'ad_id' => $ad->id,
+			];
+			$thread = $this->advisorsService->findThreadAdvisorInChargeOfSupportRequest($data);
+		}
+
+
 		$this->advisorsService->handleSupportDashboardNotifications($ad);
 
 		$vars = $this->getSupportDashboardVars($ad);
@@ -167,5 +183,15 @@ class AdvisorsController extends BaseController
 		$this->advisorsService->uploadDocument($request->input());
 
 		return back()->with('success', 'Vos documents ont bien été téléversés');
+	}
+
+	/**
+	 * @param User $user
+	 * @return RedirectResponse
+	 */
+	public function blockUser(Request $request)
+	{
+		$this->advisorsService->blockUser($request->input('user_pp_id'));
+		return back()->with('success', 'L\'utilisateur a bien été bloqué');
 	}
 }

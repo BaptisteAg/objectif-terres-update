@@ -61,6 +61,7 @@ abstract class BaseController
 		$productionGenres = ProductionGenre::all();
 		$bioCertifications = BioCertification::all();
 
+
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
@@ -90,24 +91,27 @@ abstract class BaseController
 	protected function getSupervisorReportVars(Collection $ads, Collection $projects): array
 	{
 		$numberOfAds = $ads->count();
-		$numberOfAdsByCategories = $this->adService->countAdsByCategories($ads);
-		$percentageOfAdsByAdStatus = $this->adService->calculatePercentageOfAdsByAdStatus($ads);
-		$numberOfValidateAds = $this->adService->findAllValidateAdsInSupervisorTerritories()->count();
-		$numberOfUsersPp = $this->adService->findAllAdsAndProjectsGroupByUserPp()->count();
-		$numberOfProjects = $projects->count();
-		$numberOfProjectsByCategories = $this->projectService->countProjectsByCategories($projects);
-		$percentageOfProjectsByProjectStatus = $this->projectService->calculatePercentageOfProjectsByProjectStatus($projects);
+		$publishedAdsInEachDepartmentsByYears = $this->adService->groupAdsBySupervisorDepartments($ads);
+		$publishedAdsInEachRegionsByYears = $this->adService->groupAdsBySupervisorRegions($ads);
+		$numberOfAdsByAdStatus = $this->adService->countAdsByAdStatus($ads);
+		$validatedAdsInYearGroupByMonth = $this->adService->groupAllValidatedAdsInYearByMonth($ads);
 
+		$numberOfProjects = $projects->count();
+		$projectsBySupportStages = $this->projectService->groupProjectsByStatus($projects, "support_stage_id", true);
+		$projectsBySupportStates = $this->projectService->groupProjectsByStatus($projects, "support_state_id", false);
+		$projectsByProjectStatus = $this->projectService->groupProjectsByStatus($projects, "project_status_id", true);
+		$projectsInYearGroupByMonth = $this->projectService->groupAllProjectsInYearByMonth($projects);
 		return compact(
 			'numberOfAds',
-			'numberOfAdsByCategories',
-			'percentageOfAdsByAdStatus',
-			'numberOfValidateAds',
-			'numberOfUsersPp',
+			'publishedAdsInEachDepartmentsByYears',
+			'publishedAdsInEachRegionsByYears',
+			'numberOfAdsByAdStatus',
+			'validatedAdsInYearGroupByMonth',
+			'projectsBySupportStages',
+			'projectsBySupportStates',
+			'projectsByProjectStatus',
 			'numberOfProjects',
-			'numberOfProjectsByCategories',
-			'percentageOfProjectsByProjectStatus'
+			'projectsInYearGroupByMonth'
 		);
 	}
-
 }
