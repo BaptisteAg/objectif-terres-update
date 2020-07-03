@@ -250,10 +250,13 @@
                             </p>
                         </div>
                         @php
-                            if(!empty($isSupportRequest)) {
+                            if(empty($isSupportRequest)) {
                                 $tooltip = "Pour donner envie à un cédant ou propriétaire de vous proposer " .
                                             "du foncier, décrivez votre projet, son histoire, ses valeurs, " .
                                             "votre date d'installation envisagée, etc.";
+                            }
+                            else {
+                                $tooltip = "Décrivez votre projet, son histoire, ses valeurs, votre date d'installation envisagée, etc";
                             }
                         @endphp
                         @include('pages.ads.partials.inputs.about_project_content', ['tooltip' => $tooltip])
