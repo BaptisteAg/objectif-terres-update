@@ -149,24 +149,23 @@ class AdService
 
 		$adRandomRegionId = array_rand($this->getAdRegionIds($ad));
 
-		if ($isSupportRequest) {
-			$pendingStatus = AdStatus::PENDING_ID;
-			$advisor = $this->userService->findRandomByRoleAndRegion(3, $adRandomRegionId);
-			if (!$advisor) {
-				throw new \Exception('A supervisor could not be found for an attribution');
-			}
-			$attributionAdData['user_supervisor_id'] = $advisor->id;
-
-		} else {
-			$pendingStatus = AdStatus::PENDING_MODERATION_STATUS_ID;
-			// Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
-			$moderator = $this->userService->findRandomByRoleAndRegion(1, $adRandomRegionId);
-			if (!$moderator) {
-//				throw new \Exception('A moderator could not be found for an attribution');
-				$attributionAdData['user_moderator_id'] = User::where('role', '=', 1)->first()->id;
-			}
-
-		}
+        if ($isSupportRequest) {
+            $pendingStatus = AdStatus::PENDING_ID;
+            $advisor = $this->userService->findRandomByRoleAndRegion(3, $adRandomRegionId);
+            if (!$advisor) {
+                throw new \Exception("Aucun responsable n'a été trouvé dans votre région. Veuillez sauvegarder votre demande et nous contacter.");
+            }
+            $attributionAdData['user_supervisor_id'] = $advisor->id;
+        }
+        else {
+            $pendingStatus = AdStatus::PENDING_MODERATION_STATUS_ID;
+            // Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
+            $moderator = $this->userService->findRandomByRoleAndRegion(1, $adRandomRegionId);
+            if (!$moderator) {
+                throw new \Exception("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
+            }
+            $attributionAdData['user_moderator_id'] = $moderator->id;
+        }
 
 		$attributionAdData['ad_status_id'] = $pendingStatus;
 		$attributionAdData['ad_id'] = $ad->id;

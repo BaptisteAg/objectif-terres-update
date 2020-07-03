@@ -38,9 +38,9 @@
 						@enderror
 					</div>
 
-					<div class="field is-grouped">
+					<div class="field is-grouped is-pulled-right">
 						<div class="control">
-							<button type="submit" class="button is-link">Envoyer le nouveau mot de passe</button>
+							<button type="submit" class="button is-link">Réinitialiser mon mot de passe</button>
 						</div>
 					</div>
 					{!! Form::close() !!}

@@ -68,7 +68,13 @@
                         {{--                                </div>--}}
                         {{--                            </div>--}}
 
-                        <div class="field is-grouped">
+                        <div class="field is-grouped is-flex" style="justify-content: space-between;">
+                            <div class="control">
+                                <a href="{{ route('password.request') }}" class="button basic secondary form-button">
+                                    Mot de
+                                    passe
+                                    oublié ?</a>
+                            </div>
                             <div class="control">
                                 <button type="submit" class="button basic primary form-button" :disabled="isLoading">
                                     <template v-if="isLoading">
@@ -85,14 +91,6 @@
                                     </template>
                                 </button>
                             </div>
-                            @if (Route::has('password.request'))
-                                <div class="control" v-show="hasPassedCheckpoint">
-                                    <a href="{{ route('password.request') }}" class="button basic secondary form-button">
-                                        Mot de
-                                        passe
-                                        oublié ?</a>
-                                </div>
-                            @endif
                         </div>
                         {!! Form::close() !!}
                     </login-form>
