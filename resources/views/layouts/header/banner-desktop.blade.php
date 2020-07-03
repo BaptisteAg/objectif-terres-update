@@ -125,7 +125,7 @@
 
             </div>
         </div>
-        <div v-show="isFormOpen" class="has-ba">
+        <div v-show="isFormOpen" class="has-ba" style="display:none">
             <div class="container-custom bg-l-pearl"
                  v-if="adCategorySelected === 'job'">
                 @include('layouts.partials.headerJobResearch')

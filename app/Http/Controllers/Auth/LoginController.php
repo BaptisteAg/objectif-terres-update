@@ -67,4 +67,24 @@ class LoginController extends Controller
         return response()->json(['redirect' => false]);
     }
 
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
+     */
+    public function logout(Request $request, SalesforceService $salesforceService)
+    {
+        if($salesforceService->emailExists(auth()->user()->email, 'User')) {
+            return redirect('/deconnexion/sso');
+        }
+
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return $this->loggedOut($request) ?: redirect('/');
+    }
 }

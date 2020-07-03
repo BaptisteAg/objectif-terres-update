@@ -61,7 +61,7 @@
                         </div>
 
                         <div class="field">
-                            {!! Form::label('land_seek_farms_and_buildings', 'Description du terrain recherché', ['class' => 'label']); !!}
+                            {!! Form::label('land_seek_farms_and_buildings', 'Habitation(s) et bâti(s)', ['class' => 'label']); !!}
 
                             <table class="table">
                                 <thead>

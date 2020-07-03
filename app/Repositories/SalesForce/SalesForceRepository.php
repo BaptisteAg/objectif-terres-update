@@ -76,7 +76,7 @@ class SalesForceRepository
     public function update($objectName, $id, array $params)
     {
         return $this->forrest->sobjects($objectName. '/' . $id,[
-            'method' => 'post',
+            'method' => 'patch',
             'body'   => $params
         ]);
     }

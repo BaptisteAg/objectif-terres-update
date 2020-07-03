@@ -5,16 +5,25 @@
         <div class="column is-half">
             <div class="field" v-if="displaySelection">
 
-                <label class="label" v-if="isSupportRequest">De quel accompagnement avez-vous besoin ?</label>
-                <label class="label" v-else>Quel type d'annonce souhaitez-vous publier ?</label>
-
-                <div class="columns adTypes">
+                <div class="is-pulled-left">
+                    <label class="label" v-if="isSupportRequest">De quel accompagnement avez-vous besoin ?</label>
+                    <label class="label" v-else>Quel type d'annonce souhaitez-vous publier ?</label>
+                </div>
+                <div class="is-pulled-right">
+                    <a href="/faq">
+                        Aide
+                    </a>
+                </div>
+                <div class="clearfix"></div>
+                <div class="columns adTypes" style="clear:both">
                     <div class="column adType"
                          v-for="(adType,adTypeValue) in adTypes"
                          :class="{active: value === adTypeValue}"
                          @click="_ => setAdType(adTypeValue)">
                         <i :class="'fa-4x fa '+adType.icon"></i><br>
                         {{ adType.label }}
+                        <br><br>
+                        <small>Ex :{{ adType.examples }}</small>
                     </div>
                 </div>
             </div>
@@ -37,8 +46,8 @@
     }
 
     .adTypes-container {
-        background: rgba(0,0,0,0.05);
-        padding-bottom:40px;
+        background: rgba(0, 0, 0, 0.05);
+        padding-bottom: 40px;
     }
 
     .adType {
@@ -88,22 +97,26 @@
                 let extraAdTypes = this.isSupportRequest ? {} : {
                     job_seek: {
                         label: "Je cherche une opportunité professionnelle",
-                        icon: "fa-universal-access"
+                        icon: "fa-universal-access",
+                        examples: "Emploi, stage, associé.."
                     },
                     job_offer: {
                         label: "Je propose une opportunité professionnelle",
-                        icon: "fa-universal-access"
+                        icon: "fa-universal-access",
+                        examples: "Emploi, stage, associé.."
                     }
                 };
 
                 return {
                     land_seek: {
                         label: "Je cherche du foncier agricole",
-                        icon: "fa-home"
+                        icon: "fa-home",
+                        examples: "Terrain, ferme, parcelle..."
                     },
                     land_offer: {
                         label: "Je propose du foncier agricole",
-                        icon: "fa-home"
+                        icon: "fa-home",
+                        examples: "Terrain, ferme, parcelle..."
                     },
                     ...extraAdTypes
                 }
