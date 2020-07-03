@@ -123,7 +123,7 @@
                            class="button round small secondary number-sticker-wrap "
                            title="Consulter mes messages">
                             <span class="button__icon"><i class="fas fa-envelope"></i></span>
-                            @if($numberOfUnreadMessages >=0)
+                            @if($numberOfUnreadMessages >0)
                                 <span class="number-sticker">{{$numberOfUnreadMessages}}</span>
                             @endif
                         </a>

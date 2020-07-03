@@ -2,16 +2,13 @@
 
 @section ('title', 'Mon espace modérateur')
 
-@section('header')
-    @include('components.moderator-tabs')
-@endsection
-
 @section('main-content')
-    <div class="section pt-0">
-        <h1 class="title is-2 has-text-link">Bienvenue sur votre espace modérateur <span
-                    class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
+    <div class="section pt-10">
+        <h1 class="title is-2 has-text-link">Bienvenue sur votre espace modérateur
+            <span class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span>
+        </h1>
 
-        @if(! auth()->user()->notifications->isEmpty())
+
             @if($numberOfAdsToModerate !== 0 || $numberOfUnreadMessages !==0)
                 <div id="notification-moderator" class="notification has-background-info">
                     <button id="close-notification-moderator" class="delete"></button>
@@ -49,9 +46,11 @@
                     @endif
                 </div>
             @endif
-        @endif
+
+        @include('components.moderator-tabs')
+
         {{Form::open(['route'=>'moderator.show', 'method'=>'get'])}}
-        <div id="vue-form-moderator">
+        <div id="vue-form-moderator" class="mt-50">
             @include('components.dashboard-filters')
         </div>
         {{Form::close()}}
@@ -176,7 +175,12 @@
                                     </td>
                                     <td>
                                         @if(isset($attributionAd->userModerator))
-                                            {{$attributionAd->userModerator->first_name}} {{$attributionAd->userModerator->name}}
+                                            @if($attributionAd->user_moderator_id === auth()->id())
+                                                <strong>{{$attributionAd->userModerator->first_name}} {{$attributionAd->userModerator->name}}</strong>
+
+                                            @else
+                                                {{$attributionAd->userModerator->first_name}} {{$attributionAd->userModerator->name}}
+                                            @endif
                                         @else
                                             Modérateur non attribué
                                         @endif
@@ -216,7 +220,7 @@
                                         @endif
                                     </td>
                                     <td><a href="{{route('ads.show', $attributionAd->ad->id)}}"><span>
-                                            @if($attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID and $attributionAd->userModerator->id === auth()->id())
+                                                @if($attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID and $attributionAd->userModerator->id === auth()->id())
                                                     <i class="fas fa-ruler"></i>
                                                     <span>Modérer l'annonce</span>
                                                 @else

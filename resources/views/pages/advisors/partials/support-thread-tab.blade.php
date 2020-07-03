@@ -26,6 +26,7 @@
                             @on-upload-success="refreshThread"
                             :show-response-type="true"
                             :response-templates="{{json_encode($responseTemplates)}}"
+                            v-bind:is-thread-related-to-user="isThreadRelatedToUser"
                     >
                     </form-message-reply>
                 @endif

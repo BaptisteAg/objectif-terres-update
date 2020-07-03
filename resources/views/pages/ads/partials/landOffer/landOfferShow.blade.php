@@ -10,18 +10,6 @@
 			</nav>
 		@endif
 		<h1 class="page__title">{{$ad->title}}</h1>
-		@auth
-			@if(auth()->user()->role >= 1)
-				@if($ad->project()->exists())
-					@include ('pages.ads.partials.attribution-project-options')
-				@else
-					@include('pages.ads.partials.moderator-options')
-				@endif
-			@endif
-			@if(auth()->user()->id === $ad->user_pp_id)
-				@include('pages.ads.partials.ad-status-message-display')
-			@endif
-		@endauth
 		<div class="columns">
 			@include('pages.ads.partials.show-images')
 			<div class="column">

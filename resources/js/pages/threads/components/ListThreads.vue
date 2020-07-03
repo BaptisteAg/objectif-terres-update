@@ -9,9 +9,9 @@
             </template>
             <button v-if="isUserModerator" @click="onNewThreadClick" class="open-modal-new-message button primary basic"
                     type="button">
-								 <span class="icon is-small">
-								<i class="fa fa-plus" aria-hidden="true"></i>
-								</span>
+                <span class="icon is-small">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                </span>
                 <span> Créer une discussion</span>
             </button>
         </div>
@@ -20,7 +20,7 @@
                 Vos discussions
             </p>
             <p class="menu-label" v-else>
-                Vos fils de discussion concernant cette annonce
+                Fils de discussion concernant cette annonce
             </p>
             <ul class="menu-list">
                 <li v-for="thread in threads">
@@ -30,42 +30,44 @@
                                 <template v-for="threadUnreadMessages in threadsUnreadMessages">
                                     <span v-if="threadUnreadMessages.id === thread.id "
                                           class="icon text_danger">
-                                    <i class="fas fa-circle has-"></i>
+                                        <i class="fas fa-circle has-"></i>
                                     </span>
                                 </template>
                                 <span class="icon">
-                             <i class="fas fa-users"></i>
-                            </span>
+                                    <i class="fas fa-users"></i>
+                                </span>
                                 <span>{{thread.title}}</span></a>
                         </template>
                         <template v-else-if="thread.ad_id !== null">
                             <template v-if="thread.ad.user_pp_id === userId">
                                 <a @click="onThreadClick(thread.id)">
                                     <template v-for="threadUnreadMessages in threadsUnreadMessages">
-                                            <span v-if="threadUnreadMessages.id === thread.id "
-                                                  class="icon text_danger">
+                                        <span v-if="threadUnreadMessages.id === thread.id "
+                                              class="icon text_danger">
                                             <i class="fas fa-circle has-"></i>
-                                            </span>
+                                        </span>
                                     </template>
                                     <span class="icon">
-                                             <i class="fas fa-user"></i>
-                                         </span>
-                                    <span>{{thread.title}}
-                                        </span>
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                    <span>{{thread.title}}</span>
+                                    <span class="text_size small">{{thread.ad.title}}</span>
                                 </a>
                             </template>
                             <template v-else>
                                 <a @click="onThreadClick(thread.id)">
                                     <template v-for="threadUnreadMessages in threadsUnreadMessages">
-                                    <span v-if="threadUnreadMessages.id === thread.id "
-                                          class="icon text_danger">
-                                    <i class="fas fa-circle"></i>
-                                    </span>
+                                        <span v-if="threadUnreadMessages.id === thread.id "
+                                              class="icon text_danger">
+                                            <i class="fas fa-circle"></i>
+                                        </span>
                                     </template>
                                     <span class="icon">
-                            <i class="far fa-newspaper"></i>
-                            </span>
+                                        <i class="far fa-newspaper"></i>
+                                    </span>
                                     <span>{{thread.title}}</span>
+                                    <br>
+                                    <span class="text_size small">{{thread.ad.title}}</span>
                                 </a>
                             </template>
                         </template>
@@ -74,28 +76,45 @@
                                 <template v-for="threadUnreadMessages in threadsUnreadMessages">
                                     <span v-if="threadUnreadMessages.id === thread.id"
                                           class="icon text_danger">
-                                    <i class="fas fa-circle"></i>
+                                        <i class="fas fa-circle"></i>
                                     </span>
                                 </template>
                                 <span class="icon">
-                                     <i class="fas fa-user"></i>
+                                    <i class="fas fa-user"></i>
                                 </span>
                                 <span>{{thread.title}}</span></a>
                         </template>
                     </template>
                     <template v-else>
-                        <a @click="onThreadClick(thread.id)">
-                            <template v-for="threadUnreadMessages in threadsUnreadMessages">
-                                            <span v-if="threadUnreadMessages.id === thread.id "
-                                                  class="icon text_danger">
-                                            <i class="fas fa-circle has-"></i>
-                                            </span>
-                            </template>
-                            <span class="icon">
-                                             <i class="fas fa-user"></i>
-                                         </span>
-                            <span>{{thread.title}}</span>
-                        </a>
+                        <template v-if="isUserModerator">
+                            <a @click="onThreadClick(thread.id)">
+                                <template v-for="threadUnreadMessages in threadsUnreadMessages">
+                                    <span v-if="threadUnreadMessages.id === thread.id "
+                                          class="icon text_danger">
+                                        <i class="fas fa-circle "></i>
+                                    </span>
+                                </template>
+                                <span class="icon">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <span>{{thread.title}}</span>
+                            </a>
+                        </template>
+                        <template v-else>
+                            <a @click="onThreadClick(thread.id)">
+                                <template v-for="threadUnreadMessages in threadsUnreadMessages">
+                                    <span v-if="threadUnreadMessages.id === thread.id "
+                                          class="icon text_danger">
+                                        <i class="fas fa-circle has-"></i>
+                                    </span>
+                                </template>
+                                <span class="icon">
+                                    <i class="fas fa-newspaper"></i>
+                                </span>
+                                <span>{{thread.title}}</span>
+                            </a>
+                        </template>
+
                     </template>
                 </li>
             </ul>

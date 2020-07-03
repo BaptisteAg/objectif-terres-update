@@ -54,6 +54,7 @@
 						v-bind:form-url="formUrl"
 						v-bind:ad-id="adIdShow"
 						v-bind:attribution-ad-id="attributionAd"
+						accept-ad-message = "{{\App\Models\AttributionAd::VALIDATION_MESSAGE}}"
 				>
 				</moderation-modal>
 			</div>
@@ -101,6 +102,7 @@
 						v-bind:form-url="formUrl"
 						v-bind:ad-id="adIdShow"
 						v-bind:attribution-ad-id="attributionAd"
+						accept-ad-message = "{{\App\Models\AttributionAd::VALIDATION_MESSAGE}}"
 				>
 				</moderation-modal>
 			</div>

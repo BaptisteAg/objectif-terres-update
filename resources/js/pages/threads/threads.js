@@ -18,6 +18,7 @@ Vue.component('vue-threads', {
         isDisplayInThreadPage: Boolean,
         isUserAdOwner: Boolean,
         userRole: '',
+        userId: "",
     },
     data() {
         return {
@@ -29,7 +30,8 @@ Vue.component('vue-threads', {
             isDisplay: this.isDisplayInThreadPage,
             isUserLoggedAdOwner: this.isUserLoggedAdOwner,
             isUserModerator: false,
-            usersSelected: []
+            usersSelected: [],
+            isThreadRelatedToUser: false,
         }
     },
     mounted() {
@@ -52,6 +54,7 @@ Vue.component('vue-threads', {
                     this.activeThread = results.thread;
                     this.initialLoading = false;
                     this.messagesLoading = false;
+                    this.checkUserRelatedToThread(this.messages)
                 })
         },
         onMessageReplySuccess(message) {
@@ -60,6 +63,15 @@ Vue.component('vue-threads', {
 
         onNewThreadClick() {
             this.$refs.newMessageModal.classList.add('is-active')
+        },
+
+        checkUserRelatedToThread(messages) {
+            messages[0].thread.users.some((user) => {
+                if (user.id === this.userId) {
+                    return this.isThreadRelatedToUser = true;
+                }
+               return this.isThreadRelatedToUser = false;
+            });
         }
     },
 });
