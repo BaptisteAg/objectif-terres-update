@@ -29,3 +29,15 @@
 .custom-card.custom-card-image {
   color: $primary;
 }
+
+.card-ads {
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  .card-footer {
+    border: none;
+    .card-footer-item {
+      border: none;
+    }
+  }
+ }

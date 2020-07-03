@@ -102,7 +102,7 @@
 							</div>
 						@endif
 					</div>
-					@include('pages.ads.partials.buttonsFavoriteAndMessage')
+					@include('pages.ads.partials.buttons-favorite-and-message')
 				</div>
 			</div>
 		</div>

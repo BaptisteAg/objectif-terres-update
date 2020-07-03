@@ -121,6 +121,14 @@ abstract class BaseController extends Controller
 		$user = auth()->user();
 		if (isset($user)) {
 			$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad->id);
+
+            $threads = $this->threadService->findThreadAlreadyExist($user->id, $ad->id);
+
+            $data = array(
+                "ad_id" => $ad->id,
+                "user_id" => $user->id,
+            );
+            $favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
 		}
 
 		if ($user && $user->role >= 1) {
@@ -163,12 +171,6 @@ abstract class BaseController extends Controller
 					$responseTemplates = ResponseTemplate::all();
 					$advisorUsers = $this->userService->findAllAdvisorsAndSupervisors();
 				}
-				$threads = $this->threadService->findThreadAlreadyExist($user->id, $ad->id);
-				$data = array(
-					"ad_id" => $ad->id,
-					"user_id" => $user->id,
-				);
-				$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
 			}
 		}
 		return compact(

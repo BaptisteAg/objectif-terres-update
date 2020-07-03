@@ -73,7 +73,6 @@
                     <li><span class="breadcrumb__link">{{$ad->title}}</span></li>
                 </ul>
             </nav>
-            <h1 class="title is-1 has-text-link has-text-centered">{{$ad->title}}</h1>
             @auth
                 @if(auth()->user()->role >= 1)
                     @if($ad->project()->exists())
@@ -86,6 +85,7 @@
                     @include('pages.ads.partials.ad-status-message-display')
                 @endif
             @endauth
+            <h1 class="title is-1 has-text-link has-text-centered">{{$ad->title}}</h1>
             <div class="ads-content">
                 @if($ad->ad_type === 'landSeek')
                     @include('pages.ads.partials.landSeek.landSeekShow')
@@ -102,6 +102,7 @@
             </div>
         </div>
     </section>
+    @include('components.support-terre-liens')
 @endsection
 
 @section('script')

@@ -1,28 +1,7 @@
-<!--<section class="section pt-0">
-    <div class="container ">
-        <nav class="breadcrumb" aria-label="breadcrumbs">
-            <ul>
-                <li><a class="breadcrumb__link" href="#"><?=empty($isSupportRequest) ? 'Annonces' : 'Accompagnement'?></a></li>
-                <li><a class="breadcrumb__link" href="#">Recherches foncières</a></li>
-            </ul>
-        </nav>
-        <h1 class="title is-2 has-text-link">{{$ad->title}}</h1> -->
-{{--        @auth--}}
-{{--            @if(auth()->user()->role >= 1)--}}
-{{--                @if($ad->project()->exists())--}}
-{{--                    @include ('pages.ads.partials.attribution-project-options')--}}
-{{--                @else--}}
-{{--                    @include('pages.ads.partials.moderator-options')--}}
-{{--                @endif--}}
-{{--            @endif--}}
-{{--            @if(auth()->user()->id === $ad->user_pp_id)--}}
-{{--                @include('pages.ads.partials.ad-status-message-display')--}}
-{{--            @endif--}}
-{{--        @endauth--}}
         <div class="columns is-multiline mb-50">
             @include('pages.ads.partials.show-images')
-            <div class="column is-one-third">
-                <div class="card">
+            <div class="column is-half is-flex-tablet">
+                <div class="card is-flex-tablet card-ads">
                     <div class="card-content">
                         <div class="content">
                             @if($ad->is_draft)
@@ -55,11 +34,11 @@
                                 @endguest()
                             </p>
                         </div>
-                        <div class="content">
-                            <p><span class="is-size-5 is-capitalized ad-show-feature-label">Catégorie : </span><span
-                                        class="subtitle">{{$ad->ad_type_full_name}}</span></p>
+{{--                        <div class="content">--}}
+{{--                            <p><span class="is-size-5 is-capitalized ad-show-feature-label">Catégorie : </span><span--}}
+{{--                                        class="subtitle">{{$ad->ad_type_full_name}}</span></p>--}}
 
-                        </div>
+{{--                        </div>--}}
                         <div class="content">
                             <p>
                                 <span class="is-size-5 is-capitalized ad-show-feature-label">Surface recherchée (en ha)</span>
@@ -78,6 +57,18 @@
                         </div>
 
                         <div class="content">
+                            <p><span class="is-size-5 is-capitalized ad-show-feature-label">Habitation(s) et bâti(s) recherché(s) : </span><br>
+                                @if($ad->landSeekAd->buildings)
+                                    @foreach($ad->landSeekAd->buildings as $building)
+                                        @if($building->requirement->label !== "Indifférent")
+                                        <span class="subtitle">{{ $building->buildingType->label }}</span> <i class="fas fa-arrow-right"></i><span class="subtitle"> {{ $building->requirement->label }}</span><br>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </p>
+                        </div>
+
+                        <div class="content">
                             @if(count($ad->cities))
                                 <p>
 									<span class="is-size-5 ad-show-feature-label">
@@ -86,24 +77,24 @@
                                             (dans un rayon de {{$ad->locationable_radius}}km)
                                         @endif
 										:
-									</span><br>
+									</span>
                                     @foreach($ad->zipCodesByCity as $city => $zipCodes)
-                                        <span class="subtitle">{{$city}} ({{ $zipCodes->implode(', ') }})</span><br>
+                                        <span class="subtitle">{{$city}} ({{ $zipCodes->implode(', ') }})@if(!$loop->last), @endif</span>
                                     @endforeach
                                 </p>
                             @endif
 
                             @if(count($ad->departments))
                                 <p>
-                                    <span class="is-size-5 is-capitalized ad-show-feature-label">Départements : </span><br>
-                                    <span class="subtitle"> {{$ad->departments->pluck('name')->implode(', ') }}</span>
+                                    <span class="is-size-5 is-capitalized ad-show-feature-label">Départements : </span>
+                                    <span class="subtitle"> {{ $ad->departmentsList() }}</span>
                                 </p>
                             @endif
 
                             @if(count($ad->regions))
                                 <p>
-                                    <span class="is-size-5 is-capitalized ad-show-feature-label">Régions : </span><br>
-                                    <span class="subtitle">{{$ad->regions->pluck('name')->implode(', ') }}</span>
+                                    <span class="is-size-5 is-capitalized ad-show-feature-label">Régions : </span>
+                                    <span class="subtitle">{{$ad->regionsList() }}</span>
                                 </p>
                             @endif
                         </div>
@@ -119,7 +110,7 @@
 
                         @include('pages.ads.partials.show-documents')
                     </div>
-                    @include('pages.ads.partials.buttonsFavoriteAndMessage')
+                    @include('pages.ads.partials.buttons-favorite-and-message')
                 </div>
             </div>
         </div>
@@ -130,8 +121,24 @@
         <div class="columns is-multiline is-mobile is-centered">
 
             <div class="column is-one-quarter ">
-                <p class="has-text-link is-size-5 has-text-centered"> Type d'installation souhaité</p>
-                <p class="has-text-centered">{{$ad->landSeekAd->installationType->name}}</p>
+                <p class="has-text-link is-size-5 has-text-centered"> Installation souhaité</p>
+                <p class="has-text-centered">
+                    @if ($ad->landSeekAd->installationType->name === "Seul·e")
+                        Individuelle
+                    @else
+                        {{ $ad->landSeekAd->installationType->name }}
+                    @endif
+                </p>
+            </div>
+
+            <div class="column is-one-quarter ">
+                <p class="has-text-link is-size-5 has-text-centered"> Production(s) envisagée(s)</p>
+{{--                <p class="has-text-centered">{{$ad->landSeekAd->productionGenresPossible->pluck('name')->implode(', ') }}</p>--}}
+                <ul class="has-text-centered">
+                    @foreach($ad->landSeekAd->productionGenresPossible as $productionGenre)
+                        <li>{{$productionGenre->name}}</li>
+                    @endforeach
+                </ul>
             </div>
 
             <div class="column is-one-quarter ">
@@ -178,16 +185,7 @@
                 </div>
             @endif
 
-            @if($ad->landSeekAd->buildings->count())
-                <div class="column is-one-quarter ">
-                    <p class="has-text-link is-size-5 has-text-centered">Habitation(s) et bâti(s) recherché(s)</p>
-                    @if($ad->landSeekAd->buildings)
-                        @foreach($ad->landSeekAd->buildings as $building)
-                            {{ $building->buildingType->label }} : {{ $building->requirement->label }}<br>
-                        @endforeach
-                    @endif
-                </div>
-            @endif
+
 
         </div>
 
@@ -208,13 +206,8 @@
             </div>
         @endif
 
-
         <div class="section">
             @include('pages.ads.partials.threadsDisplay')
         </div>
 
-<!--    </div>
-</section> -->
-
-@include('components.support-terre-liens')
 
