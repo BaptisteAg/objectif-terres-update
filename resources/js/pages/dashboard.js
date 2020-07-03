@@ -19,7 +19,8 @@ Vue.component('dashboard-form-filter',{
         CustomCheckbox
     },
     props : {
-        oldInputSelected : ''
+        oldInputSelected : '',
+        moreFiltersOpen : Boolean
     },
     data() {
         const hasOld = Object.values(this.oldInputSelected).some(x => (x !== null && x !== ''));
@@ -28,7 +29,7 @@ Vue.component('dashboard-form-filter',{
             locations : hasOld && this.oldInputSelected.json_locations ?JSON.parse(this.oldInputSelected.json_locations)  : [],
             selectedProductions: hasOld ? this.oldInputSelected.production_genres : [],
             selectedBioCertifications: hasOld ? this.oldInputSelected.bio_certifications : [],
-            isMoreFiltersOpen: false,
+            isMoreFiltersOpen: this.moreFiltersOpen,
         }
     },
     computed: {

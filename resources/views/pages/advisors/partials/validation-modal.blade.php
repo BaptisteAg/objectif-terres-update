@@ -4,7 +4,7 @@
 		<div class="card">
 			<div class="card-content">
 				<div class="content">
-					<p class="title is-3 has-text-centered has-text-link">Êtes-vous sûre de votre choix ?</p>
+					<p class="title is-3 has-text-centered has-text-link">Êtes-vous sûr·e de votre choix ?</p>
 				</div>
 			</div>
 			<footer class="card-footer">
