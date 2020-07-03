@@ -165,7 +165,6 @@ abstract class BaseController extends Controller
 					$advisorUsers = $this->userService->findAllAdvisorsAndSupervisors();
 				}
 			}
-
 			if ($user->role >= 1 && $ad->attributionAd->user_moderator_id !== auth()->id()) {
 				if (count(array_intersect($this->adService->getAdDepartmentsCode($ad), $this->userService->getCurrentUserTerritoryDepartments())) > 0) {
 					$threads = $this->threadService->findThreadsByAd($ad->id);

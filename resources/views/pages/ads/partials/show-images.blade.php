@@ -17,22 +17,22 @@
         @else
             <div class="card carousel-item ad-carousel">
                 <div class="card-image">
-                    <figure class="image is-2by1">
-                        <img src="/images/placeholder-ad.png">
+                    <figure>
+                        <img class="custom-carousel-image-size" src="/images/placeholder-ad.png">
                     </figure>
                 </div>
             </div>
             <div class="card carousel-item  ad-carousel">
                 <div class="card-image">
-                    <figure class="image is-2by1">
-                        <img src="https://picsum.photos/480/320">
+                    <figure>
+                        <img class="custom-carousel-image-size" src="https://picsum.photos/600/420">
                     </figure>
                 </div>
             </div>
             <div class="card carousel-item  ad-carousel">
                 <div class="card-image">
-                    <figure class=" image is-16by9 ">
-                        <img src="/images/placeholder-ad.png">
+                    <figure>
+                        <img class="custom-carousel-image-size" src="https://picsum.photos/800/580">
                     </figure>
                 </div>
             </div>
