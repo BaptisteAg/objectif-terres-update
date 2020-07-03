@@ -127,33 +127,41 @@
                                 </p>
                             </div>
 
-                            <div class="field" v-show="formInput.offerGenres.includes('2')">
-                                {!! Form::label('land_seek[rent_max]', 'Loyer maximum (en €)', ['class' => 'label']); !!}
-                                {!! Form::text('land_seek[rent_max]',
+{{--                            <div class="field" v-show="formInput.offerGenres.includes('2')">--}}
+{{--                                {!! Form::label('land_seek[rent_max]', 'Loyer maximum (en €)', ['class' => 'label']); !!}--}}
+{{--                                {!! Form::text('land_seek[rent_max]',--}}
+{{--                                          null,--}}
+{{--                                          ['min'=>1,--}}
+{{--                                          'class' => 'input',--}}
+{{--                                          'ref' => 'rentMax',--}}
+{{--                                          'v-model.trim' => 'formInput.rentMax',--}}
+{{--                                          ':disabled' => 'isInputDisabled'] ) !!}--}}
+
+{{--                                <p class="help is-danger" v-if="!$v.formInput.rentMax.numeric">Veuillez saisir des chiffres.</p>--}}
+{{--                            </div>--}}
+
+                            <div class="field" v-show="formInput.offerGenres.includes('1')">
+                                {!! Form::label('land_seek[price_max]', 'Achat : quel est votre budget maximum ?', ['class' => 'label']); !!}
+
+                                {!! Form::text('land_seek[price_max]',
                                           null,
                                           ['min'=>1,
                                           'class' => 'input',
-                                          'ref' => 'rentMax',
-                                          'v-model.trim' => 'formInput.rentMax',
+                                          'ref' => 'priceMax',
+                                          'v-model.trim' => 'formInput.priceMax',
                                           ':disabled' => 'isInputDisabled'] ) !!}
 
-                                <p class="help is-danger" v-if="!$v.formInput.rentMax.numeric">Veuillez saisir des chiffres.</p>
-                            </div>
-
-                            <div class="field" v-show="formInput.offerGenres.includes('1')">
-                                {!! Form::label('land_seek[price_max]', 'Achat : Prix maximum', ['class' => 'label']); !!}
-
-                                <vue-slider
-                                    name="land_seek[price_max]"
-                                    :data="{
-                                        '50000' : '< 50 000€',
-                                        '100000' : '100 000 €',
-                                        '200000' : '200 000 €',
-                                        '300000' : '300 000 €',
-                                        '10000000' : '> 300 000 €',
-                                    }"
-                                    v-model="formInput.priceMax">
-                                </vue-slider>
+{{--                                <vue-slider--}}
+{{--                                    name="land_seek[price_max]"--}}
+{{--                                    :data="{--}}
+{{--                                        '50000' : '< 50 000€',--}}
+{{--                                        '100000' : '100 000 €',--}}
+{{--                                        '200000' : '200 000 €',--}}
+{{--                                        '300000' : '300 000 €',--}}
+{{--                                        '10000000' : '> 300 000 €',--}}
+{{--                                    }"--}}
+{{--                                    v-model="formInput.priceMax">--}}
+{{--                                </vue-slider>--}}
                             </div>
                         @endif
                     </div>
@@ -172,9 +180,11 @@
                         <div class="field">
                             {!! Form::label('land_seek[is_bio]', "Votre projet est-il en agriculture biologique ?", ['class' => 'label']) !!}
                             {!! Form::radio('land_seek[is_bio]', '1', old('land_seek[is_bio]') , [':disabled' => 'isInputDisabled']) !!}
-                            oui
+                            Oui
                             {!! Form::radio('land_seek[is_bio]', '0', old('land_seek[is_bio]') , [':disabled' => 'isInputDisabled']) !!}
-                            non
+                            Non
+                            {!! Form::radio('land_seek[is_bio]', '-1', old('land_seek[is_bio]') , [':disabled' => 'isInputDisabled']) !!}
+                            Je ne sais pas encore
                         </div>
 
 
@@ -239,7 +249,14 @@
                                 Ce champ est requis.
                             </p>
                         </div>
-                        @include('pages.ads.partials.inputs.about_project_content', ['tooltip' => "Pour donner envie à un cédant ou propriétaire de vous proposer du foncier, décrivez votre projet, son histoire, ses valeurs, votre date d'installation envisagée, etc."])
+                        @php
+                            if(!empty($isSupportRequest)) {
+                                $tooltip = "Pour donner envie à un cédant ou propriétaire de vous proposer " .
+                                            "du foncier, décrivez votre projet, son histoire, ses valeurs, " .
+                                            "votre date d'installation envisagée, etc.";
+                            }
+                        @endphp
+                        @include('pages.ads.partials.inputs.about_project_content', ['tooltip' => $tooltip])
                     </div>
                     <div class="column"></div>
                 </div>
@@ -286,7 +303,9 @@
 
                         @include('pages.ads.partials.inputs.documents')
 
-                        @include('pages.ads.partials.inputs.accept-share-contact-infos')
+                        @if(!$isSupportRequest)
+                            @include('pages.ads.partials.inputs.accept-share-contact-infos')
+                        @endif
 
                         @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'land_seek'])
 

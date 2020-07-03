@@ -32,6 +32,9 @@ export default {
              * @returns {boolean}
              */
             oneDocument(documents) {
+                if(this.isSupportRequest) {
+                    return true;
+                }
                 const documentTypes = [
                     "application/msword",
                     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",

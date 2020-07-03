@@ -1,10 +1,14 @@
 <div class="field">
     <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
-           data-tooltip="15Mo maximum par document. Un seul document de type PDF, DOC ou DOCX est autorisé">
+           data-tooltip="15Mo maximum par document. {{ $isSupportRequest ? '' : 'Un seul document de type PDF, DOC ou DOCX est autorisé' }}">
         Documents
         <i class="fas fa-info-circle has-text-info"></i><br>
         <span style="font-weight:normal">
-            Ajoutez des photos ou un document PDF ou DOC pour donner envie de consulter votre annonce.<br>
+            @if($isSupportRequest)
+                Ajoutez des photos ou un document PDF ou DOC pour donner envie de consulter votre annonce.<br>
+            @else
+                Ajoutez des photos ou un document PDF ou DOC qui nous aideraient à comprendre votre projet.<br>
+            @endif
         </span>
     </label>
 

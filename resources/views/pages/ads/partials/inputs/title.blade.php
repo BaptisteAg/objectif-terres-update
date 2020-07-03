@@ -8,8 +8,12 @@
 <div class="field">
     <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
            for="title"
-           data-tooltip="{{$tooltip}}">
-        Titre de votre annonce*
+           data-tooltip="{{$isSupportRequest ? '' : $tooltip}}">
+        @if($isSupportRequest)
+            Titre de votre projet*
+        @else
+            Titre de votre annonce*
+        @endif
         <i class="fas fa-info-circle has-text-info"></i>
     </label>
 

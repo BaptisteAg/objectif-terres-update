@@ -650,8 +650,9 @@
 
                         @include('pages.ads.partials.inputs.documents')
 
-
-                        @include('pages.ads.partials.inputs.accept-share-contact-infos')
+                        @if(!$isSupportRequest)
+                            @include('pages.ads.partials.inputs.accept-share-contact-infos')
+                        @endif
 
                         @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'land_offer'])
 
