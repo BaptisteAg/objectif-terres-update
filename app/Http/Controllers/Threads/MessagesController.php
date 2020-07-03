@@ -94,25 +94,13 @@ class MessagesController extends Controller
 	 */
 	public function uploadDocuments(Request $request)
 	{
-		$files = $request->file('file');
-		$type = $request->get('type');
-
-		if (!is_array($files)) {
-			$files = array_filter([$files]);
+		$files = $request->get('files');
+		if (!count($files)) {
+			return response()->json('Pas de fichiers séléctionnés');
 		}
-
-		if (!count($files) || !$type) {
-			return response()->json('Paramètres incorrects.');
-		}
-
-		$documents = [];
-		foreach ($files as $file) {
-			$documents[] = $this->documentService->create($file, $request->get('type'));
-		}
-
 		$documentsIds = [];
-		foreach ($documents as $document) {
-			$documentsIds[] = $document->id;
+		foreach ($files as $document) {
+			$documentsIds[] = $document['id'];
 		}
 
 		$data = [
@@ -122,7 +110,7 @@ class MessagesController extends Controller
 			'documents_ids' => $documentsIds
 		];
 		$this->threadService->createMessage($data);
-		return response()->json($documents);
+		return response()->json($files);
 	}
 
 

@@ -27,6 +27,7 @@ Vue.component('vue-moderation-modal', {
                 this.showModal = true
                 if (e === "acceptAd") {
                     this.moderationChoice = e;
+                    this.selectOptions = this.responseTemplates;
                     this.formUrl = "/mon-espace-moderateur/validation";
                 } else if (e === 'modifyAd') {
                     this.moderationChoice = e;

@@ -9,64 +9,65 @@ use Illuminate\Http\Request;
 
 class DocumentsController extends Controller
 {
-    /**
-     * @var DocumentService
-     */
-    protected $service;
+	/**
+	 * @var DocumentService
+	 */
+	protected $service;
 
-    public function __construct(DocumentServiceInterface $service)
-    {
-        $this->service = $service;
-    }
+	public function __construct(DocumentServiceInterface $service)
+	{
+		$this->service = $service;
+	}
 
-    /**
-     * @param string $type
-     * @param string $fileName
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
-     */
-    public function show(string $type, string $fileName)
-    {
-        $document = $this->service->findByPath('documents/' . $type . '/' . $fileName);
+	/**
+	 * @param string $type
+	 * @param string $fileName
+	 * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+	 */
+	public function show(string $type, string $fileName)
+	{
+		$document = $this->service->findByPath('documents/' . $type . '/' . $fileName);
 
-        return response()->file(
-            storage_path(
-                $this->getCrossPlatformPath('app/' . $document->path)
-            )
-        );
-    }
+		return response()->file(
+			storage_path(
+				$this->getCrossPlatformPath('app/' . $document->path)
+			)
+		);
+	}
 
-    /**
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function upload(Request $request)
-    {
-        $files = $request->file('file');
-        $type = $request->get('type');
+	/**
+	 *
+	 * @param Request $request
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function upload(Request $request)
+	{
 
-        if (!is_array($files)) {
-            $files = array_filter([$files]);
-        }
+		$files = $request->file('file');
+		$type = $request->get('type');
 
-        if (!count($files) || !$type) {
-            return response()->json('Paramètres incorrects.');
-        }
+		if (!is_array($files)) {
+			$files = array_filter([$files]);
+		}
 
-        $documents = [];
-        foreach ($files as $file) {
-            $documents[] = $this->service->create($file, $request->get('type'));
-        }
+		if (!count($files) || !$type) {
+			return response()->json('Paramètres incorrects.');
+		}
 
-        return response()->json($documents);
-    }
+		$documents = [];
+		foreach ($files as $file) {
+			$documents[] = $this->service->create($file, $request->get('type'));
+		}
 
-    /**
-     * @param string $path
-     * @return mixed
-     */
-    protected function getCrossPlatformPath(string $path)
-    {
-        return str_replace('/', DIRECTORY_SEPARATOR, $path);
-    }
+		return response()->json($documents);
+	}
+
+	/**
+	 * @param string $path
+	 * @return mixed
+	 */
+	protected function getCrossPlatformPath(string $path)
+	{
+		return str_replace('/', DIRECTORY_SEPARATOR, $path);
+	}
 }

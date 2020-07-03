@@ -13,12 +13,12 @@
                             <h3 class="title is-3 has-text-centered has-text-black ">Refuser l'annonce</h3>
                         </template>
                         <template v-else>
-                            <h3 class="title is-3 has-text-centered has-text-black ">Êtes-vous sûre de vouloir valider
+                            <h3 class="title is-3 has-text-centered has-text-black ">Êtes-vous sûr·e de vouloir valider
                                 cette annonce ?</h3>
                         </template>
 
-                        <div v-if="moderationChoice !== 'acceptAd'">
-                            <h5 class="has-text-link is-size-5">Justifier votre choix en envoyant un message au porteur
+                        <div>
+                            <h5 class="has-text-link is-size-5">Détaillez votre choix en envoyant un message au porteur
                                 de
                                 projet
                             </h5>
@@ -29,52 +29,63 @@
                                         <label class="label has-text-left">Choisir un motif de
                                             refus</label>
                                         <p class="control is-expanded">
-                                    <span class="select is-fullwidth">
-                                        <select @change="setSelectOptionId">
-                                            <option disabled selected="selected">Choisissez...</option>
-                                            <option v-for="selectOption in selectOptions" :data-id="selectOption.id"
-                                                    :value="selectOption.content">{{selectOption.name}}
-                                            </option>
-                                        </select>
-                                    </span>
+                                            <span class="select is-fullwidth">
+                                                <select @change="setSelectOptionId">
+                                                    <option disabled selected="selected">Choisissez...</option>
+                                                    <option v-for="selectOption in selectOptions"
+                                                            :data-id="selectOption.id"
+                                                            :value="selectOption.content">{{selectOption.name}}
+                                                    </option>
+                                                </select>
+                                            </span>
                                         </p>
                                         <p class="control is-expanded">
                                             <a href="/gestion-reponse-types">
                                                 <span class="icon">
                                                     <i class="fas fa-plus"></i>
                                                 </span>
-                                                <span>Créer une nouvelle réponse type</span>
+                                                <span>Créer un nouveau message type</span>
                                             </a>
                                         </p>
                                     </div>
-                                    <div v-if="moderationChoice === 'modifyAd'" class="field">
+                                    <div v-if="moderationChoice !== 'rejectAd'" class="field">
                                         <label class="label has-text-left">Envoyer un message type</label>
                                         <p class="control is-expanded">
-                                    <span class="select is-fullwidth">
-                                        <select @change="setSelectOptionId">
-                                            <option disabled selected="selected">Choisissez...</option>
-                                            <option v-for="selectOption in selectOptions" :data-id="selectOption.id"
-                                                    :value="selectOption.content">
-                                                {{selectOption.content}}
-                                            </option>
-                                        </select>
-                                    </span>
+                                            <span class="select is-fullwidth">
+                                                <select @change="setSelectOptionId">
+                                                    <option disabled selected="selected">Choisissez...</option>
+                                                    <option v-for="selectOption in selectOptions"
+                                                            :data-id="selectOption.id"
+                                                            :value="selectOption.content">
+                                                        {{selectOption.content}}
+                                                    </option>
+                                                </select>
+                                            </span>
                                         </p>
                                         <p class="control is-expanded">
                                             <a href="/gestion-reponse-types">
                                                 <span class="icon">
                                                     <i class="fas fa-plus"></i>
                                                 </span>
-                                                <span>Créer une nouvelle réponse type</span>
+                                                <span>Créer un nouveau message type</span>
                                             </a>
                                         </p>
                                     </div>
                                     <div class="field">
                                         <label class="label has-text-left">Votre message </label>
                                         <div class="control">
-                                    <textarea v-model="content" required name="content"
-                                              class="textarea is-medium"
-                                              placeholder="Votre message..."></textarea>
+                                            <template v-if="moderationChoice == 'acceptAd'">
+                                                 <textarea v-model="content" required name="content"
+                                                           class="textarea is-medium"
+                                                           placeholder="Votre message..."
+                                                           >dccc</textarea>
+                                            </template>
+                                            <template v-else>
+                                                <textarea v-model="content" required name="content"
+                                                          class="textarea is-medium"
+                                                          placeholder="Votre message..."></textarea>
+                                            </template>
+
                                         </div>
                                     </div>
                                 </div>
@@ -115,10 +126,11 @@
             formUrl: '',
             adId: '',
             attributionAdId: '',
+            acceptAdMessage:'',
         },
         data() {
             return {
-                content: '',
+                content: this.moderationChoice === "acceptAd" ? this.acceptAdMessage : '' ,
                 selectOptionId: '',
                 isRejectedChoice: this.moderationChoice === "rejectAd",
                 errorMessage: '',

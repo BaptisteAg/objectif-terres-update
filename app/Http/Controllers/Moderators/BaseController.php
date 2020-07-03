@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Moderators;
 
 use App\Models\AdStatus;
+use App\Models\BioCertification;
 use App\Models\City;
 use App\Models\Department;
 use App\Models\JobOfferType;
@@ -48,6 +49,7 @@ abstract class BaseController
 		$adStatuses = AdStatus::all();
 		$productionGenres = ProductionGenre::all();
 		$jobOfferTypes = JobOfferType::all();
+		$bioCertifications = BioCertification::all();
 		$adTypes = $this->adTypes;
 		$adTypesFaIcons = $this->adTypesFaIcons;
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
@@ -64,7 +66,8 @@ abstract class BaseController
 			'adTypes',
 			'adTypesFaIcons',
 			'numberOfAdsToModerate',
-			'numberOfUnreadMessages'
+			'numberOfUnreadMessages',
+			'bioCertifications'
 		);
 	}
 

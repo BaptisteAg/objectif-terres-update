@@ -31,7 +31,7 @@ Vue.component('new-ad', {
                 return true;
             }
             const confirmationMessage = `
-                    Êtes vous sûr de vouloir quitter cette page ?
+                    Êtes vous sûr·e de vouloir quitter cette page ?
                     Les données saisies seront perdues si elles n'ont pas été enregistrées.
                 `;
 

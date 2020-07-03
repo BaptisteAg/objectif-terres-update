@@ -4,30 +4,36 @@
 
 @section('main-content')
     <div class="section pt-0">
-        <div class="section">
+        <div class="section ">
+            <div class="content ml-80 ">
+                <a class="text_size large" href="{{URL::previous()}}">
+                    <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
+                    <span>Retour </span>
+                </a>
+            </div>
             <div class="columns is-mobile is-centered">
                 <div class="column is-half ">
                     <div class="card ">
                         <div class="card-content">
                             <div class="media">
                                 <div class="media-left">
-										<span class="icon is-large text_primary" style="height: 4rem">
-										   <i class="fas fas fa-3x fa-user"></i>
-										</span>
+                                    <span class="icon is-large text_primary" style="height: 4rem">
+                                        <i class="fas fas fa-3x fa-user"></i>
+                                    </span>
                                 </div>
                                 <div class="media-content">
                                     <div class="columns">
                                         <div class="column">
                                             <p class="text_size is-size-3">{{$user->first_name}} {{$user->name}}</p>
                                         </div>
-                                        <div class="column is-offset-4">
+                                        <div class="column is-offset-2">
                                             @if(auth()->user()->id == $user->id or auth()->user()->role >= 2)
                                                 <a class="" href="{{route('user.edit', $user->id)}}">
                                                     <button class="button basic primary "
                                                             type="button">
-														 <span class="icon is-small">
-															<i class="fa fa-user-edit" aria-hidden="true"></i>
-														</span>
+                                                        <span class="icon is-small">
+                                                            <i class="fa fa-user-edit" aria-hidden="true"></i>
+                                                        </span>
                                                         <span>Modifier le profil</span>
                                                     </button>
                                                 </a>
@@ -37,10 +43,10 @@
                                                         <div>
                                                             <button class="open-modal-new-message button basic primary "
                                                                     type="button">
-														 <span class="icon is-small">
-															<i class="fa fa-paper-plane" aria-hidden="true"></i>
-														</span>
-                                                                <span> Envoyer un message au porteur de projet</span>
+                                                                <span class="icon is-small">
+                                                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                                                </span>
+                                                                <span> Envoyer un message</span>
                                                             </button>
                                                             @include('pages.users.partials.newMessageModal')
                                                         </div>
@@ -55,25 +61,25 @@
                                 <div class="columns">
                                     <div class="column has-text-centered">
                                         <p>
-											<span class="icon text_primary">
-										   <i class="fas fa-envelope"></i>
-										</span>
+                                            <span class="icon text_primary">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
                                             {{$user->email ?? "Adresse mail non renseignée"}}
                                         </p>
                                     </div>
                                     <div class="column has-text-centered">
-											<span class="icon text_primary">
-										   <i class="fas fa-map-marker-alt"></i>
-										</span>
+                                        <span class="icon text_primary">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </span>
                                         {{$user->street ?? "Adresse non renseignée "}}
                                         <p>{{$user->city ?? "Ville non renseignée"}}</p>
 
                                     </div>
                                     <div class="column has-text-centered">
                                         <p>
-											<span class="icon text_primary">
-										   <i class="fas fa-phone"></i>
-										</span>
+                                            <span class="icon text_primary">
+                                                <i class="fas fa-phone"></i>
+                                            </span>
                                             {{$user->phone ?? "Numéro de téléphone non renseigné"}}
                                         </p>
                                     </div>
@@ -92,10 +98,18 @@
             <nav class="level">
                 <div class="level-left">
                     <div>
-                        @if(count($ads) <=1)
-                            <h1 class="title"> {{ count($ads) }} annonce ou demande d'accompagnement soumise</h1>
+                        @if(auth()->user()->role <= 1)
+                            @if(count($ads) <=1)
+                                <h1 class="title"> {{ count($ads) }} annonce soumise</h1>
+                            @else
+                                <h2 class="title"> {{ count($ads) }} annonces soumises</h2>
+                            @endif
                         @else
-                            <h2 class="title"> {{ count($ads) }} annonces ou demandes d'accompagnement soumises</h2>
+                            @if(count($ads) <=1)
+                                <h1 class="title"> {{ count($ads) }} annonce ou demande d'accompagnement soumise</h1>
+                            @else
+                                <h2 class="title"> {{ count($ads) }} annonces ou demandes d'accompagnement soumises</h2>
+                            @endif
                         @endif
                     </div>
                 </div>
@@ -210,17 +224,21 @@
                                 </div>
                                 <div class="tile__content large">
                                     <div class="tile__pre-title">
-										<span class="tile__date has-text-weight-bold">
-											@if(isset($ad->project))
+                                        <span class="tile__date has-text-weight-bold">
+                                            @if(isset($ad->project))
                                                 Projet soumis le : {{ $ad->submitDate?? 'Date non renseignée' }}
                                             @else
-                                                @if(! is_null($ad->attributionAd))
-                                                    Annonce publié le : {{ $ad->published_on }}
-                                                @else
+                                                @if( is_null($ad->attributionAd))
                                                     Annonce soumise le : {{ $ad->submitDate }}
+                                                @else
+                                                    @if($ad->attributionAd->ad_status_id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID)
+                                                        Annonce soumise le : {{ $ad->submitDate }}
+                                                    @else
+                                                        Annonce publié le : {{ $ad->published_on }}
+                                                    @endif
                                                 @endif
                                             @endif
-										</span>
+                                        </span>
                                         <ul class="custom-tags">
                                             <li class="custom-tag warning">{{$ad->ad_type_full_name}}</li>
                                         </ul>
@@ -242,32 +260,32 @@
                                                 <span class="text_charcoal">{{$ad->project->supportStage->name ?? 'Non définis' }}</span>
                                                 <span class="has-tooltip-right"
                                                       data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">
-													<i class="fas fa-info-circle text_primary "></i>
-											</span>
+                                                    <i class="fas fa-info-circle text_primary "></i>
+                                                </span>
                                             </p>
                                             <p>
                                                 <span class="text_mouse">Etat de la demande :</span>
                                                 <span class="text_charcoal">{{ $ad->project->supportState->name ?? 'Non définis' }}</span>
                                                 <span class="has-tooltip-right"
                                                       data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">
-											<i class="fas fa-info-circle text_primary "></i>
-											</span>
+                                                    <i class="fas fa-info-circle text_primary "></i>
+                                                </span>
                                             </p>
                                             <p>
                                                 <span class="text_mouse">Statut du projet :</span>
                                                 <span class="text_charcoal">{{ $ad->project->projectStatus->name ?? 'Non définis' }}</span>
                                                 <span class="has-tooltip-right"
                                                       data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">
-											<i class="fas fa-info-circle text_primary "></i>
-											</span>
+                                                    <i class="fas fa-info-circle text_primary "></i>
+                                                </span>
                                             </p>
                                         @else
                                             <span class="text_mouse">Statut de l'annonce :</span>
                                             <span class="text_charcoal">{{ $ad->attributionAd->adStatus->name?? 'Non définis' }}</span>
                                             <span class="has-tooltip-right"
                                                   data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$ad->attributionAd->adStatus->id]}}">
-													<i class="fas fa-info-circle text_primary "></i>
-												</span>
+                                                <i class="fas fa-info-circle text_primary "></i>
+                                            </span>
                                             @endif
 
                                             </p>
@@ -298,18 +316,18 @@
                                         @if(isset($ad->project))
                                             <a href="{{route("advisor.showSupport", $ad->id)}}">
                                                 <button class="button basic  small warning mr-20">
-											<span class="icon is-small">
-											<i class="fas fa-hands-helping text_white"></i>
-											</span>
+                                                    <span class="icon is-small">
+                                                        <i class="fas fa-hands-helping text_white"></i>
+                                                    </span>
                                                     <span>Espace de suivi</span>
                                                 </button>
                                             </a>
                                         @else
                                             <a href="{{route("ads.show", $ad->id)}}">
                                                 <button class="button basic  small warning mr-20">
-											<span class="icon is-small">
-											<i class="fas fa-eye text_white"></i>
-											</span>
+                                                    <span class="icon is-small">
+                                                        <i class="fas fa-eye text_white"></i>
+                                                    </span>
                                                     <span>Voir l'annonce</span>
                                                 </button>
                                             </a>

@@ -447,6 +447,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			->get();
 	}
 
+	/**
+	 * @param $selectedAdType
+	 * @return Collection
+	 */
 	public function findAllPublishedWithLocations($selectedAdType): Collection
 	{
 		return $this->entity
@@ -458,6 +462,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			->get();
 	}
 
+	/**
+	 * @return int
+	 */
 	public function countAllPublished()
 	{
 		return $this->entity

@@ -102,6 +102,8 @@ class AdsController extends BaseController
 			return view('pages.errors.unavailable-page', ['message' => "Contacter un administrateur du site pour plus d'informations"]);
 		}
 
+		
+
 		//Throw error 404 if a visitor try to show an ad is not validated
 		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validée" ;
 		//TODO not display projects unless user logged is the author of the ad or the user logged is an supervisor or an advisor

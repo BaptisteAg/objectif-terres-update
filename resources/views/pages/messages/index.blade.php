@@ -37,6 +37,7 @@
 							:user-role="{{auth()->user()->role}}"
 							v-bind:is-display-in-thread-page=true
 							v-bind:is-user-ad-owner=false
+							:user-id="{{auth()->id()}}"
 					>
 						<div>
 							<div class="columns is-vcentered " v-if="initialLoading === true">
@@ -81,6 +82,7 @@
 												@on-upload-success="onThreadClick"
 												v-bind:show-response-type="isUserModerator"
 												v-bind:active-thread-id="activeThreadId"
+												v-bind:is-thread-related-to-user="isThreadRelatedToUser"
 										>
 										</form-message-reply>
 									</div>

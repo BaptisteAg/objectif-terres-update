@@ -2,6 +2,7 @@
 
 namespace App\Services\AttributionAds;
 
+use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\Department;
@@ -162,6 +163,64 @@ class AttributionAdsService
 		});
 
 
+		//Additional filters  : filter by surface range
+		if ($filters->has('surfaces_research')) {
+			if (!is_null($filters->input('surfaces_research')) && $filters->input('surfaces_research') > 0) {
+				$attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
+					$query->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('surface_range_max', 'surface', '<=', $filters->input('surfaces_research'));
+				});
+			}
+		}
+		//Additional filters  : filter by min_price
+		if ($filters->has('price_min')) {
+			if (!is_null($filters->input('price_min'))) {
+				$attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
+					$query->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('price_max', 'price', '>=', $filters->input('price_min'));
+				});
+			}
+		}
+		//Additional filters  : filter by max_price
+		if ($filters->has('price_max')) {
+			if (!is_null($filters->input('price_max'))) {
+				$attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
+					$query->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('price_max', 'price', '<=', $filters->input('price_max'));
+				});
+			}
+		}
+		//Additional filters  : filter by production_genres
+		if ($filters->has('production_genres')) {
+			if (!is_null($filters->input('production_genres'))) {
+				$attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
+					$query->where(function (Builder $query) use ($filters) {
+						$query->whereHas('landSeekAd.productionGenres', function (Builder $query) use ($filters) {
+							$query->whereIn('production_genres.id', $filters->input('production_genres'));
+						})
+							->orWhereHas('landOfferAd.productionGenres', function (Builder $query) use ($filters) {
+								$query->whereIn('production_genres.id', $filters->input('production_genres'));
+							})
+							->orWhereHas('landSeekAd.productionGenresPossible', function (Builder $query) use ($filters) {
+								$query->whereIn('production_genres.id', $filters->input('production_genres'));
+							})
+							->orWhereHas('landOfferAd.productionGenresPossible', function (Builder $query) use ($filters) {
+								$query->whereIn('production_genres.id', $filters->input('production_genres'));
+							});
+					});
+				});
+			}
+		}
+		//Additional filters  : filter by bio_certification
+		if ($filters->has('bio_certifications')) {
+			if (!is_null($filters->input('bio_certifications'))) {
+				$attributionAdsFiltered->whereHas('ad', function (Builder $builder) use ($filters) {
+					$builder->where(function (Builder $query) use ($filters) {
+						$query->whereHas('landOfferAd.bioCertifications', function (Builder $query) use ($filters) {
+							$query->whereIn('bio_certifications.id', $filters->input('bio_certifications'));
+						});
+					});
+				});
+			}
+		}
+
 		//Filter attribution ads based on their locations if requested
 		if ($filters->has('locations')) {
 			$locations = $filters->input('locations');
@@ -215,7 +274,6 @@ class AttributionAdsService
 		}
 
 		//Filter attribution ads if research ads by keywords
-
 		if (!is_null($filters->input('ad_keywords'))) {
 			$attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
 				$query->where(function (Builder $query) use ($filters) {
@@ -245,10 +303,17 @@ class AttributionAdsService
 							$q->orWhere('land_description', 'like', '%' . $filters->input('ad_keywords') . '%');
 						});
 					});
+					$query->orWhere(function (Builder $subQuery) use ($filters) {
+						$subQuery->whereHas('userPp', function (Builder $builder) use ($filters) {
+							$builder->where('name', 'like', '%' . $filters->input('ad_keywords') . '%');
+							$builder->orWhere('first_name', 'like', '%' . $filters->input('ad_keywords') . '%');
+							$builder->orWhere('email', 'like', '%' . $filters->input('ad_keywords') . '%');
+
+						});
+					});
 
 				});
 			});
-
 		}
 
 		//Handling sort of research results
@@ -292,7 +357,8 @@ class AttributionAdsService
 	 * @param int $attributionAdId
 	 * @return mixed
 	 */
-	public function acceptAd(int $attributionAdId)
+	public
+	function acceptAd(int $attributionAdId)
 	{
 		$attributionAd = $this->repository->find($attributionAdId);
 		//TODO if the pp want a support from Tdl, a special method as to be created.The moderator doesn't take part of the attribution process.
@@ -333,7 +399,8 @@ class AttributionAdsService
 		return $attributionAd;
 	}
 
-	public function modifyAd(int $attributionAdId)
+	public
+	function modifyAd(int $attributionAdId)
 	{
 		$attributionAd = $this->repository->find($attributionAdId);
 		$pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_ID)->first();
@@ -380,7 +447,8 @@ class AttributionAdsService
 	/**
 	 * @return array
 	 */
-	private function getEagerLoading()
+	private
+	function getEagerLoading()
 	{
 		return [
 			'ad',
@@ -406,7 +474,8 @@ class AttributionAdsService
 	/**
 	 * @return \Illuminate\Support\Collection
 	 */
-	public function getListOfMonthInYear(): Collection
+	public
+	function getListOfMonthInYear(): Collection
 	{
 		$period = CarbonPeriod::create(Carbon::now()->startOfYear(), '1 month', Carbon::now()->endOfYear());
 		$listOfMonth = collect();

@@ -807,10 +807,13 @@ class AdService
 				$adsCountByRegionId[$regionId]++;
 			}
 		}
-
 		return $adsCountByRegionId;
 	}
 
+	/**
+	 * @param Ad $ad
+	 * @return array
+	 */
 	public function getAdRegionIds(Ad $ad)
 	{
 		$regionIds = [];
@@ -843,6 +846,44 @@ class AdService
 		return array_unique($regionIds);
 	}
 
+	/**
+	 * @param Ad $ad
+	 * @return array
+	 */
+	public function getAdDepartmentsCode(Ad $ad)
+	{
+		$departmentsCode = [];
+
+		if (count($ad->cities)) {
+			/** @var City $city */
+			foreach ($ad->cities as $city) {
+				if ($city->department) {
+					$departmentsCode[] = $city->department->code;
+				}
+			}
+		}
+
+		if (count($ad->departments)) {
+			/** @var Department $department */
+			foreach ($ad->departments as $department) {
+				$departmentsCode[] = $department->code;
+			}
+		}
+
+		if (count($ad->regions)) {
+			/** @var Region $foundRegion */
+			foreach ($ad->regions as $region) {
+				foreach ($region->departments as $department) {
+					$departmentsCode[] = $department->code;
+				}
+			}
+		}
+		return array_unique($departmentsCode);
+	}
+
+	/**
+	 * @return int
+	 */
 	public function getPublishedAdsCount()
 	{
 		return $this->repository->countAllPublished();
