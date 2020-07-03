@@ -31,8 +31,9 @@ class AttributionAdsController extends Controller
 	 * @param Request $request
 	 * @return array
 	 */
-	public function acceptAd(Request $request)
+	public function acceptAd(ThreadRequest $request)
 	{
+		$this->threadService->create($request->validated());
 		$attributionAd = $this->service->acceptAd($request->input('attribution_ad_id'));
 		$this->setToReadModeratorNotification($request->input('attribution_ad_id'));
 		session()->flash('success', 'L\'annonce a été modérée !');

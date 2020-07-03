@@ -15,9 +15,9 @@
                 dictResponseError: 'Erreur interne. Essayez plus tard.',
                 dictCancelUpload : 'Annuler',
                 dictUploadCanceled : 'Annulé',
-                dictCancelUploadConfirmation : 'Êtes-vous sûr ?',
+                dictCancelUploadConfirmation : 'Êtes-vous sûr·e ?',
                 dictRemoveFile: 'Supprimer',
-                dictRemoveFileConfirmation: 'Êtes-vous sûr ?',
+                dictRemoveFileConfirmation: 'Êtes-vous sûr·e ?',
                 dictMaxFilesExceeded: 'Vous avez dépassé la limite de {{maxFiles}} fichiers.'
             }"
             :duplicate-check="true"

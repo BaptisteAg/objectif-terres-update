@@ -149,23 +149,23 @@ class AdService
 
 		$adRandomRegionId = array_rand($this->getAdRegionIds($ad));
 
-		if ($isSupportRequest) {
-			$pendingStatus = AdStatus::PENDING_ID;
-			$advisor = $this->userService->findRandomByRoleAndRegion(3, $adRandomRegionId);
-			if (!$advisor) {
-				throw new \Exception('A supervisor could not be found for an attribution');
-			}
-			$attributionAdData['user_supervisor_id'] = $advisor->id;
-
-		} else {
-			$pendingStatus = AdStatus::PENDING_MODERATION_STATUS_ID;
-			// Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
-			$moderator = $this->userService->findRandomByRoleAndRegion(1, $adRandomRegionId);
-			if (!$moderator) {
-				throw new \Exception('A moderator could not be found for an attribution');
-			}
-			$attributionAdData['user_moderator_id'] = 25;
-		}
+        if ($isSupportRequest) {
+            $pendingStatus = AdStatus::PENDING_ID;
+            $advisor = $this->userService->findRandomByRoleAndRegion(3, $adRandomRegionId);
+            if (!$advisor) {
+                throw new \Exception("Aucun responsable n'a été trouvé dans votre région. Veuillez sauvegarder votre demande et nous contacter.");
+            }
+            $attributionAdData['user_supervisor_id'] = $advisor->id;
+        }
+        else {
+            $pendingStatus = AdStatus::PENDING_MODERATION_STATUS_ID;
+            // Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
+            $moderator = $this->userService->findRandomByRoleAndRegion(1, $adRandomRegionId);
+            if (!$moderator) {
+                throw new \Exception("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
+            }
+            $attributionAdData['user_moderator_id'] = $moderator->id;
+        }
 
 		$attributionAdData['ad_status_id'] = $pendingStatus;
 		$attributionAdData['ad_id'] = $ad->id;
@@ -807,10 +807,13 @@ class AdService
 				$adsCountByRegionId[$regionId]++;
 			}
 		}
-
 		return $adsCountByRegionId;
 	}
 
+	/**
+	 * @param Ad $ad
+	 * @return array
+	 */
 	public function getAdRegionIds(Ad $ad)
 	{
 		$regionIds = [];
@@ -843,6 +846,44 @@ class AdService
 		return array_unique($regionIds);
 	}
 
+	/**
+	 * @param Ad $ad
+	 * @return array
+	 */
+	public function getAdDepartmentsCode(Ad $ad)
+	{
+		$departmentsCode = [];
+
+		if (count($ad->cities)) {
+			/** @var City $city */
+			foreach ($ad->cities as $city) {
+				if ($city->department) {
+					$departmentsCode[] = $city->department->code;
+				}
+			}
+		}
+
+		if (count($ad->departments)) {
+			/** @var Department $department */
+			foreach ($ad->departments as $department) {
+				$departmentsCode[] = $department->code;
+			}
+		}
+
+		if (count($ad->regions)) {
+			/** @var Region $foundRegion */
+			foreach ($ad->regions as $region) {
+				foreach ($region->departments as $department) {
+					$departmentsCode[] = $department->code;
+				}
+			}
+		}
+		return array_unique($departmentsCode);
+	}
+
+	/**
+	 * @return int
+	 */
 	public function getPublishedAdsCount()
 	{
 		return $this->repository->countAllPublished();

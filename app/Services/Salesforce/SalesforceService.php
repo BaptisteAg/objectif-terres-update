@@ -70,6 +70,13 @@ class SalesforceService
         return $contact;
     }
 
+    public function updateContact($contactId, $data)
+    {
+        $this->repository->authenticate();
+
+        $this->repository->update('Contact', $contactId, $data);
+    }
+
     /**
      * Used for testing only, it allows the remote creation of a user for roles > 0
      * @param $data

@@ -121,18 +121,18 @@ abstract class BaseController extends Controller
 		$user = auth()->user();
 		if (isset($user)) {
 			$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad->id);
-
-            $threads = $this->threadService->findThreadAlreadyExist($user->id, $ad->id);
-
-            $data = array(
-                "ad_id" => $ad->id,
-                "user_id" => $user->id,
-            );
-            $favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
+			$data = array(
+				"ad_id" => $ad->id,
+				"user_id" => $user->id,
+			);
+			$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
+			$threads = $this->threadService->findThreadAlreadyExist($user->id, $ad->id);
 		}
 
 		if ($user && $user->role >= 1) {
 			$responseTemplates = ResponseTemplate::all();
+			$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
+
 			if (!isset($ad->project)) {
 				if ($ad->attributionAd->adStatus->id === AdStatus::PENDING_MODERATION_STATUS_ID) {
 					$isAdToModerate = true;
@@ -142,6 +142,8 @@ abstract class BaseController extends Controller
 				$isLoggedUserModeratorAd = true;
 				$responseTemplates = ResponseTemplate::all();
 				$refusalTypes = RefusalType::all();
+				$threads = $this->threadService->findThreadsByAd($ad->id);
+				$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
 				//set to read if notification about moderation task about the ad exist
 				if (!$user->unreadNotifications->isEmpty()) {
 					$notification = $user->unreadNotifications()->where('data->ad_id', $ad->id)->first();
@@ -151,25 +153,21 @@ abstract class BaseController extends Controller
 					}
 				}
 			}
-			if ($user->id === $ad->user_pp_id) {
-
-				if ($user->role >= 2) {
-					$responseTemplates = ResponseTemplate::all();
-					if ($user->role >= 3) {
-						$advisorUsers = $this->userService->findAllAdvisorsAndSupervisors();
-					}
-				}
-				$threads = $this->threadService->findThreadsByAd($ad->id);
-				$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
-			} else {
-				if ($user->role >= 1) {
-					$responseTemplates = ResponseTemplate::all();
-					$refusalTypes = RefusalType::all();
-				}
+			if ($user->role >= 1) {
+				$responseTemplates = ResponseTemplate::all();
+				$refusalTypes = RefusalType::all();
+			}
+			if ($user->role >= 2) {
+				$responseTemplates = ResponseTemplate::all();
 				if ($user->role >= 3) {
 					//TODO display only advisors that are related to the supervisor
 					$responseTemplates = ResponseTemplate::all();
 					$advisorUsers = $this->userService->findAllAdvisorsAndSupervisors();
+				}
+			}
+			if ($user->role >= 1 && $ad->attributionAd->user_moderator_id !== auth()->id()) {
+				if (count(array_intersect($this->adService->getAdDepartmentsCode($ad), $this->userService->getCurrentUserTerritoryDepartments())) > 0) {
+					$threads = $this->threadService->findThreadsByAd($ad->id);
 				}
 			}
 		}
@@ -183,7 +181,8 @@ abstract class BaseController extends Controller
 			'refusalTypes',
 			'isAdToModerate',
 			'isLoggedUserModeratorAd',
-			'advisorUsers'
+			'advisorUsers',
+			'moderatorInChargeOfModeration'
 		);
 	}
 }

@@ -75,7 +75,7 @@
             </nav>
             @auth
                 @if(auth()->user()->role >= 1)
-                    @if($ad->project()->exists())
+                    @if($ad->project()->exists() && auth()->user()->role >= 3)
                         @include ('pages.ads.partials.attribution-project-options')
                     @else
                         @include('pages.ads.partials.moderator-options')

@@ -43,13 +43,13 @@ class NewMessageNotification extends Notification implements ShouldQueue
     {
         return (new MailMessage)
 			->from(env('MAIL_FROM_ADDRESS'), "Objectif Terres")
-			->subject('Vous avez reçu un nouveau message ! | Objectif terres')
+			->subject('Nouveau message de la part de'.$this->data['sender_first_name'].' '. $this->data['sender_name']. '  | Objectif terres')
 			->greeting('Bonjour,')
-			->line( 'Vous avez reçu un nouveau message de '.$this->data['sender_first_name'].' '. $this->data['sender_name']. ' : ')
+			->line( 'Vous avez reçu un nouveau message de '. $this->data['sender_name']. ' : ')
 			->line( "''". $this->data['message_content']."''")
 			->action( 'Consulter votre messagerie', url('/mon-espace/messagerie'))
 			->line('A bientôt sur Objectif Terres !')
-			->salutation('Cordialement, L\'équipe d\'Objectif Terres');
+			->salutation('L\'équipe d\'Objectif Terres');
     }
 
     /**

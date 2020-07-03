@@ -78,7 +78,7 @@ class RegisterController extends Controller
             ],
 			'first_name' => ['required', 'string', 'max:255'],
 			'phone' => ['nullable','string', 'max:30'],
-			'street' => ['string', 'min:5', 'required'],
+			'street' => ['nullable','string', 'min:5'],
 			'civility' => ['required'],
 			'profile' => ['required'],
 			'city_id' => ['required'],
@@ -103,7 +103,7 @@ class RegisterController extends Controller
      * Handle a registration request for the application.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      * @throws \Throwable
      */
     public function register(Request $request)
@@ -120,6 +120,8 @@ class RegisterController extends Controller
             return back()->withInput()->withErrors(json_decode($exception->getMessage())[0]->message);
         }
 
+        session()->flash('success', "Votre compte a été créé et nous vous avons identifié. Bienvenue !");
+
         return redirect(session('url.intended', '/'));
     }
 
@@ -133,11 +135,15 @@ class RegisterController extends Controller
     {
         //dd($data);
 
-        //$salesForceContact = $this->salesForceService->registerPP($data);
-        //$data["sf_id"] = $salesForceContact["id"];
-        $data["sf_id"] = 0;
+        $salesForceContact = $this->salesForceService->registerPP($data);
+        $data["sf_id"] = $salesForceContact["id"];
 
 		$user = $this->userService->create($data);
+
+        $this->salesForceService->updateContact($data["sf_id"], [
+            "OT_user_id__c" => $user->id
+        ]);
+
 		return $user;
 	}
 

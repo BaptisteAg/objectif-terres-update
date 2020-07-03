@@ -57,7 +57,7 @@ class AdsController extends BaseController
 		if ($numberOfAdsPublishedToday >= self::PUBLISHED_AD_LIMIT_PER_USER) {
 			return $this->store($request)
 				->withErrors(
-					"Vous ne pouvez publier que " . self::PUBLISHED_AD_LIMIT_PER_USER . " annonces en même temps. 
+					"Vous ne pouvez publier que " . self::PUBLISHED_AD_LIMIT_PER_USER . " annonces en même temps.
                     Votre annonce a été sauvegardée mais ne sera pas soumise à modération."
 				);
 		}
@@ -66,8 +66,13 @@ class AdsController extends BaseController
 		$data = $request->validated();
 
 		/** @var $ad Ad $ad */
-		$ad = $this->adService->requestPublishing($data);
-		$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
+        try {
+            $ad = $this->adService->requestPublishing($data);
+            $ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
+        }
+        catch(\Exception $exception) {
+            return back()->withInput()->withErrors($exception->getMessage());
+        }
 
 
 		return redirect()->route('ads.show', [$ad->id])
