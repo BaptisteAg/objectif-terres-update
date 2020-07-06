@@ -950,7 +950,6 @@ class AdService
 				}
 			}
 		}
-		dd($ad->departments, $ad->cities);
 		return array_unique($departmentsCode);
 	}
 

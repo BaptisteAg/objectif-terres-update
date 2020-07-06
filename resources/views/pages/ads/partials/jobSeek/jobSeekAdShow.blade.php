@@ -7,10 +7,8 @@
 				<li><a class="breadcrumb__link" href="#">Opportunités professionnelles</a></li>
 			</ul>
 		</nav>
-		<h1 class="title has-text-link">{{$ad->title}}</h1>
 		<div class="columns">
 			@include('pages.ads.partials.show-images')
-
 			<div class="column">
 				<div class="card">
 					<div class="card-content">
@@ -140,8 +138,6 @@
 			@include('pages.ads.partials.threadsDisplay')
 		</div>
 	</div>
-
 </section>
-@include('components.support-terre-liens')
 
 

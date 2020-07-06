@@ -46,7 +46,13 @@ class UsersController extends Controller
 		if (auth()->user()->role < 1) {
 			abort(404);
 		}
-		$ads = $this->adService->findAllByUser($user->id);
+
+		if (auth()->user()->role >= 2) {
+			$ads = $this->adService->findAllByUser($user->id);
+		} else {
+			$ads = $this->adService->findAllAdsByUser($user->id);
+		}
+
 		return view('pages.users.show', compact('ads', 'user'));
 	}
 
