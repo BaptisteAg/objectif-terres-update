@@ -207,6 +207,45 @@ class AdService
 		return $ad;
 	}
 
+    /**
+     * Create the ad without requesting to publish it
+     *
+     * @param array $data
+     * @return mixed
+     * @throws \Throwable
+     */
+    public function store(array $data)
+    {
+        $isUpdate = !empty($data["id"]);
+
+        DB::beginTransaction();
+
+        if($isUpdate) {
+            $ad = $this->repository->update($data["id"], $data);
+        }
+        else {
+            $ad = $this->repository->create($data);
+        }
+
+        $subAdData = $data[$data["ad_type"]];
+        $subAdData["ad_id"] = $ad->id;
+
+        if($isUpdate) {
+            $this->updateSubAd($ad, $data["ad_type"], $subAdData);
+        }
+        else {
+            $subAdData["ad_id"] = $ad->id;
+
+            $this->createSubAd($data["ad_type"], $subAdData);
+        }
+
+        DB::commit();
+
+        $ad->refresh();
+
+        return $ad;
+    }
+
 	protected function createSubAd(string $adType, array $data)
 	{
 		if ($adType === "land_seek") {
@@ -267,32 +306,6 @@ class AdService
     }
 
 	/**
-	 * Create the ad without requesting to publish it
-	 *
-	 * @param array $data
-	 * @return mixed
-	 * @throws \Throwable
-	 */
-	public function store(array $data)
-	{
-		$ad = DB::transaction(function () use ($data) {
-
-			$ad = $this->repository->create($data);
-
-			$adData = $data[$data["ad_type"]];
-			$adData["ad_id"] = $ad->id;
-
-			$this->createSubAd($data["ad_type"], $adData);
-
-			return $ad;
-		});
-
-        $ad->refresh();
-
-		return $ad;
-	}
-
-	/**
 	 * @param int $id
 	 * @return \App\Models\Ad
 	 */
@@ -318,9 +331,9 @@ class AdService
 	 * @param $idUser
 	 * @return Collection
 	 */
-	public function findAllByUser($idUser): Collection
+	public function findAllByUser($idUser, $conditions = []): Collection
 	{
-		return $ads = $this->repository->allByIdUser($idUser);
+		return $ads = $this->repository->allByIdUser($idUser, $conditions);
 	}
 
 	/**
@@ -950,7 +963,7 @@ class AdService
 				}
 			}
 		}
-		dd($ad->departments, $ad->cities);
+
 		return array_unique($departmentsCode);
 	}
 

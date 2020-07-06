@@ -59,13 +59,23 @@ class AdsController extends BaseController
 	        $vars["old"] = array_merge(
                 [
                     'ad_type'        => $this->adService->getAdType($ad),
+
                     'land_seek'      => $ad->landSeekAd  ?
                         array_merge($ad->landSeekAd->toArray(),[
                             "buildings" => $ad->landSeekAd->buildings->pluck("requirement.id", "buildingType.id")->toArray(),
                             "production_genres" => $ad->landSeekAd->productionGenres->pluck("id")->toArray()
+                        ]) : null,
+
+                    'land_offer'     => $ad->landOfferAd ?
+                        array_merge($ad->landOfferAd->toArray(),[
+                            "bio_certifications" => $ad->landOfferAd->bioCertifications->pluck("id")->toArray(),
+                            "production_genres" => $ad->landOfferAd->productionGenres->pluck("id")->toArray(),
+                            "production_genres_wanted" => $ad->landOfferAd->productionGenresPossible->pluck("id")->toArray(),
+                            "offer_genres" => $ad->landOfferAd->offerGenres->pluck("id")->toArray(),
                         ]) : [],
-                    'land_offer'     => $ad->landOfferAd ? $ad->landOfferAd->toArray() : null,
+
                     'job_offer'      => $ad->jobOfferAd  ? $ad->jobOfferAd->toArray() : null,
+
                     'job_seek'       => $ad->jobSeekAd   ? $ad->jobSeekAd->toArray() : null,
                 ],
                 $ad->only(["id", "title", "about_content", "about_project_content", "accept_share_contact_infos"]),
@@ -178,17 +188,14 @@ class AdsController extends BaseController
 	 * @return \Illuminate\Http\RedirectResponse
 	 * @throws \Throwable
 	 */
-	protected function store(AdRequest $request, $isDraft = 0)
+	protected function store(AdRequest $request, $isDraft = 1)
 	{
 		$data = $request->validated();
 
+		$data["is_draft"] = $isDraft;
+
 		$ad = $this->adService->store($data);
 
-		if ($isDraft) {
-			$ad->is_draft = 1;
-			$ad->save();
-		}
-
-		return redirect()->route('ads.show', [$ad->id]);
+		return redirect()->route('ads.list', [$ad->id]);
 	}
 }

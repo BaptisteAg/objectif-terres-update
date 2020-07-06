@@ -30,6 +30,9 @@ class LandOfferRuleset implements RulesetInterface
             'land_offer.rentPrice'                               => ['nullable', 'numeric'],
             'land_offer.test_description'                        => ['nullable', 'string'],
 
+
+            'about_content'                 => ['nullable', 'string', 'max:1000'],
+
             //'land_offer.is_beneficiary'                          => ['required', 'boolean'],
             //'land_offer.house_offer_genre'                       => ['array'],
             //'land_offer.is_call_for_application_community'       => ['boolean'],
