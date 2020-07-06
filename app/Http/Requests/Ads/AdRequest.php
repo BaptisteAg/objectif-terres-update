@@ -29,6 +29,7 @@ class AdRequest extends FormRequest
     public function rules()
     {
         $rules = [
+            'id'                            => ["nullable", "numeric"],
             'ad_type'                       => "required",
             'land_seek'                     => ['nullable', 'array'],
             'land_offer'                    => ['nullable', 'array'],

@@ -97,13 +97,17 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	/**
 	 * Updates an ad.
 	 *
-	 * @param Ad $ad
+	 * @param Ad|int $ad
 	 * @param array $data
 	 * @return Ad
 	 * @throws \Throwable
 	 */
 	public function update($ad, array $data): Ad
 	{
+	    if(!is_a($ad, Ad::class)) {
+	        $ad = $this->find($ad);
+        }
+
         $this->save($ad, $data);
 
 		return $ad;
@@ -153,15 +157,21 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 * @param  $idUser
 	 * @return Collection
 	 */
-	public function allByIdUser($idUser): Collection
+	public function allByIdUser($idUser, $conditions = []): Collection
 	{
+	    $query = $this->entity
+            ->where(["user_pp_id" => $idUser])
+            ->with($this->getDashboardsEagerLoading())
+            ->orderByDesc('id');
+
+	    foreach($conditions as $column => $value) {
+	        $query->where($column, $value);
+        }
+
 		/** @var Collection $model */
-		$models = $this->entity
-			->where(["user_pp_id" => $idUser])
-			->where('is_draft', 0)
-			->with($this->getDashboardsEagerLoading())
-            ->orderByDesc('id')
+		$models = $query
 			->get();
+
 		return $models;
 	}
 

@@ -21,30 +21,39 @@ class LandOfferAdRepository extends AbstractRepository implements LandOfferAdRep
     {
         $landOfferAd = new LandOfferAd();
 
+        $this->save($landOfferAd, $data);
+
+        return $landOfferAd;
+    }
+
+    /**
+     * Update an ad.
+     *
+     * @param LandOfferAd $landOfferAd
+     * @param array $data
+     */
+    public function update($landOfferAd, array $data): LandOfferAd
+    {
+        $this->save($landOfferAd, $data);
+
+        return $landOfferAd;
+    }
+
+    private function save(LandOfferAd $landOfferAd, array $data)
+    {
         $landOfferAd->fill($data);
 
         $landOfferAd->save();
 
-        if(isset($data["production_genres"])) {
-            foreach($data["production_genres"] as $productionGenreId) {
-                $landOfferAd->productionGenres()->attach($productionGenreId);
-            }
-        }
-        if(isset($data["production_genres_wanted"])) {
-            foreach($data["production_genres_wanted"] as $productionGenreId) {
-                $landOfferAd->productionGenres()->attach($productionGenreId, ["type" => "possible"]);
-            }
+        $landOfferAd->productionGenres()->sync($data["production_genres"] ?? []);
+
+        $landOfferAd->productionGenresPossible()->detach();
+        foreach($data["production_genres_wanted"] ?? [] as $productionGenreId) {
+            $landOfferAd->productionGenresPossible()->attach($productionGenreId, ["type" => "possible"]);
         }
 
-        foreach($data["bio_certifications"] as $bioCertificationId) {
-            $landOfferAd->bioCertifications()->attach($bioCertificationId);
-        }
+        $landOfferAd->bioCertifications()->sync($data["bio_certifications"] ?? []);
 
-        foreach($data["offer_genres"] as $offerGenreId) {
-            $landOfferAd->offerGenres()->attach($offerGenreId);
-        }
-
-
-        return $landOfferAd;
+        $landOfferAd->offerGenres()->sync($data["offer_genres"] ?? []);
     }
 }

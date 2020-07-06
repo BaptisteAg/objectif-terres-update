@@ -93,6 +93,17 @@ class LocationableController extends Controller
         return response()->json($json);
     }
 
+    public function adLocations(Request $request, AdService $adService)
+    {
+        $json = [];
+        foreach($request->get("names") as $name) {
+
+            $json[] = $this->service->getLocationGeoPolygon($name);
+        }
+
+        return response()->json($json);
+    }
+
     public function france(AdService $adService)
     {
         $adsCount = $adService->getPublishedAdsCount();

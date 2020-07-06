@@ -444,7 +444,7 @@
 						});
 
 					})
-				})
+                })
 			})
 		}
 
@@ -502,6 +502,7 @@
 					}
 
 					map.removeLayer(francePolygon);
+
 				})
 			})
 		});

@@ -41,43 +41,30 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
 
     private function save(LandSeekAd $landSeekAd, array $data)
     {
-        $productionGenres = $data["production_genres"] ?? [];
-        $offerGenres = $data["offer_genres"] ?? [];
-        $buildings = $data["buildings"] ?? [];
-        $educationLevels = $data["education_levels"] ?? [];
-
-        if(in_array('other', $productionGenres)) {
-            //$data["production_type_add"] = "";
-            $productionGenres = Arr::where($productionGenres, function($productionGenre) {return $productionGenre !== 'other';});
-        }
-
         $landSeekAd->fill($data);
 
         $landSeekAd->save();
 
-        if (count($offerGenres)) {
-            $landSeekAd->offerGenres()->sync($offerGenres);
+        $landSeekAd->offerGenres()->sync($data["offer_genres"] ?? []);
+
+        $landSeekAd->educationLevels()->sync($data["education_levels"] ?? []);
+
+        $productionGenres = $data["production_genres"] ?? [];
+        if(in_array('other', $productionGenres)) {
+            //$data["production_type_add"] = "";
+            $productionGenres = Arr::where($productionGenres, function($productionGenre) {return $productionGenre !== 'other';});
+        }
+        $landSeekAd->productionGenres()->sync($productionGenres);
+
+        $landSeekAd->buildings()->delete();
+        foreach($data["buildings"] ?? [] as $buildingId => $requirementId) {
+            $landSeekAd->buildings()->create([
+                "requirement_id" => $requirementId,
+                "building_type_id" => $buildingId,
+                "land_seek_ad_id" => $landSeekAd->id
+            ]);
         }
 
-        if (count($productionGenres)) {
-            $landSeekAd->productionGenres()->sync($productionGenres);
-        }
-
-        if (count($educationLevels)) {
-            $landSeekAd->productionGenres()->sync($educationLevels);
-        }
-
-        if (count($buildings)) {
-            $landSeekAd->buildings()->delete();
-
-            foreach($buildings as $buildingId => $requirementId) {
-                $landSeekAd->buildings()->create([
-                    "requirement_id" => $requirementId,
-                    "building_type_id" => $buildingId,
-                    "land_seek_ad_id" => $landSeekAd->id
-                ]);
-            }
-        }
     }
 
 }

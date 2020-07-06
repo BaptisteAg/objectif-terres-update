@@ -19,7 +19,7 @@
         </div>
 
         <div class="wizard-footer-right">
-            <button class="button is-light">
+            <button class="button is-light" @click="onSaveButtonClick">
                 Sauvegarder
             </button>
             <span @click="props.nextTab" @keyup.enter="props.nextTab" v-if="props.isLastStep" role="button"

@@ -152,6 +152,10 @@ export default {
                     return true;
                 }
             });
+        },
+        onSaveButtonClick(e) {
+            e.preventDefault();
+            this.$emit('submit-save-button');
         }
     },
 };
