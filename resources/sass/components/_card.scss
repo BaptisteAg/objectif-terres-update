@@ -36,7 +36,7 @@
   width: 100%;
   .card-footer {
     border: none;
-    .card-footer-item {
+    > .card-footer-item {
       border: none;
     }
   }

@@ -5,6 +5,10 @@
 @endsection
 
 @section('head-script')
+    <!-- Import Leaflet CSS Style Sheet -->
+    <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css"/>
+    <!-- Import Leaflet JS Library -->
+    <script src="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
 @endsection
 
@@ -199,5 +203,64 @@
             })
         @endif
         @endauth
+    </script>
+
+    <script>
+
+        var map = L.map('map_ad', { /* use the same name as your <div id=""> */
+            center: [46.290552, 2.771017], /* set GPS Coordinates */
+            zoom: 5, /* define the zoom level */
+            zoomControl: true, /* false = no zoom control buttons displayed */
+            scrollWheelZoom: false /* false = scrolling zoom on the map is locked */
+        });
+
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWlja2l3YXkiLCJhIjoiY2s0YmE0NHZqMDZrejNrcGlxeWJmNHRtdCJ9.In4xuZz8wYnXmDX5jrrhCg', { /* set your personal MapBox Access Token */
+            maxZoom: 18, /* zoom limit of the map */
+            minZoom: 5,
+            id: 'mapbox.satellite' /* mapbox.light / dark / streets / outdoors / satellite */
+        }).addTo(map);
+
+
+        function setupLocationPolygon(polygonData, options) {
+            var polygon = L.geoJSON(polygonData.geojson, {
+                smoothFactor: options.smoothFactor || 0,
+                style: {
+                    color: '#b34818'
+                }
+            });
+
+            polygon.addTo(map);
+            map.fitBounds(polygon.getBounds());
+
+            return polygon
+        }
+
+        var formData = new FormData();
+        formData.append('_token', "{{ csrf_token() }}");
+
+        @foreach($ad->regions as $location)
+            formData.append('names[]', "{{$location->name}}");
+        @endforeach
+        @foreach($ad->departments as $location)
+            formData.append('names[]', "{{$location->name}}");
+        @endforeach
+        @foreach($ad->cities as $location)
+            formData.append('names[]', "{{$location->name}}");
+        @endforeach
+
+        fetch('/locations/polygon/ad-locations', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(regionsPolygonData => {
+
+                regionsPolygonData.forEach(polygonData => {
+                    setupLocationPolygon(polygonData, {
+                        smoothFactor : 2
+                    })
+                })
+            })
+
     </script>
 @endsection

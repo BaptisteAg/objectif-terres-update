@@ -8,6 +8,13 @@
   /* ... */
 }
 
+#map_ad {
+  height: 400px;
+  margin: 0;
+  border-radius: 5px;
+  z-index: 1;
+}
+
 [data-tooltip]:not(.is-disabled).has-tooltip-multiline::before,
 [data-tooltip]:not(.is-loading).has-tooltip-multiline::before,
 [data-tooltip]:not([disabled]).has-tooltip-multiline::before {

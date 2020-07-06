@@ -108,6 +108,7 @@ Route::prefix('locations')->namespace('Locationables')->group(function () {
 	Route::prefix('polygon')->group(function () {
 		Route::post('regions', 'LocationableController@regionsPolygon');
 		Route::get('france', 'LocationableController@france');
+		Route::post('ad-locations', 'LocationableController@adLocations');
 	});
 });
 
