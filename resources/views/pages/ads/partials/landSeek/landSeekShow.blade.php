@@ -48,22 +48,22 @@
                 </div>
 
                 <div class="content">
-                    <p><span class="is-size-5 ad-show-feature-label">Habitation(s) et bâti(s) recherché(s) : </span><br>
-                        @if($ad->landSeekAd->buildings)
+                    @if( !empty($ad->landSeekAd->buildings) )
+                        <p><span class="is-size-5 is-capitalized ad-show-feature-label">Habitation(s) et bâti(s) recherché(s) : </span><br>
                             @foreach($ad->landSeekAd->buildings as $building)
                                 @if($building->requirement->label !== "Indifférent")
                                 <span class="subtitle">{{ $building->buildingType->label }}</span> <i class="fas fa-arrow-right"></i><span class="subtitle"> {{ $building->requirement->label }}</span><br>
                                 @endif
                             @endforeach
-                        @endif
-                    </p>
+                        </p>
+                    @endif
                 </div>
 
                 <div class="content">
                     @if(count($ad->cities))
                         <p>
                             <span class="is-size-5 ad-show-feature-label">
-                                Communes
+                                Commune(s)
                                 @if($ad->locationable_radius)
                                     (dans un rayon de {{$ad->locationable_radius}}km)
                                 @endif
@@ -77,14 +77,14 @@
 
                     @if(count($ad->departments))
                         <p>
-                            <span class="is-size-5 is-capitalized ad-show-feature-label">Départements : </span>
+                            <span class="is-size-5 is-capitalized ad-show-feature-label">Département(s) : </span>
                             <span class="subtitle"> {{ $ad->departmentsList() }}</span>
                         </p>
                     @endif
 
                     @if(count($ad->regions))
                         <p>
-                            <span class="is-size-5 is-capitalized ad-show-feature-label">Régions : </span>
+                            <span class="is-size-5 is-capitalized ad-show-feature-label">Région(s) : </span>
                             <span class="subtitle">{{$ad->regionsList() }}</span>
                         </p>
                     @endif
@@ -196,6 +196,8 @@
         <p> {!! nl2br($ad->landSeekAd->experience_farming ?? "") !!}</p>
     </div>
 @endif
+
+<div id="map_ad"></div>
 
 <div class="section">
     @include('pages.ads.partials.threadsDisplay')

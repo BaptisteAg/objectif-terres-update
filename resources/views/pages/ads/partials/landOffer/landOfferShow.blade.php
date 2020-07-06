@@ -37,13 +37,13 @@
 						@endguest()
 					</p>
 				</div>
-				<div class="content">
-					<p><span class="is-size-5 is-capitalized has-text-black">Catégorie : </span><span
-								class="subtitle">{{$ad->ad_type_full_name}}</span></p>
-				</div>
+{{--				<div class="content">--}}
+{{--					<p><span class="is-size-5 is-capitalized has-text-black">Catégorie : </span><span--}}
+{{--								class="subtitle">{{$ad->ad_type_full_name}}</span></p>--}}
+{{--				</div>--}}
 				@if($ad->landOfferAd->accept_use_zip_code)
 					@if($ad->cities->count())
-						<div class="content">
+						<div class="content has-text-centered">
 							<p><span class="is-size-5 is-capitalized has-text-black">Code postal : </span><span
 										class="subtitle">{{$ad->cities[0]->zip_code }} ({{$ad->cities[0]->name }})</span>
 							</p>
@@ -81,8 +81,7 @@
 					@if($ad->landOfferAd->rent_price)
 						<p>
 							<span class="is-size-5  has-text-black">Loyer mensuel : </span>
-							<span
-									class="subtitle ">{{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} €</span>
+							<span class="subtitle ">{{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} €</span>
 						</p>
 					@endif
 				</div>
@@ -209,6 +208,8 @@
 		<p>  {!! nl2br($ad->landOfferAd->test_description ?? "") !!}</p>
 	</div>
 @endif
+
+<div id="map_ad"></div>
 
 <div class="section">
 	@include('pages.ads.partials.threadsDisplay')
