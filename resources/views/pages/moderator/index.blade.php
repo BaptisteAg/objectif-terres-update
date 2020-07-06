@@ -203,7 +203,7 @@
                                                 <span class="custom-tag success has-tooltip-bottom"
                                                       data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
                                             @elseif($attributionAd->adStatus->id ===\App\Models\AdStatus::PENDING_ID)
-                                                <span class="custom-tag primary has-tooltip-bottom"
+                                                <span class="custom-tag warning has-tooltip-bottom"
                                                       data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
                                             @elseif($attributionAd->adStatus->id === \App\Models\AdStatus::REFUSE_ID)
                                                 <span class="custom-tag info  has-tooltip-bottom"

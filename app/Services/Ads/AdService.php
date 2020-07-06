@@ -963,7 +963,6 @@ class AdService
 				}
 			}
 		}
-
 		return array_unique($departmentsCode);
 	}
 

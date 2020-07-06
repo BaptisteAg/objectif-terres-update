@@ -125,11 +125,10 @@
 	<h3 class="title is-3">A propos</h3>
 	<p>  {!! nl2br($ad->about_content ?? "") !!}</p>
 </div>
-
 <div id="map_ad"></div>
-
 <div class="section">
 	@include('pages.ads.partials.threadsDisplay')
 </div>
+
 
 

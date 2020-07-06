@@ -41,7 +41,7 @@ class AdsController extends BaseController
         $selected_zones = json_encode(array_filter(array_merge(
             array_map($this->locationService->getResultRenderer('regions'), $ad->regions->toArray()),
             array_map($this->locationService->getResultRenderer('departments'), $ad->departments->toArray()),
-            array_map($this->locationService->getResultRenderer('cities'), $ad->cities->toArray()),
+            array_map($this->locationService->getResultRenderer('cities'), $ad->cities->toArray())
         )));
 	    $locationable = array_filter([
 	        "cities" => $ad->cities->pluck('id')->toArray(),
@@ -164,7 +164,6 @@ class AdsController extends BaseController
 	public function list()
 	{
 		$ads = $this->adService->findAllByUser(auth()->id());
-
 		return view('pages.ads.listUserAds', compact('ads'));
 	}
 
