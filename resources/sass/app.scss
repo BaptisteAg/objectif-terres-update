@@ -19,6 +19,9 @@
 // Animate
 @import url("https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css");
 
+// Waves
+@import "~node-waves/dist/waves.min.css";
+
 //Bases
 @import "bases/global";
 @import "bases/typography";
@@ -57,13 +60,14 @@
 @import "components/blockquote";
 @import "components/input";
 @import "components/card";
-@import "components/tooltip";
+//@import "components/tooltip";
 @import "components/messages";
 @import "components/dropzone";
 @import "components/tags";
 @import "components/breadcrumb";
 @import "components/leaflet";
 @import "components/accordion";
+@import "components/alerts";
 
 // Pages
 @import "pages/ads/ads";

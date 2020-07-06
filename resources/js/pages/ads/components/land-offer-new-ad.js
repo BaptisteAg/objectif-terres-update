@@ -31,8 +31,12 @@ export default {
     mixins: [FormNewAdMixin],
     props: {},
     data() {
-        const v = this.oldValues;
+        let v = this.oldValues;
         const hasOld = Object.keys(v).length;
+
+        if(!hasOld) {
+            v = {land_offer: {}};
+        }
 
         const extraFormInput = this.isSupportRequest ? {
             isBeneficiary: hasOld ? v.is_beneficiary : '1',
@@ -47,7 +51,7 @@ export default {
 
         return  {
             formInput: {
-                selectedZones: hasOld ? v.selected_zones : [],
+                selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
 
                 surface: hasOld ? v.land_offer.surface : '',
                 sauDescription: hasOld ? v.land_offer.sau_description : '',
@@ -153,7 +157,7 @@ export default {
                 productionGenresWanted: {},
                 waterAccess: {required},
                 waterAccessDescription: {
-                    minLength: minLength(5),
+                    minLength: minLength(4),
                     maxLength: maxLength(200),
                 },
                 altitude: {
@@ -164,14 +168,14 @@ export default {
                 price: {
                     decimal,
                     required(v) {
-                        return this.isSaleOffer ? !!v : true
+                        return this.isSaleOffer && !this.isSupportRequest ? !!v : true
                     }
                 },
                 rentPrice: {
                     decimal,
-                    required(v) {
+                    /*required(v) {
                         return this.isRentOffer ? !!v : true
-                    }
+                    }*/
                 },
                 testDescription: {
                     minLength: minLength(5),
@@ -191,6 +195,12 @@ export default {
                 houseDescription: {
                     minLength: minLength(5),
                     maxLength: maxLength(1000),
+                },
+
+                aboutContent: {
+                    minLength: minLength(5),
+                    maxLength:
+                        maxLength(1000),
                 },
 
                 ...extraValidations

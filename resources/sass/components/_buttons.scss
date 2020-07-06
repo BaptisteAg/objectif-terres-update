@@ -33,7 +33,6 @@ BUTTON
   text-decoration: none;
   line-height: 1.125em;
   letter-spacing: 0.05em;
-  transition: all 0.2s;
   cursor: pointer;
 }
 
@@ -80,6 +79,10 @@ BUTTON
 
 .button.small {
   font-size: 1em;
+
+  &:hover {
+    font-size:1em;
+  }
 }
 
 .button.x-small {
@@ -496,4 +499,15 @@ a.button.btn-favorite-ads:hover {
   background-color: $white;
   color: $primary;
   border-color: $primary;
+}
+
+
+/*
+--------------------
+WAVES
+--------------------
+ */
+.waves-button, .waves-button-input, .waves-button:hover, .waves-button:visited {
+  font-size:1.2em;
+  line-height: initial;
 }

@@ -6,10 +6,11 @@
                         name="{{$name}}"
                         input-value="{{$productionGenre["id"]}}"
                         :disabled="isInputDisabled"
-                        v-model="formInput.productionGenres"
-                        ref="productionGenres">
+                        v-model="{{ $vModel ?? "formInput.productionGenres" }}"
+                        :exclusive-values="['1']"
+                        ref="{{ $ref ?? "productionGenres" }}">
 
-                    <i class="fa fa-home"></i>
+{{--                    <i class="fa fa-home"></i>--}}
                     <span style="font-size:16px">
                         {{ $productionGenre["name"] }}
                     </span>

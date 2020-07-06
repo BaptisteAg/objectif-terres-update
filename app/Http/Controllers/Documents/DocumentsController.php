@@ -24,9 +24,9 @@ class DocumentsController extends Controller
 	 * @param string $fileName
 	 * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
 	 */
-	public function show(string $type, string $fileName)
+	public function show(string $type, string $user_id, string $fileName)
 	{
-		$document = $this->service->findByPath('documents/' . $type . '/' . $fileName);
+		$document = $this->service->findByPath('documents/' . $type . '/' . $user_id . '/' . $fileName);
 
 		return response()->file(
 			storage_path(
@@ -42,7 +42,6 @@ class DocumentsController extends Controller
 	 */
 	public function upload(Request $request)
 	{
-
 		$files = $request->file('file');
 		$type = $request->get('type');
 
@@ -56,7 +55,7 @@ class DocumentsController extends Controller
 
 		$documents = [];
 		foreach ($files as $file) {
-			$documents[] = $this->service->create($file, $request->get('type'));
+			$documents[] = $this->service->create($file, $request->get('type').'/'.auth()->id());
 		}
 
 		return response()->json($documents);

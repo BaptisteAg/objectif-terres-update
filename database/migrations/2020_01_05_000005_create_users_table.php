@@ -38,7 +38,7 @@ class CreateUsersTable extends Migration
 			$table->unsignedSmallInteger('country_id')->nullable();
 			$table->unsignedInteger('zip_code_id')->nullable();
 			$table->unsignedInteger('role')->default(0);
-			$table->softDeletes();
+
 			$table->rememberToken();
 			$table->timestamps();
 

@@ -8,7 +8,7 @@
                v-on:click="onClick"
                v-on:awesomplete-select="onSelect">
         <span class="icon is-small right" v-show="isFetching">
-            <i class="fas fa-spinner fa-spin"></i>
+            <i class="fas fa-spinner fa-spin has-text-black"></i>
         </span>
 
         <input type="hidden" :name="name" :value="JSON.stringify(value)" v-if="name">
@@ -124,7 +124,7 @@
                             }
 
                             // Saint etienne ne déclenche pas la liste
-                            console.log(JSON.stringify(results));
+                            //console.log(JSON.stringify(results));
 
                             this.$awesomplete.list = results;
                             this.$awesomplete.evaluate();

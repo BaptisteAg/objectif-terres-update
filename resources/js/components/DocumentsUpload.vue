@@ -55,7 +55,7 @@
             type : String,
             extraData: {
                 type: Object,
-                default: {}
+                default: _ => {}
             }
         },
         data() {
@@ -69,7 +69,9 @@
                 // Dropzone requirements for file object properties are the same as DB document object definition
                 this.value.forEach(document => {
                     dropzone.emit("addedfile", document);
-                    dropzone.emit("thumbnail", document, '/'+document.path);
+                    if(document.type.indexOf("image") === 0) {
+                        dropzone.emit("thumbnail", document, '/'+document.path);
+                    }
                     dropzone.emit("complete", document);
                 })
             }

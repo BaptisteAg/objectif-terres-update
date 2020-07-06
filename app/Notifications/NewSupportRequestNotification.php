@@ -10,23 +10,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewProjectsNotification extends Notification implements ShouldQueue
+class NewSupportRequestNotification extends Notification implements ShouldQueue
 {
 	use Queueable;
 
 	protected $ad;
-	protected $userPP;
 
 	/**
 	 * Create a new notification instance.
 	 *
 	 * @param Ad $ad
-	 * @param User $userPP
 	 */
-	public function __construct(Ad $ad, Authenticatable $userPP)
+	public function __construct(Ad $ad)
 	{
 		$this->ad = $ad;
-		$this->userPP = $userPP;
 	}
 
 	/**
@@ -53,7 +50,7 @@ class NewProjectsNotification extends Notification implements ShouldQueue
 			->from(env('MAIL_FROM_ADDRESS'), "Administration | Objectif Terres")
 			->subject('Nouvelle demande d\'accompagnement !')
 			->greeting('Bonjour,')
-			->line('Vous avez reçu une nouvelle demande d\'accompagnment pour un projet posté par '. $this->userPP->first_name.' '.$this->userPP->name.' .')
+			->line('Vous avez reçu une nouvelle demande d\'accompagnment pour un projet posté par '. $this->ad->userPp->first_name.' '.$this->ad->userPp->name.' .')
 			->action('Consulter le projet', $url)
 			->line('A bientôt sur Objectif Terres !')
 			->salutation('Cordialement, L\'équipe d\'Objectif Terres');
@@ -69,9 +66,9 @@ class NewProjectsNotification extends Notification implements ShouldQueue
 	{
 		return [
 			'ad_id' => $this->ad->id,
-			'user_pp_id' => $this->userPP->id,
-			'user_pp_first_name' => $this->userPP->first_name,
-			'user_pp_name' => $this->userPP->name,
+			'user_pp_id' => $this->ad->userPp->id,
+			'user_pp_first_name' => $this->ad->userPp->first_name,
+			'user_pp_name' => $this->ad->userPp->name,
 			'is_project' =>true
 
 		];

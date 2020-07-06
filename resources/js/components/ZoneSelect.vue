@@ -38,15 +38,15 @@
                     <span @click="_ => value.splice(i, 1)" data-tooltip="Retirer cette localisation">
                         <i class="fa fa-trash-alt" style="cursor:pointer;"></i>
                     </span>
-                    <b>{{helper.getLabel(zone.value.type)}}</b> : {{zone.value.originalLabel}}
-                    <input type="hidden" :name="name+'['+zone.value.type+'][]'" :value="zone.value.id" v-if="zone.value.id">
+                    <b>{{helper.getLabel(zone.value.type)}}</b> : {{zone.value.originalLabel || zone.label}}
+                    <input type="hidden" :disabled="disabled" :name="name+'['+zone.value.type+'][]'" :value="zone.value.id" v-if="zone.value.id">
                     <template v-if="zone.value.ids">
-                        <input type="hidden" :name="name+'['+helper.getInputNameRangeMapping(zone.value.type)+'][]'" :value="id" v-for="id in zone.value.ids">
+                        <input type="hidden" :disabled="disabled" :name="name+'['+helper.getInputNameRangeMapping(zone.value.type)+'][]'" :value="id" v-for="id in zone.value.ids">
                     </template>
                 </div>
             </div>
         </div>
-        <input type="hidden" :name="jsonName" :value="JSON.stringify(value)">
+        <input type="hidden" :disabled="disabled" :name="jsonName" :value="JSON.stringify(value)">
         <div class="card-footer">
             <div class="card-footer-item">
                 <div class="column tooltip has-tooltip-left has-tooltip-multiline" data-tooltip="Sélectionnez une commune pour activer ce champ">

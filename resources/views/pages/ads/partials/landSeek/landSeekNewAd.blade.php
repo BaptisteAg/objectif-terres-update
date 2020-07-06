@@ -5,7 +5,7 @@
             step-size="xs"
             @on-complete="$emit('form-complete')"
             @on-change="nextStep"
-            color="#3498db"
+            color="#579ea5"
             ref="formWizard">
 
         <tab-content title="Localisation" icon="ti-location-arrow">
@@ -33,6 +33,7 @@
                                     :data="{{ json_encode($surfaceRanges->pluck('label', 'value')) }}"
                                     :value="[formInput.surfaceRangeMin, formInput.surfaceRangeMax]"
                                     @input="v => (formInput.surfaceRangeMin = v[0]) && (formInput.surfaceRangeMax = v[1])"
+                                    :disabled="isInputDisabled"
                             ></vue-slider-range>
 
                             <p class="help is-danger"
@@ -81,7 +82,7 @@
                                                 <input type="radio"
                                                        name="land_seek[buildings][{{$buildingType->id}}]"
                                                        value="{{ $requirement->id }}"
-                                                       {{ in_array($requirement->id, old('land_seek[buildings]', [])) ? 'checked' : '' }}>
+                                                        {{ (string)($old['land_seek']["buildings"][(string)$buildingType->id] ?? 0) === (string)$requirement->id ? 'checked' : '' }}>
                                             </td>
                                         @endforeach
                                     </tr>
@@ -93,8 +94,8 @@
                         @if(!empty($isSupportRequest))
                             <div class="field">
                                 <label for="land_seek[offer_genres][]"
-                                        class='label has-tooltip has-tooltip-left'
-                                        data-tooltip=" Si vous ne savez pas cochez les deux">
+                                       class='label has-tooltip has-tooltip-left'
+                                       data-tooltip=" Si vous ne savez pas cochez les deux">
 
                                     Accès au foncier souhaité*,
                                     <i class="fas fa-info-circle has-text-info"></i>
@@ -127,33 +128,47 @@
                                 </p>
                             </div>
 
-                            <div class="field" v-show="formInput.offerGenres.includes('2')">
-                                {!! Form::label('land_seek[rent_max]', 'Loyer maximum (en €)', ['class' => 'label']); !!}
-                                {!! Form::text('land_seek[rent_max]',
-                                          null,
-                                          ['min'=>1,
-                                          'class' => 'input',
-                                          'ref' => 'rentMax',
-                                          'v-model.trim' => 'formInput.rentMax',
-                                          ':disabled' => 'isInputDisabled'] ) !!}
+                            {{--                            <div class="field" v-show="formInput.offerGenres.includes('2')">--}}
+                            {{--                                {!! Form::label('land_seek[rent_max]', 'Loyer maximum (en €)', ['class' => 'label']); !!}--}}
+                            {{--                                {!! Form::text('land_seek[rent_max]',--}}
+                            {{--                                          null,--}}
+                            {{--                                          ['min'=>1,--}}
+                            {{--                                          'class' => 'input',--}}
+                            {{--                                          'ref' => 'rentMax',--}}
+                            {{--                                          'v-model.trim' => 'formInput.rentMax',--}}
+                            {{--                                          ':disabled' => 'isInputDisabled'] ) !!}--}}
 
-                                <p class="help is-danger" v-if="!$v.formInput.rentMax.numeric">Veuillez saisir des chiffres.</p>
-                            </div>
+                            {{--                                <p class="help is-danger" v-if="!$v.formInput.rentMax.numeric">Veuillez saisir des chiffres.</p>--}}
+                            {{--                            </div>--}}
 
                             <div class="field" v-show="formInput.offerGenres.includes('1')">
-                                {!! Form::label('land_seek[price_max]', 'Achat : Prix maximum', ['class' => 'label']); !!}
+                                {!! Form::label('land_seek[price_max]', 'Achat : quel est votre budget maximum ?', ['class' => 'label']); !!}
 
-                                <vue-slider
-                                    name="land_seek[price_max]"
-                                    :data="{
-                                        '50000' : '< 50 000€',
-                                        '100000' : '100 000 €',
-                                        '200000' : '200 000 €',
-                                        '300000' : '300 000 €',
-                                        '10000000' : '> 300 000 €',
-                                    }"
-                                    v-model="formInput.priceMax">
-                                </vue-slider>
+                                <div class="control has-icons-right">
+                                    {!! Form::text('land_seek[price_max]',
+                                              null,
+                                              ['min'=>1,
+                                              'class' => 'input',
+                                              'ref' => 'priceMax',
+                                              'v-model.trim' => 'formInput.priceMax',
+                                              ':disabled' => 'isInputDisabled'] ) !!}
+                                    <span class="icon is-small is-right" style="color: #4a4a4a;">
+                                      €
+                                    </span>
+                                </div>
+
+
+                                {{--                                <vue-slider--}}
+                                {{--                                    name="land_seek[price_max]"--}}
+                                {{--                                    :data="{--}}
+                                {{--                                        '50000' : '< 50 000€',--}}
+                                {{--                                        '100000' : '100 000 €',--}}
+                                {{--                                        '200000' : '200 000 €',--}}
+                                {{--                                        '300000' : '300 000 €',--}}
+                                {{--                                        '10000000' : '> 300 000 €',--}}
+                                {{--                                    }"--}}
+                                {{--                                    v-model="formInput.priceMax">--}}
+                                {{--                                </vue-slider>--}}
                             </div>
                         @endif
                     </div>
@@ -171,26 +186,34 @@
 
                         <div class="field">
                             {!! Form::label('land_seek[is_bio]', "Votre projet est-il en agriculture biologique ?", ['class' => 'label']) !!}
-                            {!! Form::radio('land_seek[is_bio]', '1', old('land_seek[is_bio]') , [':disabled' => 'isInputDisabled']) !!}
-                            oui
-                            {!! Form::radio('land_seek[is_bio]', '0', old('land_seek[is_bio]') , [':disabled' => 'isInputDisabled']) !!}
-                            non
+                            <label>
+                            {!! Form::radio('land_seek[is_bio]', '1', $old['land_seek']['is_bio'] ?? null , [':disabled' => 'isInputDisabled']) !!}
+                            Oui
+                            </label><br>
+                            <label>
+                            {!! Form::radio('land_seek[is_bio]', '0', $old['land_seek']['is_bio'] ?? null , [':disabled' => 'isInputDisabled']) !!}
+                            Non
+                            </label><br>
+                            <label>
+                            {!! Form::radio('land_seek[is_bio]', '-1', $old['land_seek']['is_bio'] ?? null , [':disabled' => 'isInputDisabled']) !!}
+                            Je ne sais pas encore
+                            </label>
                         </div>
 
 
                         <div class="field">
                             {!! Form::label('land_seek[production_genres][]', 'Production(s) envisagée(s)*', ['class' => 'label']); !!}
 
-                            @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_seek[production_genres][]', 'productionGenres' => $productionGenresWithOther])
-{{--                            <multi-select--}}
-{{--                                    :options="{{json_encode($productionGenresWithOther)}}"--}}
-{{--                                    group-values="children"--}}
-{{--                                    name="land_seek[production_genres][]"--}}
-{{--                                    v-model="formInput.productionGenres"--}}
-{{--                                    selected-count-text="productions sélectionnée(s)"--}}
-{{--                                    placeholder="Sélectionnez au moins une production"--}}
-{{--                                    ref="productionGenres">--}}
-{{--                            </multi-select>--}}
+                            @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_seek[production_genres][]', 'productionGenres' => $productionGenresWithOther->slice(1)])
+                            {{--                            <multi-select--}}
+                            {{--                                    :options="{{json_encode($productionGenresWithOther)}}"--}}
+                            {{--                                    group-values="children"--}}
+                            {{--                                    name="land_seek[production_genres][]"--}}
+                            {{--                                    v-model="formInput.productionGenres"--}}
+                            {{--                                    selected-count-text="productions sélectionnée(s)"--}}
+                            {{--                                    placeholder="Sélectionnez au moins une production"--}}
+                            {{--                                    ref="productionGenres">--}}
+                            {{--                            </multi-select>--}}
 
                             <p class="help is-danger" id="productionGenresError"
                                v-if="$v.formInput.productionGenres.$error">
@@ -239,7 +262,17 @@
                                 Ce champ est requis.
                             </p>
                         </div>
-                        @include('pages.ads.partials.inputs.about_project_content', ['tooltip' => "Pour donner envie à un cédant ou propriétaire de vous proposer du foncier, décrivez votre projet, son histoire, ses valeurs, votre date d'installation envisagée, etc."])
+                        @php
+                            if(empty($isSupportRequest)) {
+                                $tooltip = "Pour donner envie à un cédant ou propriétaire de vous proposer " .
+                                            "du foncier, décrivez votre projet, son histoire, ses valeurs, " .
+                                            "votre date d'installation envisagée, etc.";
+                            }
+                            else {
+                                $tooltip = "Décrivez votre projet, son histoire, ses valeurs, votre date d'installation envisagée, etc.";
+                            }
+                        @endphp
+                        @include('pages.ads.partials.inputs.about_project_content', ['tooltip' => $tooltip])
                     </div>
                     <div class="column"></div>
                 </div>
@@ -251,10 +284,47 @@
                 <div class="columns">
                     <div class="column"></div>
                     <div class="column is-half">
+
+                        @if(!empty($isSupportRequest))
+                            <div class="field">
+                                {!! Form::label('land_seek[education_levels][]', 'Niveau de formation souhaité', ['class' => 'label']); !!}
+
+                                <div class="columns">
+                                    @foreach($educationLevels as $i => $educationLevel)
+                                        <div class="column">
+                                            <custom-checkbox
+                                                    name="land_seek[education_levels][]"
+                                                    input-value="{{$educationLevel["id"]}}"
+                                                    v-model="formInput.educationLevels"
+                                                    :disabled="isInputDisabled"
+                                                    ref="educationLevels">
+                                                {{--<i class="fa {{$educationLevel["icon"]}}"--}}
+                                                {{-- style="font-size: 30px;"></i><br><br>--}}
+                                                <span style="font-size:16px">
+                                                    {{ $educationLevel["name"] }}
+                                                </span>
+                                            </custom-checkbox>
+                                        </div>
+                                        @if($i % 2)
+                                            </div>
+                                            <div class="columns">
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+
+                        <?php
+                            if(empty($isSupportRequest)) {
+                                $tooltip = "Pour les cédants ou propriétaires, l’expérience est un plus ! Détaillez ici vos expériences professionnelles agricoles, stages ou bénévolat sur des fermes et vos diplômes agricoles.";
+                            }
+                            else {
+                                $tooltip = "Détaillez ici vos formations, expériences professionnelles agricoles, stages ou bénévolat sur des fermes et vos diplômes agricoles.";
+                            }
+                        ?>
                         <div class="field">
                             <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
-                                   data-tooltip="Pour les cédants ou propriétaires, l’expérience est un plus !
-                       Détaillez ici vos expériences professionnelles agricoles, stages ou bénévolat sur des fermes et vos diplômes agricoles.">
+                                   data-tooltip="{{$tooltip}}">
                                 Expérience dans le domaine agricole
                                 <i class="fas fa-info-circle has-text-info"></i>
                             </label>
@@ -268,7 +338,6 @@
                                     :vuelidate="$v.formInput.experienceFarming">
                             </text-area-counter>
                         </div>
-
 
                         @include('pages.ads.partials.inputs.about_content')
                     </div>
@@ -286,7 +355,9 @@
 
                         @include('pages.ads.partials.inputs.documents')
 
-                        @include('pages.ads.partials.inputs.accept-share-contact-infos')
+                        @if(!$isSupportRequest)
+                            @include('pages.ads.partials.inputs.accept-share-contact-infos')
+                        @endif
 
                         @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'land_seek'])
 

@@ -32,10 +32,14 @@ export default {
              * @returns {boolean}
              */
             oneDocument(documents) {
+                if(this.isSupportRequest) {
+                    return true;
+                }
                 const documentTypes = [
                     "application/msword",
                     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                    "application/pdf"
+                    "application/pdf",
+                    "application/octet-stream"
                 ];
                 return documents.reduce((pdfCount, document) => {
                     return pdfCount + (documentTypes.includes(document.type));

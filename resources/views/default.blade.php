@@ -144,7 +144,7 @@
     closeNotification && closeNotification.addEventListener('click', function (e) {
         let message = document.querySelector('article[data-type=main-message ]');
         message.style.display = 'none';
-    })
+    });
 
     let div = document.getElementById('main-nav__splash__transform-container');
     function extendHeaderMobileContainer() {
@@ -160,6 +160,10 @@
     }
 </script>
 
+
+<style>
+	#jsd-widget {bottom:60px !important;}
+</style>
 <script data-jsd-embedded data-key="6cc7e1b1-ff31-49eb-93bf-0016d2cab165" data-base-url="https://jsd-widget.atlassian.com" src="https://jsd-widget.atlassian.com/assets/embed.js"></script>
 
 @yield('script')
