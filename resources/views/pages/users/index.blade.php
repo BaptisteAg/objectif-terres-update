@@ -18,30 +18,58 @@
 		</div>
 		<section class="section">
 			<div class="columns is-mobile is-centered ">
-				<div class="column is-3 ">
-					<a class="" href="{{route("ads.list")}}">
-						<div class="card custom-card ">
-							<div class="card-content">
-								<div class="media">
-									<div class="media-left">
-										<figure class="image is-48x48 custom-card custom-card-image">
-									<span class="icon is-large">
-									  <i class="fas fa-3x fa-newspaper"></i>
-									</span>
-										</figure>
+				@if(auth()->user()->ads()->count())
+					<div class="column is-3 ">
+						<a class="" href="{{route("ads.list")}}">
+							<div class="card custom-card ">
+								<div class="card-content">
+									<div class="media">
+										<div class="media-left">
+											<figure class="image is-48x48 custom-card custom-card-image">
+										<span class="icon is-large">
+										  <i class="fas fa-3x fa-newspaper"></i>
+										</span>
+											</figure>
+										</div>
+										<div class="media-content">
+											<p class="custom-card custom-card-text-title">Mes annonces</p>
+										</div>
 									</div>
-									<div class="media-content">
-										<p class="custom-card custom-card-text-title">Mes annonces</p>
+									<div class="content">
+										Consulter la liste de vos annonces publiées sur Objectif Terres.
 									</div>
-								</div>
-								<div class="content">
-									Consulter la liste de vos annonces publiées sur Objectif Terres.
 								</div>
 							</div>
-						</div>
-					</a>
+						</a>
+					</div>
+				@endif
 
-				</div>
+				@if(auth()->user()->supportRequest)
+					<div class="column is-3 ">
+						<a class="" href="{{route("ads.show", ["id" => auth()->user()->supportRequest->id])}}">
+							<div class="card custom-card ">
+								<div class="card-content">
+									<div class="media">
+										<div class="media-left">
+											<figure class="image is-48x48 custom-card custom-card-image">
+												<span class="icon is-large">
+												  <i class="fas fa-3x fa-newspaper"></i>
+												</span>
+											</figure>
+										</div>
+										<div class="media-content">
+											<p class="custom-card custom-card-text-title">Mon accompagnement</p>
+										</div>
+									</div>
+									<div class="content">
+										Consulter et suivre votre demande d'accompagnement
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				@endif
+
 				<div class="column is-3">
 					<a class="" href="{{route("researches.show")}}">
 						<div class="card custom-card">

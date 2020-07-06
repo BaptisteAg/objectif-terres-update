@@ -19,7 +19,7 @@ class DocumentService implements DocumentServiceInterface
 
     public function create(UploadedFile $file, string $directory) : Document
     {
-        $storedFilePath = $file->store('documents/'.$directory);
+        $storedFilePath = $file->storeAs('documents/'.$directory, uniqid().$file->getClientOriginalName());
 
         $document = $this->repository->create([
             'path' => $storedFilePath,

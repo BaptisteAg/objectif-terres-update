@@ -1,9 +1,9 @@
 @extends('default')
 
 @if(!empty($isSupportRequest))
-    @section('title', 'Demander un accompagnement')
+    @section('title', isset($old["id"]) ? 'Modifier votre accompagnement':'Demander un accompagnement')
 @else
-    @section('title', 'Publier une nouvelle annonce')
+    @section('title',isset($old["id"]) ? 'Modifier votre annonce':'Publier une nouvelle annonce')
 @endif
 
 @section('main-content')
@@ -32,13 +32,14 @@
 
             <new-ad id="new-ad"
                     inline-template
-                    :old-ad-type-selected="'{{old('ad_type')}}'"
+                    :old-ad-type-selected="'{{$old['ad_type'] ?? ''}}'"
                     :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
                     style="display:none"
                     :style="{display:loading ? 'none': 'block'}">
 
                 <form
                     method="post"
+                    action="{{route('ads.store')}}"
                     enctype="multipart/form-data"
                     @submit="submit"
                     ref="form">
@@ -47,7 +48,13 @@
 
                     @if(!empty($isSupportRequest))
                         <input type="hidden" name="is_support_request" value="1">
-                        <input type="hidden" name="support_request_text" value="{{ session('support_request.text') }}">
+                        @if(session('support_request.text'))
+                            <input type="hidden" name="support_request_text" value="{{ session('support_request.text') }}">
+                        @endif
+                    @endif
+
+                    @if(!empty($old["id"]))
+                        <input type="hidden" name="id" value="{{ $old["id"] }}">
                     @endif
 
                     <ad-type-select v-model="adTypeSelected"
@@ -58,7 +65,7 @@
                     <new-land-seek-ad inline-template
                                       v-show="adTypeSelected === 'land_seek'"
                                       :is-input-disabled="adTypeSelected !== 'land_seek'"
-                                      :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
+                                      :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                       :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
                                       @input-enabled="setEnabledForm"
                                       @form-complete="onFormComplete"
@@ -69,7 +76,7 @@
                     <new-land-offer-ad inline-template
                                        v-show="adTypeSelected === 'land_offer'"
                                        :is-input-disabled="adTypeSelected !== 'land_offer'"
-                                       :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
+                                       :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                        :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
                                        @input-enabled="setEnabledForm"
                                        @form-complete="onFormComplete"
@@ -81,7 +88,7 @@
                         <new-job-seek-ad inline-template
                                           v-show="adTypeSelected === 'job_seek'"
                                           :is-input-disabled="adTypeSelected !== 'job_seek'"
-                                          :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
+                                          :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                           @input-enabled="setEnabledForm"
                                           @form-complete="onFormComplete"
                                           ref="job_seek">
@@ -91,7 +98,7 @@
                         <new-job-offer-ad inline-template
                                           v-show="adTypeSelected === 'job_offer'"
                                           :is-input-disabled="adTypeSelected !== 'job_offer'"
-                                          :old-values="{{json_encode(count(old()) ? old() : new stdClass)}}"
+                                          :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                           @input-enabled="setEnabledForm"
                                           @form-complete="onFormComplete"
                                           ref="job_offer">
@@ -99,11 +106,14 @@
                         </new-job-offer-ad>
                     @endif
 
-
                 </form>
             </new-ad>
         </div>
     </section>
+
+    @if(env('APP_DEBUG'))
+        <pre>{{var_export($old, true)}}</pre>
+    @endif
 @endsection
 
 @section('script')

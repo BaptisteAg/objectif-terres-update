@@ -85,7 +85,20 @@
                     @include('pages.ads.partials.ad-status-message-display')
                 @endif
             @endauth
+
+            @if($ad->canEdit)
+                <div class="is-pulled-right">
+                    <a href="{{route('ads.edit', ["id" => $ad->id])}}" class="button form-button basic warning">
+                        <span class="icon is-small">
+                            <i class="fas fa-pen"></i>
+                        </span>
+                        <span>Modifier</span>
+                    </a>
+                </div>
+            @endif
+
             <h1 class="title is-1 has-text-link has-text-centered">{{$ad->title}}</h1>
+
             <div class="ads-content">
                 @if($ad->ad_type === 'landSeek')
                     @include('pages.ads.partials.landSeek.landSeekShow')
@@ -135,33 +148,32 @@
             let notification = document.querySelector('.message');
             notification.style.display = 'none';
 
-        })
+        });
 
         @auth()
-        @if(auth()->user()->role >= 1)
-        function showValidationSupervisorModal() {
-            let validationModal = document.querySelector('#modal-supervisor-validation');
-            let html = document.querySelector('html');
-            let listAdvisorUsers = document.getElementById("list_advisor_users");
-            let advisorUserSelected = listAdvisorUsers.options[listAdvisorUsers.selectedIndex].text;
-            let spanAdvisorSelected = document.querySelector('#user_advisor_selected');
-            spanAdvisorSelected.innerHTML = advisorUserSelected;
-            validationModal.classList.add('is-active');
-            html.classList.add('is-clipped');
+            @if(auth()->user()->role >= 1)
+            function showValidationSupervisorModal() {
+                let validationModal = document.querySelector('#modal-supervisor-validation');
+                let html = document.querySelector('html');
+                let listAdvisorUsers = document.getElementById("list_advisor_users");
+                let advisorUserSelected = listAdvisorUsers.options[listAdvisorUsers.selectedIndex].text;
+                let spanAdvisorSelected = document.querySelector('#user_advisor_selected');
+                spanAdvisorSelected.innerHTML = advisorUserSelected;
+                validationModal.classList.add('is-active');
+                html.classList.add('is-clipped');
 
-            validationModal.querySelector('#modal-supervisor-validation-background').addEventListener('click', function (e) {
-                e.preventDefault();
-                validationModal.classList.remove('is-active');
-                html.classList.remove('is-clipped');
-            });
-            validationModal.querySelector('#close-modal').addEventListener('click', function (e) {
-                e.preventDefault();
-                validationModal.classList.remove('is-active');
-                html.classList.remove('is-clipped');
-            });
-        }
-
-        @endif
+                validationModal.querySelector('#modal-supervisor-validation-background').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    validationModal.classList.remove('is-active');
+                    html.classList.remove('is-clipped');
+                });
+                validationModal.querySelector('#close-modal').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    validationModal.classList.remove('is-active');
+                    html.classList.remove('is-clipped');
+                });
+            }
+            @endif
         @endauth
 
         function sendResponseTemplateMessage() {

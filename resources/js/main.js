@@ -2,6 +2,41 @@ function getAll(selector) {
     return document.querySelectorAll(selector)
 }
 
+let dropDownsWithListeners = [];
+const onDropDownClick = $el => event => {
+    $el.classList.toggle('is-active');
+};
+window.initDropdowns = function () {
+
+    // Remove previously initiated dropdowns event listeners
+    dropDownsWithListeners.forEach(function ({$el, listener}) {
+        $el.removeEventListener('click', listener);
+    });
+    dropDownsWithListeners = [];
+
+    const $dropDowns = getAll('.dropdown:not(.is-hoverable)');
+
+    if ($dropDowns.length > 0) {
+        $dropDowns.forEach(function ($el) {
+            const onClick = onDropDownClick($el);
+            $el.addEventListener('click', onClick);
+            dropDownsWithListeners.push({
+                $el: $el,
+                listener : onClick
+            });
+        });
+
+        document.addEventListener('click', function (event) {
+            if (event.target.closest('.dropdown')) {
+                return
+            }
+            $dropDowns.forEach(function ($el) {
+                $el.classList.remove('is-active');
+            });
+        });
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     // Get all "navbar-burger" elements
     const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
@@ -24,49 +59,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // Dropdowns
+    initDropdowns();
+
+    Waves.attach('.secondary .menu__link', ['waves-button', 'waves-float']);
+    Waves.attach('.button:not(.round), .bubble-wrap .menu__link', ['waves-button', 'waves-float', 'waves-light']);
+    Waves.attach('.button__icon', ['waves-circle', 'waves-light']);
+    Waves.init();
 });
 
-// Dropdowns
-var $dropdowns = getAll('.dropdown:not(.is-hoverable)');
-
-if ($dropdowns.length > 0) {
-
-    $dropdowns.forEach(function ($el) {
-        $el.addEventListener('click', function (event) {
-            $el.classList.toggle('is-active')
-            $el.classList.toggle('is-active')
-        });
-    });
-
-    document.addEventListener('click', function (event) {
-        if (event.target.closest('.dropdown')) {
-            return
-        }
-        $dropdowns.forEach(function ($el) {
-            $el.classList.remove('is-active');
-        });
-    });
-}
-
-
-window.initDropdowns = function () {
-// Dropdowns
-    var $dropdowns = getAll('.dropdown:not(.is-hoverable)');
-
-    if ($dropdowns.length > 0) {
-        $dropdowns.forEach(function ($el) {
-            $el.addEventListener('click', function (event) {
-                $el.classList.toggle('is-active');
-            });
-        });
-
-        document.addEventListener('click', function (event) {
-            if (event.target.closest('.dropdown')) {
-                return
-            }
-            $dropdowns.forEach(function ($el) {
-                $el.classList.remove('is-active');
-            });
-        });
-    }
-}

@@ -7,7 +7,7 @@
     <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
            data-tooltip="{{$tooltip}}"
            for="about_project_content">
-        {{$title}}*
+        {{$title}}{{ ($required ?? true) ? '*' : '' }}
         <i class="fas fa-info-circle has-text-info"></i>
     </label>
 

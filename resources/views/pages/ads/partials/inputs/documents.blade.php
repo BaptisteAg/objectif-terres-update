@@ -4,7 +4,7 @@
         Documents
         <i class="fas fa-info-circle has-text-info"></i><br>
         <span style="font-weight:normal">
-            @if($isSupportRequest)
+            @if(!$isSupportRequest)
                 Ajoutez des photos ou un document PDF ou DOC pour donner envie de consulter votre annonce.<br>
             @else
                 Ajoutez des photos ou un document PDF ou DOC qui nous aideraient à comprendre votre projet.<br>
@@ -21,8 +21,8 @@
             ref="documents">
     </documents-upload>
 
-    <input type="hidden" name="documents_ids[]" :value="document.id" v-for="document in formInput.documents">
-    <input type="hidden" name="documents" :value="JSON.stringify(formInput.documents)">
+    <input type="hidden" :disabled="isInputDisabled" name="documents_ids[]" :value="document.id" v-for="document in formInput.documents">
+    <input type="hidden" :disabled="isInputDisabled" name="documents" :value="JSON.stringify(formInput.documents)">
 
     <div>
         <p class="help is-danger" v-show="!$v.formInput.documents.oneDocument">

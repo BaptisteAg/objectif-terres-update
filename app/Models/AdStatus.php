@@ -43,7 +43,7 @@ class AdStatus extends Model
 
 	public const TOOLTIPS = [
 		self::APPROVE_ID => "Validée : annonce modérée publiée",
-		self::PENDING_ID => "En attente :annonce modérée en attente d’une réponse ou de modification par l’annonceur",
+		self::PENDING_ID => "En attente :annonce modérée en attente d’une réponse ou de modification par l'annonceur",
 		self::REFUSE_ID => "Refusée : annonce modérée non publiée",
 		self::PENDING_MODERATION_STATUS_ID => "À modérer : annonce à traiter par un modérateur",
 		self::ARCHIVE_ID => "Archivée : annonce validée de plus de 6 mois automatiquement dépubliée",

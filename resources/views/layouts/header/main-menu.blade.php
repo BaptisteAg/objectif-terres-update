@@ -1,6 +1,6 @@
 <section class="fw-section top-bar__2">
-    <div class="container is-fluid custom-menu-container ">
-        <ul class="custom-menu menu-site ">
+    <div class="container is-fluid custom-menu-container">
+        <ul class="custom-menu menu-site" style="justify-content: left;padding-left:50px;">
             <li>
                 <a href="{{route('home')}}" class="menu__link">
                     <i class="fas fa-home"></i>
@@ -71,46 +71,26 @@
                     </div>
                 </div>
             </li>
-            <li>
-                <a class="menu__link " href="#">Questions
+            <li class="bubble-wrap">
+                <a class="menu__link " href="/faq">Questions
                     fréquentes</a>
             </li>
-            <li>
+            <li class="bubble-wrap">
                 <a class="menu__link " href="#">Première visite ?</a>
             </li>
+        </ul>
+
+        <ul class="custom-menu menu-site" style="justify-content: flex-end;padding-right:50px;">
             <li class="secondary">
                 <a href="/accompagnement/demarrer"
                    class="menu__link ">Être
                     accompagné</a>
             </li>
             <li class="secondary">
-                {{--                                                @if(Auth::check())
-                                                                    @if(auth()->user()->role === 1 )
-                                                                        <a href="{{ route('moderator.index') }}"
-                                                                           class="menu__link ">Espace
-                                                                            modérateur</a>
-                                                                    @elseif(auth()->user()->role === 2)
-                                                                        <a href="{{ route('advisor.index') }}"
-                                                                           class="menu__link ">Espace
-                                                                            primo-accueillant</a>
-
-                                                                    @elseif (auth()->user()->role >= 3)
-                                                                        <a href="{{ route('supervisor.index') }}"
-                                                                           class="menu__link ">Espace
-                                                                            responsable territorial</a>
-                                                                    @else
-                                                                        <a href="{{ route('ads.create') }}"
-                                                                           class="menu__link ">Déposer
-                                                                            une
-                                                                            annonce</a>
-
-                                                                    @endif
-                                                                @else--}}
                 <a href="{{ route('ads.create') }}"
                    class="menu__link ">Déposer
                     une
                     annonce</a>
-                {{--                                            @endif--}}
             </li>
         </ul>
         <br>

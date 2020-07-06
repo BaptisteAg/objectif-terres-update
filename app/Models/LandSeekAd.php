@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Traits\EducationLevelable;
 use App\Models\Traits\OfferableGenre;
 use App\Models\Traits\ProductionableGenre;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\belongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 
 /**
@@ -29,6 +28,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read \App\Models\Ad $ad
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandSeekAdBuilding[] $buildings
  * @property-read int|null $buildings_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EducationLevel[] $educationLevels
+ * @property-read int|null $education_levels_count
  * @property-read \App\Models\InstallationType|null $installationType
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OfferGenre[] $offerGenres
  * @property-read int|null $offer_genres_count
@@ -58,6 +59,7 @@ class LandSeekAd extends Model
 {
     use ProductionableGenre;
     use OfferableGenre;
+    use EducationLevelable;
 
 	/**
 	 * @return BelongsTo
@@ -66,6 +68,7 @@ class LandSeekAd extends Model
 	{
 		return $this->belongsTo(Ad::class, 'ad_id', 'id');
 	}
+
     /**
      * @var array
      */
@@ -78,11 +81,10 @@ class LandSeekAd extends Model
         'experience_farming',
         'land_description',
         'surface_range_min',
+        'surface_range_max',
         'rent_max',
         'price_max',
     ];
-
-
 
     /**
      * @return BelongsTo
@@ -91,7 +93,6 @@ class LandSeekAd extends Model
     {
         return $this->belongsTo(InstallationType::class);
     }
-
 
     public function buildings()
     {

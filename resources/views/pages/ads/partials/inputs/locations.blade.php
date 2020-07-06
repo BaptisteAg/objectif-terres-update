@@ -9,7 +9,7 @@
                     json-name="selected_zones"
                     ref="selectedZones"
                     v-model="formInput.selectedZones"
-                    radius-value="{{old('land_seek[locationable_radius]', 0)}}"
+                    radius-value="{{$old['locationable_radius'] ?? 0}}"
                     :vuelidate="$v.formInput.selectedZones"
                     :disabled="isInputDisabled">
             </zone-select>

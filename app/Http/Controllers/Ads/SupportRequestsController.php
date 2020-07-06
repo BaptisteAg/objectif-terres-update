@@ -6,7 +6,8 @@ namespace App\Http\Controllers\Ads;
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
 use App\Models\User;
-use App\Notifications\NewProjectsNotification;
+use App\Notifications\NewAdToModerateNotification;
+use App\Notifications\NewSupportRequestNotification;
 
 class SupportRequestsController extends BaseController
 {
@@ -66,10 +67,17 @@ class SupportRequestsController extends BaseController
         $data = $request->validated();
 
         /** @var $ad Ad $ad */
-        $ad = $this->adService->requestPublishing($data, true);
-        // send a notification to the related supervisor
-        $ad->attributionAd->userSupervisor->notify(new NewProjectsNotification($ad, auth()->user()));
+        try {
 
+            $ad = $this->adService->requestPublishing($data, true);
+            // send a notification to each related supervisor
+            foreach($this->adService->getAdSupervisors($ad) as $supervisor) {
+                $supervisor->notify(new NewSupportRequestNotification($ad));
+            }
+        }
+        catch(\Exception $exception) {
+            return back()->withInput()->withErrors($exception->getMessage());
+        }
 
         return redirect()->route('ads.show', [$ad->id])
             ->with('success', 'Votre demande a bien été soumise. Vous receverez une réponse très bientôt ! ');

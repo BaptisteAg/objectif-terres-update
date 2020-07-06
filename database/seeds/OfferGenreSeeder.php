@@ -35,6 +35,13 @@ class OfferGenreSeeder extends Seeder
                 "land_seek_display" => 0,
                 "created_at" => Carbon::now(), "updated_at" => Carbon::now()
             ],
+            [
+                'name' => "Leg ou donation envisagée",
+                "icon" => "fa-users",
+                "land_offer_label" => "J'envisage un leg ou une donation à Terre de Liens",
+                "land_seek_display" => 0,
+                "created_at" => Carbon::now(), "updated_at" => Carbon::now()
+            ],
         ]);
     }
 }

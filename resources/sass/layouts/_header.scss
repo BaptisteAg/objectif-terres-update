@@ -271,6 +271,14 @@ MENU
 --------------------
 */
 
+
+.front-office-button {
+  &.button:active, &.button.is-active, &.button:hover, &.button.is-hovered {
+    background-color: #fefefe;
+    border: 1px solid #eee;
+  }
+}
+
 .custom-menu {
   display: flex;
   list-style: none;
@@ -349,7 +357,6 @@ MENU SITE
 
 .menu-site {
   width: 100%;
-  justify-content: center;
 }
 
 
@@ -388,33 +395,6 @@ MENU SITE
   }
 }
 
-
-/* ----- MENU SITE secondary LINKS ----- */
-
-.menu-site .secondary > .menu__link {
-  padding: 0.25em 0.5em;
-  margin: 0.25em !important;
-  font-size: 1.75em;
-}
-
-.menu-site > li.secondary > .menu__link {
-  background-color: $warning-orange;
-}
-
-.menu-site > li.secondary > .menu__link:hover,
-.menu-site > li.secondary > .menu__link:focus {
-  background-color: #cc5121;
-}
-
-.menu-site > li.secondary > .menu__link:active {
-  background-color: #ea5f28;
-}
-
-@media (max-width: $tablet - 1) {
-  .menu-site > .menu__item.menu__secondary > .menu__link {
-    padding: 0.5rem;
-  }
-}
 
 /*
 --------------------

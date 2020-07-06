@@ -20,6 +20,7 @@ use App\Models\User;
 use App\Repositories\FavoriteAds\FavoriteAdRepository;
 use App\Services\Ads\AdService;
 use App\Services\AttributionAds\AttributionAdsService;
+use App\Services\Locations\LocationService;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
 
@@ -38,8 +39,12 @@ abstract class BaseController extends Controller
 	 * @var AttributionAdsService
 	 */
 	protected $attributionAdService;
+    /**
+     * @var LocationService
+     */
+    protected $locationService;
 
-	/**
+    /**
 	 * BaseController constructor.
 	 * @param AdService $adService
 	 * @param ThreadService $threadService
@@ -47,13 +52,20 @@ abstract class BaseController extends Controller
 	 * @param UserService $userService
 	 * @param AttributionAdsService $attributionAdService
 	 */
-	public function __construct(AdService $adService, ThreadService $threadService, FavoriteAdRepository $favoriteAdRepository, UserService $userService, AttributionAdsService $attributionAdService)
-	{
+	public function __construct(
+	    AdService $adService,
+        ThreadService $threadService,
+        FavoriteAdRepository $favoriteAdRepository,
+        UserService $userService,
+        AttributionAdsService $attributionAdService,
+        LocationService $locationService
+    ) {
 		$this->adService = $adService;
 		$this->threadService = $threadService;
 		$this->favoriteAdRepository = $favoriteAdRepository;
 		$this->userService = $userService;
 		$this->attributionAdService = $attributionAdService;
+		$this->locationService = $locationService;
 	}
 
 	/**
@@ -79,6 +91,8 @@ abstract class BaseController extends Controller
 				'name' => 'Autre',
 				'children' => []
 			]]);
+		$isSupportRequest = false;
+		$old = old('ad_type') ? old() : [];
 
 		return compact(
 			'installationTypes',
@@ -91,7 +105,9 @@ abstract class BaseController extends Controller
 			'productionGenresWithOther',
 			'agriculturalActivities',
 			'buildingTypes',
-			'requirements'
+			'requirements',
+            'isSupportRequest',
+            "old"
 		);
 	}
 
@@ -166,7 +182,7 @@ abstract class BaseController extends Controller
 				}
 			}
 			if ($user->role >= 1 && $ad->attributionAd->user_moderator_id !== auth()->id()) {
-				if (count(array_intersect($this->adService->getAdDepartmentsCode($ad), $this->userService->getCurrentUserTerritoryDepartments())) > 0) {
+				if (count(array_intersect($this->adService->getAdDepartmentCodes($ad), $this->userService->getCurrentUserTerritoryDepartments())) > 0) {
 					$threads = $this->threadService->findThreadsByAd($ad->id);
 				}
 			}

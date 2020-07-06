@@ -8,7 +8,7 @@
                             @if($document->path === "0")
                                 <img class="custom-carousel-image-size" src="/images/placeholder-ad.png" alt="picsum" >
                             @else
-                                <img class="custom-carousel-image-size" src="{{URL::asset($document->path)}}" alt="Placeholder image" >
+                                <img class="custom-carousel-image-size" src="{{URL::asset($document->path)}}">
                             @endif
                         </figure>
                     </div>
@@ -19,20 +19,6 @@
                 <div class="card-image">
                     <figure>
                         <img class="custom-carousel-image-size" src="/images/placeholder-ad.png">
-                    </figure>
-                </div>
-            </div>
-            <div class="card carousel-item  ad-carousel">
-                <div class="card-image">
-                    <figure>
-                        <img class="custom-carousel-image-size" src="https://picsum.photos/600/420">
-                    </figure>
-                </div>
-            </div>
-            <div class="card carousel-item  ad-carousel">
-                <div class="card-image">
-                    <figure>
-                        <img class="custom-carousel-image-size" src="https://picsum.photos/800/580">
                     </figure>
                 </div>
             </div>

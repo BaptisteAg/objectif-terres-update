@@ -1,20 +1,20 @@
 <?php
-    if(!isset($tooltip)) {
-        $tooltip = "Le titre de l’annonce est primordial !
-                    Il s’agit de votre carte de visite sur la plateforme.
-                    Un titre clair et bien formulé augmentera vos chances de contacts.";
+    if(empty($tooltip) && empty($isSupportRequest)) {
+        $tooltip = "Le titre de l'annonce est primordial ! ".
+                    "Il s'agit de votre carte de visite sur la plateforme.".
+                    "Un titre clair et bien formulé augmentera vos chances de contacts.";
     }
 ?>
 <div class="field">
     <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
            for="title"
-           data-tooltip="{{$isSupportRequest ? '' : $tooltip}}">
+           {!! !empty($tooltip) ? 'data-tooltip="'.$tooltip.'"' : ''  !!}>
         @if($isSupportRequest)
             Titre de votre projet*
         @else
             Titre de votre annonce*
+            <i class="fas fa-info-circle has-text-info"></i>
         @endif
-        <i class="fas fa-info-circle has-text-info"></i>
     </label>
 
     {!! Form::text('title',

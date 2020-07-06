@@ -43,6 +43,12 @@ class BioCertificationSeeder extends Seeder
                 "created_at" =>  \Carbon\Carbon::now(),
                 "updated_at" => \Carbon\Carbon::now()
             ],
+            [
+                'name' => 'Je ne sais pas',
+                'icon' => '',
+                "created_at" =>  \Carbon\Carbon::now(),
+                "updated_at" => \Carbon\Carbon::now()
+            ],
         ]);
     }
 }

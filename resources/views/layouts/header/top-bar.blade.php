@@ -45,11 +45,11 @@
                         <span class="icon">
 										<i class="far fa-user"></i>
 									</span>
-                        <span>Bonjour, {{ Auth::user()->name }}, {{Auth::user()->first_name}}</span>
+                        <span>Bonjour, {{Auth::user()->first_name}} {{ Auth::user()->name }}</span>
                     @else
                         <div class="dropdown">
                             <div class="dropdown-trigger">
-                                <button class="button  button-dropdown" aria-haspopup="true"
+                                <button class="button button-dropdown front-office-button" aria-haspopup="true"
                                         aria-controls="dropdown-menu">
 										<span class="icon">
 											<i class="far fa-user"></i>

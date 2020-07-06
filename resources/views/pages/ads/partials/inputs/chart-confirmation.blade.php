@@ -8,7 +8,7 @@
                ref='chartConfirmation'
                aria-describedby='chartConfirmationError'>
 
-        Je certifie que mon projet correspond à la <a href="/" target="_blank">charte de Terre de Liens</a>
+        Je certifie que mon projet correspond à la&nbsp; <a href="/" target="_blank"> charte de Terre de Liens</a>
     </label>
     <p class="help is-danger" id="chartConfirmationError"
        v-if="$v.formInput.chartConfirmation.$error">Vous

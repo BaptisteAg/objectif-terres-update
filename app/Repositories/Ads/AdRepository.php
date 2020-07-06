@@ -2,11 +2,16 @@
 
 use App\Models\Ad;
 use App\Models\AttributionAd;
+use App\Models\City;
+use App\Models\Department;
+use App\Models\Region;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 /**
@@ -82,30 +87,53 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	public function create(array $data): Ad
 	{
 		$ad = new Ad();
+        $ad->user_pp_id = auth()->user()->id;
 
-		$ad->fill($data);
+        $this->save($ad, $data);
 
-		$ad->user_pp_id = auth()->user()->id;
-		$ad->is_draft = false;
-		$ad->save();
-
-		foreach (["cities", "departments", "regions"] as $locationableType) {
-			$locationables = $data["locationable"][$locationableType] ?? [];
-			if (count($locationables)) {
-				if (isset($data["locationable_radius"])) {
-					$ad->$locationableType()->attach($locationables, ["radius" => $data["locationable_radius"]]);
-				} else {
-					$ad->$locationableType()->attach($locationables);
-				}
-			}
-		}
-		if (isset($data["documents_ids"]) && is_array($data["documents_ids"])) {
-			foreach ($data["documents_ids"] as $documentId) {
-				$ad->documents()->attach($documentId);
-			}
-		}
 		return $ad;
 	}
+
+	/**
+	 * Updates an ad.
+	 *
+	 * @param Ad $ad
+	 * @param array $data
+	 * @return Ad
+	 * @throws \Throwable
+	 */
+	public function update($ad, array $data): Ad
+	{
+        $this->save($ad, $data);
+
+		return $ad;
+	}
+
+    private function save(Ad $ad, array $data)
+    {
+        $ad->fill($data);
+
+        $ad->save();
+
+        foreach (["cities", "departments", "regions"] as $locationableType) {
+            $locationables = $data["locationable"][$locationableType] ?? [];
+
+            if (count($locationables)) {
+                $extraFields = [];
+                if (isset($data["locationable_radius"])) {
+                    $extraFields =  ["radius" => $data["locationable_radius"]];
+                }
+
+                /** @var MorphToMany $locationableEntityQuery */
+                $locationableEntityQuery = $ad->$locationableType();
+
+                $locationableEntityQuery->sync($locationables, $extraFields);
+            }
+        }
+        if (!empty($data["documents_ids"]) && is_array($data["documents_ids"])) {
+            $ad->documents()->sync($data["documents_ids"]);
+        }
+    }
 
 	/**
 	 * Delete an  ad.
@@ -132,6 +160,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			->where(["user_pp_id" => $idUser])
 			->where('is_draft', 0)
 			->with($this->getDashboardsEagerLoading())
+            ->orderByDesc('id')
 			->get();
 		return $models;
 	}
