@@ -2,6 +2,7 @@
 
 use App\Models\Ad;
 use App\Models\City;
+use App\Models\Document;
 use App\Models\Region;
 use McCool\LaravelAutoPresenter\BasePresenter;
 
@@ -133,7 +134,6 @@ class AdPresenter extends BasePresenter
 		});
 	}
 
-
 	public function hasImages()
 	{
 		return $this->images()->count();
@@ -147,32 +147,32 @@ class AdPresenter extends BasePresenter
 	public function images()
 	{
 		return $this->wrappedObject->documents->filter(function ($document) {
-			return $document->user_id == $this->wrappedObject->user_pp_id;
-		});
+			return $this->isPpDocument($document) && $this->isImageDocument($document);
+		})->values();
 	}
 
 	public function nonImageDocuments()
 	{
 		return $this->wrappedObject->documents->filter(function ($document) {
-			return !$this->documentIsImage($document);
-		});
+			return $this->isPpDocument($document) && !$this->isImageDocument($document);
+		})->values();
 	}
 
 	public function documentsUploadedByUser()
 	{
 		return $this->wrappedObject->documents->filter(function ($document) {
-			return $document->user_id === $this->wrappedObject->user_pp_id;
-		});
+			return $this->isPpDocument($document);
+		})->values();
 	}
 
 	public function documentsUploadedByAdvisors()
 	{
 		return $this->wrappedObject->documents->filter(function ($document) {
 			return $document->user_id !== $this->wrappedObject->user_pp_id;
-		});
+		})->values();
 	}
 
-	private function documentIsImage($document)
+	private function isImageDocument($document)
 	{
 		return strpos($document->type, 'image') !== false;
 	}
@@ -198,5 +198,52 @@ class AdPresenter extends BasePresenter
 		}
 		return $waterAccess;
 	}
+
+	public function human_ha()
+    {
+        $ad = $this->wrappedObject;
+
+        if($ad->landSeekAd) {
+            if($ad->landSeekAd->surface_range_max) {
+                $max = $ad->landSeekAd->surface_range_max;
+                $min = $ad->landSeekAd->surface_range_min;
+
+                if($max === 100000 && $min === 0) {
+                    return "De 1 à > 100ha";
+                }
+
+                if($min) {
+                    return "De ".$min. "ha à ".$max."ha";
+                }
+
+                return "A partir de ".$max."ha";
+            }
+            else {
+                return "Surface non renseignéee";
+            }
+        }
+        else if($ad->landOfferAd) {
+            if(isset($ad->landOfferAd->surface)) {
+                return $ad->landOfferAd->surface." ha";
+            }
+            else {
+                return "Surface non renseignée";
+            }
+        }
+
+        return '';
+    }
+
+    public function canEdit()
+    {
+        $ad = $this->wrappedObject;
+
+        return $ad->user_pp_id === auth()->id();
+    }
+
+    private function isPpDocument(Document $document)
+    {
+        return $document->user_id === $this->wrappedObject->user_pp_id;
+    }
 
 }

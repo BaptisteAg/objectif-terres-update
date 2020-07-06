@@ -9,7 +9,7 @@
                           :placeholder="placeholder"
                           v-on:input="onInput"
                 >{{ text }}</textarea>
-            <p class="text-area-counter-value is-size-7" :style="{color:color}">
+            <p class="text-area-counter-value is-size-7 is-pulled-right" :style="{color:color}">
                 {{ text.length }}/ {{ maxLength}}
             </p>
         </div>
@@ -35,9 +35,6 @@
         position: relative;
 
         .text-area-counter-value {
-            position: absolute;
-            bottom: -17px;
-            right: 0px;
             opacity: 0.8;
         }
     }

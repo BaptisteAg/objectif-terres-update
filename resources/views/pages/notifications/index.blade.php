@@ -59,7 +59,7 @@
 							</form>
 						</div>
 					</article>
-				@elseif($notification->type == \App\Notifications\NewProjectsNotification::class)
+				@elseif($notification->type == \App\Notifications\NewSupportRequestNotification::class)
 					<article class="message is-info">
 						<div class="message-header">
 							<p>Nouvelle demande d'accompagnement</p>

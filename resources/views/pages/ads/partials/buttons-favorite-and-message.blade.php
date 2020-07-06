@@ -3,7 +3,7 @@
         @if($moderatorInChargeOfModeration)
             @if(count($threads))
                 <button onclick="window.location.href='#messages-display'" type="button"
-                        class="card-footer-item button is-link is-fullwidth">
+                        class="ad-action-button card-footer-item button is-link is-fullwidth">
                     <span class="icon is-small">
                         <i class="fas fa-reply"></i>
                     </span>
@@ -13,7 +13,7 @@
         @else
             @if(count($threads))
                 <button onclick="window.location.href='#messages-display'" type="button"
-                        class="card-footer-item button is-link is-fullwidth">
+                        class="ad-action-button card-footer-item button is-link is-fullwidth">
                     <span class="icon is-small">
                         <i class="fas fa-reply"></i>
                     </span>
@@ -21,7 +21,7 @@
                 </button>
             @else
                 <button id="open-modal-message" type="button"
-                        class="card-footer-item button is-link is-fullwidth">
+                        class="ad-action-button card-footer-item button is-link is-fullwidth">
                     <span class="icon is-small">
                         <i class="fas fa-reply"></i>
                     </span>
@@ -32,7 +32,7 @@
     @elseif($ad->user_pp_id !== auth()->user()->id)
         <footer class="card-footer">
             @if(count($threads))
-                <a href="#messages-display" class="card-footer-item button is-link is-fullwidth">
+                <a href="#messages-display" class="ad-action-button card-footer-item button is-link is-fullwidth">
                     <span class="icon is-small">
                         <i class="fas fa-reply"></i>
                     </span>
@@ -40,7 +40,7 @@
                 </a>
             @else
                 <button id="open-modal-message" type="button"
-                        class="card-footer-item button is-link is-fullwidth">
+                        class="ad-action-button card-footer-item button is-link is-fullwidth">
                      <span class="icon is-small">
                         <i class="fas fa-reply"></i>
                     </span>
@@ -49,7 +49,7 @@
             @endif
 
             @if($favoriteAdAlreadyExist)
-                <a href="{{route ('favoriteAds.destroy', $favoriteAdAlreadyExist->id)}}" class="card-footer-item button is-link btn-favorite-ads">
+                <a href="{{route ('favoriteAds.destroy', $favoriteAdAlreadyExist->id)}}" class="ad-action-button card-footer-item button is-link btn-favorite-ads">
                     <span class="icon is-small">
                         <i class="fas fa-heart"></i>
                     </span>
@@ -57,7 +57,7 @@
             @else
                 {!! Form::open(['route'=>'favoriteAds.create', 'method'=>'get']) !!}
                     <input name="ad_id" value="{{$ad->id}}" type="hidden">
-                    <button class="card-footer-item button is-link is-outlined btn-favorite-ads">
+                    <button class="ad-action-button card-footer-item button is-link is-outlined btn-favorite-ads">
                         <span class="icon">
                             <i class="far fa-heart"></i>
                         </span>
@@ -68,7 +68,7 @@
     @endif
 @else
     <footer class="card-footer testi">
-        <button id="open-modal-message" type="button" class="card-footer-item button is-link">
+        <button id="open-modal-message" type="button" class="ad-action-button card-footer-item button is-link">
             <span class="icon is-small">
                 <i class="fas fa-reply"></i>
             </span>
@@ -76,7 +76,7 @@
         </button>
         {!! Form::open(['route'=>'favoriteAds.create', 'method'=>'get']) !!}
             <input name="ad_id" value="{{$ad->id}}" type="hidden">
-            <button class="card-footer-item button is-link is-outlined btn-favorite-ads">
+            <button class="ad-action-button card-footer-item button is-link is-outlined btn-favorite-ads">
                  <span class="icon is-small">
                     <i class="far fa-heart"></i>
                  </span>

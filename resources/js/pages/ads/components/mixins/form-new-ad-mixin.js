@@ -3,6 +3,8 @@ import Vue from "vue";
 // Whitelist of html form inputs
 const INPUT_TAGS = ['input', 'textarea', 'select'];
 
+var smoothScrolls = [];
+
 export default {
     props: {
         oldValues: Object,
@@ -35,6 +37,11 @@ export default {
     },
     methods: {
         nextStep() {
+            smoothScrolls.forEach(function (smoothScroll) {
+                smoothScroll.destroy();
+            });
+            smoothScrolls = [];
+
             const smoothScroll = new SmoothScroll();
 
             const anchorElement = [].slice.call(
@@ -49,6 +56,8 @@ export default {
             if(parseInt(topPositionRelativeToWindow) > 0) {
                 smoothScroll.animateScroll(anchorElement);
             }
+
+            smoothScrolls.push(smoothScroll);
         },
         setUploading(bool) {
             this.uploading = bool;
@@ -125,6 +134,8 @@ export default {
                         if (typeof inputTabIndex !== "undefined") {
                             // Change current form step if needed
                             $form.changeTab($form.activeTabIndex, inputTabIndex);
+
+                            console.log(inputTabIndex, $form.tabs[inputTabIndex]);
 
                             const tab = $form.tabs[inputTabIndex].$el;
                             tab.addEventListener('animationend', e => {

@@ -71,7 +71,7 @@
                         </div>
                         <div class="column is-narrow-tablet has-text-centered"
                              style="padding-top: 38px;">
-                            {!! Form::submit('Rechercher', ['class' => ' button basic primary']) !!}
+                            <button class="button basic primary">Rechercher</button>
                             <br>
                             <a class="has-text-left" href="#" @click="more_criteria()">Plus de critères</a>
                         </div>

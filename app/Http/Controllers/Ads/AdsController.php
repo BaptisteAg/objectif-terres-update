@@ -2,30 +2,12 @@
 
 namespace App\Http\Controllers\Ads;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
-use App\Models\AdStatus;
-use App\Models\AgriculturalActivity;
-use App\Models\BioCertification;
-use App\Models\BuildingType;
-use App\Models\EducationLevel;
-use App\Models\InstallationType;
-use App\Models\JobOfferType;
-use App\Models\OfferGenre;
-use App\Models\RefusalType;
-use App\Models\Requirement;
-use App\Models\ResponseTemplate;
-use App\Models\SurfaceRange;
+use App\Models\User;
 use App\Notifications\NewAdToModerateNotification;
-use App\Repositories\FavoriteAds\FavoriteAdRepository;
-use App\Services\Ads\AdService;
-use App\Services\Threads\ThreadService;
-use App\Services\Users\UserService;
-use Carbon\Carbon;
+use App\Presenters\AdPresenter;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
 
@@ -43,6 +25,59 @@ class AdsController extends BaseController
 		return view('pages.ads.new', $this->getCreateFormVars());
 	}
 
+    /**
+     * Display the ad edit form
+     * @return \Illuminate\View\View
+     * @throws \Exception
+     */
+	public function edit(int $id)
+	{
+	    $ad = $this->adService->find($id);
+
+	    if(auth()->id() !== $ad->user_pp_id) {
+	        return abort(404);
+        }
+
+        $selected_zones = json_encode(array_filter(array_merge(
+            array_map($this->locationService->getResultRenderer('regions'), $ad->regions->toArray()),
+            array_map($this->locationService->getResultRenderer('departments'), $ad->departments->toArray()),
+            array_map($this->locationService->getResultRenderer('cities'), $ad->cities->toArray()),
+        )));
+	    $locationable = array_filter([
+	        "cities" => $ad->cities->pluck('id')->toArray(),
+	        "departments" => $ad->departments->pluck('id')->toArray(),
+	        "regions" => $ad->regions->pluck('id')->toArray()
+        ]);
+	    $locationable_radius = $ad->cities->count() ? $ad->cities->first()->radius : '';
+
+	    $documents = $ad->documents->toJson();
+	    $document_ids = $ad->documents->pluck("id")->toArray();
+
+	    $vars = $this->getCreateFormVars();
+
+	    if(!old('ad_type')) {
+	        $vars["old"] = array_merge(
+                [
+                    'ad_type'        => $this->adService->getAdType($ad),
+                    'land_seek'      => $ad->landSeekAd  ?
+                        array_merge($ad->landSeekAd->toArray(),[
+                            "buildings" => $ad->landSeekAd->buildings->pluck("requirement.id", "buildingType.id")->toArray(),
+                            "production_genres" => $ad->landSeekAd->productionGenres->pluck("id")->toArray()
+                        ]) : [],
+                    'land_offer'     => $ad->landOfferAd ? $ad->landOfferAd->toArray() : null,
+                    'job_offer'      => $ad->jobOfferAd  ? $ad->jobOfferAd->toArray() : null,
+                    'job_seek'       => $ad->jobSeekAd   ? $ad->jobSeekAd->toArray() : null,
+                ],
+                $ad->only(["id", "title", "about_content", "about_project_content", "accept_share_contact_infos"]),
+                compact("selected_zones", "locationable", "locationable_radius", "documents", "document_ids")
+            );
+        }
+
+	    //dd($vars);
+
+		return view('pages.ads.new', $vars);
+	}
+
 	/**
 	 * @param AdRequest $request
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
@@ -50,18 +85,17 @@ class AdsController extends BaseController
 	 */
 	public function requestPublishing(AdRequest $request)
 	{
-		$numberOfAdsPublishedToday = auth()->user()->ads()->whereHas('attributionAd', function (Builder $builder) {
-			$builder->where('created_at', '=', Carbon::now());
-		})->count();
+	    /** @var User $user */
+	    $user = auth()->user();
+		$publishedAdsCount = $this->adService->getUserPublishedAdsCount($user);
 
-		if ($numberOfAdsPublishedToday >= self::PUBLISHED_AD_LIMIT_PER_USER) {
+		if ($publishedAdsCount >= self::PUBLISHED_AD_LIMIT_PER_USER) {
 			return $this->store($request)
 				->withErrors(
 					"Vous ne pouvez publier que " . self::PUBLISHED_AD_LIMIT_PER_USER . " annonces en même temps.
                     Votre annonce a été sauvegardée mais ne sera pas soumise à modération."
 				);
 		}
-
 
 		$data = $request->validated();
 
@@ -71,9 +105,12 @@ class AdsController extends BaseController
             $ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
         }
         catch(\Exception $exception) {
+            report($exception);
+            if(env('APP_DEBUG')) {
+                //throw $exception;
+            }
             return back()->withInput()->withErrors($exception->getMessage());
         }
-
 
 		return redirect()->route('ads.show', [$ad->id])
 			->with('success', 'Votre annonce a bien été soumise à modération. Vous receverez une réponse très bientôt ! ');
@@ -145,7 +182,7 @@ class AdsController extends BaseController
 	{
 		$data = $request->validated();
 
-		$ad = $this->adService->create($data);
+		$ad = $this->adService->store($data);
 
 		if ($isDraft) {
 			$ad->is_draft = 1;

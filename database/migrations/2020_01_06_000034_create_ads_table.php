@@ -42,7 +42,6 @@ class CreateAdsTable extends Migration
 				->on('users')
 				->onDelete('cascade');
 
-
             $table->foreign('project_id', 'fk_ads_2_idx')
                 ->references('id')->on('projects')
                 ->onDelete('restrict')

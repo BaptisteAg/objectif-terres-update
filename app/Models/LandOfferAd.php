@@ -113,6 +113,8 @@ class LandOfferAd extends Model
         'test_description',
         'building_id',
         'house_id',
+        'production_type_add',
+        'production_type_wanted_add',
 
         'is_beneficiary',
         'is_activity_transfer',

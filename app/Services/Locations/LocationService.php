@@ -109,13 +109,17 @@ class LocationService
             'cities',
             $q,
             City::select(['id', 'name', 'zip_code']),
-            ["name", "zip_code"],
-            function ($city) {
-                return $city["name"] . " (" . $city["zip_code"] . ")";
-            }
+            ["name", "zip_code"]
         );
 
         return $cities;
+    }
+
+    public function getCityLabelRenderer()
+    {
+        return function ($city) {
+            return $city["name"] . " (" . $city["zip_code"] . ")";
+        };
     }
 
     public function searchDepartments(string $q)
@@ -124,11 +128,15 @@ class LocationService
             'departments',
             $q,
             Department::select(['id', 'name', 'code']),
-            ["name", "code"],
-            function ($department) {
-                return $department["name"] . " (" . $department["code"] . ")";
-            }
+            ["name", "code"]
         );
+    }
+
+    public function getDepartmentLabelRenderer()
+    {
+        return function ($department) {
+            return $department["name"] . " (" . $department["code"] . ")";
+        };
     }
 
     public function searchRegions(string $q)
@@ -137,11 +145,15 @@ class LocationService
             'regions',
             $q,
             Region::select(['id', 'name']),
-            ["name"],
-            function ($region) {
-                return $region["name"];
-            }
+            ["name"]
         );
+    }
+
+    public function getRegionLabelRenderer()
+    {
+        return function ($region) {
+            return $region["name"];
+        };
     }
 
     /**
@@ -155,18 +167,23 @@ class LocationService
      *
      * @return array
      */
-    protected function search(string $type, string $q, $eloquentQuery, array $columns, \Closure $renderer)
+    protected function search(string $type, string $q, $eloquentQuery, array $columns)
     {
-        $q = strtolower($q);
+        $q = mb_strtolower($q);
 
         foreach ($columns as $column) {
             $eloquentQuery = $eloquentQuery->orWhere($column, 'LIKE', '%' . $q . '%');
         }
 
+
+        $results = $eloquentQuery
+            ->orderBy(DB::raw('LENGTH(name)'))
+            ->orderBy('name')
+            ->get()
+            ->toArray();
+
+        /*
         $resultsByScore = [];
-
-        $results = $eloquentQuery->get()->toArray();
-
         foreach ($results as $result) {
             $indexes = Arr::only($result, $columns);
 
@@ -191,26 +208,45 @@ class LocationService
             }
             $resultsByScore[$sortScore][] = $result;
         }
-
+        dd($resultsByScore);
         ksort($resultsByScore);
 
         $sortedResults = [];
         foreach ($resultsByScore as $subResults) {
             sort($subResults);
             $sortedResults = array_merge($sortedResults, $subResults);
-        }
+        }*/
+
+        //dd($results);
 
         return array_map(
-            function ($result) use ($type, $renderer) {
-                return [
-                    "label" => $renderer($result),
-                    "value" => array_merge($result, [
-                        "type" => $type
-                    ]),
-                ];
-            },
-            array_slice($sortedResults, 0, 20)
+            $this->getResultRenderer($type),
+            array_slice($results, 0, 20)
         );
+    }
+
+    public function getResultRenderer($type)
+    {
+        switch($type) {
+            case "cities" :
+                $labelRenderer = $this->getCityLabelRenderer();
+                break;
+            case "departments" :
+                $labelRenderer = $this->getDepartmentLabelRenderer();
+                break;
+            case "regions" :
+                $labelRenderer = $this->getRegionLabelRenderer();
+                break;
+        }
+
+        return function ($result) use ($type, $labelRenderer) {
+            return [
+                "label" => $labelRenderer($result),
+                "value" => array_merge($result, [
+                    "type" => $type
+                ]),
+            ];
+        };
     }
 
 	/**

@@ -19,7 +19,7 @@
                                 <div class="vignette photo is-flex">
                                     <div class="vignette__image-wrap is-flex">
                                         @if($ad->hasImages)
-                                            @if($ad->images[0]->path ==="0")
+                                            @if($ad->images->first()->path ==="0")
                                                 @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
                                                     <img src="{{URL::asset('images/illustrations/ferme01.jpg')}}"
                                                          class="vignette__image" alt="image generic ferme"/>
@@ -42,16 +42,12 @@
                                         @endif
                                     </div>
                                     <ul class="custom-tags custom-list custom-list_v x-large">
-                                        <li class="custom-tag success">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                            @if (is_null($ad->citiesList) and is_null($ad->departmentsList) and is_null($ad->regionsList)   )
-                                                Non renseignée
-                                            @else
-                                                {{$ad->citiesList ?? ""}}
-                                                {{$ad->departmentsList ?? ""}}
-                                                {{$ad->regionsList ?? ""}}
-                                            @endif
-                                        </li>
+                                        @foreach(array_filter([$ad->regionsList, $ad->departmentsList, $ad->citiesList]) as $locations)
+                                            <li class="custom-tag success">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                {{ $locations }}
+                                            </li>
+                                        @endforeach
                                         @if($ad->landOfferAd)
                                             <li class="custom-tag warning">
                                                 <i class="fas fa-piggy-bank"></i>
@@ -69,11 +65,7 @@
                                             </li>
                                             <li class="custom-tag danger">
                                                 <i class="fas fa-arrows-alt-h"></i>
-                                                @if(isset($ad->landOfferAd->surface))
-                                                    {{$ad->landOfferAd->surface}} ha
-                                                @else
-                                                    Surface non renseignée
-                                                @endif
+                                                {{ $ad->human_ha }}
 
                                             </li>
                                         @endif
@@ -96,16 +88,7 @@
                                             </li>
                                             <li class="custom-tag danger">
                                                 <i class="fas fa-arrows-alt-h"></i>
-                                                @if(isset($ad->landSeekAd->surface_range_min) and isset($ad->landSeekAd->surface_range_max))
-                                                    Entre {{$ad->landSeekAd->surface_range_min}}
-                                                    et {{$ad->landSeekAd->surface_range_max}} ha
-                                                @elseif(isset($ad->landSeekAd->surface_range_min))
-                                                    {{$ad->landSeekAd->surface_range_min}} ha
-                                                @elseif(isset($ad->landSeekAd->surface_range_max))
-                                                    {{$ad->landSeekAd->surface_range_max}} ha
-                                                @else
-                                                    Surface non renseignée
-                                                @endif
+                                                {{ $ad->human_ha }}
                                             </li>
                                         @endif
                                     </ul>
@@ -127,39 +110,52 @@
                                         @endif
                                         <p class="mt-10 mb-10">
                                             @if(count($ad->threads) === 0)
-                                                <span class="text_charcoal">Vous n'avez pas reçu de messages concernant cette annonce</span>
+                                                <span class="text_charcoal">Vous n'avez pas reçu de messages concernant
+                                                    cette annonce</span>
                                             @endif
                                             @if(count($ad->threads) === 1 )
-                                                <span>Vous avez  <span class="text_charcoal has-text-weight-bold"><a
-                                                                href="{{route("threads.index")}}"> {{count($ad->threads)}} fil de discussion </a></span>concernant cette annonce !</span>
+                                                <span>Vous avez <span class="text_charcoal has-text-weight-bold">
+                                                        <a
+                                                                href="{{route("threads.index")}}"> {{count($ad->threads)}}
+                                                            fil de discussion
+                                                        </a>
+                                                    </span>concernant cette annonce !</span>
 
                                             @elseif(count($ad->threads) > 1)
                                                 <span class="text_charcoal">Vous avez <span
-                                                            class="has-text-weight-bold">	<a
-                                                                href="{{route("threads.index")}}"> {{count($ad->threads)}} fils de discussion </a></span>
-											 concernant cette annonce ! </span>
+                                                            class="has-text-weight-bold">
+                                                        <a
+                                                                href="{{route("threads.index")}}"> {{count($ad->threads)}}
+                                                            fils de discussion
+                                                        </a>
+                                                    </span>
+                                                    concernant cette annonce ! </span>
                                             @endif
                                         </p>
                                     </div>
                                     @if(! $ad->attributionAd and $ad->is_draft === 0)
                                         <article class="message is-warning">
                                             <div class="message-body">
-                                                Votre annonce est en mode brouillon, elle n'as pas été encore soumise à modération !
+                                                Votre annonce est en mode brouillon, elle n'as pas été encore soumise à
+                                                modération !
                                             </div>
                                         </article>
                                     @else
                                         @if($ad->attributionAd->adStatus->id === \App\Models\AdStatus::APPROVE_ID)
                                             <article class="message is-success">
                                                 <div class="message-body">
-                                                    Votre annonce  a été validée et est en ligne depuis le {{$ad->published_on}} !
+                                                    Votre annonce a été validée et est en ligne depuis
+                                                    le {{$ad->published_on}} !
                                                 </div>
                                             </article>
                                         @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_ID)
                                             <article class="message is-warning">
                                                 <div class="message-body">
-                                                    Votre annonce nécessite quelques modifications, <a
+                                                    Votre annonce nécessite quelques modifications,
+                                                    <a
                                                             href="{{route('threads.index')}}">consulter votre
-                                                        messagerie</a>
+                                                        messagerie
+                                                    </a>
                                                     pour
                                                     plus d'informations !
                                                 </div>
@@ -167,9 +163,12 @@
                                         @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::REFUSE_ID)
                                             <article class="message is-danger">
                                                 <div class="message-body">
-                                                    Votre annonce a été réfusée, <a href="{{route('threads.index')}}">consulter
+                                                    Votre annonce a été réfusée,
+                                                    <a href="{{route('threads.index')}}">consulter
                                                         votre
-                                                        messagerie</a> pour plus d'informations !
+                                                        messagerie
+                                                    </a>
+                                                    pour plus d'informations !
                                                 </div>
                                             </article>
                                         @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::ARCHIVE_ID)
@@ -188,48 +187,36 @@
                                     @endif
 
                                     @if( $ad->attributionAd and $ad->is_draft != 1)
-                                        <p class="button__wrap button__wrap_right">
-                                            @if($ad->attributionAd and $ad->attributionAd->adStatus->id === \App\Models\AdStatus::APPROVE_ID )
-                                                <a href="{{route("ads.show", $ad->id)}}">
+                                        <p class="ad-admin button__wrap button__wrap_right">
+
+                                            <a href="{{route("ads.show", $ad->id)}}">
+                                                <button class="button basic  small success mr-20">
+                                                    <span class="icon is-small">
+                                                        <i class="fas fa-eye text_white"></i>
+                                                    </span>
+                                                    <span>Voir</span>
+                                                </button>
+                                            </a>
+
+                                            @if($ad->canEdit)
+                                                <a href="{{route("ads.edit", $ad->id)}}">
                                                     <button class="button basic  small warning mr-20">
-											<span class="icon is-small">
-											<i class="fas fa-eye text_white"></i>
-											</span>
-                                                        <span>Voir votre annonce</span>
-                                                    </button>
-                                                </a>
-                                            @elseif($ad->is_draft === 1)
-                                                <a href="{{route("ads.show", $ad->id)}}">
-                                                    <button class="button basic  small warning mr-20">
-											<span class="icon is-small">
-											<i class="fas fa-eye text_white"></i>
-											</span>
-                                                        <span>Aperçu de l'annonce</span>
-                                                    </button>
-                                                </a>
-                                            @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::REFUSE_ID)
-                                            @else
-                                                <a href="{{route("ads.show", $ad->id)}}">
-                                                    <button class="button basic small warning mr-20">
-											<span class="icon is-small">
-											<i class="fas fa-eye text_white"></i>
-											</span>
-                                                        <span>Voir votre annonce</span>
-                                                    </button>
-                                                </a>
-                                            @endif
-                                            @if($ad->attributionAd and $ad->attributionAd->adStatus->id === 3 )
-                                            @else
-                                                <a>
-                                                    <button class="button basic small danger">
-												<span class="icon text_white">
-												  <i class="fas fa-trash"></i>
-												</span>
-                                                        <span>Supprimer votre annonce</span>
+                                                        <span class="icon is-small">
+                                                            <i class="fas fa-pencil-alt text_white"></i>
+                                                        </span>
+                                                        <span>Modifier</span>
                                                     </button>
                                                 </a>
                                             @endif
 
+                                            <a href="{{ route('ads.delete', ["ad" => $ad->id]) }}" onclick="return confirm('Êtes vous sûr ? Cette opération est irréversible.')">
+                                                <button class="button basic small danger">
+                                                    <span class="icon text_white">
+                                                        <i class="fas fa-trash"></i>
+                                                    </span>
+                                                    <span>Supprimer</span>
+                                                </button>
+                                            </a>
                                         </p>
                                     @endif
                                 </div>

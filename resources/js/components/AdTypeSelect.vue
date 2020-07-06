@@ -10,7 +10,7 @@
                     <label class="label" v-else>Quel type d'annonce souhaitez-vous publier ?</label>
                 </div>
                 <div class="is-pulled-right">
-                    <a href="/faq">
+                    <a href="/faq" target="_blank">
                         Aide
                     </a>
                 </div>

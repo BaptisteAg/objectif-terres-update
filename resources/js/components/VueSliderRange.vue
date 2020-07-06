@@ -8,8 +8,8 @@
                 :height="10"
                 :enable-cross="false"
         ></vue-slider>
-        <input type="hidden" :name="nameMin" :value="selectedMinMaxValues[0]">
-        <input type="hidden" :name="nameMax" :value="selectedMinMaxValues[1]">
+        <input type="hidden" :name="nameMin" :value="selectedMinMaxValues[0]" :disabled="disabled">
+        <input type="hidden" :name="nameMax" :value="selectedMinMaxValues[1]" :disabled="disabled">
     </div>
 </template>
 
@@ -28,7 +28,8 @@
             value: {
                 type: Array,
                 required: false
-            }
+            },
+            disabled: Boolean
         },
         data: function () {
             if (Array.isArray(this.value) && this.value.length) {

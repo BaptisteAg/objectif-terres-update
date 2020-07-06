@@ -91,7 +91,7 @@
 
 
 						<div class="field">
-							{!! Form::label('land_offer[education_levels][]', 'Niveau de formation souhaité', ['class' => 'label']); !!}
+							{!! Form::label('job_offer[education_levels][]', 'Niveau de formation souhaité', ['class' => 'label']); !!}
 
 {{--							<multi-select--}}
 {{--									:options="{{json_encode($educationLevels)}}"--}}

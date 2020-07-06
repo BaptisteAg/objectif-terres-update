@@ -19,6 +19,7 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
 	Route::middleware('auth')->post('sauvegarder', 'AdsController@save')->name('save');
 	Route::middleware('auth')->get('mes-annonces', 'AdsController@list')->name('list');
 	Route::get('{id}', 'AdsController@show')->name('show');
+	Route::middleware('auth')->get('modifier/{id}', 'AdsController@edit')->name('edit');
 	Route::middleware('auth')->get('supprimer/{ad}', 'AdsController@delete')->name('delete');
 });
 Route::prefix('accompagnement')->name('support-request.')->namespace('Ads')->group(function () {
@@ -47,7 +48,7 @@ Route::name('cms.')->namespace('Cms')->group(function () {
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {
 	Route::middleware('auth')->post('upload', 'DocumentsController@upload')->name('upload');
-	Route::get('{type}/{filename}', 'DocumentsController@show')->name('show');
+	Route::get('{type}/{user_id}/{filename}', 'DocumentsController@show')->name('show');
 });
 
 Route::get('/register', 'Salesforces\SalesForceAuthController@register');

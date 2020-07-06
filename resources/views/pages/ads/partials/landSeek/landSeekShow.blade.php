@@ -43,21 +43,12 @@
                     <p>
                         <span class="is-size-5 is-capitalized ad-show-feature-label">Surface recherchée (en ha)</span>
                         :
-                        @if(isset($ad->landSeekAd->surface_range_min) and isset($ad->landSeekAd->surface_range_max))
-                            <span class="subtitle">Entre {{$ad->landSeekAd->surface_range_min}}
-                            et {{$ad->landSeekAd->surface_range_max}}</span>
-                        @elseif(isset($ad->landSeekAd->surface_range_min))
-                            <span class="subtitle">{{$ad->landSeekAd->surface_range_min}}</span>
-                        @elseif(isset($ad->landSeekAd->surface_range_max))
-                            <span class="subtitle">{{$ad->landSeekAd->surface_range_max}}</span>
-                        @else
-                            Non renseignée
-                        @endif
+                        <span class="subtitle">{{ $ad->human_ha }}</span>
                     </p>
                 </div>
 
                 <div class="content">
-                    @if( empty($ad->landSeekAd->buildings) )
+                    @if( !empty($ad->landSeekAd->buildings) )
                         <p><span class="is-size-5 is-capitalized ad-show-feature-label">Habitation(s) et bâti(s) recherché(s) : </span><br>
                             @foreach($ad->landSeekAd->buildings as $building)
                                 @if($building->requirement->label !== "Indifférent")

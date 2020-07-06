@@ -31,7 +31,9 @@ export default Vue.extend({
 
         const extraFormInput = this.isSupportRequest ? {
             offerGenres: hasOld ? v.land_seek.offer_genres : [],
-            //maxRent: hasOld ? v.land_seek.rent_max : '',
+            rentMax : hasOld ? v.land_seek.rent_max : '0',
+            priceMax : hasOld ? v.land_seek.price_max : '200000',
+            educationLevels: hasOld ? v.land_seek.education_levels : [],
         } : {};
 
         return {
@@ -40,8 +42,6 @@ export default Vue.extend({
                 surfaceRangeMin : hasOld ? v.land_seek.surface_range_min : '0',
                 surfaceRangeMax : hasOld ? v.land_seek.surface_range_max : '1000000',
                 landDescription: hasOld ? (v.land_seek.land_description || '') : '',
-                rentMax : hasOld ? v.land_seek.rent_max : '0',
-                priceMax : hasOld ? v.land_seek.price_max : '200000',
                 productionGenres: hasOld ? v.land_seek.production_genres : [],
                 productionTypeAdd: hasOld ? v.land_seek.production_type_add : '',
                 installationTypeId: hasOld ? v.land_seek.installation_type_id : '',
@@ -50,7 +50,7 @@ export default Vue.extend({
                 aboutContent: hasOld ? v.about_content : '',
                 title: hasOld ? v.title : '',
                 documents: hasOld ? JSON.parse(v.documents) : [],
-                chartConfirmation: false,
+                chartConfirmation: hasOld ? v.chart_confirmation : false,
                 ...extraFormInput
             }
         }

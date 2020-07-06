@@ -133,6 +133,10 @@ class AdService
 	 */
 	public function requestPublishing(array $data, bool $isSupportRequest = false)
 	{
+	    $isUpdate = !empty($data["id"]);
+
+	    DB::beginTransaction();
+
 		$attributionAdData = [];
 
 		if ($isSupportRequest) {
@@ -145,53 +149,122 @@ class AdService
 			$data["project_id"] = $project->id;
 		}
 
-		$ad = $this->repository->create($data);
+		$data["is_draft"] = false;
 
-		$adRandomRegionId = array_rand($this->getAdRegionIds($ad));
+		if($isUpdate) {
+            $ad = $this->repository->update($data["id"], $data);
+        }
+		else {
+            $ad = $this->repository->create($data);
+        }
 
         if ($isSupportRequest) {
             $pendingStatus = AdStatus::PENDING_ID;
-            $advisor = $this->userService->findRandomByRoleAndRegion(3, $adRandomRegionId);
+            /*$advisor = $this->userService->findRandomByRoleAndRegion(3, $adRandomRegionId);
             if (!$advisor) {
                 throw new \Exception("Aucun responsable n'a été trouvé dans votre région. Veuillez sauvegarder votre demande et nous contacter.");
             }
-            $attributionAdData['user_supervisor_id'] = $advisor->id;
+            $attributionAdData['user_supervisor_id'] = $advisor->id;*/
         }
         else {
+            $adDepartmentCodes = $this->getAdDepartmentCodes($ad);
             $pendingStatus = AdStatus::PENDING_MODERATION_STATUS_ID;
-            // Temporary : should be attributed by territory stored in Salesforce. If there is many moderators, one is picked randomly
-            $moderator = $this->userService->findRandomByRoleAndRegion(1, $adRandomRegionId);
-            if (!$moderator) {
+
+            $availableModerators = $this->userService->findByRoleAndDepartments(1, $adDepartmentCodes);
+            if ($availableModerators->isEmpty()) {
                 throw new \Exception("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
             }
+
+            /** @var User $moderator */
+            $moderator = $availableModerators->random();
             $attributionAdData['user_moderator_id'] = $moderator->id;
         }
 
-		$attributionAdData['ad_status_id'] = $pendingStatus;
-		$attributionAdData['ad_id'] = $ad->id;
-		$this->attributionAdsRepository->create($attributionAdData);
+        if($ad->attributionAd) {
 
-		$adData = $data[$data["ad_type"]];
-		$adData["ad_id"] = $ad->id;
+        }
+        else {
+            $attributionAdData['ad_status_id'] = $pendingStatus;
+            $attributionAdData['ad_id'] = $ad->id;
+            $this->attributionAdsRepository->create($attributionAdData);
+        }
 
-		$this->storeSubAd($data["ad_type"], $adData);
+		$subAdData = $data[$data["ad_type"]];
 
+        if($isUpdate) {
+            $this->updateSubAd($ad, $data["ad_type"], $subAdData);
+        }
+        else {
+            $subAdData["ad_id"] = $ad->id;
+
+            $this->createSubAd($data["ad_type"], $subAdData);
+        }
+
+		DB::commit();
+
+        $ad->refresh();
 
 		return $ad;
 	}
 
-	protected function storeSubAd(string $adType, array $data)
+	protected function createSubAd(string $adType, array $data)
 	{
 		if ($adType === "land_seek") {
-			$landSeekAd = $this->landSeekAdRepository->create($data);
-		} else if ($adType === "land_offer") {
-			$landOfferAd = $this->landOfferAdRepository->create($data);
-		} else if ($adType === "job_offer") {
-			$jobOfferAd = $this->jobOfferAdRepository->create($data);
-		} else if ($adType === "job_seek") {
-			$jobSeekAd = $this->jobSeekAdRepository->create($data);
+			$subAd = $this->landSeekAdRepository->create($data);
 		}
+		else if ($adType === "land_offer") {
+            $subAd = $this->landOfferAdRepository->create($data);
+		}
+		else if ($adType === "job_offer") {
+            $subAd = $this->jobOfferAdRepository->create($data);
+		}
+		else if ($adType === "job_seek") {
+            $subAd = $this->jobSeekAdRepository->create($data);
+		}
+
+		return $subAd;
 	}
+
+	protected function updateSubAd(Ad $ad, string $adType, array $data)
+	{
+		if ($adType === "land_seek") {
+            $subAd = $this->landSeekAdRepository->update($ad->landSeekAd, $data);
+		}
+		else if ($adType === "land_offer") {
+            $subAd = $this->landOfferAdRepository->update($ad->landOfferAd, $data);
+		}
+		else if ($adType === "job_offer") {
+            $subAd = $this->jobOfferAdRepository->update($ad->jobOfferAd, $data);
+		}
+		else if ($adType === "job_seek") {
+            $subAd = $this->jobSeekAdRepository->update($ad->jobSeekAd, $data);
+		}
+
+		return $subAd;
+	}
+
+    /**
+     * @param Ad $ad
+     * @return string
+     * @throws \Exception
+     */
+    public function getAdType(Ad $ad)
+    {
+        if ($ad->landSeekAd) {
+            return 'land_seek';
+        }
+        if ($ad->landOfferAd) {
+            return 'land_offer';
+        }
+        if ($ad->jobOfferAd) {
+            return 'job_offer';
+        }
+        if ($ad->jobSeekAd) {
+            return 'job_seek';
+        }
+
+        throw new \Exception("Ad type not found on id ".$ad->id);
+    }
 
 	/**
 	 * Create the ad without requesting to publish it
@@ -200,7 +273,7 @@ class AdService
 	 * @return mixed
 	 * @throws \Throwable
 	 */
-	public function create(array $data)
+	public function store(array $data)
 	{
 		$ad = DB::transaction(function () use ($data) {
 
@@ -209,10 +282,12 @@ class AdService
 			$adData = $data[$data["ad_type"]];
 			$adData["ad_id"] = $ad->id;
 
-			$this->storeSubAd($data["ad_type"], $adData);
+			$this->createSubAd($data["ad_type"], $adData);
 
 			return $ad;
 		});
+
+        $ad->refresh();
 
 		return $ad;
 	}
@@ -245,9 +320,6 @@ class AdService
 	 */
 	public function findAllByUser($idUser): Collection
 	{
-		if (auth()->user()->role === 1) {
-			return $ads = $this->repository->allAdsByIdUser($idUser);
-		}
 		return $ads = $this->repository->allByIdUser($idUser);
 	}
 
@@ -850,7 +922,7 @@ class AdService
 	 * @param Ad $ad
 	 * @return array
 	 */
-	public function getAdDepartmentsCode(Ad $ad)
+	public function getAdDepartmentCodes(Ad $ad)
 	{
 		$departmentsCode = [];
 
@@ -878,6 +950,7 @@ class AdService
 				}
 			}
 		}
+		dd($ad->departments, $ad->cities);
 		return array_unique($departmentsCode);
 	}
 
@@ -888,4 +961,22 @@ class AdService
 	{
 		return $this->repository->countAllPublished();
 	}
+
+    /**
+     * @param Ad $ad
+     * @return User[]|\Illuminate\Database\Eloquent\Collection|Collection
+     */
+    public function getAdSupervisors(Ad $ad)
+    {
+        $departmentCodes = $this->getAdDepartmentCodes($ad);
+
+        return $this->userService->findByRoleAndDepartments(3, $departmentCodes);
+    }
+
+    public function getUserPublishedAdsCount(User $user)
+    {
+        return $user->ads()->whereHas('attributionAd', function (Builder $builder) {
+            $builder->whereNotNull('published_on');
+        })->count();
+    }
 }

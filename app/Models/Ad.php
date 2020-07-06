@@ -10,6 +10,7 @@ use App\Presenters\AdPresenter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use McCool\LaravelAutoPresenter\HasPresenter;
 
 
@@ -74,7 +75,11 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  */
 class Ad extends Model implements HasPresenter
 {
-    use Documentable, ScopeAdTypesFilterable, ScopeDataFilterable, ScopeLocationFilterable;
+    use Documentable,
+        ScopeAdTypesFilterable,
+        ScopeDataFilterable,
+        ScopeLocationFilterable,
+        SoftDeletes;
 
     /**
      * @var array

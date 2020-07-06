@@ -1,6 +1,5 @@
 <?php namespace App\Repositories\Ads;
 
-use App\Models\Ad;
 use App\Models\LandSeekAd;
 use Illuminate\Support\Arr;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
@@ -22,9 +21,30 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
     {
         $landSeekAd = new LandSeekAd();
 
+        $this->save($landSeekAd, $data);
+
+        return $landSeekAd;
+    }
+
+    /**
+     * Update an ad.
+     *
+     * @param LandSeekAd $landSeekAd
+     * @param array $data
+     */
+    public function update($landSeekAd, array $data): LandSeekAd
+    {
+        $this->save($landSeekAd, $data);
+
+        return $landSeekAd;
+    }
+
+    private function save(LandSeekAd $landSeekAd, array $data)
+    {
         $productionGenres = $data["production_genres"] ?? [];
         $offerGenres = $data["offer_genres"] ?? [];
         $buildings = $data["buildings"] ?? [];
+        $educationLevels = $data["education_levels"] ?? [];
 
         if(in_array('other', $productionGenres)) {
             //$data["production_type_add"] = "";
@@ -36,14 +56,20 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
         $landSeekAd->save();
 
         if (count($offerGenres)) {
-            $landSeekAd->offerGenres()->attach($offerGenres);
+            $landSeekAd->offerGenres()->sync($offerGenres);
         }
 
         if (count($productionGenres)) {
-            $landSeekAd->productionGenres()->attach($productionGenres);
+            $landSeekAd->productionGenres()->sync($productionGenres);
+        }
+
+        if (count($educationLevels)) {
+            $landSeekAd->productionGenres()->sync($educationLevels);
         }
 
         if (count($buildings)) {
+            $landSeekAd->buildings()->delete();
+
             foreach($buildings as $buildingId => $requirementId) {
                 $landSeekAd->buildings()->create([
                     "requirement_id" => $requirementId,
@@ -52,8 +78,6 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
                 ]);
             }
         }
-
-        return $landSeekAd;
     }
 
 }

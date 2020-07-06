@@ -17,7 +17,6 @@
         display: inline-block;
         position: relative;
         padding-left: 100%;
-        margin-bottom: 12px;
         cursor: pointer;
         font-size: 22px;
         -webkit-user-select: none;
@@ -44,7 +43,7 @@
 
         /* When the checkbox is checked, add a blue background */
         input:checked ~ .cradio-checkmark {
-            background-color: #2196F3;
+            background-color: #579ea5;
             color: #fff;
         }
 
@@ -93,7 +92,7 @@
         props: {
             name: String,
             value: {
-                type: [String, Array],
+                type: [Number, String, Array],
                 required: true
             },
             inputValue: String,
@@ -101,6 +100,10 @@
             isRadio: {
                 type: Boolean,
                 default: false
+            },
+            exclusiveValues: {
+                type: Array,
+                default: _ => []
             }
         },
         data() {
