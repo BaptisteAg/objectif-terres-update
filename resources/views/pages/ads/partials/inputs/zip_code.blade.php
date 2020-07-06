@@ -10,7 +10,7 @@
                 v-model="formInput.selectedZones"
                 aria-describedby='zipCodeError'>
         </autocomplete>
-        <input type="hidden" :disabled="isInputDisabled" name="locationable[cities][]" :value="zone.value.id"
+        <input type="hidden" :disabled="isInputDisabled" :name="'locationable['+zone.value.type+'][]'" :value="zone.value.id"
                v-for="(zone,i) in formInput.selectedZones">
         <input type="hidden" :disabled="isInputDisabled" name="selected_zones"
                :value="JSON.stringify(formInput.selectedZones)">

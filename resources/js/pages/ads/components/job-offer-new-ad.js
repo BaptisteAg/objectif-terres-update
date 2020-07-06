@@ -21,23 +21,23 @@ export default {
     props: {},
     data() {
         const v = this.oldValues;
-        const hasOld = Object.keys(v).length;
+        const hasOld = Object.keys(v).length && v.job_offer;
 
         return {
             formInput: {
-                selectedZones: hasOld ? v.selected_zones : [],
+                selectedZones: hasOld && v.selected_zones || [],
 
-                offerTypes: hasOld ? v.job_offer.offer_types : [],
-                jobDescription: hasOld ? v.job_offer.job_description : '',
-                experienceFarming: hasOld ? v.job_offer.experience_farming : '',
-                educationLevels: hasOld ? v.job_offer.education_levels : [],
+                offerTypes: hasOld && v.job_offer.offer_types || [],
+                jobDescription: hasOld && v.job_offer.job_description || '',
+                experienceFarming: hasOld && v.job_offer.experience_farming || '',
+                educationLevels: hasOld && v.job_offer.education_levels || [],
 
-                aboutProject: hasOld ? v.about_project_content : '',
-                aboutContent: hasOld ? v.about_content : '',
-                title: hasOld ? v.title : '',
-                documents: hasOld ? JSON.parse(v.documents) : [],
+                aboutProject: hasOld && v.about_project_content || '',
+                aboutContent: hasOld && v.about_content || '',
+                title: hasOld && v.title || '',
+                documents: hasOld && JSON.parse(v.documents) || [],
                 //beneficiary: hasOld ? v.is_beneficiary : '',
-                //agriculturalActivity: hasOld ? v.agricultural_activity : [],
+                //agriculturalActivity: hasOld ? v.agricultural_activity || [],
             }
         }
     },

@@ -16,12 +16,15 @@ Vue.component('new-ad', {
     },
     props: {
         oldAdTypeSelected: String,
-        isSupportRequest: Boolean
+        isSupportRequest: Boolean,
+        publishAction: String,
+        saveAction: String,
     },
     data() {
         return {
             adTypeSelected: this.oldAdTypeSelected,
-            enabledForm: null
+            enabledForm: null,
+            formAction : this.publishAction
         }
     },
     mounted() {
@@ -83,9 +86,10 @@ Vue.component('new-ad', {
                     'Vous êtes sur le point de soumettre une demande d\'accompagnement. Elle sera traitée sous 7 jours par un primo-accueillant.' :
                     'Vous êtes sur le point de demander la publication de votre annonce. Elle sera traitée sous 7 jours par un modérateur.';
 
-                if (!confirm(text)) {
+                if (this.formAction === this.publishAction && !confirm(text)) {
                     this.isSubmitting = false;
-                } else {
+                }
+                else {
                     this.isSubmitting = true;
                     this.$el.submit()
                 }
@@ -97,7 +101,15 @@ Vue.component('new-ad', {
         setEnabledForm(form) {
             this.enabledForm = form;
         },
-        onFormComplete() {
+        onPublishSubmit() {
+            this.formAction = this.publishAction;
+
+            const evt = new CustomEvent("submit", {"bubbles": true, "cancelable": true});
+            this.$refs.form.dispatchEvent(evt);
+        },
+        onSaveSubmit() {
+            this.formAction = this.saveAction;
+
             const evt = new CustomEvent("submit", {"bubbles": true, "cancelable": true});
             this.$refs.form.dispatchEvent(evt);
         }

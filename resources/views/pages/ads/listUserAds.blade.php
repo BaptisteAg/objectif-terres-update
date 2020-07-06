@@ -133,7 +133,7 @@
                                             @endif
                                         </p>
                                     </div>
-                                    @if(! $ad->attributionAd and $ad->is_draft === 0)
+                                    @if(!$ad->attributionAd || $ad->is_draft === 1)
                                         <article class="message is-warning">
                                             <div class="message-body">
                                                 Votre annonce est en mode brouillon, elle n'as pas été encore soumise à
@@ -186,17 +186,18 @@
                                         @endif
                                     @endif
 
-                                    @if( $ad->attributionAd and $ad->is_draft != 1)
                                         <p class="ad-admin button__wrap button__wrap_right">
 
-                                            <a href="{{route("ads.show", $ad->id)}}">
-                                                <button class="button basic  small success mr-20">
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-eye text_white"></i>
-                                                    </span>
-                                                    <span>Voir</span>
-                                                </button>
-                                            </a>
+                                            @if( !$ad->attributionAd || $ad->is_draft === 1)
+                                                <a href="{{route("ads.show", $ad->id)}}">
+                                                    <button class="button basic  small success mr-20">
+                                                        <span class="icon is-small">
+                                                            <i class="fas fa-eye text_white"></i>
+                                                        </span>
+                                                        <span>Voir</span>
+                                                    </button>
+                                                </a>
+                                            @endif
 
                                             @if($ad->canEdit)
                                                 <a href="{{route("ads.edit", $ad->id)}}">
@@ -209,16 +210,17 @@
                                                 </a>
                                             @endif
 
-                                            <a href="{{ route('ads.delete', ["ad" => $ad->id]) }}" onclick="return confirm('Êtes vous sûr ? Cette opération est irréversible.')">
-                                                <button class="button basic small danger">
-                                                    <span class="icon text_white">
-                                                        <i class="fas fa-trash"></i>
-                                                    </span>
-                                                    <span>Supprimer</span>
-                                                </button>
-                                            </a>
+                                            @if( !$ad->attributionAd || $ad->is_draft === 1)
+                                                <a href="{{ route('ads.delete', ["ad" => $ad->id]) }}" onclick="return confirm('Êtes vous sûr ? Cette opération est irréversible.')">
+                                                    <button class="button basic small danger">
+                                                        <span class="icon text_white">
+                                                            <i class="fas fa-trash"></i>
+                                                        </span>
+                                                        <span>Supprimer</span>
+                                                    </button>
+                                                </a>
+                                            @endif
                                         </p>
-                                    @endif
                                 </div>
                             </div>
                         </li>

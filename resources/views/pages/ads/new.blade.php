@@ -34,14 +34,16 @@
                     inline-template
                     :old-ad-type-selected="'{{$old['ad_type'] ?? ''}}'"
                     :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
+                    publish-action="{{route('ads.publish')}}"
+                    save-action="{{route('ads.save')}}"
                     style="display:none"
                     :style="{display:loading ? 'none': 'block'}">
 
                 <form
                     method="post"
-                    action="{{route('ads.store')}}"
                     enctype="multipart/form-data"
                     @submit="submit"
+                    :action="formAction"
                     ref="form">
 
                     {{ csrf_field() }}
@@ -68,7 +70,8 @@
                                       :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                       :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
                                       @input-enabled="setEnabledForm"
-                                      @form-complete="onFormComplete"
+                                      @form-complete="onPublishSubmit"
+                                      @submit-save-button="onSaveSubmit"
                                       ref="land_seek">
                         @include('pages.ads.partials.landSeek.landSeekNewAd')
                     </new-land-seek-ad>
@@ -79,7 +82,8 @@
                                        :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                        :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
                                        @input-enabled="setEnabledForm"
-                                       @form-complete="onFormComplete"
+                                       @form-complete="onPublishSubmit"
+                                       @submit-save-button="onSaveSubmit"
                                        ref="land_offer">
                         @include('pages.ads.partials.landOffer.landOfferNewAd')
                     </new-land-offer-ad>
@@ -90,7 +94,8 @@
                                           :is-input-disabled="adTypeSelected !== 'job_seek'"
                                           :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                           @input-enabled="setEnabledForm"
-                                          @form-complete="onFormComplete"
+                                          @form-complete="onPublishSubmit"
+                                         @submit-save-button="onSaveSubmit"
                                           ref="job_seek">
                             @include('pages.ads.partials.jobSeek.jobSeekNewAd')
                         </new-job-seek-ad>
@@ -100,7 +105,8 @@
                                           :is-input-disabled="adTypeSelected !== 'job_offer'"
                                           :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                           @input-enabled="setEnabledForm"
-                                          @form-complete="onFormComplete"
+                                          @form-complete="onPublishSubmit"
+                                          @submit-save-button="onSaveSubmit"
                                           ref="job_offer">
                             @include('pages.ads.partials.jobOffer.jobOfferNewAd')
                         </new-job-offer-ad>

@@ -32,53 +32,53 @@ export default {
     props: {},
     data() {
         let v = this.oldValues;
-        const hasOld = Object.keys(v).length;
+        const hasOld = Object.keys(v).length && v.land_offer;
 
         if(!hasOld) {
             v = {land_offer: {}};
         }
 
         const extraFormInput = this.isSupportRequest ? {
-            isBeneficiary: hasOld ? v.is_beneficiary : '1',
-            isActivityTransfer: hasOld ? !!v.is_activity_transfer : '',
+            isBeneficiary: hasOld && v.is_beneficiary || '1',
+            isActivityTransfer: hasOld && !!v.is_activity_transfer || '',
 
-            buildingSurface: hasOld && v.land_offer.building ? v.land_offer.building.surface: '',
-            buildingOfferGenres: hasOld && v.land_offer.building ? v.land_offer.building.offer_genres: [],
+            buildingSurface: hasOld && v.land_offer.building && v.land_offer.building.surface || '',
+            buildingOfferGenres: hasOld && v.land_offer.building && v.land_offer.building.offer_genres || [],
 
-            houseSurface: hasOld && v.land_offer.house ? v.land_offer.house.surface: '',
-            houseOfferGenres: hasOld && v.land_offer.house ? v.land_offer.house.offer_genres: [],
+            houseSurface: hasOld && v.land_offer.house && v.land_offer.house.surface || '',
+            houseOfferGenres: hasOld && v.land_offer.house && v.land_offer.house.offer_genres || [],
         } : {};
 
         return  {
             formInput: {
                 selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
 
-                surface: hasOld ? v.land_offer.surface : '',
-                sauDescription: hasOld ? v.land_offer.sau_description : '',
-                productionGenres: hasOld ? v.land_offer.production_genres : [],
-                productionGenresWanted: hasOld ? v.land_offer.production_genres_wanted : [],
-                bioCertifications: hasOld ? v.land_offer.bio_certifications : [],
-                waterAccess: hasOld ? v.land_offer.water_access: '',
-                waterAccessDescription: hasOld ? v.land_offer.water_access_description: '',
-                altitude: hasOld ? v.land_offer.altitude: '',
+                surface: hasOld && v.land_offer.surface || '',
+                sauDescription: hasOld && v.land_offer.sau_description || '',
+                productionGenres: hasOld && v.land_offer.production_genres || [],
+                productionGenresWanted: hasOld && v.land_offer.production_genres_wanted || [],
+                bioCertifications: hasOld && v.land_offer.bio_certifications || [],
+                waterAccess: hasOld && v.land_offer.water_access !== null ? v.land_offer.water_access : '',
+                waterAccessDescription: hasOld && v.land_offer.water_access_description|| '',
+                altitude: hasOld && v.land_offer.altitude|| '',
 
-                hasBuildings: hasOld ? v.land_offer.has_buildings : null,
-                buildingDescription : hasOld && v.land_offer.building ? v.land_offer.building.description: '',
+                hasBuildings: hasOld && v.land_offer.has_buildings || null,
+                buildingDescription : hasOld && v.land_offer.building && v.land_offer.building.description|| '',
 
-                hasHouses: hasOld ? v.land_offer.has_houses: null,
-                houseDescription : hasOld && v.land_offer.house ? v.land_offer.houses_description : '',
+                hasHouses: hasOld && v.land_offer.has_houses|| null,
+                houseDescription : hasOld && v.land_offer.house && v.land_offer.houses_description || '',
 
-                offerGenres: hasOld ? v.land_offer.offer_genres : [],
-                price: hasOld ? v.land_offer.altitude : '',
-                rentPrice: hasOld ? v.land_offer.altitude : '',
-                testDescription : hasOld ? v.land_offer.test_description : '',
-                chartConfirmation: false,
+                offerGenres: hasOld && v.land_offer.offer_genres || [],
+                price: hasOld && v.land_offer.altitude || '',
+                rentPrice: hasOld && v.land_offer.altitude || '',
+                testDescription : hasOld && v.land_offer.test_description || '',
+                chartConfirmation: hasOld && v.chart_confirmation || false,
 
 
-                aboutProject: hasOld ? v.about_project_content : '',
-                aboutContent: hasOld ? v.about_content : '',
-                title: hasOld ? v.title : '',
-                documents: hasOld ? JSON.parse(v.documents) : [],
+                aboutProject: hasOld && v.about_project_content || '',
+                aboutContent: hasOld && v.about_content || '',
+                title: hasOld && v.title || '',
+                documents: hasOld && JSON.parse(v.documents) || [],
 
                 //confirmPriceFermage: hasOld ? !!v.confirm_price_fermage : false,
 
