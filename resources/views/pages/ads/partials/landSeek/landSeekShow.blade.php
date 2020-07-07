@@ -1,7 +1,7 @@
 <div class="columns is-multiline mb-50">
     @include('pages.ads.partials.show-images')
     <div class="column is-half is-flex-tablet">
-        <div class="card is-flex-tablet card-ads">
+        <div class="card is-flex-tablet card-announcement">
             <div class="card-content">
                 <div class="content">
                     @if($ad->is_draft)
