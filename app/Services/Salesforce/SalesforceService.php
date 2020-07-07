@@ -173,18 +173,23 @@ class SalesforceService
 
         $roleAndDepartments = explode('-', $user["Role_Objectif_Terre__c"]);
         $role = $roleAndDepartments[0];
-        $departments = explode('_', $roleAndDepartments[1]);
 
         // Sync role
         if((string)$localUser->role !== $role) {
             $localUser->role = $role;
         }
 
-        // Sync user territory only for roles > 0
         if($role > 0) {
+            if(!isset($roleAndDepartments[1])) {
+                throw new \Exception("Nous n'avons pas pu lire votre territoire renseigné dans Salesforce. Veuillez contacter un administrateur.");
+            }
+
+            $departments = explode('_', $roleAndDepartments[1]);
+            // Sync user territory only for roles > 0
             $newDepartmentIds = Department::whereIn('code', $departments)->pluck('id');
             $localUser->departments()->sync($newDepartmentIds);
         }
+
 
         $localUser->save();
 
