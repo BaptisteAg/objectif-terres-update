@@ -24,8 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-
-        //          ->hourly();
+        $schedule->command('app:send-alert-new-results-research')->hourly();
     }
 
     /**

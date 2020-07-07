@@ -193,7 +193,7 @@
 @if($ad->landOfferAd->sau_description)
 	<div class="content">
 		<h3 class="title is-3">Description SAU</h3>
-		<p>  {!! nl2br($ad->landOffer->sau_description ?? "") !!}</p>
+		<p>  {!! nl2br($ad->landOfferAd->sau_description ?? "") !!}</p>
 	</div>
 @endif
 @if($ad->landOfferAd->water_access_description)

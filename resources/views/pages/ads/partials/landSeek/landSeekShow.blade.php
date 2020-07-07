@@ -165,7 +165,7 @@
 
     @if($ad->landSeekAd->productionGenres->count())
         <div class="column is-one-quarter ">
-            <p class="has-text-link is-size-5 has-text-centered"> Production(s) envisagée(s)</p>
+            <p class="has-text-link is-size-5 has-text-centered"> Production(s) actuelle(s)</p>
             @foreach ($ad->landSeekAd->productionGenres as $productionGenresSeek)
                 @if($productionGenresSeek->name !== '')
                     <p class="has-text-centered">{{$productionGenresSeek->name}}</p>

@@ -162,7 +162,7 @@ class AdsController extends BaseController
 		//Throw error 404 if a visitor try to show an ad is not validated
 		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validée" ;
 		//TODO not display projects unless user logged is the author of the ad or the user logged is an supervisor or an advisor
-		session()->put('url.intended', URL::current());
+		//session()->put('url.intended', URL::current());
 		return view('pages.ads.show', $this->getShowVars($ad));
 	}
 
