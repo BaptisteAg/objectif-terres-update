@@ -65,7 +65,7 @@
         @endif
     @endauth
 
-    <section class="section pt-0 ads-content">
+    <section class="section pt-0 ">
         <div class="container">
             <nav class="breadcrumb" aria-label="breadcrumbs">
                 <ul>
@@ -103,7 +103,7 @@
 
             <h1 class="title is-1 has-text-link has-text-centered">{{$ad->title}}</h1>
 
-            <div class="ads-content">
+            <div>
                 @if($ad->ad_type === 'landSeek')
                     @include('pages.ads.partials.landSeek.landSeekShow')
                 @endif
