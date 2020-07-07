@@ -5,7 +5,7 @@
 			step-size="xs"
 			@on-complete="$emit('form-complete')"
 			@on-change="nextStep"
-			color="#3498db"
+			color="#579ea5"
 			ref="formWizard">
 		<tab-content title="Localisation" icon="ti-location-arrow">
 			<section class="container">
