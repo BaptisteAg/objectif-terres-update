@@ -72,6 +72,9 @@ Route::prefix('mon-espace/recherches')->middleware('auth')->name('researches.')-
 	Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
 });
 
+Route::prefix('rss')->name('rss.')->group(function () {
+    Route::get('news', 'RssController@news')->name('news');
+});
 
 Route::middleware('auth')->name('user.')->namespace('Users')->group(function () {
 	Route::prefix('mon-espace')->group(function () {

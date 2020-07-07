@@ -54,8 +54,17 @@
                                     :vuelidate="$v.formInput.experienceFarming">
                             </text-area-counter>
                         </div>
+                    </div>
+                    <div class="column"></div>
+                </div>
+            </section>
+        </tab-content>
 
-
+        <tab-content title="Expérience" icon="ti-location-arrow">
+            <section class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-half">
 
                         <div class="field">
                             {!! Form::label('land_offer[education_levels][]', 'Niveau de formation', ['class' => 'label']); !!}
@@ -68,13 +77,15 @@
                                     ref="educationLevels">
                             </multi-select>
                         </div>
+
                     </div>
                     <div class="column"></div>
                 </div>
             </section>
         </tab-content>
 
-        <tab-content title="Expérience" icon="ti-location-arrow">
+
+        <tab-content title="Votre projet et vous" icon="ti-location-arrow">
             <section class="container">
                 <div class="columns">
                     <div class="column"></div>
@@ -108,6 +119,9 @@
                         ?>
                         @include('pages.ads.partials.inputs.title', ["tooltip"=>$titleTooltip])
 
+                        <?php
+                            $tooltip = "15Mo maximum par document.";
+                        ?>
                         @include('pages.ads.partials.inputs.documents')
 
                         @include('pages.ads.partials.inputs.accept-share-contact-infos')

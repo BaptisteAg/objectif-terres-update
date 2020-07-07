@@ -25,7 +25,7 @@
 
                             <h4 class=" text_success mt-5">Réalisez votre projet
                                 agricole.</h4>
-                            <p>Une initiative Terre de Liens</p>
+{{--                            <p>Une initiative Terre de Liens</p>--}}
                         </div>
                     </div>
                 </div>

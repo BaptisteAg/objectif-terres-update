@@ -14,7 +14,7 @@ class JobOfferTypeSeeder extends Seeder
         \App\Models\JobOfferType::insert([
             ['name' => 'Salariat', 'icon' => 'fa-user', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
             ['name' => 'Stage ou apprentissage', 'icon' => 'fa-user-friends', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['name' => "Associé ou membre d'un collectif", 'icon' => 'fa-user', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+            ['name' => "Associé·e ou membre d'un collectif", 'icon' => 'fa-user', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
             ['name' => "Espace-test", 'icon' => 'fa-user', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
         ]);
     }
