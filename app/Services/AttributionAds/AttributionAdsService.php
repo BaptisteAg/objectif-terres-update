@@ -62,7 +62,7 @@ class AttributionAdsService
     {
         $moderatorIsChargeOfAdModeration = false;
         $ad = $this->adRepository->find($adId);
-        if (auth()->user()->id == $ad->attributionAd->user_moderator_id) {
+        if ($ad->attributionAd && auth()->user()->id === $ad->attributionAd->user_moderator_id) {
             return $moderatorIsChargeOfAdModeration = true;
         }
 
