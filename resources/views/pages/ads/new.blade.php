@@ -70,8 +70,10 @@
                                       :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                       :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
                                       @input-enabled="setEnabledForm"
-                                      @form-complete="onPublishSubmit"
-                                      @submit-save-button="onSaveSubmit"
+                                      @form-complete="submitProxy"
+                                      @submit-save-button="submitProxy"
+                                      @click-save-button="onSaveClick"
+                                      @click-publish-button="onPublishClick"
                                       ref="land_seek">
                         @include('pages.ads.partials.landSeek.landSeekNewAd')
                     </new-land-seek-ad>
@@ -82,21 +84,25 @@
                                        :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                        :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
                                        @input-enabled="setEnabledForm"
-                                       @form-complete="onPublishSubmit"
-                                       @submit-save-button="onSaveSubmit"
+                                       @form-complete="submitProxy"
+                                       @submit-save-button="submitProxy"
+                                       @click-save-button="onSaveClick"
+                                       @click-publish-button="onPublishClick"
                                        ref="land_offer">
                         @include('pages.ads.partials.landOffer.landOfferNewAd')
                     </new-land-offer-ad>
 
                     @if(empty($isSupportRequest))
                         <new-job-seek-ad inline-template
-                                          v-show="adTypeSelected === 'job_seek'"
-                                          :is-input-disabled="adTypeSelected !== 'job_seek'"
-                                          :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
-                                          @input-enabled="setEnabledForm"
-                                          @form-complete="onPublishSubmit"
-                                         @submit-save-button="onSaveSubmit"
-                                          ref="job_seek">
+                                         v-show="adTypeSelected === 'job_seek'"
+                                         :is-input-disabled="adTypeSelected !== 'job_seek'"
+                                         :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                         @input-enabled="setEnabledForm"
+                                         @form-complete="submitProxy"
+                                         @submit-save-button="submitProxy"
+                                         @click-save-button="onSaveClick"
+                                         @click-publish-button="onPublishClick"
+                                         ref="job_seek">
                             @include('pages.ads.partials.jobSeek.jobSeekNewAd')
                         </new-job-seek-ad>
 
@@ -105,8 +111,10 @@
                                           :is-input-disabled="adTypeSelected !== 'job_offer'"
                                           :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                           @input-enabled="setEnabledForm"
-                                          @form-complete="onPublishSubmit"
-                                          @submit-save-button="onSaveSubmit"
+                                          @form-complete="submitProxy"
+                                          @submit-save-button="submitProxy"
+                                          @click-save-button="onSaveClick"
+                                          @click-publish-button="onPublishClick"
                                           ref="job_offer">
                             @include('pages.ads.partials.jobOffer.jobOfferNewAd')
                         </new-job-offer-ad>
@@ -117,7 +125,7 @@
         </div>
     </section>
 
-    @if(env('APP_DEBUG'))
+    @if(env('DEBUGBAR_ENABLED'))
         <pre>{{var_export($old, true)}}</pre>
     @endif
 @endsection

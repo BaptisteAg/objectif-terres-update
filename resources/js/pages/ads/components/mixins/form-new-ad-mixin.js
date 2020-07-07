@@ -135,7 +135,7 @@ export default {
                             // Change current form step if needed
                             $form.changeTab($form.activeTabIndex, inputTabIndex);
 
-                            console.log(inputTabIndex, $form.tabs[inputTabIndex]);
+                            //console.log(inputTabIndex, $form.tabs[inputTabIndex]);
 
                             const tab = $form.tabs[inputTabIndex].$el;
                             tab.addEventListener('animationend', e => {
@@ -154,8 +154,14 @@ export default {
             });
         },
         onSaveButtonClick(e) {
+            this.$emit('click-save-button');
+        },
+        onSaveButtonSubmit(e) {
             e.preventDefault();
             this.$emit('submit-save-button');
+        },
+        onPublishButtonClick(e) {
+            this.$emit('click-publish-button');
         }
     },
 };

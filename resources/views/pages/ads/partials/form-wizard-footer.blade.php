@@ -19,10 +19,10 @@
         </div>
 
         <div class="wizard-footer-right">
-            <button class="button is-light" @click="onSaveButtonClick">
+            <button class="button is-light" @mousedown="onSaveButtonClick" @click="onSaveButtonSubmit">
                 Sauvegarder
             </button>
-            <span @click="props.nextTab" @keyup.enter="props.nextTab" v-if="props.isLastStep" role="button"
+            <span @mousedown="onPublishButtonClick" @click="props.nextTab" @keyup.enter="props.nextTab" v-if="props.isLastStep" role="button"
                   tabindex="0">
                 <wizard-button
                         class="button is-primary"

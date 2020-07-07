@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\URL;
 
 class AdsController extends BaseController
 {
-	public const PUBLISHED_AD_LIMIT_PER_USER = 3;
+	public const PUBLISHED_AD_LIMIT_PER_USER = 5;
 
 	/**
 	 * Display the ad creation form
@@ -72,11 +72,19 @@ class AdsController extends BaseController
                             "production_genres" => $ad->landOfferAd->productionGenres->pluck("id")->toArray(),
                             "production_genres_wanted" => $ad->landOfferAd->productionGenresPossible->pluck("id")->toArray(),
                             "offer_genres" => $ad->landOfferAd->offerGenres->pluck("id")->toArray(),
-                        ]) : [],
+                        ]) : null,
 
-                    'job_offer'      => $ad->jobOfferAd  ? $ad->jobOfferAd->toArray() : null,
+                    'job_offer'      => $ad->jobOfferAd  ?
+                        array_merge($ad->jobOfferAd->toArray(),[
+                            "offer_types" => $ad->jobOfferAd->jobOfferTypes->pluck("id")->toArray(),
+                            "education_levels" => $ad->jobOfferAd->educationLevels->pluck("id")->toArray(),
+                        ]) : null,
 
-                    'job_seek'       => $ad->jobSeekAd   ? $ad->jobSeekAd->toArray() : null,
+                    'job_seek'       => $ad->jobSeekAd   ?
+                        array_merge($ad->jobSeekAd->toArray(),[
+                            "offer_types" => $ad->jobSeekAd->jobOfferTypes->pluck("id")->toArray(),
+                            "education_levels" => $ad->jobSeekAd->educationLevels->pluck("id")->toArray(),
+                        ]) : null,
                 ],
                 $ad->only(["id", "title", "about_content", "about_project_content", "accept_share_contact_infos"]),
                 compact("selected_zones", "locationable", "locationable_radius", "documents", "document_ids")
