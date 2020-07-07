@@ -210,16 +210,14 @@
                                                 </a>
                                             @endif
 
-                                            @if( !$ad->attributionAd || $ad->is_draft === 1)
-                                                <a href="{{ route('ads.delete', ["ad" => $ad->id]) }}" onclick="return confirm('Êtes vous sûr ? Cette opération est irréversible.')">
-                                                    <button class="button basic small danger">
-                                                        <span class="icon text_white">
-                                                            <i class="fas fa-trash"></i>
-                                                        </span>
-                                                        <span>Supprimer</span>
-                                                    </button>
-                                                </a>
-                                            @endif
+                                            <a href="{{ route('ads.delete', ["ad" => $ad->id]) }}" onclick="return confirm('Êtes vous sûr ? Cette opération est irréversible.')">
+                                                <button class="button basic small danger">
+                                                    <span class="icon text_white">
+                                                        <i class="fas fa-trash"></i>
+                                                    </span>
+                                                    <span>Supprimer</span>
+                                                </button>
+                                            </a>
                                         </p>
                                 </div>
                             </div>
