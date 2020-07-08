@@ -1009,4 +1009,9 @@ class AdService
     {
         return $this->repository->findAllByPublishedOnSince($date);
     }
+
+    public function findAttributedAndNotDraftedByUserId(int $id)
+    {
+        return $this->repository->findAttributedAndNotDraftedByUserId($id);
+    }
 }

@@ -615,4 +615,13 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             ->whereDate('updated_at', '<=', $date)
             ->get();
     }
+
+    public function findAttributedAndNotDraftedByUserId(int $userId)
+    {
+        return $this->entity
+            ->whereHas('attributionAd')
+            ->where('is_draft', 0)
+            ->where('user_pp_id', $userId)
+            ->get();
+    }
 }
