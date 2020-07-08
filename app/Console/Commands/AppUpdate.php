@@ -41,12 +41,12 @@ class AppUpdate extends Command
      */
     public function handle()
     {
-        $this->call(MigrateCommand::class);
+        $this->call('migrate');
 
         exec('npm run '.(env('APP_ENV') === 'local' ? 'dev' : 'production'));
 
-        exec('php artisan view:clear ');
-        exec('php artisan cache:clear');
-        exec('php artisan config:cache');
+        $this->call('view:clear');
+        $this->call('cache:clear');
+        $this->call('config:cache');
     }
 }
