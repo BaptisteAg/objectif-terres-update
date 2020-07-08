@@ -142,30 +142,33 @@
 						</div>
 					</a>
 				</div>
-				<div class="column is-3">
-					<a class="" href="{{route('user.edit')}}">
-						<div class="card custom-card">
-							<div class="card-content">
-								<div class="media">
-									<div class="media-left">
-										<figure class="image is-48x48 custom-card custom-card-image">
-											<span class="icon is-large">
-											  <i class="fas fa-3x fas fa-user"></i>
-											</span>
-										</figure>
+
+				@if(!auth()->user()->is_sf_user)
+					<div class="column is-3">
+						<a class="" href="{{route('user.edit')}}">
+							<div class="card custom-card">
+								<div class="card-content">
+									<div class="media">
+										<div class="media-left">
+											<figure class="image is-48x48 custom-card custom-card-image">
+												<span class="icon is-large">
+												  <i class="fas fa-3x fas fa-user"></i>
+												</span>
+											</figure>
+										</div>
+										<div class="media-content">
+											<p class="custom-card custom-card-text-title">Mes informations</p>
+										</div>
 									</div>
-									<div class="media-content">
-										<p class="custom-card custom-card-text-title">Mes informations</p>
+									<div class="content">
+										Consulter et modifier les informations de mon profil.
 									</div>
-								</div>
-								<div class="content">
-									Consulter et modifier les informations de mon profil.
 								</div>
 							</div>
-						</div>
-					</a>
+						</a>
+					</div>
+				@endif
 
-				</div>
 				<div class="column is-3">
 					<a class="" href="{{route('notification.index')}}">
 						<div class="card custom-card">

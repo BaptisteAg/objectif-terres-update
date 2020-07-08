@@ -3,6 +3,7 @@
 namespace App\Repositories\AttributionAds;
 
 use App\Models\Ad;
+use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\Department;
 use App\Models\Region;
@@ -83,10 +84,11 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 	 * @param int $monthsNumber
 	 * @return Builder[]|\Illuminate\Database\Eloquent\Collection
 	 */
-	public function findAllWherePublishedOnSinceMonths(int $monthsNumber)
+	public function findAllApprovedAndPublishedSince(Carbon $date)
 	{
 		return $this->entity
-			->whereDate("published_on", '=', Carbon::now()->subMonthsWithOverflow($monthsNumber))
+			->whereDate("published_on", '<=', $date)
+            ->where('ad_status_id', [AdStatus::APPROVE_ID])
 			->get();
 	}
 

@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Jobs;
+
+use App\Notifications\BasicNotification;
+use App\Services\Ads\AdService;
+use Carbon\Carbon;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+
+class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    private $adService;
+
+	/**
+	 * Create a new job instance.
+	 *
+	 * @param AdService $adService
+	 */
+    public function __construct(AdService $adService)
+    {
+        $this->adService = $adService;
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        $date = Carbon::now()->subDays(6);
+        $soonToExpireAds = $this->adService->findAdsPublishedSince($date);
+
+        logger("Suggesting soon to expire (".$date.") ads owner to extend the date... ".$soonToExpireAds->count()." found.");
+
+        foreach($soonToExpireAds as $ad) {
+            $ad->userPp->notify(new BasicNotification([
+                'subject' => "Votre annonce va bientôt expirer",
+                'message' => "Nous espérons que ce service a répondu à votre besoin.\n
+                    
+                    Sans action de votre part d'ici 7 jours, cette annonce ne sera plus visible sur notre site.\n
+                    
+                    Pour reconduire votre annonce sans modification pour une durée de 6 mois, cliquez sur le bouton ci-dessous.\n
+                    
+                    Vous pouvez également modifier votre annonce.\n
+                    
+                    En vous remerciant pour votre confiance.",
+                'action' => ["Etendre l'annonce", route('ads.extend', ["id" => $ad->id])]
+            ]));
+        }
+    }
+}

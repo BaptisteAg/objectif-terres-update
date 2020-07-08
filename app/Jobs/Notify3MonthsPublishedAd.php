@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Models\User;
 use App\Notifications\OverdueModerationNotification;
-use App\Notifications\PublishedAdNotification;
+use App\Notifications\AdNotification;
 use App\Repositories\Users\UserRepository;
 use App\Services\AttributionAds\AttributionAdsService;
 use Carbon\Carbon;
@@ -42,16 +42,16 @@ class Notify3MonthsPublishedAd implements ShouldQueue
 	 */
 	public function handle()
 	{
-		$attributionAds = $this->attributionAdsService->findAllPublishedSinceMonths(3);
+		$attributionAds = $this->attributionAdsService->findAllPublishedSince(Carbon::now()->subMonthsWithOverflow(3));
 		foreach ($attributionAds as $attributionAd) {
 			$data['subject'] = 'Compléter votre annonce !| Objectif Terres';
-			$data['message'] = 'Votre annonce est en ligne depuis 3 mois. Compléter les informations de votre annonce pour augmenter vos chances de contacts !';
+			$data['message'] = 'Votre annonce est en ligne depuis 3 mois. Complétez les informations de votre annonce pour augmenter vos chances de contacts !';
 			//TODO the url is the link to the modification ad form
 			$data['url'] = '/annonces/' . $attributionAd->ad->id;
 
 			/** @var User $userToNotify */
 			$userToNotify = $this->userRepository->find($attributionAd->ad->user_pp_id);
-			$userToNotify->notify(new PublishedAdNotification($data));
+			$userToNotify->notify(new AdNotification($data));
 
 		}
 	}

@@ -42,8 +42,7 @@ class NewMessageNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-			->from(env('MAIL_FROM_ADDRESS'), "Objectif Terres")
-			->subject('Nouveau message de la part de'.$this->data['sender_first_name'].' '. $this->data['sender_name']. '  | Objectif terres')
+			->subject('Nouveau message de la part de '.$this->data['sender_first_name'].' '. $this->data['sender_name']. '  | Objectif terres')
 			->greeting('Bonjour,')
 			->line( 'Vous avez reçu un nouveau message de '. $this->data['sender_name']. ' : ')
 			->line( "''". $this->data['message_content']."''")

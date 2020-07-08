@@ -167,9 +167,8 @@ class SalesforceService
         }
 
         // Sync SF ID
-        if($localUser->sf_id != $sfId) {
-            $localUser->sf_id = $sfId;
-        }
+        $localUser->sf_id = $sfId;
+        $localUser->is_sf_user = true;
 
         $roleAndDepartments = explode('-', $user["Role_Objectif_Terre__c"]);
         $role = $roleAndDepartments[0] ?: 0;
@@ -178,6 +177,8 @@ class SalesforceService
         if((string)$localUser->role !== $role) {
             $localUser->role = $role;
         }
+
+        $localUser->save();
 
         if($role > 0) {
             if(!isset($roleAndDepartments[1])) {
@@ -189,9 +190,6 @@ class SalesforceService
             $newDepartmentIds = Department::whereIn('code', $departments)->pluck('id');
             $localUser->departments()->sync($newDepartmentIds);
         }
-
-
-        $localUser->save();
 
         return $localUser;
     }

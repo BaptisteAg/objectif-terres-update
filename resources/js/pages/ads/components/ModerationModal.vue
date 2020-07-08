@@ -156,6 +156,9 @@
                     attribution_ad_id: this.attributionAdId
                 })
                     .then(response => {
+                        if(!response.data.redirect) {
+                            throw "Invalid data";
+                        }
                         window.location = response.data.redirect;
                     })
                     .catch(error => {
