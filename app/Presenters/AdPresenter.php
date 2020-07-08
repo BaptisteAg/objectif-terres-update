@@ -4,6 +4,7 @@ use App\Models\Ad;
 use App\Models\City;
 use App\Models\Document;
 use App\Models\Region;
+use App\Services\Ads\AdService;
 use McCool\LaravelAutoPresenter\BasePresenter;
 
 /**
@@ -13,6 +14,20 @@ use McCool\LaravelAutoPresenter\BasePresenter;
  */
 class AdPresenter extends BasePresenter
 {
+	/**
+	 * @var AdService
+	 */
+	protected $adService;
+
+	/**
+	 * AdPresenter constructor.
+	 * @param AdService $adService
+	 */
+	public function __construct(AdService $adService)
+	{
+		$this->adService = $adService;
+	}
+
 	public function ad_type()
 	{
 		if ($this->wrappedObject->landSeekAd) {
@@ -255,21 +270,12 @@ class AdPresenter extends BasePresenter
 	}
 
 	/**
-	 * Gett all departments codes related to the territories targeted by the ad
+	 * Get all departments codes related to the territories targeted by the ad
 	 * @return array
 	 */
 	public function adDepartmentsCodes(): array
 	{
-		$ad = $this->wrappedObject;
-		$adDepartmentsCodes = [$ad->departments->pluck('code')->toArray()];
-		$adCitiesDepartmentsCodes = $ad->cities->map(function ($city) use ($adDepartmentsCodes) {
-			return $city->department->code;
-		})->toArray();
-		$adRegionsDepartmentsCodes = $ad->regions->map(function ($region) {
-			return $region->departments->pluck('code');
-		})->toArray();
-
-		return array_unique(array_merge(...$adCitiesDepartmentsCodes, ...$adDepartmentsCodes, ...$adRegionsDepartmentsCodes));
+		return $this->adService->getAdDepartmentCodes($this->wrappedObject);
 	}
 
 
@@ -277,7 +283,7 @@ class AdPresenter extends BasePresenter
 	 * @param array $userTerritoriesCodes
 	 * @return bool
 	 */
-	public function isAdInUserTerritories(array $userTerritoriesCodes) :bool
+	public function isAdInUserTerritories(array $userTerritoriesCodes): bool
 	{
 		return count(array_intersect($userTerritoriesCodes, $this->adDepartmentsCodes())) > 0;
 	}

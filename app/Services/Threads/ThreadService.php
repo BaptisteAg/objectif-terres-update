@@ -285,6 +285,7 @@ class ThreadService
 				}
 			}
 		}
+
 		return $message;
 	}
 

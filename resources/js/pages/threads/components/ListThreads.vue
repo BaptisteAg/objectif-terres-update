@@ -65,9 +65,13 @@
                                     <span class="icon">
                                         <i class="far fa-newspaper"></i>
                                     </span>
-                                    <span>{{thread.title}}</span>
+                                    <template v-if="thread.ad.deleted_at !== null">
+                                        Annonce supprimée
+                                    </template>
+                                    <template v-else>
+                                        <span>{{thread.title}}</span>
+                                    </template>
                                     <br>
-                                    <span class="text_size small">{{thread.ad.title}}</span>
                                 </a>
                             </template>
                         </template>

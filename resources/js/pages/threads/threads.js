@@ -32,16 +32,24 @@ Vue.component('vue-threads', {
             isUserModerator: false,
             usersSelected: [],
             isThreadRelatedToUser: false,
+            isThreadBlocked : false
+        }
+    },
+    watch: {
+        activeThread: function () {
+            let ad = this.activeThread.ad
+            if (ad !== null) {
+                if (ad.deleted_at !== null) {
+                    return this.isThreadBlocked = true
+                }
+            }
+           return this.isThreadBlocked = false
         }
     },
     mounted() {
         if (this.initThread) {
             setInterval(_ => this.onThreadClick(this.activeThreadId), 15000);
             this.onThreadClick(this.activeThreadId);
-
-            if (this.userRole >= 1) {
-                this.isUserModerator = true;
-            }
         }
     },
     methods: {
@@ -66,12 +74,15 @@ Vue.component('vue-threads', {
         },
 
         checkUserRelatedToThread(messages) {
-            messages[0].thread.users.some((user) => {
-                if (user.id === this.userId) {
-                    return this.isThreadRelatedToUser = true;
-                }
-               return this.isThreadRelatedToUser = false;
-            });
+            if (messages[0]) {
+                messages[0].thread.users.some((user) => {
+                    if (user.id === this.userId) {
+                        return this.isThreadRelatedToUser = true;
+                    }
+                    return this.isThreadRelatedToUser = false;
+                });
+            }
+            return this.isThreadRelatedToUser = true;
         }
     },
 });

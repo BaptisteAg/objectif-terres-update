@@ -59,7 +59,7 @@
 	</div>
 </header>
 
-@if(!$errors->isEmpty() or Session::has('success') or Session::has('warning') or Session::has('info') )
+@if( !empty($errors) or Session::has('success') or Session::has('warning') or Session::has('info') )
 	<div class="columns" style="margin:5px">
 		<div class="column is-one-fifth"></div>
 		<div class="column is-three-fifths">

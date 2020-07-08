@@ -122,7 +122,7 @@
                             <span>Afficher l'intégralité de la liste</span>
                         </a>
                     @else
-                        <a href="{{ route('supervisor.show', array_merge(Request::all(), ['toPaginate'=>'true', 'projects_show'=>'true'])) }}">
+                        <a href="{{ route('supervisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
                             <span>Paginer la liste</span>
                         </a>
                     @endif
@@ -349,7 +349,7 @@
                                         @else
                                             @if(!is_null($ad->project->supportState))
                                                 @if($ad->project->supportState->id === \App\Models\SupportState::TO_HANDLE_ID)
-                                                    <span class="tag is-info has-tooltip-bottom"
+                                                    <span class="tag is-warning has-tooltip-bottom"
                                                           data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
                                                 @elseif($ad->project->supportState->id ===\App\Models\SupportState::HANDLE_ID)
                                                     <span class="tag is-success has-tooltip-bottom"

@@ -1,8 +1,6 @@
 <template>
     <div>
         <template class="loader-wrapper" v-if="activeThread === null">
-
-
         </template>
         <div v-else class="content ">
             <div class="columns is-vcentered">
@@ -22,13 +20,20 @@
                                 <p class="has-text-centered">Utilisateur supprimé</p>
                             </template>
                             <template v-else>
-                                <a class="" target="_blank" :href="'/utilisateurs/' + user.id">
+                                <template v-if="activeThread.ad && user.id !==userId ">
                                     <p class="has-text-centered  text-style-title__primary" v-if="user.id !==userId">
                                         {{user.first_name}} <span class="is-uppercase">{{user.name}}</span>
                                     </p>
-                                </a>
+                                </template>
+                                <template v-else-if="!activeThread.ad && user.id !==userId ">
+                                    <a class="" target="_blank" :href="'/utilisateurs/' + user.id">
+                                        <p class="has-text-centered  text-style-title__primary"
+                                           v-if="user.id !==userId">
+                                            {{user.first_name}} <span class="is-uppercase">{{user.name}}</span>
+                                        </p>
+                                    </a>
+                                </template>
                             </template>
-
                         </template>
                     </template>
 
@@ -39,22 +44,31 @@
                     <template v-if="activeThread.ad !== null && activeThread.ad.user_pp.deleted_at === null">
                         <div class="content" v-if="isDisplay">
                             <div class="buttons is-centered ">
-                                <a v-if="activeThread.ad.project_id !==null" target="_blank" :href="'/mon-espace-primo-accueillant/espace-suivi/' + activeThread.ad.id" class="">
-                                    <button class="button basic secondary">
-											<span class="icon is-small">
-											 <i class="fas fa-hands-helping"></i>
-											</span>
-                                        <span>Suivi de l'accompagnement</span>
-                                    </button>
-                                </a>
-                                <a v-if="activeThread.ad.project_id ===null" target="_blank" :href="'/annonces/' + activeThread.ad.id" class="">
-                                    <button class="button basic secondary">
-											<span class="icon is-small">
-											 <i class="fas fa-eye"></i>
-											</span>
-                                        <span>Voir l'annonce</span>
-                                    </button>
-                                </a>
+                                <template v-if="activeThread.ad.deleted_at">
+                                    Annonce supprimée
+                                </template>
+                                <template v-else>
+                                    <a v-if="activeThread.ad.project_id !==null" target="_blank"
+                                       :href="'/mon-espace-primo-accueillant/espace-suivi/' + activeThread.ad.id"
+                                       class="">
+                                        <button class="button basic secondary">
+                                            <span class="icon is-small">
+                                                <i class="fas fa-hands-helping"></i>
+                                            </span>
+                                            <span>Suivi de l'accompagnement</span>
+                                        </button>
+                                    </a>
+                                    <a v-if="activeThread.ad.project_id ===null" target="_blank"
+                                       :href="'/annonces/' + activeThread.ad.id" class="">
+                                        <button class="button basic secondary">
+                                            <span class="icon is-small">
+                                                <i class="fas fa-eye"></i>
+                                            </span>
+                                            <span>Voir l'annonce</span>
+                                        </button>
+                                    </a>
+                                </template>
+
                             </div>
                         </div>
                     </template>
@@ -75,7 +89,7 @@
             userId: {},
             isDisplay: '',
             activeThreadId: '',
-            activeThread : {},
+            activeThread: {},
         },
         data() {
             return {

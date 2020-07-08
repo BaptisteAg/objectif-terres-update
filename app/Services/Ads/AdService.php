@@ -248,6 +248,21 @@ class AdService
             }
         }
         return array_unique($departmentsCode);
+
+//		CODE VARIATION
+//		$ad = $this->wrappedObject;
+//		$adDepartmentsCodes = $ad->departments->pluck('code')->toArray();
+//		$adCitiesDepartmentsCodes = $ad->cities->map(function ($city) use ($adDepartmentsCodes) {
+//			return $city->department->code;
+//		})->toArray();
+//		$adRegionsDepartmentsCodes = $ad->regions->map(function ($region) {
+//			return $region->departments->pluck('code');
+//		})->toArray();
+//
+//		return array_unique(array_merge($adCitiesDepartmentsCodes, $adDepartmentsCodes, ...$adRegionsDepartmentsCodes));
+
+
+
     }
 
     protected function updateSubAd(Ad $ad, string $adType, array $data)
@@ -422,7 +437,7 @@ class AdService
     }
 
     /**
-     * Show all ads ads related to supervisor
+     * Show all projects with first contact support stage  related to supervisor
      * @param bool $toPaginate
      * @return LengthAwarePaginator|Collection
      */
@@ -888,7 +903,11 @@ class AdService
             'landSeekAd',
             'landOfferAd',
             'jobOfferAd',
-            'jobSeekAd'
+            'jobSeekAd',
+			'project',
+			'project.supportState',
+			'project.supportStage',
+			'project.projectStatus'
         ]);
         if ($toPaginate == true) {
             return $adsFiltred->paginate(15);

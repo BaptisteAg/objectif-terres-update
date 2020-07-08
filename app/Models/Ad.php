@@ -115,7 +115,7 @@ class Ad extends Model implements HasPresenter
      */
     public function attributionAd()
     {
-        return $this->hasOne(AttributionAd::class);
+        return $this->hasOne(AttributionAd::class)->orderByDesc("id");
     }
 
     /**

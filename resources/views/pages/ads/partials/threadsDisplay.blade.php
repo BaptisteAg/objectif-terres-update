@@ -32,7 +32,7 @@
                     <div id="messages-display" class="content">
                         <h3 class="title is-3 has-text-link has-text-centered"> Fils de discussion </h3>
                     </div>
-                    <div >
+                    <div>
                         <vue-threads
                                 inline-template
                                 v-bind:is-display-in-thread-page=false
@@ -77,6 +77,7 @@
                                                 v-bind::show-response-type="isUserModerator"
                                                 v-bind:active-thread-id="activeThreadId"
                                                 v-bind:is-thread-related-to-user="isThreadRelatedToUser"
+                                                :is-thread-blocked = "isThreadBlocked"
                                                 :show-response-type="true"
                                                 :response-templates="{{json_encode($responseTemplates)}}"
                                         >
@@ -91,7 +92,7 @@
                     <div id="messages-display" class="content">
                         <h3 class=" title is-3 has-text-link has-text-centered">Votre fil de discusion </h3>
                     </div>
-                    <div >
+                    <div>
                         <vue-threads
                                 inline-template
                                 v-bind:is-display-in-thread-page=false
@@ -126,6 +127,8 @@
                                                 v-bind:is-display="isDisplay"
                                                 v-model="messages"
                                                 :user-id="{{auth()->id()}}"
+                                                v-bind:active-thread-id="activeThreadId"
+                                                v-bind:active-thread = "activeThread"
                                         ></header-message>
                                         <display-message-content
                                                 v-model="messages"
@@ -136,11 +139,12 @@
                                                 :user-id="{{auth()->id()}}"
                                                 @message-reply-success="onMessageReplySuccess"
                                                 @on-upload-success="onThreadClick"
-                                                v-bind::show-response-type="isUserModerator"
-                                                v-bind:active-thread-id="activeThreadId"
+                                                :show-response-type="isUserModerator"
+                                                :active-thread-id="activeThreadId"
                                                 :show-response-type="false"
                                                 :response-templates="{{json_encode($responseTemplates)}}"
-                                                v-bind:is-thread-related-to-user="isThreadRelatedToUser"
+                                                :is-thread-related-to-user="isThreadRelatedToUser"
+                                                :is-thread-blocked = "isThreadBlocked"
                                         >
                                         </form-message-reply>
                                     </div>
@@ -170,10 +174,11 @@
                     </div>
                 </div>
             @else
+
                 <div id="messages-display" class="content">
                     <h3 class="title is-3 has-text-link has-text-centered">Vos messages reçus </h3>
                 </div>
-                <div >
+                <div>
                     <vue-threads
                             inline-template
                             v-bind:is-display-in-thread-page=false
@@ -207,6 +212,8 @@
                                             v-bind:is-display="isDisplay"
                                             v-model="messages"
                                             :user-id="{{auth()->id()}}"
+                                            v-bind:active-thread-id="activeThreadId"
+                                            v-bind:active-thread = "activeThread"
                                     ></header-message>
                                     <display-message-content
                                             v-model="messages"
@@ -219,6 +226,7 @@
                                             @on-thread-click="onThreadClick"
                                             v-bind:active-thread-id="activeThreadId"
                                             v-bind:is-thread-related-to-user="isThreadRelatedToUser"
+                                            :is-thread-blocked = "isThreadBlocked"
                                     >
                                     </form-message-reply>
                                 </div>

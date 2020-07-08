@@ -73,13 +73,17 @@
             <div class="card-content">
                 <div class="content">
                     <p class="title is-3 has-text-centered has-text-link">Confirmez-vous votre choix ?</p>
-                    <p>Vous êtes sur le point d'attribuer cette demande  à <span class="has-text-weight-bold"
-                                                                            id="user_advisor_selected"></span></p>
+                    <p>Vous êtes sur le point d'attribuer cette demande à <span class="has-text-weight-bold"
+                                                                                id="user_advisor_selected"></span></p>
+                    <div class="content mt-30">
+                        <p class="label has-text-centered">Laisser une note pour le primo accueillant</p>
+                        <input value="{{auth()->id()}}" name="user_id" type="hidden">
+                        <textarea required  class="textarea has-fixed-size" name="value" type="text"  placeholder="Votre note..."></textarea>
+                    </div>
                 </div>
             </div>
             <footer class="card-footer">
                 <div class="buttons card-footer-item">
-
                     <button type="submit" class="button is-link">
                         <span>Valider</span>
                     </button>

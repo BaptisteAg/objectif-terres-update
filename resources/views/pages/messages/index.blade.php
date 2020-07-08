@@ -83,6 +83,7 @@
 												v-bind:show-response-type="isUserModerator"
 												v-bind:active-thread-id="activeThreadId"
 												v-bind:is-thread-related-to-user="isThreadRelatedToUser"
+												:is-thread-blocked = "isThreadBlocked"
 										>
 										</form-message-reply>
 									</div>
