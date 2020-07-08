@@ -7,6 +7,7 @@ use App\Models\Ad;
 use App\Models\User;
 use App\Notifications\NewAdToModerateNotification;
 use App\Presenters\AdPresenter;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
@@ -189,6 +190,28 @@ class AdsController extends BaseController
 		$this->adService->delete($ad);
 		return back()->with('success', 'Votre annonce a bien été supprimée');
 	}
+
+	public function extendPublish(int $adId)
+    {
+        $ad = $this->adService->find($adId);
+
+        if(!$ad || $ad->user_pp_id !== auth()->id()) {
+            abort(403);
+        }
+
+        if(!$ad->attributionAd || !$ad->attributionAd->published_on) {
+            return redirect()
+                ->route('ads.show', ["id" => $ad->id])
+                ->withErrors("Impossible d'étendre la durée de cette annonce, car elle n'est pas publiée.");
+        }
+
+        $ad->attributionAd->published_on = Carbon::now();
+
+
+        return redirect()
+            ->route('ads.show', ["id" => $ad->id])
+            ->with("success", "La durée de publication de de votre annonce a été étendue de 6 mois.");
+    }
 
 	/**
 	 * @param AdRequest $request

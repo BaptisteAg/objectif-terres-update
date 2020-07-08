@@ -171,7 +171,7 @@
                                                     pour plus d'informations !
                                                 </div>
                                             </article>
-                                        @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::ARCHIVE_ID)
+                                        @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::ARCHIVED_ID)
                                             <article class="message is-message">
                                                 <div class="message-body">
                                                     Votre annonce a été archivée !

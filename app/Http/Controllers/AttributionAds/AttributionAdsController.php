@@ -8,6 +8,7 @@ use App\Models\AttributionAd;
 use App\Models\Thread;
 use App\Services\AttributionAds\AttributionAdsService;
 use App\Services\Threads\ThreadService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AttributionAdsController extends Controller
@@ -27,10 +28,11 @@ class AttributionAdsController extends Controller
 		$this->threadService = $threadService;
 	}
 
-	/**
-	 * @param Request $request
-	 * @return array
-	 */
+    /**
+     * @param Request $request
+     * @return array
+     * @throws \Throwable
+     */
 	public function acceptAd(ThreadRequest $request)
 	{
 		$this->threadService->create($request->validated());

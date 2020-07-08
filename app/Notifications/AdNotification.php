@@ -2,14 +2,16 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PublishedAdNotification extends Notification implements ShouldQueue
+class AdNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+
     protected $data;
 
     /**
@@ -39,11 +41,12 @@ class PublishedAdNotification extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(User $notifiable)
     {
+
         return (new MailMessage)
 			->subject($this->data['subject'])
-			->greeting('Bonjour,')
+			->greeting('Bonjour '.$notifiable->first_name.' '.$notifiable->name.',')
 			->line( $this->data['message'])
 			->action( 'Consulter votre annonce', url($this->data['url']))
 			->line('A bientôt sur Objectif Terres !')

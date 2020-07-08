@@ -2,17 +2,17 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\NotifyOverdueModeration;
+use App\Jobs\NotifyOverdueModeration as NotifyOverdueModerationJob;
 use Illuminate\Console\Command;
 
-class SendAlertsModeration extends Command
+class NotifyOverdueModeration extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:send-alert-moderation';
+    protected $signature = 'app:notify-overdue-moderation';
 
     /**
      * The console command description.
@@ -21,14 +21,15 @@ class SendAlertsModeration extends Command
      */
     protected $description = 'Send an alert to moderator if a an ad isn\'t moderate since a week';
 
+    /** @var NotifyOverdueModerationJob  */
     protected $job;
 
 	/**
 	 * Create a new command instance.
 	 *
-	 * @param NotifyOverdueModeration $job
+	 * @param NotifyOverdueModerationJob $job
 	 */
-    public function __construct(NotifyOverdueModeration $job)
+    public function __construct(NotifyOverdueModerationJob $job)
     {
     	$this->job = $job;
         parent::__construct();
@@ -37,7 +38,6 @@ class SendAlertsModeration extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
      */
     public function handle()
     {

@@ -13,7 +13,6 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
     ];
 
     /**
@@ -24,7 +23,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('app:send-alert-new-results-research')->everyFiveMinutes();
+        $schedule->command('app:send-alert-new-results-research')->hourly();
+        $schedule->command('app:unpublish-old-ads')->hourly();
+        $schedule->command('app:notify-overdue-moderation')->hourly();
+        $schedule->command('app:notify-publish-date-extend-before-expiration')->daily();
+        $schedule->command('app:notify-drafts-unpublished-ads')->hourly();
     }
 
     /**

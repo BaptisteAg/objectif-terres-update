@@ -189,7 +189,7 @@ class AdService
         $attributionAdData['ad_id'] = $ad->id;
 
         // Ad was already attributed before, and was not refused or archived; then we use the existing one
-        if ($ad->attributionAd && !in_array($ad->attributionAd->adStatus->id, [AdStatus::REFUSE_ID, AdStatus::ARCHIVE_ID])) {
+        if ($ad->attributionAd && !in_array($ad->attributionAd->adStatus->id, [AdStatus::REFUSE_ID, AdStatus::ARCHIVED_ID])) {
             $this->attributionAdsRepository->update($ad->attributionAd->id, $attributionAdData);
         } else {
 
@@ -609,7 +609,7 @@ class AdService
     public function countAdsByAdStatus(Collection $ads): array
     {
         $numberOfAdsByAdStatus = [
-            AdStatus::ARCHIVE_ID => 0,
+            AdStatus::ARCHIVED_ID => 0,
             AdStatus::REFUSE_ID => 0,
             AdStatus::PENDING_MODERATION_STATUS_ID => 0,
         ];
@@ -897,16 +897,27 @@ class AdService
         }
     }
 
-    public function findAllAdsPublishedSinceDaysAndNotComplete(int $numberOfDays): Collection
+    public function findAllAdsNotCompleteAndPublishedSince(Carbon $date): Collection
     {
-        $adsPublishedSinceDays = $this->repository->findAllPublishedSinceDays($numberOfDays);
+        $adsPublishedSinceDays = $this->repository->findAllByPublishedOnSince($date);
 
         return $adsPublishedSinceDays->mapWithKeys(function ($ad) {
             if (is_null($ad['about_content']) || is_null($ad['about_project_content']) || isset($ad['documents'])) {
                 return [$ad['id'] => $ad];
             }
             return [];
-        });
+        })->filter();
+    }
+
+    /**
+     * @param Carbon $date
+     * @return Ad[]|Collection
+     */
+    public function findAllNotAttributedSince(Carbon $date): Collection
+    {
+        $adsNotAttributed = $this->repository->findAllNotAttributedSince($date);
+
+        return $adsNotAttributed;
     }
 
     public function getPublishedAdsCountByRegionId($selectedAdType)
@@ -984,7 +995,18 @@ class AdService
     public function getUserPublishedAdsCount(User $user)
     {
         return $user->ads()->whereHas('attributionAd', function (Builder $builder) {
-            $builder->whereNotNull('published_on');
+            $builder
+                ->whereNotNull('published_on')
+                ->where('ad_status_id', AdStatus::APPROVE_ID);
         })->count();
+    }
+
+    /**
+     * @param Carbon $date
+     * @return Ad[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function findAdsPublishedSince(Carbon $date)
+    {
+        return $this->repository->findAllByPublishedOnSince($date);
     }
 }
