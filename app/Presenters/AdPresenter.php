@@ -200,50 +200,86 @@ class AdPresenter extends BasePresenter
 	}
 
 	public function human_ha()
-    {
-        $ad = $this->wrappedObject;
+	{
+		$ad = $this->wrappedObject;
 
-        if($ad->landSeekAd) {
-            if($ad->landSeekAd->surface_range_max) {
-                $max = $ad->landSeekAd->surface_range_max;
-                $min = $ad->landSeekAd->surface_range_min;
+		if ($ad->landSeekAd) {
+			if ($ad->landSeekAd->surface_range_max) {
+				$max = $ad->landSeekAd->surface_range_max;
+				$min = $ad->landSeekAd->surface_range_min;
 
-                if($max === 100000 && $min === 0) {
-                    return "De 1 à > 100ha";
-                }
+				if ($max === 100000 && $min === 0) {
+					return "De 1 à > 100ha";
+				}
 
-                if($min) {
-                    return "De ".$min. "ha à ".$max."ha";
-                }
+				if ($min) {
+					return "De " . $min . "ha à " . $max . "ha";
+				}
 
-                return "A partir de ".$max."ha";
-            }
-            else {
-                return "Surface non renseignéee";
-            }
-        }
-        else if($ad->landOfferAd) {
-            if(isset($ad->landOfferAd->surface)) {
-                return $ad->landOfferAd->surface." ha";
-            }
-            else {
-                return "Surface non renseignée";
-            }
-        }
+				return "A partir de " . $max . "ha";
+			} else {
+				return "Surface non renseignéee";
+			}
+		} else if ($ad->landOfferAd) {
+			if (isset($ad->landOfferAd->surface)) {
+				return $ad->landOfferAd->surface . " ha";
+			} else {
+				return "Surface non renseignée";
+			}
+		}
 
-        return '';
-    }
+		return '';
+	}
 
-    public function canEdit()
-    {
-        $ad = $this->wrappedObject;
+	public function canEdit()
+	{
+		$ad = $this->wrappedObject;
 
-        return $ad->user_pp_id === auth()->id();
-    }
+		return $ad->user_pp_id === auth()->id();
+	}
 
-    private function isPpDocument(Document $document)
-    {
-        return $document->user_id === $this->wrappedObject->user_pp_id;
-    }
+	private function isPpDocument(Document $document)
+	{
+		return $document->user_id === $this->wrappedObject->user_pp_id;
+	}
+
+	public function isProjectAttributedToAdvisor()
+	{
+		$ad = $this->wrappedObject;
+		if (!is_null($ad->project_id)) {
+			if (!is_null($ad->attributionAd->user_advisor_id)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Gett all departments codes related to the territories targeted by the ad
+	 * @return array
+	 */
+	public function adDepartmentsCodes(): array
+	{
+		$ad = $this->wrappedObject;
+		$adDepartmentsCodes = [$ad->departments->pluck('code')->toArray()];
+		$adCitiesDepartmentsCodes = $ad->cities->map(function ($city) use ($adDepartmentsCodes) {
+			return $city->department->code;
+		})->toArray();
+		$adRegionsDepartmentsCodes = $ad->regions->map(function ($region) {
+			return $region->departments->pluck('code');
+		})->toArray();
+
+		return array_unique(array_merge(...$adCitiesDepartmentsCodes, ...$adDepartmentsCodes, ...$adRegionsDepartmentsCodes));
+	}
+
+
+	/**
+	 * @param array $userTerritoriesCodes
+	 * @return bool
+	 */
+	public function isAdInUserTerritories(array $userTerritoriesCodes) :bool
+	{
+		return count(array_intersect($userTerritoriesCodes, $this->adDepartmentsCodes())) > 0;
+	}
 
 }

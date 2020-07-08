@@ -132,6 +132,7 @@ abstract class BaseController extends Controller
 		$isLoggedUserModeratorAd = false;
 		$advisorUsers = [];
 		$moderatorInChargeOfModeration = false;
+		$currentUser = User::whereId(auth()->id())->first();
 
 		/** @var User $user */
 		$user = auth()->user();
@@ -181,7 +182,7 @@ abstract class BaseController extends Controller
 					$advisorUsers = $this->userService->findAllAdvisorsAndSupervisors();
 				}
 			}
-			if ($user->role >= 1 && $ad->attributionAd->user_moderator_id !== auth()->id()) {
+			if ($user->role >= 1 && $ad->attributionAd->user_moderator_id !== $currentUser->id) {
 				if (count(array_intersect($this->adService->getAdDepartmentCodes($ad), $this->userService->getCurrentUserTerritoryDepartments())) > 0) {
 					$threads = $this->threadService->findThreadsByAd($ad->id);
 				}
@@ -198,7 +199,8 @@ abstract class BaseController extends Controller
 			'isAdToModerate',
 			'isLoggedUserModeratorAd',
 			'advisorUsers',
-			'moderatorInChargeOfModeration'
+			'moderatorInChargeOfModeration',
+			'currentUser'
 		);
 	}
 }

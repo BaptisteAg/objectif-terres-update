@@ -517,6 +517,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	{
 		return array_merge([
 			'userPp',
+			'userPp.departments',
 			'adNotes',
 			'adNotes.user',
 			'documents',
@@ -552,6 +553,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'jobSeekAd',
 
 			'attributionAd.userAdvisor',
+			'attributionAd.userSupervisor',
+
 		], $this->getLocationEagerLoading(), $this->getAttributionEagerLoading());
 	}
 

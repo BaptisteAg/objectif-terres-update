@@ -158,6 +158,7 @@ class AdService
             $ad = $this->repository->create($data);
         }
 
+
         if ($isSupportRequest) {
             $pendingStatus = AdStatus::PENDING_ID;
             /*$advisor = $this->userService->findRandomByRoleAndRegion(3, $adRandomRegionId);
@@ -169,7 +170,6 @@ class AdService
         else {
             $adDepartmentCodes = $this->getAdDepartmentCodes($ad);
             $pendingStatus = AdStatus::PENDING_MODERATION_STATUS_ID;
-
             $availableModerators = $this->userService->findByRoleAndDepartments(1, $adDepartmentCodes);
             if ($availableModerators->isEmpty()) {
                 throw new \Exception("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");

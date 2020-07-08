@@ -6,7 +6,6 @@ use App\Models\Scopes\ScopeLocationFilterable;
 use App\Notifications\ResetPasswordNotification;
 use App\Presenters\UserPresenter;
 use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -135,6 +134,8 @@ class User extends Authenticatable implements HasPresenter
 		'password', 'remember_token',
 	];
 
+
+
 	/**
 	 * The attributes that should be cast to native types.
 	 *
@@ -230,7 +231,7 @@ m’installer",
 	}
 
 	/**
-	 * Get all cities 'location' for the user
+	 * Get all departments 'location' for the user
 	 * @return MorphToMany
 	 */
 	public function departments()
@@ -239,7 +240,7 @@ m’installer",
 	}
 
 	/**
-	 * Get all cities 'location' for the user
+	 * Get all regions 'location' for the user
 	 * @return MorphToMany
 	 */
 	public function regions()

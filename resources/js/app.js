@@ -41,3 +41,4 @@ require('./pages/homepage/homepage');
 //////////////
 // GLOBAL
 require('./main.js');
+require('./notifications')

@@ -237,15 +237,3 @@
     </section>
 @endsection
 
-@section('script')
-
-    <script>
-        let deleteButton = document.querySelector('.close-notification');
-        deleteButton.addEventListener('click', function (e) {
-            let notification = document.querySelector('.message');
-            notification.style.display = 'none';
-        })
-
-    </script>
-
-@endsection
