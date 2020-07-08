@@ -16,7 +16,8 @@ class AppInstall extends Command
      */
     protected $signature = 'app:install
                             {--C|composer : run composer install}
-                            {--N|npm : run npm install}';
+                            {--N|npm : run npm install}
+                            {--F|force : force running in production}';
 
     /**
      * The console command description.
@@ -42,6 +43,10 @@ class AppInstall extends Command
      */
     public function handle()
     {
+        if(env('APP_ENV') === "production" && !$this->option('force')) {
+            $this->output->error("cannot run this command in production without the --force flag");
+        }
+
         if($this->option('composer')) {
             exec('composer install');
         }
