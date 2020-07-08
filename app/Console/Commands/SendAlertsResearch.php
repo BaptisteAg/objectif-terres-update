@@ -2,9 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Events\ResearchAlertEvent;
 use App\Jobs\NotifyNewResultsResearch;
-use App\Listeners\SendResearchNotification;
 use Illuminate\Console\Command;
 
 class SendAlertsResearch extends Command
@@ -14,7 +12,7 @@ class SendAlertsResearch extends Command
      *
      * @var string
      */
-    protected $signature = 'command:send-alert-new-results-research';
+    protected $signature = 'app:send-alert-new-results-research';
 
     /**
      * The console command description.

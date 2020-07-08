@@ -38,7 +38,7 @@ class AdStatus extends Model
 	public const PENDING_ID = 2;
 	public const REFUSE_ID = 3;
 	public const PENDING_MODERATION_STATUS_ID = 4;
-	public const ARCHIVE_ID = 5;
+	public const ARCHIVED_ID = 5;
 
 
 	public const TOOLTIPS = [
@@ -46,7 +46,7 @@ class AdStatus extends Model
 		self::PENDING_ID => "En attente :annonce modérée en attente d’une réponse ou de modification par l'annonceur",
 		self::REFUSE_ID => "Refusée : annonce modérée non publiée",
 		self::PENDING_MODERATION_STATUS_ID => "À modérer : annonce à traiter par un modérateur",
-		self::ARCHIVE_ID => "Archivée : annonce validée de plus de 6 mois automatiquement dépubliée",
+		self::ARCHIVED_ID => "Archivée : annonce validée de plus de 6 mois automatiquement dépubliée",
 	];
 
 	/**

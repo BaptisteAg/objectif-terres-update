@@ -167,26 +167,29 @@ class SalesforceService
         }
 
         // Sync SF ID
-        if($localUser->sf_id != $sfId) {
-            $localUser->sf_id = $sfId;
-        }
+        $localUser->sf_id = $sfId;
+        $localUser->is_sf_user = true;
 
         $roleAndDepartments = explode('-', $user["Role_Objectif_Terre__c"]);
-        $role = $roleAndDepartments[0];
-        $departments = explode('_', $roleAndDepartments[1]);
+        $role = $roleAndDepartments[0] ?: 0;
 
         // Sync role
         if((string)$localUser->role !== $role) {
             $localUser->role = $role;
         }
 
-        // Sync user territory only for roles > 0
+        $localUser->save();
+
         if($role > 0) {
+            if(!isset($roleAndDepartments[1])) {
+                throw new \Exception("Nous n'avons pas pu lire votre territoire renseigné dans Salesforce. Veuillez contacter un administrateur.");
+            }
+
+            $departments = explode('_', $roleAndDepartments[1]);
+            // Sync user territory only for roles > 0
             $newDepartmentIds = Department::whereIn('code', $departments)->pluck('id');
             $localUser->departments()->sync($newDepartmentIds);
         }
-
-        $localUser->save();
 
         return $localUser;
     }

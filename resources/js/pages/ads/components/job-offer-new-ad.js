@@ -25,7 +25,7 @@ export default {
 
         return {
             formInput: {
-                selectedZones: hasOld && v.selected_zones || [],
+                selectedZones: hasOld && JSON.parse(v.selected_zones) || [],
 
                 offerTypes: hasOld && v.job_offer.offer_types || [],
                 jobDescription: hasOld && v.job_offer.job_description || '',
@@ -58,6 +58,11 @@ export default {
                     minLength: minLength(5),
                     maxLength: maxLength(1000)
                 },
+                offerTypes: {required},
+                documents: {
+                    oneDocument: _ => true,
+                    notCurrentlyUploading: baseValidations.formInput.documents.notCurrentlyUploading
+                }
             }
         }
     }

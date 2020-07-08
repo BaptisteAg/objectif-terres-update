@@ -5,7 +5,7 @@
 			step-size="xs"
 			@on-complete="$emit('form-complete')"
 			@on-change="nextStep"
-			color="#3498db"
+			color="#579ea5"
 			ref="formWizard">
 		<tab-content title="Localisation" icon="ti-location-arrow">
 			<section class="container">
@@ -25,7 +25,7 @@
 					<div class="column"></div>
 					<div class="column is-half">
 						<div class="field">
-							{!! Form::label('job_offer[offer_types][]', "Type d'offre", ['class' => 'label']); !!}
+							{!! Form::label('job_offer[offer_types][]', "Type d'offre*", ['class' => 'label']); !!}
 
 							@include('pages.ads.partials.inputs.jobOfferTypes', ["name" => "job_offer[offer_types][]"])
 						</div>
@@ -171,6 +171,9 @@
 						?>
 						@include('pages.ads.partials.inputs.title', ["tooltip"=>$titleTooltip])
 
+						<?php
+							$tooltip = "15Mo maximum par document.";
+						?>
 						@include('pages.ads.partials.inputs.documents')
 
                         @include('pages.ads.partials.inputs.accept-share-contact-infos')

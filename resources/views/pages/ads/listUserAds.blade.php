@@ -171,7 +171,7 @@
                                                     pour plus d'informations !
                                                 </div>
                                             </article>
-                                        @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::ARCHIVE_ID)
+                                        @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::ARCHIVED_ID)
                                             <article class="message is-message">
                                                 <div class="message-body">
                                                     Votre annonce a été archivée !
@@ -188,38 +188,32 @@
 
                                         <p class="ad-admin button__wrap button__wrap_right">
 
-                                            @if( !$ad->attributionAd || $ad->is_draft === 1)
-                                                <a href="{{route("ads.show", $ad->id)}}">
-                                                    <button class="button basic  small success mr-20">
-                                                        <span class="icon is-small">
-                                                            <i class="fas fa-eye text_white"></i>
-                                                        </span>
-                                                        <span>Voir</span>
-                                                    </button>
-                                                </a>
-                                            @endif
+                                            <a href="{{route("ads.show", $ad->id)}}">
+                                                <button class="button basic  small success mr-20">
+                                                    <span class="icon is-small">
+                                                        <i class="fas fa-eye text_white"></i>
+                                                    </span>
+                                                    <span>Voir</span>
+                                                </button>
+                                            </a>
 
-                                            @if($ad->canEdit)
-                                                <a href="{{route("ads.edit", $ad->id)}}">
-                                                    <button class="button basic  small warning mr-20">
-                                                        <span class="icon is-small">
-                                                            <i class="fas fa-pencil-alt text_white"></i>
-                                                        </span>
-                                                        <span>Modifier</span>
-                                                    </button>
-                                                </a>
-                                            @endif
+                                            <a href="{{route("ads.edit", $ad->id)}}">
+                                                <button class="button basic  small warning mr-20">
+                                                    <span class="icon is-small">
+                                                        <i class="fas fa-pencil-alt text_white"></i>
+                                                    </span>
+                                                    <span>Modifier</span>
+                                                </button>
+                                            </a>
 
-                                            @if( !$ad->attributionAd || $ad->is_draft === 1)
-                                                <a href="{{ route('ads.delete', ["ad" => $ad->id]) }}" onclick="return confirm('Êtes vous sûr ? Cette opération est irréversible.')">
-                                                    <button class="button basic small danger">
-                                                        <span class="icon text_white">
-                                                            <i class="fas fa-trash"></i>
-                                                        </span>
-                                                        <span>Supprimer</span>
-                                                    </button>
-                                                </a>
-                                            @endif
+                                            <a href="{{ route('ads.delete', ["ad" => $ad->id]) }}" onclick="return confirm('Êtes vous sûr ? Cette opération est irréversible.')">
+                                                <button class="button basic small danger">
+                                                    <span class="icon text_white">
+                                                        <i class="fas fa-trash"></i>
+                                                    </span>
+                                                    <span>Supprimer</span>
+                                                </button>
+                                            </a>
                                         </p>
                                 </div>
                             </div>

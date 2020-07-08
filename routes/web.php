@@ -21,6 +21,7 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
 	Route::get('{id}', 'AdsController@show')->name('show');
 	Route::middleware('auth')->get('modifier/{id}', 'AdsController@edit')->name('edit');
 	Route::middleware('auth')->get('supprimer/{ad}', 'AdsController@delete')->name('delete');
+	Route::middleware('auth')->get('etendre-expiration/{id}', 'AdsController@extendPublish')->name('extend');
 });
 Route::prefix('accompagnement')->name('support-request.')->namespace('Ads')->group(function () {
 	Route::middleware([])->get('demarrer', 'SupportRequestsController@start')->name('start');
@@ -72,6 +73,9 @@ Route::prefix('mon-espace/recherches')->middleware('auth')->name('researches.')-
 	Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
 });
 
+Route::prefix('rss')->name('rss.')->group(function () {
+    Route::get('news', 'RssController@news')->name('news');
+});
 
 Route::middleware('auth')->name('user.')->namespace('Users')->group(function () {
 	Route::prefix('mon-espace')->group(function () {

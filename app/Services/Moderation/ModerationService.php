@@ -21,17 +21,21 @@ class ModerationService
 
 	/**
 	 * Get all ads grouped by moderator id and not moderated since more than a week
-	 * @return array
+	 * @return Collection
 	 */
-	public function findAllOverdueAttributionsByModeratorId()
+	public function findAllOverdueAttributionsKeyByModeratorId($date = null)
 	{
+	    if(!$date) {
+	        $date = Carbon::now()->subWeek();
+        }
+
 		$pendingStatusId = AdStatus::PENDING_MODERATION_STATUS_ID;
 
 		$attributionsByModeratorId = $this->repository->findAllByStatusId($pendingStatusId)->groupBy('userModerator.id');
 
 		foreach ($attributionsByModeratorId as &$attributions) {
 			foreach ($attributions as $attributionId => $attribution) {
-				if ($attribution->created_at >= Carbon::now()->subWeek()) {
+				if ($attribution->created_at >= $date) {
 					unset($attributions[$attributionId]);
 				}
 			}

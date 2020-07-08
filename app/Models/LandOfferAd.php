@@ -35,6 +35,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property int|null $is_call_for_application_community
  * @property int|null $is_call_for_application_terre_de_liens
  * @property int|null $is_call_for_application_test_area
+ * @property string|null $production_type_add
+ * @property string|null $production_type_wanted_add
  * @property-read \App\Models\Ad $ad
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BioCertification[] $bioCertifications
  * @property-read int|null $bio_certifications_count
@@ -64,6 +66,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereIsCallForApplicationTerreDeLiens($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereIsCallForApplicationTestArea($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereProductionTypeAdd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereProductionTypeWantedAdd($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereRentPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereSauDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandOfferAd whereSurface($value)

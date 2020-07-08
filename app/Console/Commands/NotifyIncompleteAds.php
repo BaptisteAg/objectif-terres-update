@@ -5,14 +5,14 @@ namespace App\Console\Commands;
 use App\Jobs\NotifyIncompleteAd;
 use Illuminate\Console\Command;
 
-class SendAlertsIncompleteAd extends Command
+class NotifyIncompleteAds extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:send-alert-incomplete-ads';
+    protected $signature = 'app:notify-incomplete-ads';
 
     /**
      * The console command description.

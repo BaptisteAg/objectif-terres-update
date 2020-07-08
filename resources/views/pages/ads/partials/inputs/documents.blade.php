@@ -1,6 +1,11 @@
 <div class="field">
+    @php
+    if(empty($tooltip)) {
+        $tooltip = "15Mo maximum par document". ($isSupportRequest ? '' : 'Un seul document de type PDF, DOC ou DOCX est autorisé');
+    }
+    @endphp
     <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
-           data-tooltip="15Mo maximum par document. {{ $isSupportRequest ? '' : 'Un seul document de type PDF, DOC ou DOCX est autorisé' }}">
+           data-tooltip="{!! $tooltip !!}">
         Documents
         <i class="fas fa-info-circle has-text-info"></i><br>
         <span style="font-weight:normal">

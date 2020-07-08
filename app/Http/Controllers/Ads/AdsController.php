@@ -7,6 +7,7 @@ use App\Models\Ad;
 use App\Models\User;
 use App\Notifications\NewAdToModerateNotification;
 use App\Presenters\AdPresenter;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\URL;
 
 class AdsController extends BaseController
 {
-	public const PUBLISHED_AD_LIMIT_PER_USER = 3;
+	public const PUBLISHED_AD_LIMIT_PER_USER = 5;
 
 	/**
 	 * Display the ad creation form
@@ -72,11 +73,19 @@ class AdsController extends BaseController
                             "production_genres" => $ad->landOfferAd->productionGenres->pluck("id")->toArray(),
                             "production_genres_wanted" => $ad->landOfferAd->productionGenresPossible->pluck("id")->toArray(),
                             "offer_genres" => $ad->landOfferAd->offerGenres->pluck("id")->toArray(),
-                        ]) : [],
+                        ]) : null,
 
-                    'job_offer'      => $ad->jobOfferAd  ? $ad->jobOfferAd->toArray() : null,
+                    'job_offer'      => $ad->jobOfferAd  ?
+                        array_merge($ad->jobOfferAd->toArray(),[
+                            "offer_types" => $ad->jobOfferAd->jobOfferTypes->pluck("id")->toArray(),
+                            "education_levels" => $ad->jobOfferAd->educationLevels->pluck("id")->toArray(),
+                        ]) : null,
 
-                    'job_seek'       => $ad->jobSeekAd   ? $ad->jobSeekAd->toArray() : null,
+                    'job_seek'       => $ad->jobSeekAd   ?
+                        array_merge($ad->jobSeekAd->toArray(),[
+                            "offer_types" => $ad->jobSeekAd->jobOfferTypes->pluck("id")->toArray(),
+                            "education_levels" => $ad->jobSeekAd->educationLevels->pluck("id")->toArray(),
+                        ]) : null,
                 ],
                 $ad->only(["id", "title", "about_content", "about_project_content", "accept_share_contact_infos"]),
                 compact("selected_zones", "locationable", "locationable_radius", "documents", "document_ids")
@@ -154,7 +163,7 @@ class AdsController extends BaseController
 		//Throw error 404 if a visitor try to show an ad is not validated
 		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validée" ;
 		//TODO not display projects unless user logged is the author of the ad or the user logged is an supervisor or an advisor
-		session()->put('url.intended', URL::current());
+		//session()->put('url.intended', URL::current());
 		return view('pages.ads.show', $this->getShowVars($ad));
 	}
 
@@ -181,6 +190,28 @@ class AdsController extends BaseController
 		$this->adService->delete($ad);
 		return back()->with('success', 'Votre annonce a bien été supprimée');
 	}
+
+	public function extendPublish(int $adId)
+    {
+        $ad = $this->adService->find($adId);
+
+        if(!$ad || $ad->user_pp_id !== auth()->id()) {
+            abort(403);
+        }
+
+        if(!$ad->attributionAd || !$ad->attributionAd->published_on) {
+            return redirect()
+                ->route('ads.show', ["id" => $ad->id])
+                ->withErrors("Impossible d'étendre la durée de cette annonce, car elle n'est pas publiée.");
+        }
+
+        $ad->attributionAd->published_on = Carbon::now();
+
+
+        return redirect()
+            ->route('ads.show', ["id" => $ad->id])
+            ->with("success", "La durée de publication de de votre annonce a été étendue de 6 mois.");
+    }
 
 	/**
 	 * @param AdRequest $request

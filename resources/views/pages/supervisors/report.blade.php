@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="level-item has-text-centered ">
                                     <div>
-                                        <p class="title has-text-info">{{$numberOfAdsByAdStatus[\App\Models\AdStatus::ARCHIVE_ID]}}</p>
+                                        <p class="title has-text-info">{{$numberOfAdsByAdStatus[\App\Models\AdStatus::ARCHIVED_ID]}}</p>
                                         <p class="heading ">archivées</p>
                                     </div>
                                 </div>

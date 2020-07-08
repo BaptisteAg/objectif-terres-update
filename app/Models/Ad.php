@@ -28,6 +28,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property string|null $support_request_text
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AdNote[] $adNotes
  * @property-read int|null $ad_notes_count
  * @property-read \App\Models\AttributionAd $attributionAd
@@ -57,13 +58,17 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterWhereHasIn($data, $relationNameTable, $columnName)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterWhereHasLandSeekAdOrWhereHasLandOfferAd($landSeekAdColumn, $landOfferAdColumn, $operator, $value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterWhereHasWhere($data, $relationNameTable, $operator, $columnName)
+ * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Ad onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad query()
+ * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAboutContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAboutProjectContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAcceptShareContactInfos($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereIsDraft($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereProjectId($value)
@@ -71,6 +76,8 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereUserPpId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Ad withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Ad withoutTrashed()
  * @mixin \Eloquent
  */
 class Ad extends Model implements HasPresenter

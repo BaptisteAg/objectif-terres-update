@@ -42,7 +42,13 @@ class NotifyOverdueModeration implements ShouldQueue
      */
     public function handle()
     {
-        $overdueAttributionsByModeratorId = $this->moderationService->findAllOverdueAttributionsByModeratorId();
+        $overdueAttributionsByModeratorId = $this->moderationService->findAllOverdueAttributionsKeyByModeratorId(Carbon::now()->subHour());
+
+        logger("Notifying overdue moderation... ".$overdueAttributionsByModeratorId->reduce(
+            function (int $count, Collection $attributionAd) {
+                return $count + $attributionAd->count();
+            }
+        , 0)." found.");
 
         /** @var AttributionAd[]|Collection $attributions */
         foreach ($overdueAttributionsByModeratorId as $moderatorId => $attributions) {
@@ -52,7 +58,7 @@ class NotifyOverdueModeration implements ShouldQueue
             // It's important to fetch only the recent notifications, otherwise the fetch will be increasingly slower
             // TODO : schedule database notifications cleaning once a month
             // This can be summarized as : a notification will be sent every 7 days as long as it is overdue
-            $recentlyNotifiedAttributionIds = $moderatorToNotify
+            /*$recentlyNotifiedAttributionIds = $moderatorToNotify
                 ->notifications()
                 ->where([
                     ['type', '=', OverdueModerationNotification::class],
@@ -70,11 +76,11 @@ class NotifyOverdueModeration implements ShouldQueue
             );
             if (!count($notRecentlyNotifiedAttributionIds)) {
                 continue;
-            }
+            }*/
 
             $messageData = 'Vous avez ' . $attributions->count() . ' annonce' .
                 ($attributions->count() <= 1 ? '' : 's') .
-                ' en attente de modération depuis plus de 7 jours !';
+                ' en attente de modération depuis plus de 7 jours.';
 
             $moderatorToNotify
                 ->notify(new OverdueModerationNotification($messageData, $attributions));

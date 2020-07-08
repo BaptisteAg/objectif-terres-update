@@ -62,7 +62,7 @@ class AttributionAdsService
     {
         $moderatorIsChargeOfAdModeration = false;
         $ad = $this->adRepository->find($adId);
-        if (auth()->user()->id == $ad->attributionAd->user_moderator_id) {
+        if ($ad->attributionAd && auth()->user()->id === $ad->attributionAd->user_moderator_id) {
             return $moderatorIsChargeOfAdModeration = true;
         }
 
@@ -92,12 +92,12 @@ class AttributionAdsService
 
     /**
      * Find all attributions ads published since specific number of month
-     * @param int $numberOfMonths
-     * @return Builder[]|Collection
+     * @param Carbon $date
+     * @return AttributionAd[]|Collection
      */
-    public function findAllPublishedSinceMonths(int $numberOfMonths)
+    public function findAllPublishedSince(Carbon $date)
     {
-        return $this->repository->findAllWherePublishedOnSinceMonths($numberOfMonths);
+        return $this->repository->findAllApprovedAndPublishedSince($date);
     }
 
 
@@ -384,6 +384,7 @@ class AttributionAdsService
      */
     public function acceptAd(int $attributionAdId)
     {
+        /** @var AttributionAd $attributionAd */
         $attributionAd = $this->repository->find($attributionAdId);
         //TODO if the pp want a support from Tdl, a special method as to be created.The moderator doesn't take part of the attribution process.
         //If on the territory related to the ad, there is advisors dedicated to specific departments, the ad is automatically attributed to the advisor and we create a project related to the ad.
@@ -409,6 +410,7 @@ class AttributionAdsService
             'action' => 'Consulter votre annonce',
             'url' => '/annonces/' . $attributionAd->ad->id,
         ];
+
         $attributionAd->ad->userPp->notify(new ModerationPpNotification($data));
 
         if ($attributionAd->refusal_type_id) {

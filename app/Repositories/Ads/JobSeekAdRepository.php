@@ -19,21 +19,33 @@ class JobSeekAdRepository extends AbstractRepository
 	 */
     public function create(array $data): JobSeekAd
     {
-        $jobOfferAd = new JobSeekAd();
-        $jobOfferAd->fill($data);
-        $jobOfferAd->save();
+        $jobSeekAd = new JobSeekAd();
 
-        if(isset($data["offer_types"])) {
-            foreach ($data["offer_types"] as $offerGenreId) {
-                $jobOfferAd->jobOfferTypes()->attach($offerGenreId);
-            }
-        }
-        if(isset($data["education_levels"])) {
-            foreach($data["education_levels"] as $offerGenreId) {
-                $jobOfferAd->educationLevels()->attach($offerGenreId);
-            }
-        }
+        $this->save($jobSeekAd, $data);
 
-        return $jobOfferAd;
+        return $jobSeekAd;
+    }
+
+	/**
+	 * Updates an ad.
+	 *
+	 * @param JobSeekAd
+	 * @param array
+	 * @return JobSeekAd
+	 */
+    public function update($jobSeekAd, array $data): JobSeekAd
+    {
+        $this->save($jobSeekAd, $data);
+
+        return $jobSeekAd;
+    }
+
+    private function save(JobSeekAd $jobSeekAd, array $data)
+    {
+        $jobSeekAd->fill($data);
+        $jobSeekAd->save();
+
+        $jobSeekAd->jobOfferTypes()->sync($data["offer_types"] ?? []);
+        $jobSeekAd->educationLevels()->sync($data["education_levels"] ?? []);
     }
 }
