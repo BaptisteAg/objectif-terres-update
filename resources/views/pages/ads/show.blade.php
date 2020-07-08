@@ -147,13 +147,6 @@
             });
         });
 
-        let deleteButton = document.querySelector('.close-notification');
-        deleteButton.addEventListener('click', function (e) {
-            let notification = document.querySelector('.message');
-            notification.style.display = 'none';
-
-        });
-
         @auth()
             @if(auth()->user()->role >= 1)
             function showValidationSupervisorModal() {

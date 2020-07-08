@@ -17,7 +17,7 @@
 
 @section('main-content')
 
-	<section class="section " style="padding-top: 0px">
+	<section class="section " >
 		<div class="content">
 			@if (session()->has('advisor_dashboard_url'))
 				<a href="{{route('advisor.show', Session::get('advisor_dashboard_url') )}}">

@@ -61,12 +61,12 @@
             <export-to-spreadsheet-form inline-template>
                 <div>
                     <div class="container is-fluid">
-                        <a v-on:click="openModal()">
-							<span class="icon is-medium has-text-link">
-								<i class="fas fa-table fa-2x "></i>
-							</span>
+                        <button v-on:click="openModal()" class="button basic secondary ">
+                            <span class="icon  ">
+                                <i class="fas fa-table "></i>
+                            </span>
                             <span>Exporter les données</span>
-                        </a>
+                        </button>
                     </div>
                     {!! Form::open(['route' => 'supervisor.export', 'method' => 'get']) !!}
                     <div v-cloak id="modal-supervisor-form-data" :class="isActive ? 'modal is-active': 'modal'">
@@ -122,7 +122,7 @@
                             <span>Afficher l'intégralité de la liste</span>
                         </a>
                     @else
-                        <a href="{{ route('supervisor.show', array_merge(Request::all(), ['toPaginate'=>'true', 'projects_show'=>'true'])) }}">
+                        <a href="{{ route('supervisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
                             <span>Paginer la liste</span>
                         </a>
                     @endif
@@ -246,22 +246,22 @@
                                         @if(!is_null($ad->project))
                                             <span class="icon is-medium  has-text-link has-tooltip-right"
                                                   data-tooltip="C'est une demande d'accompagnement">
-											  <i class="fas fa-lg fa-hands-helping"></i>
-											</span>
+                                                <i class="fas fa-lg fa-hands-helping"></i>
+                                            </span>
                                         @else
                                             <span class="icon is-medium  has-text-link has-tooltip-right"
                                                   data-tooltip="C'est une annonce">
-											  <i class="fas fa-lg fa-newspaper"></i>
-											</span>
+                                                <i class="fas fa-lg fa-newspaper"></i>
+                                            </span>
                                         @endif
                                         {{$ad->ad_type_full_name}}
                                         <br>
                                     </td>
                                     <td>
-                                        @if(is_null($ad->project))
-                                        <a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
-                                        @else
+                                        @if($ad->isProjectAttributedToAdvisor)
                                             <a href="{{route('advisor.showSupport', $ad->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+                                        @else
+                                            <a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
                                         @endif
                                     </td>
                                     <td>
@@ -330,13 +330,13 @@
                                             @if(!is_null($ad->project->supportStage))
                                                 @if($ad->project->supportStage->id === \App\Models\SupportStage::FIRST_CONTACT_ID)
                                                     <span class="tag is-info has-tooltip-bottom"
-                                                          data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}}">{{$ad->project->supportStage->name}}</span>
+                                                          data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">{{$ad->project->supportStage->name}}</span>
                                                 @elseif($ad->project->supportStage->id ===\App\Models\SupportStage::FIRST_RECEPTION_ID)
                                                     <span class="tag is-info is-light has-tooltip-bottom"
-                                                          data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}}">{{$ad->project->supportStage->name}}</span>
+                                                          data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">{{$ad->project->supportStage->name}}</span>
                                                 @elseif($ad->project->supportStage->id === \App\Models\SupportStage::ACCOMPANYING_ID)
                                                     <span class="tag is-success is-light has-tooltip-bottom"
-                                                          data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}}">{{$ad->project->supportStage->name}}</span>
+                                                          data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">{{$ad->project->supportStage->name}}</span>
                                                 @endif
                                             @else
                                                 <span class="tag is-warning">Non définis</span>
@@ -349,7 +349,7 @@
                                         @else
                                             @if(!is_null($ad->project->supportState))
                                                 @if($ad->project->supportState->id === \App\Models\SupportState::TO_HANDLE_ID)
-                                                    <span class="tag is-info has-tooltip-bottom"
+                                                    <span class="tag is-warning has-tooltip-bottom"
                                                           data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
                                                 @elseif($ad->project->supportState->id ===\App\Models\SupportState::HANDLE_ID)
                                                     <span class="tag is-success has-tooltip-bottom"
@@ -372,7 +372,7 @@
 
                                     <td>
                                         @if(! is_null($ad->project))
-                                            @if(isset($ad->attributionAd->userAdvisor))
+                                            @if($ad->isProjectAttributedToAdvisor)
                                                 <a href="{{route('advisor.showSupport', $ad->id)}}">
                                                     <span><i class="fas fa-hands-helping"></i></span>
                                                     <span>Suivi de l'accompagnement</span>
@@ -386,6 +386,7 @@
                                         @else
                                             <a href="{{route('ads.show', $ad->id)}}">
                                                 <span><i class="fas fa-search"></i></span>
+
                                                 <span>Voir le détail</span>
                                             </a>
                                         @endif

@@ -83,6 +83,7 @@
 												v-bind:show-response-type="isUserModerator"
 												v-bind:active-thread-id="activeThreadId"
 												v-bind:is-thread-related-to-user="isThreadRelatedToUser"
+												:is-thread-blocked = "isThreadBlocked"
 										>
 										</form-message-reply>
 									</div>
@@ -128,11 +129,5 @@
             html.classList.remove('is-clipped');
         });
 
-        let deleteButton = document.querySelector('.close-notification');
-        deleteButton.addEventListener('click', function (e) {
-            let notification = document.querySelector('.message');
-            notification.style.display = 'none';
-
-        })
 	</script>
 @endsection

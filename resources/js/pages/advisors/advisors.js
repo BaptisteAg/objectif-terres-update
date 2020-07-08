@@ -26,7 +26,7 @@ Vue.component('support-request-dashboard', {
             isProjectStatusSelectOpen: false,
             tabsOpen: {
                 infoTabOpen: 'support-info-tab',
-                supportTabOpen: 'support-notes-tab',
+                supportTabOpen: 'support-thread-tab',
             },
             showModal: false,
             showUserBlockedValidationModal: false,
@@ -34,6 +34,7 @@ Vue.component('support-request-dashboard', {
             documents: [],
             uploading: false,
             userAdvisorInCharge: this.isUserAdvisorInCharge,
+            isThreadRelatedToUser : this.isUserAdvisorInCharge,
         }
     },
     mounted() {

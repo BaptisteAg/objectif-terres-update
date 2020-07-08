@@ -4,6 +4,7 @@ use App\Models\Ad;
 use App\Models\City;
 use App\Models\Document;
 use App\Models\Region;
+use App\Services\Ads\AdService;
 use McCool\LaravelAutoPresenter\BasePresenter;
 
 /**
@@ -13,6 +14,20 @@ use McCool\LaravelAutoPresenter\BasePresenter;
  */
 class AdPresenter extends BasePresenter
 {
+	/**
+	 * @var AdService
+	 */
+	protected $adService;
+
+	/**
+	 * AdPresenter constructor.
+	 * @param AdService $adService
+	 */
+	public function __construct(AdService $adService)
+	{
+		$this->adService = $adService;
+	}
+
 	public function ad_type()
 	{
 		if ($this->wrappedObject->landSeekAd) {
@@ -211,50 +226,77 @@ class AdPresenter extends BasePresenter
 	}
 
 	public function human_ha()
-    {
-        $ad = $this->wrappedObject;
+	{
+		$ad = $this->wrappedObject;
 
-        if($ad->landSeekAd) {
-            if($ad->landSeekAd->surface_range_max) {
-                $max = $ad->landSeekAd->surface_range_max;
-                $min = $ad->landSeekAd->surface_range_min;
+		if ($ad->landSeekAd) {
+			if ($ad->landSeekAd->surface_range_max) {
+				$max = $ad->landSeekAd->surface_range_max;
+				$min = $ad->landSeekAd->surface_range_min;
 
-                if($max === 100000 && $min === 0) {
-                    return "De 1 à > 100ha";
-                }
+				if ($max === 100000 && $min === 0) {
+					return "De 1 à > 100ha";
+				}
 
-                if($min) {
-                    return "De ".$min. "ha à ".$max."ha";
-                }
+				if ($min) {
+					return "De " . $min . "ha à " . $max . "ha";
+				}
 
-                return "A partir de ".$max."ha";
-            }
-            else {
-                return "Surface non renseignéee";
-            }
-        }
-        else if($ad->landOfferAd) {
-            if(isset($ad->landOfferAd->surface)) {
-                return $ad->landOfferAd->surface." ha";
-            }
-            else {
-                return "Surface non renseignée";
-            }
-        }
+				return "A partir de " . $max . "ha";
+			} else {
+				return "Surface non renseignéee";
+			}
+		} else if ($ad->landOfferAd) {
+			if (isset($ad->landOfferAd->surface)) {
+				return $ad->landOfferAd->surface . " ha";
+			} else {
+				return "Surface non renseignée";
+			}
+		}
 
-        return '';
-    }
+		return '';
+	}
 
-    public function canEdit()
-    {
-        $ad = $this->wrappedObject;
+	public function canEdit()
+	{
+		$ad = $this->wrappedObject;
 
-        return $ad->user_pp_id === auth()->id();
-    }
+		return $ad->user_pp_id === auth()->id();
+	}
 
-    private function isPpDocument(Document $document)
-    {
-        return $document->user_id === $this->wrappedObject->user_pp_id;
-    }
+	private function isPpDocument(Document $document)
+	{
+		return $document->user_id === $this->wrappedObject->user_pp_id;
+	}
+
+	public function isProjectAttributedToAdvisor()
+	{
+		$ad = $this->wrappedObject;
+		if (!is_null($ad->project_id)) {
+			if (!is_null($ad->attributionAd->user_advisor_id)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Get all departments codes related to the territories targeted by the ad
+	 * @return array
+	 */
+	public function adDepartmentsCodes(): array
+	{
+		return $this->adService->getAdDepartmentCodes($this->wrappedObject);
+	}
+
+
+	/**
+	 * @param array $userTerritoriesCodes
+	 * @return bool
+	 */
+	public function isAdInUserTerritories(array $userTerritoriesCodes): bool
+	{
+		return count(array_intersect($userTerritoriesCodes, $this->adDepartmentsCodes())) > 0;
+	}
 
 }

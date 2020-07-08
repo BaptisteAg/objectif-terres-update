@@ -141,80 +141,85 @@
                                             </div>
                                         </article>
                                     @else
-                                        @if($ad->attributionAd->adStatus->id === \App\Models\AdStatus::APPROVE_ID)
-                                            <article class="message is-success">
-                                                <div class="message-body">
-                                                    Votre annonce a été validée et est en ligne depuis
-                                                    le {{$ad->published_on}} !
-                                                </div>
-                                            </article>
-                                        @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_ID)
-                                            <article class="message is-warning">
-                                                <div class="message-body">
-                                                    Votre annonce nécessite quelques modifications,
-                                                    <a
-                                                            href="{{route('threads.index')}}">consulter votre
-                                                        messagerie
-                                                    </a>
-                                                    pour
-                                                    plus d'informations !
-                                                </div>
-                                            </article>
-                                        @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::REFUSE_ID)
-                                            <article class="message is-danger">
-                                                <div class="message-body">
-                                                    Votre annonce a été réfusée,
-                                                    <a href="{{route('threads.index')}}">consulter
-                                                        votre
-                                                        messagerie
-                                                    </a>
-                                                    pour plus d'informations !
-                                                </div>
-                                            </article>
-                                        @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::ARCHIVED_ID)
-                                            <article class="message is-message">
-                                                <div class="message-body">
-                                                    Votre annonce a été archivée !
-                                                </div>
-                                            </article>
+                                        @if(isset($ad->attributionAd->adStatus))
+                                            @if($ad->attributionAd->adStatus->id === \App\Models\AdStatus::APPROVE_ID)
+                                                <article class="message is-success">
+                                                    <div class="message-body">
+                                                        Votre annonce a été validée et est en ligne depuis
+                                                        le {{$ad->published_on}} !
+                                                    </div>
+                                                </article>
+                                            @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_ID)
+                                                <article class="message is-warning">
+                                                    <div class="message-body">
+                                                        Votre annonce nécessite quelques modifications,
+                                                        <a
+                                                                href="{{route('threads.index')}}">consulter votre
+                                                            messagerie
+                                                        </a>
+                                                        pour
+                                                        plus d'informations !
+                                                    </div>
+                                                </article>
+                                            @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::REFUSE_ID)
+                                                <article class="message is-danger">
+                                                    <div class="message-body">
+                                                        Votre annonce a été réfusée,
+                                                        <a href="{{route('threads.index')}}">consulter
+                                                            votre
+                                                            messagerie
+                                                        </a>
+                                                        pour plus d'informations !
+                                                    </div>
+                                                </article>
+                                            @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::ARCHIVED_ID)
+                                                <article class="message is-message">
+                                                    <div class="message-body">
+                                                        Votre annonce a été archivée !
+                                                    </div>
+                                                </article>
+                                            @else
+                                                <article class="message is-message">
+                                                    <div class="message-body">
+                                                        Votre annonce n'as pas été encore approuvée et publiée !
+                                                    </div>
+                                                </article>
+                                            @endif
                                         @else
-                                            <article class="message is-message">
-                                                <div class="message-body">
-                                                    Votre annonce n'as pas été encore approuvée et publiée !
-                                                </div>
-                                            </article>
+
                                         @endif
                                     @endif
 
-                                        <p class="ad-admin button__wrap button__wrap_right">
+                                    <p class="ad-admin button__wrap button__wrap_right">
 
-                                            <a href="{{route("ads.show", $ad->id)}}">
-                                                <button class="button basic  small success mr-20">
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-eye text_white"></i>
-                                                    </span>
-                                                    <span>Voir</span>
-                                                </button>
-                                            </a>
+                                        <a href="{{route("ads.show", $ad->id)}}">
+                                            <button class="button basic  small success mr-20">
+                                                <span class="icon is-small">
+                                                    <i class="fas fa-eye text_white"></i>
+                                                </span>
+                                                <span>Voir</span>
+                                            </button>
+                                        </a>
 
-                                            <a href="{{route("ads.edit", $ad->id)}}">
-                                                <button class="button basic  small warning mr-20">
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-pencil-alt text_white"></i>
-                                                    </span>
-                                                    <span>Modifier</span>
-                                                </button>
-                                            </a>
+                                        <a href="{{route("ads.edit", $ad->id)}}">
+                                            <button class="button basic  small warning mr-20">
+                                                <span class="icon is-small">
+                                                    <i class="fas fa-pencil-alt text_white"></i>
+                                                </span>
+                                                <span>Modifier</span>
+                                            </button>
+                                        </a>
 
-                                            <a href="{{ route('ads.delete', ["ad" => $ad->id]) }}" onclick="return confirm('Êtes vous sûr ? Cette opération est irréversible.')">
-                                                <button class="button basic small danger">
-                                                    <span class="icon text_white">
-                                                        <i class="fas fa-trash"></i>
-                                                    </span>
-                                                    <span>Supprimer</span>
-                                                </button>
-                                            </a>
-                                        </p>
+                                        <a href="{{ route('ads.delete', ["ad" => $ad->id]) }}"
+                                           onclick="return confirm('Êtes vous sûr ? Cette opération est irréversible.')">
+                                            <button class="button basic small danger">
+                                                <span class="icon text_white">
+                                                    <i class="fas fa-trash"></i>
+                                                </span>
+                                                <span>Supprimer</span>
+                                            </button>
+                                        </a>
+                                    </p>
                                 </div>
                             </div>
                         </li>
@@ -231,15 +236,3 @@
     </section>
 @endsection
 
-@section('script')
-
-    <script>
-        let deleteButton = document.querySelector('.close-notification');
-        deleteButton.addEventListener('click', function (e) {
-            let notification = document.querySelector('.message');
-            notification.style.display = 'none';
-        })
-
-    </script>
-
-@endsection

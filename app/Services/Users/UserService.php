@@ -127,6 +127,11 @@ class UserService
 	}
 
 
+	/**
+	 * @param int $roleId
+	 * @param int $regionId
+	 * @return User|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
+	 */
 	public function findRandomByRoleAndRegion(int $roleId, int $regionId)
 	{
 		$regionsCodes = Region::whereIn('id', [$regionId])->get('code')->toArray();

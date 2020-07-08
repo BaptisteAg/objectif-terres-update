@@ -9,6 +9,7 @@ use App\Models\ProjectDataKey;
 use App\Models\Region;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Repositories\Projects\ProjectsRepository;
+use App\Services\Advisors\AdvisorsService;
 use App\Services\AttributionAds\AttributionAdsService;
 use App\Services\Users\UserService;
 use Carbon\Carbon;
@@ -26,6 +27,7 @@ class ProjectService
 	protected $userService;
 	protected $notification;
 	protected $attributionAdsService;
+	protected $advisorService;
 
 	/**
 	 * ProjectService constructor.
@@ -34,14 +36,16 @@ class ProjectService
 	 * @param UserService $userService
 	 * @param NotifySupportRequestAttribution $notification
 	 * @param AttributionAdsService $attributionAdsService
+	 * @param AdvisorsService $advisorService
 	 */
-	public function __construct(ProjectsRepository $projectsRepository, AttributionAdsRepository $attributionAdsRepository, UserService $userService, NotifySupportRequestAttribution $notification, AttributionAdsService $attributionAdsService)
+	public function __construct(ProjectsRepository $projectsRepository, AttributionAdsRepository $attributionAdsRepository, UserService $userService, NotifySupportRequestAttribution $notification, AttributionAdsService $attributionAdsService, AdvisorsService $advisorService)
 	{
 		$this->repository = $projectsRepository;
 		$this->attributionAdsRepository = $attributionAdsRepository;
 		$this->userService = $userService;
 		$this->notification = $notification;
 		$this->attributionAdsService = $attributionAdsService;
+		$this->advisorService = $advisorService;
 	}
 
 	public function create(array $data)
@@ -249,6 +253,10 @@ class ProjectService
 		$attributionAd->user_advisor_id = $request->input('user_advisor_id');
 		$attributionAd->save();
 		$this->notification->handle($attributionAd->ad->id);
+
+		$this->advisorService->createNote($request);
+
+
 	}
 
 	//TODO Create a ProjectDataKeyService and ProjectDataKeyRepository for the 2 above methods ?
