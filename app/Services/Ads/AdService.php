@@ -168,6 +168,9 @@ class AdService
             $adDepartmentCodes = $this->getAdDepartmentCodes($ad);
             $pendingStatus = AdStatus::PENDING_MODERATION_STATUS_ID;
             $availableModerators = $this->userService->findByRoleAndDepartments(1, $adDepartmentCodes);
+            if($availableModerators->isEmpty()) {
+                $availableModerators = $this->userService->findByRoleSuperiorThanAndDepartments(1, $adDepartmentCodes);
+            }
             if ($availableModerators->isEmpty()) {
                 throw new \Exception("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
             }
