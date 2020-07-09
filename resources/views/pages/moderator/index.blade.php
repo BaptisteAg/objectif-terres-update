@@ -159,7 +159,7 @@
                         </thead>
                         <tbody>
                         @foreach($attributionAds as $attributionAd)
-                            @if($attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID and $attributionAd->userModerator->id === auth()->id())
+                            @if($attributionAd->adStatus && $attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID and $attributionAd->userModerator->id === auth()->id())
                                 <tr style="background-color: mistyrose">
                             @else
                                 <tr>
@@ -220,7 +220,7 @@
                                         @endif
                                     </td>
                                     <td><a href="{{route('ads.show', $attributionAd->ad->id)}}"><span>
-                                                @if($attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID and $attributionAd->userModerator->id === auth()->id())
+                                                @if($attributionAd->adStatus && $attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID and $attributionAd->userModerator->id === auth()->id())
                                                     <i class="fas fa-ruler"></i>
                                                     <span>Modérer l'annonce</span>
                                                 @else
@@ -256,7 +256,7 @@
         });
 
         let buttons = document.querySelectorAll('.form-research-buttons');
-        let icons = document.querySelectorAll('.form-research-buttons-icons')
+        let icons = document.querySelectorAll('.form-research-buttons-icons');
 
         buttons.forEach(function (btn) {
             btn.addEventListener('click', () => {

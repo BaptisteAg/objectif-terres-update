@@ -91,7 +91,7 @@
 								@method('PATCH')
 								<input type="hidden" value="ads.show" name="route">
 								<br>
-								<input type="submit" class="button is-link " value="@lang('Modérer l\'annonce')">
+								<input type="submit" class="is-link" value="@lang('Modérer l\'annonce')">
 							</form>
 						</div>
 					</article>

@@ -150,7 +150,7 @@ abstract class BaseController extends Controller
 			$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
 
 			if (!isset($ad->project)) {
-				if ($ad->attributionAd->adStatus->id === AdStatus::PENDING_MODERATION_STATUS_ID) {
+				if ($ad->attributionAd->adStatus && $ad->attributionAd->adStatus->id === AdStatus::PENDING_MODERATION_STATUS_ID) {
 					$isAdToModerate = true;
 				}
 			}

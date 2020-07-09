@@ -66,27 +66,27 @@
 					<p class="subtitle is-6 has-text-black">L'annonce a déjà été modérée!  </p>
 					<div class="content is-medium">
 						<p class="title is-5 is-spaced">Statut actuel de l'annonce :
-							<strong>{{$ad->attributionAd->adStatus->name}}</strong></p>
+							<strong>{{$ad->attributionAd->adStatus && $ad->attributionAd->adStatus->name}}</strong></p>
 					</div>
 					<p class="has-text-centered">Vous souhaitez modifier ce choix ? </p>
 				</div>
 				<br>
 				<div class="columns is-mobile is-centered is-vcentered">
-					@if ($ad->attributionAd->adStatus->name !== "Validée")
+					@if ($ad->attributionAd->adStatus && $ad->attributionAd->adStatus->name !== "Validée")
 						<div class="column is-3  is-centered">
 							<button @click="showModerationModal('acceptAd')" class="button form-button basic success ">
 								Valider l'annonce
 							</button>
 						</div>
 					@endif
-					@if($ad->attributionAd->adStatus->name !== "En attente")
+					@if($ad->attributionAd->adStatus && $ad->attributionAd->adStatus->name !== "En attente")
 						<div class="column is-5  is-centered">
 							<button @click="showModerationModal('modifyAd')" class="button form-button basic warning">
 								Demander la modification de l'annonce
 							</button>
 						</div>
 					@endif
-					@if ($ad->attributionAd->adStatus->name !== "Refusée")
+					@if ($ad->attributionAd->adStatus && $ad->attributionAd->adStatus->name !== "Refusée")
 						<div class="column is-3 is-centered">
 							<button @click="showModerationModal('rejectAd')" class="button form-button basic danger">
 								Refuser l'annonce
