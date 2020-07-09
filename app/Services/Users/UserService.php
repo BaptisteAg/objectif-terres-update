@@ -154,17 +154,4 @@ class UserService
             ->inRandomOrder()
             ->get();
     }
-
-    /**
-     * @param int $roleId
-     * @param array $departmentCodes
-     * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
-     */
-    public function findByRoleSuperiorThanAndDepartments(int $roleId, array $departmentCodes)
-    {
-        return User::filterSubLocations('departments', $departmentCodes, 'departments.code')
-            ->where('role', '>', $roleId)
-            ->inRandomOrder()
-            ->get();
-    }
 }
