@@ -5,12 +5,7 @@
 @section('main-content')
     <div class="section pt-0">
         <div class="section ">
-            <div class="content ml-80 ">
-                <a class="text_size large" href="{{URL::previous()}}">
-                    <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-                    <span>Retour </span>
-                </a>
-            </div>
+            @include('components.back-links')
             <div class="columns is-mobile is-centered">
                 <div class="column is-half ">
                     <div class="card ">

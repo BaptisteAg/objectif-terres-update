@@ -252,6 +252,11 @@ class ThreadService
 		$messageCreated = $this->messagesRepository->create($data);
 
 		$message = $this->messagesRepository->find($messageCreated->id);
+
+		if (isset($message->thread->ad->project) && auth()->user()->role >= 2) {
+			dd('je suis pas bete');
+		}
+
 		foreach ($message->thread->users as $user) {
 			$user = User::find($user->id);
 
