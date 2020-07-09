@@ -1,15 +1,21 @@
 <template>
-    <div>
+    <div v-if="!isThreadBlocked">
         <div v-if="activeThreadId" class="content">
             <div v-if="isThreadRelatedToUser">
                 <form @submit="formSubmit"><label id="reply-input-label" for="reply-input"
                                                   class=" label has-text-black"> Répondre</label>
                     <div class="field ">
                         <div v-bind:class="[isLoading ?'control is-expanded  has-icons-left is-loading ' : 'control is-expanded  has-icons-left']">
-                            <input type="hidden" name="thread_id" :value="activeThreadId"> <textarea
-                                :disabled="isLoading" id="reply-input" v-model="content"
-                                class=" textarea has-fixed-size" name="content" type="text"
-                                placeholder="Votre message..."/></div>
+                            <input type="hidden" name="thread_id" :value="activeThreadId">
+                            <textarea
+                                :disabled="isLoading"
+                                id="reply-input"
+                                v-model="content"
+                                class=" textarea has-fixed-size"
+                                name="content"
+                                type="text"
+                                placeholder="Votre message..."/>
+                        </div>
                         <br>
                         <div class="field is-grouped"><a class=""><p
                                 class="control is-expanded text_primary has-text-underline"
@@ -73,6 +79,7 @@
             activeThreadId: '',
             userId: "",
             isThreadRelatedToUser : Boolean,
+            isThreadBlocked : Boolean,
         },
         data() {
             return {
@@ -80,14 +87,12 @@
                 isLoading: false,
                 documents: [],
                 openDocumentUpload: false,
-
             }
         },
         methods: {
             formSubmit(e) {
                 e.preventDefault();
                 if (this.documents.length > 0 || this.content) {
-                    console.log(this.documents.length > 0, this.content)
                     this.isLoading = true;
                     if (this.documents.length > 0) {
                         axios.post('/mon-espace/messagerie/upload', {

@@ -94,6 +94,10 @@ class SupervisorsController extends BaseController
 	 */
 	public function attribute(Request $request)
 	{
+		if (is_null($request->input('value'))) {
+			return back()->with('warning', 'Votre note est vide !');
+		}
+
 		$this->projectService->attributeProject($request);
 		return back()->with('success', 'La demande d\'accompagnement a bien été attribué !');
 	}

@@ -5,12 +5,7 @@
 @section('main-content')
     <div class="section pt-0">
         <div class="section ">
-            <div class="content ml-80 ">
-                <a class="text_size large" href="{{URL::previous()}}">
-                    <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-                    <span>Retour </span>
-                </a>
-            </div>
+            @include('components.back-links')
             <div class="columns is-mobile is-centered">
                 <div class="column is-half ">
                     <div class="card ">
@@ -85,9 +80,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer is-marginless">
-                                <p class="card-footer-item ">Membre depuis le {{$user->created_at}}</p>
-                            </div>
+                            @if(isset($user->created_at))
+                                <div class="card-footer is-marginless">
+                                    <p class="card-footer-item ">Membre depuis le {{$user->created_at}}</p>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -229,12 +226,16 @@
                                                 Projet soumis le : {{ $ad->submitDate?? 'Date non renseignée' }}
                                             @else
                                                 @if($ad->attributionAd)
-                                                    Annonce soumise le : {{ $ad->submitDate }}
-                                                @else
-                                                    @if($ad->attributionAd->ad_status_id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID ||$ad->attributionAd->ad_status_id === \App\Models\AdStatus::REFUSE_ID )
-                                                        Annonce soumise le : {{ $ad->submitDate }}
+                                                    @if($ad->attributionAd->ad_status_id === \App\Models\AdStatus::APPROVE_ID )
+                                                        Annonce publiée le : {{ $ad->published_on }}
+                                                    @elseif($ad->attributionAd->ad_status_id === \App\Models\AdStatus::REFUSE_ID)
+                                                        @if(isset($ad->refused_on))
+                                                            Annonce refusée le : {{ $ad->refused_on }}
+                                                        @else
+                                                            Annonce refusée le : {{ $ad->attributionAd->updated_at }}
+                                                        @endif
                                                     @else
-                                                        Annonce publié le : {{ $ad->published_on }}
+                                                        Annonce soumise le : {{ $ad->submitDate }}
                                                     @endif
                                                 @endif
                                             @endif
@@ -375,13 +376,6 @@
             modal.classList.remove('is-active');
             html.classList.remove('is-clipped');
         });
-
-        let deleteButton = document.querySelector('.close-notification');
-        deleteButton.addEventListener('click', function (e) {
-            let notification = document.querySelector('.message');
-            notification.style.display = 'none';
-
-        })
         @endif
 
     </script>

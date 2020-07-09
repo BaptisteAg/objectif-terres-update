@@ -51,13 +51,7 @@ class MessagesController extends Controller
 	 */
 	public function show(Thread $thread)
 	{
-//		$loggedUserIsParticipant = $thread->users->first(function (User $user) {
-//			return auth()->id() === $user->id;
-//		});
-//
-//		if (!$loggedUserIsParticipant) {
-//			abort(404);
-//		}
+
 
 		$messages = $this->threadService->findAllByThread($thread->id);
 		$thread = $this->threadService->find($thread->id);
@@ -80,7 +74,6 @@ class MessagesController extends Controller
 	 */
 	public function create(MessageRequest $request)
 	{
-
 		$message = $this->threadService->createMessage($request->validated());
 
 		return response()->json((object)$message);

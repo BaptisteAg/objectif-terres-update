@@ -156,6 +156,7 @@ class AdService
             $ad = $this->repository->create($data);
         }
 
+
         if ($isSupportRequest) {
             $pendingStatus = AdStatus::PENDING_ID;
             /*$advisor = $this->userService->findRandomByRoleAndRegion(3, $adRandomRegionId);
@@ -166,8 +167,11 @@ class AdService
         } else {
             $adDepartmentCodes = $this->getAdDepartmentCodes($ad);
             $pendingStatus = AdStatus::PENDING_MODERATION_STATUS_ID;
-
             $availableModerators = $this->userService->findByRoleAndDepartments(1, $adDepartmentCodes);
+            // If no moderators, we'll try supervisors
+            if($availableModerators->isEmpty()) {
+                $availableModerators = $this->userService->findByRoleAndDepartments(3, $adDepartmentCodes);
+            }
             if ($availableModerators->isEmpty()) {
                 throw new \Exception("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
             }
@@ -248,6 +252,21 @@ class AdService
             }
         }
         return array_unique($departmentsCode);
+
+//		CODE VARIATION
+//		$ad = $this->wrappedObject;
+//		$adDepartmentsCodes = $ad->departments->pluck('code')->toArray();
+//		$adCitiesDepartmentsCodes = $ad->cities->map(function ($city) use ($adDepartmentsCodes) {
+//			return $city->department->code;
+//		})->toArray();
+//		$adRegionsDepartmentsCodes = $ad->regions->map(function ($region) {
+//			return $region->departments->pluck('code');
+//		})->toArray();
+//
+//		return array_unique(array_merge($adCitiesDepartmentsCodes, $adDepartmentsCodes, ...$adRegionsDepartmentsCodes));
+
+
+
     }
 
     protected function updateSubAd(Ad $ad, string $adType, array $data)
@@ -422,7 +441,7 @@ class AdService
     }
 
     /**
-     * Show all ads ads related to supervisor
+     * Show all projects with first contact support stage  related to supervisor
      * @param bool $toPaginate
      * @return LengthAwarePaginator|Collection
      */
@@ -888,7 +907,11 @@ class AdService
             'landSeekAd',
             'landOfferAd',
             'jobOfferAd',
-            'jobSeekAd'
+            'jobSeekAd',
+			'project',
+			'project.supportState',
+			'project.supportStage',
+			'project.projectStatus'
         ]);
         if ($toPaginate == true) {
             return $adsFiltred->paginate(15);
@@ -992,7 +1015,11 @@ class AdService
         return $this->userService->findByRoleAndDepartments(3, $departmentCodes);
     }
 
-    public function getUserPublishedAdsCount(User $user)
+	/**
+	 * @param User $user
+	 * @return int
+	 */
+	public function getUserPublishedAdsCount(User $user)
     {
         return $user->ads()->whereHas('attributionAd', function (Builder $builder) {
             $builder
@@ -1010,8 +1037,21 @@ class AdService
         return $this->repository->findAllByPublishedOnSince($date);
     }
 
-    public function findAttributedAndNotDraftedByUserId(int $id)
+	/**
+	 * @param int $id
+	 * @return Ad[]|Builder[]|\Illuminate\Database\Eloquent\Collection
+	 */
+	public function findAttributedAndNotDraftedByUserId(int $id)
     {
         return $this->repository->findAttributedAndNotDraftedByUserId($id);
+    }
+
+	/**
+	 * @param int $id
+	 * @return Ad[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|Collection
+	 */
+	public function findAdsAttributedAndNotDraftedByUserId(int $id)
+    {
+        return $this->repository->findAdsAttributedAndNotDraftedByUserId($id);
     }
 }

@@ -158,7 +158,9 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 	private function getEagerLoading()
 	{
 		return [
-			'ad',
+			'ad'=> function ($query) {
+				$query->withTrashed();
+			},
 			'ad.userPp',
 			'users' => function ($query) {
 				$query->withTrashed();

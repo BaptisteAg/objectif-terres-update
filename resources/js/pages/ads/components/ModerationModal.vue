@@ -57,7 +57,7 @@
                                                     <option v-for="selectOption in selectOptions"
                                                             :data-id="selectOption.id"
                                                             :value="selectOption.content">
-                                                        {{selectOption.content}}
+                                                        {{selectOption.title}}
                                                     </option>
                                                 </select>
                                             </span>
@@ -78,7 +78,7 @@
                                                  <textarea v-model="content" required name="content"
                                                            class="textarea is-medium"
                                                            placeholder="Votre message..."
-                                                           >dccc</textarea>
+                                                 >dccc</textarea>
                                             </template>
                                             <template v-else>
                                                 <textarea v-model="content" required name="content"
@@ -126,11 +126,11 @@
             formUrl: '',
             adId: '',
             attributionAdId: '',
-            acceptAdMessage:'',
+            acceptAdMessage: '',
         },
         data() {
             return {
-                content: this.moderationChoice === "acceptAd" ? this.acceptAdMessage : '' ,
+                content: this.moderationChoice === "acceptAd" ? this.acceptAdMessage : '',
                 selectOptionId: '',
                 isRejectedChoice: this.moderationChoice === "rejectAd",
                 errorMessage: '',
@@ -156,7 +156,7 @@
                     attribution_ad_id: this.attributionAdId
                 })
                     .then(response => {
-                        if(!response.data.redirect) {
+                        if (!response.data.redirect) {
                             throw "Invalid data";
                         }
                         window.location = response.data.redirect;

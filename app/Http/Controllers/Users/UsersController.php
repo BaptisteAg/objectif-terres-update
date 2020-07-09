@@ -47,7 +47,11 @@ class UsersController extends Controller
 			abort(403);
 		}
 
-        $ads = $this->adService->findAttributedAndNotDraftedByUserId($user->id);
+		if (auth()->user()->role >= 2) {
+			$ads = $this->adService->findAttributedAndNotDraftedByUserId($user->id);
+		} else {
+			$ads = $this->adService->findAdsAttributedAndNotDraftedByUserId($user->id);
+		}
 
 		return view('pages.users.show', compact('ads', 'user'));
 	}

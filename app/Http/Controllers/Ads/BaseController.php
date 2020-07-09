@@ -39,12 +39,12 @@ abstract class BaseController extends Controller
 	 * @var AttributionAdsService
 	 */
 	protected $attributionAdService;
-    /**
-     * @var LocationService
-     */
-    protected $locationService;
+	/**
+	 * @var LocationService
+	 */
+	protected $locationService;
 
-    /**
+	/**
 	 * BaseController constructor.
 	 * @param AdService $adService
 	 * @param ThreadService $threadService
@@ -53,13 +53,14 @@ abstract class BaseController extends Controller
 	 * @param AttributionAdsService $attributionAdService
 	 */
 	public function __construct(
-	    AdService $adService,
-        ThreadService $threadService,
-        FavoriteAdRepository $favoriteAdRepository,
-        UserService $userService,
-        AttributionAdsService $attributionAdService,
-        LocationService $locationService
-    ) {
+		AdService $adService,
+		ThreadService $threadService,
+		FavoriteAdRepository $favoriteAdRepository,
+		UserService $userService,
+		AttributionAdsService $attributionAdService,
+		LocationService $locationService
+	)
+	{
 		$this->adService = $adService;
 		$this->threadService = $threadService;
 		$this->favoriteAdRepository = $favoriteAdRepository;
@@ -106,8 +107,8 @@ abstract class BaseController extends Controller
 			'agriculturalActivities',
 			'buildingTypes',
 			'requirements',
-            'isSupportRequest',
-            "old"
+			'isSupportRequest',
+			"old"
 		);
 	}
 
@@ -132,6 +133,7 @@ abstract class BaseController extends Controller
 		$isLoggedUserModeratorAd = false;
 		$advisorUsers = [];
 		$moderatorInChargeOfModeration = false;
+		$currentUser = User::whereId(auth()->id())->first();
 
 		/** @var User $user */
 		$user = auth()->user();
@@ -143,10 +145,11 @@ abstract class BaseController extends Controller
 			);
 			$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
 			$threads = $this->threadService->findThreadAlreadyExist($user->id, $ad->id);
+			$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
 		}
 
 		if ($user && $user->role >= 1) {
-			$responseTemplates = ResponseTemplate::all();
+			$responseTemplates = ResponseTemplate::orderBy('title')->get();
 			$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
 
 			if (!isset($ad->project)) {
@@ -156,7 +159,7 @@ abstract class BaseController extends Controller
 			}
 			if ($moderatorInChargeOfModeration) {
 				$isLoggedUserModeratorAd = true;
-				$responseTemplates = ResponseTemplate::all();
+				$responseTemplates = ResponseTemplate::orderBy('title')->get();
 				$refusalTypes = RefusalType::all();
 				$threads = $this->threadService->findThreadsByAd($ad->id);
 				$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
@@ -170,18 +173,18 @@ abstract class BaseController extends Controller
 				}
 			}
 			if ($user->role >= 1) {
-				$responseTemplates = ResponseTemplate::all();
-				$refusalTypes = RefusalType::all();
+				$responseTemplates = ResponseTemplate::orderBy('title')->get();
+				$refusalTypes = RefusalType::orderBy('name')->get();
 			}
 			if ($user->role >= 2) {
-				$responseTemplates = ResponseTemplate::all();
+				$responseTemplates = ResponseTemplate::orderBy('title')->get();
 				if ($user->role >= 3) {
 					//TODO display only advisors that are related to the supervisor
-					$responseTemplates = ResponseTemplate::all();
+					$responseTemplates = ResponseTemplate::orderBy('title')->get();
 					$advisorUsers = $this->userService->findAllAdvisorsAndSupervisors();
 				}
 			}
-			if ($user->role >= 1 && $ad->attributionAd->user_moderator_id !== auth()->id()) {
+			if ($user->role >= 1 && $ad->attributionAd->user_moderator_id !== $currentUser->id) {
 				if (count(array_intersect($this->adService->getAdDepartmentCodes($ad), $this->userService->getCurrentUserTerritoryDepartments())) > 0) {
 					$threads = $this->threadService->findThreadsByAd($ad->id);
 				}
@@ -198,7 +201,8 @@ abstract class BaseController extends Controller
 			'isAdToModerate',
 			'isLoggedUserModeratorAd',
 			'advisorUsers',
-			'moderatorInChargeOfModeration'
+			'moderatorInChargeOfModeration',
+			'currentUser'
 		);
 	}
 }

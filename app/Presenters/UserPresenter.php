@@ -1,7 +1,9 @@
 <?php namespace App\Presenters;
 
+use App\Models\Ad;
 use App\Models\User;
 use McCool\LaravelAutoPresenter\BasePresenter;
+use phpDocumentor\Reflection\Types\Boolean;
 
 /**
  * Class UserPresenter
@@ -10,6 +12,9 @@ use McCool\LaravelAutoPresenter\BasePresenter;
  */
 class UserPresenter extends BasePresenter
 {
+	/**
+	 * @return string
+	 */
 	public function profile()
 	{
 		if ($this->wrappedObject->profile === 1) {
@@ -33,6 +38,9 @@ class UserPresenter extends BasePresenter
 
 	}
 
+	/**
+	 * @return string
+	 */
 	public function civilityFullName()
 	{
 		if ($this->wrappedObject->civility === 1) {
@@ -46,9 +54,21 @@ class UserPresenter extends BasePresenter
 		}
 	}
 
+	/**
+	 * @return string
+	 */
 	public function created_at()
 	{
 		return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->format('d/m/Y');
+	}
+
+	/**
+	 * @return array
+	 */
+	public function userDepartmentsCodes() : array
+	{
+		 return $this->wrappedObject->departments->pluck('code')->toArray();
+
 	}
 
 

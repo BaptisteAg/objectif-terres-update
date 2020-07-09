@@ -517,6 +517,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	{
 		return array_merge([
 			'userPp',
+			'userPp.departments',
 			'adNotes',
 			'adNotes.user',
 			'documents',
@@ -552,6 +553,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'jobSeekAd',
 
 			'attributionAd.userAdvisor',
+			'attributionAd.userSupervisor',
+
 		], $this->getLocationEagerLoading(), $this->getAttributionEagerLoading());
 	}
 
@@ -622,6 +625,15 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             ->whereHas('attributionAd')
             ->where('is_draft', 0)
             ->where('user_pp_id', $userId)
+            ->get();
+    }
+    public function findAdsAttributedAndNotDraftedByUserId(int $userId)
+    {
+        return $this->entity
+            ->whereHas('attributionAd')
+            ->where('is_draft', 0)
+            ->where('user_pp_id', $userId)
+			->whereNull('project_id')
             ->get();
     }
 }

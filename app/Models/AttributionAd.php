@@ -20,6 +20,7 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * @property int|null $ad_status_id
  * @property int|null $refusal_type_id
  * @property string|null $published_on
+ * @property string|null $refused_on
  * @property string|null $archived_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -55,8 +56,8 @@ use McCool\LaravelAutoPresenter\Decoratable;
 class AttributionAd extends Model implements Decoratable
 {
 	use ScopeLocationFilterable,
-        ScopeAdTypesFilterable,
-        ScopeDataFilterable;
+		ScopeAdTypesFilterable,
+		ScopeDataFilterable;
 
 	/**
 	 * @var array
@@ -72,7 +73,8 @@ class AttributionAd extends Model implements Decoratable
 		'to_call_back',
 		'short_description',
 		'archived_at',
-		'published_on'
+		'published_on',
+		'refused_on'
 	];
 
 	const VALIDATION_MESSAGE = "Bonjour,\nVotre annonce vient d’être publiée. Sans intervention de votre part, elle sera en ligne pour 6 mois.Nous espérons qu’Objectif Terres vous permettra d’être contacté. \nCordialement,\nTerre de Liens";

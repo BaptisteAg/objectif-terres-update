@@ -7,9 +7,7 @@
 			<div class="columns is-mobile is-centered">
 				<div class="column is-half">
 					<h1 class="title is-2 has-text-centered has-text-link">Mot de passe oublié ? </h1>
-					<h2 class="subtitle has-text-centered">Renseignez votre adresse email pour générer un nouveau mot de passe </h2>
-
-
+					<h2 class="subtitle has-text-centered text_charcoal">Renseignez votre adresse email pour générer un nouveau mot de passe </h2>
 					@if(session('status'))
 					<article class="message is-succes" role="alert">
 						<div class="message-body">
