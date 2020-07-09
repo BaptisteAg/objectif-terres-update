@@ -171,10 +171,10 @@ class SalesforceService
         $localUser->is_sf_user = true;
 
         $roleAndDepartments = explode('-', $user["Role_Objectif_Terre__c"]);
-        $role = $roleAndDepartments[0] ?: 0;
+        $role = (int)$roleAndDepartments[0] ?: 0;
 
         // Sync role
-        if((string)$localUser->role !== $role) {
+        if($localUser->role !== $role) {
             $localUser->role = $role;
         }
 
