@@ -56,5 +56,13 @@ class TestUserSeeder extends Seeder
             'name' => 'Territorial',
             'role' => 3
         ])->departments()->sync($departments);
+
+        User::create([
+            'email' => "test.ot.admin@gmail.com",
+            'password' => Hash::make('test'),
+            'first_name' => 'Test',
+            'name' => 'Admin',
+            'role' => 4
+        ])->departments()->sync(Department::all());
     }
 }
