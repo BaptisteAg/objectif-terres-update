@@ -180,7 +180,11 @@ class SalesforceService
 
         $localUser->save();
 
-        if($role > 0) {
+        if($role === 4) {
+            $newDepartmentIds = Department::all()->pluck('id');
+            $localUser->departments()->sync($newDepartmentIds);
+        }
+        else if($role > 0) {
             if(!isset($roleAndDepartments[1])) {
                 throw new \Exception("Nous n'avons pas pu lire votre territoire renseigné dans Salesforce. Veuillez contacter un administrateur.");
             }
