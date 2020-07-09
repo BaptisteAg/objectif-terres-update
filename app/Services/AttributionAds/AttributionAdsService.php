@@ -452,6 +452,7 @@ class AttributionAdsService
         $rejectStatus = AdStatus::where('id', '=', AdStatus::REFUSE_ID)->first();
         $attributionAd->ad_status_id = $rejectStatus->id;
         $attributionAd->refusal_type_id = $data['refusal_type_id'];
+        $attributionAd->refused_on = Carbon::now();
         $attributionAd->save();
         $data = [
             'message' => 'Votre annonce n\'a pas été acceptée par l\'équipe d\'Objectif Terres. Consulter votre messagerie pour plus d\'informations.',

@@ -207,6 +207,14 @@ class AdPresenter extends BasePresenter
 
 		return \Carbon\Carbon::parse($this->wrappedObject->attributionAd->published_on)->format('d/m/Y');
 	}
+	public function refused_on()
+	{
+        if(!$this->wrappedObject->attributionAd) {
+            return '';
+        }
+
+		return \Carbon\Carbon::parse($this->wrappedObject->attributionAd->refused_on)->format('d/m/Y');
+	}
 
 	public function waterAccess()
 	{

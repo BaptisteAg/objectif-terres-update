@@ -154,11 +154,9 @@ class AdsController extends BaseController
 	public function show($adId)
 	{
 		$ad = $this->adService->find($adId);
-		if (!isset($ad->userPp)) {
+		if (!isset($ad->user_pp_id)) {
 			return view('pages.errors.unavailable-page', ['message' => "Contacter un administrateur du site pour plus d'informations"]);
 		}
-
-		
 
 		//Throw error 404 if a visitor try to show an ad is not validated
 		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validée" ;

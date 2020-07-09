@@ -80,9 +80,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer is-marginless">
-                                <p class="card-footer-item ">Membre depuis le {{$user->created_at}}</p>
-                            </div>
+                            @if(isset($user->created_at))
+                                <div class="card-footer is-marginless">
+                                    <p class="card-footer-item ">Membre depuis le {{$user->created_at}}</p>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -224,12 +226,16 @@
                                                 Projet soumis le : {{ $ad->submitDate?? 'Date non renseignée' }}
                                             @else
                                                 @if($ad->attributionAd)
-                                                    Annonce soumise le : {{ $ad->submitDate }}
-                                                @else
-                                                    @if($ad->attributionAd->ad_status_id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID ||$ad->attributionAd->ad_status_id === \App\Models\AdStatus::REFUSE_ID )
-                                                        Annonce soumise le : {{ $ad->submitDate }}
+                                                    @if($ad->attributionAd->ad_status_id === \App\Models\AdStatus::APPROVE_ID )
+                                                        Annonce publiée le : {{ $ad->published_on }}
+                                                    @elseif($ad->attributionAd->ad_status_id === \App\Models\AdStatus::REFUSE_ID)
+                                                        @if(isset($ad->refused_on))
+                                                            Annonce refusée le : {{ $ad->refused_on }}
+                                                        @else
+                                                            Annonce refusée le : {{ $ad->attributionAd->updated_at }}
+                                                        @endif
                                                     @else
-                                                        Annonce publié le : {{ $ad->published_on }}
+                                                        Annonce soumise le : {{ $ad->submitDate }}
                                                     @endif
                                                 @endif
                                             @endif

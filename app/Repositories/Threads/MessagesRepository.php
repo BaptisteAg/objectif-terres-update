@@ -139,6 +139,25 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 		return $message;
 	}
 
+	public function findAllMessagesByThreadAndUser(int $threadId, int $userId)
+	{
+		/** @var Collection $models */
+		$models = $this->entity
+			->where(['thread_id' => $threadId], ['sender_user_id' => $userId])
+			->get();
+		return $models;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function findNewestMessage()
+	{
+		// TODO: Implement findNewestMessage() method or remove
+	}
+
+
+
 
 	private function getEagerLoading()
 	{
@@ -159,11 +178,5 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 		];
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	public function findNewestMessage()
-	{
-		// TODO: Implement findNewestMessage() method or remove
-	}
+
 }
