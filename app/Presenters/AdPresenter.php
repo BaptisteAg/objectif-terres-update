@@ -71,9 +71,12 @@ class AdPresenter extends BasePresenter
 
 	public function submitDate()
 	{
+        if(!$this->wrappedObject->attributionAd) {
+            return '';
+        }
+
 		return \Carbon\Carbon::parse($this->wrappedObject->attributionAd->created_at)->format('d/m/Y');
 	}
-
 
 	public function is_today()
 	{
@@ -82,6 +85,10 @@ class AdPresenter extends BasePresenter
 
 	public function created_at_diff()
 	{
+	    if(!$this->wrappedObject->attributionAd) {
+	        return '';
+        }
+
 		return \Carbon\Carbon::parse($this->wrappedObject->attributionAd->published_on)->diffForHumans();
 	}
 
@@ -194,6 +201,10 @@ class AdPresenter extends BasePresenter
 
 	public function published_on()
 	{
+        if(!$this->wrappedObject->attributionAd) {
+            return '';
+        }
+
 		return \Carbon\Carbon::parse($this->wrappedObject->attributionAd->published_on)->format('d/m/Y');
 	}
 

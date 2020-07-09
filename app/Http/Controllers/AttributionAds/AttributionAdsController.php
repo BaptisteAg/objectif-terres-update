@@ -40,7 +40,6 @@ class AttributionAdsController extends Controller
 		$this->setToReadModeratorNotification($request->input('attribution_ad_id'));
 		session()->flash('success', 'L\'annonce a été modérée !');
 		return ['redirect' => route('moderator.index')];
-
 	}
 
 	/**

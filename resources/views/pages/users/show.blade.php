@@ -223,7 +223,7 @@
                                             @if(isset($ad->project))
                                                 Projet soumis le : {{ $ad->submitDate?? 'Date non renseignée' }}
                                             @else
-                                                @if( is_null($ad->attributionAd))
+                                                @if($ad->attributionAd)
                                                     Annonce soumise le : {{ $ad->submitDate }}
                                                 @else
                                                     @if($ad->attributionAd->ad_status_id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID ||$ad->attributionAd->ad_status_id === \App\Models\AdStatus::REFUSE_ID )

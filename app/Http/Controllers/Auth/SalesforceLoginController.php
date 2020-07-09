@@ -50,13 +50,13 @@ class SalesforceLoginController extends Saml2Controller
         $errors = $saml2Auth->acs();
 
         if (!empty($errors)) {
-	        dd($errors, $saml2Auth->getMetadata());
             logger()->error('Saml2 error_detail', ['error' => $saml2Auth->getLastErrorReason()]);
             session()->flash('saml2_error_detail', [$saml2Auth->getLastErrorReason()]);
 
             logger()->error('Saml2 error', $errors);
             session()->flash('saml2_error', $errors);
-            return redirect(config('saml2_settings.errorRoute'));
+
+            return redirect("/connexion")->withErrors("Une erreur empêche l'identification depuis Salesforce. Merci de <a href='https://terredeliens.lightning.force.com/secur/logout.jsp' target='_blank'>cliquer ici</a> pour vous déconnecter de Salesforce, puis réessayez");
         }
 
         $samlUser = $saml2Auth->getSaml2User();
