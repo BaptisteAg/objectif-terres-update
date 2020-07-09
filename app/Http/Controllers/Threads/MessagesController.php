@@ -74,7 +74,6 @@ class MessagesController extends Controller
 	 */
 	public function create(MessageRequest $request)
 	{
-
 		$message = $this->threadService->createMessage($request->validated());
 
 		return response()->json((object)$message);

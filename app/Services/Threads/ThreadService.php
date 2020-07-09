@@ -2,6 +2,7 @@
 
 use App\Models\Message;
 use App\Models\ReadMessage;
+use App\Models\SupportStage;
 use App\Models\Thread;
 use App\Models\ThreadUser;
 use App\Models\User;
@@ -10,6 +11,7 @@ use App\Notifications\NewMessageNotification;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Threads\MessagesRepository;
 use App\Repositories\Threads\ThreadsRepository;
+use App\Services\Advisors\AdvisorsService;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -36,6 +38,7 @@ class ThreadService
 	protected $messagesRepository;
 
 
+
 	/**
 	 * ThreadService constructor.
 	 * @param ThreadsRepository $repository
@@ -46,6 +49,7 @@ class ThreadService
 		ThreadsRepository $repository,
 		AdRepository $adRepository,
 		MessagesRepository $messagesRepository
+
 	)
 	{
 		$this->repository = $repository;
@@ -252,6 +256,13 @@ class ThreadService
 		$messageCreated = $this->messagesRepository->create($data);
 
 		$message = $this->messagesRepository->find($messageCreated->id);
+
+//		if (isset($message->thread->ad->project) && auth()->user()->role >= 2) {
+//			if ($this->findMessagesByThreadAndUserId($message->thread->id, auth()->id())->count() === 1) {
+//				$this->advisorService->updateSupport(['ad_id' => $message->thread->ad->id, 'support_stage' => SupportStage::FIRST_RECEPTION_ID]);
+//			};
+//		}
+
 		foreach ($message->thread->users as $user) {
 			$user = User::find($user->id);
 
@@ -305,5 +316,10 @@ class ThreadService
 	public function findThreadsByUnreadMessageAndAdId(int $adId)
 	{
 		return $this->repository->findThreadsByUnreadMessagesAndAdId($adId);
+	}
+
+	public function findMessagesByThreadAndUserId(int $threadId, int $userId): Collection
+	{
+		return $this->messagesRepository->findAllMessagesByThreadAndUser($threadId, $userId);
 	}
 }

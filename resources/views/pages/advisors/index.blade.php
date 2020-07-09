@@ -327,7 +327,7 @@
                                         @else
                                             @if(!is_null($ad->project->supportState))
                                                 @if($ad->project->supportState->id === \App\Models\SupportState::TO_HANDLE_ID)
-                                                    <span class="tag is-info has-tooltip-bottom"
+                                                    <span class="tag is-warning has-tooltip-bottom"
                                                           data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
                                                 @elseif($ad->project->supportState->id ===\App\Models\SupportState::HANDLE_ID)
                                                     <span class="tag is-success is-light has-tooltip-bottom"

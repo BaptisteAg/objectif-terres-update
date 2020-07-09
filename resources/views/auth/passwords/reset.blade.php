@@ -8,7 +8,7 @@
 			<div class="columns is-mobile is-centered">
 				<div class="is-half">
 					<h1 class="title is-2 has-text-centered has-text-link">Réinitialisation de votre mot de passe </h1>
-					<h2 class="subtitle has-text-centered">Renseignez votre adresse email et votre nouveau mot de
+					<h2 class="subtitle has-text-centered text_charcoal">Renseignez votre adresse email et votre nouveau mot de
 						passe </h2>
 
 					{!! Form::open(['route'=> 'password.update']) !!}

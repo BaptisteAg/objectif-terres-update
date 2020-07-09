@@ -1015,7 +1015,11 @@ class AdService
         return $this->userService->findByRoleAndDepartments(3, $departmentCodes);
     }
 
-    public function getUserPublishedAdsCount(User $user)
+	/**
+	 * @param User $user
+	 * @return int
+	 */
+	public function getUserPublishedAdsCount(User $user)
     {
         return $user->ads()->whereHas('attributionAd', function (Builder $builder) {
             $builder
@@ -1033,8 +1037,21 @@ class AdService
         return $this->repository->findAllByPublishedOnSince($date);
     }
 
-    public function findAttributedAndNotDraftedByUserId(int $id)
+	/**
+	 * @param int $id
+	 * @return Ad[]|Builder[]|\Illuminate\Database\Eloquent\Collection
+	 */
+	public function findAttributedAndNotDraftedByUserId(int $id)
     {
         return $this->repository->findAttributedAndNotDraftedByUserId($id);
+    }
+
+	/**
+	 * @param int $id
+	 * @return Ad[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|Collection
+	 */
+	public function findAdsAttributedAndNotDraftedByUserId(int $id)
+    {
+        return $this->repository->findAdsAttributedAndNotDraftedByUserId($id);
     }
 }

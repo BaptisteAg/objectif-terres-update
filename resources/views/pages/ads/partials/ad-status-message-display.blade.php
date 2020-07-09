@@ -1,4 +1,4 @@
-@if($ad->is_draft === 0)
+@if($ad->is_draft === 0 && isset($ad->attributionAd))
     @if($ad->project)
         @if($ad->attributionAd->user_advisor_id)
             <article class="message is-success">
@@ -9,7 +9,6 @@
         @else
             <article class="message is-success">
                 <div class="message-body">
-
                     Votre demande d'accompagnement est en attente d'être assignée à un primo-accueillant par un responsable territorial.
                 </div>
             </article>
