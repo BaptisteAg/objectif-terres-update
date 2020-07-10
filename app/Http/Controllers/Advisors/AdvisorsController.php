@@ -97,7 +97,6 @@ class AdvisorsController extends BaseController
 			$thread = $this->advisorsService->findThreadAdvisorInChargeOfSupportRequest($data);
 		}
 
-
 		$this->advisorsService->handleSupportDashboardNotifications($ad);
 
 		$vars = $this->getSupportDashboardVars($ad);

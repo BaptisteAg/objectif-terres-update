@@ -56,17 +56,17 @@
             <div class="columns  ">
                 <div class="column is-half ">
                     <div class="buttons are-medium">
-                        <a href="{{route('advisor.export')}}" class="button  is-link is-rounded">
-						 <span class="icon">
-						  <i class="fas fa-table"></i>
-						</span>
+                        <a href="{{route('advisor.export')}}" class="button  is-link">
+                            <span class="icon">
+                                <i class="fas fa-table"></i>
+                            </span>
                             <span>Exporter</span>
                         </a>
 
-                        <a href="{{route('advisor.createNewPp')}}" class="button  is-light is-rounded ">
-						<span class="icon">
-							<i class="fas fa-user-plus"></i>
-						</span>
+                        <a href="{{route('advisor.createNewPp')}}" class="button  is-light ">
+                            <span class="icon">
+                                <i class="fas fa-user-plus"></i>
+                            </span>
                             <span>Ajouter un PP</span>
                         </a>
                     </div>
@@ -201,7 +201,7 @@
                                 demande
                             </th>
 
-                            <th class="has-text-weight-semibold"
+                            <th class="has-text-weight-semibold " colspan="4"
                                 style="width: 142px; border-width: 0px;  border-bottom :3px solid #dbdbdb "></th>
                         </tr>
                         </thead>
@@ -220,13 +220,13 @@
                                         @if(!is_null($ad->project))
                                             <span class="icon is-medium  has-text-link has-tooltip-right"
                                                   data-tooltip="C'est une demande d'accompagnement">
-											  <i class="fas fa-lg fa-hands-helping"></i>
-											</span>
+                                                <i class="fas fa-lg fa-hands-helping"></i>
+                                            </span>
                                         @else
                                             <span class="icon is-medium  has-text-link has-tooltip-right"
                                                   data-tooltip="C'est une annonce">
-											  <i class="fas fa-lg fa-newspaper"></i>
-											</span>
+                                                <i class="fas fa-lg fa-newspaper"></i>
+                                            </span>
                                         @endif
                                         {{$ad->ad_type_full_name}}
                                         <br>
@@ -310,10 +310,10 @@
                                                     <span class="tag is-info has-tooltip-bottom"
                                                           data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">{{$ad->project->supportStage->name}}</span>
                                                 @elseif($ad->project->supportStage->id ===\App\Models\SupportStage::FIRST_RECEPTION_ID)
-                                                    <span class="tag is-info is-light has-tooltip-bottom"
+                                                    <span class="tag is-info is-light  has-tooltip-bottom"
                                                           data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">{{$ad->project->supportStage->name}}</span>
                                                 @elseif($ad->project->supportStage->id === \App\Models\SupportStage::ACCOMPANYING_ID)
-                                                    <span class="tag is-succes is-light has-tooltip-bottom"
+                                                    <span class="tag is-success  has-tooltip-bottom"
                                                           data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">{{$ad->project->supportStage->name}}</span>
                                                 @endif
                                             @else
@@ -350,10 +350,19 @@
 
                                     <td>
                                         @if(! is_null($ad->project))
-                                            <a href="{{route('advisor.showSupport', $ad->id)}}">
-                                                <span><i class="fas fa-hands-helping"></i></span>
-                                                <span>Suivi de l'accompagnement</span>
-                                            </a>
+                                            @if(isset($ad->attributionAd->user_advisor_id))
+                                                <a href="{{route('advisor.showSupport', $ad->id)}}">
+                                                    <span><i class="fas fa-hands-helping"></i></span>
+                                                    <span>Suivi de l'accompagnement</span>
+                                                </a>
+                                            @elseif(auth()->user()->role >= 3)
+                                                <a href="{{route('ads.show', $ad->id)}}">
+                                                    <span><i class="fas fa-hands-helping"></i></span>
+                                                    <span>Attribuer un primo-accueillant</span>
+                                                </a>
+                                            @else
+                                                <span>En attente d'attribution par un responsable territorial</span>
+                                            @endif
 
                                         @else
                                             <a href="{{route('ads.show', $ad->id)}}">

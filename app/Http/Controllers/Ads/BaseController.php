@@ -181,7 +181,8 @@ abstract class BaseController extends Controller
 				if ($user->role >= 3) {
 					//TODO display only advisors that are related to the supervisor
 					$responseTemplates = ResponseTemplate::orderBy('title')->get();
-					$advisorUsers = $this->userService->findAllAdvisorsAndSupervisors();
+					$adDepartmentCodes = $this->adService->getAdDepartmentCodes($ad);
+					$advisorUsers = $this->userService->findByRoleAndDepartments(2, $adDepartmentCodes);
 				}
 			}
 			if ($user->role >= 1 && $ad->attributionAd->user_moderator_id !== $currentUser->id) {

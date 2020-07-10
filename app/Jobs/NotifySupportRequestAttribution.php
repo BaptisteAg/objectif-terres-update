@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 
+use App\Models\Ad;
 use App\Models\User;
 use App\Notifications\ResearchNotification;
 use App\Notifications\SupportRequestAttributionNotification;
@@ -26,12 +27,10 @@ class NotifySupportRequestAttribution implements ShouldQueue
 	/**
 	 * Create a new job instance.
 	 *
-	 * @param AdService $adService
 	 * @param UserRepository $userRepository
 	 */
-	public function __construct(AdService $adService, UserRepository $userRepository)
+	public function __construct(UserRepository $userRepository)
 	{
-		$this->adService = $adService;
 		$this->userRepository = $userRepository;
 	}
 
@@ -43,7 +42,7 @@ class NotifySupportRequestAttribution implements ShouldQueue
 	 */
 	public function handle(int $adId)
 	{
-		$ad = $this->adService->find($adId);
+		$ad = Ad::find($adId);
 		/** @var User $advisor */
 		$advisor = $this->userRepository->find($ad->attributionAd->user_advisor_id);
 		$advisor->notify(new SupportRequestAttributionNotification($ad));

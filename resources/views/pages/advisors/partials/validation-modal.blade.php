@@ -1,5 +1,5 @@
-<div id="modal-advisor-validation" class="modal" v-bind:class="{'is-active': showModal}">
-	<div id="modal-advisor-validation-background" class="modal-background" v-on:click="closeValidationModal()"></div>
+<div  class="modal" v-bind:class="{'is-active': showModal}">
+	<div  class="modal-background custom-modal-background" v-on:click="closeValidationModal()"></div>
 	<div class="modal-content-validation">
 		<div class="card">
 			<div class="card-content">

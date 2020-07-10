@@ -39,7 +39,6 @@ class SupervisorsController extends BaseController
 		$ads = $this->adService->findAllNotAssignedProjectsByUserSupervisor(false);
 		$vars = $this->getSupervisorDashboardVars();
 		$vars['ads'] = $ads;
-
 		return view('pages.supervisors.index', $vars);
 	}
 

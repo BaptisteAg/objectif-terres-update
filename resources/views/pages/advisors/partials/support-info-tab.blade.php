@@ -91,7 +91,7 @@
             <div class="columns">
                 <div class="column is-3">
                     @if(! is_null($ad->landOfferAd->price))
-                        <p><span class="is-italic">Prix (en € )</span> :
+                        <p><span class="is-italic">Prix (en € ) </span> :
                             {{$ad->landOfferAd->price ?  number_format($ad->landOfferAd->price, 0, ",", " " ): "Non renseignée"}}
                         </p>
                     @endif
@@ -106,22 +106,39 @@
                         {{$ad->landOfferAd->altitude ?? "Non renseignée"}}
                     </p>
                 </div>
-                <div class="column">
-                    <p>
-                        <span class="is-italic">Bâtiments</span> :
-                        @if(isset($ad->landOfferAd->has_houses) and isset($ad->landOfferAd->has_buildings))
-                            @if(isset($ad->landOfferAd->has_houses))
-                                {{$ad->landOfferAd->has_houses ? 'Avec habitation' : 'Sans habitation'}}
-                            @endif
-                            @if(isset($ad->landOfferAd->has_buildings))
-                                {{$ad->landOfferAd->has_buildings ? ' Avec bâtiments agricoles' : 'Sans bâtiments agricoles'}}
-                            @endif
-                        @else
-                            Non renseignés
-                        @endif
-                    </p>
-                </div>
             </div>
+            @if($ad->landOfferAd->has_buildings)
+                @if($ad->landOfferAd->buildings_description)
+                    <p>
+                        <span class="is-italic"></span>Description bâtiment(s) agricole(s) :
+                        {{$ad->landOfferAd->buildings_description}}
+
+                    </p>
+                @endif
+            @endif
+            @if($ad->landOfferAd->has_houses)
+                @if($ad->landOfferAd->has_houses)
+                    <p>
+                        <span class="is-italic"></span>Description habitation(s) :
+                        {{$ad->landOfferAd->houses_description}}
+
+                    </p>
+                @endif
+            @endif
+            <p>
+                <span class="is-italic">Bâtiments</span> :
+            @if(isset($ad->landOfferAd->has_houses) and isset($ad->landOfferAd->has_buildings))
+                <ul>
+                    @if(isset($ad->landOfferAd->has_houses))
+                        <li>{{$ad->landOfferAd->has_houses ? 'Avec habitation' : 'Sans habitation'}}</li>
+                    @endif
+                    @if(isset($ad->landOfferAd->has_buildings))
+                        <li>{{$ad->landOfferAd->has_buildings ? ' Avec bâtiments agricoles' : 'Sans bâtiments agricoles'}}</li>
+                    @endif
+                </ul>
+            @else
+                <span>Non renseignés</span>
+            @endif
             <p>
                 <span class="is-italic">Transfert d'activité</span> :
                 @if($ad->landOfferAd->is_activity_transfert)
@@ -133,10 +150,17 @@
                 @else
                     Non renseigné
                 @endif
-            </p><p>
+            </p>
+            <p>
                 <span class="is-italic">Accès à l'eau existant</span> :
                 {{$ad->waterAccess}}
             </p>
+            @if(isset($ad->landOfferAd->water_access_description))
+                <p>
+                    <span class="is-italic">Description accès eau</span> :
+                    {{$ad->landOfferAd->water_access_description}}
+                </p>
+            @endif
             <p>
                 <span class="is-italic">Productions en place</span> :
                 @if($ad->landOfferAd->productionGenres->count() > 0)
@@ -154,14 +178,14 @@
                 @endif
             </p>
             <p>
-                <span class="is-italic">Certification bio des terres :  </span>
+                <span class="is-italic">Certification bio des terres : </span>
                 <br>
                 @foreach($ad->landOfferAd->bioCertifications as $bioCertification)
                     @if(!$bioCertification->icon == "")
                         <span class=" has-tooltip-bottom" style="margin-right: 5px; margin-left: 5px"
                               data-tooltip="{{$bioCertification->name}}">
-							<img src="{{ $bioCertification->icon }}" alt="{{$bioCertification->name}}">
-						</span>
+                            <img src="{{ $bioCertification->icon }}" alt="{{$bioCertification->name}}">
+                        </span>
                     @else
                         <span>{{$bioCertification->name}}</span>
         @endif
@@ -175,7 +199,8 @@
                 <span class="is-italic">Bâtiments recherchés</span> :
                 @if($ad->landSeekAd->buildings->count() >0)
                     @foreach($ad->landSeekAd->buildings as $building)
-                        <span class="is-lowercase">{{ $building->buildingType->label }} : {{ $building->requirement->label }}</span>
+                        <span class="is-lowercase">{{ $building->buildingType->label }}
+                            : {{ $building->requirement->label }}</span>
                         {{ $loop->last ? '': ',' }}
                     @endforeach
                 @else
@@ -231,7 +256,8 @@
 
         @endif
         <p>
-            <span class="is-italic">Plus d'informations sur la demande : </span>{{$ad->about_project_content?? "Non renseigné"}}
+            <span class="is-italic">Plus d'informations sur le projet
+                : </span>{{$ad->about_project_content?? "Non renseigné"}}
         </p>
     </div>
     <div class="is-divider"></div>
@@ -271,7 +297,8 @@
                                 </select>
                             </div>
                         @else
-                            <input {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]" class="input" type="text"
+                            <input {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]"
+                                   class="input" type="text"
                                    value="{{$currentProjectKeyDataValues->where('project_data_key_id',$publicProjectDataKey->id  )->first()->value}}"
                                    placeholder="Saisir...">
                         @endif
@@ -279,14 +306,15 @@
                         @if($publicProjectDataKey->projectDataValues->count() >0)
                             <div class="select  is-fullwidth">
                                 <select {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]">
-                                    <option selected disabled >Veuillez choisir...</option>
+                                    <option selected disabled>Veuillez choisir...</option>
                                     @foreach ($publicProjectDataKey->projectDataValues as $projectDataValue)
                                         <option value="{{$projectDataValue->value}}">{{$projectDataValue->value}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         @else
-                            <input {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]" class="input" type="text"
+                            <input {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]"
+                                   class="input" type="text"
                                    placeholder="Saisir...">
                         @endif
                     @endif
@@ -298,9 +326,9 @@
             <input type="hidden" name="ad_id" value="{{$ad->id}}">
             <input type="hidden" name="user_id" value="{{auth()->id()}}">
             <button {{$ad->userPp->trashed()? 'disabled' : ''}} class="button is-link">
-						 <span class="icon is-small">
-						  <i class="fas fa-save"></i>
-						</span>
+                <span class="icon is-small">
+                    <i class="fas fa-save"></i>
+                </span>
                 <span>Sauvegarder</span>
             </button>
         </div>

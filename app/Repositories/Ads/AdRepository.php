@@ -87,9 +87,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	public function create(array $data): Ad
 	{
 		$ad = new Ad();
-        $ad->user_pp_id = auth()->user()->id;
+		$ad->user_pp_id = auth()->user()->id;
 
-        $this->save($ad, $data);
+		$this->save($ad, $data);
 
 		return $ad;
 	}
@@ -104,40 +104,40 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 */
 	public function update($ad, array $data): Ad
 	{
-	    if(!is_a($ad, Ad::class)) {
-	        $ad = $this->find($ad);
-        }
+		if (!is_a($ad, Ad::class)) {
+			$ad = $this->find($ad);
+		}
 
-        $this->save($ad, $data);
+		$this->save($ad, $data);
 
 		return $ad;
 	}
 
-    private function save(Ad $ad, array $data)
-    {
-        $ad->fill($data);
+	private function save(Ad $ad, array $data)
+	{
+		$ad->fill($data);
 
-        $ad->save();
+		$ad->save();
 
-        foreach (["cities", "departments", "regions"] as $locationableType) {
-            $locationables = $data["locationable"][$locationableType] ?? [];
+		foreach (["cities", "departments", "regions"] as $locationableType) {
+			$locationables = $data["locationable"][$locationableType] ?? [];
 
-            if (count($locationables)) {
-                $extraFields = [];
-                if (isset($data["locationable_radius"])) {
-                    $extraFields =  ["radius" => $data["locationable_radius"]];
-                }
+			if (count($locationables)) {
+				$extraFields = [];
+				if (isset($data["locationable_radius"])) {
+					$extraFields = ["radius" => $data["locationable_radius"]];
+				}
 
-                /** @var MorphToMany $locationableEntityQuery */
-                $locationableEntityQuery = $ad->$locationableType();
+				/** @var MorphToMany $locationableEntityQuery */
+				$locationableEntityQuery = $ad->$locationableType();
 
-                $locationableEntityQuery->sync($locationables, $extraFields);
-            }
-        }
-        if (!empty($data["documents_ids"]) && is_array($data["documents_ids"])) {
-            $ad->documents()->sync($data["documents_ids"]);
-        }
-    }
+				$locationableEntityQuery->sync($locationables, $extraFields);
+			}
+		}
+		if (!empty($data["documents_ids"]) && is_array($data["documents_ids"])) {
+			$ad->documents()->sync($data["documents_ids"]);
+		}
+	}
 
 	/**
 	 * Delete an  ad.
@@ -159,14 +159,14 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 */
 	public function allByIdUser($idUser, $conditions = []): Collection
 	{
-	    $query = $this->entity
-            ->where(["user_pp_id" => $idUser])
-            ->with($this->getDashboardsEagerLoading())
-            ->orderByDesc('id');
+		$query = $this->entity
+			->where(["user_pp_id" => $idUser])
+			->with($this->getDashboardsEagerLoading())
+			->orderByDesc('id');
 
-	    foreach($conditions as $column => $value) {
-	        $query->where($column, $value);
-        }
+		foreach ($conditions as $column => $value) {
+			$query->where($column, $value);
+		}
 
 		/** @var Collection $model */
 		$models = $query
@@ -207,7 +207,6 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			->get();
 		return $models;
 	}
-
 
 	/**
 	 * @param array $territoriesCode
@@ -318,20 +317,22 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				$query->whereNotNull('project_id');
 			})
 			->orWhere(function (Builder $query) use ($territoriesCode) {
-				$query->whereNotNull('project_id');
+
 				$query->whereHas('attributionAd', function (Builder $subQuery) {
 					$subQuery->whereNotNull('user_advisor_id');
 				});
 				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
 				});
-				$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
-					$query->whereIn('code', $territoriesCode);
+				$query->where(function (Builder $query) use($territoriesCode) {
+					$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
+						$query->whereIn('code', $territoriesCode);
+					});
+					$query->orWhereHas('cities', function (Builder $query) use ($territoriesCode) {
+						$query->whereIn('department_code', $territoriesCode);
+					});
 				});
-				$query->orWhereHas('cities', function (Builder $query) use ($territoriesCode) {
-					$query->whereIn('department_code', $territoriesCode);
-				});
-
+				$query->whereNotNull('project_id');
 
 			});
 
@@ -595,45 +596,46 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		];
 	}
 
-    /**
-     * @param Carbon $date
-     * @return Ad[]|Collection
-     */
-    public function findAllByPublishedOnSince(Carbon $date)
-    {
-        return $this->entity
-            ->whereHas('attributionAd', function (Builder $query) use ($date) {
-                $query->whereDate('published_on', '<=', $date);
-            })->get();
-    }
+	/**
+	 * @param Carbon $date
+	 * @return Ad[]|Collection
+	 */
+	public function findAllByPublishedOnSince(Carbon $date)
+	{
+		return $this->entity
+			->whereHas('attributionAd', function (Builder $query) use ($date) {
+				$query->whereDate('published_on', '<=', $date);
+			})->get();
+	}
 
-    /**
-     * @param Carbon $date
-     * @return Ad[]|Collection
-     */
-    public function findAllNotAttributedSince(Carbon $date)
-    {
-        return $this->entity
-            ->doesntHave('attributionAd')
-            ->whereDate('updated_at', '<=', $date)
-            ->get();
-    }
+	/**
+	 * @param Carbon $date
+	 * @return Ad[]|Collection
+	 */
+	public function findAllNotAttributedSince(Carbon $date)
+	{
+		return $this->entity
+			->doesntHave('attributionAd')
+			->whereDate('updated_at', '<=', $date)
+			->get();
+	}
 
-    public function findAttributedAndNotDraftedByUserId(int $userId)
-    {
-        return $this->entity
-            ->whereHas('attributionAd')
-            ->where('is_draft', 0)
-            ->where('user_pp_id', $userId)
-            ->get();
-    }
-    public function findAdsAttributedAndNotDraftedByUserId(int $userId)
-    {
-        return $this->entity
-            ->whereHas('attributionAd')
-            ->where('is_draft', 0)
-            ->where('user_pp_id', $userId)
+	public function findAttributedAndNotDraftedByUserId(int $userId)
+	{
+		return $this->entity
+			->whereHas('attributionAd')
+			->where('is_draft', 0)
+			->where('user_pp_id', $userId)
+			->get();
+	}
+
+	public function findAdsAttributedAndNotDraftedByUserId(int $userId)
+	{
+		return $this->entity
+			->whereHas('attributionAd')
+			->where('is_draft', 0)
+			->where('user_pp_id', $userId)
 			->whereNull('project_id')
-            ->get();
-    }
+			->get();
+	}
 }
