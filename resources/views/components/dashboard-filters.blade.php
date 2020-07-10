@@ -196,7 +196,7 @@
                     <div class="columns is-mobile is-multiline is-centered">
                         @foreach($adStatuses as $adStatus)
                             <div class="column is-narrow has-text-centered">
-                                <label class="checkbox has-tooltip-multiline has-tooltip-top"
+                                <label class="checkbox custom-tooltip has-tooltip-multiline has-tooltip-top"
                                        data-tooltip=" {{\App\Models\AdStatus::TOOLTIPS[(int)$adStatus->id]}}"
                                 >
                                     <input name="ad_statuses[]" value="{{(int)$adStatus->id}}"
@@ -216,64 +216,65 @@
                            value="{{old('ad_keywords')}}">
                 </div>
             @else
-                <div class="column">
-                    <p class="label has-text-centered has-tooltip-multiline has-tooltip-top "
-                       data-tooltip="
-					   {{implode(PHP_EOL,\App\Models\SupportStage::TOOLTIPS)}}
-                               ">
+                <div class="column ">
+                    <p class="label has-text-centered ">
                         Stade dans l'accompagnement
-                        <i class="fas fa-info-circle has-text-info"></i>
                     </p>
                     <div class="columns is-mobile is-multiline is-centered">
                         @foreach($supportStages as $supportStage)
                             <div class="column is-narrow pl-0 pr-0 has-text-centered">
-                                <label class="checkbox">
+                                <label class="checkbox custom-tooltip has-tooltip-multiline has-tooltip-top"
+                                       data-tooltip=" {{\App\Models\SupportStage::TOOLTIPS[(int)$supportStage->id]}}">
                                     <input name="support_stages[]" value="{{(int)$supportStage->id}}"
                                            type="checkbox"
                                             {{old('support_stages') && in_array((int)$supportStage->id,old('support_stages'))  ? ' checked' : '' }}>
-                                    {{$supportStage->name}}
-                                </label>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="column is-2 ">
-                    <p class="label has-text-centered has-tooltip-multiline has-tooltip-top "
-                       data-tooltip="
-					  {{implode(PHP_EOL, \App\Models\SupportState::TOOLTIPS)}}
-                               ">
-                        État de la demande
-                        <i class="fas fa-info-circle has-text-info"></i>
-                    </p>
-                    <div class="columns is-mobile is-multiline is-centered">
-                        @foreach($supportStates as $supportState)
-                            <div class="column is-narrow pl-0 pr-0 has-text-centered">
-                                <label class="checkbox">
-                                    <input name="support_states[]" value="{{(int)$supportState->id}}"
-                                           type="checkbox"
-                                            {{old('support_states') && in_array((int)$supportState->id,old('support_states'))  ? ' checked' : '' }}>
-                                    {{$supportState->name}}
+                                    <span class="icon">
+                                        <i class="fas fa-info-circle has-text-info"></i>
+                                    </span>
+                                    <span>{{$supportStage->name}}</span>
+
                                 </label>
                             </div>
                         @endforeach
                     </div>
                 </div>
                 <div class="column is-3 ">
-                    <p class="label has-text-centered has-tooltip-multiline has-tooltip-top "
-                       data-tooltip="
-					  {{implode(PHP_EOL, \App\Models\ProjectStatus::TOOLTIPS)}}
-                               ">
+                    <p class="label has-text-centered  ">
+                        État de la demande
+                    </p>
+                    <div class="columns is-mobile is-multiline is-centered">
+                        @foreach($supportStates as $supportState)
+                            <div class="column is-narrow pl-0 pr-0 has-text-centered">
+                                <label class="checkbox custom-tooltip has-tooltip-multiline has-tooltip-top"
+                                       data-tooltip=" {{\App\Models\SupportState::TOOLTIPS[(int)$supportState->id]}}">
+                                    <input name="support_states[]" value="{{(int)$supportState->id}}"
+                                           type="checkbox"
+                                            {{old('support_states') && in_array((int)$supportState->id,old('support_states'))  ? ' checked' : '' }}>
+                                    <span class="icon">
+                                        <i class="fas fa-info-circle has-text-info"></i>
+                                    </span>
+                                    <span>{{$supportState->name}}</span>
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="column is-3 ">
+                    <p class="label has-text-centered">
                         Avancement du projet
-                        <i class="fas fa-info-circle has-text-info"></i>
                     </p>
                     <div class="columns is-mobile is-multiline is-centered">
                         @foreach($projectStatuses as $projectStatus)
                             <div class="column is-narrow pl-0 pr-0 has-text-centered">
-                                <label class="checkbox">
+                                <label class="checkbox custom-tooltip has-tooltip-multiline has-tooltip-top"
+                                       data-tooltip=" {{\App\Models\ProjectStatus::TOOLTIPS[(int)$projectStatus->id]}}">
                                     <input name="project_statuses[]" value="{{(int)$projectStatus->id}}"
                                            type="checkbox"
                                             {{old('project_statuses') && in_array((int)$projectStatus->id,old('project_statuses'))  ? ' checked' : '' }}>
-                                    {{$projectStatus->name}}
+                                    <span class="icon">
+                                        <i class="fas fa-info-circle has-text-info"></i>
+                                    </span>
+                                    <span>{{$projectStatus->name}}</span>
                                 </label>
                             </div>
                         @endforeach

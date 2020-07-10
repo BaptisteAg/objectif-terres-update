@@ -57,6 +57,7 @@
                                     <option value="{{$advisor->id}}">{{$advisor->first_name}} {{$advisor->name}}</option>
                                 @endif
                             @endforeach
+                            <option value="{{$currentUser->id}}">{{$currentUser->first_name}} {{$currentUser->name}}</option>
                         </select>
                     </div>
                     <input value="{{$ad->id}}" name="ad_id" type="hidden">
@@ -78,7 +79,8 @@
                     <div class="content mt-30">
                         <p class="label has-text-centered">Laisser une note pour le primo accueillant</p>
                         <input value="{{auth()->id()}}" name="user_id" type="hidden">
-                        <textarea required  class="textarea has-fixed-size" name="value" type="text"  placeholder="Votre note..."></textarea>
+                        <textarea required class="textarea has-fixed-size" name="value" type="text"
+                                  placeholder="Votre note..."></textarea>
                     </div>
                 </div>
             </div>

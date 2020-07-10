@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Threads;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MessageRequest;
+use App\Models\SupportStage;
 use App\Models\Thread;
 use App\Models\User;
 use App\Notifications\NewMessageNotification;
 use App\Services\Ads\AdService;
+use App\Services\Advisors\AdvisorsService;
 use App\Services\Documents\DocumentService;
 use App\Services\Documents\DocumentServiceInterface;
 use App\Services\Threads\ThreadService;
@@ -26,8 +28,19 @@ class MessagesController extends Controller
 	 * @var AdService
 	 */
 	protected $adService;
+	/**
+	 * @var UserService
+	 */
 	protected $userService;
+	/**
+	 * @var DocumentServiceInterface
+	 */
 	protected $documentService;
+
+	/**
+	 * @var AdvisorsService
+	 */
+	protected $advisorService;
 
 	/**
 	 * MessagesController constructor.
@@ -35,13 +48,15 @@ class MessagesController extends Controller
 	 * @param AdService $adService
 	 * @param UserService $userService
 	 * @param DocumentServiceInterface $documentService
+	 * @param AdvisorsService $advisorsService
 	 */
-	public function __construct(ThreadService $threadService, AdService $adService, UserService $userService, DocumentServiceInterface $documentService)
+	public function __construct(ThreadService $threadService, AdService $adService, UserService $userService, DocumentServiceInterface $documentService, AdvisorsService $advisorsService)
 	{
 		$this->threadService = $threadService;
 		$this->adService = $adService;
 		$this->userService = $userService;
 		$this->documentService = $documentService;
+		$this->advisorService = $advisorsService;
 	}
 
 
@@ -51,8 +66,6 @@ class MessagesController extends Controller
 	 */
 	public function show(Thread $thread)
 	{
-
-
 		$messages = $this->threadService->findAllByThread($thread->id);
 		$thread = $this->threadService->find($thread->id);
 		$this->threadService->setToReadAllUnreadMessagesInThread($thread->id);
@@ -76,6 +89,12 @@ class MessagesController extends Controller
 	{
 		$message = $this->threadService->createMessage($request->validated());
 
+		//if first message send for advisors/supervisor send to user support request -> update support stage
+		if (isset($message->thread->ad->project) && auth()->user()->role >= 2) {
+			if ($this->threadService->findMessagesByThreadAndUserId($message->thread->id, auth()->id())->count() === 1) {
+				$this->advisorService->updateSupport(['ad_id' => $message->thread->ad->id, 'support_stage' => SupportStage::FIRST_RECEPTION_ID]);
+			};
+		}
 		return response()->json((object)$message);
 	}
 
