@@ -330,16 +330,16 @@
                                                     <span class="tag is-warning has-tooltip-bottom"
                                                           data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
                                                 @elseif($ad->project->supportState->id ===\App\Models\SupportState::HANDLE_ID)
-                                                    <span class="tag is-success is-light has-tooltip-bottom"
+                                                    <span class="tag is-success  has-tooltip-bottom"
                                                           data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
                                                 @elseif($ad->project->supportState->id === \App\Models\SupportState::PENDING_ID)
-                                                    <span class="tag is-info is-light has-tooltip-bottom"
+                                                    <span class="tag has-text-white bg-d-secondary  has-tooltip-bottom"
                                                           data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
                                                 @elseif($ad->project->supportState->id === \App\Models\SupportState::ARCHIVE_ID)
-                                                    <span class="tag is-light has-tooltip-bottom"
+                                                    <span class="tag  has-tooltip-bottom"
                                                           data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
                                                 @elseif($ad->project->supportState->id === \App\Models\SupportState::TO_ARCHIVE_ID)
-                                                    <span class="tag is-link is-light has-tooltip-bottom"
+                                                    <span class="tag is-link  has-tooltip-bottom"
                                                           data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
                                                 @endif
                                             @else

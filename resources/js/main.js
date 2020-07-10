@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Dropdowns
     initDropdowns();
     Waves.attach('.secondary .menu__link', ['waves-button', 'waves-float']);
-    Waves.attach('.button:not(.round), .bubble-wrap .menu__link', ['waves-button', 'waves-float', 'waves-light']);
+    Waves.attach('.button:not(.round), .bubble-wrap .menu__link, input.is-link', ['waves-button', 'waves-float', 'waves-light']);
     Waves.attach('.button__icon', ['waves-circle', 'waves-light']);
     Waves.init();
 });
