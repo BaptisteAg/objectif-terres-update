@@ -153,7 +153,7 @@ abstract class BaseController extends Controller
 			$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
 
 			if (!isset($ad->project)) {
-				if ($ad->attributionAd->adStatus && $ad->attributionAd->adStatus->id === AdStatus::PENDING_MODERATION_STATUS_ID) {
+				if (!empty($ad->attributionAd->adStatus) && $ad->attributionAd->adStatus->id === AdStatus::PENDING_MODERATION_STATUS_ID) {
 					$isAdToModerate = true;
 				}
 			}
@@ -185,7 +185,7 @@ abstract class BaseController extends Controller
 					$advisorUsers = $this->userService->findByRoleAndDepartments(2, $adDepartmentCodes);
 				}
 			}
-			if ($user->role >= 1 && $ad->attributionAd->user_moderator_id !== $currentUser->id) {
+			if ($user->role >= 1 && $ad->attributionAd && $ad->attributionAd->user_moderator_id !== $currentUser->id) {
 				if (count(array_intersect($this->adService->getAdDepartmentCodes($ad), $this->userService->getCurrentUserTerritoryDepartments())) > 0) {
 					$threads = $this->threadService->findThreadsByAd($ad->id);
 				}
