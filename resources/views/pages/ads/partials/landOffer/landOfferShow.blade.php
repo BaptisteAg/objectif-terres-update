@@ -1,7 +1,7 @@
 <div class="columns">
 	@include('pages.ads.partials.show-images')
-	<div class="column">
-		<div class="card">
+	<div class="column is-half is-flex-tablet">
+		<div class="card is-flex-tablet card-announcement">
 			<div class="card-content">
 				@foreach($ad->landOfferAd->offerGenres as $offerGenre)
 					<span class="custom-tag info">{{$offerGenre->name}}</span>
@@ -41,23 +41,33 @@
 {{--					<p><span class="is-size-5 is-capitalized has-text-black">Catégorie : </span><span--}}
 {{--								class="subtitle">{{$ad->ad_type_full_name}}</span></p>--}}
 {{--				</div>--}}
-				@if($ad->landOfferAd->accept_use_zip_code)
-					@if($ad->cities->count())
-						<div class="content has-text-centered">
+				@if($ad->cities->count())
+					@if($ad->landOfferAd->accept_use_zip_code)
+						<div class="content">
 							<p><span class="is-size-5 is-capitalized has-text-black">Code postal : </span><span
 										class="subtitle">{{$ad->cities[0]->zip_code }} ({{$ad->cities[0]->name }})</span>
 							</p>
 						</div>
-					@endif
-				@else
-					@if($ad->departments->count())
+					@else
 						<div class="content">
+							@if( auth()->user()->id === $ad->user_pp_id)
+								<p><span class="is-size-5 has-text-black">Code Postal (non visible pour les autres utilisateurs): </span><span
+										class="subtitle">{{$ad->cities[0]->zip_code }} ({{$ad->cities[0]->name }})</span>
+								</p>
+							@endif
 							<p><span class="is-size-5 is-capitalized has-text-black">Département : </span><span
-										class="subtitle">{{$ad->departments[0]->code }} ({{$ad->departments[0]->name }})</span>
+										class="subtitle">{{$ad->cities[0]->department->code }} ({{$ad->cities[0]->department->name }})</span>
 							</p>
 						</div>
 					@endif
+				@elseif($ad->departments->count())
+					<div class="content">
+						<p><span class="is-size-5 is-capitalized has-text-black">Département : </span><span
+									class="subtitle">{{$ad->departments[0]->code }} ({{$ad->departments[0]->name }})</span>
+						</p>
+					</div>
 				@endif
+
 				@if(! is_null($ad->landOfferAd->surface))
 					<div class="content">
 						<p><span class="is-size-5 is-capitalized has-text-black">Surface : </span><span
@@ -86,23 +96,23 @@
 					@endif
 				</div>
 
-				<div class="content">
-					<p><span class="is-size-5 is-capitalized has-text-black">Altitude : </span>
-						@if($ad->landOfferAd->altitude)
-							<span class="subtitle">{{$ad->landOfferAd->altitude }}m</span>
-						@else
-							<span class="subtitle">Non renseignée</span>
-						@endif
-					</p>
-				</div>
-				@if($ad->landOfferAd )
-					<div class="content">
-						<p>
-							<span class="is-size-5 is-capitalized has-text-black">Accès à l'eau : </span><span
-									class="subtitle">{{$ad->waterAccess}}</span>
-						</p>
-					</div>
-				@endif
+{{--				<div class="content">--}}
+{{--					<p><span class="is-size-5 is-capitalized has-text-black">Altitude : </span>--}}
+{{--						@if($ad->landOfferAd->altitude)--}}
+{{--							<span class="subtitle">{{$ad->landOfferAd->altitude }}m</span>--}}
+{{--						@else--}}
+{{--							<span class="subtitle">Non renseignée</span>--}}
+{{--						@endif--}}
+{{--					</p>--}}
+{{--				</div>--}}
+{{--				@if($ad->landOfferAd )--}}
+{{--					<div class="content">--}}
+{{--						<p>--}}
+{{--							<span class="is-size-5 is-capitalized has-text-black">Accès à l'eau : </span><span--}}
+{{--									class="subtitle">{{$ad->waterAccess}}</span>--}}
+{{--						</p>--}}
+{{--					</div>--}}
+{{--				@endif--}}
 
 				@if($ad->userPp->accept_share_contact_infos === 1)
 					<div class="content">
@@ -152,6 +162,26 @@
 			@foreach($ad->landOfferAd->bioCertifications as $bioCertification)
 				<img src="{{ $bioCertification->icon }}">
 			@endforeach
+		</p>
+	</div>
+
+	<div class="column is-one-third ">
+		<p class="has-text-link is-size-5 has-text-centered">Altitude</p>
+
+		<p class="has-text-centered">
+			@if($ad->landOfferAd->altitude)
+				{{$ad->landOfferAd->altitude }}m
+			@else
+				Non renseignée
+			@endif
+		</p>
+	</div>
+
+	<div class="column is-one-third ">
+		<p class="has-text-link is-size-5 has-text-centered">Accès à l'eau</p>
+
+		<p class="has-text-centered">
+			{{$ad->waterAccess}}
 		</p>
 	</div>
 </div>

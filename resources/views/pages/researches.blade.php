@@ -178,12 +178,18 @@
                                     <ul class="custom-tags custom-list custom-list_v x-large">
                                         <li class="custom-tag success">
                                             <i class="fas fa-map-marker-alt"></i>
-                                            @if (is_null($ad->citiesList) and is_null($ad->departmentsList) and is_null($ad->regionsList)   )
+                                            @if (is_null($ad->citiesList) and is_null($ad->departmentsList) and is_null($ad->regionsList))
                                                 Non renseignée
+                                            @elseif ($ad->landOfferAd && !$ad->landOfferAd->accept_use_zip_code)
+                                                @if( !is_null($ad->citiesList) )
+                                                    {{ $ad->cities[0]->department->name }}
+                                                @elseif( !is_null($ad->departmentsList))
+                                                    {{ $ad->departmentsList ?? ""}}
+                                                @endif
                                             @else
-                                                {{$ad->citiesList ?? ""}}
-                                                {{$ad->departmentsList ?? ""}}
-                                                {{$ad->regionsList ?? ""}}
+                                                {{ $ad->citiesList ?? "" }}
+                                                {{ $ad->departmentsList ?? "" }}
+                                                {{ $ad->regionsList ?? "" }}
                                             @endif
                                         </li>
                                         @if($ad->landOfferAd)

@@ -163,24 +163,28 @@
         @endforeach
     </div>--}}
 
-    @if($ad->landSeekAd->productionGenres->count())
-        <div class="column is-one-quarter ">
-            <p class="has-text-link is-size-5 has-text-centered"> Production(s) actuelle(s)</p>
-            @foreach ($ad->landSeekAd->productionGenres as $productionGenresSeek)
-                @if($productionGenresSeek->name !== '')
-                    <p class="has-text-centered">{{$productionGenresSeek->name}}</p>
-                @else
-                    <p class="has-text-centered">-</p>
-                @endif
-            @endforeach
-        </div>
-    @endif
+{{--    @if($ad->landSeekAd->productionGenres->count())--}}
+{{--        <div class="column is-one-quarter ">--}}
+{{--            <p class="has-text-link is-size-5 has-text-centered"> Production(s) actuelle(s)</p>--}}
+{{--            @foreach ($ad->landSeekAd->productionGenres as $productionGenresSeek)--}}
+{{--                @if($productionGenresSeek->name !== '')--}}
+{{--                    <p class="has-text-centered">{{$productionGenresSeek->name}}</p>--}}
+{{--                @else--}}
+{{--                    <p class="has-text-centered">-</p>--}}
+{{--                @endif--}}
+{{--            @endforeach--}}
+{{--        </div>--}}
+{{--    @endif--}}
 
 
 
 </div>
 
 <hr class="navbar-divider">
+<div class="content">
+    <h3 class="title is-3">Description du terrain recherché</h3>
+    <p>  {!! nl2br($ad->landSeekAd->land_description ?? "") !!} </p>
+</div>
 <div class="content">
     <h3 class="title is-3">Description du projet</h3>
     <p>  {!! nl2br($ad->about_project_content ?? "") !!} </p>

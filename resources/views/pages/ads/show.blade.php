@@ -71,9 +71,19 @@
                         <span>Modifier</span>
                     </a>
                 </div>
+                <div class="is-clearfix"></div>
             @endif
 
             <h1 class="title is-1 has-text-link has-text-centered">{{$ad->title}}</h1>
+
+            @auth()
+                @if(!empty($ad->project_id) && (auth()->user()->id === $ad->user_pp_id || auth()->user()->role >= 1))
+                    <section class="mb-30">
+                        <h2 class="title is-3 has-text-centered">Demande d'accompagnement</h2>
+                        <p class="has-text-centered">{{ $ad->support_request_text }}</p>
+                    </section>
+                @endif
+            @endauth
 
             <div>
                 @if($ad->ad_type === 'landSeek')
@@ -221,9 +231,18 @@
         @foreach($ad->departments as $location)
             formData.append('names[]', "{{$location->name}}");
         @endforeach
+
+
         @foreach($ad->cities as $location)
-            formData.append('names[]', "{{$location->name}}");
+            @if($ad->landOfferAd && !$ad->landOfferAd->accept_use_zip_code)
+                formData.append('names[]', "{{$location->department->name}}");
+            @else
+                formData.append('names[]', "{{$location->name}}");
+            @endif
+
         @endforeach
+
+
 
         fetch('/locations/polygon/ad-locations', {
             method: 'POST',
