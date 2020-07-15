@@ -50,7 +50,7 @@
                 </ul>
             </nav>
             @auth
-                @if(auth()->user()->role >= 1)
+                @if(auth()->user()->role >= 1 && $ad->attributionAd)
                     @if($ad->project()->exists() && auth()->user()->role >= 3)
                         @include ('pages.ads.partials.attribution-project-options')
                     @else
