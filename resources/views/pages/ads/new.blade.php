@@ -48,11 +48,10 @@
 
                     {{ csrf_field() }}
 
-                    @if(!empty($isSupportRequest))
-                        <input type="hidden" name="is_support_request" value="1">
-                        @if(session('support_request.text'))
-                            <input type="hidden" name="support_request_text" value="{{ session('support_request.text') }}">
-                        @endif
+
+                    <input type="hidden" name="is_support_request" value="{{empty($isSupportRequest)? 0 : 1}}">
+                    @if(session('support_request.text'))
+                        <input type="hidden" name="support_request_text" value="{{ session('support_request.text') }}">
                     @endif
 
                     @if(!empty($old["id"]))
