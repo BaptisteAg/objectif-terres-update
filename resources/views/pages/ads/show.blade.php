@@ -187,7 +187,7 @@
         const VueModerationModal = new Vue({
                 el: "#vue-moderation-modal",
                 name: 'content'
-            })
+            });
         @endif
         @endauth
     </script>

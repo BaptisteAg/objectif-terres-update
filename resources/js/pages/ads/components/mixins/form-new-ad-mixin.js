@@ -88,7 +88,7 @@ export default {
          * Set inputs border color ( red or initial ) based on error status
          */
         setInputsBorderColor() {
-            _(this.formInput).forEach((value, key) => {
+            for (const [key, value] of Object.entries(this.formInput)) {
                 const validation = this.$v.formInput[key];
                 const ref = this.$refs[key];
 
@@ -111,7 +111,7 @@ export default {
                         input.style.borderColor = hasDirtyError ? "red" : "#dbdbdb"
                     }
                 }
-            })
+            }
         },
         /**
          * Try to focus on the first error found
