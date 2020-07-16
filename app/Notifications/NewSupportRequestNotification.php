@@ -70,7 +70,6 @@ class NewSupportRequestNotification extends Notification implements ShouldQueue
 			'user_pp_first_name' => $this->ad->userPp->first_name,
 			'user_pp_name' => $this->ad->userPp->name,
 			'is_project' =>true
-
 		];
 	}
 }

@@ -140,6 +140,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		if (!empty($data["documents_ids"]) && is_array($data["documents_ids"])) {
 			$ad->documents()->sync($data["documents_ids"]);
 		}
+
+		$ad->refresh();
 	}
 
 	/**

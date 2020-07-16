@@ -141,7 +141,7 @@
 
                                 {!! Form::radio('landOffer[is_activity_transfer]',
                                     1,
-                                    $old['landOffer']['is_activity_transfer'] ?? null,
+                                    ($old['landOffer']['is_activity_transfer'] ?? null) === "1",
                                     [':disabled' => 'isInputDisabled',
                                     'v-model' => 'formInput.isActivityTransfer',
                                     'ref' => 'formInput.isActivityTransfer',
@@ -150,7 +150,7 @@
 
                                 {!! Form::radio('landOffer[is_activity_transfer]',
                                     0,
-                                    $old['landOffer']['is_activity_transfer'] ?? null,
+                                    ($old['landOffer']['is_activity_transfer'] ?? null) === "0",
                                     [':disabled' => 'isInputDisabled',
                                     'v-model' => 'formInput.isActivityTransfer',
                                     'ref' => 'formInput.isActivityTransfer',
