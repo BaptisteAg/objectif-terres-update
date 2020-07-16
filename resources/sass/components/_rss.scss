@@ -1,0 +1,18 @@
+.VueCarousel {
+  .tile {
+    padding: 0px 10px;
+  }
+  .tile__intro > * {
+    color:#000 !important;
+  }
+}
+
+
+
+@media (max-width: $tablet - 1) {
+  .VueCarousel {
+    .tile__content  {
+      padding-left:10px;
+    }
+  }
+}

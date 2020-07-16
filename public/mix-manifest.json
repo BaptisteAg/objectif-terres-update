@@ -1,4 +1,8 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/vendors~leaflet.js": "/vendors~leaflet.js",
+    "/eu-countries.js": "/eu-countries.js",
+    "/vendors~esri-leaflet.js": "/vendors~esri-leaflet.js",
+    "/vendors~esri-leaflet~leaflet.js": "/vendors~esri-leaflet~leaflet.js"
 }

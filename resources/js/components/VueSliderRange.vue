@@ -53,7 +53,7 @@
         watch: {
             selectedMinMaxLabels(textValues) {
                 this.selectedMinMaxValues = textValues.map(v => {
-                    return _.findKey(this.data, d => d === v);
+                    return Object.keys(this.data).find(key => this.data[key] === v);
                 });
 
                 this.$emit('input', this.selectedMinMaxValues)
