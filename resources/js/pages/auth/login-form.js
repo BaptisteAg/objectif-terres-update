@@ -24,7 +24,7 @@ Vue.component('login-form', {
             }
 
             if (this.hasPassedCheckpoint) {
-                event.target.submit()
+                event.target.submit();
                 return;
             }
 
@@ -35,12 +35,21 @@ Vue.component('login-form', {
             this.isLoading = true;
             fetch('/connexion/checkpoint', {
                 method: 'POST',
-                body: formData
+                body: formData,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
             })
                 .then(response => response.json())
                 .then(result => {
                     if (result.error) {
-                        this.loginErrorHandler(result.error)
+                        if(result.status === 419) {
+                            alert("La page a expiré et va être rafraîchie. Merci de réessayer.") && location.reload();
+                        }
+                        else {
+                            this.loginErrorHandler(result.error)
+                        }
                     } else if (result.redirect && result.redirect !== '') {
                         location.href = result.redirect;
                     } else {

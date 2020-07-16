@@ -6,6 +6,8 @@ import AdTypeSelect from '../../components/AdTypeSelect'
 
 import Vue from 'vue'
 
+
+
 Vue.component('new-ad', {
     components: {
         'new-land-seek-ad': LandSeekNewAd,
@@ -17,14 +19,12 @@ Vue.component('new-ad', {
     props: {
         oldAdTypeSelected: String,
         isSupportRequest: Boolean,
-        publishAction: String,
-        saveAction: String,
     },
     data() {
         return {
             adTypeSelected: this.oldAdTypeSelected,
             enabledForm: null,
-            formAction : this.publishAction
+            formAction : this.getPublishAction()
         }
     },
     mounted() {
@@ -82,9 +82,6 @@ Vue.component('new-ad', {
 
                 this.isSubmitting = false;
             } else {
-
-                console.log(this.formAction);
-
                 const text = this.isSupportRequest ?
                     'Vous êtes sur le point de soumettre une demande d\'accompagnement. Elle sera traitée sous 7 jours par un primo-accueillant.' :
                     'Vous êtes sur le point de demander la publication de votre annonce. Elle sera traitée sous 7 jours par un modérateur.';
@@ -111,11 +108,19 @@ Vue.component('new-ad', {
         },
 
         onSaveClick() {
-            this.formAction = this.saveAction;
+            this.formAction = this.getSaveAction();
         },
 
         onPublishClick() {
-            this.formAction = this.publishAction;
+            this.formAction = this.getPublishAction();
         },
+
+        getPublishAction() {
+            return this.isSupportRequest ? '/accompagnement/creer' : '/annonces/creer';
+        },
+
+        getSaveAction() {
+            return this.isSupportRequest ? '/accompagnement/sauvegarder' : '/annonces/sauvegarder';
+        }
     }
 });

@@ -8,6 +8,7 @@ use App\Models\Ad;
 use App\Models\User;
 use App\Notifications\NewAdToModerateNotification;
 use App\Notifications\NewSupportRequestNotification;
+use App\Notifications\SupportRequestAttributionNotification;
 
 class SupportRequestsController extends BaseController
 {
@@ -27,7 +28,6 @@ class SupportRequestsController extends BaseController
 
     /**
      * Display the ad creation form
-     * @return \Illuminate\View\View
      */
     public function processStart()
     {
@@ -36,11 +36,12 @@ class SupportRequestsController extends BaseController
 
         if ($user && $user->supportRequests()->count() >= self::SUPPORT_REQUESTS_LIMIT_PER_USER) {
             return back()->withErrors(
-                "Vous avez déjà fait une demande d’accompagnement. Pour mettre à jour votre projet ou nous contacter, allez dans votre compte"
+                "Vous avez déjà rempli une demande d’accompagnement. Pour mettre à jour votre projet ou nous contacter, allez dans votre compte"
             );
         }
 
         session()->put('support-request.text', request('support_request_text'));
+
         return redirect()->route('support-request.create');
     }
 
@@ -63,15 +64,20 @@ class SupportRequestsController extends BaseController
      */
     public function submitRequest(AdRequest $request)
     {
-
         $data = $request->validated();
 
         /** @var $ad Ad $ad */
         try {
             $ad = $this->adService->requestPublishing($data, true);
-            // send a notification to each related supervisor
-            foreach($this->adService->getAdSupervisors($ad) as $supervisor) {
-                $supervisor->notify(new NewSupportRequestNotification($ad));
+
+            if ($ad->attributionAd->userAdvisor) {
+                $ad->attributionAd->userAdvisor->notify(new SupportRequestAttributionNotification($ad));
+            }
+            else {
+                // send a notification to each related supervisor
+                foreach($this->adService->getAdSupervisors($ad) as $supervisor) {
+                    $supervisor->notify(new NewSupportRequestNotification($ad));
+                }
             }
         }
         catch(\Exception $exception) {
