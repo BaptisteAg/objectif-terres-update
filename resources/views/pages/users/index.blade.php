@@ -18,7 +18,7 @@
 		</div>
 		<section class="section">
 			<div class="columns is-mobile is-centered ">
-				@if(auth()->user()->ads()->count())
+				@if(auth()->user()->ads()->count() )
 					<div class="column is-3 ">
 						<a class="" href="{{route("ads.list")}}">
 							<div class="card custom-card ">

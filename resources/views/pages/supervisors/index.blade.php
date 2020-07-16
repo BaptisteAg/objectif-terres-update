@@ -310,7 +310,9 @@
                                         @endif
                                     </td>
                                     <td>
-                                        {{$ad->attributionAd->created_at->format("d/m/Y")}}
+                                        @if(isset($ad->attributionAd))
+                                            {{$ad->attributionAd->created_at->format("d/m/Y") }}
+                                        @endif
                                     </td>
                                     <td>
                                         @if(!is_null($ad->project_id))

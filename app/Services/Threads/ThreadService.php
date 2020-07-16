@@ -257,12 +257,6 @@ class ThreadService
 
 		$message = $this->messagesRepository->find($messageCreated->id);
 
-//		if (isset($message->thread->ad->project) && auth()->user()->role >= 2) {
-//			if ($this->findMessagesByThreadAndUserId($message->thread->id, auth()->id())->count() === 1) {
-//				$this->advisorService->updateSupport(['ad_id' => $message->thread->ad->id, 'support_stage' => SupportStage::FIRST_RECEPTION_ID]);
-//			};
-//		}
-
 		foreach ($message->thread->users as $user) {
 			$user = User::find($user->id);
 

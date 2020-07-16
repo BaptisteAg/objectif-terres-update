@@ -68,7 +68,6 @@ class SupportRequestsController extends BaseController
 
         /** @var $ad Ad $ad */
         try {
-
             $ad = $this->adService->requestPublishing($data, true);
             // send a notification to each related supervisor
             foreach($this->adService->getAdSupervisors($ad) as $supervisor) {
@@ -80,7 +79,7 @@ class SupportRequestsController extends BaseController
         }
 
         return redirect()->route('ads.show', [$ad->id])
-            ->with('success', 'Votre demande a bien été soumise. Vous receverez une réponse très bientôt ! ');
+            ->with('success', 'Votre demande a bien été soumise. Vous receverez une réponse très bientôt !');
     }
 
     /**

@@ -53,7 +53,7 @@
 @else
     <article class="message is-warning">
         <div class="message-body">
-            Votre annonce n'as pas encore été soumise, finaliser la création de votre annonce !
+            Votre annonce n'a pas encore été soumise, finalisez sa création !
         </div>
     </article>
 @endif

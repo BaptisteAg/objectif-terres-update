@@ -26,73 +26,73 @@ class AdsController extends BaseController
 		return view('pages.ads.new', $this->getCreateFormVars());
 	}
 
-    /**
-     * Display the ad edit form
-     * @return \Illuminate\View\View
-     * @throws \Exception
-     */
+	/**
+	 * Display the ad edit form
+	 * @return \Illuminate\View\View
+	 * @throws \Exception
+	 */
 	public function edit(int $id)
 	{
-	    $ad = $this->adService->find($id);
+		$ad = $this->adService->find($id);
 
-	    if(auth()->id() !== $ad->user_pp_id) {
-	        return abort(404);
-        }
+		if (auth()->id() !== $ad->user_pp_id) {
+			return abort(404);
+		}
 
-        $selected_zones = json_encode(array_filter(array_merge(
-            array_map($this->locationService->getResultRenderer('regions'), $ad->regions->toArray()),
-            array_map($this->locationService->getResultRenderer('departments'), $ad->departments->toArray()),
-            array_map($this->locationService->getResultRenderer('cities'), $ad->cities->toArray())
-        )));
-	    $locationable = array_filter([
-	        "cities" => $ad->cities->pluck('id')->toArray(),
-	        "departments" => $ad->departments->pluck('id')->toArray(),
-	        "regions" => $ad->regions->pluck('id')->toArray()
-        ]);
-	    $locationable_radius = $ad->cities->count() ? $ad->cities->first()->radius : '';
+		$selected_zones = json_encode(array_filter(array_merge(
+			array_map($this->locationService->getResultRenderer('regions'), $ad->regions->toArray()),
+			array_map($this->locationService->getResultRenderer('departments'), $ad->departments->toArray()),
+			array_map($this->locationService->getResultRenderer('cities'), $ad->cities->toArray())
+		)));
+		$locationable = array_filter([
+			"cities" => $ad->cities->pluck('id')->toArray(),
+			"departments" => $ad->departments->pluck('id')->toArray(),
+			"regions" => $ad->regions->pluck('id')->toArray()
+		]);
+		$locationable_radius = $ad->cities->count() ? $ad->cities->first()->radius : '';
 
-	    $documents = $ad->documents->toJson();
-	    $document_ids = $ad->documents->pluck("id")->toArray();
+		$documents = $ad->documents->toJson();
+		$document_ids = $ad->documents->pluck("id")->toArray();
 
-	    $vars = $this->getCreateFormVars();
+		$vars = $this->getCreateFormVars();
 
-	    if(!old('ad_type')) {
-	        $vars["old"] = array_merge(
-                [
-                    'ad_type'        => $this->adService->getAdType($ad),
+		if (!old('ad_type')) {
+			$vars["old"] = array_merge(
+				[
+					'ad_type' => $this->adService->getAdType($ad),
 
-                    'land_seek'      => $ad->landSeekAd  ?
-                        array_merge($ad->landSeekAd->toArray(),[
-                            "buildings" => $ad->landSeekAd->buildings->pluck("requirement.id", "buildingType.id")->toArray(),
-                            "production_genres" => $ad->landSeekAd->productionGenres->pluck("id")->toArray()
-                        ]) : null,
+					'land_seek' => $ad->landSeekAd ?
+						array_merge($ad->landSeekAd->toArray(), [
+							"buildings" => $ad->landSeekAd->buildings->pluck("requirement.id", "buildingType.id")->toArray(),
+							"production_genres" => $ad->landSeekAd->productionGenres->pluck("id")->toArray()
+						]) : null,
 
-                    'land_offer'     => $ad->landOfferAd ?
-                        array_merge($ad->landOfferAd->toArray(),[
-                            "bio_certifications" => $ad->landOfferAd->bioCertifications->pluck("id")->toArray(),
-                            "production_genres" => $ad->landOfferAd->productionGenres->pluck("id")->toArray(),
-                            "production_genres_wanted" => $ad->landOfferAd->productionGenresPossible->pluck("id")->toArray(),
-                            "offer_genres" => $ad->landOfferAd->offerGenres->pluck("id")->toArray(),
-                        ]) : null,
+					'land_offer' => $ad->landOfferAd ?
+						array_merge($ad->landOfferAd->toArray(), [
+							"bio_certifications" => $ad->landOfferAd->bioCertifications->pluck("id")->toArray(),
+							"production_genres" => $ad->landOfferAd->productionGenres->pluck("id")->toArray(),
+							"production_genres_wanted" => $ad->landOfferAd->productionGenresPossible->pluck("id")->toArray(),
+							"offer_genres" => $ad->landOfferAd->offerGenres->pluck("id")->toArray(),
+						]) : null,
 
-                    'job_offer'      => $ad->jobOfferAd  ?
-                        array_merge($ad->jobOfferAd->toArray(),[
-                            "offer_types" => $ad->jobOfferAd->jobOfferTypes->pluck("id")->toArray(),
-                            "education_levels" => $ad->jobOfferAd->educationLevels->pluck("id")->toArray(),
-                        ]) : null,
+					'job_offer' => $ad->jobOfferAd ?
+						array_merge($ad->jobOfferAd->toArray(), [
+							"offer_types" => $ad->jobOfferAd->jobOfferTypes->pluck("id")->toArray(),
+							"education_levels" => $ad->jobOfferAd->educationLevels->pluck("id")->toArray(),
+						]) : null,
 
-                    'job_seek'       => $ad->jobSeekAd   ?
-                        array_merge($ad->jobSeekAd->toArray(),[
-                            "offer_types" => $ad->jobSeekAd->jobOfferTypes->pluck("id")->toArray(),
-                            "education_levels" => $ad->jobSeekAd->educationLevels->pluck("id")->toArray(),
-                        ]) : null,
-                ],
-                $ad->only(["id", "title", "about_content", "about_project_content", "accept_share_contact_infos"]),
-                compact("selected_zones", "locationable", "locationable_radius", "documents", "document_ids")
-            );
-        }
+					'job_seek' => $ad->jobSeekAd ?
+						array_merge($ad->jobSeekAd->toArray(), [
+							"offer_types" => $ad->jobSeekAd->jobOfferTypes->pluck("id")->toArray(),
+							"education_levels" => $ad->jobSeekAd->educationLevels->pluck("id")->toArray(),
+						]) : null,
+				],
+				$ad->only(["id", "title", "about_content", "about_project_content", "accept_share_contact_infos"]),
+				compact("selected_zones", "locationable", "locationable_radius", "documents", "document_ids")
+			);
+		}
 
-	    //dd($vars);
+		//dd($vars);
 
 		return view('pages.ads.new', $vars);
 	}
@@ -104,8 +104,8 @@ class AdsController extends BaseController
 	 */
 	public function requestPublishing(AdRequest $request)
 	{
-	    /** @var User $user */
-	    $user = auth()->user();
+		/** @var User $user */
+		$user = auth()->user();
 		$publishedAdsCount = $this->adService->getUserPublishedAdsCount($user);
 
 		if ($publishedAdsCount >= self::PUBLISHED_AD_LIMIT_PER_USER) {
@@ -119,17 +119,19 @@ class AdsController extends BaseController
 		$data = $request->validated();
 
 		/** @var $ad Ad $ad */
-        try {
-            $ad = $this->adService->requestPublishing($data);
-            $ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
-        }
-        catch(\Exception $exception) {
-            report($exception);
-            if(env('APP_DEBUG')) {
-                //throw $exception;
-            }
-            return back()->withInput()->withErrors($exception->getMessage());
-        }
+		try {
+			$ad = $this->adService->requestPublishing($data, $data['is_support_request']);
+			if (!$data['is_support_request']) {
+				$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
+			}
+
+		} catch (\Exception $exception) {
+			report($exception);
+			if (env('APP_DEBUG')) {
+				//throw $exception;
+			}
+			return back()->withInput()->withErrors($exception->getMessage());
+		}
 
 		return redirect()->route('ads.show', [$ad->id])
 			->with('success', 'Votre annonce a bien été soumise à modération. Vous receverez une réponse très bientôt ! ');
@@ -190,26 +192,26 @@ class AdsController extends BaseController
 	}
 
 	public function extendPublish(int $adId)
-    {
-        $ad = $this->adService->find($adId);
+	{
+		$ad = $this->adService->find($adId);
 
-        if(!$ad || $ad->user_pp_id !== auth()->id()) {
-            abort(403);
-        }
+		if (!$ad || $ad->user_pp_id !== auth()->id()) {
+			abort(403);
+		}
 
-        if(!$ad->attributionAd || !$ad->attributionAd->published_on) {
-            return redirect()
-                ->route('ads.show', ["id" => $ad->id])
-                ->withErrors("Impossible d'étendre la durée de cette annonce, car elle n'est pas publiée.");
-        }
+		if (!$ad->attributionAd || !$ad->attributionAd->published_on) {
+			return redirect()
+				->route('ads.show', ["id" => $ad->id])
+				->withErrors("Impossible d'étendre la durée de cette annonce, car elle n'est pas publiée.");
+		}
 
-        $ad->attributionAd->published_on = Carbon::now();
+		$ad->attributionAd->published_on = Carbon::now();
 
 
-        return redirect()
-            ->route('ads.show', ["id" => $ad->id])
-            ->with("success", "La durée de publication de de votre annonce a été étendue de 6 mois.");
-    }
+		return redirect()
+			->route('ads.show', ["id" => $ad->id])
+			->with("success", "La durée de publication de de votre annonce a été étendue de 6 mois.");
+	}
 
 	/**
 	 * @param AdRequest $request

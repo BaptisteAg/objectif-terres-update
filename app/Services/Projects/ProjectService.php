@@ -113,7 +113,7 @@ class ProjectService
 		$listOfMonthInYear = $this->attributionAdsService->getListOfMonthInYear();
 		$projectsInYear = $projects->filter(function ($project, $key) {
 			$date = Carbon::parse($project->created_at);
-			if ($date->isBetween(Carbon::now()->startOfYear(), Carbon::now()->endOfYear())) {
+			if ($date->isBetween(Carbon::now()->startOfYear()->subYear(), Carbon::now()->endOfYear()->subYear())) {
 				return $project;
 			}
 		});

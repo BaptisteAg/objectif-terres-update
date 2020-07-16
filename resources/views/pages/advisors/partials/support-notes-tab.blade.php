@@ -84,15 +84,16 @@
 								</div>
 								{!! Form::open(['route' => 'advisor.deleteNote', 'method'=>'post']) !!}
 								<input type="hidden" name="ad_note_id" value="{{$note->id}}">
-								<button class="is-size-7 is-pulled-right has-text-link"
-										style="border: none; background: transparent">
-									<a>
+{{--								<button class="is-size-7 is-pulled-right has-text-link"--}}
+{{--										style="border: none; background: transparent">--}}
+									<a class="is-pulled-right" v-on:click="showValidationModal()">
 										<span class="icon">
 										<i class="fas fa-trash-alt"></i>
 									</span>
 										<span>Supprimer</span>
 									</a>
-								</button>
+								@include('pages.advisors.partials.validation-modal')
+{{--								</button>--}}
 								{!! Form::close() !!}
 							</div>
 						</div>
