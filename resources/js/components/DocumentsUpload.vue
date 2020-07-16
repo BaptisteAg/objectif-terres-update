@@ -88,9 +88,9 @@
                 formData.append('type', this.type);
 
                 if(this.extraData) {
-                    _.forEach(this.extraData, (value, key) => {
+                    for (const [key, value] of Object.entries(this.extraData)) {
                         formData.append(key, value);
-                    })
+                    }
                 }
 
                 this.$emit('uploading', true);

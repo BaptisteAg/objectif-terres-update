@@ -1,5 +1,5 @@
 <template>
-    <VueRssFeed :feedUrl="feedUrl" :name="name" :limit="limit"/>
+    <VueRssFeed :feedUrl="src" :name="name" :limit="limit"/>
 </template>
 
 <script>
@@ -10,10 +10,12 @@
         components: {
             VueRssFeed
         },
+        props: {
+            src: String
+        },
         data() {
             return {
-                feedUrl: "https://terredeliens.org/spip.php?page=backend&id_rubrique=7",
-                name: "test",
+                name: "rss",
                 limit: 5,
             };
         },

@@ -54,7 +54,7 @@
         },
         watch: {
             sliderTextValue(v) {
-                this.sliderValue = _.findKey(this.data, d => d === v);
+                this.sliderValue = Object.keys(this.data).find(key => this.data[key] === v);
                 this.$emit('input', this.sliderValue)
             }
         }

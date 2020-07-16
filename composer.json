@@ -20,7 +20,8 @@
         "maatwebsite/excel": "^3.1",
         "mccool/laravel-auto-presenter": "^7.3",
         "omniphx/forrest": "^2.5",
-        "ozankurt/repoist": "^3.2"
+        "ozankurt/repoist": "^3.2",
+        "vedmant/laravel-feed-reader": "^1.4"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
