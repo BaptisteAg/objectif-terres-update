@@ -1,12 +1,7 @@
 
 //////////////
-// LODASH
-_ = require('lodash');
-
-//////////////
 // VUE
 window.Vue = require('vue');
-
 
 import Vuelidate from 'vuelidate';
 Vue.use(Vuelidate);
@@ -15,6 +10,8 @@ import VueFormWizard from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 Vue.use(VueFormWizard);
 
+import VueCarousel from 'vue-carousel';
+Vue.use(VueCarousel);
 
 require('vue-pagination-2/dist/vue-pagination-2.min');
 
@@ -24,10 +21,14 @@ window.SmoothScroll = require('smooth-scroll');
 window.Waves = require('node-waves');
 
 //////////////
+// LOCAL LIBS
+require('./libs/fetchJson');
+
+//////////////
 // PAGES
 require('./pages/support-request-start');
-require ('./pages/ads/new');
-require ('./pages/ads/show');
+require('./pages/ads/new');
+require('./pages/ads/show');
 require('./pages/header');
 require('./pages/auth/login-form');
 require('./pages/auth/user-form');
@@ -38,7 +39,8 @@ require('./pages/supervisor/supervisor');
 require('./pages/video');
 require('./pages/cms/contact-us-form');
 require('./pages/homepage/homepage');
+
 //////////////
 // GLOBAL
+require('./notifications');
 require('./main.js');
-require('./notifications')

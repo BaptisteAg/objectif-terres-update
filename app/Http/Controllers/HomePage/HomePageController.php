@@ -5,11 +5,10 @@ namespace App\Http\Controllers\HomePage;
 use App\Http\Controllers\Controller;
 use App\Models\Ad;
 use App\Models\AdStatus;
-use App\Models\City;
-use App\Models\Department;
-use App\Models\Region;
 use App\Services\Ads\AdService;
+use App\Services\Rss\RssService;
 use Illuminate\Database\Eloquent\Builder;
+use Vedmant\FeedReader\FeedReader;
 
 class HomePageController extends Controller
 {
@@ -23,7 +22,7 @@ class HomePageController extends Controller
 		$this->adService = $adService;
 	}
 
-	public function show(AdService $adService)
+	public function show(AdService $adService, RssService $rssService)
 	{
 		//TODO get the last ads with  : $lastAdsAdded = AttributionAdEvents::orderBy('id', 'desc')->take(2)->get();
 		//TODO get the last ads tag "Partenaires"
@@ -37,7 +36,8 @@ class HomePageController extends Controller
 			$query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
 		})->take(2)->orderBy('created_at', 'desc')->get();
 
-		return view('pages.homepage', compact('ads'));
+		$rssNews = $rssService->getTdlNews();
 
+		return view('pages.homepage', compact('ads', 'rssNews'));
 	}
 }
