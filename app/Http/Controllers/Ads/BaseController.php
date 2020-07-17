@@ -195,7 +195,6 @@ abstract class BaseController extends Controller
 			'threads',
 			'threadsWithUnreadMessages',
 			'responseTemplates',
-			'refusalTypes',
 			'isAdToModerate',
 			'isLoggedUserModeratorAd',
 			'advisorUsers',
