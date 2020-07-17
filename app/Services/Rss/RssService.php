@@ -53,7 +53,7 @@ class RssService
 
     private function getTagData(SimplePie_Item $item, $tag, $namespace = '')
     {
-        return $item->get_item_tags($namespace,$tag)[0]["data"];
+        return $item->get_item_tags($namespace,$tag)[0]["data"] ?? "";
     }
 
 
