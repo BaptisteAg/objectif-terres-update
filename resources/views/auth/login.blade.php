@@ -58,16 +58,6 @@
                             @enderror
                         </div>
 
-                        {{--                            <div class="field">--}}
-                        {{--                                <div class="control">--}}
-                        {{--                                    <label class="checkbox">--}}
-                        {{--                                        <input type="checkbox" name="remember"--}}
-                        {{--                                               id="remember" {{ old('remember') ? 'checked' : '' }}>--}}
-                        {{--                                        Se souvenir des mes identifiants--}}
-                        {{--                                    </label>--}}
-                        {{--                                </div>--}}
-                        {{--                            </div>--}}
-
                         <div class="field is-grouped is-flex" style="justify-content: space-between;">
                             <div class="control">
                                 <a href="{{ route('password.request') }}" class="button basic secondary form-button">

@@ -35,8 +35,8 @@
 							inline-template
 							init-thread='{{ $threads[0]->id }}'
 							:user-role="{{auth()->user()->role}}"
-							v-bind:is-display-in-thread-page=true
-							v-bind:is-user-ad-owner=false
+							:is-display-in-thread-page=true
+							:is-user-ad-owner=false
 							:user-id="{{auth()->id()}}"
 					>
 						<div>
@@ -49,24 +49,24 @@
 							<div class="columns" v-if="initialLoading === false">
 								<div class="column is-one-quarter">
 									<list-threads
+											v-model="messages"
 											:threads="{{json_encode((object)$threads)}}"
 											:number-of-threads-with-unread-messages="{{$threadsWithUnreadMessages->count()}}"
 											:threads-with-unread-messages="{{$threadsWithUnreadMessages}}"
-											v-model="messages"
+											:is-display="isDisplay"
+											:user-role="userRole"
+											:user-id="{{auth()->id()}}"
 											@on-thread-click="onThreadClick"
 											@on-new-thread-click="onNewThreadClick"
-											v-bind:is-display="isDisplay"
-											v-bind:is-user-moderator="isUserModerator"
-											:user-id="{{auth()->id()}}"
 									>
 									</list-threads>
 								</div>
 								<div class="column  box-thread-display">
 									<div class="box">
 										<header-message
-												v-bind:active-thread-id="activeThreadId"
-												v-bind:active-thread = "activeThread"
-												v-bind:is-display="isDisplay"
+												:active-thread-id="activeThreadId"
+												:active-thread = "activeThread"
+												:is-display="isDisplay"
 												v-model="messages"
 												:user-id="{{auth()->id()}}"
 										></header-message>
@@ -78,12 +78,12 @@
 												v-model="messages"
 												:user-id="{{auth()->id()}}"
 												:response-templates="{{json_encode($responseTemplates)}}"
+												:user-role="userRole"
+												:active-thread-id="activeThreadId"
+												:is-thread-related-to-user="isThreadRelatedToUser"
+												:is-thread-blocked = "isThreadBlocked"
 												@message-reply-success="onMessageReplySuccess"
 												@on-upload-success="onThreadClick"
-												v-bind:show-response-type="isUserModerator"
-												v-bind:active-thread-id="activeThreadId"
-												v-bind:is-thread-related-to-user="isThreadRelatedToUser"
-												:is-thread-blocked = "isThreadBlocked"
 										>
 										</form-message-reply>
 									</div>

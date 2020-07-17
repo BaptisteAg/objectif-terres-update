@@ -6,6 +6,7 @@ use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
 use App\Models\User;
 use App\Notifications\NewAdToModerateNotification;
+use App\Notifications\NewSupportRequestNotification;
 use App\Presenters\AdPresenter;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
@@ -123,6 +124,8 @@ class AdsController extends BaseController
 			$ad = $this->adService->requestPublishing($data, $data['is_support_request']);
 			if (!$data['is_support_request']) {
 				$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
+			} elseif ($data['is_support_request'] && isset($ad->attributionAd->user_advisor_id)) {
+				$ad->attributionAd->userAdvisor->notify(new NewSupportRequestNotification($ad));
 			}
 
 		} catch (\Exception $exception) {
@@ -157,7 +160,7 @@ class AdsController extends BaseController
 	{
 		$ad = $this->adService->find($adId);
 		if (!isset($ad->user_pp_id)) {
-			return view('pages.errors.unavailable-page', ['message' => "Contacter un administrateur du site pour plus d'informations"]);
+			abort(404);
 		}
 
 		//Throw error 404 if a visitor try to show an ad is not validated

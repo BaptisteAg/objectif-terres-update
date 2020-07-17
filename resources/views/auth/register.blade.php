@@ -317,10 +317,9 @@
                         <div class="field">
                             <label class="checkbox">
                                 <input type="checkbox" required>
-                                J'ai pris connaissance de <a> la charte d'utilisation de la plateforme d'annonces du
-                                    site
-                                    web de
-                                    Terre de Liens</a> .*
+                                <span>J'ai pris connaissance de
+                                    <a>  la charte d'utilisation de la plateforme d'annonces du site web de Terre de Liens</a>
+                               .*  </span>
                             </label>
                         </div>
                         <div class="field">
@@ -334,8 +333,7 @@
                             </label>
                         </div>
 
-                        <p>En appuyant sur valider, vous consentez <a>à l'utilisation de vos données
-                                personnelles</a> par Objectif Terres </p>
+                        <p>En appuyant sur valider, vous consentez <a>à l'utilisation de vos données personnelles</a> par Objectif Terres </p>
                         <br>
                         <div class="field is-grouped is-grouped-centered">
                             <div class="control is-pulled-right">

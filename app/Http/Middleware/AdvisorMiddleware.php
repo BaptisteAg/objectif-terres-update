@@ -23,7 +23,7 @@ class AdvisorMiddleware
 			abort(404);
 		} else {
 			if (auth()->user()->role < 2) {
-				return New Response(view('pages.errors.unauthorized')->with('role', 'primo-accueillants'));
+				abort(403);
 			} else {
 				return $next($request);
 			}

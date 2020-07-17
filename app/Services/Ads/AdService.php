@@ -172,10 +172,7 @@ class AdService
                 $advisor = $availableAdvisors->first();
                 $attributionAdData['user_advisor_id'] = $advisor->id;
             }
-            else if ($availableSupervisors->count() === 1) {
-                $advisor = $availableSupervisors->first();
-                $attributionAdData['user_advisor_id'] = $advisor->id;
-            }
+
             // Else nothing. No attribution needed if no advisor is bound
 
         } else {
@@ -526,10 +523,12 @@ class AdService
     public
     function groupAllValidatedAdsInYearByMonth(Collection $ads): Collection
     {
-        $validatedAds = $ads->filter(function ($ads, $key) {
-            if ($ads->attributionAd->ad_status_id === AdStatus::APPROVE_ID) {
-                return $ads;
-            }
+        $validatedAds = $ads->filter(function ($ad, $key) {
+        	if(isset($ad->attributionAd)){
+				if ($ad->attributionAd->ad_status_id === AdStatus::APPROVE_ID) {
+					return $ad;
+				}
+			}
         });
         $validatedAdsByMonthInYear = [];
         $listOfMonthInYear = $this->attributionAdsService->getListOfMonthInYear();
