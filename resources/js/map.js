@@ -52,7 +52,6 @@ class OSMapController {
         // Ajoute le feature group à la map
         this.map.addLayer(drawnItems);
 
-
         // return le feature group
         return drawnItems;
     }
