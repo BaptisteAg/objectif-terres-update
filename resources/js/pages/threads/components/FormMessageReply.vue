@@ -8,13 +8,13 @@
                         <div v-bind:class="[isLoading ?'control is-expanded  has-icons-left is-loading ' : 'control is-expanded  has-icons-left']">
                             <input type="hidden" name="thread_id" :value="activeThreadId">
                             <textarea
-                                :disabled="isLoading"
-                                id="reply-input"
-                                v-model="content"
-                                class=" textarea has-fixed-size"
-                                name="content"
-                                type="text"
-                                placeholder="Votre message..."/>
+                                    :disabled="isLoading"
+                                    id="reply-input"
+                                    v-model="content"
+                                    class=" textarea has-fixed-size"
+                                    name="content"
+                                    type="text"
+                                    placeholder="Votre message..."/>
                         </div>
                         <br>
                         <div class="field is-grouped"><a class=""><p
@@ -35,13 +35,13 @@
                                     v-show="$v.documents.$error && !$v.documents.notCurrentlyUploading"> Vous devez
                                 attendre la fin du téléversement de vos documents pour envoyer votre message. </p></div>
                         </div>
-                        <div v-if='showResponseType === false ' class="control ">
+                        <div v-if='showResponseTemplates === false ' class="control ">
                             <button class="button basic primary form-button button-send-message"><span
                                     class="icon is-small"> <i class="fas fa-paper-plane"></i> </span>
                                 <span>Envoyer</span></button>
                         </div>
                     </div>
-                    <div v-if="showResponseType"><label class="label">Envoyer un message type</label>
+                    <div v-if="showResponseTemplates"><label class="label">Envoyer un message type</label>
                         <div class="field is-grouped">
                             <p class="control is-expanded"><span
                                     v-bind:class="[isLoading ?'select is-fullwidth is-loading ' : 'select is-fullwidth']">
@@ -49,11 +49,21 @@
                                     <option disabled selected="selected">Choisissez votre message type...</option>
                                     <option v-for="responseTemplate in responseTemplates">{{responseTemplate.content}}
                                     </option>
-                                </select> </span></p>
+                                </select>
+                            </span>
+                            </p>
                         </div>
-                        <div class="field is-grouped"><p class="control is-expanded"><a href="/gestion-reponse-types">
-                            <span class="icon"> <i class="fas fa-plus"></i> </span> <span>Créer un nouveau message
-                            type</span> </a></p></div>
+
+                        <div v-if="showLinkNewResponseTemplate" class="field is-grouped">
+                            <p class="control is-expanded">
+                                <a href="/gestion-reponse-types">
+                                    <span class="icon">
+                                        <i class="fas fa-plus"></i>
+                                    </span>
+                                    <span>Créer un nouveau message type</span>
+                                </a>
+                            </p>
+                        </div>
                         <br>
                         <p class="control ">
                             <button class="button basic form-button primary button-send-message" :disabled="isLoading">
@@ -75,11 +85,11 @@
         props: {
             value: {},
             responseTemplates: '',
-            showResponseType: Boolean,
+            userRole: '',
             activeThreadId: '',
             userId: "",
-            isThreadRelatedToUser : Boolean,
-            isThreadBlocked : Boolean,
+            isThreadRelatedToUser: Boolean,
+            isThreadBlocked: Boolean,
         },
         data() {
             return {
@@ -87,6 +97,8 @@
                 isLoading: false,
                 documents: [],
                 openDocumentUpload: false,
+                showResponseTemplates: this.userRole >= 1,
+                showLinkNewResponseTemplate: this.userRole >= 3,
             }
         },
         methods: {

@@ -30,28 +30,21 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Exception  $exception
+     * @param \Exception $exception
      * @return void
+     * @throws Exception
      */
     public function report(Exception $exception)
     {
         parent::report($exception);
     }
 
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
-     */
-    public function render($request, Exception $exception)
-    {
-        return parent::render($request, $exception);
-    }
-
     protected function renderHttpException(HttpExceptionInterface $e)
     {
+        if($e->getStatusCode() === 419) {
+            return back()->withInput()->withErrors("La page a expiré. Merci de réessayer.");
+        }
+
         if (! view()->exists("errors.{$e->getStatusCode()}")) {
             return response()->view('errors.default', ['exception' => $e], $e->getStatusCode(), $e->getHeaders());
         }

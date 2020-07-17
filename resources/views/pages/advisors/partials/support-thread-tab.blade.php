@@ -20,13 +20,13 @@
                 @if(! $ad->userPp->trashed())
                     <form-message-reply
                             v-model="messages"
-                            v-bind:active-thread-id="activeThreadId"
+                            :active-thread-id="activeThreadId"
                             :user-id="{{auth()->id()}}"
                             @message-reply-success="onMessageReplySuccess"
                             @on-upload-success="refreshThread"
-                            :show-response-type="true"
+                            :user-role="{{auth()->user()->role}}"
                             :response-templates="{{json_encode($responseTemplates)}}"
-                            v-bind:is-thread-related-to-user="isThreadRelatedToUser"
+                            :is-thread-related-to-user="isThreadRelatedToUser"
                     >
                     </form-message-reply>
                 @endif

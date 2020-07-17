@@ -35,8 +35,8 @@
                     <div>
                         <vue-threads
                                 inline-template
-                                v-bind:is-display-in-thread-page=false
-                                v-bind:is-user-ad-owner=false
+                                :is-display-in-thread-page=false
+                                :is-user-ad-owner=false
                                 init-thread='{{ $threads[0]->id }}'
                                 :user-id="{{auth()->id()}}"
                                 :user-role="{{auth()->user()->role}}"
@@ -51,13 +51,13 @@
                                 <div class="columns" v-else-if="initialLoading === false">
                                     <div class="column is-one-quarter">
                                         <list-threads
+                                                v-model="messages"
                                                 :threads="{{json_encode($threads)}}"
                                                 :number-of-unread-messages="0"
                                                 :threads-with-unread-messages="{{$threadsWithUnreadMessages}}"
-                                                v-model="messages"
-                                                v-bind:is-user-moderator="isUserModerator"
-                                                v-bind:is-display="isDisplay"
-                                                v-bind:is-user-logged-ad-owner="isUserAdOwner"
+                                                :user-role="userRole"
+                                                :is-display="isDisplay"
+                                               :is-user-logged-ad-owner="isUserAdOwner"
                                                 :user-id="{{auth()->id()}}"
                                                 @on-thread-click="onThreadClick"
                                         >
@@ -72,14 +72,14 @@
                                         <form-message-reply
                                                 v-model="messages"
                                                 :user-id="{{auth()->id()}}"
-                                                @message-reply-success="onMessageReplySuccess"
-                                                @on-upload-success="onThreadClick"
-                                                v-bind::show-response-type="isUserModerator"
-                                                v-bind:active-thread-id="activeThreadId"
-                                                v-bind:is-thread-related-to-user="isThreadRelatedToUser"
+                                                :user-role="userRole"
+                                                :active-thread-id="activeThreadId"
+                                                :is-thread-related-to-user="isThreadRelatedToUser"
                                                 :is-thread-blocked = "isThreadBlocked"
                                                 :show-response-type="true"
                                                 :response-templates="{{json_encode($responseTemplates)}}"
+                                                @message-reply-success="onMessageReplySuccess"
+                                                @on-upload-success="onThreadClick"
                                         >
                                         </form-message-reply>
                                     </div>
@@ -95,8 +95,8 @@
                     <div>
                         <vue-threads
                                 inline-template
-                                v-bind:is-display-in-thread-page=false
-                                v-bind:is-user-ad-owner=false
+                                :is-display-in-thread-page=false
+                                :is-user-ad-owner=false
                                 init-thread='{{ $threads[0]->id }}'
                                 :user-id="{{auth()->id()}}"
                                 :user-role="{{auth()->user()->role}}"
@@ -114,8 +114,8 @@
                                                 :threads="{{json_encode($threads)}}"
                                                 :number-of-unread-messages="0"
                                                 v-model="messages"
-                                                v-bind:is-display="isDisplay"
-                                                v-bind:is-user-logged-ad-owner="isUserAdOwner"
+                                                :is-display="isDisplay"
+                                                :is-user-logged-ad-owner="isUserAdOwner"
                                                 :user-id="{{auth()->id()}}"
                                                 @on-thread-click="onThreadClick"
 
@@ -124,11 +124,11 @@
                                     </div>
                                     <div class="column box ">
                                         <header-message
-                                                v-bind:is-display="isDisplay"
+                                                :is-display="isDisplay"
                                                 v-model="messages"
                                                 :user-id="{{auth()->id()}}"
-                                                v-bind:active-thread-id="activeThreadId"
-                                                v-bind:active-thread = "activeThread"
+                                                :active-thread-id="activeThreadId"
+                                                :active-thread = "activeThread"
                                         ></header-message>
                                         <display-message-content
                                                 v-model="messages"
@@ -139,7 +139,7 @@
                                                 :user-id="{{auth()->id()}}"
                                                 @message-reply-success="onMessageReplySuccess"
                                                 @on-upload-success="onThreadClick"
-                                                :show-response-type="isUserModerator"
+                                                :user-role="userRole"
                                                 :active-thread-id="activeThreadId"
                                                 :show-response-type="false"
                                                 :response-templates="{{json_encode($responseTemplates)}}"
@@ -181,8 +181,8 @@
                 <div>
                     <vue-threads
                             inline-template
-                            v-bind:is-display-in-thread-page=false
-                            v-bind:is-user-ad-owner=true
+                            :is-display-in-thread-page=false
+                            :is-user-ad-owner=true
                             init-thread='{{ $threads[0]->id }}'
                             :user-id="{{auth()->id()}}"
                     >
@@ -200,8 +200,8 @@
                                             :number-of-unread-messages="0"
                                             :threads-with-unread-messages="{{$threadsWithUnreadMessages}}"
                                             v-model="messages"
-                                            v-bind:is-display="isDisplay"
-                                            v-bind:is-user-logged-ad-owner="isUserAdOwner"
+                                            :is-display="isDisplay"
+                                            :is-user-logged-ad-owner="isUserAdOwner"
                                             :user-id="{{auth()->id()}}"
                                             @on-thread-click="onThreadClick"
                                     >
@@ -209,11 +209,11 @@
                                 </div>
                                 <div class="column box ">
                                     <header-message
-                                            v-bind:is-display="isDisplay"
+                                            :is-display="isDisplay"
                                             v-model="messages"
                                             :user-id="{{auth()->id()}}"
-                                            v-bind:active-thread-id="activeThreadId"
-                                            v-bind:active-thread = "activeThread"
+                                            :active-thread-id="activeThreadId"
+                                            :active-thread = "activeThread"
                                     ></header-message>
                                     <display-message-content
                                             v-model="messages"
@@ -224,8 +224,8 @@
                                             :user-id="{{auth()->id()}}"
                                             @on-upload-success="onMessageReplySuccess"
                                             @on-thread-click="onThreadClick"
-                                            v-bind:active-thread-id="activeThreadId"
-                                            v-bind:is-thread-related-to-user="isThreadRelatedToUser"
+                                            :active-thread-id="activeThreadId"
+                                            :is-thread-related-to-user="isThreadRelatedToUser"
                                             :is-thread-blocked = "isThreadBlocked"
                                     >
                                     </form-message-reply>

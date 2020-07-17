@@ -34,8 +34,6 @@
                     inline-template
                     :old-ad-type-selected="'{{$old['ad_type'] ?? ''}}'"
                     :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
-                    publish-action="{{route('ads.publish')}}"
-                    save-action="{{route('ads.save')}}"
                     style="display:none"
                     :style="{display:loading ? 'none': 'block'}">
 

@@ -3,9 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Ad;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -34,7 +32,7 @@ class NewSupportRequestNotification extends Notification implements ShouldQueue
 	 */
 	public function via($notifiable)
 	{
-		return ['database', 'mail'];
+		return ['mail','database'];
 	}
 
 	/**
@@ -47,7 +45,6 @@ class NewSupportRequestNotification extends Notification implements ShouldQueue
 	{
 		$url = url('/annonces/'.$this->ad->id);
 		return (new MailMessage)
-			->from(env('MAIL_FROM_ADDRESS'), "Administration | Objectif Terres")
 			->subject('Nouvelle demande d\'accompagnement !')
 			->greeting('Bonjour,')
 			->line('Vous avez reçu une nouvelle demande d\'accompagnment pour un projet posté par '. $this->ad->userPp->first_name.' '.$this->ad->userPp->name.' .')
@@ -70,7 +67,6 @@ class NewSupportRequestNotification extends Notification implements ShouldQueue
 			'user_pp_first_name' => $this->ad->userPp->first_name,
 			'user_pp_name' => $this->ad->userPp->name,
 			'is_project' =>true
-
 		];
 	}
 }

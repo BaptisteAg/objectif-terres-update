@@ -22,7 +22,7 @@ class SupervisorMiddleware
 			abort(404);
 		} else {
 			if (auth()->user()->role < 3) {
-				return New Response(view('pages.errors.unauthorized')->with('role', 'responsables territoriaux'));
+				abort(403);
 			} else {
 				return $next($request);
 			}

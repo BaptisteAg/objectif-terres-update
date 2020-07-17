@@ -23,7 +23,7 @@ class ModeratorMiddleware
 			abort(404);
 		} else {
 			if (auth()->user()->role < 1) {
-				return New Response(view('pages.errors.unauthorized')->with('role', 'modérateurs'));
+				abort(403);
 			} else {
 				return $next($request);
 			}

@@ -7,7 +7,6 @@ Vue.component('vue-moderation-modal', {
         ModerationModal
     },
     props: {
-        refusalTypes: '',
         responseTemplates: '',
         adId: '',
         attributionAdId :'',
@@ -27,17 +26,13 @@ Vue.component('vue-moderation-modal', {
         showModerationModal(e) {
             if (e !== false) {
                 this.showModal = true
+                this.moderationChoice = e;
+                this.selectOptions = this.responseTemplates;
                 if (e === "acceptAd") {
-                    this.moderationChoice = e;
-                    this.selectOptions = this.responseTemplates;
                     this.formUrl = "/mon-espace-moderateur/validation";
                 } else if (e === 'modifyAd') {
-                    this.moderationChoice = e;
-                    this.selectOptions = this.responseTemplates;
                     this.formUrl = "/mon-espace-moderateur/modification";
                 } else {
-                    this.moderationChoice = e;
-                    this.selectOptions = this.refusalTypes;
                     this.formUrl = "/mon-espace-moderateur/refus"
                 }
             } else {

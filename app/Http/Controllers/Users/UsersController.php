@@ -52,8 +52,9 @@ class UsersController extends Controller
 		} else {
 			$ads = $this->adService->findAdsAttributedAndNotDraftedByUserId($user->id);
 		}
+		$currentUser = User::whereId(auth()->id())->first();
 
-		return view('pages.users.show', compact('ads', 'user'));
+		return view('pages.users.show', compact('ads', 'user', 'currentUser'));
 	}
 
 	/**

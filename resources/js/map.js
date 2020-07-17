@@ -1,7 +1,7 @@
 import {bounds} from "leaflet/dist/leaflet-src.esm";
 
 const LeafletLazy = _ => import(/* webpackChunkName: "leaflet" */'leaflet');
-const EsriLeafletLazy = _ => import(/* webpackChunkName: "esri-leaflet" */'esri-leaflet');
+const EsriLeafletLazy = _ => import(/* webpackChunkName: "leaflet-esri" */'esri-leaflet');
 
 const centerCoords = [46.290552, 2.771017];
 
@@ -51,7 +51,6 @@ class OSMapController {
 
         // Ajoute le feature group à la map
         this.map.addLayer(drawnItems);
-
 
         // return le feature group
         return drawnItems;
