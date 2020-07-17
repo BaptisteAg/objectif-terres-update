@@ -1,7 +1,8 @@
+import {bounds} from "leaflet/dist/leaflet-src.esm";
+
 const LeafletLazy = _ => import(/* webpackChunkName: "leaflet" */'leaflet');
 const EsriLeafletLazy = _ => import(/* webpackChunkName: "esri-leaflet" */'esri-leaflet');
 
-const token = 'pk.eyJ1IjoibWlja2l3YXkiLCJhIjoiY2s0YmE0NHZqMDZrejNrcGlxeWJmNHRtdCJ9.In4xuZz8wYnXmDX5jrrhCg';
 const centerCoords = [46.290552, 2.771017];
 
 class OSMapController {
@@ -24,8 +25,9 @@ class OSMapController {
             scrollWheelZoom: false
         });
 
-        this.L.esri.basemapLayer('Imagery').addTo(map);
-        this.L.esri.basemapLayer('ImageryLabels').addTo(map);
+        // this.L.esri.basemapLayer('Imagery').addTo(map);
+        // this.L.esri.basemapLayer('ImageryLabels').addTo(map);
+        this.L.esri.basemapLayer("Streets").addTo(map);
 
         this.map = map;
     }
@@ -41,6 +43,18 @@ class OSMapController {
         polygon.addTo(this.map);
 
         return polygon
+    }
+
+    addFeatureGroup() {
+        // Déclaration du nouveau feature group
+        let drawnItems = new L.FeatureGroup();
+
+        // Ajoute le feature group à la map
+        this.map.addLayer(drawnItems);
+
+
+        // return le feature group
+        return drawnItems;
     }
 
     /**
@@ -82,6 +96,14 @@ class OSMapController {
 
     remove(polygon) {
         this.map.removeLayer(polygon);
+    }
+
+    /**
+     *
+     * @param {LatLng} layer
+     */
+    fitBounds(layer) {
+        this.map.fitBounds(layer)
     }
 }
 
