@@ -6,12 +6,17 @@
 }
 
 .multiselect__tags {
-    border-radius: 0 !important;
-    border-bottom: 0.25em solid $primary !important;
-    background-color: $pearl !important;
+  border-radius: 0 !important;
+  border-bottom: 0.25em solid $primary !important;
+  background-color: $pearl !important;
     .multiselect__placeholder {
-        color: $mouse;
+      color: $mouse;
+      padding: 0;
+      margin: 0;
     }
+  .multiselect__input {
+    margin-bottom: 0;
+  }
 }
 
 
@@ -74,7 +79,7 @@ body .multiselect__tag-icon:hover {
         border-top: 0 !important;
         display: block;
         height: 0.625em;
-        margin-top: -0.2em !important;
+        margin-top: -0.4em !important;
         pointer-events: none;
         position: absolute !important;
         top: 50% !important;

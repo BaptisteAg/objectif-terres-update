@@ -13,7 +13,7 @@
         "axios": "^0.19.2",
         "cross-env": "^5.1",
         "laravel-mix": "^4.0.7",
-        "lodash": "^4.17.13",
+        "lodash": "^4.17.19",
         "popper.js": "^1.16.1",
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.26.9",
@@ -40,7 +40,7 @@
         "vue-pagination-2": "^2.0.3",
         "vue-plugin-load-script": "^1.2.0",
         "vue-rss-feed": "^0.2.4",
-        "vue-slider-component": "^3.1.5",
+        "vue-slider-component": "^3.2.2",
         "vue2-dropzone": "^3.6.0",
         "vuelidate": "^0.7.4"
     }

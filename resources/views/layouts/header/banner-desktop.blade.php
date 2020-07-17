@@ -2,7 +2,7 @@
     <header-page id="header-page" inline-template
                  :old-search-values="{{json_encode(old())}}">
         {!! Form::open(['route' => 'researches.index', 'method' => 'get']) !!}
-        <div class="container-custom bg-trame_champs_dark mb-5">
+        <div class="container-custom bg-trame_champs_dark pb-20 pt-20">
             <div class="columns is-mobile is-vcentered is-multiline">
                 <div class="column is-full-tablet is-paddingless is-5-widescreen">
                     <div class="columns is-vcentered is-centered">
@@ -125,12 +125,12 @@
 
             </div>
         </div>
-        <div v-show="isFormOpen" class="has-ba" style="display:none">
-            <div class="container-custom bg-l-pearl"
+        <div v-show="isFormOpen" class="background-more-criteria pb-15 pt-15 " style="display:none">
+            <div class="container-custom"
                  v-if="adCategorySelected === 'job'">
                 @include('layouts.partials.headerJobResearch')
             </div>
-            <div class="container-custom bg-l-pearl"
+            <div class="container-custom"
                  v-if="adCategorySelected === 'land'">
                 @include('layouts.partials.headerLandResearch')
             </div>
