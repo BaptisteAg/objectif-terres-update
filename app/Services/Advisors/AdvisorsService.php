@@ -287,7 +287,7 @@ class AdvisorsService
 			/** @var Notification[] $notifications */
 			$notifications = auth()->user()->unreadNotifications;
 			foreach ($notifications as $notification) {
-				if (array_key_exists('ad_id', $notification->data) && $notification->data['ad_id'] === $adId) {
+				if (array_key_exists('ad_id', $notification->data) && $notification->data['ad_id'] === $ad->id) {
 					$notification->markAsRead();
 					$notification->delete();
 				}

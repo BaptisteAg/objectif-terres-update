@@ -8,7 +8,7 @@
 		@if(! $user->readNotifications->isEmpty())
 			@foreach ($user->readNotifications as $notification)
 				@if(isset($notification->data['number_of_ads_to_moderate']))
-					<article class="message is-link ">
+					<article class="message button basic secondary ">
 						<div class="message-body">
 							@if($notification->data['number_of_ads_to_moderate'] <=1)
 								Vous avez {{$notification->data['number_of_ads_to_moderate']}} annonce soumise depuis
@@ -20,7 +20,7 @@
 							<br>
 							<br>
 							<a href="{{route ('moderator.show', ['ad_statuses[0]=4&order=asc&sort=date'])}}">
-								<button class="button is-link ">Consulter votre tableau de bord</button>
+								<button class="button button basic secondary ">Consulter votre tableau de bord</button>
 							</a>
 						</div>
 					</article>
@@ -54,7 +54,7 @@
 								@method('PATCH')
 								<input type="hidden" value="moderator.show" name="route">
 								<br>
-								<input type="submit" class="button is-link "
+								<input type="submit" class=" button basic secondary "
 									   value="@lang('Consulter votre tableau de bord')">
 							</form>
 						</div>
@@ -71,9 +71,10 @@
 							<form action="{{route('notification.update', $notification->id)}}" method="POST">
 								@csrf
 								@method('PATCH')
-								<input type="hidden" value="ads.show" name="route">
+								<input type="hidden" value="advisor.showSupport" name="route">
 								<br>
-								<input type="submit" class="button is-link " value="@lang('Voir le détail du projet')">
+								<input type="submit" class=" button basic secondary "
+									   value="@lang('Espace de suivi')">
 							</form>
 						</div>
 					</article>
@@ -90,7 +91,7 @@
 								@method('PATCH')
 								<input type="hidden" value="ads.show" name="route">
 								<br>
-								<input type="submit" class="is-link" value="@lang('Modérer l\'annonce')">
+								<input type="submit" class="button basic secondary" value="@lang('Modérer l\'annonce')">
 							</form>
 						</div>
 					</article>
@@ -108,7 +109,7 @@
 								@method('PATCH')
 								<input type="hidden" value="advisor.showSupport" name="route">
 								<br>
-								<input type="submit" class="button is-link "
+								<input type="submit" class=" button basic secondary "
 									   value="@lang('Espace de suivi')">
 							</form>
 						</div>
