@@ -1,7 +1,7 @@
 <div class="columns">
 	@include('pages.ads.partials.show-images')
-	<div class="column">
-		<div class="card">
+	<div class="column is-half is-flex-tablet">
+		<div class="card is-flex-tablet card-announcement">
 			<div class="card-content">
 				@foreach($ad->jobOfferAd->jobOfferTypes as $offerType)
 					<span class="tag is-primary is-medium">{{$offerType->name}}</span>
@@ -24,6 +24,10 @@
 								<span class="subtitle">
 								<a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->userPp->first_name}} {{$ad->userPp->name}}</a>
 							</span>
+							@elseif(auth()->user()->role < 1)
+								<span class="subtitle">
+									{{ $ad->userPp->first_name}} {{$ad->userPp->name}}
+								</span>
 							@endif
 						@endauth
 						@guest()

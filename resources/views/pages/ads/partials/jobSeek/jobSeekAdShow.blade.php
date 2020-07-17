@@ -1,8 +1,7 @@
 <div class="columns">
 	@include('pages.ads.partials.show-images')
-
-	<div class="column">
-		<div class="card">
+	<div class="column is-half is-flex-tablet">
+		<div class="card is-flex-tablet card-announcement">
 			<div class="card-content">
 				@foreach($ad->jobSeekAd->jobOfferTypes as $offerType)
 					<span class="tag is-primary is-medium">{{$offerType->name}}</span>
@@ -25,6 +24,10 @@
 								<span class="subtitle">
 								<a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->userPp->first_name}} {{$ad->userPp->name}}</a>
 							</span>
+							@elseif(auth()->user()->role < 1)
+								<span class="subtitle">
+									{{ $ad->userPp->first_name}} {{$ad->userPp->name}}
+								</span>
 							@endif
 						@endauth
 						@guest()
@@ -40,6 +43,13 @@
 						<span class="subtitle">{{$ad->ad_type_full_name}}</span>
 					</p>
 				</div>
+				@if($ad->jobSeekAd->jobOfferTypes->count())
+					<div class="content">
+						<p><span class="is-size-5  has-text-black">Intéressé par :</span>
+							<span class="subtitle ">{{$ad->jobSeekAd->jobOfferTypes->pluck('name')->implode(', ') }}</span>
+						</p>
+					</div>
+				@endif
 				<div class="content">
 					@if(count($ad->cities))
 						<p>
@@ -70,13 +80,6 @@
 						</p>
 					@endif
 				</div>
-				@if($ad->jobSeekAd->jobOfferTypes->count())
-					<div class="content">
-						<p><span class="is-size-5  has-text-black">Intéressé par :</span>
-							<span class="subtitle ">{{$ad->jobSeekAd->jobOfferTypes->pluck('name')->implode(', ') }}</span>
-						</p>
-					</div>
-				@endif
 				@if($ad->userPp->accept_share_contact_infos === 1)
 					<div class="content">
 						<p><span class="is-size-5 has-text-black">N° de téléphone du porteur de projet : </span>

@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import ModerationModal from "./components/ModerationModal";
+import OSMapControllerFactory from "../../map";
+
 Vue.component('vue-moderation-modal', {
     components: {
         ModerationModal
@@ -40,3 +42,30 @@ Vue.component('vue-moderation-modal', {
     }
 
 });
+
+window.showAdMapInit  = async function (id, locationsAd) {
+
+    const mapController = await OSMapControllerFactory(id);
+
+    const formData = new FormData();
+
+    for (let location of locationsAd) {
+        formData.append('names[]', location);
+    }
+
+    const locationPolygonData = await fetchJson('/locations/polygon/ad-locations', formData);
+
+    let featureGroup = mapController.addFeatureGroup();
+
+    locationPolygonData.forEach(polygonData => {
+        const polygon = mapController.addPolygon(polygonData, {
+            smoothFactor: 2
+        });
+
+        featureGroup.addLayer(polygon);
+
+    })
+
+
+    mapController.fitBounds(featureGroup.getBounds());
+};

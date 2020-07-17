@@ -242,8 +242,12 @@ class AdPresenter extends BasePresenter
 				$max = $ad->landSeekAd->surface_range_max;
 				$min = $ad->landSeekAd->surface_range_min;
 
-				if ($max === 100000 && $min === 0) {
-					return "De 1 à > 100ha";
+				if($max === 1000000) {
+				    $max = '+ de 100';
+                }
+
+				if ($max === 1000000 && $min === 0) {
+					return "De 1 à + de 100ha";
 				}
 
 				if ($min) {
@@ -306,5 +310,6 @@ class AdPresenter extends BasePresenter
 	{
 		return count(array_intersect($userTerritoriesCodes, $this->adDepartmentsCodes())) > 0;
 	}
+
 
 }

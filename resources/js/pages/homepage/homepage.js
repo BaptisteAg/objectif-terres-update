@@ -38,6 +38,8 @@ window.homepageMapInit  = async function (id) {
 
         const regionsPolygonData = await fetchJson('/locations/polygon/regions', formData);
 
+        let featureGroup = mapController.addFeatureGroup();
+
         if (!regionsPolygonData.length) {
             alert("Désolé, il n'y a pas d'annonce de ce type pour l'instant.");
             form.querySelector('button').innerHTML = "ok";
@@ -51,6 +53,8 @@ window.homepageMapInit  = async function (id) {
                 smoothFactor: 2
             });
 
+            featureGroup.addLayer(polygon);
+
             polygon.addEventListener('click', _ => {
                 location.href = "/recherche?" +
                     "offer_type=" + formData.get('offer_type') +
@@ -62,5 +66,7 @@ window.homepageMapInit  = async function (id) {
                 className: "leaflet-tooltip-big"
             })
         })
+
+        mapController.fitBounds(featureGroup.getBounds());
     });
 };
