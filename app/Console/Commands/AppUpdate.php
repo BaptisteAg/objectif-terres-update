@@ -41,9 +41,12 @@ class AppUpdate extends Command
      */
     public function handle()
     {
-        $this->call('migrate');
-
+        exec('npm install');
         exec('npm run '.(env('APP_ENV') === 'local' ? 'dev' : 'production'));
+
+        exec('composer install');
+
+        $this->call('migrate');
 
         $this->call('view:clear');
         $this->call('cache:clear');
