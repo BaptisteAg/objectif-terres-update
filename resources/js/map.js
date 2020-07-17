@@ -1,7 +1,6 @@
 const LeafletLazy = _ => import(/* webpackChunkName: "leaflet" */'leaflet');
-const EsriLeafletLazy = _ => import(/* webpackChunkName: "esri-leaflet" */'esri-leaflet');
+const EsriLeafletLazy = _ => import(/* webpackChunkName: "leaflet-esri" */'esri-leaflet');
 
-const token = 'pk.eyJ1IjoibWlja2l3YXkiLCJhIjoiY2s0YmE0NHZqMDZrejNrcGlxeWJmNHRtdCJ9.In4xuZz8wYnXmDX5jrrhCg';
 const centerCoords = [46.290552, 2.771017];
 
 class OSMapController {
