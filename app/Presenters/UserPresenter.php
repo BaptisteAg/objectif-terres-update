@@ -59,7 +59,7 @@ class UserPresenter extends BasePresenter
 	 */
 	public function created_at()
 	{
-		return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->format('d/m/Y');
+		return $this->wrappedObject->created_at ? \Carbon\Carbon::parse($this->wrappedObject->created_at)->format('d/m/Y') : null;
 	}
 
 	/**

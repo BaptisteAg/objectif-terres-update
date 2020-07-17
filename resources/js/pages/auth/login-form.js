@@ -33,31 +33,34 @@ Vue.component('login-form', {
             formData.append('email', this.email);
 
             this.isLoading = true;
-            fetch('/connexion/checkpoint', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.error) {
-                        if(result.status === 419) {
-                            alert("La page a expiré et va être rafraîchie. Merci de réessayer.") && location.reload();
-                        }
-                        else {
-                            this.loginErrorHandler(result.error)
-                        }
-                    } else if (result.redirect && result.redirect !== '') {
-                        location.href = result.redirect;
-                    } else {
-                        this.hasPassedCheckpoint = true;
-                        this.isLoading = false;
-                    }
-                })
-                .catch(error => this.loginErrorHandler(error))
+
+            this.hasPassedCheckpoint = true;
+            this.isLoading = false;
+            // fetch('/connexion/checkpoint', {
+            //     method: 'POST',
+            //     body: formData,
+            //     headers: {
+            //         'Accept': 'application/json',
+            //         'Content-Type': 'application/json'
+            //     },
+            // })
+            //     .then(response => response.json())
+            //     .then(result => {
+            //         if (result.error) {
+            //             if(result.status === 419) {
+            //                 alert("La page a expiré et va être rafraîchie. Merci de réessayer.") && location.reload();
+            //             }
+            //             else {
+            //                 this.loginErrorHandler(result.error)
+            //             }
+            //         } else if (result.redirect && result.redirect !== '') {
+            //             location.href = result.redirect;
+            //         } else {
+            //             this.hasPassedCheckpoint = true;
+            //             this.isLoading = false;
+            //         }
+            //     })
+            //     .catch(error => this.loginErrorHandler(error))
         },
         onEmailChange(event) {
             this.hasPassedCheckpoint = false;

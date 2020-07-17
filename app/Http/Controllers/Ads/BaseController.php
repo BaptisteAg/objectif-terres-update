@@ -128,7 +128,6 @@ abstract class BaseController extends Controller
 		$threads = [];
 		$threadsWithUnreadMessages = null;
 		$responseTemplates = '';
-		$refusalTypes = '';
 		$isAdToModerate = false;
 		$isLoggedUserModeratorAd = false;
 		$advisorUsers = [];
@@ -160,7 +159,6 @@ abstract class BaseController extends Controller
 			if ($moderatorInChargeOfModeration) {
 				$isLoggedUserModeratorAd = true;
 				$responseTemplates = ResponseTemplate::orderBy('title')->get();
-				$refusalTypes = RefusalType::all();
 				$threads = $this->threadService->findThreadsByAd($ad->id);
 				$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
 				//set to read if notification about moderation task about the ad exist
@@ -174,7 +172,6 @@ abstract class BaseController extends Controller
 			}
 			if ($user->role >= 1) {
 				$responseTemplates = ResponseTemplate::orderBy('title')->get();
-				$refusalTypes = RefusalType::orderBy('name')->get();
 			}
 			if ($user->role >= 2) {
 				$responseTemplates = ResponseTemplate::orderBy('title')->get();

@@ -7,7 +7,7 @@
             <template v-else>
                 <p>{{numberThreadsUnreadMessages}} discussions non lues</p>
             </template>
-            <button v-if="isUserModerator" @click="onNewThreadClick" class="open-modal-new-message button primary basic"
+            <button v-if="isUserTdlMember" @click="onNewThreadClick" class="open-modal-new-message button primary basic"
                     type="button">
                 <span class="icon is-small">
                     <i class="fa fa-plus" aria-hidden="true"></i>
@@ -90,7 +90,7 @@
                         </template>
                     </template>
                     <template v-else>
-                        <template v-if="isUserModerator">
+                        <template v-if="isUserTdlMember">
                             <a @click="onThreadClick(thread.id)">
                                 <template v-for="threadUnreadMessages in threadsUnreadMessages">
                                     <span v-if="threadUnreadMessages.id === thread.id "
@@ -137,12 +137,13 @@
             threadsWithUnreadMessages: '',
             isDisplay: Boolean,
             userId: {},
-            isUserModerator: Boolean
+            userRole: '',
         },
         data() {
             return {
                 numberThreadsUnreadMessages: this.numberOfThreadsWithUnreadMessages,
-                threadsUnreadMessages: this.threadsWithUnreadMessages
+                threadsUnreadMessages: this.threadsWithUnreadMessages,
+                isUserTdlMember : this.userRole >=1,
             }
         },
         methods: {

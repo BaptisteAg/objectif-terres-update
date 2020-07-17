@@ -158,7 +158,7 @@ Route::middleware('advisor')->prefix('mon-espace-primo-accueillant')->name('advi
 	Route::post('bloquer-utlisateur', 'AdvisorsController@blockUser')->name('blockUser');
 });
 
-Route::middleware('moderator')->prefix('gestion-reponse-types')->name('responseTemplates.')->namespace('ResponseTemplates')->group(function(){
+Route::middleware('supervisor')->prefix('gestion-reponse-types')->name('responseTemplates.')->namespace('ResponseTemplates')->group(function(){
 	Route::get('/', 'ResponseTemplatesController@index')->name('index');
 	Route::post('/creer', 'ResponseTemplatesController@create')->name('create');
 });

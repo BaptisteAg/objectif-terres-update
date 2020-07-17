@@ -85,7 +85,6 @@
 						<div class="message-body">
 							Une nouvelle annonce vient d'être soumise par
 							<a href="{{route('user.show', $notification->data['user_pp_id'])}}">{{$notification->data['user_pp_first_name']}} {{$notification->data['user_pp_name']}}</a>.
-
 							<form action="{{route('notification.update', $notification->id)}}" method="POST">
 								@csrf
 								@method('PATCH')

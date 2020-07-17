@@ -12,10 +12,15 @@
                         Une erreur est survenue.
                     </h2>
                     <p class="has-text-centered">
-                        C'est peut être dû à une erreur de notre part, une page non trouvée, ou bien une interdiction d'accès.
+                        C'est peut être dû à une erreur de notre part, une page non trouvée, ou bien une interdiction
+                        d'accès.
                     </p>
                     <br>
                     <br>
+                    <div class=" has-text-centered">
+                        <a class="button is-medium basic primary  " href="{{route('home')}}">Page
+                            d'accueil</a>
+                    </div>
                 </div>
             </div>
         </div>

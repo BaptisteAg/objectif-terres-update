@@ -80,7 +80,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @if(isset($user->created_at))
+                            @if(isset($user->created_at) && !empty($user->created_at))
                                 <div class="card-footer is-marginless">
                                     <p class="card-footer-item ">Membre depuis le {{$user->created_at}}</p>
                                 </div>
@@ -315,14 +315,25 @@
 
                                     <p class="button__wrap button__wrap_right">
                                         @if(isset($ad->project))
-                                            <a href="{{route("advisor.showSupport", $ad->id)}}">
-                                                <button class="button basic  small warning mr-20">
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-hands-helping text_white"></i>
-                                                    </span>
-                                                    <span>Espace de suivi</span>
-                                                </button>
-                                            </a>
+                                            @if(isset($ad->attributionAd->user_advisor_id) && $ad->isAdInUserTerritories($currentUser->userDepartmentsCodes) )
+                                                <a href="{{route("advisor.showSupport", $ad->id)}}">
+                                                    <button class="button basic  small warning mr-20">
+                                                        <span class="icon is-small">
+                                                            <i class="fas fa-hands-helping text_white"></i>
+                                                        </span>
+                                                        <span>Espace de suivi</span>
+                                                    </button>
+                                                </a>
+                                                @elseif($currentUser->role >= 3 && $ad->isAdInUserTerritories($currentUser->userDepartmentsCodes))
+                                                <a href="{{route("ads.show", $ad->id)}}">
+                                                        <button class="button basic  small warning mr-20">
+                                                            <span class="icon is-small">
+                                                                <i class="fas fa-hands-helping text_white"></i>
+                                                            </span>
+                                                            <span>Attribuer la demande</span>
+                                                        </button>
+                                                    </a>
+                                            @endif
                                         @else
                                             <a href="{{route("ads.show", $ad->id)}}">
                                                 <button class="button basic  small warning mr-20">

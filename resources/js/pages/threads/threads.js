@@ -29,7 +29,6 @@ Vue.component('vue-threads', {
             messagesLoading: true,
             isDisplay: this.isDisplayInThreadPage,
             isUserLoggedAdOwner: this.isUserLoggedAdOwner,
-            isUserModerator: false,
             usersSelected: [],
             isThreadRelatedToUser: false,
             isThreadBlocked : false
@@ -82,7 +81,6 @@ Vue.component('vue-threads', {
                     return this.isThreadRelatedToUser = false;
                 });
             }
-            return this.isThreadRelatedToUser = true;
         }
     },
 });

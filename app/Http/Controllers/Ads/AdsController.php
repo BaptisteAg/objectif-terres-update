@@ -157,7 +157,7 @@ class AdsController extends BaseController
 	{
 		$ad = $this->adService->find($adId);
 		if (!isset($ad->user_pp_id)) {
-			return view('pages.errors.unavailable-page', ['message' => "Contacter un administrateur du site pour plus d'informations"]);
+			abort(404);
 		}
 
 		//Throw error 404 if a visitor try to show an ad is not validated
