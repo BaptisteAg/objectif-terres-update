@@ -1,6 +1,8 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/js/chunks/vendors~leaflet-esri.js": "/js/chunks/vendors~leaflet-esri.js",
-    "/js/chunks/vendors~leaflet~leaflet-esri.js": "/js/chunks/vendors~leaflet~leaflet-esri.js"
+    "/vendors~esri-leaflet.js": "/vendors~esri-leaflet.js",
+    "/vendors~esri-leaflet~leaflet.js": "/vendors~esri-leaflet~leaflet.js",
+    "/vendors~leaflet-esri.js": "/vendors~leaflet-esri.js",
+    "/vendors~leaflet~leaflet-esri.js": "/vendors~leaflet~leaflet-esri.js"
 }
