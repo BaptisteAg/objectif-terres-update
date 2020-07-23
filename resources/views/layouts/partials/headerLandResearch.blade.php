@@ -1,4 +1,4 @@
-<div class="columns is-mobile is-multiline  ">
+<div class="columns is-mobile is-multiline">
 	@include('layouts.partials.headerResearchLocation')
 	<div class="column is-full-mobile is-half-tablet is-one-third-desktop">
 		<div class="field is-flex">
@@ -38,7 +38,6 @@
 		</div>
 
 	</div>
-
 	<div class="column if-full-mobile is-one-third-desktop" v-if="offerTypeSelected === 'OfferAd'">
         <div class="field is-flex">
             <label class="checkbox">
