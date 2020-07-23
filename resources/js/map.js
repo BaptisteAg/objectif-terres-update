@@ -25,8 +25,6 @@ class OSMapController {
             scrollWheelZoom: false
         });
 
-        // this.L.esri.basemapLayer('Imagery').addTo(map);
-        // this.L.esri.basemapLayer('ImageryLabels').addTo(map);
         this.L.esri.basemapLayer("Streets").addTo(map);
 
         this.map = map;
