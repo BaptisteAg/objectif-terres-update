@@ -147,12 +147,12 @@
 							</span>
                         <span>Se déconnecter</span>
                     </a>
-                    <span class="icon">
-								<form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                      style="display: none;">
-									@csrf
-								</form>
-							</span>
+{{--                    <span class="icon">--}}
+{{--								<form id="logout-form" action="{{ route('logout') }}" method="POST"--}}
+{{--                                      style="display: none;">--}}
+{{--									@csrf--}}
+{{--								</form>--}}
+{{--							</span>--}}
                 </div>
             @endguest
         </div>
