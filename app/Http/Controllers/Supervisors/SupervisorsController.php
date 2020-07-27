@@ -76,14 +76,14 @@ class SupervisorsController extends BaseController
 	public function export(Request $request)
 	{
 		if (is_null($request->input('date_from')) && is_null($request->input('date_from'))) {
-			return Excel::download(new SupervisorsExport($this->adService->findAllByUserSupervisor(false)), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
+			return (new SupervisorsExport($this->adService->findAllByUserSupervisor(false)))->download('export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
 		} else {
 			$dates = [
 				DateTime::createFromFormat('d/m/Y', (string)$request->input('date_from'))->format('Y-m-d'),
 				DateTime::createFromFormat('d/m/Y', (string)$request->input('date_to'))->format('Y-m-d')
 			];
 			$ads = $this->adService->findAllByUserSupervisorBetweenDates($dates);
-			return Excel::download(new SupervisorsExport($ads), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
+			return (new SupervisorsExport($ads))->download('export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
 		}
 	}
 

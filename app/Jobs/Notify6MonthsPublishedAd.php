@@ -17,7 +17,7 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class Notify5MonthsPublishedAd implements ShouldQueue
+class Notify6MonthsPublishedAd implements ShouldQueue
 {
 	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -43,10 +43,10 @@ class Notify5MonthsPublishedAd implements ShouldQueue
 	 */
 	public function handle()
 	{
-		$attributionAds = $this->attributionAdsService->findAllPublishedSince(Carbon::now()->subMonthsWithOverflow(5));
+		$attributionAds = $this->attributionAdsService->findAllPublishedSince(Carbon::now()->subMonthsWithOverflow(6));
 		foreach ($attributionAds as $attributionAd) {
 			$data['subject'] = 'Votre annonce arrive bientôt en fin de publication !| Objectif Terres';
-			$data['message'] = 'Votre annonce est en ligne depuis 5 mois et va bientôt arriver en fin de publication. Si vous souhaitez continuer à la faire publier, mettez à jour votre annonce ! Sans action de votre part, votre annonce sera archivée.';
+			$data['message'] = 'Votre annonce est en ligne depuis 6 mois et va bientôt arriver en fin de publication. Si vous souhaitez continuer à la faire publier, mettez à jour votre annonce ! Sans action de votre part, votre annonce sera archivée.';
 			//TODO the url is the link to the modification ad form
 			$data['url'] = '/annonces/' . $attributionAd->ad->id;
 
