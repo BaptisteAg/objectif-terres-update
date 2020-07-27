@@ -154,4 +154,5 @@ class UserService
             ->inRandomOrder()
             ->get();
     }
+
 }
