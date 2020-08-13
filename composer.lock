@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0be722ba64b9ec54224916ac3f06f0ae",
+    "content-hash": "e42599a252600efaf30f3909b3b76bd4",
     "packages": [
         {
             "name": "aacotroneo/laravel-saml2",
@@ -2289,6 +2289,49 @@
                 "php"
             ],
             "time": "2020-07-25T13:18:53+00:00"
+        },
+        {
+            "name": "numaxlab/nova-ckeditor5-classic",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/numaxlab/nova-ckeditor5-classic.git",
+                "reference": "1a2f045b5df699ada4bae055a0a5c331c74d3c61"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/numaxlab/nova-ckeditor5-classic/zipball/1a2f045b5df699ada4bae055a0a5c331c74d3c61",
+                "reference": "1a2f045b5df699ada4bae055a0a5c331c74d3c61",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "NumaxLab\\NovaCKEditor5Classic\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "NumaxLab\\NovaCKEditor5Classic\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova CKEditor5 Classic Field.",
+            "keywords": [
+                "ckeditor5",
+                "laravel",
+                "nova",
+                "wysiwyg"
+            ],
+            "time": "2020-02-17T15:42:14+00:00"
         },
         {
             "name": "omniphx/forrest",

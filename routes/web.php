@@ -33,15 +33,15 @@ Route::prefix('accompagnement')->name('support-request.')->namespace('Ads')->gro
     Route::middleware(['auth'])->get('suivi', 'SupportRequestsController@show')->name('show');
 });
 
-Route::name('cms.')->namespace('Cms')->group(function () {
-	Route::get('faq', 'CmsController@faq');
-	Route::get('qui-sommes-nous', 'CmsController@quiSommesNous');
-	Route::get('minstaller-comme-paysan', 'CmsController@minstallerCommePaysan');
-	Route::get('louer-vendre-mes-terres', 'CmsController@louerVendreMesTerres');
+Route::namespace('Cms')->group(function () {
+	Route::get('faq', 'CmsController@faq')->name('faq');
+	Route::get('qui-sommes-nous', 'CmsController@quiSommesNous')->name('qui-sommes-nous');
+	Route::get('minstaller-comme-paysan', 'CmsController@minstallerCommePaysan')->name('minstaller-comme-paysan');
+	Route::get('louer-vendre-mes-terres', 'CmsController@louerVendreMesTerres')->name('louer-vendre-mes-terres');
 	Route::get('ceder-ma-ferme', 'CmsController@cederMaFerme');
 	//Route::get('ceder-mes-terres', 'CmsController@cederMesTerres');
 	Route::get('trouver-un-emploi', 'CmsController@trouverUnEmploi');
-	Route::get('mentions-legales', 'CmsController@mentionsLegales');
+	Route::get('mentions-legales', 'CmsController@mentionsLegales')->name('mentions-legales');
 	Route::get('confier-mes-terres', 'CmsController@confierMesTerres');
 	Route::get('ressources-utiles', 'CmsController@ressourcesUtiles');
 	Route::get('contactez-nous', 'CmsController@contactezNous');

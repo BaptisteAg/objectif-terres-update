@@ -958,3 +958,8 @@ trix-editor.disabled {
 /* Tailwind Utilities
 ---------------------------------------------------------------------------- */
 @tailwind utilities;
+
+
+.ck.ck-reset.ck-editor.ck-rounded-corners {
+  height : 400px;
+}

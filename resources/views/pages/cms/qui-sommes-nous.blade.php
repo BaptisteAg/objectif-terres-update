@@ -11,17 +11,13 @@
         <div class="container">
             <div class="rows margin-p">
                 <div class="row is-full">
-                    <h1 class="title is-1 has_margin">Qui sommes-nous ?</h1>
-                    <p>Objectif Terre est une initiative créée par Terre de Lien eget risus varius blandit sit
-                        amet non magna. Sed posuere consectetur est at lobortis. Vestibulum id ligula
-                        porta felis euismod semper. Duis mollis, est non commodo luctus, nisi erat
-                        porttitor.
-                    </p>
-                    <p>
-                        Maecenas faucibus mollis interdum. Maecenas sed diam eget risus varius blandit
-                        sit amet non magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                        posuere consectetur est at lobortis. Integer posuere erat a ante venenatis dapibus
-                        posuere velit aliquet. Donec sed odio dui.
+                    <h1 class="page__title has-text-centered  is-1 has_margin">Qui sommes-nous ?</h1>
+                    <p class="has-text-centered">
+                        @if($pageContent->count())
+                            @if($pageContent->has('qui-sommes-nous-texte-dintroduction-sous-le-titre-principal'))
+                                {!! $pageContent['qui-sommes-nous-texte-dintroduction-sous-le-titre-principal']->content !!}
+                            @endif
+                        @endif
                     </p>
                 </div>
             </div>
@@ -34,47 +30,15 @@
         </div>
     </section>
 
-    <section section>
+    <section class="section" >
         <div class="container">
             <div class="rows margin-p">
                 <div class="row is-full">
-                    <h3 class="title is-3 has_margin">Consecteur auctor fringilla Moderatus</h3>
-                    <p>
-                        Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Integer posuere erat
-                        a ante venenatis dapibus posuere velit aliquet. Maecenas faucibus mollis
-                        interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-                    </p>
-                    <p>
-                        Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-                        mus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia
-                        odio sem nec elit. Nulla vitae elit libero, a pharetra augue. Praesent commodo
-                        cursus magna, vel scelerisque nisl consectetur et. Donec ullamcorper nulla non
-                        metus auctor fringilla.
-                    </p>
-                    <p>
-                        Maecenas sed diam eget risus varius blandit sit amet non magna. Sed posuere
-                        consectetur est at lobortis. Vestibulum id ligula porta felis euismod semper. Duis
-                        mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem
-                        nec elit. Sed posuere consectetur est at lobortis. Nullam id dolor id nibh ultricies
-                        vehicula ut id elit. Maecenas sed diam eget risus varius blandit sit amet non
-                        magna.
-                    </p>
-                </div>
-                <div class="row is-full">
-                    <h3 class="title is-3 has_margin">Pellentasque sicuram ligula</h3>
-                    <p>
-                        Maecenas faucibus mollis interdum. Maecenas sed diam eget risus varius blandit
-                        sit amet non magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                        posuere consectetur est at lobortis. Integer posuere erat a ante venenatis dapibus
-                        posuere velit aliquet. Donec sed odio dui.
-                    </p>
-                    <p>
-                        Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vestibulum
-                        id ligula porta felis euismod semper. Morbi leo risus, porta ac consectetur ac,
-                        vestibulum at eros. Cum sociis natoque penatibus et magnis dis parturient
-                        montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula ut id elit.
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cum sociis natoque
-                    </p>
+                    @if($pageContent->count())
+                        @if($pageContent->has('qui-sommes-nous-les-deux-textes-situes-sous-la-banniere'))
+                            {!! $pageContent['qui-sommes-nous-les-deux-textes-situes-sous-la-banniere']->content !!}
+                        @endif
+                    @endif
                 </div>
             </div>
         </div>
@@ -111,19 +75,12 @@
         <div class="container">
             <div class="rows">
                 <div class="row is-full margin-p">
-                    <h2 class="title is-2 has_margin">En savoir plus sur l’association Terre de Liens</h2>
-                    <p>
-                        Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Integer posuere erat
-                        a ante venenatis dapibus posuere velit aliquet. Maecenas faucibus mollis
-                        interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-                    </p>
-                    <p>
-                        Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-                        mus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia
-                        odio sem nec elit. Nulla vitae elit libero, a pharetra augue. Praesent commodo
-                        cursus magna, vel scelerisque nisl consectetur et. Donec ullamcorper nulla non
-                        metus auctor fringilla.
-                    </p>
+
+                    @if($pageContent->count())
+                        @if($pageContent->has('qui-sommes-nous-en-savoir-plus-sur-lassociation-terre-de-liens'))
+                            {!! $pageContent['qui-sommes-nous-en-savoir-plus-sur-lassociation-terre-de-liens']->content !!}
+                        @endif
+                    @endif
                 </div>
                 <div class="row is-full">
                     <p>POUR EN SAVOIR PLUS</p>

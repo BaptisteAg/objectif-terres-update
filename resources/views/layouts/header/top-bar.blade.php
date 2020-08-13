@@ -62,7 +62,13 @@
                             </div>
                             <div class="dropdown-menu" id="header-dropdown-menu" role="menu">
                                 <div class="dropdown-content" onclick="">
-                                    @if(auth()->user()->role >= 3 )
+                                    @if(auth()->user()->role >= 4 )
+                                        <a href="{{\Laravel\Nova\Nova::path()}}"
+                                           class="dropdown-item  text_charcoal ">
+                                            Espace administrateur
+                                        </a>
+                                    @endif
+                                        @if(auth()->user()->role >= 3 )
                                         <a href="{{route('supervisor.index')}}"
                                            class="dropdown-item  text_charcoal ">
                                             Espace responsable territorial

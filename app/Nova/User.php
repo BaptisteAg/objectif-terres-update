@@ -9,13 +9,14 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use NumaxLab\NovaCKEditor5Classic\CKEditor5Classic;
 
 class User extends Resource
 {
 
 	public static function label()
 	{
-		return 'Utilisateurs';
+		return 'Gestion des utilisateurs';
 	}
 
 	public static function singularLabel()
@@ -130,6 +131,11 @@ class User extends Resource
 				}
 				return $arrayValues;
 			})->onlyOnForms(),
+//
+//			CKEditor5Classic::make('Content')->withFiles('public')
+//			->options([
+//				'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote'
+//			]),
 
 			Password::make('Mot de passe', 'Password')
 				->onlyOnForms()

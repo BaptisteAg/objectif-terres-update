@@ -178,11 +178,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\NovaServiceProvider::class,
-        App\Providers\NovaServiceProvider::class,
-        App\Providers\NovaServiceProvider::class,
-        App\Providers\NovaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\ViewServiceProvider::class
+        App\Providers\ViewServiceProvider::class,
+		NumaxLab\NovaCKEditor5Classic\FieldServiceProvider::class
+
     ],
 
     /*
