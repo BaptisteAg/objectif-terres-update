@@ -11,7 +11,7 @@ class CmsPage extends Model
 	{
 		parent::boot();
 
-// grab the title and description and slugify it
+		// grab the title and description and slugify it
 		static::saving(function ($cmsPage) {
 			$cmsPage->slug = Str::slug($cmsPage->page_name) . '-' . Str::slug($cmsPage->description);
 		});
@@ -32,19 +32,28 @@ class CmsPage extends Model
 	];
 
 	static $editable_pages = [
-		'bandeau-de-participation'=>'Bandeau de participation',
-		'/ '=> 'Page d\'accueil',
-		'qui-sommes-nous' =>'Qui sommes-nous?',
-		'ceder-ma-ferme' =>'Céder ma Ferme',
-		'confier-mes-terres' =>'Confier mes terres',
-		'louer-vendre-mes-terres' =>'Louer ou vendre mes terres',
-		'minstaller-comme-paysan' =>'M’installer comme paysan',
-		'ressources-utiles' =>'Ressources utiles',
-		'trouver-un-emploi' =>'Trouver un emploi',
-		'contactez-nous' =>'Contactez-nous',
-		'annonces/creer' =>'Publier une annonce',
-		'accompagnement/démarrer' =>'Être accompagné',
-		'mentions-legales' =>'Mentions légales'
+		'bandeau-de-participation' => 'Bandeau de participation',
+		'/ ' => 'Page d\'accueil',
+		'qui-sommes-nous' => 'Qui sommes-nous?',
+		'ceder-ma-ferme' => 'Céder ma Ferme',
+		'confier-mes-terres' => 'Confier mes terres',
+		'louer-vendre-mes-terres' => 'Louer ou vendre mes terres',
+		'minstaller-comme-paysan' => 'M’installer comme paysan',
+		'ressources-utiles' => 'Ressources utiles',
+		'trouver-un-emploi' => 'Trouver un emploi',
+		'contactez-nous' => 'Contactez-nous',
+		'annonces/creer' => 'Publier une annonce',
+		'accompagnement/démarrer' => 'Être accompagné',
+		'mentions-legales' => 'Mentions légales'
 
 	];
+
+	/**
+	 * Create the slug from the title
+	 */
+	public function setSlugAttribute()
+	{
+		// grab the title and slugify it for seeds
+		$this->attributes['slug'] = Str::slug($this->page_name) . '-' . Str::slug($this->description);
+	}
 }

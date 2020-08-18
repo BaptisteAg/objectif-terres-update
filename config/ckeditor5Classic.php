@@ -12,7 +12,7 @@ return [
     */
 
     'options' => [
-        'language' => 'en',
+        'language' => 'fr',
         'toolbar' => [
             'Heading',
 			'|',

@@ -104,5 +104,9 @@
     "Are you sure you want to force delete this resource?": "Êtes-vous sûre de vouloir supprimer définitivement cet élément ?",
     "Are you sure you want to force delete the selected resources?": "Êtes-vous sûre de vouloir supprimer définitivement ces éléments ?",
     "Show Content": " Afficher contenu",
-    "Hide Content": "Masquer contenu"
+    "Hide Content": "Masquer contenu",
+    "Restore Selected": "Restaurer la sélection",
+    "Restore Resource": "Restaurer l'élément",
+    "Are you sure you want to restore this resource?": "Êtes-vous sûre de vouloir restaurer cet élément ?",
+    "Are you sure you want to restore the selected resources?": "Êtes-vous sûre de vouloir restaurer les éléments séléctionner ?"
 }

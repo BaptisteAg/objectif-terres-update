@@ -47,8 +47,18 @@ class CmsPage extends Resource
 	 * @var array
 	 */
 	public static $search = [
-		'id', 'page_name', 'description', 'content'
+		'id', 'page_name', 'description', 'content', 'slug'
 	];
+
+	public static function authorizedToCreate(Request $request)
+	{
+		return false;
+	}
+
+	public function authorizedToDelete(Request $request)
+	{
+		return false;
+	}
 
 	/**
 	 * Get the fields displayed by the resource.
