@@ -78,6 +78,8 @@ class Research extends Model
 	use Notifiable;
     use JobOfferTypable;
 
+	protected $table = "researches";
+
 	/**
 	 * @var array
 	 */
@@ -115,7 +117,7 @@ class Research extends Model
 	 */
 	public function cities()
 	{
-		return $this->morphedbyMany(City::class, 'locationable_research');
+		return $this->morphedbyMany(City::class, 'locationable_research', 'locationable_researches');
 	}
 
 	/**
@@ -124,7 +126,7 @@ class Research extends Model
 	 */
 	public function departments()
 	{
-		return $this->morphedbyMany(Department::class, 'locationable_research');
+		return $this->morphedbyMany(Department::class, 'locationable_research', 'locationable_researches');
 	}
 
 	/**
@@ -133,6 +135,6 @@ class Research extends Model
 	 */
 	public function regions()
 	{
-		return $this->morphedbyMany(Region::class, 'locationable_research');
+		return $this->morphedbyMany(Region::class, 'locationable_research','locationable_researches');
 	}
 }

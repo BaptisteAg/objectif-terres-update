@@ -30,8 +30,8 @@ class CreateJobSeekAdsTable extends Migration
 
             $table->foreign('ad_id', 'fk_job_seek_ads_1_idx')
                 ->references('id')->on('ads')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

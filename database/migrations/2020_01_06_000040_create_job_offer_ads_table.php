@@ -33,8 +33,8 @@ class CreateJobOfferAdsTable extends Migration
 
             $table->foreign('ad_id', 'fk_job_ads_1_idx')
                 ->references('id')->on('ads')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
             //$table->boolean('is_offer')->nullable();
             //$table->boolean('is_beneficiary')->nullable();

@@ -137,7 +137,6 @@ class User extends Authenticatable implements HasPresenter
 	];
 
 
-
 	/**
 	 * The attributes that should be cast to native types.
 	 *
@@ -156,14 +155,22 @@ class User extends Authenticatable implements HasPresenter
 	static $profiles = [
 		1 => "Porteur de projet en recherche de terres",
 		2 => "Porteur de projet en recherche de financement",
-		3 => "En reconversion professionnelle et à la recherche des informations pour
-m’installer",
+		3 => "En reconversion professionnelle et à la recherche des informations pour m’installer",
 		4 => "A la recherche d’un travail / d’une expérience dans le domaine agricole",
 		5 => "Agriculteur qui souhaite transmettre ma ferme",
 		6 => "Agriculteur en activité qui cherche à consolider ma ferme",
 		7 => "Propriétaire privé qui cherche à vendre ou louer mes terres",
 		8 => "Autre",
 	];
+
+	static $roles = [
+		0 => "Porteur de projet",
+		1 => "Modérateur",
+		2 => "Primo-accueillant",
+		3 => "Responsable territorial",
+		4 => "Administrateur",
+	];
+
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -199,19 +206,19 @@ m’installer",
 	}
 
 	public function ads()
-    {
-        return $this->hasMany(Ad::class, 'user_pp_id', 'id')->whereNull('project_id');
-    }
+	{
+		return $this->hasMany(Ad::class, 'user_pp_id', 'id')->whereNull('project_id');
+	}
 
-    public function supportRequests()
-    {
-        return $this->hasMany(Ad::class, 'user_pp_id', 'id')->whereNotNull('project_id');
-    }
+	public function supportRequests()
+	{
+		return $this->hasMany(Ad::class, 'user_pp_id', 'id')->whereNotNull('project_id');
+	}
 
-    public function supportRequest()
-    {
-        return $this->hasOne(Ad::class, 'user_pp_id', 'id')->whereNotNull('project_id');
-    }
+	public function supportRequest()
+	{
+		return $this->hasOne(Ad::class, 'user_pp_id', 'id')->whereNotNull('project_id');
+	}
 
 	/**
 	 * Get the presenter class.
