@@ -136,7 +136,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="columns">
                             <div class="column ">
                                 <div class="field">
@@ -225,6 +224,7 @@
                                     <autocomplete
                                         name="citySelect"
                                         id="citySelect"
+                                        autocomplete="off"
                                         class="@error('city_id') is-danger @enderror"
                                         placeholder="Saisissez les premiers caractères"
                                         ref='citySelect'
@@ -318,7 +318,7 @@
                             <label class="checkbox">
                                 <input type="checkbox" required>
                                 <span>J'ai pris connaissance de
-                                    <a>  la charte d'utilisation de la plateforme d'annonces du site web de Terre de Liens</a>
+                                    <a href="{{URL::asset('docs/Charte_TdL.pdf')}}" target="_blank">  la charte d'utilisation de la plateforme d'annonces du site web de Terre de Liens</a>
                                .*  </span>
                             </label>
                         </div>

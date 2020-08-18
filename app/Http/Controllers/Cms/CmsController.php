@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
+use App\Models\CmsPage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class CmsController extends Controller
 {
@@ -13,7 +15,8 @@ class CmsController extends Controller
 	}
     public function quiSommesNous()
     {
-        return view('pages/cms/qui-sommes-nous');
+		$pageContent = CmsPage::where('slug', 'like', Route::currentRouteName().'%' )->get()->keyBy('slug');
+		return view('pages/cms/qui-sommes-nous', compact('pageContent'));
     }
     public function minstallerCommePaysan()
     {
@@ -35,10 +38,16 @@ class CmsController extends Controller
     {
         return view('pages/cms/trouver-un-emploi');
     }
-    public function mentionsLegales()
+
+	/**
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function mentionsLegales()
     {
-        return view('pages/cms/mentions-legales');
+		$pageContent = CmsPage::where('slug', 'like', Route::currentRouteName().'%' )->get()->keyBy('slug');
+        return view('pages/cms/mentions-legales', compact('pageContent'));
     }
+
     public function confierMesTerres()
     {
         return view('pages/cms/confier-mes-terres');

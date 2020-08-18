@@ -33,7 +33,7 @@ class ProductionGenreSeeder extends Seeder
                 "updated_at" => \Carbon\Carbon::now()
             ],
             [
-                "name" => "Cérales et légumineuses",
+                "name" => "Céréales et légumineuses",
                 "created_at" =>  \Carbon\Carbon::now(),
                 "updated_at" => \Carbon\Carbon::now()
             ],

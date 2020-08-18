@@ -64,8 +64,8 @@ class CreateAttributionAdsTable extends Migration
 
 			$table->foreign('ad_id', 'fk_attribution_ads_ads_1_idx')
 				->references('id')->on('ads')
-				->onDelete('restrict')
-				->onUpdate('restrict');
+				->onDelete('cascade')
+				->onUpdate('cascade');
 
 			$table->foreign('ad_status_id', 'fk_attribution_ads_1_idx')
 				->references('id')->on('ad_statuses')

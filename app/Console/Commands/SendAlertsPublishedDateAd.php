@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\Notify3MonthsPublishedAd;
-use App\Jobs\Notify5MonthsPublishedAd;
+use App\Jobs\Notify6MonthsPublishedAd;
 use Illuminate\Console\Command;
 
 class SendAlertsPublishedDateAd extends Command
@@ -22,18 +22,18 @@ class SendAlertsPublishedDateAd extends Command
      */
     protected $description = 'Send an email if the ad is published since 3 or 5 months';
 	protected $notify3MonthsPublishedAd;
-	protected $notify5MonthsPublishedAd;
+	protected $notify6MonthsPublishedAd;
 
 	/**
 	 * Create a new command instance.
 	 *
 	 * @param Notify3MonthsPublishedAd $notify3MonthsPublishedAd
-	 * @param Notify5MonthsPublishedAd $notify5MonthsPublishedAd
+	 * @param Notify6MonthsPublishedAd $notify6MonthsPublishedAd
 	 */
-    public function __construct(Notify3MonthsPublishedAd $notify3MonthsPublishedAd, Notify5MonthsPublishedAd $notify5MonthsPublishedAd)
+    public function __construct(Notify3MonthsPublishedAd $notify3MonthsPublishedAd, Notify6MonthsPublishedAd $notify6MonthsPublishedAd)
     {
     	$this->notify3MonthsPublishedAd = $notify3MonthsPublishedAd;
-    	$this->notify5MonthsPublishedAd = $notify5MonthsPublishedAd;
+    	$this->notify6MonthsPublishedAd = $notify6MonthsPublishedAd;
         parent::__construct();
     }
 

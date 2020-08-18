@@ -3,7 +3,6 @@
 use App\Models\AdStatus;
 use App\Models\BioCertification;
 use App\Models\Department;
-use App\Models\JobOfferType;
 use App\Models\OfferGenre;
 use App\Models\ProductionGenre;
 use App\Models\ProjectStatus;

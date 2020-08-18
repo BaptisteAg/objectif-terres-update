@@ -55,7 +55,8 @@ class DatabaseSeeder extends Seeder
             EducationLevelSeeder::class,
             RefusalTypeSeeder::class,
             ProjectDataKeySeeder::class,
-            ProjectDataValueSeeder::class
+            ProjectDataValueSeeder::class,
+			CmsPageSeeder::class
         ]);
 
         if (app()->environment() === "local") {
