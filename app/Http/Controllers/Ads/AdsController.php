@@ -7,11 +7,9 @@ use App\Models\Ad;
 use App\Models\User;
 use App\Notifications\NewAdToModerateNotification;
 use App\Notifications\NewSupportRequestNotification;
-use App\Presenters\AdPresenter;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\URL;
 
 
 class AdsController extends BaseController
@@ -159,6 +157,8 @@ class AdsController extends BaseController
 	public function show($adId)
 	{
 		$ad = $this->adService->find($adId);
+
+
 		if (!isset($ad->user_pp_id)) {
 			abort(404);
 		}

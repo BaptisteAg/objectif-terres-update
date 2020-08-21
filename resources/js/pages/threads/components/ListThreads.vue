@@ -86,7 +86,8 @@
                                 <span class="icon">
                                     <i class="fas fa-user"></i>
                                 </span>
-                                <span>{{thread.title}}</span></a>
+                                <span>{{thread.title}}</span>
+                            </a>
                         </template>
                     </template>
                     <template v-else>

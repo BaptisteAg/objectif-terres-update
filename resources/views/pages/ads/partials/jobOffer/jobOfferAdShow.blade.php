@@ -12,6 +12,11 @@
 									class="subtitle">{{ $ad->created_at}}</span>
 						</p>
 					@else
+						@if(isset($ad->is_partner) && $ad->is_partner === 1 )
+							<p class="custom-tags">
+								<span class="custom-tag warning">Partenaire Terre de Liens</span>
+							</p>
+						@endif
 						<p><span class="is-size-5  has-text-black ">Publié le  : </span><span
 									class="subtitle">{{ $ad->published_on}}</span>
 						</p>

@@ -20,10 +20,10 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * @property int|null $ad_status_id
  * @property int|null $refusal_type_id
  * @property string|null $published_on
- * @property string|null $refused_on
  * @property string|null $archived_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $refused_on
  * @property-read \App\Models\Ad $ad
  * @property-read \App\Models\AdStatus|null $adStatus
  * @property-read \App\Models\RefusalType|null $refusalType
@@ -47,6 +47,7 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd wherePublishedOn($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereRefusalTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereRefusedOn($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserAdvisorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserModeratorId($value)

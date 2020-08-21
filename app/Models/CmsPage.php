@@ -5,6 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+/**
+ * App\Models\CmsPage
+ *
+ * @property int $id
+ * @property string $page_name
+ * @property string $slug
+ * @property string $description
+ * @property string|null $content
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage wherePageName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class CmsPage extends Model
 {
 	public static function boot()

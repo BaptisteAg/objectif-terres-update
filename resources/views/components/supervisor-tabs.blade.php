@@ -7,12 +7,14 @@
                 <a class="" href="{{route('supervisor.report')}}">Rapports et indicateurs</a></li>
             <li class="{{ Route::current()->getName() === 'supervisor.projectDataKeysEdit' || Route::current()->getName() === 'supervisor.projectDataKeysEdit'  ? 'is-active' : '' }}">
                 <a class="" href="{{route('supervisor.projectDataKeysEdit')}}">Administration des indicateurs</a></li>
+            <li class="{{ Route::current()->getName() === 'responseTemplates.index' || Route::current()->getName() === 'responseTemplates.index'  ? 'is-active' : '' }}">
+                <a class="" href="{{route('responseTemplates.index')}}">Gestion des messages types</a>
+            </li>
             <li class="{{ Route::current()->getName() === 'threads.index' ? 'is-active' : '' }}"><a class=""
                                                                                                     href="{{route('threads.index')}}">Messagerie</a>
             </li>
-            <li class="{{ Route::current()->getName() === 'supervisor.help' ? 'is-active' : '' }}"><a class=""
-                                                                                                      href="{{route('supervisor.help')}}">Aide
-                    et ressources</a></li>
+            <li class="{{ Route::current()->getName() === 'supervisor.help' ? 'is-active' : '' }}">
+                <a class="" href="{{route('supervisor.help')}}">Aide et ressources</a></li>
         </ul>
     </div>
 </div>
