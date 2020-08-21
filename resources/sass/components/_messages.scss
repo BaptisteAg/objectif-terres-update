@@ -6,7 +6,7 @@
 .message-sender {
   border-bottom-left-radius: 5px;
   border-top-left-radius: 5px;
-  float: right;
+  align-self: end;
   background-color: $primary;
   margin-right: 0px;
   padding-top: 5px;
@@ -28,7 +28,7 @@
   border-top-right-radius: 5px;
   background-color: $pearl;
   margin-right: 0px;
-  float: left;
+  align-self: start;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-right: 15px;
