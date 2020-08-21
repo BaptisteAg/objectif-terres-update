@@ -20,7 +20,7 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * @property int|null $project_status_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Ad $ad
+ * @property-read \App\Models\Ad|null $ad
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Document[] $documents
  * @property-read int|null $documents_count
  * @property-read \App\Models\ProjectStatus|null $projectStatus

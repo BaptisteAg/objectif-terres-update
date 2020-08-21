@@ -66,11 +66,17 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 					$subQuery->whereHas('userPp', function (Builder $q) {
 						$q->whereNull('deleted_at');
 					});
+
 					$subQuery->whereHas('departments', function (Builder $builder) use ($territoriesCodes) {
 						$builder->whereIn('code', $territoriesCodes);
 					});
 					$subQuery->orWhereHas('cities', function (Builder $builder) use ($territoriesCodes) {
 						$builder->whereIn('department_code', $territoriesCodes);
+					});
+					$subQuery->orWhereHas('regions', function (Builder $builder) use ($territoriesCodes) {
+						$builder->whereHas('departments', function (Builder $q) use ($territoriesCodes) {
+							$q->whereIn('code', $territoriesCodes);
+						});
 					});
 				});
 			})
@@ -88,7 +94,7 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 	{
 		return $this->entity
 			->whereDate("published_on", '<=', $date)
-            ->where('ad_status_id', [AdStatus::APPROVE_ID])
+			->where('ad_status_id', [AdStatus::APPROVE_ID])
 			->get();
 	}
 

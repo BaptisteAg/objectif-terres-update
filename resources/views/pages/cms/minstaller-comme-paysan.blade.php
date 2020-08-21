@@ -12,20 +12,11 @@
         <div class="container">
             <div class="rows">
                 <div class="row is-full">
-                    <h1 class="title is-1 has_margin">M’installer comme paysan</h1>
-                    <p>Terre de Liens eget risus varius blandit sit amet non magna. Sed posuere
-                        consectetur est at lobortis. Vestibulum id ligula porta felis euismod semper. Duis
-                        mollis, est non commodo luctus, nisi erat porttitor ligula,
-                    </p>
-                </div>
-                <div class="row is-full">
-                    <h3 class="title is-3 has_margin">Nascetur ridiculus venenatis blandit felis</h3>
-                    <p>
-                        Maecenas faucibus mollis interdum. Maecenas sed diam eget risus varius blandit
-                        sit amet non magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                        posuere consectetur est at lobortis. Integer posuere erat a ante venenatis dapibus
-                        posuere velit aliquet. Donec sed odio dui.
-                    </p>
+                    @if($pageContent->count())
+                        @if($pageContent->has('minstaller-comme-paysan-texte-dintroduction-sous-le-titre-principal'))
+                            {!! $pageContent['minstaller-comme-paysan-texte-dintroduction-sous-le-titre-principal']->content !!}
+                        @endif
+                    @endif
                 </div>
             </div>
         </div>
@@ -35,17 +26,11 @@
         <div class="container">
             <div class="columns">
                 <div class="column">
-                    <h2 class="title is-2">Votre projet d’installation</h2>
-                    <p>
-                        Donec ullamcorper nulla non metus auctor
-                        fringilla. Maecenas sed diam eget risus varius
-                        blandit sit amet non magna.
-                    </p>
-                    <p>
-                        <span>Pour aller plus loin :</span> Terre de Liens vous met à
-                        dispostion un <a href="#">Centre de Ressources</a> donec
-                        ullamcorper nulla non metus auctor fringilla.
-                    </p>
+                    @if($pageContent->count())
+                        @if($pageContent->has('minstaller-comme-paysan-votre-projet-dinstallations'))
+                            {!! $pageContent['minstaller-comme-paysan-votre-projet-dinstallations']->content !!}
+                        @endif
+                    @endif
                 </div>
                 <div class="column is-three-quarters has-text-centered">
                     <div class="columns is-centered">
@@ -106,40 +91,11 @@
         <div class="container">
             <div class="rows">
                 <div class="row is-full block-result-text">
-                    <h1 class="title is-2">Consecteur auctor fringilla Moderatus</h1>
-                    <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Integer posuere erat
-                        a ante venenatis dapibus posuere velit aliquet. Maecenas faucibus mollis
-                        interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-                    </p>
-                    <p>
-                        Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-                        mus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia
-                        odio sem nec elit. Nulla vitae elit libero, a pharetra augue. Praesent commodo
-                        cursus magna, vel scelerisque nisl consectetur et. Donec ullamcorper nulla non
-                        metus auctor fringilla.
-                    </p>
-                    <p>
-                        Maecenas sed diam eget risus varius blandit sit amet non magna. Sed posuere
-                        consectetur est at lobortis. Vestibulum id ligula porta felis euismod semper. Duis
-                        mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem
-                        nec elit. Sed posuere consectetur est at lobortis. Nullam id dolor id nibh ultricies
-                        vehicula ut id elit. Maecenas sed diam eget risus varius blandit sit amet non
-                        magna.
-                    </p>
-                </div>
-                <div class="row is-full">
-                    <h3 class="title is-3 has_margin">Pellentasque sicuram ligula</h3>
-                    <p>
-                        Maecenas faucibus mollis interdum. Maecenas sed diam eget risus varius blandit
-                        sit amet non magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                        posuere consectetur est at lobortis. Integer posuere erat a ante venenatis dapibus
-                        posuere velit aliquet. Donec sed odio dui.
-                        Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vestibulum
-                        id ligula porta felis euismod semper. Morbi leo risus, porta ac consectetur ac,
-                        vestibulum at eros. Cum sociis natoque penatibus et magnis dis parturient
-                        montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula ut id elit.
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cum sociis natoque
-                    </p>
+                    @if($pageContent->count())
+                        @if($pageContent->has('minstaller-comme-paysan-les-deux-textes-sous-les-chiffres'))
+                            {!! $pageContent['minstaller-comme-paysan-les-deux-textes-sous-les-chiffres']->content !!}
+                        @endif
+                    @endif
                 </div>
             </div>
         </div>

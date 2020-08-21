@@ -8,8 +8,9 @@
             <div class="rows">
                 <div class="row is-full">
                     <h1 class="title is-1 has_margin is-marginless">Être accompagné</h1>
-                    <p>Terre de Liens peut accompagner les projets d’offre ou de recherche de foncier agricole. Pour connaître nos modalités d’accueil, indiquer la région concernée par votre projet :
-                    </p>
+                    @if(isset($pageContent))
+                            {!! $pageContent->content !!}
+                    @endif
                 </div>
             </div>
         </div>
@@ -72,7 +73,8 @@
             <form method="post">
                 @csrf
                 <div class="container">
-                    <h2 class="title is-2 has-text-centered">Précisez brièvement ce que vous attendez de Terre de Liens, en quoi nous pourrions vous aider.</h2>
+                    <h2 class="title is-2 has-text-centered">Précisez brièvement ce que vous attendez de Terre de Liens,
+                        en quoi nous pourrions vous aider.</h2>
                     <div class="columns is-mobile is-centered">
                         <div class="column is-two-thirds">
                             <br>
@@ -90,7 +92,8 @@
 
                                     <div class="field is-grouped is-grouped-centered">
                                         <div class="control is-pulled-right">
-                                            <button type="submit" class="button is-link is-size-3">Étape suivante</button>
+                                            <button type="submit" class="button is-link is-size-3">Étape suivante
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

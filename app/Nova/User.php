@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Rules\SalesforceUniqueEmail;
 use Laravel\Nova\Fields\BelongsTo;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Select;
@@ -64,6 +65,7 @@ class User extends Resource
 	public function fields(Request $request)
 	{
 		return [
+
 			ID::make()->sortable(),
 
 //			Gravatar::make(),
@@ -72,7 +74,7 @@ class User extends Resource
 				if (isset($this->civility)) {
 					return \App\Models\User::$civilities[$this->civility];
 				}
-			})->exceptOnForms(),
+			})->exceptOnForms()->onlyOnDetail(),
 
 
 			Select::make('Civilité', 'civility')->options(function () {
@@ -98,10 +100,10 @@ class User extends Resource
 				->updateRules('unique:users,email,{{resourceId}}', app(SalesforceUniqueEmail::class)),
 
 			Text::make('Téléphone', 'phone')
-				->rules('nullable', 'string', 'max:30'),
+				->rules('nullable', 'string', 'max:30')->hideFromIndex(),
 
 			Text::make('Adresse', 'street')
-				->rules('required', 'string', 'max:255'),
+				->rules('required', 'string', 'max:255')->hideFromIndex(),
 
 			BelongsTo::make('Ville', 'zipCode', City::class)->searchable(),
 
@@ -113,7 +115,7 @@ class User extends Resource
 				->sortable(),
 
 			Select::make('Role')
-				->options([0=>\App\Models\User::$roles[0]])
+				->options([0 => \App\Models\User::$roles[0]])
 				->rules('required')
 				->onlyOnForms()
 				->hideWhenUpdating(),
@@ -122,7 +124,7 @@ class User extends Resource
 				if (isset($this->profile)) {
 					return \App\Models\User::$profiles[$this->profile];
 				}
-			})->exceptOnForms(),
+			})->exceptOnForms()->onlyOnDetail(),
 
 			Select::make('Profile', 'profile')->options(function () {
 				$arrayValues = [];
@@ -131,11 +133,10 @@ class User extends Resource
 				}
 				return $arrayValues;
 			})->onlyOnForms(),
-//
-//			CKEditor5Classic::make('Content')->withFiles('public')
-//			->options([
-//				'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote'
-//			]),
+
+			HasMany::make('Permission de l\'utilisateur', 'userPermissions', 'App\Nova\UserPermission')->canSee(function ($request) {
+				return isset($this->role) && $this->role >= 1;
+			}),
 
 			Password::make('Mot de passe', 'Password')
 				->onlyOnForms()
@@ -153,7 +154,7 @@ class User extends Resource
 	 */
 	public function cards(Request $request)
 	{
-		  return [new Metrics\UsersPerDay, new Metrics\NewUsers];
+		return [new Metrics\UsersPerDay, new Metrics\NewUsers];
 	}
 
 	/**

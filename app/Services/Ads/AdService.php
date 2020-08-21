@@ -10,6 +10,7 @@ use App\Models\Region;
 use App\Models\SupportStage;
 use App\Models\SupportState;
 use App\Models\User;
+use App\Models\UserPermission;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Ads\JobOfferAdRepository;
 use App\Repositories\Ads\JobSeekAdRepository;
@@ -73,11 +74,6 @@ class AdService
 	 */
 	protected $projectRepository;
 
-	/**
-	 * @var AttributionAdsService
-	 */
-	protected $attributionAdsService;
-
 
 	/**
 	 * AdService constructor.
@@ -90,7 +86,6 @@ class AdService
 	 * @param ProductionGenreRepository $productionGenreRepository
 	 * @param ProjectsRepository $projectRepository
 	 * @param UserService $userService
-	 * @param AttributionAdsService $attributionAdsService
 	 * @param NotifySupportRequestAttribution $notificationSupportRequestAttribution
 	 */
 	public function __construct(
@@ -102,8 +97,8 @@ class AdService
 		JobSeekAdRepository $jobSeekAdRepository,
 		ProductionGenreRepository $productionGenreRepository,
 		ProjectsRepository $projectRepository,
-		UserService $userService,
-		AttributionAdsService $attributionAdsService
+		UserService $userService
+
 	)
 	{
 		$this->repository = $repository;
@@ -115,7 +110,6 @@ class AdService
 		$this->productionGenreRepository = $productionGenreRepository;
 		$this->userService = $userService;
 		$this->projectRepository = $projectRepository;
-		$this->attributionAdsService = $attributionAdsService;
 	}
 
 	/**
@@ -178,10 +172,10 @@ class AdService
 		} else {
 			$availableModerators = $this->userService->findByRoleAndDepartments(1, $adDepartmentCodes);
 			$availableSupervisors = $this->userService->findByRoleAndDepartments(3, $adDepartmentCodes);
-			if ($availableModerators->isEmpty() && $availableSupervisors->isEmpty()) {
+			$availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
+			if ($availableModerators->isEmpty() && $availableSupervisors->isEmpty() && empty($availableUserWithPermission)) {
 				throw new \Exception("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
 			}
-
 			// If ad was attributed before, we'll get the same moderator if available
 			if ($ad->attributionAd && $ad->attributionAd->userModerator &&
 				$availableModerators->keyBy("id")->find($ad->attributionAd->user_moderator_id)) {
@@ -190,6 +184,8 @@ class AdService
 				if ($availableModerators->count() >= 1) {
 					/** @var User $moderator */
 					$moderator = $availableModerators->random();
+				} else if (!empty($availableUserWithPermission)) {
+					$moderator = $availableUserWithPermission;
 				} else {
 					/** @var User $moderator */
 					$moderator = $availableSupervisors->random();
@@ -231,8 +227,7 @@ class AdService
 	 * @param Ad $ad
 	 * @return array
 	 */
-	public
-	function getAdDepartmentCodes(Ad $ad)
+	public function getAdDepartmentCodes(Ad $ad)
 	{
 		$departmentsCode = [];
 
@@ -840,8 +835,7 @@ class AdService
 	 * @param int $id
 	 * @return Ad[]|Builder[]|\Illuminate\Database\Eloquent\Collection
 	 */
-	public
-	function findAttributedAndNotDraftedByUserId(int $id)
+	public function findAttributedAndNotDraftedByUserId(int $id)
 	{
 		return $this->repository->findAttributedAndNotDraftedByUserId($id);
 	}
@@ -850,9 +844,17 @@ class AdService
 	 * @param int $id
 	 * @return Ad[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|Collection
 	 */
-	public
-	function findAdsAttributedAndNotDraftedByUserId(int $id)
+	public function findAdsAttributedAndNotDraftedByUserId(int $id)
 	{
 		return $this->repository->findAdsAttributedAndNotDraftedByUserId($id);
+	}
+
+	public function updateAdPartnerStatus(Ad $ad, array $data)
+	{
+		try {
+			$this->repository->update($ad, $data);
+		} catch (\Throwable $e) {
+			return back()->withInput()->withErrors($e->getMessage());
+		}
 	}
 }

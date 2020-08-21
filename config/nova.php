@@ -103,7 +103,7 @@ return [
         DispatchServingNovaEvent::class,
         BootTools::class,
         Authorize::class,
-		\App\Http\Middleware\SupervisorMiddleware::class
+		\App\Http\Middleware\AdminMiddleware::class
     ],
 
     /*

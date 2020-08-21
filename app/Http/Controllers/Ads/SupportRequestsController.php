@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Ads;
 
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
+use App\Models\CmsPage;
 use App\Models\User;
 use App\Notifications\NewAdToModerateNotification;
 use App\Notifications\NewSupportRequestNotification;
 use App\Notifications\SupportRequestAttributionNotification;
+use Illuminate\Support\Facades\Route;
 
 class SupportRequestsController extends BaseController
 {
@@ -21,7 +23,8 @@ class SupportRequestsController extends BaseController
     public function start()
     {
         $vars = array_merge($this->getCreateFormVars(), [
-            'isSupportRequest' => 1
+            'isSupportRequest' => 1,
+			'pageContent' => CmsPage::where('slug', '=', "etre-accompagne-texte-dintroduction-sous-le-titre-principal")->first()
         ]);
         return view('pages.ads.support-request', $vars);
     }
