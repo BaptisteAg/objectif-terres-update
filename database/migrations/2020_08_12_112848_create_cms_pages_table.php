@@ -16,7 +16,7 @@ class CreateCmsPagesTable extends Migration
         Schema::create('cms_pages', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('page_name');
-            $table->text('slug');
+            $table->text('slug')->default(null);
 			$table->text('description');
 			$table->text('content')->nullable();
             $table->timestamps();
