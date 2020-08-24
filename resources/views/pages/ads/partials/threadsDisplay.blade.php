@@ -59,6 +59,7 @@
                                                 :is-display="isDisplay"
                                                :is-user-logged-ad-owner="isUserAdOwner"
                                                 :user-id="{{auth()->id()}}"
+                                                :active-thread = "activeThreadId"
                                                 @on-thread-click="onThreadClick"
                                         >
                                         </list-threads>
@@ -117,6 +118,7 @@
                                                 :is-display="isDisplay"
                                                 :is-user-logged-ad-owner="isUserAdOwner"
                                                 :user-id="{{auth()->id()}}"
+                                                :active-thread = "activeThreadId"
                                                 @on-thread-click="onThreadClick"
 
                                         >
@@ -203,6 +205,7 @@
                                             :is-display="isDisplay"
                                             :is-user-logged-ad-owner="isUserAdOwner"
                                             :user-id="{{auth()->id()}}"
+                                            :active-thread = "activeThreadId"
                                             @on-thread-click="onThreadClick"
                                     >
                                     </list-threads>

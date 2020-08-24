@@ -107,9 +107,7 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 					['is_read', '=', '0']
 				]);
 			})
-			->with($this->getEagerLoading())
-			->get();
-
+			->pluck('threads.id');
 		return $threads;
 
 	}
