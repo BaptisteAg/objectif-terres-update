@@ -50,21 +50,21 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
  * @property-read int|null $regions_count
- * @property-read \App\Models\Ad $supportRequest
+ * @property-read \App\Models\Ad|null $supportRequest
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $supportRequests
  * @property-read int|null $support_requests_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
  * @property-read int|null $threads_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserPermission[] $userPermissions
+ * @property-read int|null $user_permissions_count
  * @property-read \App\Models\City|null $zipCode
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User filterAdsTerritoryLocations($territoriesCode)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User filterLocations($relationshipName, $locationableIds)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
- * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
- * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAcceptCommunication($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAcceptShareContactInfos($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCity($value)
@@ -200,21 +200,30 @@ class User extends Authenticatable implements HasPresenter
 
 	}
 
-	public function threads()
+	public function threads(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
 	{
 		return $this->belongsToMany(Thread::class, 'thread_users')->withTimestamps();
 	}
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
 	public function ads()
 	{
 		return $this->hasMany(Ad::class, 'user_pp_id', 'id')->whereNull('project_id');
 	}
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder
+	 */
 	public function supportRequests()
 	{
 		return $this->hasMany(Ad::class, 'user_pp_id', 'id')->whereNotNull('project_id');
 	}
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasOne|\Illuminate\Database\Query\Builder
+	 */
 	public function supportRequest()
 	{
 		return $this->hasOne(Ad::class, 'user_pp_id', 'id')->whereNotNull('project_id');
@@ -257,5 +266,12 @@ class User extends Authenticatable implements HasPresenter
 		return $this->morphedbyMany(Region::class, 'locationable_user');
 	}
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function userPermissions()
+	{
+		return $this->hasMany(UserPermission::class, 'user_id');
+	}
 
 }

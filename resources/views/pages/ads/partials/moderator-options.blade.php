@@ -5,6 +5,7 @@
                           :attribution-ad-id="{{$ad->attributionAd->id}}"
     >
         @if($isAdToModerate and $isLoggedUserModeratorAd)
+
             <div class="box has-text-centered">
                 <div class="container">
                     <p class="title is-2 has-text-centered">Modération de l'annonce</p>
@@ -46,15 +47,19 @@
                         </button>
                     </div>
                 </div>
+
+
                 <moderation-modal
                         v-if="showModal"
                         @close="showModerationModal(false)"
-                        v-bind:moderation-choice="moderationChoice"
-                        v-bind:select-options="selectOptions"
-                        v-bind:form-url="formUrl"
-                        v-bind:ad-id="adIdShow"
-                        v-bind:attribution-ad-id="attributionAd"
+                        :moderation-choice="moderationChoice"
+                        :select-options="selectOptions"
+                        :form-url="formUrl"
+                        :ad-id="adIdShow"
+                        :attribution-ad-id="attributionAd"
                         accept-ad-message="{{\App\Models\AttributionAd::VALIDATION_MESSAGE}}"
+                        :allow-to-create-response-template="{{auth()->user()->role >= 3 ? 'true' : 'false'}}"
+                        :is-ad-partner="{{$ad->is_partner === 1 ? 'true' : 'false'}}"
                 >
                 </moderation-modal>
             </div>
@@ -101,12 +106,14 @@
                 <moderation-modal
                         v-if="showModal"
                         @close="showModerationModal(false)"
-                        v-bind:moderation-choice="moderationChoice"
-                        v-bind:select-options="selectOptions"
-                        v-bind:form-url="formUrl"
-                        v-bind:ad-id="adIdShow"
-                        v-bind:attribution-ad-id="attributionAd"
+                        :moderation-choice="moderationChoice"
+                        :select-options="selectOptions"
+                        :form-url="formUrl"
+                        :ad-id="adIdShow"
+                        :attribution-ad-id="attributionAd"
                         accept-ad-message="{{\App\Models\AttributionAd::VALIDATION_MESSAGE}}"
+                        :allow-to-create-response-template="{{auth()->user()->role >= 3 ? 'true' : 'false'}}"
+                        :is-ad-partner="{{$ad->is_partner === 1 ? 'true' : 'false'}}"
                 >
                 </moderation-modal>
             </div>

@@ -110,9 +110,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		if (!is_a($ad, Ad::class)) {
 			$ad = $this->find($ad);
 		}
-
 		$this->save($ad, $data);
-
 		return $ad;
 	}
 
@@ -772,6 +770,50 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		}
 	}
 
+
+	/**
+	 * @param Carbon $date
+	 * @return Ad[]|Collection
+	 */
+	public function findAllByPublishedOnSince(Carbon $date)
+	{
+		return $this->entity
+			->whereHas('attributionAd', function (Builder $query) use ($date) {
+				$query->whereDate('published_on', '<=', $date);
+			})->get();
+	}
+
+	/**
+	 * @param Carbon $date
+	 * @return Ad[]|Collection
+	 */
+	public function findAllNotAttributedSince(Carbon $date)
+	{
+		return $this->entity
+			->doesntHave('attributionAd')
+			->whereDate('updated_at', '<=', $date)
+			->get();
+	}
+
+	public function findAttributedAndNotDraftedByUserId(int $userId)
+	{
+		return $this->entity
+			->whereHas('attributionAd')
+			->where('is_draft', 0)
+			->where('user_pp_id', $userId)
+			->get();
+	}
+
+	public function findAdsAttributedAndNotDraftedByUserId(int $userId)
+	{
+		return $this->entity
+			->whereHas('attributionAd')
+			->where('is_draft', 0)
+			->where('user_pp_id', $userId)
+			->whereNull('project_id')
+			->get();
+	}
+
 	private function getFullEagerLoading()
 	{
 		return array_merge([
@@ -855,46 +897,4 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	}
 
 
-	/**
-	 * @param Carbon $date
-	 * @return Ad[]|Collection
-	 */
-	public function findAllByPublishedOnSince(Carbon $date)
-	{
-		return $this->entity
-			->whereHas('attributionAd', function (Builder $query) use ($date) {
-				$query->whereDate('published_on', '<=', $date);
-			})->get();
-	}
-
-	/**
-	 * @param Carbon $date
-	 * @return Ad[]|Collection
-	 */
-	public function findAllNotAttributedSince(Carbon $date)
-	{
-		return $this->entity
-			->doesntHave('attributionAd')
-			->whereDate('updated_at', '<=', $date)
-			->get();
-	}
-
-	public function findAttributedAndNotDraftedByUserId(int $userId)
-	{
-		return $this->entity
-			->whereHas('attributionAd')
-			->where('is_draft', 0)
-			->where('user_pp_id', $userId)
-			->get();
-	}
-
-	public function findAdsAttributedAndNotDraftedByUserId(int $userId)
-	{
-		return $this->entity
-			->whereHas('attributionAd')
-			->where('is_draft', 0)
-			->where('user_pp_id', $userId)
-			->whereNull('project_id')
-			->get();
-	}
 }

@@ -26,12 +26,13 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property string|null $about_project_content
  * @property int|null $project_id
  * @property string|null $support_request_text
+ * @property bool $is_partner
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AdNote[] $adNotes
  * @property-read int|null $ad_notes_count
- * @property-read \App\Models\AttributionAd $attributionAd
+ * @property-read \App\Models\AttributionAd|null $attributionAd
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\City[] $cities
  * @property-read int|null $cities_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Department[] $departments
@@ -40,14 +41,14 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read int|null $documents_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\FavoriteAd[] $favoriteAds
  * @property-read int|null $favorite_ads_count
- * @property-read \App\Models\JobOfferAd $jobOfferAd
- * @property-read \App\Models\JobSeekAd $jobSeekAd
- * @property-read \App\Models\LandOfferAd $landOfferAd
- * @property-read \App\Models\LandSeekAd $landSeekAd
+ * @property-read \App\Models\JobOfferAd|null $jobOfferAd
+ * @property-read \App\Models\JobSeekAd|null $jobSeekAd
+ * @property-read \App\Models\LandOfferAd|null $landOfferAd
+ * @property-read \App\Models\LandSeekAd|null $landSeekAd
  * @property-read \App\Models\Project|null $project
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
  * @property-read int|null $regions_count
- * @property-read \App\Models\Thread $threadAlreadyExist
+ * @property-read \App\Models\Thread|null $threadAlreadyExist
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
  * @property-read int|null $threads_count
  * @property-read \App\Models\User $userPp
@@ -58,12 +59,10 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterWhereHasIn($data, $relationNameTable, $columnName)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterWhereHasLandSeekAdOrWhereHasLandOfferAd($landSeekAdColumn, $landOfferAdColumn, $operator, $value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterWhereHasWhere($data, $relationNameTable, $operator, $columnName)
- * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad newQuery()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Ad onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad query()
- * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAboutContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAboutProjectContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAcceptShareContactInfos($value)
@@ -82,49 +81,50 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  */
 class Ad extends Model implements HasPresenter
 {
-    use Documentable,
-        ScopeAdTypesFilterable,
-        ScopeDataFilterable,
-        ScopeLocationFilterable,
-        SoftDeletes;
+	use Documentable,
+		ScopeAdTypesFilterable,
+		ScopeDataFilterable,
+		ScopeLocationFilterable,
+		SoftDeletes;
 
-    /**
-     * @var array
-     */
-    protected $fillable = [
-        'project_id',
-        'user_pp_id',
-        'is_draft',
-        'title',
-        'about_content',
-        'about_project_content',
-        'accept_share_contact_infos',
-        'support_request_text'
-    ];
+	/**
+	 * @var array
+	 */
+	protected $fillable = [
+		'project_id',
+		'user_pp_id',
+		'is_draft',
+		'title',
+		'about_content',
+		'about_project_content',
+		'accept_share_contact_infos',
+		'support_request_text',
+		'is_partner'
+	];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function userPp()
-    {
-        return $this->belongsTo(User::class);
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function userPp()
+	{
+		return $this->belongsTo(User::class);
+	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function attributionAd()
-    {
-        return $this->hasOne(AttributionAd::class)->orderByDesc("id");
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
+	 */
+	public function attributionAd()
+	{
+		return $this->hasOne(AttributionAd::class)->orderByDesc("id");
+	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function project()
-    {
-        return $this->belongsTo(Project::class);
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function project()
+	{
+		return $this->belongsTo(Project::class);
+	}
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -145,83 +145,83 @@ class Ad extends Model implements HasPresenter
 			});
 	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function adNotes()
-    {
-        return $this->hasMany(AdNote::class);
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function adNotes()
+	{
+		return $this->hasMany(AdNote::class);
+	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function favoriteAds()
-    {
-        return $this->hasMany(FavoriteAd::class);
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function favoriteAds()
+	{
+		return $this->hasMany(FavoriteAd::class);
+	}
 
 
-    public function jobOfferAd()
-    {
-        return $this->hasOne(JobOfferAd::class);
-    }
+	public function jobOfferAd()
+	{
+		return $this->hasOne(JobOfferAd::class);
+	}
 
-    public function jobSeekAd()
-    {
-        return $this->hasOne(JobSeekAd::class);
-    }
+	public function jobSeekAd()
+	{
+		return $this->hasOne(JobSeekAd::class);
+	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\hasOne
-     */
-    public function landOfferAd()
-    {
-        return $this->hasOne(LandOfferAd::class);
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\hasOne
+	 */
+	public function landOfferAd()
+	{
+		return $this->hasOne(LandOfferAd::class);
+	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\hasOne
-     */
-    public function landSeekAd()
-    {
-        return $this->hasOne(LandSeekAd::class);
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\hasOne
+	 */
+	public function landSeekAd()
+	{
+		return $this->hasOne(LandSeekAd::class);
+	}
 
-    /**
-     * Get all cities 'location' for the ad
-     * @return MorphToMany
-     */
-    public function cities()
-    {
-        return $this->morphedbyMany(City::class, 'locationable_ad')->withPivot('radius');
-    }
+	/**
+	 * Get all cities 'location' for the ad
+	 * @return MorphToMany
+	 */
+	public function cities()
+	{
+		return $this->morphedbyMany(City::class, 'locationable_ad')->withPivot('radius');
+	}
 
-    /**
-     * Get all cities 'location' for the ad
-     * @return MorphToMany
-     */
-    public function departments()
-    {
-        return $this->morphedbyMany(Department::class, 'locationable_ad');
-    }
+	/**
+	 * Get all cities 'location' for the ad
+	 * @return MorphToMany
+	 */
+	public function departments()
+	{
+		return $this->morphedbyMany(Department::class, 'locationable_ad');
+	}
 
-    /**
-     * Get all cities 'location' for the ad
-     * @return MorphToMany
-     */
-    public function regions()
-    {
-        return $this->morphedbyMany(Region::class, 'locationable_ad');
-    }
+	/**
+	 * Get all cities 'location' for the ad
+	 * @return MorphToMany
+	 */
+	public function regions()
+	{
+		return $this->morphedbyMany(Region::class, 'locationable_ad');
+	}
 
-    /**
-     * Get the presenter class.
-     *
-     * @return string
-     */
-    public function getPresenterClass()
-    {
-        return AdPresenter::class;
-    }
+	/**
+	 * Get the presenter class.
+	 *
+	 * @return string
+	 */
+	public function getPresenterClass()
+	{
+		return AdPresenter::class;
+	}
 }

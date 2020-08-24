@@ -9,22 +9,27 @@
                                     class="subtitle">{{ $ad->created_at}}</span>
                         </p>
                     @else
-                        <p><span class="is-size-5  has-text-black ">Publié le  : </span><span
+                        @if(isset($ad->is_partner) && $ad->is_partner === 1 )
+                            <p class="custom-tags">
+                                <span class="custom-tag warning">Partenaire Terre de Liens</span>
+                            </p>
+                        @endif
+                        <p><span class="is-size-5  has-text-black ">Publié le : </span><span
                                     class="subtitle">{{ $ad->published_on}}</span>
                         </p>
                     @endif
                 </div>
                 <div class="content">
-                    <p><span class="is-size-5   ">Publié par  : </span>
+                    <p><span class="is-size-5   ">Publié par : </span>
                         @auth()
                             @if(auth()->user()->role >= 1 )
                                 <span class="subtitle">
-                                <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->userPp->first_name}} {{$ad->userPp->name}}</a>
-                            </span>
+                                    <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+                                </span>
                             @elseif(auth()->user()->role < 1)
                                 <span class="subtitle">
-                                {{ $ad->userPp->first_name}} {{$ad->userPp->name}}
-                            </span>
+                                    {{ $ad->userPp->first_name}} {{$ad->userPp->name}}
+                                </span>
                             @endif
                         @endauth
                         @guest()
@@ -34,11 +39,6 @@
                         @endguest()
                     </p>
                 </div>
-{{--                        <div class="content">--}}
-{{--                            <p><span class="is-size-5 is-capitalized ad-show-feature-label">Catégorie : </span><span--}}
-{{--                                        class="subtitle">{{$ad->ad_type_full_name}}</span></p>--}}
-
-{{--                        </div>--}}
                 <div class="content">
                     <p>
                         <span class="is-size-5 is-capitalized ad-show-feature-label">Surface recherchée (en ha)</span>
@@ -49,10 +49,13 @@
 
                 <div class="content">
                     @if( !empty($ad->landSeekAd->buildings) )
-                        <p><span class="is-size-5 is-capitalized ad-show-feature-label">Habitation(s) et bâti(s) recherché(s) : </span><br>
+                        <p><span class="is-size-5 is-capitalized ad-show-feature-label">Habitation(s) et bâti(s)
+                                recherché(s) : </span><br>
                             @foreach($ad->landSeekAd->buildings as $building)
                                 @if($building->requirement->label !== "Indifférent")
-                                <span class="subtitle">{{ $building->buildingType->label }}</span> <i class="fas fa-arrow-right"></i><span class="subtitle"> {{ $building->requirement->label }}</span><br>
+                                    <span class="subtitle">{{ $building->buildingType->label }}</span> <i
+                                            class="fas fa-arrow-right"></i><span
+                                            class="subtitle"> {{ $building->requirement->label }}</span><br>
                                 @endif
                             @endforeach
                         </p>
@@ -70,7 +73,8 @@
                                 :
                             </span>
                             @foreach($ad->zipCodesByCity as $city => $zipCodes)
-                                <span class="subtitle">{{$city}} ({{ $zipCodes->implode(', ') }})@if(!$loop->last), @endif</span>
+                                <span class="subtitle">{{$city}} ({{ $zipCodes->implode(', ') }})@if(!$loop->last)
+                                        , @endif</span>
                             @endforeach
                         </p>
                     @endif
@@ -124,7 +128,7 @@
 
     <div class="column is-one-quarter ">
         <p class="has-text-link is-size-5 has-text-centered"> Production(s) envisagée(s)</p>
-{{--                <p class="has-text-centered">{{$ad->landSeekAd->productionGenresPossible->pluck('name')->implode(', ') }}</p>--}}
+        {{--                <p class="has-text-centered">{{$ad->landSeekAd->productionGenresPossible->pluck('name')->implode(', ') }}</p>--}}
         <ul class="has-text-centered">
             @foreach($ad->landSeekAd->productionGenresPossible as $productionGenre)
                 <li>{{$productionGenre->name}}</li>
@@ -163,19 +167,18 @@
         @endforeach
     </div>--}}
 
-{{--    @if($ad->landSeekAd->productionGenres->count())--}}
-{{--        <div class="column is-one-quarter ">--}}
-{{--            <p class="has-text-link is-size-5 has-text-centered"> Production(s) actuelle(s)</p>--}}
-{{--            @foreach ($ad->landSeekAd->productionGenres as $productionGenresSeek)--}}
-{{--                @if($productionGenresSeek->name !== '')--}}
-{{--                    <p class="has-text-centered">{{$productionGenresSeek->name}}</p>--}}
-{{--                @else--}}
-{{--                    <p class="has-text-centered">-</p>--}}
-{{--                @endif--}}
-{{--            @endforeach--}}
-{{--        </div>--}}
-{{--    @endif--}}
-
+    {{--    @if($ad->landSeekAd->productionGenres->count())--}}
+    {{--        <div class="column is-one-quarter ">--}}
+    {{--            <p class="has-text-link is-size-5 has-text-centered"> Production(s) actuelle(s)</p>--}}
+    {{--            @foreach ($ad->landSeekAd->productionGenres as $productionGenresSeek)--}}
+    {{--                @if($productionGenresSeek->name !== '')--}}
+    {{--                    <p class="has-text-centered">{{$productionGenresSeek->name}}</p>--}}
+    {{--                @else--}}
+    {{--                    <p class="has-text-centered">-</p>--}}
+    {{--                @endif--}}
+    {{--            @endforeach--}}
+    {{--        </div>--}}
+    {{--    @endif--}}
 
 
 </div>

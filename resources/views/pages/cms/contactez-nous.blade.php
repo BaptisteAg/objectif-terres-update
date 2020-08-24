@@ -8,11 +8,11 @@
         <div class="container">
             <div class="rows">
                 <div class="row is-full">
-                    <h1 class="title is-1 has_margin">Contactez-nous</h1>
-                    <p>Vous avez un projet agricole ? Vous avez besoin d’aide ou d’un suivi sur mesure ?
-                        Vous avez une idée de projet mais il n’est pas encore finalisé ? Eget risus varius
-                        blandit sit amet non magna. Sed posuere consectetur est at lobortis.
-                    </p>
+                    @if($pageContent->count())
+                        @if($pageContent->has('contactez-nous-texte-dintroduction-sous-le-titre-principal'))
+                            {!! $pageContent['contactez-nous-texte-dintroduction-sous-le-titre-principal']->content !!}
+                        @endif
+                    @endif
                 </div>
             </div>
         </div>

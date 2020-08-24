@@ -108,5 +108,6 @@
     "Restore Selected": "Restaurer la sélection",
     "Restore Resource": "Restaurer l'élément",
     "Are you sure you want to restore this resource?": "Êtes-vous sûre de vouloir restaurer cet élément ?",
-    "Are you sure you want to restore the selected resources?": "Êtes-vous sûre de vouloir restaurer les éléments séléctionner ?"
+    "Are you sure you want to restore the selected resources?": "Êtes-vous sûre de vouloir restaurer les éléments séléctionner ?",
+    "No :resource matched the given criteria.": "Aucun résultat"
 }
