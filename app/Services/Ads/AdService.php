@@ -22,6 +22,7 @@ use App\Repositories\Projects\ProjectsRepository;
 use App\Services\AttributionAds\AttributionAdsService;
 use App\Services\Users\UserService;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use DateTime;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -156,7 +157,8 @@ class AdService
 		$adDepartmentCodes = $this->getAdDepartmentCodes($ad);
 		if ($isSupportRequest) {
 			$availableAdvisors = $this->userService->findByRoleAndDepartments(2, $adDepartmentCodes);
-			$availableSupervisors = $this->userService->findByRoleAndDepartments(3, $adDepartmentCodes);
+			$availableSupervisors = $this->userService->findByRoleAndDepartments(4, $adDepartmentCodes);
+
 
 			if ($availableSupervisors->isEmpty() && $availableAdvisors->isEmpty()) {
 				throw new \Exception("Aucun responsable n'a été trouvé dans votre région. Veuillez sauvegarder votre demande et nous contacter.");
@@ -532,7 +534,7 @@ class AdService
 			}
 		});
 		$validatedAdsByMonthInYear = [];
-		$listOfMonthInYear = $this->attributionAdsService->getListOfMonthInYear();
+		$listOfMonthInYear = $this->getListOfMonthInYear();
 		if (!empty($validatedAds)) {
 			$validatedAdsInYear = $validatedAds->filter(function ($ad, $key) {
 				$date = Carbon::parse($ad->attributionAd->published_on);
@@ -546,6 +548,20 @@ class AdService
 			});
 		}
 		return $listOfMonthInYear->merge($validatedAdsByMonthInYear);
+	}
+
+	/**
+	 * TODO refacto
+	 * @return \Illuminate\Support\Collection
+	 */
+	public function getListOfMonthInYear(): Collection
+	{
+		$period = CarbonPeriod::create(Carbon::now()->startOfYear(), '1 month', Carbon::now()->endOfYear());
+		$listOfMonth = collect();
+		foreach ($period as $date) {
+			$listOfMonth[$date->localeMonth] = collect();
+		}
+		return $listOfMonth;
 	}
 
 	/**
