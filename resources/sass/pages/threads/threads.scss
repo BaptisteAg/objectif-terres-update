@@ -2,6 +2,7 @@
 .button-send-message {
   margin-left: 85%;
 }
+
 .list-threads {
   .menu {
     .menu-label {
@@ -13,13 +14,38 @@
 
     .menu-list {
       li {
-        a{
+        &.active-thread {
+          background-color: #7da23750 !important;
+
+          &:hover {
+            background-color: #7da237d1 !important;
+          }
+
+          a:hover {
+            background-color: inherit;
+          }
+        }
+
+        &.thread-with-unread-messages{
+          background-color: #f4e2e2;
+
+          &:hover {
+            background-color: #df8080;
+          }
+          a:hover {
+            background-color: inherit;
+          }
+        }
+
+        a {
           border-top: solid 1px $cream;
           padding: 15px 10px;
-          &.thread-active{
+
+          &.thread-active {
             background: #fffeda;
           }
-          &.unread-message-thread{
+
+          &.unread-message-thread {
             background: #f4e2e2;
           }
         }

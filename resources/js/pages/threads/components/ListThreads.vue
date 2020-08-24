@@ -25,92 +25,59 @@
         Fils de discussion concernant cette annonce
       </p>
       <ul class="menu-list">
-        <li v-for="thread in threads">
-          <template v-if="isDisplay">
-            <template v-if="thread.users.length > 2">
-              <a  @click="onThreadClick(thread.id)">
-                <template v-for="threadUnreadMessages in threadsUnreadMessages">
-                  <span v-if="threadUnreadMessages.id === thread.id "
-                        class="icon text_danger">
-                    <i class="fas fa-circle has-"></i>
-                  </span>
-                </template>
-                <span class="tag ">Membres TdL</span>
-                <span>{{ thread.title }}</span></a>
-            </template>
-            <template v-else-if="thread.ad_id !== null">
-              <template v-if="thread.ad.user_pp_id === userId">
+        <template v-for="thread in threads">
+          <li :class="{'thread-with-unread-messages' : threadsUnreadMessages.includes(thread.id), 'active-thread' : thread.id === activeThread }">
+            <template v-if="isDisplay">
+              <template v-if="thread.users.length > 2">
                 <a @click="onThreadClick(thread.id)">
-                  <template v-for="threadUnreadMessages in threadsUnreadMessages">
-                    <span v-if="threadUnreadMessages.id === thread.id "
-                          class="icon text_danger">
-                      <i class="fas fa-circle has-"></i>
-                    </span>
-                  </template>
-                  <span class="tag">Réponse annonce</span>
+                  <span class="tag ">Membres TdL</span>
+                  <span>{{ thread.title }}</span></a>
+              </template>
+              <template v-else-if="thread.ad_id !== null">
+                <template v-if="thread.ad.user_pp_id === userId">
+                  <a @click="onThreadClick(thread.id)">
+                    <span class="tag">Réponse annonce</span>
+                    <span>{{ thread.title }}</span>
+                    <span class="text_size small">{{ thread.ad.title }}</span>
+                  </a>
+                </template>
+                <template v-else>
+                  <a @click="onThreadClick(thread.id)">
+                    <span class="tag">Annonce</span>
+                    <template v-if="thread.ad.deleted_at !== null">
+                      Annonce supprimée
+                    </template>
+                    <template v-else>
+                      <span>{{ thread.title }}</span>
+                    </template>
+                    <br>
+                  </a>
+                </template>
+              </template>
+              <template v-else>
+                <a @click="onThreadClick(thread.id)">
+                  <span class="tag">Membre TdL</span>
                   <span>{{ thread.title }}</span>
-                  <span class="text_size small">{{ thread.ad.title }}</span>
+                </a>
+              </template>
+            </template>
+            <template v-else>
+              <template v-if="isUserTdlMember">
+                <a @click="onThreadClick(thread.id)">
+                  <span class="tag">Membre TdL</span>
+                  <span>{{ thread.title }}</span>
                 </a>
               </template>
               <template v-else>
                 <a @click="onThreadClick(thread.id)">
-                  <template v-for="threadUnreadMessages in threadsUnreadMessages">
-                    <span v-if="threadUnreadMessages.id === thread.id "
-                          class="icon text_danger">
-                      <i class="fas fa-circle"></i>
-                    </span>
-                  </template>
                   <span class="tag">Annonce</span>
-                  <template v-if="thread.ad.deleted_at !== null">
-                    Annonce supprimée
-                  </template>
-                  <template v-else>
-                    <span>{{ thread.title }}</span>
-                  </template>
-                  <br>
+                  <span>{{ thread.title }}</span>
                 </a>
               </template>
             </template>
-            <template v-else>
-              <a @click="onThreadClick(thread.id)">
-                <template v-for="threadUnreadMessages in threadsUnreadMessages">
-                  <span v-if="threadUnreadMessages.id === thread.id"
-                        class="icon text_danger">
-                    <i class="fas fa-circle"></i>
-                  </span>
-                </template>
-                <span class="tag">Membre TdL</span>
-                <span>{{ thread.title }}</span>
-              </a>
-            </template>
-          </template>
-          <template v-else>
-            <template v-if="isUserTdlMember">
-              <a @click="onThreadClick(thread.id)">
-                <template v-for="threadUnreadMessages in threadsUnreadMessages">
-                  <span v-if="threadUnreadMessages.id === thread.id "
-                        class="icon text_danger">
-                    <i class="fas fa-circle "></i>
-                  </span>
-                </template>
-                <span class="tag">Membre TdL</span>
-                <span>{{ thread.title }}</span>
-              </a>
-            </template>
-            <template v-else>
-              <a @click="onThreadClick(thread.id)">
-                <template v-for="threadUnreadMessages in threadsUnreadMessages">
-                  <span v-if="threadUnreadMessages.id === thread.id "
-                        class="icon text_danger">
-                    <i class="fas fa-circle has-"></i>
-                  </span>
-                </template>
-                <span class="tag">Annonce</span>
-                <span>{{ thread.title }}</span>
-              </a>
-            </template>
-          </template>
-        </li>
+          </li>
+        </template>
+
       </ul>
     </aside>
   </div>
@@ -128,12 +95,14 @@ export default {
     isDisplay: Boolean,
     userId: {},
     userRole: '',
+    activeThread: ''
   },
   data() {
     return {
       numberThreadsUnreadMessages: this.numberOfThreadsWithUnreadMessages,
       threadsUnreadMessages: this.threadsWithUnreadMessages,
       isUserTdlMember: this.userRole >= 1,
+      activeThreadId: this.activeThread,
     }
   },
   methods: {

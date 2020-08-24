@@ -72,7 +72,6 @@ class CmsPage extends Resource
 			ID::make()->sortable(),
 			Text::make('Nom de la page', 'page_name')->sortable()->readonly(true),
 			Text::make('Description', 'description')->readonly(true),
-			Text::make('Slug', 'slug')->readonly(true),
 			CKEditor5Classic::make('Content')->withFiles('public')->withMeta(['maxlength' => 5])
 				->options([
 					'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote'

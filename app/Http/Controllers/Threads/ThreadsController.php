@@ -55,7 +55,6 @@ class ThreadsController extends Controller
 	{
 		/** @var Collection $threads */
 		$threads = $this->service->findAllThreadsByLoggedUser();
-
 		$threadsWithUnreadMessages = $this->service->findThreadsWithUnreadMessages(auth()->id());
 		$users = null;
 		$responseTemplates = '';

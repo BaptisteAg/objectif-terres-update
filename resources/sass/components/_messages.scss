@@ -3,38 +3,51 @@
   max-height: 500px;
 }
 
-.message-sender {
-  border-bottom-left-radius: 5px;
-  border-top-left-radius: 5px;
-  align-self: end;
-  background-color: $primary;
-  margin-right: 0px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 15px;
-  padding-right: 15px;
-
-  &:first-child {
-    border-top-left-radius: 15px;
+.container-message-sender {
+  & > div {
+    overflow-wrap: anywhere;
   }
 
-  &:last-child {
-    border-bottom-left-radius: 15px;
+  flex-direction: column;
+  align-items: flex-end;
+
+  .message-sender {
+    border-radius: 5px;
+    align-self: flex-end;
+    background-color: $primary;
+    margin-right: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    //
+    //&:first-child {
+    //  border-top-left-radius: 15px;
+    //}
+    //
+    //&:last-child {
+    //  border-bottom-left-radius: 15px;
+    //}
   }
 }
 
-.message-receiver {
-  border-bottom-right-radius: 5px;
-  border-top-right-radius: 5px;
-  background-color: $pearl;
-  margin-right: 0px;
-  align-self: start;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 15px;
-  padding-right: 15px;
+.container-message-receiver {
+  & > div {
+    overflow-wrap: anywhere;
+  }
+
+  .message-receiver {
+    border-radius: 5px;
+    background-color: $pearl;
+    margin-right: 0px;
+    align-self: flex-start;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 15px;
+  }
+
+  .message-receiver-content {
+    margin-left: 12px
+  }
 }
 
-.message-receiver-content {
-  margin-left: 12px
-}
