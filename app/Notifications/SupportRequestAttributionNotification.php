@@ -49,7 +49,7 @@ class SupportRequestAttributionNotification extends Notification implements Shou
 			->from(env('MAIL_FROM_ADDRESS'), "Administration | Objectif Terres")
 			->subject('Nouvelle attribution d\'une demande d\'accompagnement !')
 			->greeting('Bonjour,')
-			->line('Votre responsable territorial ' . $this->ad->attributionAd->userSupervisor->first_name . ' ' . $this->ad->attributionAd->userSupervisor->name . ' vous a attribué une nouvelle demande d\'accomapgnement.')
+			->line('Votre responsable territorial ' . $this->ad->attributionAd->userSupervisor->first_name . ' ' . $this->ad->attributionAd->userSupervisor->name . ' vous a attribué une nouvelle demande d\'accompagnement.')
 			->line('La demande d\'accompagnement a été soumise par ' . $this->ad->userPp->first_name . ' ' . $this->ad->userPP->name . ' .')
 			->action('Consulter la demande d\'accompagnement', $url)
 			->line('A bientôt sur Objectif Terres !')
