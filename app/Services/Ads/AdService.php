@@ -166,8 +166,9 @@ class AdService
 				$advisor = $availableAdvisors->first();
 				$attributionAdData['user_advisor_id'] = $advisor->id;
 			}
-
 			// Else nothing. No attribution needed if no advisor is bound
+
+            $attributionAdData['ad_status_id'] = null;
 
 		} else {
 			$availableModerators = $this->userService->findByRoleAndDepartments(1, $adDepartmentCodes);

@@ -202,12 +202,12 @@ class SalesforceService
      * @param string $email
      * @return bool
      */
-    public function emailExists(string $email, string $object) : bool
+    public function usernameExists(string $email, string $object) : bool
     {
 		$this->repository->authenticate();
 
         return !!$this->repository->findWhere($object, [
-            'Email' => $email
+            'Username' => $email
         ]);
     }
 }

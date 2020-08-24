@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Projects;
 
+use App\Models\Ad;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -70,7 +71,7 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 	public function findAllInTerritoriesAndUserAdvisor(array $departmentCodes, int $userId, bool $toPaginate)
 	{
 		$models = $this->entity
-			->whereHas('ad', function (Builder $query) use ($departmentCodes) {
+			->whereHas('ad', function (Ad $query) use ($departmentCodes) {
 				$query->filterAdsTerritoryLocations($departmentCodes);
 			})
 			->orWhereHas('ad', function (Builder $query) use ($userId) {
