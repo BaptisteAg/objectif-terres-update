@@ -42,8 +42,8 @@
 
     <section class="section contactus-background">
         <div class="container">
-            <div class="columns">
-                <div class="column is-6">
+            <div class="columns is-multiline is-mobile">
+                <div class="column is-half">
                     @if($pageContent->count())
                         @if($pageContent->has('ceder-ma-ferme-trouver-le-candidat-ideal-de-cession'))
                             {!! $pageContent['ceder-ma-ferme-trouver-le-candidat-ideal-de-cession']->content !!}

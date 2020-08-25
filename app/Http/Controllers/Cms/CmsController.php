@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
+use App\Models\CmsFaq;
 use App\Models\CmsPage;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -14,6 +15,12 @@ class CmsController extends Controller
 	{
 		$pageContent = CmsPage::where('slug', 'like', Route::currentRouteName().'%' )->get()->keyBy('slug');
 		return compact('pageContent');
+	}
+
+	private function getFaqContent(string $routeName)
+	{
+		$cmsFaq = CmsFaq::where('page_name', '=', Route::currentRouteName() )->get();
+		return compact('cmsFaq');
 	}
 
 	public function faq()
@@ -34,7 +41,7 @@ class CmsController extends Controller
     }
     public function cederMaFerme()
     {
-        return view('pages/cms/ceder-ma-ferme', $this->getPageContent(Route::currentRouteName()));
+        return view('pages/cms/ceder-ma-ferme', $this->getPageContent(Route::currentRouteName()),$this->getFaqContent(Route::currentRouteName()));
     }
 
     public function trouverUnEmploi()

@@ -4,6 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\CmsFaq
+ *
+ * @property int $id
+ * @property string $page_name
+ * @property string $content_question
+ * @property string $content_answer
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq whereContentAnswer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq whereContentQuestion($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq wherePageName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class CmsFaq extends Model
 {
 	/**

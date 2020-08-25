@@ -23,12 +23,13 @@ namespace App\Models{
  * @property string|null $about_project_content
  * @property int|null $project_id
  * @property string|null $support_request_text
+ * @property bool $is_partner
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AdNote[] $adNotes
  * @property-read int|null $ad_notes_count
- * @property-read \App\Models\AttributionAd $attributionAd
+ * @property-read \App\Models\AttributionAd|null $attributionAd
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\City[] $cities
  * @property-read int|null $cities_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Department[] $departments
@@ -37,14 +38,14 @@ namespace App\Models{
  * @property-read int|null $documents_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\FavoriteAd[] $favoriteAds
  * @property-read int|null $favorite_ads_count
- * @property-read \App\Models\JobOfferAd $jobOfferAd
- * @property-read \App\Models\JobSeekAd $jobSeekAd
- * @property-read \App\Models\LandOfferAd $landOfferAd
- * @property-read \App\Models\LandSeekAd $landSeekAd
+ * @property-read \App\Models\JobOfferAd|null $jobOfferAd
+ * @property-read \App\Models\JobSeekAd|null $jobSeekAd
+ * @property-read \App\Models\LandOfferAd|null $landOfferAd
+ * @property-read \App\Models\LandSeekAd|null $landSeekAd
  * @property-read \App\Models\Project|null $project
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
  * @property-read int|null $regions_count
- * @property-read \App\Models\Thread $threadAlreadyExist
+ * @property-read \App\Models\Thread|null $threadAlreadyExist
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
  * @property-read int|null $threads_count
  * @property-read \App\Models\User $userPp
@@ -55,12 +56,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterWhereHasIn($data, $relationNameTable, $columnName)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterWhereHasLandSeekAdOrWhereHasLandOfferAd($landSeekAdColumn, $landOfferAdColumn, $operator, $value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad filterWhereHasWhere($data, $relationNameTable, $operator, $columnName)
- * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad newQuery()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Ad onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad query()
- * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAboutContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAboutProjectContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereAcceptShareContactInfos($value)
@@ -76,6 +75,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Ad withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Ad withoutTrashed()
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereIsPartner($value)
  */
 	class Ad extends \Eloquent implements \McCool\LaravelAutoPresenter\HasPresenter, \McCool\LaravelAutoPresenter\Decoratable {}
 }
@@ -174,10 +174,10 @@ namespace App\Models{
  * @property int|null $ad_status_id
  * @property int|null $refusal_type_id
  * @property string|null $published_on
- * @property string|null $refused_on
  * @property string|null $archived_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $refused_on
  * @property-read \App\Models\Ad $ad
  * @property-read \App\Models\AdStatus|null $adStatus
  * @property-read \App\Models\RefusalType|null $refusalType
@@ -201,12 +201,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd wherePublishedOn($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereRefusalTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereRefusedOn($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserAdvisorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserModeratorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserSupervisorId($value)
  * @mixin \Eloquent
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereRefusedOn($value)
  */
 	class AttributionAd extends \Eloquent implements \McCool\LaravelAutoPresenter\Decoratable {}
 }
@@ -246,7 +246,7 @@ namespace App\Models{
  * @property float|null $surface
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\LandOfferAd $landOfferAd
+ * @property-read \App\Models\LandOfferAd|null $landOfferAd
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OfferGenre[] $offerGenres
  * @property-read int|null $offer_genres_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building newModelQuery()
@@ -319,12 +319,36 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\CmsFaq
+ *
+ * @property int $id
+ * @property string $page_name
+ * @property string $content_question
+ * @property string $content_answer
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq whereContentAnswer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq whereContentQuestion($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq wherePageName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq whereUpdatedAt($value)
+ */
+	class CmsFaq extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\CmsPage
  *
  * @property int $id
  * @property string $page_name
+ * @property string $slug
  * @property string $description
- * @property string $content
+ * @property string|null $content
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage newModelQuery()
@@ -335,7 +359,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage wherePageName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 	class CmsPage extends \Eloquent {}
 }
@@ -491,7 +517,7 @@ namespace App\Models{
  * @property float|null $surface
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\LandOfferAd $landOfferAd
+ * @property-read \App\Models\LandOfferAd|null $landOfferAd
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OfferGenre[] $offerGenres
  * @property-read int|null $offer_genres_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\House newModelQuery()
@@ -628,7 +654,7 @@ namespace App\Models{
  * @property string|null $land_transfer_deadline
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\LandOfferAd $landOfferAds
+ * @property-read \App\Models\LandOfferAd|null $landOfferAds
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OfferGenre[] $offerGenres
  * @property-read int|null $offer_genres_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land newModelQuery()
@@ -893,7 +919,7 @@ namespace App\Models{
  * @property int|null $project_status_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Ad $ad
+ * @property-read \App\Models\Ad|null $ad
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Document[] $documents
  * @property-read int|null $documents_count
  * @property-read \App\Models\ProjectStatus|null $projectStatus
@@ -1374,21 +1400,21 @@ namespace App\Models{
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
  * @property-read int|null $regions_count
- * @property-read \App\Models\Ad $supportRequest
+ * @property-read \App\Models\Ad|null $supportRequest
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $supportRequests
  * @property-read int|null $support_requests_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
  * @property-read int|null $threads_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserPermission[] $userPermissions
+ * @property-read int|null $user_permissions_count
  * @property-read \App\Models\City|null $zipCode
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User filterAdsTerritoryLocations($territoriesCode)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User filterLocations($relationshipName, $locationableIds)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
- * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
- * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAcceptCommunication($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAcceptShareContactInfos($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCity($value)
@@ -1418,5 +1444,28 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	class User extends \Eloquent implements \McCool\LaravelAutoPresenter\HasPresenter, \McCool\LaravelAutoPresenter\Decoratable {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\UserPermission
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int $permission
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserPermission newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserPermission newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserPermission query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserPermission whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserPermission whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserPermission wherePermission($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserPermission whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserPermission whereUserId($value)
+ * @mixin \Eloquent
+ */
+	class UserPermission extends \Eloquent {}
 }
 

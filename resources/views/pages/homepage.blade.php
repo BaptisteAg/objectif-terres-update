@@ -345,8 +345,9 @@
     {{--		</div>--}}
     {{--	</section>--}}
 
-    @include('components.faqAccordion')
-
+    @if(!$cmsFaq->isEmpty())
+        @include('components.faqAccordion')
+    @endif
     <div id="vue-rss">
         @include('components.rssNews')
     </div>
