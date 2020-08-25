@@ -45,15 +45,27 @@ class SupportRequestAttributionNotification extends Notification implements Shou
 	public function toMail($notifiable)
 	{
 		$url = url('/annonces/' . $this->ad->id);
-		return (new MailMessage)
+		$mail = (new MailMessage)
 			->from(env('MAIL_FROM_ADDRESS'), "Administration | Objectif Terres")
 			->subject('Nouvelle attribution d\'une demande d\'accompagnement !')
-			->greeting('Bonjour,')
-			->line('Votre responsable territorial ' . $this->ad->attributionAd->userSupervisor->first_name . ' ' . $this->ad->attributionAd->userSupervisor->name . ' vous a attribué une nouvelle demande d\'accompagnement.')
+			->greeting('Bonjour,');
+
+		if($this->ad->attributionAd->userSupervisor) {
+		    $mail->line(
+                'Votre responsable territorial ' .
+                $this->ad->attributionAd->userSupervisor->first_name . ' ' .
+                $this->ad->attributionAd->userSupervisor->name .
+                ' vous a attribué une nouvelle demande d\'accomapgnement.'
+            );
+        }
+
+		$mail
 			->line('La demande d\'accompagnement a été soumise par ' . $this->ad->userPp->first_name . ' ' . $this->ad->userPP->name . ' .')
 			->action('Consulter la demande d\'accompagnement', $url)
 			->line('A bientôt sur Objectif Terres !')
 			->salutation('Cordialement, L\'équipe d\'Objectif Terres');
+
+		return $mail;
 	}
 
 	/**

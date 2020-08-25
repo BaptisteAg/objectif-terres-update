@@ -1,5 +1,6 @@
 <?php namespace App\Services\Ads;
 
+use App\Exceptions\AttributionAdException;
 use App\Jobs\NotifySupportRequestAttribution;
 use App\Models\Ad;
 use App\Models\AdStatus;
@@ -10,7 +11,6 @@ use App\Models\Region;
 use App\Models\SupportStage;
 use App\Models\SupportState;
 use App\Models\User;
-use App\Models\UserPermission;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Ads\JobOfferAdRepository;
 use App\Repositories\Ads\JobSeekAdRepository;
@@ -19,7 +19,6 @@ use App\Repositories\Ads\LandSeekAdRepository;
 use App\Repositories\Ads\ProductionGenreRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Repositories\Projects\ProjectsRepository;
-use App\Services\AttributionAds\AttributionAdsService;
 use App\Services\Users\UserService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -29,7 +28,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Route;
 
 /**
  * Class AdService
@@ -161,9 +159,10 @@ class AdService
 
 
 			if ($availableSupervisors->isEmpty() && $availableAdvisors->isEmpty()) {
-				throw new \Exception("Aucun responsable n'a été trouvé dans votre région. Veuillez sauvegarder votre demande et nous contacter.");
+				throw new AttributionAdException("Aucun responsable n'a été trouvé dans votre région. Veuillez sauvegarder votre demande et nous contacter.");
 			}
 
+			// S'il n'y a qu'un seul primo accueillant on saute une étape et on le sélectionne
 			if ($availableAdvisors->count() === 1) {
 				$advisor = $availableAdvisors->first();
 				$attributionAdData['user_advisor_id'] = $advisor->id;
@@ -177,7 +176,7 @@ class AdService
 			$availableSupervisors = $this->userService->findByRoleAndDepartments(3, $adDepartmentCodes);
 			$availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
 			if ($availableModerators->isEmpty() && $availableSupervisors->isEmpty() && empty($availableUserWithPermission)) {
-				throw new \Exception("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
+				throw new AttributionAdException("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
 			}
 			// If ad was attributed before, we'll get the same moderator if available
 			if ($ad->attributionAd && $ad->attributionAd->userModerator &&
