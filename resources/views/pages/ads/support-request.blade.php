@@ -73,25 +73,25 @@
             <form method="post">
                 @csrf
                 <div class="container">
-                    <h2 class="title is-2 has-text-centered">Précisez votre région</h2>
-                    <div class="columns">
-                        <div class="column is-half">
-                            <p>
-                                Terre de Liens peut accompagner les projets d’offre ou de recherche de foncier agricole.<br>
-                                Pour connaître nos modalités d’accueil, indiquer la région concernée par votre projet :
-                            </p>
-                        </div>
+{{--                    <h2 class="title is-2 has-text-centered">Précisez votre région</h2>--}}
+{{--                    <div class="columns">--}}
+{{--                        <div class="column is-half">--}}
+{{--                            <p>--}}
+{{--                                Terre de Liens peut accompagner les projets d’offre ou de recherche de foncier agricole.<br>--}}
+{{--                                Pour connaître nos modalités d’accueil, indiquer la région concernée par votre projet :--}}
+{{--                            </p>--}}
+{{--                        </div>--}}
 
-                        <div class="column is-half">
-                            <label class="label" for="region">Région</label>
-                            <select id="region" class="select" name="region" required>
-                                <option></option>
-                                @foreach($regions as $region)
-                                    <option value="{{$region->id}}">{{$region->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+{{--                        <div class="column is-half">--}}
+{{--                            <label class="label" for="region">Région</label>--}}
+{{--                            <select id="region" class="select" name="region" required>--}}
+{{--                                <option></option>--}}
+{{--                                @foreach($regions as $region)--}}
+{{--                                    <option value="{{$region->id}}">{{$region->name}}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
 
 
