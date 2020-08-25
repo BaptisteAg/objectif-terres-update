@@ -7,6 +7,7 @@ use Laravel\Nova\Fields\BelongsTo;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -133,6 +134,10 @@ class User extends Resource
 				}
 				return $arrayValues;
 			})->onlyOnForms(),
+
+			MorphMany::make('Territoires', 'departments', 'App\Nova\Department')->canSee(function($request){
+				return isset($this->role) && $this->role >= 1;
+			}),
 
 			HasMany::make('Permission de l\'utilisateur', 'userPermissions', 'App\Nova\UserPermission')->canSee(function ($request) {
 				return isset($this->role) && $this->role >= 1;

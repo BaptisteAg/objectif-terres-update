@@ -60,8 +60,8 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 				});
 			})
 			->orWhere(function (Builder $query) use ($territoriesCodes) {
+				$query->whereNotNull('ad_status_id');
 				$query->whereHas('ad', function (Builder $subQuery) use ($territoriesCodes) {
-					$subQuery->whereNotNull('ad_status_id');
 					$subQuery->whereNull('project_id');
 					$subQuery->whereHas('userPp', function (Builder $q) {
 						$q->whereNull('deleted_at');
