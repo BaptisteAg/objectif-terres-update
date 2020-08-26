@@ -13,7 +13,7 @@
                         </p>
                     </div>
                     <div class="row is-full">
-                        <button class="button is-link">TELECHARGER</button>
+                        <button class="button basic small primary  waves-effect waves-button waves-float waves-light">TELECHARGER</button>
                     </div>
                 </div>
                 <div class="column is-6 guide-pdf">

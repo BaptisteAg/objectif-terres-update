@@ -307,6 +307,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		$models = $this->entity
 			->where(function (Builder $query) {
 				$query->whereHas('attributionAd', function (Builder $subQuery) {
+					$subQuery->whereNull('ad_status_id');
 					$subQuery->whereNotNull('user_advisor_id');
 					if (auth()->user()->role == 2) {
 						$subQuery->where('user_advisor_id', '=', auth()->user()->id);
@@ -323,6 +324,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
 				$query->whereHas('attributionAd', function (Builder $subQuery) {
 					$subQuery->whereNotNull('user_advisor_id');
+					$subQuery->whereNull('ad_status_id');
+
 				});
 				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
@@ -340,6 +343,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			});
 
 		$models
+			->select('ads.*')
 			->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
 			->orderByDesc('a.created_at')
 			->with($this->getDashboardsEagerLoading());
@@ -361,40 +365,43 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	{
 		/** @var Collection $model */
 		$models = $this->entity
-			->where(function (Builder $query) {
-				$query->whereHas('userPp', function (Builder $subQuery) {
-					$subQuery->whereNull('deleted_at');
-				});
-				$query->whereHas('attributionAd', function (Builder $subQuery) {
-					$subQuery->whereNull('user_advisor_id');
-					if (auth()->user()->role == 2) {
-						$subQuery->where('user_advisor_id', '=', auth()->user()->id);
-					} else if (auth()->user()->role >= 3) {
-						$subQuery->where('user_supervisor_id', '=', auth()->user()->id);
-					}
-				});
-				$query->whereNotNull('project_id');
+			->where(function (Builder $builder) use($territoriesCode){
+				$builder->where(function (Builder $query) {
+					$query->whereHas('userPp', function (Builder $subQuery) {
+						$subQuery->whereNull('deleted_at');
+					});
+					$query->whereHas('attributionAd', function (Builder $subQuery) {
+						$subQuery->whereNull('user_advisor_id');
+						$subQuery->whereNull('ad_status_id');
+						if (auth()->user()->role == 2) {
+							$subQuery->where('user_advisor_id', '=', auth()->user()->id);
+						} else if (auth()->user()->role >= 3) {
+							$subQuery->where('user_supervisor_id', '=', auth()->user()->id);
+						}
+					});
+					$query->whereNotNull('project_id');
 
-			})
-			->orWhere(function (Builder $query) use ($territoriesCode) {
-				$query->whereNotNull('project_id');
-				$query->whereHas('userPp', function (Builder $subQuery) {
-					$subQuery->whereNull('deleted_at');
 				});
-				$query->whereHas('departments', function (Builder $subQuery) use ($territoriesCode) {
-					$subQuery->whereIn('code', $territoriesCode);
-				});
-				$query->orWhereHas('cities', function (Builder $subQuery) use ($territoriesCode) {
-					$subQuery->whereIn('department_code', $territoriesCode);
-				});
+					$builder->orWhere(function (Builder $query) use ($territoriesCode) {
+						$query->whereNotNull('project_id');
+						$query->whereHas('attributionAd', function (Builder $subQuery) {
+							$subQuery->whereNull('ad_status_id');
+							$subQuery->whereNull('user_advisor_id');
+						});
+						$query->whereHas('userPp', function (Builder $subQuery) {
+							$subQuery->whereNull('deleted_at');
+						});
+						$query->whereHas('departments', function (Builder $subQuery) use ($territoriesCode) {
+							$subQuery->whereIn('code', $territoriesCode);
+						});
+						$query->orWhereHas('cities', function (Builder $subQuery) use ($territoriesCode) {
+							$subQuery->whereIn('department_code', $territoriesCode);
+						});
 
-
-				$query->whereHas('attributionAd', function (Builder $subQuery) {
-					$subQuery->whereNull('user_advisor_id');
-				});
+					});
 			});
-
 		$models
+			->select('ads.*')
 			->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
 			->orderByDesc('a.created_at')
 			->with($this->getDashboardsEagerLoading());
@@ -538,6 +545,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 					$subQuery->whereNotNull('project_id');
 					$subQuery->whereHas('attributionAd', function (Builder $query) {
 						$query->whereNotNull('user_advisor_id');
+						$query->whereNotNull('ad_status_id');
 					});
 				});
 			});
@@ -710,6 +718,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		//Filter ads based on the role of the logged user
 		$adsFiltred->where(function (Builder $query) use ($userTerritories, $roleUser) {
 			$query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
+				$q->whereNull('ad_status_id');
 				$q->where('user_moderator_id', '=', auth()->id());
 				if ($roleUser === 2) {
 					$q->orWhere('user_advisor_id', '=', auth()->id());
@@ -755,6 +764,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		} else {
 			/**TODO find a way to group results first with projects and then ads. Each group has to be order by attribution_ads.created_at **/
 			$adsFiltred
+				->select('ads.*')
 				->leftJoin('projects as p', 'p.id', '=', 'ads.project_id')
 				->orderByDesc('p.created_at')
 				->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')

@@ -139,7 +139,6 @@ class AdService
 			$project = $this->projectRepository->create([
 				'support_stage_id' => SupportStage::FIRST_CONTACT_ID,
 				'support_state_id' => SupportState::TO_HANDLE_ID,
-				'project_status_id' => ProjectStatus::EMERGING_ID,
 			]);
 			$data["project_id"] = $project->id;
 		}
