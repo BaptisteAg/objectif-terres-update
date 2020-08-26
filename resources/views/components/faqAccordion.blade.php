@@ -5,86 +5,20 @@
             debitis delectus eaque est fugit hic ipsum laborum, laudantium nulla odit, omnis quasi repellat
             voluptatibus! Error fugiat reprehenderit suscipit.</h5>
         <section class="accordions">
+
+            @foreach($cmsFaq as $question)
             <article class="accordion">
                 <div class="accordion-header toggle">
-                    <p class="button__label">Hello World</p>
+                    <p class="button__label">{{$question->content_question}}</p>
                     <button class="toggle" aria-label="toggle"></button>
                 </div>
                 <div class="accordion-body">
                     <div class="accordion-content">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Pellentesque risus mi</strong>,
-                        tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam
-                        gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac <em>eleifend
-                            lacus</em>, in mollis lectus. Donec sodales, arcu et sollicitudin porttitor, tortor urna
-                        tempor ligula, id porttitor mi magna a neque. Donec dui urna, vehicula et sem eget, facilisis
-                        sodales sem.
+                        {{$question->content_answer}}
                     </div>
                 </div>
             </article>
-            <article class="accordion">
-                <div class="accordion-header toggle">
-                    <p class="button__label">Hello World</p>
-                    <button class="toggle" aria-label="toggle"></button>
-                </div>
-                <div class="accordion-body">
-                    <div class="accordion-content">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Pellentesque risus mi</strong>,
-                        tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam
-                        gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac <em>eleifend
-                            lacus</em>, in mollis lectus. Donec sodales, arcu et sollicitudin porttitor, tortor urna
-                        tempor ligula, id porttitor mi magna a neque. Donec dui urna, vehicula et sem eget, facilisis
-                        sodales sem.
-                    </div>
-                </div>
-            </article>
-            <article class="accordion">
-                <div class="accordion-header toggle">
-                    <p class="button__label">Hello World</p>
-                    <button class="toggle" aria-label="toggle"></button>
-                </div>
-                <div class="accordion-body">
-                    <div class="accordion-content">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Pellentesque risus mi</strong>,
-                        tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam
-                        gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac <em>eleifend
-                            lacus</em>, in mollis lectus. Donec sodales, arcu et sollicitudin porttitor, tortor urna
-                        tempor ligula, id porttitor mi magna a neque. Donec dui urna, vehicula et sem eget, facilisis
-                        sodales sem.
-                    </div>
-                </div>
-            </article>
-            <article class="accordion">
-                <div class="accordion-header toggle">
-                    <p class="button__label">Hello World</p>
-                    <button class="toggle" aria-label="toggle"></button>
-                </div>
-                <div class="accordion-body">
-                    <div class="accordion-content">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Pellentesque risus mi</strong>,
-                        tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam
-                        gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac <em>eleifend
-                            lacus</em>, in mollis lectus. Donec sodales, arcu et sollicitudin porttitor, tortor urna
-                        tempor ligula, id porttitor mi magna a neque. Donec dui urna, vehicula et sem eget, facilisis
-                        sodales sem.
-                    </div>
-                </div>
-            </article>
-            <article class="accordion">
-                <div class="accordion-header toggle">
-                    <p class="button__label">Hello World</p>
-                    <button class="toggle" aria-label="toggle"></button>
-                </div>
-                <div class="accordion-body">
-                    <div class="accordion-content">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Pellentesque risus mi</strong>,
-                        tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam
-                        gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac <em>eleifend
-                            lacus</em>, in mollis lectus. Donec sodales, arcu et sollicitudin porttitor, tortor urna
-                        tempor ligula, id porttitor mi magna a neque. Donec dui urna, vehicula et sem eget, facilisis
-                        sodales sem.
-                    </div>
-                </div>
-            </article>
+            @endforeach
         </section>
     </div>
 </section>

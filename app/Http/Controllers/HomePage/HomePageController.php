@@ -5,10 +5,12 @@ namespace App\Http\Controllers\HomePage;
 use App\Http\Controllers\Controller;
 use App\Models\Ad;
 use App\Models\AdStatus;
+use App\Models\CmsFaq;
 use App\Services\Ads\AdService;
 use App\Services\Rss\RssService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Fields\Date;
 use Vedmant\FeedReader\FeedReader;
 
@@ -38,7 +40,9 @@ class HomePageController extends Controller
 			$query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
 		})->take(2)->orderBy('created_at', 'desc')->get();
 
+
+		$cmsFaq= CmsFaq::where('page_name', '=', Route::currentRouteName())->get();
 		$rssNews = $rssService->getTdlNews();
-		return view('pages.homepage', compact('ads', 'rssNews'));
+		return view('pages.homepage', compact('ads', 'rssNews','cmsFaq'));
 	}
 }

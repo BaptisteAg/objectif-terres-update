@@ -16,7 +16,7 @@ class CmsPage extends Resource
 	 */
 	public static function label()
 	{
-		return 'Gestion des pages';
+		return 'Pages éditables';
 	}
 
 	/**
@@ -50,11 +50,19 @@ class CmsPage extends Resource
 		'id', 'page_name', 'description', 'content', 'slug'
 	];
 
+	/**
+	 * @param Request $request
+	 * @return bool
+	 */
 	public static function authorizedToCreate(Request $request)
 	{
 		return false;
 	}
 
+	/**
+	 * @param Request $request
+	 * @return bool
+	 */
 	public function authorizedToDelete(Request $request)
 	{
 		return false;

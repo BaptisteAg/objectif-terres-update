@@ -78,6 +78,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Ad withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Ad withoutTrashed()
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad whereIsPartner($value)
  */
 class Ad extends Model implements HasPresenter
 {
