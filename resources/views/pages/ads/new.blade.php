@@ -48,11 +48,11 @@
 
 
                     <input type="hidden" name="is_support_request" value="{{empty($isSupportRequest)? 0 : 1}}">
-                    @if(session('support_request.text'))
-                        <input type="hidden" name="support_request_text" value="{{ session('support_request.text') }}">
+                    @if(session('support-request.text'))
+                        <input type="hidden" name="support_request_text" value="{{ session('support-request.text') }}">
                     @endif
-                    @if(session('support_request.id_region'))
-                        <input type="hidden" name="support_request_id_region" value="{{ session('support_request.id_region') }}">
+                    @if(session('support-request.id_region'))
+                        <input type="hidden" name="support_request_id_region" value="{{ session('support-request.id_region') }}">
                     @endif
 
                     @if(!empty($old["id"]))

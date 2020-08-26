@@ -155,6 +155,8 @@ class AdService
             //dd($ad);
             $adDepartmentCodes = $this->getAdDepartmentCodesFromSupportRequestRegionId($ad);
 
+            //dd($ad->support_request_id_region, $adDepartmentCodes);
+
             $availableAdvisors = $this->userService->findByRoleAndDepartments(2, $adDepartmentCodes);
             $availableSupervisors = $this->userService->findByRoleAndDepartments(4, $adDepartmentCodes);
 
