@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Ads;
 
 
+use App\Exceptions\AttributionAdException;
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
 use App\Models\CmsPage;
+use App\Models\Region;
 use App\Models\User;
 use App\Notifications\NewAdToModerateNotification;
 use App\Notifications\NewSupportRequestNotification;
@@ -24,6 +26,7 @@ class SupportRequestsController extends BaseController
     {
         $vars = array_merge($this->getCreateFormVars(), [
             'isSupportRequest' => 1,
+			'regions' => Region::all(),
 			'pageContent' => CmsPage::where('slug', '=', "etre-accompagne-texte-dintroduction-sous-le-titre-principal")->first()
         ]);
         return view('pages.ads.support-request', $vars);
@@ -83,8 +86,16 @@ class SupportRequestsController extends BaseController
                 }
             }
         }
-        catch(\Exception $exception) {
+        catch(AttributionAdException $exception) {
             return back()->withInput()->withErrors($exception->getMessage());
+        }
+        /** Probably an unexpected error */
+        catch(\Exception $exception) {
+
+            return back()->withInput()->withErrors(
+                "Une erreur imprévu a eu lieu. Merci de nous contacter en précisant le message d'erreur suivant : '
+                [".date('d/m/Y H:i:s')."]' ".$exception->getMessage()
+            );
         }
 
         return redirect()->route('ads.show', [$ad->id])
