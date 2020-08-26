@@ -1,4 +1,3 @@
-
 @extends ('default')
 
 @section ('title', "Céder ma ferme")
@@ -38,8 +37,9 @@
         </div>
     </section>
 
-    @include('components.faq-frequentes')
-
+    @if(! $cmsFaq->isEmpty())
+        @include('components.faq-frequentes')
+    @endif
     <section class="section contactus-background">
         <div class="container">
             <div class="columns is-multiline is-mobile">

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\AdvisorMiddleware;
 use App\Models\CmsFaq;
 use App\Models\CmsPage;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 class CmsController extends Controller
@@ -41,6 +43,7 @@ class CmsController extends Controller
     }
     public function cederMaFerme()
     {
+
         return view('pages/cms/ceder-ma-ferme', $this->getPageContent(Route::currentRouteName()),$this->getFaqContent(Route::currentRouteName()));
     }
 
