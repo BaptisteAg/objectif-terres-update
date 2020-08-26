@@ -9,7 +9,7 @@
                     <template v-if="activeThread.title">
                         <p class="has-text-centered  text-style-title__primary">{{activeThread.title}}</p>
                         <template v-for="(user, index) in activeThread.users">
-                            <p class=" is-marginless subtitle is-6 has-text-centered has-text-grey"
+                            <p class=" is-marginless is-6 has-text-centered has-text-grey"
                                v-if="user.id !==userId">
                                 {{user.first_name}} {{user.name}}</p>
                         </template>

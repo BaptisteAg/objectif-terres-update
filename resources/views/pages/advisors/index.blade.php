@@ -3,7 +3,11 @@
 @section ('title', 'Mon espace primo-accueillant')
 
 @section('header')
-    @include('components.advisor-tabs')
+    @if(auth()->user()->role >= 3)
+        @include('components.supervisor-tabs')
+    @elseif (auth()->user()->role ===2)
+        @include('components.advisor-tabs')
+    @endif
 @endsection
 
 @section('main-content')

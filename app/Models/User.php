@@ -50,21 +50,21 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
  * @property-read int|null $regions_count
- * @property-read \App\Models\Ad $supportRequest
+ * @property-read \App\Models\Ad|null $supportRequest
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $supportRequests
  * @property-read int|null $support_requests_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
  * @property-read int|null $threads_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserPermission[] $userPermissions
+ * @property-read int|null $user_permissions_count
  * @property-read \App\Models\City|null $zipCode
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User filterAdsTerritoryLocations($territoriesCode)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User filterLocations($relationshipName, $locationableIds)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
- * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
- * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAcceptCommunication($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAcceptShareContactInfos($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCity($value)
@@ -137,7 +137,6 @@ class User extends Authenticatable implements HasPresenter
 	];
 
 
-
 	/**
 	 * The attributes that should be cast to native types.
 	 *
@@ -156,14 +155,22 @@ class User extends Authenticatable implements HasPresenter
 	static $profiles = [
 		1 => "Porteur de projet en recherche de terres",
 		2 => "Porteur de projet en recherche de financement",
-		3 => "En reconversion professionnelle et à la recherche des informations pour
-m’installer",
+		3 => "En reconversion professionnelle et à la recherche des informations pour m’installer",
 		4 => "A la recherche d’un travail / d’une expérience dans le domaine agricole",
 		5 => "Agriculteur qui souhaite transmettre ma ferme",
 		6 => "Agriculteur en activité qui cherche à consolider ma ferme",
 		7 => "Propriétaire privé qui cherche à vendre ou louer mes terres",
 		8 => "Autre",
 	];
+
+	static $roles = [
+		0 => "Porteur de projet",
+		1 => "Modérateur",
+		2 => "Primo-accueillant",
+		3 => "Responsable territorial",
+		4 => "Administrateur",
+	];
+
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -193,25 +200,34 @@ m’installer",
 
 	}
 
-	public function threads()
+	public function threads(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
 	{
 		return $this->belongsToMany(Thread::class, 'thread_users')->withTimestamps();
 	}
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
 	public function ads()
-    {
-        return $this->hasMany(Ad::class, 'user_pp_id', 'id')->whereNull('project_id');
-    }
+	{
+		return $this->hasMany(Ad::class, 'user_pp_id', 'id')->whereNull('project_id');
+	}
 
-    public function supportRequests()
-    {
-        return $this->hasMany(Ad::class, 'user_pp_id', 'id')->whereNotNull('project_id');
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder
+	 */
+	public function supportRequests()
+	{
+		return $this->hasMany(Ad::class, 'user_pp_id', 'id')->whereNotNull('project_id');
+	}
 
-    public function supportRequest()
-    {
-        return $this->hasOne(Ad::class, 'user_pp_id', 'id')->whereNotNull('project_id');
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasOne|\Illuminate\Database\Query\Builder
+	 */
+	public function supportRequest()
+	{
+		return $this->hasOne(Ad::class, 'user_pp_id', 'id')->whereNotNull('project_id');
+	}
 
 	/**
 	 * Get the presenter class.
@@ -250,5 +266,12 @@ m’installer",
 		return $this->morphedbyMany(Region::class, 'locationable_user');
 	}
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function userPermissions()
+	{
+		return $this->hasMany(UserPermission::class, 'user_id');
+	}
 
 }

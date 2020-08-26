@@ -8,3 +8,7 @@
 .dropzone.dz-started .dz-message {
   display: block !important;
 }
+
+.vue-dropzone > .dz-preview .dz-details {
+  background-color: $primary !important;
+}

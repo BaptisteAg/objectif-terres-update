@@ -142,17 +142,31 @@ class UserService
 			->first();
 	}
 
-    /**
-     * @param int $roleId
-     * @param array $departmentCodes
-     * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
-     */
-    public function findByRoleAndDepartments(int $roleId, array $departmentCodes)
-    {
-        return User::filterSubLocations('departments', $departmentCodes, 'departments.code')
-            ->where('role', $roleId)
-            ->inRandomOrder()
-            ->get();
-    }
+	/**
+	 * @param int $roleId
+	 * @param array $departmentCodes
+	 * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
+	 */
+	public function findByRoleAndDepartments(int $roleId, array $departmentCodes)
+	{
+		return User::filterSubLocations('departments', $departmentCodes, 'departments.code')
+			->where('role', $roleId)
+			->inRandomOrder()
+			->get();
+	}
+
+	/**
+	 * @param int $permission
+	 * @param array $departmentCodes
+	 * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
+	 */
+	public function findOneByUserPermissionAndDepartments(int $permission, array $departmentCodes)
+	{
+		$users = $this->repository->findAllByUserPermissionAndDepartments($permission, $departmentCodes);
+		if (!empty($users)) {
+			return $user = $users->first();
+		}
+		return null;
+	}
 
 }

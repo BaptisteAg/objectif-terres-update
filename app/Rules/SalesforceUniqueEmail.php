@@ -26,7 +26,7 @@ class SalesforceUniqueEmail implements Rule
      */
     public function passes($attribute, $email)
     {
-        return !$this->salesforceService->emailExists($email, 'Contact');
+        return !$this->salesforceService->usernameExists($email, 'User');
     }
 
     /**

@@ -107,9 +107,7 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 					['is_read', '=', '0']
 				]);
 			})
-			->with($this->getEagerLoading())
-			->get();
-
+			->pluck('threads.id');
 		return $threads;
 
 	}
@@ -148,6 +146,7 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 			->user()
 			->threads()
 			->with($this->getEagerLoading())
+			->orderBy('updated_at', 'desc')
 			->get();
 
 		return $threads;

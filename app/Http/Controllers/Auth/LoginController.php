@@ -56,7 +56,7 @@ class LoginController extends Controller
 
         $email = $request->get('email');
 
-        if($salesforceService->emailExists($email, 'User')) {
+        if($salesforceService->usernameExists($email, 'User')) {
             return response()->json(['redirect' => '/connexion/sso']);
         }
 
@@ -75,7 +75,7 @@ class LoginController extends Controller
      */
     public function logout(Request $request, SalesforceService $salesforceService)
     {
-        if($salesforceService->emailExists(auth()->user()->email, 'User')) {
+        if($salesforceService->usernameExists(auth()->user()->email, 'User')) {
             return redirect('/deconnexion/sso');
         }
 

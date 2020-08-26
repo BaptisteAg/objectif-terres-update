@@ -19,18 +19,11 @@
                     </p>
                 </div>
                 <div class="row is-full">
-                    <h3 class="title is-3 has_margin">Partager son patrimoine, c’est faire acte de don</h3>
-                    <p>
-                        maecenas faucibus mollis interdum. Maecenas sed diam eget risus varius blandit
-                        sit amet non magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                        posuere con, maecenas faucibus mollis interdum. Maecenas sed diam eget risus
-                        varius blandit sit amet non magna. Lorem ipsum dolor sit amet, consectetur
-                        adipiscing elit. Sed posuere consectetur est at lobortis. Integer posuere erat a
-                        ante venenatis dapibus posuere velit aliquet. Donec sed odio dui.Vivamus sagittis
-                        lacus vel augue laoreet rutrum faucibus dolor auctor. Nullam quis risus eget urna
-                        mollis ornare vel eu leo. Maecenas faucibus mollis interdum. Maecenas sed diam
-                        eget risus varius blandit sit amet non magna. Morbi leo risus, porta ac consectetur
-                    </p>
+                    @if($pageContent->count())
+                        @if($pageContent->has('confier-mes-terres-partager-son-patrimoine-de-don'))
+                            {!! $pageContent['confier-mes-terres-partager-son-patrimoine-de-don']->content !!}
+                        @endif
+                    @endif
                 </div>
             </div>
         </div>
@@ -52,18 +45,11 @@
                 <div class="columns">
                     <div class="column is-9 block-tdl-contact">
                         <div class="row">
-                            <h2 class="title is-2"><span>Léguez vos terres à Terre de Liens:</span><br> nous allons vous guider étape par étape.</h2>
-                            <p>
-                                maecenas faucibus mollis interdum. Maecenas sed diam eget risus varius blandit
-                                sit amet non magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                                posuere con, maecenas faucibus mollis interdum. Maecenas sed diam eget risus
-                                varius blandit sit amet non magna. Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Sed posuere consectetur est at lobortis. Integer posuere erat a
-                                ante venenatis dapibus posuere velit aliquet. Donec sed odio dui.Vivamus sagittis
-                                lacus vel augue laoreet rutrum faucibus dolor auctor. Nullam quis risus eget urna
-                                mollis ornare vel eu leo. Maecenas faucibus mollis interdum. Maecenas sed diam
-                                eget risus varius blandit sit amet non magna. Morbi leo risus, porta ac consectetur
-                            </p>
+                            @if($pageContent->count())
+                                @if($pageContent->has('confier-mes-terres-leguez-vos-terres-par-etape'))
+                                    {!! $pageContent['confier-mes-terres-leguez-vos-terres-par-etape']->content !!}
+                                @endif
+                            @endif
                         </div>
                         <div class="row">
                             <button class="button is-link">CONTACTEZ-NOUS</button>
@@ -81,8 +67,12 @@
     @include('components.support-terre-liens')
 
 
+@endsection
 
-
+@section('script')
+    <script>
+        console.log(thumb)
+    </script>
 
 @endsection
 

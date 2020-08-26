@@ -84,6 +84,19 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 		return $this->entity->where('role', $operator, $roleNumber)->get();
 	}
 
-
+	/**
+	 * @param int $permission
+	 * @param array $departmentCodes
+	 * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
+	 */
+	public function findAllByUserPermissionAndDepartments(int $permission, array $departmentCodes)
+	{
+		return User::filterSubLocations('departments', $departmentCodes, 'departments.code')
+			->whereHas('userPermissions', function(Builder $builder) use($permission){
+				$builder->where('permission', '=',$permission );
+			})
+			->inRandomOrder()
+			->get();
+	}
 
 }

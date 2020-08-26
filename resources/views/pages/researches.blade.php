@@ -151,21 +151,9 @@
                         <li class="tile tile_text-image_h">
                             <a class="tile__link" href="{{route('ads.show',  $ad->id)}}">
                                 <div class="vignette photo is-flex">
-                                        <div class="vignette__image-wrap is-flex">
-                                            @if($ad->hasImages)
-                                                @if($ad->images[0]->path ==="0")
-                                                    @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
-                                                        <img src="{{URL::asset('images/illustrations/ferme01.jpg')}}"
-                                                             class="vignette__image" alt="image generic ferme"/>
-                                                    @else
-                                                        <img src="{{URL::asset("images/illustrations/photo_08_bandeau-maous_1920.jpg")}}"
-                                                             class=" vignette__image" alt="image generic emploi ferme"/>
-                                                    @endif
-                                                @else
-                                                    <img src="{{URL::asset($ad->images[0]->path)}}"
-                                                         alt="{{$ad->images[0]->name}}">
-                                                @endif
-                                            @else
+                                    <div class="vignette__image-wrap is-flex">
+                                        @if($ad->hasImages)
+                                            @if($ad->images[0]->path ==="0")
                                                 @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
                                                     <img src="{{URL::asset('images/illustrations/ferme01.jpg')}}"
                                                          class="vignette__image" alt="image generic ferme"/>
@@ -173,8 +161,20 @@
                                                     <img src="{{URL::asset("images/illustrations/photo_08_bandeau-maous_1920.jpg")}}"
                                                          class=" vignette__image" alt="image generic emploi ferme"/>
                                                 @endif
+                                            @else
+                                                <img src="{{URL::asset($ad->images[0]->path)}}"
+                                                     alt="{{$ad->images[0]->name}}">
                                             @endif
-                                        </div>
+                                        @else
+                                            @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
+                                                <img src="{{URL::asset('images/illustrations/ferme01.jpg')}}"
+                                                     class="vignette__image" alt="image generic ferme"/>
+                                            @else
+                                                <img src="{{URL::asset("images/illustrations/photo_08_bandeau-maous_1920.jpg")}}"
+                                                     class=" vignette__image" alt="image generic emploi ferme"/>
+                                            @endif
+                                        @endif
+                                    </div>
                                     <ul class="custom-tags custom-list custom-list_v x-large">
                                         <li class="custom-tag success">
                                             <i class="fas fa-map-marker-alt"></i>
@@ -251,9 +251,11 @@
                                 <div class="tile__content large">
                                     <div class="tile__pre-title">
                                         <span class="tile__date">Publié {{$ad->created_at_diff}}</span>
-                                        <ul class="custom-tags">
-                                            <li class="custom-tag warning">Partenaire Objectif Terre</li>
-                                        </ul>
+                                        @if(isset($ad->is_partner) && $ad->is_partner === 1 )
+                                            <ul class="custom-tags">
+                                                <li class="custom-tag warning">Partenaire Terre de Liens</li>
+                                            </ul>
+                                        @endif
                                     </div>
                                     <p class="tile__title">{{$ad->title ?? "Titre de l'annonce non renseigné"}}
                                     </p>
@@ -265,9 +267,9 @@
                                         @endif
                                     </div>
                                     <p class="button__wrap">
-                                    <span class="button round small warning read-more">
-                                      <span class="button__icon"><i class="fas fa-arrow-right"></i></span>
-                                    </span>
+                                        <span class="button round small warning read-more">
+                                            <span class="button__icon"><i class="fas fa-arrow-right"></i></span>
+                                        </span>
                                     </p>
                                 </div>
                             </a>

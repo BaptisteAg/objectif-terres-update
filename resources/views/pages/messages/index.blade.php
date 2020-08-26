@@ -65,6 +65,7 @@
                                             :is-display="isDisplay"
                                             :user-role="userRole"
                                             :user-id="{{auth()->id()}}"
+                                            :active-thread = "activeThreadId"
                                             @on-thread-click="onThreadClick"
                                             @on-new-thread-click="onNewThreadClick"
                                     >
