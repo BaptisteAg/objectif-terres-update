@@ -51,6 +51,9 @@
                     @if(session('support_request.text'))
                         <input type="hidden" name="support_request_text" value="{{ session('support_request.text') }}">
                     @endif
+                    @if(session('support_request.id_region'))
+                        <input type="hidden" name="support_request_id_region" value="{{ session('support_request.id_region') }}">
+                    @endif
 
                     @if(!empty($old["id"]))
                         <input type="hidden" name="id" value="{{ $old["id"] }}">
@@ -122,7 +125,7 @@
         </div>
     </section>
 
-    @if(env('DEBUGBAR_ENABLED'))
+    @if(config('debugbar.enabled'))
         <pre>{{var_export($old, true)}}</pre>
     @endif
 @endsection

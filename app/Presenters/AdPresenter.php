@@ -298,7 +298,7 @@ class AdPresenter extends BasePresenter
 	 */
 	public function adDepartmentsCodes(): array
 	{
-		return $this->adService->getAdDepartmentCodes($this->wrappedObject);
+		return $this->adService->getAdDepartmentCodesFromZones($this->wrappedObject);
 	}
 
 
