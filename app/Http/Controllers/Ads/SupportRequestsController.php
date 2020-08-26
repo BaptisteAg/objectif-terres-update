@@ -46,7 +46,10 @@ class SupportRequestsController extends BaseController
             );
         }
 
-        session()->put('support-request.text', request('support_request_text'));
+        session()->put([
+            'support-request.text' => request('support_request_text'),
+            'support-request.id_region' => request('support_request_id_region')
+        ]);
 
         return redirect()->route('support-request.create');
     }

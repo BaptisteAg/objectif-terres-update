@@ -70,7 +70,7 @@ class AttributionAdsService
 			return $moderatorIsChargeOfAdModeration = true;
 		}
 		$moderatorLocationTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$adTerritoriesCodes = $this->adService->getAdDepartmentCodes($ad);
+		$adTerritoriesCodes = $this->adService->getAdDepartmentCodesFromZones($ad);
 		$intersectTerritoriesCodes = array_intersect($adTerritoriesCodes, $moderatorLocationTerritoriesCodes);
 
 

@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\hasOne;
  * @property float|null $surface
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\LandOfferAd|null $landOfferAd
+ * @property-read \App\Models\LandOfferAd $landOfferAd
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OfferGenre[] $offerGenres
  * @property-read int|null $offer_genres_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building newModelQuery()

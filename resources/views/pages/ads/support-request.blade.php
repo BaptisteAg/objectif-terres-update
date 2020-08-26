@@ -9,7 +9,7 @@
                 <div class="row is-full">
                     <h1 class="title is-1 has_margin is-marginless">Être accompagné</h1>
                     @if(isset($pageContent))
-                            {!! $pageContent->content !!}
+                        {!! $pageContent->content !!}
                     @endif
                 </div>
             </div>
@@ -19,15 +19,15 @@
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column block-demarrer">
+                <div class="column block-demarrer  has-text-centered">
                     <h2 class="title is-2">Par où démarrer ?</h2>
                     <h4 class="title is-4">Tout simplement par ici.</h4>
-                    <p>
+                    <div class="has-text-left">
                         Nullam quis risus eget urna mollis ornare
                         vel eu leo. Aenean lacinia bibendum nulla
                         sed consectetur, lorem ipsum dolor.
                         sit amet, consectetur adipiscing elit. Cum
-                    </p>
+                    </div>
                 </div>
                 <div class="column">
                     <div class="rows">
@@ -73,37 +73,52 @@
             <form method="post">
                 @csrf
                 <div class="container">
-{{--                    <h2 class="title is-2 has-text-centered">Précisez votre région</h2>--}}
-{{--                    <div class="columns">--}}
-{{--                        <div class="column is-half">--}}
-{{--                            <p>--}}
-{{--                                Terre de Liens peut accompagner les projets d’offre ou de recherche de foncier agricole.<br>--}}
-{{--                                Pour connaître nos modalités d’accueil, indiquer la région concernée par votre projet :--}}
-{{--                            </p>--}}
-{{--                        </div>--}}
+                    <h2 class="title is-2 has-text-centered">Précisez votre région</h2>
+                    <div class="section has-text-centered">
+                        <div class="is-half">
+                            Terre de Liens peut accompagner les projets d’offre ou de recherche de foncier agricole.<br>
+                            Pour connaître nos modalités d’accueil, indiquez la région concernée par votre projet.
+                        </div><br>
 
-{{--                        <div class="column is-half">--}}
-{{--                            <label class="label" for="region">Région</label>--}}
-{{--                            <select id="region" class="select" name="region" required>--}}
-{{--                                <option></option>--}}
-{{--                                @foreach($regions as $region)--}}
-{{--                                    <option value="{{$region->id}}">{{$region->name}}</option>--}}
-{{--                                @endforeach--}}
-{{--                            </select>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
+                        <div class="has-text-centered">
+                            <select id="region" class="select is-large" name="support_request_id_region" required v-model="region">
+                                <option></option>
+                                @foreach($regions as $region)
+                                    <option value="{{$region->id}}">{{$region->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
 
+                    <div class="modalites" v-if="region">
+                        <h2 class="title is-2 has-text-centered">Vos modalités d'accueil</h2>
+                        <div class="section">
+                            <div class="columns is-centered">
+                                <div class="column is-three-quarters">
+                                    L’association TDL RA fonctionne grâce à la mobilisation de citoyennes et citoyens
+                                    bénévoles organisé·e·s en groupes locaux.
+                                    Chaque groupe s’organise de façon autonome pour mener ses actions sur son territoire,
+                                    notamment l’accueil, l’orientation et l’accompagnement des porteurs de projets. Leurs
+                                    capacités pour accompagner les porteur.se.s de projet dans leur recherche de foncier peuvent
+                                    être limitées, la plupart d’entre eux étant actuellement mobilisés sur des projets
+                                    d’acquisition Terre de Liens.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <h2 class="title is-2 has-text-centered">Description de votre projet</h2>
 
-                    <h2 class="title is-2 has-text-centered">Précisez brièvement ce que vous attendez de Terre de Liens,
-                        en quoi nous pourrions vous aider.</h2>
                     <div class="columns is-mobile is-centered">
                         <div class="column is-two-thirds">
                             <br>
                             <div class="columns">
                                 <div class="column">
+                                    <div class="has-text-centered">
+                                        Précisez brièvement ce que vous attendez de Terre de Liens,
+                                        en quoi nous pourrions vous aider.<br><br>
+                                    </div>
                                     <div class="field">
-                                        <label for="support_request_text" class="label">Texte</label>
                                         <div class="control">
                                             <text-area-counter
                                                     name="support_request_text"
