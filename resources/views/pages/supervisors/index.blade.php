@@ -178,10 +178,9 @@
                                     </a>
                                 @endif
                             </th>
-
-                            <th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">
-                                Localisation(s)
-                            </th>
+{{--                            <th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">--}}
+{{--                                Localisation(s)--}}
+{{--                            </th>--}}
                             <th class="has-text-weight-semibold"
                                 style="border-right :2px solid #dbdbdb; border-bottom :3px solid #dbdbdb">
                                 @if(request()->input('sort') !== 'title')
@@ -287,17 +286,17 @@
                                             @endif
                                         @endif
                                     </td>
-                                    <td>
-                                        @if(! is_null($ad->regionsList))
-                                            <p>Region(s) : {{$ad->regionsList}}</p>
-                                        @endif
-                                        @if(! is_null($ad->departmentsList))
-                                            <p>Département(s) : {{$ad->departmentsList}}</p>
-                                        @endif
-                                        @if(! is_null($ad->citiesList))
-                                            <p>Communes(s) : {{$ad->citiesList}}</p>
-                                        @endif
-                                    </td>
+{{--                                    <td>--}}
+{{--                                        @if(! is_null($ad->regionsList))--}}
+{{--                                            <p>Region(s) : {{$ad->regionsList}}</p>--}}
+{{--                                        @endif--}}
+{{--                                        @if(! is_null($ad->departmentsList))--}}
+{{--                                            <p>Département(s) : {{$ad->departmentsList}}</p>--}}
+{{--                                        @endif--}}
+{{--                                        @if(! is_null($ad->citiesList))--}}
+{{--                                            <p>Communes(s) : {{$ad->citiesList}}</p>--}}
+{{--                                        @endif--}}
+{{--                                    </td>--}}
                                     <td style="border-right:2px solid #dbdbdb">
                                         @if(! is_null($ad->project))
                                             @if(isset($ad->attributionAd->user_advisor_id))

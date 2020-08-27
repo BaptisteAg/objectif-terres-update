@@ -298,16 +298,21 @@ class AdPresenter extends BasePresenter
 	 */
 	public function adDepartmentsCodes(): array
 	{
-		return $this->adService->getAdDepartmentCodes($this->wrappedObject);
+		return $this->adService->getAdDepartmentCodesFromZones($this->wrappedObject);
 	}
 
 
 	/**
 	 * @param array $userTerritoriesCodes
+	 * @param array $userTerritoryRegionsId
 	 * @return bool
 	 */
-	public function isAdInUserTerritories(array $userTerritoriesCodes): bool
+	public function isAdInUserTerritories(array $userTerritoriesCodes, array $userTerritoryRegionsId): bool
 	{
+		$ad = $this->wrappedObject;
+		if(isset($ad->support_request_id_region)){
+			return in_array($ad->support_request_id_region,$userTerritoryRegionsId );
+		}
 		return count(array_intersect($userTerritoriesCodes, $this->adDepartmentsCodes())) > 0;
 	}
 
