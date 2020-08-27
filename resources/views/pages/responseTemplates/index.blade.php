@@ -2,13 +2,15 @@
 
 @section('title', 'Gestion des messages types | Objectifs Terres')
 
+@section('header')
+    @if(auth()->user()->role >= 3)
+        @include('components.supervisor-tabs')
+    @elseif (auth()->user()->role ===2)
+        @include('components.advisor-tabs')
+    @endif
+@endsection
+
 @section('main-content')
-    <div class="content ml-80 mt-30">
-            <a class="text_size large" href="{{URL::previous()}}">
-                <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-                <span>Retour </span>
-            </a>
-    </div>
     <div class="section " style="padding-top: 0px">
         <h1 class="title is-2 has-text-link">Gestion des messages types </h1>
         {{Form::open(['route'=>'responseTemplates.create', 'method'=>'post'])}}

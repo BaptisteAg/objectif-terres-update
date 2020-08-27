@@ -222,6 +222,14 @@ class Ad extends Model implements HasPresenter
 	}
 
 	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function supportRequestIdRegion()
+	{
+		return $this->belongsTo(Region::class, 'support_request_id_region');
+	}
+
+	/**
 	 * Get the presenter class.
 	 *
 	 * @return string

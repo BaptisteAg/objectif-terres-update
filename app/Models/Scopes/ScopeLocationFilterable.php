@@ -34,13 +34,41 @@ trait ScopeLocationFilterable
 		});
 	}
 
-	function scopeFilterAdsTerritoryLocations(Builder $query, array $territoriesCode){
+	/**
+	 * @param Builder $query
+	 * @param array $territoriesCode
+	 */
+	function scopeFilterAdsTerritoryLocations(Builder $query, array $territoriesCode)
+	{
 
 		$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
 			$query->whereIn('code', $territoriesCode);
 		});
 		$query->orWhereHas('cities', function (Builder $query) use ($territoriesCode) {
 			$query->whereIn('department_code', $territoriesCode);
+		});
+	}
+
+	/**
+	 * @param Builder $query
+	 * @param array $territoriesRegionsId
+	 * @param int $userRole
+	 */
+	function scopeFilterSupportRequestRegionId(Builder $query, array $territoriesRegionsId, int $userRole)
+	{
+		$query->orWhere(function (Builder $query) use ($territoriesRegionsId, $userRole) {
+			$query->whereNotNull('support_request_id_region');
+			$query->whereIn('support_request_id_region', $territoriesRegionsId);
+			$query->whereNotNull('project_id');
+			$query->whereHas('attributionAd', function (Builder $subQuery) use($userRole) {
+				$subQuery->whereNull('ad_status_id');
+				if($userRole>=3){
+					$subQuery->whereNull('user_advisor_id');
+				}
+				if($userRole === 2){
+					$subQuery->whereNotNull('user_advisor_id');
+				}
+			});
 		});
 	}
 

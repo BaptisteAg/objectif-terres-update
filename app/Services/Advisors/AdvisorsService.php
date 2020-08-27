@@ -66,7 +66,9 @@ class AdvisorsService
 	public function findAllByUserAdvisor(bool $toPaginate)
 	{
 		$advisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$ads = $this->repository->allInTerritories($advisorLocationTerritoryCodes, $toPaginate);
+		$advisorLocationTerritoryRegionsId = $this->userService->getCurrentUserTerritoryRegionsIds();
+		$ads = $this->repository->allInTerritories($advisorLocationTerritoryCodes, $advisorLocationTerritoryRegionsId, $toPaginate);
+
 		return $ads;
 	}
 
@@ -78,7 +80,8 @@ class AdvisorsService
 	public function findAllSupportsByUserAdvisor(bool $toPaginate)
 	{
 		$advisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$ads = $this->repository->allProjectsInTerritories($advisorLocationTerritoryCodes, $toPaginate);
+		$advisorLocationTerritoryRegionsId = $this->userService->getCurrentUserTerritoryRegionsIds();
+		$ads = $this->repository->allProjectsInTerritories($advisorLocationTerritoryCodes,$advisorLocationTerritoryRegionsId,  $toPaginate);
 		return $ads;
 	}
 

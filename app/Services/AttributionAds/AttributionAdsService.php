@@ -69,6 +69,7 @@ class AttributionAdsService
 		if ($ad->attributionAd && auth()->user()->id === $ad->attributionAd->user_moderator_id) {
 			return $moderatorIsChargeOfAdModeration = true;
 		}
+
 		$moderatorLocationTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$adTerritoriesCodes = $this->adService->getAdDepartmentCodesFromZones($ad);
 		$intersectTerritoriesCodes = array_intersect($adTerritoriesCodes, $moderatorLocationTerritoriesCodes);

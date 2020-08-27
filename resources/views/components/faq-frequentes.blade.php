@@ -10,7 +10,7 @@
                         @foreach($cmsFaq as $question)
                             <div class="column is-6 mb-40">
                                 <h4 class="title is-4">{{$question->content_question}}</h4>
-                                <p>{{$question->content_answer}}
+                                <p>{!! $question->content_answer !!}
                                 </p>
                             </div>
                         @endforeach
