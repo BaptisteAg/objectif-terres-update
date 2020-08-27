@@ -140,7 +140,7 @@
                             <th colspan="4" class="has-text-centered" style="border-right :2px solid #dbdbdb">Suivi de
                                 l'accompagnement
                             </th>
-                            <th style="border-bottom: none;"></th>
+
                         </tr>
                         <tr>
                             <th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">Catégorie</th>

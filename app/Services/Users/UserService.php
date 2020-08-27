@@ -174,7 +174,8 @@ class UserService
 	 */
 	public function findByRoleAndRegions(int $roleId, array $regionsId)
 	{
-		return User::filterSubLocations('departments', $regionsId, 'departments.region_code')
+		$regionsCode = Region::whereIn('id', $regionsId)->get('code')->toArray();
+		return User::filterSubLocations('departments', $regionsCode, 'departments.region_code')
 			->where('role', $roleId)
 			->inRandomOrder()
 			->get();

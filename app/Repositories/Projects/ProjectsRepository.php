@@ -96,13 +96,15 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 	}
 
 	/**
-	 * @param array $departmentCodes
+	 * @param int $userId
+	 * @param array $territoriesCode
+	 * @param array $userLocationTerritoryRegionsId
 	 * @return \Illuminate\Database\Eloquent\Collection
 	 */
-	public function findAllByUserTerritories(int $userId, array $territoriesCode)
+	public function findAllByUserTerritories(int $userId, array $territoriesCode, array $userLocationTerritoryRegionsId)
 	{
 		return $this->entity
-			->whereHas('ad', function (Builder $query) use ($userId, $territoriesCode) {
+			->whereHas('ad', function (Builder $query) use ($userId, $territoriesCode, $userLocationTerritoryRegionsId) {
 				$query->whereNotNull('project_id');
 				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
@@ -112,6 +114,8 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 						$q->where('user_supervisor_id', '=', $userId);
 					});
 				});
+				$query->filterSupportRequestRegionId($userLocationTerritoryRegionsId, auth()->user()->role);
+				//previous system when support_request_id_region did not exist
 				$query->orWhere(function (Builder $builder) use ($territoriesCode) {
 					$builder->whereHas('departments', function (Builder $subQuery) use ($territoriesCode) {
 						$subQuery->whereIn('code', $territoriesCode);

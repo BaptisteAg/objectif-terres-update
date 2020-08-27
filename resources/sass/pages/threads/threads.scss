@@ -1,6 +1,11 @@
 //Threads
 .button-send-message {
-  margin-left: 85%;
+
+}
+
+.content-send-message-button{
+  display: flex;
+  justify-content: flex-end;
 }
 
 .list-threads {

@@ -116,11 +116,14 @@ class AdvisorsController extends BaseController
 	}
 
 	/**
+	 * @param Request $request
 	 * @return BinaryFileResponse
+	 * @throws \PhpOffice\PhpSpreadsheet\Exception
+	 * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
 	 */
 	public function export()
 	{
-		return Excel::download(new AdvisorsExport($this->advisorsService->findAllByUserAdvisor(false)), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_y') . '.xlsx');
+		return Excel::download(new AdvisorsExport($this->advisorsService->showForAdvisor(new Request())), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
 	}
 
 	/**

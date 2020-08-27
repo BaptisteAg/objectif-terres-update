@@ -14,7 +14,7 @@ use App\Services\Ads\AdService;
 use App\Services\Projects\ProjectService;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 abstract class BaseController
 {

@@ -226,7 +226,7 @@ class Ad extends Model implements HasPresenter
 	 */
 	public function supportRequestIdRegion()
 	{
-		return $this->belongsTo(Region::class, 'support_request_text ', 'regions');
+		return $this->belongsTo(Region::class, 'support_request_id_region');
 	}
 
 	/**
