@@ -38,7 +38,7 @@
         @endif
     </div>
     <br>
-    @if($ad->attributionAd->user_supervisor_id === $currentUser->id || $ad->isAdInUserTerritories($currentUser->userDepartmentsCodes,$currentUser->userRegionsId ))
+    @if($ad->attributionAd->user_supervisor_id === $currentUser->id || $ad->isAdInUserTerritories($currentUser->userDepartmentsCodes,$currentUser->userTerritoriesId ))
         <div class="columns is-centered ">
             <div class="column is-half has-text-centered ">
                 <div class="field">
