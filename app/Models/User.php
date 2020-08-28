@@ -94,6 +94,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withoutTrashed()
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|User filterSupportRequestRegionId($territoriesRegionsId, $userRole)
  */
 class User extends Authenticatable implements HasPresenter
 {

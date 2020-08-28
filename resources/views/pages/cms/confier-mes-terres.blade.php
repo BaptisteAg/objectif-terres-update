@@ -1,4 +1,3 @@
-
 @extends ('default')
 
 @section ('title', "Confier mes terres")
@@ -37,7 +36,9 @@
         </div>
     </section>
 
-    @include('components.faq-frequentes')
+    @if(! $cmsFaq->isEmpty())
+        @include('components.faq-frequentes')
+    @endif
 
     <section class="section contactus-background">
         <div class="container">

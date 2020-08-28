@@ -63,12 +63,12 @@
                 </div>
 
                 @if(auth()->user()->role >=2)
-                    @if(isset($ad->support_request_id_region))
+                    @if(isset($ad->support_request_territory_id))
                         <div class="content">
                             <p>
                                 <span class="is-size-5 is-capitalized has-text-black">Territoire </span>
                                 :
-                                <span class="subtitle">{{$ad->supportRequestIdRegion->name}}</span>
+                                <span class="subtitle">{{$ad->supportRequestTerritoryId->name}}</span>
                             </p>
                         </div>
                     @endif

@@ -71,13 +71,16 @@ class UserPresenter extends BasePresenter
 
 	}
 
-	public function userRegionsId(): array
+	/**
+	 * @return array
+	 */
+	public function userTerritoriesId(): array
 	{
-		$regionsId = [];
+		$territoriesId = [];
 		foreach ($this->wrappedObject->departments as $department) {
-			$regionsId[] = $department->region->id;
+			$territoriesId[] = $department->territory->id;
 		}
-		return array_unique($regionsId);
+		return array_unique($territoriesId);
 
 	}
 

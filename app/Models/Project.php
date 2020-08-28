@@ -43,6 +43,7 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereSupportStateId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|Project filterSupportRequestRegionId($territoriesRegionsId, $userRole)
  */
 class Project extends Model implements Decoratable
 {

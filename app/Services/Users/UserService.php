@@ -129,13 +129,13 @@ class UserService
 	/**
 	 * @return array
 	 */
-	public function getCurrentUserTerritoryRegionsIds()
+	public function getCurrentUserTerritoryIds()
 	{
-		$supervisorLocationTerritoryRegionsId = [];
+		$userTerritoriesId = [];
 		foreach (auth()->user()->departments as $department) {
-			array_push($supervisorLocationTerritoryRegionsId, $department->region->id);
+			array_push($userTerritoriesId, $department->territory->id);
 		}
-		return array_unique($supervisorLocationTerritoryRegionsId) ;
+		return array_unique($userTerritoriesId) ;
 	}
 
 

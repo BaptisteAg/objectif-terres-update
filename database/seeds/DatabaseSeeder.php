@@ -32,6 +32,9 @@ class DatabaseSeeder extends Seeder
 			//echo "\n$query->sql";
 			$queriesCount++;
 		});
+		$this->call([
+			TerritorySeeder::class
+		]);
 
 
 		\Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__ . '/../sql/countries.sql'));
@@ -57,7 +60,8 @@ class DatabaseSeeder extends Seeder
 			RefusalTypeSeeder::class,
 			ProjectDataKeySeeder::class,
 			ProjectDataValueSeeder::class,
-			CmsPageSeeder::class
+			CmsPageSeeder::class,
+			DepartmentSeeder::class,
 		]);
 
 		if (app()->environment() === "local") {

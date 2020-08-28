@@ -32,7 +32,7 @@ class UpdateJobOfferAdsConstraintsForeignKey extends Migration
     public function down()
     {
 		Schema::table('job_offer_ads', function (Blueprint $table) {
-			$table->dropForeign('fk_job_ads_1_idx');
+			$table->removeColumn('is_partner');
 		});
     }
 }

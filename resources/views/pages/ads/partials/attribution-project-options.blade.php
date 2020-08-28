@@ -2,7 +2,7 @@
 <div class="box has-text-centered">
     <div class="container">
         <p class="title is-2 has-text-centered">Suivi de la demande d'accompagnement</p>
-        @if($ad->isAdInUserTerritories($currentUser->userDepartmentsCodes, $currentUser->userRegionsId) || $ad->attributionAd->user_supervisor_id === $currentUser->id)
+        @if($ad->isAdInUserTerritories($currentUser->userDepartmentsCodes, $currentUser->userTerritoriesId) || $ad->attributionAd->user_supervisor_id === $currentUser->id)
             @if($ad->isProjectAttributedToAdvisor)
                 <p class="">Cette demande est attribuée à
                     <strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>.

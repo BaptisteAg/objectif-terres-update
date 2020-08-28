@@ -169,12 +169,6 @@ class CmsPageSeeder extends Seeder
 				"description" => '“Avez-vous besoin d’un conseil… d’emploi ?”',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-			],
-			[
-				'page_name' => 'Publier une annonce',
-				"description" => 'Texte d’introduction sous le titre principal',
-				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
 			], [
 				'page_name' => 'Être accompagné',
 				"description" => 'Texte d’introduction sous le titre principal',
@@ -185,7 +179,31 @@ class CmsPageSeeder extends Seeder
 				"description" => 'Toutes les mentions légales',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-			]
+			],
+			[
+				'page_name' => 'Aide et Ressoures',
+				"description" => 'Responsable Territorial-Text d\'introduction',
+				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+			],
+			[
+				'page_name' => 'Aide et Ressoures',
+				"description" => 'Responsable Territorial-Conseiller un primo-accueillant',
+				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+			],[
+				'page_name' => 'Aide et Ressoures',
+				"description" => 'Primo-accueillant-Text d\'introduction',
+				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+			],[
+				'page_name' => 'Aide et Ressoures',
+				"description" => 'Modérateur-Text d\'introduction',
+				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+			],
+
+
 		]);
 		$pages = CmsPage::all();
 		foreach ($pages as $page){

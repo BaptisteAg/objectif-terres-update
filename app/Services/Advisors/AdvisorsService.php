@@ -66,8 +66,8 @@ class AdvisorsService
 	public function findAllByUserAdvisor(bool $toPaginate)
 	{
 		$advisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$advisorLocationTerritoryRegionsId = $this->userService->getCurrentUserTerritoryRegionsIds();
-		$ads = $this->repository->allInTerritories($advisorLocationTerritoryCodes, $advisorLocationTerritoryRegionsId, $toPaginate);
+		$advisorLocationTerritoryId = $this->userService->getCurrentUserTerritoryIds();
+		$ads = $this->repository->allInTerritories($advisorLocationTerritoryCodes, $advisorLocationTerritoryId, $toPaginate);
 
 		return $ads;
 	}
@@ -80,8 +80,8 @@ class AdvisorsService
 	public function findAllSupportsByUserAdvisor(bool $toPaginate)
 	{
 		$advisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$advisorLocationTerritoryRegionsId = $this->userService->getCurrentUserTerritoryRegionsIds();
-		$ads = $this->repository->allProjectsInTerritories($advisorLocationTerritoryCodes,$advisorLocationTerritoryRegionsId,  $toPaginate);
+		$advisorLocationTerritoryId = $this->userService->getCurrentUserTerritoryIds();
+		$ads = $this->repository->allProjectsInTerritories($advisorLocationTerritoryCodes, $advisorLocationTerritoryId, $toPaginate);
 		return $ads;
 	}
 
@@ -129,7 +129,8 @@ class AdvisorsService
 	 * @param array $data
 	 * @return Thread
 	 */
-	public function findThreadAdvisorInChargeOfSupportRequest(array $data){
+	public function findThreadAdvisorInChargeOfSupportRequest(array $data)
+	{
 		$thread = $this->threadRepository->findThreadByUserIdAndAdId($data['user_id'], $data['ad_id'])->first();
 		return $thread;
 	}
