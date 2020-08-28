@@ -237,6 +237,7 @@ class AdService
 	public function getAdDepartmentCodesFromSupportRequestTerritoryId(Ad $ad)
     {
         $departmentsCode = [];
+
 		$territory = Territory::findOrFail($ad->support_request_territory_id);
 
 		foreach ($territory->departments as $department) {

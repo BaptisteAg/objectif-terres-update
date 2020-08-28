@@ -49,7 +49,7 @@ class SupportRequestsController extends BaseController
 
         session()->put([
             'support-request.text' => request('support_request_text'),
-            'support-request.id_region' => request('support_request_id_region')
+            'support-request.territory_id' => request('support_request_territory_id')
         ]);
 
         return redirect()->route('support-request.create');

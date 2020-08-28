@@ -81,7 +81,7 @@
                         </div><br>
 
                         <div class="has-text-centered">
-                            <select id="region" class="select is-large" name="support_request_id_region" required v-model="region">
+                            <select id="region" class="select is-large" name="support_request_territory_id" required v-model="region">
                                 <option></option>
                                 @foreach($territories as $territory)
                                     <option value="{{$territory->id}}">{{$territory->name}}</option>
