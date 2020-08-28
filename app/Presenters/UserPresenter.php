@@ -65,12 +65,24 @@ class UserPresenter extends BasePresenter
 	/**
 	 * @return array
 	 */
-	public function userDepartmentsCodes() : array
+	public function userDepartmentsCodes(): array
 	{
-		 return $this->wrappedObject->departments->pluck('code')->toArray();
+		return $this->wrappedObject->departments->pluck('code')->toArray();
 
 	}
 
+	/**
+	 * @return array
+	 */
+	public function userTerritoriesId(): array
+	{
+		$territoriesId = [];
+		foreach ($this->wrappedObject->departments as $department) {
+			$territoriesId[] = $department->territory->id;
+		}
+		return array_unique($territoriesId);
+
+	}
 
 
 }

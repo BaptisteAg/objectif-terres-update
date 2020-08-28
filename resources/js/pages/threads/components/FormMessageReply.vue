@@ -65,7 +65,7 @@
                             </p>
                         </div>
                         <br>
-                        <p class="control ">
+                        <p class="control  content-send-message-button ">
                             <button class="button basic form-button primary button-send-message" :disabled="isLoading">
                                 <span class="icon is-small"> <i class="fas fa-paper-plane "></i> </span>
                                 <span>Envoyer</span></button>

@@ -83,6 +83,9 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Ad withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Ad withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \App\Models\Region|null $supportRequestIdRegion
+ * @method static Builder|Ad filterSupportRequestRegionId($territoriesRegionsId, $userRole)
+ * @property-read \App\Models\Territory $supportRequestTerritoryId
  */
 class Ad extends Model implements HasPresenter
 {
@@ -105,6 +108,7 @@ class Ad extends Model implements HasPresenter
 		'accept_share_contact_infos',
 		'support_request_text',
 		'support_request_id_region',
+		'support_request_territory_id',
 		'is_partner'
 	];
 
@@ -219,6 +223,21 @@ class Ad extends Model implements HasPresenter
 	public function regions()
 	{
 		return $this->morphedbyMany(Region::class, 'locationable_ad');
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function supportRequestIdRegion()
+	{
+		return $this->belongsTo(Region::class, 'support_request_id_region');
+	}
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function supportRequestTerritoryId()
+	{
+		return $this->belongsTo(Territory::class, 'support_request_territory_id');
 	}
 
 	/**

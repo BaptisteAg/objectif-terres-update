@@ -126,6 +126,18 @@ class UserService
 		return $supervisorLocationTerritoryCodes;
 	}
 
+	/**
+	 * @return array
+	 */
+	public function getCurrentUserTerritoryIds()
+	{
+		$userTerritoriesId = [];
+		foreach (auth()->user()->departments as $department) {
+			array_push($userTerritoriesId, $department->territory->id);
+		}
+		return array_unique($userTerritoriesId) ;
+	}
+
 
 	/**
 	 * @param int $roleId
@@ -150,6 +162,20 @@ class UserService
 	public function findByRoleAndDepartments(int $roleId, array $departmentCodes)
 	{
 		return User::filterSubLocations('departments', $departmentCodes, 'departments.code')
+			->where('role', $roleId)
+			->inRandomOrder()
+			->get();
+	}
+
+	/**
+	 * @param int $roleId
+	 * @param array $regionsId
+	 * @return User|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
+	 */
+	public function findByRoleAndRegions(int $roleId, array $regionsId)
+	{
+		$regionsCode = Region::whereIn('id', $regionsId)->get('code')->toArray();
+		return User::filterSubLocations('departments', $regionsCode, 'departments.region_code')
 			->where('role', $roleId)
 			->inRandomOrder()
 			->get();

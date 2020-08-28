@@ -78,7 +78,7 @@ class CmsFaq extends Resource
         return [
             ID::make()->sortable(),
 			Text::make('Visible sur la page', 'page_name')->sortable()->readonly(true),
-			Text::make('Question', 'content_question')->readonly(true),
+			Text::make('Question', 'content_question'),
 			CKEditor5Classic::make('Content', 'content_answer')->withMeta(['maxlength' => 5]),
         ];
     }

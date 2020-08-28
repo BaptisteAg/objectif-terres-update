@@ -310,9 +310,9 @@
                                 <div class="level-item has-text-centered ">
                                     <div>
                                         <p class="title has-text-warning">
-                                            @if(isset($rpojectsBySupportStates[\Carbon\Carbon::now()->year]))
-                                                @if($rpojectsBySupportStates[\Carbon\Carbon::now()->year]->has(\App\Models\SupportState::TO_HANDLE_ID) )
-                                                    {{$rpojectsBySupportStates[\Carbon\Carbon::now()->year][\App\Models\SupportState::TO_HANDLE_ID]->count()}}
+                                            @if(isset($projectsBySupportStates[\Carbon\Carbon::now()->year]))
+                                                @if($projectsBySupportStates[\Carbon\Carbon::now()->year]->has(\App\Models\SupportState::TO_HANDLE_ID) )
+                                                    {{$projectsBySupportStates[\Carbon\Carbon::now()->year][\App\Models\SupportState::TO_HANDLE_ID]->count()}}
                                                 @else
                                                     0
                                                 @endif
@@ -326,9 +326,9 @@
                                 <div class="level-item has-text-centered ">
                                     <div>
                                         <p class="title has-text-primary">
-                                            @if(isset($rpojectsBySupportStates[\Carbon\Carbon::now()->year]))
-                                                @if($rpojectsBySupportStates[\Carbon\Carbon::now()->year]->has(\App\Models\SupportState::PENDING_ID) )
-                                                    {{$rpojectsBySupportStates[\Carbon\Carbon::now()->year][\App\Models\SupportState::PENDING_ID]->count()}}
+                                            @if(isset($projectsBySupportStates[\Carbon\Carbon::now()->year]))
+                                                @if($projectsBySupportStates[\Carbon\Carbon::now()->year]->has(\App\Models\SupportState::PENDING_ID) )
+                                                    {{$projectsBySupportStates[\Carbon\Carbon::now()->year][\App\Models\SupportState::PENDING_ID]->count()}}
                                                 @else
                                                     0
                                                 @endif
@@ -342,9 +342,9 @@
                                 <div class="level-item has-text-centered ">
                                     <div>
                                         <p class="title text_warning_orange">
-                                            @if(isset($rpojectsBySupportStates[\Carbon\Carbon::now()->year]))
-                                                @if($rpojectsBySupportStates[\Carbon\Carbon::now()->year]->has(\App\Models\SupportState::TO_ARCHIVE_ID) )
-                                                    {{$rpojectsBySupportStates[\Carbon\Carbon::now()->year][\App\Models\SupportState::TO_ARCHIVE_ID]->count()}}
+                                            @if(isset($projectsBySupportStates[\Carbon\Carbon::now()->year]))
+                                                @if($projectsBySupportStates[\Carbon\Carbon::now()->year]->has(\App\Models\SupportState::TO_ARCHIVE_ID) )
+                                                    {{$projectsBySupportStates[\Carbon\Carbon::now()->year][\App\Models\SupportState::TO_ARCHIVE_ID]->count()}}
                                                 @else
                                                     0
                                                 @endif
@@ -358,9 +358,9 @@
                                 <div class="level-item has-text-centered ">
                                     <div>
                                         <p class="title has-text-success">
-                                            @if(isset($rpojectsBySupportStates[\Carbon\Carbon::now()->year]))
-                                                @if($rpojectsBySupportStates[\Carbon\Carbon::now()->year]->has(\App\Models\SupportState::HANDLE_ID) )
-                                                    {{$rpojectsBySupportStates[\Carbon\Carbon::now()->year][\App\Models\SupportState::HANDLE_ID]->count()}}
+                                            @if(isset($projectsBySupportStates[\Carbon\Carbon::now()->year]))
+                                                @if($projectsBySupportStates[\Carbon\Carbon::now()->year]->has(\App\Models\SupportState::HANDLE_ID) )
+                                                    {{$projectsBySupportStates[\Carbon\Carbon::now()->year][\App\Models\SupportState::HANDLE_ID]->count()}}
                                                 @else
                                                     0
                                                 @endif

@@ -178,13 +178,22 @@ abstract class BaseController extends Controller
 				if ($user->role >= 3) {
 					//TODO display only advisors that are related to the supervisor
 					$responseTemplates = ResponseTemplate::orderBy('title')->get();
-					$adDepartmentCodes = $this->adService->getAdDepartmentCodesFromZones($ad);
-					$advisorUsers = $this->userService->findByRoleAndDepartments(2, $adDepartmentCodes);
+					if (isset($ad->support_request_id_region)) {
+						$advisorUsers = $this->userService->findByRoleAndRegions(2, $this->userService->getCurrentUserTerritoryRegionsIds());
+					} else {
+						$adDepartmentCodes = $this->adService->getAdDepartmentCodesFromZones($ad);
+						$advisorUsers = $this->userService->findByRoleAndDepartments(2, $adDepartmentCodes);
+					}
 				}
 			}
 			if ($user->role >= 1 && $ad->attributionAd && $ad->attributionAd->user_moderator_id !== $currentUser->id) {
 				if (count(array_intersect($this->adService->getAdDepartmentCodesFromZones($ad), $this->userService->getCurrentUserTerritoryDepartments())) > 0) {
 					$threads = $this->threadService->findThreadsByAd($ad->id);
+				}
+				if (isset($ad->support_request_id_region)) {
+					if (in_array($ad->support_request_id_region, $this->userService->getCurrentUserTerritoryRegionsIds())) {
+						$threads = $this->threadService->findThreadsByAd($ad->id);
+					}
 				}
 			}
 		}

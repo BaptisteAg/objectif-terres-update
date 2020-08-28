@@ -35,208 +35,210 @@ use Illuminate\Support\Facades\DB;
  */
 class AdService
 {
-    /**
-     * @var AdRepository
-     */
-    protected $repository;
-    /**
-     * @var LandSeekAdRepository
-     */
-    protected $landSeekAdRepository;
-    /**
-     * @var LandOfferAdRepository
-     */
-    protected $landOfferAdRepository;
-    /**
-     * @var ProductionGenreRepository
-     */
-    protected $productionGenreRepository;
-    /**
-     * @var JobOfferAdRepository
-     */
-    protected $jobOfferAdRepository;
-    /**
-     * @var JobSeekAdRepository
-     */
-    protected $jobSeekAdRepository;
-    /**
-     * @var AttributionAdsRepository
-     */
-    protected $attributionAdsRepository;
+	/**
+	 * @var AdRepository
+	 */
+	protected $repository;
+	/**
+	 * @var LandSeekAdRepository
+	 */
+	protected $landSeekAdRepository;
+	/**
+	 * @var LandOfferAdRepository
+	 */
+	protected $landOfferAdRepository;
+	/**
+	 * @var ProductionGenreRepository
+	 */
+	protected $productionGenreRepository;
+	/**
+	 * @var JobOfferAdRepository
+	 */
+	protected $jobOfferAdRepository;
+	/**
+	 * @var JobSeekAdRepository
+	 */
+	protected $jobSeekAdRepository;
+	/**
+	 * @var AttributionAdsRepository
+	 */
+	protected $attributionAdsRepository;
 
-    /**
-     * @var UserService
-     */
-    protected $userService;
-    /**
-     * @var ProjectsRepository
-     */
-    protected $projectRepository;
-
-
-    /**
-     * AdService constructor.
-     * @param AdRepository $repository
-     * @param AttributionAdsRepository $attributionAdsRepository
-     * @param LandSeekAdRepository $landSeekAdRepository
-     * @param LandOfferAdRepository $landOfferAdRepository
-     * @param JobOfferAdRepository $jobOfferAdRepository
-     * @param JobSeekAdRepository $jobSeekAdRepository
-     * @param ProductionGenreRepository $productionGenreRepository
-     * @param ProjectsRepository $projectRepository
-     * @param UserService $userService
-     * @param NotifySupportRequestAttribution $notificationSupportRequestAttribution
-     */
-    public function __construct(
-        AdRepository $repository,
-        AttributionAdsRepository $attributionAdsRepository,
-        LandSeekAdRepository $landSeekAdRepository,
-        LandOfferAdRepository $landOfferAdRepository,
-        JobOfferAdRepository $jobOfferAdRepository,
-        JobSeekAdRepository $jobSeekAdRepository,
-        ProductionGenreRepository $productionGenreRepository,
-        ProjectsRepository $projectRepository,
-        UserService $userService
-
-    )
-    {
-        $this->repository = $repository;
-        $this->attributionAdsRepository = $attributionAdsRepository;
-        $this->landSeekAdRepository = $landSeekAdRepository;
-        $this->landOfferAdRepository = $landOfferAdRepository;
-        $this->jobOfferAdRepository = $jobOfferAdRepository;
-        $this->jobSeekAdRepository = $jobSeekAdRepository;
-        $this->productionGenreRepository = $productionGenreRepository;
-        $this->userService = $userService;
-        $this->projectRepository = $projectRepository;
-    }
-
-    /**
-     * @param User $user
-     * @return User|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|Ad|null
-     */
-    public function getUserSupportRequest(User $user)
-    {
-        return $user->supportRequests()->first();
-    }
-
-    /**
-     * @param array $data
-     * @param bool $isSupportRequest
-     * @return mixed
-     * @throws \Throwable
-     */
-    public function requestPublishing(array $data, bool $isSupportRequest = false)
-    {
-        $isUpdate = !empty($data["id"]);
-
-        DB::beginTransaction();
-
-        $attributionAdData = [];
-        if ($isSupportRequest) {
-            // Create a project for this ad
-            $project = $this->projectRepository->create([
-                'support_stage_id' => SupportStage::FIRST_CONTACT_ID,
-                'support_state_id' => SupportState::TO_HANDLE_ID,
-                'project_status_id' => ProjectStatus::EMERGING_ID,
-            ]);
-            $data["project_id"] = $project->id;
-        }
-
-        $data["is_draft"] = false;
-
-        if ($isUpdate) {
-            $ad = $this->repository->update($data["id"], $data);
-        } else {
-            $ad = $this->repository->create($data);
-        }
-
-        if ($isSupportRequest) {
-            //dd($ad);
-            $adDepartmentCodes = $this->getAdDepartmentCodesFromSupportRequestRegionId($ad);
-
-            //dd($ad->support_request_id_region, $adDepartmentCodes);
-
-            $availableAdvisors = $this->userService->findByRoleAndDepartments(2, $adDepartmentCodes);
-            $availableSupervisors = $this->userService->findByRoleAndDepartments(4, $adDepartmentCodes);
+	/**
+	 * @var UserService
+	 */
+	protected $userService;
+	/**
+	 * @var ProjectsRepository
+	 */
+	protected $projectRepository;
 
 
-            if ($availableSupervisors->isEmpty() && $availableAdvisors->isEmpty()) {
-                throw new AttributionAdException("Aucun responsable n'a été trouvé dans votre région. Veuillez sauvegarder votre demande et nous contacter.");
-            }
+	/**
+	 * AdService constructor.
+	 * @param AdRepository $repository
+	 * @param AttributionAdsRepository $attributionAdsRepository
+	 * @param LandSeekAdRepository $landSeekAdRepository
+	 * @param LandOfferAdRepository $landOfferAdRepository
+	 * @param JobOfferAdRepository $jobOfferAdRepository
+	 * @param JobSeekAdRepository $jobSeekAdRepository
+	 * @param ProductionGenreRepository $productionGenreRepository
+	 * @param ProjectsRepository $projectRepository
+	 * @param UserService $userService
+	 * @param NotifySupportRequestAttribution $notificationSupportRequestAttribution
+	 */
+	public function __construct(
+		AdRepository $repository,
+		AttributionAdsRepository $attributionAdsRepository,
+		LandSeekAdRepository $landSeekAdRepository,
+		LandOfferAdRepository $landOfferAdRepository,
+		JobOfferAdRepository $jobOfferAdRepository,
+		JobSeekAdRepository $jobSeekAdRepository,
+		ProductionGenreRepository $productionGenreRepository,
+		ProjectsRepository $projectRepository,
+		UserService $userService
 
-            // S'il n'y a qu'un seul primo accueillant on saute une étape et on le sélectionne
-            if ($availableAdvisors->count() === 1) {
-                $advisor = $availableAdvisors->first();
-                $attributionAdData['user_advisor_id'] = $advisor->id;
-            }
-            // Else nothing. No attribution needed if no advisor is bound
+	)
+	{
+		$this->repository = $repository;
+		$this->attributionAdsRepository = $attributionAdsRepository;
+		$this->landSeekAdRepository = $landSeekAdRepository;
+		$this->landOfferAdRepository = $landOfferAdRepository;
+		$this->jobOfferAdRepository = $jobOfferAdRepository;
+		$this->jobSeekAdRepository = $jobSeekAdRepository;
+		$this->productionGenreRepository = $productionGenreRepository;
+		$this->userService = $userService;
+		$this->projectRepository = $projectRepository;
+	}
 
-            $attributionAdData['ad_status_id'] = null;
+	/**
+	 * @param User $user
+	 * @return User|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|Ad|null
+	 */
+	public
+	function getUserSupportRequest(User $user)
+	{
+		return $user->supportRequests()->first();
+	}
 
-        }
-        else {
-            $adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
+	/**
+	 * @param array $data
+	 * @param bool $isSupportRequest
+	 * @return mixed
+	 * @throws \Throwable
+	 */
+	public function requestPublishing(array $data, bool $isSupportRequest = false)
+	{
+		$isUpdate = !empty($data["id"]);
 
-            $availableModerators = $this->userService->findByRoleAndDepartments(1, $adDepartmentCodes);
-            $availableSupervisors = $this->userService->findByRoleAndDepartments(3, $adDepartmentCodes);
-            $availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
-            if ($availableModerators->isEmpty() && $availableSupervisors->isEmpty() && empty($availableUserWithPermission)) {
-                throw new AttributionAdException("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
-            }
-            // If ad was attributed before, we'll get the same moderator if available
-            if ($ad->attributionAd && $ad->attributionAd->userModerator &&
-                $availableModerators->keyBy("id")->find($ad->attributionAd->user_moderator_id)) {
-                $moderator = $ad->attributionAd->userModerator;
-            } else {
-                if ($availableModerators->count() >= 1) {
-                    /** @var User $moderator */
-                    $moderator = $availableModerators->random();
-                } else if (!empty($availableUserWithPermission)) {
-                    $moderator = $availableUserWithPermission;
-                } else {
-                    /** @var User $moderator */
-                    $moderator = $availableSupervisors->random();
-                }
-            }
-            $attributionAdData['ad_status_id'] = AdStatus::PENDING_MODERATION_STATUS_ID;
-            $attributionAdData['user_moderator_id'] = $moderator->id;
-        }
+		DB::beginTransaction();
+
+		$attributionAdData = [];
+		if ($isSupportRequest) {
+			// Create a project for this ad
+			$project = $this->projectRepository->create([
+				'support_stage_id' => SupportStage::FIRST_CONTACT_ID,
+				'support_state_id' => SupportState::TO_HANDLE_ID,
+			]);
+			$data["project_id"] = $project->id;
+		}
+
+		$data["is_draft"] = false;
+		$data['support_request_id_region'] = 16;
+
+		if ($isUpdate) {
+			$ad = $this->repository->update($data["id"], $data);
+		} else {
+			$ad = $this->repository->create($data);
+		}
+
+		if ($isSupportRequest) {
+			$adDepartmentCodes = $this->getAdDepartmentCodesFromSupportRequestRegionId($ad);
+			$availableAdvisors = $this->userService->findByRoleAndDepartments(2, $adDepartmentCodes);
+			$availableSupervisors = $this->userService->findByRoleAndDepartments(3, $adDepartmentCodes);
 
 
-        $attributionAdData['ad_id'] = $ad->id;
+			if ($availableSupervisors->isEmpty() && $availableAdvisors->isEmpty()) {
+				throw new AttributionAdException("Aucun responsable n'a été trouvé dans votre région. Veuillez sauvegarder votre demande et nous contacter.");
+			}
 
-        // Ad was already attributed before, and was not refused or archived; then we use the existing one
-        if ($ad->attributionAd && !in_array($ad->attributionAd->adStatus->id, [AdStatus::REFUSE_ID, AdStatus::ARCHIVED_ID])) {
-            $this->attributionAdsRepository->update($ad->attributionAd->id, $attributionAdData);
-        } else {
+			// S'il n'y a qu'un seul primo accueillant on saute une étape et on le sélectionne
+			if ($availableAdvisors->count() === 1) {
+				$advisor = $availableAdvisors->first();
+				$attributionAdData['user_advisor_id'] = $advisor->id;
+			}
+			// Else nothing. No attribution needed if no advisor is bound
 
-            $this->attributionAdsRepository->create($attributionAdData);
-        }
+			$attributionAdData['ad_status_id'] = null;
 
-        $subAdData = $data[$data["ad_type"]];
+		}
+		else {
+			$adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
 
-        if ($isUpdate) {
-            $this->updateSubAd($ad, $data["ad_type"], $subAdData);
-        } else {
-            $subAdData["ad_id"] = $ad->id;
+			$availableModerators = $this->userService->findByRoleAndDepartments(1, $adDepartmentCodes);
+			$availableSupervisors = $this->userService->findByRoleAndDepartments(3, $adDepartmentCodes);
+			$availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
+			if ($availableModerators->isEmpty() && $availableSupervisors->isEmpty() && empty($availableUserWithPermission)) {
+				throw new AttributionAdException("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
+			}
+			// If ad was attributed before, we'll get the same moderator if available
+			if ($ad->attributionAd && $ad->attributionAd->userModerator &&
+				$availableModerators->keyBy("id")->find($ad->attributionAd->user_moderator_id)) {
+				$moderator = $ad->attributionAd->userModerator;
+			} else {
+				if ($availableModerators->count() >= 1) {
+					/** @var User $moderator */
+					$moderator = $availableModerators->random();
+				} else if (!empty($availableUserWithPermission)) {
+					$moderator = $availableUserWithPermission;
+				} else {
+					/** @var User $moderator */
+					$moderator = $availableSupervisors->random();
+				}
+			}
+			$attributionAdData['ad_status_id'] = AdStatus::PENDING_MODERATION_STATUS_ID;
+			$attributionAdData['user_moderator_id'] = $moderator->id;
+		}
 
-            $this->createSubAd($data["ad_type"], $subAdData);
-        }
 
-        DB::commit();
+		$attributionAdData['ad_id'] = $ad->id;
 
-        $ad->refresh();
+		// Ad was already attributed before, and was not refused or archived; then we use the existing one
+		if ($ad->attributionAd && !in_array($ad->attributionAd->adStatus->id, [AdStatus::REFUSE_ID, AdStatus::ARCHIVED_ID])) {
+			$this->attributionAdsRepository->update($ad->attributionAd->id, $attributionAdData);
+		} else {
 
-        return $ad;
-    }
+			$this->attributionAdsRepository->create($attributionAdData);
+		}
 
-    public function getAdDepartmentCodesFromSupportRequestRegionId(Ad $ad)
+		$subAdData = $data[$data["ad_type"]];
+
+		if ($isUpdate) {
+			$this->updateSubAd($ad, $data["ad_type"], $subAdData);
+		} else {
+			$subAdData["ad_id"] = $ad->id;
+
+			$this->createSubAd($data["ad_type"], $subAdData);
+		}
+
+		DB::commit();
+
+		$ad->refresh();
+
+		return $ad;
+
+	}
+
+	/**
+	 * @param Ad $ad
+	 * @return array
+	 */
+	public function getAdDepartmentCodesFromSupportRequestRegionId(Ad $ad)
     {
         $departmentsCode = [];
-        $region = Region::findOrFail($ad->support_request_id_region);
+		$region = Region::findOrFail($ad->support_request_id_region);
 
-        foreach ($region->departments as $department) {
+		foreach ($region->departments as $department) {
             $departmentsCode[] = $department->code;
         }
 
@@ -279,7 +281,13 @@ class AdService
         return array_unique($departmentsCode);
     }
 
-    protected function updateSubAd(Ad $ad, string $adType, array $data)
+	/**
+	 * @param Ad $ad
+	 * @param string $adType
+	 * @param array $data
+	 * @return \App\Models\JobOfferAd|\App\Models\JobSeekAd|\App\Models\LandOfferAd|\App\Models\LandSeekAd
+	 */
+	protected function updateSubAd(Ad $ad, string $adType, array $data)
     {
         if ($adType === "land_seek") {
             $subAd = $this->landSeekAdRepository->update($ad->landSeekAd, $data);
@@ -446,7 +454,8 @@ class AdService
     public function findAllByUserSupervisor(bool $toPaginate)
     {
         $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-        $ads = $this->repository->allInTerritories($supervisorLocationTerritoryCodes, $toPaginate);
+		$supervisorLocationTerritoryRegionsId = $this->userService->getCurrentUserTerritoryRegionsIds();
+        $ads = $this->repository->allInTerritories($supervisorLocationTerritoryCodes, $supervisorLocationTerritoryRegionsId, $toPaginate);
         return $ads;
     }
 
@@ -458,7 +467,8 @@ class AdService
     public function findAllNotAssignedProjectsByUserSupervisor(bool $toPaginate)
     {
         $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-        $ads = $this->repository->allNotAssignedProjectsInTerritories($supervisorLocationTerritoryCodes, $toPaginate);
+        $supervisorLocationTerritoryRegionsId = $this->userService->getCurrentUserTerritoryRegionsIds();
+        $ads = $this->repository->allNotAssignedProjectsInTerritories($supervisorLocationTerritoryCodes, $supervisorLocationTerritoryRegionsId, $toPaginate);
         return $ads;
     }
 
@@ -469,7 +479,8 @@ class AdService
     public function findAllByUserSupervisorBetweenDates(array $dates): Collection
     {
         $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-        $ads = $this->repository->findAllByUserTerritoriesAndDates($supervisorLocationTerritoryCodes, $dates);
+		$supervisorLocationTerritoryRegionsId = $this->userService->getCurrentUserTerritoryRegionsIds();
+        $ads = $this->repository->findAllByUserTerritoriesAndDates($supervisorLocationTerritoryCodes, $supervisorLocationTerritoryRegionsId,  $dates);
         return $ads;
     }
 
@@ -555,7 +566,8 @@ class AdService
     public function findAllAdsAndProjectsGroupByUserPp(): Collection
     {
         $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-        $users = $this->repository->allInTerritories($supervisorLocationTerritoryCodes, false)->groupBy('user_pp_id');
+        $supervisorLocationTerritoryRegionId = $this->userService->getCurrentUserTerritoryRegionsIds();
+        $users = $this->repository->allInTerritories($supervisorLocationTerritoryCodes,$supervisorLocationTerritoryRegionId, false)->groupBy('user_pp_id');
         return $users;
     }
 
@@ -605,7 +617,6 @@ class AdService
                         return $ad;
                     }
                 }
-
             }
         });
         return $groupPublishedAdsByYears = $onlyAdsPublished->mapToGroups(function ($ad, $key) {
@@ -690,7 +701,8 @@ class AdService
     public function filter(Request $filters, int $roleUser, bool $toPaginate)
     {
         $userTerritories = $this->userService->getCurrentUserTerritoryDepartments();
-        return $this->repository->filterAds($filters, $roleUser, $userTerritories, $toPaginate);
+		$userTerritoriesRegionsId = $this->userService->getCurrentUserTerritoryRegionsIds();
+        return $this->repository->filterAds($filters, $roleUser, $userTerritories, $userTerritoriesRegionsId, $toPaginate);
     }
 
     /**

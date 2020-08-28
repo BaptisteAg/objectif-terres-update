@@ -145,6 +145,7 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 		$threads = auth()
 			->user()
 			->threads()
+			->has('messages')
 			->with($this->getEagerLoading())
 			->orderBy('updated_at', 'desc')
 			->get();

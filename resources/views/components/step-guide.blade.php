@@ -10,9 +10,15 @@
                     sed consectetur, lorem ipsum dolor.
                     sit amet, consectetur adipiscing elit. Cum
                 </p>
-                <button class="button is-link">DEPOSER VOTRE ANNONCE MAINTENANT</button>
+                <button class="button basic small primary  waves-effect waves-button waves-float waves-light">
+                    <span class="button_label">
+                        DEPOSER VOTRE ANNONCE MAINTENANT
+                    </span>
+                </button>
                 <p class="has-text-centered">ou</p>
-                <button class="button is-link">CONTACTEZ NOUS</button>
+                <button class="button basic small primary  waves-effect waves-button waves-float waves-light">CONTACTEZ
+                    NOUS
+                </button>
             </div>
             <div class="column">
                 <div class="rows">

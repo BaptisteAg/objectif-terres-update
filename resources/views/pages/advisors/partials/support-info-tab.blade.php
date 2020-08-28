@@ -44,10 +44,16 @@
                     : {{$ad->submitDate ?? "Non renseignée"}} </p>
                 <p><span class="is-italic">Catégorie</span>
                     : {{$ad->ad_type_full_name ?? "Non renseignée"}} </p>
+                @if(isset($ad->support_request_territory_id))
+                        <p>
+                            <span class="is-italic">Territoire </span>
+                            : {{$ad->supportRequestTerritoryId->name}}
+                        </p>
+                @endif
                 @if(isset($ad->landOfferAd))
                     <p><span class="is-italic">Localisations</span>:
                 @else
-                    <p><span class="is-italic">Zone de recherche</span>:
+                    <p><span class="is-italic">Zone de recherche</span> :
                         @endif
                         {{$ad->citiesList ?? ""}}
                         {{$ad->departmentsList ?? ""}}

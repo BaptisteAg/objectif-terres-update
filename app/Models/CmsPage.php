@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Documentable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -26,9 +27,15 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int|null $has_documents
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Document[] $documents
+ * @property-read int|null $documents_count
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsPage whereHasDocuments($value)
  */
 class CmsPage extends Model
 {
+	use Documentable;
+
 	public static function boot()
 	{
 		parent::boot();
@@ -50,7 +57,7 @@ class CmsPage extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'page_name', 'description', 'slug', 'content', 'created_at', 'updated_at'
+		'page_name', 'description', 'slug', 'content', 'created_at', 'updated_at', 'has_documents'
 	];
 
 	static $editable_pages = [
