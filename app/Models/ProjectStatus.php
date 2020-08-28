@@ -15,13 +15,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $projects_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $researches
  * @property-read int|null $researches_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectStatus newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectStatus newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectStatus query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectStatus whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectStatus whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectStatus whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectStatus whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProjectStatus newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProjectStatus newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProjectStatus query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProjectStatus whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProjectStatus whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProjectStatus whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProjectStatus whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class ProjectStatus extends Model

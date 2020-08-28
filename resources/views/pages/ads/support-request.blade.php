@@ -73,7 +73,7 @@
             <form method="post">
                 @csrf
                 <div class="container">
-                    <h2 class="title is-2 has-text-centered">Précisez votre région</h2>
+                    <h2 class="title is-2 has-text-centered">Précisez votre territoire</h2>
                     <div class="section has-text-centered">
                         <div class="is-half">
                             Terre de Liens peut accompagner les projets d’offre ou de recherche de foncier agricole.<br>
@@ -81,10 +81,10 @@
                         </div><br>
 
                         <div class="has-text-centered">
-                            <select id="region" class="select is-large" name="support_request_id_region" required v-model="region">
+                            <select id="region" class="select is-large" name="support_request_territory_id" required v-model="region">
                                 <option></option>
-                                @foreach($regions as $region)
-                                    <option value="{{$region->id}}">{{$region->name}}</option>
+                                @foreach($territories as $territory)
+                                    <option value="{{$territory->id}}">{{$territory->name}}</option>
                                 @endforeach
                             </select>
                         </div>

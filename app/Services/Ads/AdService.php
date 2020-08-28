@@ -10,6 +10,7 @@ use App\Models\ProjectStatus;
 use App\Models\Region;
 use App\Models\SupportStage;
 use App\Models\SupportState;
+use App\Models\Territory;
 use App\Models\User;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Ads\JobOfferAdRepository;
@@ -153,7 +154,7 @@ class AdService
 		}
 
 		if ($isSupportRequest) {
-			$adDepartmentCodes = $this->getAdDepartmentCodesFromSupportRequestRegionId($ad);
+			$adDepartmentCodes = $this->getAdDepartmentCodesFromSupportRequestTerritoryId($ad);
 			$availableAdvisors = $this->userService->findByRoleAndDepartments(2, $adDepartmentCodes);
 			$availableSupervisors = $this->userService->findByRoleAndDepartments(3, $adDepartmentCodes);
 
@@ -233,12 +234,13 @@ class AdService
 	 * @param Ad $ad
 	 * @return array
 	 */
-	public function getAdDepartmentCodesFromSupportRequestRegionId(Ad $ad)
+	public function getAdDepartmentCodesFromSupportRequestTerritoryId(Ad $ad)
     {
         $departmentsCode = [];
-		$region = Region::findOrFail($ad->support_request_id_region);
 
-		foreach ($region->departments as $department) {
+		$territory = Territory::findOrFail($ad->support_request_territory_id);
+
+		foreach ($territory->departments as $department) {
             $departmentsCode[] = $department->code;
         }
 

@@ -16,14 +16,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $researches_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\JobOfferAd[] $jobOfferAds
  * @property-read int|null $job_offer_ads_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferType newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferType newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferType query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferType whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferType whereIcon($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferType whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferType whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferType whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferType query()
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferType whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferType whereIcon($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferType whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferType whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferType whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class JobOfferType extends Model

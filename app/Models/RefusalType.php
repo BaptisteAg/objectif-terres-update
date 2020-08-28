@@ -14,14 +14,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AttributionAd[] $attributionAds
  * @property-read int|null $attribution_ads_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefusalType newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefusalType newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefusalType query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefusalType whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefusalType whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefusalType whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefusalType whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefusalType whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RefusalType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RefusalType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RefusalType query()
+ * @method static \Illuminate\Database\Eloquent\Builder|RefusalType whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RefusalType whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RefusalType whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RefusalType whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RefusalType whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class RefusalType extends Model

@@ -17,15 +17,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $ad_notes_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProjectDataValue[] $projectDataValues
  * @property-read int|null $project_data_values_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey whereImmutable($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey whereIsPublic($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProjectDataKey whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataKey newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataKey newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataKey query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataKey whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataKey whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataKey whereImmutable($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataKey whereIsPublic($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataKey whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataKey whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class ProjectDataKey extends Model

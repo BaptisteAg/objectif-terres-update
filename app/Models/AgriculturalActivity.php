@@ -13,13 +13,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\JobOfferAd[] $jobOfferAds
  * @property-read int|null $job_offer_ads_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AgriculturalActivity newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AgriculturalActivity newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AgriculturalActivity query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AgriculturalActivity whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AgriculturalActivity whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AgriculturalActivity whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AgriculturalActivity whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AgriculturalActivity newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AgriculturalActivity newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AgriculturalActivity query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AgriculturalActivity whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AgriculturalActivity whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AgriculturalActivity whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AgriculturalActivity whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class AgriculturalActivity extends Model

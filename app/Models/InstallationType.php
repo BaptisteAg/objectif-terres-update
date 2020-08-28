@@ -14,14 +14,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandSeekAd[] $landSeekAds
  * @property-read int|null $land_seek_ads_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallationType newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallationType newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallationType query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallationType whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallationType whereIcon($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallationType whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallationType whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallationType whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InstallationType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|InstallationType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|InstallationType query()
+ * @method static \Illuminate\Database\Eloquent\Builder|InstallationType whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InstallationType whereIcon($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InstallationType whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InstallationType whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InstallationType whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class InstallationType extends Model

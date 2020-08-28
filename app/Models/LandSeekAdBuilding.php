@@ -16,15 +16,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\BuildingType $buildingType
  * @property-read \App\Models\LandSeekAd $landSeekAd
  * @property-read \App\Models\Requirement $requirement
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAdBuilding newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAdBuilding newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAdBuilding query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAdBuilding whereBuildingTypeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAdBuilding whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAdBuilding whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAdBuilding whereLandSeekAdId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAdBuilding whereRequirementId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAdBuilding whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAdBuilding newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAdBuilding newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAdBuilding query()
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAdBuilding whereBuildingTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAdBuilding whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAdBuilding whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAdBuilding whereLandSeekAdId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAdBuilding whereRequirementId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAdBuilding whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class LandSeekAdBuilding extends Model

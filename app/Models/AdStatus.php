@@ -15,13 +15,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $attribution_ads_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $researches
  * @property-read int|null $researches_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdStatus newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdStatus newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdStatus query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdStatus whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdStatus whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdStatus whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdStatus whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdStatus newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AdStatus newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AdStatus query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AdStatus whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdStatus whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdStatus whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdStatus whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class AdStatus extends Model
