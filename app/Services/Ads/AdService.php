@@ -456,8 +456,8 @@ class AdService
     public function findAllByUserSupervisor(bool $toPaginate)
     {
         $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$supervisorLocationTerritoryRegionsId = $this->userService->getCurrentUserTerritoryRegionsIds();
-        $ads = $this->repository->allInTerritories($supervisorLocationTerritoryCodes, $supervisorLocationTerritoryRegionsId, $toPaginate);
+		$supervisorLocationTerritoryIds = $this->userService->getCurrentUserTerritoryIds();
+        $ads = $this->repository->allInTerritories($supervisorLocationTerritoryCodes, $supervisorLocationTerritoryIds, $toPaginate);
         return $ads;
     }
 
@@ -469,8 +469,8 @@ class AdService
     public function findAllNotAssignedProjectsByUserSupervisor(bool $toPaginate)
     {
         $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-        $supervisorLocationTerritoryRegionsId = $this->userService->getCurrentUserTerritoryRegionsIds();
-        $ads = $this->repository->allNotAssignedProjectsInTerritories($supervisorLocationTerritoryCodes, $supervisorLocationTerritoryRegionsId, $toPaginate);
+        $supervisorLocationTerritoryIds = $this->userService->getCurrentUserTerritoryIds();
+        $ads = $this->repository->allNotAssignedProjectsInTerritories($supervisorLocationTerritoryCodes, $supervisorLocationTerritoryIds, $toPaginate);
         return $ads;
     }
 
@@ -481,8 +481,8 @@ class AdService
     public function findAllByUserSupervisorBetweenDates(array $dates): Collection
     {
         $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$supervisorLocationTerritoryRegionsId = $this->userService->getCurrentUserTerritoryRegionsIds();
-        $ads = $this->repository->findAllByUserTerritoriesAndDates($supervisorLocationTerritoryCodes, $supervisorLocationTerritoryRegionsId,  $dates);
+		$supervisorLocationTerritoryIds = $this->userService->getCurrentUserTerritoryIds();
+        $ads = $this->repository->findAllByUserTerritoriesAndDates($supervisorLocationTerritoryCodes, $supervisorLocationTerritoryIds,  $dates);
         return $ads;
     }
 
@@ -568,7 +568,7 @@ class AdService
     public function findAllAdsAndProjectsGroupByUserPp(): Collection
     {
         $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-        $supervisorLocationTerritoryRegionId = $this->userService->getCurrentUserTerritoryRegionsIds();
+        $supervisorLocationTerritoryRegionId = $this->userService->getCurrentUserTerritoryIds();
         $users = $this->repository->allInTerritories($supervisorLocationTerritoryCodes,$supervisorLocationTerritoryRegionId, false)->groupBy('user_pp_id');
         return $users;
     }
@@ -703,8 +703,8 @@ class AdService
     public function filter(Request $filters, int $roleUser, bool $toPaginate)
     {
         $userTerritories = $this->userService->getCurrentUserTerritoryDepartments();
-		$userTerritoriesRegionsId = $this->userService->getCurrentUserTerritoryRegionsIds();
-        return $this->repository->filterAds($filters, $roleUser, $userTerritories, $userTerritoriesRegionsId, $toPaginate);
+		$userTerritoryIds = $this->userService->getCurrentUserTerritoryIds();
+        return $this->repository->filterAds($filters, $roleUser, $userTerritories, $userTerritoryIds, $toPaginate);
     }
 
     /**
