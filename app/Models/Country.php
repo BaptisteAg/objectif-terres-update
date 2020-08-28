@@ -17,18 +17,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereAlpha2($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereAlpha3($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereNameEnGb($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereNameFrFr($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country wherePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Country newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Country query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereAlpha2($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereAlpha3($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereNameEnGb($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereNameFrFr($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Country extends Model

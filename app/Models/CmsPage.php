@@ -16,21 +16,21 @@ use Illuminate\Support\Str;
  * @property string|null $content
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage wherePageName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsPage whereUpdatedAt($value)
- * @mixin \Eloquent
  * @property int|null $has_documents
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Document[] $documents
  * @property-read int|null $documents_count
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsPage newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsPage newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsPage query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsPage whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsPage whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsPage whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CmsPage whereHasDocuments($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsPage whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsPage wherePageName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsPage whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsPage whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class CmsPage extends Model
 {

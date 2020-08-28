@@ -8,9 +8,9 @@ namespace App\Models\Spip;
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Spip\Article[] $articles
  * @property-read int|null $articles_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Spip\Auteur newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Spip\Auteur newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Spip\Auteur query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Auteur newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Auteur newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Auteur query()
  * @mixin \Eloquent
  */
 class Auteur extends SpipModel

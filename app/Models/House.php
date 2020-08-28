@@ -13,17 +13,17 @@ use Illuminate\Database\Eloquent\Model;
  * @property float|null $surface
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\LandOfferAd $landOfferAd
+ * @property-read \App\Models\LandOfferAd|null $landOfferAd
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OfferGenre[] $offerGenres
  * @property-read int|null $offer_genres_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\House newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\House newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\House query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\House whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\House whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\House whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\House whereSurface($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\House whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|House newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|House newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|House query()
+ * @method static \Illuminate\Database\Eloquent\Builder|House whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|House whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|House whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|House whereSurface($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|House whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class House extends Model

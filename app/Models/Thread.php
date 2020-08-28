@@ -25,15 +25,15 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read int|null $unread_messages_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread whereAdId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread whereIsPrivate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Thread whereUpdatedAt($value)
+ * @method static Builder|Thread newModelQuery()
+ * @method static Builder|Thread newQuery()
+ * @method static Builder|Thread query()
+ * @method static Builder|Thread whereAdId($value)
+ * @method static Builder|Thread whereCreatedAt($value)
+ * @method static Builder|Thread whereId($value)
+ * @method static Builder|Thread whereIsPrivate($value)
+ * @method static Builder|Thread whereTitle($value)
+ * @method static Builder|Thread whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Thread extends Model implements HasPresenter

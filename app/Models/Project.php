@@ -20,30 +20,30 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * @property int|null $project_status_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Ad $ad
+ * @property-read \App\Models\Ad|null $ad
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Document[] $documents
  * @property-read int|null $documents_count
  * @property-read \App\Models\ProjectStatus|null $projectStatus
  * @property-read \App\Models\SupportStage|null $supportStage
  * @property-read \App\Models\SupportState|null $supportState
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterAdTypes($adTypesFilters, $relationTableName = '')
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterAdsTerritoryLocations($territoriesCode)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterLocations($relationshipName, $locationableIds)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterWhereHasIn($data, $relationNameTable, $columnName)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterWhereHasLandSeekAdOrWhereHasLandOfferAd($landSeekAdColumn, $landOfferAdColumn, $operator, $value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project filterWhereHasWhere($data, $relationNameTable, $operator, $columnName)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereProjectStatusId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereSupportStageId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereSupportStateId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project filterAdTypes($adTypesFilters, $relationTableName = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|Project filterAdsTerritoryLocations($territoriesCode)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project filterLocations($relationshipName, $locationableIds)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project filterSupportRequestRegionId($territoriesId, $userRole)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project filterWhereHasIn($data, $relationNameTable, $columnName)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project filterWhereHasLandSeekAdOrWhereHasLandOfferAd($landSeekAdColumn, $landOfferAdColumn, $operator, $value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project filterWhereHasWhere($data, $relationNameTable, $operator, $columnName)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Project newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Project query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereProjectStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereSupportStageId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereSupportStateId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)
  * @mixin \Eloquent
- * @method static \Illuminate\Database\Eloquent\Builder|Project filterSupportRequestRegionId($territoriesRegionsId, $userRole)
  */
 class Project extends Model implements Decoratable
 {

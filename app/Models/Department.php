@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $code
  * @property string $name
  * @property string $slug
+ * @property int|null $territory_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $ads
  * @property-read int|null $ads_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\City[] $cities
@@ -20,18 +23,21 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\Region $region
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $researches
  * @property-read int|null $researches_count
+ * @property-read \App\Models\Territory|null $territory
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereRegionCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Department newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Department newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Department query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Department whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Department whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Department whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Department whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Department whereRegionCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Department whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Department whereTerritoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Department whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property-read \App\Models\Territory $territory
  */
 class Department extends Model
 {

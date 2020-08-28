@@ -14,7 +14,7 @@ class UpdateDepartmentsAddTerritoryForeignKey extends Migration
     public function up()
     {
 		Schema::table('departments', function (Blueprint $table) {
-			$table->unsignedInteger('territory_id');
+			$table->unsignedInteger('territory_id')->nullable();
 			$table->timestamps();
 			$table->index(["territory_id"], 'fk_territory_id_idx');
 

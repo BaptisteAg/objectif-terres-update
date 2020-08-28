@@ -15,19 +15,19 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $land_transfer_deadline
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\LandOfferAd $landOfferAds
+ * @property-read \App\Models\LandOfferAd|null $landOfferAds
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OfferGenre[] $offerGenres
  * @property-read int|null $offer_genres_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land whereArea($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land whereLandAvailability($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land whereLandTransferDeadline($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land wherePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Land whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Land newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Land newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Land query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Land whereArea($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Land whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Land whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Land whereLandAvailability($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Land whereLandTransferDeadline($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Land wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Land whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Land extends Model

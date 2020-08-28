@@ -20,14 +20,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $education_levels_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\JobOfferType[] $jobOfferTypes
  * @property-read int|null $job_offer_types_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobSeekAd newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobSeekAd newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobSeekAd query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobSeekAd whereAdId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobSeekAd whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobSeekAd whereExperienceFarming($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobSeekAd whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobSeekAd whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd query()
+ * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd whereAdId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd whereExperienceFarming($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class JobSeekAd extends Model

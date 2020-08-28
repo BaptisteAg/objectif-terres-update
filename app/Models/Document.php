@@ -22,17 +22,17 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $ads
  * @property-read int|null $ads_count
  * @property-read \App\Models\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document wherePath($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereSize($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Document whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Document newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Document query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document wherePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereSize($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereUserId($value)
  * @mixin \Eloquent
  */
 class Document extends Model

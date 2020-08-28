@@ -14,14 +14,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Ad $ad
  * @property-read \App\Models\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FavoriteAd newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FavoriteAd newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FavoriteAd query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FavoriteAd whereAdId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FavoriteAd whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FavoriteAd whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FavoriteAd whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FavoriteAd whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FavoriteAd newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|FavoriteAd newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|FavoriteAd query()
+ * @method static \Illuminate\Database\Eloquent\Builder|FavoriteAd whereAdId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FavoriteAd whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FavoriteAd whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FavoriteAd whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FavoriteAd whereUserId($value)
  * @mixin \Eloquent
  */
 class FavoriteAd extends Model

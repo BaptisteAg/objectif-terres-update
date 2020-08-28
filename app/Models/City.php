@@ -23,17 +23,17 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $researches_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereDepartmentCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereGpsLat($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereGpsLng($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereInseeCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\City whereZipCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|City newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|City query()
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereDepartmentCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereGpsLat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereGpsLng($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereInseeCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereZipCode($value)
  * @mixin \Eloquent
  */
 class City extends Model

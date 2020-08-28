@@ -37,22 +37,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read int|null $production_genres_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
  * @property-read int|null $production_genres_possible_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereAdId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereExperienceFarming($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereInstallationTypeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereIsBio($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereLandDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd wherePriceMax($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereProductionTypeAdd($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereRentMax($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereSurfaceRangeMax($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereSurfaceRangeMin($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LandSeekAd whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd query()
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereAdId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereExperienceFarming($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereInstallationTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereIsBio($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereLandDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd wherePriceMax($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereProductionTypeAdd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereRentMax($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereSurfaceRangeMax($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereSurfaceRangeMin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class LandSeekAd extends Model

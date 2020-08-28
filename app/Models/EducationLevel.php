@@ -14,14 +14,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\JobOfferAd[] $jobOfferAds
  * @property-read int|null $job_offer_ads_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EducationLevel newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EducationLevel newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EducationLevel query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EducationLevel whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EducationLevel whereIcon($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EducationLevel whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EducationLevel whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EducationLevel whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EducationLevel newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|EducationLevel newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|EducationLevel query()
+ * @method static \Illuminate\Database\Eloquent\Builder|EducationLevel whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EducationLevel whereIcon($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EducationLevel whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EducationLevel whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EducationLevel whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class EducationLevel extends Model

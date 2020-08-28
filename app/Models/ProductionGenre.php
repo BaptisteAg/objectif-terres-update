@@ -13,23 +13,23 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property int|null $parent_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $children
+ * @property-read \Illuminate\Database\Eloquent\Collection|ProductionGenre[] $children
  * @property-read int|null $children_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandOfferAd[] $landOfferAds
  * @property-read int|null $land_offer_ads_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandSeekAd[] $landSeekAds
  * @property-read int|null $land_seek_ads_count
- * @property-read \App\Models\ProductionGenre $parent
+ * @property-read ProductionGenre $parent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $researches
  * @property-read int|null $researches_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre whereParentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProductionGenre whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductionGenre newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductionGenre newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductionGenre query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductionGenre whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductionGenre whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductionGenre whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductionGenre whereParentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductionGenre whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class ProductionGenre extends Model

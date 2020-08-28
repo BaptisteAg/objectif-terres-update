@@ -17,14 +17,14 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property-read int|null $land_offer_ads_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $researches
  * @property-read int|null $researches_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BioCertification newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BioCertification newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BioCertification query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BioCertification whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BioCertification whereIcon($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BioCertification whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BioCertification whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BioCertification whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BioCertification newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|BioCertification newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|BioCertification query()
+ * @method static \Illuminate\Database\Eloquent\Builder|BioCertification whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BioCertification whereIcon($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BioCertification whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BioCertification whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BioCertification whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class BioCertification extends Model

@@ -23,15 +23,15 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \App\Models\Thread $thread
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ReadMessage[] $unreadMessages
  * @property-read int|null $unread_messages_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereSenderUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereThreadId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Message newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Message query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereSenderUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereThreadId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Message extends Model implements HasPresenter

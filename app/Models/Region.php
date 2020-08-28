@@ -20,13 +20,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $researches_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Region whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Region newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Region newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Region query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Region whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Region whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Region whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Region whereSlug($value)
  * @mixin \Eloquent
  */
 class Region extends Model

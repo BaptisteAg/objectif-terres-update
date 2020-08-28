@@ -51,8 +51,8 @@
                     @if(session('support-request.text'))
                         <input type="hidden" name="support_request_text" value="{{ session('support-request.text') }}">
                     @endif
-                    @if(session('support-request.id_region'))
-                        <input type="hidden" name="support_request_id_region" value="{{ session('support-request.id_region') }}">
+                    @if(session('support-request.territory_id'))
+                        <input type="hidden" name="support_request_territory_id" value="{{ session('support-request.territory_id') }}">
                     @endif
 
                     @if(!empty($old["id"]))

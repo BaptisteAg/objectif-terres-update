@@ -49,7 +49,7 @@ class AdRequest extends FormRequest
 
             'is_support_request'            => ['nullable', 'boolean'],
             'support_request_text'          => ['nullable', 'string', 'max:1500'],
-            'support_request_id_region'     => ['nullable', 'numeric'],
+            'support_request_territory_id'  => ['nullable', 'numeric'],
         ];
 
         $rulesetsByAdType = [

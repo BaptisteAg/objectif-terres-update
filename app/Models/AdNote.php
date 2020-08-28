@@ -24,18 +24,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read \App\Models\ProjectDataKey|null $projectDataKey
  * @property-read \App\Models\ProjectDataValue|null $projectDataValue
  * @property-read \App\Models\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote whereAdId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote whereContactName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote whereProjectDataKeyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote whereProjectDataValueId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdNote whereValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdNote newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AdNote newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AdNote query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AdNote whereAdId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdNote whereContactName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdNote whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdNote whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdNote whereProjectDataKeyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdNote whereProjectDataValueId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdNote whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdNote whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdNote whereValue($value)
  * @mixin \Eloquent
  */
 class AdNote extends Model
