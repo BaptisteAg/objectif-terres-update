@@ -95,26 +95,31 @@ class TerritorySeeder extends Seeder
 				"updated_at" => \Carbon\Carbon::now()
 			],[
 				'id' => 16,
-				'name' => ' Pays de la Loire',
+				'name' => ' Normandie',
 				"created_at" => \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
 			],[
 				'id' => 17,
-				'name' => ' Picardie',
+				'name' => ' Pays de la Loire',
 				"created_at" => \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
 			],[
 				'id' => 18,
-				'name' => ' Poitou-Charentes',
+				'name' => ' Picardie',
 				"created_at" => \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
 			],[
 				'id' => 19,
-				'name' => 'PACA',
+				'name' => ' Poitou-Charentes',
 				"created_at" => \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
 			],[
 				'id' => 20,
+				'name' => 'PACA',
+				"created_at" => \Carbon\Carbon::now(),
+				"updated_at" => \Carbon\Carbon::now()
+			],[
+				'id' => 21,
 				'name' => ' Rhône-Alpes',
 				"created_at" => \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
