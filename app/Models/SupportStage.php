@@ -13,13 +13,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
  * @property-read int|null $projects_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SupportStage newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SupportStage newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SupportStage query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SupportStage whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SupportStage whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SupportStage whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SupportStage whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportStage newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportStage newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportStage query()
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportStage whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportStage whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportStage whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SupportStage whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class SupportStage extends Model

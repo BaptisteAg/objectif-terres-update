@@ -12,14 +12,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $content
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ResponseTemplate newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ResponseTemplate newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ResponseTemplate query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ResponseTemplate whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ResponseTemplate whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ResponseTemplate whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ResponseTemplate whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ResponseTemplate whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResponseTemplate newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ResponseTemplate newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ResponseTemplate query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ResponseTemplate whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResponseTemplate whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResponseTemplate whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResponseTemplate whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResponseTemplate whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class ResponseTemplate extends Model

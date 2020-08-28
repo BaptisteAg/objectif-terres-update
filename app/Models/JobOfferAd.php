@@ -24,16 +24,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $education_levels_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\JobOfferType[] $jobOfferTypes
  * @property-read int|null $job_offer_types_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereAdId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereExperienceFarming($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereIsActivityTransmission($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereJobDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JobOfferAd whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferAd newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferAd newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferAd query()
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferAd whereAdId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferAd whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferAd whereExperienceFarming($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferAd whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferAd whereIsActivityTransmission($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferAd whereJobDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferAd whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class JobOfferAd extends Model

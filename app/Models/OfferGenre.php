@@ -18,16 +18,16 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandOfferAd[] $landOfferAds
  * @property-read int|null $land_offer_ads_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereIcon($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereLandOfferLabel($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereLandSeekDisplay($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OfferGenre whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OfferGenre newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OfferGenre newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OfferGenre query()
+ * @method static \Illuminate\Database\Eloquent\Builder|OfferGenre whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OfferGenre whereIcon($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OfferGenre whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OfferGenre whereLandOfferLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OfferGenre whereLandSeekDisplay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OfferGenre whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OfferGenre whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class OfferGenre extends Model

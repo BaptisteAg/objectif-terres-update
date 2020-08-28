@@ -13,15 +13,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $content_answer
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq whereContentAnswer($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq whereContentQuestion($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq wherePageName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CmsFaq whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsFaq newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsFaq newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsFaq query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsFaq whereContentAnswer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsFaq whereContentQuestion($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsFaq whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsFaq whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsFaq wherePageName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CmsFaq whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class CmsFaq extends Model

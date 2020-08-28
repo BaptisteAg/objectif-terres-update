@@ -11,13 +11,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $label
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BuildingType newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BuildingType newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BuildingType query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BuildingType whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BuildingType whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BuildingType whereLabel($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BuildingType whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BuildingType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|BuildingType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|BuildingType query()
+ * @method static \Illuminate\Database\Eloquent\Builder|BuildingType whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BuildingType whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BuildingType whereLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BuildingType whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class BuildingType extends Model

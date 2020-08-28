@@ -8,6 +8,7 @@ use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
 use App\Models\CmsPage;
 use App\Models\Region;
+use App\Models\Territory;
 use App\Models\User;
 use App\Notifications\NewAdToModerateNotification;
 use App\Notifications\NewSupportRequestNotification;
@@ -26,7 +27,7 @@ class SupportRequestsController extends BaseController
     {
         $vars = array_merge($this->getCreateFormVars(), [
             'isSupportRequest' => 1,
-			'regions' => Region::all(),
+			'territories' => Territory::all(),
 			'pageContent' => CmsPage::where('slug', '=', "etre-accompagne-texte-dintroduction-sous-le-titre-principal")->first()
         ]);
         return view('pages.ads.support-request', $vars);

@@ -12,14 +12,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $value
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange whereLabel($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SurfaceRange whereValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SurfaceRange newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SurfaceRange newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SurfaceRange query()
+ * @method static \Illuminate\Database\Eloquent\Builder|SurfaceRange whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SurfaceRange whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SurfaceRange whereLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SurfaceRange whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SurfaceRange whereValue($value)
  * @mixin \Eloquent
  */
 class SurfaceRange extends Model
