@@ -23,7 +23,9 @@
 
     @include('components.carrousel-large')
 
-    @include('components.faq-frequentes')
+    @if(! $cmsFaq->isEmpty())
+        @include('components.faq-frequentes')
+    @endif
 
     @include ('components/block-contact')
 

@@ -31,6 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereRegionCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Department whereSlug($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Territory $territory
  */
 class Department extends Model
 {
@@ -40,7 +41,7 @@ class Department extends Model
      * @var array
      */
     protected $fillable = [
-        'region_code', 'code', 'name', 'slug', 'id'
+       'territory_id', 'region_code', 'code', 'name', 'slug', 'id'
     ];
 
     /**
@@ -49,6 +50,13 @@ class Department extends Model
     public function region()
     {
         return $this->belongsTo(Region::class, 'region_code', 'code');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function territory()
+    {
+        return $this->belongsTo(Territory::class, 'territory_id', 'id');
     }
 
     /**

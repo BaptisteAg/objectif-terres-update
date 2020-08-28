@@ -53,6 +53,7 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserModeratorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AttributionAd whereUserSupervisorId($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd filterSupportRequestRegionId($territoriesRegionsId, $userRole)
  */
 class AttributionAd extends Model implements Decoratable
 {

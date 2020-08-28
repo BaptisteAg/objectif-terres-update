@@ -51,14 +51,14 @@ trait ScopeLocationFilterable
 
 	/**
 	 * @param Builder $query
-	 * @param array $territoriesRegionsId
+	 * @param array $territoriesId
 	 * @param int $userRole
 	 */
-	function scopeFilterSupportRequestRegionId(Builder $query, array $territoriesRegionsId, int $userRole)
+	function scopeFilterSupportRequestRegionId(Builder $query, array $territoriesId, int $userRole)
 	{
-		$query->orWhere(function (Builder $query) use ($territoriesRegionsId, $userRole) {
-			$query->whereNotNull('support_request_id_region');
-			$query->whereIn('support_request_id_region', $territoriesRegionsId);
+		$query->orWhere(function (Builder $query) use ($territoriesId, $userRole) {
+			$query->whereNotNull('support_request_territory_id');
+			$query->whereIn('support_request_territory_id', $territoriesId);
 			$query->whereNotNull('project_id');
 			$query->whereHas('attributionAd', function (Builder $subQuery) use($userRole) {
 				$subQuery->whereNull('ad_status_id');

@@ -304,14 +304,14 @@ class AdPresenter extends BasePresenter
 
 	/**
 	 * @param array $userTerritoriesCodes
-	 * @param array $userTerritoryRegionsId
+	 * @param array $userTerritoryId
 	 * @return bool
 	 */
-	public function isAdInUserTerritories(array $userTerritoriesCodes, array $userTerritoryRegionsId): bool
+	public function isAdInUserTerritories(array $userTerritoriesCodes, array $userTerritoryId): bool
 	{
 		$ad = $this->wrappedObject;
-		if(isset($ad->support_request_id_region)){
-			return in_array($ad->support_request_id_region,$userTerritoryRegionsId );
+		if(isset($ad->support_request_territory_id)){
+			return in_array($ad->support_request_territory_id,$userTerritoryId );
 		}
 		return count(array_intersect($userTerritoriesCodes, $this->adDepartmentsCodes())) > 0;
 	}

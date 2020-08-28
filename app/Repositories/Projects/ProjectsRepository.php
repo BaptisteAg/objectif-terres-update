@@ -98,13 +98,13 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 	/**
 	 * @param int $userId
 	 * @param array $territoriesCode
-	 * @param array $userLocationTerritoryRegionsId
+	 * @param array $userLocationTerritoryId
 	 * @return \Illuminate\Database\Eloquent\Collection
 	 */
-	public function findAllByUserTerritories(int $userId, array $territoriesCode, array $userLocationTerritoryRegionsId)
+	public function findAllByUserTerritories(int $userId, array $territoriesCode, array $userLocationTerritoryId)
 	{
 		return $this->entity
-			->whereHas('ad', function (Builder $query) use ($userId, $territoriesCode, $userLocationTerritoryRegionsId) {
+			->whereHas('ad', function (Builder $query) use ($userId, $territoriesCode, $userLocationTerritoryId) {
 				$query->whereNotNull('project_id');
 				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
@@ -114,8 +114,8 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 						$q->where('user_supervisor_id', '=', $userId);
 					});
 				});
-				$query->filterSupportRequestRegionId($userLocationTerritoryRegionsId, auth()->user()->role);
-				//previous system when support_request_id_region did not exist
+				$query->filterSupportRequestRegionId($userLocationTerritoryId, auth()->user()->role);
+				//previous system when support_request_territory_id did not exist
 				$query->orWhere(function (Builder $builder) use ($territoriesCode) {
 					$builder->whereHas('departments', function (Builder $subQuery) use ($territoriesCode) {
 						$subQuery->whereIn('code', $territoriesCode);

@@ -281,7 +281,13 @@ class AdService
         return array_unique($departmentsCode);
     }
 
-    protected function updateSubAd(Ad $ad, string $adType, array $data)
+	/**
+	 * @param Ad $ad
+	 * @param string $adType
+	 * @param array $data
+	 * @return \App\Models\JobOfferAd|\App\Models\JobSeekAd|\App\Models\LandOfferAd|\App\Models\LandSeekAd
+	 */
+	protected function updateSubAd(Ad $ad, string $adType, array $data)
     {
         if ($adType === "land_seek") {
             $subAd = $this->landSeekAdRepository->update($ad->landSeekAd, $data);

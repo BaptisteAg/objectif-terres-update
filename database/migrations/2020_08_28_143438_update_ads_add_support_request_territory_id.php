@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class UpdateAdsAddSupportRequestTerritoryId extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('ads', function (Blueprint $table) {
+            $table->unsignedInteger('support_request_territory_id')->nullable();
+            $table->foreign('support_request_territory_id')
+                ->references('id')
+                ->on('territories')
+                ->onDelete('SET NULL');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('ads', function (Blueprint $table) {
+            $table->dropForeign('support_request_territory_id');
+            $table->dropColumn('support_request_territory_id');
+        });
+    }
+}
