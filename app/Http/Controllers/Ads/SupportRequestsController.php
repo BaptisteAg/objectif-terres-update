@@ -88,7 +88,7 @@ class SupportRequestsController extends BaseController
                 foreach($this->adService->getAdSupervisors($ad) as $supervisor) {
                     $supervisor->notify(new NewSupportRequestNotification($ad));
                 }
-            }
+           }
         }
         catch(AttributionAdException $exception) {
             return back()->withInput()->withErrors($exception->getMessage());

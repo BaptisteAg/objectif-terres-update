@@ -24,6 +24,7 @@ class ModeratorController extends BaseController
 	{
 		$request->session()->forget('_old_input');
 		$request->session()->forget('moderator_dashboard_url');
+		$request->session()->forget('supervisor_dashboard_url');
 		$vars = $this->getModeratorDashboardVars();
 		$vars['attributionAds'] = $this->service->findAllByUserModeratorTerritories();
 		return view('pages.moderator.index', $vars);

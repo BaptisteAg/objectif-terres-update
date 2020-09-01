@@ -62,49 +62,48 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 	}
 
 
-	/**
-	 * @param array $departmentCodes
-	 * @param int $userId
-	 * @param bool $toPaginate
-	 * @return \Illuminate\Database\Eloquent\Collection
-	 */
-	public function findAllInTerritoriesAndUserAdvisor(array $departmentCodes, int $userId, bool $toPaginate)
-	{
-		$models = $this->entity
-			->whereHas('ad', function (Ad $query) use ($departmentCodes) {
-				$query->filterAdsTerritoryLocations($departmentCodes);
-			})
-			->orWhereHas('ad', function (Builder $query) use ($userId) {
-				$query->whereHas('attributionAd', function (Builder $q) use ($userId) {
-					$q->where('user_advisor_id', '=', $userId);
-				});
-			})
-			->with([
-				'ad',
-				'ad.landSeekAd',
-				'ad.landOfferAd',
-				'supportStage',
-				'supportState',
-				'projectStatus',
-			]);
-		if ($toPaginate) {
-			$projects = $models->paginate(15);
-		} else {
-			$projects = $models->get();
-		}
-		return $projects;
-	}
+//	/** TODO Check if method to delete */
+//	 * @param array $departmentCodes
+//	 * @param int $userId
+//	 * @param bool $toPaginate
+//	 * @return \Illuminate\Database\Eloquent\Collection
+//	 */
+//	public function findAllInTerritoriesAndUserAdvisor(array $departmentCodes, int $userId, bool $toPaginate)
+//	{
+//		$models = $this->entity
+//			->whereHas('ad', function (Ad $query) use ($departmentCodes) {
+//				$query->filterAdsTerritoryLocations($departmentCodes);
+//			})
+//			->orWhereHas('ad', function (Builder $query) use ($userId) {
+//				$query->whereHas('attributionAd', function (Builder $q) use ($userId) {
+//					$q->where('user_advisor_id', '=', $userId);
+//				});
+//			})
+//			->with([
+//				'ad',
+//				'ad.landSeekAd',
+//				'ad.landOfferAd',
+//				'supportStage',
+//				'supportState',
+//				'projectStatus',
+//			]);
+//		if ($toPaginate) {
+//			$projects = $models->paginate(15);
+//		} else {
+//			$projects = $models->get();
+//		}
+//		return $projects;
+//	}
 
 	/**
 	 * @param int $userId
-	 * @param array $territoriesCode
 	 * @param array $userLocationTerritoryId
 	 * @return \Illuminate\Database\Eloquent\Collection
 	 */
-	public function findAllByUserTerritories(int $userId, array $territoriesCode, array $userLocationTerritoryId)
+	public function findAllByUserTerritories(int $userId, array $userLocationTerritoryId)
 	{
 		return $this->entity
-			->whereHas('ad', function (Builder $query) use ($userId, $territoriesCode, $userLocationTerritoryId) {
+			->whereHas('ad', function (Builder $query) use ($userId, $userLocationTerritoryId) {
 				$query->whereNotNull('project_id');
 				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
@@ -115,15 +114,16 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 					});
 				});
 				$query->filterSupportRequestRegionId($userLocationTerritoryId, auth()->user()->role);
+				//TODO delete if not necessary anymore
 				//previous system when support_request_territory_id did not exist
-				$query->orWhere(function (Builder $builder) use ($territoriesCode) {
-					$builder->whereHas('departments', function (Builder $subQuery) use ($territoriesCode) {
-						$subQuery->whereIn('code', $territoriesCode);
-					});
-					$builder->orWhereHas('cities', function (Builder $subQuery) use ($territoriesCode) {
-						$subQuery->whereIn('department_code', $territoriesCode);
-					});
-				});
+//				$query->orWhere(function (Builder $builder) use ($territoriesCode) {
+//					$builder->whereHas('departments', function (Builder $subQuery) use ($territoriesCode) {
+//						$subQuery->whereIn('code', $territoriesCode);
+//					});
+//					$builder->orWhereHas('cities', function (Builder $subQuery) use ($territoriesCode) {
+//						$subQuery->whereIn('department_code', $territoriesCode);
+//					});
+//				});
 			})
 			->with([
 				'ad',

@@ -90,13 +90,16 @@ class AdvisorsController extends BaseController
 				$thread = $this->advisorsService->createSupportRequestThread($ad->id);
 			}
 		} else {
-			$data = [
-				'user_id' => $ad->attributionAd->user_advisor_id,
-				'ad_id' => $ad->id,
-			];
-			$thread = $this->advisorsService->findThreadAdvisorInChargeOfSupportRequest($data);
-		}
+			if (isset($ad->attributionAd->user_advisor_id)) {
+				$data = [
+					'user_id' => $ad->attributionAd->user_advisor_id,
+					'ad_id' => $ad->id,
+				];
+				$thread = $this->advisorsService->findThreadAdvisorInChargeOfSupportRequest($data);
+			}
+			$thread = null;
 
+		}
 		$this->advisorsService->handleSupportDashboardNotifications($ad);
 
 		$vars = $this->getSupportDashboardVars($ad);

@@ -71,10 +71,10 @@
 							<form action="{{route('notification.update', $notification->id)}}" method="POST">
 								@csrf
 								@method('PATCH')
-								<input type="hidden" value="advisor.showSupport" name="route">
+								<input type="hidden" value="supervisor.index" name="route">
 								<br>
 								<input type="submit" class=" button basic secondary "
-									   value="@lang('Espace de suivi')">
+									   value="@lang('Voir le tableau de bord')">
 							</form>
 						</div>
 					</article>

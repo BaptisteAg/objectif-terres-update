@@ -8,16 +8,17 @@
                         @foreach($ad->images as $document)
                             <div class="card">
                                 <div class="card-image">
-                                    <a href="{{route('ads.show', $ad->id)}}">
-                                        <figure class="image is-2by1">
-                                            @if($document->path === "0")
-                                                <img src="https://picsum.photos/480/320" alt="picsum">
-                                            @else
-                                                <img src="{{URL::asset($document->path)}}"
-                                                     alt="Placeholder image">
-                                            @endif
-                                        </figure>
-                                    </a>
+                                    <figure class="image ">
+                                        @if($document->path === "0")
+                                            <img class="custom-carousel-image-size" src="https://picsum.photos/480/320"
+                                                 alt="picsum">
+                                        @else
+                                            <img class="custom-carousel-image-size"
+                                                 data-source="{{URL::asset($document->path)}}"
+                                                 src="{{URL::asset($document->path)}}" style="cursor : pointer;"
+                                                 alt="Placeholder image">
+                                        @endif
+                                    </figure>
                                 </div>
                             </div>
                         @endforeach
@@ -32,6 +33,9 @@
                     @endif
                 </div>
             </div>
+            <div id="image-extended-container" class="overlay">
+                <img id="image-extended" src="/images/placeholder-ad.png">
+            </div>
         </div>
         <div class="column">
             <div class="content">
@@ -45,10 +49,10 @@
                 <p><span class="is-italic">Catégorie</span>
                     : {{$ad->ad_type_full_name ?? "Non renseignée"}} </p>
                 @if(isset($ad->support_request_territory_id))
-                        <p>
-                            <span class="is-italic">Territoire </span>
-                            : {{$ad->supportRequestTerritoryId->name}}
-                        </p>
+                    <p>
+                        <span class="is-italic">Territoire </span>
+                        : {{$ad->supportRequestTerritoryId->name}}
+                    </p>
                 @endif
                 @if(isset($ad->landOfferAd))
                     <p><span class="is-italic">Localisations</span>:
@@ -97,7 +101,7 @@
             </div>
         </div>
     </div>
-    <div class="content">
+    <div class="content mt-40">
         @if(isset($ad->landOfferAd))
             <div class="columns">
                 <div class="column is-3">
