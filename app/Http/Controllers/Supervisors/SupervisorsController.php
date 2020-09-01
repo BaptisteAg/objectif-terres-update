@@ -35,10 +35,12 @@ class SupervisorsController extends BaseController
 	public function index(Request $request)
 	{
 		$request->session()->forget('_old_input');
+		$request->session()->forget('moderator_dashboard_url');
 		$request->session()->forget('supervisor_dashboard_url');
 		$ads = $this->adService->findAllNotAssignedProjectsByUserSupervisor(false);
 		$vars = $this->getSupervisorDashboardVars();
 		$vars['ads'] = $ads;
+		$vars['currentUser'] = auth()->user();
 		return view('pages.supervisors.index', $vars);
 	}
 

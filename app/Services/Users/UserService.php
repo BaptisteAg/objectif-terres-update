@@ -131,11 +131,11 @@ class UserService
 	 */
 	public function getCurrentUserTerritoryIds()
 	{
-		$userTerritoriesId = [];
+		$userTerritoryIds = [];
 		foreach (auth()->user()->departments as $department) {
-			array_push($userTerritoriesId, $department->territory->id);
+			array_push($userTerritoryIds, $department->territory->id);
 		}
-		return array_unique($userTerritoriesId) ;
+		return array_unique($userTerritoryIds);
 	}
 
 
@@ -168,6 +168,7 @@ class UserService
 	}
 
 	/**
+	 * TODO method to delete if not necessary anymore
 	 * @param int $roleId
 	 * @param array $regionsId
 	 * @return User|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
@@ -176,6 +177,20 @@ class UserService
 	{
 		$regionsCode = Region::whereIn('id', $regionsId)->get('code')->toArray();
 		return User::filterSubLocations('departments', $regionsCode, 'departments.region_code')
+			->where('role', $roleId)
+			->inRandomOrder()
+			->get();
+	}
+
+
+	/**
+	 * @param int $roleId
+	 * @param array $territoryIds
+	 * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
+	 */
+	public function findByRoleAndTerritory(int $roleId, array $territoryIds)
+	{
+		return User::filterSubLocations('departments', $territoryIds, 'departments.territory_id')
 			->where('role', $roleId)
 			->inRandomOrder()
 			->get();

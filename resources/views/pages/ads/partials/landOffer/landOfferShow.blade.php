@@ -46,17 +46,19 @@
                 {{--					<p><span class="is-size-5 is-capitalized has-text-black">Catégorie : </span><span--}}
                 {{--								class="subtitle">{{$ad->ad_type_full_name}}</span></p>--}}
                 {{--				</div>--}}
-                @if(auth()->user()->role >=2)
-                    @if(isset($ad->support_request_id_region))
-                        <div class="content">
-                            <p>
-                                <span class="is-size-5 is-capitalized has-text-black">Territoire </span>
-                                :
-                                <span class="subtitle">{{$ad->supportRequestIdRegion->name}}</span>
-                            </p>
-                        </div>
+                @auth
+                    @if(auth()->user()->role >=2)
+                        @if(isset($ad->support_request_id_region))
+                            <div class="content">
+                                <p>
+                                    <span class="is-size-5 is-capitalized ad-show-feature-label">Territoire </span>
+                                    :
+                                    <span class="subtitle">{{$ad->supportRequestIdRegion->name}}</span>
+                                </p>
+                            </div>
+                        @endif
                     @endif
-                @endif
+                @endauth
                 @if($ad->cities->count())
                     @if($ad->landOfferAd->accept_use_zip_code)
                         <div class="content">

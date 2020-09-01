@@ -70,9 +70,8 @@ class ProjectService
 	 */
 	public function findAllProjectsInSupervisorTerritories(): Collection
 	{
-		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$supervisorLocationTerritoriesId = $this->userService->getCurrentUserTerritoryIds();
-		return $this->repository->findAllByUserTerritories(auth()->id(), $supervisorLocationTerritoryCodes, $supervisorLocationTerritoriesId);
+		$supervisorLocationTerritoriesIds = $this->userService->getCurrentUserTerritoryIds();
+		return $this->repository->findAllByUserTerritories(auth()->id(), $supervisorLocationTerritoriesIds);
 	}
 
 	/**

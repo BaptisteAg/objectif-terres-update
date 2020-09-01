@@ -43,4 +43,5 @@ require('./pages/homepage/homepage');
 //////////////
 // GLOBAL
 require('./notifications');
+require('./carrousel');
 require('./main.js');
