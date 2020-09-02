@@ -407,18 +407,21 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 					$query->whereNull('support_request_territory_id');
 					$query->whereNotNull('project_id');
 					$query->whereHas('attributionAd', function (Builder $subQuery) {
-						$subQuery->whereNull('ad_status_id');
 						$subQuery->whereNull('user_advisor_id');
+						$subQuery->whereNull('ad_status_id');
 					});
-					$query->whereHas('userPp', function (Builder $subQuery) {
-						$subQuery->whereNull('deleted_at');
+					$query->where(function (Builder $query) use($territoryCodes){
+						$query->whereHas('userPp', function (Builder $subQuery) {
+							$subQuery->whereNull('deleted_at');
+						});
+						$query->whereHas('departments', function (Builder $subQuery) use ($territoryCodes) {
+							$subQuery->whereIn('code', $territoryCodes);
+						});
+						$query->orWhereHas('cities', function (Builder $subQuery) use ($territoryCodes) {
+							$subQuery->whereIn('department_code', $territoryCodes);
+						});
 					});
-					$query->whereHas('departments', function (Builder $subQuery) use ($territoryCodes) {
-						$subQuery->whereIn('code', $territoryCodes);
-					});
-					$query->orWhereHas('cities', function (Builder $subQuery) use ($territoryCodes) {
-						$subQuery->whereIn('department_code', $territoryCodes);
-					});
+
 				});
 			});
 		$models
@@ -775,7 +778,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			});
 			$query->orWhere(function (Builder $query) use ($userTerritories) {
 				$query->whereNull('project_id');
-				$query->orWhereHas('regions', function (Builder $subQuery) use ($userTerritories) {
+				$query->whereHas('regions', function (Builder $subQuery) use ($userTerritories) {
 					$subQuery->whereHas('departments', function (Builder $builder) use ($userTerritories) {
 						$builder->whereIn('code', $userTerritories);
 					});
