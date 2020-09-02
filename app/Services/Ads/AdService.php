@@ -468,7 +468,8 @@ class AdService
 	public function findAllNotAssignedProjectsByUserSupervisor(bool $toPaginate)
 	{
 		$supervisorLocationTerritoryIds = $this->userService->getCurrentUserTerritoryIds();
-		$ads = $this->repository->allNotAssignedProjectsInTerritories($supervisorLocationTerritoryIds, $toPaginate);
+		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
+		$ads = $this->repository->allNotAssignedProjectsInTerritories($supervisorLocationTerritoryIds, $supervisorLocationTerritoryCodes, $toPaginate);
 		return $ads;
 	}
 

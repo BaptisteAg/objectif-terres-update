@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Advisors;
 
 use App\Exports\Advisors\AdvisorsExport;
 use App\Models\City;
+use App\Models\CmsPage;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
@@ -56,7 +57,8 @@ class AdvisorsController extends BaseController
 	public function help()
 	{
 		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
-		return view('pages.advisors.help', compact('users'));
+		$pageContent = CmsPage::where('slug', 'like', '%'.'ressoures-primo-accueillant'. '%')->first();
+		return view('pages.advisors.help', compact('users','pageContent'));
 	}
 
 	/**

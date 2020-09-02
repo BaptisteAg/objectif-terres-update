@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Moderators;
 use App\Http\Controllers\Controller;
 use App\Models\AdStatus;
 use App\Models\City;
+use App\Models\CmsPage;
 use App\Models\Department;
 use App\Models\JobOfferType;
 use App\Models\ProductionGenre;
@@ -52,7 +53,8 @@ class ModeratorController extends BaseController
 	public function help()
 	{
 		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
-		return view('pages.moderator.help', compact('users'));
+		$pageContent = CmsPage::where('slug', 'like', '%'.'ressoures-moderateur'. '%')->first();
+		return view('pages.moderator.help', compact('users', 'pageContent'));
 	}
 
 
