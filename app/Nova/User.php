@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Rules\SalesforceUniqueEmail;
+use KABBOUCHI\NovaImpersonate\Impersonate;
 use Laravel\Nova\Fields\BelongsTo;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\HasMany;
@@ -120,6 +121,8 @@ class User extends Resource
 				->rules('required')
 				->onlyOnForms()
 				->hideWhenUpdating(),
+
+			Impersonate::make($this),
 
 			Text::make('Profile', function () {
 				if (isset($this->profile)) {

@@ -173,6 +173,7 @@ class User extends Authenticatable implements HasPresenter
 	];
 
 
+
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
