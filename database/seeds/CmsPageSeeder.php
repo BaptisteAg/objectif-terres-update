@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\CmsPage;
+use App\Models\Territory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Faker\Factory;
@@ -212,5 +213,12 @@ class CmsPageSeeder extends Seeder
 			$page->content ='<h2>Titre Section</h2><p>'.$faker->paragraphs(2, true).'</p>';
 			$page->save();
 		}
+
+//		$territories = Territory::all();
+//		foreach ($territories as $territory){
+//
+//		}
+
+
 	}
 }
