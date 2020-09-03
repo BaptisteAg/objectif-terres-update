@@ -61,6 +61,7 @@ class DatabaseSeeder extends Seeder
 			ProjectDataKeySeeder::class,
 			ProjectDataValueSeeder::class,
 			CmsPageSeeder::class,
+			CmsCommonContentSeeder::class,
 			DepartmentSeeder::class,
 		]);
 

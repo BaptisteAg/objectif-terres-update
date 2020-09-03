@@ -94,26 +94,18 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="modalites" v-if="region">
                         <h2 class="title is-2 has-text-centered">Vos modalités d'accueil</h2>
                         <div class="section">
                             <div class="columns is-centered">
-                                    <div  class="column is-three-quarters">
-                                        L’association TDL RA fonctionne grâce à la mobilisation de citoyennes et citoyens
-                                        bénévoles organisé·e·s en groupes locaux.
-                                        Chaque groupe s’organise de façon autonome pour mener ses actions sur son territoire,
-                                        notamment l’accueil, l’orientation et l’accompagnement des porteurs de projets. Leurs
-                                        capacités pour accompagner les porteur.se.s de projet dans leur recherche de foncier peuvent
-                                        être limitées, la plupart d’entre eux étant actuellement mobilisés sur des projets
-                                        d’acquisition Terre de Liens.
+                                    <div id="text-territory" class="column is-three-quarters">
+                                        <span  v-html="textRegionsContent"></span>
                                     </div>
                             </div>
                         </div>
                     </div>
 
                     <h2 class="title is-2 has-text-centered">Description de votre projet</h2>
-
                     <div class="columns is-mobile is-centered">
                         <div class="column is-two-thirds">
                             <br>

@@ -26,7 +26,7 @@
                         <div class="card carousel-item  ad-carousel">
                             <div class="card-image">
                                 <figure class="image is-2by1">
-                                    <img src="/images/placeholder-ad.png">
+                                    <img src="/images/new-placeholder-ad.png">
                                 </figure>
                             </div>
                         </div>
@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div id="image-extended-container" class="overlay">
-                <img id="image-extended" src="/images/placeholder-ad.png">
+                <img id="image-extended" src="/images/new-placeholder-ad.png">
             </div>
         </div>
         <div class="column">

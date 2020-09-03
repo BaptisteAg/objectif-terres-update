@@ -12,9 +12,17 @@ Vue.component('support-request-start', {
     data() {
         return {
             region: '',
-            textRegionsContent: this.textRegions,
+            textRegionsContent: '',
         }
     },
-
+    watch: {
+        region: function (val) {
+            Object.keys(this.textRegions).forEach(key => {
+                if (key.split('-')[6] === val) {
+                    this.textRegionsContent = this.textRegions[key].content
+                }
+            });
+        }
+    },
 });
 

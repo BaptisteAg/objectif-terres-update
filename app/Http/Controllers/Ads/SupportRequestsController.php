@@ -79,7 +79,6 @@ class SupportRequestsController extends BaseController
         /** @var $ad Ad $ad */
         try {
             $ad = $this->adService->requestPublishing($data, true);
-
             if ($ad->attributionAd->userAdvisor) {
                 $ad->attributionAd->userAdvisor->notify(new SupportRequestAttributionNotification($ad));
             }
