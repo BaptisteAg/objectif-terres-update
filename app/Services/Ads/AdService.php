@@ -130,6 +130,7 @@ class AdService
 	 */
 	public function requestPublishing(array $data, bool $isSupportRequest = false)
 	{
+
 		$isUpdate = !empty($data["id"]);
 
 		DB::beginTransaction();
@@ -144,14 +145,17 @@ class AdService
 			$data["project_id"] = $project->id;
 		}
 
-		$data["is_draft"] = false;
-		$data['support_request_id_region'] = 16;
+
+		//TODO delete if this column is not necessary anymore
+//		$data['support_request_id_region'] = 16;
 
 		if ($isUpdate) {
 			$ad = $this->repository->update($data["id"], $data);
 		} else {
 			$ad = $this->repository->create($data);
 		}
+
+		$data["is_draft"] = false;
 
 		if ($isSupportRequest) {
 			$adDepartmentCodes = $this->getAdDepartmentCodesFromSupportRequestTerritoryId($ad);
@@ -171,13 +175,13 @@ class AdService
 			// Else nothing. No attribution needed if no advisor is bound
 
 			$attributionAdData['ad_status_id'] = null;
-
 		} else {
-			$adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
 
+			$adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
 			$availableModerators = $this->userService->findByRoleAndDepartments(1, $adDepartmentCodes);
 			$availableSupervisors = $this->userService->findByRoleAndDepartments(3, $adDepartmentCodes);
 			$availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
+
 			if ($availableModerators->isEmpty() && $availableSupervisors->isEmpty() && empty($availableUserWithPermission)) {
 				throw new AttributionAdException("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
 			}
@@ -200,15 +204,17 @@ class AdService
 			$attributionAdData['user_moderator_id'] = $moderator->id;
 		}
 
-
 		$attributionAdData['ad_id'] = $ad->id;
 
 		// Ad was already attributed before, and was not refused or archived; then we use the existing one
-		if ($ad->attributionAd && !in_array($ad->attributionAd->adStatus->id, [AdStatus::REFUSE_ID, AdStatus::ARCHIVED_ID])) {
-			$this->attributionAdsRepository->update($ad->attributionAd->id, $attributionAdData);
-		} else {
+		if(!$isSupportRequest){
+			if ($ad->attributionAd && !in_array($ad->attributionAd->adStatus->id, [AdStatus::REFUSE_ID, AdStatus::ARCHIVED_ID])) {
 
-			$this->attributionAdsRepository->create($attributionAdData);
+				$this->attributionAdsRepository->update($ad->attributionAd->id, $attributionAdData);
+			} else {
+
+				$this->attributionAdsRepository->create($attributionAdData);
+			}
 		}
 
 		$subAdData = $data[$data["ad_type"]];

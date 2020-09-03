@@ -28,7 +28,7 @@ class SupportRequestsController extends BaseController
         $vars = array_merge($this->getCreateFormVars(), [
             'isSupportRequest' => 1,
 			'territories' => Territory::all(),
-			'pageContent' => CmsPage::where('slug', '=', "etre-accompagne-texte-dintroduction-sous-le-titre-principal")->first()
+			'pageContent' => CmsPage::where('slug', 'like', "%etre-accompagne%")->get()->keyBy('slug')
         ]);
         return view('pages.ads.support-request', $vars);
     }
@@ -79,7 +79,6 @@ class SupportRequestsController extends BaseController
         /** @var $ad Ad $ad */
         try {
             $ad = $this->adService->requestPublishing($data, true);
-
             if ($ad->attributionAd->userAdvisor) {
                 $ad->attributionAd->userAdvisor->notify(new SupportRequestAttributionNotification($ad));
             }

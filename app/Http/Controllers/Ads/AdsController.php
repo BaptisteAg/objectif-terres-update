@@ -53,7 +53,13 @@ class AdsController extends BaseController
 		$documents = $ad->documents->toJson();
 		$document_ids = $ad->documents->pluck("id")->toArray();
 
-		$vars = $this->getCreateFormVars();
+		if (!is_null($ad->project_id)) {
+			$vars = array_merge($this->getCreateFormVars(), [
+				'isSupportRequest' => 1,
+			]);
+		} else {
+			$vars = $this->getCreateFormVars();
+		}
 
 		if (!old('ad_type')) {
 			$vars["old"] = array_merge(
@@ -90,8 +96,6 @@ class AdsController extends BaseController
 				compact("selected_zones", "locationable", "locationable_radius", "documents", "document_ids")
 			);
 		}
-
-		//dd($vars);
 
 		return view('pages.ads.new', $vars);
 	}
@@ -196,6 +200,10 @@ class AdsController extends BaseController
 		return back()->with('success', 'Votre annonce a bien été supprimée');
 	}
 
+	/**
+	 * @param int $adId
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function extendPublish(int $adId)
 	{
 		$ad = $this->adService->find($adId);

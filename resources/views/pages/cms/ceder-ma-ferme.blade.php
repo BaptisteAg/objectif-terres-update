@@ -51,13 +51,16 @@
                     @endif
                 </div>
                 <div class="column is-6 contactUs-button">
-                    <button class="button basic small primary  waves-effect waves-button waves-float waves-light">CONTACTEZ-NOUS</button>
+                    <button class="button basic small primary  waves-effect waves-button waves-float waves-light">
+                        CONTACTEZ-NOUS
+                    </button>
                 </div>
             </div>
         </div>
     </section>
 
     @include('components/downloadPDF')
+
 
     @include('components/step-guide')
 

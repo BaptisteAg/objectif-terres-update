@@ -98,12 +98,13 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 	/**
 	 * @param int $userId
 	 * @param array $userLocationTerritoryId
+	 * @param array $territoryCodes
 	 * @return \Illuminate\Database\Eloquent\Collection
 	 */
-	public function findAllByUserTerritories(int $userId, array $userLocationTerritoryId)
+	public function findAllByUserTerritories(int $userId, array $userLocationTerritoryId, array $territoryCodes)
 	{
 		return $this->entity
-			->whereHas('ad', function (Builder $query) use ($userId, $userLocationTerritoryId) {
+			->whereHas('ad', function (Builder $query) use ($userId, $userLocationTerritoryId, $territoryCodes) {
 				$query->whereNotNull('project_id');
 				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
@@ -116,14 +117,16 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 				$query->filterSupportRequestRegionId($userLocationTerritoryId, auth()->user()->role);
 				//TODO delete if not necessary anymore
 				//previous system when support_request_territory_id did not exist
-//				$query->orWhere(function (Builder $builder) use ($territoriesCode) {
-//					$builder->whereHas('departments', function (Builder $subQuery) use ($territoriesCode) {
-//						$subQuery->whereIn('code', $territoriesCode);
-//					});
-//					$builder->orWhereHas('cities', function (Builder $subQuery) use ($territoriesCode) {
-//						$subQuery->whereIn('department_code', $territoriesCode);
-//					});
-//				});
+				$query->orWhere(function (Builder $builder) use ($territoryCodes) {
+					$builder->whereNull('support_request_territory_id');
+					$builder->whereNotNull('project_id');
+					$builder->whereHas('departments', function (Builder $subQuery) use ($territoryCodes) {
+						$subQuery->whereIn('code', $territoryCodes);
+					});
+					$builder->orWhereHas('cities', function (Builder $subQuery) use ($territoryCodes) {
+						$subQuery->whereIn('department_code', $territoryCodes);
+					});
+				});
 			})
 			->with([
 				'ad',

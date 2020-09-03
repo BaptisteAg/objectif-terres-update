@@ -9,7 +9,9 @@
                 <div class="row is-full">
                     <h1 class="title is-1 has_margin is-marginless">Être accompagné</h1>
                     @if(isset($pageContent))
-                        {!! $pageContent->content !!}
+                        @if($pageContent->has('etre-accompagne-texte-dintroduction-sous-le-titre-principal'))
+                            {!! $pageContent['etre-accompagne-texte-dintroduction-sous-le-titre-principal']->content !!}
+                        @endif
                     @endif
                 </div>
             </div>
@@ -69,7 +71,8 @@
 
 
     <section class="section" id="support-request-vue">
-        <support-request-start inline-template>
+        <support-request-start inline-template
+                               :text-regions="{{json_encode($pageContent)}}">
             <form method="post">
                 @csrf
                 <div class="container">
@@ -78,10 +81,12 @@
                         <div class="is-half">
                             Terre de Liens peut accompagner les projets d’offre ou de recherche de foncier agricole.<br>
                             Pour connaître nos modalités d’accueil, indiquez la région concernée par votre projet.
-                        </div><br>
+                        </div>
+                        <br>
 
                         <div class="has-text-centered">
-                            <select id="region" class="select is-large" name="support_request_territory_id" required v-model="region">
+                            <select id="region" class="select is-large" name="support_request_territory_id" required
+                                    v-model="region">
                                 <option></option>
                                 @foreach($territories as $territory)
                                     <option value="{{$territory->id}}">{{$territory->name}}</option>
@@ -89,26 +94,18 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="modalites" v-if="region">
                         <h2 class="title is-2 has-text-centered">Vos modalités d'accueil</h2>
                         <div class="section">
                             <div class="columns is-centered">
-                                <div class="column is-three-quarters">
-                                    L’association TDL RA fonctionne grâce à la mobilisation de citoyennes et citoyens
-                                    bénévoles organisé·e·s en groupes locaux.
-                                    Chaque groupe s’organise de façon autonome pour mener ses actions sur son territoire,
-                                    notamment l’accueil, l’orientation et l’accompagnement des porteurs de projets. Leurs
-                                    capacités pour accompagner les porteur.se.s de projet dans leur recherche de foncier peuvent
-                                    être limitées, la plupart d’entre eux étant actuellement mobilisés sur des projets
-                                    d’acquisition Terre de Liens.
-                                </div>
+                                    <div id="text-territory" class="column is-three-quarters">
+                                        <span  v-html="textRegionsContent"></span>
+                                    </div>
                             </div>
                         </div>
                     </div>
 
                     <h2 class="title is-2 has-text-centered">Description de votre projet</h2>
-
                     <div class="columns is-mobile is-centered">
                         <div class="column is-two-thirds">
                             <br>

@@ -172,8 +172,6 @@ class User extends Authenticatable implements HasPresenter
 		4 => "Administrateur",
 	];
 
-
-
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
