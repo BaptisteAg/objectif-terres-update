@@ -53,7 +53,7 @@
 										<div class="media-left">
 											<figure class="image is-48x48 custom-card custom-card-image">
 												<span class="icon is-large">
-												  <i class="fas fa-3x fa-newspaper"></i>
+												  <i class="fas fa-3x fa-hands-helping"></i>
 												</span>
 											</figure>
 										</div>
