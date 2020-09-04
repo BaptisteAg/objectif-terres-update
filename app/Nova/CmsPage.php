@@ -80,9 +80,27 @@ class CmsPage extends Resource
 			ID::make()->sortable(),
 			Text::make('Nom de la page', 'page_name')->sortable()->readonly(true),
 			Text::make('Description', 'description')->readonly(true),
-			CKEditor5Classic::make('Content')->withFiles('public')->withMeta(['maxlength' => 5])
+			CKEditor5Classic::make('Content')->withFiles('public')
 				->options([
-					'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote'
+					"toolbar" => [
+						'heading',
+						'|',
+						'bold',
+						'italic',
+						'link',
+						'bulletedList',
+						'numberedList',
+						'|',
+						'indent',
+						'outdent',
+						'|',
+						'imageUpload',
+						'blockQuote',
+						'insertTable',
+						'mediaEmbed',
+						'undo',
+						'redo'
+					],
 				]),
 		];
 	}
