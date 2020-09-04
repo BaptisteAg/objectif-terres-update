@@ -4,6 +4,7 @@ namespace App\Repositories\Projects;
 
 use App\Models\Ad;
 use App\Models\Project;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
@@ -13,6 +14,27 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 	public function entity()
 	{
 		return Project::class;
+	}
+
+
+	/**
+	 * @param int $supportStateId
+	 * @param int $numberOfDays
+	 * @return mixed
+	 */
+	public function findAllBySupportStateAndSinceNumberOfDays(int $supportStateId, int $numberOfDays)
+	{
+		return $this->entity
+			->where('support_state_id', '=', $supportStateId)
+			->where(function (Builder $builder) use ($numberOfDays) {
+				$builder->whereHas('ad', function (Builder $query) use ($numberOfDays) {
+					$query->whereHas('attributionAd', function (Builder $q) use ($numberOfDays) {
+						$q->whereDate('created_at', '=', Carbon::now()->subDays($numberOfDays));
+						$q->whereNotNull('user_advisor_id');
+					});
+				});
+			})
+			->get();
 	}
 
 	/**

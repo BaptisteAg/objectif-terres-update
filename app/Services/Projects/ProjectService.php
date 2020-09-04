@@ -76,6 +76,16 @@ class ProjectService
 	}
 
 	/**
+	 * @param int $supportStateId
+	 * @param int $numberOfDays
+	 * @return mixed
+	 */
+	public function findAllBySupportStateAndSinceNumberOfDays(int $supportStateId, int $numberOfDays) : Collection
+	{
+		return $this->repository->findAllBySupportStateAndSinceNumberOfDays($supportStateId,$numberOfDays);
+	}
+
+	/**
 	 * @param Collection $projects
 	 * @param bool $getProjectsCreatedSinceLastYear
 	 * @return Collection
