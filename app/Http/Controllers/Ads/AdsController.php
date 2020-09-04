@@ -127,6 +127,7 @@ class AdsController extends BaseController
 			if (!$data['is_support_request']) {
 				$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
 			} elseif ($data['is_support_request'] && isset($ad->attributionAd->user_advisor_id)) {
+
 				$ad->attributionAd->userAdvisor->notify(new NewSupportRequestNotification($ad));
 			}
 

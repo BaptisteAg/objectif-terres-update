@@ -155,7 +155,7 @@ class AdService
 		} else {
 			$ad = $this->repository->create($data);
 		}
-		
+
 
 		if ($isSupportRequest) {
 			$adDepartmentCodes = $this->getAdDepartmentCodesFromSupportRequestTerritoryId($ad);
@@ -175,8 +175,8 @@ class AdService
 			// Else nothing. No attribution needed if no advisor is bound
 
 			$attributionAdData['ad_status_id'] = null;
-		} else {
 
+		} else {
 			$adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
 			$availableModerators = $this->userService->findByRoleAndDepartments(1, $adDepartmentCodes);
 			$availableSupervisors = $this->userService->findByRoleAndDepartments(3, $adDepartmentCodes);
@@ -207,12 +207,19 @@ class AdService
 		$attributionAdData['ad_id'] = $ad->id;
 
 		// Ad was already attributed before, and was not refused or archived; then we use the existing one
-		if(!$isSupportRequest){
+		if (!$isSupportRequest) {
 			if ($ad->attributionAd && !in_array($ad->attributionAd->adStatus->id, [AdStatus::REFUSE_ID, AdStatus::ARCHIVED_ID])) {
 
 				$this->attributionAdsRepository->update($ad->attributionAd->id, $attributionAdData);
 			} else {
+				$this->attributionAdsRepository->create($attributionAdData);
+			}
+		}
 
+		if ($isSupportRequest) {
+			if ($ad->attributionAd) {
+				$this->attributionAdsRepository->update($ad->attributionAd->id, $attributionAdData);
+			} else {
 				$this->attributionAdsRepository->create($attributionAdData);
 			}
 		}
@@ -226,11 +233,9 @@ class AdService
 
 			$this->createSubAd($data["ad_type"], $subAdData);
 		}
-
 		DB::commit();
 
 		$ad->refresh();
-
 		return $ad;
 
 	}
