@@ -1,5 +1,6 @@
 @extends('default')
 
+
 @if(!empty($isSupportRequest))
     @section('title', isset($old["id"]) ? 'Modifier votre accompagnement':'Demander un accompagnement')
 @else

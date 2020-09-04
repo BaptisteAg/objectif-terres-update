@@ -6,10 +6,23 @@ Vue.component('support-request-start', {
     components: {
         TextAreaCounter
     },
-    data: () => {
+    props: {
+        textRegions: {}
+    },
+    data() {
         return {
-            region: ''
+            region: '',
+            textRegionsContent: '',
         }
-    }
+    },
+    watch: {
+        region: function (val) {
+            Object.keys(this.textRegions).forEach(key => {
+                if (key.split('-')[6] === val) {
+                    this.textRegionsContent = this.textRegions[key].content
+                }
+            });
+        }
+    },
 });
 

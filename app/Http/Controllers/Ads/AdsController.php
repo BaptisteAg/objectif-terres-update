@@ -53,7 +53,13 @@ class AdsController extends BaseController
 		$documents = $ad->documents->toJson();
 		$document_ids = $ad->documents->pluck("id")->toArray();
 
-		$vars = $this->getCreateFormVars();
+		if (!is_null($ad->project_id)) {
+			$vars = array_merge($this->getCreateFormVars(), [
+				'isSupportRequest' => 1,
+			]);
+		} else {
+			$vars = $this->getCreateFormVars();
+		}
 
 		if (!old('ad_type')) {
 			$vars["old"] = array_merge(
@@ -91,8 +97,6 @@ class AdsController extends BaseController
 			);
 		}
 
-		//dd($vars);
-
 		return view('pages.ads.new', $vars);
 	}
 
@@ -123,6 +127,7 @@ class AdsController extends BaseController
 			if (!$data['is_support_request']) {
 				$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
 			} elseif ($data['is_support_request'] && isset($ad->attributionAd->user_advisor_id)) {
+
 				$ad->attributionAd->userAdvisor->notify(new NewSupportRequestNotification($ad));
 			}
 
@@ -177,7 +182,7 @@ class AdsController extends BaseController
 	 */
 	public function list()
 	{
-		$ads = $this->adService->findAllByUser(auth()->id());
+		$ads = $this->adService->findAllAdsByUser(auth()->id());
 		return view('pages.ads.listUserAds', compact('ads'));
 	}
 
@@ -196,6 +201,10 @@ class AdsController extends BaseController
 		return back()->with('success', 'Votre annonce a bien été supprimée');
 	}
 
+	/**
+	 * @param int $adId
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function extendPublish(int $adId)
 	{
 		$ad = $this->adService->find($adId);

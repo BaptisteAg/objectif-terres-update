@@ -192,12 +192,12 @@ class CmsPageSeeder extends Seeder
 				"description" => 'Responsable Territorial-Conseiller un primo-accueillant',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-			],[
+			], [
 				'page_name' => 'Aide et Ressoures',
 				"description" => 'Primo-accueillant-Text d\'introduction',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-			],[
+			], [
 				'page_name' => 'Aide et Ressoures',
 				"description" => 'Modérateur-Text d\'introduction',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -207,17 +207,25 @@ class CmsPageSeeder extends Seeder
 
 		]);
 		$pages = CmsPage::all();
-		foreach ($pages as $page){
+		foreach ($pages as $page) {
 			$page->setSlugAttribute();
 			$faker = Factory::create('fr_FR');
-			$page->content ='<h2>Titre Section</h2><p>'.$faker->paragraphs(2, true).'</p>';
+			$page->content = '<h2>Titre Section</h2><p>' . $faker->paragraphs(2, true) . '</p>';
 			$page->save();
 		}
 
-//		$territories = Territory::all();
-//		foreach ($territories as $territory){
-//
-//		}
+		$territories = Territory::all();
+		foreach ($territories as $territory) {
+			CmsPage::insert([
+				'page_name' => 'Être accompagné',
+				'description' => 'Text du territoire ' . $territory->name,
+				'slug' => "etre-accompagne-text-du-territoire-numero-".$territory->id,
+				'content' => "L’association TDL " . $territory->name . " fonctionne grâce à la mobilisation de citoyennes et citoyens bénévoles organisé·e·s en groupes locaux. Chaque groupe s’organise de façon autonome pour mener ses actions sur son territoire, notamment l’accueil, l’orientation et l’accompagnement des porteurs de projets. Leurs capacités pour accompagner les porteur.se.s de projet dans leur recherche de foncier peuvent être limitées, la plupart d’entre eux étant actuellement mobilisés sur des projets d’acquisition Terre de Liens. ",
+				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+			]);
+			dump($territory->id);
+		}
 
 
 	}

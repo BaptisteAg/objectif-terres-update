@@ -252,7 +252,7 @@
     {{--						<div class="card">--}}
     {{--							<div class="card-image">--}}
     {{--								<figure class="image is-3by2">--}}
-    {{--									<img src="/images/placeholder-ad.png" alt="picsum">--}}
+    {{--									<img src="/images/new-placeholder-ad.png" alt="picsum">--}}
     {{--								</figure>--}}
     {{--							</div>--}}
     {{--							<div class="card-content">--}}
@@ -287,7 +287,7 @@
     {{--						<div class="card">--}}
     {{--							<div class="card-image">--}}
     {{--								<figure class="image is-3by2">--}}
-    {{--									<img src="/images/placeholder-ad.png" alt="picsum">--}}
+    {{--									<img src="/images/new-placeholder-ad.png" alt="picsum">--}}
     {{--								</figure>--}}
     {{--							</div>--}}
     {{--							<div class="card-content">--}}
