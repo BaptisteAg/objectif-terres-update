@@ -25,7 +25,7 @@
                     @else
                         <div class="card carousel-item  ad-carousel">
                             <div class="card-image">
-                                <figure class="image is-2by1">
+                                <figure class="image is-3by2">
                                     <img src="/images/new-placeholder-ad.png">
                                 </figure>
                             </div>

@@ -71,19 +71,19 @@
 						</p>
 					@endif
 
-					@if(count($ad->departments))
+					@if(! is_null($ad->departmentsList()))
 						<p>
-							<span class="is-size-5 is-capitalized ad-show-feature-label">Départements : </span><br>
-							<span class="subtitle"> {{$ad->departments->pluck('name')->implode(', ') }}</span>
+							<span class="is-size-5 is-capitalized ad-show-feature-label">Départements : </span>
+							<span class="subtitle"> {{$ad->departmentsList() }}</span>
 						</p>
 					@endif
 
-					@if(count($ad->regions))
-						<p>
-							<span class="is-size-5 is-capitalized ad-show-feature-label">Régions : </span><br>
-							<span class="subtitle">{{$ad->regions->pluck('name')->implode(', ') }}</span>
-						</p>
-					@endif
+						@if(! is_null($ad->regionsList()))
+							<p>
+								<span class="is-size-5 is-capitalized ad-show-feature-label">Régions : </span>
+								<span class="subtitle"> {{$ad->regionsList() }}</span>
+							</p>
+						@endif
 				</div>
 				@if($ad->userPp->accept_share_contact_infos === 1)
 					<div class="content">
