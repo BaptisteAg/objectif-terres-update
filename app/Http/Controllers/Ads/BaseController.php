@@ -51,6 +51,7 @@ abstract class BaseController extends Controller
 	 * @param FavoriteAdRepository $favoriteAdRepository
 	 * @param UserService $userService
 	 * @param AttributionAdsService $attributionAdService
+	 * @param LocationService $locationService
 	 */
 	public function __construct(
 		AdService $adService,

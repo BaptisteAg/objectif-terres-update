@@ -145,17 +145,17 @@ class AdService
 			$data["project_id"] = $project->id;
 		}
 
+		$data["is_draft"] = false;
 
 		//TODO delete if this column is not necessary anymore
-//		$data['support_request_id_region'] = 16;
+		//$data['support_request_id_region'] = 16;
 
 		if ($isUpdate) {
 			$ad = $this->repository->update($data["id"], $data);
 		} else {
 			$ad = $this->repository->create($data);
 		}
-
-		$data["is_draft"] = false;
+		
 
 		if ($isSupportRequest) {
 			$adDepartmentCodes = $this->getAdDepartmentCodesFromSupportRequestTerritoryId($ad);
