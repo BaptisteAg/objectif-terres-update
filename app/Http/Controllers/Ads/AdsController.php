@@ -182,7 +182,7 @@ class AdsController extends BaseController
 	 */
 	public function list()
 	{
-		$ads = $this->adService->findAllByUser(auth()->id());
+		$ads = $this->adService->findAllAdsByUser(auth()->id());
 		return view('pages.ads.listUserAds', compact('ads'));
 	}
 
