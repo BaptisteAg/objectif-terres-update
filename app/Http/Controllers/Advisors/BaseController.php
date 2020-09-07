@@ -62,8 +62,6 @@ abstract class BaseController extends Controller
 		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
 		$numberOfProjectToHandle = $this->advisorsService->findAllBySupportStageAndSupportState(SupportStage::FIRST_CONTACT_ID, SupportState::TO_HANDLE_ID)->count();
 
-
-
 		return compact(
 			'supportStages',
 			'supportStates',
@@ -89,7 +87,8 @@ abstract class BaseController extends Controller
 		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
 		$publicProjectDataKeys = ProjectDataKey::where('is_public', '=', 1)->with('projectDataValues')->get();
-		$currentProjectKeyDataValues = $this->advisorsService->allNotesWithPublicProjectDatKeysByAdId($ad->id);
+		$currentProjectKeyDataValues = $this->advisorsService->allNotesWithProjectDatKeysByAdId($ad->id);
+		dd($currentProjectKeyDataValues);
 		$responseTemplates = ResponseTemplate::all();
 		$listUserAds = $this->adService->findAllAdsByUser($ad->user_pp_id);
 

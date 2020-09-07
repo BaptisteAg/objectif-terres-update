@@ -55,10 +55,10 @@ class AdPresenter extends BasePresenter
 			return 'Offre de foncier';
 		}
 		if ($this->wrappedObject->jobOfferAd) {
-			return 'Offre d\'emploi';
+			return 'Offre opportunité professionnelle';
 		}
 		if ($this->wrappedObject->jobSeekAd) {
-			return 'Recherche d\'emploi';
+			return 'Recherche opportunité professionnelle';
 		}
 
 		return '';

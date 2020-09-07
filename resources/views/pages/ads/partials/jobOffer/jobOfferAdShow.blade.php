@@ -95,18 +95,18 @@
 @include('pages.ads.partials.adMessageModal')
 
 <hr class="navbar-divider">
-<h3 class="title is-3 has-text-centered">Caractéristiques de l'offre</h3>
+<h3 class="title is-3 has-text-centered">Description de l'offre</h3>
 <div class="columns is-multiline is-mobile is-centered">
     @if($ad->jobOfferAd->educationLevels)
         <div class="column is-one-third ">
-            <p class="has-text-link is-size-5 has-text-centered"> Niveaux de formation acceptés</p>
+            <p class="has-text-link is-size-5 has-text-centered"> Niveau de formation souhaité</p>
             <p class="has-text-centered">{{$ad->jobOfferAd->educationLevels->pluck('name')->implode(', ') }}</p>
         </div>
     @endif
 
     @if($ad->jobOfferAd->experience_farming)
         <div class="column is-one-third ">
-            <p class="has-text-link is-size-5 has-text-centered"> Expérience dans le monde agricole</p>
+            <p class="has-text-link is-size-5 has-text-centered"> Expérience souhaitée</p>
             <p class="has-text-centered">{{$ad->jobOfferAd->experience_farming}}</p>
         </div>
     @endif
@@ -123,20 +123,23 @@
 
 @if($ad->jobOfferAd->job_description)
     <div class="content">
-        <h3 class="title is-3">Description de l'offre d'emploi</h3>
+        <h3 class="title is-3">Description du poste</h3>
         <p>  {!! nl2br($ad->jobOfferAd->job_description ?? "") !!}</p>
     </div>
 @endif
 
-<div class="content">
-    <h3 class="title is-3">Description de la ferme</h3>
-    <p> {!! nl2br($ad->about_project_content ?? "") !!} </p>
-</div>
-
-<div class="content">
-    <h3 class="title is-3">A propos du porteur de projet</h3>
-    <p> {!! nl2br($ad->about_content ?? "") !!}</p>
-</div>
+@if($ad->about_project_content)
+    <div class="content">
+        <h3 class="title is-3">Description de la ferme</h3>
+        <p> {!! nl2br($ad->about_project_content ?? "") !!} </p>
+    </div>
+@endif
+@if($ad->about_content)
+    <div class="content">
+        <h3 class="title is-3">Information(s) sur l’annonceur</h3>
+        <p> {!! nl2br($ad->about_content ?? "") !!}</p>
+    </div>
+@endif
 
 <div id="map_ad"></div>
 

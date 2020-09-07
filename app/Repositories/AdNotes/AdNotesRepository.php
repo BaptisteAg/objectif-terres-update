@@ -75,6 +75,20 @@ class AdNotesRepository extends AbstractRepository implements AdNotesRepositoryI
 	 * @param int $adId
 	 * @return Collection
 	 */
+	public function findAllNotesWithProjectDataKeysByAdId(int $adId)
+	{
+		/** @var Collection $notes $notes */
+		$notes = $this->entity
+			->where("ad_id", "=", $adId)
+			->whereNotNull('project_data_key_id')
+			->with('projectDataKey')
+			->get();
+		return $notes;
+	}
+	/**
+	 * @param int $adId
+	 * @return Collection
+	 */
 	public function findAllNotesWithPublicProjectDatKeysByAdId(int $adId)
 	{
 		/** @var Collection $notes $notes */

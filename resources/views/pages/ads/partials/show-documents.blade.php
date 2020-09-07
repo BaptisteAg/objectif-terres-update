@@ -1,7 +1,7 @@
 @if($ad->documentsUploadedByUser->count() > 0)
 	<div class="content">
 		<p>
-			<span class="is-size-5 ad-show-feature-label">Documents joints au projet : </span><br>
+			<span class="is-size-5 ad-show-feature-label has-text-black">Documents joints au projet : </span><br>
 			@foreach($ad->documentsUploadedByUser as $document)
 				@if(strstr($document->type,'/',true) !== "image")
 					<a href="{{URL::asset($document->path)}}"
