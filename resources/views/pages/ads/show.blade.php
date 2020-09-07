@@ -166,9 +166,8 @@
 
         function sendResponseTemplateMessage() {
             let listResponseTemplates = document.getElementById("response_templates_list");
-            let responseTemplateSelected = listResponseTemplates.options[listResponseTemplates.selectedIndex].text;
+            let responseTemplateSelected = listResponseTemplates.options[listResponseTemplates.selectedIndex].value;
             let textareaMessage = document.querySelector('#textearea_message');
-            console.log(textareaMessage);
             textareaMessage.value = responseTemplateSelected;
         }
 

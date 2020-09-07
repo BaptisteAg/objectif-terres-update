@@ -103,7 +103,6 @@ class AdvisorsController extends BaseController
 
 		}
 		$this->advisorsService->handleSupportDashboardNotifications($ad);
-
 		$vars = $this->getSupportDashboardVars($ad);
 		$vars['ad'] = $ad;
 		$vars['thread'] = $thread;

@@ -57,7 +57,7 @@
                                         <select id="response_templates_list" onchange="sendResponseTemplateMessage()">
                                             <option disabled selected hidden>Choisir...</option>
                                             @foreach($responseTemplates as $response)
-                                                <option name="response_template">{{$response->content}}</option>
+                                                <option value="{{$response->content}}" name="response_template">{{$response->title}}</option>
                                             @endforeach
                                         </select>
                                     </div>
