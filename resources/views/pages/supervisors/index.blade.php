@@ -372,17 +372,10 @@
 
                                     <td>
                                         @if(! is_null($ad->project))
-                                            @if($ad->isProjectAttributedToAdvisor)
-                                                <a href="{{route('advisor.showSupport', $ad->id)}}">
-                                                    <span><i class="fas fa-hands-helping"></i></span>
-                                                    <span>Suivi de l'accompagnement</span>
-                                                </a>
-                                            @else
                                                 <a href="{{route('ads.show', $ad->id)}}">
                                                     <span><i class="fas fa-hands-helping"></i></span>
                                                     <span>Attribuer un primo-accueillant</span>
                                                 </a>
-                                            @endif
                                         @else
                                             <a href="{{route('ads.show', $ad->id)}}">
                                                 <span><i class="fas fa-search"></i></span>
