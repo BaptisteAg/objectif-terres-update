@@ -25,11 +25,11 @@
                             </li>
                             <li>
                                 <a class="menu__link menu__link_danger "
-                                   href="/confier-mes-terres">transmettre ma ferme</a>
+                                   href="/ceder-ma-ferme">transmettre ma ferme</a>
                             </li>
                             <li>
                                 <a class="menu__link menu__link_danger "
-                                   href="/qui-sommes-nous">faire une donation ou un
+                                   href="/confier-mes-terres">faire une donation ou un
                                     leg à Terre
                                     de Liens</a>
                             </li>
