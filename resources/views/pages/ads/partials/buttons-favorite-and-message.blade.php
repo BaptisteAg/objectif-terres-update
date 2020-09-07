@@ -1,5 +1,4 @@
 @auth
-
     @if(auth()->user()->role >= 1)
         @if($moderatorInChargeOfModeration)
             @if(count($threads))
@@ -9,6 +8,14 @@
                         <i class="fas fa-reply"></i>
                     </span>
                     <span> Voir les fils de discussion </span>
+                </button>
+            @else
+                <button id="open-modal-message" type="button"
+                        class="ad-action-button card-footer-item button is-link is-fullwidth">
+                    <span class="icon is-small">
+                        <i class="fas fa-reply"></i>
+                    </span>
+                    <span> Envoyer un message au porteur de projet</span>
                 </button>
             @endif
         @else

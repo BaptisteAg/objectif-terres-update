@@ -318,15 +318,17 @@ class AdPresenter extends BasePresenter
 
 	/**
 	 * @param array $userTerritoryId
+	 * @param array $userDepartmentsCode
 	 * @return bool
 	 */
-	public function isProjectInUserTerritories(array $userTerritoryId): bool
+	public function isProjectInUserTerritories(array $userTerritoryId,array $userDepartmentsCode): bool
 	{
 		$ad = $this->wrappedObject;
 		if(isset($ad->support_request_territory_id)){
 			return in_array($ad->support_request_territory_id,$userTerritoryId );
 		}
-		return false;
+		//TODO delete this system based on department code when system based on territory fully integrated, don't forget to attributes of all methods calls
+		return count(array_intersect($userDepartmentsCode, $this->adDepartmentsCodes())) > 0;
 	}
 
 

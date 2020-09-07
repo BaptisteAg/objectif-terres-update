@@ -281,22 +281,22 @@
         <div class="content">
             <p class="has-text-centered title is-5">Indicateurs concernant cette demande</p>
         </div>
-        @foreach($publicProjectDataKeys as $publicProjectDataKey)
+        @foreach($allProjectDataKeys as $projectDataKey)
             <div class="columns">
                 <div class="column is-one-third">
-                    <p>{{$publicProjectDataKey->name}}</p>
+                    <p>{{$projectDataKey->name}}</p>
                 </div>
                 <div class="column">
                     @php
-                        $currentProjectData = $currentProjectKeyDataValues->where('project_data_key_id',$publicProjectDataKey->id)->first();
+                        $currentProjectData = $currentProjectKeyDataValues->where('project_data_key_id',$projectDataKey->id)->first();
                     @endphp
 
                     @if(!is_null($currentProjectData))
-                        @if($publicProjectDataKey->projectDataValues->count() >0)
+                        @if($projectDataKey->projectDataValues->count() >0)
                             <div class="select is-fullwidth">
-                                <select {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]">
+                                <select {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$projectDataKey->id}}]">
                                     <option selected disabled>Veuillez choisir...</option>
-                                    @foreach ($publicProjectDataKey->projectDataValues as $projectDataValue)
+                                    @foreach ($projectDataKey->projectDataValues as $projectDataValue)
                                         @if(isset($currentProjectData->projectDataValue))
                                             @if($projectDataValue->id === $currentProjectData->projectDataValue->id)
                                                 <option selected value="{{$projectDataValue->value}}">
@@ -312,23 +312,23 @@
                                 </select>
                             </div>
                         @else
-                            <input {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]"
+                            <input {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$projectDataKey->id}}]"
                                    class="input" type="text"
-                                   value="{{$currentProjectKeyDataValues->where('project_data_key_id',$publicProjectDataKey->id  )->first()->value}}"
+                                   value="{{$currentProjectKeyDataValues->where('project_data_key_id',$projectDataKey->id  )->first()->value}}"
                                    placeholder="Saisir...">
                         @endif
                     @else
-                        @if($publicProjectDataKey->projectDataValues->count() >0)
+                        @if($projectDataKey->projectDataValues->count() >0)
                             <div class="select  is-fullwidth">
-                                <select {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]">
+                                <select {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$projectDataKey->id}}]">
                                     <option selected disabled>Veuillez choisir...</option>
-                                    @foreach ($publicProjectDataKey->projectDataValues as $projectDataValue)
+                                    @foreach ($projectDataKey->projectDataValues as $projectDataValue)
                                         <option value="{{$projectDataValue->value}}">{{$projectDataValue->value}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         @else
-                            <input {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]"
+                            <input {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$projectDataKey->id}}]"
                                    class="input" type="text"
                                    placeholder="Saisir...">
                         @endif

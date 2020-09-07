@@ -86,9 +86,8 @@ abstract class BaseController extends Controller
 		$supportStages = SupportStage::all();
 		$supportStates = SupportState::all();
 		$projectStatuses = ProjectStatus::all();
-		$publicProjectDataKeys = ProjectDataKey::where('is_public', '=', 1)->with('projectDataValues')->get();
+		$allProjectDataKeys = ProjectDataKey::with('projectDataValues')->get();
 		$currentProjectKeyDataValues = $this->advisorsService->allNotesWithProjectDatKeysByAdId($ad->id);
-		dd($currentProjectKeyDataValues);
 		$responseTemplates = ResponseTemplate::all();
 		$listUserAds = $this->adService->findAllAdsByUser($ad->user_pp_id);
 
@@ -96,7 +95,7 @@ abstract class BaseController extends Controller
 			'supportStages',
 			'supportStates',
 			'projectStatuses',
-			'publicProjectDataKeys',
+			'allProjectDataKeys',
 			'currentProjectKeyDataValues',
 			'responseTemplates',
 			'listUserAds'
