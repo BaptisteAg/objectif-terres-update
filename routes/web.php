@@ -161,6 +161,8 @@ Route::middleware('advisor')->prefix('mon-espace-primo-accueillant')->name('advi
 Route::middleware('supervisor')->prefix('gestion-reponse-types')->name('responseTemplates.')->namespace('ResponseTemplates')->group(function(){
 	Route::get('/', 'ResponseTemplatesController@index')->name('index');
 	Route::post('/creer', 'ResponseTemplatesController@create')->name('create');
+	Route::post('/editer', 'ResponseTemplatesController@edit')->name('edit');
+	Route::post('/supprimer', 'ResponseTemplatesController@delete')->name('delete');
 });
 
 Route::middleware('auth')->prefix('notification')->name('notification.')->namespace('Notifications')->group(function () {

@@ -37,11 +37,11 @@
                     <a class="text_size large"
                        href="{{route('moderator.show', Session::get('moderator_dashboard_url') )}}">
                         <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-                        <span>Aller dans votre espace modérateur  </span>
+                        <span>Aller dans votre espace modérateur </span>
                     </a>
                 </div>
             @else
-               @include('components.back-links')
+                @include('components.back-links')
             @endif
         @endif
     @endauth
@@ -51,10 +51,40 @@
             <nav class="breadcrumb" aria-label="breadcrumbs">
                 <ul>
                     <li class="breadcrumb__home">
-                        <a href="/" class="breadcrumb__link"><i class="fas fa-home"></i></a>
+                        <a href="/" class="breadcrumb__link"> <i class="fas fa-home"></i></a>
                     </li>
-                    <li><a class="breadcrumb__link" href="#"><?=empty($isSupportRequest) ? 'Annonces' : 'Accompagnement'?></a></li>
-                    <li><a class="breadcrumb__link" href="#">{{$ad->ad_type_full_name}}</a></li>
+                    <li>
+                        @if($ad->ad_type === "landSeek")
+                            <a class="breadcrumb__link" href="{{route('researches.index',  ["offer_type"=>"SeekAd", 'ad_category' => 'land'])}}">
+{{--                                <span class="icon">--}}
+{{--                                    <i class="fas fa-home"></i>--}}
+{{--                                </span>--}}
+                                <span>{{$ad->ad_type_full_name}}</span>
+                            </a>
+                        @elseif($ad->ad_type === "landOffer")
+                            <a class="breadcrumb__link" href="{{route('researches.index',  ["offer_type"=>"OfferAd", 'ad_category' => 'land'])}}">
+{{--                                <span class="icon">--}}
+{{--                                    <i class="fas fa-home"></i>--}}
+{{--                                </span>--}}
+                                <span>{{$ad->ad_type_full_name}}</span>
+                            </a>
+                        @elseif($ad->ad_type === "jobSeek")
+                            <a class="breadcrumb__link" href="{{route('researches.index',  ["offer_type"=>"SeekAd", 'ad_category' => 'job'])}}">
+{{--                                <span class="icon">--}}
+{{--                                    <i class="fa-universal-access"></i>--}}
+{{--                                </span>--}}
+                                <span>{{$ad->ad_type_full_name}}</span>
+                            </a>
+                        @elseif($ad->ad_type === "jobOffer")
+                            <a class="breadcrumb__link" href="{{route('researches.index',  ["offer_type"=>"OfferAd", 'ad_category' => 'job'])}}">
+{{--                                <span class="icon">--}}
+{{--                                    <i class="fas fa-universal-access"></i>--}}
+{{--                                </span>--}}
+                                <span>{{$ad->ad_type_full_name}}</span>
+                            </a>
+
+                        @endif
+                    </li>
                     <li><span class="breadcrumb__link">{{$ad->title}}</span></li>
                 </ul>
             </nav>
@@ -139,31 +169,30 @@
         });
 
         @auth()
-            @if(auth()->user()->role >= 1)
-            function showValidationSupervisorModal() {
-                let validationModal = document.querySelector('#modal-supervisor-validation');
-                let html = document.querySelector('html');
-                let listAdvisorUsers = document.getElementById("list_advisor_users");
-                let advisorUserSelected = listAdvisorUsers.options[listAdvisorUsers.selectedIndex].text;
-                let spanAdvisorSelected = document.querySelector('#user_advisor_selected');
-                spanAdvisorSelected.innerHTML = advisorUserSelected;
-                validationModal.classList.add('is-active');
-                html.classList.add('is-clipped');
+        @if(auth()->user()->role >= 1)
+        function showValidationSupervisorModal() {
+            let validationModal = document.querySelector('#modal-supervisor-validation');
+            let html = document.querySelector('html');
+            let listAdvisorUsers = document.getElementById("list_advisor_users");
+            let advisorUserSelected = listAdvisorUsers.options[listAdvisorUsers.selectedIndex].text;
+            let spanAdvisorSelected = document.querySelector('#user_advisor_selected');
+            spanAdvisorSelected.innerHTML = advisorUserSelected;
+            validationModal.classList.add('is-active');
+            html.classList.add('is-clipped');
 
-                validationModal.querySelector('#modal-supervisor-validation-background').addEventListener('click', function (e) {
-                    e.preventDefault();
-                    validationModal.classList.remove('is-active');
-                    html.classList.remove('is-clipped');
-                });
-                validationModal.querySelector('#close-modal').addEventListener('click', function (e) {
-                    e.preventDefault();
-                    validationModal.classList.remove('is-active');
-                    html.classList.remove('is-clipped');
-                });
-            }
-            @endif
+            validationModal.querySelector('#modal-supervisor-validation-background').addEventListener('click', function (e) {
+                e.preventDefault();
+                validationModal.classList.remove('is-active');
+                html.classList.remove('is-clipped');
+            });
+            validationModal.querySelector('#close-modal').addEventListener('click', function (e) {
+                e.preventDefault();
+                validationModal.classList.remove('is-active');
+                html.classList.remove('is-clipped');
+            });
+        }
+        @endif
         @endauth
-
         function sendResponseTemplateMessage() {
             let listResponseTemplates = document.getElementById("response_templates_list");
             let responseTemplateSelected = listResponseTemplates.options[listResponseTemplates.selectedIndex].value;
@@ -172,30 +201,30 @@
         }
 
     </script>
-{{--    @if(count($ad->images) > 1)--}}
-        <script src="{{asset('/js/bulma-carousel.js')}}"></script>
-        <script>
-            const carousel = bulmaCarousel.attach('#ad-images', {
-                slidesToScroll: 1,
-                slidesToShow: 1,
-                loop: true,
-                navigationSwipe: true,
-                pagination: true,
-            });
-        </script>
-{{--    @endif--}}
+    {{--    @if(count($ad->images) > 1)--}}
+    <script src="{{asset('/js/bulma-carousel.js')}}"></script>
+    <script>
+        const carousel = bulmaCarousel.attach('#ad-images', {
+            slidesToScroll: 1,
+            slidesToShow: 1,
+            loop: true,
+            navigationSwipe: true,
+            pagination: true,
+        });
+    </script>
+    {{--    @endif--}}
 
     <script>
         const vueThreads = new Vue({
             el: '#vue-messages',
             name: 'content'
         });
-                @auth()
-                @if(auth()->user()->role >= 1 and !$ad->project()->exists())
+        @auth()
+        @if(auth()->user()->role >= 1 and !$ad->project()->exists())
         const VueModerationModal = new Vue({
-                el: "#vue-moderation-modal",
-                name: 'content'
-            });
+            el: "#vue-moderation-modal",
+            name: 'content'
+        });
         @endif
         @endauth
     </script>
@@ -205,19 +234,19 @@
         let locationsAd = [];
 
         @foreach($ad->regions as $location)
-            locationsAd.push("{{$location->name}}");
+        locationsAd.push("{{$location->name}}");
         @endforeach
 
         @foreach($ad->departments as $location)
-            locationsAd.push("{{$location->name}}");
+        locationsAd.push("{{$location->name}}");
         @endforeach
 
         @foreach($ad->cities as $location)
-            @if($ad->landOfferAd && !$ad->landOfferAd->accept_use_zip_code)
-                locationsAd.push("{{$location->department->name}}");
-            @else
-                locationsAd.push("{{$location->name}}");
-            @endif
+        @if($ad->landOfferAd && !$ad->landOfferAd->accept_use_zip_code)
+        locationsAd.push("{{$location->department->name}}");
+        @else
+        locationsAd.push("{{$location->name}}");
+        @endif
         @endforeach
 
         showAdMapInit('map_ad', locationsAd);

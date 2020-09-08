@@ -16,6 +16,7 @@ class ResponseTemplateRequest extends FormRequest
 		return [
 			'title' => ['required', 'string', 'max:100', 'min:3'],
 			'content' => ['required', 'string', 'max:1000', 'min:10'],
+
 		];
 	}
 }

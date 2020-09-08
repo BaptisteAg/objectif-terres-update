@@ -30,4 +30,18 @@ class ResponseTemplatesRepository implements ResponseTemplatesRepositoryInterfac
 
 		return $responseTemplate;
 	}
+
+	/**
+	 * @param int $responseTemplateId
+	 * @param array $data
+	 * @return ResponseTemplate
+	 */
+	public function edit(int $responseTemplateId, array $data): ResponseTemplate
+	{
+		$responseTemplate = ResponseTemplate::find($responseTemplateId);
+		$responseTemplate->fill($data);
+		$responseTemplate->save();
+
+		return $responseTemplate;
+	}
 }
