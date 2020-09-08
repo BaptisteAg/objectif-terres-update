@@ -118,8 +118,9 @@
                                     <div class="field">
                                         <div class="control">
                                             <text-area-counter
+                                                    :required="true"
                                                     name="support_request_text"
-                                                    :max-length="200">
+                                                    :max-length="400">
                                             </text-area-counter>
                                         </div>
                                     </div>

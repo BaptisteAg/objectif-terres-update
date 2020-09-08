@@ -31,6 +31,7 @@ Route::prefix('accompagnement')->name('support-request.')->namespace('Ads')->gro
 	Route::middleware(['auth'])->post('sauvegarder', 'SupportRequestsController@save')->name('save');
 
     Route::middleware(['auth'])->get('suivi', 'SupportRequestsController@show')->name('show');
+    Route::middleware('auth')->get('modifier', 'SupportRequestsController@edit')->name('edit');
 });
 
 Route::namespace('Cms')->group(function () {

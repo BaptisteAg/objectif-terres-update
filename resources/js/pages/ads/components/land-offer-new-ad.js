@@ -47,6 +47,8 @@ export default {
 
             houseSurface: hasOld && v.land_offer.house && v.land_offer.house.surface || '',
             houseOfferGenres: hasOld && v.land_offer.house && v.land_offer.house.offer_genres || [],
+
+            supportRequestText: v.support_request_text || ''
         } : {};
 
         return  {
@@ -129,6 +131,12 @@ export default {
                 decimal
             },
             //houseOfferGenres: {required},
+
+            supportRequestText: {
+                required,
+                minLength: minLength(10),
+                maxLength: maxLength(400),
+            }
 
         } : {};
 

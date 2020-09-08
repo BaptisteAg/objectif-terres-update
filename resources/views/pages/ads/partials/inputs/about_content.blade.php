@@ -3,7 +3,7 @@
         $title = "Et si vous nous en disiez un peu plus sur vous ?";
     }
     if(!isset($tooltip)) {
-        if(!empty($isSupportRequest)) {
+        if(empty($isSupportRequest)) {
             $tooltip = "Présentez-vous brièvement pour faciliter la mise en relation avec les personnes intéressées votre annonce.";
         }
         else {

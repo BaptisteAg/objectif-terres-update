@@ -116,8 +116,7 @@ class AdService
 	 * @param User $user
 	 * @return User|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|Ad|null
 	 */
-	public
-	function getUserSupportRequest(User $user)
+	public function getUserSupportRequest(User $user)
 	{
 		return $user->supportRequests()->first();
 	}
@@ -130,7 +129,6 @@ class AdService
 	 */
 	public function requestPublishing(array $data, bool $isSupportRequest = false)
 	{
-
 		$isUpdate = !empty($data["id"]);
 
 		DB::beginTransaction();
@@ -209,7 +207,6 @@ class AdService
 		// Ad was already attributed before, and was not refused or archived; then we use the existing one
 		if (!$isSupportRequest) {
 			if ($ad->attributionAd && !in_array($ad->attributionAd->adStatus->id, [AdStatus::REFUSE_ID, AdStatus::ARCHIVED_ID])) {
-
 				$this->attributionAdsRepository->update($ad->attributionAd->id, $attributionAdData);
 			} else {
 				$this->attributionAdsRepository->create($attributionAdData);
@@ -239,6 +236,22 @@ class AdService
 		return $ad;
 
 	}
+
+    /**
+     * @param Ad $ad
+     * @param array $data
+     * @return Ad
+     * @throws \Throwable
+     */
+    public function update($id, array $data)
+    {
+        $ad = $this->repository->update($id, $data);
+
+        $subAdData = $data[$data["ad_type"]];
+        $this->updateSubAd($ad, $data["ad_type"], $subAdData);
+
+        return $ad;
+    }
 
 	/**
 	 * @param Ad $ad

@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="content">
-                    @if( !empty($ad->landSeekAd->buildings) )
+                    @if( $ad->landSeekAd->buildings->count() )
                         <p><span class="is-size-5 is-capitalized ad-show-feature-label">Habitation(s) et bâti(s)
                                 recherché(s) : </span><br>
                             @foreach($ad->landSeekAd->buildings as $building)
@@ -144,9 +144,14 @@
         <p class="has-text-link is-size-5 has-text-centered"> Production(s) envisagée(s)</p>
         {{--                <p class="has-text-centered">{{$ad->landSeekAd->productionGenresPossible->pluck('name')->implode(', ') }}</p>--}}
         <ul class="has-text-centered">
-            @foreach($ad->landSeekAd->productionGenresPossible as $productionGenre)
-                <li>{{$productionGenre->name}}</li>
+            @foreach($ad->landSeekAd->productionGenres as $id => $productionGenre)
+                @if($id !== "other")
+                    <li>{{$productionGenre->name}}</li>
+                @endif
             @endforeach
+            @if($ad->landSeekAd->production_type_add)
+                {{ $ad->landSeekAd->production_type_add }}
+            @endif
         </ul>
     </div>
 
@@ -162,24 +167,25 @@
         @endif
     </div>
 
-    {{--
-    @if($ad->landSeekAd->offerGenre)
-        <div class="column is-one-quarter ">
-            <p class="has-text-link is-size-5 has-text-centered"> Accès au foncier souhaité </p>
-            <p class="has-text-centered">{{$ad->landSeekAd->offerGenre->name}}</p>
-        </div>
+
+    @if($ad->landSeekAd->offerGenres->count())
+        @foreach ($ad->landSeekAd->offerGenres as $offerGenre)
+            <div class="column is-one-quarter ">
+                <p class="has-text-link is-size-5 has-text-centered"> Accès au foncier souhaité </p>
+                <p class="has-text-centered">
+                    {{$offerGenre->name}}
+                    @if($offerGenre->id === $offerGenre::ID_ACHAT)
+                        <br>Budget maximum : {{ $ad->landSeekAd->price_max }} €
+                    @endif
+                </p>
+            </div>
+        @endforeach
     @endif
 
     <div class="column is-one-quarter ">
-        <p class="has-text-link is-size-5 has-text-centered"> Surface(s) recherchée(s)(en ha)</p>
-        @foreach ($ad->landSeekAd->surfaceRanges as $surfaceRangeSeek)
-            @if($surfaceRangeSeek->surface !== '')
-                <p class="has-text-centered">{{$ad->landSeekAd->surfaceRanges->pluck('surface')->implode(', ') }}</p>
-            @else
-                <p class="has-text-centered">Non renseigné</p>
-            @endif
-        @endforeach
-    </div>--}}
+        <p class="has-text-link is-size-5 has-text-centered"> Surface(s) recherchée(s)(en hectares)</p>
+        <p class="has-text-centered">De {{ $ad->landSeekAd->surface_range_min }}ha à {{ $ad->landSeekAd->surface_range_max }}ha</p>
+    </div>
 
     {{--    @if($ad->landSeekAd->productionGenres->count())--}}
     {{--        <div class="column is-one-quarter ">--}}
@@ -198,10 +204,18 @@
 </div>
 
 <hr class="navbar-divider">
-<div class="content">
-    <h3 class="title is-3">Description du terrain recherché</h3>
-    <p>  {!! nl2br($ad->landSeekAd->land_description ?? "") !!} </p>
-</div>
+@if($isSupportRequest && $ad->support_request_text)
+    <div class="content">
+        <h3 class="title is-3">Résumé de votre projet</h3>
+        <p>  {!! nl2br($ad->support_request_text ?? "") !!} </p>
+    </div>
+@endif
+@if($ad->landSeekAd->land_description)
+    <div class="content">
+        <h3 class="title is-3">Description du terrain recherché</h3>
+        <p>  {!! nl2br($ad->landSeekAd->land_description ?? "") !!} </p>
+    </div>
+@endif
 <div class="content">
     <h3 class="title is-3">Description du projet</h3>
     <p>  {!! nl2br($ad->about_project_content ?? "") !!} </p>
