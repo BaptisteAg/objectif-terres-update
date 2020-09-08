@@ -264,6 +264,15 @@ class AdvisorsService
 	 * @param int $adId
 	 * @return Builder[]|Collection
 	 */
+	public function allNotesWithProjectDatKeysByAdId(int $adId): Collection
+	{
+		$notes = $this->adNotesRepository->findAllNotesWithProjectDataKeysByAdId($adId);
+		return $notes;
+	}
+	/**
+	 * @param int $adId
+	 * @return Builder[]|Collection
+	 */
 	public function allNotesWithPublicProjectDatKeysByAdId(int $adId): Collection
 	{
 		$notes = $this->adNotesRepository->findAllNotesWithPublicProjectDatKeysByAdId($adId);

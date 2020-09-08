@@ -63,6 +63,7 @@ class DatabaseSeeder extends Seeder
 			CmsPageSeeder::class,
 			CmsCommonContentSeeder::class,
 			DepartmentSeeder::class,
+			ResponseTemplateSeeder::class,
 		]);
 
 		if (app()->environment() === "local") {
@@ -71,7 +72,6 @@ class DatabaseSeeder extends Seeder
 				TestUserSeeder::class,
 				TestResponseTypeSeeder::class,
 				TestResearchSeeder::class,
-				TestResponseTemplateSeeder::class,
 			]);
 
 			//$departmentCodes = [01, 07, 19, 22, 23, 26, 35, 38, 42, 69, 74, 87];

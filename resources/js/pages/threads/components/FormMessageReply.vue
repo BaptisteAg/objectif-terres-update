@@ -47,7 +47,7 @@
                                     v-bind:class="[isLoading ?'select is-fullwidth is-loading ' : 'select is-fullwidth']">
                                 <select :disabled="isLoading" v-model.trim="content">
                                     <option disabled selected="selected">Choisissez votre message type...</option>
-                                    <option v-for="responseTemplate in responseTemplates">{{responseTemplate.content}}
+                                    <option v-for="responseTemplate in responseTemplates" v-bind:value="responseTemplate.content">{{responseTemplate.title}}
                                     </option>
                                 </select>
                             </span>
