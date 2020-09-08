@@ -1,3 +1,4 @@
+
 @auth
     @if(auth()->user()->role >= 1)
         @if($moderatorInChargeOfModeration)

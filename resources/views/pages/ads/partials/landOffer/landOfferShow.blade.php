@@ -23,7 +23,7 @@
                     @endif
                 </div>
                 <div class="content">
-                    <p><span class="is-size-5   ">Publié par : </span>
+                    <p><span class="is-size-5 has-text-black">Publié par : </span>
                         @auth()
                             @if(auth()->user()->role >= 1 )
                                 <span class="subtitle">
@@ -63,8 +63,7 @@
                     @if($ad->landOfferAd->accept_use_zip_code)
                         <div class="content">
                             <p><span class="is-size-5 is-capitalized has-text-black">Code postal : </span><span
-                                        class="subtitle">{{$ad->cities[0]->zip_code }} ({{$ad->cities[0]->name }}
-                                    )</span>
+                                        class="subtitle">{{$ad->cities[0]->zip_code }} ({{$ad->cities[0]->name }})</span>
                             </p>
                         </div>
                     @else
@@ -100,7 +99,7 @@
                 <div class="content">
                     @if ($ad->landOfferAd->offerGenres->count() >=1)
                         <p>
-                            <span class="is-size-5  has-text-black">Type d'offre : </span>
+                            <span class="is-size-5  has-text-black">Mode de cession : </span>
                             <span class="subtitle">
                                 {{$ad->landOfferAd->offerGenres->pluck('name')->implode(', ') }}
                             </span>
@@ -236,14 +235,6 @@
         @endif
     </div>
 </div>
-<div class="content">
-    <h3 class="title is-3">Description du projet</h3>
-    <p>  {!! nl2br($ad->about_project_content ??"") !!}</p>
-</div>
-<div class="content">
-    <h3 class="title is-3">A propos du porteur de projet</h3>
-    <p> {!! nl2br($ad->about_content ?? "") !!}</p>
-</div>
 @if($ad->landOfferAd->sau_description)
     <div class="content">
         <h3 class="title is-3">Description SAU</h3>
@@ -262,6 +253,16 @@
         <p>  {!! nl2br($ad->landOfferAd->test_description ?? "") !!}</p>
     </div>
 @endif
+
+<div class="content">
+    <h3 class="title is-3">Description du projet</h3>
+    <p>  {!! nl2br($ad->about_project_content ??"") !!}</p>
+</div>
+<div class="content">
+    <h3 class="title is-3">A propos de l'annonceur</h3>
+    <p> {!! nl2br($ad->about_content ?? "") !!}</p>
+</div>
+
 
 <div id="map_ad"></div>
 

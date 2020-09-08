@@ -20,7 +20,7 @@
                     @endif
                 </div>
                 <div class="content">
-                    <p><span class="is-size-5   ">Publié par : </span>
+                    <p><span class="is-size-5">Publié par : </span>
                         @auth()
                             @if(auth()->user()->role >= 1 )
                                 <span class="subtitle">
@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="content">
-                    @if( !empty($ad->landSeekAd->buildings) )
+                    @if( $ad->landSeekAd->buildings->count() >0 )
                         <p><span class="is-size-5 is-capitalized ad-show-feature-label">Habitation(s) et bâti(s)
                                 recherché(s) : </span><br>
                             @foreach($ad->landSeekAd->buildings as $building)
@@ -129,26 +129,32 @@
 <h3 class="title is-3 has-text-centered">Caractéristiques du projet</h3>
 <div class="columns is-multiline is-mobile is-centered">
 
-    <div class="column is-one-quarter ">
-        <p class="has-text-link is-size-5 has-text-centered"> Installation souhaité</p>
-        <p class="has-text-centered">
-            @if ($ad->landSeekAd->installationType->name === "Seul·e")
-                Individuelle
-            @else
-                {{ $ad->landSeekAd->installationType->name }}
-            @endif
-        </p>
-    </div>
+    @if(isset($ad->landSeekAd->installationType))
+        @if($ad->landSeekAd->installationType->name !== "Indifférent")
+            <div class="column is-one-quarter ">
+                <p class="has-text-link is-size-5 has-text-centered"> Installation souhaité</p>
+                <p class="has-text-centered">
+                    @if ($ad->landSeekAd->installationType->name === "Seul·e")
+                        Individuelle
+                    @else
+                        {{ $ad->landSeekAd->installationType->name }}
+                    @endif
+                </p>
+            </div>
+        @endif
+    @endif
 
-    <div class="column is-one-quarter ">
-        <p class="has-text-link is-size-5 has-text-centered"> Production(s) envisagée(s)</p>
-        {{--                <p class="has-text-centered">{{$ad->landSeekAd->productionGenresPossible->pluck('name')->implode(', ') }}</p>--}}
-        <ul class="has-text-centered">
-            @foreach($ad->landSeekAd->productionGenresPossible as $productionGenre)
-                <li>{{$productionGenre->name}}</li>
-            @endforeach
-        </ul>
-    </div>
+
+    @if($ad->landSeekAd->productionGenresPossible->count() >0)
+        <div class="column is-one-quarter ">
+            <p class="has-text-link is-size-5 has-text-centered"> Production(s) envisagée(s)</p>
+            <ul class="has-text-centered">
+                @foreach($ad->landSeekAd->productionGenresPossible as $productionGenre)
+                    <li>{{$productionGenre->name}}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <div class="column is-one-quarter ">
         <p class="has-text-link is-size-5 has-text-centered"> Souhaite s'installer en bio</p>
