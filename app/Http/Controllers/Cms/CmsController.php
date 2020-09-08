@@ -32,7 +32,10 @@ class CmsController extends Controller
 
 	public function faq()
 	{
-		return view('pages/cms/faq');
+		$cmsFaq = CmsFaq::all();
+		$cmsCommonContent = CmsCommonContent::where('pages_name', 'like', '%' . Route::currentRouteName() . '%')->get()->groupBy('name');
+
+		return view('pages/cms/faq',compact('cmsFaq', 'cmsCommonContent'));
 	}
 
 	public function quiSommesNous()

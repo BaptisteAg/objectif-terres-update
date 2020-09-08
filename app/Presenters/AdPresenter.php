@@ -242,7 +242,6 @@ class AdPresenter extends BasePresenter
 				$max = $ad->landSeekAd->surface_range_max;
 				$min = $ad->landSeekAd->surface_range_min;
 
-
 				if ($max === 1000000 && $min === 0) {
 					return "De 1 à + de 100ha";
 				}
@@ -254,7 +253,7 @@ class AdPresenter extends BasePresenter
 					return "De " . $min . "ha à " . $max . "ha";
 				}
 
-				return "A partir de " . $max . "ha";
+				return "Moins de " . $max . "ha";
 			} else {
 				return "Surface non renseignéee";
 			}
