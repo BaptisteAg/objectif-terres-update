@@ -7,6 +7,7 @@ use App\Models\City;
 use App\Models\Department;
 use App\Models\Region;
 use App\Models\Research;
+use App\Repositories\Ads\AdRepository;
 use App\Repositories\Researches\ResearchRepository;
 use App\Services\Locations\LocationService;
 use Carbon\Carbon;
@@ -22,16 +23,19 @@ class ResearchService
 	 */
 	protected $repository;
 	protected $locationService;
+	protected $adRepository;
 
 	/**
 	 * ResearchService constructor.
 	 * @param ResearchRepository $repository
 	 * @param LocationService $locationService
+	 * @param AdRepository $adRepository
 	 */
-	public function __construct(ResearchRepository $repository, LocationService $locationService)
+	public function __construct(ResearchRepository $repository, LocationService $locationService, AdRepository $adRepository)
 	{
 		$this->repository = $repository;
 		$this->locationService = $locationService;
+		$this->adRepository = $adRepository;
 	}
 
 
@@ -88,7 +92,7 @@ class ResearchService
 	/**
 	 * @return array
 	 */
-	public function findNewRelatedAds() : array
+	public function findNewRelatedAds(): array
 	{
 		$researches = $this->repository->findAllResearchesWithAlertActive();
 		$researchesWithNewAds = [];
@@ -181,18 +185,33 @@ class ResearchService
 		return $researchesWithNewAds;
 	}
 
+	/**
+	 * @param Request $filters
+	 * @return array
+	 */
 	public function index(Request $filters)
 	{
 		$ads = $this->filter($filters);
 		return $ads;
 	}
 
+	/**
+	 * @param Request $filters
+	 * @return array
+	 */
 	public function filter(Request $filters)
 	{
 		$ads = collect();
 		$adsFilter = (new Ad)->newQuery();
 		//Filter by type of ads
 		$adsTypeSelected = '';
+
+		if ($filters->has('ad_category') && $filters->input('ad_category') === "all") {
+			$ads = $this->adRepository->findAllPublished(true);
+			$adsTypeSelected = 'all';
+			return [$ads, $adsTypeSelected];
+		}
+
 		if ($filters->has('ad_category') && $filters->has('offer_type')) {
 			$adsTypeSelected = $filters->input('ad_category') . $filters->input('offer_type');
 		} else {
@@ -296,7 +315,7 @@ class ResearchService
 			} else {
 
 				$adsTypeSelectedTableName = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $adsTypeSelected)) . 's';
-				$adsFilter->join($adsTypeSelectedTableName,'ads.id', '=', $adsTypeSelectedTableName.'.ad_id')
+				$adsFilter->join($adsTypeSelectedTableName, 'ads.id', '=', $adsTypeSelectedTableName . '.ad_id')
 					->orderBy($filters->input('sort'), $filters->input('order'))
 					->select('ads.*');
 			}

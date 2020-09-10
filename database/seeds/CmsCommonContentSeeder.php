@@ -16,7 +16,7 @@ class CmsCommonContentSeeder extends Seeder
 			[
 				'name' => 'Description vidéo',
 				"description" => 'Texte de description afficher au dessus de la vidéo',
-				'pages_name' => 'ceder-ma-ferme, confier-mes-terres',
+				'pages_name' => 'ceder-ma-ferme, confier-mes-terres, minstaller-comme-paysan ',
 				'slug' => 'text-video',
 				'content' => '<span>' . $faker->sentence() . '</span>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),

@@ -1,6 +1,7 @@
 <?php namespace App\Repositories\Ads;
 
 use App\Models\Ad;
+use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\City;
 use App\Models\Department;
@@ -520,6 +521,35 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		return $ads;
 	}
 
+	/**
+	 * @param bool $toPaginate
+	 * @return Ad[]|LengthAwarePaginator|Builder[]|Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
+	 */
+	public function findAllPublished(bool $toPaginate)
+	{
+		$ads =  $this->entity
+			->whereHas('attributionAd', function (Builder $query) {
+				$query->whereNotNull('published_on');
+				$query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
+			})
+			->whereNull('project_id')
+			->with('landSeekAd',
+				'landOfferAd',
+				'jobOfferAd',
+				'jobSeekAd',
+				'cities',
+				'cities.department',
+				'cities.department.region',
+				'departments',
+				'departments.region',
+				'regions',
+			'documents',
+			'attributionAd');
+		if($toPaginate === true){
+			return $ads->paginate(15);
+		}
+		return $ads->get();
+	}
 	/**
 	 * @param int $numberOfDays
 	 * @return Collection
