@@ -1,56 +1,56 @@
 <table>
 	<thead>
 	<tr>
-		<th colspan="9" style="text-align: center"><h1>Données générales</h1></th>
-		<th colspan="16" style="text-align: center; border-left: solid #000000 1px;"><h1>Détails offres foncières</h1>
+		<th colspan="9" ><h1>Données générales</h1></th>
+		<th colspan="16"><h1>Détails offres foncières</h1>
 		</th>
-		<th colspan="6" style="text-align: center; border-left: solid #000000 1px;"><h1>Détails recherche de
+		<th colspan="6"><h1>Détails recherche de
 				foncier</h1></th>
-		<th colspan="6" style="text-align: center; border-left: solid #000000 1px;"><h1>Détails offre d'emploi</h1></th>
-		<th colspan="3" style="text-align: center; border-left: solid #000000 1px;"><h1>Détails recherche d'emploi</h1>
+		<th colspan="6"><h1>Détails offre d'emploi</h1></th>
+		<th colspan="3"><h1>Détails recherche d'emploi</h1>
 		</th>
 	</tr>
 	</thead>
-	<tr style="border-bottom: solid #000000 2px">
-		<th style="background-color: #bdbdbd; width: auto">Date de la soumission</th>
-		<th style="background-color: #bdbdbd; width: auto">Titre de l'annonce</th>
-		<th style="background-color: #bdbdbd; width: auto">Type de l'annonce</th>
-		<th style="background-color: #bdbdbd; width: auto">Nom du porteur de projet</th>
-		<th style="background-color: #bdbdbd; width: auto">Adresse mail</th>
-		<th style="background-color: #bdbdbd; width: auto">Localisation(s)</th>
-		<th style="background-color: #bdbdbd; width: auto">Nom du modérateur</th>
-		<th style="background-color: #bdbdbd; width: auto ">Descritpion de l'annonce</th>
-		<th style="background-color: #bdbdbd; width: auto">Description du porteur de projet</th>
-		<th style="background-color: #8fb5d9; width: auto ">Surface (en ha)</th>
-		<th style="background-color: #8fb5d9; width: auto ">Description Surface Agricole Utiles (SAU)</th>
-		<th style="background-color: #8fb5d9; width: auto ">Accès à l'eau</th>
-		<th style="background-color: #8fb5d9; width: auto ">Description accès à l'eau</th>
-		<th style="background-color: #8fb5d9; width: auto ">Altitude en (en m)</th>
-		<th style="background-color: #8fb5d9; width: auto ">Production(s) en place</th>
-		<th style="background-color: #8fb5d9; width: auto ">Production(s) possibles</th>
-		<th style="background-color: #8fb5d9; width: auto ">Certification des terres</th>
-		<th style="background-color: #8fb5d9; width: auto ">Avec bâtiment(s) agricole(s)</th>
-		<th style="background-color: #8fb5d9; width: auto ">Description bâtiment(s) agricole(s)</th>
-		<th style="background-color: #8fb5d9; width: auto ">Avec habitationt(s)</th>
-		<th style="background-color: #8fb5d9; width: auto ">Description habitation(s)</th>
-		<th style="background-color: #8fb5d9; width: auto ">Type d'offre</th>
-		<th style="background-color: #8fb5d9; width: auto ">Prix (en €)</th>
-		<th style="background-color: #8fb5d9; width: auto ">Loyer (en €)</th>
-		<th style="background-color: #8fb5d9; width: auto ">Modalité test agricole</th>
-		<th style="background-color: #74f765; width: auto">Surface recherchée (en ha)</th>
-		<th style="background-color: #74f765; width: auto">Habitation(s) et bâti(s) recherché(s)</th>
-		<th style="background-color: #74f765; width: auto">Projet agriculture bio</th>
-		<th style="background-color: #74f765; width: auto">Productions(s) envisagée(s)</th>
-		<th style="background-color: #74f765; width: auto">Type d'installation</th>
-		<th style="background-color: #74f765; width: auto">Expérience dans le domaine agricole</th>
-		<th style="background-color: #f06060; width: auto">Transmission d'activité</th>
-		<th style="background-color: #f06060; width: auto">Type d'offre</th>
-		<th style="background-color: #f06060; width: auto">Description du poste</th>
-		<th style="background-color: #f06060; width: auto">Expérience souhaité</th>
-		<th style="background-color: #f06060; width: auto">Niveau de formation souhaité</th>
-		<th style="background-color: #e3cb5f; width: auto">Type d'opportunité recherché</th>
-		<th style="background-color: #e3cb5f; width: auto">Expérience dans le milieu agricole</th>
-		<th style="background-color: #e3cb5f; width: auto">Niveau de formation</th>
+	<tr >
+		<th>Date de la soumission</th>
+		<th>Titre de l'annonce</th>
+		<th>Type de l'annonce</th>
+		<th>Nom du porteur de projet</th>
+		<th>Adresse mail</th>
+		<th>Localisation(s)</th>
+		<th>Nom du modérateur</th>
+		<th>Descritpion de l'annonce</th>
+		<th>Description du porteur de projet</th>
+		<th>Surface (en ha)</th>
+		<th>Description Surface Agricole Utiles (SAU)</th>
+		<th>Accès à l'eau</th>
+		<th>Description accès à l'eau</th>
+		<th>Altitude en (en m)</th>
+		<th>Production(s) en place</th>
+		<th>Production(s) possibles</th>
+		<th>Certification des terres</th>
+		<th>Avec bâtiment(s) agricole(s)</th>
+		<th>Description bâtiment(s) agricole(s)</th>
+		<th>Avec habitationt(s)</th>
+		<th>Description habitation(s)</th>
+		<th>Type d'offre</th>
+		<th>Prix (en €)</th>
+		<th>Loyer (en €)</th>
+		<th>Modalité test agricole</th>
+		<th>Surface recherchée (en ha)</th>
+		<th>Habitation(s) et bâti(s) recherché(s)</th>
+		<th>Projet agriculture bio</th>
+		<th>Productions(s) envisagée(s)</th>
+		<th>Type d'installation</th>
+		<th>Expérience dans le domaine agricole</th>
+		<th>Transmission d'activité</th>
+		<th>Type d'offre</th>
+		<th>Description du poste</th>
+		<th>Expérience souhaité</th>
+		<th>Niveau de formation souhaité</th>
+		<th>Type d'opportunité recherché</th>
+		<th>Expérience dans le milieu agricole</th>
+		<th>Niveau de formation</th>
 
 
 	</tr>

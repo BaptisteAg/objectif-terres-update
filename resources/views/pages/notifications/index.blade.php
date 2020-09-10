@@ -5,34 +5,31 @@
 @section('main-content')
 	<div class="section pt-0">
 		<h1 class="page__title">Vos notifications</h1>
-		@if(! $user->readNotifications->isEmpty())
-			@foreach ($user->readNotifications as $notification)
-				@if(isset($notification->data['number_of_ads_to_moderate']))
-					<article class="message button basic secondary ">
-						<div class="message-body">
-							@if($notification->data['number_of_ads_to_moderate'] <=1)
-								Vous avez {{$notification->data['number_of_ads_to_moderate']}} annonce soumise depuis
-								plus de 7 jours  à modérer !
-							@else
-								Vous avez {{$notification->data['number_of_ads_to_moderate']}} annonces soumises depuis
-								plus de 7 jours à modérer !
-							@endif
-							<br>
-							<br>
-							<a href="{{route ('moderator.show', ['ad_statuses[0]=4&order=asc&sort=date'])}}">
-								<button class="button button basic secondary ">Consulter votre tableau de bord</button>
-							</a>
-						</div>
-					</article>
-				@else
-					<div class="container">
-						<p class="is-size-5">Vous n'avez pas de nouvelle notification !</p>
-					</div>
-				@endif
-			@endforeach
-		@elseif ($user->unreadNotifications->isEmpty())
+{{--		@if(! $user->readNotifications->isEmpty())--}}
+{{--			@foreach ($user->readNotifications as $notification)--}}
+{{--				@if(isset($notification->data['number_of_ads_to_moderate']))--}}
+{{--					<article class="message button basic secondary ">--}}
+{{--						<div class="message-body">--}}
+{{--							@if($notification->data['number_of_ads_to_moderate'] <=1)--}}
+{{--								Vous avez {{$notification->data['number_of_ads_to_moderate']}} annonce soumise depuis--}}
+{{--								plus de 7 jours  à modérer !--}}
+{{--							@else--}}
+{{--								Vous avez {{$notification->data['number_of_ads_to_moderate']}} annonces soumises depuis--}}
+{{--								plus de 7 jours à modérer !--}}
+{{--							@endif--}}
+{{--							<br>--}}
+{{--							<br>--}}
+{{--							<a href="{{route ('moderator.show', ['ad_statuses[0]=4&order=asc&sort=date'])}}">--}}
+{{--								<button class="button button basic secondary ">Consulter votre espace gestion des annonces</button>--}}
+{{--							</a>--}}
+{{--						</div>--}}
+{{--					</article>--}}
+{{--				@else--}}
+{{--				@endif--}}
+{{--			@endforeach--}}
+		@if ($user->unreadNotifications->isEmpty())
 			<div class="container">
-				<p class="is-size-5">Vous n'avez pas de nouvelle notification !</p>
+				<p class="is-size-5">Vous n'avez pas de nouvelle(s) notification(s)</p>
 			</div>
 		@else
 			@foreach ($user->unreadNotifications as $notification)
@@ -55,7 +52,7 @@
 								<input type="hidden" value="moderator.show" name="route">
 								<br>
 								<input type="submit" class=" button basic secondary "
-									   value="@lang('Consulter votre tableau de bord')">
+									   value="@lang('Consulter votre espace de gestion des annonces')">
 							</form>
 						</div>
 					</article>
@@ -110,7 +107,7 @@
 								<input type="hidden" value="advisor.showSupport" name="route">
 								<br>
 								<input type="submit" class=" button basic secondary "
-									   value="@lang('Espace de suivi')">
+									   value="@lang('Espace de gestion des accompagnements')">
 							</form>
 						</div>
 					</article>

@@ -312,10 +312,11 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	/**
 	 * Find all  projects in user (supervisor or advisor) territories
 	 * @param array $userLocationTerritoryRegionsId
+	 * @param array $territoriesCode
 	 * @param bool $toPaginate
 	 * @return LengthAwarePaginator|Builder[]|Collection
 	 */
-	public function allProjectsInTerritories(array $userLocationTerritoryRegionsId, bool $toPaginate)
+	public function allProjectsInTerritories(array $territoriesCode, array $userLocationTerritoryRegionsId,  bool $toPaginate)
 	{
 		/** @var Collection $model */
 		$models = $this->entity
@@ -334,30 +335,30 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				});
 				$query->whereNotNull('project_id');
 			})
-			->filterSupportRequestRegionId($userLocationTerritoryRegionsId, auth()->user()->role);
+			->filterSupportRequestRegionId($userLocationTerritoryRegionsId, auth()->user()->role)
 
-		//	TODO delete if this method not necessary anymore
-		// previous query when support_request_territory_id didn't exist
-//	->orWhere(function (Builder $query) use ($territoriesCode) {
-//
-//				$query->whereHas('attributionAd', function (Builder $subQuery) {
-//					$subQuery->whereNotNull('user_advisor_id');
-//					$subQuery->whereNull('ad_status_id');
-//
-//				});
-//				$query->whereHas('userPp', function (Builder $subQuery) {
-//					$subQuery->whereNull('deleted_at');
-//				});
-//				$query->where(function (Builder $query) use ($territoriesCode) {
-//					$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
-//						$query->whereIn('code', $territoriesCode);
-//					});
-//					$query->orWhereHas('cities', function (Builder $query) use ($territoriesCode) {
-//						$query->whereIn('department_code', $territoriesCode);
-//					});
-//				});
-//				$query->whereNotNull('project_id');
-//			})
+			//	TODO delete if this method not necessary anymore
+			// previous query when support_request_territory_id didn't exist
+			->orWhere(function (Builder $query) use ($territoriesCode) {
+
+				$query->whereHas('attributionAd', function (Builder $subQuery) {
+					$subQuery->whereNotNull('user_advisor_id');
+					$subQuery->whereNull('ad_status_id');
+
+				});
+				$query->whereHas('userPp', function (Builder $subQuery) {
+					$subQuery->whereNull('deleted_at');
+				});
+				$query->where(function (Builder $query) use ($territoriesCode) {
+					$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
+						$query->whereIn('code', $territoriesCode);
+					});
+					$query->orWhereHas('cities', function (Builder $query) use ($territoriesCode) {
+						$query->whereIn('department_code', $territoriesCode);
+					});
+				});
+				$query->whereNotNull('project_id');
+			});
 
 		$models
 			->select('ads.*')
@@ -410,7 +411,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 						$subQuery->whereNull('user_advisor_id');
 						$subQuery->whereNull('ad_status_id');
 					});
-					$query->where(function (Builder $query) use($territoryCodes){
+					$query->where(function (Builder $query) use ($territoryCodes) {
 						$query->whereHas('userPp', function (Builder $subQuery) {
 							$subQuery->whereNull('deleted_at');
 						});

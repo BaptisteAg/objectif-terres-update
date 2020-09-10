@@ -1,6 +1,6 @@
 @extends ('default')
 
-@section ('title', 'Mon espace primo-accueillant')
+@section ('title', 'Mon espace gestion des accompagnements')
 
 @section('header')
     @if(auth()->user()->role >= 3)
@@ -12,7 +12,7 @@
 
 @section('main-content')
     <div class="section pt-0">
-        <h1 class="title is-2 has-text-link">Bienvenue sur votre espace primo-accueillant <span
+        <h1 class="title is-2 has-text-link">Bienvenue sur votre espace gestion des accompagnements <span
                     class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
 
         @if(! auth()->user()->notifications->isEmpty())
@@ -261,7 +261,7 @@
                                                           data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">{{$ad->project->projectStatus->name}}</span>
                                                 @endif
                                             @else
-                                                <span class="tag is-warning">Non définis</span>
+                                                <span class="tag is-warning">Non défini</span>
                                             @endif
                                         @endif
                                     </td>
@@ -321,7 +321,7 @@
                                                           data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">{{$ad->project->supportStage->name}}</span>
                                                 @endif
                                             @else
-                                                <span class="tag is-warning">Non définis</span>
+                                                <span class="tag is-warning">Non défini</span>
                                             @endif
                                         @endif
                                     </td>
@@ -347,7 +347,7 @@
                                                           data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
                                                 @endif
                                             @else
-                                                <span class="tag is-warning">Non définis</span>
+                                                <span class="tag is-warning">Non défini</span>
                                             @endif
                                         @endif
                                     </td>

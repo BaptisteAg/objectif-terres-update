@@ -29,7 +29,7 @@
                     <a class="text_size large"
                        href="{{route('supervisor.show', Session::get('supervisor_dashboard_url') )}}">
                         <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-                        <span>Aller dans votre espace responsable territorial </span>
+                        <span>Aller dans votre tableau de bord </span>
                     </a>
                 </div>
             @elseif(session()->has('moderator_dashboard_url'))
@@ -37,7 +37,7 @@
                     <a class="text_size large"
                        href="{{route('moderator.show', Session::get('moderator_dashboard_url') )}}">
                         <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-                        <span>Aller dans votre espace modérateur </span>
+                        <span>Aller sur votre espace de gestion des annonces </span>
                     </a>
                 </div>
             @else
