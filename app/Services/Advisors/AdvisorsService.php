@@ -79,8 +79,9 @@ class AdvisorsService
 	 */
 	public function findAllSupportsByUserAdvisor(bool $toPaginate)
 	{
+		$advisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$advisorLocationTerritoryId = $this->userService->getCurrentUserTerritoryIds();
-		$ads = $this->repository->allProjectsInTerritories($advisorLocationTerritoryId, $toPaginate);
+		$ads = $this->repository->allProjectsInTerritories($advisorLocationTerritoryCodes, $advisorLocationTerritoryId, $toPaginate);
 		return $ads;
 	}
 
@@ -212,6 +213,7 @@ class AdvisorsService
 	 */
 	public function updateProjectDataKeysValues(Request $request)
 	{
+
 		$requestProjectDataKeyValues = array_filter($request->input('project_data_key'));
 
 		$previousValues = $this->adNotesRepository->findAllNotesWithPublicProjectDatKeysByAdId($request->input('ad_id'));

@@ -127,7 +127,11 @@ class AdvisorsController extends BaseController
 	 */
 	public function export()
 	{
-		return Excel::download(new AdvisorsExport($this->advisorsService->showForAdvisor(new Request())), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
+		ob_end_clean(); // this
+		ob_start();
+		return (new AdvisorsExport($this->advisorsService->showForAdvisor(new Request())))->download('invoices.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+
+//		return Excel::download(new AdvisorsExport($this->advisorsService->showForAdvisor(new Request())), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
 	}
 
 	/**
@@ -172,6 +176,10 @@ class AdvisorsController extends BaseController
 	 */
 	public function updateProjectDataKeysValues(Request $request)
 	{
+		if(!$request->has('project_data_key')){
+			return back()->with('warning', 'Une erreur est survenue, veuillez réessayer');
+
+		}
 		$this->advisorsService->updateProjectDataKeysValues($request);
 		return back()->with('success', 'L\'indicateur a bien été modifié');
 	}

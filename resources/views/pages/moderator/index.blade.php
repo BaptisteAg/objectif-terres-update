@@ -1,6 +1,6 @@
 @extends ('default')
 
-@section ('title', 'Mon espace modérateur')
+@section ('title', 'Gestion des annonces')
 
 @section('header')
     @if(auth()->user()->role >= 3)
@@ -14,7 +14,7 @@
 
 @section('main-content')
     <div class="section pt-10">
-        <h1 class="title is-2 has-text-link">Bienvenue sur votre espace modérateur
+        <h1 class="title is-2 has-text-link">Bienvenue sur votre espace de gestion des annonces
             <span class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span>
         </h1>
 
@@ -224,7 +224,7 @@
                                                       data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
                                             @endif
                                         @else
-                                            Non définis
+                                            Non défini
                                         @endif
                                     </td>
                                     <td><a href="{{route('ads.show', $attributionAd->ad->id)}}"><span>

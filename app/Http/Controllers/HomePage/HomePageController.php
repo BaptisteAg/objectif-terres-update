@@ -28,6 +28,7 @@ class HomePageController extends Controller
 
 	public function show(AdService $adService, RssService $rssService)
 	{
+
 		//TODO get the last ads with  : $lastAdsAdded = AttributionAdEvents::orderBy('id', 'desc')->take(2)->get();
 		//TODO get the last ads tag "Partenaires"
 //		$ads = [];
