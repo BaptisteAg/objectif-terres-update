@@ -87,14 +87,18 @@
             <nav class="level">
                 <div class="level-left">
                     <div class="">
-                        @if ($adsType === 'landOfferAd')
-                            <h1 class="title">Offres foncières</h1>
-                        @elseif($adsType === 'landSeekAd')
-                            <h1 class="title">Recherche de fonciers</h1>
-                        @elseif($adsType === 'jobOfferAd')
-                            <h1 class="title">Offres d'emploi</h1>
-                        @else
-                            <h1 class="title">Recherche d'emploi</h1>
+                        @if(isset($adsType))
+                            @if ($adsType === 'landOfferAd')
+                                <h1 class="title">Offres foncières</h1>
+                            @elseif($adsType === 'landSeekAd')
+                                <h1 class="title">Recherche de fonciers</h1>
+                            @elseif($adsType === 'jobOfferAd')
+                                <h1 class="title">Offres d'emploi</h1>
+                            @@elseif($adsType === 'jobSeekAd')
+                                <h1 class="title">Recherche d'emploi</h1>
+                                @else
+                                <h1 class="title">Toutes les annonces</h1>
+                            @endif
                         @endif
                         <h2 class="subtitle text_success">{{ ($ads->total()) }} annonces trouvées</h2>
                     </div>
@@ -176,6 +180,9 @@
                                         @endif
                                     </div>
                                     <ul class="custom-tags custom-list custom-list_v x-large">
+                                        @if(isset($ad->is_partner) && $ad->is_partner === 1 )
+                                            <li class="custom-tag warning">Partenaire Terre de Liens</li>
+                                        @endif
                                         <li class="custom-tag success">
                                             <i class="fas fa-map-marker-alt"></i>
                                             @if (is_null($ad->citiesList) and is_null($ad->departmentsList) and is_null($ad->regionsList))

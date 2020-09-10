@@ -31,19 +31,18 @@ class HomePageController extends Controller
 
 		//TODO get the last ads with  : $lastAdsAdded = AttributionAdEvents::orderBy('id', 'desc')->take(2)->get();
 		//TODO get the last ads tag "Partenaires"
-//		$ads = [];
-//		$firstAd = $this->adService->find(6);
-//		array_push($ads, $firstAd);
-//		$secondAd = $this->adService->find(22);
-//		array_push($ads, $secondAd);
+
 
 		$ads = Ad::whereHas('attributionAd', function (Builder $query) {
 			$query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
 		})->take(2)->orderBy('created_at', 'desc')->get();
 
+		$adsPartner = Ad::whereHas('attributionAd', function (Builder $query) {
+			$query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
+		})->where('is_partner', '=', 1)->take(2)->orderBy('created_at', 'desc')->get();
 
-		$cmsFaq= CmsFaq::where('page_name', '=', Route::currentRouteName())->get();
+		$cmsFaq = CmsFaq::where('page_name', '=', Route::currentRouteName())->get();
 		$rssNews = $rssService->getTdlNews();
-		return view('pages.homepage', compact('ads', 'rssNews','cmsFaq'));
+		return view('pages.homepage', compact('ads', 'adsPartner', 'rssNews', 'cmsFaq'));
 	}
 }

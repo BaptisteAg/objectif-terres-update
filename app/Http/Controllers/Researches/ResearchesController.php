@@ -14,12 +14,21 @@ class ResearchesController extends Controller
 	private $researchService;
 	private $researchNotification;
 
+	/**
+	 * ResearchesController constructor.
+	 * @param ResearchService $researchService
+	 * @param NotifyCreationAlertResearch $notifyCreationAlertResearch
+	 */
 	public function __construct(ResearchService $researchService, NotifyCreationAlertResearch $notifyCreationAlertResearch)
 	{
 		$this->researchService = $researchService;
 		$this->researchNotification = $notifyCreationAlertResearch;
 	}
 
+	/**
+	 * @param Request $request
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
 	public function index(Request $request)
 	{
 		list ($ads, $adsType) = $this->researchService->index($request);
@@ -27,6 +36,11 @@ class ResearchesController extends Controller
 		return view('pages.researches', compact('ads', 'adsType'));
 	}
 
+	/**
+	 * @param Request $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 * @throws \Throwable
+	 */
 	public function store(Request $request)
 	{
 		$research = $this->researchService->create($request);
@@ -34,6 +48,9 @@ class ResearchesController extends Controller
 		return redirect()->route('researches.show');
 	}
 
+	/**
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
 	public function show()
 	{
 		$researches = $this->researchService->findAllByUser(auth()->user()->id);
@@ -46,6 +63,10 @@ class ResearchesController extends Controller
 		return view('pages.savedResearches.listSavedResearches', compact('researches', 'numberAlertActives'));
 	}
 
+	/**
+	 * @param Research $research
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function destroy(Research $research)
 	{
 		if (auth()->id() !== $research->user_id) {
@@ -55,6 +76,10 @@ class ResearchesController extends Controller
 		return back()->with('success', 'La recherche a bien été supprimée.');
 	}
 
+	/**
+	 * @param Research $research
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function deleteAlert(Research $research)
 	{
 		if (auth()->id() !== $research->user_id) {
@@ -64,6 +89,10 @@ class ResearchesController extends Controller
 		return back()->with('success', 'L\'alerte a bien été supprimée');
 	}
 
+	/**
+	 * @param Request $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function notificationCreateAlert(Request $request)
 	{
 		$this->researchNotification->handle($request->input('research'));

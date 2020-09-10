@@ -12,10 +12,10 @@
 				<p><i class="far fa-check-circle"></i> Des ressources</p>
 				<p><i class="far fa-check-circle"></i> Des formations adaptées</p>
 			</div>
-			<a href="/" class="button is-dark is-uppercase is-medium">Contactez-nous</a>
+			<a href="/" class="button is-link is-uppercase is-medium">Contactez-nous</a>
 		</div>
 		<div class="column">
-			<figure><img src="https://picsum.photos/600/350" alt="Placeholder image"></figure>
+			<figure> <img aria-placeholder="placeholder" src="/images/placeholder-ad.png"></figure>
 			<div><p>En 2018, plus de xx fermiers ont pu s'installer ou céder leurs terres avec succès,
 					grâce à la platerforme Objectif Terre et au travail mené sur le terrain par
 					l'association Terre de Liens</p></div>
