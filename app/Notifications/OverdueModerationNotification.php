@@ -47,13 +47,13 @@ class OverdueModerationNotification extends Notification implements ShouldQueue
 	public function toMail($notifiable)
 	{
 		$message = $this->data;
-		$url = url('/mon-espace-moderateur/recherche?ad_statuses[0]=4');
+		$url = url('/gestion-des-annonces/recherche?ad_statuses[0]=4');
 		return (new MailMessage)
 			->from(env('MAIL_FROM_ADDRESS'), "Administration | Objectif Terres")
 			->subject('Des annonces sont en attente de modération')
 			->greeting('Bonjour,')
 			->line($message)
-			->action('Aller sur l\' espace modérateur', $url)
+			->action('Aller sur votre espace de gestion des annonces', $url)
 			->line('A bientôt sur Objectif Terres !')
 			->salutation('Cordialement, L\'équipe d\'Objectif Terres');
 	}

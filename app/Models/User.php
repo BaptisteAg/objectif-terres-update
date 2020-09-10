@@ -257,6 +257,7 @@ class User extends Authenticatable implements HasPresenter
 		return $this->morphedbyMany(Department::class, 'locationable_user');
 	}
 
+
 	/**
 	 * Get all regions 'location' for the user
 	 * @return MorphToMany
@@ -273,5 +274,6 @@ class User extends Authenticatable implements HasPresenter
 	{
 		return $this->hasMany(UserPermission::class, 'user_id');
 	}
+	
 
 }

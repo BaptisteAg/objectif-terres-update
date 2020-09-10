@@ -49,7 +49,7 @@
                                 </template>
                                 <template v-else>
                                     <a v-if="activeThread.ad.project_id !==null" target="_blank"
-                                       :href="'/mon-espace-primo-accueillant/espace-suivi/' + activeThread.ad.id"
+                                       :href="'/gestion-des-accompagnements/espace-suivi/' + activeThread.ad.id"
                                        class="">
                                         <button class="button basic secondary">
                                             <span class="icon is-small">

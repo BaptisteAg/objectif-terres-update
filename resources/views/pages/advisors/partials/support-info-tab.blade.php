@@ -278,8 +278,16 @@
     <div class="is-divider"></div>
     <div class="column">
         {!! Form::open(['route' => 'advisor.updateProjectDataKeysValues', 'method'=>'post']) !!}
-        <div class="content">
+        <div class="content is-flex" style="justify-content: center">
             <p class="has-text-centered title is-5">Indicateurs concernant cette demande</p>
+            <div class="control is-pulled-right ml-60">
+            <button {{$ad->userPp->trashed()? 'disabled' : ''}} class="button is-link">
+                    <span class="icon is-small">
+                        <i class="fas fa-save"></i>
+                    </span>
+                    <span>Sauvegarder</span>
+                </button>
+            </div>
         </div>
         @foreach($allProjectDataKeys as $projectDataKey)
             <div class="columns">
@@ -294,7 +302,7 @@
                     @if(!is_null($currentProjectData))
                         @if($projectDataKey->projectDataValues->count() >0)
                             <div class="select is-fullwidth">
-                                <select {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$projectDataKey->id}}]">
+                                <select {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$projectDataKey->id}}]" style="background-color: #4a4a4a82">
                                     <option selected disabled>Veuillez choisir...</option>
                                     @foreach ($projectDataKey->projectDataValues as $projectDataValue)
                                         @if(isset($currentProjectData->projectDataValue))
@@ -315,7 +323,7 @@
                             <input {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$projectDataKey->id}}]"
                                    class="input" type="text"
                                    value="{{$currentProjectKeyDataValues->where('project_data_key_id',$projectDataKey->id  )->first()->value}}"
-                                   placeholder="Saisir...">
+                                   placeholder="Saisir..." style="background-color: #4a4a4a82">
                         @endif
                     @else
                         @if($projectDataKey->projectDataValues->count() >0)
@@ -340,12 +348,12 @@
         <div class="control">
             <input type="hidden" name="ad_id" value="{{$ad->id}}">
             <input type="hidden" name="user_id" value="{{auth()->id()}}">
-            <button {{$ad->userPp->trashed()? 'disabled' : ''}} class="button is-link">
-                <span class="icon is-small">
-                    <i class="fas fa-save"></i>
-                </span>
-                <span>Sauvegarder</span>
-            </button>
+{{--            <button {{$ad->userPp->trashed()? 'disabled' : ''}} class="button is-link">--}}
+{{--                <span class="icon is-small">--}}
+{{--                    <i class="fas fa-save"></i>--}}
+{{--                </span>--}}
+{{--                <span>Sauvegarder</span>--}}
+{{--            </button>--}}
         </div>
         {!! Form::close() !!}
     </div>

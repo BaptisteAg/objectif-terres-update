@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Trix;
 use NumaxLab\NovaCKEditor5Classic\CKEditor5Classic;
 
 class CmsPage extends Resource
