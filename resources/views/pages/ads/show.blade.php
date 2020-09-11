@@ -103,7 +103,7 @@
 
             @if($ad->canEdit)
                 <div class="is-pulled-right">
-                    <a href="{{route('ads.edit', ["id" => $ad->id])}}" class="button form-button basic warning">
+                    <a href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ["id" => $ad->id]) }}" class="button form-button basic warning">
                         <span class="icon is-small">
                             <i class="fas fa-pen"></i>
                         </span>

@@ -331,7 +331,7 @@
                             ]) !!}
                             non
                         </div>
-                        <div v-show="formInput.hasBuildings === '1'">
+                        <div v-show="formInput.hasBuildings == '1'">
                             <div class="field">
                                 <label for='land_offer[building][description]'
                                        class="tooltip has-tooltip-multiline has-tooltip-left"
@@ -414,7 +414,7 @@
                             ]) !!}
                             non
                         </div>
-                        <div v-show="formInput.hasHouses === '1'">
+                        <div v-show="formInput.hasHouses == '1'">
                             <div class="field">
                                 <label for='land_offer[house][description]'
                                        class="tooltip has-tooltip-multiline has-tooltip-left"
@@ -711,6 +711,10 @@
                         @endif
 
                         @include('pages.ads.partials.inputs.documents')
+
+                        @if(!empty($isSupportRequest))
+                            @include('pages.ads.partials.inputs.support-request-text')
+                        @endif
 
                         @if(!$isSupportRequest)
                             @include('pages.ads.partials.inputs.accept-share-contact-infos')

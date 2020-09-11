@@ -46,7 +46,7 @@
 
 				@if(auth()->user()->supportRequest)
 					<div class="column is-3 ">
-						<a class="" href="{{route("ads.show", ["id" => auth()->user()->supportRequest->id])}}">
+						<a class="" href="{{route("support-request.show")}}">
 							<div class="card custom-card ">
 								<div class="card-content">
 									<div class="media">
