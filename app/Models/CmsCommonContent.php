@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Documentable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -30,6 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CmsCommonContent extends Model
 {
+	use Documentable;
 	/**
 	 * The table associated with the model.
 	 *
@@ -41,7 +43,7 @@ class CmsCommonContent extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'name', 'description',  'slug', 'pages_name', 'content', 'created_at', 'updated_at'
+		'name', 'description',  'slug', 'pages_name', 'content', 'created_at', 'updated_at', "has_documents"
 	];
 
 
