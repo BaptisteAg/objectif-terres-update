@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Notifications\NewAdToModerateNotification;
 use App\Notifications\NewSupportRequestNotification;
 use App\Notifications\SupportRequestAttributionNotification;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 class SupportRequestsController extends BaseController
@@ -121,4 +122,17 @@ class SupportRequestsController extends BaseController
 
         return view('pages.ads.show', $vars);
     }
+
+//	/**
+//	 * @param Request $request
+//	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+//	 * @throws \Throwable
+//	 */
+//	public function save(AdRequest $request)
+//	{
+//		$data = $request->validated();
+//		$data["is_draft"] = 1;
+//		return $this->adService->store($data)
+//			->with('success', 'Votre demande d\'accompagnement a bien été sauvegardée.');
+//	}
 }

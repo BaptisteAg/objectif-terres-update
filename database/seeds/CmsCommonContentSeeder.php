@@ -21,6 +21,7 @@ class CmsCommonContentSeeder extends Seeder
 				'content' => '<span>' . $faker->sentence() . '</span>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'has_documents' => 0
 			],
 			[
 				'name' => 'Téléchargement guide',
@@ -30,6 +31,7 @@ class CmsCommonContentSeeder extends Seeder
 				'content' => '<h2>Titre Section</h2><p>' . $faker->paragraphs(2, true) . '</p>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'has_documents' => 1
 			],
 			[
 				'name' => '"Par où démarrer"',
@@ -39,6 +41,7 @@ class CmsCommonContentSeeder extends Seeder
 				'content' => '<h2>Titre Section</h2><p>' . $faker->paragraphs(2, true) . '</p>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'has_documents' => 0
 			],
 			[
 				'name' => '"Par où démarrer"',
@@ -48,6 +51,7 @@ class CmsCommonContentSeeder extends Seeder
 				'content' => '<h2>Titre Section</h2><p>' . $faker->paragraphs(2, true) . '</p>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'has_documents' => 0
 			],
 			[
 				'name' => '"Par où démarrer"',
@@ -57,6 +61,7 @@ class CmsCommonContentSeeder extends Seeder
 				'content' => '<h2>Titre Section</h2><p>' . $faker->paragraphs(2, true) . '</p>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'has_documents' => 0
 			], [
 				'name' => '"Par où démarrer"',
 				"description" => 'Texte troisième étape',
@@ -65,6 +70,7 @@ class CmsCommonContentSeeder extends Seeder
 				'content' => '<h2>Titre Section</h2><p>' . $faker->paragraphs(2, true) . '</p>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'has_documents' => 0
 			],
 			[
 				'name' => '"Donner-vous plus de chances"',
@@ -74,6 +80,7 @@ class CmsCommonContentSeeder extends Seeder
 				'content' => '<h2>Titre Section</h2><p>' . $faker->paragraphs(2, true) . '</p>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'has_documents' => 0
 			],
 			[
 				'name' => 'Chiffres clés',
@@ -83,6 +90,7 @@ class CmsCommonContentSeeder extends Seeder
 				'content' => '<h2>Titre Section</h2><p>' . $faker->paragraphs(2, true) . '</p>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'has_documents' => 0
 			], [
 				'name' => 'Chiffres clés',
 				"description" => 'Premier chiffre',
@@ -91,6 +99,7 @@ class CmsCommonContentSeeder extends Seeder
 				'content' =>  $faker->numberBetween(0, 100) ,
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'has_documents' => 0
 			], [
 				'name' => 'Chiffres clés',
 				"description" => 'Texte premier chiffre',
@@ -99,6 +108,7 @@ class CmsCommonContentSeeder extends Seeder
 				'content' => '<span>' . $faker->sentence() . '</span>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'has_documents' => 0
 			], [
 				'name' => 'Chiffres clés',
 				"description" => 'Deuxième chiffre',
@@ -107,6 +117,7 @@ class CmsCommonContentSeeder extends Seeder
 				'content' =>  $faker->numberBetween(0, 100) ,
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'has_documents' => 0
 			],
 			[
 				'name' => 'Chiffres clés',
@@ -116,6 +127,7 @@ class CmsCommonContentSeeder extends Seeder
 				'content' => '<span>' . $faker->sentence() . '</span>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'has_documents' => 0
 			],
 			[
 				'name' => 'Chiffres clés',
@@ -125,6 +137,7 @@ class CmsCommonContentSeeder extends Seeder
 				'content' =>  $faker->numberBetween(0, 100) ,
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'has_documents' => 0
 			],
 			[
 				'name' => 'Chiffres clés',
@@ -134,6 +147,7 @@ class CmsCommonContentSeeder extends Seeder
 				'content' => '<span>' . $faker->sentence() . '</span>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'has_documents' => 0
 			],
 		]);
 	}

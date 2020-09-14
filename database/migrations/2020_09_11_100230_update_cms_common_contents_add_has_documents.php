@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateCmsCommonContentAddHasDocuments extends Migration
+class UpdateCmsCommonContentsAddHasDocuments extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class UpdateCmsCommonContentAddHasDocuments extends Migration
      */
     public function up()
     {
-		Schema::table('cms_common_content', function (Blueprint $table) {
+		Schema::table('cms_common_contents', function (Blueprint $table) {
 			$table->boolean('has_documents')->default('0')->nullable();
 		});
     }
@@ -25,7 +25,7 @@ class UpdateCmsCommonContentAddHasDocuments extends Migration
      */
     public function down()
     {
-		Schema::table('cms_common_content', function (Blueprint $table) {
+		Schema::table('cms_common_contents', function (Blueprint $table) {
 			$table->removeColumn('has_documents');
 		});
     }
