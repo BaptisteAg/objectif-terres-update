@@ -118,7 +118,14 @@
                         </p>
                     @endif
                 </div>
-
+                @if($ad->is_activity_transfer)
+                    <div class="content">
+                        <p>
+                            <span class="is-size-5  has-text-black">Transfert d'activité : </span>
+                            <span class="subtitle"> {{ $ad->is_activity_transfer ? "Oui" : "Non" }} </span>
+                        </p>
+                    </div>
+                @endif
                 {{--				<div class="content">--}}
                 {{--					<p><span class="is-size-5 is-capitalized has-text-black">Altitude : </span>--}}
                 {{--						@if($ad->landOfferAd->altitude)--}}
@@ -210,6 +217,14 @@
 </div>
 
 <hr class="navbar-divider">
+
+@if($isSupportRequest && $ad->support_request_text)
+    <div class="content">
+        <h3 class="title is-3">Résumé de votre projet</h3>
+        <p>  {!! nl2br($ad->support_request_text ?? "") !!} </p>
+    </div>
+@endif
+
 <div class="content">
     <h3 class="title is-3 has-text-centered">Description</h3>
     <div class="columns is-multiline is-mobile is-centered">

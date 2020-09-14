@@ -131,7 +131,7 @@
 
 @include('layouts.footer')
 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ mix('js/app.js') }}"></script>
 <script defer>
     const vueHeader = new Vue({
         el: '#vue-header',

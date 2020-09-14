@@ -52,7 +52,7 @@
             },
             vuelidate: {
                 type: Object
-            },
+            }
         },
         data() {
             return {

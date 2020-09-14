@@ -9,7 +9,8 @@ export default {
     props: {
         oldValues: Object,
         isInputDisabled: Boolean,
-        isSupportRequest: Boolean
+        isSupportRequest: Boolean,
+        supportRequestText: String
     },
     data() {
         return {
@@ -121,7 +122,7 @@ export default {
             return Object.keys(this.formInput).find(inputName => {
                 if (this.$v.formInput[inputName] && this.$v.formInput[inputName].$error) {
                     let input = this.findInputElement(this.$refs[inputName]);
-                    console.log(input);
+                    console.log(inputName);
                     const $form = this.$refs.formWizard;
 
                     if (input) {
