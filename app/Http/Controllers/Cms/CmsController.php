@@ -18,14 +18,14 @@ class CmsController extends Controller
 	{
 		$cmsFaq = new Collection();
 		$cmsCommonContent = new Collection();
-		$pageContent = CmsPage::where('slug', 'like', Route::currentRouteName() . '%')->get()->keyBy('slug');
+		$pageContent = CmsPage::where('slug', 'like', Route::currentRouteName() . '%')->with('documents')->get()->keyBy('slug');
 
 		if ($hasFaqSection) {
 			$cmsFaq = CmsFaq::where('page_name', '=', Route::currentRouteName())->get();
 		}
 
 		if ($hasCmsCommonContent) {
-			$cmsCommonContent = CmsCommonContent::where('pages_name', 'like', '%' . Route::currentRouteName() . '%')->get()->groupBy('name');
+			$cmsCommonContent = CmsCommonContent::where('pages_name', 'like', '%' . Route::currentRouteName() . '%')->with('documents')->get()->groupBy('name');
 		}
 		return compact('pageContent', "cmsFaq", "cmsCommonContent");
 	}

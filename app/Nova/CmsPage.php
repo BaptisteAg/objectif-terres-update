@@ -3,11 +3,11 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Trix;
 use NumaxLab\NovaCKEditor5Classic\CKEditor5Classic;
 
 class CmsPage extends Resource
@@ -81,7 +81,10 @@ class CmsPage extends Resource
 			ID::make()->sortable(),
 			Text::make('Nom de la page', 'page_name')->sortable()->readonly(true),
 			Text::make('Description', 'description')->readonly(true),
-			CKEditor5Classic::make('Content')->withFiles('public')
+			MorphToMany::make('Documents', 'documents', 'App\Nova\Document'),
+			CKEditor5Classic::make('Content')->withFiles('public')->canSee(function ($request) {
+				return isset($this->has_documents) && $this->has_documents === 0;
+			})
 				->options([
 					"toolbar" => [
 						'heading',
