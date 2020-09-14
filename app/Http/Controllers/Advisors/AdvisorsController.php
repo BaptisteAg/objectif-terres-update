@@ -129,8 +129,7 @@ class AdvisorsController extends BaseController
 	{
 		ob_end_clean(); // this
 		ob_start();
-		return (new AdvisorsExport($this->advisorsService->showForAdvisor(new Request())))->download('invoices.xlsx', \Maatwebsite\Excel\Excel::XLSX);
-
+		return (new AdvisorsExport($this->advisorsService->showForAdvisor(new Request())))->download('export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
 //		return Excel::download(new AdvisorsExport($this->advisorsService->showForAdvisor(new Request())), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
 	}
 
