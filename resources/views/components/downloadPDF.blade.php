@@ -10,14 +10,19 @@
                                     {!! $cmsCommonContent['Téléchargement guide'][0]->content !!}
                                 @endif
                             </div>
-                            <div class="row is-full">
-                                <button class="button basic small primary  waves-effect waves-button waves-float waves-light">
-                                    TELECHARGER
-                                </button>
-                            </div>
+                            @if(($cmsCommonContent['Téléchargement guide'][0]->documents->count()))
+                                <div class="row is-full">
+                                    <a href='{{"/".$cmsCommonContent['Téléchargement guide'][0]->documents[0]->path}}' download="{{$cmsCommonContent['Téléchargement guide'][0]->documents[0]->name}}" >
+{{--                                        <button class="button basic small primary  waves-effect waves-button waves-float waves-light">--}}
+{{--                                            TELECHARGER--}}
+{{--                                        </button>--}}
+                                        looooooooooooool
+                                    </a>
+                                </div>
+                            @endif
                         </div>
                         <div class="column is-6 guide-pdf">
-                            <a >
+                            <a>
                                 <img src="/images/placeholder-ad.png" alt="Placeholder image">
                             </a>
                         </div>
