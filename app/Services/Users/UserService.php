@@ -206,7 +206,7 @@ class UserService
 	{
 		return User::filterSubLocations('departments', $territoryIds, 'departments.territory_id')
 			->where('role', '>=', $roleId)
-			->with('departments', 'departments.territory')
+			->with('departments', 'departments.territory', 'userPermissions')
 			->get();
 	}
 

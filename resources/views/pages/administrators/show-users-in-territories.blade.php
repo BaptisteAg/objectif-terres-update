@@ -31,8 +31,18 @@
                                 <td>
                                     @if(count($users) >0)
                                         @foreach($users as $user)
-                                            <p>{{$user->first_name}} {{$user->name}} - <span
-                                                        class="is-italic">{{$user->roleFullName}}</span></p>
+                                            <p>{{$user->first_name}} {{$user->name}}
+                                                -
+                                                <span class="is-italic">{{$user->roleFullName}}</span>
+                                                @if($user->userPermissions->count())
+                                                    @foreach($user->userPermissions as $permission )
+                                                        -
+                                                    <span class="is-size-7">{{\App\Models\UserPermission::$permissions[$permission->id]}}</span>
+                                                    @endforeach
+
+                                                @endif
+
+                                            </p>
 
                                         @endforeach
                                     @else
