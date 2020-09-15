@@ -120,7 +120,7 @@ class TerritorySeeder extends Seeder
 				"updated_at" => \Carbon\Carbon::now()
 			],[
 				'id' => 21,
-				'name' => ' Rhône-Alpes',
+				'name' => 'Rhône-Alpes',
 				"created_at" => \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
 			],

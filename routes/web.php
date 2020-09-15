@@ -130,6 +130,10 @@ Route::middleware('moderator')->prefix('gestion-des-annonces')->name('moderator.
 	});
 });
 
+Route::middleware('admin')->prefix('administration')->name('administrator.')->namespace('Administrators')->group(function (){
+	Route::get('liste-utilisateurs-par-territoires', 'AdministratorController@showUsersByTerritories')->name('usersByTerritories');
+});
+
 Route::middleware('supervisor')->prefix('mon-tableau-de-bord')->name('supervisor.')->namespace('Supervisors')->group(function () {
 	Route::get('/', 'SupervisorsController@index')->name('index');
 	Route::get('recherche', 'SupervisorsController@show')->name('show');

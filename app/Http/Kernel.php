@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\HttpsProtocol;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -62,6 +63,7 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
 		'moderator'=>\App\Http\Middleware\ModeratorMiddleware::class,
 		'advisor' =>\App\Http\Middleware\AdvisorMiddleware::class,
+		'admin'=>\App\Http\Middleware\AdminMiddleware::class,
 		'supervisor' =>\App\Http\Middleware\SupervisorMiddleware::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

@@ -158,5 +158,5 @@ class SupportRequestsController extends BaseController
 
         return view('pages.ads.show', $vars);
     }
-    
+
 }
