@@ -73,5 +73,7 @@ class SpipMigrate extends Command
                 $this->spipService->getLocalUserMapping($auteur)
             );
         });
+
+
     }
 }
