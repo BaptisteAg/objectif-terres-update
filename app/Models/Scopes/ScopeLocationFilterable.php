@@ -41,7 +41,6 @@ trait ScopeLocationFilterable
 	 */
 	function scopeFilterAdsTerritoryLocations(Builder $query, array $territoriesCode)
 	{
-
 		$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
 			$query->whereIn('code', $territoriesCode);
 		});
