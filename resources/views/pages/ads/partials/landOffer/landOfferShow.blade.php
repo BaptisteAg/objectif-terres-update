@@ -23,7 +23,7 @@
                     @endif
                 </div>
                 <div class="content">
-                    <p><span class="is-size-5   ">Publié par : </span>
+                    <p><span class="is-size-5 has-text-black">Publié par : </span>
                         @auth()
                             @if(auth()->user()->role >= 1 )
                                 <span class="subtitle">
@@ -46,23 +46,24 @@
                 {{--					<p><span class="is-size-5 is-capitalized has-text-black">Catégorie : </span><span--}}
                 {{--								class="subtitle">{{$ad->ad_type_full_name}}</span></p>--}}
                 {{--				</div>--}}
-                @if(auth()->user()->role >=2)
-                    @if(isset($ad->support_request_id_region))
-                        <div class="content">
-                            <p>
-                                <span class="is-size-5 is-capitalized has-text-black">Territoire </span>
-                                :
-                                <span class="subtitle">{{$ad->supportRequestIdRegion->name}}</span>
-                            </p>
-                        </div>
+                @auth
+                    @if(auth()->user()->role >=2)
+                        @if(isset($ad->support_request_id_region))
+                            <div class="content">
+                                <p>
+                                    <span class="is-size-5 is-capitalized ad-show-feature-label">Territoire </span>
+                                    :
+                                    <span class="subtitle">{{$ad->supportRequestIdRegion->name}}</span>
+                                </p>
+                            </div>
+                        @endif
                     @endif
-                @endif
+                @endauth
                 @if($ad->cities->count())
                     @if($ad->landOfferAd->accept_use_zip_code)
                         <div class="content">
                             <p><span class="is-size-5 is-capitalized has-text-black">Code postal : </span><span
-                                        class="subtitle">{{$ad->cities[0]->zip_code }} ({{$ad->cities[0]->name }}
-                                    )</span>
+                                        class="subtitle">{{$ad->cities[0]->zip_code }} ({{$ad->cities[0]->name }})</span>
                             </p>
                         </div>
                     @else
@@ -98,7 +99,7 @@
                 <div class="content">
                     @if ($ad->landOfferAd->offerGenres->count() >=1)
                         <p>
-                            <span class="is-size-5  has-text-black">Type d'offre : </span>
+                            <span class="is-size-5  has-text-black">Mode de cession : </span>
                             <span class="subtitle">
                                 {{$ad->landOfferAd->offerGenres->pluck('name')->implode(', ') }}
                             </span>
@@ -117,7 +118,14 @@
                         </p>
                     @endif
                 </div>
-
+                @if($ad->is_activity_transfer)
+                    <div class="content">
+                        <p>
+                            <span class="is-size-5  has-text-black">Transfert d'activité : </span>
+                            <span class="subtitle"> {{ $ad->is_activity_transfer ? "Oui" : "Non" }} </span>
+                        </p>
+                    </div>
+                @endif
                 {{--				<div class="content">--}}
                 {{--					<p><span class="is-size-5 is-capitalized has-text-black">Altitude : </span>--}}
                 {{--						@if($ad->landOfferAd->altitude)--}}
@@ -209,6 +217,14 @@
 </div>
 
 <hr class="navbar-divider">
+
+@if($isSupportRequest && $ad->support_request_text)
+    <div class="content">
+        <h3 class="title is-3">Résumé de votre projet</h3>
+        <p>  {!! nl2br($ad->support_request_text ?? "") !!} </p>
+    </div>
+@endif
+
 <div class="content">
     <h3 class="title is-3 has-text-centered">Description</h3>
     <div class="columns is-multiline is-mobile is-centered">
@@ -234,14 +250,6 @@
         @endif
     </div>
 </div>
-<div class="content">
-    <h3 class="title is-3">Description du projet</h3>
-    <p>  {!! nl2br($ad->about_project_content ??"") !!}</p>
-</div>
-<div class="content">
-    <h3 class="title is-3">A propos du porteur de projet</h3>
-    <p> {!! nl2br($ad->about_content ?? "") !!}</p>
-</div>
 @if($ad->landOfferAd->sau_description)
     <div class="content">
         <h3 class="title is-3">Description SAU</h3>
@@ -260,6 +268,16 @@
         <p>  {!! nl2br($ad->landOfferAd->test_description ?? "") !!}</p>
     </div>
 @endif
+
+<div class="content">
+    <h3 class="title is-3">Description du projet</h3>
+    <p>  {!! nl2br($ad->about_project_content ??"") !!}</p>
+</div>
+<div class="content">
+    <h3 class="title is-3">A propos de l'annonceur</h3>
+    <p> {!! nl2br($ad->about_content ?? "") !!}</p>
+</div>
+
 
 <div id="map_ad"></div>
 

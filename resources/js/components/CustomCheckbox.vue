@@ -5,7 +5,7 @@
                :name="name"
                :value="inputValue"
                :disabled="disabled"
-                v-model="checked">
+               v-model="checked">
         <span class="cradio-checkmark">
             <slot></slot>
         </span>
@@ -106,23 +106,17 @@
                 default: _ => []
             }
         },
-        data() {
-            return {
-                checked: this.value
-            };
-        },
-        watch: {
-            checked(newValue) {
-                if(Array.isArray(newValue)) {
-                    if(newValue.length) {
-                        this.$emit('input', this.value.concat(newValue))
+        computed: {
+            checked: {
+                get() {
+                    return Array.isArray(this.value) ? this.value.map(v => v.toString()) : this.value.toString()
+                },
+                set(newValue) {
+                    if (Array.isArray(newValue)) {
+                        this.$emit('input', newValue);
+                    } else {
+                        this.$emit('input', this.inputValue)
                     }
-                    else {
-                        this.$emit('input', this.value.filter(v => v !== this.inputValue))
-                    }
-                }
-                else {
-                    this.$emit('input', this.inputValue)
                 }
             }
         }

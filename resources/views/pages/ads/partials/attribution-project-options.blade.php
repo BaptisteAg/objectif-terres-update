@@ -2,7 +2,7 @@
 <div class="box has-text-centered">
     <div class="container">
         <p class="title is-2 has-text-centered">Suivi de la demande d'accompagnement</p>
-        @if($ad->isAdInUserTerritories($currentUser->userDepartmentsCodes, $currentUser->userTerritoriesId) || $ad->attributionAd->user_supervisor_id === $currentUser->id)
+        @if($ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->userDepartmentsCodes) || $ad->attributionAd->user_supervisor_id === $currentUser->id)
             @if($ad->isProjectAttributedToAdvisor)
                 <p class="">Cette demande est attribuée à
                     <strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>.
@@ -19,6 +19,14 @@
                 <p class="">Le responsable territorial de cette demande est
                     <strong>{{$ad->attributionAd->userSupervisor->first_name}} {{$ad->attributionAd->userSupervisor->name}}</strong>.
                 </p>
+            @elseif(isset($ad->support_request_territory_id))
+                <p class="">Cette demande d'accomapgnement concerne les responsables territoriaux de :
+                    <strong>{{$ad->supportRequestTerritoryId->name}} </strong>.
+                </p>
+            @else
+                <p class="">Cette demande d'accomapgnement ne concerne pas votre terriotire.
+                </p>
+
             @endif
 
             @if($ad->isProjectAttributedToAdvisor)
@@ -32,13 +40,12 @@
                     </span>
                     <span>Accéder à l'espace de suivi</span>
                 </a>
-
             @endif
 
         @endif
     </div>
     <br>
-    @if($ad->attributionAd->user_supervisor_id === $currentUser->id || $ad->isAdInUserTerritories($currentUser->userDepartmentsCodes,$currentUser->userRegionsId ))
+    @if($ad->attributionAd->user_supervisor_id === $currentUser->id || $ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->userDepartmentsCodes ))
         <div class="columns is-centered ">
             <div class="column is-half has-text-centered ">
                 <div class="field">

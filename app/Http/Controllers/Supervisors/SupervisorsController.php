@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Supervisors;
 use App\Exports\Supervisors\SupervisorsExport;
 use App\Http\Controllers\Controller;
 use App\Models\BioCertification;
+use App\Models\CmsFaq;
+use App\Models\CmsPage;
 use App\Models\JobOfferType;
 use App\Models\ProductionGenre;
 use App\Models\ProjectDataKey;
@@ -20,6 +22,7 @@ use DateTime;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -35,10 +38,12 @@ class SupervisorsController extends BaseController
 	public function index(Request $request)
 	{
 		$request->session()->forget('_old_input');
+		$request->session()->forget('moderator_dashboard_url');
 		$request->session()->forget('supervisor_dashboard_url');
 		$ads = $this->adService->findAllNotAssignedProjectsByUserSupervisor(false);
 		$vars = $this->getSupervisorDashboardVars();
 		$vars['ads'] = $ads;
+		$vars['currentUser'] = auth()->user();
 		return view('pages.supervisors.index', $vars);
 	}
 
@@ -65,7 +70,8 @@ class SupervisorsController extends BaseController
 	public function help()
 	{
 		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
-		return view('pages.supervisors.help', compact('users'));
+		$pageContent = CmsPage::where('slug', 'like', '%'.'ressoures-responsable-territorial'. '%')->first();
+		return view('pages.supervisors.help', compact('users', 'pageContent'));
 	}
 
 	/**

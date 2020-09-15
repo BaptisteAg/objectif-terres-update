@@ -8,29 +8,33 @@
                         @foreach($ad->images as $document)
                             <div class="card">
                                 <div class="card-image">
-                                    <a href="{{route('ads.show', $ad->id)}}">
-                                        <figure class="image is-2by1">
-                                            @if($document->path === "0")
-                                                <img src="https://picsum.photos/480/320" alt="picsum">
-                                            @else
-                                                <img src="{{URL::asset($document->path)}}"
-                                                     alt="Placeholder image">
-                                            @endif
-                                        </figure>
-                                    </a>
+                                    <figure class="image ">
+                                        @if($document->path === "0")
+                                            <img class="custom-carousel-image-size" src="https://picsum.photos/480/320"
+                                                 alt="picsum">
+                                        @else
+                                            <img class="custom-carousel-image-size"
+                                                 data-source="{{URL::asset($document->path)}}"
+                                                 src="{{URL::asset($document->path)}}" style="cursor : pointer;"
+                                                 alt="Placeholder image">
+                                        @endif
+                                    </figure>
                                 </div>
                             </div>
                         @endforeach
                     @else
                         <div class="card carousel-item  ad-carousel">
                             <div class="card-image">
-                                <figure class="image is-2by1">
-                                    <img src="/images/placeholder-ad.png">
+                                <figure class="image is-3by2">
+                                    <img src="/images/new-placeholder-ad.png">
                                 </figure>
                             </div>
                         </div>
                     @endif
                 </div>
+            </div>
+            <div id="image-extended-container" class="overlay">
+                <img id="image-extended" src="/images/new-placeholder-ad.png">
             </div>
         </div>
         <div class="column">
@@ -45,10 +49,10 @@
                 <p><span class="is-italic">Catégorie</span>
                     : {{$ad->ad_type_full_name ?? "Non renseignée"}} </p>
                 @if(isset($ad->support_request_territory_id))
-                        <p>
-                            <span class="is-italic">Territoire </span>
-                            : {{$ad->supportRequestTerritoryId->name}}
-                        </p>
+                    <p>
+                        <span class="is-italic">Territoire </span>
+                        : {{$ad->supportRequestTerritoryId->name}}
+                    </p>
                 @endif
                 @if(isset($ad->landOfferAd))
                     <p><span class="is-italic">Localisations</span>:
@@ -97,7 +101,7 @@
             </div>
         </div>
     </div>
-    <div class="content">
+    <div class="content mt-40">
         @if(isset($ad->landOfferAd))
             <div class="columns">
                 <div class="column is-3">
@@ -274,25 +278,33 @@
     <div class="is-divider"></div>
     <div class="column">
         {!! Form::open(['route' => 'advisor.updateProjectDataKeysValues', 'method'=>'post']) !!}
-        <div class="content">
+        <div class="content is-flex" style="justify-content: center">
             <p class="has-text-centered title is-5">Indicateurs concernant cette demande</p>
+            <div class="control is-pulled-right ml-60">
+            <button {{$ad->userPp->trashed()? 'disabled' : ''}} class="button is-link">
+                    <span class="icon is-small">
+                        <i class="fas fa-save"></i>
+                    </span>
+                    <span>Sauvegarder</span>
+                </button>
+            </div>
         </div>
-        @foreach($publicProjectDataKeys as $publicProjectDataKey)
+        @foreach($allProjectDataKeys as $projectDataKey)
             <div class="columns">
                 <div class="column is-one-third">
-                    <p>{{$publicProjectDataKey->name}}</p>
+                    <p>{{$projectDataKey->name}}</p>
                 </div>
                 <div class="column">
                     @php
-                        $currentProjectData = $currentProjectKeyDataValues->where('project_data_key_id',$publicProjectDataKey->id)->first();
+                        $currentProjectData = $currentProjectKeyDataValues->where('project_data_key_id',$projectDataKey->id)->first();
                     @endphp
 
                     @if(!is_null($currentProjectData))
-                        @if($publicProjectDataKey->projectDataValues->count() >0)
+                        @if($projectDataKey->projectDataValues->count() >0)
                             <div class="select is-fullwidth">
-                                <select {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]">
+                                <select {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$projectDataKey->id}}]" style="background-color: #4a4a4a82">
                                     <option selected disabled>Veuillez choisir...</option>
-                                    @foreach ($publicProjectDataKey->projectDataValues as $projectDataValue)
+                                    @foreach ($projectDataKey->projectDataValues as $projectDataValue)
                                         @if(isset($currentProjectData->projectDataValue))
                                             @if($projectDataValue->id === $currentProjectData->projectDataValue->id)
                                                 <option selected value="{{$projectDataValue->value}}">
@@ -308,23 +320,23 @@
                                 </select>
                             </div>
                         @else
-                            <input {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]"
+                            <input {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$projectDataKey->id}}]"
                                    class="input" type="text"
-                                   value="{{$currentProjectKeyDataValues->where('project_data_key_id',$publicProjectDataKey->id  )->first()->value}}"
-                                   placeholder="Saisir...">
+                                   value="{{$currentProjectKeyDataValues->where('project_data_key_id',$projectDataKey->id  )->first()->value}}"
+                                   placeholder="Saisir..." style="background-color: #4a4a4a82">
                         @endif
                     @else
-                        @if($publicProjectDataKey->projectDataValues->count() >0)
+                        @if($projectDataKey->projectDataValues->count() >0)
                             <div class="select  is-fullwidth">
-                                <select {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]">
+                                <select {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$projectDataKey->id}}]">
                                     <option selected disabled>Veuillez choisir...</option>
-                                    @foreach ($publicProjectDataKey->projectDataValues as $projectDataValue)
+                                    @foreach ($projectDataKey->projectDataValues as $projectDataValue)
                                         <option value="{{$projectDataValue->value}}">{{$projectDataValue->value}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         @else
-                            <input {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$publicProjectDataKey->id}}]"
+                            <input {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$projectDataKey->id}}]"
                                    class="input" type="text"
                                    placeholder="Saisir...">
                         @endif
@@ -336,12 +348,12 @@
         <div class="control">
             <input type="hidden" name="ad_id" value="{{$ad->id}}">
             <input type="hidden" name="user_id" value="{{auth()->id()}}">
-            <button {{$ad->userPp->trashed()? 'disabled' : ''}} class="button is-link">
-                <span class="icon is-small">
-                    <i class="fas fa-save"></i>
-                </span>
-                <span>Sauvegarder</span>
-            </button>
+{{--            <button {{$ad->userPp->trashed()? 'disabled' : ''}} class="button is-link">--}}
+{{--                <span class="icon is-small">--}}
+{{--                    <i class="fas fa-save"></i>--}}
+{{--                </span>--}}
+{{--                <span>Sauvegarder</span>--}}
+{{--            </button>--}}
         </div>
         {!! Form::close() !!}
     </div>

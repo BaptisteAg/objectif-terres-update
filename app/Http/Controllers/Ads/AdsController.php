@@ -32,66 +32,9 @@ class AdsController extends BaseController
 	 */
 	public function edit(int $id)
 	{
-		$ad = $this->adService->find($id);
+        $ad = $this->adService->find($id);
 
-		if (auth()->id() !== $ad->user_pp_id) {
-			return abort(404);
-		}
-
-		$selected_zones = json_encode(array_filter(array_merge(
-			array_map($this->locationService->getResultRenderer('regions'), $ad->regions->toArray()),
-			array_map($this->locationService->getResultRenderer('departments'), $ad->departments->toArray()),
-			array_map($this->locationService->getResultRenderer('cities'), $ad->cities->toArray())
-		)));
-		$locationable = array_filter([
-			"cities" => $ad->cities->pluck('id')->toArray(),
-			"departments" => $ad->departments->pluck('id')->toArray(),
-			"regions" => $ad->regions->pluck('id')->toArray()
-		]);
-		$locationable_radius = $ad->cities->count() ? $ad->cities->first()->radius : '';
-
-		$documents = $ad->documents->toJson();
-		$document_ids = $ad->documents->pluck("id")->toArray();
-
-		$vars = $this->getCreateFormVars();
-
-		if (!old('ad_type')) {
-			$vars["old"] = array_merge(
-				[
-					'ad_type' => $this->adService->getAdType($ad),
-
-					'land_seek' => $ad->landSeekAd ?
-						array_merge($ad->landSeekAd->toArray(), [
-							"buildings" => $ad->landSeekAd->buildings->pluck("requirement.id", "buildingType.id")->toArray(),
-							"production_genres" => $ad->landSeekAd->productionGenres->pluck("id")->toArray()
-						]) : null,
-
-					'land_offer' => $ad->landOfferAd ?
-						array_merge($ad->landOfferAd->toArray(), [
-							"bio_certifications" => $ad->landOfferAd->bioCertifications->pluck("id")->toArray(),
-							"production_genres" => $ad->landOfferAd->productionGenres->pluck("id")->toArray(),
-							"production_genres_wanted" => $ad->landOfferAd->productionGenresPossible->pluck("id")->toArray(),
-							"offer_genres" => $ad->landOfferAd->offerGenres->pluck("id")->toArray(),
-						]) : null,
-
-					'job_offer' => $ad->jobOfferAd ?
-						array_merge($ad->jobOfferAd->toArray(), [
-							"offer_types" => $ad->jobOfferAd->jobOfferTypes->pluck("id")->toArray(),
-							"education_levels" => $ad->jobOfferAd->educationLevels->pluck("id")->toArray(),
-						]) : null,
-
-					'job_seek' => $ad->jobSeekAd ?
-						array_merge($ad->jobSeekAd->toArray(), [
-							"offer_types" => $ad->jobSeekAd->jobOfferTypes->pluck("id")->toArray(),
-							"education_levels" => $ad->jobSeekAd->educationLevels->pluck("id")->toArray(),
-						]) : null,
-				],
-				$ad->only(["id", "title", "about_content", "about_project_content", "accept_share_contact_infos"]),
-				compact("selected_zones", "locationable", "locationable_radius", "documents", "document_ids")
-			);
-		}
-
-		//dd($vars);
+		$vars = $this->getEditFormVars($ad);
 
 		return view('pages.ads.new', $vars);
 	}
@@ -123,6 +66,7 @@ class AdsController extends BaseController
 			if (!$data['is_support_request']) {
 				$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
 			} elseif ($data['is_support_request'] && isset($ad->attributionAd->user_advisor_id)) {
+
 				$ad->attributionAd->userAdvisor->notify(new NewSupportRequestNotification($ad));
 			}
 
@@ -177,7 +121,7 @@ class AdsController extends BaseController
 	 */
 	public function list()
 	{
-		$ads = $this->adService->findAllByUser(auth()->id());
+		$ads = $this->adService->findAllAdsByUser(auth()->id());
 		return view('pages.ads.listUserAds', compact('ads'));
 	}
 
@@ -196,6 +140,10 @@ class AdsController extends BaseController
 		return back()->with('success', 'Votre annonce a bien été supprimée');
 	}
 
+	/**
+	 * @param int $adId
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function extendPublish(int $adId)
 	{
 		$ad = $this->adService->find($adId);

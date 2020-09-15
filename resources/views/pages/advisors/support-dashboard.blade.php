@@ -37,7 +37,8 @@
             @if(!is_null($ad->attributionAd->userAdvisor))
                 @if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
                     <div class="notification is-primary">
-                        Vous êtes le primo-accueillant pour cette demande !
+                        Vous êtes le primo-accueillant pour cette demande ! <br>
+                        N'oubliez pas de mettre à jour le stade et l'état de la demande ainsi que l'avancement du projet !
                     </div>
                     <p class="has-text-weight-bold"></p>
 
@@ -78,7 +79,7 @@
                                         <span class="tag has-text-white bg-d-warning_dark has-tooltip-top"
                                               data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">{{$ad->project->supportStage->name}}</span>
                                     @else
-                                        <span class="tag is-light">Non définis</span>
+                                        <span class="tag is-light">Non défini</span>
                                     @endif
                                     @if(! $ad->userPp->trashed())
                                         <a>
@@ -114,7 +115,7 @@
                                         <span class="tag has-text-white bg-d-warning_dark has-tooltip-top"
                                               data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
                                     @else
-                                        <span class="tag is-light">Non définis</span>
+                                        <span class="tag is-light">Non défini</span>
                                     @endif
                                     @if(! $ad->userPp->trashed())
                                         <a>
@@ -150,7 +151,7 @@
                                         <span class="tag has-text-white bg-d-warning_dark has-tooltip-top"
                                               data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">{{$ad->project->projectStatus->name}}</span>
                                     @else
-                                        <span class="tag is-light">Non définis</span>
+                                        <span class="tag is-light">Non défini</span>
                                     @endif
                                     @if(! $ad->userPp->trashed())
                                         <a>

@@ -31,6 +31,7 @@ Route::prefix('accompagnement')->name('support-request.')->namespace('Ads')->gro
 	Route::middleware(['auth'])->post('sauvegarder', 'SupportRequestsController@save')->name('save');
 
     Route::middleware(['auth'])->get('suivi', 'SupportRequestsController@show')->name('show');
+    Route::middleware('auth')->get('modifier', 'SupportRequestsController@edit')->name('edit');
 });
 
 Route::namespace('Cms')->group(function () {
@@ -116,7 +117,7 @@ Route::prefix('locations')->namespace('Locationables')->group(function () {
 	});
 });
 
-Route::middleware('moderator')->prefix('mon-espace-moderateur')->name('moderator.')->group(function () {
+Route::middleware('moderator')->prefix('gestion-des-annonces')->name('moderator.')->group(function () {
 	Route::namespace('Moderators')->group(function () {
 		Route::get('/', 'ModeratorController@index')->name('index');
 		Route::get('recherche', 'ModeratorController@show')->name('show');
@@ -129,7 +130,11 @@ Route::middleware('moderator')->prefix('mon-espace-moderateur')->name('moderator
 	});
 });
 
-Route::middleware('supervisor')->prefix('mon-espace-responsable-territorial')->name('supervisor.')->namespace('Supervisors')->group(function () {
+Route::middleware('admin')->prefix('administration')->name('administrator.')->namespace('Administrators')->group(function (){
+	Route::get('liste-utilisateurs-par-territoires', 'AdministratorController@showUsersByTerritories')->name('usersByTerritories');
+});
+
+Route::middleware('supervisor')->prefix('mon-tableau-de-bord')->name('supervisor.')->namespace('Supervisors')->group(function () {
 	Route::get('/', 'SupervisorsController@index')->name('index');
 	Route::get('recherche', 'SupervisorsController@show')->name('show');
 	Route::get('aide-et-ressources', 'SupervisorsController@help')->name('help');
@@ -141,7 +146,7 @@ Route::middleware('supervisor')->prefix('mon-espace-responsable-territorial')->n
 	Route::post('suppression-indicateur', 'SupervisorsController@projectDataKeyDelete')->name('projectDataKeyDelete');
 });
 
-Route::middleware('advisor')->prefix('mon-espace-primo-accueillant')->name('advisor.')->namespace('Advisors')->group(function () {
+Route::middleware('advisor')->prefix('gestion-des-accompagnements')->name('advisor.')->namespace('Advisors')->group(function () {
 	Route::get('/', 'AdvisorsController@index')->name('index');
 	Route::get('aide-et-ressources', 'AdvisorsController@help')->name('help');
 	Route::get('recherche', 'AdvisorsController@show')->name('show');
@@ -160,6 +165,8 @@ Route::middleware('advisor')->prefix('mon-espace-primo-accueillant')->name('advi
 Route::middleware('supervisor')->prefix('gestion-reponse-types')->name('responseTemplates.')->namespace('ResponseTemplates')->group(function(){
 	Route::get('/', 'ResponseTemplatesController@index')->name('index');
 	Route::post('/creer', 'ResponseTemplatesController@create')->name('create');
+	Route::post('/editer', 'ResponseTemplatesController@edit')->name('edit');
+	Route::post('/supprimer', 'ResponseTemplatesController@delete')->name('delete');
 });
 
 Route::middleware('auth')->prefix('notification')->name('notification.')->namespace('Notifications')->group(function () {

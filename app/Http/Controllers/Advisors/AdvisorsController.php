@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Advisors;
 
 use App\Exports\Advisors\AdvisorsExport;
 use App\Models\City;
+use App\Models\CmsPage;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
@@ -56,7 +57,8 @@ class AdvisorsController extends BaseController
 	public function help()
 	{
 		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
-		return view('pages.advisors.help', compact('users'));
+		$pageContent = CmsPage::where('slug', 'like', '%'.'ressoures-primo-accueillant'. '%')->first();
+		return view('pages.advisors.help', compact('users','pageContent'));
 	}
 
 	/**
@@ -90,15 +92,17 @@ class AdvisorsController extends BaseController
 				$thread = $this->advisorsService->createSupportRequestThread($ad->id);
 			}
 		} else {
-			$data = [
-				'user_id' => $ad->attributionAd->user_advisor_id,
-				'ad_id' => $ad->id,
-			];
-			$thread = $this->advisorsService->findThreadAdvisorInChargeOfSupportRequest($data);
+			if (isset($ad->attributionAd->user_advisor_id)) {
+				$data = [
+					'user_id' => $ad->attributionAd->user_advisor_id,
+					'ad_id' => $ad->id,
+				];
+				$thread = $this->advisorsService->findThreadAdvisorInChargeOfSupportRequest($data);
+			}
+			$thread = null;
+
 		}
-
 		$this->advisorsService->handleSupportDashboardNotifications($ad);
-
 		$vars = $this->getSupportDashboardVars($ad);
 		$vars['ad'] = $ad;
 		$vars['thread'] = $thread;
@@ -123,7 +127,8 @@ class AdvisorsController extends BaseController
 	 */
 	public function export()
 	{
-		return Excel::download(new AdvisorsExport($this->advisorsService->showForAdvisor(new Request())), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
+		return (new AdvisorsExport($this->advisorsService->showForAdvisor(new Request())))->download('export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
+//		return Excel::download(new AdvisorsExport($this->advisorsService->showForAdvisor(new Request())), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
 	}
 
 	/**
@@ -168,6 +173,10 @@ class AdvisorsController extends BaseController
 	 */
 	public function updateProjectDataKeysValues(Request $request)
 	{
+		if(!$request->has('project_data_key')){
+			return back()->with('warning', 'Une erreur est survenue, veuillez réessayer');
+
+		}
 		$this->advisorsService->updateProjectDataKeysValues($request);
 		return back()->with('success', 'L\'indicateur a bien été modifié');
 	}

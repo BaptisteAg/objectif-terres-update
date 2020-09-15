@@ -51,6 +51,7 @@ abstract class BaseController extends Controller
 	 * @param FavoriteAdRepository $favoriteAdRepository
 	 * @param UserService $userService
 	 * @param AttributionAdsService $attributionAdService
+	 * @param LocationService $locationService
 	 */
 	public function __construct(
 		AdService $adService,
@@ -68,6 +69,81 @@ abstract class BaseController extends Controller
 		$this->attributionAdService = $attributionAdService;
 		$this->locationService = $locationService;
 	}
+
+    /**
+     * @param Ad $ad
+     * @return array
+     * @throws \Exception
+     */
+    protected function getEditFormVars(Ad $ad): array
+    {
+        if (auth()->id() !== $ad->user_pp_id) {
+            abort(404);
+        }
+
+        $selected_zones = json_encode(array_filter(array_merge(
+            array_map($this->locationService->getResultRenderer('regions'), $ad->regions->toArray()),
+            array_map($this->locationService->getResultRenderer('departments'), $ad->departments->toArray()),
+            array_map($this->locationService->getResultRenderer('cities'), $ad->cities->toArray())
+        )));
+        $locationable = array_filter([
+            "cities" => $ad->cities->pluck('id')->toArray(),
+            "departments" => $ad->departments->pluck('id')->toArray(),
+            "regions" => $ad->regions->pluck('id')->toArray()
+        ]);
+        $locationable_radius = $ad->cities->count() ? $ad->cities->first()->radius : '';
+
+        $documents = $ad->documents->toJson();
+        $document_ids = $ad->documents->pluck("id")->toArray();
+
+        if (!is_null($ad->project_id)) {
+            $vars = array_merge($this->getCreateFormVars(), [
+                'isSupportRequest' => 1,
+            ]);
+        } else {
+            $vars = $this->getCreateFormVars();
+        }
+
+        if (!old('ad_type')) {
+            $vars["old"] = array_merge(
+                [
+                    'ad_type' => $this->adService->getAdType($ad),
+
+                    'land_seek' => $ad->landSeekAd ?
+                        array_merge($ad->landSeekAd->toArray(), [
+                            "buildings" => $ad->landSeekAd->buildings->pluck("requirement.id", "buildingType.id")->toArray(),
+                            "production_genres" => $ad->landSeekAd->productionGenres->pluck("id")->toArray()
+                        ]) : null,
+
+                    'land_offer' => $ad->landOfferAd ?
+                        array_merge($ad->landOfferAd->toArray(), [
+                            "bio_certifications" => $ad->landOfferAd->bioCertifications->pluck("id")->toArray(),
+                            "production_genres" => $ad->landOfferAd->productionGenres->pluck("id")->toArray(),
+                            "production_genres_wanted" => $ad->landOfferAd->productionGenresPossible->pluck("id")->toArray(),
+                            "offer_genres" => $ad->landOfferAd->offerGenres->pluck("id")->toArray(),
+                        ]) : null,
+
+                    'job_offer' => $ad->jobOfferAd ?
+                        array_merge($ad->jobOfferAd->toArray(), [
+                            "offer_types" => $ad->jobOfferAd->jobOfferTypes->pluck("id")->toArray(),
+                            "education_levels" => $ad->jobOfferAd->educationLevels->pluck("id")->toArray(),
+                        ]) : null,
+
+                    'job_seek' => $ad->jobSeekAd ?
+                        array_merge($ad->jobSeekAd->toArray(), [
+                            "offer_types" => $ad->jobSeekAd->jobOfferTypes->pluck("id")->toArray(),
+                            "education_levels" => $ad->jobSeekAd->educationLevels->pluck("id")->toArray(),
+                        ]) : null,
+                ],
+                $ad->only(["id", "title", "about_content", "about_project_content", "accept_share_contact_infos"]),
+                compact("selected_zones", "locationable", "locationable_radius", "documents", "document_ids")
+            );
+        }
+
+
+
+        return $vars;
+    }
 
 	/**
 	 * Returns all the vars needed to display an ad creation form
@@ -132,7 +208,8 @@ abstract class BaseController extends Controller
 		$isLoggedUserModeratorAd = false;
 		$advisorUsers = [];
 		$moderatorInChargeOfModeration = false;
-		$currentUser = User::whereId(auth()->id())->first();
+		$currentUser = auth()->user();
+        $isSupportRequest = false;
 
 		/** @var User $user */
 		$user = auth()->user();
@@ -178,8 +255,8 @@ abstract class BaseController extends Controller
 				if ($user->role >= 3) {
 					//TODO display only advisors that are related to the supervisor
 					$responseTemplates = ResponseTemplate::orderBy('title')->get();
-					if (isset($ad->support_request_id_region)) {
-						$advisorUsers = $this->userService->findByRoleAndRegions(2, $this->userService->getCurrentUserTerritoryRegionsIds());
+					if (isset($ad->support_request_territory_id)) {
+						$advisorUsers = $this->userService->findByRoleAndTerritory(2, $this->userService->getCurrentUserTerritoryIds());
 					} else {
 						$adDepartmentCodes = $this->adService->getAdDepartmentCodesFromZones($ad);
 						$advisorUsers = $this->userService->findByRoleAndDepartments(2, $adDepartmentCodes);
@@ -190,13 +267,14 @@ abstract class BaseController extends Controller
 				if (count(array_intersect($this->adService->getAdDepartmentCodesFromZones($ad), $this->userService->getCurrentUserTerritoryDepartments())) > 0) {
 					$threads = $this->threadService->findThreadsByAd($ad->id);
 				}
-				if (isset($ad->support_request_id_region)) {
-					if (in_array($ad->support_request_id_region, $this->userService->getCurrentUserTerritoryRegionsIds())) {
+				if (isset($ad->support_request_territory_id)) {
+					if (in_array($ad->support_request_territory_id, $this->userService->getCurrentUserTerritoryIds())) {
 						$threads = $this->threadService->findThreadsByAd($ad->id);
 					}
 				}
 			}
 		}
+
 		return compact(
 			'ad',
 			'userMessage',
@@ -208,7 +286,8 @@ abstract class BaseController extends Controller
 			'isLoggedUserModeratorAd',
 			'advisorUsers',
 			'moderatorInChargeOfModeration',
-			'currentUser'
+			'currentUser',
+            'isSupportRequest'
 		);
 	}
 }

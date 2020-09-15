@@ -49,12 +49,12 @@
 								<div class="card-image">
 									@if($userAd->userPp->trashed())
 										<figure class="image is-2by1">
-											<img src="/images/placeholder-ad.png">
+											<img src="/images/new-placeholder-ad.png">
 										</figure>
 									@else
 										<a href="{{route('ads.show', $userAd->id)}}">
 											<figure class="image is-2by1">
-												<img src="/images/placeholder-ad.png">
+												<img src="/images/new-placeholder-ad.png">
 											</figure>
 										</a>
 									@endif

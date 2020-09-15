@@ -43,20 +43,20 @@
                                 @if(auth()->user()->role >= 3 )
                                     <a href="{{route('supervisor.index')}}"
                                        class="dropdown-item  text_charcoal ">
-                                        Espace responsable territorial
+                                        Tableau de bord
                                     </a>
                                 @endif
                                 @if(auth()->user()->role >= 2 )
                                     <a href="{{route('advisor.index')}}"
                                        class="dropdown-item  text_charcoal">
-                                        Espace primo-accueillant
+                                        espace gestion des accompagnements
                                     </a>
                                 @endif
 
                                 @if(auth()->user()->role >= 1 )
                                     <a href="{{route('moderator.index')}}"
                                        class="dropdown-item  text_charcoal">
-                                        Espace modérateur
+                                        Gestion des annonces
                                     </a>
                                 @endif
                             </div>

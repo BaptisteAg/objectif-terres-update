@@ -1,5 +1,6 @@
 @extends('default')
 
+
 @if(!empty($isSupportRequest))
     @section('title', isset($old["id"]) ? 'Modifier votre accompagnement':'Demander un accompagnement')
 @else
@@ -48,9 +49,7 @@
 
 
                     <input type="hidden" name="is_support_request" value="{{empty($isSupportRequest)? 0 : 1}}">
-                    @if(session('support-request.text'))
-                        <input type="hidden" name="support_request_text" value="{{ session('support-request.text') }}">
-                    @endif
+
                     @if(session('support-request.territory_id'))
                         <input type="hidden" name="support_request_territory_id" value="{{ session('support-request.territory_id') }}">
                     @endif
@@ -61,7 +60,8 @@
 
                     <ad-type-select v-model="adTypeSelected"
                                     name="ad_type"
-                                    :is-support-request="{{empty($isSupportRequest)?'false':'true'}}">
+                                    :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
+                                    :is-new="{{ empty($old["id"]) ? 'true' : 'false'}}">
                     </ad-type-select>
 
                     <new-land-seek-ad inline-template

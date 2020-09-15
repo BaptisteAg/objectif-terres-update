@@ -57,6 +57,29 @@ class UserPresenter extends BasePresenter
 	/**
 	 * @return string
 	 */
+	public function roleFullName()
+	{
+		if ($this->wrappedObject->role === 0) {
+			return 'Porteur de projet';
+		}
+		if ($this->wrappedObject->role === 1) {
+			return 'Modérateur';
+		}
+		if ($this->wrappedObject->role === 2) {
+			return 'Primo-accueillants';
+		}
+		if ($this->wrappedObject->role === 3) {
+			return 'Responsable territorial';
+		}
+		if ($this->wrappedObject->role === 4) {
+			return 'Administrateur';
+		}
+
+	}
+
+	/**
+	 * @return string
+	 */
 	public function created_at()
 	{
 		return $this->wrappedObject->created_at ? \Carbon\Carbon::parse($this->wrappedObject->created_at)->format('d/m/Y') : null;
@@ -74,13 +97,13 @@ class UserPresenter extends BasePresenter
 	/**
 	 * @return array
 	 */
-	public function userTerritoriesId(): array
+	public function userTerritoryIds(): array
 	{
-		$territoriesId = [];
+		$territoryIds = [];
 		foreach ($this->wrappedObject->departments as $department) {
-			$territoriesId[] = $department->territory->id;
+			$territoryIds[] = $department->territory->id;
 		}
-		return array_unique($territoriesId);
+		return array_unique($territoryIds);
 
 	}
 

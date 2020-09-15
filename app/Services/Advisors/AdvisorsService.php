@@ -213,6 +213,7 @@ class AdvisorsService
 	 */
 	public function updateProjectDataKeysValues(Request $request)
 	{
+
 		$requestProjectDataKeyValues = array_filter($request->input('project_data_key'));
 
 		$previousValues = $this->adNotesRepository->findAllNotesWithPublicProjectDatKeysByAdId($request->input('ad_id'));
@@ -261,6 +262,15 @@ class AdvisorsService
 		return $notes;
 	}
 
+	/**
+	 * @param int $adId
+	 * @return Builder[]|Collection
+	 */
+	public function allNotesWithProjectDatKeysByAdId(int $adId): Collection
+	{
+		$notes = $this->adNotesRepository->findAllNotesWithProjectDataKeysByAdId($adId);
+		return $notes;
+	}
 	/**
 	 * @param int $adId
 	 * @return Builder[]|Collection

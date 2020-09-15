@@ -399,6 +399,10 @@ class AttributionAdsService
 		return $attributionAd;
 	}
 
+	/**
+	 * @param int $attributionAdId
+	 * @return mixed
+	 */
 	public function modifyAd(int $attributionAdId)
 	{
 		$attributionAd = $this->repository->find($attributionAdId);
@@ -420,6 +424,10 @@ class AttributionAdsService
 		return $attributionAd;
 	}
 
+	/**
+	 * @param array $data
+	 * @return mixed
+	 */
 	public function rejectAd(array $data)
 	{
 		$attributionAd = $this->repository->find($data['attribution_ad_id']);

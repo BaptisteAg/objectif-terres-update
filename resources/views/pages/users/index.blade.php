@@ -46,14 +46,14 @@
 
 				@if(auth()->user()->supportRequest)
 					<div class="column is-3 ">
-						<a class="" href="{{route("ads.show", ["id" => auth()->user()->supportRequest->id])}}">
+						<a class="" href="{{route("support-request.show")}}">
 							<div class="card custom-card ">
 								<div class="card-content">
 									<div class="media">
 										<div class="media-left">
 											<figure class="image is-48x48 custom-card custom-card-image">
 												<span class="icon is-large">
-												  <i class="fas fa-3x fa-newspaper"></i>
+												  <i class="fas fa-3x fa-hands-helping"></i>
 												</span>
 											</figure>
 										</div>

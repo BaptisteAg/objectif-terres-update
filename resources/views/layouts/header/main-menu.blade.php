@@ -15,17 +15,17 @@
                         <ul class="custom-menu menu-submenu">
                             <li>
                                 <a class="menu__link menu__link_danger "
-                                   href="/louer-vendre-mes-terres">m'installer
+                                   href="/minstaller-comme-paysan">m'installer
                                     paysan</a>
                             </li>
                             <li>
                                 <a class="menu__link menu__link_danger "
-                                   href="/ceder-ma-ferme">trouver une terre ou des
+                                   href="/louer-ou-vendre-mes-terres">trouver une terre ou des
                                     financements</a>
                             </li>
                             <li>
                                 <a class="menu__link menu__link_danger "
-                                   href="/trouver-un-emploi">transmettre ma ferme</a>
+                                   href="/ceder-ma-ferme">transmettre ma ferme</a>
                             </li>
                             <li>
                                 <a class="menu__link menu__link_danger "

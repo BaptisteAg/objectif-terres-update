@@ -70,9 +70,19 @@ class ProjectService
 	 */
 	public function findAllProjectsInSupervisorTerritories(): Collection
 	{
-		$supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$supervisorLocationTerritoriesId = $this->userService->getCurrentUserTerritoryIds();
-		return $this->repository->findAllByUserTerritories(auth()->id(), $supervisorLocationTerritoryCodes, $supervisorLocationTerritoriesId);
+		$supervisorLocationTerritoriesIds = $this->userService->getCurrentUserTerritoryIds();
+		$supervisorDepartmentTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
+		return $this->repository->findAllByUserTerritories(auth()->id(), $supervisorLocationTerritoriesIds, $supervisorDepartmentTerritoryCodes);
+	}
+
+	/**
+	 * @param int $supportStateId
+	 * @param int $numberOfDays
+	 * @return mixed
+	 */
+	public function findAllBySupportStateAndSinceNumberOfDays(int $supportStateId, int $numberOfDays) : Collection
+	{
+		return $this->repository->findAllBySupportStateAndSinceNumberOfDays($supportStateId,$numberOfDays);
 	}
 
 	/**

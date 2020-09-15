@@ -4,6 +4,7 @@ use App\Models\Ad;
 use App\Models\City;
 use App\Models\Department;
 use App\Models\Region;
+use App\Models\Territory;
 use App\Models\User;
 use App\Repositories\Users\UserRepository;
 use Illuminate\Support\Facades\Hash;
@@ -131,11 +132,11 @@ class UserService
 	 */
 	public function getCurrentUserTerritoryIds()
 	{
-		$userTerritoriesId = [];
+		$userTerritoryIds = [];
 		foreach (auth()->user()->departments as $department) {
-			array_push($userTerritoriesId, $department->territory->id);
+			array_push($userTerritoryIds, $department->territory->id);
 		}
-		return array_unique($userTerritoriesId) ;
+		return array_unique($userTerritoryIds);
 	}
 
 
@@ -168,6 +169,7 @@ class UserService
 	}
 
 	/**
+	 * TODO method to delete if not necessary anymore
 	 * @param int $roleId
 	 * @param array $regionsId
 	 * @return User|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
@@ -180,6 +182,59 @@ class UserService
 			->inRandomOrder()
 			->get();
 	}
+
+
+	/**
+	 * @param int $roleId
+	 * @param array $territoryIds
+	 * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
+	 */
+	public function findByRoleAndTerritory(int $roleId, array $territoryIds)
+	{
+		return User::filterSubLocations('departments', $territoryIds, 'departments.territory_id')
+			->where('role', $roleId)
+			->inRandomOrder()
+			->get();
+	}
+
+	/**
+	 * @param int $roleId
+	 * @param array $territoryIds
+	 * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
+	 */
+	public function findAllByRoleAndTerritory(int $roleId, array $territoryIds)
+	{
+		return User::filterSubLocations('departments', $territoryIds, 'departments.territory_id')
+			->where('role', '>=', $roleId)
+			->with('departments', 'departments.territory')
+			->get();
+	}
+
+
+	/**
+	 * TODO find a prettier way to do the operation
+	 * @param int $roleId
+	 * @param $territoryIds
+	 * @return array
+	 */
+	public function groupAllUsersByTerritory(int $roleId, array $territoryIds)
+	{
+		$users = $this->findAllByRoleAndTerritory($roleId, $territoryIds);
+		$usersGroupedByTerritoryNames = array_fill_keys(Territory::all()->pluck('name')->toArray(), []);
+		foreach ($usersGroupedByTerritoryNames as $territoryName => $value) {
+			foreach ($users as $user) {
+				foreach ($user->departments as $department) {
+					if ($department->territory->name == $territoryName) {
+						if (!in_array($user, $usersGroupedByTerritoryNames[$territoryName])) {
+							array_push($usersGroupedByTerritoryNames[$territoryName], $user);
+						}
+					}
+				}
+			}
+		}
+		return $usersGroupedByTerritoryNames;
+	}
+
 
 	/**
 	 * @param int $permission

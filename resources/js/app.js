@@ -39,8 +39,10 @@ require('./pages/supervisor/supervisor');
 require('./pages/video');
 require('./pages/cms/contact-us-form');
 require('./pages/homepage/homepage');
+require('./pages/responseTemplates/responseTemplates')
 
 //////////////
 // GLOBAL
 require('./notifications');
+require('./carrousel');
 require('./main.js');

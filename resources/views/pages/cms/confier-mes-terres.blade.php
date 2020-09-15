@@ -71,9 +71,7 @@
 @endsection
 
 @section('script')
-    <script>
-        console.log(thumb)
-    </script>
+
 
 @endsection
 

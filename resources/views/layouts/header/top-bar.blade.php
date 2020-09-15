@@ -26,6 +26,9 @@
                 </div>
             </div>
 
+            <div class="level-item">
+                @include('layouts.header.lanceur-applications')
+            </div>
         </div>
         <div class="level-right">
             @guest
@@ -65,26 +68,26 @@
                                     @if(auth()->user()->role >= 4 )
                                         <a href="{{\Laravel\Nova\Nova::path()}}"
                                            class="dropdown-item  text_charcoal ">
-                                            Espace administrateur
+                                            Administration
                                         </a>
                                     @endif
                                         @if(auth()->user()->role >= 3 )
                                         <a href="{{route('supervisor.index')}}"
                                            class="dropdown-item  text_charcoal ">
-                                            Espace responsable territorial
+                                            Tableau de bord
                                         </a>
                                     @endif
                                     @if(auth()->user()->role >= 2 )
                                         <a href="{{route('advisor.index')}}"
                                            class="dropdown-item  text_charcoal">
-                                            Espace primo-accueillant
+                                            Gestion des accompagnements
                                         </a>
                                     @endif
 
                                     @if(auth()->user()->role >= 1 )
                                         <a href="{{route('moderator.index')}}"
                                            class="dropdown-item  text_charcoal">
-                                            Espace modérateur
+                                            Gestion des annonces
                                         </a>
                                     @endif
                                 </div>
@@ -93,24 +96,22 @@
                     @endif
                 </div>
 
-                @include('layouts.header.lanceur-applications')
-
-                <div class="level-item">
-                    <p class="button__wrap">
-                        <a href="{{route('favoriteAds.show')}}"
-                           class="button round small secondary " title="Annonces favorites">
-                            <span class="button__icon"><i class="fas fa-star" aria-hidden="true"></i></span>
-                        </a>
-                    </p>
-                </div>
-                <div class="level-item">
-                    <p class="button__wrap">
-                        <a href="{{route('researches.show')}}"
-                           class="button round small secondary " title="Mes recherches">
-                            <span class="button__icon"><i class="fas fa-save" aria-hidden="true"></i></span>
-                        </a>
-                    </p>
-                </div>
+{{--                <div class="level-item">--}}
+{{--                    <p class="button__wrap">--}}
+{{--                        <a href="{{route('favoriteAds.show')}}"--}}
+{{--                           class="button round small secondary " title="Annonces favorites">--}}
+{{--                            <span class="button__icon"><i class="fas fa-star" aria-hidden="true"></i></span>--}}
+{{--                        </a>--}}
+{{--                    </p>--}}
+{{--                </div>--}}
+{{--                <div class="level-item">--}}
+{{--                    <p class="button__wrap">--}}
+{{--                        <a href="{{route('researches.show')}}"--}}
+{{--                           class="button round small secondary " title="Mes recherches">--}}
+{{--                            <span class="button__icon"><i class="fas fa-save" aria-hidden="true"></i></span>--}}
+{{--                        </a>--}}
+{{--                    </p>--}}
+{{--                </div>--}}
                 <div class="level-item">
                     <p class="button__wrap">
                         <a href="{{route('notification.index')}}"

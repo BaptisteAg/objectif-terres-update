@@ -55,10 +55,10 @@ class AdPresenter extends BasePresenter
 			return 'Offre de foncier';
 		}
 		if ($this->wrappedObject->jobOfferAd) {
-			return 'Offre d\'emploi';
+			return 'Offre opportunité professionnelle';
 		}
 		if ($this->wrappedObject->jobSeekAd) {
-			return 'Recherche d\'emploi';
+			return 'Recherche opportunité professionnelle';
 		}
 
 		return '';
@@ -242,19 +242,18 @@ class AdPresenter extends BasePresenter
 				$max = $ad->landSeekAd->surface_range_max;
 				$min = $ad->landSeekAd->surface_range_min;
 
-				if($max === 1000000) {
-				    $max = '+ de 100';
-                }
-
 				if ($max === 1000000 && $min === 0) {
 					return "De 1 à + de 100ha";
+				}
+				if($max === 1000000) {
+					$max = '+ de 100';
 				}
 
 				if ($min) {
 					return "De " . $min . "ha à " . $max . "ha";
 				}
 
-				return "A partir de " . $max . "ha";
+				return "Moins de " . $max . "ha";
 			} else {
 				return "Surface non renseignéee";
 			}
@@ -314,6 +313,21 @@ class AdPresenter extends BasePresenter
 			return in_array($ad->support_request_territory_id,$userTerritoryId );
 		}
 		return count(array_intersect($userTerritoriesCodes, $this->adDepartmentsCodes())) > 0;
+	}
+
+	/**
+	 * @param array $userTerritoryId
+	 * @param array $userDepartmentsCode
+	 * @return bool
+	 */
+	public function isProjectInUserTerritories(array $userTerritoryId,array $userDepartmentsCode): bool
+	{
+		$ad = $this->wrappedObject;
+		if(isset($ad->support_request_territory_id)){
+			return in_array($ad->support_request_territory_id,$userTerritoryId );
+		}
+		//TODO delete this system based on department code when system based on territory fully integrated, don't forget to attributes of all methods calls
+		return count(array_intersect($userDepartmentsCode, $this->adDepartmentsCodes())) > 0;
 	}
 
 

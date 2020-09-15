@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Moderators;
 use App\Http\Controllers\Controller;
 use App\Models\AdStatus;
 use App\Models\City;
+use App\Models\CmsPage;
 use App\Models\Department;
 use App\Models\JobOfferType;
 use App\Models\ProductionGenre;
@@ -24,6 +25,7 @@ class ModeratorController extends BaseController
 	{
 		$request->session()->forget('_old_input');
 		$request->session()->forget('moderator_dashboard_url');
+		$request->session()->forget('supervisor_dashboard_url');
 		$vars = $this->getModeratorDashboardVars();
 		$vars['attributionAds'] = $this->service->findAllByUserModeratorTerritories();
 		return view('pages.moderator.index', $vars);
@@ -51,7 +53,8 @@ class ModeratorController extends BaseController
 	public function help()
 	{
 		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
-		return view('pages.moderator.help', compact('users'));
+		$pageContent = CmsPage::where('slug', 'like', '%'.'ressoures-moderateur'. '%')->first();
+		return view('pages.moderator.help', compact('users', 'pageContent'));
 	}
 
 

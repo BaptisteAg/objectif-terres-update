@@ -28,7 +28,11 @@
                         class="button is-primary"
                         :style="props.fillButtonStyle">
                     @if(!empty($isSupportRequest))
-                        Soumettre la demande
+                        @if(!empty($old["id"]))
+                            Mettre à jour la demande
+                        @else
+                            Soumettre la demande
+                        @endif
                     @else
                         Demander la publication
                     @endif

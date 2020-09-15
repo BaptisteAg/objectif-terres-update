@@ -3,6 +3,7 @@
 use App\Models\City;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 trait ScopeLocationFilterable
 {
@@ -40,7 +41,6 @@ trait ScopeLocationFilterable
 	 */
 	function scopeFilterAdsTerritoryLocations(Builder $query, array $territoriesCode)
 	{
-
 		$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
 			$query->whereIn('code', $territoriesCode);
 		});
@@ -60,12 +60,16 @@ trait ScopeLocationFilterable
 			$query->whereNotNull('support_request_territory_id');
 			$query->whereIn('support_request_territory_id', $territoriesId);
 			$query->whereNotNull('project_id');
-			$query->whereHas('attributionAd', function (Builder $subQuery) use($userRole) {
+			$query->whereHas('attributionAd', function (Builder $subQuery) use ($userRole) {
 				$subQuery->whereNull('ad_status_id');
-				if($userRole>=3){
-					$subQuery->whereNull('user_advisor_id');
+				if ($userRole >= 3) {
+					if (Route::currentRouteName() === "advisor.index" || Route::currentRouteName() === "advisor.export") {
+						$subQuery->whereNotNull('user_advisor_id');
+					}else{
+						$subQuery->whereNull('user_advisor_id');
+					}
 				}
-				if($userRole === 2){
+				if ($userRole === 2) {
 					$subQuery->whereNotNull('user_advisor_id');
 				}
 			});

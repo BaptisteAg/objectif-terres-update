@@ -109,5 +109,15 @@
     "Restore Resource": "Restaurer l'élément",
     "Are you sure you want to restore this resource?": "Êtes-vous sûre de vouloir restaurer cet élément ?",
     "Are you sure you want to restore the selected resources?": "Êtes-vous sûre de vouloir restaurer les éléments séléctionner ?",
-    "No :resource matched the given criteria.": "Aucun résultat"
+    "No :resource matched the given criteria.": "Aucun résultat",
+    "Edit Attached": "Modifier fichier joint",
+    "Detach Resource": "Retirer Resource",
+    "Detach": "Retirer",
+    "Detach Selected": "Retirer les éléments séléctionnés",
+    "Are you sure you want to detach this resource?": "Êtes-vous sûre de vouloir retier cet élément ?",
+    "Are you sure you want to detach the selected resources?": "AÊtes-vous sûre de vouloir retirer ces éléments ?",
+    "Attach": "Ajouter",
+    "Attach & Attach Another": "Ajouter & Continuer",
+    "Attach :resource": "Ajouter :resource",
+    "Choose :resource": "Choisir :resource"
 }

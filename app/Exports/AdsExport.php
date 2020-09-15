@@ -4,9 +4,10 @@ namespace App\Exports;
 
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithTitle;
 
-class AdsExport implements FromView,  WithTitle
+class AdsExport implements FromView,  WithTitle, WithColumnWidths
 {
 	protected $ads;
 
@@ -27,6 +28,22 @@ class AdsExport implements FromView,  WithTitle
 			'ads' => $this->ads
 		]);
 	}
+
+	public function columnWidths(): array
+	{
+		return [
+			'A' => 10,
+			'B' => 35,
+			'D' => 20,
+			'E' => 25,
+			'H' => 50,
+			'I' => 50,
+			'K' => 30,
+			'U' => 30,
+			'AH' => 30,
+		];
+	}
+
 
 	/**
 	 * @return string

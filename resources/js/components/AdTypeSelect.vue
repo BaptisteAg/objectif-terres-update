@@ -29,7 +29,7 @@
             </div>
             <div class="adType-selected" v-else>
                 <label><i :class="'fa '+currentAdType.icon"></i> {{currentAdType.label}}</label><br>
-                <a href="#" @click.prevent="displaySelection = true">← Changer de type d'annonce</a>
+                <a href="#" @click.prevent="displaySelection = true" v-if="isNew">← Changer de type d'annonce</a>
             </div>
             <input type="hidden" :name="name" :value="value">
         </div>
@@ -79,13 +79,14 @@
                 required: true
             },
             name: {
-                type: String,
+                type: String, 
                 required: true
             },
             isSupportRequest: {
                 type: Boolean,
                 required: true
-            }
+            },
+            isNew: Boolean
         },
         data() {
             return {

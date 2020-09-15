@@ -36,9 +36,9 @@
                     <div class="field">
                         <p class="control">
                             <button class="button is-link" type="submit">
-							 <span class="icon is-small">
-							<i class="fas fa-plus-circle"></i>
-							</span>
+                                <span class="icon is-small">
+                                    <i class="fas fa-plus-circle"></i>
+                                </span>
                                 <span>Créer un nouveau message type</span>
                             </button>
                         </p>
@@ -54,28 +54,123 @@
             @if($responseTemplates->count() === 0)
                 <p class="has-text-centered">Aucun message type trouvée</p>
             @else
-                <div class="columns is-centered is-mobile">
-                    <div class="column is-10 ">
-                        <table class="table is-hoverable is-striped">
-                            <thead>
-                            <tr>
-                                <th>Titre du message</th>
-                                <th>Contenu du message</th>
-                            </tr>
-                            </thead>
-                            <tbody>
+                <div id="response-template-dashboard" class="columns is-centered is-mobile">
+                    <response-template-page inline-template>
+                        <div class="column is-10  ">
+                            <div class="columns is-center is-mobile response-templates-header-container">
+                                <div class="column is-2">Titre du message</div>
+                                <div class="column is-three-quarters">Contenu du message</div>
+                                <div class="column"></div>
+                            </div>
                             @foreach($responseTemplates->sortBy('created_at') as $response)
-                                <tr>
-                                    <td>{{$response->title}}</td>
-                                    <td>{{$response->content}}
-                                    </td>
-                                </tr>
+                                <div class="columns is-center is-mobile response-templates-container">
+                                    <template v-if="responseTemplateToModify === {{$response->id}}">
+                                        <div class="column is-11">
+                                            {!! Form::open(['route' => 'responseTemplates.edit', 'method'=>'post']) !!}
+                                            <div class="field is-horizontal">
+                                                <div class="field-body">
+                                            <div class="field is-narrow ">
+                                                <div class="control">
+                                                    <input class="input"  type="text" name="title" value="{{$response->title}}">
+                                                </div>
+                                            </div>
+                                            <div class="field ">
+                                                <div class="control is-expanded">
+                                                    <input type="hidden" name="response_template_id"
+                                                           value="{{$response->id}}">
+                                                    <textarea class="textarea"
+                                                              name="content"
+                                                              placeholder="Remplissez...">{{$response->content}}</textarea>
+                                                </div>
+                                                <div class="field is-grouped is-narrow mt-15">
+                                                    <div class="control">
+                                                        <button type="submit"
+                                                                class="button is-link">
+                                                            <span class="icon">
+                                                                <i class="fas fa-check"></i>
+                                                            </span>
+                                                            <span>Valider</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="control">
+                                                        <button v-on:click="modifyResponseTemplate(0)"
+                                                                class="button is-link is-light">
+                                                            <span class="icon">
+                                                                <i class="fas fa-times"></i>
+                                                            </span>
+                                                            <span>Annuler</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                                </div>
+                                            </div>
+                                            {!! Form::close() !!}
+                                        </div>
+
+
+
+                                    </template>
+                                    <template v-else>
+                                        <div class="column is-2">{{$response->title}}</div>
+                                        <div class="column is-three-quarters">
+                                            <p>{{$response->content}}</p>
+                                        </div>
+                                    </template>
+                                    <div class="column">
+                                        <div v-if="responseTemplateToModify === {{$response->id}}">
+                                            <button v-on:click="modifyResponseTemplate(0)"
+                                                    class="is-size-6 is-pulled-right has-text-link"
+                                                    style="border: none; background: transparent">
+                                                <a>
+                                                    <span class="icon">
+                                                        <i class="fas fa-times"></i>
+                                                    </span>
+                                                    <span>Annuler</span>
+                                                </a>
+                                            </button>
+                                        </div>
+                                        <div v-else>
+                                            <button v-on:click="modifyResponseTemplate({{$response->id}})"
+                                                    class="is-size-6 is-pulled-right has-text-link"
+                                                    style="border: none; background: transparent">
+                                                <a>
+                                                    <span class="icon">
+                                                        <i class="fas fa-pen"></i>
+                                                    </span>
+                                                    <span>Modifier</span>
+                                                </a>
+                                            </button>
+                                        </div>
+                                        {!! Form::open(['route' => 'responseTemplates.delete', 'method'=>'post']) !!}
+                                        <input type="hidden" name="response_template_id"
+                                               value="{{$response->id}}">
+
+                                        <a class="is-pulled-right" v-on:click="showValidationModal()">
+                                            <span class="icon">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </span>
+                                            <span>Supprimer</span>
+                                        </a>
+                                        @include('pages.advisors.partials.validation-modal')
+                                        {!! Form::close() !!}
+                                    </div>
+                                </div>
                             @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                        </div>
+                    </response-template-page>
                 </div>
             @endif
         </div>
     </div>
+@endsection
+
+@section('script')
+    <script>
+        const vueResponseTemplate = new Vue({
+            el: "#response-template-dashboard",
+            name: "content"
+        })
+    </script>
 @endsection

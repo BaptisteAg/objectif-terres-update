@@ -1,15 +1,14 @@
 @extends('default')
 
-@section ('title', 'Mon espace responsable territorial')
+@section ('title', 'Mon tableau de bord')
 
 @section('header')
     @include('components.supervisor-tabs')
 @endsection
 
 @section('main-content')
-
     <div class="section pt-0">
-        <h1 class="title is-2 has-text-link">Bienvenue sur votre espace responsable territorial <span
+        <h1 class="title is-2 has-text-link">Bienvenue sur votre tableau de bord <span
                     class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
 
         @if(! auth()->user()->notifications->isEmpty())
@@ -178,9 +177,9 @@
                                     </a>
                                 @endif
                             </th>
-{{--                            <th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">--}}
-{{--                                Localisation(s)--}}
-{{--                            </th>--}}
+                            {{--                            <th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">--}}
+                            {{--                                Localisation(s)--}}
+                            {{--                            </th>--}}
                             <th class="has-text-weight-semibold"
                                 style="border-right :2px solid #dbdbdb; border-bottom :3px solid #dbdbdb">
                                 @if(request()->input('sort') !== 'title')
@@ -235,7 +234,7 @@
                         <tbody>
                         @foreach($ads as $ad)
                             @if(!is_null($ad->project))
-                                @if(auth()->id() === $ad->attributionAd->user_supervisor_id and is_null($ad->attributionAd->userAdvisor))
+                                @if(is_null($ad->attributionAd->userAdvisor))
                                     <tr style="background-color: mistyrose">
                                 @endif
                             @else
@@ -282,21 +281,21 @@
                                                           data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">{{$ad->project->projectStatus->name}}</span>
                                                 @endif
                                             @else
-                                                <span class="tag is-warning">Non définis</span>
+                                                <span class="tag is-warning">Non défini</span>
                                             @endif
                                         @endif
                                     </td>
-{{--                                    <td>--}}
-{{--                                        @if(! is_null($ad->regionsList))--}}
-{{--                                            <p>Region(s) : {{$ad->regionsList}}</p>--}}
-{{--                                        @endif--}}
-{{--                                        @if(! is_null($ad->departmentsList))--}}
-{{--                                            <p>Département(s) : {{$ad->departmentsList}}</p>--}}
-{{--                                        @endif--}}
-{{--                                        @if(! is_null($ad->citiesList))--}}
-{{--                                            <p>Communes(s) : {{$ad->citiesList}}</p>--}}
-{{--                                        @endif--}}
-{{--                                    </td>--}}
+                                    {{--                                    <td>--}}
+                                    {{--                                        @if(! is_null($ad->regionsList))--}}
+                                    {{--                                            <p>Region(s) : {{$ad->regionsList}}</p>--}}
+                                    {{--                                        @endif--}}
+                                    {{--                                        @if(! is_null($ad->departmentsList))--}}
+                                    {{--                                            <p>Département(s) : {{$ad->departmentsList}}</p>--}}
+                                    {{--                                        @endif--}}
+                                    {{--                                        @if(! is_null($ad->citiesList))--}}
+                                    {{--                                            <p>Communes(s) : {{$ad->citiesList}}</p>--}}
+                                    {{--                                        @endif--}}
+                                    {{--                                    </td>--}}
                                     <td style="border-right:2px solid #dbdbdb">
                                         @if(! is_null($ad->project))
                                             @if(isset($ad->attributionAd->user_advisor_id))
@@ -340,7 +339,7 @@
                                                           data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">{{$ad->project->supportStage->name}}</span>
                                                 @endif
                                             @else
-                                                <span class="tag is-warning">Non définis</span>
+                                                <span class="tag is-warning">Non défini</span>
                                             @endif
                                         @endif
                                     </td>
@@ -366,17 +365,17 @@
                                                           data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
                                                 @endif
                                             @else
-                                                <span class="tag is-warning">Non définis</span>
+                                                <span class="tag is-warning">Non défini</span>
                                             @endif
                                         @endif
                                     </td>
 
                                     <td>
                                         @if(! is_null($ad->project))
-                                            @if($ad->isProjectAttributedToAdvisor)
-                                                <a href="{{route('advisor.showSupport', $ad->id)}}">
+                                            @if(! is_null($ad->attributionAd->user_advisor_id))
+                                                <a href="{{route('ads.show', $ad->id)}}">
                                                     <span><i class="fas fa-hands-helping"></i></span>
-                                                    <span>Suivi de l'accompagnement</span>
+                                                    <span>Attribuer à un autre primo-accueillant</span>
                                                 </a>
                                             @else
                                                 <a href="{{route('ads.show', $ad->id)}}">

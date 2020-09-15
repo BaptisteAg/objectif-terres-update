@@ -141,7 +141,7 @@
                             {{--                                <p class="help is-danger" v-if="!$v.formInput.rentMax.numeric">Veuillez saisir des chiffres.</p>--}}
                             {{--                            </div>--}}
 
-                            <div class="field" v-show="formInput.offerGenres.includes('1')">
+                            <div class="field" v-show="formInput.offerGenres.includes('1') || formInput.offerGenres.includes(1)">
                                 {!! Form::label('land_seek[price_max]', 'Achat : quel est votre budget maximum ?', ['class' => 'label']); !!}
 
                                 <div class="control has-icons-right">
@@ -287,7 +287,7 @@
 
                         @if(!empty($isSupportRequest))
                             <div class="field">
-                                {!! Form::label('land_seek[education_levels][]', 'Niveau de formation souhaité', ['class' => 'label']); !!}
+                                {!! Form::label('land_seek[education_levels][]', 'Niveau de formation', ['class' => 'label']); !!}
 
                                 <div class="columns">
                                     @foreach($educationLevels as $i => $educationLevel)
@@ -354,6 +354,10 @@
                         @include('pages.ads.partials.inputs.title')
 
                         @include('pages.ads.partials.inputs.documents')
+
+                        @if(!empty($isSupportRequest))
+                            @include('pages.ads.partials.inputs.support-request-text')
+                        @endif
 
                         @if(!$isSupportRequest)
                             @include('pages.ads.partials.inputs.accept-share-contact-infos')

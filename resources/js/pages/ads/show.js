@@ -29,11 +29,11 @@ Vue.component('vue-moderation-modal', {
                 this.moderationChoice = e;
                 this.selectOptions = this.responseTemplates;
                 if (e === "acceptAd") {
-                    this.formUrl = "/mon-espace-moderateur/validation";
+                    this.formUrl = "/gestion-des-annonces/validation";
                 } else if (e === 'modifyAd') {
-                    this.formUrl = "/mon-espace-moderateur/modification";
+                    this.formUrl = "/gestion-des-annonces/modification";
                 } else {
-                    this.formUrl = "/mon-espace-moderateur/refus"
+                    this.formUrl = "/gestion-des-annonces/refus"
                 }
             } else {
                 this.showModal = false

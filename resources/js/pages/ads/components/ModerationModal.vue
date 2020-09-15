@@ -91,7 +91,7 @@
                   </div>
                   <label class="checkbox" v-if="moderationChoice === 'acceptAd'">
                     <input type="checkbox" v-model="isPartner">
-                    Cette annonce est partenaire de Terre de Liens
+                    Cette annonce est rédigée par un partenaire de Terre de Liens
                   </label>
                 </div>
               </div>

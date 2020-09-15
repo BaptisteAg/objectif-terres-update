@@ -32,8 +32,10 @@ export default Vue.extend({
         const extraFormInput = this.isSupportRequest ? {
             offerGenres: hasOld && v.land_seek.offer_genres || [],
             rentMax : hasOld && v.land_seek.rent_max || '0',
-            priceMax : hasOld && v.land_seek.price_max || '200000',
+            priceMax : hasOld && v.land_seek.price_max || '',
             educationLevels: hasOld && v.land_seek.education_levels || [],
+
+            supportRequestText: v.support_request_text || ''
         } : {};
 
         return {
@@ -72,6 +74,11 @@ export default Vue.extend({
     validations() {
         const extraValidations = this.isSupportRequest ? {
             offerGenres: {required},
+            supportRequestText: {
+                required,
+                minLength: minLength(10),
+                maxLength: maxLength(400),
+            }
         } : {};
 
         return {

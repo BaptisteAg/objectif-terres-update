@@ -256,33 +256,39 @@
                                         <p class="mt-10 mb-10">
 
                                         @if(isset($ad->project))
-                                            <p>
-                                                <span class="text_mouse">Stade de l'accompagnement :</span>
-                                                <span class="text_charcoal">{{$ad->project->supportStage->name ?? 'Non définis' }}</span>
-                                                <span class="has-tooltip-right"
-                                                      data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">
-                                                    <i class="fas fa-info-circle text_primary "></i>
-                                                </span>
-                                            </p>
-                                            <p>
-                                                <span class="text_mouse">Etat de la demande :</span>
-                                                <span class="text_charcoal">{{ $ad->project->supportState->name ?? 'Non définis' }}</span>
-                                                <span class="has-tooltip-right"
-                                                      data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">
-                                                    <i class="fas fa-info-circle text_primary "></i>
-                                                </span>
-                                            </p>
-                                            <p>
-                                                <span class="text_mouse">Statut du projet :</span>
-                                                <span class="text_charcoal">{{ $ad->project->projectStatus->name ?? 'Non définis' }}</span>
-                                                <span class="has-tooltip-right"
-                                                      data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">
-                                                    <i class="fas fa-info-circle text_primary "></i>
-                                                </span>
-                                            </p>
+                                            @if(isset($ad->project->support_stage_id))
+                                                <p>
+                                                    <span class="text_mouse">Stade de l'accompagnement :</span>
+                                                    <span class="text_charcoal">{{$ad->project->supportStage->name ?? 'Non défini' }}</span>
+                                                    <span class="has-tooltip-right"
+                                                          data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">
+                                                        <i class="fas fa-info-circle text_primary "></i>
+                                                    </span>
+                                                </p>
+                                            @endif
+                                            @if(isset($ad->project->support_state_id))
+                                                <p>
+                                                    <span class="text_mouse">Etat de la demande :</span>
+                                                    <span class="text_charcoal">{{ $ad->project->supportState->name ?? 'Non défini' }}</span>
+                                                    <span class="has-tooltip-right"
+                                                          data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">
+                                                        <i class="fas fa-info-circle text_primary "></i>
+                                                    </span>
+                                                </p>
+                                            @endif
+                                            @if(isset($ad->project->project_status_id))
+                                                <p>
+                                                    <span class="text_mouse">Statut du projet :</span>
+                                                    <span class="text_charcoal">{{ $ad->project->projectStatus->name ?? 'Non défini' }}</span>
+                                                    <span class="has-tooltip-right"
+                                                          data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">
+                                                        <i class="fas fa-info-circle text_primary "></i>
+                                                    </span>
+                                                </p>
+                                            @endif
                                         @else
                                             <span class="text_mouse">Statut de l'annonce :</span>
-                                            <span class="text_charcoal">{{ $ad->attributionAd->adStatus->name?? 'Non définis' }}</span>
+                                            <span class="text_charcoal">{{ $ad->attributionAd->adStatus->name?? 'Non défini' }}</span>
                                             <span class="has-tooltip-right"
                                                   data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$ad->attributionAd->adStatus->id]}}">
                                                 <i class="fas fa-info-circle text_primary "></i>
@@ -315,7 +321,7 @@
 
                                     <p class="button__wrap button__wrap_right">
                                         @if(isset($ad->project))
-                                            @if(isset($ad->attributionAd->user_advisor_id) && $ad->isAdInUserTerritories($currentUser->userDepartmentsCodes) )
+                                            @if(isset($ad->attributionAd->user_advisor_id) && $ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->isProjectInUserTerritories) )
                                                 <a href="{{route("advisor.showSupport", $ad->id)}}">
                                                     <button class="button basic  small warning mr-20">
                                                         <span class="icon is-small">
@@ -324,15 +330,15 @@
                                                         <span>Espace de suivi</span>
                                                     </button>
                                                 </a>
-                                                @elseif($currentUser->role >= 3 && $ad->isAdInUserTerritories($currentUser->userDepartmentsCodes))
+                                            @elseif($currentUser->role >= 3 && $ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->isProjectInUserTerritories))
                                                 <a href="{{route("ads.show", $ad->id)}}">
-                                                        <button class="button basic  small warning mr-20">
-                                                            <span class="icon is-small">
-                                                                <i class="fas fa-hands-helping text_white"></i>
-                                                            </span>
-                                                            <span>Attribuer la demande</span>
-                                                        </button>
-                                                    </a>
+                                                    <button class="button basic  small warning mr-20">
+                                                        <span class="icon is-small">
+                                                            <i class="fas fa-hands-helping text_white"></i>
+                                                        </span>
+                                                        <span>Attribuer la demande</span>
+                                                    </button>
+                                                </a>
                                             @endif
                                         @else
                                             <a href="{{route("ads.show", $ad->id)}}">
@@ -359,11 +365,11 @@
 
 @section('script')
     <script>
-                @if(auth()->user()->id != $user->id and auth()->user()->role < 2)
+        @if(auth()->user()->id != $user->id and auth()->user()->role < 2)
         const vueThreads = new Vue({
-                el: '#vue-contact-user-modal',
-                name: 'content'
-            });
+            el: '#vue-contact-user-modal',
+            name: 'content'
+        });
 
         let buttons = document.querySelectorAll('.open-modal-new-message');
         buttons.forEach((button) => {

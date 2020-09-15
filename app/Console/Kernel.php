@@ -29,6 +29,7 @@ class Kernel extends ConsoleKernel
         //$schedule->command('app:notify-overdue-moderation')->hourly();
         //$schedule->command('app:notify-publish-date-extend-before-expiration')->daily();
         //$schedule->command('app:notify-drafts-unpublished-ads')->hourly();
+		//$schedule->command('app:change-support-state-old-support-request')->daily();
 		$schedule->call(function () {
 			(new PruneStaleAttachments)();
 		})->daily();
