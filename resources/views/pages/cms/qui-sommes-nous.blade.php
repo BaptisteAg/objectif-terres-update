@@ -7,7 +7,8 @@
 @endsection
 
 @section('main-content')
-    <section class="section cms-page">
+    <div class="cms-page">
+    <section class="section ">
         <div class="container">
             <div class="rows margin-p">
                 <div class="row is-full">
@@ -122,7 +123,7 @@
 
 
     @include('components.support-terre-liens')
-
+    </div>
 @endsection
 
 @section('script')
