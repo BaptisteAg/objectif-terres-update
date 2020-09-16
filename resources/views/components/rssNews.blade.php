@@ -7,7 +7,7 @@
 {{--    </section>--}}
 
 <section class="section" style="display:none;" :style="{display:ready?'block':'none'}">
-    <h2 class="title is-2 is-spaced has-text-centered ">Actualités Terre de liens</h2>
+    <h2 class="title is-2 is-spaced has-text-centered ">Actualités de Terre de Liens</h2>
     <carousel class="list tiles" :per-page="1" :per-page-custom="[[768, 3], [1024, 5]]" :pagination-size="20">
         @foreach($rssNews as $item)
             <slide class="tile tile_text-image_v">
