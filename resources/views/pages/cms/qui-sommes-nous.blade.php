@@ -120,7 +120,6 @@
 {{--        </div>--}}
 {{--    </section>--}}
 
-    @include('components.partnering')
 
     @include('components.support-terre-liens')
 
