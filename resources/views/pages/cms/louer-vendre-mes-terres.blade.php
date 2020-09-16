@@ -8,7 +8,7 @@
 @endsection
 
 @section('main-content')
-    <section class="section">
+    <section class="section cms-page">
         <div class="container">
             <div class="rows">
                 <div class="row is-full">

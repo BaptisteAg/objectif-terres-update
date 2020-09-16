@@ -19,7 +19,7 @@
                             </li>
                             <li>
                                 <a class="menu__link menu__link_primary "
-                                   href="">A propos d'Objectif Terre</a>
+                                   href="">A propos d'Objectif Terres</a>
                             </li>
                         </ul>
                     </div>
