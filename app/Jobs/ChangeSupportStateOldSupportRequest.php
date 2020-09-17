@@ -36,7 +36,7 @@ class ChangeSupportStateOldSupportRequest implements ShouldQueue
 	 */
 	public function handle()
 	{
-		$projects = $this->projectService->findAllBySupportStateAndSinceNumberOfDays(SupportState::PENDING_ID,180);
+		$projects = $this->projectService->findAllBySupportStateAndSinceNumberOfDays(SupportState::PENDING_ID,1);
 		foreach ($projects as $project) {
 			/** @var Project $project */
 			$project->support_state_id = SupportState::TO_ARCHIVE_ID;
