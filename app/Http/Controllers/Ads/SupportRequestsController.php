@@ -23,6 +23,7 @@ class SupportRequestsController extends BaseController
      */
     public function edit()
     {
+
         /** @var User $user */
         $user = auth()->user();
 
@@ -99,6 +100,7 @@ class SupportRequestsController extends BaseController
      */
     public function submitRequest(AdRequest $request)
     {
+
         $data = $request->validated();
 
         /** @var $ad Ad $ad */
@@ -156,4 +158,5 @@ class SupportRequestsController extends BaseController
 
         return view('pages.ads.show', $vars);
     }
+
 }

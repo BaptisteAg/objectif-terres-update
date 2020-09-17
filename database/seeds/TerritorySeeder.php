@@ -83,12 +83,14 @@ class TerritorySeeder extends Seeder
 				'name' => ' Lorraine',
 				"created_at" => \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
-			],[
-				'id' => 14,
-				'name' => ' Massif central',
-				"created_at" => \Carbon\Carbon::now(),
-				"updated_at" => \Carbon\Carbon::now()
-			],[
+			],
+//			[
+//				'id' => 14,
+//				'name' => ' Massif central',
+//				"created_at" => \Carbon\Carbon::now(),
+//				"updated_at" => \Carbon\Carbon::now()
+//			],
+			[
 				'id' => 15,
 				'name' => ' Midi-Pyrénées',
 				"created_at" => \Carbon\Carbon::now(),
@@ -103,12 +105,14 @@ class TerritorySeeder extends Seeder
 				'name' => ' Pays de la Loire',
 				"created_at" => \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
-			],[
-				'id' => 18,
-				'name' => ' Picardie',
-				"created_at" => \Carbon\Carbon::now(),
-				"updated_at" => \Carbon\Carbon::now()
-			],[
+			],
+//			[
+//				'id' => 18,
+//				'name' => ' Picardie',
+//				"created_at" => \Carbon\Carbon::now(),
+//				"updated_at" => \Carbon\Carbon::now()
+//			],
+			[
 				'id' => 19,
 				'name' => ' Poitou-Charentes',
 				"created_at" => \Carbon\Carbon::now(),
@@ -120,7 +124,7 @@ class TerritorySeeder extends Seeder
 				"updated_at" => \Carbon\Carbon::now()
 			],[
 				'id' => 21,
-				'name' => ' Rhône-Alpes',
+				'name' => 'Rhône-Alpes',
 				"created_at" => \Carbon\Carbon::now(),
 				"updated_at" => \Carbon\Carbon::now()
 			],

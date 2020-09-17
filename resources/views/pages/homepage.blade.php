@@ -133,7 +133,7 @@
         <section class="section bg-l-pearl bg-trame_champs_light">
             <div class="container">
                 <div class="has-text-centered ">
-                    <h2 class="title is-1 text_warning_orange">Annonce à la Une</h2>
+                    <h2 class="title is-1 text_warning_orange">Annonce à la une</h2>
                     {{--                <p>ASTUCE :--}}
                     {{--                    <a href="{{url('/')}}">Créez votre compte gratuit</a>--}}
                     {{--                    pour visualiser directement les annonces--}}

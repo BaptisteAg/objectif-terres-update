@@ -41,8 +41,7 @@ class ResetPasswordController extends Controller
 				'required',
 				'string', 'email',
 				'max:255',
-				'unique:users',
-				app(SalesforceUniqueEmail::class)
+				'exist:users',
 			],
 			'password' => 'required|confirmed|min:5',
 		];

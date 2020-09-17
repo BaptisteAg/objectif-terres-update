@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Text;
 use NumaxLab\NovaCKEditor5Classic\CKEditor5Classic;
 
@@ -79,9 +80,30 @@ class CmsCommonContent extends Resource
 			Text::make('Nom de la section', 'name')->sortable()->readonly(true),
 			Text::make('Description', 'description')->readonly(true),
 			Text::make('Présence sur les pages', 'pages_name')->onlyOnDetail()->readonly(true),
-			CKEditor5Classic::make('Content')->withFiles('public')->withMeta(['maxlength' => 5])
+			MorphToMany::make('Documents', 'documents', 'App\Nova\Document'),
+			CKEditor5Classic::make('Content')->withFiles('public')->canSee(function ($request) {
+				return isset($this->has_documents) && $this->has_documents === 0;
+			})
 				->options([
-					'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote'
+					"toolbar" => [
+						'heading',
+						'|',
+						'bold',
+						'italic',
+						'link',
+						'bulletedList',
+						'numberedList',
+						'|',
+						'indent',
+						'outdent',
+						'|',
+						'imageUpload',
+						'blockQuote',
+						'insertTable',
+						'mediaEmbed',
+						'undo',
+						'redo'
+					],
 				]),
 		];
 	}

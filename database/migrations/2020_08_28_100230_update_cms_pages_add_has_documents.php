@@ -25,7 +25,7 @@ class UpdateCmsPagesAddHasDocuments extends Migration
      */
     public function down()
     {
-		Schema::table('ads', function (Blueprint $table) {
+		Schema::table('cms_pages', function (Blueprint $table) {
 			$table->removeColumn('has_documents');
 		});
     }
