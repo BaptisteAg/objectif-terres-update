@@ -107,7 +107,7 @@
 								<input type="hidden" value="advisor.showSupport" name="route">
 								<br>
 								<input type="submit" class=" button basic secondary "
-									   value="@lang('Espace de gestion des accompagnements')">
+									   value="@lang('Espace primo-accueillant')">
 							</form>
 						</div>
 					</article>

@@ -39,12 +39,13 @@ Route::namespace('Cms')->group(function () {
 	Route::get('qui-sommes-nous', 'CmsController@quiSommesNous')->name('qui-sommes-nous');
 	Route::get('minstaller-comme-paysan', 'CmsController@minstallerCommePaysan')->name('minstaller-comme-paysan');
 	Route::get('louer-ou-vendre-mes-terres', 'CmsController@louerVendreMesTerres')->name('louer-ou-vendre-mes-terres');
-	Route::get('ceder-ma-ferme', 'CmsController@cederMaFerme')->name('ceder-ma-ferme');
+	Route::get('transmettre-ma-ferme', 'CmsController@cederMaFerme')->name('transmettre-ma-ferme');
 	Route::get('trouver-un-emploi', 'CmsController@trouverUnEmploi')->name('trouver-un-emploi');
 	Route::get('mentions-legales', 'CmsController@mentionsLegales')->name('mentions-legales');
 	Route::get('confier-mes-terres', 'CmsController@confierMesTerres')->name('confier-mes-terres');
 	Route::get('ressources-utiles', 'CmsController@ressourcesUtiles')->name('ressources-utiles');
 	Route::get('contactez-nous', 'CmsController@contactezNous')->name('contactez-nous');
+	Route::get('proprietaire-de-foncier', 'CmsController@proprietaireDeFoncier')->name('proprietaire-de-foncier');
 });
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {

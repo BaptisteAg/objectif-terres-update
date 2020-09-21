@@ -64,7 +64,7 @@ class CmsPage extends Model
 		'bandeau-de-participation' => 'Bandeau de participation',
 		'/ ' => 'Page d\'accueil',
 		'qui-sommes-nous' => 'Qui sommes-nous?',
-		'ceder-ma-ferme' => 'Céder ma Ferme',
+		'transmettre-ma-ferme' => 'Transmettre ma ferme',
 		'confier-mes-terres' => 'Confier mes terres',
 		'louer-vendre-mes-terres' => 'Louer ou vendre mes terres',
 		'minstaller-comme-paysan' => 'M’installer comme paysan',

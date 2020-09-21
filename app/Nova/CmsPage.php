@@ -85,27 +85,6 @@ class CmsPage extends Resource
 			CKEditor5Classic::make('Content')->withFiles('public')->canSee(function ($request) {
 				return isset($this->has_documents) && $this->has_documents === 0;
 			})
-				->options([
-					"toolbar" => [
-						'heading',
-						'|',
-						'bold',
-						'italic',
-						'link',
-						'bulletedList',
-						'numberedList',
-						'|',
-						'indent',
-						'outdent',
-						'|',
-						'imageUpload',
-						'blockQuote',
-						'insertTable',
-						'mediaEmbed',
-						'undo',
-						'redo'
-					],
-				]),
 		];
 	}
 
