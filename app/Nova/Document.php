@@ -63,10 +63,10 @@ class Document extends Resource
 					'name' => $request->name,
 					'size' => $request->path->getSize(),
 					'type' => $request->path->getMimeType(),
-					'path' =>$request->path->store('documents/cms', 'public')
+					'path' =>$request->path->store('documents/cms', 'local')
 				];
 			})->onlyOnForms(),
-			File::make('Document', 'path')->disk('public')->onlyOnDetail()
+			File::make('Document', 'path')->disk('local')->onlyOnDetail()
 		];
 	}
 

@@ -12,7 +12,7 @@ class CmsPageSeeder extends Seeder
 
 	public function run()
 	{
-		CmsPage::insert([
+		CmsPage::updateOrInsert([
 			[
 				'page_name' => 'Bandeau de participation',
 				"description" => 'Soutenir Terre de Liens c’est préserver notre avenir',
@@ -282,13 +282,13 @@ class CmsPageSeeder extends Seeder
 
 
 		]);
-		$pages = CmsPage::all();
-		foreach ($pages as $page) {
-			$page->setSlugAttribute();
-			$faker = Factory::create('fr_FR');
-			$page->content = '<h2>Titre Section</h2><p>' . $faker->paragraphs(2, true) . '</p>';
-			$page->save();
-		}
+//		$pages = CmsPage::all();
+//		foreach ($pages as $page) {
+//			$page->setSlugAttribute();
+//			$faker = Factory::create('fr_FR');
+//			$page->content = '<h2>Titre Section</h2><p>' . $faker->paragraphs(2, true) . '</p>';
+//			$page->save();
+//		}
 
 		$territories = Territory::all();
 		foreach ($territories as $territory) {
