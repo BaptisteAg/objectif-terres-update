@@ -255,11 +255,13 @@
     @if(!$cmsFaq->isEmpty())
         @include('components.faqAccordion')
     @endif
+
+
+    @include('components.partnering')
+
     <div id="vue-rss">
         @include('components.rssNews')
     </div>
-
-    @include('components.partnering')
     @include('components.support-terre-liens')
 
 @endsection

@@ -37,11 +37,9 @@
                                                 @if($user->userPermissions->count())
                                                     @foreach($user->userPermissions as $permission )
                                                         -
-                                                    <span class="is-size-7">{{\App\Models\UserPermission::$permissions[$permission->id]}}</span>
+                                                    <span class="is-size-7">{{\App\Models\UserPermission::$permissions[$permission->permission]}}</span>
                                                     @endforeach
-
                                                 @endif
-
                                             </p>
 
                                         @endforeach

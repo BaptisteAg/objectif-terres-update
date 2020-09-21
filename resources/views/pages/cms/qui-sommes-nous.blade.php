@@ -9,7 +9,7 @@
 @section('main-content')
     <div class="cms-page">
     <section class="section ">
-        <div class="container">
+        <div id="a-propos-d-objectif-terres" class="container">
             <div class="rows margin-p">
                 <div class="row is-full">
                         @if($pageContent->count())
@@ -69,7 +69,7 @@
         </div>
     </section>
 
-    <section class="section">
+    <section id="le-mouvement-terre-de-liens" class="section">
         <div class="container">
             <div class="rows">
                 <div class="row is-full margin-p">

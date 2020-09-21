@@ -80,9 +80,9 @@ class ProjectService
 	 * @param int $numberOfDays
 	 * @return mixed
 	 */
-	public function findAllBySupportStateAndSinceNumberOfDays(int $supportStateId, int $numberOfDays) : Collection
+	public function findAllBySupportStateAndSinceNumberOfDays(int $supportStateId, int $numberOfDays): Collection
 	{
-		return $this->repository->findAllBySupportStateAndSinceNumberOfDays($supportStateId,$numberOfDays);
+		return $this->repository->findAllBySupportStateAndSinceNumberOfDays($supportStateId, $numberOfDays);
 	}
 
 	/**
@@ -263,8 +263,9 @@ class ProjectService
 		$attributionAd->user_advisor_id = $request->input('user_advisor_id');
 		$attributionAd->save();
 		$this->notification->handle($attributionAd->ad->id);
-
-		$this->advisorService->createNote($request);
+		if (! is_null($request->input('value'))) {
+			$this->advisorService->createNote($request);
+		}
 
 
 	}

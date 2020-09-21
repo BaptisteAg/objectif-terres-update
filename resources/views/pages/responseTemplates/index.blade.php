@@ -18,7 +18,13 @@
             <h5 class="title is-5 has-text-centered">Créer un nouveau message type</h5>
             <div class="columns is-mobile is-centered">
                 <div class="column is-half ">
-                    <p class="">Remplissez le formulaire suivant pour créer un nouveau message type</p>
+                    <p>
+                        <span class="icon">
+                            <i class="fas fa-info-circle has-text-info"></i>
+                        </span>
+                        <span class="">Commencez le titre du message par Annonce ou Accompagnement pour faciliter le
+                            rangement de ces réponses.</span>
+                    </p>
                     <div class="field">
                         <label class="label">Titre du message</label>
                         <div class="control">
@@ -62,53 +68,53 @@
                                 <div class="column is-three-quarters">Contenu du message</div>
                                 <div class="column"></div>
                             </div>
-                            @foreach($responseTemplates->sortBy('created_at') as $response)
+                            @foreach($responseTemplates as $response)
                                 <div class="columns is-center is-mobile response-templates-container">
                                     <template v-if="responseTemplateToModify === {{$response->id}}">
                                         <div class="column is-11">
                                             {!! Form::open(['route' => 'responseTemplates.edit', 'method'=>'post']) !!}
                                             <div class="field is-horizontal">
                                                 <div class="field-body">
-                                            <div class="field is-narrow ">
-                                                <div class="control">
-                                                    <input class="input"  type="text" name="title" value="{{$response->title}}">
-                                                </div>
-                                            </div>
-                                            <div class="field ">
-                                                <div class="control is-expanded">
-                                                    <input type="hidden" name="response_template_id"
-                                                           value="{{$response->id}}">
-                                                    <textarea class="textarea"
-                                                              name="content"
-                                                              placeholder="Remplissez...">{{$response->content}}</textarea>
-                                                </div>
-                                                <div class="field is-grouped is-narrow mt-15">
-                                                    <div class="control">
-                                                        <button type="submit"
-                                                                class="button is-link">
-                                                            <span class="icon">
-                                                                <i class="fas fa-check"></i>
-                                                            </span>
-                                                            <span>Valider</span>
-                                                        </button>
+                                                    <div class="field is-narrow ">
+                                                        <div class="control">
+                                                            <input class="input" type="text" name="title"
+                                                                   value="{{$response->title}}">
+                                                        </div>
                                                     </div>
-                                                    <div class="control">
-                                                        <button v-on:click="modifyResponseTemplate(0)"
-                                                                class="button is-link is-light">
-                                                            <span class="icon">
-                                                                <i class="fas fa-times"></i>
-                                                            </span>
-                                                            <span>Annuler</span>
-                                                        </button>
+                                                    <div class="field ">
+                                                        <div class="control is-expanded">
+                                                            <input type="hidden" name="response_template_id"
+                                                                   value="{{$response->id}}">
+                                                            <textarea class="textarea"
+                                                                      name="content"
+                                                                      placeholder="Remplissez...">{{$response->content}}</textarea>
+                                                        </div>
+                                                        <div class="field is-grouped is-narrow mt-15">
+                                                            <div class="control">
+                                                                <button type="submit"
+                                                                        class="button is-link">
+                                                                    <span class="icon">
+                                                                        <i class="fas fa-check"></i>
+                                                                    </span>
+                                                                    <span>Valider</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="control">
+                                                                <button v-on:click="modifyResponseTemplate(0)"
+                                                                        class="button is-link is-light">
+                                                                    <span class="icon">
+                                                                        <i class="fas fa-times"></i>
+                                                                    </span>
+                                                                    <span>Annuler</span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
 
                                                 </div>
                                             </div>
                                             {!! Form::close() !!}
                                         </div>
-
 
 
                                     </template>
