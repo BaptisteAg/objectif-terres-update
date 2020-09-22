@@ -1,6 +1,11 @@
 @extends ('default')
 
-@section ('title', 'Mon espace gestion des accompagnements')
+@if(auth()->user()->role >=3)
+    @section ('title', 'Mon espace gestion des accompagnements')
+@else
+    @section ('title', 'Mon espace primo-accueillant')
+@endif
+
 
 @section('header')
     @if(auth()->user()->role >= 3)
@@ -12,9 +17,13 @@
 
 @section('main-content')
     <div class="section pt-0">
-        <h1 class="title is-2 has-text-link">Bienvenue sur votre espace gestion des accompagnements <span
-                    class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
-
+        @if(auth()->user()->role >= 3)
+            <h1 class="title is-2 has-text-link">Bienvenue sur votre espace gestion des accompagnements <span
+                        class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
+        @else
+            <h1 class="title is-2 has-text-link">Bienvenue sur votre espace primo-accueillant <span
+                        class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
+        @endif
         @if(! auth()->user()->notifications->isEmpty())
             @if($numberOfProjectToHandle !== 0 || $numberOfUnreadMessages !== 0)
                 <div id="notification-advisor" class="notification has-background-info">

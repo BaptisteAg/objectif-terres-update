@@ -37,7 +37,7 @@ require('./pages/dashboard');
 require('./pages/advisors/advisors');
 require('./pages/supervisor/supervisor');
 require('./pages/video');
-require('./pages/cms/contact-us-form');
+require('./pages/cms/cms-page');
 require('./pages/homepage/homepage');
 require('./pages/responseTemplates/responseTemplates')
 

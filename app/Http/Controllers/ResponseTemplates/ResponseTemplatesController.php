@@ -27,7 +27,7 @@ class ResponseTemplatesController extends Controller
 	 */
 	public function index()
 	{
-		$responseTemplates = ResponseTemplate::all();
+		$responseTemplates = ResponseTemplate::orderBy('title')->get();
 		return view('pages.responseTemplates.index', compact('responseTemplates'));
 	}
 

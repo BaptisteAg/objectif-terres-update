@@ -57,8 +57,8 @@ class AdvisorsController extends BaseController
 	public function help()
 	{
 		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
-		$pageContent = CmsPage::where('slug', 'like', '%'.'ressoures-primo-accueillant'. '%')->first();
-		return view('pages.advisors.help', compact('users','pageContent'));
+		$pageContents = CmsPage::where('slug', 'like', '%'.'ressources-primo-accueillant'. '%')->with('documents')->get()->keyBy('slug');
+		return view('pages.advisors.help', compact('users','pageContents'));
 	}
 
 	/**

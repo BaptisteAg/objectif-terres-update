@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     var v = document.getElementsByClassName("youtube-player");
     var overlayText = document.getElementById("overlay-text");
-    console.log(overlayText)
-    if (v.length>0) {
+    if (v.length > 0) {
         var div,
             n;
         for (n = 0; n < v.length; n++) {
@@ -17,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function noThumb(id, overlayTextContent) {
     var thumb = '<img src="https://i.ytimg.com/vi/ID/maxresdefault.jpg">',
-        overlayText = '\'<div class="text-video">'+overlayTextContent.innerHTML+'</div>',
+        overlayText = '\'<div class="text-video">' + overlayTextContent.innerHTML + '</div>',
         play = '<div class="play"></div>';
     return thumb.replace("ID", id) + play + overlayText;
 }

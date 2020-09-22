@@ -1,6 +1,6 @@
 <div class="column is-full-mobile is-half-tablet is-one-third-desktop">
 	<div class="field">
-		<label class="label">Choississez un départments</label>
+		<label class="label">Choississez un départment</label>
 		<multi-select
 				:options="{{ json_encode($departments) }}"
 				:multiple="true"

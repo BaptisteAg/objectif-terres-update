@@ -16,7 +16,7 @@ class CmsCommonContentSeeder extends Seeder
 			[
 				'name' => 'Description vidéo',
 				"description" => 'Texte de description afficher au dessus de la vidéo',
-				'pages_name' => 'ceder-ma-ferme, confier-mes-terres, minstaller-comme-paysan ',
+				'pages_name' => 'transmettre-ma-ferme, confier-mes-terres, minstaller-comme-paysan ',
 				'slug' => 'text-video',
 				'content' => '<span>' . $faker->sentence() . '</span>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -26,7 +26,7 @@ class CmsCommonContentSeeder extends Seeder
 			[
 				'name' => 'Téléchargement guide',
 				"description" => 'Texte de description pour le téléchargement du guide',
-				'pages_name' => 'ceder-ma-ferme, confier-mes-terres, louer-ou-vendre-mes-terres, minstaller-comme-paysan, ressources-utiles, trouver-un-emploi',
+				'pages_name' => 'transmettre-ma-ferme, confier-mes-terres, louer-ou-vendre-mes-terres, minstaller-comme-paysan, ressources-utiles, trouver-un-emploi',
 				'slug' => 'text-telechargement-guide',
 				'content' => '<h2>Titre Section</h2><p>' . $faker->paragraphs(2, true) . '</p>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -37,7 +37,7 @@ class CmsCommonContentSeeder extends Seeder
 				'name' => '"Par où démarrer"',
 				"description" => 'Texte de d\'introduction',
 				'slug' => 'par-ou-commencer-introduction',
-				'pages_name' => 'ceder-ma-ferme, louer-ou-vendre-mes-terres, minstaller-comme-paysan, trouver-un-emploi',
+				'pages_name' => 'transmettre-ma-ferme, louer-ou-vendre-mes-terres, minstaller-comme-paysan, trouver-un-emploi',
 				'content' => '<h2>Titre Section</h2><p>' . $faker->paragraphs(2, true) . '</p>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -46,7 +46,7 @@ class CmsCommonContentSeeder extends Seeder
 			[
 				'name' => '"Par où démarrer"',
 				"description" => 'Texte première étape',
-				'pages_name' => 'ceder-ma-ferme, louer-ou-vendre-mes-terres, minstaller-comme-paysan, trouver-un-emploi',
+				'pages_name' => 'transmettre-ma-ferme, louer-ou-vendre-mes-terres, minstaller-comme-paysan, trouver-un-emploi',
 				'slug' => 'par-ou-commencer-premiere-etape',
 				'content' => '<h2>Titre Section</h2><p>' . $faker->paragraphs(2, true) . '</p>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -56,7 +56,7 @@ class CmsCommonContentSeeder extends Seeder
 			[
 				'name' => '"Par où démarrer"',
 				"description" => 'Texte deuxième étape',
-				'pages_name' => 'ceder-ma-ferme, louer-ou-vendre-mes-terres, minstaller-comme-paysan, trouver-un-emploi',
+				'pages_name' => 'transmettre-ma-ferme, louer-ou-vendre-mes-terres, minstaller-comme-paysan, trouver-un-emploi',
 				'slug' => 'par-ou-commencer-deuxieme-etape',
 				'content' => '<h2>Titre Section</h2><p>' . $faker->paragraphs(2, true) . '</p>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -65,7 +65,7 @@ class CmsCommonContentSeeder extends Seeder
 			], [
 				'name' => '"Par où démarrer"',
 				"description" => 'Texte troisième étape',
-				'pages_name' => 'ceder-ma-ferme, louer-ou-vendre-mes-terres, minstaller-comme-paysan, trouver-un-emploi',
+				'pages_name' => 'transmettre-ma-ferme, louer-ou-vendre-mes-terres, minstaller-comme-paysan, trouver-un-emploi',
 				'slug' => 'par-ou-commencer-troisieme-etape',
 				'content' => '<h2>Titre Section</h2><p>' . $faker->paragraphs(2, true) . '</p>',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),

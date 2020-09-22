@@ -6,18 +6,18 @@
                     <h6 class="title is-6 text_white footer-site__title">TERRE DE LIENS</h6>
                     <p><a class="" target="_blank" href="{{ url('https://terredeliens.org/-un-mouvement-trois-piliers-.html') }}">Qui sommes nous ?</a>
                     </p>
-                    <p><a class=""  href="{{ url('/') }}">Notre mission</a></p>
-                    <p><a class="" target="_blank" href="{{ url('https://terredeliens.org/-le-sens-de-notre-action-.html') }}">Nos actions</a></p>
+                    <p><a class=""  href="{{ url('https://terredeliens.org/-un-mouvement-trois-piliers-.html') }}">Notre mission</a></p>
+                    <p><a class="" target="_blank" href="{{ url('https://terredeliens.org/-proteger-les-terres-.html') }}">Nos actions</a></p>
                     <p><a class="" target="_blank"
                           href="{{ url('https://terredeliens.org/-les-chiffres-clefs-.html') }}">Chiffres clés</a>
                     </p>
-                    <p><a class="" target="_blank" href="{{ url('https://www.accesstoland.eu/') }}">Une question ? </a>
+                    <p><a class="" target="_blank" href="#">Une question ? </a>
                     </p>
                 </div>
                 <div class="column is-2-desktop is-half-tablet">
                     <h6 class="title is-6 text_white footer-site__title">NOS AUTRES SITES</h6>
                     <p><a class="" target="_blank" href="{{ url('https://terredeliens.org/') }}">Terre de Liens</a></p>
-                    <p><a class="" target="_blank" href="{{ url('https://ressources.terredeliens.org/') }}">Centres de
+                    <p><a class="" target="_blank" href="{{ url('https://ressources.terredeliens.org/') }}">Centre de
                             Ressources</a></p>
                     <p><a class="" target="_blank" href="{{ url('https://parcel-app.org/') }}">PARCEL</a></p>
                     <p><a class="" target="_blank" href="{{ url('https://www.accesstoland.eu/') }}">Access to land</a>

@@ -20,6 +20,30 @@
                         {!! Form::open(['route'=>'register']) !!}
                         @csrf
                         <div class="columns">
+                            <div class="column is-one-fifths">
+                                <div class="field">
+                                    <label class="label" for="civility">Civilité*</label>
+                                    <div class="control has-icons-left">
+                                        <div class="select">
+
+                                            <select id="civility" name="civility"
+                                                    class="input @error('civility') is-danger @enderror "
+                                                    required>
+                                                <option value=""></option>
+                                                @foreach(\App\Models\User::$civilities as $id => $civ)
+                                                    <option
+                                                            value="{{$id}}" {{old('civility') == $id ? 'selected' : ''}}>
+                                                        {{$civ}}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="icon is-small is-left">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="column is-two-fifths">
                                 <div class="field">
                                     <label class="label">Votre nom*</label>
@@ -63,30 +87,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="column is-one-fifths">
-                                <div class="field">
-                                    <label class="label" for="civility">Civilité*</label>
-                                    <div class="control has-icons-left">
-                                        <div class="select">
 
-                                            <select id="civility" name="civility"
-                                                    class="input @error('civility') is-danger @enderror "
-                                                    required>
-                                                <option value=""></option>
-                                                @foreach(\App\Models\User::$civilities as $id => $civ)
-                                                    <option
-                                                        value="{{$id}}" {{old('civility') == $id ? 'selected' : ''}}>
-                                                        {{$civ}}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="icon is-small is-left">
-                                            <i class="fas fa-user"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div class="columns">
                             <div class="column is-half">

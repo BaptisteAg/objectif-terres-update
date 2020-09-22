@@ -86,7 +86,7 @@
                     <div class="content mt-30">
                         <p class="label has-text-centered">Laisser une note pour le primo accueillant</p>
                         <input value="{{auth()->id()}}" name="user_id" type="hidden">
-                        <textarea required class="textarea has-fixed-size" name="value" type="text"
+                        <textarea  class="textarea has-fixed-size" name="value" type="text"
                                   placeholder="Votre note..."></textarea>
                     </div>
                 </div>
