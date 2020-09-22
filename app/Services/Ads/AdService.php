@@ -6,12 +6,14 @@ use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\City;
 use App\Models\Department;
+use App\Models\ProjectDataKey;
 use App\Models\ProjectStatus;
 use App\Models\Region;
 use App\Models\SupportStage;
 use App\Models\SupportState;
 use App\Models\Territory;
 use App\Models\User;
+use App\Repositories\AdNotes\AdNotesRepository;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Ads\JobOfferAdRepository;
 use App\Repositories\Ads\JobSeekAdRepository;
@@ -27,8 +29,10 @@ use DateTime;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 /**
  * Class AdService
@@ -73,9 +77,10 @@ class AdService
 	 * @var ProjectsRepository
 	 */
 	protected $projectRepository;
+    protected $adNotesRepository;
 
 
-	/**
+    /**
 	 * AdService constructor.
 	 * @param AdRepository $repository
 	 * @param AttributionAdsRepository $attributionAdsRepository
@@ -97,8 +102,8 @@ class AdService
 		JobSeekAdRepository $jobSeekAdRepository,
 		ProductionGenreRepository $productionGenreRepository,
 		ProjectsRepository $projectRepository,
-		UserService $userService
-
+		UserService $userService,
+        AdNotesRepository $adNotesRepository
 	)
 	{
 		$this->repository = $repository;
@@ -110,6 +115,7 @@ class AdService
 		$this->productionGenreRepository = $productionGenreRepository;
 		$this->userService = $userService;
 		$this->projectRepository = $projectRepository;
+		$this->adNotesRepository = $adNotesRepository;
 	}
 
 	/**
@@ -236,6 +242,56 @@ class AdService
 		return $ad;
 
 	}
+
+    /**
+     * @param array $data
+     * @throws \Exception
+     * @throws Throwable
+     */
+    public function importAd(array $data, $userId)
+    {
+        DB::beginTransaction();
+
+        $ad = $this->repository->createForUser($data, $userId);
+
+        if(!$data["is_draft"]) {
+            $adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
+            $availableModerators = $this->userService->findByRoleAndDepartments(1, $adDepartmentCodes);
+            $availableSupervisors = $this->userService->findByRoleAndDepartments(3, $adDepartmentCodes);
+            $availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
+
+            if ($availableModerators->isEmpty() && $availableSupervisors->isEmpty() && empty($availableUserWithPermission)) {
+                throw new AttributionAdException("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
+            }
+            // If ad was attributed before, we'll get the same moderator if available
+            if ($ad->attributionAd && $ad->attributionAd->userModerator &&
+                $availableModerators->keyBy("id")->find($ad->attributionAd->user_moderator_id)) {
+                $moderator = $ad->attributionAd->userModerator;
+            } else {
+                if ($availableModerators->count() >= 1) {
+                    /** @var User $moderator */
+                    $moderator = $availableModerators->random();
+                } else if (!empty($availableUserWithPermission)) {
+                    $moderator = $availableUserWithPermission;
+                } else {
+                    /** @var User $moderator */
+                    $moderator = $availableSupervisors->random();
+                }
+            }
+            $attributionAdData['ad_status_id'] = AdStatus::PENDING_MODERATION_STATUS_ID;
+            $attributionAdData['user_moderator_id'] = $moderator->id;
+            $attributionAdData['ad_id'] = $ad->id;
+
+            $this->attributionAdsRepository->create($attributionAdData);
+        }
+
+        $subAdData = $data[$data["ad_type"]];
+        $subAdData["ad_id"] = $ad->id;
+        $this->createSubAd($data["ad_type"], $subAdData);
+
+        DB::commit();
+        return $ad;
+    }
 
     /**
      * @param Ad $ad
@@ -885,4 +941,61 @@ class AdService
 			return back()->withInput()->withErrors($e->getMessage());
 		}
 	}
+	
+    /**
+     * @param int $adId
+     * @return Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function allPublicNotesWithProjectDatKeysByAdId(int $adId): Collection
+    {
+        $notes = $this->adNotesRepository->findAllNotesWithPublicProjectDatKeysByAdId($adId);
+        return $notes;
+    }
+
+
+
+    /**
+     * @param Request $request
+     * @throws Throwable
+     */
+    public function updateProjectDataKeysValues(Request $request)
+    {
+
+        $requestProjectDataKeyValues = array_filter($request->input('project_data_key'));
+
+        $previousValues = $this->adNotesRepository->findAllNotesWithPublicProjectDatKeysByAdId($request->input('ad_id'));
+
+        $previousValues->filter(function ($note) use ($request, &$requestProjectDataKeyValues) {
+            if (array_key_exists($note->project_data_key_id, $requestProjectDataKeyValues)) {
+                if ($note->value != $requestProjectDataKeyValues[$note->project_data_key_id]) {
+                    $note->value = $requestProjectDataKeyValues[$note->project_data_key_id];
+                    $note->user_id = $request->input('user_id');
+                    $note->save();
+
+                    $projectDataKey = ProjectDataKey::whereId($note->project_data_key_id)->with('projectDataValues')->first();
+
+                    if ($projectDataKey->projectDataValues->count() > 0) {
+                        $projectDataKey->projectDataValues->filter(function ($projectDataValue) use ($note, $requestProjectDataKeyValues) {
+                            if ($projectDataValue->value === $requestProjectDataKeyValues[$note->project_data_key_id]) {
+                                $note->projectDataValue()->associate($projectDataValue->id);
+                                $note->save();
+                            }
+                        });
+                    }
+                }
+                unset($requestProjectDataKeyValues[$note->project_data_key_id]);
+            }
+        });
+        if (count($requestProjectDataKeyValues) > 0) {
+            foreach ($requestProjectDataKeyValues as $key => $value) {
+                $data = Arr::only($request->input(), [
+                    "ad_id",
+                    "user_id"
+                ]);
+                $data['value'] = $value;
+                $data['project_data_key_id'] = $key;
+                $this->adNotesRepository->create($data);
+            }
+        }
+    }
 }
