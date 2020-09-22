@@ -36,15 +36,15 @@ class CmsPage extends Model
 {
 	use Documentable;
 
-	public static function boot()
-	{
-		parent::boot();
-
-		// grab the title and description and slugify it
-		static::saving(function ($cmsPage) {
-			$cmsPage->slug = Str::slug($cmsPage->page_name) . '-' . Str::slug($cmsPage->description);
-		});
-	}
+//	public static function boot()
+//	{
+//		parent::boot();
+//
+//		// grab the title and description and slugify it
+//		static::saving(function ($cmsPage) {
+//			$cmsPage->slug = Str::slug($cmsPage->page_name) . '-' . Str::slug($cmsPage->description);
+//		});
+//	}
 
 	/**
 	 * The table associated with the model.

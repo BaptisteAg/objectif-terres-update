@@ -2,9 +2,9 @@
     <div class="container is-fluid">
         @if(Route::currentRouteName() ==="minstaller-comme-paysan")
             <h2 class="title is-2 has-text-centered">Ils peuvent vous accompagner</h2>
-        @elseif(Route::currentRouteName() ==="louer-ou-vendre-mes-terres")
+        @elseif(Route::currentRouteName() ==="transmettre-ma-ferme")
             <h2 class="title is-2 has-text-centered"> Ils peuvent vous accompagner à transmettre</h2>
-        @elseif(Route::currentRouteName() === "transmettre-ma-ferme")
+        @elseif(Route::currentRouteName() === "louer-ou-vendre-mes-terres")
             <h2 class="title is-2 has-text-centered"> Ils peuvent vous accompagner au-delà du volet foncier de votre
                 projet </h2>
         @else
