@@ -134,7 +134,7 @@
                             <div class="card-image vignette photo">
                                 <figure class="image vignette__image-wrap vignette__ratio_4-3">
                                     <img class="vignette__image"
-                                         src="{{asset('/images/cms/ressources/Capture d’écran 2020-09-17 à 15.21.57.png')}}"
+                                         src="{{asset('/images/cms/ressources/Capture d’écran 2020-09-17 à 15.01.09.png')}}"
                                          alt="Placeholder image">
                                 </figure>
                                 <ul class="custom-tags custom-list custom-list_v ">
@@ -164,8 +164,6 @@
                         </a>
                     </div>
                 </div>
-
-
                 <div class="content has-text-centered mt-60">
                     <p>Pour votre recherche de terres agricoles nous vous invitons à :</p>
                     <div class="columns is-centered">

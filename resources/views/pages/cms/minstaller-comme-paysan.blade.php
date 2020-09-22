@@ -68,6 +68,9 @@
             </div>
         </div>
     </section>
+    <div class="container">
+        <p >Quelques ressources issues de ce dossier : </p>
+    </div>
     <div class="columns is-centered">
         <div class="column is-one-quarter">
             <a target="_blank" class="tile__link card"
