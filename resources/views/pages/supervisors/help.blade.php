@@ -98,8 +98,7 @@
                             <div class="content">
                                 <div class="columns is-mobile is-centered">
                                     <div class="column is-three-quarters">
-                                        <h2 class="title is-2 ">Conseils sur la gestion de votre
-                                            territoire</h2>
+                                        <h2 class="title is-2 ">Modération des annonces</h2>
                                     </div>
                                 </div>
                             </div>

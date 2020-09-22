@@ -74,7 +74,7 @@
     <div class="columns is-centered">
         <div class="column is-one-quarter">
             <a target="_blank" class="tile__link card"
-               href="{{url(':https://ressources.terredeliens.org/les-ressources/trouver-une-terre-pour-mon-projet-agricole')}}">
+               href="{{url('https://ressources.terredeliens.org/les-ressources/trouver-une-terre-pour-mon-projet-agricole')}}">
                 <div class="card-image vignette photo">
                     <figure class="image vignette__image-wrap vignette__ratio_4-3">
                         <img class="vignette__image"
@@ -110,7 +110,7 @@
         </div>
         <div class="column is-one-quarter">
             <a target="_blank" class="tile__link card"
-               href="{{url(' https://ressources.terredeliens.org/les-ressources/neo-paysans-le-guide-tres-pratique')}}">
+               href="{{url('https://ressources.terredeliens.org/les-ressources/neo-paysans-le-guide-tres-pratique')}}">
                 <div class="card-image vignette photo">
                     <figure class="image vignette__image-wrap vignette__ratio_4-3">
                         <img class="vignette__image"

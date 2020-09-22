@@ -59,7 +59,7 @@
                 <div class="columns is-centered mb-60">
                     <div class="column is-one-quarter">
                         <a target="_blank" class="tile__link card"
-                           href="{{url(':https://ressources.terredeliens.org/les-ressources/trouver-une-terre-pour-mon-projet-agricole')}}">
+                           href="{{url('https://ressources.terredeliens.org/les-ressources/trouver-une-terre-pour-mon-projet-agricole')}}">
                             <div class="card-image vignette photo">
                                 <figure class="image vignette__image-wrap vignette__ratio_4-3">
                                     <img class="vignette__image"

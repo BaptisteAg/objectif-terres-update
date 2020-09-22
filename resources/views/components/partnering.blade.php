@@ -1,7 +1,7 @@
 <section class="section bg-l-pearl bg-trame_champs_light" style="background:rgba(0,0,0,0.05);margin-top:50px;">
     <div class="container is-fluid">
         @if(Route::currentRouteName() ==="minstaller-comme-paysan")
-            <h2 class="title is-2 has-text-centered">Ils peuvent vous accompagner</h2>
+            <h2 class="title is-2 has-text-centered">Ils peuvent vous accompagner dans votre projet</h2>
         @elseif(Route::currentRouteName() ==="transmettre-ma-ferme")
             <h2 class="title is-2 has-text-centered"> Ils peuvent vous accompagner à transmettre</h2>
         @elseif(Route::currentRouteName() === "louer-ou-vendre-mes-terres")

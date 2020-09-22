@@ -167,11 +167,11 @@
             </a>
         </div>
     </div>
-    <div class="content has-text-centered mt-60">
-{{--        <p>Pour votre recherche de terres agricoles nous vous invitons à :</p>--}}
+    <div class="container content has-text-centered mt-60">
+        <p>Pour votre recherche de terres agricoles nous vous invitons à :</p>
         <div class="columns is-centered">
             <div class="column has-text-centered">
-{{--                <p>Déposer une annonce pour rendre visible votre recherche</p>--}}
+                <p>Déposer une annonce pour rendre visible votre recherche</p>
                 <a href="{{route('ads.create')}}">
                     <button class="button is-link is-medium basic secondary">
                         <span class="button__label"> Déposer une annonce</span>
@@ -179,7 +179,7 @@
                 </a>
             </div>
             <div class="column has-text-centered">
-{{--                <p>Solliciter un accompagnement sur le volet foncier de votre projet auprès de l’une des dix-neuf associations territoriales Terre de Liens </p>--}}
+                <p>Solliciter un accompagnement sur le volet foncier de votre projet auprès de l’une des dix-neuf associations territoriales Terre de Liens </p>
                 <a href="/accompagnement/demarrer">
                     <button class="button is-link is-medium basic secondary">
                         <span class="button__label">
