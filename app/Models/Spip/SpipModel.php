@@ -15,5 +15,5 @@ use Illuminate\Database\Eloquent\Model;
  */
 class SpipModel extends Model
 {
-//    protected $connection = 'mysql_spip';
+    protected $connection = 'mysql_spip';
 }

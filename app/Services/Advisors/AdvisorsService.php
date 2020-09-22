@@ -208,51 +208,6 @@ class AdvisorsService
 
 
 	/**
-	 * @param Request $request
-	 * @throws Throwable
-	 */
-	public function updateProjectDataKeysValues(Request $request)
-	{
-
-		$requestProjectDataKeyValues = array_filter($request->input('project_data_key'));
-
-		$previousValues = $this->adNotesRepository->findAllNotesWithPublicProjectDatKeysByAdId($request->input('ad_id'));
-
-		$previousValues->filter(function ($note) use ($request, &$requestProjectDataKeyValues) {
-			if (array_key_exists($note->project_data_key_id, $requestProjectDataKeyValues)) {
-				if ($note->value != $requestProjectDataKeyValues[$note->project_data_key_id]) {
-					$note->value = $requestProjectDataKeyValues[$note->project_data_key_id];
-					$note->user_id = $request->input('user_id');
-					$note->save();
-
-					$projectDataKey = ProjectDataKey::whereId($note->project_data_key_id)->with('projectDataValues')->first();
-
-					if ($projectDataKey->projectDataValues->count() > 0) {
-						$projectDataKey->projectDataValues->filter(function ($projectDataValue) use ($note, $requestProjectDataKeyValues) {
-							if ($projectDataValue->value === $requestProjectDataKeyValues[$note->project_data_key_id]) {
-								$note->projectDataValue()->associate($projectDataValue->id);
-								$note->save();
-							}
-						});
-					}
-				}
-				unset($requestProjectDataKeyValues[$note->project_data_key_id]);
-			}
-		});
-		if (count($requestProjectDataKeyValues) > 0) {
-			foreach ($requestProjectDataKeyValues as $key => $value) {
-				$data = Arr::only($request->input(), [
-					"ad_id",
-					"user_id"
-				]);
-				$data['value'] = $value;
-				$data['project_data_key_id'] = $key;
-				$this->adNotesRepository->create($data);
-			}
-		}
-	}
-
-	/**
 	 * @param array $data
 	 * @return Builder[]|Collection
 	 */

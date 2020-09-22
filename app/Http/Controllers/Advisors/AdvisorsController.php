@@ -177,8 +177,8 @@ class AdvisorsController extends BaseController
 			return back()->with('warning', 'Une erreur est survenue, veuillez réessayer');
 
 		}
-		$this->advisorsService->updateProjectDataKeysValues($request);
-		return back()->with('success', 'L\'indicateur a bien été modifié');
+		$this->adService->updateProjectDataKeysValues($request);
+		return back()->with('success', 'Les indicateurs ont bien été modifiés.');
 	}
 
 	/**

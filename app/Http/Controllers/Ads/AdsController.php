@@ -22,7 +22,27 @@ class AdsController extends BaseController
 	 */
 	public function create()
 	{
-		return view('pages.ads.new', $this->getCreateFormVars());
+	    $supportRequests = [];
+        if(auth()->user()->supportRequest) {
+            $supportRequests = [auth()->user()->supportRequest];
+        }
+
+		return view('pages.ads.new', array_merge($this->getCreateFormVars(), compact("supportRequests")));
+	}
+
+    /**
+     * Display the ad creation form
+     * @return \Illuminate\View\View
+     * @throws \Exception
+     */
+	public function createFromSupportRequest(Ad $ad)
+	{
+        $vars = $this->getEditFormVars($ad);
+
+        unset($vars["old"]["id"]);
+        $vars["isSupportRequest"] = 0;
+
+		return view('pages.ads.new', $vars);
 	}
 
 	/**
@@ -106,7 +126,6 @@ class AdsController extends BaseController
 		if (!isset($ad->user_pp_id)) {
 			abort(404);
 		}
-
 
 		//Throw error 404 if a visitor try to show an ad is not validated
 		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validée" ;

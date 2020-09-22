@@ -56,9 +56,8 @@ class SupervisorsController extends BaseController
 	{
 		$request->flash();
 		$request->session()->put('supervisor_dashboard_url', $request->all());
-		$ads = $this->adService->showForSupervisor($request);
 		$vars = $this->getSupervisorDashboardVars();
-		$vars['ads'] = $ads;
+		$vars['ads'] = $this->adService->showForSupervisor($request);
 
 		return view('pages.supervisors.index', $vars);
 	}

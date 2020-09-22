@@ -7,10 +7,14 @@ use App\Exceptions\AttributionAdException;
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
 use App\Models\CmsPage;
+use App\Models\ProjectDataKey;
 use App\Models\Territory;
 use App\Models\User;
 use App\Notifications\NewSupportRequestNotification;
 use App\Notifications\SupportRequestAttributionNotification;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Throwable;
 
 class SupportRequestsController extends BaseController
 {
@@ -23,18 +27,12 @@ class SupportRequestsController extends BaseController
      */
     public function edit()
     {
-
         /** @var User $user */
         $user = auth()->user();
 
         $ad = $user->supportRequest;
 
-        $vars = array_merge($this->getEditFormVars($ad), [
-            'isSupportRequest' => 1
-        ]);
-
-        $vars["old"]["land_seek"]["offer_genres"] = $ad->landSeekAd->offerGenres->pluck("id")->toArray();
-        $vars["old"]["land_seek"]["education_levels"] = $ad->landSeekAd->educationLevels->pluck("id")->toArray();
+        $vars = $this->getEditFormVars($ad);
 
         return view('pages.ads.new', $vars);
     }
@@ -67,7 +65,6 @@ class SupportRequestsController extends BaseController
      */
     public function processStart()
     {
-
         session()->put([
             'support-request.text' => request('support_request_text'),
             'support-request.territory_id' => request('support_request_territory_id')
@@ -89,6 +86,28 @@ class SupportRequestsController extends BaseController
         if(empty($vars["old"]["support_request_text"])) {
             $vars["old"]["support_request_text"] = session('support-request.text');
         }
+
+        $vars["ads"] = auth()->user()->ads->filter(function (Ad $ad) {
+            return in_array($this->adService->getAdType($ad), ["land_seek", "land_offer"]);
+        });
+
+        return view('pages.ads.new', $vars);
+    }
+
+    /**
+     * Display the ad creation form
+     * @return \Illuminate\View\View
+     * @throws \Exception
+     */
+    public function createFromAd(Ad $ad)
+    {
+        $vars = $this->getEditFormVars($ad);
+
+        if(empty($vars["old"]["support_request_text"])) {
+            $vars["old"]["support_request_text"] = session('support-request.text');
+        }
+
+        unset($vars["old"]["id"]);
 
         return view('pages.ads.new', $vars);
     }
@@ -156,7 +175,39 @@ class SupportRequestsController extends BaseController
 
         $vars["isSupportRequest"] = true;
 
+        $vars["allProjectDataKeys"] = ProjectDataKey::with('projectDataValues')->where("is_public", 1)->get();
+        $vars["currentProjectKeyDataValues"] = $this->adService->allPublicNotesWithProjectDatKeysByAdId($ad->id);
+
         return view('pages.ads.show', $vars);
     }
 
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws Throwable
+     */
+    public function updateProjectDataKeysValues(Request $request)
+    {
+        if(!$request->has('project_data_key')){
+            return back()->with('warning', 'Une erreur est survenue, veuillez réessayer');
+
+        }
+        $this->adService->updateProjectDataKeysValues($request);
+        return back()->with('success', 'Les indicateurs ont bien été modifié');
+    }
+
+    protected function getEditFormVars(Ad $ad): array
+    {
+        $vars = array_merge(parent::getEditFormVars($ad), [
+            'isSupportRequest' => 1
+        ]);
+
+        if($ad->landSeekAd) {
+            $vars["old"]["land_seek"]["offer_genres"] = $ad->landSeekAd->offerGenres->pluck("id")->toArray();
+            $vars["old"]["land_seek"]["education_levels"] = $ad->landSeekAd->educationLevels->pluck("id")->toArray();
+        }
+
+        return $vars;
+    }
 }

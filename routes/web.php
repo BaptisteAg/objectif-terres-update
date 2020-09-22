@@ -15,6 +15,8 @@ Route::get('/', 'HomePage\HomePageController@show')->name('home');
 
 Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
 	Route::middleware(['auth'])->get('creer', 'AdsController@create')->name('create');
+	Route::middleware(['auth'])->get('creer/copier-accompagnement/{ad}', 'AdsController@createFromSupportRequest')
+        ->name('create-from-support-request');
 	Route::middleware(['auth'])->post('creer', 'AdsController@requestPublishing')->name('publish');
 	Route::middleware('auth')->post('sauvegarder', 'AdsController@save')->name('save');
 	Route::middleware('auth')->get('mes-annonces', 'AdsController@list')->name('list');
@@ -27,10 +29,14 @@ Route::prefix('accompagnement')->name('support-request.')->namespace('Ads')->gro
 	Route::middleware([])->get('demarrer', 'SupportRequestsController@start')->name('start');
 	Route::middleware([])->post('demarrer', 'SupportRequestsController@processStart')->name('process-start');
 	Route::middleware(['auth'])->get('creer', 'SupportRequestsController@create')->name('create');
+    Route::middleware(['auth'])->get('creer/copier-annonce/{ad}', 'SupportRequestsController@createFromAd')
+        ->name('create-from-ad');
 	Route::middleware(['auth'])->post('creer', 'SupportRequestsController@submitRequest')->name('store');
 	Route::middleware(['auth'])->post('sauvegarder', 'SupportRequestsController@save')->name('save');
 
     Route::middleware(['auth'])->get('suivi', 'SupportRequestsController@show')->name('show');
+    Route::middleware(['auth'])->post('suivi/sauvegarder-indicateurs', 'SupportRequestsController@updateProjectDataKeysValues')
+        ->name('show.update-project-data-keys-values');
     Route::middleware('auth')->get('modifier', 'SupportRequestsController@edit')->name('edit');
 });
 

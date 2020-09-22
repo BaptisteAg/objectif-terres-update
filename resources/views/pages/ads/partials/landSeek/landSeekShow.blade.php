@@ -235,16 +235,22 @@
     <h3 class="title is-3">Description du projet</h3>
     <p>  {!! nl2br($ad->about_project_content ?? "") !!} </p>
 </div>
-<div class="content">
-    <h3 class="title is-3">A propos du porteur de projet</h3>
-    <p>  {!! nl2br($ad->about_content ?? "") !!}</p>
-</div>
+@if($ad->about_content)
+    <div class="content">
+        <h3 class="title is-3">A propos du porteur de projet</h3>
+        <p>  {!! nl2br($ad->about_content ?? "") !!}</p>
+    </div>
+@endif
 
 @if($ad->landSeekAd->experience_farming)
     <div class="content">
         <h3 class="title is-3">Expérience du porteur de projet dans le domaine agricole</h3>
         <p> {!! nl2br($ad->landSeekAd->experience_farming ?? "") !!}</p>
     </div>
+@endif
+
+@if($isSupportRequest)
+    @include('pages.ads.partials.projectDataKeys')
 @endif
 
 <div id="map_ad"></div>

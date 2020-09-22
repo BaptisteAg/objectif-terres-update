@@ -80,23 +80,41 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	}
 
 
-	/**
-	 * Creates an ad.
-	 *
-	 * @param int
-	 * @param array
-	 * @return Ad
-	 * @throws \Throwable
-	 */
-	public function create(array $data): Ad
-	{
-		$ad = new Ad();
-		$ad->user_pp_id = auth()->user()->id;
+    /**
+     * Creates an ad.
+     *
+     * @param int
+     * @param array
+     * @return Ad
+     * @throws \Throwable
+     */
+    public function create(array $data): Ad
+    {
+        $ad = new Ad();
+        $ad->user_pp_id = auth()->user()->id;
 
-		$this->save($ad, $data);
+        $this->save($ad, $data);
 
-		return $ad;
-	}
+        return $ad;
+    }
+
+    /**
+     * Creates an ad.
+     *
+     * @param int
+     * @param array
+     * @return Ad
+     * @throws \Throwable
+     */
+    public function createForUser(array $data, $userId): Ad
+    {
+        $ad = new Ad();
+        $ad->user_pp_id = $userId;
+
+        $this->save($ad, $data);
+
+        return $ad;
+    }
 
 	/**
 	 * Updates an ad.
