@@ -57,6 +57,139 @@
             </div>
         </div>
     </section>
+    <div class="container">
+        <p >Quelques ressources issues de ce dossier : </p>
+    </div>
+    <div class="columns is-centered">
+        <div class="column is-one-quarter">
+            <a target="_blank" class="tile__link card"
+               href="{{url('https://ressources.terredeliens.org/les-ressources/des-idees-pour-transmettre-sa-ferme')}}">
+                <div class="card-image vignette photo">
+                    <figure class="image vignette__image-wrap vignette__ratio_4-3">
+                        <img class="vignette__image"
+                             src="{{asset('/images/cms/ressources/Capture d’écran 2020-09-17 à 15.21.57.png')}}"
+                             alt="Placeholder image">
+                    </figure>
+                    <ul class="custom-tags custom-list custom-list_v ">
+                        <li class="custom-tag success text_size x-large">
+                            Guides
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-content  tile__container">
+                    <div class="content text_danger_orange tile__content">
+                        <h3 class="title is-3 tile__title has-text-danger">Des idées pour transmettre sa ferme</h3>
+                        <p class="button-wrap">
+                            <span class="button round small warning read-more">
+                                <span class="button__icon waves-effect waves-circle waves-light">
+                                    <svg class="svg-inline--fa fa-arrow-right fa-w-14" aria-hidden="true"
+                                         data-prefix="fas" data-icon="arrow-right" role="img"
+                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                                         data-fa-i2svg="">
+                                        <path fill="currentColor"
+                                              d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path>
+                                    </svg><!-- <i class="fas fa-arrow-right" aria-hidden="true"></i> -->
+                                </span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="column is-one-quarter">
+            <a target="_blank" class="tile__link card"
+               href="{{url('https://ressources.terredeliens.org/les-ressources/le-chemin-de-l-installation-et-de-la-transmission')}}">
+                <div class="card-image vignette photo">
+                    <figure class="image vignette__image-wrap vignette__ratio_4-3">
+                        <img class="vignette__image"
+                             src="{{asset('/images/cms/ressources/Capture d’écran 2020-09-17 à 15.32.00.png')}}"
+                             alt="Placeholder image">
+                    </figure>
+                    <ul class="custom-tags custom-list custom-list_v ">
+                        <li class="custom-tag success text_size x-large">
+                            Études et rapports
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-content  tile__container">
+                    <div class="content text_danger_orange tile__content">
+                        <h3 class="title is-3 tile__title has-text-danger">Le chemin de l'installation et de la transmission</h3>
+                        <p class="button-wrap">
+                            <span class="button round small warning read-more">
+                                <span class="button__icon waves-effect waves-circle waves-light">
+                                    <svg class="svg-inline--fa fa-arrow-right fa-w-14" aria-hidden="true"
+                                         data-prefix="fas" data-icon="arrow-right" role="img"
+                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                                         data-fa-i2svg="">
+                                        <path fill="currentColor"
+                                              d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path>
+                                    </svg><!-- <i class="fas fa-arrow-right" aria-hidden="true"></i> -->
+                                </span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="column is-one-quarter">
+            <a target="_blank" class="tile__link card"
+               href="{{url('https://ressources.terredeliens.org/les-ressources/preservons-nos-terres-agricoles')}}">
+                <div class="card-image vignette photo">
+                    <figure class="image vignette__image-wrap vignette__ratio_4-3">
+                        <img class="vignette__image"
+                             src="{{asset('/images/cms/ressources/Capture d’écran 2020-09-17 à 15.33.32.png')}}"
+                             alt="Placeholder image">
+                    </figure>
+                    <ul class="custom-tags custom-list custom-list_v ">
+                        <li class="custom-tag success text_size x-large">
+                            Guides
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-content  tile__container">
+                    <div class="content text_danger_orange tile__content">
+                        <h3 class="title is-3 tile__title has-text-danger">Préservons nos terres agricoles</h3>
+                        <p class="button-wrap">
+                            <span class="button round small warning read-more">
+                                <span class="button__icon waves-effect waves-circle waves-light">
+                                    <svg class="svg-inline--fa fa-arrow-right fa-w-14" aria-hidden="true"
+                                         data-prefix="fas" data-icon="arrow-right" role="img"
+                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                                         data-fa-i2svg="">
+                                        <path fill="currentColor"
+                                              d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path>
+                                    </svg><!-- <i class="fas fa-arrow-right" aria-hidden="true"></i> -->
+                                </span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="container content has-text-centered mt-60">
+        <p>Pour votre recherche de terres agricoles nous vous invitons à :</p>
+        <div class="columns is-centered">
+            <div class="column has-text-centered">
+                <p>Déposer une annonce pour rendre visible votre recherche</p>
+                <a href="{{route('ads.create')}}">
+                    <button class="button is-link is-medium basic secondary">
+                        <span class="button__label"> Déposer une annonce</span>
+                    </button>
+                </a>
+            </div>
+            <div class="column has-text-centered">
+                <p>Solliciter un accompagnement sur le volet foncier de votre projet auprès de l’une des dix-neuf associations territoriales Terre de Liens </p>
+                <a href="/accompagnement/demarrer">
+                    <button class="button is-link is-medium basic secondary">
+                        <span class="button__label">
+                            Être accompagné
+                        </span>
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
 
 {{--    @include('components.multiple-img-block')--}}
 {{--    <section class="hero has_margin">--}}

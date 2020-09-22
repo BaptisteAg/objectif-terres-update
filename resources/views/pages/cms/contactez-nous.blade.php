@@ -2,6 +2,11 @@
 
 @section ('title', "Contactez-nous")
 
+@section('head-script')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
+@endsection
+
+
 @section('main-content')
 
     <div class="cms-page">
@@ -389,5 +394,8 @@
         @include('components.support-terre-liens')
     </div>
 
+@endsection
+@section('script')
+    <script src="{{ asset('js/bulma-carousel.js') }}"></script>
 @endsection
 
