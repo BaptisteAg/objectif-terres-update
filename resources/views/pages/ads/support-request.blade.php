@@ -109,42 +109,44 @@
                             </div>
                         </div>
                     </div>
-                    <h2 class="title is-2 has-text-centered">Précisez brièvement ce que vous attendez de Terre de
-                        Liens</h2>
-                    <div class="columns is-mobile is-centered">
-                        <div class="column is-two-thirds">
-                            <br>
-                            <div class="columns">
-                                <div class="column">
-                                    <div class="has-text-centered">
-                                        Vous serez amené(e) à décrire votre projet plus précisément à l’étape
-                                        suivante.<br><br>
-                                    </div>
-                                    <div class="field">
-                                        <div class="control">
-                                            <text-area-counter
-                                                    :required="true"
-                                                    name="support_request_text"
-                                                    :max-length="400">
-                                            </text-area-counter>
+                    <div v-if="showSubmitFormButton">
+                        <h2 class="title is-2 has-text-centered">Précisez brièvement ce que vous attendez de Terre de
+                            Liens</h2>
+                        <div class="columns is-mobile is-centered">
+                            <div class="column is-two-thirds">
+                                <br>
+                                <div class="columns">
+                                    <div class="column">
+                                        <div class="has-text-centered">
+                                            Vous serez amené(e) à décrire votre projet plus précisément à l’étape
+                                            suivante.<br><br>
                                         </div>
-                                    </div>
-                                    <div class="field is-grouped is-grouped-centered">
-                                        <div class="control is-pulled-right">
-                                            <button type="submit" class="button is-link is-size-3">Étape suivante
-                                            </button>
+                                        <div class="field">
+                                            <div class="control">
+                                                <text-area-counter
+                                                        :required="true"
+                                                        name="support_request_text"
+                                                        :max-length="400">
+                                                </text-area-counter>
+                                            </div>
+                                        </div>
+                                        <div class="field is-grouped is-grouped-centered">
+                                            <div class="control is-pulled-right">
+                                                <button type="submit" class="button is-link is-size-3">Étape suivante
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </form>
         </support-request-start>
 
-        <br>
-        <div class="content mt-40">
+        <div  class="content mt-80">
             <p>
                 *Notre capacité à vous accompagner pouvant être limitée, merci de cibler le territoire prioritaire sur
                 lequel porte votre projet d’installation.</p>

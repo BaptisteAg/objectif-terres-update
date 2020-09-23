@@ -31,7 +31,6 @@ class CmsController extends Controller
 
 	public function faq()
 	{
-
 		return view('pages/cms/faq', $this->getCmsContent(Route::currentRouteName(), false, false));
 	}
 
