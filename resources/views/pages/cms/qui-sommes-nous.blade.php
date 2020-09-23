@@ -8,7 +8,7 @@
 
 @section('main-content')
     <div class="cms-page">
-    <section class="section ">
+    <section class="">
         <div id="a-propos-d-objectif-terres" class="container">
             <div class="rows margin-p">
                 <div class="row is-full">
@@ -28,7 +28,7 @@
 {{--        </div>--}}
 {{--    </section>--}}
 
-    <section class="section" >
+    <section class="" >
         <div class="container">
             <div class="rows margin-p">
                 <div class="row is-full">
@@ -69,7 +69,7 @@
 {{--        </div>--}}
 {{--    </section>--}}
 
-    <section id="le-mouvement-terre-de-liens" class="section">
+    <section id="le-mouvement-terre-de-liens" class="">
         <div class="container">
             <div class="rows">
                 <div class="row is-full margin-p">

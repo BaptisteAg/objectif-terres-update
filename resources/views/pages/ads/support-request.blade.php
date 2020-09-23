@@ -89,7 +89,6 @@
                             Pour connaître nos modalités d’accueil, indiquez la région concernée par votre projet.
                         </div>
                         <br>
-
                         <div class="has-text-centered">
                             <select id="region" class="select is-large" name="support_request_territory_id" required
                                     v-model="region">
@@ -102,7 +101,7 @@
                     </div>
                     <div class="modalites" v-if="region">
                         <h2 class="title is-2 has-text-centered">Vos modalités d'accueil</h2>
-                        <div class="section">
+                        <div class="">
                             <div class="columns is-centered">
                                 <div id="text-territory" class="column is-three-quarters">
                                     <span v-html="textRegionsContent"></span>
@@ -110,7 +109,6 @@
                             </div>
                         </div>
                     </div>
-
                     <h2 class="title is-2 has-text-centered">Précisez brièvement ce que vous attendez de Terre de
                         Liens</h2>
                     <div class="columns is-mobile is-centered">
@@ -131,7 +129,6 @@
                                             </text-area-counter>
                                         </div>
                                     </div>
-
                                     <div class="field is-grouped is-grouped-centered">
                                         <div class="control is-pulled-right">
                                             <button type="submit" class="button is-link is-size-3">Étape suivante
