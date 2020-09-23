@@ -65,7 +65,7 @@ class CmsPageSeeder extends Seeder
 			],
 			[
 				'page_name' => 'Confier mes terres',
-				"description" => '“Léguez vos terres… par étape”',
+				"description" => 'Contenu section "Contactez-nous"',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'has_documents' => 0

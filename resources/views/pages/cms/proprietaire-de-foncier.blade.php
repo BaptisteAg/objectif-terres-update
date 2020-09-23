@@ -16,33 +16,6 @@
                             {!! $pageContent['proprietaire-de-foncier']->content !!}
                         @endif
                     @endif
-
-                    <p>Pour vous aider, vous inspirer et vous outiller dans votre projet d’installation ou de
-                        transmission agricole, Terre de Liens et ses partenaires du réseau InPACT (Initiatives pour une
-                        Agriculture citoyenne et territoriale) ont édité un ensemble de guides méthodologiques et
-                        recueilli une diversité de projets réussis et inspirants d’installations et de
-                        transmissions.</p>
-
-                    <p>
-                        L’ensemble de ces ressources vous sont mises à disposition gratuitement sur le site du Centre de
-                        Ressources Terre de Liens, dont la vocation est de “sensibiliser, documenter, inspirer et
-                        outiller toute personne souhaitant s’engager pour la préservation des terres agricoles et
-                        l’agroécologie”.
-                    </p>
-
-                    <p class="has-text-weight-bold">
-                        Un dossier thématique à destination des propriétaires privés qui se posent la question du
-                        devenir agricole de leur bien ou qui souhaitent en orienter l'usage, par exemple vers des
-                        pratiques agricoles plus respectueuses de l'environnement sera bientôt disponible. Terre de
-                        Liens éditera d'ici 2021 un guide de la propriété foncière agricole pour vous outiller en ce
-                        sens. Patience !
-                    </p>
-                    <p>
-                        En attendant, vous pouvez consulter ci-dessous le guide foncier pour proprié'terre, qui apporte
-                        des éclairages techniques, méthodologiques et juridiques à des destination des propriétaires de
-                        foncier :
-                    </p>
-
                     <div class="columns is-centered">
                         <div class="column is-one-third">
                             <a target="_blank" class="tile__link card"

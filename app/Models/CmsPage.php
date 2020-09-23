@@ -65,7 +65,6 @@ class CmsPage extends Model
 		'annonces/creer' => 'Publier une annonce',
 		'accompagnement/démarrer' => 'Être accompagné',
 		'mentions-legales' => 'Mentions légales'
-
 	];
 
 	/**
