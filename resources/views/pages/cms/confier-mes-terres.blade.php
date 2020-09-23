@@ -75,8 +75,8 @@
                     <div class="column is-9 block-tdl-contact">
                         <div class="row">
                             @if($pageContent->count())
-                                @if($pageContent->has('confier-mes-terres-leguez-vos-terres-par-etape'))
-                                    {!! $pageContent['confier-mes-terres-leguez-vos-terres-par-etape']->content !!}
+                                @if($pageContent->has('confier-mes-terres-contenu-section-contactez-nous'))
+                                    {!! $pageContent['confier-mes-terres-contenu-section-contactez-nous']->content !!}
                                 @endif
                             @endif
                         </div>
