@@ -68,7 +68,7 @@
     {{--        @include('components.faq-frequentes')--}}
     {{--    @endif--}}
 
-    <section class="section contactus-background">
+    <section class="section bg-l-pearl bg-trame_champs_light">
         <div class="container">
             <div class="rows">
                 <div class="columns">

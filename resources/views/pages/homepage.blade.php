@@ -252,9 +252,9 @@
             </div>
         </section>
     @endif
-    @if(!$cmsFaq->isEmpty())
-        @include('components.faqAccordion')
-    @endif
+{{--    @if(!$cmsFaq->isEmpty())--}}
+{{--        @include('components.faqAccordion')--}}
+{{--    @endif--}}
 
 
     @include('components.partnering')
