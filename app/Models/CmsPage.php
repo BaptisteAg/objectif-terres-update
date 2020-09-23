@@ -74,7 +74,7 @@ class CmsPage extends Model
 	public function setSlugAttribute()
 	{
 		// grab the title and slugify it for seeds
-		if (! is_null($this->description)) {
+		if (! is_null($this->description) && $this->description!=="") {
 			return $this->attributes['slug'] = Str::slug($this->page_name) . '-' . Str::slug($this->description);
 		}
 		return $this->attributes['slug'] = Str::slug($this->page_name);
