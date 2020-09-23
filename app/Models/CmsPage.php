@@ -36,15 +36,6 @@ class CmsPage extends Model
 {
 	use Documentable;
 
-	public static function boot()
-	{
-		parent::boot();
-
-		// grab the title and description and slugify it
-		static::saving(function ($cmsPage) {
-			$cmsPage->slug = Str::slug($cmsPage->page_name) . '-' . Str::slug($cmsPage->description);
-		});
-	}
 
 	/**
 	 * The table associated with the model.
@@ -64,7 +55,7 @@ class CmsPage extends Model
 		'bandeau-de-participation' => 'Bandeau de participation',
 		'/ ' => 'Page d\'accueil',
 		'qui-sommes-nous' => 'Qui sommes-nous?',
-		'ceder-ma-ferme' => 'Céder ma Ferme',
+		'transmettre-ma-ferme' => 'Transmettre ma ferme',
 		'confier-mes-terres' => 'Confier mes terres',
 		'louer-vendre-mes-terres' => 'Louer ou vendre mes terres',
 		'minstaller-comme-paysan' => 'M’installer comme paysan',
@@ -74,7 +65,6 @@ class CmsPage extends Model
 		'annonces/creer' => 'Publier une annonce',
 		'accompagnement/démarrer' => 'Être accompagné',
 		'mentions-legales' => 'Mentions légales'
-
 	];
 
 	/**
@@ -83,6 +73,10 @@ class CmsPage extends Model
 	public function setSlugAttribute()
 	{
 		// grab the title and slugify it for seeds
-		$this->attributes['slug'] = Str::slug($this->page_name) . '-' . Str::slug($this->description);
+		if (! is_null($this->description) && $this->description!=="") {
+			return $this->attributes['slug'] = Str::slug($this->page_name) . '-' . Str::slug($this->description);
+		}
+		return $this->attributes['slug'] = Str::slug($this->page_name);
+
 	}
 }

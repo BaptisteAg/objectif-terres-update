@@ -44,9 +44,9 @@ class CmsFaq extends Model
 
 	static $page_name = [
 		'home',
-		'ceder-ma-ferme',
+		'transmettre-ma-ferme',
 		'confier-mes-terres',
-		'louer-ou-vendre-mes-terres',
+		'trouver-une-terre-ou-des-financements',
 		'trouver-un-emploi',
 	];
 }

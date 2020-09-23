@@ -1,6 +1,11 @@
 @extends ('default')
 
-@section ('title', 'Gestion des annonces')
+@if(auth()->user()->role >=3)
+    @section ('title', 'Gestion des annonces')
+@else
+    @section ('title', 'Espace modérateur')
+@endif
+
 
 @section('header')
     @if(auth()->user()->role >= 3)
@@ -14,10 +19,15 @@
 
 @section('main-content')
     <div class="section pt-10">
-        <h1 class="title is-2 has-text-link">Bienvenue sur votre espace de gestion des annonces
-            <span class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span>
-        </h1>
-
+        @if(auth()->user()->role >= 3 )
+            <h1 class="title is-2 has-text-link">Bienvenue sur votre espace de gestion des annonces
+                <span class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span>
+            </h1>
+        @else
+            <h1 class="title is-2 has-text-link">Bienvenue sur votre espace modérateur
+                <span class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span>
+            </h1>
+        @endif
 
         @if($numberOfAdsToModerate !== 0 || $numberOfUnreadMessages !==0)
             <div id="notification-moderator" class="notification has-background-info">

@@ -225,12 +225,14 @@
     </div>
 @endif
 
+
+@if($ad->landOfferAd->buildings_description || $ad->landOfferAd->houses_description)
 <div class="content">
-    <h3 class="title is-3 has-text-centered">Description</h3>
+    <h3 class="title is-3">Descriptions</h3>
     <div class="columns is-multiline is-mobile is-centered">
         @if($ad->landOfferAd->has_buildings)
             <div class=" column is-one-thirds ">
-                <h3 class="title is-5 has-text-centered">Bâtiment(s) agricole(s)</h3>
+                <h3 class="title is-5">Bâtiment(s) agricole(s)</h3>
                 @if($ad->landOfferAd->buildings_description)
                     <p class="has-text-black">
                         <span>{{$ad->landOfferAd->buildings_description}}</span>
@@ -240,7 +242,7 @@
         @endif
         @if($ad->landOfferAd->has_houses)
             <div class=" column is-one-thirds ">
-                <h3 class="title is-5 has-text-centered">Habitation(s)</h3>
+                <h3 class="title is-5">Habitation(s)</h3>
                 @if($ad->landOfferAd->houses_description)
                     <p class="has-text-black">
                         <span>{{$ad->landOfferAd->houses_description}}</span>
@@ -250,6 +252,7 @@
         @endif
     </div>
 </div>
+@endif
 @if($ad->landOfferAd->sau_description)
     <div class="content">
         <h3 class="title is-3">Description SAU</h3>
@@ -273,10 +276,17 @@
     <h3 class="title is-3">Description du projet</h3>
     <p>  {!! nl2br($ad->about_project_content ??"") !!}</p>
 </div>
-<div class="content">
-    <h3 class="title is-3">A propos de l'annonceur</h3>
-    <p> {!! nl2br($ad->about_content ?? "") !!}</p>
-</div>
+@if($ad->about_content)
+    <div class="content">
+        <h3 class="title is-3">A propos de l'annonceur</h3>
+        <p> {!! nl2br($ad->about_content ?? "") !!}</p>
+    </div>
+@endif
+
+
+@if($isSupportRequest)
+    @include('pages.ads.partials.projectDataKeys')
+@endif
 
 
 <div id="map_ad"></div>

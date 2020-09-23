@@ -19,6 +19,9 @@ class AdministratorController extends Controller
 		$this->userService = $userService;
 	}
 
+	/**
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
 	public function showUsersByTerritories()
    {
    		$allTerritoriesId = Territory::all()->pluck('id')->toArray();

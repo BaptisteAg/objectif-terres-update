@@ -23,6 +23,8 @@ Vue.component('new-ad', {
     data() {
         return {
             adTypeSelected: this.oldAdTypeSelected,
+            createFromSupportRequest: null,
+            createFromAd: null,
             enabledForm: null,
             formAction : this.getPublishAction()
         }
@@ -69,6 +71,14 @@ Vue.component('new-ad', {
             const $removedAffix = $affix.parentElement.removeChild($affix);
             $container.appendChild($removedAffix);
         });
+    },
+    watch: {
+        createFromSupportRequest(id) {
+            id && (location.href = "/annonces/creer/copier-accompagnement/" + id);
+        },
+        createFromAd(id) {
+            id && (location.href = "/accompagnement/creer/copier-annonce/" + id);
+        },
     },
     methods: {
         submit(e) {

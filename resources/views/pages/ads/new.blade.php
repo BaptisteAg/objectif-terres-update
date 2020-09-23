@@ -64,6 +64,31 @@
                                     :is-new="{{ empty($old["id"]) ? 'true' : 'false'}}">
                     </ad-type-select>
 
+                    @if(empty($old["id"]))
+                        @if(empty($isSupportRequest) && !empty($supportRequests))
+                            <section class="has-text-centered" v-if="!adTypeSelected">
+                                Vous pouvez également remplir votre annonce à partir des champs de votre demande d'accompagnement :<br>
+                                <select class="select" v-model="createFromSupportRequest">
+                                    <option></option>
+                                @foreach($supportRequests as $supportRequest)
+                                    <option value="{{$supportRequest->id}}">{{$supportRequest->title}}</option>
+                                @endforeach
+                                </select>
+                            </section>
+                        @endif
+                        @if(!empty($isSupportRequest) && !empty($ads))
+                            <section class="has-text-centered" v-if="!adTypeSelected">
+                                Vous pouvez également remplir votre demande d'accompagnement à partir des champs de votre annonce :<br>
+                                <select class="select" v-model="createFromAd">
+                                    <option></option>
+                                    @foreach($ads as $ad)
+                                        <option value="{{$ad->id}}">{{$ad->title}}</option>
+                                    @endforeach
+                                </select>
+                            </section>
+                        @endif
+                    @endif
+
                     <new-land-seek-ad inline-template
                                       v-show="adTypeSelected === 'land_seek'"
                                       :is-input-disabled="adTypeSelected !== 'land_seek'"

@@ -3,7 +3,7 @@
 @section ('title', "Mentions Légales")
 
 @section('main-content')
-    <section class="section">
+    <section class="section cms-page">
         <div>
             <h1 class="page__title has-text-centered ">Mentions Légales</h1>
         </div>

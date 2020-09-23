@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Spip\Auteur;
 use App\Models\User;
+use App\Services\Ads\AdService;
 use App\Services\Spip\SpipService;
 use App\Services\Users\UserService;
 use Illuminate\Console\Command;
@@ -31,18 +32,23 @@ class SpipMigrate extends Command
      * @var UserService
      */
     private $userService;
+    /**
+     * @var AdService
+     */
+    protected $adService;
 
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct(SpipService $spipService, UserService $userService)
+    public function __construct(SpipService $spipService, UserService $userService, AdService $adService)
     {
         parent::__construct();
 
         $this->spipService = $spipService;
         $this->userService = $userService;
+        $this->adService = $adService;
 
     }
 
@@ -64,14 +70,21 @@ class SpipMigrate extends Command
         print_r("Found $userCount users and $adCount ads.\n");
 
         $spipAdsByUser->each(function (Auteur $auteur) {
-            User::where('email', $auteur->email)->delete();
+            User::where('email', $auteur->email)->forceDelete();
             //dd($auteur->email, $auteur->bio, $auteur->id_auteur);
 
             //dd($this->spipService->getLocalUserMapping($auteur));
 
-            $this->userService->create(
+            $user = $this->userService->create(
                 $this->spipService->getLocalUserMapping($auteur)
             );
+
+            foreach($auteur->articles as $article) {
+                $ad = $this->adService->importAd(
+                    $this->spipService->getLocalAdMapping($article),
+                    $user->id
+                );
+            }
         });
 
 

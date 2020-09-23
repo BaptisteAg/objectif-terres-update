@@ -56,9 +56,8 @@ class SupervisorsController extends BaseController
 	{
 		$request->flash();
 		$request->session()->put('supervisor_dashboard_url', $request->all());
-		$ads = $this->adService->showForSupervisor($request);
 		$vars = $this->getSupervisorDashboardVars();
-		$vars['ads'] = $ads;
+		$vars['ads'] = $this->adService->showForSupervisor($request);
 
 		return view('pages.supervisors.index', $vars);
 	}
@@ -70,8 +69,8 @@ class SupervisorsController extends BaseController
 	public function help()
 	{
 		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
-		$pageContent = CmsPage::where('slug', 'like', '%'.'ressoures-responsable-territorial'. '%')->first();
-		return view('pages.supervisors.help', compact('users', 'pageContent'));
+		$pageContents = CmsPage::where('slug', 'like', '%'.'ressources-responsable-territorial'. '%')->with('documents')->get()->keyBy('slug');
+		return view('pages.supervisors.help', compact('users', 'pageContents'));
 	}
 
 	/**
@@ -101,9 +100,9 @@ class SupervisorsController extends BaseController
 	 */
 	public function attribute(Request $request)
 	{
-		if (is_null($request->input('value'))) {
-			return back()->with('warning', 'Votre note est vide !');
-		}
+//		if (is_null($request->input('value'))) {
+//			return back()->with('warning', 'Votre note est vide !');
+//		}
 		$this->projectService->attributeProject($request);
 		return back()->with('success', 'La demande d\'accompagnement a bien été attribué !');
 	}

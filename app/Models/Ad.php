@@ -226,6 +226,7 @@ class Ad extends Model implements HasPresenter
 	}
 
 	/**
+	 * TODO delete this column and all occurrences
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function supportRequestIdRegion()

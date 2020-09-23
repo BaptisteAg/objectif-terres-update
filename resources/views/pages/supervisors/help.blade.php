@@ -13,57 +13,231 @@
         <h1 class="title is-2 has-text-link">Aide & ressources </h1>
         <div class="container ">
             <div class="content is-medium has-text-justified">
-                @if(isset($pageContent))
-                    {!! $pageContent->content !!}
+                @if($pageContents->count() > 0)
+                    @if($pageContents->has('aide-et-ressources-responsable-territorial-text-dintroduction'))
+                        {!!$pageContents['aide-et-ressources-responsable-territorial-text-dintroduction']->content !!}
+                    @endif
                 @endif
             </div>
-            <br>
-            <br>
         </div>
         <div class="container is-fluid">
-            <div class="columns is-centered">
-                <div class="column is-one-third ">
-                    <div class="content">
-                        <div class="columns is-mobile is-centered">
-                            <div class="column is-three-quarters">
-                                <h2 class="title is-2 has-text-link">Conseiller un primo-accueillant</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cupiditate
-                                    debitis
-                                    deleniti dicta, error exercitationem fugit illo labore laudantium modi</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="columns is-centered">
-                        @for ($i = 0; $i < 3; $i++)
-                            <div class="column is-one-third ">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <figure class="image is-4by3">
-                                            <a href="/" download="rapport2019"><img src="/images/placeholder-ad.png"
-                                                                                    alt=""></a>
-                                        </figure>
-                                    </div>
-                                    <div class="card-content is-marginless">
-                                        <p class="title is-4 has-text-centered">Titre du document</p>
-                                        <p class="subtitle is-6 has-text-grey">Lorem ipsum dolor sit amet, consectetur
-                                            adipisicing
-                                            elit. Accusamus corporis deleniti </p>
-                                        <div class="content has-text-centered">
-                                            <a href="/" class="button is-link is-uppercase"
-                                               download="rapport2019">Télécharger</a>
-                                        </div>
+            @if($pageContents->count() > 0)
+                @if($pageContents->has('aide-et-ressources-responsable-territorial-documents-utilisation-site-objectif-terres'))
+                    <div class="columns is-centered mt-30 mb-30">
+                        <div class="column is-one-third ">
+                            <div class="content">
+                                <div class="columns is-mobile is-centered">
+                                    <div class="column is-three-quarters">
+                                        <h2 class="title is-2 ">Utilisation du site d'Objectif Terres</h2>
                                     </div>
                                 </div>
                             </div>
-                        @endfor
+                        </div>
+                        <div class="column">
+                            @if($pageContents['aide-et-ressources-responsable-territorial-documents-utilisation-site-objectif-terres']->documents->count() > 0)
+                                <div class="columns is-centered is-multiline">
+                                    @foreach($pageContents['aide-et-ressources-responsable-territorial-documents-utilisation-site-objectif-terres']->documents as $document)
+                                        <div class="column is-one-third ">
+                                            <div class="card">
+                                                <div class="card-image">
+
+                                                    <figure class="image is-4by3">
+                                                        <a href="{{URL::asset('storage/'.$document->path)}}"
+                                                           download="{{$document->name}}">
+                                                            @if(strpos($document->type, 'image') !== false)
+                                                                <img src="{{URL::asset('storage/'.$document->path)}}"
+                                                                     alt="">
+                                                            @else
+                                                                <img src="/images/placeholder-ad.png" alt="">
+                                                            @endif
+                                                        </a>
+                                                    </figure>
+                                                </div>
+                                                <div class="card-content is-marginless">
+                                                    <p class="title is-4 has-text-centered">{{$document->name}}</p>
+                                                    @if($document->type === "application/pdf")
+                                                        <p class="subtitle is-6 has-text-grey has-text-centered">Fichier
+                                                            pdf</p>
+                                                    @elseif($document->type === "application/msword")
+                                                        <p class="subtitle is-6 has-text-grey has-text-centered">Fichier
+                                                            word</p>
+                                                    @elseif(strpos($document->type, 'image') !== false)
+                                                        <p class="subtitle is-6 has-text-grey has-text-centered">Fichier
+                                                            image</p>
+                                                    @endif
+                                                    <div class="content has-text-centered">
+                                                        <a href="{{URL::asset('storage/'.$document->path)}}"
+                                                           class="button is-link is-uppercase"
+                                                           download="{{$document->name}}">
+                                                            @if($document->type === "application/pdf")
+                                                                <i class="fa fa-file-pdf"></i>
+                                                            @elseif($document->type === "application/msword")
+                                                                <i class="fa fa-file-word"></i>
+                                                            @elseif(strpos($document->type, 'image') !== false)
+                                                                <i class="far fa-file-image"></i>
+                                                            @else
+                                                                <i class="fas fa-file"></i>
+                                                            @endif
+                                                            <span class="ml-5"> Télécharger</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @else
+                                <p>Aucun document à afficher</p>
+                            @endif
+                        </div>
                     </div>
-                </div>
-            </div>
+                @endif
+                @if($pageContents->has('aide-et-ressources-responsable-territorial-documents-moderation-des-annonces'))
+                    <div class="columns is-centered mt-30 mb-30 ">
+                        <div class="column is-one-third ">
+                            <div class="content">
+                                <div class="columns is-mobile is-centered">
+                                    <div class="column is-three-quarters">
+                                        <h2 class="title is-2 ">Modération des annonces</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            @if($pageContents['aide-et-ressources-responsable-territorial-documents-moderation-des-annonces']->documents->count() > 0)
+                                <div class="columns is-centered is-multiline">
+                                    @foreach($pageContents['aide-et-ressources-responsable-territorial-documents-moderation-des-annonces']->documents as $document)
+                                        <div class="column is-one-third ">
+                                            <div class="card">
+                                                <div class="card-image">
+
+                                                    <figure class="image is-4by3">
+                                                        <a href="{{URL::asset('storage/'.$document->path)}}"
+                                                           download="{{$document->name}}">
+                                                            @if(strpos($document->type, 'image') !== false)
+                                                                <img src="{{URL::asset('storage/'.$document->path)}}"
+                                                                     alt="">
+                                                            @else
+                                                                <img src="/images/placeholder-ad.png" alt="">
+                                                            @endif
+                                                        </a>
+                                                    </figure>
+                                                </div>
+                                                <div class="card-content is-marginless">
+                                                    <p class="title is-4 has-text-centered">{{$document->name}}</p>
+                                                    @if($document->type === "application/pdf")
+                                                        <p class="subtitle is-6 has-text-grey has-text-centered">Fichier
+                                                            pdf</p>
+                                                    @elseif($document->type === "application/msword")
+                                                        <p class="subtitle is-6 has-text-grey has-text-centered">Fichier
+                                                            word</p>
+                                                    @elseif(strpos($document->type, 'image') !== false)
+                                                        <p class="subtitle is-6 has-text-grey has-text-centered">Fichier
+                                                            image</p>
+                                                    @endif
+                                                    <div class="content has-text-centered">
+                                                        <a href="{{URL::asset('storage/'.$document->path)}}"
+                                                           class="button is-link is-uppercase"
+                                                           download="{{$document->name}}">
+                                                            @if($document->type === "application/pdf")
+                                                                <i class="fa fa-file-pdf"></i>
+                                                            @elseif($document->type === "application/msword")
+                                                                <i class="fa fa-file-word"></i>
+                                                            @elseif(strpos($document->type, 'image') !== false)
+                                                                <i class="far fa-file-image"></i>
+                                                            @else
+                                                                <i class="fas fa-file"></i>
+                                                            @endif
+                                                            <span class="ml-5"> Télécharger</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @else
+                                <p>Aucun document à afficher</p>
+                            @endif
+                        </div>
+                    </div>
+                @endif
+                @if($pageContents->has('aide-et-ressources-responsable-territorial-documents-gestion-des-accompagnements'))
+                    <div class="columns is-centered mt-30 mb-30">
+                        <div class="column is-one-third ">
+                            <div class="content">
+                                <div class="columns is-mobile is-centered">
+                                    <div class="column is-three-quarters">
+                                        <h2 class="title is-2 ">Gestion des accompagnements</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            @if($pageContents['aide-et-ressources-responsable-territorial-documents-gestion-des-accompagnements']->documents->count() > 0)
+                                <div class="columns is-centered is-multiline">
+                                    @foreach($pageContents['aide-et-ressources-responsable-territorial-documents-gestion-des-accompagnements']->documents as $document)
+                                        <div class="column is-one-third ">
+                                            <div class="card">
+                                                <div class="card-image">
+
+                                                    <figure class="image is-4by3">
+                                                        <a href="{{URL::asset('storage/'.$document->path)}}"
+                                                           download="{{$document->name}}">
+                                                            @if(strpos($document->type, 'image') !== false)
+                                                                <img src="{{URL::asset('storage/'.$document->path)}}"
+                                                                     alt="">
+                                                            @else
+                                                                <img src="/images/placeholder-ad.png" alt="">
+                                                            @endif
+                                                        </a>
+                                                    </figure>
+                                                </div>
+                                                <div class="card-content is-marginless">
+                                                    <p class="title is-4 has-text-centered">{{$document->name}}</p>
+                                                    @if($document->type === "application/pdf")
+                                                        <p class="subtitle is-6 has-text-grey has-text-centered">Fichier
+                                                            pdf</p>
+                                                    @elseif($document->type === "application/msword")
+                                                        <p class="subtitle is-6 has-text-grey has-text-centered">Fichier
+                                                            word</p>
+                                                    @elseif(strpos($document->type, 'image') !== false)
+                                                        <p class="subtitle is-6 has-text-grey has-text-centered">Fichier
+                                                            image</p>
+                                                    @endif
+                                                    <div class="content has-text-centered">
+                                                        <a href="{{URL::asset('storage/'.$document->path)}}"
+                                                           class="button is-link is-uppercase"
+                                                           download="{{$document->name}}">
+                                                            @if($document->type === "application/pdf")
+                                                                <i class="fa fa-file-pdf"></i>
+                                                            @elseif($document->type === "application/msword")
+                                                                <i class="fa fa-file-word"></i>
+                                                            @elseif(strpos($document->type, 'image') !== false)
+                                                                <i class="far fa-file-image"></i>
+                                                            @else
+                                                                <i class="fas fa-file"></i>
+                                                            @endif
+                                                            <span class="ml-5"> Télécharger</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @else
+                                <p>Aucun document à afficher</p>
+                            @endif
+                        </div>
+                    </div>
+                @endif
+            @endif
+
         </div>
     </div>
-    <br>
+
+
     <section class=" has-background-white-ter pt-50 pb-50">
         <div class="hero-body">
             <div class="container has-text-centered">
@@ -76,7 +250,7 @@
                 <div id="vue-supervisor-help-new-message-modal">
                     <vue-threads inline-template>
                         <div>
-                            <button class="open-modal-new-message button is-link " >
+                            <button class="open-modal-new-message button is-link ">
                                 <span class="icon is-small">
                                     <i class="fa fa-paper-plane" aria-hidden="true"></i>
                                 </span>
@@ -89,99 +263,6 @@
             </div>
         </div>
     </section>
-    <br>
-    <div class="section">
-        <div class="container is-fluid">
-            <div class="section">
-                <div class="columns is-centered ">
-                    <div class="column is-one-third ">
-                        <div class="content">
-                            <div class="columns is-mobile is-centered">
-                                <div class="column is-three-quarters">
-                                    <h2 class="title is-2 has-text-link">Conseils sur la gestion de votre
-                                        territoire</h2>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cupiditate
-                                        debitis
-                                        deleniti dicta, error exercitationem fugit illo labore laudantium modi</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="columns is-centered">
-                            @for ($i = 0; $i < 3; $i++)
-                                <div class="column is-one-third ">
-                                    <div class="card">
-                                        <div class="card-image">
-                                            <figure class="image is-4by3">
-                                                <a href="/" download="rapport2019"><img src="/images/placeholder-ad.png"
-                                                                                        alt=""></a>
-                                            </figure>
-                                        </div>
-                                        <div class="card-content is-marginless">
-                                            <p class="title is-4 has-text-centered">Titre du document</p>
-                                            <p class="subtitle is-6 has-text-grey">Lorem ipsum dolor sit amet,
-                                                consectetur
-                                                adipisicing
-                                                elit. Accusamus corporis deleniti </p>
-                                            <div class="content has-text-centered">
-                                                <a href="/" class="button is-link is-uppercase"
-                                                   download="rapport2019">Télécharger</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endfor
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="section">
-                <div class="columns is-centered">
-                    <div class="column is-one-third ">
-                        <div class="content">
-                            <div class="columns is-mobile is-centered">
-                                <div class="column is-three-quarters">
-                                    <h2 class="title is-2 has-text-link">Utilisation du site d'Objectif Terres</h2>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cupiditate
-                                        debitis
-                                        deleniti dicta, error exercitationem fugit illo labore laudantium modi</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="columns is-centered">
-                            @for ($i = 0; $i < 3; $i++)
-                                <div class="column is-one-third ">
-                                    <div class="card">
-                                        <div class="card-image">
-                                            <figure class="image is-4by3">
-                                                <a href="/" download="rapport2019"><img src="/images/placeholder-ad.png"
-                                                                                        alt=""></a>
-                                            </figure>
-                                        </div>
-                                        <div class="card-content is-marginless">
-                                            <p class="title is-4 has-text-centered">Titre du document</p>
-                                            <p class="subtitle is-6 has-text-grey">Lorem ipsum dolor sit amet,
-                                                consectetur
-                                                adipisicing
-                                                elit. Accusamus corporis deleniti </p>
-                                            <div class="content has-text-centered">
-                                                <a href="/" class="button is-link is-uppercase"
-                                                   download="rapport2019">Télécharger</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endfor
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br>
-        </div>
-    </div>
 
 @endsection
 

@@ -60,10 +60,10 @@ class Document extends Resource
 			File::make('Document', 'path')->store(function (Request $request, $model) {
 				return [
 					'user_id' => $request->user()->id,
-					'name' => $request->path->getClientOriginalName(),
+					'name' => $request->name,
 					'size' => $request->path->getSize(),
-					'path' =>$request->path->store('/documents/cms', 'local')
-
+					'type' => $request->path->getMimeType(),
+					'path' =>$request->path->store('documents/cms', 'local')
 				];
 			})->onlyOnForms(),
 			File::make('Document', 'path')->disk('local')->onlyOnDetail()

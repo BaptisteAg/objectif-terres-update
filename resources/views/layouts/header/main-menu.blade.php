@@ -20,12 +20,12 @@
                             </li>
                             <li>
                                 <a class="menu__link menu__link_danger "
-                                   href="/louer-ou-vendre-mes-terres">trouver une terre ou des
+                                   href="/trouver-une-terre-ou-des-financements">trouver une terre ou des
                                     financements</a>
                             </li>
                             <li>
                                 <a class="menu__link menu__link_danger "
-                                   href="/ceder-ma-ferme">transmettre ma ferme</a>
+                                   href="/transmettre-ma-ferme">transmettre ma ferme</a>
                             </li>
                             <li>
                                 <a class="menu__link menu__link_danger "
@@ -45,28 +45,28 @@
                     <div class="bubble__container bubble__container_danger ">
                         <ul class="custom-menu menu-submenu">
                             <li>
-                                <a class="menu__link menu__link_danger "
-                                   href="">en reconversion professionnelle avec un
+                                <a href="/minstaller-comme-paysan" class="menu__link menu__link_danger ">en reconversion
+                                    professionnelle avec un
                                     projet
                                     d'installation</a>
                             </li>
                             <li>
                                 <a class="menu__link menu__link_danger "
-                                   href="">un candidat à l'installation en recherche de
+                                   href="/trouver-une-terre-ou-des-financements">un candidat à l'installation en recherche de
                                     terres</a>
                             </li>
                             <li>
                                 <a class="menu__link menu__link_danger "
-                                   href="">un paysan (bientôt) à la retraite</a>
+                                   href="/transmettre-ma-ferme">un paysan (bientôt) à la retraite</a>
                             </li>
-                            <li>
-                                <a class="menu__link menu__link_danger "
-                                   href="">un propriétaire de foncier</a>
-                            </li>
-                            <li>
-                                <a class="menu__link menu__link_danger "
-                                   href="">une collectivité </a>
-                            </li>
+                                                        <li>
+                                                            <a class="menu__link menu__link_danger "
+                                                               href="/proprietaire-de-foncier">un propriétaire de foncier</a>
+                                                        </li>
+                            {{--                            <li>--}}
+                            {{--                                <a class="menu__link menu__link_danger "--}}
+                            {{--                                   href="">une collectivité </a>--}}
+                            {{--                            </li>--}}
                         </ul>
                     </div>
                 </div>

@@ -14,8 +14,8 @@ class ResponseTemplateRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'title' => ['required', 'string', 'max:100', 'min:3'],
-			'content' => ['required', 'string', 'max:1000', 'min:10'],
+			'title' => ['required', 'string',  'min:3'],
+			'content' => ['required', 'string',  'min:10'],
 
 		];
 	}

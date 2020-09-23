@@ -57,8 +57,8 @@ class AdvisorsController extends BaseController
 	public function help()
 	{
 		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
-		$pageContent = CmsPage::where('slug', 'like', '%'.'ressoures-primo-accueillant'. '%')->first();
-		return view('pages.advisors.help', compact('users','pageContent'));
+		$pageContents = CmsPage::where('slug', 'like', '%'.'ressources-primo-accueillant'. '%')->with('documents')->get()->keyBy('slug');
+		return view('pages.advisors.help', compact('users','pageContents'));
 	}
 
 	/**
@@ -177,8 +177,8 @@ class AdvisorsController extends BaseController
 			return back()->with('warning', 'Une erreur est survenue, veuillez réessayer');
 
 		}
-		$this->advisorsService->updateProjectDataKeysValues($request);
-		return back()->with('success', 'L\'indicateur a bien été modifié');
+		$this->adService->updateProjectDataKeysValues($request);
+		return back()->with('success', 'Les indicateurs ont bien été modifiés.');
 	}
 
 	/**

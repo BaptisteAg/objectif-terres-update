@@ -24,7 +24,7 @@
         @if ($numberOfAds >0)
             <section class="section pt-0">
                 <h2 class="has-text-centered mt-0">Les annonces</h2>
-                <div class="columns is-mobile is-centered">
+                <div class="columns is-mobile is-centered mb-60">
                     <div class="column is-two-thirds">
                         <div class="box">
                             <h3 class="title  has-text-centered ">Répartition des annonces par statut</h3>
@@ -51,10 +51,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="columns is-mobile is-centered">
-                    <div class="column is-one-third">
-                        <h3 class="title  has-text-centered ">Répartition des annonces validées sur les départements</h3>
-                        <table class="table is-hoverable has-text-centered center-element ">
+                <h3 class="title  has-text-centered ">Répartition des annonces validées sur les départements</h3>
+                <div class="columns is-mobile is-centered ">
+                    <div class="column is-11  table-container">
+                        <table class="table is-hoverable has-text-centered center-element table-container ">
                             <thead>
                             <tr>
                                 <th></th>
@@ -78,56 +78,64 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="column is-one-third">
-                        <h3 class="title  has-text-centered ">Répartition des annonces validées sur les régions</h3>
-                        <table class="table is-hoverable center-element ">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                @foreach($publishedAdsInEachRegionsByYears as $adsInEachRegions)
-                                    @foreach($adsInEachRegions as $region => $ads)
-                                        <th>{{$region}}</th>
-                                    @endforeach
-                                    @break
-                                @endforeach
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($publishedAdsInEachRegionsByYears as $year=>$adsInEachRegions)
+                </div>
+                <div class="mt-40 mb-40">
+                    <h3 class="title  has-text-centered ">Répartition des annonces validées sur les régions</h3>
+                    <div class="columns">
+                        <div class="column is-11  table-container ">
+                            <table class="table is-hoverable center-element   ">
+                                <thead>
                                 <tr>
-                                    <td>En {{$year}}</td>
-                                    @foreach($adsInEachRegions as $region => $ads)
-                                        <td>{{$ads->count()}}</td>
+                                    <th></th>
+                                    @foreach($publishedAdsInEachRegionsByYears as $adsInEachRegions)
+                                        @foreach($adsInEachRegions as $region => $ads)
+                                            <th>{{$region}}</th>
+                                        @endforeach
+                                        @break
                                     @endforeach
                                 </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                @foreach($publishedAdsInEachRegionsByYears as $year=>$adsInEachRegions)
+                                    <tr>
+                                        <td>En {{$year}}</td>
+                                        @foreach($adsInEachRegions as $region => $ads)
+                                            <td>{{$ads->count()}}</td>
+                                        @endforeach
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                <div class="columns is-mobile is-centered">
-                    <div class="column is-two-thirds">
-                        <h3 class="title  has-text-centered ">Répartition des annonces soumises par mois</h3>
-                        <h4 class="subtitle  has-text-centered ">
-                            En {{\Illuminate\Support\Carbon::now()->subYear()->year}}</h4>
-                        <table class="table is-hoverable center-element ">
-                            <thead>
-                            <tr>
-                                @foreach($validatedAdsInYearGroupByMonth as $month=>$ads)
-                                    <th>{{$month}}</th>
-                                @endforeach
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                @foreach($validatedAdsInYearGroupByMonth as $month=>$ads)
-                                    <th>{{$ads->count()}}</th>
-                                @endforeach
-                            </tr>
-                            </tbody>
-                        </table>
+
+                <div class="mt-40 mb-40">
+                    <div class="columns is-mobile is-centered">
+                        <div class="column is-11  table-container">
+                            <h3 class="title  has-text-centered ">Répartition des annonces soumises par mois</h3>
+                            <h4 class="subtitle  has-text-centered ">
+                                En {{\Illuminate\Support\Carbon::now()->subYear()->year}}</h4>
+                            <table class="table is-hoverable center-element ">
+                                <thead>
+                                <tr>
+                                    @foreach($validatedAdsInYearGroupByMonth as $month=>$ads)
+                                        <th>{{$month}}</th>
+                                    @endforeach
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    @foreach($validatedAdsInYearGroupByMonth as $month=>$ads)
+                                        <th>{{$ads->count()}}</th>
+                                    @endforeach
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+
             </section>
 
         @endif

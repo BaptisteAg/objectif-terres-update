@@ -19,7 +19,6 @@ class CmsController extends Controller
 		$cmsFaq = new Collection();
 		$cmsCommonContent = new Collection();
 		$pageContent = CmsPage::where('slug', 'like', Route::currentRouteName() . '%')->with('documents')->get()->keyBy('slug');
-
 		if ($hasFaqSection) {
 			$cmsFaq = CmsFaq::where('page_name', '=', Route::currentRouteName())->get();
 		}
@@ -32,10 +31,8 @@ class CmsController extends Controller
 
 	public function faq()
 	{
-		$cmsFaq = CmsFaq::all();
-		$cmsCommonContent = CmsCommonContent::where('pages_name', 'like', '%' . Route::currentRouteName() . '%')->get()->groupBy('name');
 
-		return view('pages/cms/faq',compact('cmsFaq', 'cmsCommonContent'));
+		return view('pages/cms/faq', $this->getCmsContent(Route::currentRouteName(), false, false));
 	}
 
 	public function quiSommesNous()
@@ -48,14 +45,19 @@ class CmsController extends Controller
 		return view('pages/cms/minstaller-comme-paysan', $this->getCmsContent(Route::currentRouteName(), false, true));
 	}
 
-	public function louerVendreMesTerres()
+	public function trouverUneTerreOuDesFinancements()
 	{
-		return view('pages/cms/louer-vendre-mes-terres', $this->getCmsContent(Route::currentRouteName(), true, true));
+		return view('pages/cms/trouver-une-terre-ou-des-financements', $this->getCmsContent(Route::currentRouteName(), true, true));
 	}
 
 	public function cederMaFerme()
 	{
-		return view('pages/cms/ceder-ma-ferme', $this->getCmsContent(Route::currentRouteName(), false, true));
+		return view('pages/cms/transmettre-ma-ferme', $this->getCmsContent(Route::currentRouteName(), false, true));
+	}
+
+	public function proprietaireDeFoncier()
+	{
+		return view('pages/cms/proprietaire-de-foncier', $this->getCmsContent(Route::currentRouteName(), false, false));
 	}
 
 	public function trouverUnEmploi()

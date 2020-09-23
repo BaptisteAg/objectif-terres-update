@@ -121,7 +121,8 @@ class UserService
 	public function getCurrentUserTerritoryDepartments(): array
 	{
 		$supervisorLocationTerritoryCodes = [];
-		foreach (auth()->user()->departments as $department) {
+		$userDepartments = User::with('departments')->find(auth()->user()->id);
+		foreach ($userDepartments->departments as $department) {
 			array_push($supervisorLocationTerritoryCodes, $department->code);
 		}
 		return $supervisorLocationTerritoryCodes;
@@ -133,7 +134,8 @@ class UserService
 	public function getCurrentUserTerritoryIds()
 	{
 		$userTerritoryIds = [];
-		foreach (auth()->user()->departments as $department) {
+		$userDepartments = User::with('departments', 'departments.territory')->find(auth()->user()->id);
+		foreach ($userDepartments->departments as $department) {
 			array_push($userTerritoryIds, $department->territory->id);
 		}
 		return array_unique($userTerritoryIds);
@@ -206,7 +208,7 @@ class UserService
 	{
 		return User::filterSubLocations('departments', $territoryIds, 'departments.territory_id')
 			->where('role', '>=', $roleId)
-			->with('departments', 'departments.territory')
+			->with('departments', 'departments.territory', 'userPermissions')
 			->get();
 	}
 

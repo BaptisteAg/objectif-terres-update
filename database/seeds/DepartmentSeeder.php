@@ -14,7 +14,7 @@ class DepartmentSeeder extends Seeder
 		);
 		Department::updateOrCreate(
 			['id' => 2],
-			['territory_id' => 18]
+			['territory_id' => 9]
 		);
 		Department::updateOrCreate(
 			['id' => 3],
@@ -66,7 +66,7 @@ class DepartmentSeeder extends Seeder
 		);
 		Department::updateOrCreate(
 			['id' => 15],
-			['territory_id' => 14]
+			['territory_id' => 3]
 		);
 		Department::updateOrCreate(
 			['id' => 16],
@@ -250,7 +250,7 @@ class DepartmentSeeder extends Seeder
 		);
 		Department::updateOrCreate(
 			['id' => 61],
-			['territory_id' => 18]
+			['territory_id' => 9]
 		);
 		Department::updateOrCreate(
 			['id' => 62],
@@ -262,7 +262,7 @@ class DepartmentSeeder extends Seeder
 		);
 		Department::updateOrCreate(
 			['id' => 64],
-			['territory_id' => 14]
+			['territory_id' => 3]
 		);
 		Department::updateOrCreate(
 			['id' => 65],
@@ -330,7 +330,7 @@ class DepartmentSeeder extends Seeder
 		);
 		Department::updateOrCreate(
 			['id' => 81],
-			['territory_id' => 18]
+			['territory_id' => 9]
 		);
 		Department::updateOrCreate(
 			['id' => 82],

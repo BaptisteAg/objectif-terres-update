@@ -16,7 +16,6 @@
 {{--                                        <button class="button basic small primary  waves-effect waves-button waves-float waves-light">--}}
 {{--                                            TELECHARGER--}}
 {{--                                        </button>--}}
-                                        looooooooooooool
                                     </a>
                                 </div>
                             @endif
