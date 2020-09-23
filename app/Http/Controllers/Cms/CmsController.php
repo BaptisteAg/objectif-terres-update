@@ -32,7 +32,7 @@ class CmsController extends Controller
 	public function faq()
 	{
 
-		return view('pages/cms/faq',$this->getCmsContent(Route::currentRouteName(), false, false));
+		return view('pages/cms/faq', $this->getCmsContent(Route::currentRouteName(), false, false));
 	}
 
 	public function quiSommesNous()
@@ -45,9 +45,9 @@ class CmsController extends Controller
 		return view('pages/cms/minstaller-comme-paysan', $this->getCmsContent(Route::currentRouteName(), false, true));
 	}
 
-	public function louerVendreMesTerres()
+	public function trouverUneTerreOuDesFinancements()
 	{
-		return view('pages/cms/louer-vendre-mes-terres', $this->getCmsContent(Route::currentRouteName(), true, true));
+		return view('pages/cms/trouver-une-terre-ou-des-financements', $this->getCmsContent(Route::currentRouteName(), true, true));
 	}
 
 	public function cederMaFerme()
@@ -57,7 +57,7 @@ class CmsController extends Controller
 
 	public function proprietaireDeFoncier()
 	{
-		return view('pages/cms/proprietaire-de-foncier');
+		return view('pages/cms/proprietaire-de-foncier', $this->getCmsContent(Route::currentRouteName(), false, false));
 	}
 
 	public function trouverUnEmploi()

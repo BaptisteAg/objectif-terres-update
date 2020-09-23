@@ -12,8 +12,8 @@
             <div class="rows">
                 <div class="row is-full">
                     @if($pageContent->count())
-                        @if($pageContent->has('transmettre-ma-ferme-'))
-                            {!! $pageContent['transmettre-ma-ferme-']->content !!}
+                        @if($pageContent->has('transmettre-ma-ferme'))
+                            {!! $pageContent['transmettre-ma-ferme']->content !!}
                         @endif
                     @endif
                 </div>
@@ -58,7 +58,7 @@
         </div>
     </section>
     <div class="container">
-        <p >Quelques ressources issues de ce dossier : </p>
+        <p>Quelques ressources issues de ce dossier : </p>
     </div>
     <div class="columns is-centered">
         <div class="column is-one-quarter">
@@ -113,7 +113,8 @@
                 </div>
                 <div class="card-content  tile__container">
                     <div class="content text_danger_orange tile__content">
-                        <h3 class="title is-3 tile__title has-text-danger">Le chemin de l'installation et de la transmission</h3>
+                        <h3 class="title is-3 tile__title has-text-danger">Le chemin de l'installation et de la
+                            transmission</h3>
                         <p class="button-wrap">
                             <span class="button round small warning read-more">
                                 <span class="button__icon waves-effect waves-circle waves-light">
@@ -167,59 +168,37 @@
             </a>
         </div>
     </div>
-    <div class="container content has-text-centered mt-60">
-        <p>Pour votre recherche de terres agricoles nous vous invitons à :</p>
-        <div class="columns is-centered">
-            <div class="column has-text-centered">
-                <p>Déposer une annonce pour rendre visible votre recherche</p>
-                <a href="{{route('ads.create')}}">
-                    <button class="button is-link is-medium basic secondary">
-                        <span class="button__label"> Déposer une annonce</span>
-                    </button>
-                </a>
-            </div>
-            <div class="column has-text-centered">
-                <p>Solliciter un accompagnement sur le volet foncier de votre projet auprès de l’une des dix-neuf associations territoriales Terre de Liens </p>
-                <a href="/accompagnement/demarrer">
-                    <button class="button is-link is-medium basic secondary">
-                        <span class="button__label">
-                            Être accompagné
-                        </span>
-                    </button>
-                </a>
-            </div>
-        </div>
-    </div>
+    @include('components.cms-page-cta')
 
-{{--    @include('components.multiple-img-block')--}}
-{{--    <section class="hero has_margin">--}}
-{{--        <div class="hero-body block-video">--}}
-{{--            @include('components.video')--}}
-{{--        </div>--}}
-{{--    </section>--}}
-{{--    @if(! $cmsFaq->isEmpty())--}}
-{{--        @include('components.faq-frequentes')--}}
-{{--    @endif--}}
-{{--    <section class="section contactus-background">--}}
-{{--        <div class="container">--}}
-{{--            <div class="columns is-multiline is-mobile">--}}
-{{--                <div class="column is-half">--}}
-{{--                    @if($pageContent->count())--}}
-{{--                        @if($pageContent->has('transmettre-ma-ferme-trouver-le-candidat-ideal-de-cession'))--}}
-{{--                            {!! $pageContent['transmettre-ma-ferme-trouver-le-candidat-ideal-de-cession']->content !!}--}}
-{{--                        @endif--}}
-{{--                    @endif--}}
-{{--                </div>--}}
-{{--                <div class="column is-6 contactUs-button">--}}
-{{--                    <button class="button basic small primary  waves-effect waves-button waves-float waves-light">--}}
-{{--                        CONTACTEZ-NOUS--}}
-{{--                    </button>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </section>--}}
+    {{--    @include('components.multiple-img-block')--}}
+    {{--    <section class="hero has_margin">--}}
+    {{--        <div class="hero-body block-video">--}}
+    {{--            @include('components.video')--}}
+    {{--        </div>--}}
+    {{--    </section>--}}
+    {{--    @if(! $cmsFaq->isEmpty())--}}
+    {{--        @include('components.faq-frequentes')--}}
+    {{--    @endif--}}
+    {{--    <section class="section contactus-background">--}}
+    {{--        <div class="container">--}}
+    {{--            <div class="columns is-multiline is-mobile">--}}
+    {{--                <div class="column is-half">--}}
+    {{--                    @if($pageContent->count())--}}
+    {{--                        @if($pageContent->has('transmettre-ma-ferme-trouver-le-candidat-ideal-de-cession'))--}}
+    {{--                            {!! $pageContent['transmettre-ma-ferme-trouver-le-candidat-ideal-de-cession']->content !!}--}}
+    {{--                        @endif--}}
+    {{--                    @endif--}}
+    {{--                </div>--}}
+    {{--                <div class="column is-6 contactUs-button">--}}
+    {{--                    <button class="button basic small primary  waves-effect waves-button waves-float waves-light">--}}
+    {{--                        CONTACTEZ-NOUS--}}
+    {{--                    </button>--}}
+    {{--                </div>--}}
+    {{--            </div>--}}
+    {{--        </div>--}}
+    {{--    </section>--}}
 
-{{--    @include('components/step-guide')--}}
+    {{--    @include('components/step-guide')--}}
 
     @include('components.partnering')
 

@@ -43,6 +43,7 @@ class HomePageController extends Controller
 
 		$cmsFaq = CmsFaq::where('page_name', '=', Route::currentRouteName())->get();
 		$rssNews = $rssService->getTdlNews();
+
 		return view('pages.homepage', compact('ads', 'adsPartner', 'rssNews', 'cmsFaq'));
 	}
 }

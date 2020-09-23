@@ -20,7 +20,7 @@
                             </li>
                             <li>
                                 <a class="menu__link menu__link_danger "
-                                   href="/louer-ou-vendre-mes-terres">trouver une terre ou des
+                                   href="/trouver-une-terre-ou-des-financements">trouver une terre ou des
                                     financements</a>
                             </li>
                             <li>
@@ -52,7 +52,7 @@
                             </li>
                             <li>
                                 <a class="menu__link menu__link_danger "
-                                   href="/louer-ou-vendre-mes-terres">un candidat à l'installation en recherche de
+                                   href="/trouver-une-terre-ou-des-financements">un candidat à l'installation en recherche de
                                     terres</a>
                             </li>
                             <li>

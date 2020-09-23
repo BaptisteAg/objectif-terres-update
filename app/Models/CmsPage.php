@@ -36,15 +36,6 @@ class CmsPage extends Model
 {
 	use Documentable;
 
-//	public static function boot()
-//	{
-//		parent::boot();
-//
-//		// grab the title and description and slugify it
-//		static::saving(function ($cmsPage) {
-//			$cmsPage->slug = Str::slug($cmsPage->page_name) . '-' . Str::slug($cmsPage->description);
-//		});
-//	}
 
 	/**
 	 * The table associated with the model.
@@ -83,6 +74,10 @@ class CmsPage extends Model
 	public function setSlugAttribute()
 	{
 		// grab the title and slugify it for seeds
-		$this->attributes['slug'] = Str::slug($this->page_name) . '-' . Str::slug($this->description);
+		if (! is_null($this->description)) {
+			return $this->attributes['slug'] = Str::slug($this->page_name) . '-' . Str::slug($this->description);
+		}
+		return $this->attributes['slug'] = Str::slug($this->page_name);
+
 	}
 }

@@ -18,12 +18,12 @@
         </div>
     </section>
 
-    <section class="section">
+    <section class="section pt-0 mt-0  pb-0">
         <div class="container">
+            <div class="  has-text-centered">
+                <h2>Comment ça marche ?</h2>
+            </div>
             <div class="columns">
-                <div class="column block-demarrer  has-text-centered">
-                    <h2>Comment ça marche ?</h2>
-                </div>
                 <div class="column">
                     <div class="rows">
                         <div class="row-is-full block-step-numbers">
@@ -76,7 +76,7 @@
     </section>
 
 
-    <section class="section" id="support-request-vue">
+    <section class="section pt-0 mt-0" id="support-request-vue">
         <support-request-start inline-template
                                :text-regions="{{json_encode($pageContent)}}">
             <form method="post">
@@ -149,7 +149,7 @@
         <br>
         <div class="content mt-40">
             <p>
-                **Notre capacité à vous accompagner pouvant être limitée, merci de cibler le territoire prioritaire sur
+                *Notre capacité à vous accompagner pouvant être limitée, merci de cibler le territoire prioritaire sur
                 lequel porte votre projet d’installation.</p>
             <p> **Les informations remplies dans ce formulaire sont susceptibles d’être enregistrées ; vous pouvez à
                 tout moment gérer vos informations personnelles dans <a href="{{route('user.edit')}}">votre compte</a>
