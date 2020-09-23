@@ -12,7 +12,7 @@ class CmsPageSeeder extends Seeder
 
 	public function run()
 	{
-		CmsPage::updateOrInsert([
+		CmsPage::insert([
 			[
 				'page_name' => 'Bandeau de participation',
 				"description" => 'Soutenir Terre de Liens c’est préserver notre avenir',
@@ -72,21 +72,21 @@ class CmsPageSeeder extends Seeder
 			],
 
 			[
-				'page_name' => 'Louer ou vendre mes terres',
+				'page_name' => 'Trouver une terre ou des financements',
 				"description" => 'Texte d’introduction sous le titre principal et “vos terres vont nourrir… d’envergure”',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'has_documents' => 0
 			],
 			[
-				'page_name' => 'Louer ou vendre mes terres',
+				'page_name' => 'Trouver une terre ou des financements',
 				"description" => '“Donnez vous plus de chances”',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'has_documents' => 0
 			],
 			[
-				'page_name' => 'Louer ou vendre mes terres',
+				'page_name' => 'Trouver une terre ou des financements',
 				"description" => '“Des projets partout en France”',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -279,6 +279,13 @@ class CmsPageSeeder extends Seeder
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'has_documents' => 0
 			],
+			[
+				'page_name' => 'Propriétaire de foncier',
+				"description" => '',
+				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'has_documents' => 0
+			],
 
 
 		]);
@@ -301,6 +308,12 @@ class CmsPageSeeder extends Seeder
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'has_documents' => 0
 			]);
+		}
+
+		$cmsPages  = CmsPage::all();
+		foreach($cmsPages as $cmsPage){
+			$cmsPage->setSlugAttribute();
+			$cmsPage->save();
 		}
 
 

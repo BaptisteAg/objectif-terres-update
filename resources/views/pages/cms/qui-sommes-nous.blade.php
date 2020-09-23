@@ -42,23 +42,23 @@
         </div>
     </section>
 
-    <section class="section">
-        <div class="container">
-            <div id="carousel-quiNousSommes" class="carousel">
-                @for ($i = 0; $i < 4; $i++)
-                    <div class="column is-12 ">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="media">
-                                    <figure class="image is-centered is-256x256">
-                                        <img src="https://picsum.photos/800/600?random=1" alt="Placeholder image">
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endfor
-            </div>
+{{--    <section class="section">--}}
+{{--        <div class="container">--}}
+{{--            <div id="carousel-quiNousSommes" class="carousel">--}}
+{{--                @for ($i = 0; $i < 4; $i++)--}}
+{{--                    <div class="column is-12 ">--}}
+{{--                        <div class="card">--}}
+{{--                            <div class="card-content">--}}
+{{--                                <div class="media">--}}
+{{--                                    <figure class="image is-centered is-256x256">--}}
+{{--                                        <img src="https://picsum.photos/800/600?random=1" alt="Placeholder image">--}}
+{{--                                    </figure>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                @endfor--}}
+{{--            </div>--}}
 {{--            <div class="container has-text-centered ">--}}
 {{--                <h2 class="title is-2 has_margin">Lorem ipsum pellentasque </h2>--}}
 {{--                <p>--}}
@@ -66,8 +66,8 @@
 {{--                    consectetur purus sit amet fermentum. Donec sed odio dui.--}}
 {{--                </p>--}}
 {{--            </div>--}}
-        </div>
-    </section>
+{{--        </div>--}}
+{{--    </section>--}}
 
     <section id="le-mouvement-terre-de-liens" class="section">
         <div class="container">
@@ -126,15 +126,15 @@
     </div>
 @endsection
 
-@section('script')
-    <script src="{{ asset('js/bulma-carousel.js') }}"></script>
-    <script>
-        bulmaCarousel.attach('#carousel-quiNousSommes', {
-            slidesToScroll: 1,
-            slidesToShow: 1,
-            loop: true,
-            navigation: true,
+{{--@section('script')--}}
+{{--    <script src="{{ asset('js/bulma-carousel.js') }}"></script>--}}
+{{--    <script>--}}
+{{--        bulmaCarousel.attach('#carousel-quiNousSommes', {--}}
+{{--            slidesToScroll: 1,--}}
+{{--            slidesToShow: 1,--}}
+{{--            loop: true,--}}
+{{--            navigation: true,--}}
 
-        });
-    </script>
-@endsection
+{{--        });--}}
+{{--    </script>--}}
+{{--@endsection--}}

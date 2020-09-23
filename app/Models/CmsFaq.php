@@ -46,7 +46,7 @@ class CmsFaq extends Model
 		'home',
 		'transmettre-ma-ferme',
 		'confier-mes-terres',
-		'louer-ou-vendre-mes-terres',
+		'trouver-une-terre-ou-des-financements',
 		'trouver-un-emploi',
 	];
 }

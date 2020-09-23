@@ -1,10 +1,10 @@
-<section class="section bg-l-pearl bg-trame_champs_light" style="background:rgba(0,0,0,0.05);margin-top:50px;">
+<section class="section bg-l-pearl bg-trame_champs_light" style="background:rgba(0,0,0,0.05)">
     <div class="container is-fluid">
         @if(Route::currentRouteName() ==="minstaller-comme-paysan")
             <h2 class="title is-2 has-text-centered">Ils peuvent vous accompagner dans votre projet</h2>
         @elseif(Route::currentRouteName() ==="transmettre-ma-ferme")
             <h2 class="title is-2 has-text-centered"> Ils peuvent vous accompagner à transmettre</h2>
-        @elseif(Route::currentRouteName() === "louer-ou-vendre-mes-terres")
+        @elseif(Route::currentRouteName() === "trouver-une-terre-ou-des-financements")
             <h2 class="title is-2 has-text-centered"> Ils peuvent vous accompagner au-delà du volet foncier de votre
                 projet </h2>
         @else
@@ -14,7 +14,7 @@
             <div id="carousel-partners" class=" carousel carousel-large has-text-centered ">
                 <div class="mr-50 ml-50">
                     <figure class="image is-128x128 is-inline-block">
-                        <img src="{{asset('/images/logo-partenaires/logo_fadear.jpg')}}" alt="logo adear">
+                        <img src="{{asset('/images/logo-partenaires/FADEAR-cmjn-01-01.png')}}" alt="logo adear">
                     </figure>
                     <div>
                         <p class="has-text-weight-bold">Les ADEAR</p>
@@ -31,7 +31,7 @@
                 <div class="mr-50 ml-50">
                     <figure class="image is-128x128 is-inline-block">
                         <img style="width : 80%; margin-left : auto ; margin-right: auto"
-                             src="{{asset('/images/logo-partenaires/logo-reseau-civam-quadri-861x1024.jpg')}}"
+                             src="{{asset('/images/logo-partenaires/LOGO_RESEAU_CIVAM_FOND_TRANSPARENT.PNG')}}"
                              alt="logo civam">
                     </figure>
                     <div>
@@ -45,10 +45,10 @@
                         </p>
                     </div>
                 </div>
-                @if( Route::currentRouteName() !="louer-ou-vendre-mes-terres" && Route::currentRouteName() != "transmettre-ma-ferme")
+                @if( Route::currentRouteName() !="trouver-une-terre-ou-des-financements" && Route::currentRouteName() != "transmettre-ma-ferme")
                     <div class="mr-50 ml-50">
                         <figure class="image is-128x128 is-inline-block">
-                            <img src="{{asset('/images/logo-partenaires/logo_inpact.jpg')}}" alt="logo inpact">
+                            <img src="{{asset('/images/logo-partenaires/logo_inpact_Plan de travail 1.png')}}" alt="logo inpact">
                         </figure>
                         <div>
                             <p class="has-text-weight-bold">InPACT</p>
@@ -72,7 +72,7 @@
                 @endif
                 <div class="mr-50 ml-50">
                     <figure class="image is-128x128 is-inline-block">
-                        <img src="{{asset('/images/logo-partenaires/logo_inter_afocg.jpg')}}" alt="logo aocg">
+                        <img src="{{asset('/images/logo-partenaires/logo IA fond transparent.png')}}" alt="logo aocg">
                     </figure>
                     <div>
                         <p class="has-text-weight-bold">Les AFOCG</p>
@@ -102,7 +102,7 @@
                 @if(Route::currentRouteName() != "transmettre-ma-ferme")
                     <div class="mr-50 ml-50">
                         <figure class="image is-128x128 is-inline-block">
-                            <img src="{{asset('/images/logo-partenaires/reneta-logo.png')}}" alt="logo reneta">
+                            <img src="{{asset('/images/logo-partenaires/Logo Reneta - RVB.png')}}" alt="logo reneta">
                         </figure>
                         <div>
                             <p class="has-text-weight-bold">Le RENETA</p>
@@ -115,25 +115,25 @@
                         </div>
                     </div>
                 @endif
-                @if( Route::currentRouteName() !="minstaller-comme-paysan" && Route::currentRouteName() != "transmettre-ma-ferme")
-                    <div class="mr-50 ml-50">
-                        <figure class="image is-128x128 is-inline-block">
-                            <img src="{{asset('/images/logo-partenaires/agricultures-et-territoires-chambres-agricultures.jpg')}}"
-                                 alt="logo chambres agriculture">
-                        </figure>
-                        <div>
-                            <p class="has-text-weight-bold">Les Chambres d’agriculture</p>
-                            <p> Présentes dans tous les départements, elles sont des interlocutrices importantes pour
-                                les
-                                porteurs de projets et les agriculteurs (gestion des démarches administratives, conseils
-                                techniques et économiques, etc.)
-                                Plus d'informations <a target="_blank" href="http://www.sinstallerenagriculture.fr/">en
-                                    cliquant sur ce lien</a>
-                            </p>
-                        </div>
-                    </div>
-                @endif
-                @if( Route::currentRouteName() !="louer-ou-vendre-mes-terres" && Route::currentRouteName() != "transmettre-ma-ferme")
+{{--                @if( Route::currentRouteName() !="minstaller-comme-paysan" && Route::currentRouteName() != "transmettre-ma-ferme")--}}
+{{--                    <div class="mr-50 ml-50">--}}
+{{--                        <figure class="image is-128x128 is-inline-block">--}}
+{{--                            <img src="{{asset('/images/logo-partenaires/agricultures-et-territoires-logo.png')}}"--}}
+{{--                                 alt="logo chambres agriculture">--}}
+{{--                        </figure>--}}
+{{--                        <div>--}}
+{{--                            <p class="has-text-weight-bold">Les Chambres d’agriculture</p>--}}
+{{--                            <p> Présentes dans tous les départements, elles sont des interlocutrices importantes pour--}}
+{{--                                les--}}
+{{--                                porteurs de projets et les agriculteurs (gestion des démarches administratives, conseils--}}
+{{--                                techniques et économiques, etc.)--}}
+{{--                                Plus d'informations <a target="_blank" href="http://www.sinstallerenagriculture.fr/">en--}}
+{{--                                    cliquant sur ce lien</a>--}}
+{{--                            </p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                @endif--}}
+                @if( Route::currentRouteName() !="trouver-une-terre-ou-des-financements" && Route::currentRouteName() != "transmettre-ma-ferme")
                     <div class="mr-50 ml-50">
                         <figure class="image is-128x128 is-inline-block">
                             <img src="{{asset('/images/logo/logo_TdL_cartouche_blanc-rouge_500.png')}}"

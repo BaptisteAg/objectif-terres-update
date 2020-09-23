@@ -11,6 +11,12 @@
         <div class="container">
             <div class="rows">
                 <div class="row is-full">
+                    @if($pageContent->count())
+                        @if($pageContent->has('proprietaire-de-foncier'))
+                            {!! $pageContent['proprietaire-de-foncier']->content !!}
+                        @endif
+                    @endif
+
                     <p>Pour vous aider, vous inspirer et vous outiller dans votre projet d’installation ou de
                         transmission agricole, Terre de Liens et ses partenaires du réseau InPACT (Initiatives pour une
                         Agriculture citoyenne et territoriale) ont édité un ensemble de guides méthodologiques et

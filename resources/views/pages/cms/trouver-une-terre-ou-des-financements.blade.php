@@ -12,8 +12,8 @@
             <div class="rows">
                 <div class="row is-full">
                     @if($pageContent->count())
-                        @if($pageContent->has('louer-ou-vendre-mes-terres-texte-dintroduction-sous-le-titre-principal-et-vos-terres-vont-nourrir-denvergure'))
-                            {!! $pageContent['louer-ou-vendre-mes-terres-texte-dintroduction-sous-le-titre-principal-et-vos-terres-vont-nourrir-denvergure']->content !!}
+                        @if($pageContent->has('trouver-une-terre-ou-des-financements-texte-dintroduction-sous-le-titre-principal-et-vos-terres-vont-nourrir-denvergure'))
+                            {!! $pageContent['trouver-une-terre-ou-des-financements-texte-dintroduction-sous-le-titre-principal-et-vos-terres-vont-nourrir-denvergure']->content !!}
                         @endif
                     @endif
                 </div>
@@ -35,7 +35,8 @@
                             </div>
                             <div class="card-content  tile__container">
                                 <div class="content text_danger_orange tile__content">
-                                    <h3 class="title is-3 tile__title has-text-danger">Je recherche des terres pour mon projet agricole</h3>
+                                    <h3 class="title is-3 tile__title has-text-danger">Je recherche des terres pour mon
+                                        projet agricole</h3>
                                     <p class="button-wrap">
                                         <span class="button round small warning read-more">
                                             <span class="button__icon waves-effect waves-circle waves-light">
@@ -110,7 +111,8 @@
                             </div>
                             <div class="card-content  tile__container">
                                 <div class="content text_danger_orange tile__content">
-                                    <h3 class="title is-3 tile__title has-text-danger">Rechercher une terre pour accueillir son projet</h3>
+                                    <h3 class="title is-3 tile__title has-text-danger">Rechercher une terre pour
+                                        accueillir son projet</h3>
                                     <p class="button-wrap">
                                         <span class="button round small warning read-more">
                                             <span class="button__icon waves-effect waves-circle waves-light">
@@ -145,7 +147,8 @@
                             </div>
                             <div class="card-content  tile__container">
                                 <div class="content text_danger_orange tile__content">
-                                    <h3 class="title is-3 tile__title has-text-danger">Et si on restructurait les fermes ? </h3>
+                                    <h3 class="title is-3 tile__title has-text-danger">Et si on restructurait les fermes
+                                        ? </h3>
                                     <p class="button-wrap">
                                         <span class="button round small warning read-more">
                                             <span class="button__icon waves-effect waves-circle waves-light">
@@ -164,75 +167,53 @@
                         </a>
                     </div>
                 </div>
-                <div class="content has-text-centered mt-60">
-                    <p>Pour votre recherche de terres agricoles nous vous invitons à :</p>
-                    <div class="columns is-centered">
-                        <div class="column has-text-centered">
-                            <p>Déposer une annonce pour rendre visible votre recherche</p>
-                            <a href="{{route('ads.create')}}">
-                                <button class="button is-link is-medium basic secondary">
-                                    <span class="button__label"> Déposer une annonce</span>
-                                </button>
-                            </a>
-                        </div>
-                        <div class="column has-text-centered">
-                            <p>Solliciter un accompagnement sur le volet foncier de votre projet auprès de l’une des dix-neuf associations territoriales Terre de Liens </p>
-                            <a href="/accompagnement/demarrer">
-                                <button class="button is-link is-medium basic secondary">
-                                    <span class="button__label">
-                                        Être accompagné
-                                    </span>
-                                </button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+
     </section>
+    @include('components.cms-page-cta')
+    {{--    @include('components.carrousel-large')--}}
 
-{{--    @include('components.carrousel-large')--}}
+    {{--    @if(! $cmsFaq->isEmpty())--}}
+    {{--        @include('components.faq-frequentes')--}}
+    {{--    @endif--}}
 
-{{--    @if(! $cmsFaq->isEmpty())--}}
-{{--        @include('components.faq-frequentes')--}}
-{{--    @endif--}}
+    {{--    @include ('components/block-contact')--}}
 
-{{--    @include ('components/block-contact')--}}
+    {{--    <section class="section">--}}
+    {{--        <div class="container block-numbers">--}}
+    {{--            <div class="container has-text-centered">--}}
+    {{--                <div class="rows">--}}
+    {{--                    <div class="row is-full">--}}
+    {{--                        <h2 class="title is-2 has_margin">Un marché plus sain</h2>--}}
+    {{--                        <p>--}}
+    {{--                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor--}}
+    {{--                            incididunt ut labore et dolore magna aliquat enim ad minim.--}}
+    {{--                        </p>--}}
+    {{--                    </div>--}}
+    {{--                    @include('components/number-circle-percent')--}}
+    {{--                </div>--}}
+    {{--            </div>--}}
+    {{--        </div>--}}
+    {{--    </section>--}}
 
-{{--    <section class="section">--}}
-{{--        <div class="container block-numbers">--}}
-{{--            <div class="container has-text-centered">--}}
-{{--                <div class="rows">--}}
-{{--                    <div class="row is-full">--}}
-{{--                        <h2 class="title is-2 has_margin">Un marché plus sain</h2>--}}
-{{--                        <p>--}}
-{{--                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor--}}
-{{--                            incididunt ut labore et dolore magna aliquat enim ad minim.--}}
-{{--                        </p>--}}
-{{--                    </div>--}}
-{{--                    @include('components/number-circle-percent')--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </section>--}}
+    {{--    <section class="section">--}}
+    {{--        <div class="container">--}}
+    {{--            <div class="rows">--}}
+    {{--                <div class="row is-full block-result-text">--}}
+    {{--                    @if($pageContent->count())--}}
+    {{--                        @if($pageContent->has('trouver-une-terre-ou-des-financements-des-projets-partout-en-france'))--}}
+    {{--                            {!! $pageContent['trouver-une-terre-ou-des-financements-des-projets-partout-en-france']->content !!}--}}
+    {{--                        @endif--}}
+    {{--                    @endif--}}
+    {{--                </div>--}}
+    {{--            </div>--}}
+    {{--        </div>--}}
+    {{--    </section>--}}
 
-{{--    <section class="section">--}}
-{{--        <div class="container">--}}
-{{--            <div class="rows">--}}
-{{--                <div class="row is-full block-result-text">--}}
-{{--                    @if($pageContent->count())--}}
-{{--                        @if($pageContent->has('louer-ou-vendre-mes-terres-des-projets-partout-en-france'))--}}
-{{--                            {!! $pageContent['louer-ou-vendre-mes-terres-des-projets-partout-en-france']->content !!}--}}
-{{--                        @endif--}}
-{{--                    @endif--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </section>--}}
+    {{--    @include('components/downloadPDF')--}}
 
-{{--    @include('components/downloadPDF')--}}
+    {{--    @include('components/step-guide')--}}
 
-{{--    @include('components/step-guide')--}}
-
-{{--    @include('components/testimony')--}}
+    {{--    @include('components/testimony')--}}
 
     @include('components.partnering')
 

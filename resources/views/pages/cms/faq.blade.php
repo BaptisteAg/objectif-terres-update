@@ -8,8 +8,8 @@
             <div class="rows">
                 <div class="row is-full">
                     @if($pageContent->count())
-                        @if($pageContent->has('faq-'))
-                            {!! $pageContent['faq-']->content !!}
+                        @if($pageContent->has('faq'))
+                            {!! $pageContent['faq']->content !!}
                         @endif
                     @endif
                 </div>

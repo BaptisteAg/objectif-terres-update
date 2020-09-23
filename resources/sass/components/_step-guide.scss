@@ -6,6 +6,7 @@
     position: relative;
     .content-numbers {
         margin-top: 13px;
+        flex: 2 1 auto;
     }
     .number-step {
         color: #000;
@@ -20,7 +21,6 @@
     }
     p{
         margin: auto 0;
-        max-width: 355px;
     }
     h4{
         margin: auto 0;
