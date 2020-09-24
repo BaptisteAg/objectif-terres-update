@@ -1,6 +1,9 @@
 @extends ('default')
 
 @section ('title', 'Rechercher parmis les annonces postées sur Objectif Terres')
+@section('head-script')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
+@endsection
 
 @section('main-content')
     <section class="section pt-0">
@@ -94,9 +97,9 @@
                                 <h1 class="title">Recherche de fonciers</h1>
                             @elseif($adsType === 'jobOfferAd')
                                 <h1 class="title">Offres d'emploi</h1>
-                            @@elseif($adsType === 'jobSeekAd')
+                                @@elseif($adsType === 'jobSeekAd')
                                 <h1 class="title">Recherche d'emploi</h1>
-                                @else
+                            @else
                                 <h1 class="title">Toutes les annonces</h1>
                             @endif
                         @endif
@@ -292,33 +295,33 @@
                 </div>
 
             </section>
-            @if($adsType === 'landOfferAd' || $adsType === 'landSeekAd')
-                <section class="section">
-                    <div class="columns">
-                        <div class="column">
-                            <h1 class="title is-1">Avez-vous un projet agricole ?</h1>
-                            <div><p>Objectif Terre est là pour vous aider à le réaliser ! Avec un suivi sur mesure et
-                                    notre expérience du secteur, nous sommes en mesure de vous apporter une vraie plus
-                                    value, de l'idée initiale au projet déjà défini. <u>Rencontrons-nous !</u></p></div>
-                            <div>
-                                <p><i class="far fa-check-circle"></i> Un suivi sur mesure</p>
-                                <p><i class="far fa-check-circle"></i> Des experts du secteur foncier</p>
-                                <p><i class="far fa-check-circle"></i> Des ressources</p>
-                                <p><i class="far fa-check-circle"></i> Des formations adaptées</p>
-                            </div>
-                            <a href="/" class="button is-dark is-uppercase is-medium">Contactez-nous</a>
-                        </div>
-                        <div class="column">
-                            <figure><img src="https://picsum.photos/600/350" alt="Placeholder image"></figure>
-                            <div><p>En 2018, plus de xx fermiers ont pu s'installer ou céder leurs terres avec succès,
-                                    grâce à la platerforme Objectif Terre et au travail mené sur le terrain par
-                                    l'association Terre de Liens</p></div>
-                        </div>
-                    </div>
-                </section>
-            @else
-                @include('components.section-orientation-terre-liens')
-            @endif
+            {{--            @if($adsType === 'landOfferAd' || $adsType === 'landSeekAd')--}}
+            {{--                <section class="section">--}}
+            {{--                    <div class="columns">--}}
+            {{--                        <div class="column">--}}
+            {{--                            <h1 class="title is-1">Avez-vous un projet agricole ?</h1>--}}
+            {{--                            <div><p>Objectif Terre est là pour vous aider à le réaliser ! Avec un suivi sur mesure et--}}
+            {{--                                    notre expérience du secteur, nous sommes en mesure de vous apporter une vraie plus--}}
+            {{--                                    value, de l'idée initiale au projet déjà défini. <u>Rencontrons-nous !</u></p></div>--}}
+            {{--                            <div>--}}
+            {{--                                <p><i class="far fa-check-circle"></i> Un suivi sur mesure</p>--}}
+            {{--                                <p><i class="far fa-check-circle"></i> Des experts du secteur foncier</p>--}}
+            {{--                                <p><i class="far fa-check-circle"></i> Des ressources</p>--}}
+            {{--                                <p><i class="far fa-check-circle"></i> Des formations adaptées</p>--}}
+            {{--                            </div>--}}
+            {{--                            <a href="/" class="button is-dark is-uppercase is-medium">Contactez-nous</a>--}}
+            {{--                        </div>--}}
+            {{--                        <div class="column">--}}
+            {{--                            <figure><img src="https://picsum.photos/600/350" alt="Placeholder image"></figure>--}}
+            {{--                            <div><p>En 2018, plus de xx fermiers ont pu s'installer ou céder leurs terres avec succès,--}}
+            {{--                                    grâce à la platerforme Objectif Terre et au travail mené sur le terrain par--}}
+            {{--                                    l'association Terre de Liens</p></div>--}}
+            {{--                        </div>--}}
+            {{--                    </div>--}}
+            {{--                </section>--}}
+            {{--            @else--}}
+            {{--                @include('components.section-orientation-terre-liens')--}}
+            {{--            @endif--}}
 
 
         </div>

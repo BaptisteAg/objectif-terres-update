@@ -76,6 +76,13 @@ class UserService
 		if (isset ($data['password'])) {
 			$data['password'] = Hash::make($data['password']);
 		}
+
+		$user = User::where('email', '=', $data['email'])->first();
+		if ($user !== null) {
+			if ($user->id !== (int)$data['user_id']) {
+				return back()->withInput()->withErrors("Cette adresse email est déjà utilisée par un autre utilisateur");
+			}
+		}
 		$user = $this->repository->update($data['user_id'], $data);
 		return $user;
 	}
@@ -88,7 +95,6 @@ class UserService
 	{
 		return $this->repository->find($id);
 	}
-
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection

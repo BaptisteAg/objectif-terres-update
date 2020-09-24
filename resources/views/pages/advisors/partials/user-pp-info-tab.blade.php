@@ -53,7 +53,7 @@
 		@if(! $ad->userPp->trashed())
 			<div class="columns ">
 				<div class="column is-2">
-					<a href="{{route('user.edit', $ad->userPp)}}">
+					<a href="{{route('user.edit', $ad->userPp->id)}}">
 					<span class="icon  has-text-link">
 						<i class="fas fa-user-edit "></i>
 					</span>

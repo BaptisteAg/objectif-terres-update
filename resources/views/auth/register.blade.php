@@ -25,7 +25,6 @@
                                     <label class="label" for="civility">Civilité*</label>
                                     <div class="control has-icons-left">
                                         <div class="select">
-
                                             <select id="civility" name="civility"
                                                     class="input @error('civility') is-danger @enderror "
                                                     required>
