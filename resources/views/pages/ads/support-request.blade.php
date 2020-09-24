@@ -3,11 +3,41 @@
 @section ('title', "Être accompagné")
 
 @section('main-content')
+    @guest()
+        <div class="content has-text-centered fw-section CTA bg-trame_champs_light bg-trame_champs_dark pt-10 pb-30 mb-0">
+            <div class=" mb-50">
+                <h4 class="text_size x-large ">Bénéficiez des services d'Objectif Terres</h4>
+                <p class="has-text-centered">Pour faire une demande d'accompagnement, il vous faut au préalable :</p>
+            </div>
+            <div class="container">
+                <div class=" columns is-centered is-mobile">
+                    <div class="column is-3 has-text-centered">
+                        <a href="{{route("register")}}">
+                            <button class="button is-link  basic primary">
+                                <span class="button__label">
+                                    CREER UN COMPTE
+                                </span>
+                            </button>
+                        </a>
+                    </div>
+                    <div class="column is-1 has-text-centered">
+                        <p>OU</p>
+                    </div>
+                    <div class="column is-3 has-text-centered">
+                        <a href="{{route('login')}}">
+                            <button class="button is-link basic primary">
+                                <span class="button__label">SE CONNECTER</span>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endguest
     <section class="section">
         <div class="container">
             <div class="rows">
                 <div class="row is-full">
-                    <h1 class="title is-1 has_margin is-marginless">Être accompagné</h1>
                     @if(isset($pageContent))
                         @if($pageContent->has('etre-accompagne-texte-dintroduction-sous-le-titre-principal'))
                             {!! $pageContent['etre-accompagne-texte-dintroduction-sous-le-titre-principal']->content !!}
@@ -17,6 +47,8 @@
             </div>
         </div>
     </section>
+
+
 
     <section class="section pt-0 mt-0  pb-0">
         <div class="container">
@@ -110,18 +142,31 @@
                         </div>
                     </div>
                     <div v-if="showSubmitFormButton">
-                        <h2 class="title is-2 has-text-centered">Précisez brièvement ce que vous attendez de Terre de
+                        <h2 class="title is-2 has-text-centered mb-0">Précisez brièvement ce que vous attendez de Terre
+                            de
                             Liens</h2>
                         <div class="columns is-mobile is-centered">
                             <div class="column is-two-thirds">
                                 <br>
                                 <div class="columns">
                                     <div class="column">
-                                        <div class="has-text-centered">
-                                            Vous serez amené(e) à décrire votre projet plus précisément à l’étape
-                                            suivante.<br><br>
+                                        <div class="has-text-centered mb-10">
+                                            <p>
+                                                Vous serez amené(e) à décrire votre projet plus précisément à l’étape
+                                                suivante.
+                                            </p>
+                                            @guest()
+                                                <p class="mb-20">
+                                                    <span class="icon">
+                                                        <i class="fas fa-info-circle has-text-info"></i>
+                                                    </span>
+                                                    <span>Attention, si vous n'avez pas créé de compte ou si vous n'êtes
+                                                        pas connecté, vous serez bloqué à l'étape suivante.</span>
+                                                </p>
+
+                                            @endguest
                                         </div>
-                                        <div class="field">
+                                        <div class="field mt-30">
                                             <div class="control">
                                                 <text-area-counter
                                                         :required="true"
@@ -146,12 +191,18 @@
             </form>
         </support-request-start>
 
-        <div  class="content mt-80">
+        <div class="content mt-80">
             <p>
                 *Notre capacité à vous accompagner pouvant être limitée, merci de cibler le territoire prioritaire sur
                 lequel porte votre projet d’installation.</p>
             <p> **Les informations remplies dans ce formulaire sont susceptibles d’être enregistrées ; vous pouvez à
-                tout moment gérer vos informations personnelles dans <a href="{{route('user.edit')}}">votre compte</a>
+                tout moment gérer vos informations personnelles dans
+                @guest()
+                    <a href="{{route('login')}}">votre compte.</a>
+                @else
+                    <a href="{{route('user.edit',  auth()->user()->id)}}">votre compte.</a>
+                @endif
+
             </p>
 
         </div>

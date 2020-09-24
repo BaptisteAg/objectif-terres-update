@@ -15,31 +15,43 @@ class UserRequest extends FormRequest
 	 */
 	public function rules()
 	{
-		return [
-			'name' => ['required', 'string', 'max:1000'],
-			'email' => [
+		$emailRule = ['email' => [
+			'required',
+			'string', 'email',
+			'max:255',
+			\Illuminate\Validation\Rule::unique('users')->ignore($this->user()->id),
+		],];
+
+		//in case of an pp profile update from an TDL member
+		if ($this->user()->role >= 2 && $this->request->get('user_id') !== $this->user()->id) {
+			$emailRule = ['email' => [
 				'required',
-				'string', 'email',
+				'string',
+				'email',
 				'max:255',
-				\Illuminate\Validation\Rule::unique('users')->ignore($this->user()->id),
-			],
+//				\Illuminate\Validation\Rule::unique('users'),
+			],];
+
+		}
+		return array_merge([
+			'name' => ['required', 'string', 'max:1000'],
 			'first_name' => ['required', 'string', 'max:255'],
-			'phone' => ['nullable','string', 'min:10', 'max:255'],
-			'address' => ['nullable','string', 'min:5'],
+			'phone' => ['nullable', 'string', 'min:10', 'max:255'],
+			'address' => ['nullable', 'string', 'min:5'],
 			'civility' => ['required'],
 			'profile' => ['required'],
 			'city_id' => ['nullable', "integer"],
-			'current_password' => [ 'min:5'],
-			'password' => [ 'confirmed', 'min:5'],
-			'user_id'=>['integer']
+			'current_password' => ['min:5'],
+			'password' => ['confirmed', 'min:5'],
+			'user_id' => ['integer']
 
-		];
+		], $emailRule);
 	}
 
 	/**
 	 * Configure the validator instance.
 	 *
-	 * @param  \Illuminate\Validation\Validator  $validator
+	 * @param \Illuminate\Validation\Validator $validator
 	 * @return void
 	 */
 	public function withValidator($validator)
@@ -47,8 +59,8 @@ class UserRequest extends FormRequest
 		// checks user current password
 		// before making changes
 		$validator->after(function (Validator $validator) {
-			if ($this->current_password){
-				if ( !Hash::check($this->current_password, auth()->user()->password) ) {
+			if ($this->current_password) {
+				if (!Hash::check($this->current_password, auth()->user()->password)) {
 					$validator->errors()->add('current_password', 'Votre mot de passe actuel est incorrect.');
 				}
 			}

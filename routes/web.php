@@ -81,7 +81,7 @@ Route::prefix('rss')->name('rss.')->group(function () {
 Route::middleware('auth')->name('user.')->namespace('Users')->group(function () {
 	Route::prefix('mon-espace')->group(function () {
 		Route::get('/', 'UsersController@index')->name('index');
-		Route::get('mon-compte', 'UsersController@edit')->name('edit');
+		Route::get('modification-compte/{user}', 'UsersController@edit')->name('edit');
 		Route::post('mon-compte', 'UsersController@update')->name('update');
 	});
 	Route::prefix('utilisateurs')->group(function () {
