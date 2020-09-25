@@ -65,7 +65,7 @@
                     </ad-type-select>
 
                     @if(empty($old["id"]))
-                        @if(empty($isSupportRequest) && !empty($supportRequests))
+                        @if(empty($isSupportRequest) && !empty($supportRequests) && count($supportRequests))
                             <section class="has-text-centered" v-if="!adTypeSelected">
                                 Vous pouvez également remplir votre annonce à partir des champs de votre demande d'accompagnement :<br>
                                 <select class="select" v-model="createFromSupportRequest">
@@ -76,7 +76,7 @@
                                 </select>
                             </section>
                         @endif
-                        @if(!empty($isSupportRequest) && !empty($ads))
+                        @if(!empty($isSupportRequest) && !empty($ads) && count($ads))
                             <section class="has-text-centered" v-if="!adTypeSelected">
                                 Vous pouvez également remplir votre demande d'accompagnement à partir des champs de votre annonce :<br>
                                 <select class="select" v-model="createFromAd">

@@ -163,6 +163,12 @@ class SpipService
                 'offer_genres' => $offerGenres,
                 'price' => $isBuyOffer ? $article->prix : '',
                 'rent_price' => $isBuyOffer ? '' : $article->prix,
+            ],
+            'job_offer' => [
+
+            ],
+            'job_seek' => [
+
             ]
         ];
     }
