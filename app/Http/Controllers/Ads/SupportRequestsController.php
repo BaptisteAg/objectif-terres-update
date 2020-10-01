@@ -211,3 +211,4 @@ class SupportRequestsController extends BaseController
         return $vars;
     }
 }
+

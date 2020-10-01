@@ -80,41 +80,41 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	}
 
 
-    /**
-     * Creates an ad.
-     *
-     * @param int
-     * @param array
-     * @return Ad
-     * @throws \Throwable
-     */
-    public function create(array $data): Ad
-    {
-        $ad = new Ad();
-        $ad->user_pp_id = auth()->user()->id;
+	/**
+	 * Creates an ad.
+	 *
+	 * @param int
+	 * @param array
+	 * @return Ad
+	 * @throws \Throwable
+	 */
+	public function create(array $data): Ad
+	{
+		$ad = new Ad();
+		$ad->user_pp_id = auth()->user()->id;
 
-        $this->save($ad, $data);
+		$this->save($ad, $data);
 
-        return $ad;
-    }
+		return $ad;
+	}
 
-    /**
-     * Creates an ad.
-     *
-     * @param int
-     * @param array
-     * @return Ad
-     * @throws \Throwable
-     */
-    public function createForUser(array $data, $userId): Ad
-    {
-        $ad = new Ad();
-        $ad->user_pp_id = $userId;
+	/**
+	 * Creates an ad.
+	 *
+	 * @param int
+	 * @param array
+	 * @return Ad
+	 * @throws \Throwable
+	 */
+	public function createForUser(array $data, $userId): Ad
+	{
+		$ad = new Ad();
+		$ad->user_pp_id = $userId;
 
-        $this->save($ad, $data);
+		$this->save($ad, $data);
 
-        return $ad;
-    }
+		return $ad;
+	}
 
 	/**
 	 * Updates an ad.
@@ -335,7 +335,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 * @param bool $toPaginate
 	 * @return LengthAwarePaginator|Builder[]|Collection
 	 */
-	public function allProjectsInTerritories(array $territoriesCode, array $userLocationTerritoryRegionsId,  bool $toPaginate)
+	public function allProjectsInTerritories(array $territoriesCode, array $userLocationTerritoryRegionsId, bool $toPaginate)
 	{
 		/** @var Collection $model */
 		$models = $this->entity
@@ -369,7 +369,12 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 					$subQuery->whereNull('deleted_at');
 				});
 				$query->where(function (Builder $query) use ($territoriesCode) {
-					$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
+					$query->whereHas('regions', function (Builder $subQuery) use ($territoriesCode) {
+						$subQuery->whereHas('departments', function (Builder $builder) use ($territoriesCode) {
+							$builder->whereIn('code', $territoriesCode);
+						});
+					});
+					$query->orWhereHas('departments', function (Builder $query) use ($territoriesCode) {
 						$query->whereIn('code', $territoriesCode);
 					});
 					$query->orWhereHas('cities', function (Builder $query) use ($territoriesCode) {
@@ -401,6 +406,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 */
 	public function allNotAssignedProjectsInTerritories(array $territoriesIds, array $territoryCodes, bool $toPaginate)
 	{
+
 		/** @var Collection $model */
 		$models = $this->entity
 			->where(function (Builder $builder) use ($territoriesIds, $territoryCodes) {
@@ -424,7 +430,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				//	TODO delete if this method not necessary anymore
 				//previous system when column support_region_id_region did not exist
 				$builder->orWhere(function (Builder $query) use ($territoryCodes) {
-					$query->whereNull('support_request_territory_id');
+//					$query->whereNull('support_request_territory_id');
 					$query->whereNotNull('project_id');
 					$query->whereHas('attributionAd', function (Builder $subQuery) {
 						$subQuery->whereNull('user_advisor_id');
@@ -434,7 +440,12 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 						$query->whereHas('userPp', function (Builder $subQuery) {
 							$subQuery->whereNull('deleted_at');
 						});
-						$query->whereHas('departments', function (Builder $subQuery) use ($territoryCodes) {
+						$query->whereHas('regions', function (Builder $subQuery) use ($territoryCodes) {
+							$subQuery->whereHas('departments', function (Builder $builder) use ($territoryCodes) {
+								$builder->whereIn('code', $territoryCodes);
+							});
+						});
+						$query->orWhereHas('departments', function (Builder $subQuery) use ($territoryCodes) {
 							$subQuery->whereIn('code', $territoryCodes);
 						});
 						$query->orWhereHas('cities', function (Builder $subQuery) use ($territoryCodes) {
@@ -545,7 +556,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 */
 	public function findAllPublished(bool $toPaginate)
 	{
-		$ads =  $this->entity
+		$ads = $this->entity
 			->whereHas('attributionAd', function (Builder $query) {
 				$query->whereNotNull('published_on');
 				$query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
@@ -561,13 +572,14 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				'departments',
 				'departments.region',
 				'regions',
-			'documents',
-			'attributionAd');
-		if($toPaginate === true){
+				'documents',
+				'attributionAd');
+		if ($toPaginate === true) {
 			return $ads->paginate(15);
 		}
 		return $ads->get();
 	}
+
 	/**
 	 * @param int $numberOfDays
 	 * @return Collection
@@ -730,7 +742,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				$regionsCodes = Region::whereIn('id', $locations['regions'])->get('code')->toArray();
 				$departmentsCode = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
 				$adsFiltred->where(function (Builder $query) use ($locations, $regionsCodes, $departmentsCode) {
-					$query->whereNull('support_request_territory_id');
+//					$query->whereNull('support_request_territory_id');
 					$query->filterLocations('regions', $locations['regions']);
 					$query->filterSubLocations('departments', $regionsCodes, 'departments.region_code');
 					$query->filterSubLocations('cities', $departmentsCode, 'cities.department_code');
@@ -930,6 +942,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	private function getFullEagerLoading()
 	{
 		return array_merge([
+			'project',
 			'userPp',
 			'userPp.departments',
 			'adNotes',
@@ -968,6 +981,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
 			'attributionAd.userAdvisor',
 			'attributionAd.userSupervisor',
+
 
 		], $this->getLocationEagerLoading(), $this->getAttributionEagerLoading());
 	}

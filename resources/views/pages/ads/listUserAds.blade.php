@@ -7,9 +7,9 @@
         <div class="container">
             <h1 class="page__title">Liste de mes annonces</h1>
             @if(count($ads) <=1)
-                <h2 class="page__subtitle"> {{ count($ads) }} annonce crée</h2>
+                <h2 class="page__subtitle"> {{ count($ads) }} annonce créée</h2>
             @else
-                <h2 class="page__subtitle"> {{ count($ads) }} annonces crées</h2>
+                <h2 class="page__subtitle"> {{ count($ads) }} annonces créées</h2>
             @endif
             <section class="section">
                 @foreach ($ads as $ad)

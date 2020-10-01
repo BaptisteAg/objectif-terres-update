@@ -1,3 +1,7 @@
 .custom-modal-background.modal-background{
   background-color: rgba(10, 10, 10, 0.2);
 }
+
+.modal{
+  z-index : 1000 !important;
+}

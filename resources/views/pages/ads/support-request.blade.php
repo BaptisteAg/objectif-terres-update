@@ -118,7 +118,9 @@
                     <div class="section has-text-centered">
                         <div class="is-half">
                             Terre de Liens peut accompagner les projets d’offre ou de recherche de foncier agricole.<br>
-                            Pour connaître nos modalités d’accueil, indiquez la région concernée par votre projet.
+                            Pour connaître nos modalités d’accueil,
+                            <span class="is-size-5 has-text-weight-bold ">indiquez la région concernée par votre projet </span>.<br>
+                            Par exemple, si vous habitez en Rhône-Alpes mais que vous souhaitez vous installez en Midi-Pyrénées, il vous faut sélectionner le territoire Midi-Pyrénées.
                         </div>
                         <br>
                         <div class="has-text-centered">

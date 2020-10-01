@@ -57,8 +57,8 @@ class AdvisorsController extends BaseController
 	public function help()
 	{
 		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
-		$pageContents = CmsPage::where('slug', 'like', '%'.'ressources-primo-accueillant'. '%')->with('documents')->get()->keyBy('slug');
-		return view('pages.advisors.help', compact('users','pageContents'));
+		$pageContents = CmsPage::where('slug', 'like', '%' . 'ressources-primo-accueillant' . '%')->with('documents')->get()->keyBy('slug');
+		return view('pages.advisors.help', compact('users', 'pageContents'));
 	}
 
 	/**
@@ -98,9 +98,9 @@ class AdvisorsController extends BaseController
 					'ad_id' => $ad->id,
 				];
 				$thread = $this->advisorsService->findThreadAdvisorInChargeOfSupportRequest($data);
+			} else {
+				$thread = null;
 			}
-			$thread = null;
-
 		}
 		$this->advisorsService->handleSupportDashboardNotifications($ad);
 		$vars = $this->getSupportDashboardVars($ad);
@@ -173,7 +173,7 @@ class AdvisorsController extends BaseController
 	 */
 	public function updateProjectDataKeysValues(Request $request)
 	{
-		if(!$request->has('project_data_key')){
+		if (!$request->has('project_data_key')) {
 			return back()->with('warning', 'Une erreur est survenue, veuillez réessayer');
 
 		}
