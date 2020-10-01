@@ -1,11 +1,19 @@
 @if($ad->is_draft === 0 && isset($ad->attributionAd))
-    @if($ad->project)
+    @if($ad->isProject())
         @if($ad->attributionAd->user_advisor_id)
-            <article class="message is-success">
-                <div class="message-body">
-                    Votre demande d'accompagnement est prise en compte par un primo accueillant.
-                </div>
-            </article>
+            @if($ad->attributionAd->user_advisor_id === $currentUser->id)
+                <article class="message is-success">
+                    <div class="message-body">
+                        Vous êtes le primo-accueillant de cette demande d'accomapgnement! Consulter <a href="{{route('advisor.showSupport', $ad->id)}}">l'espace de suivi</a>
+                    </div>
+                </article>
+            @else
+                <article class="message is-success">
+                    <div class="message-body">
+                        Votre demande d'accompagnement est prise en compte par un primo accueillant.
+                    </div>
+                </article>
+            @endif
         @else
             <article class="message is-success">
                 <div class="message-body">

@@ -1,7 +1,7 @@
 {!! Form::open(['route' => 'supervisor.attribute', 'method'=>'post']) !!}
 <div class="box has-text-centered">
     <div class="container">
-        <p class="title is-2 has-text-centered">Suivi de la demande d'accompagnement</p>
+        <p class="title is-2 has-text-centered">Attribution de l'accompagnement</p>
         @if($ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->userDepartmentsCodes) || $ad->attributionAd->user_supervisor_id === $currentUser->id)
             @if($ad->isProjectAttributedToAdvisor)
                 <p class="">Cette demande est attribuée à
@@ -52,7 +52,6 @@
                     <label class="label">Séléctionnez une personne parmi les primo-accueillants de votre
                         territoire</label>
                     <div class="select">
-
                         <select id="list_advisor_users" name="user_advisor_id"
                                 onchange="showValidationSupervisorModal()">
                             <option disabled selected hidden class="has-text-grey-light">Veuillez choisir...</option>
@@ -64,7 +63,6 @@
                                     <option value="{{$advisor->id}}">{{$advisor->first_name}} {{$advisor->name}}</option>
                                 @endif
                             @endforeach
-                            <option value="{{$currentUser->id}}">{{$currentUser->first_name}} {{$currentUser->name}}</option>
                         </select>
                     </div>
                     <input value="{{$ad->id}}" name="ad_id" type="hidden">

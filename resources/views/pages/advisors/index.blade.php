@@ -89,8 +89,6 @@
         </div>
         {{Form::close()}}
         <div class="section">
-            <h1 class="title is-1 has-text-centered">Activités sur votre
-                territoire</h1>
             @if (count($ads) ==0)
                 <p class="has-text-centered">Aucun résultat</p>
             @else

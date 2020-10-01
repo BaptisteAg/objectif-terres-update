@@ -15,7 +15,9 @@
         <h1 class="title is-2 has-text-link">Gestion des messages types </h1>
         {{Form::open(['route'=>'responseTemplates.create', 'method'=>'post'])}}
         <div class="content ">
-            <h5 class="title is-5 has-text-centered">Créer un nouveau message type</h5>
+            <h3 class="title is-3 has-text-centered">Créer un nouveau message type</h3>
+            <p class="subtitle has-text-centered">Les messages sont ajoutés pour tous les
+                utilisateurs.</p>
             <div class="columns is-mobile is-centered">
                 <div class="column is-half ">
                     <p>
@@ -115,16 +117,14 @@
                                             </div>
                                             {!! Form::close() !!}
                                         </div>
-
-
                                     </template>
                                     <template v-else>
                                         <div class="column is-2">{{$response->title}}</div>
-                                        <div class="column is-three-quarters">
+                                        <div class="column is-8 ">
                                             <p>{{$response->content}}</p>
                                         </div>
                                     </template>
-                                    <div class="column">
+                                    <div class="column ">
                                         <div v-if="responseTemplateToModify === {{$response->id}}">
                                             <button v-on:click="modifyResponseTemplate(0)"
                                                     class="is-size-6 is-pulled-right has-text-link"
@@ -152,14 +152,14 @@
                                         {!! Form::open(['route' => 'responseTemplates.delete', 'method'=>'post']) !!}
                                         <input type="hidden" name="response_template_id"
                                                value="{{$response->id}}">
-
-                                        <a class="is-pulled-right" v-on:click="showValidationModal()">
+                                        <a type="submit" class="is-pulled-right"
+                                           v-on:click="showValidationModal({{$response->id}})">
                                             <span class="icon">
                                                 <i class="fas fa-trash-alt"></i>
                                             </span>
                                             <span>Supprimer</span>
                                         </a>
-                                        @include('pages.advisors.partials.validation-modal')
+                                        @include('pages.responseTemplates.partials.response-templates-validation-modal')
                                         {!! Form::close() !!}
                                     </div>
                                 </div>

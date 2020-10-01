@@ -256,10 +256,10 @@ abstract class BaseController extends Controller
 					//TODO display only advisors that are related to the supervisor
 					$responseTemplates = ResponseTemplate::orderBy('title')->get();
 					if (isset($ad->support_request_territory_id)) {
-						$advisorUsers = $this->userService->findByRoleAndTerritory(2, $this->userService->getCurrentUserTerritoryIds());
+						$advisorUsers = $this->userService->findByRolesAndTerritory([2, 3], $this->userService->getCurrentUserTerritoryIds());
 					} else {
 						$adDepartmentCodes = $this->adService->getAdDepartmentCodesFromZones($ad);
-						$advisorUsers = $this->userService->findByRoleAndDepartments(2, $adDepartmentCodes);
+						$advisorUsers = $this->userService->findByRolesAndDepartments([2, 3], $adDepartmentCodes);
 					}
 				}
 			}

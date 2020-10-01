@@ -55,31 +55,35 @@
                     </li>
                     <li>
                         @if($ad->ad_type === "landSeek")
-                            <a class="breadcrumb__link" href="{{route('researches.index',  ["offer_type"=>"SeekAd", 'ad_category' => 'land'])}}">
-{{--                                <span class="icon">--}}
-{{--                                    <i class="fas fa-home"></i>--}}
-{{--                                </span>--}}
+                            <a class="breadcrumb__link"
+                               href="{{route('researches.index',  ["offer_type"=>"SeekAd", 'ad_category' => 'land'])}}">
+                                {{--                                <span class="icon">--}}
+                                {{--                                    <i class="fas fa-home"></i>--}}
+                                {{--                                </span>--}}
                                 <span>{{$ad->ad_type_full_name}}</span>
                             </a>
                         @elseif($ad->ad_type === "landOffer")
-                            <a class="breadcrumb__link" href="{{route('researches.index',  ["offer_type"=>"OfferAd", 'ad_category' => 'land'])}}">
-{{--                                <span class="icon">--}}
-{{--                                    <i class="fas fa-home"></i>--}}
-{{--                                </span>--}}
+                            <a class="breadcrumb__link"
+                               href="{{route('researches.index',  ["offer_type"=>"OfferAd", 'ad_category' => 'land'])}}">
+                                {{--                                <span class="icon">--}}
+                                {{--                                    <i class="fas fa-home"></i>--}}
+                                {{--                                </span>--}}
                                 <span>{{$ad->ad_type_full_name}}</span>
                             </a>
                         @elseif($ad->ad_type === "jobSeek")
-                            <a class="breadcrumb__link" href="{{route('researches.index',  ["offer_type"=>"SeekAd", 'ad_category' => 'job'])}}">
-{{--                                <span class="icon">--}}
-{{--                                    <i class="fa-universal-access"></i>--}}
-{{--                                </span>--}}
+                            <a class="breadcrumb__link"
+                               href="{{route('researches.index',  ["offer_type"=>"SeekAd", 'ad_category' => 'job'])}}">
+                                {{--                                <span class="icon">--}}
+                                {{--                                    <i class="fa-universal-access"></i>--}}
+                                {{--                                </span>--}}
                                 <span>{{$ad->ad_type_full_name}}</span>
                             </a>
                         @elseif($ad->ad_type === "jobOffer")
-                            <a class="breadcrumb__link" href="{{route('researches.index',  ["offer_type"=>"OfferAd", 'ad_category' => 'job'])}}">
-{{--                                <span class="icon">--}}
-{{--                                    <i class="fas fa-universal-access"></i>--}}
-{{--                                </span>--}}
+                            <a class="breadcrumb__link"
+                               href="{{route('researches.index',  ["offer_type"=>"OfferAd", 'ad_category' => 'job'])}}">
+                                {{--                                <span class="icon">--}}
+                                {{--                                    <i class="fas fa-universal-access"></i>--}}
+                                {{--                                </span>--}}
                                 <span>{{$ad->ad_type_full_name}}</span>
                             </a>
 
@@ -90,9 +94,9 @@
             </nav>
             @auth
                 @if(auth()->user()->role >= 1 && $ad->attributionAd)
-                    @if($ad->project()->exists() && auth()->user()->role >= 3)
+                    @if($ad->isProject() && auth()->user()->role >= 3)
                         @include ('pages.ads.partials.attribution-project-options')
-                    @else
+                    @elseif(! $ad->isProject())
                         @include('pages.ads.partials.moderator-options')
                     @endif
                 @endif
@@ -103,7 +107,8 @@
 
             @if($ad->canEdit)
                 <div class="is-pulled-right">
-                    <a href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ["id" => $ad->id]) }}" class="button form-button basic warning">
+                    <a href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ["id" => $ad->id]) }}"
+                       class="button form-button basic warning">
                         <span class="icon is-small">
                             <i class="fas fa-pen"></i>
                         </span>

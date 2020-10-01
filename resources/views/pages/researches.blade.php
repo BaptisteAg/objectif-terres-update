@@ -97,7 +97,7 @@
                                 <h1 class="title">Recherche de fonciers</h1>
                             @elseif($adsType === 'jobOfferAd')
                                 <h1 class="title">Offres d'emploi</h1>
-                                @@elseif($adsType === 'jobSeekAd')
+                                @elseif($adsType === 'jobSeekAd')
                                 <h1 class="title">Recherche d'emploi</h1>
                             @else
                                 <h1 class="title">Toutes les annonces</h1>
@@ -170,7 +170,7 @@
                                                 @endif
                                             @else
                                                 <img src="{{URL::asset($ad->images[0]->path)}}"
-                                                     alt="{{$ad->images[0]->name}}">
+                                                     class=" vignette__image" alt="{{$ad->images[0]->name}}">
                                             @endif
                                         @else
                                             @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
@@ -326,7 +326,7 @@
 
         </div>
     </section>
-    @include('components.partnering')
+{{--    @include('components.partnering')--}}
     @include('components.support-terre-liens')
 @endsection
 

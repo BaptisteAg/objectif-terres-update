@@ -164,14 +164,14 @@ class UserService
 	}
 
 	/**
-	 * @param int $roleId
+	 * @param array $rolesId
 	 * @param array $departmentCodes
 	 * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
 	 */
-	public function findByRoleAndDepartments(int $roleId, array $departmentCodes)
+	public function findByRolesAndDepartments(array $rolesId, array $departmentCodes)
 	{
 		return User::filterSubLocations('departments', $departmentCodes, 'departments.code')
-			->where('role', $roleId)
+			->whereIn('role', $rolesId)
 			->inRandomOrder()
 			->get();
 	}
@@ -193,14 +193,14 @@ class UserService
 
 
 	/**
-	 * @param int $roleId
+	 * @param array $roleIds
 	 * @param array $territoryIds
 	 * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
 	 */
-	public function findByRoleAndTerritory(int $roleId, array $territoryIds)
+	public function findByRolesAndTerritory(array $roleIds, array $territoryIds)
 	{
 		return User::filterSubLocations('departments', $territoryIds, 'departments.territory_id')
-			->where('role', $roleId)
+			->whereIn('role', $roleIds)
 			->inRandomOrder()
 			->get();
 	}

@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Presenters\AdPresenter;
 use Illuminate\Database\Eloquent\Model;
+use McCool\LaravelAutoPresenter\Decoratable;
+use McCool\LaravelAutoPresenter\HasPresenter;
 
 /**
  * App\Models\FavoriteAd
@@ -24,7 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|FavoriteAd whereUserId($value)
  * @mixin \Eloquent
  */
-class FavoriteAd extends Model
+class FavoriteAd extends Model implements Decoratable
 {
     /**
      * @var array
@@ -46,5 +49,10 @@ class FavoriteAd extends Model
 	public function user()
 	{
 		return $this->belongsTo(User::class);
+	}
+
+	public function getPresenterClass()
+	{
+		return AdPresenter::class;
 	}
 }
