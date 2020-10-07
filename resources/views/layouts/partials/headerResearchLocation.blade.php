@@ -1,13 +1,13 @@
 <div class="column is-full-mobile is-half-tablet is-one-third-desktop">
 	<div class="field">
-		<label class="label">Choississez un départment</label>
+		<label class="label">Choisissez un départment</label>
 		<multi-select
 				:options="{{ json_encode($departments) }}"
 				:multiple="true"
 				v-model = "selectedDepartments"
 				name="departments_location_researches_ids[]"
 				selected-count-text="département(s) sélectionné(s)"
-				placeholder="Choississez un/des département(s)">
+				placeholder="Choisissez un/des département(s)">
 		</multi-select>
 	</div>
 	<div class="is-divider" data-content="OU"></div>
@@ -16,7 +16,7 @@
 		<ajax-multi-select
 				:multiple="true"
 				selected-count-text="ville sélectionnée"
-				placeholder="Choississez une ville"
+				placeholder="Choisissez une ville"
 				name-option-label="villes"
 				src="/locations/cities"
 				name="cities_location_researches_ids[]"

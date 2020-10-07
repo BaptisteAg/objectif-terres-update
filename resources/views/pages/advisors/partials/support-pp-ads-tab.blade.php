@@ -1,6 +1,6 @@
 <div class="card-content ">
 	@if($listUserAds->count() === 0)
-		<p class="has-text-centered">Cette personne n'a pas déposer d'annonces.</p>
+		<p class="has-text-centered">Cette personne n'a pas déposé d'annonces.</p>
 	@else
 		<div style="overflow-x: hidden; max-height: 700px">
 			@foreach($listUserAds as $userAd)

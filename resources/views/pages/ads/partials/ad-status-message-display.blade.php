@@ -4,7 +4,8 @@
             @if($ad->attributionAd->user_advisor_id === $currentUser->id)
                 <article class="message is-success">
                     <div class="message-body">
-                        Vous êtes le primo-accueillant de cette demande d'accomapgnement! Consulter <a href="{{route('advisor.showSupport', $ad->id)}}">l'espace de suivi</a>
+                        Vous êtes le primo-accueillant de cette demande d'accomapgnement! Consulter <a
+                                href="{{route('advisor.showSupport', $ad->id)}}">l'espace de suivi</a>
                     </div>
                 </article>
             @else
@@ -59,11 +60,19 @@
         @endif
     @endif
 @else
-    <article class="message is-warning">
-        <div class="message-body">
-            Votre annonce n'a pas encore été soumise, finalisez sa création !
-        </div>
-    </article>
+    @if($ad->isProject())
+        <article class="message is-warning">
+            <div class="message-body">
+                Votre demande d'accompagnement n'a pas encore été soumise. Cliquez sur modifier pour la finaliser.
+            </div>
+        </article>
+    @else
+        <article class="message is-warning">
+            <div class="message-body">
+                Votre annonce n'a pas encore été soumise, finalisez sa création !
+            </div>
+        </article>
+    @endif
 @endif
 
 

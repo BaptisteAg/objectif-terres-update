@@ -76,7 +76,7 @@
                                 </select>
                             </section>
                         @endif
-                        @if(!empty($isSupportRequest) && !empty($ads))
+                        @if(!empty($isSupportRequest) && $ads->count() > 0)
                             <section class="has-text-centered" v-if="!adTypeSelected">
                                 Vous pouvez également remplir votre demande d'accompagnement à partir des champs de votre annonce :<br>
                                 <select class="select" v-model="createFromAd">

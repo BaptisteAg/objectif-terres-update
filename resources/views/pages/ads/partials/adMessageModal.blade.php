@@ -51,7 +51,7 @@
                         </div>
                         @if(auth()->user()->role >= 1 )
                             <div class="field">
-                                <label class="label">Ou choississez une réponse type :</label>
+                                <label class="label">Ou choisissez une réponse type :</label>
                                 <div class="control is-expanded ">
                                     <div class="select">
                                         <select id="response_templates_list" onchange="sendResponseTemplateMessage()">

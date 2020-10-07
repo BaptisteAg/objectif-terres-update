@@ -48,25 +48,30 @@
     @if($ad->attributionAd->user_supervisor_id === $currentUser->id || $ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->userDepartmentsCodes ))
         <div class="columns is-centered ">
             <div class="column is-half has-text-centered ">
-                <div class="field">
-                    <label class="label">Séléctionnez une personne parmi les primo-accueillants de votre
-                        territoire</label>
-                    <div class="select">
-                        <select id="list_advisor_users" name="user_advisor_id"
-                                onchange="showValidationSupervisorModal()">
-                            <option disabled selected hidden class="has-text-grey-light">Veuillez choisir...</option>
-                            @foreach ($advisorUsers as $advisor)
-                                @if(isset($ad->attributionAd->userAdvisor) and $ad->attributionAd->user_advisor_id === $advisor->id )
-                                    <option disabled
-                                            value="{{$advisor->id}}">{{$advisor->first_name}} {{$advisor->name}}</option>
-                                @else
-                                    <option value="{{$advisor->id}}">{{$advisor->first_name}} {{$advisor->name}}</option>
-                                @endif
-                            @endforeach
-                        </select>
+                @if($advisorUsers->count() >0)
+                    <div class="field">
+                        <label class="label">Séléctionnez une personne parmi les primo-accueillants de votre
+                            territoire</label>
+                        <div class="select">
+                            <select id="list_advisor_users" name="user_advisor_id"
+                                    onchange="showValidationSupervisorModal()">
+                                <option disabled selected hidden class="has-text-grey-light">Veuillez choisir...
+                                </option>
+                                @foreach ($advisorUsers as $advisor)
+                                    @if(isset($ad->attributionAd->userAdvisor) and $ad->attributionAd->user_advisor_id === $advisor->id )
+                                        <option disabled
+                                                value="{{$advisor->id}}">{{$advisor->first_name}} {{$advisor->name}}</option>
+                                    @else
+                                        <option value="{{$advisor->id}}">{{$advisor->first_name}} {{$advisor->name}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <input value="{{$ad->id}}" name="ad_id" type="hidden">
                     </div>
-                    <input value="{{$ad->id}}" name="ad_id" type="hidden">
-                </div>
+                @else
+                    <p class="has-text-weight-bold">Aucun primo-accueillant disponible sur ce territoire. Veuillez contacter un administrateur.</p>
+                @endif
             </div>
         </div>
     @endif
@@ -84,7 +89,7 @@
                     <div class="content mt-30">
                         <p class="label has-text-centered">Laisser une note pour le primo accueillant</p>
                         <input value="{{auth()->id()}}" name="user_id" type="hidden">
-                        <textarea  class="textarea has-fixed-size" name="value" type="text"
+                        <textarea class="textarea has-fixed-size" name="value" type="text"
                                   placeholder="Votre note..."></textarea>
                     </div>
                 </div>

@@ -173,13 +173,13 @@
                                                     </div>
                                                 </article>
                                             @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::ARCHIVED_ID)
-                                                <article class="message is-message">
+                                                <article class="message is-message ">
                                                     <div class="message-body">
                                                         Votre annonce a été archivée !
                                                     </div>
                                                 </article>
                                             @else
-                                                <article class="message is-message">
+                                                <article class="message is-message message is-dark">
                                                     <div class="message-body">
                                                         Votre annonce n'as pas été encore approuvée et publiée !
                                                     </div>

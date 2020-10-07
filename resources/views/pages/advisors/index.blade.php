@@ -95,22 +95,39 @@
                 <div class="content">
                     @if(request()->input('toPaginate') == 'true')
                         <a href="{{ route('advisor.show', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">
-                            <span>Afficher l'intégralité de la liste</span>
-                        </a>
-                    @elseif(request()->has('projects_show') )
-                        <a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
-                            <span>Paginer la liste</span>
-                        </a>
-                    @elseif(request()->has('ads_show') )
-                        <a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
-                            <span>Paginer la liste</span>
+                            <span>Voir tous les résultats</span>
                         </a>
                     @else
-                        <a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true', 'projects_show'=>'true'])) }}">
-                            <span>Paginer la liste</span>
+                        <a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
+                            <span>Voir 15 résultats par page</span>
                         </a>
                     @endif
+
+{{--                    @if(request()->input('toPaginate') == 'true')--}}
+{{--                        <a href="{{ route('advisor.show', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">--}}
+{{--                            <span>Afficher l'intégralité de la liste</span>--}}
+{{--                        </a>--}}
+{{--                    @elseif(request()->has('projects_show') )--}}
+{{--                        <a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">--}}
+{{--                            <span>Paginer la liste</span>--}}
+{{--                        </a>--}}
+{{--                    @elseif(request()->has('ads_show') )--}}
+{{--                        <a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">--}}
+{{--                            <span>Paginer la liste</span>--}}
+{{--                        </a>--}}
+{{--                    @else--}}
+{{--                        <a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true', 'projects_show'=>'true'])) }}">--}}
+{{--                            <span>Paginer la liste</span>--}}
+{{--                        </a>--}}
+{{--                    @endif--}}
                 </div>
+                @if($ads instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                    <div class="columns is-mobile is-centered mb-40">
+                        <div class="column is-one-third ">
+                            {{ $ads->appends(Request::all())->links() }}
+                        </div>
+                    </div>
+                @endif
                 <div id="dashboard-advisor" class="table-container">
                     <table class="table is-bordered  is-striped is-narrow is-hoverable is-fullwidth "
                            style="border :2px solid #dbdbdb">
@@ -183,8 +200,6 @@
                                     </a>
                                 @endif
                             </th>
-
-
                             <th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">
                                 @if(request()->input('sort') !== 'date')
                                     <a href="{{ route('advisor.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date'])) }}">
@@ -202,7 +217,6 @@
                                     </a>
                                 @endif
                             </th>
-
                             <th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">Suivi par</th>
                             <th class="has-text-weight-semibold" style="border-bottom :3px solid #dbdbdb">Stade de
                                 l'accompagnement
@@ -211,7 +225,6 @@
                                 style="border-right :2px solid #dbdbdb;  border-bottom :3px solid #dbdbdb">Etat de la
                                 demande
                             </th>
-
                             <th class="has-text-weight-semibold " colspan="4"
                                 style="width: 142px; border-width: 0px;  border-bottom :3px solid #dbdbdb "></th>
                         </tr>
