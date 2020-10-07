@@ -94,32 +94,43 @@
             @else
                 <div class="content">
                     @if(request()->input('toPaginate') == 'true')
-                        <a href="{{ route('advisor.show', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">
-                            <span>Voir tous les résultats</span>
-                        </a>
+                        @if(url()->current() == route('advisor.index'))
+                            <a href="{{ route('advisor.index', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">
+                                <span>Voir tous les résultats</span>
+                            </a>
+                        @else
+                            <a href="{{ route('advisor.show', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">
+                                <span>Voir tous les résultats</span>
+                            </a>
+                        @endif
                     @else
-                        <a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
-                            <span>Voir 15 résultats par page</span>
-                        </a>
+                        @if(url()->current() == route('advisor.index'))
+                            <a href="{{ route('advisor.index', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
+                                <span>Voir 15 résultats par page</span>
+                            </a>
+                        @else
+                            <a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
+                                <span>Voir 15 résultats par page</span>
+                            </a>
+                        @endif
                     @endif
-
-{{--                    @if(request()->input('toPaginate') == 'true')--}}
-{{--                        <a href="{{ route('advisor.show', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">--}}
-{{--                            <span>Afficher l'intégralité de la liste</span>--}}
-{{--                        </a>--}}
-{{--                    @elseif(request()->has('projects_show') )--}}
-{{--                        <a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">--}}
-{{--                            <span>Paginer la liste</span>--}}
-{{--                        </a>--}}
-{{--                    @elseif(request()->has('ads_show') )--}}
-{{--                        <a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">--}}
-{{--                            <span>Paginer la liste</span>--}}
-{{--                        </a>--}}
-{{--                    @else--}}
-{{--                        <a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true', 'projects_show'=>'true'])) }}">--}}
-{{--                            <span>Paginer la liste</span>--}}
-{{--                        </a>--}}
-{{--                    @endif--}}
+                    {{--                    @if(request()->input('toPaginate') == 'true')--}}
+                    {{--                        <a href="{{ route('advisor.show', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">--}}
+                    {{--                            <span>Afficher l'intégralité de la liste</span>--}}
+                    {{--                        </a>--}}
+                    {{--                    @elseif(request()->has('projects_show') )--}}
+                    {{--                        <a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">--}}
+                    {{--                            <span>Paginer la liste</span>--}}
+                    {{--                        </a>--}}
+                    {{--                    @elseif(request()->has('ads_show') )--}}
+                    {{--                        <a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">--}}
+                    {{--                            <span>Paginer la liste</span>--}}
+                    {{--                        </a>--}}
+                    {{--                    @else--}}
+                    {{--                        <a href="{{ route('advisor.show', array_merge(Request::all(), ['toPaginate'=>'true', 'projects_show'=>'true'])) }}">--}}
+                    {{--                            <span>Paginer la liste</span>--}}
+                    {{--                        </a>--}}
+                    {{--                    @endif--}}
                 </div>
                 @if($ads instanceof \Illuminate\Pagination\LengthAwarePaginator)
                     <div class="columns is-mobile is-centered mb-40">

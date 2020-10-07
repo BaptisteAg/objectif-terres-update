@@ -116,13 +116,25 @@
             @else
                 <div class="content">
                     @if(request()->input('toPaginate') == 'true')
-                        <a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">
-                            <span>Voir tous les résultats</span>
-                        </a>
+                        @if(url()->current() == route('supervisor.index'))
+                            <a href="{{ route('supervisor.index', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">
+                                <span>Voir tous les résultats</span>
+                            </a>
+                        @else
+                            <a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">
+                                <span>Voir tous les résultats</span>
+                            </a>
+                        @endif
                     @else
-                        <a href="{{ route('supervisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
-                            <span>Voir 15 résultats par page</span>
-                        </a>
+                        @if(url()->current() == route('supervisor.index'))
+                            <a href="{{ route('supervisor.index', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
+                                <span>Voir 15 résultats par page</span>
+                            </a>
+                        @else
+                            <a href="{{ route('supervisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
+                                <span>Voir 15 résultats par page</span>
+                            </a>
+                        @endif
                     @endif
                 </div>
                 @if($ads instanceof \Illuminate\Pagination\LengthAwarePaginator)
