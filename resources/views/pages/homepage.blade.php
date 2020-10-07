@@ -21,9 +21,9 @@
                 {{--                    de votre région !--}}
                 {{--                </p>--}}
             </div>
-            <div class="columns">
+            <div class="columns is-multiline is-mobile">
                 @foreach ($ads as $ad)
-                    <div class="column is-half tile tile_image">
+                    <div class="column is-half mb-60 tile tile_image">
                         <a href="{{route("ads.show", $ad->id)}}" class="tile__link card">
                             <div class="card-image vignette photo">
                                 <figure class="image vignette__image-wrap vignette__ratio_4-3">
@@ -153,12 +153,7 @@
         <section class="section bg-l-pearl bg-trame_champs_light">
             <div class="container">
                 <div class="has-text-centered ">
-                    <h2 class="title is-1 text_warning_orange">Annonce à la une</h2>
-                    {{--                <p>ASTUCE :--}}
-                    {{--                    <a href="{{url('/')}}">Créez votre compte gratuit</a>--}}
-                    {{--                    pour visualiser directement les annonces--}}
-                    {{--                    de votre région !--}}
-                    {{--                </p>--}}
+                    <h2 class="title is-1 text_warning_orange">Annonces à la une</h2>
                 </div>
                 <div class="columns is-mobile is-centered">
                     @foreach ($adsPartner as $ad)
@@ -166,9 +161,28 @@
                             <a href="{{route("ads.show", $ad->id)}}" class="tile__link card">
                                 <div class="card-image vignette photo">
                                     <figure class="image vignette__image-wrap vignette__ratio_4-3">
-                                        <img class="vignette__image"
-                                             src="{{url('/images/vignette/photo_02_4-3_600.jpg')}}"
-                                             alt="Placeholder image">
+                                        @if($ad->hasImages)
+                                            @if($ad->images[0]->path ==="0")
+                                                @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
+                                                    <img src="{{URL::asset('images/illustrations/ferme01.jpg')}}"
+                                                         class="vignette__image" alt="image generic ferme"/>
+                                                @else
+                                                    <img src="{{URL::asset("images/illustrations/photo_08_bandeau-maous_1920.jpg")}}"
+                                                         class=" vignette__image" alt="image generic emploi ferme"/>
+                                                @endif
+                                            @else
+                                                <img src="{{URL::asset($ad->images[0]->path)}}"
+                                                     class=" vignette__image" alt="{{$ad->images[0]->name}}">
+                                            @endif
+                                        @else
+                                            @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
+                                                <img src="{{URL::asset('images/illustrations/ferme01.jpg')}}"
+                                                     class="vignette__image" alt="image generic ferme"/>
+                                            @else
+                                                <img src="{{URL::asset("images/illustrations/photo_08_bandeau-maous_1920.jpg")}}"
+                                                     class=" vignette__image" alt="image generic emploi ferme"/>
+                                            @endif
+                                        @endif
                                     </figure>
                                     <ul class="custom-tags custom-list custom-list_v">
                                         @if(isset($ad->is_partner) && $ad->is_partner === 1 )

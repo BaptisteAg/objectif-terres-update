@@ -241,6 +241,10 @@
                             @if(!is_null($ad->project))
                                 @if(is_null($ad->attributionAd->userAdvisor))
                                     <tr style="background-color: mistyrose">
+                                @else
+                                    @if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
+                                        <tr style=" background-color: #e8e8e8">
+                                    @endif
                                 @endif
                             @else
                                 <tr>

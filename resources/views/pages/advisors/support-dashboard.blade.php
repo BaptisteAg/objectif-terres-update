@@ -54,7 +54,7 @@
         </div>
         @if($ad->userPp->trashed())
             <div class="notification is-danger ">
-                L'utilisateur <strong>{{$ad->userPp->first_name}} {{$ad->userPp->name}}</strong> a été bannî le
+                L'utilisateur <strong>{{$ad->userPp->first_name}} {{$ad->userPp->name}}</strong> a été bloqué le
                 <strong> {{ \Carbon\Carbon::parse($ad->userPp->deleted_at)->format('d/m/Y')}} </strong>.
                 L'ensemble de ces annonces ne sont plus visibles par les membres et visiteurs d'Objectif Terres.
                 Contacter l'administrateur pour plus d'informations.

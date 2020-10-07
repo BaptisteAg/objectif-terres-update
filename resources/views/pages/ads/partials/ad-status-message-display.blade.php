@@ -16,9 +16,9 @@
                 </article>
             @endif
         @else
-            <article class="message is-success">
+            <article class="message is-warning">
                 <div class="message-body">
-                    Votre demande d'accompagnement est en attente d'être assignée à un primo-accueillant par un responsable territorial.
+                    Votre demande d’accompagnement va être traitée par l’équipe Terre de Liens.
                 </div>
             </article>
         @endif

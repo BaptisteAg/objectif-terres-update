@@ -69,17 +69,26 @@
                         </div>
                     @else
                         <div class="content">
-                            @if( auth()->user()->id === $ad->user_pp_id)
-                                <p><span class="is-size-5 has-text-black">Code Postal (non visible pour les autres
-                                        utilisateurs): </span><span
-                                            class="subtitle">{{$ad->cities[0]->zip_code }} ({{$ad->cities[0]->name }}
-                                        )</span>
+                            @auth
+                                @if( auth()->user()->id === $ad->user_pp_id)
+                                    <p><span class="is-size-5 has-text-black">Code Postal (non visible pour les autres
+                                            utilisateurs): </span><span
+                                                class="subtitle">{{$ad->cities[0]->zip_code }}
+                                            ({{$ad->cities[0]->name }}
+                                            )</span>
+                                    </p>
+                                @else
+                                    <p><span class="is-size-5 is-capitalized has-text-black">Département : </span><span
+                                                class="subtitle">{{$ad->cities[0]->department->code }}
+                                            ({{$ad->cities[0]->department->name }})</span>
+                                    </p>
+                                @endif
+                            @else
+                                <p><span class="is-size-5 is-capitalized has-text-black">Département : </span><span
+                                            class="subtitle">{{$ad->cities[0]->department->code }}
+                                        ({{$ad->cities[0]->department->name }})</span>
                                 </p>
-                            @endif
-                            <p><span class="is-size-5 is-capitalized has-text-black">Département : </span><span
-                                        class="subtitle">{{$ad->cities[0]->department->code }}
-                                    ({{$ad->cities[0]->department->name }})</span>
-                            </p>
+                            @endauth
                         </div>
                     @endif
                 @elseif($ad->departments->count())

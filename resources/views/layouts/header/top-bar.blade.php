@@ -156,7 +156,7 @@
                 <div class="level-item">
                     <p class="button__wrap">
                         <a href="{{route('user.index')}}"
-                           class="button round small secondary " title="Gérer mon profil">
+                           class="button round small secondary " title="Accéder à mon compte">
                             <span class="button__icon"><i class="fas fa-user"></i></span>
                         </a>
                     </p>
