@@ -213,10 +213,12 @@
             <p>
                 <span class="is-italic">Bâtiments recherchés</span> :
                 @if($ad->landSeekAd->buildings->count() >0)
+                    <br>
                     @foreach($ad->landSeekAd->buildings as $building)
                         <span class="is-lowercase">{{ $building->buildingType->label }}
                             : {{ $building->requirement->label }}</span>
                         {{ $loop->last ? '': ',' }}
+                        <br>
                     @endforeach
                 @else
                     Non renseignés
