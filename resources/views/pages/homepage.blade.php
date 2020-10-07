@@ -172,7 +172,7 @@
                                     </figure>
                                     <ul class="custom-tags custom-list custom-list_v">
                                         @if(isset($ad->is_partner) && $ad->is_partner === 1 )
-                                            <li class="custom-tag warning">Partenaire Terre de Liens</li>
+                                            <li class="custom-tag warning">Annonce certifiée </li>
                                         @endif
                                         <li class="custom-tag success">
                                             <i class="fas fa-map-marker-alt"></i>

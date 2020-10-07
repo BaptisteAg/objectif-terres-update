@@ -59,6 +59,7 @@ class ThreadsController extends Controller
 		$users = null;
 		$responseTemplates = '';
 		if (auth()->user()->role >= 1) {
+			$users = $this->userService->findAllExceptPPAndLoggedUser();
 			$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
 			$responseTemplates = ResponseTemplate::all();
 		}

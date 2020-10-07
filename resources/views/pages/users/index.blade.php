@@ -196,8 +196,5 @@
 			</div>
 		</section>
 	</div>
-
-
-	@include('components.partnering')
 	@include('components.support-terre-liens')
 @endsection

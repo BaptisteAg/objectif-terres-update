@@ -109,6 +109,7 @@
                 </div>
             </export-to-spreadsheet-form>
         </div>
+
         <div class="section">
             @if (count($ads) ==0)
                 <p class="has-text-centered">Aucun résultat</p>
@@ -116,15 +117,21 @@
                 <div class="content">
                     @if(request()->input('toPaginate') == 'true')
                         <a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">
-                            <span>Afficher l'intégralité de la liste</span>
+                            <span>Voir tous les résultats</span>
                         </a>
                     @else
                         <a href="{{ route('supervisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
-                            <span>Paginer la liste</span>
+                            <span>Voir 15 résultats par page</span>
                         </a>
                     @endif
                 </div>
-
+                @if($ads instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                    <div class="columns is-mobile is-centered mb-40">
+                        <div class="column is-one-third ">
+                            {{ $ads->appends(Request::all())->links() }}
+                        </div>
+                    </div>
+                @endif
                 <div class="table-container">
                     <table class="table is-bordered  is-striped is-narrow is-hoverable is-fullwidth "
                            style="border :2px solid #dbdbdb">
@@ -395,7 +402,7 @@
                     </table>
                 </div>
                 @if($ads instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                    <div class="columns is-mobile is-centered">
+                    <div class="columns is-mobile is-one-third is-centered">
                         <div class="column is-half ">
                             {{ $ads->appends(Request::all())->links() }}
                         </div>

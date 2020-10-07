@@ -28,7 +28,7 @@
                                 <a class="text_primary has-text-underline"
                                    href="{{route ('researches.index', [ltrim($research->url, '?')])}}">
                                     <h1 class="title text_primary">{{$research->name}} </h1></a>
-                                <p><span class="has-text-grey-dark">Type d'annonces recherchés :</span>
+                                <p><span class="has-text-grey-dark">Type d'annonces recherchées :</span>
                                     @if($research->ad_type === 'jobOffer')
                                         <span class="has-text-black">Offres d'emplois</span>
                                     @elseif($research->ad_type === 'jobSeekAd')
@@ -48,7 +48,7 @@
                                     <span class="has-text-black">{{ $research->cities->pluck('name')->implode(', ') }}</span>
                                        @endif
                                 </p>
-                                <p><span class="has-text-grey-dark">Recherche crée le :</span> <span
+                                <p><span class="has-text-grey-dark">Recherche créée le :</span> <span
                                             class="has-text-black">{{ \Carbon\Carbon::parse($research->created_at)->format('d/m/Y')}}</span>
                                 </p>
 

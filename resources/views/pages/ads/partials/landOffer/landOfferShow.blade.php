@@ -14,7 +14,7 @@
                     @else
                         @if(isset($ad->is_partner) && $ad->is_partner === 1 )
                             <p class="custom-tags">
-                                <span class="custom-tag warning">Partenaire Terre de Liens</span>
+                                <span class="custom-tag warning">Annonce certifiée </span>
                             </p>
                         @endif
                         <p><span class="is-size-5  has-text-black ">Publié le : </span><span
@@ -63,7 +63,8 @@
                     @if($ad->landOfferAd->accept_use_zip_code)
                         <div class="content">
                             <p><span class="is-size-5 is-capitalized has-text-black">Code postal : </span><span
-                                        class="subtitle">{{$ad->cities[0]->zip_code }} ({{$ad->cities[0]->name }})</span>
+                                        class="subtitle">{{$ad->cities[0]->zip_code }} ({{$ad->cities[0]->name }}
+                                    )</span>
                             </p>
                         </div>
                     @else
@@ -185,11 +186,13 @@
     @endif
 
     <div class="column is-one-third ">
-        <p class="has-text-link is-size-5 has-text-centered"> Certification bio des terres</p>
+        <p class="has-text-link is-size-5 has-text-centered"> Certification des terres</p>
 
         <p class="has-text-centered">
-            <span>{{$ad->landOfferAd->bioCertifications->pluck('name')->implode(', ') }}</span><br>
             @foreach($ad->landOfferAd->bioCertifications as $bioCertification)
+                @if($bioCertification->icon == "")
+                    <span>{{$bioCertification->name }}</span>
+                @endif
                 <img src="{{ $bioCertification->icon }}">
             @endforeach
         </p>
@@ -227,31 +230,31 @@
 
 
 @if($ad->landOfferAd->buildings_description || $ad->landOfferAd->houses_description)
-<div class="content">
-    <h3 class="title is-3">Descriptions</h3>
-    <div class="columns is-multiline is-mobile is-centered">
-        @if($ad->landOfferAd->has_buildings)
-            <div class=" column is-one-thirds ">
-                <h3 class="title is-5">Bâtiment(s) agricole(s)</h3>
-                @if($ad->landOfferAd->buildings_description)
-                    <p class="has-text-black">
-                        <span>{{$ad->landOfferAd->buildings_description}}</span>
-                    </p>
-                @endif
-            </div>
-        @endif
-        @if($ad->landOfferAd->has_houses)
-            <div class=" column is-one-thirds ">
-                <h3 class="title is-5">Habitation(s)</h3>
-                @if($ad->landOfferAd->houses_description)
-                    <p class="has-text-black">
-                        <span>{{$ad->landOfferAd->houses_description}}</span>
-                    </p>
-                @endif
-            </div>
-        @endif
+    <div class="content">
+        <h3 class="title is-3">Descriptions</h3>
+        <div class="columns is-multiline is-mobile is-centered">
+            @if($ad->landOfferAd->has_buildings)
+                <div class=" column is-one-thirds ">
+                    <h3 class="title is-5">Bâtiment(s) agricole(s)</h3>
+                    @if($ad->landOfferAd->buildings_description)
+                        <p class="has-text-black">
+                            <span>{{$ad->landOfferAd->buildings_description}}</span>
+                        </p>
+                    @endif
+                </div>
+            @endif
+            @if($ad->landOfferAd->has_houses)
+                <div class=" column is-one-thirds ">
+                    <h3 class="title is-5">Habitation(s)</h3>
+                    @if($ad->landOfferAd->houses_description)
+                        <p class="has-text-black">
+                            <span>{{$ad->landOfferAd->houses_description}}</span>
+                        </p>
+                    @endif
+                </div>
+            @endif
+        </div>
     </div>
-</div>
 @endif
 @if($ad->landOfferAd->sau_description)
     <div class="content">

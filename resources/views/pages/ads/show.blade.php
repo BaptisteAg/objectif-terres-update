@@ -144,6 +144,17 @@
                 @endif
             </div>
         </div>
+        <div class="is-pulled-right mr-30 ">
+            <a href="#">
+                <span class="icon has-text-info">
+                    <i class="fas fa-exclamation-circle"></i>
+                </span>
+                <span>
+                    Signaler un abus
+                </span>
+            </a>
+        </div>
+
     </section>
     @include('components.support-terre-liens')
 @endsection

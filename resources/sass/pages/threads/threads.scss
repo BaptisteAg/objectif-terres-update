@@ -1,7 +1,4 @@
 //Threads
-.button-send-message {
-
-}
 
 .content-send-message-button{
   display: flex;
@@ -18,6 +15,9 @@
     }
 
     .menu-list {
+      overflow-y: auto;
+      max-height: 500px;
+
       li {
         &.active-thread {
           background-color: #7da23750 !important;

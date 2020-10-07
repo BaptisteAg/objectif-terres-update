@@ -23,8 +23,7 @@
                                 </a>
                             </h1>
 
-                            <h4 class=" text_success mt-5">Réalisez votre projet
-                                agricole.</h4>
+                            <h4 class=" text_success mt-5">Faites pousser votre projet agricole</h4>
 {{--                            <p>Une initiative Terre de Liens</p>--}}
                         </div>
                     </div>
@@ -65,7 +64,7 @@
                                         :multiple="true"
                                         name="regions_location_researches_ids[]"
                                         selected-count-text="région(s) sélectionnée(s)"
-                                        placeholder="Choississez une/des région(s)">
+                                        placeholder="Choisissez une/des région(s)">
                                 </multi-select>
                             </div>
                         </div>

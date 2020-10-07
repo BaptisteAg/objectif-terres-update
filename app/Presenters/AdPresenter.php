@@ -255,6 +255,9 @@ class AdPresenter extends BasePresenter
 					$max = '+ de 100';
 				}
 
+				if ($min && $max === 1000000) {
+					return "Surface non précisée";
+				}
 				if ($min) {
 					return "De " . $min . "ha à " . $max . "ha";
 				}

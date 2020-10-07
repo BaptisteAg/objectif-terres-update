@@ -112,7 +112,7 @@
                         <br>
                         <div class="select">
                             <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-                                <option value="">Choisissez un filter</option>
+                                <option value="">Choisissez un filtre</option>
                                 <option {{request()->input('order') === 'desc' && request()->input('sort') === 'date' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date', 'page'=> 0])) }}">
                                     Date: du plus récent au plus ancien
                                 </option>
@@ -184,7 +184,7 @@
                                     </div>
                                     <ul class="custom-tags custom-list custom-list_v x-large">
                                         @if(isset($ad->is_partner) && $ad->is_partner === 1 )
-                                            <li class="custom-tag warning">Partenaire Terre de Liens</li>
+                                            <li class="custom-tag warning">Annonce certifiée </li>
                                         @endif
                                         <li class="custom-tag success">
                                             <i class="fas fa-map-marker-alt"></i>
@@ -263,7 +263,7 @@
                                         <span class="tile__date">Publié {{$ad->created_at_diff}}</span>
                                         @if(isset($ad->is_partner) && $ad->is_partner === 1 )
                                             <ul class="custom-tags">
-                                                <li class="custom-tag warning">Partenaire Terre de Liens</li>
+                                                <li class="custom-tag warning">Annonce certifiée </li>
                                             </ul>
                                         @endif
                                     </div>

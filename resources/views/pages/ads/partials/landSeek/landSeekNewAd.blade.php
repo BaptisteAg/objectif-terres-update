@@ -141,7 +141,8 @@
                             {{--                                <p class="help is-danger" v-if="!$v.formInput.rentMax.numeric">Veuillez saisir des chiffres.</p>--}}
                             {{--                            </div>--}}
 
-                            <div class="field" v-show="formInput.offerGenres.includes('1') || formInput.offerGenres.includes(1)">
+                            <div class="field"
+                                 v-show="formInput.offerGenres.includes('1') || formInput.offerGenres.includes(1)">
                                 {!! Form::label('land_seek[price_max]', 'Achat : quel est votre budget maximum ?', ['class' => 'label']); !!}
 
                                 <div class="control has-icons-right">
@@ -153,7 +154,7 @@
                                               'v-model.trim' => 'formInput.priceMax',
                                               ':disabled' => 'isInputDisabled'] ) !!}
                                     <span class="icon is-small is-right" style="color: #4a4a4a;">
-                                      €
+                                        €
                                     </span>
                                 </div>
 
@@ -187,16 +188,16 @@
                         <div class="field">
                             {!! Form::label('land_seek[is_bio]', "Votre projet est-il en agriculture biologique ?", ['class' => 'label']) !!}
                             <label>
-                            {!! Form::radio('land_seek[is_bio]', '1', $old['land_seek']['is_bio'] ?? null , [':disabled' => 'isInputDisabled']) !!}
-                            Oui
+                                {!! Form::radio('land_seek[is_bio]', '1', $old['land_seek']['is_bio'] ?? null , [':disabled' => 'isInputDisabled']) !!}
+                                Oui
                             </label><br>
                             <label>
-                            {!! Form::radio('land_seek[is_bio]', '0', $old['land_seek']['is_bio'] ?? null , [':disabled' => 'isInputDisabled']) !!}
-                            Non
+                                {!! Form::radio('land_seek[is_bio]', '0', $old['land_seek']['is_bio'] ?? null , [':disabled' => 'isInputDisabled']) !!}
+                                Non
                             </label><br>
                             <label>
-                            {!! Form::radio('land_seek[is_bio]', '-1', $old['land_seek']['is_bio'] ?? null , [':disabled' => 'isInputDisabled']) !!}
-                            Je ne sais pas encore
+                                {!! Form::radio('land_seek[is_bio]', '-1', $old['land_seek']['is_bio'] ?? null , [':disabled' => 'isInputDisabled']) !!}
+                                Je ne sais pas encore
                             </label>
                         </div>
 
@@ -306,22 +307,21 @@
                                             </custom-checkbox>
                                         </div>
                                         @if($i % 2)
-                                            </div>
-                                            <div class="columns">
-                                        @endif
+                                </div>
+                                <div class="columns">
+                                    @endif
                                     @endforeach
                                 </div>
                             </div>
                         @endif
 
-                        <?php
-                            if(empty($isSupportRequest)) {
-                                $tooltip = "Pour les cédants ou propriétaires, l’expérience est un plus ! Détaillez ici vos expériences professionnelles agricoles, stages ou bénévolat sur des fermes et vos diplômes agricoles.";
-                            }
-                            else {
-                                $tooltip = "Détaillez ici vos formations, expériences professionnelles agricoles, stages ou bénévolat sur des fermes et vos diplômes agricoles.";
-                            }
-                        ?>
+						<?php
+						if (empty($isSupportRequest)) {
+							$tooltip = "Pour les cédants ou propriétaires, l’expérience est un plus ! Détaillez ici vos expériences professionnelles agricoles, stages ou bénévolat sur des fermes et vos diplômes agricoles.";
+						} else {
+							$tooltip = "Détaillez ici vos formations, expériences professionnelles agricoles, stages ou bénévolat sur des fermes et vos diplômes agricoles.";
+						}
+						?>
                         <div class="field">
                             <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
                                    data-tooltip="{{$tooltip}}">

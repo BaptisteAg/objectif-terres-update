@@ -41,7 +41,7 @@
             <div class="content">
                 @if(isset($ad->is_partner) && $ad->is_partner === 1 )
                     <p class="custom-tags">
-                        <span class="custom-tag warning">Partenaire Terre de Liens</span>
+                        <span class="custom-tag warning">Annonce certifiée </span>
                     </p>
                 @endif
                 <p><span class="is-italic">Date de soumission</span>

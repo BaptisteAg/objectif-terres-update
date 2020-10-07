@@ -101,7 +101,13 @@ class UserService
 	 */
 	public function findAllExceptPPAndLoggedUser()
 	{
-		return $this->repository->findAllExceptPPAndLoggedUser();
+		$users = $this->repository->findAllExceptPPAndLoggedUser();
+		$users->map(function ($user, $key) {
+			$user['name'] = $user['first_name'] . ' ' . $user['name'];
+			return $user;
+		});
+
+		return $users;
 	}
 
 	/**
