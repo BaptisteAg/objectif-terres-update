@@ -297,6 +297,13 @@ class CmsPageSeeder extends Seeder
 //			$page->save();
 //		}
 
+
+		$cmsPages  = CmsPage::all();
+		foreach($cmsPages as $cmsPage){
+			$cmsPage->setSlugAttribute();
+			$cmsPage->save();
+		}
+
 		$territories = Territory::all();
 		foreach ($territories as $territory) {
 			CmsPage::insert([
@@ -310,11 +317,7 @@ class CmsPageSeeder extends Seeder
 			]);
 		}
 
-		$cmsPages  = CmsPage::all();
-		foreach($cmsPages as $cmsPage){
-			$cmsPage->setSlugAttribute();
-			$cmsPage->save();
-		}
+
 
 
 	}

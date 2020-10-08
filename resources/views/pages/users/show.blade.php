@@ -321,7 +321,7 @@
 
                                     <p class="button__wrap button__wrap_right">
                                         @if(isset($ad->project))
-                                            @if(isset($ad->attributionAd->user_advisor_id) && $ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->isProjectInUserTerritories) )
+                                            @if(isset($ad->attributionAd->user_advisor_id) && $ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->userDepartmentsCodes) )
                                                 <a href="{{route("advisor.showSupport", $ad->id)}}">
                                                     <button class="button basic  small warning mr-20">
                                                         <span class="icon is-small">
@@ -330,7 +330,7 @@
                                                         <span>Espace de suivi</span>
                                                     </button>
                                                 </a>
-                                            @elseif($currentUser->role >= 3 && $ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->isProjectInUserTerritories))
+                                            @elseif($currentUser->role >= 3 && $ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->userDepartmentsCodes))
                                                 <a href="{{route("ads.show", $ad->id)}}">
                                                     <button class="button basic  small warning mr-20">
                                                         <span class="icon is-small">

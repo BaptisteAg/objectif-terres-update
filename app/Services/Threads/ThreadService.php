@@ -38,7 +38,6 @@ class ThreadService
 	protected $messagesRepository;
 
 
-
 	/**
 	 * ThreadService constructor.
 	 * @param ThreadsRepository $repository
@@ -257,6 +256,7 @@ class ThreadService
 
 		$message = $this->messagesRepository->find($messageCreated->id);
 
+		$message->thread->update(['updated_at' => Carbon::now()]);
 		foreach ($message->thread->users as $user) {
 			$user = User::find($user->id);
 

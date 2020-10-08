@@ -76,6 +76,13 @@ class UserService
 		if (isset ($data['password'])) {
 			$data['password'] = Hash::make($data['password']);
 		}
+
+		$user = User::where('email', '=', $data['email'])->first();
+		if ($user !== null) {
+			if ($user->id !== (int)$data['user_id']) {
+				return back()->withInput()->withErrors("Cette adresse email est déjà utilisée par un autre utilisateur");
+			}
+		}
 		$user = $this->repository->update($data['user_id'], $data);
 		return $user;
 	}
@@ -89,13 +96,18 @@ class UserService
 		return $this->repository->find($id);
 	}
 
-
 	/**
 	 * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
 	 */
 	public function findAllExceptPPAndLoggedUser()
 	{
-		return $this->repository->findAllExceptPPAndLoggedUser();
+		$users = $this->repository->findAllExceptPPAndLoggedUser();
+		$users->map(function ($user, $key) {
+			$user['name'] = $user['first_name'] . ' ' . $user['name'];
+			return $user;
+		});
+
+		return $users;
 	}
 
 	/**
@@ -158,14 +170,14 @@ class UserService
 	}
 
 	/**
-	 * @param int $roleId
+	 * @param array $rolesId
 	 * @param array $departmentCodes
 	 * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
 	 */
-	public function findByRoleAndDepartments(int $roleId, array $departmentCodes)
+	public function findByRolesAndDepartments(array $rolesId, array $departmentCodes)
 	{
 		return User::filterSubLocations('departments', $departmentCodes, 'departments.code')
-			->where('role', $roleId)
+			->whereIn('role', $rolesId)
 			->inRandomOrder()
 			->get();
 	}
@@ -187,14 +199,14 @@ class UserService
 
 
 	/**
-	 * @param int $roleId
+	 * @param array $roleIds
 	 * @param array $territoryIds
 	 * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
 	 */
-	public function findByRoleAndTerritory(int $roleId, array $territoryIds)
+	public function findByRolesAndTerritory(array $roleIds, array $territoryIds)
 	{
 		return User::filterSubLocations('departments', $territoryIds, 'departments.territory_id')
-			->where('role', $roleId)
+			->whereIn('role', $roleIds)
 			->inRandomOrder()
 			->get();
 	}

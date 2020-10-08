@@ -145,7 +145,7 @@
 
 				@if(!auth()->user()->is_sf_user)
 					<div class="column is-3">
-						<a class="" href="{{route('user.edit')}}">
+						<a class="" href="{{route('user.edit', auth()->user()->id)}}">
 							<div class="card custom-card">
 								<div class="card-content">
 									<div class="media">
@@ -196,8 +196,5 @@
 			</div>
 		</section>
 	</div>
-
-
-	@include('components.partnering')
 	@include('components.support-terre-liens')
 @endsection

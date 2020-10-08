@@ -9,25 +9,23 @@ use App\Models\Thread;
  */
 class ThreadPresenter extends BasePresenter
 {
-	public function title() : string
+	public function title(): string
 	{
 		$title = array_filter([$this->wrappedObject->title]);
 
-		if(!count($title)) {
-			$title = [];
-			if(! is_null($this->wrappedObject->ad) && auth()->user()->id !== $this->wrappedObject->ad->user_pp_id && auth()->user()->role <1){
+		if (!count($title)) {
+			if (!is_null($this->wrappedObject->ad) && auth()->user()->id !== $this->wrappedObject->ad->user_pp_id && auth()->user()->role < 1) {
 				$title = $this->wrappedObject->ad->title;
 				return $title;
 			}
-			foreach ($this->wrappedObject->users as $user){
-				if ($user->id !== auth()->id()){
-					array_push($title, $user->first_name. ' '. $user->name);
+			foreach ($this->wrappedObject->users as $user) {
+				if ($user->id !== auth()->id()) {
+					array_push($title, $user->first_name . ' ' . $user->name);
 				}
-				array_unique($title);
 			}
 		}
 
-		return implode(' - ', $title);
+		return implode(' - ', array_unique($title));
 	}
 
 	public function unread_count()
@@ -37,12 +35,12 @@ class ThreadPresenter extends BasePresenter
 
 	public function created_at()
 	{
-		$date =  \Carbon\Carbon::parse($this->wrappedObject->created_at);
-		return 'Le '. $date->format('d-m-Y').' a '.$date->format('H:i');
+		$date = \Carbon\Carbon::parse($this->wrappedObject->created_at);
+		return 'Le ' . $date->format('d-m-Y') . ' a ' . $date->format('H:i');
 	}
 
 	public function created_at_diff()
 	{
-		return  \Carbon\Carbon::parse($this->wrappedObject->created_at)->diffForHumans();
+		return \Carbon\Carbon::parse($this->wrappedObject->created_at)->diffForHumans();
 	}
 }

@@ -71,9 +71,9 @@ class AdPresenter extends BasePresenter
 
 	public function submitDate()
 	{
-        if(!$this->wrappedObject->attributionAd) {
-            return '';
-        }
+		if (!$this->wrappedObject->attributionAd) {
+			return '';
+		}
 
 		return \Carbon\Carbon::parse($this->wrappedObject->attributionAd->created_at)->format('d/m/Y');
 	}
@@ -85,9 +85,9 @@ class AdPresenter extends BasePresenter
 
 	public function created_at_diff()
 	{
-	    if(!$this->wrappedObject->attributionAd) {
-	        return '';
-        }
+		if (!$this->wrappedObject->attributionAd) {
+			return '';
+		}
 
 		return \Carbon\Carbon::parse($this->wrappedObject->attributionAd->published_on)->diffForHumans();
 	}
@@ -201,17 +201,23 @@ class AdPresenter extends BasePresenter
 
 	public function published_on()
 	{
-        if(!$this->wrappedObject->attributionAd) {
-            return '';
-        }
+		if (!$this->wrappedObject->attributionAd) {
+			return '';
+		}
 
 		return \Carbon\Carbon::parse($this->wrappedObject->attributionAd->published_on)->format('d/m/Y');
 	}
+
+	public function isProject()
+	{
+		return $this->wrappedObject->project()->exists();
+	}
+
 	public function refused_on()
 	{
-        if(!$this->wrappedObject->attributionAd) {
-            return '';
-        }
+		if (!$this->wrappedObject->attributionAd) {
+			return '';
+		}
 
 		return \Carbon\Carbon::parse($this->wrappedObject->attributionAd->refused_on)->format('d/m/Y');
 	}
@@ -245,10 +251,13 @@ class AdPresenter extends BasePresenter
 				if ($max === 1000000 && $min === 0) {
 					return "De 1 à + de 100ha";
 				}
-				if($max === 1000000) {
+				if ($max === 1000000) {
 					$max = '+ de 100';
 				}
 
+				if ($min && $max === 1000000) {
+					return "Surface non précisée";
+				}
 				if ($min) {
 					return "De " . $min . "ha à " . $max . "ha";
 				}
@@ -309,8 +318,8 @@ class AdPresenter extends BasePresenter
 	public function isAdInUserTerritories(array $userTerritoriesCodes, array $userTerritoryId): bool
 	{
 		$ad = $this->wrappedObject;
-		if(isset($ad->support_request_territory_id)){
-			return in_array($ad->support_request_territory_id,$userTerritoryId );
+		if (isset($ad->support_request_territory_id)) {
+			return in_array($ad->support_request_territory_id, $userTerritoryId);
 		}
 		return count(array_intersect($userTerritoriesCodes, $this->adDepartmentsCodes())) > 0;
 	}
@@ -320,11 +329,11 @@ class AdPresenter extends BasePresenter
 	 * @param array $userDepartmentsCode
 	 * @return bool
 	 */
-	public function isProjectInUserTerritories(array $userTerritoryId,array $userDepartmentsCode): bool
+	public function isProjectInUserTerritories(array $userTerritoryId, array $userDepartmentsCode): bool
 	{
 		$ad = $this->wrappedObject;
-		if(isset($ad->support_request_territory_id)){
-			return in_array($ad->support_request_territory_id,$userTerritoryId );
+		if (isset($ad->support_request_territory_id)) {
+			return in_array($ad->support_request_territory_id, $userTerritoryId);
 		}
 		//TODO delete this system based on department code when system based on territory fully integrated, don't forget to attributes of all methods calls
 		return count(array_intersect($userDepartmentsCode, $this->adDepartmentsCodes())) > 0;

@@ -172,7 +172,7 @@
 		<p class="button__wrap">
 			<a href="{{route('user.index')}}"
 			   class="button round small danger "
-			   title="Gérer mon profil">
+			   title="Accéder à mon compte">
 															<span class="button__icon"><i
 																		class="fas fa-user"></i></span>
 			</a>

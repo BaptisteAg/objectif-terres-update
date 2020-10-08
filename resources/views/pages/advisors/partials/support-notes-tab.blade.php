@@ -7,8 +7,7 @@
 			@else
 				<div style=" overflow-x: hidden; max-height: 500px;">
 					@foreach($ad->adNotes->whereNull('project_data_key_id') as $note)
-						<div class="card has-background-white-ter"
-							 style="border: 2px solid transparent; border-radius: 12px; margin : 5px; margin-right : 10px; ">
+						<div class=" post-it-note">
 							<div class="card-content" style="margin-bottom: 15px">
 								<div v-if="noteToModify === {{$note->id}}">
 									{!! Form::open(['route' => 'advisor.editNote', 'method'=>'post']) !!}
@@ -72,7 +71,7 @@
 								</div>
 								<div v-else>
 									<button v-on:click="modifyNote({{$note->id}})"
-											class="is-size-7 is-pulled-right has-text-link"
+											class="is-size-6 is-pulled-right has-text-link ml-20"
 											style="border: none; background: transparent">
 										<a>
 										<span class="icon">
@@ -84,16 +83,13 @@
 								</div>
 								{!! Form::open(['route' => 'advisor.deleteNote', 'method'=>'post']) !!}
 								<input type="hidden" name="ad_note_id" value="{{$note->id}}">
-{{--								<button class="is-size-7 is-pulled-right has-text-link"--}}
-{{--										style="border: none; background: transparent">--}}
-									<a class="is-pulled-right" v-on:click="showValidationModal()">
+									<a class="is-pulled-right" v-on:click="showDeleteNoteValidationModal({{$note->id}})">
 										<span class="icon">
 										<i class="fas fa-trash-alt"></i>
 									</span>
 										<span>Supprimer</span>
 									</a>
-								@include('pages.advisors.partials.validation-modal')
-{{--								</button>--}}
+								@include('pages.advisors.partials.delete-note-validation-modal')
 								{!! Form::close() !!}
 							</div>
 						</div>

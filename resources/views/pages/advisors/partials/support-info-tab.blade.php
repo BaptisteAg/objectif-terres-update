@@ -41,7 +41,7 @@
             <div class="content">
                 @if(isset($ad->is_partner) && $ad->is_partner === 1 )
                     <p class="custom-tags">
-                        <span class="custom-tag warning">Partenaire Terre de Liens</span>
+                        <span class="custom-tag warning">Annonce certifiée </span>
                     </p>
                 @endif
                 <p><span class="is-italic">Date de soumission</span>
@@ -213,10 +213,12 @@
             <p>
                 <span class="is-italic">Bâtiments recherchés</span> :
                 @if($ad->landSeekAd->buildings->count() >0)
+                    <br>
                     @foreach($ad->landSeekAd->buildings as $building)
                         <span class="is-lowercase">{{ $building->buildingType->label }}
                             : {{ $building->requirement->label }}</span>
                         {{ $loop->last ? '': ',' }}
+                        <br>
                     @endforeach
                 @else
                     Non renseignés

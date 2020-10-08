@@ -50,10 +50,10 @@ class ResponseTemplatesController extends Controller
 	 */
 	public function edit(ResponseTemplateRequest $request)
 	{
-		if(! $request->has('response_template_id')){
+		if (!$request->has('response_template_id')) {
 			return back()->with('warning', 'Une erreur s\'est produite, veuillez réessayer');
 		}
-		$this->repository->edit($request->input('response_template_id'),$request->validated());
+		$this->repository->edit($request->input('response_template_id'), $request->validated());
 		return back()->with('success', 'La réponse a bien été modifiée');
 	}
 
@@ -62,15 +62,15 @@ class ResponseTemplatesController extends Controller
 	 * @return RedirectResponse
 	 * @throws \Exception
 	 */
-	public function delete(Request $request){
+	public function delete(Request $request)
+	{
 		$responseTemplate = ResponseTemplate::find($request->input('response_template_id'));
-		if(!isset($responseTemplate)){
+		if (!isset($responseTemplate)) {
 			return back()->with('warning', 'Une erreur s\'est produite, veuillez réessayer');
 		}
 		$responseTemplate->delete();
 		return back()->with('success', 'La réponse a bien été supprimée');
 	}
-
 
 
 }

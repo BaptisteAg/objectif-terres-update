@@ -67,6 +67,7 @@ class FavoriteAdRepository extends AbstractRepository implements FavoriteAdRepos
 					$builder->whereNull('deleted_at');
 				});
 			})
+			->with('ad')
 			->get();
 
 		if (!$model) {

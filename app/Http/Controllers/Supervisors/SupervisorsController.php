@@ -40,7 +40,11 @@ class SupervisorsController extends BaseController
 		$request->session()->forget('_old_input');
 		$request->session()->forget('moderator_dashboard_url');
 		$request->session()->forget('supervisor_dashboard_url');
-		$ads = $this->adService->findAllNotAssignedProjectsByUserSupervisor(false);
+		if($request->input('toPaginate') === 'true'){
+			$ads = $this->adService->findAllNotAssignedProjectsByUserSupervisor(true);
+		}else{
+			$ads = $this->adService->findAllNotAssignedProjectsByUserSupervisor(false);
+		}
 		$vars = $this->getSupervisorDashboardVars();
 		$vars['ads'] = $ads;
 		$vars['currentUser'] = auth()->user();
@@ -69,7 +73,7 @@ class SupervisorsController extends BaseController
 	public function help()
 	{
 		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
-		$pageContents = CmsPage::where('slug', 'like', '%'.'ressources-responsable-territorial'. '%')->with('documents')->get()->keyBy('slug');
+		$pageContents = CmsPage::where('slug', 'like', '%' . 'ressources-responsable-territorial' . '%')->with('documents')->get()->keyBy('slug');
 		return view('pages.supervisors.help', compact('users', 'pageContents'));
 	}
 

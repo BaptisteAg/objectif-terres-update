@@ -15,89 +15,117 @@ BACKGROUNDS
 .bg-d-primary {
   background-color: $primary !important;
   color: $white;
+
   .button.basic.primary {
     background-color: rgba(255, 255, 255, 0.1);
     border-color: transparent;
+
     &:hover {
       background-color: $secondary;
     }
+
     &:focus {
       background-color: $secondary;
     }
+
     &:active {
       background-color: #00c3d6;
     }
   }
 }
+
 .bg-d-secondary {
   background-color: $secondary !important;
   color: $white;
 }
+
 .bg-d-blue_bright {
   background-color: $blue-bright !important;
   color: $white;
 }
+
 .bg-d-success {
   background-color: $success !important;
   color: $white;
 }
+
 .bg-d-success_dark {
   background-color: $success-dark !important;
   color: $white;
 }
+
 .bg-d-success_bright {
   background-color: $success-bright !important;
   color: $white;
 }
+
 .bg-d-danger {
   background-color: $danger !important;
   color: $white;
 }
+
 .bg-d-danger_dark {
   background-color: $danger-dark !important;
   color: $white;
 }
+
 .bg-d-danger_bright {
   background-color: $danger-bright !important;
   color: $white;
 }
+
 .bd-danger-light {
-  background-color: lighten($danger, 90%)  !important;
+  background-color: lighten($danger, 90%) !important;
 }
+
+.bg-d-note {
+  background-color: $yellow-note !important;
+}
+
 .bg-d-warning {
   background-color: $warning !important;
   color: $white;
 }
+
 .bg-d-warning_dark {
   background-color: $warning-dark !important;
   color: $white;
 }
+
 .bg-d-warning_bright {
   background-color: $warning-bright !important;
   color: $white;
 }
+
 .bg-d-charcoal {
   background-color: $charcoal !important;
   color: $white;
 }
+
 .bg-l-mouse {
   background-color: $mouse !important;
 }
+
 .bg-l-white {
   background-color: $white !important;
   color: $charcoal;
 }
+
 .bg-l-pearl {
   background-color: $pearl !important;
 }
+
 .bg-l-cream {
   background-color: $cream !important;
 }
+
 .bg-d-night {
   background-color: $night;
 }
+
 [class*="bg-trame"] {
   position: relative;
+
   &:before {
     content: "";
     display: block;
@@ -109,11 +137,13 @@ BACKGROUNDS
     z-index: 1;
     transition: all 0.2s ease-in-out;
   }
-  >* {
+
+  > * {
     position: relative;
     z-index: 2;
   }
 }
+
 /* ----- Backgrounds trame ----- */
 .bg-trame_champs_light {
   &:before {
@@ -121,18 +151,21 @@ BACKGROUNDS
     opacity: 1;
   }
 }
+
 .bg-trame_champs_dark {
   &:before {
     background: url("public/images/trames/motif_champ_black.png") repeat;
     opacity: 0.15;
   }
 }
+
 .bg-trame_rayures_light {
   &:before {
     background: url("/public/images/trames/motif_rayure_white.png") repeat;
     opacity: 0.6;
   }
 }
+
 .bg-trame_rayures_dark {
   &:before {
     background: url("/public/images/trames/motif_rayure_black.png") repeat;

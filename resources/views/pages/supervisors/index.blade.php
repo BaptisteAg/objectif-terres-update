@@ -109,24 +109,41 @@
                 </div>
             </export-to-spreadsheet-form>
         </div>
+
         <div class="section">
-            <h1 class="title is-1 has-text-centered">Activités sur votre
-                territoire</h1>
             @if (count($ads) ==0)
                 <p class="has-text-centered">Aucun résultat</p>
             @else
                 <div class="content">
                     @if(request()->input('toPaginate') == 'true')
-                        <a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">
-                            <span>Afficher l'intégralité de la liste</span>
-                        </a>
+                        @if(url()->current() == route('supervisor.index'))
+                            <a href="{{ route('supervisor.index', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">
+                                <span>Voir tous les résultats</span>
+                            </a>
+                        @else
+                            <a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">
+                                <span>Voir tous les résultats</span>
+                            </a>
+                        @endif
                     @else
-                        <a href="{{ route('supervisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
-                            <span>Paginer la liste</span>
-                        </a>
+                        @if(url()->current() == route('supervisor.index'))
+                            <a href="{{ route('supervisor.index', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
+                                <span>Voir 15 résultats par page</span>
+                            </a>
+                        @else
+                            <a href="{{ route('supervisor.show', array_merge(Request::all(), ['toPaginate'=>'true'])) }}">
+                                <span>Voir 15 résultats par page</span>
+                            </a>
+                        @endif
                     @endif
                 </div>
-
+                @if($ads instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                    <div class="columns is-mobile is-centered mb-40">
+                        <div class="column is-one-third ">
+                            {{ $ads->appends(Request::all())->links() }}
+                        </div>
+                    </div>
+                @endif
                 <div class="table-container">
                     <table class="table is-bordered  is-striped is-narrow is-hoverable is-fullwidth "
                            style="border :2px solid #dbdbdb">
@@ -236,6 +253,10 @@
                             @if(!is_null($ad->project))
                                 @if(is_null($ad->attributionAd->userAdvisor))
                                     <tr style="background-color: mistyrose">
+                                @else
+                                    @if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
+                                        <tr style=" background-color: #e8e8e8">
+                                    @endif
                                 @endif
                             @else
                                 <tr>
@@ -397,7 +418,7 @@
                     </table>
                 </div>
                 @if($ads instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                    <div class="columns is-mobile is-centered">
+                    <div class="columns is-mobile is-one-third is-centered">
                         <div class="column is-half ">
                             {{ $ads->appends(Request::all())->links() }}
                         </div>

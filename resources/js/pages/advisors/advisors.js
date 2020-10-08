@@ -31,10 +31,11 @@ Vue.component('support-request-dashboard', {
             showModal: false,
             showUserBlockedValidationModal: false,
             noteToModify: '',
+            noteToDelete: '',
             documents: [],
             uploading: false,
             userAdvisorInCharge: this.isUserAdvisorInCharge,
-            isThreadRelatedToUser : this.isUserAdvisorInCharge,
+            isThreadRelatedToUser: this.isUserAdvisorInCharge,
         }
     },
     mounted() {
@@ -60,8 +61,14 @@ Vue.component('support-request-dashboard', {
             this.isSupportStateSelectOpen = false;
             this.isProjectStatusSelectOpen = false;
         },
+        showDeleteNoteValidationModal(noteId) {
+            this.showModal = true;
+            this.noteToDelete = noteId;
+
+        },
         closeValidationModal() {
             this.showModal = false;
+            this.noteToDelete = '';
         },
 
         refreshThread(threadId) {

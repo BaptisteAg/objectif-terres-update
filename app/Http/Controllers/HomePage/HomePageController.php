@@ -35,15 +35,16 @@ class HomePageController extends Controller
 
 		$ads = Ad::whereHas('attributionAd', function (Builder $query) {
 			$query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
-		})->take(2)->orderBy('created_at', 'desc')->get();
+		})->take(4)->orderBy('created_at', 'desc')->get()->shuffle();
 
 		$adsPartner = Ad::whereHas('attributionAd', function (Builder $query) {
 			$query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
 		})->where('is_partner', '=', 1)->take(2)->orderBy('created_at', 'desc')->get();
 
-		$cmsFaq = CmsFaq::where('page_name', '=', Route::currentRouteName())->get();
+//TODO, in the V2, inject faq section content into the the template
+//$cmsFaq = CmsFaq::where('page_name', '=', Route::currentRouteName())->get();
 		$rssNews = $rssService->getTdlNews();
 
-		return view('pages.homepage', compact('ads', 'adsPartner', 'rssNews', 'cmsFaq'));
+		return view('pages.homepage', compact('ads', 'adsPartner', 'rssNews'));
 	}
 }

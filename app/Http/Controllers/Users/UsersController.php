@@ -58,11 +58,20 @@ class UsersController extends Controller
 	}
 
 	/**
+	 * @param User $user
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
-	public function edit()
+	public function edit(User $user)
 	{
-		$user = auth()->user();
+		if (is_null($user) || $user->id !== auth()->user()->id && auth()->user()->role < 2) {
+			abort(404);
+		}
+
+
+		$isUserConnectedEditHisOwnAccount = true;
+		if (auth()->user()->id !== $user->id) {
+			$isUserConnectedEditHisOwnAccount = false;
+		}
 		$cities = City::all();
 		if ($user->zipCode) {
 			$cityData = [
@@ -74,7 +83,7 @@ class UsersController extends Controller
 
 			$user['citySelect'] = json_encode([$cityData]);
 		}
-		return view('pages.users.edit', compact('cities', 'user'));
+		return view('pages.users.edit', compact('cities', 'user', 'isUserConnectedEditHisOwnAccount'));
 
 	}
 
@@ -85,7 +94,7 @@ class UsersController extends Controller
 	public function update(UserRequest $request)
 	{
 		$data = $request->validated();
-		$user = $this->userService->update($data);
-		return redirect()->route('user.edit', $data['user_id'])->with('success', 'Votre profil a bien été mis à jour !');
+		$this->userService->update($data);
+		return redirect()->route('user.edit', $data['user_id'])->with('success', 'Mise à jour effectuée avec succès !');
 	}
 }

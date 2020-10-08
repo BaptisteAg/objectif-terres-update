@@ -44,7 +44,7 @@
                             :multiple="true"
                             name="regions_location_researches_ids[]"
                             selected-count-text="région(s) sélectionnée(s)"
-                            placeholder="Choississez une/des région(s)">
+                            placeholder="Choisissez une/des région(s)">
                     </multi-select>
                 </div>
             </div>

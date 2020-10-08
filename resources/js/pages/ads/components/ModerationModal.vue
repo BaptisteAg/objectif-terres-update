@@ -91,7 +91,7 @@
                   </div>
                   <label class="checkbox" v-if="moderationChoice === 'acceptAd'">
                     <input type="checkbox" v-model="isPartner">
-                    Cette annonce est rédigée par un partenaire de Terre de Liens
+                    Mettre cette annonce à la une (annonceur certifié)
                   </label>
                 </div>
               </div>

@@ -75,7 +75,6 @@
 
 
         <div class="section">
-            <h1 class="title is-1 has-text-centered">Liste des annonces attribuées</h1>
             @if (count($attributionAds) == 0)
                 <p class="has-text-centered">Aucun résultat</p>
             @else
