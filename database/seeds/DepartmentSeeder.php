@@ -290,7 +290,7 @@ class DepartmentSeeder extends Seeder
 		);
 		Department::updateOrCreate(
 			['id' => 71],
-			['territory_id' => 21]
+			['territory_id' => 4]
 		);
 		Department::updateOrCreate(
 			['id' => 72],

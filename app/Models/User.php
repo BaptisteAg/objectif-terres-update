@@ -153,15 +153,16 @@ class User extends Authenticatable implements HasPresenter
 		3 => "Autre",
 	];
 
-	static $profiles = [
-		1 => "candidat à l‘installation",
-		2 => "personne en recherche d’expérience ou de travail dans le domaine agricole",
-		3 => "un agriculteur qui souhaite consolider sa ferme",
-		4 => "un agriculteur qui souhaite transmettre sa ferme",
-		5 => "un propriétaire privé qui souhaite vendre ou louer sa ferme",
-		6 => "un propriétaire privé qui souhaite donner ou léguer sa ferme",
-		7 => "autre",
-	];
+    static $profiles = [
+        1 => "Porteur de projet en recherche de terres",
+        2 => "Porteur de projet en recherche de financement",
+        3 => "En reconversion professionnelle et à la recherche des informations pour m’installer",
+        4 => "A la recherche d’un travail / d’une expérience dans le domaine agricole",
+        5 => "Agriculteur qui souhaite transmettre ma ferme",
+        6 => "Agriculteur en activité qui cherche à consolider ma ferme",
+        7 => "Propriétaire privé qui cherche à vendre ou louer mes terres",
+        8 => "Autre",
+    ];
 
 	static $roles = [
 		0 => "Porteur de projet",

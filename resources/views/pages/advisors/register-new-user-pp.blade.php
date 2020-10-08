@@ -150,27 +150,13 @@
 													v-model="optionProfileSelected"
 													class="input @error('profile') is-danger @enderror ">
 												<option disabled="disabled" selected>Le PP est...</option>
-												<option value="1" {{old('profile') == 1 ? 'selected' : ''}} >un candidat
-													à l’installation agricole
-												</option>
-												<option value="2" {{old('profile') == 2 ? 'selected' : ''}}>une personne
-													en recherche de travail ou d’expérience
-													professionnelle dans le
-													domaine agricole
-												</option>
-												<option value="3" {{old('profile') == 3 ? 'selected' : ''}}>un
-													agriculteur qui souhaite consolider sa ferme
-												</option>
-												<option value="4" {{old('profile') == 4 ? 'selected' : ''}}>un
-													agriculteur qui souhaite transmettre sa ferme
-												</option>
-												<option value="5" {{old('profile') == 5 ? 'selected' : ''}}>un
-													propriétaire foncier qui souhaite vendre ou louer
-													sa
-													terre
-												</option>
-												<option value="6" {{old('profile') == 6 ? 'selected' : ''}}>Autre
-												</option>
+												@foreach(\App\Models\User::$profiles as $id => $prof)
+													<option
+															value="{{$id}}"
+															{{old('profile') == $id ? 'selected' : ''}} >
+														{{$prof}}
+													</option>
+												@endforeach
 											</select>
 										</div>
 										<div class="icon is-small is-left">
@@ -186,7 +172,7 @@
 									@enderror
 								</div>
 							</div>
-							<div v-if="optionProfileSelected === '6'" class="column is-half">
+							<div v-if="optionProfileSelected === '8'" class="column is-half">
 								<div class="field">
 									<label class="label">Situation autre </label>
 									<p class="control has-icons-left has-icons-right">

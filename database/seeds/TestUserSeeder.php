@@ -23,7 +23,8 @@ class TestUserSeeder extends Seeder
             'role' => 0
         ]);
 
-        $departments = Department::where('code', 69)->get();
+        //$departments = Department::where('code', 69)->get();
+        $departments = Department::all();
 
         User::create([
             'email' => "test.ot.moderateur@gmail.com",
