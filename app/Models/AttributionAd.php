@@ -33,6 +33,7 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd filterAdTypes($adTypesFilters, $relationTableName = '')
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd filterAdsTerritoryLocations($territoriesCode)
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd filterLocations($relationshipName, $locationableIds)
+ * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd filterRegions($regionCode)
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd filterSupportRequestRegionId($territoriesId, $userRole)
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd filterWhereHasIn($data, $relationNameTable, $columnName)

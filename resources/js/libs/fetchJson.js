@@ -1,4 +1,14 @@
 window.fetchJson = async function(url, formData) {
+    if(typeof formData === "object" && !(formData instanceof FormData)) {
+        let formDataOnTheFly = new FormData();
+
+        for ( var key in formData ) {
+            formDataOnTheFly.append(key, formData[key]);
+        }
+
+        formData = formDataOnTheFly;
+    }
+
     if(formData instanceof FormData) {
         formData.append('_token', window.csrf_token);
     }

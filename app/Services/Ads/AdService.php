@@ -256,7 +256,7 @@ class AdService
 
         if(!$data["is_draft"]) {
             $adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
-            $availableModerators = $this->userService->findByRoleAndDepartments(1, $adDepartmentCodes);
+            $availableModerators = $this->userService->findByRolesAndDepartments([1], $adDepartmentCodes);
             $availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
 
             if ($availableModerators->isEmpty() && empty($availableUserWithPermission)) {
@@ -835,6 +835,29 @@ class AdService
 	}
 
 	/**
+	 * @param $selectedAdType
+	 * @return array
+	 */
+	public function getPublishedAdsCountByDepartmentId($selectedAdType, $regionId)
+	{
+		$adsCountByDepartmentId = [];
+
+		$regionCode = Region::find($regionId)->code;
+
+		foreach ($this->repository->findAllPublishedInRegionWithLocations($selectedAdType, $regionCode) as $ad) {
+			$departmentIds = $this->getAdDepartmentIds($ad);
+
+			foreach ($departmentIds as $departmentId) {
+				if (!isset($adsCountByDepartmentId[$departmentId])) {
+					$adsCountByDepartmentId[$departmentId] = 0;
+				}
+				$adsCountByDepartmentId[$departmentId]++;
+			}
+		}
+		return $adsCountByDepartmentId;
+	}
+
+	/**
 	 * @param Ad $ad
 	 * @return array
 	 */
@@ -868,6 +891,39 @@ class AdService
 		}
 
 		return array_unique($regionIds);
+	}
+
+	/**
+	 * @param Ad $ad
+	 * @return array
+	 */
+	public function getAdDepartmentIds(Ad $ad)
+	{
+		$departmentIds = [];
+
+		if (count($ad->cities)) {
+			foreach ($ad->cities as $city) {
+				if ($city->department) {
+					$departmentIds[] = $city->department->id;
+				}
+			}
+		}
+
+		if (count($ad->departments)) {
+			foreach ($ad->departments as $department) {
+                $departmentIds[] = $department->id;
+			}
+		}
+
+		if (count($ad->regions)) {
+			foreach ($ad->regions as $region) {
+			    foreach($region->departments as $department) {
+                    $departmentIds[] = $department->id;
+                }
+			}
+		}
+
+		return array_unique($departmentIds);
 	}
 
 	/**

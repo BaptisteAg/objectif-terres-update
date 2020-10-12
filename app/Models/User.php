@@ -60,6 +60,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \App\Models\City|null $zipCode
  * @method static \Illuminate\Database\Eloquent\Builder|User filterAdsTerritoryLocations($territoriesCode)
  * @method static \Illuminate\Database\Eloquent\Builder|User filterLocations($relationshipName, $locationableIds)
+ * @method static \Illuminate\Database\Eloquent\Builder|User filterRegions($regionCode)
  * @method static \Illuminate\Database\Eloquent\Builder|User filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
  * @method static \Illuminate\Database\Eloquent\Builder|User filterSupportRequestRegionId($territoriesId, $userRole)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()

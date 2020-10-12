@@ -3,77 +3,74 @@
 namespace App\Http\Controllers\Locationables;
 
 use App\Http\Controllers\Controller;
-use App\Models\City;
 use App\Models\Department;
 use App\Models\Region;
 use App\Services\Ads\AdService;
 use App\Services\Locations\LocationService;
-use GuzzleHttp\Client;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
 
 class LocationableController extends Controller
 {
-	/**
-	 * @var LocationService
-	 */
-	protected $service;
+    /**
+     * @var LocationService
+     */
+    protected $service;
 
-	public function __construct(LocationService $service)
-	{
-		$this->service = $service;
-	}
+    public function __construct(LocationService $service)
+    {
+        $this->service = $service;
+    }
 
-	public function locations(Request $request)
-	{
-		if (!$request->get('q')) {
-			return response()->json(['error' => 'La requête est vide.']);
-		}
+    public function locations(Request $request)
+    {
+        if (!$request->get('q')) {
+            return response()->json(['error' => 'La requête est vide.']);
+        }
 
-		return response()->json($this->service->searchAll($request->get('q')));
-	}
+        return response()->json($this->service->searchAll($request->get('q')));
+    }
 
-	public function cities(Request $request)
-	{
-		if (!$request->get('q')) {
-			return response()->json(['error' => 'La requête est vide.']);
-		}
+    public function cities(Request $request)
+    {
+        if (!$request->get('q')) {
+            return response()->json(['error' => 'La requête est vide.']);
+        }
 
-		return response()->json(
-			$this->service->searchCities($request->get('q'))
-		);
-	}
+        return response()->json(
+            $this->service->searchCities($request->get('q'))
+        );
+    }
 
-	public function citiesAndDepartments(Request $request)
-	{
-		if (!$request->get('q')) {
-			return response()->json(['error' => 'La requête est vide.']);
-		}
+    public function citiesAndDepartments(Request $request)
+    {
+        if (!$request->get('q')) {
+            return response()->json(['error' => 'La requête est vide.']);
+        }
 
-		return response()->json(
-			$this->service->searchCitiesAndDepartments($request->get('q'))
-		);
-	}
+        return response()->json(
+            $this->service->searchCitiesAndDepartments($request->get('q'))
+        );
+    }
 
-	public function departmentsAndRegions(Request $request)
-	{
-		if (!$request->get('q')) {
-			return response()->json(['error' => 'La requête est vide.']);
-		}
+    public function departmentsAndRegions(Request $request)
+    {
+        if (!$request->get('q')) {
+            return response()->json(['error' => 'La requête est vide.']);
+        }
 
-		return response()->json(
-			$this->service->searchDepartmentsAndRegions($request->get('q'))
-		);
-	}
+        return response()->json(
+            $this->service->searchDepartmentsAndRegions($request->get('q'))
+        );
+    }
 
     public function regionsPolygon(Request $request, AdService $adService)
     {
         if ($request->has('ad_category') && $request->has('offer_type')) {
             $selectedAdType = $request->input('ad_category') . $request->input('offer_type');
         } else {
-            abort('Aucune catégorie d\'annonce séléctionnée');
+            return response()->json([
+                'error' => 'Aucune catégorie d\'annonce séléctionnée'
+            ]);
         }
 
         $adsCountByRegionId = $adService->getPublishedAdsCountByRegionId($selectedAdType);
@@ -93,10 +90,45 @@ class LocationableController extends Controller
         return response()->json($json);
     }
 
+    public function departmentsPolygon(Request $request, AdService $adService)
+    {
+        if ($request->has('ad_category') && $request->has('offer_type')) {
+            $selectedAdType = $request->input('ad_category') . $request->input('offer_type');
+        } else {
+            return response()->json([
+                'error' => 'Aucune catégorie d\'annonce séléctionnée'
+            ]);
+        }
+
+        if ($request->has('region_id')) {
+            $regionId = $request->get("region_id");
+        } else {
+            return response()->json([
+                'error' => 'Aucune région séléctionnée'
+            ]);
+        }
+
+        $adsCountByDepartmentId = $adService->getPublishedAdsCountByDepartmentId($selectedAdType, $regionId);
+
+        /** @var Department[] $departments */
+        $departments = Department::whereIn('id', array_keys($adsCountByDepartmentId))->get();
+
+        $json = [];
+
+        foreach ($departments as $department) {
+            $geoPolygon = $this->service->getLocationGeoPolygon($department->name);
+            $geoPolygon->department_id = $department->id;
+            $geoPolygon->ads_count = $adsCountByDepartmentId[$department->id];
+            $json[] = $geoPolygon;
+        }
+
+        return response()->json($json);
+    }
+
     public function adLocations(Request $request, AdService $adService)
     {
         $json = [];
-        foreach($request->get("names") as $name) {
+        foreach ($request->get("names") as $name) {
 
             $json[] = $this->service->getLocationGeoPolygon($name);
         }

@@ -35,19 +35,38 @@ trait ScopeLocationFilterable
 		});
 	}
 
-	/**
-	 * @param Builder $query
-	 * @param array $territoriesCode
-	 */
-	function scopeFilterAdsTerritoryLocations(Builder $query, array $territoriesCode)
-	{
-		$query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
-			$query->whereIn('code', $territoriesCode);
-		});
-		$query->orWhereHas('cities', function (Builder $query) use ($territoriesCode) {
-			$query->whereIn('department_code', $territoriesCode);
-		});
-	}
+    /**
+     * @param Builder $query
+     * @param array $territoriesCode
+     */
+    function scopeFilterRegions(Builder $query, $regionCode)
+    {
+        $query->whereHas('departments', function (Builder $query) use ($regionCode) {
+            $query->where('region_code', $regionCode);
+        });
+        $query->orWhereHas('cities', function (Builder $query) use ($regionCode) {
+            $query->whereHas('department', function (Builder $query) use ($regionCode) {
+                $query->where('region_code', $regionCode);
+            });
+        });
+        $query->orWhereHas('regions', function (Builder $query) use ($regionCode) {
+            $query->where('code', $regionCode);
+        });
+    }
+
+    /**
+     * @param Builder $query
+     * @param array $territoriesCode
+     */
+    function scopeFilterAdsTerritoryLocations(Builder $query, array $territoriesCode)
+    {
+        $query->whereHas('departments', function (Builder $query) use ($territoriesCode) {
+            $query->whereIn('code', $territoriesCode);
+        });
+        $query->orWhereHas('cities', function (Builder $query) use ($territoriesCode) {
+            $query->whereIn('department_code', $territoriesCode);
+        });
+    }
 
 	/**
 	 * @param Builder $query

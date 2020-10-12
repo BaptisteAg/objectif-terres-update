@@ -11,6 +11,7 @@
 
 @section('main-content')
     <div id="global-map"></div>
+
     <section class="section">
         <div class="container">
             <div class="has-text-centered ">
