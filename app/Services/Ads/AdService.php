@@ -260,7 +260,7 @@ class AdService
             $availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
 
             if ($availableModerators->isEmpty() && empty($availableUserWithPermission)) {
-                throw new AttributionAdException("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
+                throw new AttributionAdException("Aucun modérateur n'a été trouvé dans les départements ".implode(", ",$adDepartmentCodes));
             }
 
             // Modérateur
