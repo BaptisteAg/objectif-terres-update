@@ -13,8 +13,7 @@
 
 
 -- Listage de la structure de la base pour objectifterres
-CREATE DATABASE IF NOT EXISTS `objectifterres` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `objectifterres`;
+
 
 -- Listage des données de la table objectifterres.users : ~100 rows (environ)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
