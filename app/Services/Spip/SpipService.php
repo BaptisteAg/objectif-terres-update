@@ -3,13 +3,16 @@
 use App\Models\City;
 use App\Models\Spip\Article;
 use App\Models\Spip\Auteur;
+use App\Models\Spip\Document;
 use App\Models\Spip\Mot;
 use App\Repositories\Users\UserRepository;
+use App\Services\Documents\DocumentService;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\File\File;
 
 class SpipService
 {
@@ -21,11 +24,15 @@ class SpipService
      * @var UserRepository
      */
     private $localUserRepository;
+    /**
+     * @var DocumentService
+     */
+    protected $documentService;
 
-    public function __construct(DatabaseManager $db, UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, DocumentService $documentService)
     {
-//        $this->db = $db->connection('mysql_spip');
         $this->localUserRepository = $userRepository;
+        $this->documentService = $documentService;
     }
 
     public function userExists(string $email)
@@ -140,7 +147,24 @@ class SpipService
         return $offerGenres;
     }
 
-    public function getLocalAdMapping(Article $article)
+    public function getLocalDocumentsMapping(Collection $spipDocuments, $userId)
+    {
+        $documentIds = [];
+
+        foreach($spipDocuments as $document) {
+            $filePath = str_replace("/", DIRECTORY_SEPARATOR, storage_path('app/spip/'.$document->fichier));
+            if(!is_file($filePath)) {
+                continue;
+            }
+            $file = new File($filePath);
+            $document = $this->documentService->create($file, 'ads/'.$userId, $userId);
+            $documentIds[] = $document->id;
+        }
+
+        return $documentIds;
+    }
+
+    public function getLocalAdMapping(Article $article, $userId)
     {
         $offerGenres = $this->getLocalOfferGenresMapping($article->mots);
         $isBuyOffer = in_array(7, $offerGenres);
@@ -163,7 +187,14 @@ class SpipService
                 'offer_genres' => $offerGenres,
                 'price' => $isBuyOffer ? $article->prix : '',
                 'rent_price' => $isBuyOffer ? '' : $article->prix,
-            ]
+            ],
+            'job_offer' => [
+
+            ],
+            'job_seek' => [
+
+            ],
+            'document_ids' => $this->getLocalDocumentsMapping($article->documents, $userId)
         ];
     }
 

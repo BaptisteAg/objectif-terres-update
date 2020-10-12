@@ -39,7 +39,8 @@ require('./pages/supervisor/supervisor');
 require('./pages/video');
 require('./pages/cms/cms-page');
 require('./pages/homepage/homepage');
-require('./pages/responseTemplates/responseTemplates')
+require('./pages/researches/researches');
+require('./pages/responseTemplates/responseTemplates');
 
 //////////////
 // GLOBAL

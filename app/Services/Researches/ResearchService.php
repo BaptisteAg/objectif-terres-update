@@ -201,7 +201,6 @@ class ResearchService
 	 */
 	public function filter(Request $filters)
 	{
-		$ads = collect();
 		$adsFilter = (new Ad)->newQuery();
 		//Filter by type of ads
 		$adsTypeSelected = '';

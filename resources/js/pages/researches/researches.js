@@ -1,5 +1,6 @@
-import {Pagination} from 'vue-pagination-2';
+import OSMapControllerFactory from "../../map"
 
+/*import {Pagination} from 'vue-pagination-2';
 import Vue from 'vue';
 
 Vue.Component('search', {
@@ -11,4 +12,34 @@ Vue.Component('search', {
             theme : 'bulma',
         },
     }
-});
+});*/
+
+
+window.regionMapInit  = async function (mapId, fetchOptions) {
+    const mapController = await OSMapControllerFactory(mapId);
+
+    const departmentsPolygonData = await fetchJson('/locations/polygon/departments/', fetchOptions);
+
+    let featureGroup = mapController.addFeatureGroup();
+
+    departmentsPolygonData.forEach(polygonData => {
+        const polygon = mapController.addPolygon(polygonData, {
+            smoothFactor: 2
+        });
+
+        featureGroup.addLayer(polygon);
+
+        polygon.addEventListener('click', _ => {
+            location.href = "/recherche?" +
+                "offer_type=" + fetchOptions.offer_type +
+                "&ad_category=" + fetchOptions.ad_category +
+                '&departments_location_researches_ids[]=' + polygonData.department_id;
+        });
+
+        mapController.bindTooltip(polygon, polygonData.ads_count.toString() + " annonce "+(polygonData.ads_count > 1 ? "s" : ''), {
+            className: "leaflet-tooltip-big"
+        })
+    });
+
+    mapController.fitBounds(featureGroup.getBounds());
+};

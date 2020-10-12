@@ -254,40 +254,38 @@ class AdService
 
 		$ad = $this->repository->createForUser($data, $userId);
 
-		if (!$data["is_draft"]) {
-			$adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
-			$availableModerators = $this->userService->findByRolesAndDepartments([1], $adDepartmentCodes);
-			$availableSupervisors = $this->userService->findByRolesAndDepartments([3], $adDepartmentCodes);
-			$availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
+        if(!$data["is_draft"]) {
+            $adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
+            $availableModerators = $this->userService->findByRolesAndDepartments([1], $adDepartmentCodes);
+            $availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
 
-			if ($availableModerators->isEmpty() && $availableSupervisors->isEmpty() && empty($availableUserWithPermission)) {
-				throw new AttributionAdException("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
-			}
-			// If ad was attributed before, we'll get the same moderator if available
-			if ($ad->attributionAd && $ad->attributionAd->userModerator &&
-				$availableModerators->keyBy("id")->find($ad->attributionAd->user_moderator_id)) {
-				$moderator = $ad->attributionAd->userModerator;
-			} else {
-				if ($availableModerators->count() >= 1) {
-					/** @var User $moderator */
-					$moderator = $availableModerators->random();
-				} else if (!empty($availableUserWithPermission)) {
-					$moderator = $availableUserWithPermission;
-				} else {
-					/** @var User $moderator */
-					$moderator = $availableSupervisors->random();
-				}
-			}
-			$attributionAdData['ad_status_id'] = AdStatus::PENDING_MODERATION_STATUS_ID;
-			$attributionAdData['user_moderator_id'] = $moderator->id;
-			$attributionAdData['ad_id'] = $ad->id;
+            if ($availableModerators->isEmpty() && empty($availableUserWithPermission)) {
+                throw new AttributionAdException("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
+            }
+
+            // Modérateur
+            if ($availableModerators->count() >= 1) {
+                /** @var User $moderator */
+                $moderator = $availableModerators->random();
+            }
+            // Sinon utilisateurs avec permissions spéciales
+            else if (!empty($availableUserWithPermission)) {
+                $moderator = $availableUserWithPermission;
+            }
+
+            // Annonce déjà approuvée sur SPIP
+            $attributionAdData['ad_status_id'] = AdStatus::APPROVE_ID;
+            $attributionAdData['user_moderator_id'] = $moderator->id;
+            $attributionAdData['ad_id'] = $ad->id;
 
 			$this->attributionAdsRepository->create($attributionAdData);
 		}
 
-		$subAdData = $data[$data["ad_type"]];
-		$subAdData["ad_id"] = $ad->id;
-		$this->createSubAd($data["ad_type"], $subAdData);
+        if(isset($data[$data["ad_type"]])) {
+            $subAdData = $data[$data["ad_type"]];
+            $subAdData["ad_id"] = $ad->id;
+            $this->createSubAd($data["ad_type"], $subAdData);
+        }
 
 		DB::commit();
 		return $ad;
@@ -837,6 +835,29 @@ class AdService
 	}
 
 	/**
+	 * @param $selectedAdType
+	 * @return array
+	 */
+	public function getPublishedAdsCountByDepartmentId($selectedAdType, $regionId)
+	{
+		$adsCountByDepartmentId = [];
+
+		$regionCode = Region::find($regionId)->code;
+
+		foreach ($this->repository->findAllPublishedInRegionWithLocations($selectedAdType, $regionCode) as $ad) {
+			$departmentIds = $this->getAdDepartmentIds($ad);
+
+			foreach ($departmentIds as $departmentId) {
+				if (!isset($adsCountByDepartmentId[$departmentId])) {
+					$adsCountByDepartmentId[$departmentId] = 0;
+				}
+				$adsCountByDepartmentId[$departmentId]++;
+			}
+		}
+		return $adsCountByDepartmentId;
+	}
+
+	/**
 	 * @param Ad $ad
 	 * @return array
 	 */
@@ -870,6 +891,39 @@ class AdService
 		}
 
 		return array_unique($regionIds);
+	}
+
+	/**
+	 * @param Ad $ad
+	 * @return array
+	 */
+	public function getAdDepartmentIds(Ad $ad)
+	{
+		$departmentIds = [];
+
+		if (count($ad->cities)) {
+			foreach ($ad->cities as $city) {
+				if ($city->department) {
+					$departmentIds[] = $city->department->id;
+				}
+			}
+		}
+
+		if (count($ad->departments)) {
+			foreach ($ad->departments as $department) {
+                $departmentIds[] = $department->id;
+			}
+		}
+
+		if (count($ad->regions)) {
+			foreach ($ad->regions as $region) {
+			    foreach($region->departments as $department) {
+                    $departmentIds[] = $department->id;
+                }
+			}
+		}
+
+		return array_unique($departmentIds);
 	}
 
 	/**

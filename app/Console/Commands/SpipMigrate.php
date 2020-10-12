@@ -81,10 +81,12 @@ class SpipMigrate extends Command
 
             foreach($auteur->articles as $article) {
                 $ad = $this->adService->importAd(
-                    $this->spipService->getLocalAdMapping($article),
+                    $this->spipService->getLocalAdMapping($article, $user->id),
                     $user->id
                 );
             }
         });
+
+
     }
 }
