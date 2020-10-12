@@ -9,7 +9,8 @@ use App\Services\Researches\ResearchService;
 use Illuminate\Http\Request;
 
 
-class ResearchesController extends Controller
+class
+ResearchesController extends Controller
 {
 	private $researchService;
 	private $researchNotification;
@@ -33,7 +34,7 @@ class ResearchesController extends Controller
 	{
 		list ($ads, $adsType) = $this->researchService->index($request);
 		$request->flash();
-		return view('pages.researches', compact('ads', 'adsType'));
+		return view('pages.researches', compact('ads', 'adsType', 'request'));
 	}
 
 	/**

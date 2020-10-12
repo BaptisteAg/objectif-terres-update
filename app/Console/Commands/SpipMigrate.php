@@ -69,8 +69,6 @@ class SpipMigrate extends Command
 
         print_r("Found $userCount users and $adCount ads.\n");
 
-
-
         $spipAdsByUser->each(function (Auteur $auteur) {
             User::where('email', $auteur->email)->forceDelete();
             //dd($auteur->email, $auteur->bio, $auteur->id_auteur);
@@ -83,7 +81,7 @@ class SpipMigrate extends Command
 
             foreach($auteur->articles as $article) {
                 $ad = $this->adService->importAd(
-                    $this->spipService->getLocalAdMapping($article),
+                    $this->spipService->getLocalAdMapping($article, $user->id),
                     $user->id
                 );
             }

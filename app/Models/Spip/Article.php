@@ -78,7 +78,9 @@ namespace App\Models\Spip;
  * @property string $champtitre3
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Spip\Auteur[] $auteurs
  * @property-read int|null $auteurs_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Spip\Auteur[] $mots
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Spip\Document[] $documents
+ * @property-read int|null $documents_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Spip\Mot[] $mots
  * @property-read int|null $mots_count
  * @method static \Illuminate\Database\Eloquent\Builder|Article newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Article newQuery()
@@ -177,6 +179,16 @@ class Article extends SpipModel
             'spip_mots_liens',
             'id_objet',
             'id_mot'
+        )->where('objet', 'article');
+    }
+
+    public function documents()
+    {
+        return $this->belongsToMany(
+            Document::class,
+            'spip_documents_liens',
+            'id_objet',
+            'id_document'
         )->where('objet', 'article');
     }
 }

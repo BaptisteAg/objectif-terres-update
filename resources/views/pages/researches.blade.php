@@ -3,9 +3,15 @@
 @section ('title', 'Rechercher parmis les annonces postées sur Objectif Terres')
 @section('head-script')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
+    <!-- Import Leaflet CSS Style Sheet -->
+    <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css"/>
 @endsection
 
 @section('main-content')
+    @if(!empty($request->get("regions_location_researches_ids")) && count($request->get("regions_location_researches_ids")) === 1)
+        <div id="global-map"></div>
+    @endif
+
     <section class="section pt-0">
         <div class="container">
             <nav class="level">
@@ -351,4 +357,15 @@
             });
         });
     </script>
+
+    @if(!empty($request->get("regions_location_researches_ids")) && count($request->get("regions_location_researches_ids")) === 1)
+        <script defer>
+            regionMapInit('global-map', {
+                region_id: "{{$request->get("regions_location_researches_ids")[0]}}",
+                offer_type: "{{$request->get("offer_type")}}",
+                ad_category: "{{$request->get("ad_category")}}"
+            });
+        </script>
+    @endif
+
 @endsection

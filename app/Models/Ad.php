@@ -59,6 +59,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static Builder|Ad filterAdTypes($adTypesFilters, $relationTableName = '')
  * @method static Builder|Ad filterAdsTerritoryLocations($territoriesCode)
  * @method static Builder|Ad filterLocations($relationshipName, $locationableIds)
+ * @method static Builder|Ad filterRegions($regionCode)
  * @method static Builder|Ad filterSubLocations($relationshipName, $locationableCodes, $locationTargetTableName)
  * @method static Builder|Ad filterSupportRequestRegionId($territoriesId, $userRole)
  * @method static Builder|Ad filterWhereHasIn($data, $relationNameTable, $columnName)
