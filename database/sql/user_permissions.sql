@@ -23,6 +23,8 @@ TRUNCATE TABLE user_permissions;
 
 DELETE FROM `user_permissions` WHERE `id`=1;
 INSERT INTO `user_permissions` (`id`, `user_id`, `permission`, `created_at`, `updated_at`) VALUES (1, 90, 1, '2020-08-26 10:50:27', '2020-08-26 10:50:27');
+DELETE FROM `user_permissions` WHERE `id`=28;
+INSERT INTO `user_permissions` (`id`, `user_id`, `permission`, `created_at`, `updated_at`) VALUES (28, 114, 1, '2020-10-13 10:02:44', '2020-10-13 10:02:45');
 DELETE FROM `user_permissions` WHERE `id`=3;
 INSERT INTO `user_permissions` (`id`, `user_id`, `permission`, `created_at`, `updated_at`) VALUES (3, 89, 1, '2020-09-14 14:34:03', '2020-09-14 14:34:03');
 DELETE FROM `user_permissions` WHERE `id`=5;
