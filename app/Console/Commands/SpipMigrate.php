@@ -86,7 +86,6 @@ class SpipMigrate extends Command
             }
 
             //dd($auteur->email, $auteur->bio, $auteur->id_auteur);
-
             //dd($this->spipService->getLocalUserMapping($auteur));
 
 
