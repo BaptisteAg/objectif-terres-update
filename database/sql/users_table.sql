@@ -18,6 +18,7 @@
 -- Listage des données de la table objectifterres.users : ~100 rows (environ)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 
+TRUNCATE TABLE users;
 
 DELETE FROM `users` WHERE `id`=34;
 INSERT INTO `users` (`id`, `sf_id`, `name`, `first_name`, `phone`, `street`, `city`, `civility`, `profile`, `other_profile`, `accept_communication`, `accept_share_contact_infos`, `email`, `email_verified_at`, `password`, `origin`, `country_id`, `zip_code_id`, `role`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `is_sf_user`) VALUES (34, '005w0000005Klrp', 'Kassamaly', 'Youssouf', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 'y.kassamaly@terredeliens.org', NULL, NULL, NULL, NULL, NULL, 4, NULL, '2020-06-24 16:50:57', '2020-10-07 08:45:00', NULL, 1);
