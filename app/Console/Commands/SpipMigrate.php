@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Ad;
 use App\Models\Spip\Auteur;
 use App\Models\User;
 use App\Services\Ads\AdService;
@@ -70,14 +71,24 @@ class SpipMigrate extends Command
         print_r("Found $userCount users and $adCount ads.\n");
 
         $spipAdsByUser->each(function (Auteur $auteur) {
-            User::where('email', $auteur->email)->forceDelete();
+            $user = User::where('email', $auteur->email)->first();
+
+            if($user) {
+                $user->ads->each(function (Ad $ad) {
+                    $ad->forceDelete();
+                });
+                //$user->forceDelete();
+            }
+            else {
+                $user = $this->userService->create(
+                    $this->spipService->getLocalUserMapping($auteur)
+                );
+            }
+
             //dd($auteur->email, $auteur->bio, $auteur->id_auteur);
 
             //dd($this->spipService->getLocalUserMapping($auteur));
 
-            $user = $this->userService->create(
-                $this->spipService->getLocalUserMapping($auteur)
-            );
 
             foreach($auteur->articles as $article) {
                 $ad = $this->adService->importAd(
