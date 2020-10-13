@@ -19,6 +19,8 @@
 /*!40000 ALTER TABLE `locationable_users` DISABLE KEYS */;
 
 
+TRUNCATE TABLE locationable_users;
+
 DELETE FROM `locationable_users` WHERE `id`=1;
 INSERT INTO `locationable_users` (`id`, `user_id`, `locationable_user_id`, `locationable_user_type`, `created_at`, `updated_at`) VALUES (1, 32, 21, 'App\\Models\\Department', NULL, NULL);
 DELETE FROM `locationable_users` WHERE `id`=2;
