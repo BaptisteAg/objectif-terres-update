@@ -256,6 +256,11 @@ class AdService
 
         if(!$data["is_draft"]) {
             $adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
+
+            if(empty($adDepartmentCodes)) {
+                dd($data);
+            }
+
             $availableModerators = $this->userService->findByRolesAndDepartments([1], $adDepartmentCodes);
             $availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
 
@@ -357,6 +362,7 @@ class AdService
 				}
 			}
 		}
+
 		return array_unique($departmentsCode);
 	}
 

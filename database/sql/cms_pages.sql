@@ -18,8 +18,6 @@
 -- Listage des données de la table objectifterres.cms_pages : ~54 rows (environ)
 /*!40000 ALTER TABLE `cms_pages` DISABLE KEYS */;
 
-TRUNCATE TABLE cms_pages;
-
 DELETE FROM `cms_pages` WHERE `id`=30;
 INSERT INTO `cms_pages` (`id`, `page_name`, `slug`, `description`, `content`, `created_at`, `updated_at`, `has_documents`) VALUES (30, 'Bandeau de participation', 'bandeau-de-participation-soutenir-terre-de-liens-cest-preserver-notre-avenir', 'Soutenir Terre de Liens c’est préserver notre avenir', '<h2>Titre Section</h2><p>Est sequi adipisci nulla dicta provident incidunt amet occaecati. Doloremque omnis et numquam commodi. Atque ut reiciendis ipsum magni nesciunt.\n\nExplicabo velit dolorem minus ullam eos optio. Blanditiis modi et quis occaecati nostrum qui non. Ducimus dolores et quos veritatis.</p>', '2020-08-28 16:47:20', '2020-08-28 16:47:20', 0);
 DELETE FROM `cms_pages` WHERE `id`=31;

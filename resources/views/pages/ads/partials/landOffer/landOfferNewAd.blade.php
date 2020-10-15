@@ -693,22 +693,21 @@
                         ?>
                         @include('pages.ads.partials.inputs.title', ["tooltip"=>$titleTooltip])
 
-                        @if(!empty($isSupportRequest))
-                            <div class="field">
-                                {!! Form::label('land_offer[is_beneficiary]', 'Je remplis ce formulaire', ['class' => 'label']); !!}
-                                <div class="select">
-                                    {!! Form::select('land_offer[is_beneficiary]',
-                                             ['1' => 'En mon nom',
-                                             '0' => 'Pour une autre personne'],
-                                              $old['land_offer']['is_beneficiary'] ?? null,
-                                              [
-                                                  'placeholder' => 'Veuillez sélectionner...',
-                                                  ':disabled' => 'isInputDisabled',
-                                                  'aria-describedby'=>'isBeneficiaryError'
-                                      ]); !!}
-                                </div>
+
+                        <div class="field">
+                            {!! Form::label('land_offer[is_beneficiary]', 'Je remplis ce formulaire', ['class' => 'label']); !!}
+                            <div class="select">
+                                {!! Form::select('land_offer[is_beneficiary]',
+                                         ['1' => 'En mon nom',
+                                         '0' => 'Pour une autre personne'],
+                                          $old['land_offer']['is_beneficiary'] ?? null,
+                                          [
+                                              'placeholder' => 'Veuillez sélectionner...',
+                                              ':disabled' => 'isInputDisabled',
+                                              'aria-describedby'=>'isBeneficiaryError'
+                                  ]); !!}
                             </div>
-                        @endif
+                        </div>
 
                         @include('pages.ads.partials.inputs.documents')
 

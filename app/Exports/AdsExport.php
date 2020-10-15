@@ -13,9 +13,9 @@ class AdsExport implements FromView,  WithTitle, WithColumnWidths
 
 	/**
 	 * AdsExport constructor.
-	 * @param object $ads
+	 * @param array $ads
 	 */
-	public function __construct(object $ads){
+	public function __construct(array $ads){
 		$this->ads = $ads;
 	}
 

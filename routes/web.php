@@ -202,3 +202,5 @@ Route::prefix('motdepasse')->name('password.')->group(function () {
 	Route::get('reinitialiser/{token}', 'Auth\ResetPasswordController@showResetForm')->name('reset');
 	Route::post('reinitialiser', 'Auth\ResetPasswordController@reset')->name('update');
 });
+
+Route::post('newsletter', 'Newsletter\NewsletterController@create');
