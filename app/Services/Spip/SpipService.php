@@ -57,6 +57,9 @@ class SpipService
      */
     public function getAllUsersWithAds()
     {
+
+        DB::enableQueryLog();
+
         $auteurs = Auteur::with(['articles', 'articles.mots'])
             ->whereExists(function (Builder $query) {
             $query->select(DB::raw(1))
@@ -65,7 +68,6 @@ class SpipService
                 ->where('objet', 'article');
             })
             ->where('email', '<>', '')
-            ->where('bio', '<>', '')
             ->get();
 
         return $auteurs;
@@ -85,6 +87,8 @@ class SpipService
         $adTypeMapping = [
             4 => "land_offer",
             5 => "land_offer",
+            207 => "job_offer",
+            210 => "job_seek",
         ];
 
         foreach($motIds as $motId) {
@@ -97,6 +101,8 @@ class SpipService
     public function getLocalRegionMapping(Collection $mots)
     {
         $motIds = $mots->pluck("id_mot", "id_mot");
+
+        //dd($motIds);
 
         $regionMapping = [
             162 => 11,
@@ -174,6 +180,7 @@ class SpipService
             'about_content' => utf8_encode($article->surtitre),
             'about_project_content' => utf8_encode($article->texte),
             'created_at' =>  $article->date,
+            'updated_at' => $article->maj,
             'is_draft' => $article->statut !== "publie" ? 1 : 0,
             'ad_type' => $this->getLocalAdTypeMapping($article->mots),
             'locationable' => [

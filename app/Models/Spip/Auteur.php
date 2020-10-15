@@ -84,6 +84,8 @@ class Auteur extends SpipModel
     protected $table = "spip_auteurs";
     protected $primaryKey = "id_auteur";
 
+    public $timestamps = false;
+
     public function articles()
     {
         return $this->belongsToMany(

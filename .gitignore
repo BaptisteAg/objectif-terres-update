@@ -6,6 +6,7 @@
 /public/mix-manifest.json
 /storage/*.key
 /storage/app/spip
+/storage/framework/laravel-excel
 /vendor
 .env
 .env.backup

@@ -47,23 +47,26 @@
                     </div>
                 </div>
                 <div class="column is-6-desktop pl-xl-50 pr-xl-50">
-                    <h6 class="title is-6 text_white footer-site__title">NEWSLETTER TERRE DE LIENS</h6>
-                    <p>On l’appelle newsletter, mais c’est beaucoup plus ! Suivez notre mouvement en vous abonnant.</p>
-                    <div class="columns is-gapless is-mobile">
-                        <div class="column">
-                            <div class="field">
-                                <p class="control has-icons-left has-icons-right is-marginless">
-                                    <input class="input" type="email" placeholder="email">
-                                    <span class="icon is-small is-left">
-                                        <i class="fas fa-envelope"></i>
-                                    </span>
-                                </p>
+                    <form method="post" action="/newsletter">
+                        {{ csrf_field() }}
+                        <h6 class="title is-6 text_white footer-site__title">NEWSLETTER TERRE DE LIENS</h6>
+                        <p>On l’appelle newsletter, mais c’est beaucoup plus ! Suivez notre mouvement en vous abonnant.</p>
+                        <div class="columns is-gapless is-mobile">
+                            <div class="column">
+                                <div class="field">
+                                    <p class="control has-icons-left has-icons-right is-marginless">
+                                        <input class="input" type="email" placeholder="email" name="email">
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="column is-narrow">
+                                <button class="button is-normal is-link form-button basic primary">S'abonner</button>
                             </div>
                         </div>
-                        <div class="column is-narrow">
-                            <button class="button is-normal is-link form-button basic primary">S'abonner</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
