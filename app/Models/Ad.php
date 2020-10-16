@@ -110,7 +110,8 @@ class Ad extends Model implements HasPresenter
 		'support_request_text',
 		'support_request_id_region',
 		'support_request_territory_id',
-		'is_partner'
+		'is_partner',
+        'created_at'
 	];
 
 	/**

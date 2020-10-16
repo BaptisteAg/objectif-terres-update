@@ -195,23 +195,26 @@ class SpipMigrate extends Command
         \Excel::store(new UsersExport($importedUsers), 'spip_users.xlsx');
         \Excel::store(new AdsExport($importedAds), 'spip_ads.xlsx');
 
-        $stats["land_seek"] = collect($importedAds)->filter(function ($ad) {
+        $ads = collect($importedAds)->splice(0,1);
+        $users = collect($importedUsers)->splice(0,1);
+
+        $stats["land_seek"] = $ads->filter(function ($ad) {
             return $ad["ad_type"] === "land_seek";
         })->count();
-        $stats["land_offer"] = collect($importedAds)->filter(function ($ad) {
+        $stats["land_offer"] = $ads->filter(function ($ad) {
             return $ad["ad_type"] === "land_offer";
         })->count();
-        $stats["job_seek"] = collect($importedAds)->filter(function ($ad) {
+        $stats["job_seek"] = $ads->filter(function ($ad) {
             return $ad["ad_type"] === "job_seek";
         })->count();
-        $stats["job_offer"] = collect($importedAds)->filter(function ($ad) {
+        $stats["job_offer"] = $ads->filter(function ($ad) {
             return $ad["ad_type"] === "job_offer";
         })->count();
 
-        $stats["users_without_ad"] = collect($importedUsers)->filter(function ($user) {
+        $stats["users_without_ad"] = $users->filter(function ($user) {
             return $user["ads_count"] === 0;
         })->count();
-        $stats["users_with_more_than_1_ad"] = collect($importedUsers)->filter(function ($user) {
+        $stats["users_with_more_than_1_ad"] = $users->filter(function ($user) {
             return $user["ads_count"] > 1;
         })->count();
 
