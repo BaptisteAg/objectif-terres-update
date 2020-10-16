@@ -82,6 +82,7 @@ namespace App\Models\Spip;
  * @property-read int|null $documents_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Spip\Mot[] $mots
  * @property-read int|null $mots_count
+ * @property-read \App\Models\Spip\Url|null $url
  * @method static \Illuminate\Database\Eloquent\Builder|Article newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Article newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Article query()
@@ -190,5 +191,11 @@ class Article extends SpipModel
             'id_objet',
             'id_document'
         )->where('objet', 'article');
+    }
+
+    public function url()
+    {
+        return $this->hasOne(Url::class, 'id_objet', 'id_article')
+            ->where('type', 'article');
     }
 }

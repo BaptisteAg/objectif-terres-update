@@ -60,7 +60,7 @@ class SpipService
 
         DB::enableQueryLog();
 
-        $auteurs = Auteur::with(['articles', 'articles.mots'])
+        $auteurs = Auteur::with(['articles', 'articles.mots', 'articles.url'])
             ->whereExists(function (Builder $query) {
             $query->select(DB::raw(1))
                 ->from('spip_auteurs_liens')
@@ -86,7 +86,7 @@ class SpipService
 
         $adTypeMapping = [
             4 => "land_offer",
-            5 => "land_offer",
+            5 => "land_seek",
             207 => "job_offer",
             210 => "job_seek",
         ];
@@ -168,6 +168,11 @@ class SpipService
         }
 
         return $documentIds;
+    }
+
+    public function hasAdType(Article $article)
+    {
+        return !empty($this->getLocalAdTypeMapping($article->mots));
     }
 
     public function getLocalAdMapping(Article $article, $userId)
