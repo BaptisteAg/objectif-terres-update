@@ -248,7 +248,7 @@ class AdService
 	 * @throws \Exception
 	 * @throws Throwable
 	 */
-	public function importAd(array $data, $userId)
+	public function importAd(array $data, $userId) : Ad
 	{
 		DB::beginTransaction();
 
