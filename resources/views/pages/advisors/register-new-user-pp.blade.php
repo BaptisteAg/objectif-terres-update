@@ -172,7 +172,7 @@
 									@enderror
 								</div>
 							</div>
-							<div v-if="optionProfileSelected === '8'" class="column is-half">
+							<div v-if="optionProfileSelected === '7'" class="column is-half">
 								<div class="field">
 									<label class="label">Situation autre </label>
 									<p class="control has-icons-left has-icons-right">

@@ -36,7 +36,7 @@ window.regionMapInit  = async function (mapId, fetchOptions) {
                 '&departments_location_researches_ids[]=' + polygonData.department_id;
         });
 
-        mapController.bindTooltip(polygon, polygonData.ads_count.toString() + " annonce "+(polygonData.ads_count > 1 ? "s" : ''), {
+        mapController.bindTooltip(polygon, polygonData.ads_count.toString() + " annonce"+(polygonData.ads_count > 1 ? "s" : ''), {
             className: "leaflet-tooltip-big"
         })
     });

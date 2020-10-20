@@ -247,7 +247,7 @@
                                     name="land_offer[bio_certifications][]"
                                     v-model="formInput.bioCertifications"
                                     :clear-other-values="{{json_encode($bioCertifications->filter(function ($v) {
-                                        return in_array($v->name, ['Aucune', 'En conversion']);
+                                        return in_array($v->name, ['Aucune', 'En conversion', 'Je ne sais pas']);
                                     }))}}"
                                     :show-icons="true"
                                     placeholder="Sélectionnez une ou plusieurs certifications"

@@ -74,10 +74,17 @@
         {{Form::close()}}
 
 
-        <div class="section">
+        <div class="section pt-20">
             @if (count($attributionAds) == 0)
                 <p class="has-text-centered">Aucun résultat</p>
             @else
+                <div class="mb-30">
+                    @if($attributionAds->count() <=1)
+                        <p class="has-text-weight-bold">{{$attributionAds->total()}} résultat</p>
+                    @else
+                        <p class="has-text-weight-bold">{{$attributionAds->total()}} résultats</p>
+                    @endif
+                </div>
                 <div class="table-container">
                     <table id="moderator-list-ads" class="table is-striped is-hoverable is-fullwidth ">
                         <thead>

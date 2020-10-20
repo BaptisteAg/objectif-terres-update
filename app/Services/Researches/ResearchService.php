@@ -283,7 +283,7 @@ class ResearchService
 
 		if ($filters->has('has_picture')) {
 			$adsFilter->whereHas('documents', function (Builder $query) {
-				$query->whereIn('type', 'image');
+				$query->where('type', '=', 'image');
 			});
 		}
 
@@ -303,9 +303,42 @@ class ResearchService
 		}
 
 		$adsFilter->filterAdTypes(array($adsTypeSelected), '');
-		// TODO show only ads approved by moderators
 		$validatedStatus = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first();
 		$adsFilter->filterWhereHasWhere($validatedStatus->id, 'attributionAd', '=', 'ad_status_id');
+
+		//Filter ads by keywords
+		if (!is_null($filters->input('keywords'))) {
+			//TODO refactor properly ans use trait scope
+			$adsFilter->where(function (Builder $query) use ($filters) {
+				$query->where('title', 'like', '%' . $filters->input('keywords') . '%');
+				$query->orWhere('about_content', 'like', '%' . $filters->input('keywords') . '%');
+				$query->orWhere('about_project_content', 'like', '%' . $filters->input('keywords') . '%');
+				$query->orWhere(function (Builder $subQuery) use ($filters) {
+					$subQuery->whereHas('landOfferAd', function (Builder $q) use ($filters) {
+						$q->where('sau_description', 'like', '%' . $filters->input('keywords') . '%');
+						$q->orWhere('water_access_description', 'like', '%' . $filters->input('keywords') . '%');
+						$q->orWhere('test_description', 'like', '%' . $filters->input('keywords') . '%');
+						$q->orWhere(function (Builder $q) use ($filters) {
+							$q->whereHas('building', function (Builder $r) use ($filters) {
+								$r->where('description', 'like', '%' . $filters->input('keywords') . '%');
+
+							});
+							$q->orWhereHas('house', function (Builder $r) use ($filters) {
+								$r->where('description', 'like', '%' . $filters->input('keywords') . '%');
+							});
+						});
+
+					});
+				});
+				$query->orWhere(function (Builder $subQuery) use ($filters) {
+					$subQuery->whereHas('landSeekAd', function (Builder $q) use ($filters) {
+						$q->where('experience_farming', 'like', '%' . $filters->input('keywords') . '%');
+						$q->orWhere('land_description', 'like', '%' . $filters->input('keywords') . '%');
+					});
+				});
+
+			});
+		}
 
 
 		if ($filters->has('order') && $filters->has('sort')) {

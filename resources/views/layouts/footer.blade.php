@@ -78,7 +78,7 @@
                         légales</a></div>
                 <div class="column is-narrow is-paddingless"><a class="menu__link " href="{{url('/')}}">Politique de
                         cookie</a></div>
-                <div class="column is-narrow is-paddingless"><a class="menu__link " href="{{url('/')}}">Conditions
+                <div class="column is-narrow is-paddingless"><a class="menu__link " href="{{route('conditions-utilisation')}}">Conditions
                         d'utilisation</a></div>
                 <div class="column"><span>©<?=date('Y')?> - Terre de Liens | All right reserved</span></div>
             </div>

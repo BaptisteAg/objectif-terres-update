@@ -19,32 +19,32 @@ use Omniphx\Forrest\Exceptions\SalesforceException;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-    //use RegistersUsers;
+	/*
+	|--------------------------------------------------------------------------
+	| Register Controller
+	|--------------------------------------------------------------------------
+	|
+	| This controller handles the registration of new users as well as their
+	| validation and creation. By default this controller uses a trait to
+	| provide this functionality without requiring any additional code.
+	|
+	*/
+	//use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/';
+	/**
+	 * Where to redirect users after registration.
+	 *
+	 * @var string
+	 */
+	protected $redirectTo = '/';
 
-    /** @var UserService  */
+	/** @var UserService */
 	protected $userService;
 
-    /**
-     * @var SalesforceService
-     */
-    protected $salesForceService;
+	/**
+	 * @var SalesforceService
+	 */
+	protected $salesForceService;
 
 	/**
 	 * Create a new controller instance.
@@ -52,40 +52,39 @@ class RegisterController extends Controller
 	 * @param UserService $userService
 	 * @param SalesforceService $salesForceService
 	 */
-    public function __construct(UserService $userService, SalesforceService $salesForceService)
-    {
-        $this->middleware('guest');
-        $this->userService = $userService;
-        $this->salesForceService = $salesForceService;
-    }
+	public function __construct(UserService $userService, SalesforceService $salesForceService)
+	{
+		$this->userService = $userService;
+		$this->salesForceService = $salesForceService;
+	}
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
+	/**
+	 * Get a validator for an incoming registration request.
+	 *
+	 * @param array $data
+	 * @return \Illuminate\Contracts\Validation\Validator
+	 */
+	protected function validator(array $data)
+	{
 		return Validator::make($data, [
 			'name' => ['required', 'string', 'max:255'],
 			'email' => [
-			    'required',
-                'string', 'email',
-                'max:255',
-                'unique:users',
-                app(SalesforceUniqueEmail::class)
-            ],
+				'required',
+				'string', 'email',
+				'max:255',
+				'unique:users',
+				app(SalesforceUniqueEmail::class)
+			],
 			'first_name' => ['required', 'string', 'max:255'],
-			'phone' => ['nullable','string', 'max:30'],
-			'street' => ['nullable','string', 'min:5'],
+			'phone' => ['nullable', 'string', 'max:30'],
+			'street' => ['nullable', 'string', 'min:5'],
 			'civility' => ['required'],
 			'profile' => ['required'],
 			'city_id' => ['required'],
-            'password' => ['required', 'confirmed', 'min:5']
+			'password' => ['required', 'confirmed', 'min:5']
 		], [
-		    'city_id.required' => "Veuillez sélectionner un lieu dans la liste en saisissant les premiers caractères"
-        ]);
+			'city_id.required' => "Veuillez sélectionner un lieu dans la liste en saisissant les premiers caractères"
+		]);
 	}
 
 	/**
@@ -94,36 +93,36 @@ class RegisterController extends Controller
 	 */
 	public function showRegistrationForm()
 	{
+
 		$cities = City::all();
 		return view('auth.register', compact('cities'));
 	}
 
 
-    /**
-     * Handle a registration request for the application.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
-     * @throws \Throwable
-     */
-    public function register(Request $request)
-    {
+	/**
+	 * Handle a registration request for the application.
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
+	 * @throws \Throwable
+	 */
+	public function register(Request $request)
+	{
+
 		$this->validator($request->all())->validate();
+		try {
+			event(new Registered($user = $this->create($request->all())));
+			$this->guard()->login($user);
+		} catch (SalesforceException $exception) {
 
-        try
-        {
-            event(new Registered($user = $this->create($request->all())));
-            $this->guard()->login($user);
-        }
-        catch(SalesforceException $exception)
-        {
-            return back()->withInput()->withErrors(json_decode($exception->getMessage())[0]->message);
-        }
+			return back()->withInput()->withErrors(json_decode($exception->getMessage())[0]->message);
+		}
 
-        session()->flash('success', "Votre compte a été créé et nous vous avons identifié. Bienvenue !");
 
-        return redirect(session('url.intended', '/'));
-    }
+		session()->flash('success', "Votre compte a été créé et nous vous avons identifié. Bienvenue !");
+
+		return redirect(session('url.intended', '/'));
+	}
 
 	/**
 	 * Create a new user instance after a valid registration.
@@ -131,29 +130,29 @@ class RegisterController extends Controller
 	 * @param array $data
 	 * @throws \Throwable
 	 */
-    protected function create(array $data)
-    {
-        //dd($data);
+	protected function create(array $data)
+	{
+		//dd($data);
 
-        $salesForceContact = $this->salesForceService->registerPP($data);
-        $data["sf_id"] = $salesForceContact["id"];
+		$salesForceContact = $this->salesForceService->registerPP($data);
+		$data["sf_id"] = $salesForceContact["id"];
 
 		$user = $this->userService->create($data);
 
-        $this->salesForceService->updateContact($data["sf_id"], [
-            "OT_user_id__c" => $user->id
-        ]);
+		$this->salesForceService->updateContact($data["sf_id"], [
+			"OT_user_id__c" => $user->id
+		]);
 
 		return $user;
 	}
 
-    /**
-     * Get the guard to be used during registration.
-     *
-     * @return \Illuminate\Contracts\Auth\StatefulGuard
-     */
-    protected function guard()
-    {
-        return Auth::guard();
-    }
+	/**
+	 * Get the guard to be used during registration.
+	 *
+	 * @return \Illuminate\Contracts\Auth\StatefulGuard
+	 */
+	protected function guard()
+	{
+		return Auth::guard();
+	}
 }

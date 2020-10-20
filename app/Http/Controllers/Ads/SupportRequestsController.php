@@ -121,7 +121,6 @@ class SupportRequestsController extends BaseController
     {
 
         $data = $request->validated();
-
         /** @var $ad Ad $ad */
         try {
             // If this is an update, we'll skip the publishing/attribution part
@@ -130,6 +129,7 @@ class SupportRequestsController extends BaseController
                 $success = "Votre demande a bien été mise à jour.";
             }
             else {
+
                 $ad = $this->adService->requestPublishing($data, true);
                 $success = 'Votre demande a bien été soumise. Vous receverez une réponse très bientôt !';
 

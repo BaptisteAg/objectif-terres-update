@@ -52,6 +52,7 @@ Route::namespace('Cms')->group(function () {
 	Route::get('ressources-utiles', 'CmsController@ressourcesUtiles')->name('ressources-utiles');
 	Route::get('contactez-nous', 'CmsController@contactezNous')->name('contactez-nous');
 	Route::get('proprietaire-de-foncier', 'CmsController@proprietaireDeFoncier')->name('proprietaire-de-foncier');
+	Route::get('conditions-utilisation', 'CmsController@conditionsUtilisation')->name('conditions-utilisation');
 });
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {

@@ -10,8 +10,8 @@
 @section('main-content')
     <section class="section">
         <div class="container">
-            <div class="rows">
-                <div class="row is-full">
+            <div class="">
+                <div class="">
                     <h1 class="title is-1 has_margin">Confier mes terres à TDL</h1>
                     <p>Faire un legs c’est avant tout et eget risus varius blandit sit amet non magna. Sed
                         posuere consectetur est at lobortis. Vestibulum id ligula porta felis euismod
