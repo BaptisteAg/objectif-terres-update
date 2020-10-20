@@ -41,11 +41,11 @@ class LandOfferAdRepository extends AbstractRepository implements LandOfferAdRep
 
     private function save(LandOfferAd $landOfferAd, array $data)
     {
-        $landOfferAd->fill($data);
+		$landOfferAd->fill($data);
 
-        $landOfferAd->save();
+		$landOfferAd->save();
 
-        $landOfferAd->productionGenres()->sync($data["production_genres"] ?? []);
+		$landOfferAd->productionGenres()->sync($data["production_genres"] ?? []);
 
         $landOfferAd->productionGenresPossible()->detach();
         foreach($data["production_genres_wanted"] ?? [] as $productionGenreId) {

@@ -203,6 +203,13 @@ class CmsPageSeeder extends Seeder
 				'has_documents' => 0
 			],
 			[
+				'page_name' => 'Conditions utilisation',
+				"description" => 'Toutes les conditions d\'utilisation du site d\'Objectif Terres',
+				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				'has_documents' => 0
+			],
+			[
 				'page_name' => 'Aide et Ressources',
 				"description" => 'Responsable Territorial-Text d\'introduction',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -298,8 +305,8 @@ class CmsPageSeeder extends Seeder
 //		}
 
 
-		$cmsPages  = CmsPage::all();
-		foreach($cmsPages as $cmsPage){
+		$cmsPages = CmsPage::all();
+		foreach ($cmsPages as $cmsPage) {
 			$cmsPage->setSlugAttribute();
 			$cmsPage->save();
 		}
@@ -316,8 +323,6 @@ class CmsPageSeeder extends Seeder
 				'has_documents' => 0
 			]);
 		}
-
-
 
 
 	}

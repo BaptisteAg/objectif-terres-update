@@ -36,12 +36,18 @@
 			{{ form::label('price_max', 'Prix maximum', ['class' => 'label']) }}
 			{{ form::number('price_max', '', ['min' => '0', 'class' => 'input',]) }}
 		</div>
-
+		<div v-else>
+			<div class="field">
+				{!! Form::label('keywords', 'Recherche par mot clé', ['class' => 'label']); !!}
+				<input name="keywords" class="input" type="text" placeholder="Votre recherche..."
+					   value="{{old('keywords')}}">
+			</div>
+		</div>
 	</div>
 	<div class="column if-full-mobile is-one-third-desktop" v-if="offerTypeSelected === 'OfferAd'">
         <div class="field is-flex">
             <label class="checkbox">
-                <input type="checkbox" name="has_pics" value="1" {{ old('has_pics') === "1" ? ' checked' : '' }}>
+                <input type="checkbox" name="has_picture" value="1" {{ old('has_picture') === "1" ? ' checked' : '' }}>
                 Avec photos
             </label>
             <label class="checkbox">
@@ -72,6 +78,11 @@
                     placeholder="Choississez">
             </multi-select>
         </div>
+		<div class="field ">
+			{!! Form::label('keywords', 'Recherche par mot clé', ['class' => 'label']); !!}
+			<input name="keywords" class="input" type="text" placeholder="Votre recherche..."
+				   value="{{old('keywords')}}">
+		</div>
     </div>
 </div>
 

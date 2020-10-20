@@ -34,17 +34,13 @@
             </div>
         </div>
     @endguest
-    <section class="section">
+    <section>
         <div class="container">
-            <div class="rows">
-                <div class="row is-full">
-                    @if(isset($pageContent))
-                        @if($pageContent->has('etre-accompagne-texte-dintroduction-sous-le-titre-principal'))
-                            {!! $pageContent['etre-accompagne-texte-dintroduction-sous-le-titre-principal']->content !!}
-                        @endif
-                    @endif
-                </div>
-            </div>
+            @if(isset($pageContent))
+                @if($pageContent->has('etre-accompagne-texte-dintroduction-sous-le-titre-principal'))
+                    {!! $pageContent['etre-accompagne-texte-dintroduction-sous-le-titre-principal']->content !!}
+                @endif
+            @endif
         </div>
     </section>
 
@@ -108,19 +104,21 @@
     </section>
 
 
-    <section class="section pt-0 mt-0" id="support-request-vue">
+    <section class="section pt-0 mt-0 bg-trame_champs_light bg-l-cream" id="support-request-vue">
         <support-request-start inline-template
                                :text-regions="{{json_encode($pageContent)}}">
             <form method="post">
                 @csrf
-                <div class="container">
+                <div class="container pt-10">
                     <h2 class="title is-2 has-text-centered">Choisissez votre territoire</h2>
-                    <div class="section has-text-centered">
+                    <div class="has-text-centered">
                         <div class="is-half">
                             Terre de Liens peut accompagner les projets d’offre ou de recherche de foncier agricole.<br>
                             Pour connaître nos modalités d’accueil,
-                            <span class="is-size-5 has-text-weight-bold ">indiquez la région concernée par votre projet </span>.<br>
-                            Par exemple, si vous habitez en Rhône-Alpes mais que vous souhaitez vous installez en Midi-Pyrénées, il vous faut sélectionner le territoire Midi-Pyrénées.
+                            <span class="is-size-5 has-text-weight-bold ">indiquez la région concernée par votre
+                                projet </span>.<br>
+                            Par exemple, si vous habitez en Rhône-Alpes mais que vous souhaitez vous installez en
+                            Midi-Pyrénées, il vous faut sélectionner le territoire Midi-Pyrénées.
                         </div>
                         <br>
                         <div class="has-text-centered">

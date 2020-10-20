@@ -39,7 +39,7 @@
                             <p class="help is-danger"
                                style="margin-top: 30px;"
                                v-if="$v.formInput.surfaceRangeMax.$error">
-                                Ce champ est requis.
+                                Indiquez une valeur supérieure à zéro.
                             </p>
                         </div>
                         <br>

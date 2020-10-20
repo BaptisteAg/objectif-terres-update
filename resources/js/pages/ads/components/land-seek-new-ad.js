@@ -89,14 +89,14 @@ export default Vue.extend({
                 },
                 landDescription: {
                     minLength: minLength(5),
-                    maxLength: maxLength(1000),
+                    maxLength: maxLength(1500),
                 },
                 productionGenres: {required},
                 installationTypeId: {required},
                 rentMax: {numeric},
                 experienceFarming: {
                     minLength: minLength(5),
-                    maxLength: maxLength(1000),
+                    maxLength: maxLength(1500),
                 },
                 chartConfirmation: {
                     checked(v) {
