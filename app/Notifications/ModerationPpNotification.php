@@ -42,7 +42,7 @@ class ModerationPpNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
 		return (new MailMessage)
-			->subject('Votre annonce a été modérée ! | Objectif terres ')
+			->subject('Votre annonce a été modérée')
 			->greeting('Bonjour,')
 			->line( $this->data['message'])
 			->action( $this->data['action'], url($this->data['url']))

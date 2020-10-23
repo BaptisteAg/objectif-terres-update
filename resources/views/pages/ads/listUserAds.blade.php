@@ -231,7 +231,7 @@
             <section class="section">
                 <pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
             </section>
-            @include('components.section-orientation-terre-liens')
+{{--            @include('components.section-orientation-terre-liens')--}}
         </div>
     </section>
 @endsection

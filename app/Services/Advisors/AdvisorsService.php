@@ -115,17 +115,6 @@ class AdvisorsService
 	}
 
 	/**
-	 * @param int $adId
-	 * @return Thread| null
-	 */
-	public function findSupportRequestThread(int $adId)
-	{
-		/** @var Thread $thread */
-		$thread = $this->threadRepository->findThreadByUserIdAndAdId(auth()->id(), $adId)->first();
-		return $thread;
-	}
-
-	/**
 	 * @param array $data
 	 * @return Thread
 	 */
@@ -144,23 +133,6 @@ class AdvisorsService
 	{
 		$projects = $this->projectRepository->findAllByUserIdAndUserRoleAndSupportStageIdAndSupportStateId(auth()->user()->id, auth()->user()->role, $supportStageId, $supportStateId);
 		return $projects;
-	}
-
-	/**
-	 * @param int $adId
-	 * @return Thread|null
-	 * @throws Throwable
-	 */
-	public function createSupportRequestThread(int $adId)
-	{
-		$threadData = [
-			'ad_id' => $adId,
-			'advisor_id' => auth()->user()->id,
-//			'content' => 'Bonjour. Je suis ' . auth()->user()->first_name . ' ' . auth()->user()->name . ', membre de l\'équipe Terre de Liens. Je vais vous accompagner pour la réalisation de votre projet. Vous pouvez utiliser cette messagerie pour me contacter dès que vous le souhaitez.',
-		];
-		$this->threadService->create($threadData);
-		$thread = $this->findSupportRequestThread($adId);
-		return $thread;
 	}
 
 	/**
@@ -226,6 +198,7 @@ class AdvisorsService
 		$notes = $this->adNotesRepository->findAllNotesWithProjectDataKeysByAdId($adId);
 		return $notes;
 	}
+
 	/**
 	 * @param int $adId
 	 * @return Builder[]|Collection

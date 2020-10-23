@@ -49,7 +49,7 @@ class NotifyNewResultsResearch implements ShouldQueue
 				$research = $this->researchService->find($idResearch);
 				$data = [
 					'url' => $research->url,
-					'subject' => 'De nouvelles annonces correspondantes à votre recherche ont été publiées | Objectif Terres',
+					'subject' => 'De nouvelles annonces correspondantes à votre recherche ont été publiées',
 					'message' => 'De nouvelles annonces concernant votre recherche ont été publiées, consulter les dernières annonces correspondantes à votre recherche !'
 				];
 

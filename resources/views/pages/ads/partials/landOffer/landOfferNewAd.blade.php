@@ -137,20 +137,20 @@
                     <div class="column is-half">
                         @if(!empty($isSupportRequest))
                             <div class="field">
-                                {!! Form::label('landOffer[is_activity_transfer]', 'La ferme est-elle toujours en activité ?*', ['class' => 'label']) !!}
+                                {!! Form::label('land_offer[is_activity_transfer]', 'La ferme est-elle toujours en activité ?*', ['class' => 'label']) !!}
 
-                                {!! Form::radio('landOffer[is_activity_transfer]',
+                                {!! Form::radio('land_offer[is_activity_transfer]',
                                     1,
-                                    ($old['landOffer']['is_activity_transfer'] ?? null) === "1",
+                                    ($old['land_offer']['is_activity_transfer'] ?? null) === "1",
                                     [':disabled' => 'isInputDisabled',
                                     'v-model' => 'formInput.isActivityTransfer',
                                     'ref' => 'formInput.isActivityTransfer',
                                     'aria-describedby'=>'isActivityTransferError'])
                                 !!} Oui
 
-                                {!! Form::radio('landOffer[is_activity_transfer]',
+                                {!! Form::radio('land_offer[is_activity_transfer]',
                                     0,
-                                    ($old['landOffer']['is_activity_transfer'] ?? null) === "0",
+                                    ($old['land_offer']['is_activity_transfer'] ?? null) === "0",
                                     [':disabled' => 'isInputDisabled',
                                     'v-model' => 'formInput.isActivityTransfer',
                                     'ref' => 'formInput.isActivityTransfer',
@@ -248,7 +248,7 @@
                                     v-model="formInput.bioCertifications"
                                     :clear-other-values="{{json_encode($bioCertifications->filter(function ($v) {
                                         return in_array($v->name, ['Aucune', 'En conversion', 'Je ne sais pas']);
-                                    }))}}"
+                                    })->values())}}"
                                     :show-icons="true"
                                     placeholder="Sélectionnez une ou plusieurs certifications"
                                     ref="bioCertifications">

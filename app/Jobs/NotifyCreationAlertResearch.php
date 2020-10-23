@@ -44,7 +44,7 @@ class NotifyCreationAlertResearch implements ShouldQueue
 		$research->update(['has_alert' => 1]);
 		$data = [
 			'url' => $research->url,
-			'subject' => 'Création d\'une alerte pour une recherche de projet | Objectif Terres',
+			'subject' => 'Création d\'une alerte pour une recherche de projet',
 			'message'=> 'Une alerte a bien été créée pour une recherche'
 		];
 		/** @var User $userLogged */

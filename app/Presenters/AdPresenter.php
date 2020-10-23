@@ -227,18 +227,19 @@ class AdPresenter extends BasePresenter
 		$waterAccess = null;
 		if ($this->wrappedObject->landOfferAd) {
 			if (isset($this->wrappedObject->landOfferAd->water_access)) {
-				if ($this->wrappedObject->landOfferAd->water_access == true) {
+				if ($this->wrappedObject->landOfferAd->water_access == 1) {
 					if (!is_null($this->wrappedObject->landOfferAd->water_access_description)) {
 						$waterAccess = $this->wrappedObject->landOfferAd->water_access_description;
 					} else {
 						$waterAccess = "Oui";
 					}
+				} elseif ($this->wrappedObject->landOfferAd->water_access == -1) {
+					$waterAccess = "Je ne sais pas";
 				} else {
 					$waterAccess = "Non";
 				}
-			} else {
-				$waterAccess = "Ne sais pas";
 			}
+
 		}
 		return $waterAccess;
 	}

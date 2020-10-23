@@ -154,10 +154,12 @@ class AdService
 		//TODO delete if this column is not necessary anymore
 		//$data['support_request_id_region'] = 16;
 
+
 		if ($isUpdate) {
 			$ad = $this->repository->update($data["id"], $data);
 		} else {
 			$ad = $this->repository->create($data);
+
 		}
 
 
@@ -233,7 +235,6 @@ class AdService
 			$this->updateSubAd($ad, $data["ad_type"], $subAdData);
 		} else {
 			$subAdData["ad_id"] = $ad->id;
-
 			$this->createSubAd($data["ad_type"], $subAdData);
 		}
 		DB::commit();

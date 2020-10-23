@@ -13,13 +13,16 @@
             @foreach($rssNews as $item)
                 <slide class="tile tile_text-image_v">
                     <a href="{{ $item["link"] }}" class="tile__link">
-{{--                        TODO display properly images --}}
-{{--                        <div class="vignette photo">--}}
-{{--                            <figure >--}}
-{{--                                <img src="{{ $item["thumbnail"] }}" class="vignette__image" alt="{{ $item["title"] }}">--}}
-{{--                            </figure>--}}
-{{--                            --}}{{--                                <p class="vignette__credit">Crédit photo Jeanne Cianovitch</p>--}}
-{{--                        </div>--}}
+                        {{--                        TODO display properly images --}}
+{{--                        @if(! is_null($item["thumbnail"]))--}}
+{{--                            <div class="vignette photo">--}}
+{{--                                <div class="vignette__image-wrap ">--}}
+{{--                                    <img src="{{ $item["thumbnail"] }}" class="vignette__image"--}}
+{{--                                         alt="{{ $item["title"] }}">--}}
+{{--                                </div>--}}
+{{--                                --}}{{--                                                            <p class="vignette__credit">Crédit photo Jeanne Cianovitch</p>--}}
+{{--                            </div>--}}
+{{--                        @endif--}}
                         <div class="tile__content">
                             <h4 class="tile__title">{{ $item["title"] }}</h4>
                             @if(count($item["categories"]))
@@ -34,8 +37,9 @@
                                     {{ Str::words($item["description"], 50) }}
                                 </p>
                             </div>
-                            <p class="button__wrap"> <span class="button round small warning read-more">
-                                    <span class="button__icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span> </span>
+                            <p class="button__wrap"><span class="button round small warning read-more">
+                                    <span class="button__icon"><i class="fas fa-arrow-right"
+                                                                  aria-hidden="true"></i></span> </span>
                             </p>
                         </div>
                     </a>

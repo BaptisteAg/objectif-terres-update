@@ -35,9 +35,9 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 
 	/**
 	 * @param string $threadId
-	 * @return Thread
+	 * @return Thread|null
 	 */
-	public function find($threadId): Thread
+	public function find($threadId): ?Thread
 	{
 		/** @var Thread $model */
 		$model = $this->entity
@@ -52,9 +52,26 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 			);
 		}
 		return $model;
-
 	}
 
+	/**
+	 * @param int $adId
+	 * @return Thread|null
+	 */
+	public function findThreadByAdId(int $adId): ?Thread
+	{
+		/** @var Thread $model */
+		$model = $this->entity
+			->where(['ad_id' => $adId])
+			->with($this->getEagerLoading())
+			->first();
+
+		if (!$model) {
+			return null;
+		}
+
+		return $model;
+	}
 	/**
 	 * @param int $adId
 	 * @return Thread

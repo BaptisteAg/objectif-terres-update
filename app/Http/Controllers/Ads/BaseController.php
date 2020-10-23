@@ -91,7 +91,8 @@ abstract class BaseController extends Controller
             "departments" => $ad->departments->pluck('id')->toArray(),
             "regions" => $ad->regions->pluck('id')->toArray()
         ]);
-        $locationable_radius = $ad->cities->count() ? $ad->cities->first()->radius : '';
+        $locationable_radius = $ad->cities->count() ? $ad->cities->first()->pivot->radius : '';
+
 
         $documents = $ad->documents->toJson();
         $document_ids = $ad->documents->pluck("id")->toArray();

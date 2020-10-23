@@ -2,14 +2,13 @@
 
 body,
 body *:not(html):not(style):not(br):not(tr):not(code) {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
-        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    font-family: 'Nunito', sans-serif;
     box-sizing: border-box;
 }
 
 body {
-    background-color: #f8fafc;
-    color: #74787e;
+    /*background-color: #eae6cf;*/
+    color: black;
     height: 100%;
     hyphens: auto;
     line-height: 1.4;
@@ -32,7 +31,7 @@ blockquote {
 }
 
 a {
-    color: #3869d4;
+    color: #579ea5;
 }
 
 a img {
@@ -47,6 +46,30 @@ h1 {
     font-weight: bold;
     margin-top: 0;
     text-align: left;
+}
+
+.mail-main-title {
+    color: #33383d !important;
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.125;
+    margin-top: 10px;
+    font-family: "Bebas Neue", "Source Sans Pro", sans-serif;
+    letter-spacing: 2px;
+    margin-bottom: 0px;
+    font-size: 50px;
+
+}
+
+.mail-sub-title {
+    color: #7da237 !important;
+    letter-spacing: 2px;
+    text-align: center;
+    font-weight: normal;
+    line-height: 1.125;
+    font-family: "Kalam", cursive;
+    font-size: 25px;
+
 }
 
 h2 {
@@ -66,7 +89,7 @@ h3 {
 }
 
 p {
-    color: #3d4852;
+    color: black;
     font-size: 16px;
     line-height: 1.5em;
     margin-top: 0;
@@ -84,7 +107,7 @@ img {
 /* Layout */
 
 .wrapper {
-    background-color: #f8fafc;
+    background-image: url("./public/images/motif_champ_white.png");
     margin: 0;
     padding: 0;
     width: 100%;
@@ -222,11 +245,11 @@ img {
 
 .button-blue,
 .button-primary {
-    background-color: #3490dc;
-    border-top: 10px solid #3490dc;
-    border-right: 18px solid #3490dc;
-    border-bottom: 10px solid #3490dc;
-    border-left: 18px solid #3490dc;
+    background-color: #579ea5;
+    border-top: 10px solid #579ea5;
+    border-right: 18px solid #579ea5;
+    border-bottom: 10px solid #579ea5;
+    border-left: 18px solid #579ea5;
 }
 
 .button-green,

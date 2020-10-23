@@ -3,6 +3,7 @@
 namespace App\Services\Projects;
 
 use App\Jobs\NotifySupportRequestAttribution;
+use App\Models\AttributionAd;
 use App\Models\Department;
 use App\Models\Project;
 use App\Models\ProjectDataKey;
@@ -11,6 +12,7 @@ use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Repositories\Projects\ProjectsRepository;
 use App\Services\Advisors\AdvisorsService;
 use App\Services\AttributionAds\AttributionAdsService;
+use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
 use Carbon\Carbon;
 use DateTime;
@@ -28,6 +30,7 @@ class ProjectService
 	protected $notification;
 	protected $attributionAdsService;
 	protected $advisorService;
+	protected $threadService;
 
 	/**
 	 * ProjectService constructor.
@@ -37,8 +40,9 @@ class ProjectService
 	 * @param NotifySupportRequestAttribution $notification
 	 * @param AttributionAdsService $attributionAdsService
 	 * @param AdvisorsService $advisorService
+	 * @param ThreadService $threadService
 	 */
-	public function __construct(ProjectsRepository $projectsRepository, AttributionAdsRepository $attributionAdsRepository, UserService $userService, NotifySupportRequestAttribution $notification, AttributionAdsService $attributionAdsService, AdvisorsService $advisorService)
+	public function __construct(ProjectsRepository $projectsRepository, AttributionAdsRepository $attributionAdsRepository, UserService $userService, NotifySupportRequestAttribution $notification, AttributionAdsService $attributionAdsService, AdvisorsService $advisorService, ThreadService $threadService)
 	{
 		$this->repository = $projectsRepository;
 		$this->attributionAdsRepository = $attributionAdsRepository;
@@ -46,6 +50,7 @@ class ProjectService
 		$this->notification = $notification;
 		$this->attributionAdsService = $attributionAdsService;
 		$this->advisorService = $advisorService;
+		$this->threadService = $threadService;
 	}
 
 	public function create(array $data)
@@ -259,11 +264,24 @@ class ProjectService
 	 */
 	public function attributeProject(Request $request)
 	{
+		/** @var AttributionAd $attributionAd */
 		$attributionAd = $this->attributionAdsRepository->findByAdId($request->input('ad_id'));
 		$attributionAd->user_advisor_id = $request->input('user_advisor_id');
+		$thread = $this->threadService->findByAdId($request->input('ad_id'));
+		if (isset($thread)) {
+			$threadData = [
+				"user_id" => $request->input('user_advisor_id'),
+				"ad_id" => $request->input('ad_id'),
+				"user_pp_id" => $attributionAd->ad->userPP->id,
+				"thread_id" => $thread->id
+			];
+			$this->threadService->addUserInSupportRequestThread($threadData);
+		} else {
+			$this->threadService->createSupportRequestThread($request->input('ad_id'), $request->input('user_advisor_id'));
+		}
 		$attributionAd->save();
 		$this->notification->handle($attributionAd->ad->id);
-		if (! is_null($request->input('value'))) {
+		if (!is_null($request->input('value'))) {
 			$this->advisorService->createNote($request);
 		}
 

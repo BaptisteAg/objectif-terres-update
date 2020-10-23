@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
+use Throwable;
 
 /**
  * Class ThreadService
@@ -63,6 +64,15 @@ class ThreadService
 	public function find(int $threadId)
 	{
 		return $this->repository->find($threadId);
+	}
+
+	/**
+	 * @param int $adId
+	 * @return Thread
+	 */
+	public function findByAdId(int $adId)
+	{
+		return $this->repository->findThreadByAdId($adId);
 	}
 
 
@@ -116,6 +126,35 @@ class ThreadService
 
 		return $allMessagesInThread;
 
+	}
+
+	/**
+	 * @param array $data
+	 */
+	public function addUserInThread(array $data): void
+
+	{
+		$thread = $this->repository->find($data['thread_id']);
+		if (isset($thread)) {
+			$thread->users()->save(User::find($data['user_id']));
+		}
+	}
+
+	/**
+	 * @param array $data
+	 */
+	public function addUserInSupportRequestThread(array $data): void
+
+	{
+		$thread = $this->repository->find($data['thread_id']);
+		if (isset($thread)) {
+			foreach ($thread->users as $user) {
+				if ($user->id !== $data['user_id'] && $user->id !== $data['user_pp_id']) {
+					$thread->users()->detach($user->id);
+				}
+			}
+			$thread->users()->save(User::find($data['user_id']));
+		}
 	}
 
 	/**
@@ -173,6 +212,11 @@ class ThreadService
 					$this->adRepository->find($data["ad_id"])->user_pp_id,
 					$data['advisor_id']
 				];
+			} elseif (isset($data['title'])) {
+				//in case of new thread created when submitting new support request
+				$threadParticipants = [
+					$this->adRepository->find($data["ad_id"])->user_pp_id,
+				];
 			} else {
 				//in case of new message send from the ad view
 				$threadParticipants = [
@@ -210,6 +254,7 @@ class ThreadService
 			$messageData = Arr::only($data, ["content"]);
 			$messageData["sender_user_id"] = (isset($data['supervisor_id'])) ? $data['supervisor_id'] : auth()->id();
 			$messageData["thread_id"] = $thread->id;
+			$messageData["content"] = $this->convertContentToHTML($messageData["content"]);
 			$message = $this->messagesRepository->create($messageData);
 			foreach ($threadParticipants as $user_id) {
 				if (isset($data['supervisor_id'])) {
@@ -246,12 +291,37 @@ class ThreadService
 	}
 
 	/**
+	 * @param string $content
+	 * @return string
+	 */
+	public function convertContentToHTML(string $content): string
+	{
+		$content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
+		$content = htmlspecialchars($content);
+		$content = strip_tags($content);
+		$match_href = '|((https?://)?([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i';
+		$match_hash = '|\B#([\d\w_]+)|i';
+		$match_plus = '|\B\+([\d\w_]+)|i';
+		$replace_url = '<a href="$1" target="_blank">$3</a>';
+		$replace_tag = '<a href="http://url.com/pluslink/$1" target="_blank">$0</a>';
+
+		$content = preg_replace($match_href, $replace_url, $content);
+		$content = preg_replace($match_hash, $replace_tag, $content);
+		$content = preg_replace($match_plus, $replace_tag, $content);
+
+
+		return "<p>" . $content . "</p>";
+	}
+
+
+	/**
 	 * @param array $data
 	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
 	 * @throws \Throwable
 	 */
 	public function createMessage(array $data)
 	{
+		$data['content'] = $this->convertContentToHTML($data['content']);
 		$messageCreated = $this->messagesRepository->create($data);
 
 		$message = $this->messagesRepository->find($messageCreated->id);
@@ -296,6 +366,50 @@ class ThreadService
 
 
 	/**
+	 * @param int $adId
+	 * @return Thread|null
+	 * @throws Throwable
+	 */
+	public function createSupportRequestThread(int $adId, int $advisorId)
+	{
+		$threadData = [
+			'ad_id' => $adId,
+			'advisor_id' => $advisorId,
+//			'content' => 'Bonjour. Je suis ' . auth()->user()->first_name . ' ' . auth()->user()->name . ', membre de l\'équipe Terre de Liens. Je vais vous accompagner pour la réalisation de votre projet. Vous pouvez utiliser cette messagerie pour me contacter dès que vous le souhaitez.',
+		];
+		$this->create($threadData);
+		$thread = $this->findSupportRequestThread($adId);
+		return $thread;
+	}
+
+
+	/**
+	 * @param array $data
+	 * @return Thread|null
+	 * @throws \Throwable
+	 */
+	public function createSupportRequestThreadFromResume(array $data)
+	{
+		$this->create($data);
+		$thread = $this->findSupportRequestThread($data['ad_id']);
+		return $thread;
+	}
+
+
+	/**
+	 * @param int $adId
+	 * @return Thread| null
+	 * TODO refactor, too similar with a another method
+	 */
+	public function findSupportRequestThread(int $adId)
+	{
+		/** @var Thread $thread */
+		$thread = $this->repository->findThreadByUserIdAndAdId(auth()->id(), $adId)->first();
+		return $thread;
+	}
+
+
+	/**
 	 * @return Collection
 	 */
 	public function findThreadsWithUnreadMessages(int $userId)
@@ -312,8 +426,22 @@ class ThreadService
 		return $this->repository->findThreadsByUnreadMessagesAndAdId($adId);
 	}
 
+	/**
+	 * @param int $threadId
+	 * @param int $userId
+	 * @return Collection
+	 */
 	public function findMessagesByThreadAndUserId(int $threadId, int $userId): Collection
 	{
 		return $this->messagesRepository->findAllMessagesByThreadAndUser($threadId, $userId);
+	}
+
+	/**
+	 * @param array $data
+	 * @return bool
+	 */
+	public function findUserInThread(array $data): bool
+	{
+		return $this->repository->findThreadByUserIdAndAdId($data['user_id'], $data['ad_id'])->first()->exists();
 	}
 }

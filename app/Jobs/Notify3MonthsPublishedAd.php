@@ -44,7 +44,7 @@ class Notify3MonthsPublishedAd implements ShouldQueue
 	{
 		$attributionAds = $this->attributionAdsService->findAllPublishedSince(Carbon::now()->subMonthsWithOverflow(3));
 		foreach ($attributionAds as $attributionAd) {
-			$data['subject'] = 'Compléter votre annonce !| Objectif Terres';
+			$data['subject'] = 'Compléter votre annonce !';
 			$data['message'] = 'Votre annonce est en ligne depuis 3 mois. Complétez les informations de votre annonce pour augmenter vos chances de contacts !';
 			//TODO the url is the link to the modification ad form
 			$data['url'] = '/annonces/' . $attributionAd->ad->id;
