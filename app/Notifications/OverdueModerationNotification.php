@@ -49,7 +49,7 @@ class OverdueModerationNotification extends Notification implements ShouldQueue
 		$message = $this->data;
 		$url = url('/gestion-des-annonces/recherche?ad_statuses[0]=4');
 		return (new MailMessage)
-			->from(env('MAIL_FROM_ADDRESS'), "Administration | Objectif Terres")
+			->from(env('MAIL_FROM_ADDRESS'), "Administration")
 			->subject('Des annonces sont en attente de modération')
 			->greeting('Bonjour,')
 			->line($message)

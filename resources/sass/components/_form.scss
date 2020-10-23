@@ -36,3 +36,10 @@ FORM INPUT FIELD
 ::placeholder {
   color: $mouse !important;
 }
+
+
+.dashboard-filters {
+  .multiselect__tags {
+    background-color: white !important;
+  }
+}

@@ -133,7 +133,7 @@
                 @if($ad->landSeekAd->installationType->name !== "Indifférent")
                     <div class="mb-20 ">
                         <p class="has-text-link is-size-5 "> Installation souhaitée</p>
-                        <p class="has-text-centered">
+                        <p class="">
                             @if ($ad->landSeekAd->installationType->name === "Seul·e")
                                 Individuelle
                             @else
@@ -200,9 +200,20 @@
             @endif
 
             <div class="mb-20">
-                <p class="has-text-link is-size-5 "> Surface(s) recherchée(s)</p>
-                <p class="">{{$ad->human_ha}}
-                </p>
+                <p class="has-text-link is-size-5 "> Niveau de formation</p>
+                @if($ad->landSeekAd->educationLevels->count() >0)
+                    @foreach($ad->landSeekAd->educationLevels as $educationLevel)
+                        <p>
+                            @if($loop->last)
+                                <span class="">{{$educationLevel->name}}</span>
+                            @else
+                                <span class="">{{$educationLevel->name}}, </span>
+                            @endif
+                            @endforeach
+                        </p>
+                        @else
+                            <p class="">Non renseignée</p>
+                        @endif
             </div>
         </div>
     </div>
