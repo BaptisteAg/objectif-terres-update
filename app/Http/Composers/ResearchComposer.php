@@ -26,7 +26,7 @@ class ResearchComposer
         $jobOfferTypes = JobOfferType::orderBy('name')->get();
         $productionGenres = ProductionGenre::orderBy('name')->get();
         $bioCertifications = BioCertification::orderBy('name')->get();
-		$offerGenres = OfferGenre::orderBy('name')->get();
+		$offerGenres = OfferGenre::where('id', '!=', OfferGenre::ID_LED_OU_DONATION)->orderBy('name')->get();
 
         $view->with(compact('regionsWithAll','departments', 'jobOfferTypes', 'productionGenres', 'bioCertifications', 'offerGenres'));
     }

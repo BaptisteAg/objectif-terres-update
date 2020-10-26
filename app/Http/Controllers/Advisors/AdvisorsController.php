@@ -84,15 +84,15 @@ class AdvisorsController extends BaseController
 		if (!$ad->project()->exists()) {
 			abort(404);
 		}
-		$thread = $this->advisorsService->findSupportRequestThread($ad->id);
-		if (!isset($thread) && auth()->id() === $ad->attributionAd->user_advisor_id) {
-			$thread = $this->advisorsService->createSupportRequestThread($ad->id);
-		}
+//		$thread = $this->threadService->findSupportRequestThread($ad->id);
+//		if (!isset($thread) && auth()->id() === $ad->attributionAd->user_advisor_id) {
+//			$thread = $this->threadService->createSupportRequestThread($ad->id);
+//		}
 
 		if (auth()->id() === $ad->attributionAd->user_advisor_id) {
-			$thread = $this->advisorsService->findSupportRequestThread($ad->id);
+			$thread = $this->threadService->findSupportRequestThread($ad->id);
 			if (!isset($thread)) {
-				$thread = $this->advisorsService->createSupportRequestThread($ad->id);
+				$thread = $this->threadService->createSupportRequestThread($ad->id, auth()->id());
 			}
 		} else {
 			if (isset($ad->attributionAd->user_advisor_id)) {

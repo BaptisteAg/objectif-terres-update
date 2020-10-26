@@ -157,7 +157,12 @@ class AttributionAdsService
 			});
 		});
 
-
+		//Additional filters  : filter by ads attributed to moderator
+		if ($filters->has('user_attribution')) {
+			if (!is_null($filters->input('user_attribution')) ) {
+				$attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
+			}
+		}
 		//Additional filters  : filter by surface range
 		if ($filters->has('surfaces_research')) {
 			if (!is_null($filters->input('surfaces_research')) && $filters->input('surfaces_research') > 0) {

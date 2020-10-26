@@ -64,6 +64,7 @@ class ThreadsController extends Controller
 			$responseTemplates = ResponseTemplate::all();
 		}
 
+
 		return view('pages.messages.index', compact('threads', 'users', 'threadsWithUnreadMessages', 'responseTemplates'));
 	}
 

@@ -2,6 +2,12 @@
 <div class="box has-text-centered">
     <div class="container">
         <p class="title is-2 has-text-centered">Attribution de l'accompagnement</p>
+
+        @if(!is_null($ad->support_request_text))
+            <section class="mb-30">
+                <p class="has-text-centered">Résumé : {{ $ad->support_request_text }}</p>
+            </section>
+        @endif
         @if($ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->userDepartmentsCodes) || $ad->attributionAd->user_supervisor_id === $currentUser->id)
             @if($ad->isProjectAttributedToAdvisor)
                 <p class="">Cette demande est attribuée à
@@ -41,8 +47,8 @@
                     <span>Accéder à l'espace de suivi</span>
                 </a>
             @endif
-
         @endif
+
     </div>
     <br>
     @if($ad->attributionAd->user_supervisor_id === $currentUser->id || $ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->userDepartmentsCodes ))
@@ -70,7 +76,8 @@
                         <input value="{{$ad->id}}" name="ad_id" type="hidden">
                     </div>
                 @else
-                    <p class="has-text-weight-bold">Aucun primo-accueillant disponible sur ce territoire. Veuillez contacter un administrateur.</p>
+                    <p class="has-text-weight-bold">Aucun primo-accueillant disponible sur ce territoire. Veuillez
+                        contacter un administrateur.</p>
                 @endif
             </div>
         </div>

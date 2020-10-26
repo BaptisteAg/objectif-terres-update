@@ -32,7 +32,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  */
 class OfferGenre extends Model
 {
-    const ID_ACHAT = 1;
+    const ID_VENTE = 1;
     const ID_LOCATION = 2;
     const ID_TEST_AGRICOLE = 3;
     const ID_LED_OU_DONATION = 4;

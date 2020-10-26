@@ -316,7 +316,7 @@
                             <label class="checkbox">
                                 <input type="checkbox" required>
                                 <span>J'ai pris connaissance de
-                                    <a href="{{URL::asset('docs/Charte_TdL.pdf')}}" target="_blank">  la charte d'utilisation de la plateforme d'annonces du site web de Terre de Liens</a>
+                                    <a href="{{URL::asset('docs/OT_charte_oct2020.pdf')}}" target="_blank">  la charte d'utilisation de la plateforme d'annonces du site web de Terre de Liens</a>
                                .*  </span>
                             </label>
                         </div>

@@ -110,11 +110,25 @@
             </export-to-spreadsheet-form>
         </div>
 
-        <div class="section">
+        <div class="section pt-20">
             @if (count($ads) ==0)
                 <p class="has-text-centered">Aucun résultat</p>
             @else
                 <div class="content">
+                    @if(request()->has('toPaginate'))
+                        @if($ads->count() <=1)
+                            <p class="has-text-weight-bold">{{$ads->total()}} résultat</p>
+                        @else
+                            <p class="has-text-weight-bold">{{$ads->total()}} résultats</p>
+                        @endif
+                    @else
+                        @if($ads->count() <=1)
+                            <p class="has-text-weight-bold">{{$ads->count()}} résultat</p>
+                        @else
+                            <p class="has-text-weight-bold">{{$ads->count()}} résultats</p>
+                        @endif
+                    @endif
+
                     @if(request()->input('toPaginate') == 'true')
                         @if(url()->current() == route('supervisor.index'))
                             <a href="{{ route('supervisor.index', array_diff_key(Request::all(), ['toPaginate'=>''])) }}">
@@ -188,7 +202,8 @@
                                         <span>Avancement du projet</span>
                                     </a>
                                 @else
-                                    <a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}) }}">
+                                    <a href="{{ route('supervisor.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }})
+                        }}">
                                         <i class="fas fa-arrow-down"></i>
                                         <span>Avancement du projet</span>
                                     </a>

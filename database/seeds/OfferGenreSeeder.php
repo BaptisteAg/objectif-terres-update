@@ -15,7 +15,7 @@ class OfferGenreSeeder extends Seeder
     {
         OfferGenre::insert([
             [
-                'name' => 'Achat',
+                'name' => 'Vente',
                 "icon" => "fa-user",
                 "land_offer_label" => 'A la vente',
                 "land_seek_display" => 1,

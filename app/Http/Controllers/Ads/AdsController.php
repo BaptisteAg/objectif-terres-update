@@ -52,7 +52,7 @@ class AdsController extends BaseController
 	 */
 	public function edit(int $id)
 	{
-        $ad = $this->adService->find($id);
+		$ad = $this->adService->find($id);
 
 		$vars = $this->getEditFormVars($ad);
 
@@ -77,11 +77,10 @@ class AdsController extends BaseController
                     Votre annonce a été sauvegardée mais ne sera pas soumise à modération."
 				);
 		}
-
 		$data = $request->validated();
-
 		/** @var $ad Ad $ad */
 		try {
+
 			$ad = $this->adService->requestPublishing($data, $data['is_support_request']);
 			if (!$data['is_support_request']) {
 				$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
@@ -193,7 +192,6 @@ class AdsController extends BaseController
 	protected function store(AdRequest $request, $isDraft = 1)
 	{
 		$data = $request->validated();
-
 		$data["is_draft"] = $isDraft;
 
 		$ad = $this->adService->store($data);

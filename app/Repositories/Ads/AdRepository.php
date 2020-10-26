@@ -146,16 +146,16 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		foreach (["cities", "departments", "regions"] as $locationableType) {
 			$locationables = $data["locationable"][$locationableType] ?? [];
 
+
 			if (count($locationables)) {
 				$extraFields = [];
 				if (isset($data["locationable_radius"])) {
 					$extraFields = ["radius" => $data["locationable_radius"]];
 				}
-
 				/** @var MorphToMany $locationableEntityQuery */
 				$locationableEntityQuery = $ad->$locationableType();
 
-				$locationableEntityQuery->sync($locationables, $extraFields);
+				$locationableEntityQuery->sync(array_fill_keys($locationables, $extraFields));
 			}
 		}
 		if (!empty($data["documents_ids"]) && is_array($data["documents_ids"])) {
@@ -605,8 +605,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				$query->whereNotNull('published_on');
 			})
 			->filterAdTypes([$selectedAdType])
-            ->with($this->getLocationEagerLoading())
-            ->get();
+			->with($this->getLocationEagerLoading())
+			->get();
 	}
 
 	/**
@@ -620,9 +620,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				$query->whereNotNull('published_on');
 			})
 			->filterAdTypes([$selectedAdType])
-		    ->filterRegions($regionCode)
-            ->with($this->getLocationEagerLoading())
-            ->get();
+			->filterRegions($regionCode)
+			->with($this->getLocationEagerLoading())
+			->get();
 	}
 
 	/**
@@ -672,6 +672,14 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			});
 		}
 
+		//Additional filters  : filter by ads attributed to moderator
+		if ($filters->has('user_attribution')) {
+			if (!is_null($filters->input('user_attribution'))) {
+				$adsFiltred->whereHas('attributionAd', function (Builder $subBuilder) {
+					$subBuilder->where('user_advisor_id', '=', auth()->id());
+				});
+			}
+		}
 		//Additional filters  : filter by surface range
 		if ($filters->has('surfaces_research')) {
 			if (!is_null($filters->input('surfaces_research'))) {
@@ -982,12 +990,12 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'landOfferAd.bioCertifications',
 			'landOfferAd.offerGenres',
 			'landOfferAd.building',
-			'landOfferAd.building.description',
-			'landOfferAd.building.surface',
+			'landOfferAd.building',
+			'landOfferAd.building',
 			'landOfferAd.building.offerGenres',
 			'landOfferAd.house',
-			'landOfferAd.house.description',
-			'landOfferAd.house.surface',
+			'landOfferAd.house',
+			'landOfferAd.house',
 			'landOfferAd.house.offerGenres',
 
 			'jobOfferAd',

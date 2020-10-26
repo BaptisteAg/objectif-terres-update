@@ -13,7 +13,7 @@
     <div id="global-map"></div>
 
     <section class="section">
-        <div class="container">
+        <div class="mr-10 ml-10">
             <div class="has-text-centered ">
                 <h2 class="title is-1 text_warning_orange">Dernières annonces publiées</h2>
                 {{--                <p>ASTUCE :--}}
@@ -24,10 +24,10 @@
             </div>
             <div class="columns is-multiline is-mobile">
                 @foreach ($ads as $ad)
-                    <div class="column is-half mb-60 tile tile_image">
+                    <div class="column is-one-quarter-desktop is-half-tablet  mb-60 tile tile_image">
                         <a href="{{route("ads.show", $ad->id)}}" class="tile__link card">
                             <div class="card-image vignette photo">
-                                <figure class="image vignette__image-wrap vignette__ratio_4-3">
+                                <figure class="image vignette__image-wrap vignette__ratio_4-3 is-square">
                                     @if($ad->hasImages)
                                         @if($ad->images[0]->path ==="0")
                                             @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")

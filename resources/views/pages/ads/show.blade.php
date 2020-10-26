@@ -120,15 +120,6 @@
 
             <h1 class="title is-1 has-text-link has-text-centered">{{$ad->title}}</h1>
 
-            @auth()
-                @if(!empty($ad->project_id) && (auth()->user()->id === $ad->user_pp_id || auth()->user()->role >= 1))
-                    <section class="mb-30">
-                        <h2 class="title is-3 has-text-centered">Demande d'accompagnement</h2>
-                        <p class="has-text-centered">{{ $ad->support_request_text }}</p>
-                    </section>
-                @endif
-            @endauth
-
             <div>
                 @if($ad->ad_type === 'landSeek')
                     @include('pages.ads.partials.landSeek.landSeekShow')

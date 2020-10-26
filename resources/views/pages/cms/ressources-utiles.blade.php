@@ -10,7 +10,7 @@
 
     <div class="cms-page">
         <div class="section ">
-            <div class="container margin-p">
+            <div class="container">
                 <div class="content is-medium has-text-justified">
                     <h1 class="title is-2 has-text-link">Ressources utiles </h1>
                     @if($pageContent->count())

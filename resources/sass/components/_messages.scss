@@ -20,6 +20,19 @@
     padding-bottom: 5px;
     padding-left: 15px;
     padding-right: 15px;
+
+      a {
+      color: white !important;
+      text-decoration: underline;
+      transition: all 0.2s;
+
+      &:hover {
+        background-color: white;
+        text-decoration: none;
+        color: $primary !important;
+      }
+    }
+
     //
     //&:first-child {
     //  border-top-left-radius: 15px;
@@ -34,6 +47,7 @@
 .container-message-receiver {
   & > div {
     overflow-wrap: anywhere;
+
   }
 
   .message-receiver {
@@ -44,6 +58,19 @@
     padding-top: 5px;
     padding-bottom: 5px;
     padding-right: 15px;
+
+    a {
+      color: $primary !important;
+      text-decoration: underline;
+      transition: all 0.2s;
+
+      &:hover {
+        background-color: $primary;
+        text-decoration: none;
+        color: $white !important;
+      }
+    }
+
   }
 
   .message-receiver-content {
