@@ -1,8 +1,8 @@
-@if($ad->documentsUploadedByUser->count() > 0)
+@if($ad->nonImageDocuments->count() > 0)
 	<div class="content">
 		<p>
 			<span class="is-size-5 ad-show-feature-label has-text-black">Documents joints au projet : </span><br>
-			@foreach($ad->documentsUploadedByUser as $document)
+			@foreach($ad->nonImageDocuments as $document)
 				@if(strstr($document->type,'/',true) !== "image")
 					<a href="{{URL::asset($document->path)}}"
 					   target="_blank">

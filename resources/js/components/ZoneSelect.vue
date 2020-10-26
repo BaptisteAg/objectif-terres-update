@@ -52,7 +52,7 @@
                 <div class="column tooltip has-tooltip-left has-tooltip-multiline" data-tooltip="Sélectionnez une commune pour activer ce champ">
                     <p class="label">Dans un rayon de </p>
                     <vue-slider
-                            :disabled="!hasCities"
+                            :disabled="disabled || !hasCities"
                             :name="radiusName"
                             :value="radiusValue"
                             :data="{

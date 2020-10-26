@@ -39,13 +39,15 @@
                         @endguest()
                     </p>
                 </div>
-                <div class="content">
-                    <p>
-                        <span class="is-size-5 is-capitalized ad-show-feature-label">Surface recherchée (en ha)</span>
-                        :
-                        <span class="subtitle">{{ $ad->human_ha }}</span>
-                    </p>
-                </div>
+                @if(!empty($ad->landOfferAd->human_ha))
+                    <div class="content">
+                        <p>
+                            <span class="is-size-5 is-capitalized ad-show-feature-label">Surface recherchée (en ha)</span>
+                            :
+                            <span class="subtitle">{{ $ad->human_ha }}</span>
+                        </p>
+                    </div>
+                @endif
 
                 <div class="content">
                     @if( $ad->landSeekAd->buildings->count() >0 )

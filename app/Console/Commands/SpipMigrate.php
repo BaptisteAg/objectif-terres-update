@@ -99,10 +99,11 @@ class SpipMigrate extends Command
             if($user) {
                 echo("User retrieved : ".$auteur->email."\n");
 
-                $user->ads->each(function (Ad $ad) {
-                    $ad->forceDelete();
-                });
-                //$user->forceDelete();
+                if(config('app.env') === "local") {
+                    $user->ads->each(function (Ad $ad) {
+                        $ad->forceDelete();
+                    });
+                }
             }
             else {
                 if(!$auteur->bio) {
@@ -198,25 +199,28 @@ class SpipMigrate extends Command
         $ads = collect($importedAds)->splice(0,1);
         $users = collect($importedUsers)->splice(0,1);
 
-        $stats["land_seek"] = $ads->filter(function ($ad) {
-            return $ad["ad_type"] === "land_seek";
+        /*$stats["land_seek"] = $ads->filter(function (Ad $ad) {
+            return !empty($ad->landSeekAd);
+    })->count();
+        $stats["land_offer"] = $ads->filter(function (Ad $ad) {
+            return !empty($ad->landOfferAd);
         })->count();
-        $stats["land_offer"] = $ads->filter(function ($ad) {
-            return $ad["ad_type"] === "land_offer";
+        $stats["job_seek"] = $ads->filter(function (Ad $ad) {
+            return !empty($ad->jobSeekAd);
         })->count();
-        $stats["job_seek"] = $ads->filter(function ($ad) {
-            return $ad["ad_type"] === "job_seek";
-        })->count();
-        $stats["job_offer"] = $ads->filter(function ($ad) {
-            return $ad["ad_type"] === "job_offer";
+        $stats["job_offer"] = $ads->filter(function (Ad $ad) {
+            return !empty($ad->jobOfferAd);
         })->count();
 
-        $stats["users_without_ad"] = $users->filter(function ($user) {
-            return $user["ads_count"] === 0;
+        $stats["users_without_ad"] = $users->filter(function (User $user) {
+            return $user->ads_count === 0;
         })->count();
-        $stats["users_with_more_than_1_ad"] = $users->filter(function ($user) {
-            return $user["ads_count"] > 1;
+        $stats["users_with_1_ad"] = $users->filter(function (User $user) {
+            return $user->ads_count === 1;
         })->count();
+        $stats["users_with_more_than_1_ad"] = $users->filter(function (User $user) {
+            return $user->ads_count > 1;
+        })->count();*/
 
         print_r($stats);
         echo "\n";

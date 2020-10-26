@@ -70,6 +70,8 @@ return [
             'database'  => env('DB_DATABASE_SPIP'),
             'username'  => env('DB_USERNAME_SPIP'),
             'password'  => env('DB_PASSWORD_SPIP'),
+            'charset' => 'utf8',
+            'collation' => 'utf8_general_ci',
         ],
 
         'pgsql' => [

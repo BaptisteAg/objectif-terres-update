@@ -48,7 +48,7 @@ class ResearchNotification extends Notification implements ShouldQueue
 			->subject($subject)
 			->line($message)
 			->greeting('Bonjour,')
-			->action('Consulter les résultats de votre recherche', $url)
+			->action('Consultez les résultats de votre recherche', $url)
 			->line('Merci d\'utiliser les services du site d\'Objectif Terres !')
 			->salutation('Cordialement, L\'équipe d\'Objectif Terres');
 

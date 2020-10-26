@@ -28,6 +28,9 @@ class HomePageController extends Controller
 
 	public function show(AdService $adService, RssService $rssService)
 	{
+	    if(!auth()->user() && config('app.is_coming_soon')) {
+	        return view('pages.coming_soon');
+        }
 
 		//TODO get the last ads with  : $lastAdsAdded = AttributionAdEvents::orderBy('id', 'desc')->take(2)->get();
 		//TODO get the last ads tag "Partenaires"

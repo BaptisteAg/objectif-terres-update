@@ -1,8 +1,8 @@
 <?php
 
-use Omniphx\Forrest\Providers\Laravel\ForrestServiceProvider;
-
 return [
+
+    'is_coming_soon' => env('COMING_SOON', false),
 
     /*
     |--------------------------------------------------------------------------
