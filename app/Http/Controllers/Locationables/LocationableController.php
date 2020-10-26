@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\Region;
 use App\Services\Ads\AdService;
 use App\Services\Locations\LocationService;
+use Cache;
 use Illuminate\Http\Request;
 
 class LocationableController extends Controller
@@ -73,21 +74,7 @@ class LocationableController extends Controller
             ]);
         }
 
-        $adsCountByRegionId = $adService->getPublishedAdsCountByRegionId($selectedAdType);
-
-        /** @var Region[] $regions */
-        $regions = Region::whereIn('id', array_keys($adsCountByRegionId))->get();
-
-        $json = [];
-
-        foreach ($regions as $region) {
-            $geoPolygon = $this->service->getLocationGeoPolygon($region->name);
-            $geoPolygon->region_id = $region->id;
-            $geoPolygon->ads_count = $adsCountByRegionId[$region->id];
-            $json[] = $geoPolygon;
-        }
-
-        return response()->json($json);
+        return response()->json($this->service->getRegionPolygons($selectedAdType));
     }
 
     public function departmentsPolygon(Request $request, AdService $adService)
@@ -108,21 +95,7 @@ class LocationableController extends Controller
             ]);
         }
 
-        $adsCountByDepartmentId = $adService->getPublishedAdsCountByDepartmentId($selectedAdType, $regionId);
-
-        /** @var Department[] $departments */
-        $departments = Department::whereIn('id', array_keys($adsCountByDepartmentId))->get();
-
-        $json = [];
-
-        foreach ($departments as $department) {
-            $geoPolygon = $this->service->getLocationGeoPolygon($department->name);
-            $geoPolygon->department_id = $department->id;
-            $geoPolygon->ads_count = $adsCountByDepartmentId[$department->id];
-            $json[] = $geoPolygon;
-        }
-
-        return response()->json($json);
+        return response()->json($this->service->getDepartmentPolygons($regionId, $selectedAdType));
     }
 
     public function adLocations(Request $request, AdService $adService)
@@ -130,7 +103,7 @@ class LocationableController extends Controller
         $json = [];
         foreach ($request->get("names") as $name) {
 
-            $json[] = $this->service->getLocationGeoPolygon($name);
+            $json[] = $this->service->getLocationGeoPolygon($name, 'misc');
         }
 
         return response()->json($json);

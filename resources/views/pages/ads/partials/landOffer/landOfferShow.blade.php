@@ -186,10 +186,10 @@
             @endif
 
     @if($ad->landOfferAd->bioCertifications->count())
-        <div class="column is-one-third ">
-            <p class="has-text-link is-size-5 has-text-centered"> Certification des terres</p>
+        <div class=" ">
+            <p class="has-text-link is-size-5"> Certification des terres</p>
 
-            <p class="has-text-centered">
+            <p class="">
                 @foreach($ad->landOfferAd->bioCertifications as $bioCertification)
                     @if($bioCertification->icon == "")
                         <span>{{$bioCertification->name }}</span>

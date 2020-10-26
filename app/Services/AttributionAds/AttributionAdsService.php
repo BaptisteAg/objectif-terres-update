@@ -2,6 +2,7 @@
 
 namespace App\Services\AttributionAds;
 
+use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\Department;
@@ -353,11 +354,24 @@ class AttributionAdsService
 		return $attributionAds;
 	}
 
+    /**
+     * @param Ad $ad
+     * @throws \Exception
+     */
+    private function forgetAdPolygonCache(Ad $ad)
+    {
+        cache()->forget('regionspolygon.'.$this->adService->getAdType($ad));
+        foreach($this->adService->getAdRegions($ad) as $region) {
+            cache()->forget('departmentspolygon.'.$region->id);
+        }
+    }
 
-	/**
-	 * @param array $data
-	 * @return mixed
-	 */
+
+    /**
+     * @param array $data
+     * @return AttributionAd
+     * @throws \Exception
+     */
 	public function acceptAd(array $data)
 	{
 		/** @var AttributionAd $attributionAd */
@@ -401,13 +415,16 @@ class AttributionAdsService
 		$ad->is_draft = 0;
 		$ad->save();
 
+		$this->forgetAdPolygonCache($ad);
+
 		return $attributionAd;
 	}
 
-	/**
-	 * @param int $attributionAdId
-	 * @return mixed
-	 */
+    /**
+     * @param int $attributionAdId
+     * @return mixed
+     * @throws \Exception
+     */
 	public function modifyAd(int $attributionAdId)
 	{
 		$attributionAd = $this->repository->find($attributionAdId);
@@ -419,6 +436,8 @@ class AttributionAdsService
 		$ad->is_draft = 1;
 		$ad->save();
 
+        $this->forgetAdPolygonCache($ad);
+
 		//TODO url is the link to the form form modifiy the ad
 		$data = [
 			'message' => 'Votre annonce nécessite quelques modifications pour être publiée ! Consulter votre messagerie pour plus d\'informations.',
@@ -429,10 +448,11 @@ class AttributionAdsService
 		return $attributionAd;
 	}
 
-	/**
-	 * @param array $data
-	 * @return mixed
-	 */
+    /**
+     * @param array $data
+     * @return mixed
+     * @throws \Exception
+     */
 	public function rejectAd(array $data)
 	{
 		$attributionAd = $this->repository->find($data['attribution_ad_id']);
@@ -452,6 +472,8 @@ class AttributionAdsService
 			$ad = $this->adRepository->find($attributionAd->ad->id);
 			$ad->is_draft = 0;
 			$ad->save();
+
+            $this->forgetAdPolygonCache($ad);
 		}
 		return $attributionAd;
 

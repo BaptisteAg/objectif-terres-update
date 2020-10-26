@@ -62,7 +62,7 @@ window.homepageMapInit  = async function (id) {
                     '&regions_location_researches_ids[]=' + polygonData.region_id;
             });
 
-            mapController.bindTooltip(polygon, polygonData.ads_count.toString() + " annonce"+(polygonData.ads_count > 1 ?"s" : ''), {
+            mapController.bindTooltip(polygon, polygonData.ads_count.toString(), {
                 className: "leaflet-tooltip-big"
             })
         });

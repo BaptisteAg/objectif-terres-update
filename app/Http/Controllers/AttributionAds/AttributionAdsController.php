@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ThreadRequest;
 use App\Models\AttributionAd;
 use App\Models\Thread;
+use App\Services\Ads\AdService;
 use App\Services\AttributionAds\AttributionAdsService;
 use App\Services\Threads\ThreadService;
 use Carbon\Carbon;
@@ -15,17 +16,22 @@ class AttributionAdsController extends Controller
 {
 	protected $service;
 	protected $threadService;
+    /**
+     * @var AdService
+     */
+    private $adService;
 
 
-	/**
+    /**
 	 * AttributionAdsController constructor.
 	 * @param AttributionAdsService $service
 	 * @param ThreadService $threadService
 	 */
-	public function __construct(AttributionAdsService $service, ThreadService $threadService)
+	public function __construct(AttributionAdsService $service, ThreadService $threadService, AdService $adService)
 	{
 		$this->service = $service;
 		$this->threadService = $threadService;
+		$this->adService = $adService;
 	}
 
     /**
@@ -36,14 +42,16 @@ class AttributionAdsController extends Controller
 	public function acceptAd(ThreadRequest $request)
 	{
 		$this->threadService->create($request->validated());
-		$this->service->acceptAd($request->all());
+
+		$attributionAd = $this->service->acceptAd($request->all());
+
 		$this->setToReadModeratorNotification($request->input('attribution_ad_id'));
 		session()->flash('success', 'L\'annonce a été modérée !');
 		return ['redirect' => route('moderator.index')];
 	}
 
 	/**
-	 * @param ThreadRequest $request
+	 * @param ThreadRequest $request<
 	 * @return array
 	 * @throws \Throwable
 	 */
