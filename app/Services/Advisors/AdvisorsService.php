@@ -7,6 +7,7 @@ use App\Models\AdNote;
 use App\Models\ProjectDataKey;
 use App\Models\Thread;
 use App\Models\User;
+use App\Notifications\BasicNotification;
 use App\Repositories\AdNotes\AdNotesRepository;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Projects\ProjectsRepository;
@@ -246,6 +247,13 @@ class AdvisorsService
 		$userPp = User::find($UserId);
 		try {
 			$userPp->delete();
+			$userPp->notify(new BasicNotification([
+				'subject' => "Votre compte est suspendu temporairement",
+				'message' => "Votre compte Objectif Terres vient d’être suspendu puisque vous avez dépassé le cadre d’utilisation d’Objectif Terres.\n
+                    Pour rappel, notre charte d’utilisation est disponible ici :\n",
+				'action' => ["Charte d'utilisation Objectif Terres", asset('docs/OT_charte_oct2020.pdf'),
+					'salutation' => "Merci de votre compréhension,"]
+			]));
 		} catch (\Exception $e) {
 			return back()->with('warning', 'Une erreur est survenue, veuillez réessayer ');
 		}

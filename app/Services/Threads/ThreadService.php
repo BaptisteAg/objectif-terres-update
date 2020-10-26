@@ -256,6 +256,7 @@ class ThreadService
 			$messageData["thread_id"] = $thread->id;
 			$messageData["content"] = $this->convertContentToHTML($messageData["content"]);
 			$message = $this->messagesRepository->create($messageData);
+			$notificationData = $this->getMessageNotificationAdData($thread);
 			foreach ($threadParticipants as $user_id) {
 				if (isset($data['supervisor_id'])) {
 					if ($user_id !== $data['supervisor_id']) {
@@ -268,7 +269,9 @@ class ThreadService
 						$user->notify(new NewMessageNotification([
 							'sender_name' => $supervisor->name,
 							'sender_first_name' => $supervisor->first_name,
-							'message_content' => $message->content
+							'message_content' => $message->content,
+							'ad_type'=> $notificationData['ad_type'],
+							'ad_title' => $notificationData['ad_title']
 						]));
 					}
 				} else {
@@ -281,7 +284,9 @@ class ThreadService
 						$user->notify(new NewMessageNotification([
 							'sender_name' => auth()->user()->name,
 							'sender_first_name' => auth()->user()->first_name,
-							'message_content' => $message->content
+							'message_content' => $message->content,
+							'ad_type'=> $notificationData['ad_type'],
+							'ad_title' => $notificationData['ad_title']
 						]));
 					}
 				}
@@ -323,13 +328,11 @@ class ThreadService
 	{
 		$data['content'] = $this->convertContentToHTML($data['content']);
 		$messageCreated = $this->messagesRepository->create($data);
-
 		$message = $this->messagesRepository->find($messageCreated->id);
-
 		$message->thread->update(['updated_at' => Carbon::now()]);
+		$notificationData = $this->getMessageNotificationAdData($message->thread);
 		foreach ($message->thread->users as $user) {
 			$user = User::find($user->id);
-
 			if ($user->id !== auth()->id()) {
 				if (isset($data['supervisor_id'])) {
 					//in case of an automatic message from the supervisor
@@ -343,7 +346,9 @@ class ThreadService
 						$user->notify(new NewMessageNotification([
 							'sender_name' => $supervisor->name,
 							'sender_first_name' => $supervisor->first_name,
-							'message_content' => $message->content
+							'message_content' => $message->content,
+							'ad_type' => $notificationData['ad_type'],
+							'ad_title' => $notificationData['ad_title']
 						]));
 					}
 				} else {
@@ -355,7 +360,9 @@ class ThreadService
 					$user->notify(new NewMessageNotification([
 						'sender_name' => auth()->user()->name,
 						'sender_first_name' => auth()->user()->first_name,
-						'message_content' => $message->content
+						'message_content' => $message->content,
+						'ad_type' => $notificationData['ad_type'],
+						'ad_title' => $notificationData['ad_title']
 					]));
 				}
 			}
@@ -443,5 +450,29 @@ class ThreadService
 	public function findUserInThread(array $data): bool
 	{
 		return $this->repository->findThreadByUserIdAndAdId($data['user_id'], $data['ad_id'])->first()->exists();
+	}
+
+
+	/**
+	 * @param Thread $thread
+	 * @return null[]
+	 */
+	public function getMessageNotificationAdData(Thread $thread): array
+	{
+		$notificationData = [
+			'ad_title' => null,
+			'ad_type' => null,
+		];
+		//Handling notification data
+		if (!is_null($thread->ad)) {
+			$notificationData['ad_title'] = $thread->ad->title;
+			if (is_null($thread->ad->project)) {
+				$notificationData['ad_type'] = "annonce";
+			} else {
+				$notificationData['ad_type'] = "projet";
+			}
+		}
+
+		return $notificationData;
 	}
 }

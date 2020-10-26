@@ -22,7 +22,7 @@
         Vos discussions
       </p>
       <p class="menu-label" v-else>
-        Fils de discussion concernant cette annonce
+        Fils de discussion
       </p>
       <ul class="menu-list">
         <template v-for="thread in threads">
@@ -74,15 +74,46 @@
               </template>
             </template>
             <template v-else>
-              <template v-if="isUserTdlMember">
+              <template v-if="thread.users.length > 2">
                 <a @click="onThreadClick(thread.id)">
-                  <span class="tag">Membre TdL</span>
+                  <span class="tag ">Membres TdL</span>
                   <span>{{ thread.title }}</span>
                 </a>
               </template>
+              <template v-else-if="thread.ad_id !== null">
+                <template v-if="thread.ad.user_pp_id === userId">
+                  <a @click="onThreadClick(thread.id)">
+                    <template v-if="thread.ad.project_id !== null">
+                      <span class="tag">Réponse accompagnement</span>
+                    </template>
+                    <template v-else>
+                      <span class="tag">Réponse annonce</span>
+                    </template>
+                    <span>{{ thread.title }}</span>
+                    <span class="text_size small">{{ thread.ad.title }}</span>
+                  </a>
+                </template>
+                <template v-else>
+                  <a @click="onThreadClick(thread.id)">
+                    <template v-if="thread.ad.project_id !== null">
+                      <span class="tag">Accompagnement</span>
+                    </template>
+                    <template v-else>
+                      <span class="tag">Annonce</span>
+                    </template>
+                    <template v-if="thread.ad.deleted_at !== null">
+                      Annonce supprimée
+                    </template>
+                    <template v-else>
+                      <span>{{ thread.title }}</span>
+                    </template>
+                    <br>
+                  </a>
+                </template>
+              </template>
               <template v-else>
                 <a @click="onThreadClick(thread.id)">
-                  <span class="tag">Annonce</span>
+                  <span class="tag">Membre TdL</span>
                   <span>{{ thread.title }}</span>
                 </a>
               </template>

@@ -1,4 +1,4 @@
-<section class="section">
+<section class="">
     <div class="container">
         <div class="rows">
             <div class="row has-text-centered">

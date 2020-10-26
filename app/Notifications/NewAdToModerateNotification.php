@@ -15,7 +15,7 @@ class NewAdToModerateNotification extends Notification implements ShouldQueue
 	use Queueable;
 
 	protected $ad;
-	/** @var User|Authenticatable  */
+	/** @var User|Authenticatable */
 	protected $userPP;
 
 	/**
@@ -49,16 +49,29 @@ class NewAdToModerateNotification extends Notification implements ShouldQueue
 	 */
 	public function toMail($notifiable)
 	{
-		$url = url('/annonces/'.$this->ad->id);
-		return (new MailMessage)
-			->subject('MODEREZ l\'annonce n°['.$this->ad->id.']')
-			->greeting('Bonjour, '.$this->ad->attributionAd->userModerator->first_name)
-			->line('Cette annonce attend d\'être modérée. ')
-			->line('Titre : "'.$this->ad->title.'"')
-			->line('Auteur·e :"'.$this->userPP->name.'"')
+		$url = url('/annonces/' . $this->ad->id);
+		$isNewAd = $this->ad->updated_at > $this->ad->created_at;
+		$mailMessage = new MailMessage();
+		if ($isNewAd) {
+			$mailMessage->subject('MODEREZ l\'annonce n°[' . $this->ad->id . ']');
+		} else {
+			$mailMessage->subject('MODEREZ l\'annonce n°[' . $this->ad->id . '] MODIFIÉE par son autteur');
+		}
+
+		$mailMessage->greeting('Bonjour, ' . $notifiable->first_name);
+
+		if ($isNewAd) {
+			$mailMessage->line('Cette annonce attend d\'être modérée. ');
+		} else {
+			$mailMessage->line('Cette annonce a été modifiée par son auteur·e et doit être modérée à nouveau.');
+
+		}
+		$mailMessage->line('Titre : "' . $this->ad->title . '"')
+			->line('Auteur·e :"' . $this->userPP->name . '"')
 			->action('Modérer l\'annonce', $url)
-			->line('A bientôt sur Objectif Terres !')
-			->salutation('L\'équipe d\'Objectif Terres');
+			->salutation('A bientôt sur Objectif Terres !');
+
+		return $mailMessage;
 	}
 
 	/**

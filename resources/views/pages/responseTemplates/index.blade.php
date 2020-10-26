@@ -1,6 +1,6 @@
 @extends('default')
 
-@section('title', 'Gestion des messages types | Objectifs Terres')
+@section('title', 'Gestion des messages types | Objectif Terress')
 
 @section('header')
     @if(auth()->user()->role >= 3)

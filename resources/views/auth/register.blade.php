@@ -150,7 +150,7 @@
                                                 <option disabled="disabled">Vous êtes...</option>
                                                 @foreach(\App\Models\User::$profiles as $id => $prof)
                                                     <option
-                                                        value="{{$id}}" {{old('profile') == $id ? 'selected' : ''}} >
+                                                            value="{{$id}}" {{old('profile') == $id ? 'selected' : ''}} >
                                                         {{$prof}}
                                                     </option>
                                                 @endforeach
@@ -222,24 +222,24 @@
                                 <div class="field">
                                     <label class="label">Commune et Code postal*</label>
                                     <autocomplete
-                                        name="citySelect"
-                                        id="citySelect"
-                                        autocomplete="off"
-                                        class="@error('city_id') is-danger @enderror"
-                                        placeholder="Saisissez les premiers caractères"
-                                        ref='citySelect'
-                                        src="/locations/cities"
-                                        v-model="citySelect">
-                                        <input autocomplete="off"  type="hidden" name="city_id" :value="zone.value.id"
+                                            name="citySelect"
+                                            id="citySelect"
+                                            autocomplete="off"
+                                            class="@error('city_id') is-danger @enderror"
+                                            placeholder="Saisissez les premiers caractères"
+                                            ref='citySelect'
+                                            src="/locations/cities"
+                                            v-model="citySelect">
+                                        <input autocomplete="off" type="hidden" name="city_id" :value="zone.value.id"
                                                v-for="(zone,i) in citySelect">
-                                        <div  class="tag autocomplete-input-tag is-info"
+                                        <div class="tag autocomplete-input-tag is-info"
                                              v-for="(zone,i) in citySelect"
                                              @click="_ => citySelect.splice(i,1)">
                                             @{{ zone.label }}
                                             &nbsp;&nbsp
                                             <i class="fa fa-trash" style="cursor:pointer"></i>
                                         </div>
-                                        <input  type="hidden" name="country_id" value="75">
+                                        <input type="hidden" name="country_id" value="75">
                                     </autocomplete>
                                     @error('city_id')
                                     <article class="message is-danger" role="alert">
@@ -316,8 +316,9 @@
                             <label class="checkbox">
                                 <input type="checkbox" required>
                                 <span>J'ai pris connaissance de
-                                    <a href="{{URL::asset('docs/OT_charte_oct2020.pdf')}}" target="_blank">  la charte d'utilisation de la plateforme d'annonces du site web de Terre de Liens</a>
-                               .*  </span>
+                                    <a href="{{URL::asset('docs/OT_charte_oct2020.pdf')}}" target="_blank"> la charte
+                                        d'utilisation de la plateforme d'annonces du site web de Terre de Liens</a>
+                                    .* </span>
                             </label>
                         </div>
                         <div class="field">
@@ -331,7 +332,8 @@
                             </label>
                         </div>
 
-                        <p>En appuyant sur valider, vous consentez <a>à l'utilisation de vos données personnelles</a> par Objectif Terres </p>
+                        <p>En appuyant sur valider, vous consentez <a href="{{route('conditions-utilisation')}}">à
+                                l'utilisation de vos données personnelles</a> par Objectif Terres </p>
                         <br>
                         <div class="field is-grouped is-grouped-centered">
                             <div class="control is-pulled-right">

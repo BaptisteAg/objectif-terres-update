@@ -47,12 +47,14 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
 	public function toMail($notifiable)
 	{
 		return (new MailMessage)
-			->subject('Réinitialisation de votre mot de passe ')
-			->greeting('Bonjour,')
-			->line('Vous venez de recevoir ce mail car vous souhaitez réinitialiser votre mot de passe pour accéder à votre compte Objectif Terres. ')
-			->action('Générer un nouveau mot de passe',  url(config('app.url').route('password.reset', $this->token, false)))
+			->subject('Réinitialisation du mot de passe')
+			->greeting('Bonjour,'. $notifiable->name)
+			->line('Vous avez demandé la réinitialisation du mot de passe de votre compte.')
+			->line('Pour poursuivre cette opération cliquez ici :')
+			->action('Réinitialiser votre mot de passe',  url(config('app.url').route('password.reset', $this->token, false)))
 			->line('Ce lien va expirer dans 60 minutes. Si vous ne générer pas un nouveau mot de passe, l\'ancien mot de passe restera actif.')
-			->salutation('Cordialement, L\'équipe d\'Objectif Terres');
+			->line('Si vous n’êtes pas à l’origine de cette demande ne faites rien.')
+			->salutation('A bientôt sur Objectif Terres !');
 	}
 
 

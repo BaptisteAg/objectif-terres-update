@@ -226,12 +226,10 @@
                 <p>  {!! nl2br($ad->support_request_text ?? "") !!} </p>
             </div>
         @endif
-        @if($ad->landSeekAd->land_description)
-            <div class="content">
-                <h4 class="title is-3">Description du terrain recherché</h4>
-                <p>  {!! nl2br($ad->landSeekAd->land_description ?? "") !!} </p>
-            </div>
-        @endif
+        <div class="content">
+            <h4 class="title is-3">Description du terrain recherché</h4>
+            <p>  {!! nl2br($ad->landSeekAd->land_description ?? "Non précisée") !!} </p>
+        </div>
         <div class="content">
             <h4 class="title is-3">Description du projet</h4>
             <p>  {!! nl2br($ad->about_project_content ?? "") !!} </p>

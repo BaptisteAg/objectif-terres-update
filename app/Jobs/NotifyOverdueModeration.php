@@ -18,10 +18,10 @@ use Illuminate\Queue\SerializesModels;
 
 class NotifyOverdueModeration implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $moderationService;
-    private $userRepository;
+	private $moderationService;
+	private $userRepository;
 
 	/**
 	 * Create a new job instance.
@@ -29,61 +29,59 @@ class NotifyOverdueModeration implements ShouldQueue
 	 * @param UserRepository $userRepository
 	 * @param ModerationService $moderationService
 	 */
-    public function __construct(UserRepository $userRepository, ModerationService $moderationService)
-    {
-        $this->userRepository = $userRepository;
-        $this->moderationService = $moderationService;
-    }
+	public function __construct(UserRepository $userRepository, ModerationService $moderationService)
+	{
+		$this->userRepository = $userRepository;
+		$this->moderationService = $moderationService;
+	}
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
-    {
-        $overdueAttributionsByModeratorId = $this->moderationService->findAllOverdueAttributionsKeyByModeratorId(Carbon::now()->subHour());
+	/**
+	 * Execute the job.
+	 *
+	 * @return void
+	 */
+	public function handle()
+	{
+		$overdueAttributionsByModeratorId = $this->moderationService->findAllOverdueAttributionsKeyByModeratorId(Carbon::now()->subHour());
 
-        logger("Notifying overdue moderation... ".$overdueAttributionsByModeratorId->reduce(
-            function (int $count, Collection $attributionAd) {
-                return $count + $attributionAd->count();
-            }
-        , 0)." found.");
+		logger("Notifying overdue moderation... " . $overdueAttributionsByModeratorId->reduce(
+				function (int $count, Collection $attributionAd) {
+					return $count + $attributionAd->count();
+				}
+				, 0) . " found.");
 
-        /** @var AttributionAd[]|Collection $attributions */
-        foreach ($overdueAttributionsByModeratorId as $moderatorId => $attributions) {
-            /** @var User $moderatorToNotify */
-            $moderatorToNotify = $this->userRepository->find($moderatorId);
-            // If a recent notification about these ads already exists, we'll skip the process
-            // It's important to fetch only the recent notifications, otherwise the fetch will be increasingly slower
-            // TODO : schedule database notifications cleaning once a month
-            // This can be summarized as : a notification will be sent every 7 days as long as it is overdue
-            /*$recentlyNotifiedAttributionIds = $moderatorToNotify
-                ->notifications()
-                ->where([
-                    ['type', '=', OverdueModerationNotification::class],
-                    ['created_at', '>', Carbon::now()->subWeek()],
-                ])
-                ->get()
-                ->flatMap(function (DatabaseNotification $notification) {
-                    return $notification->data['attribution_ids'];
-                })
+		/** @var AttributionAd[]|Collection $attributions */
+		foreach ($overdueAttributionsByModeratorId as $moderatorId => $attributions) {
+			/** @var User $moderatorToNotify */
+			$moderatorToNotify = $this->userRepository->find($moderatorId);
+			// If a recent notification about these ads already exists, we'll skip the process
+			// It's important to fetch only the recent notifications, otherwise the fetch will be increasingly slower
+			// TODO : schedule database notifications cleaning once a month
+			// This can be summarized as : a notification will be sent every 7 days as long as it is overdue
+			/*$recentlyNotifiedAttributionIds = $moderatorToNotify
+				->notifications()
+				->where([
+					['type', '=', OverdueModerationNotification::class],
+					['created_at', '>', Carbon::now()->subWeek()],
+				])
+				->get()
+				->flatMap(function (DatabaseNotification $notification) {
+					return $notification->data['attribution_ids'];
+				})
 				->toArray();
 
-            $notRecentlyNotifiedAttributionIds = array_diff(
+			$notRecentlyNotifiedAttributionIds = array_diff(
 				$recentlyNotifiedAttributionIds,
 				$attributions->pluck('id')->toArray()
-            );
-            if (!count($notRecentlyNotifiedAttributionIds)) {
-                continue;
-            }*/
+			);
+			if (!count($notRecentlyNotifiedAttributionIds)) {
+				continue;
+			}*/
 
-            $messageData = 'Vous avez ' . $attributions->count() . ' annonce' .
-                ($attributions->count() <= 1 ? '' : 's') .
-                ' en attente de modération depuis plus de 7 jours.';
-
-            $moderatorToNotify
-                ->notify(new OverdueModerationNotification($messageData, $attributions));
-        }
-    }
+			$notificationData['subject'] = $attributions->count() . "annonce" . ($attributions->count() <= 1 ? '' : 's') . "à modérer de plus de 7 jours";
+			$notificationData['message'] = "Une ou plusieurs annonces attendent d'être modérées depuis plus de 7 jours.";
+			$moderatorToNotify
+				->notify(new OverdueModerationNotification($notificationData, $attributions));
+		}
+	}
 }

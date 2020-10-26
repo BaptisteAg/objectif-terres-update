@@ -122,49 +122,85 @@
                     </p>
                 </div>
             </div>
-            @if($ad->landOfferAd->has_buildings)
-                @if($ad->landOfferAd->buildings_description)
-                    <p>
-                        <span class="is-italic"></span>Description bâtiment(s) agricole(s) :
-                        {{$ad->landOfferAd->buildings_description}}
 
-                    </p>
-                @endif
+            @if($ad->landOfferAd->has_buildings)
+                <p class="has-text-weight-bold">Bâtiment(s) agricole(s)</p>
+                <p>
+                    <span class="is-italic">Surface totale des bâtiments agricoles (en m²) :</span>
+                    {{$ad->landOfferAd->building->surface ?? "Non renseignée"}}
+                </p>
+                <p>
+                    <span class="is-italic">Type de cession des bâtiments agricole:</span>
+                    @if($ad->landOfferAd->building->offerGenres->count() > 0 )
+                        @foreach($ad->landOfferAd->building->offerGenres as $offerGenre)
+                            @if($loop->last)
+                                {{$offerGenre->name}}
+                            @else
+                                {{$offerGenre->name}},
+                            @endif
+                        @endforeach
+                    @else
+                        non précisé
+                    @endif
+
+                </p>
+                <p>
+                    <span class="is-italic">Description :</span>
+                    {{$ad->landOfferAd->building->description ?? "Non renseignée"}}
+
+                </p>
+                <br>
+            @else
+                <p>Sans bâtiment(s) agricole(s)</p>
             @endif
             @if($ad->landOfferAd->has_houses)
-                @if($ad->landOfferAd->has_houses)
-                    <p>
-                        <span class="is-italic"></span>Description habitation(s) :
-                        {{$ad->landOfferAd->houses_description}}
+                <p class="has-text-weight-bold">Bâtiment(s) d'habitation</p>
+                <p>
+                    <span class="is-italic">Surface totale d'habitation(en m²) :</span>
+                    {{$ad->landOfferAd->house->surface ?? "Non renseignée"}}
 
-                    </p>
-                @endif
-            @endif
-            <p>
-                <span class="is-italic">Bâtiments</span> :
-            @if(isset($ad->landOfferAd->has_houses) and isset($ad->landOfferAd->has_buildings))
-                <ul>
-                    @if(isset($ad->landOfferAd->has_houses))
-                        <li>{{$ad->landOfferAd->has_houses ? 'Avec habitation' : 'Sans habitation'}}</li>
-                    @endif
-                    @if(isset($ad->landOfferAd->has_buildings))
-                        <li>{{$ad->landOfferAd->has_buildings ? ' Avec bâtiments agricoles' : 'Sans bâtiments agricoles'}}</li>
-                    @endif
-                </ul>
-            @else
-                <span>Non renseignés</span>
-            @endif
-            <p>
-                <span class="is-italic">Transfert d'activité</span> :
-                @if($ad->landOfferAd->is_activity_transfert)
-                    @if($ad->landOfferAd->is_activity_transfert == 1)
-                        Oui
+                </p>
+                <p>
+                    <span class="is-italic">Type de cession de l'habitation :</span>
+                    @if($ad->landOfferAd->house->offerGenres->count() > 0 )
+                        @foreach($ad->landOfferAd->house->offerGenres as $offerGenre)
+                            @if($loop->last)
+                                {{$offerGenre->name}}
+                            @else
+                                {{$offerGenre->name}},
+                            @endif
+                        @endforeach
                     @else
-                        Non
+                        non précisé
                     @endif
-                @else
-                    Non renseigné
-                @endif
+
+                </p>
+                <p>
+                    <span class="is-italic">Description des bâti + maison d’habitation :</span>
+                    {{$ad->landOfferAd->house->description ?? "Non renseignée"}}
+
+                </p>
+                <br>
+            @else
+                <p>Sans bâtiment(s) d'habitation</p>
+            @endif
+            <p>
+            {{--                <span class="is-italic">Bâtiments</span> :--}}
+            {{--            @if(isset($ad->landOfferAd->has_houses) and isset($ad->landOfferAd->has_buildings))--}}
+            {{--                <ul>--}}
+            {{--                    @if(isset($ad->landOfferAd->has_houses))--}}
+            {{--                        <li>{{$ad->landOfferAd->has_houses ? 'Avec habitation' : 'Sans habitation'}}</li>--}}
+            {{--                    @endif--}}
+            {{--                    @if(isset($ad->landOfferAd->has_buildings))--}}
+            {{--                        <li>{{$ad->landOfferAd->has_buildings ? ' Avec bâtiments agricoles' : 'Sans bâtiments agricoles'}}</li>--}}
+            {{--                    @endif--}}
+            {{--                </ul>--}}
+            {{--            @else--}}
+            {{--                <span>Non renseignés</span>--}}
+            {{--            @endif--}}
+            <p>
+                <span class="is-italic">Ferme en activité</span> :
+                {{ $ad->landOfferAd->is_activity_transfer ? "Oui" : "Non" }}
             </p>
             <p>
                 <span class="is-italic">Accès à l'eau existant</span> :
@@ -271,6 +307,11 @@
                 {{$ad->landSeekAd->installationType->name ?? 'Non renseigné'}}
             </p>
 
+            <p>
+                <span class="is-italic">Description du terrain recherché</span> :
+                {!! nl2br($ad->landSeekAd->land_description ?? "Non précisée") !!}
+            </p>
+
         @endif
         <p>
             <span class="is-italic">Plus d'informations sur le projet
@@ -283,7 +324,7 @@
         <div class="content is-flex" style="justify-content: center">
             <p class="has-text-centered title is-5">Indicateurs concernant cette demande</p>
             <div class="control is-pulled-right ml-60">
-            <button {{$ad->userPp->trashed()? 'disabled' : ''}} class="button is-link">
+                <button {{$ad->userPp->trashed()? 'disabled' : ''}} class="button is-link">
                     <span class="icon is-small">
                         <i class="fas fa-save"></i>
                     </span>
@@ -304,7 +345,8 @@
                     @if(!is_null($currentProjectData))
                         @if($projectDataKey->projectDataValues->count() >0)
                             <div class="select is-fullwidth">
-                                <select {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$projectDataKey->id}}]" style="background-color: #4a4a4a82">
+                                <select {{$ad->userPp->trashed()? 'disabled' : ''}} name="project_data_key[{{$projectDataKey->id}}]"
+                                        style="background-color: #4a4a4a82">
                                     <option selected disabled>Veuillez choisir...</option>
                                     @foreach ($projectDataKey->projectDataValues as $projectDataValue)
                                         @if(isset($currentProjectData->projectDataValue))
@@ -350,12 +392,12 @@
         <div class="control">
             <input type="hidden" name="ad_id" value="{{$ad->id}}">
             <input type="hidden" name="user_id" value="{{auth()->id()}}">
-{{--            <button {{$ad->userPp->trashed()? 'disabled' : ''}} class="button is-link">--}}
-{{--                <span class="icon is-small">--}}
-{{--                    <i class="fas fa-save"></i>--}}
-{{--                </span>--}}
-{{--                <span>Sauvegarder</span>--}}
-{{--            </button>--}}
+            {{--            <button {{$ad->userPp->trashed()? 'disabled' : ''}} class="button is-link">--}}
+            {{--                <span class="icon is-small">--}}
+            {{--                    <i class="fas fa-save"></i>--}}
+            {{--                </span>--}}
+            {{--                <span>Sauvegarder</span>--}}
+            {{--            </button>--}}
         </div>
         {!! Form::close() !!}
     </div>

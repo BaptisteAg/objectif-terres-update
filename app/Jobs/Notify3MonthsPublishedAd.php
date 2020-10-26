@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Models\User;
-use App\Notifications\OverdueModerationNotification;
 use App\Notifications\AdNotification;
 use App\Repositories\Users\UserRepository;
 use App\Services\AttributionAds\AttributionAdsService;

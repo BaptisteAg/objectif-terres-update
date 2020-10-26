@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\Region;
 use App\Models\Territory;
 use App\Models\User;
+use App\Notifications\BasicNotification;
 use App\Repositories\Users\UserRepository;
 use Illuminate\Support\Facades\Hash;
 
@@ -84,6 +85,20 @@ class UserService
 			}
 		}
 		$user = $this->repository->update($data['user_id'], $data);
+
+		$user = User::find($data['user_id']);
+		try {
+			$user->notify(new BasicNotification([
+				'subject' => "Modifications de vos informations personnelles",
+				'message' => "Vos informations personnelles viennent d’être modifiées.\n
+                    Pour gérer vos informations personnelles :\n",
+				'action' => ["Vos informations personnelles", route('user.edit', ['user' => $user->id]),
+					'salutation' => "A bientôt sur Objectif Terres !"]
+			]));
+		} catch (\Exception $e) {
+			return back()->with('warning', 'Une erreur est survenue, veuillez réessayer ');
+		}
+
 		return $user;
 	}
 

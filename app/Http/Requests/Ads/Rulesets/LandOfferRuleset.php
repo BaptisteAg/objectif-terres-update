@@ -8,8 +8,7 @@ class LandOfferRuleset implements RulesetInterface
 {
 	public function get(bool $isSupportRequest): array
 	{
-		//dd(request()->all());
-		return [
+		$rules = [
 			'land_offer.accept_use_zip_code' => ['boolean'],
 			'land_offer.surface' => ['required', 'numeric'],
 			'land_offer.sau_description' => ['nullable', 'string'],
@@ -24,7 +23,6 @@ class LandOfferRuleset implements RulesetInterface
 			'land_offer.has_buildings' => ['boolean'],
 			'land_offer.buildings_description' => ['nullable', 'string'],
 			'land_offer.has_houses' => ['boolean'],
-			'land_offer.is_activity_transfer' => ['numeric', 'required'],
 			'land_offer.houses_description' => ['nullable', 'string'],
 			'land_offer.offer_genres' => ['required', 'array'],
 			'land_offer.price' => ['nullable', 'numeric'],
@@ -49,5 +47,11 @@ class LandOfferRuleset implements RulesetInterface
 			//'land_offer.house_number'                            => ['nullable', 'string'],
 			//'land_offer.house_surface'                           => ['nullable', 'string'],
 		];
+
+		if ($isSupportRequest) {
+			return array_merge($rules, ['land_offer.is_activity_transfer' => ['numeric', 'required'],]);
+		}
+		return $rules;
+
 	}
 }

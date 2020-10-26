@@ -18,10 +18,10 @@ class OverdueModerationNotification extends Notification implements ShouldQueue
 	/**
 	 * Create a new notification instance.
 	 *
-	 * @param string $data
-	 * @param object $attributions
+	 * @param array $data
+	 * @param Collection $attributions
 	 */
-	public function __construct(string $data, Collection $attributions)
+	public function __construct(array $data, Collection $attributions)
 	{
 		$this->data = $data;
 		$this->attributions = $attributions;
@@ -46,16 +46,15 @@ class OverdueModerationNotification extends Notification implements ShouldQueue
 	 */
 	public function toMail($notifiable)
 	{
-		$message = $this->data;
+
 		$url = url('/gestion-des-annonces/recherche?ad_statuses[0]=4');
 		return (new MailMessage)
 			->from(env('MAIL_FROM_ADDRESS'), "Administration")
-			->subject('Des annonces sont en attente de modération')
-			->greeting('Bonjour,')
-			->line($message)
-			->action('Aller sur votre espace de gestion des annonces', $url)
-			->line('A bientôt sur Objectif Terres !')
-			->salutation('Cordialement, L\'équipe d\'Objectif Terres');
+			->subject(isset($this->data['subject']) ?? 'Des annonces sont en attente de modération')
+			->greeting('Bonjour, ' . $notifiable->first_name)
+			->line($this->data['message'])
+			->action('Aller sur l\'espace Modérateur', $url)
+			->salutation('A bientôt sur Objectif Terres !');
 	}
 
 	/**

@@ -15,11 +15,11 @@ BasicNotification extends Notification implements ShouldQueue
 
     protected $data;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
+	/**
+	 * Create a new notification instance.
+	 *
+	 * @param array $data
+	 */
     public function __construct(array $data)
     {
         $this->data = $data;
@@ -53,7 +53,7 @@ BasicNotification extends Notification implements ShouldQueue
         }
 
         $message->action( $this->data["action"][0] ?? null, $this->data["action"][1] ?? null)
-			->salutation('Cordialement, L\'équipe d\'Objectif Terres');
+			->salutation($this->data['salutation'] ??'Cordialement, L\'équipe d\'Objectif Terres');
 
         return $message;
     }

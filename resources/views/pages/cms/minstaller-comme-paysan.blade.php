@@ -7,7 +7,7 @@
 @endsection
 
 @section('main-content')
-    <section class="section cms-page">
+    <section class=" cms-page">
         <div class="container">
             <div class="rows">
                 <div class="row is-full">
@@ -21,7 +21,7 @@
         </div>
     </section>
 
-    <section class="section">
+    <section class="">
         <div class="container">
             @if($pageContent->count())
                 @if($pageContent->has('minstaller-comme-paysan-votre-projet-dinstallations'))

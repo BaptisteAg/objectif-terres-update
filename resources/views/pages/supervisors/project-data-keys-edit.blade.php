@@ -1,6 +1,6 @@
 @extends('default')
 
-@section('title', 'Administration des indicateurs | Objectifs Terres')
+@section('title', 'Administration des indicateurs | Objectif Terress')
 
 
 @section('header')
