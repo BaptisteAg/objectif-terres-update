@@ -3,7 +3,7 @@
 @section('title', 'Foire aux questions | Objectif Terres')
 
 @section('main-content')
-    <div class="section cms-page">
+    <div class=" cms-page">
         <div class="container">
             <div class="rows">
                 <div class="row is-full">

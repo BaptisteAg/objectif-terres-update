@@ -37,6 +37,8 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 			$user->save();
 			return $user;
 		});
+
+
 		return $user;
 	}
 

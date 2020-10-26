@@ -24,7 +24,7 @@
 {{--                            </div>--}}
 {{--                        @endif--}}
                         <div class="tile__content">
-                            <h4 class="tile__title">{{ $item["title"] }}</h4>
+                            <h4 class="tile__title mt-0 mb-0 mr-0 ml-0">{{ $item["title"] }}</h4>
                             @if(count($item["categories"]))
                                 <div class="tags">
                                     @foreach($item["categories"] as $category)

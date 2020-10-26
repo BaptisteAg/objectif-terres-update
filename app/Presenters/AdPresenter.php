@@ -146,7 +146,28 @@ class AdPresenter extends BasePresenter
 			}
 		}
 		return $cities;
+	}
 
+	public function shortCitiesList()
+	{
+
+		$cities = null;
+		if ($this->wrappedObject->cities->count() >= 3) {
+			$i = 0;
+			$len = 3;
+			foreach ($this->wrappedObject->cities->take(3) as $key => $attribute) {
+				if ($key === 0) {
+					$cities = $cities . $attribute['name'];
+				} elseif ($i == $len - 1) {
+					$cities = $cities . ', ' . $attribute['name'] . '...';
+				} else {
+					$cities = $cities . ', ' . $attribute['name'];
+				}
+				$i++;
+			}
+			return $cities;
+		}
+		return $this->citiesList();
 	}
 
 	public function zipCodesByCity()

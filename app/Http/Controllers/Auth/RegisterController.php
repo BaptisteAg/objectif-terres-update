@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Notifications\BasicNotification;
 use App\Rules\SalesforceUniqueEmail;
 use App\Services\Salesforce\SalesforceService;
 use App\Models\City;
@@ -114,7 +115,6 @@ class RegisterController extends Controller
 			event(new Registered($user = $this->create($request->all())));
 			$this->guard()->login($user);
 		} catch (SalesforceException $exception) {
-
 			return back()->withInput()->withErrors(json_decode($exception->getMessage())[0]->message);
 		}
 
@@ -142,6 +142,7 @@ class RegisterController extends Controller
 		$this->salesForceService->updateContact($data["sf_id"], [
 			"OT_user_id__c" => $user->id
 		]);
+
 
 		return $user;
 	}

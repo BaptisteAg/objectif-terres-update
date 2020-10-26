@@ -8,7 +8,7 @@
 @endsection
 
 @section('main-content')
-    <section class="section">
+    <section class="">
         <div class="container">
             <div class="">
                 <div class="">

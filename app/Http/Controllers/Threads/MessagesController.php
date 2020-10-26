@@ -6,17 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MessageRequest;
 use App\Models\SupportStage;
 use App\Models\Thread;
-use App\Models\User;
-use App\Notifications\NewMessageNotification;
 use App\Services\Ads\AdService;
 use App\Services\Advisors\AdvisorsService;
-use App\Services\Documents\DocumentService;
 use App\Services\Documents\DocumentServiceInterface;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class MessagesController extends Controller
 {

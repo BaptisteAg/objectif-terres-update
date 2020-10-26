@@ -57,7 +57,7 @@
                                         @if (is_null($ad->citiesList) and is_null($ad->departmentsList) and is_null($ad->regionsList)   )
                                             Non renseignée
                                         @else
-                                            {{$ad->citiesList ?? ""}}
+                                            {{$ad->shortCitiesList ?? ""}}
                                             {{$ad->departmentsList ?? ""}}
                                             {{$ad->regionsList ?? ""}}
                                         @endif
@@ -65,14 +65,15 @@
                                     @if($ad->landOfferAd)
                                         <li class="custom-tag warning">
                                             <i class="fas fa-piggy-bank"></i>
-                                            @if(! is_null($ad->landOfferAd->price))
-                                                {{number_format($ad->landOfferAd->price, 0, ",", " " )}} €
+                                            @if(! is_null($ad->landOfferAd->price) || !is_null($ad->landOfferAd->rent_price))
+                                                @if(! is_null($ad->landOfferAd->price))
+                                                    {{number_format($ad->landOfferAd->price, 0, ",", " " )}} €
+                                                @endif
+                                                @if(! is_null($ad->landOfferAd->rent_price))
+                                                    {{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} €/mois
+                                                @endif
                                             @else
-                                                Prix non renseigné
-                                            @endif
-                                            @if(! is_null($ad->landOfferAd->rent_price))
-                                                {{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} €/mois
-                                            @else
+                                                Pix non renseigné
                                             @endif
                                         </li>
                                         <li class="custom-tag danger">
@@ -120,10 +121,10 @@
                             </div>
                             <div class="card-content has-text-centered tile__container">
                                 <div class="content text_danger_orange tile__content">
-                                    <h4 class="title is-4 tile__title">{{$ad->title}}</h4>
-                                    <div class="tile__intro">
-                                        <p>{{ \Illuminate\Support\Str::limit($ad->about_project_content, 200, $end='...') }}</p>
-                                    </div>
+                                    <p class="title tile__title">{{ \Illuminate\Support\Str::limit($ad->title, 100, $end='...') }}</p>
+                                    {{--                                    <div class="tile__intro">--}}
+                                    {{--                                        <p>{{ \Illuminate\Support\Str::limit($ad->about_project_content, 200, $end='...') }}</p>--}}
+                                    {{--                                    </div>--}}
                                     <p class="button-wrap">
                                         <span class="button round small warning read-more">
                                             <span class="button__icon">
@@ -187,7 +188,7 @@
                                     </figure>
                                     <ul class="custom-tags custom-list custom-list_v">
                                         @if(isset($ad->is_partner) && $ad->is_partner === 1 )
-                                            <li class="custom-tag warning">Annonce certifiée </li>
+                                            <li class="custom-tag warning">Annonce certifiée</li>
                                         @endif
                                         <li class="custom-tag success">
                                             <i class="fas fa-map-marker-alt"></i>
@@ -257,7 +258,7 @@
                                 </div>
                                 <div class="card-content has-text-centered tile__container">
                                     <div class="content text_danger_orange tile__content">
-                                        <h4 class="title is-4 tile__title">{{$ad->title}}</h4>
+                                        <p class="title tile__title">{{ \Illuminate\Support\Str::limit($ad->title, 100, $end='...') }}</p>
                                         <div class="tile__intro">
                                             <p>{{ \Illuminate\Support\Str::limit($ad->about_project_content, 200, $end='...') }}</p>
                                         </div>
@@ -287,9 +288,9 @@
             </div>
         </section>
     @endif
-{{--    @if(!$cmsFaq->isEmpty())--}}
-{{--        @include('components.faqAccordion')--}}
-{{--    @endif--}}
+    {{--    @if(!$cmsFaq->isEmpty())--}}
+    {{--        @include('components.faqAccordion')--}}
+    {{--    @endif--}}
 
 
     @include('components.partnering')

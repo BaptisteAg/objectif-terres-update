@@ -66,8 +66,6 @@ class UsersController extends Controller
 		if (is_null($user) || $user->id !== auth()->user()->id && auth()->user()->role < 2) {
 			abort(404);
 		}
-
-
 		$isUserConnectedEditHisOwnAccount = true;
 		if (auth()->user()->id !== $user->id) {
 			$isUserConnectedEditHisOwnAccount = false;

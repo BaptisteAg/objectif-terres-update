@@ -129,9 +129,9 @@
                     @endif
                 </div>
                 @if($ad->landOfferAd->is_activity_transfer)
-                        <div class="content">
+                    <div class="content">
                         <p>
-                            <span class="is-size-5  ">Transfert d'activité : </span>
+                            <span class="is-size-5  ">Ferme en activité : </span>
                             <span class="subtitle"> {{ $ad->landOfferAd->is_activity_transfer ? "Oui" : "Non" }} </span>
                         </p>
                     </div>
@@ -241,6 +241,11 @@
                                     </p>
                                 @endif
                             </div>
+                        @else
+                            <div class="mb-20">
+                                <p class="has-text-link is-size-5">Bâtiment(s) agricole(s)</p>
+                                <p class="">Sans bâtiment agricole</p>
+                            </div>
                         @endif
                         @if($ad->landOfferAd->has_houses)
                             <div class=" mb-20 ">
@@ -270,6 +275,11 @@
                                         </span>
                                     </p>
                                 @endif
+                            </div>
+                        @else
+                            <div class="mb-20">
+                                <p class="has-text-link is-size-5">Habitation</p>
+                                <p class="">Sans habitation</p>
                             </div>
                         @endif
                     </div>

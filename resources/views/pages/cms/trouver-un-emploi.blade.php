@@ -8,7 +8,7 @@
 @endsection
 
 @section('main-content')
-    <section class="section cms-page">
+    <section class=" cms-page">
         <div class="container">
             <div class="rows">
                 <div class="row is-full">
@@ -24,7 +24,7 @@
 
     @include('components.multiple-img-block')
 
-    <section class="section">
+    <section class="">
         <div class="container block-numbers">
             <div class="container has-text-centered">
                 <div class="rows">
@@ -51,7 +51,7 @@
         @include('components.faq-frequentes')
     @endif
 
-    <section class="section contactus-background">
+    <section class=" contactus-background">
         <div class="container">
             <div class="columns">
                 <div class="column is-6">
