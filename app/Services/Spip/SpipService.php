@@ -178,12 +178,12 @@ class SpipService
     public function getLocalAdMapping(Article $article, $userId)
     {
         $offerGenres = $this->getLocalOfferGenresMapping($article->mots);
-        $isBuyOffer = in_array(7, $offerGenres);
+        $isBuyOffer = in_array(6, $offerGenres);
 
         return [
-            'title' => utf8_encode($article->titre),
-            'about_content' => utf8_encode($article->surtitre),
-            'about_project_content' => utf8_encode($article->texte),
+            'title' => $article->titre,
+            'about_content' => $article->surtitre,
+            'about_project_content' => $article->texte,
             'created_at' =>  $article->date,
             'updated_at' => $article->maj,
             'is_draft' => $article->statut !== "publie" ? 1 : 0,
@@ -206,7 +206,7 @@ class SpipService
             'job_seek' => [
 
             ],
-            'document_ids' => $this->getLocalDocumentsMapping($article->documents, $userId)
+            'documents_ids' => $this->getLocalDocumentsMapping($article->documents, $userId)
         ];
     }
 
@@ -218,15 +218,15 @@ class SpipService
     public function getLocalUserMapping(Auteur $auteur)
     {
         return [
-            'first_name' => utf8_encode($auteur->cpnom),
-            'name' => utf8_encode($auteur->cnom),
-            'phone' => utf8_encode($auteur->ctel),
-            'street' => utf8_encode(implode(', ', array_filter(array_unique([$auteur->cadresse, $auteur->cadresse2, $auteur->cadresse3])))),
+            'first_name' => $auteur->cpnom,
+            'name' => $auteur->cnom,
+            'phone' => $auteur->ctel,
+            'street' => implode(', ', array_filter(array_unique([$auteur->cadresse, $auteur->cadresse2, $auteur->cadresse3]))),
             'zip_code_id' => $this->findMatchingCityId($auteur),
 
-            'email' => utf8_encode($auteur->email),
+            'email' => $auteur->email,
             // bio contains the unencrypted password ( yes -_- )
-            'password' => Hash::make(utf8_encode($auteur->bio)),
+            'password' => Hash::make($auteur->bio),
 
             // Taken from the first ad found
             'accept_share_contact_infos' => $auteur->articles->first->soustitre === 'oui' ? 1 : 0,

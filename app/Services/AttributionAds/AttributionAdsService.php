@@ -381,7 +381,7 @@ class AttributionAdsService
 		//If the pp doesn't need a support from Tdl, the ad is validated and published
 
 		$ad = $this->adRepository->find($attributionAd->ad->id);
-		$this->adService->updateAdPartnerStatus($ad, ['is_partner' => $data['is_partner']]);
+		$this->adService->updateAdPartnerStatus($ad, ['is_partner' => $data['is_partner'] ?? null]);
 
 		$attributionAd->ad_status_id = AdStatus::APPROVE_ID;
 		$attributionAd->published_on = Carbon::now();

@@ -48,20 +48,16 @@
                    v-for="id in zone.value.ids">
           </template>
         </div>
-      </div>
-    </div>
-    <input type="hidden" :disabled="disabled" :name="jsonName" :value="JSON.stringify(value)">
-    <div class="card-footer">
-      <div class="card-footer-item">
-        <div class="column tooltip has-tooltip-left has-tooltip-multiline"
-             data-tooltip="Sélectionnez une commune pour activer ce champ">
-          <p class="label">Dans un rayon de </p>
-          <template v-if="!disabled">
-            <vue-slider
-                :disabled="disabled || !hasCities"
-                :name="radiusName"
-                :value="radiusValue"
-                :data="{
+        <input type="hidden" :disabled="disabled" :name="jsonName" :value="JSON.stringify(value)">
+        <div class="card-footer">
+            <div class="card-footer-item">
+                <div class="column tooltip has-tooltip-left has-tooltip-multiline" data-tooltip="Sélectionnez une commune pour activer ce champ">
+                    <p class="label">Dans un rayon de </p>
+                    <vue-slider
+                            :disabled="disabled || !hasCities"
+                            :name="radiusName"
+                            :value="radiusValue"
+                            :data="{
                                 '0': '0km',
                                 '5': '5km',
                                 '10': '10km',

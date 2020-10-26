@@ -98,9 +98,17 @@
                                 )</span>
                         </p>
                     </div>
+                @elseif($ad->regions->count())
+                    <div class="content">
+                        <p><span class="is-size-5 is-capitalized has-text-black">Région : </span>
+                            <span class="subtitle">
+                                {{$ad->regions[0]->name }} ({{$ad->regions[0]->code }})
+                            </span>
+                        </p>
+                    </div>
                 @endif
 
-                @if(! is_null($ad->landOfferAd->surface))
+                @if(!empty($ad->landOfferAd->surface))
                     <div class="content">
                         <p><span class="is-size-5 is-capitalized ">Surface : </span><span
                                     class="subtitle">{{$ad->landOfferAd->surface}} hectares</span></p>
@@ -177,18 +185,20 @@
                 </div>
             @endif
 
-            <div class="mb-20">
-                <p class="has-text-link is-size-5 "> Certification des terres</p>
+    @if($ad->landOfferAd->bioCertifications->count())
+        <div class="column is-one-third ">
+            <p class="has-text-link is-size-5 has-text-centered"> Certification des terres</p>
 
-                <p class="">
-                    @foreach($ad->landOfferAd->bioCertifications as $bioCertification)
-                        @if($bioCertification->icon == "")
-                            <span>{{$bioCertification->name }}</span>
-                        @endif
-                        <img src="{{ $bioCertification->icon }}">
-                    @endforeach
-                </p>
-            </div>
+            <p class="has-text-centered">
+                @foreach($ad->landOfferAd->bioCertifications as $bioCertification)
+                    @if($bioCertification->icon == "")
+                        <span>{{$bioCertification->name }}</span>
+                    @endif
+                    <img src="{{ $bioCertification->icon }}">
+                @endforeach
+            </p>
+        </div>
+    @endif
 
             <div class="mb-20">
                 <p class="has-text-link is-size-5 ">Altitude</p>

@@ -168,7 +168,7 @@
                                         @if($ad->hasImages)
                                             @if($ad->images[0]->path ==="0")
                                                 @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
-                                                    <img src="{{URL::asset('images/illustrations/ferme01.jpg')}}"
+                                                    <img src="{{URL::asset('images/new-placeholder-ad.png')}}"
                                                          class="vignette__image" alt="image generic ferme"/>
                                                 @else
                                                     <img src="{{URL::asset("images/illustrations/photo_08_bandeau-maous_1920.jpg")}}"
@@ -180,7 +180,7 @@
                                             @endif
                                         @else
                                             @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
-                                                <img src="{{URL::asset('images/illustrations/ferme01.jpg')}}"
+                                                <img src="{{URL::asset('images/new-placeholder-ad.png')}}"
                                                      class="vignette__image" alt="image generic ferme"/>
                                             @else
                                                 <img src="{{URL::asset("images/illustrations/photo_08_bandeau-maous_1920.jpg")}}"

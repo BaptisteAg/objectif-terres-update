@@ -280,9 +280,10 @@ class AdService
             }
 
             // Annonce déjà approuvée sur SPIP
-            $attributionAdData['ad_status_id'] = AdStatus::APPROVE_ID;
-            $attributionAdData['user_moderator_id'] = $moderator->id;
             $attributionAdData['ad_id'] = $ad->id;
+            $attributionAdData['user_moderator_id'] = $moderator->id;
+            $attributionAdData['ad_status_id'] = AdStatus::APPROVE_ID;
+            $attributionAdData['published_on'] = $data["created_at"];
 
 			$this->attributionAdsRepository->create($attributionAdData);
 		}

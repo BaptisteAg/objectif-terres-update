@@ -30,28 +30,30 @@ class DocumentService implements DocumentServiceInterface
         $directory =  'documents/'.$directory;
 
         if($file instanceof UploadedFile) {
-            $path = $file->storeAs($directory, uniqid().$file->getClientOriginalName());
+            $storageDirectory = $file->storeAs($directory, uniqid().$file->getClientOriginalName());
             $name = $file->getClientOriginalName();
         }
         else {
-            $directory = str_replace('/', DIRECTORY_SEPARATOR, storage_path('app/'.$directory));
-
-            $path = str_replace('/', DIRECTORY_SEPARATOR,
-                $directory.'/'.uniqid().$file->getFilename()
+            $name = $file->getFilename();
+            $fileName = uniqid().$file->getFilename();
+            $storageDirectory = str_replace(DIRECTORY_SEPARATOR, '/',
+                $directory.'/'.$fileName
             );
 
-            if(!is_dir($directory)) {
-                mkdir($directory, 0755, true);
+            $absolutePath = str_replace('/', DIRECTORY_SEPARATOR, storage_path('app/'.$storageDirectory));
+
+            if(!is_dir(dirname($absolutePath))) {
+                mkdir(dirname($absolutePath), 0755, true);
             }
+
             copy(
                 str_replace('/', DIRECTORY_SEPARATOR, $file->getPathname()),
-                $path
+                $absolutePath
             );
-            $name = $file->getFilename();
         }
 
         $document = $this->repository->create([
-            'path' => $path,
+            'path' => $storageDirectory,
             'name' => $name,
             'size' => $file->getSize(),
             'type' => $file->getMimeType(),
