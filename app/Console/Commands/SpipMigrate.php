@@ -8,9 +8,11 @@ use App\Models\Ad;
 use App\Models\Spip\Auteur;
 use App\Models\User;
 use App\Services\Ads\AdService;
+use App\Services\Salesforce\SalesforceService;
 use App\Services\Spip\SpipService;
 use App\Services\Users\UserService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class SpipMigrate extends Command
@@ -40,19 +42,24 @@ class SpipMigrate extends Command
      * @var AdService
      */
     protected $adService;
+    /**
+     * @var SalesforceService
+     */
+    private $salesforceService;
 
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct(SpipService $spipService, UserService $userService, AdService $adService)
+    public function __construct(SpipService $spipService, UserService $userService, AdService $adService, SalesforceService $salesforceService)
     {
         parent::__construct();
 
         $this->spipService = $spipService;
         $this->userService = $userService;
         $this->adService = $adService;
+        $this->salesforceService = $salesforceService;
 
     }
 
@@ -86,6 +93,9 @@ class SpipMigrate extends Command
         $importedUsers = [];
         $importedAds = [];
 
+        $stats["generated_passwords"] = 0;
+        $stats["salesforce_users"] = 0;
+
         /** @var Auteur[] $auteur */
         foreach($spipAdsByUser as $auteur) {
 
@@ -95,6 +105,12 @@ class SpipMigrate extends Command
             }
 
             $user = User::where('email', $auteur->email)->first();
+
+            $isSalesforceUser = $this->salesforceService->userNameExists($auteur->email, 'User');
+
+            if($isSalesforceUser) {
+                $stats["salesforce_users"]++;
+            }
 
             if($user) {
                 echo("User retrieved : ".$auteur->email."\n");
@@ -106,17 +122,18 @@ class SpipMigrate extends Command
                 }
             }
             else {
-                if(!$auteur->bio) {
+                if(!$auteur->bio && !$isSalesforceUser) {
                     echo("Generating password for user : ".$auteur->email."\n");
                     $auteur->bio = Str::random(8);
                     $auteur->save();
+                    $stats["generated_passwords"]++;
                 }
 
                 $user = $this->userService->create(
                     $this->spipService->getLocalUserMapping($auteur)
                 );
 
-                print_r("User created : ".$auteur->email."\n");
+                print_r("User imported : ".$auteur->email."\n");
             }
 
             //dd($auteur->email, $auteur->bio, $auteur->id_auteur);
@@ -149,7 +166,7 @@ class SpipMigrate extends Command
                     $user->id
                 );
 
-                print_r("Created ad n°".$stats["adCount"]." : ".json_encode([
+                print_r("Imported ad n°".$stats["adCount"]." : ".json_encode([
                     "spip_id" => $article->id_article,
                     "id" => $ad->id,
                     "title" => $ad->title,
@@ -173,7 +190,7 @@ class SpipMigrate extends Command
                 $lastUserAd = $ad;
                 $stats["adCount"]++;
                 $userAdCount++;
-                if(!$ad->documents_count) {
+                if(!$ad->documents()->count()) {
                     $stats["adsWithoutDocument"]++;
                 }
             }
@@ -182,13 +199,15 @@ class SpipMigrate extends Command
                 "first_name" => $user->first_name,
                 "last_name" => $user->name,
                 "email" => $user->email,
-                "password" => utf8_encode($auteur->bio),
+                "password" => $auteur->bio,
                 "ads_count" => $userAdCount,
                 "last_ad_is_published" => !$lastUserAd || $lastUserAd->is_draft ? '0' : '1',
                 "last_ad_title" => $lastUserAd ? $lastUserAd->title : '',
                 "last_ad_date" => $lastUserAd ? $lastUserAd->created_at : '',
             ];
         }
+
+        Cache::flush();
 
         array_splice($importedUsers, 0, 0, [array_keys($importedUsers[0])]);
         array_splice($importedAds, 0, 0, [array_keys($importedAds[0])]);

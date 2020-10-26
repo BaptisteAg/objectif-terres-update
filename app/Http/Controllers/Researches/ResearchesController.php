@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Researches;
 use App\Jobs\NotifyCreationAlertResearch;
 use App\Models\Research;
 use App\Http\Controllers\Controller;
+use App\Services\Locations\LocationService;
 use App\Services\Researches\ResearchService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 
 class
@@ -14,16 +16,21 @@ ResearchesController extends Controller
 {
 	private $researchService;
 	private $researchNotification;
+    /**
+     * @var LocationService
+     */
+    private $locationService;
 
-	/**
+    /**
 	 * ResearchesController constructor.
 	 * @param ResearchService $researchService
 	 * @param NotifyCreationAlertResearch $notifyCreationAlertResearch
 	 */
-	public function __construct(ResearchService $researchService, NotifyCreationAlertResearch $notifyCreationAlertResearch)
+	public function __construct(ResearchService $researchService, NotifyCreationAlertResearch $notifyCreationAlertResearch, LocationService $locationService)
 	{
 		$this->researchService = $researchService;
 		$this->researchNotification = $notifyCreationAlertResearch;
+		$this->locationService = $locationService;
 	}
 
 	/**
@@ -32,9 +39,31 @@ ResearchesController extends Controller
 	 */
 	public function index(Request $request)
 	{
+        if ($request->has('ad_category') && $request->has('offer_type')) {
+            $selectedAdType = $request->input('ad_category') . $request->input('offer_type');
+        } else {
+            return back()->withErrors([
+                'error' => 'Aucune catégorie d\'annonce séléctionnée'
+            ]);
+        }
+
 		list ($ads, $adsType) = $this->researchService->index($request);
 		$request->flash();
-		return view('pages.researches', compact('ads', 'adsType', 'request'));
+
+        $hasDepartmentPolygons = false;
+
+        if(!empty($request->get("regions_location_researches_ids"))) {
+            $regionIds = $request->get("regions_location_researches_ids");
+
+            if(count($regionIds) === 1) {
+                $departmentPolygons = $this->locationService->getDepartmentPolygons($regionIds[0], $selectedAdType);
+                if(!empty($departmentPolygons)) {
+                    $hasDepartmentPolygons = true;
+                }
+            }
+        }
+
+		return view('pages.researches', compact('ads', 'adsType', 'request', 'hasDepartmentPolygons'));
 	}
 
 	/**

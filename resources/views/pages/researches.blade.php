@@ -3,12 +3,14 @@
 @section ('title', 'Rechercher parmis les annonces postées sur Objectif Terres')
 @section('head-script')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
-    <!-- Import Leaflet CSS Style Sheet -->
-    <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css"/>
+    @if($hasDepartmentPolygons)
+        <!-- Import Leaflet CSS Style Sheet -->
+        <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css"/>
+    @endif
 @endsection
 
 @section('main-content')
-    @if(!empty($request->get("regions_location_researches_ids")) && count($request->get("regions_location_researches_ids")) === 1)
+    @if($hasDepartmentPolygons)
         <div id="global-map"></div>
     @endif
 
@@ -358,7 +360,7 @@
         });
     </script>
 
-    @if(!empty($request->get("regions_location_researches_ids")) && count($request->get("regions_location_researches_ids")) === 1)
+    @if($hasDepartmentPolygons)
         <script defer>
             regionMapInit('global-map', {
                 region_id: "{{$request->get("regions_location_researches_ids")[0]}}",

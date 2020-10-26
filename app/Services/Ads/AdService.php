@@ -867,6 +867,44 @@ class AdService
 
 	/**
 	 * @param Ad $ad
+	 * @return Region[]
+	 */
+	public function getAdRegions(Ad $ad)
+	{
+		$regions = collect();
+
+		if (count($ad->cities)) {
+			/** @var City $city */
+			foreach ($ad->cities as $city) {
+				if ($city->department && $city->department->region) {
+                    $regions[] = $city->department->region;
+				}
+			}
+		}
+
+		if (count($ad->departments)) {
+			/** @var Department $department */
+			foreach ($ad->departments as $department) {
+				if ($department->region) {
+                    $regions[] = $department->region;
+				}
+			}
+		}
+
+		if (count($ad->regions)) {
+			/** @var Region $foundRegion */
+			foreach ($ad->regions as $region) {
+                $regions[] = $region;
+			}
+		}
+
+		return $regions->unique(function (Region $region) {
+            return $region->id;
+        });
+	}
+
+	/**
+	 * @param Ad $ad
 	 * @return array
 	 */
 	public function getAdRegionIds(Ad $ad)
@@ -920,14 +958,6 @@ class AdService
 		if (count($ad->departments)) {
 			foreach ($ad->departments as $department) {
                 $departmentIds[] = $department->id;
-			}
-		}
-
-		if (count($ad->regions)) {
-			foreach ($ad->regions as $region) {
-			    foreach($region->departments as $department) {
-                    $departmentIds[] = $department->id;
-                }
 			}
 		}
 

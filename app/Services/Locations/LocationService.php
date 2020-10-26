@@ -3,6 +3,7 @@
 use App\Models\City;
 use App\Models\Department;
 use App\Models\Region;
+use App\Services\Ads\AdService;
 use Cache;
 use GuzzleHttp\Client;
 use Illuminate\Database\Query\Builder;
@@ -12,6 +13,16 @@ use Illuminate\Support\Facades\DB;
 class LocationService
 {
     /**
+     * @var AdService
+     */
+    private $adService;
+
+    public function __construct(AdService $adService)
+    {
+        $this->adService = $adService;
+    }
+
+    /**
      * @param string $zipCode
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|City|null
      */
@@ -20,14 +31,78 @@ class LocationService
         return City::where('zip_code', $zipCode)->first();
     }
 
-    public function getLocationGeoPolygon(string $q)
+    public function getRegionPolygons($selectedAdType)
+    {
+        $cacheKey = 'regionspolygon.'.$selectedAdType;
+
+        return Cache::rememberForever($cacheKey, function () use ($selectedAdType) {
+            $adsCountByRegionId = $this->adService->getPublishedAdsCountByRegionId($selectedAdType);
+
+            /** @var Region[] $regions */
+            $regions = Region::whereIn('id', array_keys($adsCountByRegionId))->get();
+
+            $data = [];
+
+            foreach ($regions as $region) {
+                $geoPolygon = $this->getLocationGeoPolygon($region->name, 'region');
+                $geoPolygon->region_id = $region->id;
+                $geoPolygon->ads_count = $adsCountByRegionId[$region->id];
+                $data[] = $geoPolygon;
+            }
+
+            return $data;
+        });
+    }
+
+    public function getDepartmentPolygons($regionId, $selectedAdType)
+    {
+        $cacheKey = 'departmentspolygon.'.$regionId.'.'.$selectedAdType;
+
+        return Cache::rememberForever($cacheKey, function () use ($selectedAdType, $regionId) {
+
+            $adsCountByDepartmentId = $this->adService->getPublishedAdsCountByDepartmentId($selectedAdType, $regionId);
+
+            /** @var Department[] $departments */
+            $departments = Department::whereIn('id', array_keys($adsCountByDepartmentId))->get();
+
+            $data = [];
+
+            foreach ($departments as $department) {
+                $geoPolygon = $this->getLocationGeoPolygon($department->name, 'department');
+                $geoPolygon->department_id = $department->id;
+                $geoPolygon->ads_count = $adsCountByDepartmentId[$department->id];
+                $data[] = $geoPolygon;
+            }
+
+            return $data;
+        });
+    }
+
+    public function getLocationGeoPolygon(string $q, $type = "")
     {
         $cacheKey = 'geopolygon-'.$q;
 
         if(!Cache::has($cacheKey)) {
-            Cache::remember($cacheKey, now()->addDays(365), function() use ($q) {
+            Cache::remember($cacheKey, now()->addDays(365), function() use ($q, $type) {
                 $client = new Client();
-                $res = $client->request('GET', 'https://nominatim.openstreetmap.org/search.php?q='.urlencode($q.', France').'&polygon_geojson=1&format=json');
+                $params = "country=france";
+                if($type === "region") {
+                    $params .="&state=".$q;
+                    $threshold = 0.15;
+                }
+                elseif($type === "department") {
+                    $params .="&county=".$q;
+                    $threshold = 0.15;
+                }
+                elseif($type === "misc") {
+                    $params .="&q=".$q;
+                    $threshold = 0.02;
+                }
+                else {
+                    $params .="&q=".$q;
+                    $threshold = 0.2;
+                }
+                $res = $client->request('GET', 'https://nominatim.openstreetmap.org/search.php?'.$params.'&polygon_geojson=1&format=json&polygon_threshold='.$threshold);
 
                 $results = json_decode($res->getBody());
 
