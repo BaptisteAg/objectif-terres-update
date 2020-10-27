@@ -7,6 +7,7 @@ use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\Department;
 use App\Models\Region;
+use App\Notifications\BasicNotification;
 use App\Notifications\ModerationPpNotification;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
@@ -160,7 +161,7 @@ class AttributionAdsService
 
 		//Additional filters  : filter by ads attributed to moderator
 		if ($filters->has('user_attribution')) {
-			if (!is_null($filters->input('user_attribution')) ) {
+			if (!is_null($filters->input('user_attribution'))) {
 				$attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
 			}
 		}
@@ -354,24 +355,24 @@ class AttributionAdsService
 		return $attributionAds;
 	}
 
-    /**
-     * @param Ad $ad
-     * @throws \Exception
-     */
-    private function forgetAdPolygonCache(Ad $ad)
-    {
-        cache()->forget('regionspolygon.'.$this->adService->getAdType($ad));
-        foreach($this->adService->getAdRegions($ad) as $region) {
-            cache()->forget('departmentspolygon.'.$region->id);
-        }
-    }
+	/**
+	 * @param Ad $ad
+	 * @throws \Exception
+	 */
+	private function forgetAdPolygonCache(Ad $ad)
+	{
+		cache()->forget('regionspolygon.' . $this->adService->getAdType($ad));
+		foreach ($this->adService->getAdRegions($ad) as $region) {
+			cache()->forget('departmentspolygon.' . $region->id);
+		}
+	}
 
 
-    /**
-     * @param array $data
-     * @return AttributionAd
-     * @throws \Exception
-     */
+	/**
+	 * @param array $data
+	 * @return AttributionAd
+	 * @throws \Exception
+	 */
 	public function acceptAd(array $data)
 	{
 		/** @var AttributionAd $attributionAd */
@@ -399,13 +400,13 @@ class AttributionAdsService
 
 		$attributionAd->ad_status_id = AdStatus::APPROVE_ID;
 		$attributionAd->published_on = Carbon::now();
-		$data = [
-			'message' => 'Votre annonce a été validée par l\'équipe d\'Objectif Terres et est désormais publiée ! ',
-			'action' => 'Consulter votre annonce',
-			'url' => '/annonces/' . $attributionAd->ad->id,
-		];
-		$attributionAd->ad->userPp->notify(new ModerationPpNotification($data));
-
+		$attributionAd->ad->userPp->notify(new BasicNotification(
+			['subject' => "Votre annonce n°" . $attributionAd->ad->id . " a été validée par" . $attributionAd->userModerator->first_name . " " . $attributionAd->userModerator->name,
+				'message' => "Votre annonce a été publiée sur Objectif Terres. Elle sera en ligne durant 6 mois.\n
+                    Si besoin vous pouvez la modifier ou la supprimer.\n",
+				'action' => ["Gérer mes annonces", route('ads.list')],
+				'salutation' => "A bientôt sur Objectif Terres !"]
+		));
 		if ($attributionAd->refusal_type_id) {
 			$attributionAd->refusal_type_id = null;
 		}
@@ -420,11 +421,11 @@ class AttributionAdsService
 		return $attributionAd;
 	}
 
-    /**
-     * @param int $attributionAdId
-     * @return mixed
-     * @throws \Exception
-     */
+	/**
+	 * @param int $attributionAdId
+	 * @return mixed
+	 * @throws \Exception
+	 */
 	public function modifyAd(int $attributionAdId)
 	{
 		$attributionAd = $this->repository->find($attributionAdId);
@@ -436,7 +437,7 @@ class AttributionAdsService
 		$ad->is_draft = 1;
 		$ad->save();
 
-        $this->forgetAdPolygonCache($ad);
+		$this->forgetAdPolygonCache($ad);
 
 		//TODO url is the link to the form form modifiy the ad
 		$data = [
@@ -448,11 +449,11 @@ class AttributionAdsService
 		return $attributionAd;
 	}
 
-    /**
-     * @param array $data
-     * @return mixed
-     * @throws \Exception
-     */
+	/**
+	 * @param array $data
+	 * @return mixed
+	 * @throws \Exception
+	 */
 	public function rejectAd(array $data)
 	{
 		$attributionAd = $this->repository->find($data['attribution_ad_id']);
@@ -467,13 +468,12 @@ class AttributionAdsService
 			'url' => '/mon-espace/messagerie',
 		];
 		$attributionAd->ad->userPp->notify(new ModerationPpNotification($data));
-
 		if ($attributionAd->ad->is_draft === 1) {
 			$ad = $this->adRepository->find($attributionAd->ad->id);
 			$ad->is_draft = 0;
 			$ad->save();
 
-            $this->forgetAdPolygonCache($ad);
+			$this->forgetAdPolygonCache($ad);
 		}
 		return $attributionAd;
 

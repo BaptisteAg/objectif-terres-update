@@ -97,7 +97,7 @@
                                        class='label has-tooltip has-tooltip-left'
                                        data-tooltip=" Si vous ne savez pas cochez les deux">
 
-                                    Accès au foncier souhaité*,
+                                    Accès au foncier souhaité*
                                     <i class="fas fa-info-circle has-text-info"></i>
                                 </label>
 
