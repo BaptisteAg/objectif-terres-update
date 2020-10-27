@@ -173,7 +173,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 */
 	public function destroy(int $id)
 	{
-		$ad = $this->find($id);
+		$ad = Ad::find($id);
 		$ad->delete();
 	}
 

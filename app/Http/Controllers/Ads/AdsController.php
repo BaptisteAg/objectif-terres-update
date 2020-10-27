@@ -87,7 +87,7 @@ class AdsController extends BaseController
 				$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
 				$ad->userPp->notify(new BasicNotification([
 					'subject' => "Votre annonce va être modérée",
-					'message' => "Votre annonce '".$ad->title."' va être modérée par un membre de l’équipe sous 7 jours.\n
+					'message' => "Votre annonce '" . $ad->title . "' va être modérée par un membre de l’équipe sous 7 jours.\n
                     Vous pouvez gérer vos annonces depuis votre espace personnel Objectif Terres :\n",
 					'action' => ["Gérer mes annonces", route('ads.list')],
 					'salutation' => "En vous remerciant pour votre confiance,\n
@@ -164,7 +164,10 @@ class AdsController extends BaseController
 			abort(404);
 		}
 		$this->adService->delete($ad);
-		return back()->with('success', 'Votre annonce a bien été supprimée');
+		if (is_null($ad->project_id)) {
+			return back()->with('success', 'Votre annonce a bien été supprimée');
+		}
+		return redirect()->route('user.index')->with('success', 'Votre demande d\'accomapgnement a été supprimée avec succès');
 	}
 
 	/**

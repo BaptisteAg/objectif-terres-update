@@ -322,4 +322,5 @@
         homepageMapInit('global-map');
     </script>
 
+
 @endsection

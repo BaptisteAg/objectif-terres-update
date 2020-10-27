@@ -52,17 +52,18 @@
                             </li>
                             <li>
                                 <a class="menu__link menu__link_danger "
-                                   href="/trouver-une-terre-ou-des-financements">un candidat à l'installation en recherche de
+                                   href="/trouver-une-terre-ou-des-financements">un candidat à l'installation en
+                                    recherche de
                                     terres</a>
                             </li>
                             <li>
                                 <a class="menu__link menu__link_danger "
                                    href="/transmettre-ma-ferme">un paysan (bientôt) à la retraite</a>
                             </li>
-                                                        <li>
-                                                            <a class="menu__link menu__link_danger "
-                                                               href="/proprietaire-de-foncier">un propriétaire de foncier</a>
-                                                        </li>
+                            <li>
+                                <a class="menu__link menu__link_danger "
+                                   href="/proprietaire-de-foncier">un propriétaire de foncier</a>
+                            </li>
                             {{--                            <li>--}}
                             {{--                                <a class="menu__link menu__link_danger "--}}
                             {{--                                   href="">une collectivité </a>--}}
@@ -76,7 +77,7 @@
                     fréquentes</a>
             </li>
             <li class="bubble-wrap">
-                <a class="menu__link " href="#">Première visite ?</a>
+                <a class="menu__link " href="{{route("site-tour")}}">Première visite ?</a>
             </li>
         </ul>
 

@@ -42,9 +42,6 @@ class DatabaseSeeder extends Seeder
 		\Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__ . '/../sql/departments.sql'));
 		\Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__ . '/../sql/cities.sql'));
 
-
-        \Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__ . '/../sql/cms_pages.sql'));
-
         \Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__ . '/../sql/users_table.sql'));
         \Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__ . '/../sql/locationable_users.sql'));
         \Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__ . '/../sql/user_permissions.sql'));
@@ -73,6 +70,8 @@ class DatabaseSeeder extends Seeder
 			ResponseTemplateSeeder::class,
 			KaffeinUserSeeder::class,
 		]);
+
+		\Illuminate\Support\Facades\DB::unprepared(file_get_contents(__DIR__ . '/../sql/cms_pages.sql'));
 
 		if (app()->environment() === "local") {
 			$fakeAdsByDepartmentAndTypeCount = (int)env('SEED_ADS_COUNT', 1);

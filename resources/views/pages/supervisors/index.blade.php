@@ -460,10 +460,14 @@
         });
 
         let deleteButton = document.querySelector('#close-notification-supervisor');
-        deleteButton.addEventListener('click', function (e) {
-            let notification = document.querySelector('#notification-supervisor');
-            notification.style.display = 'none';
-        });
+        if (deleteButton != null) {
+            deleteButton.addEventListener('click', function (e) {
+                    let notification = document.querySelector('#notification-supervisor');
+                    notification.style.display = 'none';
+                }
+            )
+        }
+
     </script>
 
 @endsection
