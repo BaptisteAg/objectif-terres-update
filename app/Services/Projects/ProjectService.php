@@ -81,6 +81,15 @@ class ProjectService
 	}
 
 	/**
+	 * @param Carbon $date
+	 * @return Collection
+	 */
+	public function findAllByCreatedSinceDate(Carbon $date):Collection
+	{
+		return $this->repository->findAllCreatedSinceDate($date);
+	}
+
+	/**
 	 * @param int $supportStateId
 	 * @param int $numberOfDays
 	 * @return mixed

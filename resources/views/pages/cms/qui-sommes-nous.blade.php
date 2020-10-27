@@ -7,7 +7,6 @@
 @endsection
 
 @section('main-content')
-    {{dd($pageContent)}}
     <div class="cms-page">
         <section class="">
             <div id="a-propos-d-objectif-terres" class="container">

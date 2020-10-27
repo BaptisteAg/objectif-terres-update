@@ -18,6 +18,22 @@ class ProjectsRepository extends AbstractRepository implements ProjectsRepositor
 
 
 	/**
+	 * @param Carbon $date
+	 * @return mixed
+	 */
+	public function findAllCreatedSinceDate(Carbon $date)
+	{
+		return $this->entity
+			->where(function (Builder $builder) use ($date) {
+				$builder->whereHas('ad', function (Builder $query) use ($date) {
+					$query->whereHas('attributionAd', function (Builder $q) use ($date) {
+						$q->whereDate('created_at', '=', $date);
+						$q->whereNotNull('user_advisor_id');
+					});
+				});
+			})
+			->get();
+	}	/**
 	 * @param int $supportStateId
 	 * @param int $numberOfDays
 	 * @return mixed

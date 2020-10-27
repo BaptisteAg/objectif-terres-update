@@ -2,18 +2,14 @@
 
 namespace App\Jobs;
 
-use App\Models\AttributionAd;
 use App\Models\User;
-use App\Notifications\OverdueModerationNotification;
 use App\Notifications\AdNotification;
 use App\Repositories\Users\UserRepository;
 use App\Services\AttributionAds\AttributionAdsService;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
