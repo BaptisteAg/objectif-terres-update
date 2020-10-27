@@ -191,9 +191,10 @@
             @if($ad->landSeekAd->offerGenres->count())
                 @foreach ($ad->landSeekAd->offerGenres as $offerGenre)
                     <div class="mb-20">
-                        <p class="has-text-link is-size-5 "> Accès au foncier souhaité </p>
+                        <p class="has-text-link is-size-5 ">Accès au foncier souhaité </p>
                         <p class="">
-                            {{$offerGenre->name}}
+                            {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
+
                             @if($offerGenre->id === $offerGenre::ID_VENTE && $ad->landSeekAd->price_max)
                                 <br>Budget maximum : {{ $ad->landSeekAd->price_max }} €
                             @endif
@@ -235,16 +236,16 @@
             <h4 class="title is-3">Description du projet</h4>
             <p>  {!! nl2br($ad->about_project_content ?? "") !!} </p>
         </div>
-        @if($ad->landSeekAd->experience_farming)
-            <div class="content">
-                <h4 class="title is-3">Expérience du porteur de projet dans le domaine agricole</h4>
-                <p> {!! nl2br($ad->landSeekAd->experience_farming ?? "") !!}</p>
-            </div>
-        @endif
         @if($ad->about_content)
             <div class="content">
                 <h4 class="title is-3">A propos du porteur de projet</h4>
                 <p>  {!! nl2br($ad->about_content ?? "") !!}</p>
+            </div>
+        @endif
+        @if($ad->landSeekAd->experience_farming)
+            <div class="content">
+                <h4 class="title is-3">Expérience du porteur de projet dans le domaine agricole</h4>
+                <p> {!! nl2br($ad->landSeekAd->experience_farming ?? "") !!}</p>
             </div>
         @endif
 

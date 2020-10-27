@@ -4,7 +4,9 @@
         <div class="card is-flex-tablet card-announcement">
             <div class="card-content">
                 @foreach($ad->landOfferAd->offerGenres as $offerGenre)
-                    <span class="custom-tag info">{{$offerGenre->name}}</span>
+                    <span class="custom-tag info">
+                        {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
+                    </span>
                 @endforeach
                 <div class="content">
                     @if($ad->is_draft)
@@ -125,7 +127,12 @@
                         <p>
                             <span class="is-size-5  ">Mode de cession : </span>
                             <span class="subtitle">
-                                {{$ad->landOfferAd->offerGenres->pluck('name')->implode(', ') }}
+                                @foreach($ad->landOfferAd->offerGenres as $offerGenre)
+                                    {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
+                                    @if(!$loop->last)
+                                        ,
+                                    @endif
+                                @endforeach
                             </span>
                         </p>
                     @endif
@@ -217,12 +224,12 @@
                 </p>
             </div>
 
-            @if(!empty($ad->waterAccess))
+            @if($ad->water_access === 1)
             <div class="mb-20">
                 <p class="has-text-link is-size-5 ">Accès à l'eau</p>
 
                 <p class="">
-                    {{$ad->waterAccess}}
+                    {{$ad->water_access_description}}
                 </p>
             </div>
             @endif
@@ -245,13 +252,14 @@
                                     <p class="">
                                         <span>Type de cession :
                                             @if($ad->landOfferAd->building->offerGenres->count() > 0 )
+
                                                 @foreach($ad->landOfferAd->building->offerGenres as $offerGenre)
-                                                    @if($loop->last)
-                                                        {{$offerGenre->name}}
-                                                    @else
-                                                        {{$offerGenre->name}},
+                                                    {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
+                                                    @if(!$loop->last)
+                                                        ,
                                                     @endif
                                                 @endforeach
+
                                             @else
                                                 non précisé
                                             @endif
@@ -281,10 +289,9 @@
                                         <span>Type de cession :
                                             @if($ad->landOfferAd->house->offerGenres->count() > 0 )
                                                 @foreach($ad->landOfferAd->house->offerGenres as $offerGenre)
-                                                    @if($loop->last)
-                                                        {{$offerGenre->name}}
-                                                    @else
-                                                        {{$offerGenre->name}},
+                                                    {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
+                                                    @if(!$loop->last)
+                                                        ,
                                                     @endif
                                                 @endforeach
                                             @else
@@ -314,7 +321,7 @@
         @endif
         @if($ad->landOfferAd->sau_description)
             <div class="content">
-                <h4 class="title is-3"> Description du foncier agricole</h4>
+                <h4 class="title is-3"> Description du bâti</h4>
                 <p>  {!! nl2br($ad->landOfferAd->sau_description ?? "") !!}</p>
             </div>
         @endif
