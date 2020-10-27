@@ -61,13 +61,13 @@
                             </div>
 
                             @if(Route::current()->getName() == 'advisor.index' ||  Route::current()->getName() == 'advisor.show')
-                            <div class="column is-1">
-                                <label class="checkbox">
-                                    <input name="user_attribution" value="true"
-                                           type="checkbox" {{old('user_attribution') ? ' checked' : '' }}>
-                                    <span>Mes attributions</span>
-                                </label>
-                            </div>
+                                <div class="column is-1">
+                                    <label class="checkbox">
+                                        <input name="user_attribution" value="true"
+                                               type="checkbox" {{old('user_attribution') ? ' checked' : '' }}>
+                                        <span>Mes attributions</span>
+                                    </label>
+                                </div>
                             @endif
                         @endif
                         @if(Route::current()->getName() == 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
@@ -444,11 +444,5 @@
                 </div>
 
         </div>
+    </div>
 </dashboard-form-filter>
-<script>
-    import Label from "../../../nova/resources/js/components/Form/Label";
-
-    export default {
-        components: {Label}
-    }
-</script>

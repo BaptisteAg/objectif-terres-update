@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'HomePage\HomePageController@show')->name('home');
+Route::get('/premiere-visite', 'HomePage\HomePageController@show')->name('site-tour');
 
 Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
 	Route::middleware(['auth'])->get('creer', 'AdsController@create')->name('create');
