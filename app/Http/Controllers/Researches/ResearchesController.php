@@ -39,7 +39,7 @@ ResearchesController extends Controller
 	 */
 	public function index(Request $request)
 	{
-        if ($request->has('ad_category') && $request->has('offer_type')) {
+        if ($request->has('ad_category')) {
             $selectedAdType = $request->input('ad_category') . $request->input('offer_type');
         } else {
             return back()->withErrors([

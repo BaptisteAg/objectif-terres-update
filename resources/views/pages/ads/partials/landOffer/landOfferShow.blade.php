@@ -211,6 +211,7 @@
                 </p>
             </div>
 
+            @if(!empty($ad->waterAccess))
             <div class="mb-20">
                 <p class="has-text-link is-size-5 ">Accès à l'eau</p>
 
@@ -218,6 +219,7 @@
                     {{$ad->waterAccess}}
                 </p>
             </div>
+            @endif
 
             @if($ad->landOfferAd->has_houses || $ad->landOfferAd->has_buildings)
                 <div class="content">
