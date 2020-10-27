@@ -52,9 +52,10 @@ class ModeratorController extends BaseController
 	 */
 	public function help()
 	{
-		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
-		$pageContents = CmsPage::where('slug', 'like', '%'.'ressources-moderateur'. '%')->with('documents')->get()->keyBy('slug');
-		return view('pages.moderator.help', compact('users', 'pageContents'));
+//		$users = json_encode($this->userService->findAllExceptPPAndLoggedUser());
+//		$pageContents = CmsPage::where('slug', 'like', '%'.'ressources-moderateur'. '%')->with('documents')->get()->keyBy('slug');
+//		return view('pages.moderator.help', compact('users', 'pageContents'));
+		return view('pages.moderator.help');
 	}
 
 
