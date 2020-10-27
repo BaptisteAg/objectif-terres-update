@@ -86,7 +86,8 @@
 				</div>
 				@if($ad->userPp->accept_share_contact_infos === 1)
 					<div class="content">
-						<p><span class="is-size-5 has-text-black">N° de téléphone du porteur de projet : </span>
+						<p>
+							<span class="is-size-5 has-text-black">N° de téléphone du porteur de projet : </span>
 						</p>
 						<p><span class="subtitle">{{$ad->userPp->phone}}</span></p>
 					</div>
@@ -100,7 +101,7 @@
 @include('pages.ads.partials.adMessageModal')
 
 <hr class="navbar-divider">
-<h3 class="title is-3 has-text-centered">Caractéristiques du projet</h3>
+<h3 class="title is-3 has-text-centered">Description générale du bien</h3>
 <div class="columns is-multiline is-mobile is-centered">
 
 	<div class="column is-one-quarter ">

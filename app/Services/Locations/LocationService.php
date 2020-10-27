@@ -96,7 +96,7 @@ class LocationService
                 }
                 elseif($type === "misc") {
                     $params .="&q=".$q;
-                    $threshold = 0.02;
+                    $threshold = 0.002;
                 }
                 else {
                     $params .="&q=".$q;

@@ -339,7 +339,7 @@
                             </text-area-counter>
                         </div>
 
-                        @include('pages.ads.partials.inputs.about_content')
+                        @include('pages.ads.partials.inputs.about_content', ["tooltip" => null])
                     </div>
                     <div class="column"></div>
                 </div>

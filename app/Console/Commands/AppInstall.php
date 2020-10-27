@@ -17,7 +17,7 @@ class AppInstall extends Command
     protected $signature = 'app:install
                             {--C|composer : run composer install}
                             {--N|npm : run npm install}
-                            {--F|force : force running in production}';
+                            {--S|spip : run spip migration}';
 
     /**
      * The console command description.
@@ -43,9 +43,7 @@ class AppInstall extends Command
      */
     public function handle()
     {
-        if(env('APP_ENV') === "production" && !$this->option('force')) {
-            $this->output->error("cannot run this command in production without the --force flag");
-        }
+        exec('composer dumpautoload');
 
         if($this->option('composer')) {
             exec('composer install');
@@ -56,6 +54,10 @@ class AppInstall extends Command
 
         $this->call(FreshCommand::class);
         $this->call(SeedCommand::class);
+
+        if($this->option('spip')) {
+            $this->call(SpipMigrate::class);
+        }
 
         exec('npm run '.(env('APP_ENV') === 'production' ? 'production' : 'dev'));
 

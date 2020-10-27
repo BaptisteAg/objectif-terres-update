@@ -130,7 +130,7 @@
 
 <div class="columns is-multiline">
     <div class="column is-half-desktop is-full-tablet">
-        <h4 class="title is-3 has-text-centered">Caractéristiques du projet</h4>
+        <h4 class="title is-3 has-text-centered">Description générale du bien</h4>
         <div class="">
             @if(isset($ad->landSeekAd->installationType))
                 @if($ad->landSeekAd->installationType->name !== "Indifférent")
@@ -194,7 +194,7 @@
                         <p class="has-text-link is-size-5 "> Accès au foncier souhaité </p>
                         <p class="">
                             {{$offerGenre->name}}
-                            @if($offerGenre->id === $offerGenre::ID_VENTE)
+                            @if($offerGenre->id === $offerGenre::ID_VENTE && $ad->landSeekAd->price_max)
                                 <br>Budget maximum : {{ $ad->landSeekAd->price_max }} €
                             @endif
                         </p>
@@ -253,7 +253,7 @@
 </div>
 
 {{--<hr class="navbar-divider">--}}
-{{--<h4 class="title is-3 has-text-centered">Caractéristiques du projet</h4>--}}
+{{--<h4 class="title is-3 has-text-centered">Description générale du bien</h4>--}}
 {{--<div class="columns is-multiline is-mobile is-centered">--}}
 
 {{--    @if(isset($ad->landSeekAd->installationType))--}}

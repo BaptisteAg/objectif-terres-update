@@ -20,7 +20,11 @@
                          v-for="(adType,adTypeValue) in adTypes"
                          :class="{active: value === adTypeValue}"
                          @click="_ => setAdType(adTypeValue)">
-                        <i :class="'fa-4x fa '+adType.icon"></i><br>
+
+                        <img :src="'/images/icons/' + adType.img" v-if="adType.img">
+                        <i :class="'fa-4x fa '+adType.icon" v-if="adType.icon"></i>
+
+                        <br>
                         {{ adType.label }}
                         <br><br>
                         <small>Ex :{{ adType.examples }}</small>
@@ -111,12 +115,12 @@
                 return {
                     land_seek: {
                         label: "Je cherche du foncier agricole",
-                        icon: "fa-home",
+                        img: "land_ad_type.png",
                         examples: "Terrain, ferme, parcelle..."
                     },
                     land_offer: {
                         label: "Je propose du foncier agricole",
-                        icon: "fa-home",
+                        img: "land_ad_type.png",
                         examples: "Terrain, ferme, parcelle..."
                     },
                     ...extraAdTypes

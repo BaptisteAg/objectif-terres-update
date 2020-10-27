@@ -97,7 +97,7 @@
 <hr class="navbar-divider">
 <h4 class="title is-3 has-text-centered">Description de l'offre</h4>
 <div class="columns is-multiline is-mobile is-centered">
-    @if($ad->jobOfferAd->educationLevels)
+    @if($ad->jobOfferAd->educationLevels->count())
         <div class="column is-one-third ">
             <p class="has-text-link is-size-5 has-text-centered"> Niveau de formation souhaité</p>
             <p class="has-text-centered">{{$ad->jobOfferAd->educationLevels->pluck('name')->implode(', ') }}</p>
@@ -111,11 +111,12 @@
         </div>
     @endif
 
-
+    @if(!is_null($ad->jobOfferAd->is_activity_transmission))
     <div class="column is-one-third ">
         <p class="has-text-link is-size-5 has-text-centered">Transmission d'activité envisagée</p>
         <p class="has-text-centered">{{$ad->jobOfferAd->is_activity_transmission ? 'Oui' : 'Non'}}</p>
     </div>
+    @endif
 
 </div>
 
