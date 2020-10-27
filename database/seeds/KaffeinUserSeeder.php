@@ -15,7 +15,7 @@ class KaffeinUserSeeder extends Seeder
     {
         User::create([
             'email' => "admin@kaffein.agency",
-            'password' => Hash::make('test'),
+            'password' => Hash::make('crif9bf1'),
             'first_name' => 'Kaffein',
             'name' => 'Agency',
             'role' => 4

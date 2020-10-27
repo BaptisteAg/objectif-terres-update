@@ -43,6 +43,8 @@ class AppInstall extends Command
      */
     public function handle()
     {
+        exec('composer dumpautoload');
+
         if($this->option('composer')) {
             exec('composer install');
         }
