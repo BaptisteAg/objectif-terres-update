@@ -32,7 +32,12 @@
                 </div>
             </div>
             <div class="adType-selected" v-else>
-                <label><i :class="'fa '+currentAdType.icon"></i> {{currentAdType.label}}</label><br>
+                <label>
+                    <img :src="'/images/icons/' + currentAdType.img" v-if="currentAdType.img" style="width:20px">
+                    <i :class="'fa '+currentAdType.icon" v-if="currentAdType.icon"></i>
+
+                    {{currentAdType.label}}
+                </label><br>
                 <a href="#" @click.prevent="displaySelection = true" v-if="isNew">← Changer de type d'annonce</a>
             </div>
             <input type="hidden" :name="name" :value="value">

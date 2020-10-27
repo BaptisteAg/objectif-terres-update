@@ -84,12 +84,12 @@
 						@endif
 					</p>
 				</div>
-				@if($ad->userPp->accept_share_contact_infos === 1)
+				@if($ad->accept_share_contact_infos === 1)
 					<div class="content">
 						<p>
-							<span class="is-size-5 has-text-black">N° de téléphone du porteur de projet : </span>
+							<span class="is-size-5 has-text-black">N° de téléphone : </span>
+							<span class="subtitle">{{$ad->userPp->phone}}</span>
 						</p>
-						<p><span class="subtitle">{{$ad->userPp->phone}}</span></p>
 					</div>
 				@endif
 			</div>
