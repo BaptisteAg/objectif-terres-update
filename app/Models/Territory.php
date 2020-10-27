@@ -32,9 +32,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Territory extends Model
 {
-  use Locationable;
+	use Locationable;
 
-  protected $fillable = ['name'];
+	protected $fillable = ['name'];
+
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -43,5 +44,6 @@ class Territory extends Model
 	{
 		return $this->hasMany(Department::class, 'territory_id', 'id');
 	}
+
 
 }

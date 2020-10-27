@@ -10,6 +10,7 @@ use App\Models\CmsPage;
 use App\Models\ProjectDataKey;
 use App\Models\Territory;
 use App\Models\User;
+use App\Notifications\BasicNotification;
 use App\Notifications\NewSupportRequestNotification;
 use App\Notifications\SupportRequestAttributionNotification;
 use Illuminate\Http\RedirectResponse;
@@ -151,6 +152,17 @@ class SupportRequestsController extends BaseController
 						$supervisor->notify(new NewSupportRequestNotification($ad));
 					}
 				}
+				$supportRequestTerritoryModalityContent = CmsPage::where('slug', '=', 'etre-accompagne-text-du-territoire-numero-' . $ad->supportRequestTerritoryId->id)->first()->content;
+				$ad->userPp->notify(new BasicNotification([
+					'subject' => "Nous avons bien reçu votre demande d’accompagnement",
+					'message' => "Merci de nous avoir fait part de votre projet '" . $ad->title . "' .\n
+                   				Un membre de Terre de Liens " . $ad->supportRequestTerritoryId->name . " prendra contact avec vous prochainement.\n
+                   				Voici les modalités d’accompagnement de notre association :\n
+								" . $supportRequestTerritoryModalityContent . "\n
+                    			Vous pouvez mettre à jour projet sur Objectif Terres\n",
+					'action' => ["Voir mon projet", route('support-request.show')]
+				]));
+
 			}
 			session()->forget('support-request');
 		} catch (AttributionAdException $exception) {
@@ -160,8 +172,8 @@ class SupportRequestsController extends BaseController
 		(\Exception $exception) {
 			logger()->error($exception->getMessage(), $exception->getTrace());
 			return back()->withInput()->withErrors(
-				"Une erreur imprévu a eu lieu. Merci de nous contacter en précisant le message d'erreur suivant : '
-                [" . date('d/m/Y H:i:s') . "]' " . $exception->getMessage()
+				"Une erreur imprévu a eu lieu . Merci de nous contacter en précisant le message d'erreur suivant : '
+				[" . date('d/m/Y H:i:s') . "]' " . $exception->getMessage()
 			);
 		}
 
