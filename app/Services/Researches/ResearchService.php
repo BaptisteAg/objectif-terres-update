@@ -283,8 +283,9 @@ class ResearchService
 
 		if ($filters->has('has_picture')) {
 			$adsFilter->whereHas('documents', function (Builder $query) {
-				$query->where('type', '=', 'image');
+				$query->where('type', 'like', 'image/%');
 			});
+
 		}
 
 		if ($filters->has('production_genres')) {

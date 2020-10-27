@@ -287,7 +287,6 @@ class AdPresenter extends BasePresenter
 				if ($min) {
 					return "De " . $min . "ha à " . $max . "ha";
 				}
-
 				return "Moins de " . $max . "ha";
 			} else if ($ad->landSeekAd->surface_range_min) {
 				$min = $ad->landSeekAd->surface_range_min;
