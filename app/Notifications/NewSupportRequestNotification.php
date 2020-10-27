@@ -32,7 +32,7 @@ class NewSupportRequestNotification extends Notification implements ShouldQueue
 	 */
 	public function via($notifiable)
 	{
-		return ['mail','database'];
+		return ['mail', 'database'];
 	}
 
 	/**
@@ -43,14 +43,15 @@ class NewSupportRequestNotification extends Notification implements ShouldQueue
 	 */
 	public function toMail($notifiable)
 	{
-		$url = url('/annonces/'.$this->ad->id);
+		$url = url('/annonces/' . $this->ad->id);
 		return (new MailMessage)
-			->subject('Nouvelle demande d\'accompagnement !')
-			->greeting('Bonjour,')
-			->line('Vous avez reçu une nouvelle demande d\'accompagnment pour un projet posté par '. $this->ad->userPp->first_name.' '.$this->ad->userPp->name.' .')
-			->action('Consulter le projet', $url)
-			->line('A bientôt sur Objectif Terres !')
-			->salutation('Cordialement, L\'équipe d\'Objectif Terres');
+			->subject("Accompagnement de " . $this->ad->userPp->name)
+			->greeting('Bonjour' . $notifiable->first_name . ',')
+			->line("Une nouvelle demande d'accompagnement concerne votre territoire. Vous devez l’attribuer à un primo-accueillant.")
+			->line("Projet : " . $this->ad->title)
+			->line("Porteur : " . $this->ad->userPp->name)
+			->action('Attribuer la demande', $url)
+			->salutation('A bientôt sur Objectif Terres !');
 	}
 
 	/**
@@ -66,7 +67,7 @@ class NewSupportRequestNotification extends Notification implements ShouldQueue
 			'user_pp_id' => $this->ad->userPp->id,
 			'user_pp_first_name' => $this->ad->userPp->first_name,
 			'user_pp_name' => $this->ad->userPp->name,
-			'is_project' =>true
+			'is_project' => true
 		];
 	}
 }

@@ -105,7 +105,7 @@
                                 <h1 class="title">Recherche de fonciers</h1>
                             @elseif($adsType === 'jobOfferAd')
                                 <h1 class="title">Offres d'emploi</h1>
-                                @elseif($adsType === 'jobSeekAd')
+                            @elseif($adsType === 'jobSeekAd')
                                 <h1 class="title">Recherche d'emploi</h1>
                             @else
                                 <h1 class="title">Toutes les annonces</h1>
@@ -192,7 +192,7 @@
                                     </div>
                                     <ul class="custom-tags custom-list custom-list_v x-large">
                                         @if(isset($ad->is_partner) && $ad->is_partner === 1 )
-                                            <li class="custom-tag warning">Annonce certifiée </li>
+                                            <li class="custom-tag warning">Annonce certifiée</li>
                                         @endif
                                         <li class="custom-tag success">
                                             <i class="fas fa-map-marker-alt"></i>
@@ -225,12 +225,11 @@
                                             </li>
                                             <li class="custom-tag danger">
                                                 <i class="fas fa-arrows-alt-h"></i>
-                                                @if(isset($ad->landOfferAd->surface))
-                                                    {{$ad->landOfferAd->surface}} ha
+                                                @if(!empty($ad->human_ha))
+                                                    {{$ad->human_ha}}
                                                 @else
                                                     Surface non renseignée
                                                 @endif
-
                                             </li>
                                         @endif
                                         @if($ad->landSeekAd)
@@ -252,13 +251,8 @@
                                             </li>
                                             <li class="custom-tag danger">
                                                 <i class="fas fa-arrows-alt-h"></i>
-                                                @if(isset($ad->landSeekAd->surface_range_min) and isset($ad->landSeekAd->surface_range_max))
-                                                    Entre {{$ad->landSeekAd->surface_range_min}}
-                                                    et {{$ad->landSeekAd->surface_range_max}} ha
-                                                @elseif(isset($ad->landSeekAd->surface_range_min))
-                                                    {{$ad->landSeekAd->surface_range_min}} ha
-                                                @elseif(isset($ad->landSeekAd->surface_range_max))
-                                                    {{$ad->landSeekAd->surface_range_max}} ha
+                                                @if(!empty($ad->human_ha))
+                                                    {{$ad->human_ha}}
                                                 @else
                                                     Surface non renseignée
                                                 @endif
@@ -271,7 +265,7 @@
                                         <span class="tile__date">Publié {{$ad->created_at_diff}}</span>
                                         @if(isset($ad->is_partner) && $ad->is_partner === 1 )
                                             <ul class="custom-tags">
-                                                <li class="custom-tag warning">Annonce certifiée </li>
+                                                <li class="custom-tag warning">Annonce certifiée</li>
                                             </ul>
                                         @endif
                                     </div>
@@ -334,7 +328,7 @@
 
         </div>
     </section>
-{{--    @include('components.partnering')--}}
+    {{--    @include('components.partnering')--}}
     @include('components.support-terre-liens')
 @endsection
 

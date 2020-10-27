@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ads;
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
 use App\Models\User;
+use App\Notifications\BasicNotification;
 use App\Notifications\NewAdToModerateNotification;
 use App\Notifications\NewSupportRequestNotification;
 use Carbon\Carbon;
@@ -22,25 +23,25 @@ class AdsController extends BaseController
 	 */
 	public function create()
 	{
-	    $supportRequests = [];
-        if(auth()->user()->supportRequest) {
-            $supportRequests = [auth()->user()->supportRequest];
-        }
+		$supportRequests = [];
+		if (auth()->user()->supportRequest) {
+			$supportRequests = [auth()->user()->supportRequest];
+		}
 
 		return view('pages.ads.new', array_merge($this->getCreateFormVars(), compact("supportRequests")));
 	}
 
-    /**
-     * Display the ad creation form
-     * @return \Illuminate\View\View
-     * @throws \Exception
-     */
+	/**
+	 * Display the ad creation form
+	 * @return \Illuminate\View\View
+	 * @throws \Exception
+	 */
 	public function createFromSupportRequest(Ad $ad)
 	{
-        $vars = $this->getEditFormVars($ad);
+		$vars = $this->getEditFormVars($ad);
 
-        unset($vars["old"]["id"]);
-        $vars["isSupportRequest"] = 0;
+		unset($vars["old"]["id"]);
+		$vars["isSupportRequest"] = 0;
 
 		return view('pages.ads.new', $vars);
 	}
@@ -84,8 +85,16 @@ class AdsController extends BaseController
 			$ad = $this->adService->requestPublishing($data, $data['is_support_request']);
 			if (!$data['is_support_request']) {
 				$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
-			} elseif ($data['is_support_request'] && isset($ad->attributionAd->user_advisor_id)) {
+				$ad->userPp->notify(new BasicNotification([
+					'subject' => "Votre annonce va être modérée",
+					'message' => "Votre annonce '".$ad->title."' va être modérée par un membre de l’équipe sous 7 jours.\n
+                    Vous pouvez gérer vos annonces depuis votre espace personnel Objectif Terres :\n",
+					'action' => ["Gérer mes annonces", route('ads.list')],
+					'salutation' => "En vous remerciant pour votre confiance,\n
+									L’équipe d’Objectif Terres."
+				]));
 
+			} elseif ($data['is_support_request'] && isset($ad->attributionAd->user_advisor_id)) {
 				$ad->attributionAd->userAdvisor->notify(new NewSupportRequestNotification($ad));
 			}
 

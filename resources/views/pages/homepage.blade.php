@@ -78,12 +78,11 @@
                                         </li>
                                         <li class="custom-tag danger">
                                             <i class="fas fa-arrows-alt-h"></i>
-                                            @if(isset($ad->landOfferAd->surface))
-                                                {{$ad->landOfferAd->surface}} ha
+                                            @if(!empty($ad->human_ha))
+                                                {{$ad->human_ha}}
                                             @else
                                                 Surface non renseignée
                                             @endif
-
                                         </li>
                                     @endif
                                     @if($ad->landSeekAd)
@@ -105,13 +104,8 @@
                                         </li>
                                         <li class="custom-tag danger">
                                             <i class="fas fa-arrows-alt-h"></i>
-                                            @if(isset($ad->landSeekAd->surface_range_min) and isset($ad->landSeekAd->surface_range_max))
-                                                Entre {{$ad->landSeekAd->surface_range_min}}
-                                                et {{$ad->landSeekAd->surface_range_max}} ha
-                                            @elseif(isset($ad->landSeekAd->surface_range_min))
-                                                {{$ad->landSeekAd->surface_range_min}} ha
-                                            @elseif(isset($ad->landSeekAd->surface_range_max))
-                                                {{$ad->landSeekAd->surface_range_max}} ha
+                                            @if(!empty($ad->human_ha))
+                                                {{$ad->human_ha}}
                                             @else
                                                 Surface non renseignée
                                             @endif

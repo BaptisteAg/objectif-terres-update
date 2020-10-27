@@ -70,9 +70,15 @@
                     @else
                         <div class="content">
                             @auth
-                                @if( auth()->user()->id === $ad->user_pp_id)
-                                    <p><span class="is-size-5 ">Code Postal (non visible pour les autres
-                                            utilisateurs): </span><span
+                                @if( auth()->user()->id === $ad->user_pp_id || auth()->user()->role >=3)
+                                    <p>
+                                        @if(auth()->user()->id === $ad->user_pp_id)
+                                            <span class="is-size-5 ">Code Postal (non visible pour les autres
+                                                utilisateurs): </span>
+                                        @else
+                                            <span class="is-size-5 ">Code Postal: </span>
+                                        @endif
+                                        <span
                                                 class="subtitle">{{$ad->cities[0]->zip_code }}
                                             ({{$ad->cities[0]->name }}
                                             )</span>
@@ -185,20 +191,20 @@
                 </div>
             @endif
 
-    @if($ad->landOfferAd->bioCertifications->count())
-        <div class=" ">
-            <p class="has-text-link is-size-5"> Certification des terres</p>
+            @if($ad->landOfferAd->bioCertifications->count())
+                <div class=" ">
+                    <p class="has-text-link is-size-5"> Certification des terres</p>
 
-            <p class="">
-                @foreach($ad->landOfferAd->bioCertifications as $bioCertification)
-                    @if($bioCertification->icon == "")
-                        <span>{{$bioCertification->name }}</span>
-                    @endif
-                    <img src="{{ $bioCertification->icon }}">
-                @endforeach
-            </p>
-        </div>
-    @endif
+                    <p class="">
+                        @foreach($ad->landOfferAd->bioCertifications as $bioCertification)
+                            @if($bioCertification->icon == "")
+                                <span>{{$bioCertification->name }}</span>
+                            @endif
+                            <img src="{{ $bioCertification->icon }}">
+                        @endforeach
+                    </p>
+                </div>
+            @endif
 
             <div class="mb-20">
                 <p class="has-text-link is-size-5 ">Altitude</p>

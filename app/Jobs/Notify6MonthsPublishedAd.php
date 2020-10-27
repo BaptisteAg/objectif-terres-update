@@ -43,12 +43,19 @@ class Notify6MonthsPublishedAd implements ShouldQueue
 	 */
 	public function handle()
 	{
-		$attributionAds = $this->attributionAdsService->findAllPublishedSince(Carbon::now()->subMonthsWithOverflow(6));
+		$attributionAds = $this->attributionAdsService->findAllPublishedSince(Carbon::now()->subDays(173));
 		foreach ($attributionAds as $attributionAd) {
-			$data['subject'] = 'Votre annonce arrive bientôt en fin de publication !';
-			$data['message'] = 'Votre annonce est en ligne depuis 6 mois et va bientôt arriver en fin de publication. Si vous souhaitez continuer à la faire publier, mettez à jour votre annonce ! Sans action de votre part, votre annonce sera archivée.';
-			//TODO the url is the link to the modification ad form
-			$data['url'] = '/annonces/' . $attributionAd->ad->id;
+			$data['subject'] = 'Dans 7 jours : expiration de votre annonce';
+			$data['message'] = "Il y a bientôt 6 mois que l'annonce '".$attributionAd->ad->title."' que vous avez déposée sur Objectif Terres est en ligne.\n
+			Nous espérons que ce service a répondu à votre besoin.\n
+			Sans action de votre part d'ici 7 jours, cette annonce ne sera plus visible sur notre site.\n
+			Pour reconduire votre annonce sans modification pour une durée de 6 mois : \n";
+			$data["action"] =  ["Etendre l'annonce", route("ads.extend", [$attributionAd->ad->id])];
+
+			$data['additional_message'] = "Pour modifier votre annonce :";
+			$data["additional_action"] =  ["Modifier l'annonce", route("ads.edit", [$attributionAd->ad->id])];
+
+
 
 			/** @var User $userToNotify */
 			$userToNotify = $this->userRepository->find($attributionAd->ad->user_pp_id);

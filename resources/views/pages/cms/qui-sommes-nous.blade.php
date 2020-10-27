@@ -7,6 +7,7 @@
 @endsection
 
 @section('main-content')
+    {{dd($pageContent)}}
     <div class="cms-page">
         <section class="">
             <div id="a-propos-d-objectif-terres" class="container">
@@ -19,7 +20,6 @@
                 </div>
             </div>
         </section>
-
         {{--    <section class="hero">--}}
         {{--        <div class="hero-body market-background">--}}
         {{--            <h2 class="title is-2">Mettre en relation l’offre et la demande du foncier agricole en France.</h2>--}}

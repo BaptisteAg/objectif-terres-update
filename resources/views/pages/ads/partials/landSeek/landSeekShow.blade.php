@@ -39,10 +39,11 @@
                         @endguest()
                     </p>
                 </div>
-                @if(!empty($ad->landOfferAd->human_ha))
+                @if(!empty($ad->human_ha))
                     <div class="content">
                         <p>
-                            <span class="is-size-5 is-capitalized ad-show-feature-label">Surface recherchée (en ha)</span>
+                            <span class="is-size-5 is-capitalized ad-show-feature-label">Surface recherchée (en
+                                ha)</span>
                             :
                             <span class="subtitle">{{ $ad->human_ha }}</span>
                         </p>
@@ -202,7 +203,7 @@
             @endif
 
             <div class="mb-20">
-                <p class="has-text-link is-size-5 "> Niveau de formation</p>
+                <p class="has-text-link is-size-5 "> Niveau de formation agricole</p>
                 @if($ad->landSeekAd->educationLevels->count() >0)
                     @foreach($ad->landSeekAd->educationLevels as $educationLevel)
                         <p>
