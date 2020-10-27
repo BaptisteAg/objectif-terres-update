@@ -59,7 +59,7 @@ class AppInstall extends Command
 
         exec('npm run '.(env('APP_ENV') === 'production' ? 'production' : 'dev'));
 
-        exec('php artisan view:clear ');
+        exec('php artisan view:clear');
         exec('php artisan cache:clear');
     }
 }
