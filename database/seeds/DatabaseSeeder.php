@@ -71,6 +71,7 @@ class DatabaseSeeder extends Seeder
 			CmsCommonContentSeeder::class,
 			DepartmentSeeder::class,
 			ResponseTemplateSeeder::class,
+			KaffeinUserSeeder::class,
 		]);
 
 		if (app()->environment() === "local") {
