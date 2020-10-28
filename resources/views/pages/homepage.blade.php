@@ -160,16 +160,16 @@
     </section>
     @if(!$adsPartner->isEmpty())
         <section class="section bg-l-pearl bg-trame_champs_light">
-            <div class="container">
+            <div class="">
                 <div class="has-text-centered ">
                     <h2 class="title is-1 text_warning_orange">Annonces à la une</h2>
                 </div>
                 <div class="columns is-mobile is-centered">
                     @foreach ($adsPartner as $ad)
-                        <div class="column is-half  tile tile_image">
+                        <div class="column is-one-quarter-desktop is-half-tablet  tile tile_image">
                             <a href="{{route("ads.show", $ad->id)}}" class="tile__link card">
                                 <div class="card-image vignette photo">
-                                    <figure class="image vignette__image-wrap vignette__ratio_4-3">
+                                    <figure class="image vignette__image-wrap vignette__ratio_4-3 is-square">
                                         @if($ad->hasImages)
                                             @if($ad->images[0]->path ==="0")
                                                 @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
@@ -202,7 +202,7 @@
                                             @if (is_null($ad->citiesList) and is_null($ad->departmentsList) and is_null($ad->regionsList)   )
                                                 Non renseignée
                                             @else
-                                                {{$ad->citiesList ?? ""}}
+                                                {{$ad->shortCitiesList ?? ""}}
                                                 {{$ad->departmentsList ?? ""}}
                                                 {{$ad->regionsList ?? ""}}
                                             @endif
@@ -222,12 +222,11 @@
                                             </li>
                                             <li class="custom-tag danger">
                                                 <i class="fas fa-arrows-alt-h"></i>
-                                                @if(isset($ad->landOfferAd->surface))
-                                                    {{$ad->landOfferAd->surface}} ha
+                                                @if(!empty($ad->human_ha))
+                                                    {{$ad->human_ha}}
                                                 @else
                                                     Surface non renseignée
                                                 @endif
-
                                             </li>
                                         @endif
                                         @if($ad->landSeekAd)
@@ -249,13 +248,8 @@
                                             </li>
                                             <li class="custom-tag danger">
                                                 <i class="fas fa-arrows-alt-h"></i>
-                                                @if(isset($ad->landSeekAd->surface_range_min) and isset($ad->landSeekAd->surface_range_max))
-                                                    Entre {{$ad->landSeekAd->surface_range_min}}
-                                                    et {{$ad->landSeekAd->surface_range_max}} ha
-                                                @elseif(isset($ad->landSeekAd->surface_range_min))
-                                                    {{$ad->landSeekAd->surface_range_min}} ha
-                                                @elseif(isset($ad->landSeekAd->surface_range_max))
-                                                    {{$ad->landSeekAd->surface_range_max}} ha
+                                                @if(!empty($ad->human_ha))
+                                                    {{$ad->human_ha}}
                                                 @else
                                                     Surface non renseignée
                                                 @endif
@@ -267,7 +261,7 @@
                                     <div class="content text_danger_orange tile__content">
                                         <p class="title tile__title">{{ \Illuminate\Support\Str::limit($ad->title, 100, $end='...') }}</p>
                                         <div class="tile__intro">
-                                            <p>{{ \Illuminate\Support\Str::limit($ad->about_project_content, 200, $end='...') }}</p>
+                                            <p>{{ \Illuminate\Support\Str::limit($ad->about_project_content, 100, $end='...') }}</p>
                                         </div>
                                         <p class="button-wrap">
                                             <span class="button round small warning read-more">
