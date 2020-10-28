@@ -1,0 +1,58 @@
+.shepherd-theme-custom {
+
+  &.shepherd-element {
+    background-color: white;
+
+    & .shepherd-content {
+      padding: 10px;
+
+      & .shepherd-header {
+        margin-right: 20px
+      }
+
+      & .shepherd-text {
+        color: black;
+        margin-bottom: 20px;
+      }
+
+      & .shepherd-footer {
+        & .shepherd-button {
+          display: inline-flex;
+          box-sizing: border-box;
+          font-size: 1.25em;
+          text-align: center;
+          text-decoration: none;
+          line-height: 1.125em;
+          letter-spacing: 0.05em;
+          cursor: pointer;
+          font-family: $family-sans-serif-title;
+          color: white;
+          background-color: $primary;
+          border-color: $primary;
+
+          &:hover {
+            background-color: $secondary;
+            border-color: $secondary;
+          }
+
+          &.shepherd-button-secondary {
+            color: $secondary;
+            background-color: $white;
+            border: 1px solid $primary;
+
+            &:hover {
+              color: $white;
+              border-color: $secondary;
+              background-color: $secondary;
+            }
+          }
+        }
+
+
+      }
+    }
+
+
+  }
+
+}

@@ -23,12 +23,12 @@
                                 </a>
                             </h1>
 
-                            <h4 class=" text_success mt-5">Faites pousser votre projet agricole</h4>
+                            <h4 class=" text_success mt-5 has-font-cursive">Faites pousser votre projet agricole</h4>
 {{--                            <p>Une initiative Terre de Liens</p>--}}
                         </div>
                     </div>
                 </div>
-                <div class="column is-7-widescreen">
+                <div id="header-main-filters" class="column is-7-widescreen">
                     <div class="columns is-vcentered">
                         <div class="column has-text-right">
                             <div style="display:inline-block;&">

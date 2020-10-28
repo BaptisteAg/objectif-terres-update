@@ -50,7 +50,7 @@
                     <form method="post" action="/newsletter">
                         {{ csrf_field() }}
                         <h6 class="title is-6 text_white footer-site__title">NEWSLETTER TERRE DE LIENS</h6>
-                        <p>On l’appelle newsletter, mais c’est beaucoup plus ! Suivez notre mouvement en vous abonnant.</p>
+                        <p>Suivez notre mouvement en vous abonnant.</p>
                         <div class="columns is-gapless is-mobile">
                             <div class="column">
                                 <div class="field">

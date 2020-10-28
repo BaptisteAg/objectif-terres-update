@@ -10,6 +10,19 @@
 
 
 @section('main-content')
+
+    @if(Route::currentRouteName() === "site-tour")
+        <div id="vue-site-tour">
+            <site-tour-shepherd inline-template
+                                image-path="{{asset('/images/cms/screenshot-site-tour.png')}}">
+                <template>
+
+                </template>
+            </site-tour-shepherd>
+        </div>
+    @endif
+
+
     <div id="global-map"></div>
 
     <section class="section">
@@ -321,6 +334,15 @@
     <script defer>
         homepageMapInit('global-map');
     </script>
+    @if(Route::currentRouteName() === "site-tour")
+        <script>
 
+            const vueSiteTour = new Vue({
+                el: '#vue-site-tour',
+                name: 'content'
+            });
+        </script>
+
+    @endif
 
 @endsection
