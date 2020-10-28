@@ -43,6 +43,7 @@ require('./pages/cms/cms-page');
 require('./pages/homepage/homepage');
 require('./pages/researches/researches');
 require('./pages/responseTemplates/responseTemplates');
+require('./pages/site-tour/site-tour')
 
 //////////////
 // GLOBAL

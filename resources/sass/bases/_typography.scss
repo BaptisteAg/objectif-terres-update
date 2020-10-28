@@ -9,21 +9,57 @@ TEXT COLOR
 --------------------
 */
 
-.text_color, .text_success { color: $success !important; }
-.text_primary { color: $primary !important; }
-.text_secondary { color: $secondary !important; }
-.text_danger { color:$danger !important; }
-.text_danger_orange { color: $danger-darken-orange !important; }
-.text_warning { color: $warning !important; }
-.text_warning_orange { color: $warning-orange !important; }
-.text_warning_dark{color:$warning-dark !important;}
+.text_color, .text_success {
+  color: $success !important;
+}
 
-.text_charcoal { color: $charcoal !important; }
-.text_mouse{color: $mouse !important;}
-.text_cream { color: $cream !important; }
-.text_pearl { color: $pearl !important; }
-.text_white { color: $white !important; }
+.text_primary {
+  color: $primary !important;
+}
 
+.text_secondary {
+  color: $secondary !important;
+}
+
+.text_danger {
+  color: $danger !important;
+}
+
+.text_danger_orange {
+  color: $danger-darken-orange !important;
+}
+
+.text_warning {
+  color: $warning !important;
+}
+
+.text_warning_orange {
+  color: $warning-orange !important;
+}
+
+.text_warning_dark {
+  color: $warning-dark !important;
+}
+
+.text_charcoal {
+  color: $charcoal !important;
+}
+
+.text_mouse {
+  color: $mouse !important;
+}
+
+.text_cream {
+  color: $cream !important;
+}
+
+.text_pearl {
+  color: $pearl !important;
+}
+
+.text_white {
+  color: $white !important;
+}
 
 
 /*
@@ -47,6 +83,7 @@ TEXT SIZE
 .text_size.x-large {
   font-size: 3em;
 }
+
 /*
 --------------------
 TEXT ON PHOTO
@@ -54,13 +91,13 @@ TEXT ON PHOTO
 */
 
 .text_on-photo {
-  text-shadow: 0 0 4em #311102,1px 1px 2em #311102,1px 1px 1em #311102,-1px -1px 1px rgba(0,0,0,0.5),1px 1px 1px rgba(0,0,0,0.5);
+  text-shadow: 0 0 4em #311102, 1px 1px 2em #311102, 1px 1px 1em #311102, -1px -1px 1px rgba(0, 0, 0, 0.5), 1px 1px 1px rgba(0, 0, 0, 0.5);
   position: relative;
   z-index: 3;
 }
 
 .text_on-photo,
-.text_on-photo > *{
+.text_on-photo > * {
   color: $white !important;
 }
 
@@ -88,7 +125,7 @@ TEXT FONT
 */
 
 
-.text-style-title{
+.text-style-title {
   margin-bottom: 0.5em;
   font-size: 1.25em;
   line-height: 1.25em;
@@ -96,13 +133,17 @@ TEXT FONT
   font-family: $family-sans-serif-title;
 }
 
-.text-style-title__primary{
+.text-style-title__primary {
   margin-bottom: 0.5em;
   font-size: 1.50em;
   line-height: 1.25em;
   font-weight: bold;
   font-family: $family-sans-serif-title;
-  color : $primary
+  color: $primary
+}
+
+.has-font-cursive {
+  font-family: $family-sans-serif-title-second !important;
 }
 
 

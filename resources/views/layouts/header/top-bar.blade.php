@@ -32,7 +32,7 @@
                 @include('layouts.header.lanceur-applications')
             </div>
         </div>
-        <div class="level-right">
+        <div id="top-bar-user-menu" class="level-right pt-0 pb-15">
             @guest
                 <div class="level-item">Bienvenue !</div>
                 <div class="level-item">

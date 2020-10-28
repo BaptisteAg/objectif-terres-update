@@ -22,6 +22,9 @@
 // Waves
 @import "~node-waves/dist/waves.min.css";
 
+//Vue-Shepherd
+@import '~shepherd.js/dist/css/shepherd.css';
+
 //Bases
 @import "bases/global";
 @import "bases/typography";
@@ -84,6 +87,7 @@
 @import "pages/research/research";
 @import "pages/threads/threads";
 @import "pages/response-templates/response_templates";
+@import "pages/site-tour/site-tour";
 
 // Keyframes
 @import "keyframes/progress-circle";

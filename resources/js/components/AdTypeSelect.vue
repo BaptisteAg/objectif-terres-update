@@ -21,7 +21,7 @@
                          :class="{active: value === adTypeValue}"
                          @click="_ => setAdType(adTypeValue)">
 
-                        <img :src="'/images/icons/' + adType.img" v-if="adType.img">
+                        <img :src="'/images/icons/' + adType.img" v-if="adType.img" style="max-width: 80px">
                         <i :class="'fa-4x fa '+adType.icon" v-if="adType.icon"></i>
 
                         <br>
@@ -88,7 +88,7 @@
                 required: true
             },
             name: {
-                type: String, 
+                type: String,
                 required: true
             },
             isSupportRequest: {
