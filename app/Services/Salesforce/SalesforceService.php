@@ -64,7 +64,8 @@ class SalesforceService
             "MailingCity" => $city->name,
             "MailingCountry" => Country::findOrFail($data["country_id"])->name_fr_fr,
             "LeadSource" => "Petites annonces",
-            "OT_Password__c" => Hash::make($data["password"])
+            "OT_Password__c" => Hash::make($data["password"]),
+            "role__c" => 'Annonceur Objectif Terre'
         ]);
 
         return $contact;
