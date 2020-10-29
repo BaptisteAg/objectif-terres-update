@@ -182,10 +182,6 @@ class SpipService
         $isBuyOffer = in_array(OfferGenre::ID_VENTE, $offerGenres);
         $formattedPrice = preg_replace('/[ .]/', '', $article->prix);
 
-        if($article->id_article === 16222) {
-            dd($formattedPrice);
-        }
-
         return [
             'title' => $article->titre,
             'about_content' => $article->surtitre,
