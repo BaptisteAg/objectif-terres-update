@@ -357,6 +357,7 @@ class ResearchService
 		}
 
 		$ads = $adsFilter->with(
+		    'project',
 			'userPp',
 			'project.projectStatus',
 			'attributionAd',
@@ -371,7 +372,8 @@ class ResearchService
 			'landSeekAd',
 			'landOfferAd',
 			'jobOfferAd',
-			'jobSeekAd')
+			'jobSeekAd'
+        )
 			->paginate(15);
 
 		return [$ads, $adsTypeSelected];

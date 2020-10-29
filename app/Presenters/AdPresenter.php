@@ -28,6 +28,11 @@ class AdPresenter extends BasePresenter
 		$this->adService = $adService;
 	}
 
+	public function isSupportRequest()
+    {
+        return !!$this->wrappedObject->project;
+    }
+
 	public function ad_type()
 	{
 		if ($this->wrappedObject->landSeekAd) {
@@ -274,6 +279,10 @@ class AdPresenter extends BasePresenter
 				$max = $ad->landSeekAd->surface_range_max;
 				$min = $ad->landSeekAd->surface_range_min;
 
+				if($min === 0 && $max === 0) {
+				    return "";
+                }
+
 				if ($max === 1000000 && $min === 0) {
 					return "De 1 à + de 100ha";
 				}
@@ -295,7 +304,7 @@ class AdPresenter extends BasePresenter
 				return "Surface non renseignée";
 			}
 		} else if ($ad->landOfferAd) {
-			if (isset($ad->landOfferAd->surface)) {
+			if ($ad->landOfferAd->surface) {
 				return $ad->landOfferAd->surface . " ha";
 			} else {
 				return "Surface non renseignée";

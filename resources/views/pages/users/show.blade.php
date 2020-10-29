@@ -117,144 +117,12 @@
                         <li class="tile tile_text-image_h">
                             <div class="tile__link">
                                 <div class="vignette photo is-flex">
-                                    <div class="vignette__image-wrap is-flex">
-                                        @if($ad->hasImages)
-                                            @if($ad->images[0]->path ==="0")
-                                                @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
-                                                    <img src="{{URL::asset('images/illustrations/ferme01.jpg')}}"
-                                                         class="vignette__image" alt="image generic ferme"/>
-                                                @else
-                                                    <img src="{{URL::asset("images/illustrations/photo_08_bandeau-maous_1920.jpg")}}"
-                                                         class=" vignette__image" alt="image generic emploi ferme"/>
-                                                @endif
-                                            @else
-                                                <img src="{{URL::asset($ad->images[0]->path)}}"
-                                                     alt="{{$ad->images[0]->name}}">
-                                            @endif
-                                        @else
-                                            @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
-                                                <img src="{{URL::asset('images/illustrations/ferme01.jpg')}}"
-                                                     class="vignette__image" alt="image generic ferme"/>
-                                            @else
-                                                <img src="{{URL::asset("images/illustrations/photo_08_bandeau-maous_1920.jpg")}}"
-                                                     class=" vignette__image" alt="image generic emploi ferme"/>
-                                            @endif
-                                        @endif
-                                    </div>
-                                    <ul class="custom-tags custom-list custom-list_v x-large">
-                                        <li class="custom-tag info">
-                                            @if(isset($ad->project))
-                                                <i class="fas fa-hands-helping"></i>
-                                                Projet
-                                            @else
-                                                <i class="fas as fa-newspaper"></i>
-                                                Annonce
-                                            @endif
-                                        </li>
-                                        <li class="custom-tag success">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                            @if (is_null($ad->citiesList) and is_null($ad->departmentsList) and is_null($ad->regionsList)   )
-                                                Non renseignée
-                                            @else
-                                                {{$ad->citiesList ?? ""}}
-                                                {{$ad->departmentsList ?? ""}}
-                                                {{$ad->regionsList ?? ""}}
-                                            @endif
-                                        </li>
-                                        @if($ad->landOfferAd)
-                                            <li class="custom-tag warning">
-                                                <i class="fas fa-piggy-bank"></i>
-                                                @if(! is_null($ad->landOfferAd->price))
-                                                    {{number_format($ad->landOfferAd->price, 0, ",", " " )}}
-                                                    €
-                                                @else
-                                                    Prix non renseigné
-                                                @endif
-                                                @if(! is_null($ad->landOfferAd->rent_price))
-                                                    {{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}}
-                                                    €/mois
-                                                @else
-                                                @endif
-                                            </li>
-                                            <li class="custom-tag danger">
-                                                <i class="fas fa-arrows-alt-h"></i>
-                                                @if(isset($ad->landOfferAd->surface))
-                                                    {{$ad->landOfferAd->surface}} ha
-                                                @else
-                                                    Surface non renseignée
-                                                @endif
-
-                                            </li>
-                                        @endif
-                                        @if($ad->landSeekAd)
-                                            <li class="custom-tag warning">
-                                                <i class="fas fa-piggy-bank"></i>
-                                                @if(isset($ad->landSeekAd->price_max))
-                                                    @if($ad->landSeekAd->price_max > 300000)
-                                                        Plus de 300 000 €
-                                                    @else
-                                                        Jusqu'à {{number_format($ad->landSeekAd->price_max, 2, ',', ' ')}}
-                                                        €
-                                                    @endif
-                                                @elseif(isset($ad->landSeekAd->rent_max))
-                                                    Jusqu'à {{number_format($ad->landSeekAd->rent_max, 2, ',', ' ')}}
-                                                    €/mois
-                                                @else
-                                                    Budget non renseigné
-                                                @endif
-                                            </li>
-                                            <li class="custom-tag danger">
-                                                <i class="fas fa-arrows-alt-h"></i>
-                                                @if(isset($ad->landSeekAd->surface_range_min) and isset($ad->landSeekAd->surface_range_max))
-                                                    Entre {{$ad->landSeekAd->surface_range_min}}
-                                                    et {{$ad->landSeekAd->surface_range_max}} ha
-                                                @elseif(isset($ad->landSeekAd->surface_range_min))
-                                                    {{$ad->landSeekAd->surface_range_min}} ha
-                                                @elseif(isset($ad->landSeekAd->surface_range_max))
-                                                    {{$ad->landSeekAd->surface_range_max}} ha
-                                                @else
-                                                    Surface non renseignée
-                                                @endif
-                                            </li>
-                                        @endif
-                                    </ul>
+                                    @include('pages.ads.partials.thumbnail_left')
                                 </div>
                                 <div class="tile__content large">
-                                    <div class="tile__pre-title">
-                                        <span class="tile__date has-text-weight-bold">
-                                            @if(isset($ad->project))
-                                                Projet soumis le : {{ $ad->submitDate?? 'Date non renseignée' }}
-                                            @else
-                                                @if($ad->attributionAd)
-                                                    @if($ad->attributionAd->ad_status_id === \App\Models\AdStatus::APPROVE_ID )
-                                                        Annonce publiée le : {{ $ad->published_on }}
-                                                    @elseif($ad->attributionAd->ad_status_id === \App\Models\AdStatus::REFUSE_ID)
-                                                        @if(isset($ad->refused_on))
-                                                            Annonce refusée le : {{ $ad->refused_on }}
-                                                        @else
-                                                            Annonce refusée le : {{ $ad->attributionAd->updated_at }}
-                                                        @endif
-                                                    @else
-                                                        Annonce soumise le : {{ $ad->submitDate }}
-                                                    @endif
-                                                @endif
-                                            @endif
-                                        </span>
-                                        <ul class="custom-tags">
-                                            <li class="custom-tag warning">{{$ad->ad_type_full_name}}</li>
-                                        </ul>
-                                    </div>
-                                    <p class="tile__title">{{$ad->title ?? "Titre de l'annonce non renseigné"}}
-                                    </p>
+                                    @include('pages.ads.partials.thumbnail_right')
+
                                     <div class="tile__intro">
-                                        @if(isset($ad->about_project_content))
-                                            <p>{{ Illuminate\Support\Str::limit($ad->about_project_content, 200)}}</p>
-                                        @else
-                                            <p>Pas de description renseignée pour cette annonce.</p>
-                                        @endif
-
-                                        <p class="mt-10 mb-10">
-
                                         @if(isset($ad->project))
                                             @if(isset($ad->project->support_stage_id))
                                                 <p>
@@ -293,9 +161,8 @@
                                                   data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$ad->attributionAd->adStatus->id]}}">
                                                 <i class="fas fa-info-circle text_primary "></i>
                                             </span>
-                                            @endif
+                                        @endif
 
-                                            </p>
                                     </div>
 
                                     @if($ad->is_draft === 1)

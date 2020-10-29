@@ -32,6 +32,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property int $is_partner
  * @property int|null $support_request_id_region
  * @property int|null $support_request_territory_id
+ * @property string|null $origin
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AdNote[] $adNotes
  * @property-read int|null $ad_notes_count
  * @property-read \App\Models\AttributionAd|null $attributionAd
@@ -77,6 +78,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static Builder|Ad whereId($value)
  * @method static Builder|Ad whereIsDraft($value)
  * @method static Builder|Ad whereIsPartner($value)
+ * @method static Builder|Ad whereOrigin($value)
  * @method static Builder|Ad whereProjectId($value)
  * @method static Builder|Ad whereSupportRequestIdRegion($value)
  * @method static Builder|Ad whereSupportRequestTerritoryId($value)
@@ -111,7 +113,8 @@ class Ad extends Model implements HasPresenter
 		'support_request_id_region',
 		'support_request_territory_id',
 		'is_partner',
-        'created_at'
+        'created_at',
+        'origin'
 	];
 
 	/**
