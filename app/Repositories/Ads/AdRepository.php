@@ -1001,6 +1001,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'jobOfferAd',
 			'jobOfferAd.educationLevels',
 			'jobOfferAd.jobOfferTypes',
+
 			'jobSeekAd',
 
 			'attributionAd.userAdvisor',

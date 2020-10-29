@@ -22,7 +22,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property float|null $altitude
  * @property int|null $has_buildings
  * @property int|null $has_houses
- * @property float|null $price
  * @property float|null $rent_price
  * @property string|null $test_description
  * @property int $ad_id
@@ -37,6 +36,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property int|null $is_call_for_application_test_area
  * @property string|null $production_type_add
  * @property string|null $production_type_wanted_add
+ * @property float|null $price
  * @property-read \App\Models\Ad $ad
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BioCertification[] $bioCertifications
  * @property-read int|null $bio_certifications_count

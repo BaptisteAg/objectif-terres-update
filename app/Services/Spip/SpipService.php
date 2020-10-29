@@ -1,6 +1,7 @@
 <?php namespace App\Services\Spip;
 
 use App\Models\City;
+use App\Models\OfferGenre;
 use App\Models\Spip\Article;
 use App\Models\Spip\Auteur;
 use App\Models\Spip\Document;
@@ -178,7 +179,12 @@ class SpipService
     public function getLocalAdMapping(Article $article, $userId)
     {
         $offerGenres = $this->getLocalOfferGenresMapping($article->mots);
-        $isBuyOffer = in_array(6, $offerGenres);
+        $isBuyOffer = in_array(OfferGenre::ID_VENTE, $offerGenres);
+        $formattedPrice = preg_replace('/[ .]/', '', $article->prix);
+
+        if($article->id_article === 16222) {
+            dd($formattedPrice);
+        }
 
         return [
             'title' => $article->titre,
@@ -192,13 +198,13 @@ class SpipService
                 'regions' => [$this->getLocalRegionMapping($article->mots)]
             ],
             'land_seek' => [
-                'offer_genres' => $this->getLocalOfferGenresMapping($article->mots),
-                'price_max' => $isBuyOffer ? $article->prix : '',
+                'offer_genres' => $offerGenres,
+                'price_max' => $isBuyOffer ? $formattedPrice : '',
             ],
             'land_offer' => [
                 'offer_genres' => $offerGenres,
-                'price' => $isBuyOffer ? $article->prix : '',
-                'rent_price' => $isBuyOffer ? '' : $article->prix,
+                'price' => $isBuyOffer ? $formattedPrice : '',
+                'rent_price' => $isBuyOffer ? '' : $formattedPrice,
             ],
             'job_offer' => [
 
@@ -206,7 +212,10 @@ class SpipService
             'job_seek' => [
 
             ],
-            'documents_ids' => $this->getLocalDocumentsMapping($article->documents, $userId)
+            'documents_ids' => $this->getLocalDocumentsMapping($article->documents, $userId),
+            // Taken from the first ad found
+            'accept_share_contact_infos' => $article->soustitre === 'oui' ? 1 : 0,
+            'origin' => "spip"
         ];
     }
 
@@ -227,9 +236,6 @@ class SpipService
             'email' => $auteur->email,
             // bio contains the unencrypted password ( yes -_- )
             'password' => Hash::make($auteur->bio),
-
-            // Taken from the first ad found
-            'accept_share_contact_infos' => $auteur->articles->first->soustitre === 'oui' ? 1 : 0,
 
             'origin' => 'spip'
         ];

@@ -135,6 +135,13 @@ class AdsController extends BaseController
 			abort(404);
 		}
 
+		if($ad->origin === "spip") {
+		    session()->now('warning',
+                "Ceci est une annonce de l’ancienne site de petites annonces, 
+                l’affichage peut être minimal car toutes les informations sont contenues dans les champs de textes libres."
+            );
+        }
+
 		//Throw error 404 if a visitor try to show an ad is not validated
 		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validée" ;
 		//TODO not display projects unless user logged is the author of the ad or the user logged is an supervisor or an advisor

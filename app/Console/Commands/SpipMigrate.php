@@ -199,6 +199,7 @@ class SpipMigrate extends Command
                 "first_name" => $user->first_name,
                 "last_name" => $user->name,
                 "email" => $user->email,
+                "is_salesforce" => $isSalesforceUser,
                 "password" => $auteur->bio,
                 "ads_count" => $userAdCount,
                 "last_ad_is_published" => !$lastUserAd || $lastUserAd->is_draft ? '0' : '1',
@@ -232,7 +233,7 @@ class SpipMigrate extends Command
         })->count();
 
         $stats["users_without_ad"] = $users->filter(function (User $user) {
-            return $user->ads_count === 0;
+            return $user->ads_count === 0;*
         })->count();
         $stats["users_with_1_ad"] = $users->filter(function (User $user) {
             return $user->ads_count === 1;

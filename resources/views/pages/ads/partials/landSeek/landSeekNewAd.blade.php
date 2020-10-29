@@ -205,7 +205,7 @@
                         <div class="field">
                             {!! Form::label('land_seek[production_genres][]', 'Production(s) envisagée(s)*', ['class' => 'label']); !!}
 
-                            @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_seek[production_genres][]', 'productionGenres' => $productionGenresWithOther->slice(1)])
+                            @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_seek[production_genres][]', 'productionGenres' => $productionGenresWithOther])
                             {{--                            <multi-select--}}
                             {{--                                    :options="{{json_encode($productionGenresWithOther)}}"--}}
                             {{--                                    group-values="children"--}}

@@ -112,12 +112,18 @@
         </div>
     @endif
 
-    @if(!is_null($ad->jobOfferAd->is_activity_transmission))
     <div class="column is-one-third ">
         <p class="has-text-link is-size-5 has-text-centered">Transmission d'activité envisagée</p>
-        <p class="has-text-centered">{{$ad->jobOfferAd->is_activity_transmission ? 'Oui' : 'Non'}}</p>
+        <p class="has-text-centered">
+            @if($ad->jobOfferAd->is_activity_transmission === 1)
+                Oui
+            @elseif($ad->jobOfferAd->is_activity_transmission === 0)
+                Non
+            @else
+                Non précisé
+            @endif
+        </p>
     </div>
-    @endif
 
 </div>
 

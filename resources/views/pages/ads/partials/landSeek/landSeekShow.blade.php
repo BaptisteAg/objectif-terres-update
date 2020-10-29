@@ -39,20 +39,17 @@
                         @endguest()
                     </p>
                 </div>
-                @if(!empty($ad->human_ha))
-                    <div class="content">
-                        <p>
-                            <span class="is-size-5 is-capitalized ad-show-feature-label">Surface recherchée (en
-                                ha)</span>
-                            :
-                            <span class="subtitle">{{ $ad->human_ha }}</span>
-                        </p>
-                    </div>
-                @endif
+                <div class="content">
+                    <p>
+                        <span class="is-size-5 is-capitalized ad-show-feature-label">Surface recherchée</span>
+                        :
+                        <span class="subtitle">{{ empty($ad->human_ha) ? 'Non renseigné' :$ad->human_ha }}</span>
+                    </p>
+                </div>
 
                 <div class="content">
                     @if( $ad->landSeekAd->buildings->count() >0 )
-                        <p><span class="is-size-5 is-capitalized ad-show-feature-label">Habitation(s) et bâti(s)
+                        <p><span class="is-size-5 ad-show-feature-label">Habitation(s) et bâti(s)
                                 recherché(s) : </span><br>
                             @foreach($ad->landSeekAd->buildings as $building)
                                 @if($building->requirement->label !== "Indifférent")
@@ -182,8 +179,10 @@
                     <p class="">Oui</p>
                 @elseif ($ad->landSeekAd->is_bio === 0)
                     <p class="">Non</p>
-                @else
+                @elseif($ad->landSeekAd->is_bio === -1)
                     <p class="">Ne sais pas</p>
+                @else
+                    <p class="">Non précisé</p>
                 @endif
             </div>
 
@@ -203,22 +202,24 @@
                 @endforeach
             @endif
 
-            <div class="mb-20">
-                <p class="has-text-link is-size-5 "> Niveau de formation agricole</p>
-                @if($ad->landSeekAd->educationLevels->count() >0)
-                    @foreach($ad->landSeekAd->educationLevels as $educationLevel)
+            @if($isSupportRequest)
+                <div class="mb-20">
+                    <p class="has-text-link is-size-5 "> Niveau de formation agricole</p>
+                    @if($ad->landSeekAd->educationLevels->count() >0)
                         <p>
+                        @foreach($ad->landSeekAd->educationLevels as $educationLevel)
                             @if($loop->last)
                                 <span class="">{{$educationLevel->name}}</span>
                             @else
                                 <span class="">{{$educationLevel->name}}, </span>
                             @endif
-                            @endforeach
+                        @endforeach
                         </p>
-                        @else
-                            <p class="">Non renseignée</p>
-                        @endif
-            </div>
+                    @else
+                        <p class="">Non renseignée</p>
+                    @endif
+                </div>
+            @endif
         </div>
     </div>
     <div class="column is-half-desktop is-full-tablet">
@@ -236,16 +237,16 @@
             <h4 class="title is-3">Description du projet</h4>
             <p>  {!! nl2br($ad->about_project_content ?? "") !!} </p>
         </div>
-        @if($ad->about_content)
-            <div class="content">
-                <h4 class="title is-3">A propos du porteur de projet</h4>
-                <p>  {!! nl2br($ad->about_content ?? "") !!}</p>
-            </div>
-        @endif
         @if($ad->landSeekAd->experience_farming)
             <div class="content">
                 <h4 class="title is-3">Expérience du porteur de projet dans le domaine agricole</h4>
                 <p> {!! nl2br($ad->landSeekAd->experience_farming ?? "") !!}</p>
+            </div>
+        @endif
+        @if($ad->about_content)
+            <div class="content">
+                <h4 class="title is-3">A propos du porteur de projet</h4>
+                <p>  {!! nl2br($ad->about_content ?? "") !!}</p>
             </div>
         @endif
 

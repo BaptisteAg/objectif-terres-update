@@ -110,7 +110,7 @@
                     <div class="content">
                         <p><span class="is-size-5 is-capitalized has-text-black">Région : </span>
                             <span class="subtitle">
-                                {{$ad->regions[0]->name }} ({{$ad->regions[0]->code }})
+                                {{$ad->regions[0]->name }}
                             </span>
                         </p>
                     </div>
@@ -136,18 +136,24 @@
                             </span>
                         </p>
                     @endif
-                    @if($ad->landOfferAd->price)
-                        <p><span class="is-size-5  ">Prix : </span>
-                            <span class="subtitle ">{{ number_format($ad->landOfferAd->price, 0, ",", " " )}} €</span>
-                        </p>
-                    @endif
-                    @if($ad->landOfferAd->rent_price)
-                        <p>
-                            <span class="is-size-5  ">Loyer mensuel : </span>
-                            <span class="subtitle ">{{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}}
-                                €</span>
-                        </p>
-                    @endif
+                    <p>
+                        @if($ad->landOfferAd->price || $ad->landOfferAd->rent_price)
+                            @if($ad->landOfferAd->price)
+                                <span class="is-size-5  ">Prix : </span>
+                                <span class="subtitle ">
+                                    {{number_format($ad->landOfferAd->price, 0, ",", " " )}} €
+                                </span>
+                            @endif
+                            @if($ad->landOfferAd->rent_price)
+                                <span class="is-size-5  ">Loyer mensuel : </span>
+                                <span class="subtitle ">
+                                    {{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} € / mois
+                                </span>
+                            @endif
+                        @else
+                            Prix non renseigné
+                        @endif
+                    </p>
                 </div>
                 @if($ad->landOfferAd->is_activity_transfer)
                     <div class="content">
@@ -234,82 +240,7 @@
             </div>
             @endif
 
-            @if($ad->landOfferAd->has_houses || $ad->landOfferAd->has_buildings)
-                <div class="content">
-                    <div class="">
-                        @if($ad->landOfferAd->has_buildings)
-                            <div class="mb-20">
-                                <p class="has-text-link is-size-5">Bâtiment(s) agricole(s)</p>
-                                <p class="">
-                                    <span>Description
-                                        : {{$ad->landOfferAd->building->description ?? "Non renseignée"}}</span>
-                                </p>
-                                @if($isSupportRequest)
-                                    <p class="">
-                                        <span>Surface totale
-                                            : {{$ad->landOfferAd->building->surface ?? "Non renseignée"}}</span>
-                                    </p>
-                                    <p class="">
-                                        <span>Type de cession :
-                                            @if($ad->landOfferAd->building->offerGenres->count() > 0 )
 
-                                                @foreach($ad->landOfferAd->building->offerGenres as $offerGenre)
-                                                    {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
-                                                    @if(!$loop->last)
-                                                        ,
-                                                    @endif
-                                                @endforeach
-
-                                            @else
-                                                non précisé
-                                            @endif
-                                        </span>
-                                    </p>
-                                @endif
-                            </div>
-                        @else
-                            <div class="mb-20">
-                                <p class="has-text-link is-size-5">Bâtiment(s) agricole(s)</p>
-                                <p class="">Sans bâtiment agricole</p>
-                            </div>
-                        @endif
-                        @if($ad->landOfferAd->has_houses)
-                            <div class=" mb-20 ">
-                                <p class="has-text-link is-size-5">Habitation(s)</p>
-                                <p class="">
-                                    <span>Description
-                                        : {{$ad->landOfferAd->house->description ?? "Non renseignée"}}</span>
-                                </p>
-                                @if($isSupportRequest)
-                                    <p class="">
-                                        <span>Surface totale
-                                            : {{$ad->landOfferAd->house->surface ?? "Non renseignée"}}</span>
-                                    </p>
-                                    <p class="">
-                                        <span>Type de cession :
-                                            @if($ad->landOfferAd->house->offerGenres->count() > 0 )
-                                                @foreach($ad->landOfferAd->house->offerGenres as $offerGenre)
-                                                    {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
-                                                    @if(!$loop->last)
-                                                        ,
-                                                    @endif
-                                                @endforeach
-                                            @else
-                                                non précisé
-                                            @endif
-                                        </span>
-                                    </p>
-                                @endif
-                            </div>
-                        @else
-                            <div class="mb-20">
-                                <p class="has-text-link is-size-5">Habitation</p>
-                                <p class="">Sans habitation</p>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            @endif
         </div>
     </div>
     <div class="column is-half-desktop is-full-tablet">
@@ -319,12 +250,91 @@
                 <p>  {!! nl2br($ad->support_request_text ?? "") !!} </p>
             </div>
         @endif
-        @if($ad->landOfferAd->sau_description)
-            <div class="content">
-                <h4 class="title is-3"> Description du bâti</h4>
+        <div class="content">
+            @if($ad->landOfferAd->sau_description || $ad->landOfferAd->has_houses || $ad->landOfferAd->has_buildings)
+            <h4 class="title is-3"> Description du bâti</h4>
+
+                @if($ad->landOfferAd->sau_description)
                 <p>  {!! nl2br($ad->landOfferAd->sau_description ?? "") !!}</p>
-            </div>
-        @endif
+                @endif
+
+                @if($ad->landOfferAd->has_houses || $ad->landOfferAd->has_buildings)
+                    <div class="content">
+                        <div class="">
+                            @if($ad->landOfferAd->has_buildings)
+                                <div class="mb-20">
+                                    <p class="has-text-link is-size-5">Bâtiment(s) agricole(s)</p>
+                                    <p class="">
+                                        <span>
+                                            {{$ad->landOfferAd->building->description ?? "Non renseignée"}}</span>
+                                    </p>
+                                    @if($isSupportRequest)
+                                        <p class="">
+                                            <span>
+                                                {{$ad->landOfferAd->building->surface ?? "Non renseignée"}}</span>
+                                        </p>
+                                        <p class="">
+                                            <span>Type de cession :
+                                                @if($ad->landOfferAd->building->offerGenres->count() > 0 )
+
+                                                    @foreach($ad->landOfferAd->building->offerGenres as $offerGenre)
+                                                        {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
+                                                        @if(!$loop->last)
+                                                            ,
+                                                        @endif
+                                                    @endforeach
+
+                                                @else
+                                                    non précisé
+                                                @endif
+                                            </span>
+                                        </p>
+                                    @endif
+                                </div>
+                            @else
+                                <div class="mb-20">
+                                    <p class="has-text-link is-size-5">Bâtiment(s) agricole(s)</p>
+                                    <p class="">Sans bâtiment agricole</p>
+                                </div>
+                            @endif
+                            @if($ad->landOfferAd->has_houses)
+                                <div class=" mb-20 ">
+                                    <p class="has-text-link is-size-5">Habitation(s)</p>
+                                    <p class="">
+                                        <span>{{$ad->landOfferAd->house->description ?? "Non renseignée"}}</span>
+                                    </p>
+                                    @if($isSupportRequest)
+                                        <p class="">
+                                            <span>Surface totale
+                                                : {{$ad->landOfferAd->house->surface ?? "Non renseignée"}}</span>
+                                        </p>
+                                        <p class="">
+                                            <span>Type de cession :
+                                                @if($ad->landOfferAd->house->offerGenres->count() > 0 )
+                                                    @foreach($ad->landOfferAd->house->offerGenres as $offerGenre)
+                                                        {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
+                                                        @if(!$loop->last)
+                                                            ,
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    non précisé
+                                                @endif
+                                            </span>
+                                        </p>
+                                    @endif
+                                </div>
+                            @else
+                                <div class="mb-20">
+                                    <p class="has-text-link is-size-5">Habitation</p>
+                                    <p class="">Sans habitation</p>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                @endif
+            @endif
+        </div>
         @if($ad->landOfferAd->test_description)
             <div class="content">
                 <h4 class="title is-3">Description du test agricole</h4>

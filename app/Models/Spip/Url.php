@@ -7,7 +7,7 @@ namespace App\Models\Spip;
  * App\Models\Spip\Url
  *
  * @property int $id_parent
- * @property int $url
+ * @property string $url
  * @property string $type
  * @property int $id_objet
  * @property string $date
