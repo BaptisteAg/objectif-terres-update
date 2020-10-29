@@ -23,7 +23,7 @@
     @endif
 </div>
 <ul class="custom-tags custom-list custom-list_v x-large">
-    @if($ad->landOfferAd)
+    @if($ad->landOfferAd && $ad->landOfferAd->offerGenres->count())
         <li class="custom-tag info">
             @foreach($ad->landOfferAd->offerGenres as $offerGenre)
                 {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}

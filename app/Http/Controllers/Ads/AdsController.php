@@ -137,7 +137,7 @@ class AdsController extends BaseController
 
 		if($ad->origin === "spip") {
 		    session()->now('warning',
-                "Ceci est une annonce de l’ancienne site de petites annonces, 
+                "Ceci est une annonce de l’ancien site de petites annonces, 
                 l’affichage peut être minimal car toutes les informations sont contenues dans les champs de textes libres."
             );
         }
