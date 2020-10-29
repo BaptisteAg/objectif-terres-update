@@ -43,13 +43,10 @@
             @endif
         </div>
     </section>
-
-
-
-    <section class="section pt-0 mt-0  pb-0">
+    <section class="section pt-0 mt-0  pb-0 mb-10">
         <div class="container">
             <div class="  has-text-centered">
-                <h2>Comment ça marche ?</h2>
+                <p class="has-text-centered has-text-weight-bold">Comment ça marche ?</p>
             </div>
             <div class="columns">
                 <div class="column">
@@ -57,8 +54,8 @@
                         <div class="row-is-full block-step-numbers">
                             <div class="number-step">1</div>
                             <div class="content-numbers">
-                                <h4 class="title is-4">Vous sélectionnez le territoire où vous souhaitez être
-                                    accompagné(e)</h4>
+                                <p class="has-text-weight-bold">Vous sélectionnez le territoire où vous souhaitez être
+                                    accompagné(e)</p>
                                 <p>C’est le
                                     territoire où vous souhaitez vous installer ou le territoire où se situe votre bien
                                     à transmettre. Attention, vous ne pouvez soumettre qu’une seule demande
@@ -69,9 +66,10 @@
                         <div class="row-is-full block-step-numbers">
                             <div class="number-step">2</div>
                             <div class="content-numbers">
-                                <h4 class="title is-4">Vous découvrez les modalités d’accompagnement de l’association
+                                <p class="has-text-weight-bold">Vous découvrez les modalités d’accompagnement de
+                                    l’association
                                     Terre de Liens de
-                                    votre territoire</h4>
+                                    votre territoire</p>
                                 <p> Chacune des 19 associations territoriales de Terre de Liens a un
                                     fonctionnement différent, avec des forces vives et des disponibilités variant d’un
                                     territoire à l’autre.
@@ -81,7 +79,7 @@
                         <div class="row-is-full block-step-numbers">
                             <div class="number-step">3</div>
                             <div class="content-numbers">
-                                <h4 class="title is-4">Vous déposez votre demande d’accompagnement</h4>
+                                <p class="has-text-weight-bold">Vous déposez votre demande d’accompagnement</p>
                                 <p>A travers un formulaire**, vous nous
                                     décrivez précisément votre projet pour que nous puissions vous répondre dans les
                                     meilleurs délais.
@@ -91,7 +89,7 @@
                         <div class="row-is-full block-step-numbers">
                             <div class="number-step">4</div>
                             <div class="content-numbers">
-                                <h4 class="title is-4">Vous échangez sur votre projet avec Terre de Liens</h4>
+                                <p class="has-text-weight-bold">Vous échangez sur votre projet avec Terre de Liens</p>
                                 <p>Nous vous recontactons pour vous orienter, vous donner des informations ou envisager
                                     un prochain rendez-vous pour donner vie à votre projet !
                                 </p>
@@ -131,8 +129,8 @@
                             </select>
                         </div>
                     </div>
-                    <div class="modalites" v-if="region">
-                        <h2 class="title is-2 has-text-centered">Vos modalités d'accueil</h2>
+                    <div class="modalites mt-30" v-if="region">
+                        <h6 class="title is-5 has-text-centered">Vos modalités d'accueil</h6>
                         <div class="">
                             <div class="columns is-centered">
                                 <div id="text-territory" class="column is-three-quarters">
@@ -141,13 +139,12 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="showSubmitFormButton">
-                        <h2 class="title is-2 has-text-centered mb-0">Précisez brièvement ce que vous attendez de Terre
+                    <div class="mt-15" v-if="showSubmitFormButton">
+                        <p class="title is-5 has-text-centered mb-0">Précisez brièvement ce que vous attendez de Terre
                             de
-                            Liens</h2>
+                            Liens</p>
                         <div class="columns is-mobile is-centered">
                             <div class="column is-two-thirds">
-                                <br>
                                 <div class="columns">
                                     <div class="column">
                                         <div class="has-text-centered mb-10">
