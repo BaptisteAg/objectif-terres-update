@@ -231,7 +231,7 @@ class SpipService
 
             'email' => $auteur->email,
             // bio contains the unencrypted password ( yes -_- )
-            'password' => Hash::make($auteur->bio),
+            'password' => $auteur->bio,
 
             'origin' => 'spip'
         ];

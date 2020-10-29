@@ -151,7 +151,10 @@
                                 </span>
                             @endif
                         @else
-                            Prix non renseigné
+                            <span class="is-size-5  ">Prix : </span>
+                            <span class="subtitle ">
+                                Non renseigné
+                            </span>
                         @endif
                     </p>
                 </div>
@@ -163,7 +166,7 @@
                         </p>
                     </div>
                 @endif
-                @if($ad->accept_share_contact_infos === 1)
+                @if($ad->accept_share_contact_infos === 1 && $ad->userPp->phone)
                     <div class="content">
                         <p>
                             <span class="is-size-5 ">N° de téléphone : </span>
