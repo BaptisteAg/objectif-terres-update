@@ -46,7 +46,7 @@
                         </div>
                         <div class="card-content  tile__container">
                             <div class="content text_danger_orange tile__content">
-                                <h3 class="title is-3 tile__title has-text-danger">Je souhaite m'installer et devenir
+                                <h3 class="title is-3 has-text-danger">Je souhaite m'installer et devenir
                                     paysan-ne</h3>
                                 <p class="button-wrap">
                                     <span class="button round small warning read-more">
@@ -89,7 +89,7 @@
                 </div>
                 <div class="card-content  tile__container">
                     <div class="content text_danger_orange tile__content">
-                        <h3 class="title is-3 tile__title has-text-danger">Trouver une terre pour mon projet
+                        <h3 class="title is-3  has-text-danger">Trouver une terre pour mon projet
                             agricole</h3>
                         <p class="button-wrap">
                             <span class="button round small warning read-more">
@@ -125,7 +125,7 @@
                 </div>
                 <div class="card-content  tile__container">
                     <div class="content text_danger_orange tile__content">
-                        <h3 class="title is-3 tile__title has-text-danger">Néo-paysans - le guide (très) pratique</h3>
+                        <h3 class="title is-3  has-text-danger">Néo-paysans - le guide (très) pratique</h3>
                         <p class="button-wrap">
                             <span class="button round small warning read-more">
                                 <span class="button__icon waves-effect waves-circle waves-light">
@@ -160,7 +160,7 @@
                 </div>
                 <div class="card-content  tile__container">
                     <div class="content text_danger_orange tile__content">
-                        <h3 class="title is-3 tile__title has-text-danger">Devenir paysan, reconversions
+                        <h3 class="title is-3  has-text-danger">Devenir paysan, reconversions
                             professionnelles vers l'agriculture</h3>
                         <p class="button-wrap">
                             <span class="button round small warning read-more">
