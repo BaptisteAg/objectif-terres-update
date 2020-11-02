@@ -52,6 +52,7 @@ Vue.component('login-form', {
                     } else if (result.redirect && result.redirect !== '') {
                         location.href = result.redirect;
                     } else {
+                        //this.$refs.email.setAttribute("autocomplete", Math.random());
                         this.hasPassedCheckpoint = true;
                         this.isLoading = false;
                     }

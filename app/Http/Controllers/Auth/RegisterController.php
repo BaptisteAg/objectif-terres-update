@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Notifications\BasicNotification;
 use App\Rules\SalesforceUniqueEmail;
+use App\Services\Auth\RegisterService;
 use App\Services\Salesforce\SalesforceService;
 use App\Models\City;
 use App\Models\Country;
@@ -39,54 +40,22 @@ class RegisterController extends Controller
 	 */
 	protected $redirectTo = '/';
 
-	/** @var UserService */
-	protected $userService;
+    /**
+     * @var RegisterService
+     */
+    private $registerService;
 
-	/**
-	 * @var SalesforceService
-	 */
-	protected $salesForceService;
 
-	/**
+    /**
 	 * Create a new controller instance.
 	 *
 	 * @param UserService $userService
-	 * @param SalesforceService $salesForceService
 	 */
-	public function __construct(UserService $userService, SalesforceService $salesForceService)
+	public function __construct(RegisterService $registerService)
 	{
-		$this->userService = $userService;
-		$this->salesForceService = $salesForceService;
+		$this->registerService = $registerService;
 	}
 
-	/**
-	 * Get a validator for an incoming registration request.
-	 *
-	 * @param array $data
-	 * @return \Illuminate\Contracts\Validation\Validator
-	 */
-	protected function validator(array $data)
-	{
-		return Validator::make($data, [
-			'name' => ['required', 'string', 'max:255'],
-			'email' => [
-				'required',
-				'string', 'email',
-				'max:255',
-				'unique:users',
-				app(SalesforceUniqueEmail::class)
-			],
-			'first_name' => ['required', 'string', 'max:255'],
-			'phone' => ['nullable', 'string', 'max:30'],
-			'street' => ['nullable', 'string', 'min:5'],
-			'civility' => ['required'],
-			'profile' => ['required'],
-			'city_id' => ['required'],
-			'password' => ['required', 'confirmed', 'min:5']
-		], [
-			'city_id.required' => "Veuillez sélectionner un lieu dans la liste en saisissant les premiers caractères"
-		]);
-	}
 
 	/**
 	 * Show the application registration form.
@@ -99,7 +68,6 @@ class RegisterController extends Controller
 		return view('auth.register', compact('cities'));
 	}
 
-
 	/**
 	 * Handle a registration request for the application.
 	 *
@@ -109,42 +77,33 @@ class RegisterController extends Controller
 	 */
 	public function register(Request $request)
 	{
-
-		$this->validator($request->all())->validate();
+		$this->registerService->validator(
+		    $request->all(),
+            [
+                'password' => ['required', 'confirmed', 'min:5']
+            ]
+        )->validate();
 		try {
-			event(new Registered($user = $this->create($request->all())));
+			event(new Registered($user = $this->registerService->create($request->all())));
 			$this->guard()->login($user);
 		} catch (SalesforceException $exception) {
 			return back()->withInput()->withErrors(json_decode($exception->getMessage())[0]->message);
 		}
 
+        $user->notify(new BasicNotification([
+            'subject' => "Bienvenue sur Objectif Terres !",
+            'message' => "
+                Vous venez de vous inscrire sur Objectif Terres pour réaliser votre projet agricole.\n
+                Merci de confirmer votre email.",
+            'action' => [
+                "Confirmer mon email",
+                $this->registerService->getVerifyUrl($user)
+            ]
+        ]));
 
 		session()->flash('success', "Votre compte a été créé et nous vous avons identifié. Bienvenue !");
 
 		return redirect(session('url.intended', '/'));
-	}
-
-	/**
-	 * Create a new user instance after a valid registration.
-	 *
-	 * @param array $data
-	 * @throws \Throwable
-	 */
-	protected function create(array $data)
-	{
-		//dd($data);
-
-		$salesForceContact = $this->salesForceService->registerPP($data);
-		$data["sf_id"] = $salesForceContact["id"];
-
-		$user = $this->userService->create($data);
-
-		$this->salesForceService->updateContact($data["sf_id"], [
-			"OT_user_id__c" => $user->id
-		]);
-
-
-		return $user;
 	}
 
 	/**

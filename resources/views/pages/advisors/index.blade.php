@@ -8,11 +8,7 @@
 
 
 @section('header')
-    @if(auth()->user()->role >= 3)
-        @include('components.supervisor-tabs')
-    @elseif (auth()->user()->role ===2)
-        @include('components.advisor-tabs')
-    @endif
+    @include('components.advisor-tabs')
 @endsection
 
 @section('main-content')
