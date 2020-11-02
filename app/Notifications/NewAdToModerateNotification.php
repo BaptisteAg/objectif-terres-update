@@ -50,12 +50,13 @@ class NewAdToModerateNotification extends Notification implements ShouldQueue
 	public function toMail($notifiable)
 	{
 		$url = url('/annonces/' . $this->ad->id);
-		$isNewAd = $this->ad->updated_at > $this->ad->created_at;
+		$isNewAd = $this->ad->updated_at->eq($this->ad->created_at);
+		
 		$mailMessage = new MailMessage();
 		if ($isNewAd) {
 			$mailMessage->subject('MODEREZ l\'annonce n°[' . $this->ad->id . ']');
 		} else {
-			$mailMessage->subject('MODEREZ l\'annonce n°[' . $this->ad->id . '] MODIFIÉE par son autteur');
+			$mailMessage->subject('MODEREZ l\'annonce n°[' . $this->ad->id . '] MODIFIÉE par son auteur');
 		}
 
 		$mailMessage->greeting('Bonjour, ' . $notifiable->first_name);

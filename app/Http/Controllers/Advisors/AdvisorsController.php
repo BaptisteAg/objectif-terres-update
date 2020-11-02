@@ -5,14 +5,17 @@ namespace App\Http\Controllers\Advisors;
 
 use App\Exports\Advisors\AdvisorsExport;
 use App\Models\City;
-use App\Models\CmsPage;
 use App\Models\User;
+use App\Notifications\BasicNotification;
+use App\Services\Auth\RegisterService;
 use Carbon\Carbon;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
-use Maatwebsite\Excel\Facades\Excel;
+use Omniphx\Forrest\Exceptions\SalesforceException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Throwable;
 
@@ -68,11 +71,52 @@ class AdvisorsController extends BaseController
 	/**
 	 * @return Factory|View
 	 */
-	public function registerNewUserPp()
+	public function createNewUserPp()
 	{
 		$cities = City::all();
 		return view('pages.advisors.register-new-user-pp', compact('cities'));
 	}
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
+     * @throws \Throwable
+     */
+    public function registerNewUserPp(Request $request, RegisterService $registerService)
+    {
+        $data = $request->all();
+
+        $data["password"] = Str::random(8);
+
+        $registerService->validator($data)->validate();
+
+        try {
+            event(new Registered($user = $registerService->create($data)));
+        } catch (SalesforceException $exception) {
+            return back()->withInput()->withErrors(json_decode($exception->getMessage())[0]->message);
+        }
+
+        $user->notify(new BasicNotification([
+            'subject' => "Bienvenue sur Objectif Terres !",
+            'message' => "
+                Vous avez été inscrit sur Objectif Terres par un primo-accueillant pour réaliser votre projet agricole.\n
+                
+                Le mot de passe généré pour vous est le suivant : ".$data["password"]."\n
+                Utilisez-le pour vous connecter sur le site. Vous pourrez ensuite le modifier.\n\n
+                
+                Merci de confirmer votre email.",
+            'action' => [
+                "Confirmer mon email",
+                $registerService->getVerifyUrl($user)
+            ]
+        ]));
+
+        session()->flash('success', "Le compte PP a bien été créé.");
+
+        return redirect()->route('advisor.index');
+    }
 
 	/**
 	 * @param int $adId

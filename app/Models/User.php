@@ -6,6 +6,7 @@ use App\Models\Scopes\ScopeLocationFilterable;
 use App\Notifications\ResetPasswordNotification;
 use App\Presenters\UserPresenter;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -95,7 +96,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
  * @mixin \Eloquent
  */
-class User extends Authenticatable implements HasPresenter
+class User extends Authenticatable implements HasPresenter,MustVerifyEmail
 {
 	use Notifiable;
 	use CanResetPassword;

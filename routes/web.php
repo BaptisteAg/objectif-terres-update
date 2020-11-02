@@ -160,7 +160,8 @@ Route::middleware('advisor')->prefix('gestion-des-accompagnements')->name('advis
 	Route::get('/', 'AdvisorsController@index')->name('index');
 	Route::get('aide-et-ressources', 'AdvisorsController@help')->name('help');
 	Route::get('recherche', 'AdvisorsController@show')->name('show');
-	Route::get('création-compte-pp', 'AdvisorsController@registerNewUserPp')->name('createNewPp');
+	Route::get('creation-compte-pp', 'AdvisorsController@createNewUserPp')->name('createNewPp');
+	Route::post('creation-compte-pp', 'AdvisorsController@registerNewUserPp')->name('registerNewPp');
 	Route::get('export', 'AdvisorsController@export')->name('export');
 	Route::get('espace-suivi/{id}', 'AdvisorsController@showSupport')->name('showSupport');
 	Route::post('mise-a-jour-statut', 'AdvisorsController@updateSupport')->name('updateSupport');
@@ -192,6 +193,9 @@ Route::get('connexion/sso', 'Auth\SalesforceLoginController@salesforceLogin')->n
 //Route::post('login', 'Auth\SalesforceLoginController@login')->name('login');
 Route::get('deconnexion/sso', 'Auth\SalesforceLoginController@salesforceLogout')->name('logout.sso');
 Route::post('deconnexion', 'Auth\LoginController@logout')->name('logout');
+Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
+Route::get('email/verify/{id}/{hash}', 'Auth\VerificationController@verify')->name('verification.verify');
+Route::post('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
 
 // Registration Routes...
 Route::get('inscription', 'Auth\RegisterController@showRegistrationForm')->name('register');

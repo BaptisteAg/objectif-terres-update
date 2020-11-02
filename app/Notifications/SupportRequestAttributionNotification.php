@@ -47,7 +47,7 @@ class SupportRequestAttributionNotification extends Notification implements Shou
 		$url = url('/annonces/' . $this->ad->id);
 		$mail = (new MailMessage)
 			->from(config('mail.from.address'), "Administration")
-			->subject('Accompagnement de' . $this->ad->userPp->name)
+			->subject('Accompagnement de ' . $this->ad->userPp->name)
 			->greeting('Bonjour ' . $notifiable->first_name . ',');
 
 		if ($this->ad->attributionAd->userSupervisor) {

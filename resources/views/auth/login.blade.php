@@ -22,9 +22,10 @@
                                        type="email"
                                        name="email"
                                        v-model="email"
+                                       ref="email"
                                        v-on:change="onEmailChange"
                                        required
-                                       autocomplete="email"
+                                       :autocomplete="'email' + Math.random()"
                                        autofocus
                                        placeholder="Votre adresse email...">
                                 <span class="icon is-small is-left">
