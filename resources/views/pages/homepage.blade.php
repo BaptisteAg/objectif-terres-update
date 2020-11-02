@@ -260,9 +260,9 @@
                                 <div class="card-content has-text-centered tile__container">
                                     <div class="content text_danger_orange tile__content">
                                         <p class="title tile__title">{{ \Illuminate\Support\Str::limit($ad->title, 100, $end='...') }}</p>
-                                        <div class="tile__intro">
-                                            <p>{{ \Illuminate\Support\Str::limit($ad->about_project_content, 100, $end='...') }}</p>
-                                        </div>
+{{--                                        <div class="tile__intro">--}}
+{{--                                            <p>{{ \Illuminate\Support\Str::limit($ad->about_project_content, 100, $end='...') }}</p>--}}
+{{--                                        </div>--}}
                                         <p class="button-wrap">
                                             <span class="button round small warning read-more">
                                                 <span class="button__icon">

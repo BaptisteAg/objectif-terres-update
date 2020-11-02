@@ -35,7 +35,7 @@
                     </div>
                     <div class="card-content  tile__container">
                         <div class="content text_danger_orange tile__content">
-                            <h3 class="title is-3 tile__title has-text-danger">Préservons nos terres agricoles</h3>
+                            <h3 class="title is-3 has-text-danger">Préservons nos terres agricoles</h3>
                             <p class="button-wrap">
                                 <span class="button round small warning read-more">
                                     <span class="button__icon waves-effect waves-circle waves-light">

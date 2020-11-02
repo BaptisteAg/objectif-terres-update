@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="card-content  tile__container">
                                     <div class="content text_danger_orange tile__content">
-                                        <h3 class="title is-3 tile__title has-text-danger">Guide foncier pour
+                                        <h3 class="title is-3  has-text-danger">Guide foncier pour
                                             proprié'terre</h3>
                                         <p class="button-wrap">
                                             <span class="button round small warning read-more">
