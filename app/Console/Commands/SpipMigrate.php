@@ -200,7 +200,7 @@ class SpipMigrate extends Command
                     "documents" => $ad->documents_count,
                     "spip_id" => $article->id_article,
                     "id" => $ad->id,
-                    "spip_url" => "https://terredeliens.org/".$article->url->url,
+                    "spip_url" => "https://terredeliens.org/".$article->url->url.".html",
                     "url" => "https://www.objectif-terres.org/annonces/".$ad->id,
                 ];
                 $lastUserAd = $ad;

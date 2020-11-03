@@ -10,17 +10,17 @@
             <div class="bubble__scrollable-wrap">
                 <div class="bubble__scrollable">
                     <ul class="custom-menu menu-submenu tiles">
-                        <li class="tile_icon-label">
-                            <a href="{{url('https://portail-terredeliens.force.com/rhizome/s/')}}"
-                               class="menu__link tile__link"
-                               title="Rhizôme">
-                                <span class="tile__icon"><i class="fad fa-address-card"></i></span>
-                                <div class="tile__content">
-                                    <p class="tile__title">
-                                        Rhizôme</p>
-                                </div>
-                            </a>
-                        </li>
+{{--                        <li class="tile_icon-label">--}}
+{{--                            <a href="{{url('https://portail-terredeliens.force.com/rhizome/s/')}}"--}}
+{{--                               class="menu__link tile__link"--}}
+{{--                               title="Rhizôme">--}}
+{{--                                <span class="tile__icon"><i class="fad fa-address-card"></i></span>--}}
+{{--                                <div class="tile__content">--}}
+{{--                                    <p class="tile__title">--}}
+{{--                                        Rhizôme</p>--}}
+{{--                                </div>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
                         <li class="tile_icon-label">
                             <a href="{{url('https://terredeliens.org/')}}" class="menu__link tile__link"
                                title="Le site national de Terre de Liens">
@@ -60,33 +60,33 @@
                                 </div>
                             </a>
                         </li>
-                        <li class="tile_icon-label">
-                            <a href="{{url('https://plateferme-parti.ovh/prod/')}}" class="menu__link tile__link"
-                               title="Diaganostic Ferme">
-                                <span class="tile__icon"><img
-                                            src="/images/icons/diagnostic-ferme.png"></span>
-                                <div class="tile__content">
-                                    <p class="tile__title"> Diaganostic
-                                        Ferme</p>
-                                    <p class="tile__intro"> Diagnostiquer,
-                                        collecter et partager des données
-                                        sur les fermes
-                                </div>
-                            </a>
-                        </li>
-                        <li class="tile_icon-label">
-                            <a href="{{url('https://terredeliens.keepeek.com/')}}" class="menu__link tile__link"
-                               title="Photothèque">
-                                <span class="tile__icon"><img
-                                            src="/images/icons/phototheque.png"></span>
-                                <div class="tile__content">
-                                    <p class="tile__title"> Photothèque </p>
-                                    <p class="tile__intro"> Partager les
-                                        photos de Terre de Liens pour une
-                                        agriculture photogénique</p>
-                                </div>
-                            </a>
-                        </li>
+{{--                        <li class="tile_icon-label">--}}
+{{--                            <a href="{{url('https://plateferme-parti.ovh/prod/')}}" class="menu__link tile__link"--}}
+{{--                               title="Diaganostic Ferme">--}}
+{{--                                <span class="tile__icon"><img--}}
+{{--                                            src="/images/icons/diagnostic-ferme.png"></span>--}}
+{{--                                <div class="tile__content">--}}
+{{--                                    <p class="tile__title"> Diaganostic--}}
+{{--                                        Ferme</p>--}}
+{{--                                    <p class="tile__intro"> Diagnostiquer,--}}
+{{--                                        collecter et partager des données--}}
+{{--                                        sur les fermes--}}
+{{--                                </div>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                        <li class="tile_icon-label">--}}
+{{--                            <a href="{{url('https://terredeliens.keepeek.com/')}}" class="menu__link tile__link"--}}
+{{--                               title="Photothèque">--}}
+{{--                                <span class="tile__icon"><img--}}
+{{--                                            src="/images/icons/phototheque.png"></span>--}}
+{{--                                <div class="tile__content">--}}
+{{--                                    <p class="tile__title"> Photothèque </p>--}}
+{{--                                    <p class="tile__intro"> Partager les--}}
+{{--                                        photos de Terre de Liens pour une--}}
+{{--                                        agriculture photogénique</p>--}}
+{{--                                </div>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
                         {{--                        <li class="tile_icon-label">--}}
                         {{--                            <a href="{{url('https://terredeliens.org/')}}" class="menu__link tile__link"--}}
                         {{--                               title="Consulter mes notifications">--}}

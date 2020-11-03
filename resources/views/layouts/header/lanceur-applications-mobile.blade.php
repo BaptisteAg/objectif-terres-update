@@ -11,18 +11,18 @@
 				<div class="bubble__scrollable-wrap">
 					<div class="bubble__scrollable">
 						<ul class="custom-menu menu-submenu ">
-							<li class="tile_icon-label">
-								<a href="#"
-								   class="menu__link tile__link"
-								   title="Accéder aux applis Terre de liens">
-                                                                            <span class="tile__icon"><i
-																						class="fad fa-address-card"></i></span>
-									<div class="tile__content">
-										<p class="tile__title">
-											Rhizôme</p>
-									</div>
-								</a>
-							</li>
+{{--							<li class="tile_icon-label">--}}
+{{--								<a href="#"--}}
+{{--								   class="menu__link tile__link"--}}
+{{--								   title="Accéder aux applis Terre de liens">--}}
+{{--                                                                            <span class="tile__icon"><i--}}
+{{--																						class="fad fa-address-card"></i></span>--}}
+{{--									<div class="tile__content">--}}
+{{--										<p class="tile__title">--}}
+{{--											Rhizôme</p>--}}
+{{--									</div>--}}
+{{--								</a>--}}
+{{--							</li>--}}
 							<li class="tile_icon-label">
 								<a href="#"
 								   class="menu__link tile__link"
@@ -73,42 +73,42 @@
 									</div>
 								</a>
 							</li>
-							<li class="tile_icon-label">
-								<a href="#"
-								   class="menu__link tile__link"
-								   title="Consulter mes notifications">
-                                                                            <span class="tile__icon"><img
-																						src="/images/icons/diagnostic-ferme.png"></span>
-									<div class="tile__content">
-										<p class="tile__title">
-											Diaganostic
-											Ferme</p>
-										<p class="tile__intro">
-											Diagnostiquer,
-											collecter et partager des
-											données
-											sur les fermes
-									</div>
-								</a>
-							</li>
-							<li class="tile_icon-label">
-								<a href="#"
-								   class="menu__link tile__link"
-								   title="Consulter mes notifications">
-                                                                            <span class="tile__icon"><img
-																						src="/images/icons/phototheque.png"></span>
-									<div class="tile__content">
-										<p class="tile__title">
-											Photothèque </p>
-										<p class="tile__intro"> Partager
-											les
-											photos de Terre de Liens
-											pour
-											une
-											agriculture photogénique</p>
-									</div>
-								</a>
-							</li>
+{{--							<li class="tile_icon-label">--}}
+{{--								<a href="#"--}}
+{{--								   class="menu__link tile__link"--}}
+{{--								   title="Consulter mes notifications">--}}
+{{--                                                                            <span class="tile__icon"><img--}}
+{{--																						src="/images/icons/diagnostic-ferme.png"></span>--}}
+{{--									<div class="tile__content">--}}
+{{--										<p class="tile__title">--}}
+{{--											Diaganostic--}}
+{{--											Ferme</p>--}}
+{{--										<p class="tile__intro">--}}
+{{--											Diagnostiquer,--}}
+{{--											collecter et partager des--}}
+{{--											données--}}
+{{--											sur les fermes--}}
+{{--									</div>--}}
+{{--								</a>--}}
+{{--							</li>--}}
+{{--							<li class="tile_icon-label">--}}
+{{--								<a href="#"--}}
+{{--								   class="menu__link tile__link"--}}
+{{--								   title="Consulter mes notifications">--}}
+{{--                                                                            <span class="tile__icon"><img--}}
+{{--																						src="/images/icons/phototheque.png"></span>--}}
+{{--									<div class="tile__content">--}}
+{{--										<p class="tile__title">--}}
+{{--											Photothèque </p>--}}
+{{--										<p class="tile__intro"> Partager--}}
+{{--											les--}}
+{{--											photos de Terre de Liens--}}
+{{--											pour--}}
+{{--											une--}}
+{{--											agriculture photogénique</p>--}}
+{{--									</div>--}}
+{{--								</a>--}}
+{{--							</li>--}}
 							<li class="tile_icon-label">
 								<a href="#"
 								   class="menu__link tile__link"
