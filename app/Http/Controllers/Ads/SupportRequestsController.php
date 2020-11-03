@@ -96,7 +96,7 @@ class SupportRequestsController extends BaseController
 	}
 
 	/**
-	 * Display the ad creation form
+	 *
 	 * @return \Illuminate\View\View
 	 * @throws \Exception
 	 */
