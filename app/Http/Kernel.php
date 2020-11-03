@@ -4,7 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\HttpsProtocol;
-use App\Http\Middleware\RedirectIp;
+use App\Http\Middleware\FilterIps;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -23,7 +23,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         HttpsProtocol::class,
-        RedirectIp::class
+        FilterIps::class
     ];
 
     /**
