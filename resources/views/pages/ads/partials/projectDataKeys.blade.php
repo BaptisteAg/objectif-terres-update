@@ -1,6 +1,7 @@
 {!! Form::open(['route' => 'support-request.show.update-project-data-keys-values', 'method'=>'post']) !!}
-<div class="content is-flex">
+<div class="content ">
     <h3 class="title is-3">Renseignez vos indicateurs</h3>
+    <p>Ces indicateurs sont <strong>optionnels</strong>. Néanmoins, ils sont pour nous importants : ils nous permettent de mieux vous accompagner mais aussi d'observer les signaux faibles de l'installation et de la transmission en France en anonymisant ces informations et en les croisant au niveau national, à la manière d'un observatoire. Merci pour votre contribution !</p>
 </div>
 <div class="content">
     Ces indicateurs sont <b>optionnels</b>. Néanmoins, ils sont pour nous importants :

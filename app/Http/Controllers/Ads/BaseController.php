@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Ads;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ad;
+use App\Models\AdNote;
 use App\Models\AdStatus;
 use App\Models\AgriculturalActivity;
 use App\Models\BioCertification;
@@ -12,6 +13,7 @@ use App\Models\EducationLevel;
 use App\Models\InstallationType;
 use App\Models\JobOfferType;
 use App\Models\OfferGenre;
+use App\Models\ProjectDataKey;
 use App\Models\RefusalType;
 use App\Models\Requirement;
 use App\Models\ResponseTemplate;
@@ -211,6 +213,8 @@ abstract class BaseController extends Controller
 		$moderatorInChargeOfModeration = false;
 		$currentUser = auth()->user();
         $isSupportRequest = false;
+		$allProjectDataKeys = [];
+		$currentProjectKeyDataValues = [];
 
 		/** @var User $user */
 		$user = auth()->user();
@@ -229,11 +233,16 @@ abstract class BaseController extends Controller
 			$responseTemplates = ResponseTemplate::orderBy('title')->get();
 			$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
 
-			if (!isset($ad->project)) {
+			if (is_null($ad->project)) {
 				if (!empty($ad->attributionAd->adStatus) && $ad->attributionAd->adStatus->id === AdStatus::PENDING_MODERATION_STATUS_ID) {
 					$isAdToModerate = true;
 				}
+			}else{
+				$isSupportRequest = true;
+				$allProjectDataKeys = ProjectDataKey::with('projectDataValues')->where('is_public', '=', 1)->get();
+				$currentProjectKeyDataValues = AdNote::where('ad_id', '=', $ad->id)->whereNotNull('project_data_key_id')->get();
 			}
+
 			if ($moderatorInChargeOfModeration) {
 				$isLoggedUserModeratorAd = true;
 				$responseTemplates = ResponseTemplate::orderBy('title')->get();
@@ -288,7 +297,9 @@ abstract class BaseController extends Controller
 			'advisorUsers',
 			'moderatorInChargeOfModeration',
 			'currentUser',
-            'isSupportRequest'
+            'isSupportRequest',
+			'allProjectDataKeys',
+			'currentProjectKeyDataValues'
 		);
 	}
 }

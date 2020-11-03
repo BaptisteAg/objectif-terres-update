@@ -35,7 +35,7 @@
                             </div>
                             <div class="card-content  tile__container">
                                 <div class="content text_danger_orange tile__content">
-                                    <h3 class="title is-3 tile__title has-text-danger">Je recherche des terres pour mon
+                                    <h3 class="title is-3 has-text-danger">Je recherche des terres pour mon
                                         projet agricole</h3>
                                     <p class="button-wrap">
                                         <span class="button round small warning read-more">
@@ -75,7 +75,7 @@
                             </div>
                             <div class="card-content  tile__container">
                                 <div class="content text_danger_orange tile__content">
-                                    <h3 class="title is-3 tile__title has-text-danger">Trouver une terre pour mon projet
+                                    <h3 class="title is-3 has-text-danger">Trouver une terre pour mon projet
                                         agricole</h3>
                                     <p class="button-wrap">
                                         <span class="button round small warning read-more">
@@ -111,7 +111,7 @@
                             </div>
                             <div class="card-content  tile__container">
                                 <div class="content text_danger_orange tile__content">
-                                    <h3 class="title is-3 tile__title has-text-danger">Rechercher une terre pour
+                                    <h3 class="title is-3 has-text-danger">Rechercher une terre pour
                                         accueillir son projet</h3>
                                     <p class="button-wrap">
                                         <span class="button round small warning read-more">
@@ -147,7 +147,7 @@
                             </div>
                             <div class="card-content  tile__container">
                                 <div class="content text_danger_orange tile__content">
-                                    <h3 class="title is-3 tile__title has-text-danger">Et si on restructurait les fermes
+                                    <h3 class="title is-3 has-text-danger">Et si on restructurait les fermes
                                         ? </h3>
                                     <p class="button-wrap">
                                         <span class="button round small warning read-more">

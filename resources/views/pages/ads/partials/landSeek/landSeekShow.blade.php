@@ -377,7 +377,6 @@
 {{--        <p> {!! nl2br($ad->landSeekAd->experience_farming ?? "") !!}</p>--}}
 {{--    </div>--}}
 {{--@endif--}}
-
 @if($isSupportRequest)
     @include('pages.ads.partials.projectDataKeys')
 @endif

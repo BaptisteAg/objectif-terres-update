@@ -37,7 +37,7 @@
                     </div>
                     <div class="card-content  tile__container">
                         <div class="content text_danger_orange tile__content">
-                            <h3 class="title is-3 tile__title has-text-danger">Je transmets mes terres ou ma ferme</h3>
+                            <h3 class="title is-3 has-text-danger">Je transmets mes terres ou ma ferme</h3>
                             <p class="button-wrap">
                                 <span class="button round small warning read-more">
                                     <span class="button__icon waves-effect waves-circle waves-light">
@@ -78,7 +78,7 @@
                 </div>
                 <div class="card-content  tile__container">
                     <div class="content text_danger_orange tile__content">
-                        <h3 class="title is-3 tile__title has-text-danger">Des idées pour transmettre sa ferme</h3>
+                        <h3 class="title is-3 has-text-danger">Des idées pour transmettre sa ferme</h3>
                         <p class="button-wrap">
                             <span class="button round small warning read-more">
                                 <span class="button__icon waves-effect waves-circle waves-light">
@@ -113,7 +113,7 @@
                 </div>
                 <div class="card-content  tile__container">
                     <div class="content text_danger_orange tile__content">
-                        <h3 class="title is-3 tile__title has-text-danger">Le chemin de l'installation et de la
+                        <h3 class="title is-3 has-text-danger">Le chemin de l'installation et de la
                             transmission</h3>
                         <p class="button-wrap">
                             <span class="button round small warning read-more">
@@ -149,7 +149,7 @@
                 </div>
                 <div class="card-content  tile__container">
                     <div class="content text_danger_orange tile__content">
-                        <h3 class="title is-3 tile__title has-text-danger">Préservons nos terres agricoles</h3>
+                        <h3 class="title is-3  has-text-danger">Préservons nos terres agricoles</h3>
                         <p class="button-wrap">
                             <span class="button round small warning read-more">
                                 <span class="button__icon waves-effect waves-circle waves-light">
