@@ -191,7 +191,7 @@
                     <div class="mb-20">
                         <p class="has-text-link is-size-5 ">Accès au foncier souhaité </p>
                         <p class="">
-                            {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
+                            {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Vente' : $offerGenre->name}}
 
                             @if($isSupportRequest && $offerGenre->id === $offerGenre::ID_VENTE && $ad->landSeekAd->price_max)
                                 <br>Budget maximum : {{ $ad->landSeekAd->price_max }} €

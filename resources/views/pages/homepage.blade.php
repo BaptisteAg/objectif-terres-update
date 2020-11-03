@@ -54,7 +54,7 @@
         </div>
     </section>
     @if(!$adsPartner->isEmpty())
-        <section class="section bg-l-pearl bg-trame_champs_light">
+        <section class="section">
             <div class="">
                 <div class="has-text-centered ">
                     <h2 class="title is-1 text_warning_orange">Annonces à la une</h2>

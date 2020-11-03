@@ -534,3 +534,21 @@ LIST
   margin: 0;
   margin-bottom: 0.2em;
 }
+
+
+/// recadrage des vignettes par pédro
+.vignette__image-wrap {
+  max-height: 340px;
+}
+.vignette__image {
+  object-fit: cover;
+}
+/* Y'avait des soucis responsive */
+@media screen and (max-width: 768px) {
+  [class*=tile_text-image] > .tile__link {
+    flex-direction: column;
+  }
+  .tile__title {
+    margin: 0.5em 0;
+  }
+}
