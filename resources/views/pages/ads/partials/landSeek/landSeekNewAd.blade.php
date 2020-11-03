@@ -115,7 +115,11 @@
                                                     <i class="fa {{ $offerGenre["icon"] }}"
                                                        style="font-size: 30px;"></i><br><br>
                                                     <span style="font-size:16px">
-                                                        {{ $offerGenre["name"] }}
+                                                        @if($offerGenre["name"] === "Vente")
+                                                            Achat
+                                                        @else
+                                                            {{ $offerGenre["name"] }}
+                                                        @endif
                                                     </span>
                                                 </custom-checkbox>
                                             </div>

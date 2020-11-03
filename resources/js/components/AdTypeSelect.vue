@@ -38,7 +38,11 @@
 
                     {{currentAdType.label}}
                 </label><br>
-                <a href="#" @click.prevent="displaySelection = true" v-if="isNew">← Changer de type d'annonce</a>
+              <template>
+                <a href="#" @click.prevent="displaySelection = true" v-if="isSupportRequest">← Changer de type d'accompagnement</a>
+                <a href="#" @click.prevent="displaySelection = true" v-else>← Changer de type d'annonce</a>
+              </template>
+
             </div>
             <input type="hidden" :name="name" :value="value">
         </div>
