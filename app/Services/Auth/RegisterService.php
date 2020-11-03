@@ -41,15 +41,23 @@ class RegisterService
     {
         //dd($data);
 
-        $salesForceContact = $this->salesforceService->registerPP($data);
-        $data["sf_id"] = $salesForceContact["id"];
+        if($data["city_id"] ?? $data["zip_code_id"]) {
+            try {
+                $salesForceContact = $this->salesforceService->registerPP($data);
+                $data["sf_id"] = $salesForceContact["id"];
+            }
+            catch (\Exception $e) {
+
+            }
+        }
 
         $user = $this->userService->create($data);
 
-        $this->salesforceService->updateContact($data["sf_id"], [
-            "OT_user_id__c" => $user->id
-        ]);
-
+        if(!empty($data["sf_id"])) {
+            $this->salesforceService->updateContact($data["sf_id"], [
+                "OT_user_id__c" => $user->id
+            ]);
+        }
 
         return $user;
     }

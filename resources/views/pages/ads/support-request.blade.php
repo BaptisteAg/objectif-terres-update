@@ -34,6 +34,9 @@
             </div>
         </div>
     @endguest
+    @auth
+        <h2 class="title is-2 has-text-centered">Être accompagné par Terre de Liens</h2>
+    @endauth
     <section>
         <div class="container">
             @if(isset($pageContent))

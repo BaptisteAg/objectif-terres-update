@@ -49,7 +49,8 @@ class AdNotification extends Notification implements ShouldQueue
 		$mailMessage
 			->subject($this->data['subject'])
 			->greeting('Bonjour ' . $notifiable->name . ',')
-			->line($this->data['message']);
+			->line($this->data['message'])
+            ->cc("objectifterres@terredeliens.org");
 
 		if (isset($this->data['url'])) {
 			$mailMessage->action('Consulter votre annonce', url($this->data['url']));

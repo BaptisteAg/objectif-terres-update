@@ -7,7 +7,7 @@
                             @if($document->path === "0")
                                 <img class="custom-carousel-image-size" src="/images/new-placeholder-ad.png" alt="picsum" >
                             @else
-                                    <img class="custom-carousel-image-size" data-source="{{URL::asset($document->path)}}" src="{{URL::asset($document->path)}}" style="cursor: pointer">
+                                <img class="custom-carousel-image-size" data-source="{{URL::asset($document->path)}}" src="{{URL::asset($document->path)}}" style="cursor: pointer">
                             @endif
                     </div>
                 </div>
@@ -16,7 +16,15 @@
             <div class="card carousel-item ad-carousel">
                 <div class="card-image">
                     <figure>
-                        <img class="custom-carousel-image-size" src="/images/new-placeholder-ad.png">
+                        @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
+                            <img class="custom-carousel-image-size"
+                                 src="/images/new-placeholder-ad.png"
+                                 alt="image générique foncier ferme">
+                        @else
+                            <img class="custom-carousel-image-size"
+                                 src="/images/job-offer-placeholder-ad.png"
+                                 alt="image générique emploi ferme">
+                        @endif
                     </figure>
                 </div>
             </div>

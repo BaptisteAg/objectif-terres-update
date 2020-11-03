@@ -24,17 +24,24 @@ class Kernel extends ConsoleKernel
 	 */
 	protected function schedule(Schedule $schedule)
 	{
-		//$schedule->command('app:send-alert-new-results-research')->hourly();
+        // DO NOT UNCOMMENT NOW
+        // LE CLIENT DECIDERA QUAND ON DECOMMENTE CETTE TACHE
+        //$schedule->command('app:unpublish-old-ads')->hourly();
 
-		// DO NOT UNCOMMENT NOW
-		// LE CLIENT DECIDERA QUAND ON DECOMMENTE CETTE TACHE
-		//$schedule->command('app:unpublish-old-ads')->hourly();
+        if(config("app.is_scheduler_live_mode")) {
+            $schedule->command('app:send-alert-new-results-research')->hourly();
+            $schedule->command('app:notify-overdue-moderation')->weekly();
+            $schedule->command('app:notify-publish-date-extend-before-expiration')->daily();
+        }
+        else {
+            $schedule->command('app:send-alert-new-results-research')->everyFiveMinutes();
+            $schedule->command('app:notify-overdue-moderation')->everyTwoHours();
+            $schedule->command('app:notify-publish-date-extend-before-expiration')->daily();
+        }
+        $schedule->command('app:notify-drafts-unpublished-ads')->hourly();
+        $schedule->command('app:change-support-state-old-support-request')->daily();
+        $schedule->command('app:notify-6-moths-old-support-request')->daily();
 
-		//$schedule->command('app:notify-overdue-moderation')->hourly();
-		//$schedule->command('app:notify-publish-date-extend-before-expiration')->daily();
-		//$schedule->command('app:notify-drafts-unpublished-ads')->hourly();
-		//$schedule->command('app:change-support-state-old-support-request')->daily();
-		//$schedule->command('app:notify-6-moths-old-support-request')->daily();
 		$schedule->call(function () {
 			(new PruneStaleAttachments)();
 		})->daily();

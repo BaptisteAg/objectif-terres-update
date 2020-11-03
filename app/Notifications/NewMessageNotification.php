@@ -61,7 +61,8 @@ class NewMessageNotification extends Notification implements ShouldQueue
 			->line(strip_tags($this->data['message_content']))
 			->action('Consulter votre messagerie', url('/mon-espace/messagerie'))
 			->line('A bientôt sur Objectif Terres !')
-			->salutation('L\'équipe d\'Objectif Terres');
+			->salutation('L\'équipe d\'Objectif Terres')
+            ->cc("objectifterres@terredeliens.org");
 
 		return $mailMessage;
 	}

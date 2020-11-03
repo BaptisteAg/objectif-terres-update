@@ -15,10 +15,10 @@
     @else
         @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
             <img src="{{URL::asset('images/new-placeholder-ad.png')}}"
-                 class="vignette__image" alt="image generic ferme"/>
+                 class="vignette__image" alt="image générique foncier ferme"/>
         @else
-            <img src="{{URL::asset("images/illustrations/photo_08_bandeau-maous_1920.jpg")}}"
-                 class=" vignette__image" alt="image generic emploi ferme"/>
+            <img src="{{URL::asset("images/job-offer-placeholder-ad.png")}}"
+                 class=" vignette__image" alt="image générique emploi ferme"/>
         @endif
     @endif
 </div>

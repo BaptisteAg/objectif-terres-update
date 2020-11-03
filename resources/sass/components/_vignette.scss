@@ -204,3 +204,8 @@ VIGNETTE AND TAGS
     z-index : 10 !important;
 }
 
+.vignette > .custom-tags.custom-tags-right {
+    right: 0;
+    left:initial;
+    align-items: flex-end;
+}

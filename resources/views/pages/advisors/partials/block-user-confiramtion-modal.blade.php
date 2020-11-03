@@ -5,7 +5,7 @@
 			<div class="card-content">
 				<div class="content">
 					<p class="title is-3 has-text-centered has-text-link">Êtes-vous sûr·e de votre choix ?</p>
-					<p class="has-text-centered ">Bloquer l'utilisateur <strong>{{$ad->userPp->first_name}} {{$ad->userPp->name}}</strong> </p>
+					<p class="has-text-centered ">Bloquer l'utilisateur <strong>{{$ad->pp_display_name}}</strong> </p>
 
 				</div>
 			</div>

@@ -8,6 +8,7 @@ use App\Models\Ad;
 use App\Models\Spip\Auteur;
 use App\Models\User;
 use App\Services\Ads\AdService;
+use App\Services\Auth\RegisterService;
 use App\Services\Salesforce\SalesforceService;
 use App\Services\Spip\SpipService;
 use App\Services\Users\UserService;
@@ -35,9 +36,9 @@ class SpipMigrate extends Command
      */
     protected $spipService;
     /**
-     * @var UserService
+     * @var RegisterService
      */
-    private $userService;
+    private $registerService;
     /**
      * @var AdService
      */
@@ -52,12 +53,12 @@ class SpipMigrate extends Command
      *
      * @return void
      */
-    public function __construct(SpipService $spipService, UserService $userService, AdService $adService, SalesforceService $salesforceService)
+    public function __construct(SpipService $spipService, RegisterService $registerService, AdService $adService, SalesforceService $salesforceService)
     {
         parent::__construct();
 
         $this->spipService = $spipService;
-        $this->userService = $userService;
+        $this->registerService = $registerService;
         $this->adService = $adService;
         $this->salesforceService = $salesforceService;
 
@@ -103,6 +104,10 @@ class SpipMigrate extends Command
                 echo("User without ads, skipping : ".$auteur->email."\n");
                 continue;
             }
+            if(empty($auteur->email)) {
+                echo("User without email, skipping : ".$auteur->cpnom. " " . $auteur->cnom."\n");
+                continue;
+            }
 
             $user = User::where('email', $auteur->email)->first();
 
@@ -122,14 +127,22 @@ class SpipMigrate extends Command
                 }
             }
             else {
-                if(!$auteur->bio && !$isSalesforceUser) {
+                if($auteur->bio) {
+                    if(strpos($auteur->bio, "TRAITE ") !== false) {
+                        $auteur->bio = str_replace("TRAITE ", "", $auteur->bio);
+                    }
+
+                    $auteur->bio = html_entity_decode($auteur->bio);
+                    $auteur->save();
+                }
+                elseif(!$auteur->bio && !$isSalesforceUser) {
                     echo("Generating password for user : ".$auteur->email."\n");
                     $auteur->bio = Str::random(8);
                     $auteur->save();
                     $stats["generated_passwords"]++;
                 }
 
-                $user = $this->userService->create(
+                $user = $this->registerService->create(
                     $this->spipService->getLocalUserMapping($auteur)
                 );
 
@@ -177,6 +190,9 @@ class SpipMigrate extends Command
                     "title" => $ad->title,
                     "ad_type" => $this->adService->getAdType($ad),
                     "is_published" => $ad->is_draft ? "0" : "1",
+                    "pp_display_name" => $ad->userPp->first_name ?
+                        ($ad->userPp->first_name.' '.$ad->userPp->name) :
+                        $ad->userPp->email,
                     "moderator" => $ad->is_draft ? "" : $ad->attributionAd->userModerator->email,
                     "date" => $ad->created_at,
                     "about_content" => $ad->about_content,

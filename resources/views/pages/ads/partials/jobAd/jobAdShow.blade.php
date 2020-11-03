@@ -55,9 +55,9 @@
 				<div class="content">
 					<p><span class="is-size-5  has-text-black ">Publié par  : </span>
 						@if(auth()->user()->role >=1)
-							<span class="subtitle"><a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->userPp->first_name}} {{$ad->userPp->name}}</a></span>
+							<span class="subtitle"><a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->pp_display_name}}</a></span>
 						@else
-							<span class="subtitle">{{ $ad->userPp->first_name}} {{$ad->userPp->name}}</span>
+							<span class="subtitle">{{ $ad->pp_display_name}}</span>
 						@endif
 					</p>
 				</div>

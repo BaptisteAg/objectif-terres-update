@@ -2,7 +2,9 @@
 
 return [
 
+    // OT General params
     'is_coming_soon' => env('COMING_SOON', false),
+    'is_scheduler_live_mode' => env('IS_SCHEDULER_LIVE_MODE', false),
 
     /*
     |--------------------------------------------------------------------------
