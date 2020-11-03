@@ -128,11 +128,12 @@ class SpipMigrate extends Command
             }
             else {
                 if($auteur->bio) {
-                    if(strpos($auteur->bio, "TRAITE ")) {
+                    if(strpos($auteur->bio, "TRAITE ") !== false) {
                         $auteur->bio = str_replace("TRAITE ", "", $auteur->bio);
                     }
 
                     $auteur->bio = html_entity_decode($auteur->bio);
+                    $auteur->save();
                 }
                 elseif(!$auteur->bio && !$isSalesforceUser) {
                     echo("Generating password for user : ".$auteur->email."\n");
