@@ -45,6 +45,7 @@ class NotifyNewResultsResearch implements ShouldQueue
 	{
 		$researchesWithNewAds = $this->researchService->findNewRelatedAds();
 		if (count($researchesWithNewAds)) {
+
 			foreach ($researchesWithNewAds as $idResearch => $ad) {
 				$research = $this->researchService->find($idResearch);
 				$data = [

@@ -2,10 +2,10 @@
 	<div class="content">
 		@if(! $ad->userPp->trashed())
 			<h4 class="title is-4 has-text-centered"><a
-						href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+						href="{{route('user.show', $ad->userPp->id)}}">{{$ad->pp_display_name}}</a>
 			</h4>
 		@else
-			<h4 class="title is-4 has-text-centered">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</h4>
+			<h4 class="title is-4 has-text-centered">{{$ad->pp_display_name}}</h4>
 		@endif
 		<div class="columns">
 			<div class="column has-text-centered">

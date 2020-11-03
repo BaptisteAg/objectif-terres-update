@@ -33,6 +33,17 @@ class AdPresenter extends BasePresenter
         return !!$this->wrappedObject->project;
     }
 
+    public function pp_display_name()
+    {
+        $user = $this->wrappedObject->userPp;
+
+        if(!$user->first_name || !$user->name) {
+            return $user->email;
+        }
+
+        return $user->first_name. " ". $user->name;
+    }
+
 	public function ad_type()
 	{
 		if ($this->wrappedObject->landSeekAd) {

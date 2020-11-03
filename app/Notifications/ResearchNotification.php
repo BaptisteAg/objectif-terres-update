@@ -50,7 +50,8 @@ class ResearchNotification extends Notification implements ShouldQueue
 			->greeting('Bonjour,')
 			->action('Consultez les résultats de votre recherche', $url)
 			->line('Merci d\'utiliser les services du site d\'Objectif Terres !')
-			->salutation('Cordialement, L\'équipe d\'Objectif Terres');
+			->salutation('Cordialement, L\'équipe d\'Objectif Terres')
+            ->cc("objectifterres@terredeliens.org");
 
 	}
 

@@ -54,7 +54,8 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
 			->action('Réinitialiser votre mot de passe',  url(config('app.url').route('password.reset', $this->token, false)))
 			->line('Ce lien va expirer dans 60 minutes. Si vous ne générer pas un nouveau mot de passe, l\'ancien mot de passe restera actif.')
 			->line('Si vous n’êtes pas à l’origine de cette demande ne faites rien.')
-			->salutation('A bientôt sur Objectif Terres !');
+			->salutation('A bientôt sur Objectif Terres !')
+            ->cc("objectifterres@terredeliens.org");
 	}
 
 

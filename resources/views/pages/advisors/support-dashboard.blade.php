@@ -30,7 +30,7 @@
                 <h1 class="title is-1 has-text-link">Suivi
                     de {{$ad->userPp->getWrappedObject()->first_name}} {{$ad->userPp->getWrappedObject()->name}} </h1>
             @else
-                <h1 class="title is-1 has-text-link">Suivi de {{$ad->userPp->first_name}} {{$ad->userPp->name}} </h1>
+                <h1 class="title is-1 has-text-link">Suivi de {{$ad->pp_display_name}} </h1>
             @endif
 
             <h3 class="subtitle is-3 ">{{$ad->title}}</h3>
@@ -54,7 +54,7 @@
         </div>
         @if($ad->userPp->trashed())
             <div class="notification is-danger ">
-                L'utilisateur <strong>{{$ad->userPp->first_name}} {{$ad->userPp->name}}</strong> a été bloqué le
+                L'utilisateur <strong>{{$ad->pp_display_name}}</strong> a été bloqué le
                 <strong> {{ \Carbon\Carbon::parse($ad->userPp->deleted_at)->format('d/m/Y')}} </strong>.
                 L'ensemble de ces annonces ne sont plus visibles par les membres et visiteurs d'Objectif Terres.
                 Contacter l'administrateur pour plus d'informations.

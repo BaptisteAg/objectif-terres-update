@@ -39,20 +39,16 @@ class SalesforceService
      */
     public function registerPP($data)
     {
-    	$this->repository->authenticate();
+        $this->repository->authenticate();
 
-        $city = City::findOrFail($data["city_id"]);
+        $city = City::findOrFail($data["city_id"] ?? $data["zip_code_id"]);
 
+        if(empty($data["country_id"])) {
+            // France
+            $data["country_id"] = 75;
+        }
 
-        /**
-         * example response :
-         * array:3 [
-         * "id" => "0031q00000RVzsRAAT"
-         * "success" => true
-         * "errors" => []
-         * ]
-         */
-        $contact = $this->repository->create('Contact', [
+        $sfPayload = [
             // Account global donné par Youssouf
             "AccountId" => "0011r00002XFjaeAAD",
             "Email" => $data["email"],
@@ -65,8 +61,27 @@ class SalesforceService
             "MailingCountry" => Country::findOrFail($data["country_id"])->name_fr_fr,
             "LeadSource" => "Petites annonces",
             "OT_Password__c" => Hash::make($data["password"]),
-            "role__c" => 'Annonceur Objectif Terre'
-        ]);
+            "role__c" => 'Annonceur Objectif Terre',
+            "Recevoir_les_infos_de_TDL__c" => empty($data["accept_communication"]) ? 0 : 1
+        ];
+
+        $contactsFound = $this->repository->findWhere('Contact', ["Email" => $data["email"]]);
+
+        if(count($contactsFound)) {
+            $contactId = $contactsFound[0]["Id"];
+            $contact = $this->repository->update('Contact', $contactId, $sfPayload);
+        }
+        else {
+            /**
+             * example response :
+             * array:3 [
+             * "id" => "0031q00000RVzsRAAT"
+             * "success" => true
+             * "errors" => []
+             * ]
+             */
+            $contact = $this->repository->create('Contact', $sfPayload);
+        }
 
         return $contact;
     }

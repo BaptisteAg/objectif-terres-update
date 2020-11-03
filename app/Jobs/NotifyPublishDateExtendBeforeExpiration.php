@@ -34,7 +34,15 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
      */
     public function handle()
     {
-        $date = Carbon::now()->subDays(6);
+        if(config("app.is_scheduler_live_mode")) {
+            $date = Carbon::now()->subDays(6);
+            $extraMsg = '';
+        }
+        else {
+            $date = Carbon::now()->subHours(2);
+            $extraMsg = " \n(MODE TEST : NOTIFICATION 2 HEURES AVANT, EXPIRATION LE ".$date. ")";
+        }
+
         $soonToExpireAds = $this->adService->findAdsPublishedSince($date);
 
         logger("Suggesting soon to expire (".$date.") ads owner to extend the date... ".$soonToExpireAds->count()." found.");
@@ -50,7 +58,7 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
                     
                     Vous pouvez également modifier votre annonce.\n
                     
-                    En vous remerciant pour votre confiance.",
+                    En vous remerciant pour votre confiance." . $extraMsg,
                 'action' => ["Etendre l'annonce", route('ads.extend', ["id" => $ad->id])]
             ]));
         }

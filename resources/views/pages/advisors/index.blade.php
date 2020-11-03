@@ -278,9 +278,9 @@
                                     </td>
                                     <td>
                                         @if(is_null($ad->project))
-                                            <a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+                                            <a href="{{route('user.show', $ad->userPp->id)}}">{{$ad->pp_display_name}}</a>
                                         @else
-                                            <a href="{{route('advisor.showSupport', $ad->id)}}">{{$ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+                                            <a href="{{route('advisor.showSupport', $ad->id)}}">{{$ad->pp_display_name}}</a>
                                         @endif
                                     </td>
                                     <td>

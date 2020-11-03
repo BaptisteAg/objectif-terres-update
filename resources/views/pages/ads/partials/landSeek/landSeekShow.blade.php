@@ -24,17 +24,17 @@
                         @auth()
                             @if(auth()->user()->role >= 1 )
                                 <span class="subtitle">
-                                    <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+                                    <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->pp_display_name }}</a>
                                 </span>
                             @elseif(auth()->user()->role < 1)
                                 <span class="subtitle">
-                                    {{ $ad->userPp->first_name}} {{$ad->userPp->name}}
+                                    {{ $ad->pp_display_name}}
                                 </span>
                             @endif
                         @endauth
                         @guest()
                             <span class="subtitle">
-                                {{ $ad->userPp->first_name}} {{$ad->userPp->name}}
+                                {{ $ad->pp_display_name}}
                             </span>
                         @endguest()
                     </p>
@@ -186,7 +186,6 @@
                 @endif
             </div>
 
-
             @if($ad->landSeekAd->offerGenres->count())
                 @foreach ($ad->landSeekAd->offerGenres as $offerGenre)
                     <div class="mb-20">
@@ -194,7 +193,7 @@
                         <p class="">
                             {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
 
-                            @if($offerGenre->id === $offerGenre::ID_VENTE && $ad->landSeekAd->price_max)
+                            @if($isSupportRequest && $offerGenre->id === $offerGenre::ID_VENTE && $ad->landSeekAd->price_max)
                                 <br>Budget maximum : {{ $ad->landSeekAd->price_max }} €
                             @endif
                         </p>

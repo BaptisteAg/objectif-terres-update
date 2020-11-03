@@ -27,17 +27,17 @@
                         @auth()
                             @if(auth()->user()->role >= 1 )
                                 <span class="subtitle">
-                                    <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->userPp->first_name}} {{$ad->userPp->name}}</a>
+                                    <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->pp_display_name}}</a>
                                 </span>
                             @elseif(auth()->user()->role < 1)
                                 <span class="subtitle">
-                                    {{ $ad->userPp->first_name}} {{$ad->userPp->name}}
+                                    {{ $ad->pp_display_name}}
                                 </span>
                             @endif
                         @endauth
                         @guest()
                             <span class="subtitle">
-                                {{ $ad->userPp->first_name}} {{$ad->userPp->name}}
+                                {{ $ad->pp_display_name}}
                             </span>
                         @endguest
                     </p>

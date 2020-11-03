@@ -19,7 +19,7 @@ class NotifyOverdueModeration extends Command
      *
      * @var string
      */
-    protected $description = 'Send an alert to moderator if a an ad isn\'t moderate since a week';
+    protected $description = 'Send an alert to moderator if a an ad isn\'t moderate for a week';
 
     /** @var NotifyOverdueModerationJob  */
     protected $job;

@@ -70,7 +70,8 @@ class NewAdToModerateNotification extends Notification implements ShouldQueue
 		$mailMessage->line('Titre : "' . $this->ad->title . '"')
 			->line('Auteur·e :"' . $this->userPP->name . '"')
 			->action('Modérer l\'annonce', $url)
-			->salutation('A bientôt sur Objectif Terres !');
+			->salutation('A bientôt sur Objectif Terres !')
+            ->cc("objectifterres@terredeliens.org");
 
 		return $mailMessage;
 	}
