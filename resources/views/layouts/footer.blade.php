@@ -6,7 +6,7 @@
                     <h6 class="title is-6 text_white footer-site__title">TERRE DE LIENS</h6>
                     <p><a class="" target="_blank" href="{{ url('https://terredeliens.org/-un-mouvement-trois-piliers-.html') }}">Qui sommes nous ?</a>
                     </p>
-                    <p><a class=""  href="{{ url('https://terredeliens.org/-un-mouvement-trois-piliers-.html') }}">Notre mission</a></p>
+                    <p><a class="" target="_blank" href="{{ url('https://terredeliens.org/-un-mouvement-trois-piliers-.html') }}">Notre mission</a></p>
                     <p><a class="" target="_blank" href="{{ url('https://terredeliens.org/-proteger-les-terres-.html') }}">Nos actions</a></p>
                     <p><a class="" target="_blank"
                           href="{{ url('https://terredeliens.org/-les-chiffres-clefs-.html') }}">Chiffres clés</a>
@@ -76,11 +76,11 @@
             <div class="columns menu menu-intersites">
                 <div class="column is-narrow menu__item is-paddingless"><a class="menu__link " href="/mentions-legales">Mentions
                         légales</a></div>
-                <div class="column is-narrow is-paddingless"><a class="menu__link " href="{{url('/')}}">Politique de
-                        cookie</a></div>
+{{--                <div class="column is-narrow is-paddingless"><a class="menu__link " href="{{url('/')}}">Politique de--}}
+{{--                        cookie</a></div>--}}
                 <div class="column is-narrow is-paddingless"><a class="menu__link " href="{{route('conditions-utilisation')}}">Conditions
                         d'utilisation</a></div>
-                <div class="column"><span>©<?=date('Y')?> - Terre de Liens | All right reserved</span></div>
+                <div class="column"><span>Tous droits réservés | © Terre de Liens - <?=date('Y')?></span></div>
             </div>
         </div>
     </section>

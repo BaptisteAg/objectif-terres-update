@@ -26,16 +26,6 @@
                 @endif
             </figure>
             <ul class="custom-tags custom-list custom-list_v">
-                @if($ad->landOfferAd && $ad->landOfferAd->offerGenres->count())
-                    <li class="custom-tag info">
-                        @foreach($ad->landOfferAd->offerGenres as $offerGenre)
-                            {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
-                            @if(!$loop->last)
-                                ,
-                            @endif
-                        @endforeach
-                    </li>
-                @endif
                 @if(isset($ad->is_partner) && $ad->is_partner === 1 )
                     <li class="custom-tag warning">Annonce certifiée</li>
                 @endif
@@ -49,8 +39,26 @@
                         {{$ad->regionsList ?? ""}}
                     @endif
                 </li>
+                @if($ad->landSeekAd || $ad->landOfferAd)
+                    <li class="custom-tag danger">
+                        <i class="fas fa-arrows-alt-h"></i>
+                        @if(!empty($ad->human_ha))
+                            {{$ad->human_ha}}
+                        @endif
+                    </li>
+                @endif
             </ul>
             <ul class="custom-tags custom-list custom-list_v custom-tags-right">
+                @if($ad->landOfferAd && $ad->landOfferAd->offerGenres->count())
+                    <li class="custom-tag info">
+                        @foreach($ad->landOfferAd->offerGenres as $offerGenre)
+                            {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Vente' : $offerGenre->name}}
+                            @if(!$loop->last)
+                                ,
+                            @endif
+                        @endforeach
+                    </li>
+                @endif
                 @if($ad->landOfferAd)
                     <li class="custom-tag warning">
                         <i class="fas fa-piggy-bank"></i>
@@ -63,12 +71,6 @@
                             @endif
                         @else
                             Prix non renseigné
-                        @endif
-                    </li>
-                    <li class="custom-tag danger">
-                        <i class="fas fa-arrows-alt-h"></i>
-                        @if(!empty($ad->human_ha))
-                            {{$ad->human_ha}}
                         @endif
                     </li>
                 @endif
@@ -91,12 +93,6 @@
                             @endif
                         </li>
                     @endif
-                    <li class="custom-tag danger">
-                        <i class="fas fa-arrows-alt-h"></i>
-                        @if(!empty($ad->human_ha))
-                            {{$ad->human_ha}}
-                        @endif
-                    </li>
                 @endif
             </ul>
         </div>

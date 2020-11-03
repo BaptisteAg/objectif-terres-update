@@ -33,16 +33,13 @@ class HomePageController extends Controller
         }
 
 		//TODO get the last ads with  : $lastAdsAdded = AttributionAdEvents::orderBy('id', 'desc')->take(2)->get();
-		//TODO get the last ads tag "Partenaires"
-
 
 		$ads = Ad::whereHas('attributionAd', function (Builder $query) {
 			$query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
 		})->take(4)->orderBy('created_at', 'desc')->get()->shuffle();
 
 
-
-		$adsPartner = Ad::whereHas('attributionAd', function (Builder $query) {
+		$adsPartner = Ad::where('is_partner', 1)->whereHas('attributionAd', function (Builder $query) {
 			$query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
 		})->take(4)->orderBy('created_at', 'desc')->get();
 

@@ -26,7 +26,7 @@
     @if($ad->landOfferAd && $ad->landOfferAd->offerGenres->count())
         <li class="custom-tag info">
             @foreach($ad->landOfferAd->offerGenres as $offerGenre)
-                {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
+                {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Vente' : $offerGenre->name}}
                 @if(!$loop->last)
                     ,
                 @endif

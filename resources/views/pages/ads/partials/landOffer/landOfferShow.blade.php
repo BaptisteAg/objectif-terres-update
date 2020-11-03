@@ -5,7 +5,7 @@
             <div class="card-content">
                 @foreach($ad->landOfferAd->offerGenres as $offerGenre)
                     <span class="custom-tag info">
-                        {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
+                        {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Vente' : $offerGenre->name}}
                     </span>
                 @endforeach
                 <div class="content">
@@ -108,7 +108,7 @@
                     </div>
                 @elseif($ad->regions->count())
                     <div class="content">
-                        <p><span class="is-size-5 is-capitalized has-text-black">Région : </span>
+                        <p><span class="is-size-5 is-capitalized">Région : </span>
                             <span class="subtitle">
                                 {{$ad->regions[0]->name }}
                             </span>
@@ -128,7 +128,7 @@
                             <span class="is-size-5  ">Mode de cession : </span>
                             <span class="subtitle">
                                 @foreach($ad->landOfferAd->offerGenres as $offerGenre)
-                                    {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
+                                    {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Vente' : $offerGenre->name}}
                                     @if(!$loop->last)
                                         ,
                                     @endif
@@ -281,7 +281,7 @@
                                                 @if($ad->landOfferAd->building->offerGenres->count() > 0 )
 
                                                     @foreach($ad->landOfferAd->building->offerGenres as $offerGenre)
-                                                        {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
+                                                        {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Vente' : $offerGenre->name}}
                                                         @if(!$loop->last)
                                                             ,
                                                         @endif
@@ -315,7 +315,7 @@
                                             <span>Type de cession :
                                                 @if($ad->landOfferAd->house->offerGenres->count() > 0 )
                                                     @foreach($ad->landOfferAd->house->offerGenres as $offerGenre)
-                                                        {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Achat' : $offerGenre->name}}
+                                                        {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Vente' : $offerGenre->name}}
                                                         @if(!$loop->last)
                                                             ,
                                                         @endif

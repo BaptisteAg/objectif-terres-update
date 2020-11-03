@@ -46,63 +46,63 @@
             @endif
         </div>
     </section>
-    <section class="section pt-0 mt-0  pb-0 mb-10">
-        <div class="container">
-            <div class="  has-text-centered">
-                <p class="has-text-centered has-text-weight-bold">Comment ça marche ?</p>
-            </div>
-            <div class="columns">
-                <div class="column">
-                    <div class="rows">
-                        <div class="row-is-full block-step-numbers">
-                            <div class="number-step">1</div>
-                            <div class="content-numbers">
-                                <p class="has-text-weight-bold">Vous sélectionnez le territoire où vous souhaitez être
-                                    accompagné(e)</p>
-                                <p>C’est le
-                                    territoire où vous souhaitez vous installer ou le territoire où se situe votre bien
-                                    à transmettre. Attention, vous ne pouvez soumettre qu’une seule demande
-                                    d’accompagnement* !
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row-is-full block-step-numbers">
-                            <div class="number-step">2</div>
-                            <div class="content-numbers">
-                                <p class="has-text-weight-bold">Vous découvrez les modalités d’accompagnement de
-                                    l’association
-                                    Terre de Liens de
-                                    votre territoire</p>
-                                <p> Chacune des 19 associations territoriales de Terre de Liens a un
-                                    fonctionnement différent, avec des forces vives et des disponibilités variant d’un
-                                    territoire à l’autre.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row-is-full block-step-numbers">
-                            <div class="number-step">3</div>
-                            <div class="content-numbers">
-                                <p class="has-text-weight-bold">Vous déposez votre demande d’accompagnement</p>
-                                <p>A travers un formulaire**, vous nous
-                                    décrivez précisément votre projet pour que nous puissions vous répondre dans les
-                                    meilleurs délais.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row-is-full block-step-numbers">
-                            <div class="number-step">4</div>
-                            <div class="content-numbers">
-                                <p class="has-text-weight-bold">Vous échangez sur votre projet avec Terre de Liens</p>
-                                <p>Nous vous recontactons pour vous orienter, vous donner des informations ou envisager
-                                    un prochain rendez-vous pour donner vie à votre projet !
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+{{--    <section class="section pt-0 mt-0  pb-0 mb-10">--}}
+{{--        <div class="container">--}}
+{{--            <div class="has-text-centered">--}}
+{{--                <p class="has-text-centered has-text-weight-bold">Comment ça marche ?</p>--}}
+{{--            </div>--}}
+{{--            <div class="columns">--}}
+{{--                <div class="column">--}}
+{{--                    <div class="rows">--}}
+{{--                        <div class="row-is-full block-step-numbers">--}}
+{{--                            <div class="number-step">1</div>--}}
+{{--                            <div class="content-numbers">--}}
+{{--                                <p class="has-text-weight-bold">Vous sélectionnez le territoire où vous souhaitez être--}}
+{{--                                    accompagné(e)</p>--}}
+{{--                                <p>C’est le--}}
+{{--                                    territoire où vous souhaitez vous installer ou le territoire où se situe votre bien--}}
+{{--                                    à transmettre. Attention, vous ne pouvez soumettre qu’une seule demande--}}
+{{--                                    d’accompagnement* !--}}
+{{--                                </p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="row-is-full block-step-numbers">--}}
+{{--                            <div class="number-step">2</div>--}}
+{{--                            <div class="content-numbers">--}}
+{{--                                <p class="has-text-weight-bold">Vous découvrez les modalités d’accompagnement de--}}
+{{--                                    l’association--}}
+{{--                                    Terre de Liens de--}}
+{{--                                    votre territoire</p>--}}
+{{--                                <p> Chacune des 19 associations territoriales de Terre de Liens a un--}}
+{{--                                    fonctionnement différent, avec des forces vives et des disponibilités variant d’un--}}
+{{--                                    territoire à l’autre.--}}
+{{--                                </p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="row-is-full block-step-numbers">--}}
+{{--                            <div class="number-step">3</div>--}}
+{{--                            <div class="content-numbers">--}}
+{{--                                <p class="has-text-weight-bold">Vous déposez votre demande d’accompagnement</p>--}}
+{{--                                <p>A travers un formulaire**, vous nous--}}
+{{--                                    décrivez précisément votre projet pour que nous puissions vous répondre dans les--}}
+{{--                                    meilleurs délais.--}}
+{{--                                </p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="row-is-full block-step-numbers">--}}
+{{--                            <div class="number-step">4</div>--}}
+{{--                            <div class="content-numbers">--}}
+{{--                                <p class="has-text-weight-bold">Vous échangez sur votre projet avec Terre de Liens</p>--}}
+{{--                                <p>Nous vous recontactons pour vous orienter, vous donner des informations ou envisager--}}
+{{--                                    un prochain rendez-vous pour donner vie à votre projet !--}}
+{{--                                </p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </section>--}}
 
 
     <section class="section pt-0 mt-0 bg-trame_champs_light bg-l-cream" id="support-request-vue">
@@ -114,10 +114,14 @@
                     <h2 class="title is-2 has-text-centered">Choisissez votre territoire</h2>
                     <div class="has-text-centered">
                         <div class="is-half">
-                            Terre de Liens peut accompagner les projets d’offre ou de recherche de foncier agricole.<br>
+{{--                            Terre de Liens peut accompagner les projets d’offre ou de recherche de foncier agricole.<br>--}}
                             Pour connaître nos modalités d’accueil,
                             <span class="is-size-5 has-text-weight-bold ">indiquez la région concernée par votre
                                 projet </span>.<br>
+
+                            Notre capacité à vous accompagner pouvant être limitée, merci de cibler le territoire prioritaire sur
+                            lequel porte votre projet d’installation.<br>
+
                             Par exemple, si vous habitez en Rhône-Alpes mais que vous souhaitez vous installez en
                             Midi-Pyrénées, il vous faut sélectionner le territoire Midi-Pyrénées.
                         </div>
@@ -192,18 +196,15 @@
         </support-request-start>
 
         <div class="content mt-80">
-            <p>
-                *Notre capacité à vous accompagner pouvant être limitée, merci de cibler le territoire prioritaire sur
-                lequel porte votre projet d’installation.</p>
-            <p> **Les informations remplies dans ce formulaire sont susceptibles d’être enregistrées ; vous pouvez à
-                tout moment gérer vos informations personnelles dans
-                @guest()
-                    <a href="{{route('login')}}">votre compte.</a>
-                @else
-                    <a href="{{route('user.edit',  auth()->user()->id)}}">votre compte.</a>
-                @endif
+{{--            <p> **Les informations remplies dans ce formulaire sont susceptibles d’être enregistrées ; vous pouvez à--}}
+{{--                tout moment gérer vos informations personnelles dans--}}
+{{--                @guest()--}}
+{{--                    <a href="{{route('login')}}">votre compte.</a>--}}
+{{--                @else--}}
+{{--                    <a href="{{route('user.edit',  auth()->user()->id)}}">votre compte.</a>--}}
+{{--                @endif--}}
 
-            </p>
+{{--            </p>--}}
 
         </div>
 
