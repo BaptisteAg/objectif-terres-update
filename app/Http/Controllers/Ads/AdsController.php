@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Ads;
 
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
+use App\Models\AdStatus;
 use App\Models\User;
 use App\Notifications\BasicNotification;
 use App\Notifications\NewAdToModerateNotification;
@@ -134,6 +135,16 @@ class AdsController extends BaseController
 		if (!isset($ad->user_pp_id)) {
 			abort(404);
 		}
+
+		if (is_null($ad->project_id) && $ad->attributionAd->ad_status_id !== AdStatus::APPROVE_ID)
+		{
+			$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad->id);
+			if(!$moderatorInChargeOfModeration && $ad->user_pp_id !== auth()->user()->id){
+				abort(404);
+			}
+		}
+
+
 
 		if($ad->origin === "spip") {
 		    session()->now('warning',
