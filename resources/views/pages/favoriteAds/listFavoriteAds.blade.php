@@ -23,7 +23,7 @@
 
                                     @include('pages.ads.partials.thumbnail_right', ["ad" => $favoriteAd->ad])
 
-                                    @if($ad->ad->threadAlreadyExist)
+                                    @if($favoriteAd->ad->threadAlreadyExist)
                                         <article class="message is-success mb-0">
                                             <div class="message-body pt-15 pr-15 pb-15 pl-15">
                                                 <a href="{{route('threads.index')}}">Vous avez déjà envoyé un message au
