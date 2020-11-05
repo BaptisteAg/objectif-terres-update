@@ -59,7 +59,9 @@
             @endif
             @if($favoriteAdAlreadyExist)
                 <a href="{{route ('favoriteAds.destroy', $favoriteAdAlreadyExist->id)}}"
-                   class="ad-action-button card-footer-item button is-link btn-favorite-ads">
+                   class="ad-action-button card-footer-item button is-link btn-favorite-ads has-tooltip-left"
+                   data-tooltip="Retirer des favoris"
+                  >
                     <span class="icon is-small">
                         <i class="fas fa-heart"></i>
                     </span>
@@ -67,7 +69,8 @@
             @else
                 {!! Form::open(['route'=>'favoriteAds.create', 'method'=>'get']) !!}
                 <input name="ad_id" value="{{$ad->id}}" type="hidden">
-                <button class="ad-action-button card-footer-item button is-link is-outlined btn-favorite-ads">
+                <button class="ad-action-button card-footer-item button is-link is-outlined btn-favorite-ads has-tooltip-left"
+                        data-tooltip="Mettre en favoris">
                     <span class="icon">
                         <i class="far fa-heart"></i>
                     </span>

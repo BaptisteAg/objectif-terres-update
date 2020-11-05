@@ -59,11 +59,11 @@
 	@foreach($ads as $ad)
 		@if(! isset($ad->project) )
 			<tr>
-				<td>{{$ad->attributionAd->created_at}}</td>
-				<td>{{$ad->title}}</td>
-				<td>{{$ad->ad_type_full_name}}</td>
+				<td>{{$ad->attributionAd->created_at?: ''}}</td>
+				<td>{{$ad->title?: ''}}</td>
+				<td>{{$ad->ad_type_full_name?: ''}}</td>
 				<td>{{$ad->userPp->first_name ?: ''}} {{$ad->userPp->name ?: ''}}</td>
-				<td>{{$ad->userPP->email}}</td>
+				<td>{{$ad->userPP->email?: ''}}</td>
 				<td>
 					@if(! is_null($ad->regionsList))
 						<p>Region(s) : {{$ad->regionsList}}</p>
@@ -76,8 +76,8 @@
 					@endif
 				</td>
 				<td>{{$ad->attributionAd->userAdvisor->first_name ?? ''}} {{$ad->attributionAd->userAdvisor->name ?? ''}}</td>
-				<td style="width: auto">{{$ad->about_project_content}}</td>
-				<td>{{$ad->about_content}}</td>
+				<td style="width: auto">{{$ad->about_project_content?: ''}}</td>
+				<td>{{$ad->about_content?: ''}}</td>
 				<td>{{$ad->landOfferAd->surface?? '' }}</td>
 				<td>{{$ad->landOfferAd->sau_description?? '' }}</td>
 				<td>

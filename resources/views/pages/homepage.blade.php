@@ -94,7 +94,6 @@
 @section('script')
     <script src="{{ asset('js/bulma-accordion.js') }}"></script>
     <script>let accordions = bulmaAccordion.attach();</script>
-
     <script src="{{ asset('js/bulma-carousel.js') }}"></script>
     <script>
         bulmaCarousel.attach('#post_images', {

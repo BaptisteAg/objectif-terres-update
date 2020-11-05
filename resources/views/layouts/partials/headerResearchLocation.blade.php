@@ -25,11 +25,12 @@
 	</div>
 	<div class="field">
 		<p class="label">Dans un rayon de </p>
+
 		<vue-slider
 				name="radius_research"
 				:old-data="{
 						'value' : {{json_encode(old('radius_research'))}},
-						'textValue' : {{json_encode(old('radius_research'))}}+'km'
+						'textValue' : {{old('radius_research') !== null ? json_encode(old('radius_research')) : 0}}+' km'
 						}"
                 :data="{
                     0: '0km',

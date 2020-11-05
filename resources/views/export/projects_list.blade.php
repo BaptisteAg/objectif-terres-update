@@ -50,12 +50,12 @@
 	@foreach($ads as $ad)
 		@if(isset($ad->project))
 			<tr>
-				<td>{{$ad->project->created_at}}</td>
+				<td>{{$ad->project->created_at?: ''}}</td>
 				<td>{{$ad->project->supportStage->name ?? ''}}</td>
 				<td>{{$ad->project->supportState->name ?? ''}}</td>
 				<td>{{$ad->project->projectStatus->name ?? ''}}</td>
 				<td>{{$ad->title ?? ''}}</td>
-				<td>{{$ad->ad_type_full_name}}</td>
+				<td>{{$ad->ad_type_full_name?: ''}}</td>
 				<td>{{$ad->userPp->first_name ?? ''}} {{$ad->userPp->name ?? ''}}</td>
 				<td>{{$ad->userPP->email ?? ''}}</td>
 				<td>

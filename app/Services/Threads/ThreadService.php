@@ -270,7 +270,7 @@ class ThreadService
 							'sender_name' => $supervisor->name,
 							'sender_first_name' => $supervisor->first_name,
 							'message_content' => $message->content,
-							'ad_type'=> $notificationData['ad_type'],
+							'ad_type' => $notificationData['ad_type'],
 							'ad_title' => $notificationData['ad_title']
 						]));
 					}
@@ -285,7 +285,7 @@ class ThreadService
 							'sender_name' => auth()->user()->name,
 							'sender_first_name' => auth()->user()->first_name,
 							'message_content' => $message->content,
-							'ad_type'=> $notificationData['ad_type'],
+							'ad_type' => $notificationData['ad_type'],
 							'ad_title' => $notificationData['ad_title']
 						]));
 					}
@@ -309,11 +309,9 @@ class ThreadService
 		$match_plus = '|\B\+([\d\w_]+)|i';
 		$replace_url = '<a href="$1" target="_blank">$3</a>';
 		$replace_tag = '<a href="http://url.com/pluslink/$1" target="_blank">$0</a>';
-
 		$content = preg_replace($match_href, $replace_url, $content);
 		$content = preg_replace($match_hash, $replace_tag, $content);
 		$content = preg_replace($match_plus, $replace_tag, $content);
-
 
 		return "<p>" . $content . "</p>";
 	}
@@ -328,6 +326,7 @@ class ThreadService
 	{
 		$data['content'] = $this->convertContentToHTML($data['content']);
 		$messageCreated = $this->messagesRepository->create($data);
+
 		$message = $this->messagesRepository->find($messageCreated->id);
 		$message->thread->update(['updated_at' => Carbon::now()]);
 		$notificationData = $this->getMessageNotificationAdData($message->thread);
@@ -445,11 +444,11 @@ class ThreadService
 
 	/**
 	 * @param array $data
-	 * @return bool
+	 * @return Thread|bool|\Illuminate\Database\Eloquent\Model|object
 	 */
-	public function findUserInThread(array $data): bool
+	public function findUserInAdThread(array $data)
 	{
-		return $this->repository->findThreadByUserIdAndAdId($data['user_id'], $data['ad_id'])->first()->exists();
+		return $this->repository->findThreadByUserIdAndAdId($data['user_id'], $data['ad_id'])->first();
 	}
 
 
@@ -474,5 +473,16 @@ class ThreadService
 		}
 
 		return $notificationData;
+	}
+
+
+	public function createOrUpdateThread(array $data): void
+	{
+		$thread = $this->findUserInAdThread(['user_id' => $data['user_id'], 'ad_id' => $data['ad_id']]);
+		if (isset($thread)) {
+			$this->createMessage(['content' => $data['content'], "thread_id" => $thread->id]);
+		} else {
+			$this->create($data);
+		}
 	}
 }

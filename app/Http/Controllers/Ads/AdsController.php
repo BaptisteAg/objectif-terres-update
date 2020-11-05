@@ -11,6 +11,7 @@ use App\Notifications\NewAdToModerateNotification;
 use App\Notifications\NewSupportRequestNotification;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
 
@@ -139,6 +140,9 @@ class AdsController extends BaseController
 
 		if (is_null($ad->project_id) && $ad->attributionAd->ad_status_id !== AdStatus::APPROVE_ID)
 		{
+			if (!Auth::user()) {
+				abort(404);
+			}
 			$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad->id);
 			if(!$moderatorInChargeOfModeration && $ad->user_pp_id !== auth()->user()->id){
 				abort(404);

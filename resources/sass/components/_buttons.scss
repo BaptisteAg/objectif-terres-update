@@ -486,20 +486,29 @@ FORM INPUT BUTTON
 
 
 .btn-favorite-ads {
-  position: absolute;
+  position: absolute !important;
   top: 10px;
   right: 10px;
   border-radius: 50%;
   padding: 0 .8em;
   font-size: 1.9em !important;
   height: 2.1em;
+  transition: all 0.3s ease-in-out;
+
 }
 
-a.button.btn-favorite-ads:hover {
-  background-color: $white;
+a.button.btn-favorite-ads{
   color: $primary;
   border-color: $primary;
+  background-color: white;
+
+  &:hover {
+    background-color: $primary;
+    color: white;
+    border-color: $primary;
+  }
 }
+
 
 
 /*

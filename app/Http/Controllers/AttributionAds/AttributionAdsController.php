@@ -16,13 +16,13 @@ class AttributionAdsController extends Controller
 {
 	protected $service;
 	protected $threadService;
-    /**
-     * @var AdService
-     */
-    private $adService;
+	/**
+	 * @var AdService
+	 */
+	private $adService;
 
 
-    /**
+	/**
 	 * AttributionAdsController constructor.
 	 * @param AttributionAdsService $service
 	 * @param ThreadService $threadService
@@ -34,31 +34,34 @@ class AttributionAdsController extends Controller
 		$this->adService = $adService;
 	}
 
-    /**
-     * @param Request $request
-     * @return array
-     * @throws \Throwable
-     */
+	/**
+	 * @param Request $request
+	 * @return array
+	 * @throws \Throwable
+	 */
 	public function acceptAd(ThreadRequest $request)
 	{
-		$this->threadService->create($request->validated());
+		$threadData = $request->validated();
+		$threadData['user_id'] = auth()->id();
+		$this->threadService->createOrUpdateThread($threadData);
 
 		$attributionAd = $this->service->acceptAd($request->all());
-
 		$this->setToReadModeratorNotification($request->input('attribution_ad_id'));
 		session()->flash('success', 'L\'annonce a été modérée !');
 		return ['redirect' => route('moderator.index')];
 	}
 
 	/**
-	 * @param ThreadRequest $request<
+	 * @param ThreadRequest $request <
 	 * @return array
 	 * @throws \Throwable
 	 */
 	public function modifyAd(ThreadRequest $request)
 	{
+		$threadData = $request->validated();
+		$threadData['user_id'] = auth()->id();
+		$this->threadService->createOrUpdateThread($threadData);
 
-		$this->threadService->create($request->validated());
 		$attributionAd = $this->service->modifyAd($request->input('attribution_ad_id'));
 		$this->setToReadModeratorNotification($request->input('attribution_ad_id'));
 		session()->flash('success', 'L\'annonce a été modérée !');
@@ -73,7 +76,9 @@ class AttributionAdsController extends Controller
 	 */
 	public function rejectAd(ThreadRequest $request)
 	{
-		$this->threadService->create($request->validated());
+		$threadData = $request->validated();
+		$threadData['user_id'] = auth()->id();
+		$this->threadService->createOrUpdateThread($threadData);
 
 		$rejectAdData = [];
 		$rejectAdData['attribution_ad_id'] = $request->input('attribution_ad_id');
