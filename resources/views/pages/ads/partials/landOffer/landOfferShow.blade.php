@@ -220,7 +220,7 @@
                             {{$ad->landOfferAd->productionGenresPossible->pluck('name')->implode(', ') }}
 
                             @if($ad->landOfferAd->production_type_wanted_add)
-                                @if($ad->landOfferAd->productionGenres->count())
+                                @if($ad->landOfferAd->productionGenresPossible->count())
                                     ,
                                 @endif
                                 {{ ucfirst($ad->landOfferAd->production_type_wanted_add) }}
@@ -292,12 +292,14 @@
                                     <p class="has-text-link is-size-5">Bâtiment(s) agricole(s)</p>
                                     <p class="">
                                         <span>
-                                            {{$ad->landOfferAd->building->description ?? "Non renseignée"}}</span>
+                                            Description : {{$ad->landOfferAd->building->description ?? "Non renseignée"}}
+                                        </span>
                                     </p>
                                     @if($isSupportRequest)
                                         <p class="">
                                             <span>
-                                                {{$ad->landOfferAd->building->surface ?? "Non renseignée"}}</span>
+                                                Surface totale : {{empty($ad->landOfferAd->building->surface) ? "Non renseignée" : $ad->landOfferAd->building->surface.'m²'}}
+                                            </span>
                                         </p>
                                         <p class="">
                                             <span>Type de cession :
@@ -327,12 +329,13 @@
                                 <div class=" mb-20 ">
                                     <p class="has-text-link is-size-5">Habitation(s)</p>
                                     <p class="">
-                                        <span>{{$ad->landOfferAd->house->description ?? "Non renseignée"}}</span>
+                                        <span>Description : {{$ad->landOfferAd->house->description ?? "Non renseignée"}}</span>
                                     </p>
                                     @if($isSupportRequest)
                                         <p class="">
                                             <span>Surface totale
-                                                : {{$ad->landOfferAd->house->surface ?? "Non renseignée"}}</span>
+                                                : {{empty($ad->landOfferAd->house->surface) ? "Non renseignée" : $ad->landOfferAd->house->surface.'m²'}}
+                                            </span>
                                         </p>
                                         <p class="">
                                             <span>Type de cession :

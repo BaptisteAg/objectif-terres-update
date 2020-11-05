@@ -32,54 +32,56 @@ export default {
     props: {},
     data() {
         let v = this.oldValues;
-        const hasOld = Object.keys(v).length && v.land_offer;
 
-        if(!hasOld) {
-            v = {land_offer: {}};
+        if(!v.land_offer) {
+            v.land_offer = {}
         }
 
         const extraFormInput = this.isSupportRequest ? {
-            isBeneficiary: hasOld && v.is_beneficiary || '1',
-            isActivityTransfer: hasOld && v.land_offer.is_activity_transfer || '',
+            isBeneficiary: v.land_offer.is_beneficiary || '1',
+            isActivityTransfer: typeof v.land_offer.is_activity_transfer !== "undefined" ?
+                v.land_offer.is_activity_transfer.toString() : '',
 
-            buildingSurface: hasOld && v.land_offer.building && v.land_offer.building.surface || '',
-            buildingOfferGenres: hasOld && v.land_offer.building && v.land_offer.building.offer_genres || [],
+            buildingSurface: v.land_offer.building && v.land_offer.building.surface || '',
+            buildingOfferGenres: v.land_offer.building && v.land_offer.building.offer_genres || [],
 
-            houseSurface: hasOld && v.land_offer.house && v.land_offer.house.surface || '',
-            houseOfferGenres: hasOld && v.land_offer.house && v.land_offer.house.offer_genres || [],
+            houseSurface: v.land_offer.house && v.land_offer.house.surface || '',
+            houseOfferGenres: v.land_offer.house && v.land_offer.house.offer_genres || [],
 
             supportRequestText: v.support_request_text || ''
         } : {};
 
         return  {
             formInput: {
-                selectedZones: hasOld ? JSON.parse(v.selected_zones) : [],
+                selectedZones: v.selected_zones && JSON.parse(v.selected_zones) || [],
 
-                surface: hasOld && v.land_offer.surface || '',
-                sauDescription: hasOld && v.land_offer.sau_description || '',
-                productionGenres: hasOld && v.land_offer.production_genres || [],
-                productionGenresWanted: hasOld && v.land_offer.production_genres_wanted || [],
-                bioCertifications: hasOld && v.land_offer.bio_certifications || [],
-                waterAccess: hasOld && v.land_offer.water_access !== null ? v.land_offer.water_access : '',
-                waterAccessDescription: hasOld && v.land_offer.water_access_description|| '',
-                altitude: hasOld && v.land_offer.altitude|| '',
+                surface: v.land_offer.surface || '',
+                sauDescription: v.land_offer.sau_description || '',
+                productionGenres: v.land_offer.production_genres || [],
+                productionGenresWanted: v.land_offer.production_genres_wanted || [],
+                bioCertifications: v.land_offer.bio_certifications || [],
+                waterAccess: typeof v.land_offer.water_access !== "undefined" ?
+                    v.land_offer.water_access : '',
+                waterAccessDescription: v.land_offer.water_access_description|| '',
+                altitude: v.land_offer.altitude|| '',
 
-                hasBuildings: hasOld && v.land_offer.has_buildings || null,
-                buildingDescription : hasOld && v.land_offer.building && v.land_offer.building.description|| '',
-                hasHouses: hasOld && v.land_offer.has_houses|| null,
-                houseDescription : hasOld && v.land_offer.house && v.land_offer.house.description || '',
+                hasBuildings: typeof v.land_offer.has_buildings !== "undefined" ?
+                    v.land_offer.has_buildings.toString() : '',
+                buildingDescription : v.land_offer.building && v.land_offer.building.description|| '',
+                hasHouses: typeof v.land_offer.has_houses !== "undefined" ?
+                    v.land_offer.has_houses.toString() : '',
+                houseDescription : v.land_offer.house && v.land_offer.house.description || '',
 
-                offerGenres: hasOld && v.land_offer.offer_genres || [],
-                price: hasOld && v.land_offer.altitude || '',
-                rentPrice: hasOld && v.land_offer.altitude || '',
-                testDescription : hasOld && v.land_offer.test_description || '',
-                chartConfirmation: hasOld && v.chart_confirmation || false,
+                offerGenres: v.land_offer.offer_genres || [],
+                price: v.land_offer.altitude || '',
+                rentPrice: v.land_offer.altitude || '',
+                testDescription : v.land_offer.test_description || '',
+                chartConfirmation: v.chart_confirmation || false,
 
-
-                aboutProject: hasOld && v.about_project_content || '',
-                aboutContent: hasOld && v.about_content || '',
-                title: hasOld && v.title || '',
-                documents: hasOld && JSON.parse(v.documents) || [],
+                aboutProject: v.about_project_content || '',
+                aboutContent: v.about_content || '',
+                title: v.title || '',
+                documents: v.documents && JSON.parse(v.documents) || [],
 
                 //confirmPriceFermage: hasOld ? !!v.confirm_price_fermage : false,
 
@@ -106,13 +108,6 @@ export default {
         isTestOffer() {
             return this.formInput.offerGenres.find(offerGenreId => offerGenreId.toString() === "3");
         }
-    },
-    mounted() {
-        setTimeout(function() {
-            this.$forceCompute('isSaleOffer');
-            this.$forceCompute('isRentOffer');
-            this.$forceCompute('isTestOffer');
-        }, 500);
     },
     methods: {
 

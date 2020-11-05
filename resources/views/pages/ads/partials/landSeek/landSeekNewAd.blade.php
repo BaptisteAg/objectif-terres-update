@@ -192,15 +192,15 @@
                         <div class="field">
                             {!! Form::label('land_seek[is_bio]', "Votre projet est-il en agriculture biologique ?", ['class' => 'label']) !!}
                             <label>
-                                {!! Form::radio('land_seek[is_bio]', '1', $old['land_seek']['is_bio'] ?? null , [':disabled' => 'isInputDisabled']) !!}
+                                {!! Form::radio('land_seek[is_bio]', '1', (string)($old['land_seek']['is_bio'] ?? null) === "1" , [':disabled' => 'isInputDisabled']) !!}
                                 Oui
                             </label><br>
                             <label>
-                                {!! Form::radio('land_seek[is_bio]', '0', $old['land_seek']['is_bio'] ?? null , [':disabled' => 'isInputDisabled']) !!}
+                                {!! Form::radio('land_seek[is_bio]', '0', (string)($old['land_seek']['is_bio'] ?? null) == "0" , [':disabled' => 'isInputDisabled']) !!}
                                 Non
                             </label><br>
                             <label>
-                                {!! Form::radio('land_seek[is_bio]', '-1', $old['land_seek']['is_bio'] ?? null , [':disabled' => 'isInputDisabled']) !!}
+                                {!! Form::radio('land_seek[is_bio]', '-1', (string)($old['land_seek']['is_bio'] ?? null) === "-1" , [':disabled' => 'isInputDisabled']) !!}
                                 Je ne sais pas encore
                             </label>
                         </div>

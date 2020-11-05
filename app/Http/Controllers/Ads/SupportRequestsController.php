@@ -84,10 +84,6 @@ class SupportRequestsController extends BaseController
 			'isSupportRequest' => 1
 		]);
 
-		if (empty($vars["old"]["support_request_text"])) {
-			$vars["old"]["support_request_text"] = session('support-request.text');
-		}
-
 		$vars["ads"] = auth()->user()->ads->filter(function (Ad $ad) {
 			return in_array($this->adService->getAdType($ad), ["land_seek", "land_offer"]);
 		});

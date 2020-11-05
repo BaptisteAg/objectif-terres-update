@@ -115,7 +115,10 @@ abstract class BaseController extends Controller
                     'land_seek' => $ad->landSeekAd ?
                         array_merge($ad->landSeekAd->toArray(), [
                             "buildings" => $ad->landSeekAd->buildings->pluck("requirement.id", "buildingType.id")->toArray(),
-                            "production_genres" => $ad->landSeekAd->productionGenres->pluck("id")->toArray()
+                            "production_genres" => array_merge(
+                                $ad->landSeekAd->productionGenres->pluck("id")->toArray(),
+                                $ad->landSeekAd->production_type_add ? ['other'] : []
+                            ),
                         ]) : null,
 
                     'land_offer' => $ad->landOfferAd ?
@@ -179,6 +182,10 @@ abstract class BaseController extends Controller
 			]]);
 		$isSupportRequest = false;
 		$old = old('ad_type') ? old() : [];
+
+        if (empty($old["support_request_text"]) && session('support-request.text')) {
+            $old["support_request_text"] = session('support-request.text');
+        }
 
 		return compact(
 			'installationTypes',

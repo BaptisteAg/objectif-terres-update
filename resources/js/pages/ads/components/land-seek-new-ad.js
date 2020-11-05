@@ -26,33 +26,36 @@ export default Vue.extend({
         DocumentsUpload
     },
     data() {
-        const v = this.oldValues;
-        const hasOld = Object.keys(v).length && v.land_seek;
+        let v = this.oldValues;
+
+        if(!v.land_seek) {
+            v.land_seek = {}
+        }
 
         const extraFormInput = this.isSupportRequest ? {
-            offerGenres: hasOld && v.land_seek.offer_genres || [],
-            rentMax : hasOld && v.land_seek.rent_max || '0',
-            priceMax : hasOld && v.land_seek.price_max || '',
-            educationLevels: hasOld && v.land_seek.education_levels || [],
+            offerGenres: v.land_seek.offer_genres || [],
+            rentMax : v.land_seek.rent_max || '0',
+            priceMax : v.land_seek.price_max || '',
+            educationLevels: v.land_seek.education_levels || [],
 
             supportRequestText: v.support_request_text || ''
         } : {};
 
         return {
             formInput: {
-                selectedZones: hasOld && JSON.parse(v.selected_zones) || [],
-                surfaceRangeMin : hasOld && v.land_seek.surface_range_min || '0',
-                surfaceRangeMax : hasOld && v.land_seek.surface_range_max || '1000000',
-                landDescription: hasOld && v.land_seek.land_description || '',
-                productionGenres: hasOld && v.land_seek.production_genres || [],
-                productionTypeAdd: hasOld && v.land_seek.production_type_add || '',
-                installationTypeId: hasOld && v.land_seek.installation_type_id || '',
-                aboutProject: hasOld && v.about_project_content || '',
-                experienceFarming: hasOld && v.land_seek.experience_farming || '',
-                aboutContent: hasOld && v.about_content || '',
-                title: hasOld && v.title || '',
-                documents: hasOld && JSON.parse(v.documents) || [],
-                chartConfirmation: hasOld && v.chart_confirmation || false,
+                selectedZones: v.selected_zones && JSON.parse(v.selected_zones) || [],
+                surfaceRangeMin : v.land_seek.surface_range_min || '0',
+                surfaceRangeMax : v.land_seek.surface_range_max || '1000000',
+                landDescription: v.land_seek.land_description || '',
+                productionGenres: v.land_seek.production_genres || [],
+                productionTypeAdd: v.land_seek.production_type_add || '',
+                installationTypeId: v.land_seek.installation_type_id || '',
+                aboutProject: v.about_project_content || '',
+                experienceFarming: v.land_seek.experience_farming || '',
+                aboutContent: v.about_content || '',
+                title: v.title || '',
+                documents: v.documents && JSON.parse(v.documents) || [],
+                chartConfirmation: v.chart_confirmation || false,
                 ...extraFormInput
             }
         }
