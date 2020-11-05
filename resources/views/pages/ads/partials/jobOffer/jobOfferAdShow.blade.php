@@ -75,7 +75,7 @@
                         </p>
                     </div>
                 @endif
-                @if($ad->accept_share_contact_infos === 1)
+                @if($ad->accept_share_contact_infos === 1 && $ad->userPp->phone)
                     <div class="content">
                         <p>
                             <span class="is-size-5 ">N° de téléphone : </span>

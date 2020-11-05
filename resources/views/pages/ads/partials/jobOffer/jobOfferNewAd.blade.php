@@ -34,11 +34,11 @@
 							{!! Form::label('job_offer[is_activity_transmission]', "S'agit-il d'une transmission ou d'une possibilité de transmission de l'activité agricole ?", [
 								'class' => 'label'
 							]) !!}
-							{!! Form::radio('job_offer[is_activity_transmission]', 1, old('is_activity_transmission') , [
+							{!! Form::radio('job_offer[is_activity_transmission]', 1, (string)($old['job_offer']['is_activity_transmission'] ?? null) === "1" , [
                                 ':disabled' => 'isInputDisabled'
                             ]) !!}
 							oui
-							{!! Form::radio('job_offer[is_activity_transmission]', 0, old('is_activity_transmission') , [
+							{!! Form::radio('job_offer[is_activity_transmission]', 0, (string)($old['job_offer']['is_activity_transmission'] ?? null) === "0" , [
                                 ':disabled' => 'isInputDisabled'
                             ]) !!}
 							non

@@ -8,7 +8,7 @@
                 :marks="true"
                 :height="10"
         ></vue-slider>
-        <input type="hidden" :id="name" :name="name" :value="sliderValue">
+        <input type="hidden" :id="name" :name="name" :value="sliderValue" :disabled="disabled">
     </div>
 </template>
 

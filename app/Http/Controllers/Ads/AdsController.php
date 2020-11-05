@@ -80,6 +80,7 @@ class AdsController extends BaseController
 				);
 		}
 		$data = $request->validated();
+
 		/** @var $ad Ad $ad */
 		try {
 
