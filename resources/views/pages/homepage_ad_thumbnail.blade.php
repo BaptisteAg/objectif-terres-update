@@ -34,9 +34,7 @@
                     @if (is_null($ad->citiesList) and is_null($ad->departmentsList) and is_null($ad->regionsList) )
                         Non renseignée
                     @else
-                        {{$ad->shortCitiesList ?? ""}}
-                        {{$ad->departmentsList ?? ""}}
-                        {{$ad->regionsList ?? ""}}
+                        {{$ad->shortLocationsList ?? ""}}
                     @endif
                 </li>
                 @if($ad->landSeekAd || $ad->landOfferAd)

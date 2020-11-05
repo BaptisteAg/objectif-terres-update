@@ -13,9 +13,14 @@ Vue.use(VueFormWizard);
 import VueCarousel from 'vue-carousel';
 Vue.use(VueCarousel);
 
-
-
 require('vue-pagination-2/dist/vue-pagination-2.min');
+
+Vue.prototype.$forceCompute= function(computedName, forceUpdate /* default: true */) {
+    if (this._computedWatchers[computedName]) {
+        this._computedWatchers[computedName].run();
+        if (forceUpdate || typeof forceUpdate == 'undefined') this.$forceUpdate()
+    }
+}
 
 //////////////
 // VENDORS

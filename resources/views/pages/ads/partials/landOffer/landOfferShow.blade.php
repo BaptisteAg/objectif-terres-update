@@ -136,27 +136,32 @@
                             </span>
                         </p>
                     @endif
-                    <p>
-                        @if($ad->landOfferAd->price || $ad->landOfferAd->rent_price)
-                            @if($ad->landOfferAd->price)
+
+                    @if($ad->landOfferAd->price || $ad->landOfferAd->rent_price)
+                        @if($ad->landOfferAd->price)
+                            <p>
                                 <span class="is-size-5  ">Prix : </span>
                                 <span class="subtitle ">
                                     {{number_format($ad->landOfferAd->price, 0, ",", " " )}} €
                                 </span>
-                            @endif
-                            @if($ad->landOfferAd->rent_price)
+                            </p>
+                        @endif
+                        @if($ad->landOfferAd->rent_price)
+                            <p>
                                 <span class="is-size-5  ">Loyer mensuel : </span>
                                 <span class="subtitle ">
                                     {{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} € / mois
                                 </span>
-                            @endif
-                        @else
-                            <span class="is-size-5  ">Prix : </span>
-                            <span class="subtitle ">
-                                Non renseigné
-                            </span>
+                            </p>
                         @endif
-                    </p>
+                    @else
+                        <p>
+                        <span class="is-size-5  ">Prix : </span>
+                        <span class="subtitle ">
+                            Non renseigné
+                        </span>
+                        </p>
+                    @endif
                 </div>
                 @if($ad->landOfferAd->is_activity_transfer)
                     <div class="content">
@@ -189,25 +194,43 @@
     <div class="column is-half-desktop is-full-tablet">
         <h4 class="title is-3 has-text-centered">Description générale du bien</h4>
         <div class=" ">
-            @if($ad->landOfferAd->productionGenres->count())
+            @if($ad->landOfferAd->productionGenres->count() || $ad->landOfferAd->production_type_add)
                 <div class="mb-20">
                     <p class="has-text-link is-size-5 ">Système de production en place</p>
                     <p class="">
-                        <span>{{$ad->landOfferAd->productionGenres->pluck('name')->implode(', ') }}</span>
+                        <span>
+                            {{$ad->landOfferAd->productionGenres->pluck('name')->implode(', ') }}
+
+                            @if($ad->landOfferAd->production_type_add)
+                                @if($ad->landOfferAd->productionGenres->count())
+                                    ,
+                                @endif
+                                {{ ucfirst($ad->landOfferAd->production_type_add) }}
+                            @endif
+                        </span>
                     </p>
                 </div>
             @endif
 
-            @if($ad->landOfferAd->productionGenresPossible->count())
+            @if($ad->landOfferAd->productionGenresPossible->count() || $ad->landOfferAd->production_type_wanted_add)
                 <div class="mb-20">
                     <p class="has-text-link is-size-5 ">Productions possibles</p>
                     <p class="">
-                        <span>{{$ad->landOfferAd->productionGenresPossible->pluck('name')->implode(', ') }}</span>
+                        <span>
+                            {{$ad->landOfferAd->productionGenresPossible->pluck('name')->implode(', ') }}
+
+                            @if($ad->landOfferAd->production_type_wanted_add)
+                                @if($ad->landOfferAd->productionGenres->count())
+                                    ,
+                                @endif
+                                {{ ucfirst($ad->landOfferAd->production_type_wanted_add) }}
+                            @endif
+                        </span>
                     </p>
                 </div>
             @endif
 
-            @if($ad->landOfferAd->bioCertifications->count())
+            @if($ad->landOfferAd->bioCertifications->count() || $ad->landOfferAd->production_type_add)
                 <div class=" ">
                     <p class="has-text-link is-size-5"> Certification des terres</p>
 

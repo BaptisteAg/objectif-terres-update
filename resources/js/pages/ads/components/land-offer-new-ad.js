@@ -40,7 +40,7 @@ export default {
 
         const extraFormInput = this.isSupportRequest ? {
             isBeneficiary: hasOld && v.is_beneficiary || '1',
-            isActivityTransfer: hasOld && !!v.is_activity_transfer || '',
+            isActivityTransfer: hasOld && v.land_offer.is_activity_transfer || '',
 
             buildingSurface: hasOld && v.land_offer.building && v.land_offer.building.surface || '',
             buildingOfferGenres: hasOld && v.land_offer.building && v.land_offer.building.offer_genres || [],
@@ -66,9 +66,8 @@ export default {
 
                 hasBuildings: hasOld && v.land_offer.has_buildings || null,
                 buildingDescription : hasOld && v.land_offer.building && v.land_offer.building.description|| '',
-
                 hasHouses: hasOld && v.land_offer.has_houses|| null,
-                houseDescription : hasOld && v.land_offer.house && v.land_offer.houses_description || '',
+                houseDescription : hasOld && v.land_offer.house && v.land_offer.house.description || '',
 
                 offerGenres: hasOld && v.land_offer.offer_genres || [],
                 price: hasOld && v.land_offer.altitude || '',
@@ -96,17 +95,24 @@ export default {
             return this.formInput.productionGenresWanted.includes('other');
         },
         hasWaterAccess() {
-            return this.formInput.waterAccess === "1";
+            return this.formInput.waterAccess.toString() === "1";
         },
         isSaleOffer() {
-            return this.formInput.offerGenres.includes("1");
+            return this.formInput.offerGenres.find(offerGenreId => offerGenreId.toString() === "1");
         },
         isRentOffer() {
-            return this.formInput.offerGenres.includes("2");
+            return this.formInput.offerGenres.find(offerGenreId => offerGenreId.toString() === "2");
         },
         isTestOffer() {
-            return this.formInput.offerGenres.includes("3");
+            return this.formInput.offerGenres.find(offerGenreId => offerGenreId.toString() === "3");
         }
+    },
+    mounted() {
+        setTimeout(function() {
+            this.$forceCompute('isSaleOffer');
+            this.$forceCompute('isRentOffer');
+            this.$forceCompute('isTestOffer');
+        }, 500);
     },
     methods: {
 

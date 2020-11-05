@@ -18,7 +18,7 @@
                         @if(empty($isSupportRequest))
                             <div class="field has-tooltip-left" data-tooltip="Ce choix peut rendre votre annonce moins visible lors des recherches.">
                                 <label for="land_offer[accept_use_zip_code]" class="checkbox">
-                                    {!! Form::checkbox('land_offer[accept_use_zip_code]', '0', (($old['land_offer']['accept_use_zip_code'] ?? null) === '0'), [
+                                    {!! Form::checkbox('land_offer[accept_use_zip_code]', '0', (((string)$old['land_offer']['accept_use_zip_code'] ?? null) === "0"), [
                                         "id" =>"land_offer[accept_use_zip_code]",
                                         ':disabled'=>'isInputDisabled'
                                     ]) !!}
@@ -141,7 +141,7 @@
 
                                 {!! Form::radio('land_offer[is_activity_transfer]',
                                     1,
-                                    ($old['land_offer']['is_activity_transfer'] ?? null) === "1",
+                                    ((string)$old['land_offer']['is_activity_transfer'] ?? null) === "1",
                                     [':disabled' => 'isInputDisabled',
                                     'v-model' => 'formInput.isActivityTransfer',
                                     'ref' => 'formInput.isActivityTransfer',
@@ -150,7 +150,7 @@
 
                                 {!! Form::radio('land_offer[is_activity_transfer]',
                                     0,
-                                    ($old['land_offer']['is_activity_transfer'] ?? null) === "0",
+                                    ((string)$old['land_offer']['is_activity_transfer'] ?? null) === "0",
                                     [':disabled' => 'isInputDisabled',
                                     'v-model' => 'formInput.isActivityTransfer',
                                     'ref' => 'formInput.isActivityTransfer',

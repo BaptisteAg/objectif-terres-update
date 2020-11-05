@@ -164,26 +164,43 @@ class AdPresenter extends BasePresenter
 		return $cities;
 	}
 
-	public function shortCitiesList()
+	public function shortLocationsList()
+    {
+        $locations = array_filter([
+            $this->shortLocationsListByType('cities'),
+            $this->shortLocationsListByType('departments'),
+            $this->shortLocationsListByType('regions'),
+        ]);
+
+        $concatenatedLocations = implode(', ',$locations);
+
+        if(count($locations) > 1 && substr_count($concatenatedLocations, '.') > 3) {
+            return $locations[0];
+        }
+
+        return $concatenatedLocations;
+    }
+
+	public function shortLocationsListByType($type)
 	{
 
-		$cities = null;
-		if ($this->wrappedObject->cities->count() >= 3) {
+		$locations = null;
+		if ($this->wrappedObject->$type->count() >= 3) {
 			$i = 0;
 			$len = 3;
-			foreach ($this->wrappedObject->cities->take(3) as $key => $attribute) {
+			foreach ($this->wrappedObject->$type->take(3) as $key => $attribute) {
 				if ($key === 0) {
-					$cities = $cities . $attribute['name'];
+					$locations = $locations . $attribute['name'];
 				} elseif ($i == $len - 1) {
-					$cities = $cities . ', ' . $attribute['name'] . '...';
+					$locations = $locations . ', ' . $attribute['name'] . '...';
 				} else {
-					$cities = $cities . ', ' . $attribute['name'];
+					$locations = $locations . ', ' . $attribute['name'];
 				}
 				$i++;
 			}
-			return $cities;
+			return $locations;
 		}
-		return $this->citiesList();
+		return call_user_func([$this, $type.'List']);
 	}
 
 	public function zipCodesByCity()

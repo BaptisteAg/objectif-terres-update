@@ -31,7 +31,7 @@ class SupportRequestsController extends BaseController
 		/** @var User $user */
 		$user = auth()->user();
 
-		$ad = $user->supportRequest;
+		$ad = $this->adService->find($user->supportRequest->id);
 
 		$vars = $this->getEditFormVars($ad);
 
@@ -226,6 +226,15 @@ class SupportRequestsController extends BaseController
 		$vars = array_merge(parent::getEditFormVars($ad), [
 			'isSupportRequest' => 1
 		]);
+
+		if($ad->landOfferAd) {
+		    if($ad->landOfferAd->building) {
+                $vars["old"]["land_offer"]["building"]["offer_genres"] = $ad->landOfferAd->building->offerGenres->pluck("id")->toArray();
+            }
+            if($ad->landOfferAd->house) {
+                $vars["old"]["land_offer"]["house"]["offer_genres"] = $ad->landOfferAd->house->offerGenres->pluck("id")->toArray();
+            }
+        }
 
 		if ($ad->landSeekAd) {
 			$vars["old"]["land_seek"]["offer_genres"] = $ad->landSeekAd->offerGenres->pluck("id")->toArray();

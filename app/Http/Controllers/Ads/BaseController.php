@@ -121,8 +121,14 @@ abstract class BaseController extends Controller
                     'land_offer' => $ad->landOfferAd ?
                         array_merge($ad->landOfferAd->toArray(), [
                             "bio_certifications" => $ad->landOfferAd->bioCertifications->pluck("id")->toArray(),
-                            "production_genres" => $ad->landOfferAd->productionGenres->pluck("id")->toArray(),
-                            "production_genres_wanted" => $ad->landOfferAd->productionGenresPossible->pluck("id")->toArray(),
+                            "production_genres" => array_merge(
+                                $ad->landOfferAd->productionGenres->pluck("id")->toArray(),
+                                $ad->landOfferAd->production_type_add ? ['other'] : []
+                            ),
+                            "production_genres_wanted" => array_merge(
+                                $ad->landOfferAd->productionGenresPossible->pluck("id")->toArray(),
+                                $ad->landOfferAd->production_type_wanted_add ? ['other'] : []
+                            ),
                             "offer_genres" => $ad->landOfferAd->offerGenres->pluck("id")->toArray(),
                         ]) : null,
 
@@ -138,7 +144,7 @@ abstract class BaseController extends Controller
                             "education_levels" => $ad->jobSeekAd->educationLevels->pluck("id")->toArray(),
                         ]) : null,
                 ],
-                $ad->only(["id", "title", "about_content", "about_project_content", "accept_share_contact_infos"]),
+                $ad->only(["id", "title", "about_content", "about_project_content", "accept_share_contact_infos", "support_request_text"]),
                 compact("selected_zones", "locationable", "locationable_radius", "documents", "document_ids")
             );
         }

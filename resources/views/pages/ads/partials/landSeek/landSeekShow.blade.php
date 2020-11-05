@@ -143,7 +143,7 @@
                     </div>
                 @endif
             @endif
-            @if($ad->landSeekAd->productionGenres->count() >0 )
+            @if($ad->landSeekAd->productionGenres->count() || $ad->landSeekAd->production_type_add)
                 <div class="mb-20 ">
                     <p class="has-text-link is-size-5 "> Production(s) envisagée(s)</p>
                     <ul class="">
@@ -157,14 +157,17 @@
                             @endif
                         @endforeach
                         @if($ad->landSeekAd->production_type_add)
-                            {{ $ad->landSeekAd->production_type_add }}
+                            @if($ad->landSeekAd->productionGenres->count())
+                                ,
+                            @endif
+                            {{ ucfirst($ad->landSeekAd->production_type_add) }}
                         @endif
                     </ul>
                 </div>
             @endif
             @if($ad->landSeekAd->productionGenresPossible->count() >0)
                 <div class="mb-20">
-                    <p class="has-text-link is-size-5 "> Production(s) envisagée(s)</p>
+                    <p class="has-text-link is-size-5 "> Production(s) possible(s)</p>
                     <ul class="">
                         @foreach($ad->landSeekAd->productionGenresPossible as $productionGenre)
                             <li>{{$productionGenre->name}}</li>
