@@ -228,6 +228,9 @@ class AdsController extends BaseController
 		$data = $request->validated();
 		$data["is_draft"] = $isDraft;
 
+		if($isDraft){
+			$data['ad_status'] = AdStatus::PENDING_MODERATION_STATUS_ID;
+		}
 		$ad = $this->adService->store($data);
 
 		return redirect()->route('ads.list', [$ad->id]);
