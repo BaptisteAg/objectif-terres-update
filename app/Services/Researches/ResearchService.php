@@ -221,8 +221,6 @@ class ResearchService
 		}
 
 		if ($filters->input('ad_category') !== "all") {
-
-
 			//If request, filter by departments locations and all locations related to the departments selected
 			$adsFilter->whereNull('project_id');
 			if ($filters->has('cities_location_researches_ids')) {
@@ -312,6 +310,7 @@ class ResearchService
 			$adsFilter->filterAdTypes(array($adsTypeSelected), '');
 			$validatedStatus = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first();
 			$adsFilter->filterWhereHasWhere($validatedStatus->id, 'attributionAd', '=', 'ad_status_id');
+			$adsFilter->where("is_draft", '=', 0);
 
 			//Filter ads by keywords
 			if (!is_null($filters->input('keywords'))) {

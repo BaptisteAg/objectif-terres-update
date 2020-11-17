@@ -419,6 +419,8 @@ class AdService
 
 		if ($isUpdate) {
 			$ad = $this->repository->update($data["id"], $data);
+			$ad->attributionAd->ad_status_id = $data['ad_status'];
+			$ad->attributionAd->save();
 		} else {
 			$ad = $this->repository->create($data);
 		}
@@ -430,7 +432,6 @@ class AdService
 			$this->updateSubAd($ad, $data["ad_type"], $subAdData);
 		} else {
 			$subAdData["ad_id"] = $ad->id;
-
 			$this->createSubAd($data["ad_type"], $subAdData);
 		}
 
@@ -439,6 +440,7 @@ class AdService
 		$ad->refresh();
 
 		return $ad;
+
 	}
 
 	/**
