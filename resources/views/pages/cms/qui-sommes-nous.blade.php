@@ -26,7 +26,7 @@
         {{--    </section>--}}
 
         <section class="">
-            <div class="container">
+            <div class="container list-partners">
                 <div>
                     @if($pageContent->count())
                         @if($pageContent->has('qui-sommes-nous-les-deux-textes-situes-sous-la-banniere'))

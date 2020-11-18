@@ -111,16 +111,19 @@
                                 <h1 class="title">Toutes les annonces</h1>
                             @endif
                         @endif
-                        <h2 class="subtitle text_success">{{ ($ads->total()) }} annonces trouvées</h2>
+                        @if($ads->total() <= 1 )
+                            <h2 class="subtitle text_success">{{ ($ads->total()) }} annonce trouvée</h2>
+                        @else
+                            <h2 class="subtitle text_success">{{ ($ads->total()) }} annonces trouvées</h2>
+                        @endif
                     </div>
                 </div>
                 <div class="level-right">
                     <div class="level-item ">
-                        <label class="label">Trier par : </label>
                         <br>
                         <div class="select">
                             <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-                                <option value="">Choisissez un filtre</option>
+                                <option disabled  value="">Trier par</option>
                                 <option {{request()->input('order') === 'desc' && request()->input('sort') === 'date' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date', 'page'=> 0])) }}">
                                     Date: du plus récent au plus ancien
                                 </option>

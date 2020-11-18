@@ -48,7 +48,7 @@
 				@else
 					non
 			@endif
-			<td>{{$ad->userPp->created_at}}</td>
+			<td>{{$ad->userPp->created_at?: ''}}</td>
 		</tr>
 	@endforeach
 	</tbody>
