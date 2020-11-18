@@ -65,11 +65,9 @@ export default {
                 waterAccessDescription: v.land_offer.water_access_description|| '',
                 altitude: v.land_offer.altitude|| '',
 
-                hasBuildings: typeof v.land_offer.has_buildings !== "undefined" ?
-                    v.land_offer.has_buildings.toString() : '',
+                hasBuildings: v.land_offer.has_buildings ? v.land_offer.has_buildings.toString() : '',
                 buildingDescription : v.land_offer.building && v.land_offer.building.description|| '',
-                hasHouses: typeof v.land_offer.has_houses !== "undefined" ?
-                    v.land_offer.has_houses.toString() : '',
+                hasHouses: v.land_offer.has_houses ? v.land_offer.has_houses.toString() : '',
                 houseDescription : v.land_offer.house && v.land_offer.house.description || '',
 
                 offerGenres: v.land_offer.offer_genres || [],
@@ -97,7 +95,7 @@ export default {
             return this.formInput.productionGenresWanted.includes('other');
         },
         hasWaterAccess() {
-            return this.formInput.waterAccess.toString() === "1";
+            return this.formInput.waterAccess && this.formInput.waterAccess.toString() === "1";
         },
         isSaleOffer() {
             return this.formInput.offerGenres.find(offerGenreId => offerGenreId.toString() === "1");
