@@ -401,7 +401,7 @@ class AttributionAdsService
 		$attributionAd->ad_status_id = AdStatus::APPROVE_ID;
 		$attributionAd->published_on = Carbon::now();
 		$attributionAd->ad->userPp->notify(new BasicNotification(
-			['subject' => "Votre annonce n°" . $attributionAd->ad->id . " a été validée par" . $attributionAd->userModerator->first_name . " " . $attributionAd->userModerator->name,
+			['subject' => "Votre annonce n°" . $attributionAd->ad->id . " a été validée par " . $attributionAd->userModerator->first_name . " " . $attributionAd->userModerator->name,
 				'message' => "Votre annonce a été publiée sur Objectif Terres. Elle sera en ligne durant 6 mois.\n
                     Si besoin vous pouvez la modifier ou la supprimer.\n",
 				'action' => ["Gérer mes annonces", route('ads.list')],
