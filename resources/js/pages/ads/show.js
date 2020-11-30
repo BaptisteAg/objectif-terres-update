@@ -45,6 +45,7 @@ Vue.component('vue-moderation-modal', {
 
 window.showAdMapInit  = async function (id, locationsAd) {
 
+
     const mapController = await OSMapControllerFactory(id);
 
     const formData = new FormData();

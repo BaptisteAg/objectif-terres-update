@@ -95,7 +95,8 @@ class LocationService
                     $threshold = 0.15;
                 }
                 elseif($type === "misc") {
-                    $params .="&q=".$q;
+					$data = explode(";",$q);
+                    $params .="&city=".$data[0]."&postalcode=".$data[1];
                     $threshold = 0.002;
                 }
                 else {

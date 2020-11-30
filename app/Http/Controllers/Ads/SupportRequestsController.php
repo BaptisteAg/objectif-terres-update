@@ -35,6 +35,7 @@ class SupportRequestsController extends BaseController
 
 		$vars = $this->getEditFormVars($ad);
 
+
 		return view('pages.ads.new', $vars);
 	}
 
