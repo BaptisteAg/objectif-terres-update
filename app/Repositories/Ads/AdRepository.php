@@ -160,6 +160,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		}
 		if (!empty($data["documents_ids"]) && is_array($data["documents_ids"])) {
 			$ad->documents()->sync($data["documents_ids"]);
+		}else{
+			//In case user remove document when editing his ad
+			$ad->documents()->sync([]);
 		}
 
 		$ad->refresh();

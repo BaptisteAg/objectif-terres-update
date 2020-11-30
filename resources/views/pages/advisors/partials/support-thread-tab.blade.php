@@ -2,7 +2,7 @@
     <div v-if="activeThreadId !== null" class="content">
         <div v-if="! userAdvisorInCharge">
             <div class="notification is-info is-light mb-30">
-                Vous consulter le fil de discussion entre le porteur de projet et son primo-accueillant en charge de la demande d'accompagnement !
+                Vous consultez le fil de discussion entre le porteur de projet et son primo-accueillant en charge de la demande d'accompagnement !
             </div>
         </div>
         <div class="columns is-vcentered " v-if="initialLoading === true">

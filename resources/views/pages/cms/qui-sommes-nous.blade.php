@@ -25,7 +25,7 @@
         {{--        </div>--}}
         {{--    </section>--}}
 
-        <section class="">
+        <section id="le-mouvement-terre-de-liens" class="">
             <div class="container list-partners">
                 <div>
                     @if($pageContent->count())
@@ -64,7 +64,7 @@
         {{--        </div>--}}
         {{--    </section>--}}
 
-        <section id="le-mouvement-terre-de-liens" class="">
+        <section  class="">
             <div class="container">
                 @if($pageContent->count())
                     @if($pageContent->has('qui-sommes-nous-en-savoir-plus-sur-lassociation-terre-de-liens'))
@@ -113,19 +113,15 @@
         {{--    </section>--}}
 
 
-        @include('components.support-terre-liens')
     </div>
+    @include('components.support-terre-liens')
 @endsection
 
-{{--@section('script')--}}
-{{--    <script src="{{ asset('js/bulma-carousel.js') }}"></script>--}}
-{{--    <script>--}}
-{{--        bulmaCarousel.attach('#carousel-quiNousSommes', {--}}
-{{--            slidesToScroll: 1,--}}
-{{--            slidesToShow: 1,--}}
-{{--            loop: true,--}}
-{{--            navigation: true,--}}
-
-{{--        });--}}
-{{--    </script>--}}
-{{--@endsection--}}
+@section('script')
+    <script>
+let links = document.querySelector('.cms-page').querySelectorAll('a')
+links.forEach((link)=>{
+    link.setAttribute('target', '_blank');
+})
+    </script>
+@endsection

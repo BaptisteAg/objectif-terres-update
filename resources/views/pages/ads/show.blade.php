@@ -168,8 +168,7 @@
 
 @section('script')
     <script>
-
-        let buttons = document.querySelectorAll('#open-modal-message');
+        let buttons = document.querySelectorAll('button.open-modal-message');
         buttons.forEach((button) => {
             button.addEventListener('click', function (event) {
                 event.preventDefault();
@@ -192,29 +191,29 @@
         });
 
         @auth()
-            @if(auth()->user()->role >= 1)
-                function showValidationSupervisorModal() {
-                    let validationModal = document.querySelector('#modal-supervisor-validation');
-                    let html = document.querySelector('html');
-                    let listAdvisorUsers = document.getElementById("list_advisor_users");
-                    let advisorUserSelected = listAdvisorUsers.options[listAdvisorUsers.selectedIndex].text;
-                    let spanAdvisorSelected = document.querySelector('#user_advisor_selected');
-                    spanAdvisorSelected.innerHTML = advisorUserSelected;
-                    validationModal.classList.add('is-active');
-                    html.classList.add('is-clipped');
+        @if(auth()->user()->role >= 1)
+        function showValidationSupervisorModal() {
+            let validationModal = document.querySelector('#modal-supervisor-validation');
+            let html = document.querySelector('html');
+            let listAdvisorUsers = document.getElementById("list_advisor_users");
+            let advisorUserSelected = listAdvisorUsers.options[listAdvisorUsers.selectedIndex].text;
+            let spanAdvisorSelected = document.querySelector('#user_advisor_selected');
+            spanAdvisorSelected.innerHTML = advisorUserSelected;
+            validationModal.classList.add('is-active');
+            html.classList.add('is-clipped');
 
-                    validationModal.querySelector('#modal-supervisor-validation-background').addEventListener('click', function (e) {
-                        e.preventDefault();
-                        validationModal.classList.remove('is-active');
-                        html.classList.remove('is-clipped');
-                    });
-                    validationModal.querySelector('#close-modal').addEventListener('click', function (e) {
-                        e.preventDefault();
-                        validationModal.classList.remove('is-active');
-                        html.classList.remove('is-clipped');
-                    });
-                }
-            @endif
+            validationModal.querySelector('#modal-supervisor-validation-background').addEventListener('click', function (e) {
+                e.preventDefault();
+                validationModal.classList.remove('is-active');
+                html.classList.remove('is-clipped');
+            });
+            validationModal.querySelector('#close-modal').addEventListener('click', function (e) {
+                e.preventDefault();
+                validationModal.classList.remove('is-active');
+                html.classList.remove('is-clipped');
+            });
+        }
+        @endif
         @endauth
         function sendResponseTemplateMessage() {
             let listResponseTemplates = document.getElementById("response_templates_list");
@@ -228,22 +227,26 @@
     <script src="{{asset('/js/bulma-carousel.js')}}"></script>
     <script>
         @if($ad->images->count() > 1)
-            const carousel = bulmaCarousel.attach('#ad-images', {
-                slidesToScroll: 1,
-                slidesToShow: 1,
-                loop: true,
-                navigationSwipe: true,
-                pagination: true,
-            });
+        const carousel = bulmaCarousel.attach('#ad-images', {
+            slidesToScroll: 1,
+            slidesToShow: 1,
+            loop: true,
+            navigationSwipe: true,
+            pagination: true,
+        });
         @endif
     </script>
     {{--    @endif--}}
 
     <script>
-        const vueThreads = new Vue({
-            el: '#vue-messages',
-            name: 'content'
-        });
+        let vueMessageContainer = document.querySelector('#vue-messages');
+        if (vueMessageContainer !== null) {
+            const vueThreads = new Vue({
+                el: '#vue-messages',
+                name: 'content'
+            });
+        }
+
         @auth()
         @if(auth()->user()->role >= 1 and !$ad->project()->exists())
         const VueModerationModal = new Vue({
@@ -273,7 +276,6 @@
         locationsAd.push("{{$location->name}}");
         @endif
         @endforeach
-
         showAdMapInit('map_ad', locationsAd);
     </script>
 

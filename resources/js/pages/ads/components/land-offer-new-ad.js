@@ -71,8 +71,8 @@ export default {
                 houseDescription : v.land_offer.house && v.land_offer.house.description || '',
 
                 offerGenres: v.land_offer.offer_genres || [],
-                price: v.land_offer.altitude || '',
-                rentPrice: v.land_offer.altitude || '',
+                price: v.land_offer.price || '',
+                rentPrice: v.land_offer.rentPrice || '',
                 testDescription : v.land_offer.test_description || '',
                 chartConfirmation: v.chart_confirmation || false,
 
