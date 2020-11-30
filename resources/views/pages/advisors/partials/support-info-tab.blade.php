@@ -176,7 +176,7 @@
 
                 </p>
                 <p>
-                    <span class="is-italic">Description des bâti + maison d’habitation :</span>
+                    <span class="is-italic">Description :</span>
                     {{$ad->landOfferAd->house->description ?? "Non renseignée"}}
 
                 </p>
@@ -184,6 +184,9 @@
             @else
                 <p>Sans bâtiment(s) d'habitation</p>
             @endif
+            <p>
+                <span class="is-italic">Description des bâti + maison d’habitation : </span>{{$ad->landOfferAd->sau_description?? "Non renseigné"}}
+            </p>
             <p>
             {{--                <span class="is-italic">Bâtiments</span> :--}}
             {{--            @if(isset($ad->landOfferAd->has_houses) and isset($ad->landOfferAd->has_buildings))--}}
@@ -206,12 +209,6 @@
                 <span class="is-italic">Accès à l'eau existant</span> :
                 {{$ad->waterAccess}}
             </p>
-            @if(isset($ad->landOfferAd->water_access_description))
-                <p>
-                    <span class="is-italic">Description accès eau</span> :
-                    {{$ad->landOfferAd->water_access_description}}
-                </p>
-            @endif
             <p>
                 <span class="is-italic">Productions en place</span> :
                 @if($ad->landOfferAd->productionGenres->count() > 0)
@@ -239,11 +236,9 @@
                         </span>
                     @else
                         <span>{{$bioCertification->name}}</span>
-        @endif
-        @endforeach
-        <p>
-            <span class="is-italic">Description SAU : </span>{{$ad->landOfferAd->sau_description?? "Non renseigné"}}
-        </p>
+                @endif
+                @endforeach
+
         @endif
         @if(isset($ad->landSeekAd))
             <p>

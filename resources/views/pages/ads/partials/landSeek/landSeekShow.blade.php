@@ -102,7 +102,7 @@
 
                     @if(count($ad->regions))
                         <p>
-                            <span class="is-size-5 is-capitalized ad-show-feature-label">Région(s) : </span>
+                            <span class="is-size-5 ad-show-feature-label">Région(s) : </span>
                             <span class="subtitle">{{$ad->regionsList() }}</span>
                         </p>
                     @endif
@@ -127,7 +127,7 @@
 
 <div class="columns is-multiline">
     <div class="column is-half-desktop is-full-tablet">
-        <h4 class="title is-3 has-text-centered">Description générale du bien</h4>
+        <h4 class="title is-3 has-text-centered">Description générale</h4>
         <div class="">
             @if(isset($ad->landSeekAd->installationType))
                 @if($ad->landSeekAd->installationType->name !== "Indifférent")

@@ -39,7 +39,7 @@ export default {
 
         const extraFormInput = this.isSupportRequest ? {
             isBeneficiary: v.land_offer.is_beneficiary || '1',
-            isActivityTransfer: typeof v.land_offer.is_activity_transfer !== "undefined" ?
+            isActivityTransfer:  v.land_offer.is_activity_transfer  ?
                 v.land_offer.is_activity_transfer.toString() : '',
 
             buildingSurface: v.land_offer.building && v.land_offer.building.surface || '',

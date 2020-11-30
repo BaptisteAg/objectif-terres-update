@@ -158,11 +158,18 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				$locationableEntityQuery->sync(array_fill_keys($locationables, $extraFields));
 			}
 		}
+
+
 		if (!empty($data["documents_ids"]) && is_array($data["documents_ids"])) {
 			$ad->documents()->sync($data["documents_ids"]);
-		}else{
-			//In case user remove document when editing his ad
-			$ad->documents()->sync([]);
+		}
+
+		if(!array_key_exists('is_partner', $data)){
+			if (!array_key_exists('documents_ids', $data)) {
+				//In case user remove document when editing his ad
+				$ad->documents()->sync([]);
+			}
+
 		}
 
 		$ad->refresh();
