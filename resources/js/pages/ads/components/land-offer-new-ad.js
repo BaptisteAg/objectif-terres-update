@@ -72,7 +72,7 @@ export default {
 
                 offerGenres: v.land_offer.offer_genres || [],
                 price: v.land_offer.price || '',
-                rentPrice: v.land_offer.rentPrice || '',
+                rentPrice: v.land_offer.rent_price || '',
                 testDescription : v.land_offer.test_description || '',
                 chartConfirmation: v.chart_confirmation || false,
 
