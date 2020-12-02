@@ -173,10 +173,10 @@ class AdService
 				throw new AttributionAdException("Aucun responsable n'a été trouvé dans votre région. Veuillez sauvegarder votre demande et nous contacter.");
 			}
 
-			// S'il n'y a qu'un seul primo accueillant on saute une étape et on le sélectionne
-			if ($availableAdvisors->count() === 1) {
-				$advisor = $availableAdvisors->first();
-				$attributionAdData['user_advisor_id'] = $advisor->id;
+			// S'il n'y a qu'un seul responsable terr. et pas de primo accueillant on saute une étape et on le sélectionne
+			if ($availableAdvisors->count() === 0 && $availableSupervisors->count() === 1) {
+				$supervisor = $availableSupervisors->first();
+				$attributionAdData['user_advisor_id'] = $supervisor->id;
 			}
 			// Else nothing. No attribution needed if no advisor is bound
 

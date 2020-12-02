@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Request;
 
 class AdsController extends BaseController
 {
-	public const PUBLISHED_AD_LIMIT_PER_USER = 5;
+	public const PUBLISHED_AD_LIMIT_PER_USER = 20;
 
 	/**
 	 * Display the ad creation form

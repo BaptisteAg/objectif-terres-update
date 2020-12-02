@@ -94,6 +94,7 @@ class AdvisorsController extends BaseController
 
         try {
             event(new Registered($user = $registerService->create($data)));
+            auth()->login($user);
         } catch (SalesforceException $exception) {
             return back()->withInput()->withErrors(json_decode($exception->getMessage())[0]->message);
         }

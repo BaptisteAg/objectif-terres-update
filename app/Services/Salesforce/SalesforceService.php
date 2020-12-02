@@ -182,6 +182,10 @@ class SalesforceService
 			]);
         }
 
+        // Sync Firstname / Name
+        $localUser->first_name = $user["FirstName"];
+        $localUser->name = $user["LastName"];
+
         // Sync SF ID
         $localUser->sf_id = $sfId;
         $localUser->is_sf_user = true;

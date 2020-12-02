@@ -270,7 +270,7 @@
         @if($ad->landOfferAd && !$ad->landOfferAd->accept_use_zip_code)
         locationsAd.push("{{$location->department->name}}");
         @else
-        locationsAd.push("{{$location->name}}");
+        locationsAd.push("{{$location->name}}, {{$location->department->name}}");
         @endif
         @endforeach
 
