@@ -116,7 +116,7 @@ class AdvisorsController extends BaseController
 
         session()->flash('success', "Le compte PP a bien été créé.");
 
-        return redirect()->route('advisor.index');
+        return redirect('/');
     }
 
 	/**
