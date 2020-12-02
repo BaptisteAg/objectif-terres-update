@@ -95,7 +95,6 @@ class AdvisorsController extends BaseController
         try {
             event(new Registered($user = $registerService->create($data)));
             auth()->login($user);
-            return redirect('/');
         } catch (SalesforceException $exception) {
             return back()->withInput()->withErrors(json_decode($exception->getMessage())[0]->message);
         }
@@ -117,7 +116,7 @@ class AdvisorsController extends BaseController
 
         session()->flash('success', "Le compte PP a bien été créé.");
 
-        return redirect()->route('advisor.index');
+        return redirect('/');
     }
 
 	/**
