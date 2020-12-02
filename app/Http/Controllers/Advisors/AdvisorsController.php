@@ -114,7 +114,7 @@ class AdvisorsController extends BaseController
             ]
         ]));
 
-        session()->flash('success', "Le compte PP a bien été créé.");
+        session()->flash('success', "Le compte PP a bien été créé et vous êtes désormais connecté avec celui-ci.");
 
         return redirect('/');
     }
