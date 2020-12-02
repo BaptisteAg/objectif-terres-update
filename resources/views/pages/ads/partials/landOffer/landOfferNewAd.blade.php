@@ -573,6 +573,7 @@
                                     ]); !!}
 
                                     <div class="control has-icons-right">
+
                                         {!! Form::text('land_offer[rent_price]', $old['land_offer']['rent_price'] ?? null, [
                                             'class' => 'input',
                                             'ref' => 'rentPrice',

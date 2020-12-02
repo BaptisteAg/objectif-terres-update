@@ -255,13 +255,12 @@
                     @endif
                 </p>
             </div>
-
-            @if($ad->water_access === 1)
+            @if($ad->landOfferAd->water_access === 1)
             <div class="mb-20">
                 <p class="has-text-link is-size-5 ">Accès à l'eau</p>
 
                 <p class="">
-                    {{$ad->water_access_description}}
+                    {{$ad->waterAccess}}
                 </p>
             </div>
             @endif

@@ -39,7 +39,7 @@ export default {
 
         const extraFormInput = this.isSupportRequest ? {
             isBeneficiary: v.land_offer.is_beneficiary || '1',
-            isActivityTransfer: typeof v.land_offer.is_activity_transfer !== "undefined" ?
+            isActivityTransfer:  v.land_offer.is_activity_transfer  ?
                 v.land_offer.is_activity_transfer.toString() : '',
 
             buildingSurface: v.land_offer.building && v.land_offer.building.surface || '',
@@ -71,8 +71,8 @@ export default {
                 houseDescription : v.land_offer.house && v.land_offer.house.description || '',
 
                 offerGenres: v.land_offer.offer_genres || [],
-                price: v.land_offer.altitude || '',
-                rentPrice: v.land_offer.altitude || '',
+                price: v.land_offer.price || '',
+                rentPrice: v.land_offer.rent_price || '',
                 testDescription : v.land_offer.test_description || '',
                 chartConfirmation: v.chart_confirmation || false,
 

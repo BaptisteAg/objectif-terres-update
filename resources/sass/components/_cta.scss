@@ -62,8 +62,10 @@ CTA SOUTIEN
 
 .CTA_soutien {
     font-size: 1em !important;
-    background-color: #7da237;
     text-align: left;
+    background-image: linear-gradient(to bottom, rgba(219, 149, 0, 0.23), rgba(219, 149, 0, 0.45)), url('./public/images/vignette/photo_09_bandeau_1920.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .CTA_soutien__title,

@@ -16,7 +16,7 @@
                         <span class="icon is-small">
                             <i class="fas fa-reply"></i>
                         </span>
-                        <span> Envoyer un message au porteur de projet</span>
+                        <span> Envoyer un message à l'annonceur</span>
                     </button>
                 @endif
             @else
@@ -30,7 +30,7 @@
                     </button>
                 @else
                     <button id="open-modal-message" type="button"
-                            class="ad-action-button card-footer-item button is-link is-fullwidth">
+                            class="ad-action-button card-footer-item button is-link is-fullwidth open-modal-message">
                         <span class="icon is-small">
                             <i class="fas fa-reply"></i>
                         </span>
@@ -50,7 +50,7 @@
                 </a>
             @else
                 <button id="open-modal-message" type="button"
-                        class="ad-action-button card-footer-item button is-link is-fullwidth">
+                        class="ad-action-button card-footer-item button is-link is-fullwidth open-modal-message">
                     <span class="icon is-small">
                         <i class="fas fa-reply"></i>
                     </span>
@@ -92,7 +92,7 @@
     @endif
 @else
     <footer class="card-footer ">
-        <button id="open-modal-message" type="button" class="ad-action-button card-footer-item button is-link">
+        <button id="open-modal-message" type="button" class="ad-action-button card-footer-item button is-link open-modal-message">
             <span class="icon is-small">
                 <i class="fas fa-reply"></i>
             </span>

@@ -1,10 +1,10 @@
 <section class="hero CTA CTA_soutien">
-    <div class="vignette photo">
-        <div class="vignette__image-wrap">
-            <img src="{{ url('/images/vignette/photo_09_bandeau_1920.jpg') }}"
-                 alt="photo d'une vache, d'un père et son fils" class="vignette__image">
-        </div>
-    </div>
+{{--    <div class="vignette photo">--}}
+{{--        <div class="vignette__image-wrap">--}}
+{{--            <img src="{{ url('/images/vignette/photo_09_bandeau_1920.jpg') }}"--}}
+{{--                 alt="photo d'une vache, d'un père et son fils" class="vignette__image">--}}
+{{--        </div>--}}
+{{--    </div>--}}
     <div class="container mt-50 mb-50 ">
         <div class="columns">
             <div class="column is-half is-offset-6">

@@ -80,7 +80,7 @@ class AttributionAd extends Model implements Decoratable
 		'refused_on'
 	];
 
-	const VALIDATION_MESSAGE = "Bonjour,\nVotre annonce vient d’être publiée. Sans intervention de votre part, elle sera en ligne pour 6 mois.Nous espérons qu’Objectif Terres vous permettra d’être contacté. \nCordialement,\nTerre de Liens";
+	const VALIDATION_MESSAGE = "Bonjour,\nVotre annonce vient d’être publiée. Sans intervention de votre part, elle sera en ligne pour 6 mois. Nous espérons qu’Objectif Terres vous permettra d’être contacté. \nCordialement,\nTerre de Liens";
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

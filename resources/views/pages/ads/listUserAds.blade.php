@@ -51,7 +51,7 @@
                                     @if(!$ad->attributionAd || $ad->is_draft === 1)
                                         <article class="message is-warning">
                                             <div class="message-body">
-                                                Votre annonce est en mode brouillon, elle n'as pas été encore soumise à
+                                                Votre annonce est en mode brouillon, elle n'a pas été encore soumise à
                                                 modération !
                                             </div>
                                         </article>
