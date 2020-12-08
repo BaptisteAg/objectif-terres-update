@@ -23,3 +23,4 @@ mix.js('resources/js/app.js', 'public/js')
 mix.babelConfig({
     plugins: ['@babel/plugin-syntax-dynamic-import'],
 });
+
