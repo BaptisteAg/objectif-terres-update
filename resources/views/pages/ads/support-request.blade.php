@@ -1,6 +1,6 @@
 @extends ('default')
 
-@section ('title', "Être accompagné")
+@section ('title', "Être accompagné par Terre deLiens")
 
 @section('main-content')
     @guest()
