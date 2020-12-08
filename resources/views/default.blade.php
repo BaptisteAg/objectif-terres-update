@@ -133,7 +133,12 @@
 
 @include('layouts.footer')
 <script>
-    var $buoop = {required:{e:-6,f:-6,o:-6,s:-6,c:-6},insecure:true,unsupported:true,api:2020.12 };
+    var $buoop = {required:{e:-4,f:-3,o:-3,s:-1,c:-3},
+        reminder:0,
+        reminderClosed: 1,
+        insecure:true,
+        unsupported:true,
+        api:2020.12 };
     function $buo_f(){
         var e = document.createElement("script");
         e.src = "//browser-update.org/update.min.js";

@@ -4,6 +4,7 @@
                 <textarea :id="name"
                           :name="name"
                           class="textarea"
+                          :required="required"
                           :disabled="disabled"
                           :maxlength="maxLength"
                           :placeholder="placeholder"
@@ -46,6 +47,7 @@
             name: String,
             maxLength: Number,
             disabled: Boolean,
+            required : false,
             value: {
                 type: String,
                 default: ''
