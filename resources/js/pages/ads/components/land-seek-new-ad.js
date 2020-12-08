@@ -78,7 +78,6 @@ export default Vue.extend({
         const extraValidations = this.isSupportRequest ? {
             offerGenres: {required},
             supportRequestText: {
-                required,
                 minLength: minLength(10),
                 maxLength: maxLength(400),
             }
