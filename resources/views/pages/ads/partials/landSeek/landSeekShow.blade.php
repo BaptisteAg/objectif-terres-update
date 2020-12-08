@@ -52,11 +52,9 @@
                         <p><span class="is-size-5 ad-show-feature-label">Habitation(s) et bâti(s)
                                 recherché(s) : </span><br>
                             @foreach($ad->landSeekAd->buildings as $building)
-                                @if($building->requirement->label !== "Indifférent")
                                     <span class="subtitle">{{ $building->buildingType->label }}</span> <i
                                             class="fas fa-arrow-right"></i><span
                                             class="subtitle"> {{ $building->requirement->label }}</span><br>
-                                @endif
                             @endforeach
                         </p>
                     @endif

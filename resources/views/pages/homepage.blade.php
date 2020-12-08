@@ -29,11 +29,6 @@
         <div class="mr-10 ml-10">
             <div class="has-text-centered ">
                 <h2 class="title is-1 text_warning_orange">Dernières annonces publiées</h2>
-                {{--                <p>ASTUCE :--}}
-                {{--                    <a href="{{url('/')}}">Créez votre compte gratuit</a>--}}
-                {{--                    pour visualiser directement les annonces--}}
-                {{--                    de votre région !--}}
-                {{--                </p>--}}
             </div>
             <div class="columns is-multiline is-mobile">
                 @foreach ($ads as $ad)
