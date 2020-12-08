@@ -3,6 +3,8 @@
         $tooltip = "Le titre de l'annonce est primordial ! ".
                     "Il s'agit de votre carte de visite sur la plateforme.".
                     "Un titre clair et bien formulé augmentera vos chances de contacts.";
+    }else {
+    	$tooltip = "";
     }
 ?>
 <div class="field">

@@ -15,6 +15,7 @@ class LandSeekRuleset implements RulesetInterface
             $extraValidations = [
                 'land_seek.offer_genres' => ['nullable', 'array'],
                 'land_seek.experience_levels' => ['nullable', 'array'],
+				'about_content' => [ 'nullable', 'max:1000'],
             ];
         }
 

@@ -39,8 +39,8 @@ class AdRequest extends FormRequest
 			'locationable' => [new HasZone],
 			'locationable_radius' => ['nullable', 'string'],
 
-			'about_content' => ['required', 'string', 'max:1500'],
-			'about_project_content' => ['required', 'string', 'max:1500'],
+			'about_content' => ['required', 'string', 'max:1000'],
+			'about_project_content' => ['required', 'string', 'max:1000'],
 			'title' => ['required', 'string'],
 
 			'documents_ids' => ['nullable', 'array'],

@@ -80,7 +80,12 @@ export default Vue.extend({
             supportRequestText: {
                 minLength: minLength(10),
                 maxLength: maxLength(400),
-            }
+            },
+            aboutContent: {
+                minLength: minLength(5),
+                maxLength:
+                    maxLength(1000),
+            },
         } : {};
 
         return {
