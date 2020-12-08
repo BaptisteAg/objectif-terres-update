@@ -27,6 +27,9 @@ Vue.prototype.$forceCompute= function(computedName, forceUpdate /* default: true
 window.SmoothScroll = require('smooth-scroll');
 window.Waves = require('node-waves');
 
+
+
+
 //////////////
 // LOCAL LIBS
 require('./libs/fetchJson');
@@ -55,3 +58,6 @@ require('./pages/site-tour/site-tour');
 require('./notifications');
 require('./carrousel');
 require('./main.js');
+
+
+

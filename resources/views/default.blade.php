@@ -21,6 +21,7 @@
     <link rel="icon" href="/images/favicon/favicon.ico"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
     <script src="https://kit.fontawesome.com/c97506cdaa.js" crossorigin="anonymous"></script>
+
 </head>
 <body lang="fr-FR">
 
@@ -131,6 +132,17 @@
 </div>
 
 @include('layouts.footer')
+<script>
+    var $buoop = {required:{e:-6,f:-6,o:-6,s:-6,c:-6},insecure:true,unsupported:true,api:2020.12 };
+    function $buo_f(){
+        var e = document.createElement("script");
+        e.src = "//browser-update.org/update.min.js";
+        document.body.appendChild(e);
+    };
+    try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
+    catch(e){window.attachEvent("onload", $buo_f)}
+</script>
+
 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 <script src="{{ mix('js/app.js') }}"></script>
 <script defer>
@@ -163,8 +175,6 @@
         }
     }
 </script>
-
-
 <style>
     #jsd-widget {
         bottom: 60px !important;
@@ -173,6 +183,8 @@
 <script data-jsd-embedded data-key="6cc7e1b1-ff31-49eb-93bf-0016d2cab165"
         data-base-url="https://jsd-widget.atlassian.com"
         src="https://jsd-widget.atlassian.com/assets/embed.js" defer></script>
+
+
 
 @yield('script')
 
