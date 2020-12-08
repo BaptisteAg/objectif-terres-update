@@ -31,21 +31,25 @@
                                 <td>
                                     @if(count($users) >0)
                                         @foreach($users as $user)
-                                            <p>{{$user->first_name}} {{$user->name}}
-                                                -
-                                                <span class="is-italic">{{$user->roleFullName}}</span>
-                                                @if($user->userPermissions->count())
-                                                    @foreach($user->userPermissions as $permission )
-                                                        -
+                                            @if(($user->first_name == null) && ($user->name == null))
+                                                <span>{{$user->email}} </span>
+                                            @else
+                                                <span>{{$user->first_name != null ? $user->first_name : ""}} {{ $user->name != null ? $user->name : "" }} </span>
+                                            @endif
+                                            -
+                                            <span class="is-italic">{{$user->roleFullName}}</span>
+                                            @if($user->userPermissions->count())
+                                                @foreach($user->userPermissions as $permission )
+                                                    -
                                                     <span class="is-size-7">{{\App\Models\UserPermission::$permissions[$permission->permission]}}</span>
                                                     @endforeach
-                                                @endif
-                                            </p>
+                                                    @endif
+                                                    </p>
 
-                                        @endforeach
-                                    @else
-                                        <p>Aucun utilisateur</p>
-                                    @endif
+                                                @endforeach
+                                            @else
+                                                <p>Aucun utilisateur</p>
+                                            @endif
                                 </td>
                             </tr>
                         @endforeach

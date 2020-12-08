@@ -2,7 +2,8 @@
     <nav class="level ">
         <div class="level-left">
             <div class="level-item">
-                <a target="_blank" href="{{url('https://soutenir.terredeliens.org/objectifterre/~mon-don')}}" class="button basic secondary ">
+                <a target="_blank" href="{{url('https://soutenir.terredeliens.org/objectifterre/~mon-don')}}"
+                   class="button basic secondary ">
                     <span class="button__label">Nous soutenir</span>
                 </a>
             </div>
@@ -59,7 +60,12 @@
                                     <span class="icon">
                                         <i class="far fa-user"></i>
                                     </span>
-                                    <span>{{Auth::user()->first_name}} {{ Auth::user()->name }} </span>
+                                    @if((Auth::user()->first_name == null) && (Auth::user()->name == null))
+                                        <span>{{Auth::user()->email}} </span>
+
+                                    @else
+                                        <span>{{Auth::user()->first_name != null ? Auth::user()->first_name : ""}} {{ Auth::user()->name != null ? Auth::user()->name : "" }} </span>
+                                    @endif
                                     <span class="icon is-small">
                                         <i class="fas fa-angle-down" aria-hidden="true"></i>
                                     </span>
