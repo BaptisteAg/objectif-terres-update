@@ -15,7 +15,7 @@
     <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
            data-tooltip="{{$tooltip}}"
            for="about_content">
-        {{$title}}{{ ($required ?? true) ? '*' : '' }}
+        {{$title}}{{ (empty($isSupportRequest) ?? true) ? '*' : '' }}
         <i class="fas fa-info-circle has-text-info"></i>
     </label>
 
