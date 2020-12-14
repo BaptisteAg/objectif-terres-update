@@ -193,8 +193,6 @@
         src="https://jsd-widget.atlassian.com/assets/embed.js" defer></script>
 
 @if(app()->environment() === "production")
-    <script id="CookieDeclaration" src="https://consent.cookiebot.com/f8fb4eb1-20bb-474a-8b1a-bef062c79ea7/cd.js" type="text/javascript" async></script>
-
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CZC04WPSVH"></script>
     <script>
