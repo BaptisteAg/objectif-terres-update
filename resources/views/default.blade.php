@@ -22,6 +22,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
     <script src="https://kit.fontawesome.com/c97506cdaa.js" crossorigin="anonymous"></script>
 
+    @if(app()->environment() === "production")
+        <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="f8fb4eb1-20bb-474a-8b1a-bef062c79ea7" data-blockingmode="auto" type="text/javascript"></script>
+    @endif
 </head>
 <body lang="fr-FR">
 
@@ -189,7 +192,19 @@
         data-base-url="https://jsd-widget.atlassian.com"
         src="https://jsd-widget.atlassian.com/assets/embed.js" defer></script>
 
+@if(app()->environment() === "production")
+    <script id="CookieDeclaration" src="https://consent.cookiebot.com/f8fb4eb1-20bb-474a-8b1a-bef062c79ea7/cd.js" type="text/javascript" async></script>
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CZC04WPSVH"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-CZC04WPSVH');
+    </script>
+@endif
 
 @yield('script')
 

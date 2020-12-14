@@ -76,15 +76,15 @@
                     <label class="label has-text-left">Votre message </label>
                     <div class="control">
                       <template v-if="moderationChoice == 'acceptAd'">
-                                                 <textarea v-model="content" required name="content"
-                                                           class="textarea is-medium"
-                                                           placeholder="Votre message..."
-                                                 ></textarea>
+                         <textarea v-model="content" required name="content"
+                                   class="textarea is-medium"
+                                   placeholder="Votre message..."
+                         ></textarea>
                       </template>
                       <template v-else>
-                                                <textarea v-model="content" required name="content"
-                                                          class="textarea is-medium"
-                                                          placeholder="Votre message..."></textarea>
+                          <textarea v-model="content" required name="content"
+                                  class="textarea is-medium"
+                                  placeholder="Votre message..."></textarea>
                       </template>
 
                     </div>
@@ -107,7 +107,8 @@
           <footer class="card-footer">
             <div class="buttons card-footer-item">
               <button class="button form-button basic primary">
-                <span>Valider</span>
+                <span v-if="!isLoading">Valider</span>
+                <span v-else><i class="fas fa-spinner fa-spin"></i> Chargement</span>
               </button>
               <button @click="$emit('close')" class="button form-button basic secondary">
                 <span>Annuler</span></button>
@@ -143,6 +144,7 @@ export default {
       errorMessage: '',
       showLinkNewResponseTemplate: this.allowToCreateResponseTemplate,
       isPartner: this.isAdPartner,
+      isLoading: false
     }
   },
   methods: {
@@ -158,6 +160,9 @@ export default {
       if (this.isRejectedChoice && this.selectOptionId === '') {
         return this.errorMessage = 'Veuillez séléctionner un motif de refus'
       }
+
+      this.isLoading = true;
+
       axios.post(this.formUrl, {
         content: this.content,
         ad_id: this.adId,
@@ -172,7 +177,9 @@ export default {
             window.location = response.data.redirect;
           })
           .catch(error => {
-            console.log(error)
+            console.log(error);
+            alert("Une erreur a eu lieu. Veuillez contacter l'administrateur.");
+            this.isLoading = false;
           })
     }
   },
