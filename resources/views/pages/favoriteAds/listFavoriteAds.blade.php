@@ -67,11 +67,10 @@
                 <pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
             </section>
 
-            @include('components.section-orientation-terre-liens')
-            @include('components.partnering')
-            @include('components.support-terre-liens')
+{{--            @include('components.partnering')--}}
 
         </div>
     </section>
+    @include('components.support-terre-liens')
 @endsection
 

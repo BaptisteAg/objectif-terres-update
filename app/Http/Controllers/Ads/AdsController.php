@@ -211,6 +211,7 @@ class AdsController extends BaseController
 		}
 
 		$ad->attributionAd->published_on = Carbon::now();
+		$ad->attributionAd->save();
 
 
 		return redirect()
