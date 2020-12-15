@@ -31,7 +31,7 @@ Vue.component('vue-threads', {
             isUserLoggedAdOwner: this.isUserLoggedAdOwner,
             usersSelected: [],
             isThreadRelatedToUser: false,
-            isThreadBlocked : false
+            isThreadBlocked: false
         }
     },
     watch: {
@@ -42,12 +42,12 @@ Vue.component('vue-threads', {
                     return this.isThreadBlocked = true
                 }
             }
-           return this.isThreadBlocked = false
+            return this.isThreadBlocked = false
         }
     },
     mounted() {
         if (this.initThread) {
-            setInterval(_ => this.onThreadClick(this.activeThreadId), 15000);
+            setInterval(_ => this.onThreadClick(this.activeThreadId), 25000);
             this.onThreadClick(this.activeThreadId);
         }
     },
@@ -55,7 +55,7 @@ Vue.component('vue-threads', {
         onThreadClick(threadId) {
             fetch('/mon-espace/messagerie/' + threadId)
                 .then(response => response.json())
-                .then(results => {
+                .then((results) => {
                     this.messages = results.messages;
                     this.activeThreadId = results.thread.id;
                     this.activeThread = results.thread;
