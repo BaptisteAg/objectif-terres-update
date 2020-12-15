@@ -239,6 +239,7 @@ abstract class BaseController extends Controller
 			);
 			$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
 			$threads = $this->threadService->findThreadAlreadyExist($user->id, $ad->id);
+
 			$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
 		}
 

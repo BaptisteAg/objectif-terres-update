@@ -12,7 +12,7 @@
                     <h1 class="page__title">Vos informations personnelles</h1>
                     <h2 class="page__subtitle"> Modifiez si besoin les informations liées à votre compte</h2>
                 @else
-                    <h1 class="page__title">Compte de {{$user->first_name}} {{$user->name}}</h1>
+                    <h1 class="page__title">Compte de {{$user->first_name != null ? $user->first_name : ""}} {{$user->name != null ? $user->name : ""}}</h1>
                     <h2 class="page__subtitle"> Modifiez si besoin les informations liées à ce porteur de projet</h2>
                 @endif
                 {!! Form::open(['route'=>'user.update', 'method'=>'post']) !!}
@@ -24,7 +24,7 @@
                             <div class="control has-icons-left">
                                 <input id="name" name="name" class="input @error('name')is-danger @enderror"
                                        type="text"
-                                       value="{{ old('name') ? old('name') : $user->name }}" autocomplete="name"
+                                       value="{{ old('name') ? old('name') : $user->name != null ? $user->name : "" }}" autocomplete="name"
                                        autofocus
                                        placeholder="Votre nom...">
                                 <span class="icon is-small is-left">
@@ -46,7 +46,7 @@
                             <div class="control has-icons-left">
                                 <input id="first_name" name="first_name"
                                        class="input @error('first_name')is-danger @enderror" type="text"
-                                       value="{{ old('first_name') ? old('first_name') : $user->first_name }}"
+                                       value="{{ old('first_name') ? old('first_name') : $user->first_name != null ? $user->first_name : "" }}"
                                        autocomplete="first_name"
                                        autofocus
                                        placeholder="Votre prénom...">
@@ -94,7 +94,7 @@
                             <label class="label">Numéro de téléphone </label>
                             <p class="control has-icons-left has-icons-right">
                                 <input id="phone" class="input @error('phone') is-danger @enderror" type="text"
-                                       name="phone" value="{{ old('phone') ? old('phone') : $user->phone }}"
+                                       name="phone" value="{{ old('phone') ? old('phone') : $user->phone != null ? $user->phone : "" }}"
                                        autocomplete="phone" autofocus
                                        placeholder="Numéro de téléphone ...">
                                 <span class="icon is-small is-left">
