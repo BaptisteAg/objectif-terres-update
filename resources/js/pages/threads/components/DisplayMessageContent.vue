@@ -34,7 +34,7 @@
                     </template>
                   </div>
                   <div v-else>
-                    <p v-html="message.content" class="has-text-white">
+                    <p v-html="handleLineBreak(message.content)" class="has-text-white">
                     </p>
                   </div>
                   <div v-if="!message.day_posted" id="loading" style="height : 30px; width : 30px"></div>
@@ -77,7 +77,7 @@
                       </template>
                     </div>
                     <div v-else>
-                      <p v-html="message.content" class="has-text-black">
+                      <p v-html="handleLineBreak(message.content)" class="has-text-black">
                       </p>
                     </div>
 
@@ -120,6 +120,11 @@ export default {
   updated() {
     let el = this.$refs.content
     el.scrollTop = el.scrollHeight;
+  },
+  methods : {
+    handleLineBreak : function (message){
+      return message.replace(/(?:\r\n|\r|\n)/g, '<br />');
+    }
   }
 }
 </script>
