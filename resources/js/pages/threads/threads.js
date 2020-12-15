@@ -63,6 +63,7 @@ Vue.component('vue-threads', {
                     this.messagesLoading = false;
                     this.checkUserRelatedToThread(this.messages)
                 })
+
         },
         onMessageReplySuccess(message) {
             this.messages.push(message)
