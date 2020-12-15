@@ -164,11 +164,17 @@
             <section class="section">
                 <pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
             </section>
-            @include('components.section-orientation-terre-liens')
+{{--            @include('components.section-orientation-terre-liens')--}}
         </div>
 
     </section>
 
-    @include('components.partnering')
+{{--    @include('components.partnering')--}}
     @include('components.support-terre-liens')
+@endsection
+@section('script')
+    <script src="{{ asset('js/bulma-accordion.js') }}"></script>
+    <script src="{{ asset('js/bulma-carousel.js') }}"></script>
+
+
 @endsection
