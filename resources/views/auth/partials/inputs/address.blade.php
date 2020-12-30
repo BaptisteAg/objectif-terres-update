@@ -5,7 +5,7 @@
                type="text"
                name="street"
                value="{{ old('street') }}"
-               autocomplete="street"
+               autocomplete="street-address"
                autofocus
                placeholder="Votre adresse ...">
         <span class="icon is-small is-left">

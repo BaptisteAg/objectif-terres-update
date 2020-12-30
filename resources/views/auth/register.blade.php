@@ -40,9 +40,6 @@
                             </div>
                         </div>
                         <div class="columns">
-                            @include('auth.partials.inputs.profile')
-                        </div>
-                        <div class="columns">
                             <div class="column is-7">
                                 @include('auth.partials.inputs.address')
                             </div>
@@ -50,6 +47,10 @@
                                 @include('auth.partials.inputs.zipcode')
                             </div>
                         </div>
+                        <div class="columns">
+                            @include('auth.partials.inputs.profile')
+                        </div>
+
 
 
                         {{--								TODO delete if information about country is not necessary
