@@ -4,8 +4,7 @@
 	<div class="modal-content">
 		<div class="card">
 			<div class="card-content">
-				<h3 class="title is-3 has-text-centered has-text-black ">Envoyer un message au porteur de
-					projet</h3>
+				<h3 class="title is-3 has-text-centered has-text-black ">Envoyer un message à l'annonceur</h3>
 			</div>
 			<div class="card-content">
 				<div class="container">
