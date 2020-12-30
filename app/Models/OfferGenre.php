@@ -39,7 +39,7 @@ class OfferGenre extends Model
 
     /**
      * @var array
-     */
+     */  
     protected $fillable = [
         'name'
     ];

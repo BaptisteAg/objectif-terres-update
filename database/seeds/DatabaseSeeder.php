@@ -82,7 +82,7 @@ class DatabaseSeeder extends Seeder
 			]);
 
 			//$departmentCodes = [01, 07, 19, 22, 23, 26, 35, 38, 42, 69, 74, 87];
-			$departmentCodes = [69, 77];
+			$departmentCodes = [42, 43];
 
 			$departments = Department::whereIn('code', $departmentCodes)->get();
 
