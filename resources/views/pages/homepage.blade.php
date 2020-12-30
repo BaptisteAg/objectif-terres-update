@@ -61,7 +61,7 @@
                 </div>
                 <div class="columns is-centered">
                     <div class="column is-half has-text-centered">
-                        <a href="{{route('researches.index', ['ad_category' => 'all', 'certified'])}}">
+                        <a href="{{route('researches.index', ['ad_category' => 'all', 'certified' =>"true"])}}">
                             <button class="button is-link is-medium basic secondary">
                                 <span class="button__icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
                                 <span class="button__label">Toutes les annonces certifiées</span>
