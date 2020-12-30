@@ -117,7 +117,7 @@ export default {
 
     }
   },
-  updated() {
+  mounted() {
     let el = this.$refs.content
     el.scrollTop = el.scrollHeight;
   },

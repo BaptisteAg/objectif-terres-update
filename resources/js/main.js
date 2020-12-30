@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Dropdowns
     initDropdowns();
     Waves.attach('.secondary .menu__link', ['waves-button', 'waves-float']);
-    Waves.attach('.button:not(.round):not(.button-dropdown):not(.ad-action-button):not(.is-normal), input.is-link', ['waves-button', 'waves-float', 'waves-light']);
+    Waves.attach('.button:not(.round):not(.button-dropdown):not(.ad-action-button):not(.is-normal):not(.is-large), input.is-link', ['waves-button', 'waves-float', 'waves-light']);
     Waves.attach('.button__icon:not(#main-nav__hamburger__line)', ['waves-circle', 'waves-light']);
     Waves.init();
 

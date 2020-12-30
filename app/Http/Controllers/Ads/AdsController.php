@@ -138,25 +138,37 @@ class AdsController extends BaseController
 			abort(404);
 		}
 
-		if (is_null($ad->project_id) && $ad->attributionAd->ad_status_id !== AdStatus::APPROVE_ID)
-		{
+		if ($ad->is_draft !== 1) {
+			if (is_null($ad->project_id) && $ad->attributionAd->ad_status_id !== AdStatus::APPROVE_ID) {
+				if (!Auth::user()) {
+					abort(404);
+				}
+				$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad->id);
+				if (!$moderatorInChargeOfModeration && $ad->user_pp_id !== auth()->user()->id) {
+					abort(404);
+				}
+			}
+		} else {
 			if (!Auth::user()) {
 				abort(404);
 			}
-			$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad->id);
-			if(!$moderatorInChargeOfModeration && $ad->user_pp_id !== auth()->user()->id){
+			if (Auth::user()->id !== $ad->user_pp_id) {
 				abort(404);
 			}
+			$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad->id);
+			if (!$moderatorInChargeOfModeration && $ad->user_pp_id !== auth()->user()->id) {
+				abort(404);
+			}
+			
 		}
 
 
-
-		if($ad->origin === "spip") {
-		    session()->now('warning',
-                "Ceci est une annonce de l’ancien site de petites annonces, 
+		if ($ad->origin === "spip") {
+			session()->now('warning',
+				"Ceci est une annonce de l’ancien site de petites annonces, 
                 l’affichage peut être minimal car toutes les informations sont contenues dans les champs de textes libres."
-            );
-        }
+			);
+		}
 
 		//Throw error 404 if a visitor try to show an ad is not validated
 		//TODO display only ads who are not in draft mode and if  $ad->attributionAd->adStatus->name === "Validée" ;
@@ -229,7 +241,7 @@ class AdsController extends BaseController
 		$data = $request->validated();
 		$data["is_draft"] = $isDraft;
 
-		if($isDraft){
+		if ($isDraft) {
 			$data['ad_status'] = AdStatus::PENDING_MODERATION_STATUS_ID;
 		}
 		$ad = $this->adService->store($data);
