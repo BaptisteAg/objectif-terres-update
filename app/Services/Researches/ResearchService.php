@@ -205,6 +205,10 @@ class ResearchService
 		//Filter by type of ads
 		$adsTypeSelected = '';
 
+		if($filters->has('certified')){
+			$adsFilter->where('is_partner', '=', 1);
+		}
+
 		if ($filters->has('ad_category') && $filters->input('ad_category') === "all") {
 			$adsFilter->whereHas('attributionAd', function (Builder $query) {
 				$query->whereNotNull('published_on');

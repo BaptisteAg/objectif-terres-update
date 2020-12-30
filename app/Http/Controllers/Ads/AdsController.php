@@ -152,9 +152,7 @@ class AdsController extends BaseController
 			if (!Auth::user()) {
 				abort(404);
 			}
-			if (Auth::user()->id !== $ad->user_pp_id) {
-				abort(404);
-			}
+
 			$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad->id);
 			if (!$moderatorInChargeOfModeration && $ad->user_pp_id !== auth()->user()->id) {
 				abort(404);
