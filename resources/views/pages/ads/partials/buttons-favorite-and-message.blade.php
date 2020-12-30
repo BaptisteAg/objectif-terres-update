@@ -70,7 +70,7 @@
                 {!! Form::open(['route'=>'favoriteAds.create', 'method'=>'get']) !!}
                 <input name="ad_id" value="{{$ad->id}}" type="hidden">
                 <button class="ad-action-button card-footer-item button is-link is-outlined btn-favorite-ads has-tooltip-left"
-                        data-tooltip="Mettre en favoris">
+                        data-tooltip="Sauvegarder">
                     <span class="icon">
                         <i class="far fa-heart"></i>
                     </span>
@@ -100,8 +100,9 @@
         </button>
         {!! Form::open(['route'=>'favoriteAds.create', 'method'=>'get']) !!}
         <input name="ad_id" value="{{$ad->id}}" type="hidden">
-        <button class="ad-action-button card-footer-item button is-link is-outlined btn-favorite-ads">
-            <span class="icon is-small">
+        <button class="ad-action-button card-footer-item button is-link is-outlined btn-favorite-ads has-tooltip-left"
+                data-tooltip="Sauvegarder">
+            <span class="icon">
                 <i class="far fa-heart"></i>
             </span>
         </button>
