@@ -628,7 +628,8 @@ SCROLLABLE BUBBLE
 }
 
 .bubble__scrollable {
-  height: 50vh;
+
+  //height: 50vh;
   overflow-x: hidden;
   overflow-y: auto;
 }
