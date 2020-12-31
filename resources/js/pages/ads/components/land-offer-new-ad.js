@@ -48,7 +48,8 @@ export default {
             houseSurface: v.land_offer.house && v.land_offer.house.surface || '',
             houseOfferGenres: v.land_offer.house && v.land_offer.house.offer_genres || [],
 
-            supportRequestText: v.support_request_text || ''
+            supportRequestText: v.support_request_text || '',
+            supportRequestTerritoryId : v.support_request_territory_id ||"",
         } : {};
 
         return  {
