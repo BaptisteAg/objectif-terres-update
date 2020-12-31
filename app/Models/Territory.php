@@ -36,6 +36,8 @@ class Territory extends Model
 
 	protected $fillable = ['name'];
 
+	static $territoriesIdAllowToUseService  = [1, 3, 4, 12, 15, 16, 20, 21];
+
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany

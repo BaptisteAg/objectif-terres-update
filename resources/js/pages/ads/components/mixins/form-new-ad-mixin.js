@@ -10,11 +10,13 @@ export default {
         oldValues: Object,
         isInputDisabled: Boolean,
         isSupportRequest: Boolean,
-        supportRequestText: String
+        supportRequestText: String,
+        textContentTerritories : Object,
     },
     data() {
         return {
-            uploading: false
+            uploading: false,
+            textTerritoryContent : ''
         }
     },
     mounted() {
@@ -34,7 +36,14 @@ export default {
                 this.setInputsBorderColor()
             },
             deep: true
-        }
+        },
+    "formInput.supportRequestTerritoryId": function (val){
+        Object.keys(this.textContentTerritories).forEach(key => {
+            if (key.split('-')[6] === val) {
+                this.textTerritoryContent = this.textContentTerritories[key].content
+            }
+        });
+}
     },
     methods: {
         nextStep() {

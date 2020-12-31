@@ -16,14 +16,16 @@
                         @include('pages.ads.partials.inputs.zip_code', ["uri"=>"cities-and-departments"])
 
                         @if(empty($isSupportRequest))
-                            <div class="field has-tooltip-left" data-tooltip="Ce choix peut rendre votre annonce moins visible lors des recherches.">
+                            <div class="field has-tooltip-left"
+                                 data-tooltip="Ce choix peut rendre votre annonce moins visible lors des recherches.">
                                 <label for="land_offer[accept_use_zip_code]" class="checkbox">
                                     {!! Form::checkbox('land_offer[accept_use_zip_code]', '0', ((string)($old['land_offer']['accept_use_zip_code'] ?? null) === "0"), [
                                         "id" =>"land_offer[accept_use_zip_code]",
                                         ':disabled'=>'isInputDisabled'
                                     ]) !!}
                                     <span>
-                                        Je ne souhaite pas que le code postal de mon bien soit rendu public. Dans ce cas, mon
+                                        Je ne souhaite pas que le code postal de mon bien soit rendu public. Dans ce
+                                        cas, mon
                                         annonce sera
                                         référencée au niveau du département.
                                     </span>
@@ -47,7 +49,7 @@
                                             'ref' => 'surface'
                                         ]) !!}
                                         <span class="icon is-small is-right" style="color: #4a4a4a;">
-                                          ha
+                                            ha
                                         </span>
                                     </div>
 
@@ -65,7 +67,8 @@
                                 </div>
                                 <div class="column is-half">
                                     <p v-if="formInput.surface">
-                                        = @{{ isNaN(formInput.surface) ? 0 : (formInput.surface*10000).toLocaleString() }}m²
+                                        = @{{ isNaN(formInput.surface) ? 0 : (formInput.surface*10000).toLocaleString()
+                                        }}m²
                                     </p>
                                 </div>
                             </div>
@@ -92,9 +95,9 @@
 
                         <div class="field">
                             <label for="land_offer[altitude]"
-                                    ref="altitude"
-                                    class="label has-tooltip has-tooltip-left"
-                                    data-tooltip="Important pour savoir si votre terrain convient à certains projets agricoles">
+                                   ref="altitude"
+                                   class="label has-tooltip has-tooltip-left"
+                                   data-tooltip="Important pour savoir si votre terrain convient à certains projets agricoles">
                                 Altitude
                                 <i class="fas fa-info-circle has-text-info"></i>
                             </label>
@@ -109,7 +112,7 @@
                                             'ref' => 'altitude'
                                         ]) !!}
                                         <span class="icon is-small is-right" style="color: #4a4a4a;">
-                                          m
+                                            m
                                         </span>
                                     </div>
                                     <template v-if="$v.formInput.altitude.$error">
@@ -123,10 +126,16 @@
                                 </div>
                                 <div class="column"></div>
                             </div>
+
                         </div>
                     </div>
                     <div class="column"></div>
                 </div>
+                @if(!empty($isSupportRequest))
+                    @if(isset($old["id"]))
+                        @include('pages.ads.partials.inputs.support-request-territory')
+                    @endif
+                @endif
             </section>
         </tab-content>
 
@@ -169,22 +178,22 @@
                                 'data-tooltip' => "Sélectionner la ou les productions actuellement en cours sur la ferme ou le terrain."
                             ]); !!}
 
-{{--                            <multi-select--}}
-{{--                                    :options="{{json_encode($productionGenres)}}"--}}
-{{--                                    group-values="children"--}}
-{{--                                    name="land_offer[production_genres][]"--}}
-{{--                                    v-model="formInput.productionGenres"--}}
-{{--                                    placeholder="Sélectionnez une ou plusieurs productions"--}}
-{{--                                    ref="productionGenres">--}}
-{{--                            </multi-select>--}}
+                            {{--                            <multi-select--}}
+                            {{--                                    :options="{{json_encode($productionGenres)}}"--}}
+                            {{--                                    group-values="children"--}}
+                            {{--                                    name="land_offer[production_genres][]"--}}
+                            {{--                                    v-model="formInput.productionGenres"--}}
+                            {{--                                    placeholder="Sélectionnez une ou plusieurs productions"--}}
+                            {{--                                    ref="productionGenres">--}}
+                            {{--                            </multi-select>--}}
 
 
-                            <?php
-                            $params = [
-                                'name' => 'land_offer[production_genres][]',
-                                'productionGenres' => $productionGenresWithOther
-                            ];
-                            ?>
+							<?php
+							$params = [
+								'name' => 'land_offer[production_genres][]',
+								'productionGenres' => $productionGenresWithOther
+							];
+							?>
                             @include('pages.ads.partials.inputs.production_genres', $params)
                             <p class="help is-danger" v-if="$v.formInput.productionGenres.$error">
                                 Ce champ est requis.
@@ -208,23 +217,23 @@
                                 'data-tooltip' => 'Sélectionner les productions envisageables sur la ferme ou le terrain.'
                             ]); !!}
 
-                            <?php
-                                $params = [
-                                    'name' => 'land_offer[production_genres_wanted][]',
-                                    'ref' => 'productionGenresWanted',
-                                    'productionGenres' => $productionGenresWithOther->slice(1),
-                                    'vModel' => "formInput.productionGenresWanted"
-                                ];
-                            ?>
+							<?php
+							$params = [
+								'name' => 'land_offer[production_genres_wanted][]',
+								'ref' => 'productionGenresWanted',
+								'productionGenres' => $productionGenresWithOther->slice(1),
+								'vModel' => "formInput.productionGenresWanted"
+							];
+							?>
                             @include('pages.ads.partials.inputs.production_genres', $params)
-{{--                            <multi-select--}}
-{{--                                    :options="{{json_encode($productionGenres)}}"--}}
-{{--                                    group-values="children"--}}
-{{--                                    name="land_offer[production_genres_wanted][]"--}}
-{{--                                    v-model="formInput.productionGenresWanted"--}}
-{{--                                    placeholder="Sélectionnez une ou plusieurs productions"--}}
-{{--                                    ref="productionGenresWanted">--}}
-{{--                            </multi-select>--}}
+                            {{--                            <multi-select--}}
+                            {{--                                    :options="{{json_encode($productionGenres)}}"--}}
+                            {{--                                    group-values="children"--}}
+                            {{--                                    name="land_offer[production_genres_wanted][]"--}}
+                            {{--                                    v-model="formInput.productionGenresWanted"--}}
+                            {{--                                    placeholder="Sélectionnez une ou plusieurs productions"--}}
+                            {{--                                    ref="productionGenresWanted">--}}
+                            {{--                            </multi-select>--}}
                         </div>
 
                         <div class="field" v-show="productionGenresWantedHasOther">
@@ -321,13 +330,13 @@
                         <div class="field">
                             {!! Form::label('land_offer[has_buildings]', "Présence de bâtiment(s) agricole(s)", ['class' => 'label']) !!}
                             {!! Form::radio('land_offer[has_buildings]', 1, null , [
-                                'v-model' => 'formInput.hasBuildings',
-                                ':disabled' => 'isInputDisabled'
+                            'v-model' => 'formInput.hasBuildings',
+                            ':disabled' => 'isInputDisabled'
                             ]) !!}
                             oui
                             {!! Form::radio('land_offer[has_buildings]', 0, null , [
-                                'v-model' => 'formInput.hasBuildings',
-                                ':disabled' => 'isInputDisabled'
+                            'v-model' => 'formInput.hasBuildings',
+                            ':disabled' => 'isInputDisabled'
                             ]) !!}
                             non
                         </div>
@@ -364,7 +373,7 @@
                                             'ref' => 'buildingSurface'
                                         ]) !!}
                                         <span class="icon is-small is-right" style="color: #4a4a4a;">
-                                              m²
+                                            m²
                                         </span>
                                     </div>
 
@@ -391,8 +400,8 @@
                                                     <i class="fa {{ $offerGenre["icon"] }}"
                                                        style="font-size: 30px;"></i><br><br>
                                                     <span style="font-size:16px">
-                                                    {{ $offerGenre["land_offer_label"] }}
-                                                </span>
+                                                        {{ $offerGenre["land_offer_label"] }}
+                                                    </span>
                                                 </custom-checkbox>
                                             </div>
                                         @endforeach
@@ -404,13 +413,13 @@
                         <div class="field">
                             {!! Form::label('land_offer[has_houses]', "Présence d'habitation(s)", ['class' => 'label']) !!}
                             {!! Form::radio('land_offer[has_houses]', 1, null, [
-                                'v-model' => 'formInput.hasHouses',
-                                ':disabled' => 'isInputDisabled'
+                            'v-model' => 'formInput.hasHouses',
+                            ':disabled' => 'isInputDisabled'
                             ]) !!}
                             oui
                             {!! Form::radio('land_offer[has_houses]', 0, null, [
-                                'v-model' => 'formInput.hasHouses',
-                                ':disabled' => 'isInputDisabled'
+                            'v-model' => 'formInput.hasHouses',
+                            ':disabled' => 'isInputDisabled'
                             ]) !!}
                             non
                         </div>
@@ -446,7 +455,7 @@
                                             'ref' => 'houseSurface'
                                         ]) !!}
                                         <span class="icon is-small is-right" style="color: #4a4a4a;">
-                                              m²
+                                            m²
                                         </span>
                                     </div>
 
@@ -473,8 +482,8 @@
                                                     <i class="fa {{ $offerGenre["icon"] }}"
                                                        style="font-size: 30px;"></i><br><br>
                                                     <span style="font-size:16px">
-                                                    {{ $offerGenre["land_offer_label"] }}
-                                                </span>
+                                                        {{ $offerGenre["land_offer_label"] }}
+                                                    </span>
                                                 </custom-checkbox>
                                             </div>
                                         @endforeach
@@ -518,11 +527,13 @@
                             </div>
 
                             @if(empty($isSupportRequest))
-                            <p>
-                                Afin de favoriser l'accès à la terre au plus grand nombre et pour lutter contre la spéculation foncière,
-                                sachez que les modérateurs refuseront les annonces dont le prix
-                                des terres sont au dessus des prix du marché ou dont les fermages sont au-dessus des arrêtés préfectoraux.
-                            </p>
+                                <p>
+                                    Afin de favoriser l'accès à la terre au plus grand nombre et pour lutter contre la
+                                    spéculation foncière,
+                                    sachez que les modérateurs refuseront les annonces dont le prix
+                                    des terres sont au dessus des prix du marché ou dont les fermages sont au-dessus des
+                                    arrêtés préfectoraux.
+                                </p>
                             @endif
 
                             <p id="offerGenreIdError" class="help is-danger" v-if="$v.formInput.offerGenres.$error">
@@ -545,14 +556,16 @@
                                             ':disabled'=>'isInputDisabled',
                                         ]) !!}
                                         <span class="icon is-small is-right" style="color: #4a4a4a;">
-                                          €
+                                            €
                                         </span>
                                     </div>
 
                                     <p>
                                         Pour connaître le prix moyen des terres dans votre département
-                                        <a href="https://agreste.agriculture.gouv.fr/agreste-web/download/publication/publie/Chd1919/cd2019-19.pdf" target="_blank">
-                                            veuillez consulter ce document <i class="fas fa-external-link-square-alt"></i>
+                                        <a href="https://agreste.agriculture.gouv.fr/agreste-web/download/publication/publie/Chd1919/cd2019-19.pdf"
+                                           target="_blank">
+                                            veuillez consulter ce document <i
+                                                    class="fas fa-external-link-square-alt"></i>
                                         </a>
                                     </p>
 
@@ -581,13 +594,14 @@
                                             ':disabled'=>'isInputDisabled',
                                         ]) !!}
                                         <span class="icon is-small is-right" style="color: #4a4a4a;">
-                                          €
+                                            €
                                         </span>
                                     </div>
 
                                     <p>
                                         Pour consulter les indices des fermages de votre territoire,
-                                        rendez-vous sur le site internet de votre département ou de la Chambre d’agriculture.
+                                        rendez-vous sur le site internet de votre département ou de la Chambre
+                                        d’agriculture.
                                     </p>
 
                                     <template v-if="$v.formInput.rentPrice.$error">
@@ -621,35 +635,35 @@
 
 
                         @if(!empty($isSupportRequest))
-{{--                            <div class="field">--}}
-{{--                                <label class="label">Appel à candidature</label>--}}
+                            {{--                            <div class="field">--}}
+                            {{--                                <label class="label">Appel à candidature</label>--}}
 
-{{--                                <label style="font-size: 1.1rem;">--}}
-{{--                                    {!! Form::checkbox('land_offer[is_call_for_application_community]',--}}
-{{--                                    '1',--}}
-{{--                                    $old['land_offer']['is_call_for_application_community'] ?? null,--}}
-{{--                                    [':disabled' => 'isInputDisabled']) !!}--}}
-{{--                                    Il s'agit d’un appel à candidatures dans le cadre d'un projet soutenu par une collectivité--}}
-{{--                                </label>--}}
-{{--                            </div>--}}
-{{--                            <div class="field">--}}
-{{--                                <label style="font-size: 1.1rem;">--}}
-{{--                                    {!! Form::checkbox('land_offer[is_call_for_application_terre_de_liens]',--}}
-{{--                                    '1',--}}
-{{--                                    $old['land_offer']['is_call_for_application_terre_de_liens'] ?? null,--}}
-{{--                                    [':disabled' => 'isInputDisabled']) !!}--}}
-{{--                                    Il s’agit d’un appel à candidatures pour une ferme Terre de Liens--}}
-{{--                                </label>--}}
-{{--                            </div>--}}
-{{--                            <div class="field">--}}
-{{--                                <label style="font-size: 1.1rem;">--}}
-{{--                                    {!! Form::checkbox('land_offer[is_call_for_application_test_area]',--}}
-{{--                                    '1',--}}
-{{--                                    $old['land_offer']['is_call_for_application_test_area'] ?? null,--}}
-{{--                                    [':disabled' => 'isInputDisabled']) !!}--}}
-{{--                                    Il s’agit d’un appel à candidatures dans le cadre d'un Espace test--}}
-{{--                                </label>--}}
-{{--                            </div>--}}
+                            {{--                                <label style="font-size: 1.1rem;">--}}
+                            {{--                                    {!! Form::checkbox('land_offer[is_call_for_application_community]',--}}
+                            {{--                                    '1',--}}
+                            {{--                                    $old['land_offer']['is_call_for_application_community'] ?? null,--}}
+                            {{--                                    [':disabled' => 'isInputDisabled']) !!}--}}
+                            {{--                                    Il s'agit d’un appel à candidatures dans le cadre d'un projet soutenu par une collectivité--}}
+                            {{--                                </label>--}}
+                            {{--                            </div>--}}
+                            {{--                            <div class="field">--}}
+                            {{--                                <label style="font-size: 1.1rem;">--}}
+                            {{--                                    {!! Form::checkbox('land_offer[is_call_for_application_terre_de_liens]',--}}
+                            {{--                                    '1',--}}
+                            {{--                                    $old['land_offer']['is_call_for_application_terre_de_liens'] ?? null,--}}
+                            {{--                                    [':disabled' => 'isInputDisabled']) !!}--}}
+                            {{--                                    Il s’agit d’un appel à candidatures pour une ferme Terre de Liens--}}
+                            {{--                                </label>--}}
+                            {{--                            </div>--}}
+                            {{--                            <div class="field">--}}
+                            {{--                                <label style="font-size: 1.1rem;">--}}
+                            {{--                                    {!! Form::checkbox('land_offer[is_call_for_application_test_area]',--}}
+                            {{--                                    '1',--}}
+                            {{--                                    $old['land_offer']['is_call_for_application_test_area'] ?? null,--}}
+                            {{--                                    [':disabled' => 'isInputDisabled']) !!}--}}
+                            {{--                                    Il s’agit d’un appel à candidatures dans le cadre d'un Espace test--}}
+                            {{--                                </label>--}}
+                            {{--                            </div>--}}
                         @endif
                     </div>
                     <div class="column"></div>
@@ -663,8 +677,8 @@
                 <div class="columns">
                     <div class="column"></div>
                     <div class="column is-half">
-                        <?php
-                            $aboutProjectTooltip = "Parce qu’il y a derrière chaque projet et chaque lieu des personnes et des histoires,
+						<?php
+						$aboutProjectTooltip = "Parce qu’il y a derrière chaque projet et chaque lieu des personnes et des histoires,
                                 nous vous invitons ici à en dire un peu plus sur votre projet.
                                 Qu’est-ce qui motive votre projet ?
                                 Quelles sont vos attentes ?
@@ -672,11 +686,12 @@
                                 Quelle est l’histoire du lieu ?
                                 Quelles sont les conditions de la transmission le cas échéant ?
                                 Quel type de personnes et de projet agricole recherchez-vous ?";
-                        ?>
+						?>
 
                         @include('pages.ads.partials.inputs.about_project_content', ['tooltip' => $aboutProjectTooltip])
 
                         @include('pages.ads.partials.inputs.about_content', ['required' => false, 'tooltip' => "Présentez-vous brièvement pour faciliter la mise en relation."])
+
                     </div>
                     <div class="column"></div>
                 </div>
@@ -689,9 +704,9 @@
                 <div class="columns">
                     <div class="column"></div>
                     <div class="column is-half">
-                        <?php
-                            $titleTooltip = "Décrivez précisément et succintement le bien proposé. Ne pas mentionner 'Vente' ou 'Location' dans le titre.";
-                        ?>
+						<?php
+						$titleTooltip = "Décrivez précisément et succintement le bien proposé. Ne pas mentionner 'Vente' ou 'Location' dans le titre.";
+						?>
                         @include('pages.ads.partials.inputs.title', ["tooltip"=>$titleTooltip])
 
 

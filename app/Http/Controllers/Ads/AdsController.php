@@ -29,7 +29,6 @@ class AdsController extends BaseController
 		if (auth()->user()->supportRequest) {
 			$supportRequests = [auth()->user()->supportRequest];
 		}
-
 		return view('pages.ads.new', array_merge($this->getCreateFormVars(), compact("supportRequests")));
 	}
 
@@ -58,7 +57,6 @@ class AdsController extends BaseController
 		$ad = $this->adService->find($id);
 
 		$vars = $this->getEditFormVars($ad);
-
 		return view('pages.ads.new', $vars);
 	}
 

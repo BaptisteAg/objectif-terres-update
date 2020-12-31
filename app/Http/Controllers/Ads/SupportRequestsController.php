@@ -34,7 +34,6 @@ class SupportRequestsController extends BaseController
 		$ad = $this->adService->find($user->supportRequest->id);
 
 		$vars = $this->getEditFormVars($ad);
-
 		return view('pages.ads.new', $vars);
 	}
 
@@ -116,16 +115,17 @@ class SupportRequestsController extends BaseController
 	 */
 	public function submitRequest(AdRequest $request)
 	{
-
 		$data = $request->validated();
 		/** @var $ad Ad $ad */
 		try {
 			// If this is an update, we'll skip the publishing/attribution part
 			if (!empty($data["id"])) {
 				$ad = $this->adService->update($data["id"], $data);
+				if ($ad->wasChanged('support_request_territory_id')) {
+					$this->adService->handleSupportRequestAttributionNotifications($ad);
+				}
 				$success = "Votre demande a bien été mise à jour.";
 			} else {
-
 				$ad = $this->adService->requestPublishing($data, true);
 				$success = 'Votre demande a bien été soumise. Vous receverez une réponse très bientôt !';
 
@@ -141,25 +141,26 @@ class SupportRequestsController extends BaseController
 					$this->threadService->createSupportRequestThreadFromResume($data);
 				}
 
-				if ($ad->attributionAd->userAdvisor) {
-					$ad->attributionAd->userAdvisor->notify(new SupportRequestAttributionNotification($ad));
-				} else {
-					// send a notification to each related supervisor
-					foreach ($this->adService->getAdSupervisors($ad) as $supervisor) {
-						$supervisor->notify(new NewSupportRequestNotification($ad));
-					}
-				}
-				$supportRequestTerritoryModalityContent = CmsPage::where('slug', '=', 'etre-accompagne-text-du-territoire-numero-' . $ad->supportRequestTerritoryId->id)->first()->content;
-				$ad->userPp->notify(new BasicNotification([
-					'subject' => "Nous avons bien reçu votre demande d’accompagnement",
-					'message' => "Merci de nous avoir fait part de votre projet '" . $ad->title . "' .\n
-                   				Un membre de Terre de Liens " . $ad->supportRequestTerritoryId->name . " prendra contact avec vous prochainement.\n
-                   				Voici les modalités d’accompagnement de notre association :\n
-								" . $supportRequestTerritoryModalityContent . "\n
-                    			Vous pouvez mettre à jour projet sur Objectif Terres\n",
-					'action' => ["Voir mon projet", route('support-request.show')]
-				]));
+				$this->adService->handleSupportRequestAttributionNotifications($ad);
 
+//				if ($ad->attributionAd->userAdvisor) {
+//					$ad->attributionAd->userAdvisor->notify(new SupportRequestAttributionNotification($ad));
+//				} else {
+//					// send a notification to each related supervisor
+//					foreach ($this->adService->getAdSupervisors($ad) as $supervisor) {
+//						$supervisor->notify(new NewSupportRequestNotification($ad));
+//					}
+//				}
+//				$supportRequestTerritoryModalityContent = CmsPage::where('slug', '=', 'etre-accompagne-text-du-territoire-numero-' . $ad->supportRequestTerritoryId->id)->first()->content;
+//				$ad->userPp->notify(new BasicNotification([
+//					'subject' => "Nous avons bien reçu votre demande d’accompagnement",
+//					'message' => "Merci de nous avoir fait part de votre projet '" . $ad->title . "' .\n
+//                   				Un membre de Terre de Liens " . $ad->supportRequestTerritoryId->name . " prendra contact avec vous prochainement.\n
+//                   				Voici les modalités d’accompagnement de notre association :\n
+//								" . $supportRequestTerritoryModalityContent . "\n
+//                    			Vous pouvez mettre à jour projet sur Objectif Terres\n",
+//					'action' => ["Voir mon projet", route('support-request.show')]
+//				]));
 			}
 			session()->forget('support-request');
 		} catch (AttributionAdException $exception) {
@@ -224,14 +225,24 @@ class SupportRequestsController extends BaseController
 			'isSupportRequest' => 1
 		]);
 
-		if($ad->landOfferAd) {
-		    if($ad->landOfferAd->building) {
-                $vars["old"]["land_offer"]["building"]["offer_genres"] = $ad->landOfferAd->building->offerGenres->pluck("id")->toArray();
-            }
-            if($ad->landOfferAd->house) {
-                $vars["old"]["land_offer"]["house"]["offer_genres"] = $ad->landOfferAd->house->offerGenres->pluck("id")->toArray();
-            }
-        }
+		if (!is_null($ad->support_request_territory_id)) {
+			$vars = array_merge($vars, [
+				'support_request_territory_id' => $ad->support_request_territory_id,
+				'territories' => Territory::all()->whereIn('id', Territory::$territoriesIdAllowToUseService),
+				'pageContent' => CmsPage::where('slug', 'like', "%etre-accompagne%")->get()->keyBy('slug')
+			]);
+			$vars["old"]["support_request_territory_id"] = $ad->support_request_territory_id;
+
+		}
+
+		if ($ad->landOfferAd) {
+			if ($ad->landOfferAd->building) {
+				$vars["old"]["land_offer"]["building"]["offer_genres"] = $ad->landOfferAd->building->offerGenres->pluck("id")->toArray();
+			}
+			if ($ad->landOfferAd->house) {
+				$vars["old"]["land_offer"]["house"]["offer_genres"] = $ad->landOfferAd->house->offerGenres->pluck("id")->toArray();
+			}
+		}
 
 		if ($ad->landSeekAd) {
 			$vars["old"]["land_seek"]["offer_genres"] = $ad->landSeekAd->offerGenres->pluck("id")->toArray();

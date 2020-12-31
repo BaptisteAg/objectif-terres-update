@@ -46,65 +46,6 @@
             @endif
         </div>
     </section>
-{{--    <section class="section pt-0 mt-0  pb-0 mb-10">--}}
-{{--        <div class="container">--}}
-{{--            <div class="has-text-centered">--}}
-{{--                <p class="has-text-centered has-text-weight-bold">Comment ça marche ?</p>--}}
-{{--            </div>--}}
-{{--            <div class="columns">--}}
-{{--                <div class="column">--}}
-{{--                    <div class="rows">--}}
-{{--                        <div class="row-is-full block-step-numbers">--}}
-{{--                            <div class="number-step">1</div>--}}
-{{--                            <div class="content-numbers">--}}
-{{--                                <p class="has-text-weight-bold">Vous sélectionnez le territoire où vous souhaitez être--}}
-{{--                                    accompagné(e)</p>--}}
-{{--                                <p>C’est le--}}
-{{--                                    territoire où vous souhaitez vous installer ou le territoire où se situe votre bien--}}
-{{--                                    à transmettre. Attention, vous ne pouvez soumettre qu’une seule demande--}}
-{{--                                    d’accompagnement* !--}}
-{{--                                </p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="row-is-full block-step-numbers">--}}
-{{--                            <div class="number-step">2</div>--}}
-{{--                            <div class="content-numbers">--}}
-{{--                                <p class="has-text-weight-bold">Vous découvrez les modalités d’accompagnement de--}}
-{{--                                    l’association--}}
-{{--                                    Terre de Liens de--}}
-{{--                                    votre territoire</p>--}}
-{{--                                <p> Chacune des 19 associations territoriales de Terre de Liens a un--}}
-{{--                                    fonctionnement différent, avec des forces vives et des disponibilités variant d’un--}}
-{{--                                    territoire à l’autre.--}}
-{{--                                </p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="row-is-full block-step-numbers">--}}
-{{--                            <div class="number-step">3</div>--}}
-{{--                            <div class="content-numbers">--}}
-{{--                                <p class="has-text-weight-bold">Vous déposez votre demande d’accompagnement</p>--}}
-{{--                                <p>A travers un formulaire**, vous nous--}}
-{{--                                    décrivez précisément votre projet pour que nous puissions vous répondre dans les--}}
-{{--                                    meilleurs délais.--}}
-{{--                                </p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="row-is-full block-step-numbers">--}}
-{{--                            <div class="number-step">4</div>--}}
-{{--                            <div class="content-numbers">--}}
-{{--                                <p class="has-text-weight-bold">Vous échangez sur votre projet avec Terre de Liens</p>--}}
-{{--                                <p>Nous vous recontactons pour vous orienter, vous donner des informations ou envisager--}}
-{{--                                    un prochain rendez-vous pour donner vie à votre projet !--}}
-{{--                                </p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </section>--}}
-
-
     <section class="section pt-0 mt-0 bg-trame_champs_light bg-l-cream" id="support-request-vue">
         <support-request-start inline-template
                                :text-regions="{{json_encode($pageContent)}}">

@@ -5,6 +5,7 @@ use App\Jobs\NotifySupportRequestAttribution;
 use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\City;
+use App\Models\CmsPage;
 use App\Models\Department;
 use App\Models\ProjectDataKey;
 use App\Models\ProjectStatus;
@@ -13,6 +14,9 @@ use App\Models\SupportStage;
 use App\Models\SupportState;
 use App\Models\Territory;
 use App\Models\User;
+use App\Notifications\BasicNotification;
+use App\Notifications\NewSupportRequestNotification;
+use App\Notifications\SupportRequestAttributionNotification;
 use App\Repositories\AdNotes\AdNotesRepository;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Ads\JobOfferAdRepository;
@@ -312,6 +316,28 @@ class AdService
 		$this->updateSubAd($ad, $data["ad_type"], $subAdData);
 
 		return $ad;
+	}
+
+	public function handleSupportRequestAttributionNotifications(Ad $ad)
+	{
+		if ($ad->attributionAd->userAdvisor) {
+			$ad->attributionAd->userAdvisor->notify(new SupportRequestAttributionNotification($ad));
+		} else {
+			// send a notification to each related supervisor
+			foreach ($this->getAdSupervisors($ad) as $supervisor) {
+				$supervisor->notify(new NewSupportRequestNotification($ad));
+			}
+		}
+		$supportRequestTerritoryModalityContent = CmsPage::where('slug', '=', 'etre-accompagne-text-du-territoire-numero-' . $ad->supportRequestTerritoryId->id)->first()->content;
+		$ad->userPp->notify(new BasicNotification([
+			'subject' => "Nous avons bien reçu votre demande d’accompagnement",
+			'message' => "Merci de nous avoir fait part de votre projet '" . $ad->title . "' .\n
+                   				Un membre de Terre de Liens " . $ad->supportRequestTerritoryId->name . " prendra contact avec vous prochainement.\n
+                   				Voici les modalités d’accompagnement de notre association :\n
+								" . $supportRequestTerritoryModalityContent . "\n
+                    			Vous pouvez mettre à jour projet sur Objectif Terres\n",
+			'action' => ["Voir mon projet", route('support-request.show')]
+		]));
 	}
 
 	/**

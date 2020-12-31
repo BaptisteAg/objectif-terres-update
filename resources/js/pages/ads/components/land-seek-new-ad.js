@@ -37,8 +37,8 @@ export default Vue.extend({
             rentMax : v.land_seek.rent_max || '0',
             priceMax : v.land_seek.price_max || '',
             educationLevels: v.land_seek.education_levels || [],
-
-            supportRequestText: v.support_request_text || ''
+            supportRequestText: v.support_request_text || '',
+            supportRequestTerritoryId : v.support_request_territory_id ||"",
         } : {};
 
         return {

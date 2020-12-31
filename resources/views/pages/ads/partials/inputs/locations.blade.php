@@ -16,4 +16,11 @@
         </div>
         <div class="column"></div>
     </div>
+    @if(!empty($isSupportRequest))
+        @if(isset($old["id"]))
+            @include('pages.ads.partials.inputs.support-request-territory')
+        @endif
+    @endif
+
+
 </section>
