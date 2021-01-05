@@ -50,7 +50,7 @@ BasicNotification extends Notification implements ShouldQueue
             ->cc("objectifterres@terredeliens.org")
             ->replyTo("objectifterres@terredeliens.org");
 
-		foreach (explode("\n", $this->data["message"]) as $line) {
+		foreach (explode("\n", strip_tags($this->data["message"])) as $line) {
 			$message->line($line);
 		}
 
