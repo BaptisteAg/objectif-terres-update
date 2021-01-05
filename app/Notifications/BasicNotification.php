@@ -47,7 +47,8 @@ BasicNotification extends Notification implements ShouldQueue
 		$message = (new MailMessage)
 			->subject($this->data['subject'])
 			->greeting('Bonjour ' . $notifiable->name . ',')
-            ->cc("objectifterres@terredeliens.org");
+            ->cc("objectifterres@terredeliens.org")
+            ->replyTo("objectifterres@terredeliens.org");
 
 		foreach (explode("\n", $this->data["message"]) as $line) {
 			$message->line($line);

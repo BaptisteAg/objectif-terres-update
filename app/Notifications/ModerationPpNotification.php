@@ -48,7 +48,8 @@ class ModerationPpNotification extends Notification implements ShouldQueue
 			->action( $this->data['action'], url($this->data['url']))
 			->line('A bientôt sur Objectif Terres !')
 			->salutation('Cordialement, L\'équipe d\'Objectif Terres')
-            ->cc("objectifterres@terredeliens.org");
+            ->cc("objectifterres@terredeliens.org")
+            ->replyTo("objectifterres@terredeliens.org");
     }
 
     /**
