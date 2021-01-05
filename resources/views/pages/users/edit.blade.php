@@ -24,7 +24,7 @@
                             <div class="control has-icons-left">
                                 <input id="name" name="name" class="input @error('name')is-danger @enderror"
                                        type="text"
-                                       value="{{ old('name') ? old('name') : $user->name != null ? $user->name : "" }}" autocomplete="name"
+                                       value="{{ old('name') ? old('name') : ($user->name != null ? $user->name : "") }}" autocomplete="name"
                                        autofocus
                                        placeholder="Votre nom...">
                                 <span class="icon is-small is-left">
