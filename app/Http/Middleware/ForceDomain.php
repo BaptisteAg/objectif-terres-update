@@ -6,12 +6,12 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
-class HttpsProtocol {
+class ForceDomain {
 
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->secure()) {
-            return redirect()->secure($request->getRequestUri());
+        if($request->getHost() !== parse_url(config('app.url'))["host"]) {
+            return redirect()->secure(config('app.url').$request->getRequestUri());
         }
 
         return $next($request);
