@@ -55,7 +55,8 @@ class OverdueModerationNotification extends Notification implements ShouldQueue
 			->line($this->data['message'])
 			->action('Aller sur l\'espace Modérateur', $url)
 			->salutation('A bientôt sur Objectif Terres !')
-            ->cc("objectifterres@terredeliens.org");
+            ->cc("objectifterres@terredeliens.org")
+            ->replyTo("objectifterres@terredeliens.org");
 	}
 
 	/**

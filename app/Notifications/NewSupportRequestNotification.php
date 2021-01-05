@@ -52,7 +52,8 @@ class NewSupportRequestNotification extends Notification implements ShouldQueue
 			->line("Porteur : " . $this->ad->userPp->name)
 			->action('Attribuer la demande', $url)
 			->salutation('A bientôt sur Objectif Terres !')
-            ->cc("objectifterres@terredeliens.org");
+            ->cc("objectifterres@terredeliens.org")
+            ->replyTo("objectifterres@terredeliens.org");
 	}
 
 	/**

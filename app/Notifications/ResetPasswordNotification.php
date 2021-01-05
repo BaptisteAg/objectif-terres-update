@@ -55,7 +55,8 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
 			->line('Ce lien va expirer dans 60 minutes. Si vous ne générer pas un nouveau mot de passe, l\'ancien mot de passe restera actif.')
 			->line('Si vous n’êtes pas à l’origine de cette demande ne faites rien.')
 			->salutation('A bientôt sur Objectif Terres !')
-            ->cc("objectifterres@terredeliens.org");
+            ->cc("objectifterres@terredeliens.org")
+            ->replyTo("objectifterres@terredeliens.org");
 	}
 
 
