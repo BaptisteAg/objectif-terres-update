@@ -2,9 +2,9 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\AdminMiddleware;
-use App\Http\Middleware\HttpsProtocol;
 use App\Http\Middleware\FilterIps;
+use App\Http\Middleware\ForceDomain;
+use App\Http\Middleware\ForceHttpsProtocol;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -22,7 +22,8 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        HttpsProtocol::class,
+        ForceHttpsProtocol::class,
+        ForceDomain::class,
         FilterIps::class
     ];
 
