@@ -153,7 +153,7 @@ class AdService
 			$data["project_id"] = $project->id;
 		}
 
-		$data["is_draft"] = false;
+//		$data["is_draft"] = false;
 
 		//TODO delete if this column is not necessary anymore
 		//$data['support_request_id_region'] = 16;
@@ -163,28 +163,29 @@ class AdService
 			$ad = $this->repository->update($data["id"], $data);
 		} else {
 			$ad = $this->repository->create($data);
-
 		}
 
 
 		if ($isSupportRequest) {
-			$adDepartmentCodes = $this->getAdDepartmentCodesFromSupportRequestTerritoryId($ad);
-			$availableAdvisors = $this->userService->findByRolesAndDepartments([2], $adDepartmentCodes);
-			$availableSupervisors = $this->userService->findByRolesAndDepartments([3], $adDepartmentCodes);
+			if ($data["is_draft"] !== 1) {
+				$adDepartmentCodes = $this->getAdDepartmentCodesFromSupportRequestTerritoryId($ad);
+				$availableAdvisors = $this->userService->findByRolesAndDepartments([2], $adDepartmentCodes);
+				$availableSupervisors = $this->userService->findByRolesAndDepartments([3], $adDepartmentCodes);
 
 
-			if ($availableSupervisors->isEmpty() && $availableAdvisors->isEmpty()) {
-				throw new AttributionAdException("Aucun responsable n'a été trouvé dans votre région. Veuillez sauvegarder votre demande et nous contacter.");
+				if ($availableSupervisors->isEmpty() && $availableAdvisors->isEmpty()) {
+					throw new AttributionAdException("Aucun responsable n'a été trouvé dans votre région. Veuillez sauvegarder votre demande et nous contacter.");
+				}
+
+				// S'il n'y a qu'un seul responsable terr. et pas de primo accueillant on saute une étape et on le sélectionne
+				if ($availableAdvisors->count() === 0 && $availableSupervisors->count() === 1) {
+					$supervisor = $availableSupervisors->first();
+					$attributionAdData['user_advisor_id'] = $supervisor->id;
+				}
+				// Else nothing. No attribution needed if no advisor is bound
+
+				$attributionAdData['ad_status_id'] = null;
 			}
-
-			// S'il n'y a qu'un seul responsable terr. et pas de primo accueillant on saute une étape et on le sélectionne
-			if ($availableAdvisors->count() === 0 && $availableSupervisors->count() === 1) {
-				$supervisor = $availableSupervisors->first();
-				$attributionAdData['user_advisor_id'] = $supervisor->id;
-			}
-			// Else nothing. No attribution needed if no advisor is bound
-
-			$attributionAdData['ad_status_id'] = null;
 
 		} else {
 			$adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
@@ -253,50 +254,49 @@ class AdService
 	 * @throws \Exception
 	 * @throws Throwable
 	 */
-	public function importAd(array $data, $userId) : Ad
+	public function importAd(array $data, $userId): Ad
 	{
 		DB::beginTransaction();
 
 		$ad = $this->repository->createForUser($data, $userId);
 
-        if(!$data["is_draft"]) {
-            $adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
+		if (!$data["is_draft"]) {
+			$adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
 
-            if(empty($adDepartmentCodes)) {
-                dd($data);
-            }
+			if (empty($adDepartmentCodes)) {
+				dd($data);
+			}
 
-            $availableModerators = $this->userService->findByRolesAndDepartments([1], $adDepartmentCodes);
-            $availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
+			$availableModerators = $this->userService->findByRolesAndDepartments([1], $adDepartmentCodes);
+			$availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
 
-            if ($availableModerators->isEmpty() && empty($availableUserWithPermission)) {
-                throw new AttributionAdException("Aucun modérateur n'a été trouvé dans les départements ".implode(", ",$adDepartmentCodes));
-            }
+			if ($availableModerators->isEmpty() && empty($availableUserWithPermission)) {
+				throw new AttributionAdException("Aucun modérateur n'a été trouvé dans les départements " . implode(", ", $adDepartmentCodes));
+			}
 
-            // Modérateur
-            if ($availableModerators->count() >= 1) {
-                /** @var User $moderator */
-                $moderator = $availableModerators->random();
-            }
-            // Sinon utilisateurs avec permissions spéciales
-            else if (!empty($availableUserWithPermission)) {
-                $moderator = $availableUserWithPermission;
-            }
+			// Modérateur
+			if ($availableModerators->count() >= 1) {
+				/** @var User $moderator */
+				$moderator = $availableModerators->random();
+			} // Sinon utilisateurs avec permissions spéciales
+			else if (!empty($availableUserWithPermission)) {
+				$moderator = $availableUserWithPermission;
+			}
 
-            // Annonce déjà approuvée sur SPIP
-            $attributionAdData['ad_id'] = $ad->id;
-            $attributionAdData['user_moderator_id'] = $moderator->id;
-            $attributionAdData['ad_status_id'] = AdStatus::APPROVE_ID;
-            $attributionAdData['published_on'] = $data["created_at"];
+			// Annonce déjà approuvée sur SPIP
+			$attributionAdData['ad_id'] = $ad->id;
+			$attributionAdData['user_moderator_id'] = $moderator->id;
+			$attributionAdData['ad_status_id'] = AdStatus::APPROVE_ID;
+			$attributionAdData['published_on'] = $data["created_at"];
 
 			$this->attributionAdsRepository->create($attributionAdData);
 		}
 
-        if(isset($data[$data["ad_type"]])) {
-            $subAdData = $data[$data["ad_type"]];
-            $subAdData["ad_id"] = $ad->id;
-            $this->createSubAd($data["ad_type"], $subAdData);
-        }
+		if (isset($data[$data["ad_type"]])) {
+			$subAdData = $data[$data["ad_type"]];
+			$subAdData["ad_id"] = $ad->id;
+			$this->createSubAd($data["ad_type"], $subAdData);
+		}
 
 		DB::commit();
 		return $ad;
@@ -318,6 +318,10 @@ class AdService
 		return $ad;
 	}
 
+
+	/**
+	 * @param Ad $ad
+	 */
 	public function handleSupportRequestAttributionNotifications(Ad $ad)
 	{
 		if ($ad->attributionAd->userAdvisor) {
@@ -620,18 +624,6 @@ class AdService
 		return $ad;
 	}
 
-// TODO  delete if this method is not necessary anymore
-//
-//    /**
-//     * @return Collection
-//     */
-//    public function findAllValidateAdsInSupervisorTerritories(): Collection
-//    {
-//        $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-//        $validateStatusId = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first()->id;
-//        $ads = $this->repository->allInTerritoriesByAdStatus($supervisorLocationTerritoryCodes, $validateStatusId);
-//        return $ads;
-//    }
 
 	/**
 	 * @param Collection $ads
@@ -905,7 +897,7 @@ class AdService
 			/** @var City $city */
 			foreach ($ad->cities as $city) {
 				if ($city->department && $city->department->region) {
-                    $regions[] = $city->department->region;
+					$regions[] = $city->department->region;
 				}
 			}
 		}
@@ -914,7 +906,7 @@ class AdService
 			/** @var Department $department */
 			foreach ($ad->departments as $department) {
 				if ($department->region) {
-                    $regions[] = $department->region;
+					$regions[] = $department->region;
 				}
 			}
 		}
@@ -922,13 +914,13 @@ class AdService
 		if (count($ad->regions)) {
 			/** @var Region $foundRegion */
 			foreach ($ad->regions as $region) {
-                $regions[] = $region;
+				$regions[] = $region;
 			}
 		}
 
 		return $regions->unique(function (Region $region) {
-            return $region->id;
-        });
+			return $region->id;
+		});
 	}
 
 	/**
@@ -985,7 +977,7 @@ class AdService
 
 		if (count($ad->departments)) {
 			foreach ($ad->departments as $department) {
-                $departmentIds[] = $department->id;
+				$departmentIds[] = $department->id;
 			}
 		}
 

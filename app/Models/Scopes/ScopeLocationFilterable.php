@@ -79,6 +79,7 @@ trait ScopeLocationFilterable
 			$query->whereNotNull('support_request_territory_id');
 			$query->whereIn('support_request_territory_id', $territoriesId);
 			$query->whereNotNull('project_id');
+			$query->where('is_draft', '=', 0);
 			$query->whereHas('attributionAd', function (Builder $subQuery) use ($userRole) {
 				$subQuery->whereNull('ad_status_id');
 				if ($userRole >= 3) {

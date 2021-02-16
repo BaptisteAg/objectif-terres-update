@@ -205,7 +205,7 @@ class ResearchService
 		//Filter by type of ads
 		$adsTypeSelected = '';
 
-		if($filters->has('certified')){
+		if ($filters->has('certified')) {
 			$adsFilter->where('is_partner', '=', 1);
 		}
 
@@ -352,16 +352,19 @@ class ResearchService
 		}
 		if ($filters->has('order') && $filters->has('sort')) {
 			if ($filters->input('sort') === 'date') {
-				$adsFilter->orderBy('created_at', $filters->input('order'));
+				$adsFilter->join('attribution_ads', "ads.id", '=', "attribution_ads.ad_id")
+					->orderBy('published_on', $filters->input('order'))
+					->select('ads.*');
 			} else {
-
 				$adsTypeSelectedTableName = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $adsTypeSelected)) . 's';
 				$adsFilter->join($adsTypeSelectedTableName, 'ads.id', '=', $adsTypeSelectedTableName . '.ad_id')
 					->orderBy($filters->input('sort'), $filters->input('order'))
 					->select('ads.*');
 			}
 		} else {
-			$adsFilter->orderByDesc('created_at');
+			$adsFilter->join('attribution_ads', "ads.id", '=', "attribution_ads.ad_id")
+				->orderByDesc('published_on')
+				->select('ads.*');
 		}
 
 		$ads = $adsFilter->with(

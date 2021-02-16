@@ -110,7 +110,7 @@ class SupervisorsController extends BaseController
 //		}
 
 		$this->projectService->attributeProject($request);
-		return back()->with('success', 'La demande d\'accompagnement a bien été attribué !');
+		return back()->with('success', 'La demande d\'accompagnement a bien été attribuée !');
 	}
 
 

@@ -13,7 +13,6 @@
     @if($hasDepartmentPolygons)
         <div id="global-map"></div>
     @endif
-
     <section class="section pt-0">
         <div class="container">
             <nav class="level">
@@ -161,8 +160,6 @@
                     </div>
                 </div>
             </nav>
-
-
             <section class="section">
                 @foreach($ads as $ad)
                     <ul class="list list_v tiles">

@@ -292,6 +292,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		$models = $this->entity
 			->where(function (Builder $query) {
 				$query->whereNotNull('project_id');
+				$query->where('is_draft', '=', 0);
 				$query->whereHas('userPp', function (Builder $subQuery) {
 					$subQuery->whereNull('deleted_at');
 				});
@@ -434,6 +435,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 						}
 					});
 					$query->whereNotNull('project_id');
+					$query->where('is_draft', '=', 0);
 
 				});
 				$builder->filterSupportRequestRegionId($territoriesIds, auth()->user()->role);
@@ -442,6 +444,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				$builder->orWhere(function (Builder $query) use ($territoryCodes) {
 //					$query->whereNull('support_request_territory_id');
 					$query->whereNotNull('project_id');
+					$query->where('is_draft', '=', 0);
 					$query->whereHas('attributionAd', function (Builder $subQuery) {
 						$subQuery->whereNull('user_advisor_id');
 						$subQuery->whereNull('ad_status_id');
@@ -513,6 +516,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	{
 		$queryAds = Ad::where(function (Builder $query) use ($territoryCodes, $territoriesIds) {
 			$query->whereNotNull('project_id');
+			$query->where('is_draft', '=', 0);
 			$query->whereHas('userPp', function (Builder $subQuery) {
 				$subQuery->whereNull('deleted_at');
 			});
@@ -527,6 +531,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			});
 			$query->orWhere(function (Builder $builder) use ($territoryCodes) {
 				$builder->whereNotNull('project_id');
+				$builder->where('is_draft', '=', 0);
 				$builder->orWhereHas('regions', function (Builder $subQuery) use ($territoryCodes) {
 					$subQuery->whereHas('departments', function (Builder $builder) use ($territoryCodes) {
 						$builder->whereIn('code', $territoryCodes);
@@ -665,6 +670,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		$adsFiltred->whereHas('userPp', function (Builder $query) {
 			$query->whereNull('deleted_at');
 		});
+		//Remove all draft ads or support request
+		$adsFiltred->where('is_draft', '=', 0);
 
 		if (Route::currentRouteName() === "advisor.show" || Route::currentRouteName() === "advisor.export") {
 			//Remove all support request that are not attributed to anyone by the supervisor in advisors dashboard
