@@ -17,6 +17,7 @@ use App\Services\Users\UserService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use DateTime;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -357,7 +358,7 @@ class AttributionAdsService
 
 	/**
 	 * @param Ad $ad
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	private function forgetAdPolygonCache(Ad $ad)
 	{
@@ -371,7 +372,7 @@ class AttributionAdsService
 	/**
 	 * @param array $data
 	 * @return AttributionAd
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function acceptAd(array $data)
 	{
@@ -400,8 +401,9 @@ class AttributionAdsService
 
 		$attributionAd->ad_status_id = AdStatus::APPROVE_ID;
 		$attributionAd->published_on = Carbon::now();
+		$adModerator = $attributionAd->userModerator ?? auth()->user();
 		$attributionAd->ad->userPp->notify(new BasicNotification(
-			['subject' => "Votre annonce n°" . $attributionAd->ad->id . " a été validée par " . $attributionAd->userModerator->first_name . " " . $attributionAd->userModerator->name,
+			['subject' => "Votre annonce n°" . $attributionAd->ad->id . " a été validée par " . $adModerator->first_name . " " . $adModerator->name,
 				'message' => "Votre annonce a été publiée sur Objectif Terres. Elle sera en ligne durant 6 mois.\n
                     Si besoin vous pouvez la modifier ou la supprimer.\n",
 				'action' => ["Gérer mes annonces", route('ads.list')],
@@ -424,7 +426,7 @@ class AttributionAdsService
 	/**
 	 * @param int $attributionAdId
 	 * @return mixed
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function modifyAd(int $attributionAdId)
 	{
@@ -452,7 +454,7 @@ class AttributionAdsService
 	/**
 	 * @param array $data
 	 * @return mixed
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function rejectAd(array $data)
 	{
@@ -490,6 +492,19 @@ class AttributionAdsService
 			$listOfMonth[$date->localeMonth] = collect();
 		}
 		return $listOfMonth;
+	}
+
+
+	/**
+	 * @param Ad $ad
+	 * @throws Exception
+	 */
+	public function changeSupportRequestTerritory(Ad $ad)
+	{
+		if(isset($ad->attributionAd->user_advisor_id)){
+			$ad->attributionAd->user_advisor_id= null;
+			$ad->attributionAd->save();
+		}
 	}
 
 	/**
