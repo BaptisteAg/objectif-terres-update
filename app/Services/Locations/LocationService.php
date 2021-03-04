@@ -40,7 +40,6 @@ class LocationService
 
             /** @var Region[] $regions */
             $regions = Region::whereIn('id', array_keys($adsCountByRegionId))->get();
-
             $data = [];
 
             foreach ($regions as $region) {
@@ -49,22 +48,21 @@ class LocationService
                 $geoPolygon->ads_count = $adsCountByRegionId[$region->id];
                 $data[] = $geoPolygon;
             }
-
             return $data;
         });
     }
 
     public function getDepartmentPolygons($regionId, $selectedAdType)
     {
-        $cacheKey = 'departmentspolygon.'.$regionId.'.'.$selectedAdType;
+
+        $cacheKey = 'departmentspolygon.'.$regionId.'.';
 
         return Cache::rememberForever($cacheKey, function () use ($selectedAdType, $regionId) {
-
             $adsCountByDepartmentId = $this->adService->getPublishedAdsCountByDepartmentId($selectedAdType, $regionId);
+
 
             /** @var Department[] $departments */
             $departments = Department::whereIn('id', array_keys($adsCountByDepartmentId))->get();
-
             $data = [];
 
             foreach ($departments as $department) {
@@ -86,6 +84,7 @@ class LocationService
             Cache::remember($cacheKey, now()->addDays(365), function() use ($q, $type) {
                 $client = new Client();
                 $params = "country=france";
+
                 if($type === "region") {
                     $params .="&state=".$q;
                     $threshold = 0.15;
@@ -103,11 +102,9 @@ class LocationService
                     $params .="&q=".$q;
                     $threshold = 0.2;
                 }
-                $res = $client->request('GET', 'https://nominatim.openstreetmap.org/search.php?'.$params.'&polygon_geojson=1&format=json&polygon_threshold='.$threshold);
-
+				$res = $client->request('GET', 'https://nominatim.openstreetmap.org/search.php?'.$params.'&polygon_geojson=1&format=json&polygon_threshold='.$threshold);
                 $results = json_decode($res->getBody());
-
-                return $results[0];
+				return $results[0];
             });
         }
 

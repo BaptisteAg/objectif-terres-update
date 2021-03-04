@@ -73,7 +73,6 @@ class LocationableController extends Controller
                 'error' => 'Aucune catégorie d\'annonce séléctionnée'
             ]);
         }
-
         return response()->json($this->service->getRegionPolygons($selectedAdType));
     }
 
@@ -87,6 +86,7 @@ class LocationableController extends Controller
             ]);
         }
 
+
         if ($request->has('region_id')) {
             $regionId = $request->get("region_id");
         } else {
@@ -94,7 +94,6 @@ class LocationableController extends Controller
                 'error' => 'Aucune région séléctionnée'
             ]);
         }
-
         return response()->json($this->service->getDepartmentPolygons($regionId, $selectedAdType));
     }
 
