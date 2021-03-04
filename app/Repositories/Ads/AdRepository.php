@@ -171,8 +171,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			}
 
 		}
-
 		$ad->refresh();
+
 	}
 
 	/**

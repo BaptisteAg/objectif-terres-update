@@ -23,6 +23,7 @@ window.regionMapInit  = async function (mapId, fetchOptions) {
     let featureGroup = mapController.addFeatureGroup();
 
     departmentsPolygonData.forEach(polygonData => {
+
         const polygon = mapController.addPolygon(polygonData, {
             smoothFactor: 2
         });
