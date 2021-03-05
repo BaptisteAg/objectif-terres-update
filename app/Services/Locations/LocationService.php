@@ -102,8 +102,16 @@ class LocationService
                     $params .="&q=".$q;
                     $threshold = 0.2;
                 }
+
+                $locationsWithWrongResultsFromAPI = [
+					"country=france&county=Ain"
+				];
+
 				$res = $client->request('GET', 'https://nominatim.openstreetmap.org/search.php?'.$params.'&polygon_geojson=1&format=json&polygon_threshold='.$threshold);
                 $results = json_decode($res->getBody());
+				if(in_array($params,$locationsWithWrongResultsFromAPI)){
+					return $results[1];
+				}
 				return $results[0];
             });
         }
