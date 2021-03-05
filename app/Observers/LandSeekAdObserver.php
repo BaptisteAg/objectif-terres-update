@@ -3,11 +3,11 @@
 namespace App\Observers;
 
 use App\Models\LandSeekAd;
-use App\Observers\Traits\TracksHistoryTrait;
+use App\Observers\Traits\SubAdHistoryObserverTrait;
 
 class LandSeekAdObserver
 {
-	use TracksHistoryTrait;
+	use SubAdHistoryObserverTrait;
 
 	private $fieldList = [
 		'is bio' => 'projet biologique',
@@ -39,17 +39,8 @@ class LandSeekAdObserver
 	 */
 	public function created(LandSeekAd $landSeekAd)
 	{
-		$this->track($landSeekAd, function ($value, $field) use ($landSeekAd) {
-			if (!in_array($field, $this->fieldToNotTrack)) {
-				$fieldName = $this->fieldList[$field] ?? $field;
-				$valueName = $this->valueList[$value] ?? $value;
 
-				return [
-					'ad_id' => $landSeekAd->ad->id,
-					'body' => "Création de l'annonce : pour le champs <em>" . $fieldName . "</em>, l'utilisateur a renseigné <em>" . $valueName . "</em>",
-				];
-			}
-		});
+		$this->createdObserverSubAd($landSeekAd, $this->fieldToNotTrack);
 	}
 
 	/**
@@ -60,15 +51,13 @@ class LandSeekAdObserver
 	 */
 	public function updated(LandSeekAd $landSeekAd)
 	{
-		$this->track($landSeekAd, function ($value, $field) use ($landSeekAd) {
-			$fieldName = $this->fieldList[$field] ?? $field;
-			$valueName = $this->valueList[$value] ?? $value;
 
-			return [
-				'ad_id' => $landSeekAd->ad->id,
-				'body' => "Modification de l'annonce : dans le champs <em>" . $fieldName . "</em>, l'utilisateur a modifié pour <em>" . $valueName . "</em>",
-			];
-		});
+		$this->updatedObserverSubAd($landSeekAd);
+
+	}
+
+	public function updating(LandSeekAd $landSeekAd){
+
 	}
 
 	/**

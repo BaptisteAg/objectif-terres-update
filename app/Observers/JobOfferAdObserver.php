@@ -3,11 +3,12 @@
 namespace App\Observers;
 
 use App\Models\JobOfferAd;
+use App\Observers\Traits\SubAdHistoryObserverTrait;
 use App\Observers\Traits\TracksHistoryTrait;
 
 class JobOfferAdObserver
 {
-	use TracksHistoryTrait;
+	use SubAdHistoryObserverTrait;
 
 	private $fieldList = [
 		'is activity transmission' => ' transmission ou d\'une possibilité de transmission de l\'activité agricole',
@@ -34,19 +35,7 @@ class JobOfferAdObserver
 	 */
 	public function created(JobOfferAd $jobOfferAd)
 	{
-
-		$this->track($jobOfferAd, function ($value, $field) use ($jobOfferAd) {
-			if (!in_array($field, $this->fieldToNotTrack)) {
-				$fieldName = $this->fieldList[$field] ?? $field;
-				$valueName = $this->valueList[$value] ?? $value;
-
-				return [
-					'ad_id' => $jobOfferAd->ad->id,
-					'body' => "Création de l'annonce : pour le champs <em>" . $fieldName . "</em>, l'utilisateur a renseigné <em>" . $valueName . "</em>",
-				];
-			}
-
-		});
+		$this->createdObserverSubAd($jobOfferAd, $this->fieldToNotTrack);
 	}
 
 	/**
@@ -57,15 +46,7 @@ class JobOfferAdObserver
 	 */
 	public function updated(JobOfferAd $jobOfferAd)
 	{
-		$this->track($jobOfferAd, function ($value, $field) use ($jobOfferAd) {
-			$fieldName = $this->fieldList[$field] ?? $field;
-			$valueName = $this->valueList[$value] ?? $value;
-
-			return [
-				'ad_id' => $jobOfferAd->ad->id,
-				'body' => "Modification de l'annonce : dans le champs <em>" . $fieldName . "</em>, l'utilisateur a modifié pour <em>" . $valueName . "</em>",
-			];
-		});
+		$this->updatedObserverSubAd($jobOfferAd);
 	}
 
 	/**
