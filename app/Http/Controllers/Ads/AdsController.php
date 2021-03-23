@@ -132,7 +132,6 @@ class AdsController extends BaseController
 	{
 		$ad = $this->adService->find($adId);
 
-
 		if (!isset($ad->user_pp_id)) {
 			abort(404);
 		}

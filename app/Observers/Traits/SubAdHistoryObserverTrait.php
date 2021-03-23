@@ -70,7 +70,7 @@ trait SubAdHistoryObserverTrait
 					'reference_table' => $subAd->getTable(),
 					'reference_id'    => $subAd->ad->id,
 					'actor_id'        => Auth::user()->id,
-					'body' => $typeOfObserver.' : un champs a été mis à jour'
+					'body' => $typeOfObserver.' : un champs a été mis à jours'
 				]);
 		}
 	}

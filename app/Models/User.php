@@ -96,7 +96,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
  * @mixin \Eloquent
  */
-class User extends Authenticatable implements HasPresenter,MustVerifyEmail
+class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 {
 	use Notifiable;
 	use CanResetPassword;
@@ -155,15 +155,15 @@ class User extends Authenticatable implements HasPresenter,MustVerifyEmail
 		3 => "Autre",
 	];
 
-    static $profiles = [
-        1 => "candidat à l‘installation",
-        2 => "personne en recherche d’expérience ou de travail dans le domaine agricole",
-        3 => "un agriculteur qui souhaite consolider sa ferme",
-        4 => "un agriculteur qui souhaite transmettre sa ferme",
-        5 => "un propriétaire privé qui souhaite vendre ou louer sa ferme",
-        6 => "un propriétaire privé qui souhaite donner ou léguer sa ferme",
-        7 => "autre",
-    ];
+	static $profiles = [
+		1 => "candidat à l‘installation",
+		2 => "personne en recherche d’expérience ou de travail dans le domaine agricole",
+		3 => "un agriculteur qui souhaite consolider sa ferme",
+		4 => "un agriculteur qui souhaite transmettre sa ferme",
+		5 => "un propriétaire privé qui souhaite vendre ou louer sa ferme",
+		6 => "un propriétaire privé qui souhaite donner ou léguer sa ferme",
+		7 => "autre",
+	];
 
 	static $roles = [
 		0 => "Porteur de projet",
@@ -231,6 +231,31 @@ class User extends Authenticatable implements HasPresenter,MustVerifyEmail
 	}
 
 	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function adsModerator()
+	{
+		return $this->hasMany(AttributionAd::class, "user_moderator_id", 'id');
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function adsSupervisor()
+	{
+		return $this->hasMany(AttributionAd::class, "user_supervisor_id", 'id');
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function adsAdvisor()
+	{
+		return $this->hasMany(AttributionAd::class, "user_advisor_id", 'id');
+	}
+
+
+	/**
 	 * Get the presenter class.
 	 *
 	 * @return string
@@ -275,6 +300,6 @@ class User extends Authenticatable implements HasPresenter,MustVerifyEmail
 	{
 		return $this->hasMany(UserPermission::class, 'user_id');
 	}
-	
+
 
 }

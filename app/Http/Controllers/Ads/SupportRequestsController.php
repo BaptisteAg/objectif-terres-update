@@ -128,7 +128,7 @@ class SupportRequestsController extends BaseController
 					$success = "Votre demande d'accompagnement a bien été mise à jour et sauvegardée";
 				} else {
 					$ad = $this->adService->requestPublishing($data, true);
-					$success = "Votre demande d'accompagnement a créée et sauvegardée";
+					$success = "Votre demande d'accompagnement a été créée et sauvegardée";
 				}
 			} elseif (!empty($data["id"])) {
 				// If this is an update, we'll skip the publishing/attribution part only if the territory doesn't change
