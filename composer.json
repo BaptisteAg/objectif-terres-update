@@ -11,6 +11,7 @@
         "php": "^7.2",
         "ext-json": "*",
         "aacotroneo/laravel-saml2": "^2.1",
+        "bugsnag/bugsnag-laravel": "^2.0",
         "caouecs/laravel-lang": "~4.0",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "~6.0",

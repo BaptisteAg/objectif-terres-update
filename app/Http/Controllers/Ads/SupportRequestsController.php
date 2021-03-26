@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Notifications\BasicNotification;
 use App\Notifications\NewSupportRequestNotification;
 use App\Notifications\SupportRequestAttributionNotification;
+use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Throwable;
@@ -110,18 +111,30 @@ class SupportRequestsController extends BaseController
 
 	/**
 	 * @param AdRequest $request
+	 * @param int $isDraft
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-	 * @throws \Throwable
+	 * @throws Throwable
 	 */
-	public function submitRequest(AdRequest $request)
+	public function submitRequest(AdRequest $request, $isDraft = 0)
 	{
 		$data = $request->validated();
+		$data = array_merge($data, ['is_draft' => $isDraft]);
 		/** @var $ad Ad $ad */
 		try {
-			// If this is an update, we'll skip the publishing/attribution part
-			if (!empty($data["id"])) {
+
+			if ($isDraft === 1) {
+				if (!empty($data["id"])) {
+					$ad = $this->adService->update($data["id"], $data);
+					$success = "Votre demande d'accompagnement a bien été mise à jour et sauvegardée";
+				} else {
+					$ad = $this->adService->requestPublishing($data, true);
+					$success = "Votre demande d'accompagnement a été créée et sauvegardée";
+				}
+			} elseif (!empty($data["id"])) {
+				// If this is an update, we'll skip the publishing/attribution part only if the territory doesn't change
 				$ad = $this->adService->update($data["id"], $data);
-				if ($ad->wasChanged('support_request_territory_id')) {
+				if ($ad->wasChanged('support_request_territory_id') || $ad->wasChanged('is_draft')) {
+					$this->attributionAdService->changeSupportRequestTerritory($ad);
 					$this->adService->handleSupportRequestAttributionNotifications($ad);
 				}
 				$success = "Votre demande a bien été mise à jour.";
@@ -140,34 +153,17 @@ class SupportRequestsController extends BaseController
 					}
 					$this->threadService->createSupportRequestThreadFromResume($data);
 				}
-
 				$this->adService->handleSupportRequestAttributionNotifications($ad);
-
-//				if ($ad->attributionAd->userAdvisor) {
-//					$ad->attributionAd->userAdvisor->notify(new SupportRequestAttributionNotification($ad));
-//				} else {
-//					// send a notification to each related supervisor
-//					foreach ($this->adService->getAdSupervisors($ad) as $supervisor) {
-//						$supervisor->notify(new NewSupportRequestNotification($ad));
-//					}
-//				}
-//				$supportRequestTerritoryModalityContent = CmsPage::where('slug', '=', 'etre-accompagne-text-du-territoire-numero-' . $ad->supportRequestTerritoryId->id)->first()->content;
-//				$ad->userPp->notify(new BasicNotification([
-//					'subject' => "Nous avons bien reçu votre demande d’accompagnement",
-//					'message' => "Merci de nous avoir fait part de votre projet '" . $ad->title . "' .\n
-//                   				Un membre de Terre de Liens " . $ad->supportRequestTerritoryId->name . " prendra contact avec vous prochainement.\n
-//                   				Voici les modalités d’accompagnement de notre association :\n
-//								" . $supportRequestTerritoryModalityContent . "\n
-//                    			Vous pouvez mettre à jour projet sur Objectif Terres\n",
-//					'action' => ["Voir mon projet", route('support-request.show')]
-//				]));
 			}
 			session()->forget('support-request');
 		} catch (AttributionAdException $exception) {
-			return back()->withInput()->withErrors($exception->getMessage());
+			Bugsnag::notifyException($exception);
+			return back()->withInput()->withErrors("(Erreur 54) Désolé, l'opération n'a pas pu être effectuée. Nous en avons été informé et nous faisons le maximum pour résoudre le probleme rapidement. Veuillez réessayer un peu plus tard.");
+//			return back()->withInput()->withErrors($exception->getMessage());
 		} /** Probably an unexpected error */
 		catch
 		(\Exception $exception) {
+			Bugsnag::notifyException($exception);
 			logger()->error($exception->getMessage(), $exception->getTrace());
 			return back()->withInput()->withErrors(
 				"Une erreur imprévu a eu lieu . Merci de nous contacter en précisant le message d'erreur suivant : '
@@ -201,6 +197,17 @@ class SupportRequestsController extends BaseController
 		$vars["currentProjectKeyDataValues"] = $this->adService->allPublicNotesWithProjectDatKeysByAdId($ad->id);
 
 		return view('pages.ads.show', $vars);
+	}
+
+	/**
+	 * @param \Illuminate\Support\Facades\Request $request
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 * @throws \Throwable
+	 */
+	public function save(AdRequest $request)
+	{
+
+		return $this->submitRequest($request, 1);
 	}
 
 

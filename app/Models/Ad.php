@@ -117,6 +117,7 @@ class Ad extends Model implements HasPresenter
         'origin'
 	];
 
+
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
@@ -175,7 +176,6 @@ class Ad extends Model implements HasPresenter
 	{
 		return $this->hasMany(FavoriteAd::class);
 	}
-
 
 	public function jobOfferAd()
 	{
@@ -245,6 +245,15 @@ class Ad extends Model implements HasPresenter
 	{
 		return $this->belongsTo(Territory::class, 'support_request_territory_id');
 	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+	 */
+	public function history()
+	{
+		return $this->morphMany(History::class, 'ads');
+	}
+
 
 	/**
 	 * Get the presenter class.

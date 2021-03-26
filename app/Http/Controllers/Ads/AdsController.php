@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Notifications\BasicNotification;
 use App\Notifications\NewAdToModerateNotification;
 use App\Notifications\NewSupportRequestNotification;
+use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Auth;
@@ -82,7 +83,6 @@ class AdsController extends BaseController
 
 		/** @var $ad Ad $ad */
 		try {
-
 			$ad = $this->adService->requestPublishing($data, $data['is_support_request']);
 			if (!$data['is_support_request']) {
 				$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
@@ -100,6 +100,7 @@ class AdsController extends BaseController
 			}
 
 		} catch (\Exception $exception) {
+			Bugsnag::notifyException($exception);
 			report($exception);
 			if (env('APP_DEBUG')) {
 				//throw $exception;
@@ -130,7 +131,6 @@ class AdsController extends BaseController
 	public function show($adId)
 	{
 		$ad = $this->adService->find($adId);
-
 
 		if (!isset($ad->user_pp_id)) {
 			abort(404);
@@ -234,14 +234,21 @@ class AdsController extends BaseController
 	 */
 	protected function store(AdRequest $request, $isDraft = 1)
 	{
-		$data = $request->validated();
-		$data["is_draft"] = $isDraft;
+		try {
+			$data = $request->validated();
+			$data["is_draft"] = $isDraft;
 
-		if ($isDraft) {
-			$data['ad_status'] = AdStatus::PENDING_MODERATION_STATUS_ID;
+			if ($isDraft) {
+				$data['ad_status'] = AdStatus::PENDING_MODERATION_STATUS_ID;
+			}
+			$ad = $this->adService->store($data);
+
+			return redirect()->route('ads.list', [$ad->id]);
+		} catch (\Exception $exception) {
+
+			Bugsnag::notifyException($exception);
+			return back()->withInput()->withErrors("(Erreur 54) Désolé, l'opération n'a pas pu être effectuée. Nous en avons été informé et nous faisons le maximum pour résoudre le probleme rapidement. Veuillez réessayer un peu plus tard.");
 		}
-		$ad = $this->adService->store($data);
 
-		return redirect()->route('ads.list', [$ad->id]);
 	}
 }

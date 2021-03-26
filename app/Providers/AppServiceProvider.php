@@ -2,6 +2,18 @@
 
 namespace App\Providers;
 
+use App\Models\Ad;
+use App\Models\JobOfferAd;
+use App\Models\JobSeekAd;
+use App\Models\LandOfferAd;
+use App\Models\LandSeekAd;
+use App\Models\User;
+use App\Observers\AdObserver;
+use App\Observers\JobOfferAdObserver;
+use App\Observers\JobSeekAdObserver;
+use App\Observers\LandOfferAdObserver;
+use App\Observers\LandSeekAdObserver;
+use App\Observers\UserObserver;
 use App\Services\Documents\DocumentService;
 use App\Services\Documents\DocumentServiceInterface;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
@@ -32,6 +44,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+    	Ad::observe(AdObserver::class);
+    	LandSeekAd::observe(LandSeekAdObserver::class);
+    	LandOfferAd::observe(LandOfferAdObserver::class);
+    	JobSeekAd::observe(JobSeekAdObserver::class);
+    	JobOfferAd::observe(JobOfferAdObserver::class);
+    	User::observe(UserObserver::class);
         $this->app->bind(DocumentServiceInterface::class, DocumentService::class);
 
         $this->app->singleton('forrest_token', function ($app) {
