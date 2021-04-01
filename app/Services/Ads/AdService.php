@@ -325,13 +325,10 @@ class AdService
 	public function notifyAdvisorOfSupportRequestTerritoryChange(Ad $ad, User $advisor)
 	{
         $advisor->notify(new BasicNotification([
-			'subject' => "Nous avons bien reçu votre demande d’accompagnement",
-			'message' => "Merci de nous avoir fait part de votre projet '" . $ad->title . "' .\n
-                   				Un membre de Terre de Liens " . $ad->supportRequestTerritoryId->name . " prendra contact avec vous prochainement.\n
-                   				Voici les modalités d’accompagnement de notre association :\n
-								" . $supportRequestTerritoryModalityContent . "\n
-                    			Vous pouvez mettre à jour projet sur Objectif Terres\n",
-			'action' => ["Voir mon projet", route('support-request.show')]
+			'subject' => "Le territoire d'une demande d'accompagnement a été modifié",
+			'message' => "La demande d'accompagnement ayant pour titre '" . $ad->title .
+                         "' et pour porteur de projet ". $ad->userPp->first_name ." ". $ad->userPp->name ." 
+                   			a été modifiée et ne vous est désormais plus attribuée."
 		]));
 	}
 

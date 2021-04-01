@@ -46,7 +46,7 @@ class NewSupportRequestNotification extends Notification implements ShouldQueue
 		$url = url('/annonces/' . $this->ad->id);
 		return (new MailMessage)
 			->subject("Accompagnement de " . $this->ad->userPp->name)
-			->greeting('Bonjour' . $notifiable->first_name . ',')
+			->greeting('Bonjour ' . $notifiable->first_name . ',')
 			->line("Une nouvelle demande d'accompagnement concerne votre territoire. Vous devez l’attribuer à un primo-accueillant.")
 			->line("Projet : " . $this->ad->title)
 			->line("Porteur : " . $this->ad->userPp->name)
