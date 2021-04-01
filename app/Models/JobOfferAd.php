@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models\Traits\EducationLevelable;
 use App\Models\Traits\JobOfferTypable;
 use App\Models\Traits\OfferableGenre;
+use Chelout\RelationshipEvents\Concerns\HasMorphToManyEvents;
+use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -38,34 +40,49 @@ use Illuminate\Database\Eloquent\Model;
  */
 class JobOfferAd extends Model
 {
-    use JobOfferTypable;
-    use EducationLevelable;
+	use JobOfferTypable,
+		EducationLevelable,
+		HasMorphToManyEvents,
+		HasRelationshipObservables;
 
-    /**
-     * @var array
-     */
-    protected $fillable = [
-        'ad_id',
-        'is_activity_transmission',
-        'experience_farming',
-        'job_description'
-        //'is_beneficiary',
-        //'education_level_id',
-    ];
+	/**
+	 * @var array
+	 */
+	protected $fillable = [
+		'ad_id',
+		'is_activity_transmission',
+		'experience_farming',
+		'job_description'
+		//'is_beneficiary',
+		//'education_level_id',
+	];
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-    public function ad()
-    {
-        return $this->belongsTo(Ad::class);
-    }
+	public function ad()
+	{
+		return $this->belongsTo(Ad::class);
+	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
-     */
-    public function agriculturalActivity()
-    {
-        return $this->belongsToMany(AgriculturalActivity::class)->withTimestamps();
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+	 */
+	public function agriculturalActivity()
+	{
+		return $this->belongsToMany(AgriculturalActivity::class)->withTimestamps();
+	}
+
+	public static function boot()
+	{
+		parent::boot();
+
+		/**
+		 * Many To Many Polymorphic Relationship Events
+		 */
+
+		static::morphToManyAttaching(function ($relation, $parent, $ids, $attributes) {
+		});
+	}
+
 }

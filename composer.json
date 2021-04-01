@@ -13,6 +13,7 @@
         "aacotroneo/laravel-saml2": "^2.1",
         "bugsnag/bugsnag-laravel": "^2.0",
         "caouecs/laravel-lang": "~4.0",
+        "chelout/laravel-relationship-events": "v1.1.1",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "~6.0",
         "kabbouchi/nova-impersonate": "^1.3",

@@ -45,6 +45,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	{
 		/** @var Ad $model */
 		$model = $this->entity
+			->withTrashed()
 			->where(["id" => $id])
 			->with($this->getFullEagerLoading())
 			->first();

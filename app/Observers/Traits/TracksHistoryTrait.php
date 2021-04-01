@@ -4,6 +4,7 @@
 namespace App\Observers\Traits;
 
 
+use App\Models\Ad;
 use App\Models\History;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -68,5 +69,44 @@ trait TracksHistoryTrait
 			// e.g. first_name -> first name
 			return [str_replace('_', ' ', $key) => $value];
 		});
+	}
+
+	/**
+	 * @param string $relation
+	 * @param Model $model
+	 * @param Ad $ad
+	 * @param array $ids
+	 * @param array $modelNames
+	 * @param array $readableModelName
+	 */
+	protected function polymorphicRelationTrack(string $relation, Model $model, Ad $ad, array $ids, array $modelNames, array $readableModelName){
+		$relationIdsFromModel = $model->$relation->pluck('id')->toArray();
+		if ($relationIdsFromModel !== $ids) {
+			foreach ($ids as $id) {
+				if (!in_array($id, $relationIdsFromModel)) {
+					$relationModel = $modelNames[$relation]::where('id', $id)->get()->first();
+
+					History::create([
+						'reference_table' => $relation,
+						'reference_id' => $id,
+						'ad_id' => $ad->id,
+						'actor_id' => Auth::user()->id,
+						'body' => "Annonce n°" . $ad->id . " : pour le champs <em>" . $readableModelName[$relation] . "</em>, l'utilisateur a renseigné <em>" . $relationModel->name . "</em>"
+					]);
+				}
+			}
+		}
+	}
+
+	protected function belongsToRelationTrack(string $relation, Model $related, Model $parent,  array $readableModelName)
+	{
+		History::create([
+			'reference_table' => $relation,
+			'reference_id' => $related->id,
+			'ad_id' => $related->ad_id,
+			'actor_id' => Auth::user()->id,
+			'body' => "Annonce n°" . $related->ad_id . " : pour le champs <em>" . $readableModelName[$relation] . "</em>, l'utilisateur a renseigné <em>" . $parent->name . "</em>"
+		]);
+
 	}
 }

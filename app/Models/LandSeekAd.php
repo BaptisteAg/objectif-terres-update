@@ -5,6 +5,10 @@ namespace App\Models;
 use App\Models\Traits\EducationLevelable;
 use App\Models\Traits\OfferableGenre;
 use App\Models\Traits\ProductionableGenre;
+use Chelout\RelationshipEvents\Concerns\HasBelongsToEvents;
+use Chelout\RelationshipEvents\Concerns\HasManyEvents;
+use Chelout\RelationshipEvents\Concerns\HasMorphToManyEvents;
+use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -57,9 +61,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class LandSeekAd extends Model
 {
-    use ProductionableGenre;
-    use OfferableGenre;
-    use EducationLevelable;
+	use ProductionableGenre,
+		OfferableGenre,
+		EducationLevelable,
+		HasMorphToManyEvents,
+		HasManyEvents,
+		HasBelongsToEvents,
+		HasRelationshipObservables;
 
 	/**
 	 * @return BelongsTo
@@ -69,34 +77,50 @@ class LandSeekAd extends Model
 		return $this->belongsTo(Ad::class, 'ad_id', 'id');
 	}
 
-    /**
-     * @var array
-     */
-    protected $fillable = [
-        'ad_id',
-        'installation_type_id',
-        'offer_type_id',
-        'is_bio',
-        'production_type_add',
-        'experience_farming',
-        'land_description',
-        'surface_range_min',
-        'surface_range_max',
-        'rent_max',
-        'price_max',
-    ];
+	/**
+	 * @var array
+	 */
+	protected $fillable = [
+		'ad_id',
+		'installation_type_id',
+		'offer_type_id',
+		'is_bio',
+		'production_type_add',
+		'experience_farming',
+		'land_description',
+		'surface_range_min',
+		'surface_range_max',
+		'rent_max',
+		'price_max',
+	];
 
-    /**
-     * @return BelongsTo
-     */
-    public function installationType()
-    {
-        return $this->belongsTo(InstallationType::class);
-    }
+	/**
+	 * @return BelongsTo
+	 */
+	public function installationType()
+	{
+		return $this->belongsTo(InstallationType::class);
+	}
 
-    public function buildings()
-    {
-        return $this->hasMany(LandSeekAdBuilding::class);
-    }
+	public function buildings()
+	{
+		return $this->hasMany(LandSeekAdBuilding::class);
+	}
 
+	public static function boot()
+	{
+		parent::boot();
+
+		static::belongsToAssociating(function ($relation, $related, $parent) {
+		});
+
+		/**
+		 * Many To Many Polymorphic Relationship Events
+		 */
+		static::morphToManyAttaching(function ($relation, $parent, $ids, $attributes) {
+
+		});
+
+
+	}
 }

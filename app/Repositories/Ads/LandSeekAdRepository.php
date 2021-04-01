@@ -1,5 +1,6 @@
 <?php namespace App\Repositories\Ads;
 
+use App\Models\InstallationType;
 use App\Models\LandSeekAd;
 use Illuminate\Support\Arr;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
@@ -26,12 +27,13 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
         return $landSeekAd;
     }
 
-    /**
-     * Update an ad.
-     *
-     * @param LandSeekAd $landSeekAd
-     * @param array $data
-     */
+	/**
+	 * Update an ad.
+	 *
+	 * @param LandSeekAd $landSeekAd
+	 * @param array $data
+	 * @return LandSeekAd
+	 */
     public function update($landSeekAd, array $data): LandSeekAd
     {
         $this->save($landSeekAd, $data);
@@ -48,6 +50,9 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
         $landSeekAd->offerGenres()->sync($data["offer_genres"] ?? []);
 
         $landSeekAd->educationLevels()->sync($data["education_levels"] ?? []);
+
+        $installationType = InstallationType::findOrFail($data["installation_type_id"]);
+        $landSeekAd->installationType()->associate($installationType);
 
         $productionGenres = $data["production_genres"] ?? [];
         if(in_array('other', $productionGenres)) {

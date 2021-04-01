@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Chelout\RelationshipEvents\Concerns\HasBelongsToEvents;
+use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -29,6 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class LandSeekAdBuilding extends Model
 {
+
     protected $fillable = [
         "requirement_id",
         "building_type_id",
@@ -49,4 +52,5 @@ class LandSeekAdBuilding extends Model
     {
         return $this->belongsTo(Requirement::class);
     }
+
 }
