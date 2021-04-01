@@ -363,8 +363,8 @@ class AdPresenter extends BasePresenter
 	public function isProjectAttributedToAdvisor()
 	{
 		$ad = $this->wrappedObject;
-		if (!is_null($ad->project_id)) {
-			if (!is_null($ad->attributionAd->user_advisor_id)) {
+		if (!is_null($ad->project)) {
+			if (!is_null($ad->attributionAd->userAdvisor)) {
 				return true;
 			}
 		}

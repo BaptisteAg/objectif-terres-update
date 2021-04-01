@@ -495,16 +495,23 @@ class AttributionAdsService
 	}
 
 
-	/**
-	 * @param Ad $ad
-	 * @throws Exception
-	 */
-	public function changeSupportRequestTerritory(Ad $ad)
+    /**
+     * @param Ad $ad
+     * @return \App\Models\User|null
+     * @throws Exception
+     */
+	public function unsetAdvisor(Ad $ad)
 	{
 		if(isset($ad->attributionAd->user_advisor_id)){
-			$ad->attributionAd->user_advisor_id= null;
+			$oldAdvisor = $ad->attributionAd->userAdvisor;
+
+			$ad->attributionAd->user_advisor_id = null;
 			$ad->attributionAd->save();
+
+			return $oldAdvisor;
 		}
+
+		return null;
 	}
 
 	/**

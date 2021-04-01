@@ -322,6 +322,19 @@ class AdService
 	/**
 	 * @param Ad $ad
 	 */
+	public function notifyAdvisorOfSupportRequestTerritoryChange(Ad $ad, User $advisor)
+	{
+        $advisor->notify(new BasicNotification([
+			'subject' => "Le territoire d'une demande d'accompagnement a été modifié",
+			'message' => "La demande d'accompagnement ayant pour titre '" . $ad->title .
+                         "' et pour porteur de projet ". $ad->userPp->first_name ." ". $ad->userPp->name ." 
+                   			a été modifiée et ne vous est désormais plus attribuée."
+		]));
+	}
+
+	/**
+	 * @param Ad $ad
+	 */
 	public function handleSupportRequestAttributionNotifications(Ad $ad)
 	{
 		if ($ad->attributionAd->userAdvisor) {
