@@ -101,6 +101,12 @@ class AdPresenter extends BasePresenter
 
 	public function created_at_diff()
 	{
+
+		return \Carbon\Carbon::parse($this->wrappedObject->created_at)->diffForHumans();
+	}
+
+	public function published_on_diff()
+	{
 		if (!$this->wrappedObject->attributionAd) {
 			return '';
 		}

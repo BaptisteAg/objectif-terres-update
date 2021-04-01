@@ -7,6 +7,8 @@ use App\Models\Scopes\ScopeDataFilterable;
 use App\Models\Scopes\ScopeLocationFilterable;
 use App\Models\Traits\Documentable;
 use App\Presenters\AdPresenter;
+use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
+use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -96,7 +98,9 @@ class Ad extends Model implements HasPresenter
 		ScopeAdTypesFilterable,
 		ScopeDataFilterable,
 		ScopeLocationFilterable,
-		SoftDeletes;
+		SoftDeletes,
+		HasMorphedByManyEvents,
+		HasRelationshipObservables;
 
 	/**
 	 * @var array
@@ -113,8 +117,8 @@ class Ad extends Model implements HasPresenter
 		'support_request_id_region',
 		'support_request_territory_id',
 		'is_partner',
-        'created_at',
-        'origin'
+		'created_at',
+		'origin'
 	];
 
 
@@ -238,6 +242,7 @@ class Ad extends Model implements HasPresenter
 	{
 		return $this->belongsTo(Region::class, 'support_request_id_region');
 	}
+
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
@@ -264,4 +269,17 @@ class Ad extends Model implements HasPresenter
 	{
 		return AdPresenter::class;
 	}
+
+	protected static function boot()
+	{
+		parent::boot();
+
+		/**
+		 * Many To Many Polymorphic Relationship Events
+		 */
+
+		static::morphedByManyAttaching(function ($relation, $parent, $ids, $attributes) {
+		});
+	}
+
 }

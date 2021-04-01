@@ -8,7 +8,7 @@ use App\Models\History;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-trait SubAdHistoryObserverTrait
+trait ObserverRelationsTrait
 {
 	use TracksHistoryTrait;
 
@@ -20,7 +20,6 @@ trait SubAdHistoryObserverTrait
 	{
 		$this->track($subAd, function ($value, $field) use ($subAd, $fieldToNotTrack) {
 			if (!in_array($field, $fieldToNotTrack)) {
-
 				$fieldName = $this->fieldList[$field] ?? $field;
 				$valueName = $this->valueList[$value] ?? $value;
 
@@ -39,10 +38,6 @@ trait SubAdHistoryObserverTrait
 	protected function updatedObserverSubAd(Model $subAd)
 	{
 		$this->track($subAd, function ($value, $field) use ($subAd) {
-			if (str_ends_with($field, ' id')) {
-				return $this->handleBelongsToRelationObserver($subAd, $field, $value, "Modification de l'annonce");
-			}
-
 			$fieldName = $this->fieldList[$field] ?? $field;
 			$valueName = $this->valueList[$value] ?? $value;
 
@@ -53,25 +48,30 @@ trait SubAdHistoryObserverTrait
 		});
 	}
 
-	/**
-	 * @param Model $subAd
-	 * @param string $field
-	 * @param string $value
-	 * @param string $typeOfObserver
-	 */
-	protected function handleBelongsToRelationObserver(Model $subAd, string $field, string $value, string $typeOfObserver = "Création de l'annonce")
+	protected function morphToManySubAdObserver(string $relation, Model $model, array $ids)
 	{
-		$fieldNameInCamelCase = ucwords($field);
-		$modelName = str_replace(' ', '', $fieldNameInCamelCase);
-		$belongToRelationModelName = 'App\Models\\'.substr($modelName, 0, strpos($modelName, "Id"));
-		$belongsToModel = $belongToRelationModelName::where('id', $value)->first();
-		if(isset($belongsToModel)){
-			 History::create([
-					'reference_table' => $subAd->getTable(),
-					'reference_id'    => $subAd->ad->id,
-					'actor_id'        => Auth::user()->id,
-					'body' => $typeOfObserver.' : un champs a été mis à jours'
-				]);
+		$ad = $model->ad;
+		$modelNames = [
+			'productionGenres' => "App\Models\ProductionGenre",
+			'productionGenresPossible' => "App\Models\ProductionGenre",
+			'offerGenres' => "App\Models\OfferGenre",
+			'educationLevels'=> "App\Models\EducationLevel",
+			'bioCertifications'=>"App\Models\BioCertification",
+			'jobOfferTypes'=>"App\Models\JobOfferType",
+
+		];
+		$readableModelName = [
+			'productionGenres' => "production",
+			'productionGenresPossible' => "production possible",
+			'offerGenres' => "installation",
+			'educationLevels' => "niveau formation",
+			'jobOfferTypes' => "type d'offre",
+			'bioCertifications'=> 'certification des terres'
+
+		];
+		if (array_key_exists($relation, $modelNames)) {
+			$this->polymorphicRelationTrack($relation, $model, $ad, $ids, $modelNames, $readableModelName);
 		}
 	}
+
 }

@@ -3,11 +3,11 @@
 namespace App\Observers;
 
 use App\Models\LandOfferAd;
-use App\Observers\Traits\SubAdHistoryObserverTrait;
+use App\Observers\Traits\ObserverRelationsTrait;
 
 class LandOfferAdObserver
 {
-	use SubAdHistoryObserverTrait;
+	use ObserverRelationsTrait;
 
 	private $fieldList = [
 		'sau description' => 'description du foncier agricole',
@@ -29,7 +29,10 @@ class LandOfferAdObserver
 
 	private $fieldToNotTrack = [
 		'ad id',
-		'id'
+		'id',
+		'house id',
+		'building id'
+
 	];
 
 	/**
@@ -53,6 +56,11 @@ class LandOfferAdObserver
     {
 		$this->updatedObserverSubAd($landOfferAd);
     }
+
+	public function morphToManyAttaching(string $relation, LandOfferAd $landOfferAd, array $ids, array $attributes)
+	{
+		$this->morphToManySubAdObserver($relation, $landOfferAd, $ids);
+	}
 
 	/**
 	 * Handle the land offer ad "deleted" event.

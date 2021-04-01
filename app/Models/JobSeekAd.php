@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models\Traits\EducationLevelable;
 use App\Models\Traits\JobOfferTypable;
 use App\Models\Traits\OfferableGenre;
+use Chelout\RelationshipEvents\Concerns\HasMorphToManyEvents;
+use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -32,8 +34,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class JobSeekAd extends Model
 {
-    use JobOfferTypable;
-    use EducationLevelable;
+    use JobOfferTypable,
+		EducationLevelable,
+		HasMorphToManyEvents,
+		HasRelationshipObservables;
 
     /**
      * @var array
@@ -50,4 +54,16 @@ class JobSeekAd extends Model
     {
         return $this->belongsTo(Ad::class);
     }
+
+	public static function boot()
+	{
+		parent::boot();
+
+		/**
+		 * Many To Many Polymorphic Relationship Events
+		 */
+
+		static::morphToManyAttaching(function ($relation, $parent, $ids, $attributes) {
+		});
+	}
 }
