@@ -322,6 +322,22 @@ class AdService
 	/**
 	 * @param Ad $ad
 	 */
+	public function notifyAdvisorOfSupportRequestTerritoryChange(Ad $ad, User $advisor)
+	{
+        $advisor->notify(new BasicNotification([
+			'subject' => "Nous avons bien reçu votre demande d’accompagnement",
+			'message' => "Merci de nous avoir fait part de votre projet '" . $ad->title . "' .\n
+                   				Un membre de Terre de Liens " . $ad->supportRequestTerritoryId->name . " prendra contact avec vous prochainement.\n
+                   				Voici les modalités d’accompagnement de notre association :\n
+								" . $supportRequestTerritoryModalityContent . "\n
+                    			Vous pouvez mettre à jour projet sur Objectif Terres\n",
+			'action' => ["Voir mon projet", route('support-request.show')]
+		]));
+	}
+
+	/**
+	 * @param Ad $ad
+	 */
 	public function handleSupportRequestAttributionNotifications(Ad $ad)
 	{
 		if ($ad->attributionAd->userAdvisor) {
