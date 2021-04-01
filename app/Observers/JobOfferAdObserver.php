@@ -3,12 +3,11 @@
 namespace App\Observers;
 
 use App\Models\JobOfferAd;
-use App\Observers\Traits\SubAdHistoryObserverTrait;
-use App\Observers\Traits\TracksHistoryTrait;
+use App\Observers\Traits\ObserverRelationsTrait;
 
 class JobOfferAdObserver
 {
-	use SubAdHistoryObserverTrait;
+	use ObserverRelationsTrait;
 
 	private $fieldList = [
 		'is activity transmission' => ' transmission ou d\'une possibilité de transmission de l\'activité agricole',
@@ -49,6 +48,10 @@ class JobOfferAdObserver
 		$this->updatedObserverSubAd($jobOfferAd);
 	}
 
+	public function morphToManyAttaching(string $relation, JobOfferAd $jobOfferAd, array $ids, array $attributes)
+	{
+		$this->morphToManySubAdObserver($relation, $jobOfferAd, $ids);
+	}
 	/**
 	 * Handle the job offer ad "deleted" event.
 	 *

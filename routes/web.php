@@ -63,6 +63,7 @@ Route::prefix('documents')->name('documents.')->namespace('Documents')->group(fu
 
 Route::get('/register', 'Salesforces\SalesForceAuthController@register');
 
+
 Route::prefix('recherche')->name('researches.')->namespace('Researches')->group(function () {
 	Route::get('/', 'ResearchesController@index')->name('index');
 //
@@ -139,6 +140,8 @@ Route::middleware('moderator')->prefix('gestion-des-annonces')->name('moderator.
 		Route::post('refus', 'AttributionAdsController@rejectAd')->name('rejectAd');
 	});
 });
+
+Route::middleware('moderator')->get('historique/{id}', 'Histories\HistoriesController@show')->name('history.show');
 
 Route::middleware('admin')->prefix('administration')->name('administrator.')->namespace('Administrators')->group(function (){
 	Route::get('liste-utilisateurs-par-territoires', 'AdministratorController@showUsersByTerritories')->name('usersByTerritories');

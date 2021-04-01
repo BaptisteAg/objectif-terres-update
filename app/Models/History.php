@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -44,4 +45,16 @@ class History extends Model
 		'created_at',
 		'updated_at'
 	];
+
+
+	public function getCreatedAtAttribute($date)
+	{
+		return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('H:i d/m/Y');
+	}
+
+	public function getUpdatedAtAttribute($date)
+	{
+		return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('H:i d/m/Y');
+	}
+
 }

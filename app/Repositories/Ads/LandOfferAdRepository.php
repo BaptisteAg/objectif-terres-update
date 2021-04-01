@@ -60,6 +60,7 @@ class LandOfferAdRepository extends AbstractRepository implements LandOfferAdRep
             }
 		}
 
+
 		$landOfferAd->bioCertifications()->sync($data["bio_certifications"] ?? []);
 
 		$landOfferAd->offerGenres()->sync($data["offer_genres"] ?? []);

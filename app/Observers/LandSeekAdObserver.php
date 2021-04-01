@@ -3,11 +3,12 @@
 namespace App\Observers;
 
 use App\Models\LandSeekAd;
-use App\Observers\Traits\SubAdHistoryObserverTrait;
+use App\Observers\Traits\ObserverRelationsTrait;
+use Illuminate\Database\Eloquent\Model;
 
 class LandSeekAdObserver
 {
-	use SubAdHistoryObserverTrait;
+	use ObserverRelationsTrait;
 
 	private $fieldList = [
 		'is bio' => 'projet biologique',
@@ -27,7 +28,8 @@ class LandSeekAdObserver
 
 	private $fieldToNotTrack = [
 		'ad id',
-		'id'
+		'id',
+		'installation type id'
 	];
 
 
@@ -56,8 +58,19 @@ class LandSeekAdObserver
 
 	}
 
-	public function updating(LandSeekAd $landSeekAd){
+	public function updating(LandSeekAd $landSeekAd)
+	{
 
+	}
+
+	public function morphToManyAttaching(string $relation, LandSeekAd $landSeekAd, array $ids, array $attributes)
+	{
+		$this->morphToManySubAdObserver($relation, $landSeekAd, $ids);
+	}
+
+	public function belongsToAssociating(string $relation, Model $related, Model $parent)
+	{
+		$this->belongsToRelationTrack($relation, $related, $parent, ['installationType' => "type d'installation"]);
 	}
 
 	/**

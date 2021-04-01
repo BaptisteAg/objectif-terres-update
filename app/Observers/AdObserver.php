@@ -3,7 +3,9 @@
 namespace App\Observers;
 
 use App\Models\Ad;
+use App\Models\History;
 use App\Observers\Traits\TracksHistoryTrait;
+use Auth;
 
 class AdObserver
 {
@@ -28,6 +30,24 @@ class AdObserver
 		'id'
 	];
 
+
+	public function morphedByManyAttaching(string $relation, Ad $ad, array $ids, array $attributes)
+	{
+		$modelNames = [
+			'cities' => "App\Models\City",
+			'departments' => "App\Models\Department",
+			'regions' => "App\Models\Region"
+		];
+		$readableModelName = [
+			'cities' => "ville",
+			'departments' => "département",
+			'regions' => "régions"
+		];
+		if (array_key_exists($relation, $modelNames)) {
+			$this->polymorphicRelationTrack($relation, $ad, $ad, $ids, $modelNames, $readableModelName);
+		}
+	}
+
 	/**
 	 * Handle the ad "created" event.
 	 *
@@ -36,16 +56,17 @@ class AdObserver
 	 */
 	public function created(Ad $ad)
 	{
+
 		$this->track($ad, function ($value, $field) use ($ad) {
 			if (in_array($field, $this->fieldToNotTrack)) {
 				return $field = null;
 			}
-				$fieldName = $this->fieldList[$field] ?? $field;
-				$valueName = $this->valueList[$value] ?? $value;
-				return [
-					'ad_id' => $ad->id,
-					'body' => "Création de l'annonce : pour le champs <em>" . $fieldName . "</em>, l'utilisateur a renseigné <em>" . $valueName . "</em>",
-				];
+			$fieldName = $this->fieldList[$field] ?? $field;
+			$valueName = $this->valueList[$value] ?? $value;
+			return [
+				'ad_id' => $ad->id,
+				'body' => "Création de l'annonce : pour le champs <em>" . $fieldName . "</em>, l'utilisateur a renseigné <em>" . $valueName . "</em>",
+			];
 
 
 		});

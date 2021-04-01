@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import ModerationModal from "./components/ModerationModal";
 import OSMapControllerFactory from "../../map";
+import AdHistoryModal from "./components/AdHistoryModal";
 
 Vue.component('vue-moderation-modal', {
     components: {
-        ModerationModal
+        ModerationModal,
+        AdHistoryModal
     },
     props: {
         responseTemplates: '',
@@ -19,6 +21,7 @@ Vue.component('vue-moderation-modal', {
             formUrl: '',
             adIdShow: this.adId,
             attributionAd: this.attributionAdId,
+            historyModalOpen : false,
         }
     },
 
@@ -38,8 +41,11 @@ Vue.component('vue-moderation-modal', {
             } else {
                 this.showModal = false
             }
+        },
+        showHistoryModal(){
+            this.historyModalOpen = true;
         }
-    }
+    },
 
 });
 
