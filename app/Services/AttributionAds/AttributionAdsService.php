@@ -69,7 +69,7 @@ class AttributionAdsService
 	{
 		$moderatorIsChargeOfAdModeration = false;
 		$ad = $this->adRepository->find($adId);
-		if ($ad->attributionAd && auth()->user()->id === $ad->attributionAd->user_moderator_id) {
+		if ($ad->attributionAd && auth()->id() === $ad->attributionAd->user_moderator_id) {
 			return $moderatorIsChargeOfAdModeration = true;
 		}
 
@@ -101,7 +101,7 @@ class AttributionAdsService
 	public function countAllAdsToModerateForLoggedModerator()
 	{
 		$pendingModerationStatus = AdStatus::where('id', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
-		return $this->repository->findAllByUserIdAndStatusId($pendingModerationStatus->id, auth()->user()->id)->count();
+		return $this->repository->findAllByUserIdAndStatusId($pendingModerationStatus->id, auth()->id())->count();
 	}
 
 

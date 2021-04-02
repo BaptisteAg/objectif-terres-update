@@ -148,7 +148,12 @@ class UserService
 	public function getCurrentUserTerritoryDepartments(): array
 	{
 		$supervisorLocationTerritoryCodes = [];
-		$userDepartments = User::with('departments')->find(auth()->user()->id);
+
+		if(!auth()->id()) {
+		    return [];
+        }
+
+		$userDepartments = User::with('departments')->find(auth()->id());
 		foreach ($userDepartments->departments as $department) {
 			array_push($supervisorLocationTerritoryCodes, $department->code);
 		}
