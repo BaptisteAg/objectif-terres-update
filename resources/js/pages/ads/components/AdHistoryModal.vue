@@ -62,7 +62,7 @@
         methods: {},
         mounted() {
             axios
-                .get('https://objectif-terres.test/historique/' + this.adId)
+                .get('/historique/' + this.adId)
                 .then(response => (this.historyData = response.data.histories))
                 .catch(error => {
                     console.log(error)
