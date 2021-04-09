@@ -86,13 +86,18 @@ trait TracksHistoryTrait
 				if (!in_array($id, $relationIdsFromModel)) {
 					$relationModel = $modelNames[$relation]::where('id', $id)->get()->first();
 
-					History::create([
-						'reference_table' => $relation,
-						'reference_id' => $id,
-						'ad_id' => $ad->id,
-						'actor_id' => Auth::user()->id,
-						'body' => "Annonce n°" . $ad->id . " : pour le champs <em>" . $readableModelName[$relation] . "</em>, l'utilisateur a renseigné <em>" . $relationModel->name . "</em>"
-					]);
+					try {
+                        History::create([
+                            'reference_table' => $relation,
+                            'reference_id' => $id,
+                            'ad_id' => $ad->id,
+                            'actor_id' => Auth::user()->id,
+                            'body' => "<em>" . $readableModelName[$relation] . "</em> = <em>" . $relationModel->name . "</em>"
+                        ]);
+                    }
+                    catch(\Exception $e) {
+
+                    }
 				}
 			}
 		}
@@ -100,13 +105,17 @@ trait TracksHistoryTrait
 
 	protected function belongsToRelationTrack(string $relation, Model $related, Model $parent,  array $readableModelName)
 	{
-		History::create([
-			'reference_table' => $relation,
-			'reference_id' => $related->id,
-			'ad_id' => $related->ad_id,
-			'actor_id' => Auth::user()->id,
-			'body' => "Annonce n°" . $related->ad_id . " : pour le champs <em>" . $readableModelName[$relation] . "</em>, l'utilisateur a renseigné <em>" . $parent->name . "</em>"
-		]);
+        try {
+            History::create([
+                'reference_table' => $relation,
+                'reference_id' => $related->id,
+                'ad_id' => $related->ad_id,
+                'actor_id' => Auth::user()->id,
+                'body' => "<em>" . $readableModelName[$relation] . "</em> = <em>" . $parent->name . "</em>"
+            ]);
+        }
+        catch(\Exception $e) {
 
+        }
 	}
 }
