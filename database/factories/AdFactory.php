@@ -9,6 +9,15 @@ use App\Models\User;
 use Faker\Factory;
 use Faker\Generator as Faker;
 
+use \Illuminate\Database\Eloquent\FactoryBuilder;
+
+FactoryBuilder::macro('disableEvents', function () {
+	$this->class::flushEventListeners();
+
+	return $this;
+});
+
+
 $factory->define(Ad::class, function () {
 	$faker = Factory::create('fr_FR');
 	$randomDateCreated = \Carbon\Carbon::yesterday()->subtract(rand(0,352).' days');

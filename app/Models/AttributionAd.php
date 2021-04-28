@@ -119,7 +119,7 @@ class AttributionAd extends Model implements Decoratable
 	 */
 	public function refusalType()
 	{
-		return $this->belongsTo(RefusalType::class);
+		return $this->belongsTo(ResponseTemplate::class);
 	}
 
 	/**

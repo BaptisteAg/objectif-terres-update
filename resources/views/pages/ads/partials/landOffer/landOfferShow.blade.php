@@ -277,7 +277,7 @@
         @endif
         <div class="content">
             @if($ad->landOfferAd->sau_description || $ad->landOfferAd->has_houses || $ad->landOfferAd->has_buildings)
-            <h4 class="title is-3"> Description du bâti</h4>
+            <h4 class="title is-3"> Description du foncier</h4>
 
                 @if($ad->landOfferAd->sau_description)
                 <p>  {!! nl2br($ad->landOfferAd->sau_description ?? "") !!}</p>

@@ -48,7 +48,7 @@ class AdNotification extends Notification implements ShouldQueue
 
 		$mailMessage
 			->subject($this->data['subject'])
-			->greeting('Bonjour ' . $notifiable->name . ',')
+			->greeting('Bonjour ' . $notifiable->first_name . ',')
 			->line($this->data['message'])
             ->cc("objectifterres@terredeliens.org")
             ->replyTo("objectifterres@terredeliens.org");

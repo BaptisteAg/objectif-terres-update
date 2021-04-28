@@ -48,7 +48,7 @@ class NewMessageNotification extends Notification implements ShouldQueue
 
 		$mailMessage
 			->subject('Nouveau message de la part de ' . $this->data['sender_first_name'] . ' ' . $this->data['sender_name'])
-			->greeting('Bonjour, ' . $notifiable->name);
+			->greeting('Bonjour, ' . $notifiable->fisrt_name);
 
 		if (isset($this->data['ad_type'])) {
 			$mailMessage->line("Vous avez reçu un nouveau message de " . $this->data['sender_name'] . " au sujet de votre " . $this->data['ad_type'] . " '" . $this->data['ad_title'] . "'");
@@ -58,7 +58,7 @@ class NewMessageNotification extends Notification implements ShouldQueue
 		}
 
 		$mailMessage
-			->line(strip_tags($this->data['message_content']))
+			->line(new HtmlString($this->data['message_content']))
 			->action('Consulter votre messagerie', url('/mon-espace/messagerie'))
 			->line('A bientôt sur Objectif Terres !')
 			->salutation('L\'équipe d\'Objectif Terres')

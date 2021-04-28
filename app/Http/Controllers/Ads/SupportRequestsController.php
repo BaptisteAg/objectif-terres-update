@@ -208,7 +208,7 @@ class SupportRequestsController extends BaseController
                 $success = "Votre demande a bien été mise à jour.";
             } else {
                 $ad = $this->adService->requestPublishing($data, true);
-                $success = 'Votre demande a bien été soumise. Vous receverez une réponse très bientôt !';
+                $success = 'Votre demande a bien été soumise. Vous recevrez une réponse très bientôt !';
 
                 if (isset($data['support_request_text'])) {
                     $data = [

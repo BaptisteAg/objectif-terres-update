@@ -20,6 +20,7 @@ class HomePageController extends Controller
 	public function __construct(AdService $adService)
 	{
 		$this->adService = $adService;
+
 	}
 
 	public function show(AdService $adService, RssService $rssService)

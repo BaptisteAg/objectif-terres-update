@@ -8,6 +8,13 @@ use App\Models\House;
 use App\Models\Land;
 use App\Models\LandOfferAd;
 use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\FactoryBuilder;
+
+FactoryBuilder::macro('disableEvents', function () {
+	$this->class::flushEventListeners();
+
+	return $this;
+});
 
 $factory->define(LandOfferAd::class, function (Faker $faker) {
     return [

@@ -6,20 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ResponseTemplateRequest;
 use App\Models\ResponseTemplate;
 use App\Repositories\ResponseTemplates\ResponseTemplatesRepository;
+use App\Services\Threads\ThreadService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ResponseTemplatesController extends Controller
 {
 	protected $repository;
+	protected $threadService;
 
 	/**
 	 * ResponseTemplatesController constructor.
 	 * @param ResponseTemplatesRepository $responseTemplatesRepository
+	 * @param ThreadService $threadService
 	 */
-	public function __construct(ResponseTemplatesRepository $responseTemplatesRepository)
+	public function __construct(ResponseTemplatesRepository $responseTemplatesRepository, ThreadService $threadService)
 	{
 		$this->repository = $responseTemplatesRepository;
+		$this->threadService = $threadService;
 	}
 
 	/**
@@ -37,6 +41,8 @@ class ResponseTemplatesController extends Controller
 	 */
 	public function create(ResponseTemplateRequest $request)
 	{
+		$data = $request->validated();
+		$data['content'] = $this->threadService->convertContentToHTML($data['content']);
 		$newResponseTemplate = $this->repository->create($request->validated());
 		if (empty($newResponseTemplate->getAttributes())) {
 			return back()->with('warning', 'Une erreur s\'est produite, veuillez réessayer');

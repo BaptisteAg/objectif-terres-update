@@ -48,7 +48,7 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
 	{
 		return (new MailMessage)
 			->subject('Réinitialisation du mot de passe')
-			->greeting('Bonjour,'. $notifiable->name)
+			->greeting('Bonjour,'. $notifiable->first_name)
 			->line('Vous avez demandé la réinitialisation du mot de passe de votre compte.')
 			->line('Pour poursuivre cette opération cliquez ici :')
 			->action('Réinitialiser votre mot de passe',  url(config('app.url').route('password.reset', $this->token, false)))

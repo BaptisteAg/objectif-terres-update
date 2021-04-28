@@ -298,7 +298,6 @@ abstract class BaseController extends Controller
 				}
 			}
 		}
-
 		return compact(
 			'ad',
 			'userMessage',

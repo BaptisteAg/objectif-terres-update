@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Notifications\BasicNotification;
 use App\Notifications\NewSupportRequestNotification;
 use App\Notifications\SupportRequestAttributionNotification;
+use App\Notifications\SupportRequestTerritoryNotification;
 use App\Repositories\AdNotes\AdNotesRepository;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Ads\JobOfferAdRepository;
@@ -36,6 +37,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\HtmlString;
 use Throwable;
 
 /**
@@ -346,13 +348,12 @@ class AdService
 			}
 		}
 		$supportRequestTerritoryModalityContent = CmsPage::where('slug', '=', 'etre-accompagne-text-du-territoire-numero-' . $ad->supportRequestTerritoryId->id)->first()->content;
-		$ad->userPp->notify(new BasicNotification([
+
+		$ad->userPp->notify(new SupportRequestTerritoryNotification([
 			'subject' => "Nous avons bien reçu votre demande d’accompagnement",
-			'message' => "Merci de nous avoir fait part de votre projet '" . $ad->title . "' .\n
-                   				Un membre de Terre de Liens " . $ad->supportRequestTerritoryId->name . " prendra contact avec vous prochainement.\n
-                   				Voici les modalités d’accompagnement de notre association :\n
-								" . $supportRequestTerritoryModalityContent . "\n
-                    			Vous pouvez mettre à jour projet sur Objectif Terres\n",
+			'ad_title' =>$ad->title,
+			'supportRequest_name' =>$ad->supportRequestTerritoryId->name,
+			'supportRequest_content'=> $supportRequestTerritoryModalityContent,
 			'action' => ["Voir mon projet", route('support-request.show')]
 		]));
 	}
