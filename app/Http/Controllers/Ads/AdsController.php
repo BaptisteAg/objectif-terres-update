@@ -109,7 +109,7 @@ class AdsController extends BaseController
 		}
 
 		return redirect()->route('ads.show', [$ad->id])
-			->with('success', 'Votre annonce a bien été soumise à modération. Vous receverez une réponse très bientôt ! ');
+			->with('success', 'Votre annonce a bien été soumise à modération. Vous recevrez une réponse très bientôt ! ');
 	}
 
 	/**

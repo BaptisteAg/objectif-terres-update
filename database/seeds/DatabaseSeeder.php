@@ -89,7 +89,7 @@ class DatabaseSeeder extends Seeder
 			for ($i = 0; $i < $fakeAdsByDepartmentAndTypeCount; $i++) {
 				foreach ($departments as $department) {
 					/** @var Ad[]|\Illuminate\Database\Eloquent\Collection $ads */
-					$ads = factory(Ad::class, 3)->create()->each(function (Ad $ad) use ($department) {
+					$ads = factory(Ad::class, 3)->disableEvents()->create()->each(function (Ad $ad) use ($department) {
 						$ad->adNotes()->save(factory(AdNote::class)->create());
 						$ad->favoriteAds()->save(factory(FavoriteAd::class)->create());
 //					    $ad->documents()->save(factory(Document::class)->make());
@@ -113,7 +113,7 @@ class DatabaseSeeder extends Seeder
 
 	private function createLandOfferAd(Ad $ad)
 	{
-		$landOfferAd = factory(LandOfferAd::class)->create();
+		$landOfferAd = factory(LandOfferAd::class)->disableEvents()->create();
 
 		$cats = ['', 'Vend'];
 		$types = ['ferme', 'pâture', 'terrain', 'location', 'terre', 'petite structure'];
@@ -138,7 +138,7 @@ class DatabaseSeeder extends Seeder
 
 	private function createLandSeekAd(Ad $ad)
 	{
-		$landSeekAd = factory(LandSeekAd::class)->create();
+		$landSeekAd = factory(LandSeekAd::class)->disableEvents()->create();
 
 		$cats = ['', 'Recherche', 'A la recherche de'];
 		$types = ['ferme', 'pâture', 'terrain', 'location', 'terre', 'petite structure'];
@@ -163,7 +163,7 @@ class DatabaseSeeder extends Seeder
 
 	private function createJobOfferAd(Ad $ad)
 	{
-		$jobAd = factory(JobOfferAd::class)->create();
+		$jobAd = factory(JobOfferAd::class)->disableEvents()->create();
 
 		$cats = ['', 'Propose emploi', 'Recrutement', 'Urgent cherche', 'Opportunité'];
 		$types = ['éleveur', 'producteur', 'agent agricole', 'agriculteur'];

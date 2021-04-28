@@ -4,6 +4,15 @@
 
 use App\Models\JobOfferAd;
 use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\FactoryBuilder;
+
+FactoryBuilder::macro('disableEvents', function () {
+	$this->class::flushEventListeners();
+
+	return $this;
+});
+
+
 
 $factory->define(JobOfferAd::class, function (Faker $faker) {
     return [

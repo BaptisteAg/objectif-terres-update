@@ -85,13 +85,17 @@ trait TracksHistoryTrait
 			foreach ($ids as $id) {
 				if (!in_array($id, $relationIdsFromModel)) {
 					$relationModel = $modelNames[$relation]::where('id', $id)->get()->first();
+					$actor_id = 0;
+					if (Auth::check()) {
+						$actor_id = Auth::user()->id;
+					}
 
 					try {
                         History::create([
                             'reference_table' => $relation,
                             'reference_id' => $id,
                             'ad_id' => $ad->id,
-                            'actor_id' => Auth::user()->id,
+                            'actor_id' => $actor_id,
                             'body' => "<em>" . $readableModelName[$relation] . "</em> = <em>" . $relationModel->name . "</em>"
                         ]);
                     }
