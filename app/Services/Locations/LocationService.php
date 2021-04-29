@@ -91,7 +91,7 @@ class LocationService
                 }
                 elseif($type === "department") {
                     $params .="&county=".$q;
-                    $threshold = 0.15;
+                    $threshold = 0.002;
                 }
                 elseif($type === "misc") {
 					$data = explode(";",$q);
