@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Foundation\Console\StorageDocumentsLink;
 use NumaxLab\NovaCKEditor5Classic\Jobs\PruneStaleAttachments;
 
 class Kernel extends ConsoleKernel
