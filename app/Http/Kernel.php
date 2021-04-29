@@ -95,15 +95,4 @@ class Kernel extends HttpKernel
 		\Illuminate\Routing\Middleware\SubstituteBindings::class,
 		\Illuminate\Auth\Middleware\Authorize::class,
 	];
-
-	/**
-	 * @return array
-	 */
-	protected function bootstrappers()
-	{
-		return array_merge(
-			[\Bugsnag\BugsnagLaravel\OomBootstrapper::class],
-			parent::bootstrappers()
-		);
-	}
 }
