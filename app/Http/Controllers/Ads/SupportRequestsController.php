@@ -10,7 +10,6 @@ use App\Models\CmsPage;
 use App\Models\ProjectDataKey;
 use App\Models\Territory;
 use App\Models\User;
-use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Throwable;
@@ -225,18 +224,15 @@ class SupportRequestsController extends BaseController
             }
             session()->forget('support-request');
         } catch (AttributionAdException $exception) {
-            Bugsnag::notifyException($exception);
-            return back()->withInput()->withErrors("(Erreur 54) Désolé, l'opération n'a pas pu être effectuée. Nous en avons été informé et nous faisons le maximum pour résoudre le probleme rapidement. Veuillez réessayer un peu plus tard.");
+            report($exception);
+            return back()->withInput()->withErrors("[61] Désolé, l'opération n'a pas pu être effectuée. Nous en avons été informé et nous faisons le maximum pour résoudre le probleme rapidement. Veuillez réessayer un peu plus tard.");
 //			return back()->withInput()->withErrors($exception->getMessage());
         } /** Probably an unexpected error */
         catch
         (\Exception $exception) {
-            Bugsnag::notifyException($exception);
-            logger()->error($exception->getMessage(), $exception->getTrace());
+            report($exception);
             return back()->withInput()->withErrors(
-                "Une erreur imprévu a eu lieu . Merci de nous contacter en précisant le message d'erreur suivant : '
-				[" . date('d/m/Y H:i:s') . "]' " . $exception->getMessage()
-            );
+                "[62] Désolé, l'opération n'a pas pu être effectuée. Nous en avons été informé et nous faisons le maximum pour résoudre le probleme rapidement. Veuillez réessayer un peu plus tard.");
         }
 
         return redirect()->route('support-request.show')

@@ -9,7 +9,6 @@ use App\Models\User;
 use App\Notifications\BasicNotification;
 use App\Notifications\NewAdToModerateNotification;
 use App\Notifications\NewSupportRequestNotification;
-use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Auth;
@@ -100,12 +99,8 @@ class AdsController extends BaseController
 			}
 
 		} catch (\Exception $exception) {
-			Bugsnag::notifyException($exception);
 			report($exception);
-			if (env('APP_DEBUG')) {
-				//throw $exception;
-			}
-			return back()->withInput()->withErrors($exception->getMessage());
+			return back()->withInput()->withErrors("[51] Désolé, une erreur s'est produite. Nous avons été informé du problème.");
 		}
 
 		return redirect()->route('ads.show', [$ad->id])
@@ -254,9 +249,8 @@ class AdsController extends BaseController
 
 			return redirect()->route('ads.list', [$ad->id]);
 		} catch (\Exception $exception) {
-
-			Bugsnag::notifyException($exception);
-			return back()->withInput()->withErrors("(Erreur 54) Désolé, l'opération n'a pas pu être effectuée. Nous en avons été informé et nous faisons le maximum pour résoudre le probleme rapidement. Veuillez réessayer un peu plus tard.");
+            report($exception);
+            return back()->withInput()->withErrors("[52] Désolé, une erreur s'est produite. Nous avons été informé du problème.");
 		}
 
 	}

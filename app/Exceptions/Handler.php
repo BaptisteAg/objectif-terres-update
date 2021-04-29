@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use GlueDev\Laravel\Stackdriver\StackdriverExceptionHandler;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
@@ -36,6 +37,7 @@ class 	Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        StackdriverExceptionHandler::report($exception);
         parent::report($exception);
     }
 
