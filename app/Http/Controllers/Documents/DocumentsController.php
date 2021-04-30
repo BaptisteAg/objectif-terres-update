@@ -27,11 +27,11 @@ class DocumentsController extends Controller
 	 */
 	public function show(string $type, string $user_id, string $fileName)
 	{
-		$document = $this->service->findByPath('documents/' . $type . '/' . $user_id . '/' . $fileName);
+	    $path = 'documents/' . $type . '/' . $user_id . '/' . $fileName;
 
 		return response()->file(
 			storage_path(
-				$this->getCrossPlatformPath('app/' . $document->path)
+				$this->getCrossPlatformPath('app/' . $path)
 			)
 		);
 	}
