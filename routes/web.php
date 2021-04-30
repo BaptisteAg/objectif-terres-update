@@ -58,7 +58,7 @@ Route::namespace('Cms')->group(function () {
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {
 	Route::middleware('auth')->post('upload', 'DocumentsController@upload')->name('upload');
-	//Route::get('{type}/{user_id}/{filename}', 'DocumentsController@show')->name('show');
+	Route::get('{type}/{user_id}/{filename}', 'DocumentsController@show')->name('show');
 });
 
 Route::get('/register', 'Salesforces\SalesForceAuthController@register');
