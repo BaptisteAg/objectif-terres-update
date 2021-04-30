@@ -1,10 +1,6 @@
 /node_modules
 /public/hot
 /public/storage
-/public/js/*
-!/public/js/bulma-accordion.js
-!/public/js/bulma-carousel.js
-/public/css/*
 /public/mix-manifest.json
 /storage/*.key
 /storage/app/spip
