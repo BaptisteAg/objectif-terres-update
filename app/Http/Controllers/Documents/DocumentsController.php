@@ -20,7 +20,6 @@ class DocumentsController extends Controller
 	}
 
 	/**
-     * @deprecated
      *
 	 * @param string $type
 	 * @param string $fileName
