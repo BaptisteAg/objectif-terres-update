@@ -26,22 +26,26 @@
                 </div>
                 <div class="content">
                     <p><span class="is-size-5 ">Publié par : </span>
-                        @auth()
-                            @if(auth()->user()->role >= 1 )
-                                <span class="subtitle">
-                                    <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->pp_display_name}}</a>
-                                </span>
-                            @elseif(auth()->user()->role < 1)
+                        @if(!empty($ad->userPp))
+                            @auth()
+                                @if(auth()->user()->role >= 1 )
+                                    <span class="subtitle">
+                                        <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->pp_display_name}}</a>
+                                    </span>
+                                @elseif(auth()->user()->role < 1)
+                                    <span class="subtitle">
+                                        {{ $ad->pp_display_name}}
+                                    </span>
+                                @endif
+                            @endauth
+                            @guest()
                                 <span class="subtitle">
                                     {{ $ad->pp_display_name}}
                                 </span>
-                            @endif
-                        @endauth
-                        @guest()
-                            <span class="subtitle">
-                                {{ $ad->pp_display_name}}
-                            </span>
-                        @endguest()
+                            @endguest()
+                        @else
+                            <span class="subtitle">[Utilisateur supprimé]</span>
+                        @endif
                     </p>
                 </div>
                 {{--				<div class="content">--}}
@@ -171,7 +175,7 @@
                         </p>
                     </div>
                 @endif
-                @if($ad->accept_share_contact_infos === 1 && $ad->userPp->phone)
+                @if($ad->accept_share_contact_infos === 1 && !empty($ad->userPp) && $ad->userPp->phone)
                     <div class="content">
                         <p>
                             <span class="is-size-5 ">N° de téléphone : </span>
