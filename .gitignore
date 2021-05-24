@@ -20,3 +20,5 @@ public/.htaccess
 public/.htpasswd
 .editorconfig
 public/documents
+database/sql/terredelspip.zip
+database/sql/terredelspip.sql
