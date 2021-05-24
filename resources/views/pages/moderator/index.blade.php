@@ -195,7 +195,11 @@
                                     </td>
                                     <td>{{$attributionAd->ad->ad_type_full_name}}</td>
                                     <td>
-                                        <a href="{{route('user.show', $attributionAd->ad->userPp->id)}}">{{$attributionAd->ad->userPp->first_name}} {{$attributionAd->ad->userPp->name}}</a>
+                                        @if(!empty($attributionAd->ad->userPp))
+                                            <a href="{{route('user.show', $attributionAd->ad->userPp->id)}}">{{$attributionAd->ad->userPp->first_name}} {{$attributionAd->ad->userPp->name}}</a>
+                                        @else
+                                            [Porteur de projet supprimé]
+                                        @endif
                                     </td>
                                     <td>
                                         @if(isset($attributionAd->userModerator))
@@ -209,7 +213,7 @@
                                             Modérateur non attribué
                                         @endif
                                     </td>
-                                    <td>{{$attributionAd->ad->userPp->email}}</td>
+                                    <td>{{$attributionAd->ad->userPp->email ?? "[Supprimé]"}}</td>
                                     <td>
                                         @if(! is_null($attributionAd->ad->regionsList))
                                             <p>Region(s) : {{$attributionAd->ad->regionsList}}</p>

@@ -49,5 +49,9 @@ class AppUpdate extends Command
         $this->call('view:clear');
         $this->call('cache:clear');
         $this->call('config:cache');
+        $this->call('route:cache');
+        $this->call('optimize');
+
+        exec('composer dumpautoload -o');
     }
 }
