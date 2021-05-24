@@ -273,13 +273,13 @@ class UserService
 	/**
 	 * @param int $permission
 	 * @param array $departmentCodes
-	 * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
+	 * @return User|null
 	 */
-	public function findOneByUserPermissionAndDepartments(int $permission, array $departmentCodes)
-	{
+	public function findOneByUserPermissionAndDepartments(int $permission, array $departmentCodes): ?User
+    {
 		$users = $this->repository->findAllByUserPermissionAndDepartments($permission, $departmentCodes);
 		if (!empty($users)) {
-			return $user = $users->first();
+			return $users->first();
 		}
 		return null;
 	}

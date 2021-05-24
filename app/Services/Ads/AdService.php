@@ -136,7 +136,7 @@ class AdService
 	/**
 	 * @param array $data
 	 * @param bool $isSupportRequest
-	 * @return mixed
+	 * @return Ad
 	 * @throws \Throwable
 	 */
 	public function requestPublishing(array $data, bool $isSupportRequest = false)
