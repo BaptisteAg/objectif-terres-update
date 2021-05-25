@@ -181,7 +181,7 @@ class AdPresenter extends BasePresenter
         $concatenatedLocations = implode(', ',$locations);
 
         if(count($locations) > 1 && substr_count($concatenatedLocations, '.') > 3) {
-            return $locations[0];
+            return reset($locations);
         }
 
         return $concatenatedLocations;
