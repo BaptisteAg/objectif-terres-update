@@ -93,7 +93,7 @@
                                 data-type="close-main-message"></button>
                     </div>
                     <div class="message-body">
-                        {{ $message }}
+                        {!! $message !!}
                     </div>
                 </article>
             @endforeach

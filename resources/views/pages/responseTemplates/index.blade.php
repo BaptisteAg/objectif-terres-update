@@ -119,7 +119,7 @@
 										</div>
 									</template>
 									<template v-else>
-										<div class="column is-2">{{$response->title}}</div>
+										<div class="column is-2">{{$response->title}} <br><br><small><i>Créé le {{$response->created_at}}</i></small></div>
 										<div class="column is-8 ">
 											<p>
 												@php
