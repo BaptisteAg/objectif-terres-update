@@ -33,8 +33,8 @@ return $settings = array(
 
         // Usually x509cert and privateKey of the SP are provided by files placed at
         // the certs folder. But we can also provide them with the following parameters
-        'x509cert' => file_get_contents(__DIR__.'/../../certs/salesforce_api.pem'),
-        'privateKey' => file_get_contents(__DIR__.'/../../certs/salesforce_api.key'),
+        'x509cert' => file_get_contents(__DIR__.'/../../certs/salesforce_api_2021.pem'),
+        'privateKey' => file_get_contents(__DIR__.'/../../certs/salesforce_api_2021.key'),
 
         // Identifier (URI) of the SP entity.
         // Leave blank to use the '{idpName}_metadata' route, e.g. 'test_metadata'.
@@ -80,9 +80,11 @@ return $settings = array(
         'x509cert' => '',
         /*
          *  Instead of use the whole x509cert you can use a fingerprint
-         *  (openssl x509 -noout -fingerprint -in "idp.crt" to generate it)
+         *  (openssl x509 -noout -fingerprint -in "salesforce_api_XXXX.pem" to generate it)
+         *  Remove the ':' characters
          */
-        'certFingerprint' => '87c6a10dadf2fa24cf42ee41d12870f84db3b2f0',
+        //2020 'certFingerprint' => '87c6a10dadf2fa24cf42ee41d12870f84db3b2f0',
+        'certFingerprint' => 'E3E2BD94308A5E454EC39033B65E3C75DBF070C7',
     ),
 
     /***

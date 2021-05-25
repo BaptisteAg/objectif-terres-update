@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Omniphx\Forrest\Providers\Laravel\Facades\Forrest;
 use Tests\TestCase;
 
-class ExampleTest extends TestCase
+class ApiSalesforceTest extends TestCase
 {
 
     public function setUp(): void
