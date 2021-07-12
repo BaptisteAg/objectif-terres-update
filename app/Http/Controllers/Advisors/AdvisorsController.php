@@ -143,7 +143,7 @@ class AdvisorsController extends BaseController
 		} else {
 			if (isset($ad->attributionAd->user_advisor_id)) {
 				$data = [
-					'user_id' => $ad->attributionAd->user_advisor_id,
+					'user_id' => auth()->id(),
 					'ad_id' => $ad->id,
 				];
 				$thread = $this->advisorsService->findThreadAdvisorInChargeOfSupportRequest($data);

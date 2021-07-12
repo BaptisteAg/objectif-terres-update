@@ -364,7 +364,7 @@ class AdPresenter extends BasePresenter
 	{
 		$ad = $this->wrappedObject;
 		if (!is_null($ad->project)) {
-			if (!is_null($ad->attributionAd->userAdvisor)) {
+			if (!is_null($ad->attributionAd->userAdvisor) || !is_null($ad->attributionAd->userAdvisor2) || !is_null($ad->attributionAd->userAdvisor3) || !is_null($ad->attributionAd->userAdvisor4)) {
 				return true;
 			}
 		}

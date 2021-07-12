@@ -50,9 +50,8 @@ class SupportRequestAttributionNotification extends Notification implements Shou
 			->subject('Accompagnement de ' . $this->ad->userPp->name)
 			->greeting('Bonjour ' . $notifiable->first_name . ',');
 
-		if ($this->ad->attributionAd->userSupervisor) {
-			$mail->line("Une nouvelle demande d'accompagnement vous a été attribuée par" . $this->ad->attributionAd->userSupervisor->name . ".");
-		}
+		$mail->line("Une nouvelle demande d'accompagnement vous a été attribuée.");
+
 		$mail
 			->line("Projet : " . $this->ad->title)
 			->line("Porteur : " . $this->ad->userPp->name)

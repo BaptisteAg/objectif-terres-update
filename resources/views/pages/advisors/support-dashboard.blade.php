@@ -43,9 +43,17 @@
                     <p class="has-text-weight-bold"></p>
 
                 @else
-                    <p>Cette demande est attribuée
-                        à
-                        <span class="has-text-weight-bold">{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</span>.
+                    <p>Cette demande est attribuée à (<a href="/annonces/{{$ad->id}}">Modifier</a>) :
+                        <ul style="list-style-type:none;">
+                            @foreach($ad->attributionAd->getAdvisors() as $i => $userAdvisor)
+                                <li>
+                                    <strong>
+                                        {{$userAdvisor->first_name}} {{$userAdvisor->name}}
+                                        <a href="/mon-tableau-de-bord/supprimer-attribution/{{$ad->id}}/{{$i+1}}"></a>
+                                    </strong>
+                                </li>
+                            @endforeach
+                        </ul>
                     </p>
                 @endif
             @else
@@ -66,7 +74,7 @@
                     inline-template
                     :thread='{{ $thread->id ?? 'undefined' }}'
                     :ad-id="{{$ad->id}}"
-                    v-bind:is-user-advisor-in-charge="{{auth()->id() === $ad->attributionAd->user_advisor_id ? 'true' : 'false'}}"
+                    v-bind:is-user-advisor-in-charge="{{$ad->attributionAd->isCurrentUserAdvisorOfAd() ? 'true' : 'false'}}"
             >
                 <div>
                     {!! Form::open(['route' => 'advisor.updateSupport', 'method'=>'post']) !!}
