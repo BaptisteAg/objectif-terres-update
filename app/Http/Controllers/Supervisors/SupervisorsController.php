@@ -109,9 +109,22 @@ class SupervisorsController extends BaseController
 //			return back()->with('warning', 'Votre note est vide !');
 //		}
 
-		$this->projectService->attributeProject($request);
+		$hasSucceeded = $this->projectService->attributeProject($request);
+
+		if(!$hasSucceeded) {
+		    return back()->withErrors("Il ne peut y avoir que 4 primo-accueillants par accompagnement. Veuillez d'abord désattribuer quelqu'un.");
+        }
+
 		return back()->with('success', 'La demande d\'accompagnement a bien été attribuée !');
 	}
+
+	public function deleteAttribution($adId, $slot)
+    {
+        $this->projectService->deleteAttribution($adId,$slot);
+
+
+        return back()->with('success', 'L\'attribution a bien été supprimée !');
+    }
 
 
 	/**

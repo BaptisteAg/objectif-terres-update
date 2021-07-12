@@ -55,6 +55,15 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd whereUserModeratorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd whereUserSupervisorId($value)
  * @mixin \Eloquent
+ * @property int|null $user_advisor_2_id
+ * @property int|null $user_advisor_3_id
+ * @property int|null $user_advisor_4_id
+ * @property-read \App\Models\User $userAdvisor2
+ * @property-read \App\Models\User $userAdvisor3
+ * @property-read \App\Models\User $userAdvisor4
+ * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd whereUserAdvisor2Id($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd whereUserAdvisor3Id($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd whereUserAdvisor4Id($value)
  */
 class AttributionAd extends Model implements Decoratable
 {
@@ -71,6 +80,9 @@ class AttributionAd extends Model implements Decoratable
 		'lead_type_id',
 		'refusal_type_id',
 		'user_advisor_id',
+		'user_advisor_2_id',
+		'user_advisor_3_id',
+		'user_advisor_4_id',
 		'user_moderator_id',
 		'user_supervisor_id',
 		'to_call_back',
@@ -82,13 +94,47 @@ class AttributionAd extends Model implements Decoratable
 
 	const VALIDATION_MESSAGE = "Bonjour,\nVotre annonce vient d’être publiée. Sans intervention de votre part, elle sera en ligne pour 6 mois. Nous espérons qu’Objectif Terres vous permettra d’être contacté. \nCordialement,\nTerre de Liens";
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function userAdvisor()
-	{
-		return $this->belongsTo(User::class);
-	}
+	public function getAdvisors()
+    {
+        return array_filter($this->getAdvisorsUnfiltered());
+    }
+
+	public function getAdvisorsUnfiltered()
+    {
+        return [$this->userAdvisor, $this->userAdvisor2, $this->userAdvisor3, $this->userAdvisor4];
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userAdvisor()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userAdvisor2()
+    {
+        return $this->belongsTo(User::class, 'user_advisor_2_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userAdvisor3()
+    {
+        return $this->belongsTo(User::class, 'user_advisor_3_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userAdvisor4()
+    {
+        return $this->belongsTo(User::class, 'user_advisor_4_id');
+    }
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -139,4 +185,9 @@ class AttributionAd extends Model implements Decoratable
 	{
 		return AdPresenter::class;
 	}
+
+    public function isCurrentUserAdvisorOfAd()
+    {
+        return auth()->id() === $this->user_advisor_id || auth()->id() === $this->user_advisor_2_id || auth()->id() === $this->user_advisor_3_id || auth()->id() === $this->user_advisor_4_id;
+    }
 }

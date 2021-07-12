@@ -95,6 +95,12 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Query\Builder|User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AttributionAd[] $adsAdvisor
+ * @property-read int|null $ads_advisor_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AttributionAd[] $adsModerator
+ * @property-read int|null $ads_moderator_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AttributionAd[] $adsSupervisor
+ * @property-read int|null $ads_supervisor_count
  */
 class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 {

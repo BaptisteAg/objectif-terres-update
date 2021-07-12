@@ -276,7 +276,7 @@ abstract class BaseController extends Controller
 			}
 			if ($user->role >= 2) {
 				$responseTemplates = ResponseTemplate::orderBy('title')->get();
-				if ($user->role >= 3) {
+				if ($user->role >= 2) {
 					//TODO display only advisors that are related to the supervisor
 					$responseTemplates = ResponseTemplate::orderBy('title')->get();
 					if (isset($ad->support_request_territory_id)) {

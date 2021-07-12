@@ -8,19 +8,28 @@
                 <p class="has-text-centered">Résumé : {{ $ad->support_request_text }}</p>
             </section>
         @endif
-        @if($ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->userDepartmentsCodes) || $ad->attributionAd->user_supervisor_id === $currentUser->id)
-            @if($ad->isProjectAttributedToAdvisor)
-                <p class="">Cette demande est attribuée à
-                    <strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>.
-                </p>
-                <p>Vous souhaitez attribuer cette demande à un autre primo-accueillant ?</p>
-            @else
-                <div class="notification is-danger is-light">
-                    Cette demande d'accompagnement n'a pas été encore attribuée à un primo-accueillant !
-                </div>
-                <p class="">Vous souhaitez attribuer cette demande ?</p>
-            @endif
+
+        @if($ad->isProjectAttributedToAdvisor)
+            <p class="">Cette demande est attribuée à :</p>
+                <ul style="list-style-type:none;">
+                @foreach($ad->attributionAd->getAdvisors() as $i => $userAdvisor)
+                    <li>
+                        <strong>
+                            {{$userAdvisor->first_name}} {{$userAdvisor->name}}
+                            <a href="/mon-tableau-de-bord/supprimer-attribution/{{$ad->id}}/{{$i+1}}"><i class="fa fa-trash"></i></a>
+                        </strong>
+                    </li>
+                @endforeach
+                </ul>
+
+            <br>
         @else
+            <div class="notification is-danger is-light">
+                Cette demande d'accompagnement n'a pas été encore attribuée à un primo-accueillant !
+            </div>
+        @endif
+
+        @if(!$ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->userDepartmentsCodes))
             @if(isset($ad->attributionAd->user_supervisor_id))
                 <p class="">Le responsable territorial de cette demande est
                     <strong>{{$ad->attributionAd->userSupervisor->first_name}} {{$ad->attributionAd->userSupervisor->name}}</strong>.
@@ -32,14 +41,8 @@
             @else
                 <p class="">Cette demande d'accomapgnement ne concerne pas votre terriotire.
                 </p>
-
             @endif
-
-            @if($ad->isProjectAttributedToAdvisor)
-                <p class="">Cette demande est attribuée à
-                    <strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>.
-                </p>
-                <br>
+            @if($ad->isProjectAttributedToAdvisor && $ad->attributionAd->userAdvisor)
                 <a href="{{route('advisor.showSupport', $ad->id)}}" class="button is-link ">
                     <span class="icon is-small">
                         <i class="fas fa-search"></i>
@@ -51,10 +54,11 @@
 
     </div>
     <br>
-    @if($ad->attributionAd->user_supervisor_id === $currentUser->id || $ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->userDepartmentsCodes ))
+    @if($ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->userDepartmentsCodes ))
         <div class="columns is-centered ">
             <div class="column is-half has-text-centered ">
-                @if($advisorUsers->count() >0)
+                <p class="">Vous souhaitez attribuer cette demande ?</p>
+                @if(count($advisorUsers) > 0)
                     <div class="field">
                         <label class="label">Séléctionnez une personne parmi les primo-accueillants de votre
                             territoire</label>

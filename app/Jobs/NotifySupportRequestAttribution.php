@@ -40,11 +40,11 @@ class NotifySupportRequestAttribution implements ShouldQueue
 	 * @param int $adId
 	 * @return void
 	 */
-	public function handle(int $adId)
+	public function handle(int $adId, $newAdvisorId)
 	{
 		$ad = Ad::find($adId);
 		/** @var User $advisor */
-		$advisor = $this->userRepository->find($ad->attributionAd->user_advisor_id);
+		$advisor = $this->userRepository->find($newAdvisorId);
 		$advisor->notify(new SupportRequestAttributionNotification($ad));
 	}
 }
