@@ -41,17 +41,8 @@ class AppUpdate extends Command
      */
     public function handle()
     {
-        exec('npm install');
-        exec('composer install');
-
         $this->call('migrate');
-
         $this->call('view:clear');
-        $this->call('cache:clear');
-        $this->call('config:cache');
-        $this->call('route:cache');
         $this->call('optimize');
-
-        exec('composer dumpautoload -o');
     }
 }

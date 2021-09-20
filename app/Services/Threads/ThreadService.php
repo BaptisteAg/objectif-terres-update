@@ -413,7 +413,7 @@ class ThreadService
 	public function findSupportRequestThread(int $adId)
 	{
 		/** @var Thread $thread */
-		$thread = $this->repository->findThreadByUserIdAndAdId(auth()->id(), $adId)->first();
+		$thread = $this->repository->findThreadByAdId($adId);
 		return $thread;
 	}
 

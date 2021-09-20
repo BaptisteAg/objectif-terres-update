@@ -99,7 +99,7 @@ class AttributionAd extends Model implements Decoratable
         return array_filter($this->getAdvisorsUnfiltered());
     }
 
-	public function getAdvisorsUnfiltered()
+	public function getAdvisorsUnfiltered(): array
     {
         return [$this->userAdvisor, $this->userAdvisor2, $this->userAdvisor3, $this->userAdvisor4];
     }

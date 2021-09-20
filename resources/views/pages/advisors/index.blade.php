@@ -331,14 +331,22 @@
                                     </td>
                                     <td>
                                         @if(!is_null($ad->project_id))
-                                            @if(isset($ad->attributionAd->userAdvisor))
-                                                @if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
-                                                    <strong>Vous êtes le primo-accueillant de cette demande</strong>
-                                                @else
-                                                    Attribué
-                                                    à
-                                                    <strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>
-                                                @endif
+                                            @if(count($ad->attributionAd->getAdvisors()))
+                                                Attribué
+                                                à
+                                                @foreach($ad->attributionAd->getAdvisors() as $i => $advisor)
+                                                    @if($i)
+                                                        et
+                                                    @endif
+                                                    @if($advisor->id === auth()->user()->id)
+                                                        <strong>Vous</strong>
+                                                    @else
+                                                        <strong>
+                                                            {{$advisor->first_name}}
+                                                            {{$advisor->name}}
+                                                        </strong>
+                                                    @endif
+                                                @endforeach
                                             @else
                                                 <span class="tag is-danger is-light">Non attribué</span>
                                             @endif

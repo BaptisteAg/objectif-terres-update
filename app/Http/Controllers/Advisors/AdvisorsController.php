@@ -103,10 +103,10 @@ class AdvisorsController extends BaseController
             'subject' => "Bienvenue sur Objectif Terres !",
             'message' => "
                 Vous avez été inscrit sur Objectif Terres par un primo-accueillant pour réaliser votre projet agricole.\n
-                
+
                 Le mot de passe généré pour vous est le suivant : ".$data["password"]."\n
                 Utilisez-le pour vous connecter sur le site. Vous pourrez ensuite le modifier.\n\n
-                
+
                 Merci de confirmer votre email.",
             'action' => [
                 "Confirmer mon email",
@@ -135,22 +135,14 @@ class AdvisorsController extends BaseController
 //			$thread = $this->threadService->createSupportRequestThread($ad->id);
 //		}
 
-		if (auth()->id() === $ad->attributionAd->user_advisor_id) {
-			$thread = $this->threadService->findSupportRequestThread($ad->id);
+        $thread = $this->threadService->findSupportRequestThread($ad->id);
+
+		if (in_array(auth()->id(), array_column($ad->attributionAd->getAdvisors(), 'id'), true)) {
 			if (!isset($thread)) {
 				$thread = $this->threadService->createSupportRequestThread($ad->id, auth()->id());
 			}
-		} else {
-			if (isset($ad->attributionAd->user_advisor_id)) {
-				$data = [
-					'user_id' => auth()->id(),
-					'ad_id' => $ad->id,
-				];
-				$thread = $this->advisorsService->findThreadAdvisorInChargeOfSupportRequest($data);
-			} else {
-				$thread = null;
-			}
 		}
+
 		$this->advisorsService->handleSupportDashboardNotifications($ad);
 		$vars = $this->getSupportDashboardVars($ad);
 		$vars['ad'] = $ad;

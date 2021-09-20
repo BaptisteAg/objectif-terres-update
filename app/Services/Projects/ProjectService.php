@@ -122,7 +122,7 @@ class ProjectService
 			}
 
 		});
-		return $groupPublishedAdsByYears = $onlyProjectCreatedLastYear->mapToGroups(function ($project, $key) {
+		return $onlyProjectCreatedLastYear->mapToGroups(function ($project, $key) {
 			$date = Carbon::parse($project->created_at);
 			return [$date->year => $project];
 		});
@@ -295,6 +295,7 @@ class ProjectService
 		$newAdvisorId = $request->input('user_advisor_id');
 
 		$advisorSlotSuffix = '';
+
 		foreach($attributionAd->getAdvisorsUnfiltered() as $i => $advisor) {
 		    if(!$advisor && $i) {
 		        $advisorSlotSuffix = '_' . ($i+1);
