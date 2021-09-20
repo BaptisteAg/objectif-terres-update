@@ -65,7 +65,7 @@
             <div class="columns  ">
                 <div class="column is-half ">
                     <div class="buttons are-medium">
-                        <a href="{{route('advisor.export')}}" class="button  is-link">
+                        <a href="{{route('advisor.export')}}?{{request()->getQueryString()}}" class="button  is-link">
                             <span class="icon">
                                 <i class="fas fa-table"></i>
                             </span>
