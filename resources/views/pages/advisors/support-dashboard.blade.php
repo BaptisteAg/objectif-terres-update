@@ -37,7 +37,7 @@
             @if(!is_null($ad->attributionAd->userAdvisor))
                 @if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
                     <div class="notification is-primary">
-                        Vous êtes le primo-accueillant pour cette demande ! <br>
+                        Vous êtes le primo-accueillant pour cette demande ! (<a href="/annonces/{{$ad->id}}">Modifier</a>) <br>
                         N'oubliez pas de mettre à jour le stade et l'état de la demande ainsi que l'avancement du projet !
                     </div>
                     <p class="has-text-weight-bold"></p>

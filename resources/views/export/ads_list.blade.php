@@ -59,7 +59,7 @@
 	@foreach($ads as $ad)
 		@if(! isset($ad->project) )
 			<tr>
-				<td>{{$ad->attributionAd->created_at?: ''}}</td>
+				<td>{{$ad->attributionAd->created_at ?? ''}}</td>
 				<td>{{$ad->title?: ''}}</td>
 				<td>{{$ad->ad_type_full_name?: ''}}</td>
 				<td>{{$ad->userPp->first_name ?: ''}} {{$ad->userPp->name ?: ''}}</td>

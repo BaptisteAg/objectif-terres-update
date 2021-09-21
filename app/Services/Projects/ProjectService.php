@@ -299,6 +299,7 @@ class ProjectService
 		foreach($attributionAd->getAdvisorsUnfiltered() as $i => $advisor) {
 		    if(!$advisor && $i) {
 		        $advisorSlotSuffix = '_' . ($i+1);
+                break;
             }
         }
 

@@ -43,7 +43,7 @@
 			</td>
 			<td>{{$ad->userPP->other_profile ?? ""}}</td>
 			<td>
-				@if($ad->userPP->accept_communication === 1 )
+				@if(!empty($ad->userPP->accept_communication) && $ad->userPP->accept_communication === 1 )
 					oui
 				@else
 					non
