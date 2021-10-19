@@ -352,7 +352,7 @@ class AdPresenter extends BasePresenter
 	{
 		$ad = $this->wrappedObject;
 
-		return $ad->user_pp_id === auth()->id();
+		return $ad->user_pp_id === auth()->id() || $ad->attributionAd->userModerator === auth()->id();
 	}
 
 	private function isPpDocument(Document $document)

@@ -6,8 +6,10 @@
                 v-model='date'
                 :max-date='new Date(Date.now())'
                 :is-required=true
-                :input-props='{
-                         placeholder: "Sélectionner une plage de dates"}'
+                :input-props='{ placeholder: "Sélectionner une plage de dates"}'
+                :first-day-of-week="2"
+                :masks="{ title: 'MMM YYYY' }"
+                locale="fr"
         >
         </date-picker>
 
@@ -51,7 +53,7 @@
                 if (!this.date || !this.date.start || !this.date.end) {
                     return []
                 } else {
-                    return [this.date.start.toLocaleDateString(), this.date.end.toLocaleDateString()]
+                    return [this.date.start.toLocaleDateString('fr-FR'), this.date.end.toLocaleDateString('fr-FR')]
                 }
             },
         },

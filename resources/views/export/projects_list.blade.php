@@ -17,7 +17,11 @@
 		<th>Type de projet</th>
 		<th>Nom du porteur de projet</th>
 		<th>Adresse mail</th>
-		<th>Localisation(s)</th>
+		<th>Code Postal du PP</th>
+		<th>Territoire</th>
+		<th>Région(s)</th>
+		<th>Département(s)</th>
+		<th>Commune(s)</th>
 		<th>Nom du primo-accueillant</th>
 		<th>Nom du responsable territorial</th>
 		<th>Descritpion du projet</th>
@@ -58,15 +62,21 @@
 				<td>{{$ad->ad_type_full_name?: ''}}</td>
 				<td>{{$ad->userPp->first_name ?? ''}} {{$ad->userPp->name ?? ''}}</td>
 				<td>{{$ad->userPP->email ?? ''}}</td>
+				<td>{{$ad->userPP->zipCode->zip_code ?? ''}}</td>
+				<td>{{$ad->supportRequestTerritoryId->name}}</td>
 				<td>
 					@if(! is_null($ad->regionsList))
-						<p>Region(s) : {{$ad->regionsList}}</p>
+						<p>{{$ad->regionsList}}</p>
 					@endif
-					@if(! is_null($ad->departmentList))
-						<p>Département(s) : {{$ad->departmentsList}}</p>
+				</td>
+				<td>
+					@if(! is_null($ad->departmentsList))
+						<p>{{$ad->departmentsList}}</p>
 					@endif
+				</td>
+				<td>
 					@if(! is_null($ad->citiesList))
-						<p>Communes(s) : {{$ad->citiesList}}</p>
+						<p>{{$ad->citiesList}}</p>
 					@endif
 				</td>
 				<td>{{$ad->attributionAd->userAdvisor->first_name ?? '' }} {{ $ad->attributionAd->userAdvisor->name ?? ''}}</td>

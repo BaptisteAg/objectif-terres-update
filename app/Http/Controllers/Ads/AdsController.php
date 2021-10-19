@@ -87,11 +87,14 @@ class AdsController extends BaseController
 				$ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
 				$ad->userPp->notify(new BasicNotification([
 					'subject' => "Votre annonce va être modérée",
-					'message' => "Votre annonce '" . $ad->title . "' va être modérée par un membre de l’équipe sous 7 jours.\n
-                    Vous pouvez gérer vos annonces depuis votre espace personnel Objectif Terres :\n",
-					'action' => ["Gérer mes annonces", route('ads.list')],
-					'salutation' => "En vous remerciant pour votre confiance,\n
-									L’équipe d’Objectif Terres."
+					'message' => "Votre annonce '" . $ad->title . "' va être prochainement modérée par un membre de l’équipe, qui rassemble ".
+                        "des bénévoles et salarié·es. Souvent en déplacement sur le terrain, nous faisons notre possible pour vous répondre le plus ".
+					    "rapidement.\n\n
+
+                        Vous pouvez gérer vos annonces depuis votre espace personnel Objectif Terres :\n",
+                        'action' => ["Gérer mes annonces", route('ads.list')],
+                        'salutation' => "En vous remerciant pour votre confiance,\n
+                                        L’équipe d’Objectif Terres."
 				]));
 
 			} elseif ($data['is_support_request'] && isset($ad->attributionAd->user_advisor_id)) {
@@ -165,7 +168,7 @@ class AdsController extends BaseController
 
 		if ($ad->origin === "spip") {
 			session()->now('warning',
-				"Ceci est une annonce de l’ancien site de petites annonces, 
+				"Ceci est une annonce de l’ancien site de petites annonces,
                 l’affichage peut être minimal car toutes les informations sont contenues dans les champs de textes libres."
 			);
 		}

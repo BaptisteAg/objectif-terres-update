@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Notifications\BasicNotification;
 use App\Services\Auth\RegisterService;
 use Carbon\Carbon;
+use http\Env\Response;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
@@ -168,7 +169,9 @@ class AdvisorsController extends BaseController
 	 */
 	public function export()
 	{
-		return (new AdvisorsExport($this->advisorsService->showForAdvisor(request())))->download('export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
+        $request = request()->merge(["projects_show" => true]);
+
+		return (new AdvisorsExport($this->advisorsService->showForAdvisor($request)))->download('export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
 //		return Excel::download(new AdvisorsExport($this->advisorsService->showForAdvisor(new Request())), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
 	}
 

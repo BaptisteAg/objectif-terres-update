@@ -39,10 +39,10 @@ class ProjectExport implements FromView, WithTitle, WithColumnWidths
 			'B' => 25,
 			'E' => 50,
 			'G' => 30,
-			'O' => 30,
-			'W' => 30,
-			'AC' => 30,
-			'AD' => 30
+			'T' => 30,
+			'AB' => 30,
+			'AH' => 30,
+			'AI' => 30
 		];
 	}
 

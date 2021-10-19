@@ -394,6 +394,13 @@ MENU SITE
     padding-bottom: 0.25em;
   }
 }
+.menu-site > li.secondary.inverse > .menu__link {
+  background-color: #7da237;
+  color: #fff;
+}
+.menu-site > li.secondary.inverse > .menu__link:hover {
+  color:#7da237;
+}
 
 
 /*

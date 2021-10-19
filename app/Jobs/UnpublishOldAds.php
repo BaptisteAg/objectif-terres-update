@@ -50,9 +50,9 @@ class UnpublishOldAds implements ShouldQueue
 		foreach ($attributionAds as $attributionAd) {
 
 			$data['subject'] = 'Votre annonce a été dépubliée';
-			$data['message'] = 'Votre annonce était en ligne depuis 6 mois. Sans intervention de votre part, nous l\'avons archivée. 
+			$data['message'] = 'Votre annonce était en ligne depuis 6 mois. Sans intervention de votre part, nous l\'avons archivée.
 			Vous avez toujours la possibilité de la soumettre à nouveau à modération en allant dans votre compte et en cliquant sur "Modifier"';
-			//TODO the url is the link to the modification ad form
+
 			$data['url'] = '/annonces/' . $attributionAd->ad->id;
 
 			/** @var User $userToNotify */

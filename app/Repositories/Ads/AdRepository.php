@@ -1035,6 +1035,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			'userPp' => function ($query) {
 				$query->withTrashed();
 			},
+            'userPp.zipCode',
 			'landSeekAd',
 			'landOfferAd',
 			'jobOfferAd',

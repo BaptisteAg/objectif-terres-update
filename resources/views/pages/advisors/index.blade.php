@@ -65,7 +65,7 @@
             <div class="columns  ">
                 <div class="column is-half ">
                     <div class="buttons are-medium">
-                        <a href="{{route('advisor.export')}}?{{request()->getQueryString()}}" class="button  is-link">
+                        <a href="{{route('advisor.export')}}?{{request()->getQueryString()}}" class="button  is-link" onclick="exportLoader()">
                             <span class="icon">
                                 <i class="fas fa-table"></i>
                             </span>
@@ -78,10 +78,20 @@
                             </span>
                             <span>Ajouter un PP</span>
                         </a>
+
                     </div>
 
                 </div>
             </div>
+
+            <div id="exportLoader"></div>
+
+            <script>
+                function exportLoader() {
+                    document.getElementById("exportLoader").innerText = "Veuillez patienter un instant pour l'export.."
+                }
+                document.addEventListener("load", function () {console.log("oui")})
+            </script>
         </div>
         {{Form::close()}}
         <div class="section pt-20">
