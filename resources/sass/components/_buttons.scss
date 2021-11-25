@@ -245,6 +245,25 @@ THEME (necessary)
   color: $warning-bright;
 }
 
+.button.button-green {
+  background-color:#7da237 !important;
+  color:#fff !important;
+}
+.button.button-green:hover {
+  background-color:#fff !important;
+  color:#7da237 !important;
+}
+
+.plus-de-criteres {
+  background: #fff;
+  font-weight: bold;
+  border: 1px solid #eee;
+  padding: 3px 10px;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+}
+
 /* Danger */
 
 .button.danger.basic,

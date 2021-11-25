@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Request;
 
 class AdsController extends BaseController
 {
-	public const PUBLISHED_AD_LIMIT_PER_USER = 20;
+	public const PUBLISHED_AD_LIMIT_PER_USER = 50;
 
 	/**
 	 * Display the ad creation form
@@ -204,7 +204,7 @@ class AdsController extends BaseController
 		if (is_null($ad->project_id)) {
 			return back()->with('success', 'Votre annonce a bien été supprimée');
 		}
-		return redirect()->route('user.index')->with('success', 'Votre demande d\'accomapgnement a été supprimée avec succès');
+		//return redirect()->route('user.index')->with('success', 'Votre demande d\'accomapgnement a été supprimée avec succès');
 	}
 
 	/**

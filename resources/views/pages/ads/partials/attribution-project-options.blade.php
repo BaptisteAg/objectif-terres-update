@@ -1,3 +1,12 @@
+
+
+<a href="{{route('advisor.showSupport', $ad->id)}}" class="button is-link ">
+                <span class="icon is-small">
+                    <i class="fas fa-arrow-left"></i>
+                </span>
+    <span>Retourner à l'espace de suivi</span>
+</a>
+
 {!! Form::open(['route' => 'supervisor.attribute', 'method'=>'post']) !!}
 <div class="box has-text-centered">
     <div class="container">
@@ -9,7 +18,7 @@
             </section>
         @endif
 
-        @if($ad->isProjectAttributedToAdvisor)
+        @if(count($ad->attributionAd->getAdvisors()))
             <p class="">Cette demande est attribuée à :</p>
                 <ul style="list-style-type:none;">
                 @foreach($ad->attributionAd->getAdvisors() as $i => $userAdvisor)
@@ -29,7 +38,7 @@
             </div>
         @endif
 
-        @if(!$ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->userDepartmentsCodes))
+        {{--@if(!$ad->isProjectInUserTerritories($currentUser->userTerritoryIds, $currentUser->userDepartmentsCodes))--}}
             @if(isset($ad->attributionAd->user_supervisor_id))
                 <p class="">Le responsable territorial de cette demande est
                     <strong>{{$ad->attributionAd->userSupervisor->first_name}} {{$ad->attributionAd->userSupervisor->name}}</strong>.
@@ -42,15 +51,7 @@
                 <p class="">Cette demande d'accomapgnement ne concerne pas votre terriotire.
                 </p>
             @endif
-            @if($ad->isProjectAttributedToAdvisor && $ad->attributionAd->userAdvisor)
-                <a href="{{route('advisor.showSupport', $ad->id)}}" class="button is-link ">
-                    <span class="icon is-small">
-                        <i class="fas fa-search"></i>
-                    </span>
-                    <span>Accéder à l'espace de suivi</span>
-                </a>
-            @endif
-        @endif
+        {{--@endif--}}
 
     </div>
     <br>
@@ -68,7 +69,7 @@
                                 <option disabled selected hidden class="has-text-grey-light">Veuillez choisir...
                                 </option>
                                 @foreach ($advisorUsers as $advisor)
-                                    @if(isset($ad->attributionAd->userAdvisor) and $ad->attributionAd->user_advisor_id === $advisor->id )
+                                    @if(in_array($advisor->id, array_map(fn($user) => $user->id, $ad->attributionAd->getAdvisors())) )
                                         <option disabled
                                                 value="{{$advisor->id}}">{{$advisor->first_name}} {{$advisor->name}}</option>
                                     @else

@@ -185,7 +185,7 @@ class UserService
 
 		return User::filterSubLocations('departments', $regionsCodes, 'departments.region_code')
 			->where('role', $roleId)
-			->inRandomOrder()
+            ->orderBy('name')
 			->first();
 	}
 
@@ -198,7 +198,7 @@ class UserService
 	{
 		return User::filterSubLocations('departments', $departmentCodes, 'departments.code')
 			->whereIn('role', $rolesId)
-			->inRandomOrder()
+            ->orderBy('name')
 			->get();
 	}
 
@@ -213,7 +213,7 @@ class UserService
 		$regionsCode = Region::whereIn('id', $regionsId)->get('code')->toArray();
 		return User::filterSubLocations('departments', $regionsCode, 'departments.region_code')
 			->where('role', $roleId)
-			->inRandomOrder()
+            ->orderBy('name')
 			->get();
 	}
 
@@ -227,7 +227,7 @@ class UserService
 	{
 		return User::filterSubLocations('departments', $territoryIds, 'departments.territory_id')
 			->whereIn('role', $roleIds)
-			->inRandomOrder()
+			->orderBy('name')
 			->get();
 	}
 

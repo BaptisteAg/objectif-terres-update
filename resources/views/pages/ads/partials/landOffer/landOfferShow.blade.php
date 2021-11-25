@@ -24,30 +24,32 @@
                         </p>
                     @endif
                 </div>
-                <div class="content">
-                    <p><span class="is-size-5 ">Publié par : </span>
-                        @if(!empty($ad->userPp))
-                            @auth()
-                                @if(auth()->user()->role >= 1 )
-                                    <span class="subtitle">
-                                        <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->pp_display_name}}</a>
-                                    </span>
-                                @elseif(auth()->user()->role < 1)
-                                    <span class="subtitle">
-                                        {{ $ad->pp_display_name}}
-                                    </span>
+                    @if($ad->accept_share_contact_infos === 1)
+                        <div class="content">
+                            <p><span class="is-size-5 ">Publié par : </span>
+                                @if(!empty($ad->userPp))
+                                    @auth()
+                                        @if(auth()->user()->role >= 1 )
+                                            <span class="subtitle">
+                                                <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->pp_display_name}}</a>
+                                            </span>
+                                        @elseif(auth()->user()->role < 1)
+                                            <span class="subtitle">
+                                                {{ $ad->pp_display_name}}
+                                            </span>
+                                        @endif
+                                    @endauth
+                                    @guest()
+                                        <span class="subtitle">
+                                            {{ $ad->pp_display_name}}
+                                        </span>
+                                    @endguest()
+                                @else
+                                    <span class="subtitle">[Utilisateur supprimé]</span>
                                 @endif
-                            @endauth
-                            @guest()
-                                <span class="subtitle">
-                                    {{ $ad->pp_display_name}}
-                                </span>
-                            @endguest()
-                        @else
-                            <span class="subtitle">[Utilisateur supprimé]</span>
-                        @endif
-                    </p>
-                </div>
+                            </p>
+                        </div>
+                    @endif
                 {{--				<div class="content">--}}
                 {{--					<p><span class="is-size-5 is-capitalized has-text-black">Catégorie : </span><span--}}
                 {{--								class="subtitle">{{$ad->ad_type_full_name}}</span></p>--}}

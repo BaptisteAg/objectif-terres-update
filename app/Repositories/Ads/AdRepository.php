@@ -354,9 +354,17 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			->where(function (Builder $query) {
 				$query->whereHas('attributionAd', function (Builder $subQuery) {
 					$subQuery->whereNull('ad_status_id');
-					$subQuery->whereNotNull('user_advisor_id');
+					$subQuery->whereNotNull('user_advisor_id')
+                        ->orWhereNotNull('user_advisor_2_id')
+                        ->orWhereNotNull('user_advisor_3_id')
+                        ->orWhereNotNull('user_advisor_4_id');
+
 					if (auth()->user()->role == 2) {
-						$subQuery->where('user_advisor_id', '=', auth()->user()->id);
+						$subQuery
+                            ->where('user_advisor_id', '=', auth()->user()->id)
+                            ->orWhere('user_advisor_2_id', '=', auth()->user()->id)
+                            ->orWhere('user_advisor_3_id', '=', auth()->user()->id)
+                            ->orWhere('user_advisor_4_id', '=', auth()->user()->id);
 					} else if (auth()->user()->role >= 3) {
 						$subQuery->where('user_supervisor_id', '=', auth()->user()->id);
 					}
@@ -698,12 +706,18 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				});
 			}
 		}
-		//Additional filters  : filter by surface range
-		if ($filters->has('surfaces_research')) {
-			if (!is_null($filters->input('surfaces_research'))) {
-				$adsFiltred->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('surface_range_max', 'surface', '<=', $filters->input('surfaces_research'));
-			}
-		}
+        //Additional filters  : filter by surface range
+        if ($filters->has('surfaces_research_min')) {
+            if (!is_null($filters->input('surfaces_research_min'))) {
+                $adsFiltred->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('surface_range_min', 'surface', '<=', $filters->input('surfaces_research_min'));
+            }
+        }
+        //Additional filters  : filter by surface range
+        if ($filters->has('surfaces_research')) {
+            if (!is_null($filters->input('surfaces_research'))) {
+                $adsFiltred->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('surface_range_max', 'surface', '<=', $filters->input('surfaces_research'));
+            }
+        }
 		//Additional filters  : filter by min_price
 		if ($filters->has('price_min')) {
 			if (!is_null($filters->input('price_min'))) {

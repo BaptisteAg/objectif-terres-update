@@ -23,11 +23,11 @@
                 </div>
                 <div class="level-right">
                     <div class="level-item">
+                        <a id="open-modal" href="" class="button" style="margin-top:10px;">
+                            <span class="icon"><i class="far fa-heart"></i></span>
+                            <span>Sauvegarder cette recherche</span>
+                        </a>
                         @guest
-                            <a id="open-modal" href="">
-                                <span class="icon"><i class="far fa-heart"></i></span>
-                                <span>Sauvegarder cette recherche</span>
-                            </a>
                             <div class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-content">
@@ -58,10 +58,6 @@
                                 </div>
                             </div>
                         @else
-                            <a id="open-modal" href="">
-                                <span class="icon"><i class="far fa-heart"></i></span>
-                                <span>Sauvegarder cette recherche</span>
-                            </a>
                             <form method="POST" action="{{ route('researches.store', request()->input())}}">
                                 @csrf
                                 <div class="modal">

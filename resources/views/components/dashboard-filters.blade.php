@@ -241,7 +241,7 @@
                                    value="{{old('ad_keywords')}}">
                         </div>
                     @else
-                        <div class="column ">
+                        <div class="column is-2">
                             <p class="label has-text-centered ">
                                 Stade dans l'accompagnement
                             </p>
@@ -263,7 +263,7 @@
                                 @endforeach
                             </div>
                         </div>
-                        <div class="column is-3 ">
+                        <div class="column is-2 ">
                             <p class="label has-text-centered  ">
                                 État de la demande
                             </p>
@@ -284,7 +284,7 @@
                                 @endforeach
                             </div>
                         </div>
-                        <div class="column is-3 ">
+                        <div class="column is-2 ">
                             <p class="label has-text-centered">
                                 Avancement du projet
                             </p>

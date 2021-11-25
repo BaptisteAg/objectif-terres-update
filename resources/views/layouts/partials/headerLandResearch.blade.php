@@ -12,12 +12,10 @@
 		</div>
 		<div class="field">
 			<p class="label">Surface (ha)</p>
-			<vue-slider
-					name="surfaces_research"
-					:old-data="{
-							'value' : {{json_encode(old('surfaces_research'))}},
-							'textValue' : {{json_encode(old('surfaces_research'))}}
-							}"
+			<vue-slider-range
+					ref="surfaceRangeMinMax"
+					name-min="surfaces_research_min"
+					name-max="surfaces_research"
 					:data="{
                         0: '0',
                         5: '5',
@@ -27,7 +25,8 @@
                         100 : '100',
                         '+100' : '+100',
                     }"
-					:values="['0', '>100']"></vue-slider>
+					:value="[{{old("surfaces_research_min") ?: '0'}}, {{old("surfaces_research") ?: '+100'}}]"
+			></vue-slider-range>
 			<br>
 		</div>
 		<div v-if="offerTypeSelected === 'OfferAd'" class="field">
@@ -64,7 +63,8 @@
                     v-model="selectedProductions"
                     name="production_genres[]"
                     selected-count-text="production(s) sélectionné(s)"
-                    placeholder="Choississez">
+                    placeholder="Choississez"
+					:close-on-select="true">
             </multi-select>
         </div>
         <div class="field">
@@ -75,7 +75,8 @@
                     v-model="selectedBioCertifications"
                     name="bio_certifications[]"
                     selected-count-text="production(s) bio sélectionné(s)"
-                    placeholder="Choississez">
+                    placeholder="Choississez"
+					:close-on-select="true">
             </multi-select>
         </div>
 		<div class="field ">

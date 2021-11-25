@@ -110,7 +110,8 @@ Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->na
 	Route::post('creer', 'ThreadsController@create')->name('create');
 	Route::get('{thread}', 'MessagesController@show')->name('show');
 	Route::post('envoi', 'MessagesController@create')->name('send');
-	Route::post('upload', 'MessagesController@uploadDocuments')->name('upload');
+    Route::post('upload', 'MessagesController@uploadDocuments')->name('upload');
+    Route::get('delete/{id}', 'MessagesController@delete')->name('delete-message');
 //	Route::get('{type}/{filename}', 'MessagesController@show')->name('show');
 
 });

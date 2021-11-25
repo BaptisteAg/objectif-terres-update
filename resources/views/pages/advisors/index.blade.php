@@ -59,18 +59,28 @@
                 </div>
             @endif
         @endif
-        {{Form::open(['route'=>'advisor.show', 'method'=>'get'])}}
+        {{Form::open(['route'=>'advisor.show', 'method'=>'get', 'class' => 'exportable-form'])}}
         <div id="vue-form-advisor">
             @include('components.dashboard-filters')
             <div class="columns  ">
                 <div class="column is-half ">
                     <div class="buttons are-medium">
-                        <a href="{{route('advisor.export')}}?{{request()->getQueryString()}}" class="button  is-link" onclick="exportLoader()">
+                        <a href="{{route('advisor.export')}}" class="button  is-link" onmousedown="exportLoader(this)">
                             <span class="icon">
                                 <i class="fas fa-table"></i>
                             </span>
                             <span>Exporter</span>
                         </a>
+
+                        <script>
+                            function exportLoader(button) {
+                                // Get all field data from the form
+                                let data = new FormData(document.querySelector('.exportable-form'));
+                                let queryString = new URLSearchParams(data).toString();
+                                button.href = button.href.split("?")[0] + "?" + queryString
+                                document.getElementById("exportLoader").innerText = "Veuillez patienter un instant pour l'export.."
+                            }
+                        </script>
 
                         <a href="{{route('advisor.createNewPp')}}" class="button  is-light ">
                             <span class="icon">
@@ -85,13 +95,6 @@
             </div>
 
             <div id="exportLoader"></div>
-
-            <script>
-                function exportLoader() {
-                    document.getElementById("exportLoader").innerText = "Veuillez patienter un instant pour l'export.."
-                }
-                document.addEventListener("load", function () {console.log("oui")})
-            </script>
         </div>
         {{Form::close()}}
         <div class="section pt-20">
@@ -413,7 +416,7 @@
 
                                     <td>
                                         @if(! is_null($ad->project))
-                                            @if(isset($ad->attributionAd->user_advisor_id))
+                                            @if(count($ad->attributionAd->getAdvisors()))
                                                 <a href="{{route('advisor.showSupport', $ad->id)}}">
                                                     <span><i class="fas fa-hands-helping"></i></span>
                                                     <span>Suivi de l'accompagnement</span>

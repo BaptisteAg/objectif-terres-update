@@ -148,6 +148,7 @@ class AdvisorsController extends BaseController
 		$vars = $this->getSupportDashboardVars($ad);
 		$vars['ad'] = $ad;
 		$vars['thread'] = $thread;
+
 		return view('pages.advisors.support-dashboard', $vars);
 	}
 

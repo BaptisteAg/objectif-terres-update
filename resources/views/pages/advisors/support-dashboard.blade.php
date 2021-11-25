@@ -34,28 +34,25 @@
             @endif
 
             <h3 class="subtitle is-3 ">{{$ad->title}}</h3>
-            @if(!is_null($ad->attributionAd->userAdvisor))
-                @if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
+            @if(count($ad->attributionAd->getAdvisors()))
+                @if($ad->isProjectAttributedToAdvisor)
                     <div class="notification is-primary">
                         Vous êtes le primo-accueillant pour cette demande ! (<a href="/annonces/{{$ad->id}}">Modifier</a>) <br>
                         N'oubliez pas de mettre à jour le stade et l'état de la demande ainsi que l'avancement du projet !
                     </div>
-                    <p class="has-text-weight-bold"></p>
-
-                @else
-                    <p>Cette demande est attribuée à (<a href="/annonces/{{$ad->id}}">Modifier</a>) :
-                        <ul style="list-style-type:none;">
-                            @foreach($ad->attributionAd->getAdvisors() as $i => $userAdvisor)
-                                <li>
-                                    <strong>
-                                        {{$userAdvisor->first_name}} {{$userAdvisor->name}}
-                                        <a href="/mon-tableau-de-bord/supprimer-attribution/{{$ad->id}}/{{$i+1}}"></a>
-                                    </strong>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </p>
                 @endif
+                <p>Cette demande est attribuée à (<a href="/annonces/{{$ad->id}}">Modifier</a>) :
+                    <ul style="list-style-type:none;">
+                        @foreach($ad->attributionAd->getAdvisors() as $i => $userAdvisor)
+                            <li>
+                                <strong>
+                                    {{$userAdvisor->first_name}} {{$userAdvisor->name}}
+                                    <a href="/mon-tableau-de-bord/supprimer-attribution/{{$ad->id}}/{{$i+1}}"></a>
+                                </strong>
+                            </li>
+                        @endforeach
+                    </ul>
+                </p>
             @else
                 <p>Cette demande n'a pas été encore attribuée à un primo-accueillant</p>
             @endif

@@ -1,12 +1,14 @@
 import MultiSelect from "../components/MultiSelect";
 import AjaxMultiSelect from "../components/AjaxMultiSelect";
 import VueSlider from "../components/VueSlider";
+import VueSliderRange from "../components/VueSliderRange";
 import Vue from 'vue'
 
 Vue.component('header-page', {
     components: {
         MultiSelect,
         VueSlider,
+        VueSliderRange,
         AjaxMultiSelect,
     },
     props: {
@@ -29,7 +31,13 @@ Vue.component('header-page', {
         more_criteria() {
             this.isFormOpen = this.isFormOpen !== true;
         }
-
+    },
+    watch: {
+        selectedDepartments(v) {
+            if(v.length) {
+                this.$refs.header_regions.selected = []
+            }
+        }
     }
 });
 

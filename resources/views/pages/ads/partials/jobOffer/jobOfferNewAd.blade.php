@@ -12,7 +12,7 @@
 				<div class="columns">
 					<div class="column"></div>
 					<div class="column is-half">
-						@include('pages.ads.partials.inputs.zip_code', ['uri'=>'cities', 'label'=>"Code postal de l'offre"])
+						@include('pages.ads.partials.inputs.zip_code', ["uri"=>"cities-and-departments", "label" => "Code postal ou département de l'offre"])
 					</div>
 					<div class="column"></div>
 				</div>
