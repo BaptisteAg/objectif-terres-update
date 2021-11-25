@@ -71,9 +71,9 @@
                                 @foreach ($advisorUsers as $advisor)
                                     @if(in_array($advisor->id, array_map(function($user) { return $user->id; }, $ad->attributionAd->getAdvisors())) )
                                         <option disabled
-                                                value="{{$advisor->id}}">{{$advisor->first_name}} {{$advisor->name}}</option>
+                                                value="{{$advisor->id}}">{{$advisor->name}} {{$advisor->first_name}}</option>
                                     @else
-                                        <option value="{{$advisor->id}}">{{$advisor->first_name}} {{$advisor->name}}</option>
+                                        <option value="{{$advisor->id}}">{{$advisor->name}} {{$advisor->first_name}}</option>
                                     @endif
                                 @endforeach
                             </select>

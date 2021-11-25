@@ -326,7 +326,7 @@
                                 <div class="column is-narrow pl-0 pr-0 has-text-centered">
                                     <label class="checkbox">
                                         @if(Route::current()->getName() == 'supervisor.index' )
-                                            <input name="project_attribution[]" value="false" checked
+                                            <input name="project_attribution[]" value="false"
                                                    type="checkbox" {{old('project_attribution') && in_array('false',old('project_attribution')) ? ' checked' : '' }}>
                                         @else
                                             <input name="project_attribution[]" value="false"
