@@ -69,7 +69,7 @@
                                 <option disabled selected hidden class="has-text-grey-light">Veuillez choisir...
                                 </option>
                                 @foreach ($advisorUsers as $advisor)
-                                    @if(in_array($advisor->id, array_map(fn($user) => $user->id, $ad->attributionAd->getAdvisors())) )
+                                    @if(in_array($advisor->id, array_map(function($user) { return $user->id; }, $ad->attributionAd->getAdvisors())) )
                                         <option disabled
                                                 value="{{$advisor->id}}">{{$advisor->first_name}} {{$advisor->name}}</option>
                                     @else
