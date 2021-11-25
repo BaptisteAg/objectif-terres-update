@@ -364,7 +364,7 @@ class AdPresenter extends BasePresenter
 	public function isProjectAttributedToAdvisor()
 	{
 		$ad = $this->wrappedObject;
-        $advisorIds = array_map(fn($advisor) => $advisor->id, $ad->attributionAd->getAdvisors());
+        $advisorIds = array_map(function($advisor) { return $advisor->id; }, $ad->attributionAd->getAdvisors());
 
 		return in_array(auth()->user()->id, $advisorIds);
 	}
