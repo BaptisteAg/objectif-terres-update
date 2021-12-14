@@ -5,7 +5,9 @@
 						  :attribution-ad-id="{{$ad->attributionAd->id}}"
 	>
 		<div class="box has-text-centered">
-			@if($isAdToModerate and $isLoggedUserModeratorAd)
+			@if($ad->attributionAd->ad_status_id === 5)
+				<p class="title is-2 has-text-centered">Cette annonce a été archivée.</p>
+			@elseif($isAdToModerate and $isLoggedUserModeratorAd)
 
 				<div class="has-text-centered">
 					<div class="container">

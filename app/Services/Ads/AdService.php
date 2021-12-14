@@ -578,6 +578,16 @@ class AdService
 	}
 
 	/**
+	 * @param Ad $ad
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function archive(Ad $ad)
+	{
+		return $this->repository->archive($ad->id);
+	}
+
+	/**
 	 * Show all ads ads related to supervisor
 	 * @param bool $toPaginate
 	 * @return LengthAwarePaginator|Collection

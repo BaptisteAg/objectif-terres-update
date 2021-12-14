@@ -306,6 +306,4 @@ class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 	{
 		return $this->hasMany(UserPermission::class, 'user_id');
 	}
-
-
 }

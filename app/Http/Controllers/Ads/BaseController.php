@@ -79,7 +79,7 @@ abstract class BaseController extends Controller
      */
     protected function getEditFormVars(Ad $ad): array
     {
-        if (auth()->id() !== $ad->user_pp_id) {
+        if (!$ad->canEdit()) {
             abort(404);
         }
 

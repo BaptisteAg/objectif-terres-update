@@ -284,4 +284,9 @@ class Ad extends Model implements HasPresenter
 		});
 	}
 
+
+    public function canEdit()
+    {
+        return $this->user_pp_id === auth()->id() || $this->attributionAd->userModerator->id === auth()->id();
+    }
 }

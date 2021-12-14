@@ -188,6 +188,20 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		$ad->delete();
 	}
 
+	/**
+	 * Delete an  ad.
+	 *
+	 * @param int
+	 * @throws \Exception
+	 */
+	public function archive(int $id)
+	{
+        /** @var Ad $ad */
+		$ad = Ad::find($id);
+        $ad->attributionAd->ad_status_id = AdStatus::ARCHIVED_ID;
+		$ad->attributionAd->save();
+	}
+
 
 	/**
 	 * Find all ads and projects by user id

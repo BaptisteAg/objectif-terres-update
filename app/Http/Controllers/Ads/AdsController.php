@@ -190,22 +190,38 @@ class AdsController extends BaseController
 	}
 
 
-	/**
-	 * @param Ad $ad
-	 * @return \Illuminate\Http\RedirectResponse
-	 * @throws \Exception
-	 */
-	public function delete(Ad $ad)
-	{
-		if ($ad->user_pp_id !== auth()->id()) {
-			abort(404);
-		}
-		$this->adService->delete($ad);
-		if (is_null($ad->project_id)) {
-			return back()->with('success', 'Votre annonce a bien été supprimée');
-		}
-		//return redirect()->route('user.index')->with('success', 'Votre demande d\'accomapgnement a été supprimée avec succès');
-	}
+    /**
+     * @param Ad $ad
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function delete(Ad $ad)
+    {
+        if (!$ad->canEdit()) {
+            abort(404);
+        }
+        $this->adService->delete($ad);
+        if (is_null($ad->project_id)) {
+            return back()->with('success', 'Votre annonce a bien été supprimée');
+        }
+        //return redirect()->route('user.index')->with('success', 'Votre demande d\'accomapgnement a été supprimée avec succès');
+    }
+    /**
+     * @param Ad $ad
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function archive(Ad $ad)
+    {
+        if (!$ad->canEdit()) {
+            abort(404);
+        }
+        $this->adService->archive($ad);
+        if (is_null($ad->project_id)) {
+            return back()->with('success', 'Votre annonce a bien été archivée');
+        }
+        return redirect()->route('user.index')->with('success', 'Votre demande d\'accomapgnement a été archivée avec succès');
+    }
 
 	/**
 	 * @param int $adId

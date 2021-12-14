@@ -349,13 +349,6 @@ class AdPresenter extends BasePresenter
 		return '';
 	}
 
-	public function canEdit()
-	{
-		$ad = $this->wrappedObject;
-
-		return $ad->user_pp_id === auth()->id() || $ad->attributionAd->userModerator === auth()->id();
-	}
-
 	private function isPpDocument(Document $document)
 	{
 		return $document->user_id === $this->wrappedObject->user_pp_id;

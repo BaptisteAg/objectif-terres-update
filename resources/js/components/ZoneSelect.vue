@@ -9,7 +9,7 @@
             <div class="content">
                 <div class="field">
                     <label class="label" :for="id">
-                        Code postal, commune, département ou région*
+                        Code postal, commune ou département*
                     </label>
                     <autocomplete
                             :id="id"

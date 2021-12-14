@@ -63169,7 +63169,7 @@ var render = function() {
             [
               _c("label", { staticClass: "label", attrs: { for: _vm.id } }, [
                 _vm._v(
-                  "\n                        Code postal, commune, département ou région*\n                    "
+                  "\n                        Code postal, commune ou département*\n                    "
                 )
               ]),
               _vm._v(" "),

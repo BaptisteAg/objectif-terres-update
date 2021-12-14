@@ -107,7 +107,7 @@
                 @endif
             @endauth
 
-            @if($ad->canEdit)
+            @if($ad->canEdit())
                 <div class="is-pulled-right ">
                     <a href="{{  route('ads.delete', [ $ad->id]) }}"
                        onclick="return confirm('Êtes vous sûr·e ? Cette opération est irréversible.')"
@@ -116,6 +116,17 @@
                             <i class="fas fa-trash-alt"></i>
                         </span>
                         <span>Supprimer</span>
+                    </a>
+                </div>
+
+                <div class="is-pulled-right mr-10  ">
+                    <a href="{{  route('ads.archive', [ $ad->id]) }}"
+                       onclick="return confirm('Êtes vous sûr·e ?')"
+                       class="button form-button basic danger">
+                        <span class="icon is-small">
+                            <i class="fas fa-trash-alt"></i>
+                        </span>
+                        <span>Archiver</span>
                     </a>
                 </div>
 
