@@ -10,7 +10,6 @@
     "require": {
         "ext-json": "*",
         "aacotroneo/laravel-saml2": "^2.1",
-        "caouecs/laravel-lang": "~4.0",
         "chelout/laravel-relationship-events": "v1.1.1",
         "fideloper/proxy": "^4.0",
         "gluedev/laravel-stackdriver": "^0.2.2",

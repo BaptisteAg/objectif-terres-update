@@ -122,7 +122,7 @@ class ProjectService
 			}
 
 		});
-		return $groupPublishedAdsByYears = $onlyProjectCreatedLastYear->mapToGroups(function ($project, $key) {
+		return $onlyProjectCreatedLastYear->mapToGroups(function ($project, $key) {
 			$date = Carbon::parse($project->created_at);
 			return [$date->year => $project];
 		});
@@ -267,6 +267,16 @@ class ProjectService
 		return $projects;
 	}
 
+    public function deleteAttribution($adId, $slot)
+    {
+        $attributionAd = $this->attributionAdsRepository->findByAdId($adId);
+
+        $advisorIdColumn = 'user_advisor'.($slot === '1' ? '' : '_'.$slot).'_id';
+
+        $attributionAd->$advisorIdColumn = null;
+        $attributionAd->save();
+    }
+
 
 	/**
 	 * @param Request $request
@@ -275,26 +285,47 @@ class ProjectService
 	{
 		/** @var AttributionAd $attributionAd */
 		$attributionAd = $this->attributionAdsRepository->findByAdId($request->input('ad_id'));
-		$attributionAd->user_advisor_id = $request->input('user_advisor_id');
+
+		$advisorsCount = count($attributionAd->getAdvisors());
+
+		if($advisorsCount > 3) {
+		    return false;
+        }
+
+		$newAdvisorId = $request->input('user_advisor_id');
+
+		$advisorSlotSuffix = '';
+
+		foreach($attributionAd->getAdvisorsUnfiltered() as $i => $advisor) {
+		    if(!$advisor && $i) {
+		        $advisorSlotSuffix = '_' . ($i+1);
+                break;
+            }
+        }
+
+		$advisorIdColumn = 'user_advisor'.$advisorSlotSuffix.'_id';
+
+		$attributionAd->$advisorIdColumn = $newAdvisorId;
 		$thread = $this->threadService->findByAdId($request->input('ad_id'));
 		if (isset($thread)) {
 			$threadData = [
-				"user_id" => $request->input('user_advisor_id'),
+				"user_id" => $newAdvisorId,
 				"ad_id" => $request->input('ad_id'),
 				"user_pp_id" => $attributionAd->ad->userPP->id,
 				"thread_id" => $thread->id
 			];
 			$this->threadService->addUserInSupportRequestThread($threadData);
 		} else {
-			$this->threadService->createSupportRequestThread($request->input('ad_id'), $request->input('user_advisor_id'));
+			$this->threadService->createSupportRequestThread($request->input('ad_id'), $newAdvisorId);
 		}
 		$attributionAd->save();
-		$this->notification->handle($attributionAd->ad->id);
+		$this->notification->handle($attributionAd->ad->id, $newAdvisorId);
 		if (!is_null($request->input('value'))) {
 			$this->advisorService->createNote($request);
 		}
 
 
+        return true;
 	}
 
 	//TODO Create a ProjectDataKeyService and ProjectDataKeyRepository for the 2 above methods ?

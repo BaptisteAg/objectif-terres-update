@@ -30,6 +30,16 @@ class SalesforceService
         $this->localUserRepository = $userRepository;
     }
 
+
+    public function testFlo()
+    {
+        $this->repository->authenticate();
+
+        $relationships = $this->repository->testFloGetRelationships();
+
+        dd($relationships);
+    }
+
     /**
      * Registers a basic user ( role : Porteur de projet )
      * in Salesforce.

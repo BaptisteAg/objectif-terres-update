@@ -55,11 +55,17 @@ Vue.component('support-request-dashboard', {
                 this.tabsOpen.supportTabOpen = tabName
             }
         },
-        showValidationModal() {
+        showValidationModal(event) {
             this.showModal = true;
             this.isSupportStageSelectOpen = false;
             this.isSupportStateSelectOpen = false;
             this.isProjectStatusSelectOpen = false;
+        },
+        sendStatusChange(event) {
+            event.target.form.submit()
+            const chargement = document.createElement("p");
+            chargement.innerText = "Chargement..";
+            event.target.parentElement.replaceWith(chargement)
         },
         showDeleteNoteValidationModal(noteId) {
             this.showModal = true;

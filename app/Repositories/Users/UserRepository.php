@@ -50,7 +50,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 	{
 		$model = $this->entity
 			->where(["id" => $id])
-			->firstOrFail();
+			->first();
 
 		return $model;
 	}

@@ -7,14 +7,14 @@
                     <div class="field ">
                         <div v-bind:class="[isLoading ?'control is-expanded  has-icons-left is-loading ' : 'control is-expanded  has-icons-left']">
                             <input type="hidden" name="thread_id" :value="activeThreadId">
-                            <textarea
+                            <vue-editor
                                     :disabled="isLoading"
                                     id="reply-input"
                                     v-model="content"
-                                    class=" textarea has-fixed-size"
                                     name="content"
                                     type="text"
-                                    placeholder="Votre message..."/>
+                                    placeholder="Votre message..."
+                                    :editorToolbar='[["bold", "underline"],[{ list: "ordered" }, { list: "bullet" }],["link", "image"]]'/>
                         </div>
                         <br>
                         <div class="field is-grouped"><a class=""><p
@@ -79,6 +79,7 @@
 <script>
     import axios from 'axios';
     import DocumentsUpload from "../../../components/DocumentsUpload";
+    import { VueEditor } from "vue2-editor";
 
     export default {
         components: {DocumentsUpload},
@@ -100,6 +101,8 @@
                 showResponseTemplates: this.userRole >= 1,
                 showLinkNewResponseTemplate: this.userRole >= 3,
             }
+        },
+        mounted() {
         },
         methods: {
             formSubmit(e) {

@@ -302,8 +302,7 @@ class ThreadService
 	public function convertContentToHTML(string $content): string
 	{
 		$content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
-		$content = htmlspecialchars($content);
-		$content = strip_tags($content);
+		$content = strip_tags($content, '<strong><u><i><a><ul><li><br><img>');
 //		$match_href = '|((https?://)?([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i';
 //		$match_hash = '|\B#([\d\w_]+)|i';
 //		$match_plus = '|\B\+([\d\w_]+)|i';
@@ -313,10 +312,10 @@ class ThreadService
 //		$content = preg_replace($match_hash, $replace_tag, $content);
 //		$content = preg_replace($match_plus, $replace_tag, $content);
 
-		$url = '/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/';
+		$url = '/ (http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/';
 		$content = preg_replace($url, '<a href="$0" target="_blank" title="$0">$0</a>', $content);
 
-		return "<p>" . $content . "</p>";
+		return  $content;
 	}
 
 
@@ -413,7 +412,7 @@ class ThreadService
 	public function findSupportRequestThread(int $adId)
 	{
 		/** @var Thread $thread */
-		$thread = $this->repository->findThreadByUserIdAndAdId(auth()->id(), $adId)->first();
+		$thread = $this->repository->findThreadByAdId($adId);
 		return $thread;
 	}
 

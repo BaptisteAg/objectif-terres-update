@@ -94,6 +94,7 @@ class AdvisorsService
 	{
 		$toPaginate = $request->has('toPaginate') ? true : false;
 		$ads = $this->adService->filter($request, auth()->user()->role, $toPaginate);
+
 		return $ads;
 	}
 

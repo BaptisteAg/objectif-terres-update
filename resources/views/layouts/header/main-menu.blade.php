@@ -85,7 +85,7 @@
 
         <div id="header-main-cta">
             <ul class="custom-menu menu-site" style="justify-content: flex-end;padding-right:50px;">
-                <li class="secondary">
+                <li class="secondary inverse">
                     <a href="/accompagnement/demarrer"
                        class="menu__link ">Être
                         accompagné</a>

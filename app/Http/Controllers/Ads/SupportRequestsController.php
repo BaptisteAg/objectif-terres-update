@@ -231,12 +231,13 @@ class SupportRequestsController extends BaseController
         catch
         (\Exception $exception) {
             report($exception);
+            throw $exception;
             return back()->withInput()->withErrors(
                 "[62] Désolé, l'opération n'a pas pu être effectuée. Nous en avons été informé et nous faisons le maximum pour résoudre le probleme rapidement. Veuillez réessayer un peu plus tard.");
         }
 
-        return redirect()->route('support-request.show')
-            ->with('success', $success);
+        //return redirect()->route('support-request.show')
+        //    ->with('success', $success);
     }
 
     /**

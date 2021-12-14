@@ -22,26 +22,28 @@
                         </p>
                     @endif
                 </div>
-                <div class="content">
-                    <p><span class="is-size-5   ">Publié par : </span>
-                        @auth()
-                            @if(auth()->user()->role >= 1 )
-                                <span class="subtitle">
-                                    <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->pp_display_name}}</a>
-                                </span>
-                            @elseif(auth()->user()->role < 1)
+                @if($ad->accept_share_contact_infos === 1)
+                    <div class="content">
+                        <p><span class="is-size-5   ">Publié par : </span>
+                            @auth()
+                                @if(auth()->user()->role >= 1 )
+                                    <span class="subtitle">
+                                        <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->pp_display_name}}</a>
+                                    </span>
+                                @elseif(auth()->user()->role < 1)
+                                    <span class="subtitle">
+                                        {{ $ad->pp_display_name}}
+                                    </span>
+                                @endif
+                            @endauth
+                            @guest()
                                 <span class="subtitle">
                                     {{ $ad->pp_display_name}}
                                 </span>
-                            @endif
-                        @endauth
-                        @guest()
-                            <span class="subtitle">
-                                {{ $ad->pp_display_name}}
-                            </span>
-                        @endguest()
-                    </p>
-                </div>
+                            @endguest()
+                        </p>
+                    </div>
+                @endif
                 <div class="content">
                     <p>
                         <span class="is-size-5 is-capitalized ">Catégorie : </span>

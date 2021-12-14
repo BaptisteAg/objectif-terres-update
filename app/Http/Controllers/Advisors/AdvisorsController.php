@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Notifications\BasicNotification;
 use App\Services\Auth\RegisterService;
 use Carbon\Carbon;
+use http\Env\Response;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
@@ -103,10 +104,10 @@ class AdvisorsController extends BaseController
             'subject' => "Bienvenue sur Objectif Terres !",
             'message' => "
                 Vous avez été inscrit sur Objectif Terres par un primo-accueillant pour réaliser votre projet agricole.\n
-                
+
                 Le mot de passe généré pour vous est le suivant : ".$data["password"]."\n
                 Utilisez-le pour vous connecter sur le site. Vous pourrez ensuite le modifier.\n\n
-                
+
                 Merci de confirmer votre email.",
             'action' => [
                 "Confirmer mon email",
@@ -135,26 +136,19 @@ class AdvisorsController extends BaseController
 //			$thread = $this->threadService->createSupportRequestThread($ad->id);
 //		}
 
-		if (auth()->id() === $ad->attributionAd->user_advisor_id) {
-			$thread = $this->threadService->findSupportRequestThread($ad->id);
+        $thread = $this->threadService->findSupportRequestThread($ad->id);
+
+		if (in_array(auth()->id(), array_column($ad->attributionAd->getAdvisors(), 'id'), true)) {
 			if (!isset($thread)) {
 				$thread = $this->threadService->createSupportRequestThread($ad->id, auth()->id());
 			}
-		} else {
-			if (isset($ad->attributionAd->user_advisor_id)) {
-				$data = [
-					'user_id' => $ad->attributionAd->user_advisor_id,
-					'ad_id' => $ad->id,
-				];
-				$thread = $this->advisorsService->findThreadAdvisorInChargeOfSupportRequest($data);
-			} else {
-				$thread = null;
-			}
 		}
+
 		$this->advisorsService->handleSupportDashboardNotifications($ad);
 		$vars = $this->getSupportDashboardVars($ad);
 		$vars['ad'] = $ad;
 		$vars['thread'] = $thread;
+
 		return view('pages.advisors.support-dashboard', $vars);
 	}
 
@@ -176,7 +170,9 @@ class AdvisorsController extends BaseController
 	 */
 	public function export()
 	{
-		return (new AdvisorsExport($this->advisorsService->showForAdvisor(new Request())))->download('export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
+        $request = request()->merge(["projects_show" => true]);
+
+		return (new AdvisorsExport($this->advisorsService->showForAdvisor($request)))->download('export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
 //		return Excel::download(new AdvisorsExport($this->advisorsService->showForAdvisor(new Request())), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
 	}
 

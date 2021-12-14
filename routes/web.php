@@ -110,7 +110,8 @@ Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->na
 	Route::post('creer', 'ThreadsController@create')->name('create');
 	Route::get('{thread}', 'MessagesController@show')->name('show');
 	Route::post('envoi', 'MessagesController@create')->name('send');
-	Route::post('upload', 'MessagesController@uploadDocuments')->name('upload');
+    Route::post('upload', 'MessagesController@uploadDocuments')->name('upload');
+    Route::get('delete/{id}', 'MessagesController@delete')->name('delete-message');
 //	Route::get('{type}/{filename}', 'MessagesController@show')->name('show');
 
 });
@@ -147,16 +148,17 @@ Route::middleware('admin')->prefix('administration')->name('administrator.')->na
 	Route::get('liste-utilisateurs-par-territoires', 'AdministratorController@showUsersByTerritories')->name('usersByTerritories');
 });
 
-Route::middleware('supervisor')->prefix('mon-tableau-de-bord')->name('supervisor.')->namespace('Supervisors')->group(function () {
-	Route::get('/', 'SupervisorsController@index')->name('index');
-	Route::get('recherche', 'SupervisorsController@show')->name('show');
-	Route::get('aide-et-ressources', 'SupervisorsController@help')->name('help');
+Route::prefix('mon-tableau-de-bord')->name('supervisor.')->namespace('Supervisors')->group(function () {
+	Route::middleware('supervisor')->get('/', 'SupervisorsController@index')->name('index');
+	Route::middleware('supervisor')->get('recherche', 'SupervisorsController@show')->name('show');
+	Route::middleware('supervisor')->get('aide-et-ressources', 'SupervisorsController@help')->name('help');
 	Route::post('attribution', 'SupervisorsController@attribute')->name('attribute');
-	Route::get('export', 'SupervisorsController@export')->name('export');
-	Route::get('rapports-et-indicateurs', 'SupervisorsController@report')->name('report');
-	Route::get('administration-indicateurs', 'SupervisorsController@projectKeysDataEdit')->name('projectDataKeysEdit');
-	Route::post('creation-indicateur', 'SupervisorsController@projectDataKeysCreate')->name('projectDataKeysCreate');
-	Route::post('suppression-indicateur', 'SupervisorsController@projectDataKeyDelete')->name('projectDataKeyDelete');
+	Route::get('supprimer-attribution/{adId}/{slot}', 'SupervisorsController@deleteAttribution')->name('delete_attribution');
+	Route::middleware('supervisor')->get('export', 'SupervisorsController@export')->name('export');
+	Route::middleware('supervisor')->get('rapports-et-indicateurs', 'SupervisorsController@report')->name('report');
+	Route::middleware('supervisor')->get('administration-indicateurs', 'SupervisorsController@projectKeysDataEdit')->name('projectDataKeysEdit');
+	Route::middleware('supervisor')->post('creation-indicateur', 'SupervisorsController@projectDataKeysCreate')->name('projectDataKeysCreate');
+	Route::middleware('supervisor')->post('suppression-indicateur', 'SupervisorsController@projectDataKeyDelete')->name('projectDataKeyDelete');
 });
 
 Route::middleware('advisor')->prefix('gestion-des-accompagnements')->name('advisor.')->namespace('Advisors')->group(function () {

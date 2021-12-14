@@ -34,20 +34,25 @@
             @endif
 
             <h3 class="subtitle is-3 ">{{$ad->title}}</h3>
-            @if(!is_null($ad->attributionAd->userAdvisor))
-                @if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
+            @if(count($ad->attributionAd->getAdvisors()))
+                @if($ad->isProjectAttributedToAdvisor)
                     <div class="notification is-primary">
-                        Vous êtes le primo-accueillant pour cette demande ! <br>
+                        Vous êtes le primo-accueillant pour cette demande ! (<a href="/annonces/{{$ad->id}}">Modifier</a>) <br>
                         N'oubliez pas de mettre à jour le stade et l'état de la demande ainsi que l'avancement du projet !
                     </div>
-                    <p class="has-text-weight-bold"></p>
-
-                @else
-                    <p>Cette demande est attribuée
-                        à
-                        <span class="has-text-weight-bold">{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</span>.
-                    </p>
                 @endif
+                <p>Cette demande est attribuée à (<a href="/annonces/{{$ad->id}}">Modifier</a>) :
+                    <ul style="list-style-type:none;">
+                        @foreach($ad->attributionAd->getAdvisors() as $i => $userAdvisor)
+                            <li>
+                                <strong>
+                                    {{$userAdvisor->first_name}} {{$userAdvisor->name}}
+                                    <a href="/mon-tableau-de-bord/supprimer-attribution/{{$ad->id}}/{{$i+1}}"></a>
+                                </strong>
+                            </li>
+                        @endforeach
+                    </ul>
+                </p>
             @else
                 <p>Cette demande n'a pas été encore attribuée à un primo-accueillant</p>
             @endif
@@ -66,7 +71,7 @@
                     inline-template
                     :thread='{{ $thread->id ?? 'undefined' }}'
                     :ad-id="{{$ad->id}}"
-                    v-bind:is-user-advisor-in-charge="{{auth()->id() === $ad->attributionAd->user_advisor_id ? 'true' : 'false'}}"
+                    v-bind:is-user-advisor-in-charge="{{$ad->attributionAd->isCurrentUserAdvisorOfAd() ? 'true' : 'false'}}"
             >
                 <div>
                     {!! Form::open(['route' => 'advisor.updateSupport', 'method'=>'post']) !!}
@@ -77,7 +82,11 @@
                                 <p class=" has-text-centered">Stade de l'accompagnement :
                                     @if(isset($ad->project->supportStage))
                                         <span class="tag has-text-white bg-d-warning_dark has-tooltip-top"
-                                              data-tooltip="{{\App\Models\SupportStage::TOOLTIPS[$ad->project->supportStage->id]}}">{{$ad->project->supportStage->name}}</span>
+                                              data-tooltip="Stade de l’accompagnement :
+Premier contact : valeur par défaut quand le porteur de projet soumet sa demande d’accompagnement
+Primo-accueil : une première réponse a été apportée au porteur de projet
+Accompagnement : plusieurs échanges, au moins une rencontre physique avec le porteur de projet
+">{{$ad->project->supportStage->name}}</span>
                                     @else
                                         <span class="tag is-light">Non défini</span>
                                     @endif
@@ -94,7 +103,7 @@
                             <div v-show="isSupportStageSelectOpen === true" class="field">
                                 <div class="control has-text-centered">
                                     <div class="select">
-                                        <select name="support_stage" v-on:change="showValidationModal()">
+                                        <select name="support_stage" v-on:change="sendStatusChange">
                                             @foreach ($supportStages as $supportStage)
                                                 @if(isset($ad->project->supportStage) and $supportStage->id === $ad->project->supportStage->id)
                                                     <option disabled selected
@@ -113,7 +122,12 @@
                                 <p class=" has-text-centered">État de la demande :
                                     @if(isset($ad->project->supportState))
                                         <span class="tag has-text-white bg-d-warning_dark has-tooltip-top"
-                                              data-tooltip="{{\App\Models\SupportState::TOOLTIPS[$ad->project->supportState->id]}}">{{$ad->project->supportState->name}}</span>
+                                              data-tooltip="A traiter : valeur par défaut quand la demande d’accompagnement arrive
+Traité : vous avez répondu au porteur de projet
+En attente : vous attendez des informations de la part du porteur de projet
+A archiver : Valeur automatique au bout de 6 mois d’inactivité sur le suivi de cet accompagnement
+Archivé : cet accompagnement est terminé
+">{{$ad->project->supportState->name}}</span>
                                     @else
                                         <span class="tag is-light">Non défini</span>
                                     @endif
@@ -130,7 +144,7 @@
                             <div v-show="isSupportStateSelectOpen === true" class="field">
                                 <div class="control  has-text-centered">
                                     <div class="select">
-                                        <select name="support_state" v-on:change="showValidationModal()">
+                                        <select name="support_state" v-on:change="sendStatusChange">
                                             @foreach ($supportStates as $supportState)
                                                 @if(isset($ad->project->supportState) and $supportState->id === $ad->project->supportState->id)
                                                     <option disabled selected
@@ -148,10 +162,21 @@
                             <div class="content">
                                 <p class=" has-text-centered">Avancement du projet :
                                     @if(isset($ad->project->projectStatus))
-                                        <span class="tag has-text-white bg-d-warning_dark has-tooltip-top"
-                                              data-tooltip="{{\App\Models\ProjectStatus::TOOLTIPS[$ad->project->projectStatus->id]}}">{{$ad->project->projectStatus->name}}</span>
+                                        <span class="tag has-text-white bg-d-warning_dark has-tooltip-left"
+                                              data-tooltip="Non défini : valeur par défaut quand la demande d’accompagnement arrive
+Emergence : projet au stade des premières idées/réflexions
+En cours : projet abouti en phase opérationnelle (recherche de terres, de candidats)
+Abandonné : le projet d’installation ou de transmission a finalement été abandonné
+Abouti : le projet d’installation ou de transmission s’est concrétisé
+">{{$ad->project->projectStatus->name}}</span>
                                     @else
-                                        <span class="tag is-light">Non défini</span>
+                                        <span class="tag is-light has-tooltip-left"
+                                              data-tooltip="Non défini : valeur par défaut quand la demande d’accompagnement arrive
+Emergence : projet au stade des premières idées/réflexions
+En cours : projet abouti en phase opérationnelle (recherche de terres, de candidats)
+Abandonné : le projet d’installation ou de transmission a finalement été abandonné
+Abouti : le projet d’installation ou de transmission s’est concrétisé
+">Non défini</span>
                                     @endif
                                     @if(! $ad->userPp->trashed())
                                         <a>
@@ -166,7 +191,7 @@
                             <div v-show="isProjectStatusSelectOpen === true" class="field">
                                 <div class="control  has-text-centered">
                                     <div class="select ">
-                                        <select name="project_status" v-on:change="showValidationModal()">
+                                        <select name="project_status" v-on:change="sendStatusChange">
                                             @foreach ($projectStatuses as $projectStatus)
                                                 @if(isset($ad->project->projectStatus) and $projectStatus->id === $ad->project->projectStatus->id)
                                                     <option disabled selected

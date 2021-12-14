@@ -174,7 +174,6 @@ class AdService
 				$availableAdvisors = $this->userService->findByRolesAndDepartments([2], $adDepartmentCodes);
 				$availableSupervisors = $this->userService->findByRolesAndDepartments([3], $adDepartmentCodes);
 
-
 				if ($availableSupervisors->isEmpty() && $availableAdvisors->isEmpty()) {
 					throw new AttributionAdException("Aucun responsable n'a été trouvé dans votre région. Veuillez sauvegarder votre demande et nous contacter.");
 				}
@@ -248,7 +247,6 @@ class AdService
 
 		$ad->refresh();
 		return $ad;
-
 	}
 
 	/**
@@ -329,7 +327,7 @@ class AdService
         $advisor->notify(new BasicNotification([
 			'subject' => "Le territoire d'une demande d'accompagnement a été modifié",
 			'message' => "La demande d'accompagnement ayant pour titre '" . $ad->title .
-                         "' et pour porteur de projet ". $ad->userPp->first_name ." ". $ad->userPp->name ." 
+                         "' et pour porteur de projet ". $ad->userPp->first_name ." ". $ad->userPp->name ."
                    			a été modifiée et ne vous est désormais plus attribuée."
 		]));
 	}

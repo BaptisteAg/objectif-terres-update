@@ -138,7 +138,9 @@
 				</div>
 			@endif
 			<div class="mt-30 mb-30">
-				<a  @click="showHistoryModal()">Consulter l'historique de l'annonce</a>
+				<button @click="showHistoryModal()" type="button" class="ad-action-button card-footer-item button is-link">
+					<span>Consulter l'historique de l'annonce</span>
+				</button>
 			</div>
 				<ad-history-modal
 						v-if="historyModalOpen"

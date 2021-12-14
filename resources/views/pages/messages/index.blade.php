@@ -110,6 +110,8 @@
 @endsection
 
 @section('script')
+
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
     <script>
         const vueThreads = new Vue({
             el: '#vue-messages',

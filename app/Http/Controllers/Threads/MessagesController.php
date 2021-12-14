@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Threads;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MessageRequest;
+use App\Models\Message;
 use App\Models\SupportStage;
 use App\Models\Thread;
 use App\Services\Ads\AdService;
@@ -12,7 +13,9 @@ use App\Services\Documents\DocumentServiceInterface;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Throwable;
 
 class MessagesController extends Controller
 {
@@ -58,7 +61,7 @@ class MessagesController extends Controller
 
 	/**
 	 * @param Thread $thread
-	 * @return \Illuminate\Http\JsonResponse
+	 * @return JsonResponse
 	 */
 	public function show(Thread $thread)
 	{
@@ -78,8 +81,8 @@ class MessagesController extends Controller
 	/**
 	 * @param MessageRequest $request
 	 *
-	 * @return \Illuminate\Http\JsonResponse
-	 * @throws \Throwable
+	 * @return JsonResponse
+	 * @throws Throwable
 	 */
 	public function create(MessageRequest $request)
 	{
@@ -89,16 +92,16 @@ class MessagesController extends Controller
 		if (isset($message->thread->ad->project) && auth()->user()->role >= 2) {
 			if ($this->threadService->findMessagesByThreadAndUserId($message->thread->id, auth()->id())->count() === 1) {
 				$this->advisorService->updateSupport(['ad_id' => $message->thread->ad->id, 'support_stage' => SupportStage::FIRST_RECEPTION_ID]);
-			};
-		}
+			}
+        }
 		return response()->json((object)$message);
 	}
 
 
 	/**
 	 * @param Request $request
-	 * @return \Illuminate\Http\JsonResponse
-	 * @throws \Throwable
+	 * @return JsonResponse
+	 * @throws Throwable
 	 */
 	public function uploadDocuments(Request $request)
 	{
@@ -121,5 +124,15 @@ class MessagesController extends Controller
 		return response()->json($files);
 	}
 
+    public function delete($messageId) {
+        $message = Message::find($messageId);
 
+        if(!$message || $message->sender_user_id !== auth()->id()) {
+            return response("Vous n'êtes pas autorisé à cette action", 403);
+        }
+
+        $message->delete();
+
+        return back();
+    }
 }

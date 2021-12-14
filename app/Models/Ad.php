@@ -91,6 +91,8 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Query\Builder|Ad withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Ad withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\History[] $history
+ * @property-read int|null $history_count
  */
 class Ad extends Model implements HasPresenter
 {

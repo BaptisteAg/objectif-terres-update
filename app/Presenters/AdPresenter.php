@@ -4,6 +4,7 @@ use App\Models\Ad;
 use App\Models\City;
 use App\Models\Document;
 use App\Models\Region;
+use App\Models\User;
 use App\Services\Ads\AdService;
 use McCool\LaravelAutoPresenter\BasePresenter;
 
@@ -352,7 +353,7 @@ class AdPresenter extends BasePresenter
 	{
 		$ad = $this->wrappedObject;
 
-		return $ad->user_pp_id === auth()->id();
+		return $ad->user_pp_id === auth()->id() || $ad->attributionAd->userModerator === auth()->id();
 	}
 
 	private function isPpDocument(Document $document)
@@ -363,12 +364,9 @@ class AdPresenter extends BasePresenter
 	public function isProjectAttributedToAdvisor()
 	{
 		$ad = $this->wrappedObject;
-		if (!is_null($ad->project)) {
-			if (!is_null($ad->attributionAd->userAdvisor)) {
-				return true;
-			}
-		}
-		return false;
+        $advisorIds = array_map(function($advisor) { return $advisor->id; }, $ad->attributionAd->getAdvisors());
+
+		return in_array(auth()->user()->id, $advisorIds);
 	}
 
 	/**

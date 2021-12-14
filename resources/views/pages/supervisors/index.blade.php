@@ -50,65 +50,37 @@
                 </div>
             @endif
         @endif
-        {{Form::open(['route'=>'supervisor.show', 'method'=>'get'])}}
+        {{Form::open(['route'=>'supervisor.show', 'method'=>'get', 'class' => 'exportable-form'])}}
         <div id="vue-form-supervisor">
             @include('components.dashboard-filters')
+            <div class="columns  ">
+                <div class="column is-half ">
+                    <div class="buttons are-medium">
+                        <a href="{{route('advisor.export')}}" class="button  is-link" onmousedown="exportLoader(this)">
+                            <span class="icon">
+                                <i class="fas fa-table"></i>
+                            </span>
+                            <span>Exporter</span>
+                        </a>
+
+                        <script>
+                            function exportLoader(button) {
+                                // Get all field data from the form
+                                let data = new FormData(document.querySelector('.exportable-form'));
+                                let queryString = new URLSearchParams(data).toString();
+                                button.href = button.href.split("?")[0] + "?" + queryString
+                                document.getElementById("exportLoader").innerText = "Veuillez patienter un instant pour l'export.."
+                            }
+                        </script>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="exportLoader"></div>
         </div>
         {{Form::close()}}
-
-        <div id="supervisor-form-export-data">
-            <export-to-spreadsheet-form inline-template>
-                <div>
-                    <div class="container is-fluid">
-                        <button v-on:click="openModal()" class="button basic secondary ">
-                            <span class="icon  ">
-                                <i class="fas fa-table "></i>
-                            </span>
-                            <span>Exporter les données</span>
-                        </button>
-                    </div>
-                    {!! Form::open(['route' => 'supervisor.export', 'method' => 'get']) !!}
-                    <div v-cloak id="modal-supervisor-form-data" :class="isActive ? 'modal is-active': 'modal'">
-                        <div id="modal-supervisor-form-data-background" class="modal-background"
-                             v-on:click="closeModal()"></div>
-                        <div class="modal-content-validation">
-                            <div class="card">
-                                <div class="card-content">
-                                    <div class="content">
-                                        <a v-on:click="closeModal()" id="close-modal" class="modal-close is-large"
-                                           aria-label="close"
-                                           style="position : relative; float: right; background-color: rgba(10, 10, 10, 0.2); right: 0px; top:0px;"></a>
-                                        <p class="title is-3 has-text-centered has-text-link">Exportation des
-                                            données</p>
-                                        <p class="subtitle has-text-centered ">Veuillez sélectionner une plage de
-                                            dates</p>
-                                        <div class="columns is-mobile is-centered">
-                                            <div class="column">
-                                                <div class="control has-icons-right ">
-                                                    <date-range></date-range>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <footer class="card-footer">
-                                    <div class="buttons card-footer-item">
-                                        <button type="submit" class="button is-link"
-                                                v-on:click="closeModalAfterSubmit()">
-                                            <span>Télécharger</span>
-                                        </button>
-                                        <a class="button is-link is-light" v-on:click="closeModal()">
-                                            <span>Annuler</span>
-                                        </a>
-                                    </div>
-                                </footer>
-                            </div>
-                        </div>
-                    </div>
-                    {{Form::close()}}
-                </div>
-            </export-to-spreadsheet-form>
-        </div>
 
         <div class="section pt-20">
             @if (count($ads) ==0)
@@ -466,6 +438,14 @@
                     notification.style.display = 'none';
                 }
             )
+        }
+
+        function submitExport(form) {
+            if(!form.date_from.value) {
+                alert("Vous devez renseigner une tranche de dates pour l'export.")
+                return false
+            }
+            return true;
         }
 
     </script>

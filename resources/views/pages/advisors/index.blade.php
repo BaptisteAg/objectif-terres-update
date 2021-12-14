@@ -59,18 +59,28 @@
                 </div>
             @endif
         @endif
-        {{Form::open(['route'=>'advisor.show', 'method'=>'get'])}}
+        {{Form::open(['route'=>'advisor.show', 'method'=>'get', 'class' => 'exportable-form'])}}
         <div id="vue-form-advisor">
             @include('components.dashboard-filters')
             <div class="columns  ">
                 <div class="column is-half ">
                     <div class="buttons are-medium">
-                        <a href="{{route('advisor.export')}}" class="button  is-link">
+                        <a href="{{route('advisor.export')}}" class="button  is-link" onmousedown="exportLoader(this)">
                             <span class="icon">
                                 <i class="fas fa-table"></i>
                             </span>
                             <span>Exporter</span>
                         </a>
+
+                        <script>
+                            function exportLoader(button) {
+                                // Get all field data from the form
+                                let data = new FormData(document.querySelector('.exportable-form'));
+                                let queryString = new URLSearchParams(data).toString();
+                                button.href = button.href.split("?")[0] + "?" + queryString
+                                document.getElementById("exportLoader").innerText = "Veuillez patienter un instant pour l'export.."
+                            }
+                        </script>
 
                         <a href="{{route('advisor.createNewPp')}}" class="button  is-light ">
                             <span class="icon">
@@ -78,10 +88,13 @@
                             </span>
                             <span>Ajouter un PP</span>
                         </a>
+
                     </div>
 
                 </div>
             </div>
+
+            <div id="exportLoader"></div>
         </div>
         {{Form::close()}}
         <div class="section pt-20">
@@ -331,14 +344,22 @@
                                     </td>
                                     <td>
                                         @if(!is_null($ad->project_id))
-                                            @if(isset($ad->attributionAd->userAdvisor))
-                                                @if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
-                                                    <strong>Vous êtes le primo-accueillant de cette demande</strong>
-                                                @else
-                                                    Attribué
-                                                    à
-                                                    <strong>{{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}</strong>
-                                                @endif
+                                            @if(count($ad->attributionAd->getAdvisors()))
+                                                Attribué
+                                                à
+                                                @foreach($ad->attributionAd->getAdvisors() as $i => $advisor)
+                                                    @if($i)
+                                                        et
+                                                    @endif
+                                                    @if($advisor->id === auth()->user()->id)
+                                                        <strong>Vous</strong>
+                                                    @else
+                                                        <strong>
+                                                            {{$advisor->first_name}}
+                                                            {{$advisor->name}}
+                                                        </strong>
+                                                    @endif
+                                                @endforeach
                                             @else
                                                 <span class="tag is-danger is-light">Non attribué</span>
                                             @endif
@@ -395,7 +416,7 @@
 
                                     <td>
                                         @if(! is_null($ad->project))
-                                            @if(isset($ad->attributionAd->user_advisor_id))
+                                            @if(count($ad->attributionAd->getAdvisors()))
                                                 <a href="{{route('advisor.showSupport', $ad->id)}}">
                                                     <span><i class="fas fa-hands-helping"></i></span>
                                                     <span>Suivi de l'accompagnement</span>

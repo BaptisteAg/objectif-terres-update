@@ -112,4 +112,9 @@ class SalesForceRepository
 			$this->forrest->authenticate();
 		}
     }
+
+    public function testFloGetRelationships()
+    {
+        return $this->forrest->sobjects('Contact/updated?start='.date("Y-m-d").'T15:27:00Z&end='.date("Y-m-d").'T18:00:00Z');
+    }
 }

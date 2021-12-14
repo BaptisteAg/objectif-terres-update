@@ -59,6 +59,7 @@
                             </div>
                             <div style="display:inline-block">
                                 <multi-select
+                                        ref="header_regions"
                                         :options="{{ $regionsWithAll }}"
                                         v-model="selectedRegions"
                                         :multiple="true"
@@ -72,7 +73,7 @@
                              style="padding-top: 38px;">
                             <button class="button basic primary">Rechercher</button>
                             <br>
-                            <a class="has-text-left" href="#" @click="more_criteria()">Plus de critères</a>
+                            <a class="has-text-left plus-de-criteres" href="#" @click="more_criteria()">Plus de critères</a>
                         </div>
                     </div>
                 </div>
@@ -132,6 +133,10 @@
             <div class="container-custom"
                  v-if="adCategorySelected === 'land'">
                 @include('layouts.partials.headerLandResearch')
+            </div>
+            <div class="column is-narrow-tablet has-text-right"
+                 style="margin-right:20px;">
+                <button class="button basic primary">Rechercher</button>
             </div>
         </div>
         {!! Form::close() !!}
