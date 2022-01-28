@@ -348,8 +348,7 @@
                             <div class="field">
                                 <label class="checkbox">
                                     <input type="checkbox" required>
-                                    Je certifie que mon projet correspond à la charte de Terre de Liens, <a href="#">lire
-                                        notre charte</a>.
+                                    Je certifie que mon projet correspond à la charte d'Objectif Terres', <a href="{{URL::asset('docs/OT_charte_oct2020.pdf')}}" target="_blank"> lire la charte</a>.
                                 </label>
                             </div>
                         </div>

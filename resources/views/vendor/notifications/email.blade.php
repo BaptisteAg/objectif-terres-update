@@ -40,7 +40,7 @@
 <p style="text-align: center;">
     <a target="_blank" href="https://soutenir.terredeliens.org/objectifterre/~mon-don"
        class="button button-primary"
-       style="font-family: 'Nunito', sans-serif; box-sizing: border-box; border-radius: 3px; box-shadow: 0 1px 4px rgb(0 0 0 / 16%); color: #579ea5; display: inline-block; text-decoration: none; -webkit-text-size-adjust: none; background-color: #ffffff; border-top: 10px solid #ffffff; border-right: 18px solid #ffffff; border-bottom: 10px solid #ffffff; border-left: 18px solid #ffffff;">
+       style="font-family: 'Nunito', sans-serif; box-sizing: border-box; border-radius: 3px; box-shadow: 0 1px 4px rgb(0 0 0 / 16%); color: #BF0D0D; display: inline-block; text-decoration: none; -webkit-text-size-adjust: none; background-color: #ffffff; border-top: 10px solid #ffffff; border-right: 18px solid #ffffff; border-bottom: 10px solid #ffffff; border-left: 18px solid #ffffff;">
         Faire un don ou soutenir Objectif Terres
     </a>
 </p>

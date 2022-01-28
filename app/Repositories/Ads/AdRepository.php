@@ -368,17 +368,21 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			->where(function (Builder $query) {
 				$query->whereHas('attributionAd', function (Builder $subQuery) {
 					$subQuery->whereNull('ad_status_id');
-					$subQuery->whereNotNull('user_advisor_id')
-                        ->orWhereNotNull('user_advisor_2_id')
-                        ->orWhereNotNull('user_advisor_3_id')
-                        ->orWhereNotNull('user_advisor_4_id');
+					$subQuery->where(function ($subQuery) {
+                       $subQuery->orWhereNotNull('user_advisor_id')
+                            ->orWhereNotNull('user_advisor_2_id')
+                            ->orWhereNotNull('user_advisor_3_id')
+                            ->orWhereNotNull('user_advisor_4_id');
+                    });
 
 					if (auth()->user()->role == 2) {
-						$subQuery
-                            ->where('user_advisor_id', '=', auth()->user()->id)
-                            ->orWhere('user_advisor_2_id', '=', auth()->user()->id)
-                            ->orWhere('user_advisor_3_id', '=', auth()->user()->id)
-                            ->orWhere('user_advisor_4_id', '=', auth()->user()->id);
+                        $subQuery->where(function ($subQuery) {
+                            $subQuery
+                                ->orWhere('user_advisor_id', '=', auth()->user()->id)
+                                ->orWhere('user_advisor_2_id', '=', auth()->user()->id)
+                                ->orWhere('user_advisor_3_id', '=', auth()->user()->id)
+                                ->orWhere('user_advisor_4_id', '=', auth()->user()->id);
+                        });
 					} else if (auth()->user()->role >= 3) {
 						$subQuery->where('user_supervisor_id', '=', auth()->user()->id);
 					}

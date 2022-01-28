@@ -185,7 +185,6 @@ class SupportRequestsController extends BaseController
         $data = array_merge($data, ['is_draft' => $isDraft]);
         /** @var $ad Ad $ad */
         try {
-
             if ($isDraft === 1) {
                 if (!empty($data["id"])) {
                     $ad = $this->adService->update($data["id"], $data);
@@ -236,8 +235,8 @@ class SupportRequestsController extends BaseController
                 "[62] Désolé, l'opération n'a pas pu être effectuée. Nous en avons été informé et nous faisons le maximum pour résoudre le probleme rapidement. Veuillez réessayer un peu plus tard.");
         }
 
-        //return redirect()->route('support-request.show')
-        //    ->with('success', $success);
+        return redirect()->route('support-request.show')
+            ->with('success', $success);
     }
 
     /**

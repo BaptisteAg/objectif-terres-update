@@ -44,7 +44,7 @@ use Throwable;
  * Class AdService
  * @package App\Services\Ads
  */
-class AdService
+class  AdService
 {
 	/**
 	 * @var AdRepository
@@ -818,7 +818,7 @@ class AdService
 	 */
 	public function showForSupervisor(Request $request)
 	{
-		$toPaginate = $request->has('toPaginate') ? true : false;
+        $toPaginate = $request->get('toPaginate') === "true" || $request->get('toPaginate') === null  ? true : false;
 		$ads = $this->filter($request, auth()->user()->role, $toPaginate);
 		return $ads;
 	}

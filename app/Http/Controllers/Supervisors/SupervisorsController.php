@@ -40,7 +40,8 @@ class SupervisorsController extends BaseController
 		$request->session()->forget('_old_input');
 		$request->session()->forget('moderator_dashboard_url');
 		$request->session()->forget('supervisor_dashboard_url');
-		if($request->input('toPaginate') === 'true'){
+
+		if($request->input('toPaginate') === 'true' || $request->input('toPaginate') === null){
 			$ads = $this->adService->findAllNotAssignedProjectsByUserSupervisor(true);
 		}else{
 			$ads = $this->adService->findAllNotAssignedProjectsByUserSupervisor(false);

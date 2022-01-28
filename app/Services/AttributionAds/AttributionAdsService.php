@@ -404,7 +404,10 @@ class AttributionAdsService
 		$adModerator = $attributionAd->userModerator ?? auth()->user();
 		$attributionAd->ad->userPp->notify(new BasicNotification(
 			['subject' => "Votre annonce n°" . $attributionAd->ad->id . " a été validée par " . $adModerator->first_name . " " . $adModerator->name,
-				'message' => "Votre annonce a été publiée sur Objectif Terres. Elle sera en ligne durant 6 mois.\n
+				'message' => "Votre annonce a été publiée sur Objectif Terres. Elle sera en ligne durant 6 mois.\n\n
+
+				    Veuillez prendre note que la modification de votre annonce ne la fera pas remonter dans la liste de recherche.\n\n
+
                     Si besoin vous pouvez la modifier ou la supprimer.\n",
 				'action' => ["Gérer mes annonces", route('ads.list')],
 				'salutation' => "A bientôt sur Objectif Terres !"]

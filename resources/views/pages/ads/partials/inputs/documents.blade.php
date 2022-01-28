@@ -8,7 +8,8 @@
         <i class="fas fa-info-circle has-text-info"></i><br>
         <span style="font-weight:normal">
             @if(!$isSupportRequest)
-                Ajoutez des photos ou un document PDF ou DOC pour donner envie de consulter votre annonce.<br>
+                Si vous déposez des photos (JPG, GIF, PNG, ... ) elles défileront en entête de votre annonce.
+                <br>Les fichier PDF et DOC seront affichés en pièces jointes.<br>
             @else
                 Ajoutez des photos ou un document PDF ou DOC qui nous aideraient à comprendre votre projet.<br>
             @endif

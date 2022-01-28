@@ -204,7 +204,8 @@ class AdsController extends BaseController
         if (is_null($ad->project_id)) {
             return back()->with('success', 'Votre annonce a bien été supprimée');
         }
-        //return redirect()->route('user.index')->with('success', 'Votre demande d\'accomapgnement a été supprimée avec succès');
+
+        return redirect()->route('user.index')->with('success', 'Votre demande d\'accomapgnement a été supprimée avec succès');
     }
     /**
      * @param Ad $ad

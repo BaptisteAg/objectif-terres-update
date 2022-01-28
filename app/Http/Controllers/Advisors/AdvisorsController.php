@@ -31,13 +31,14 @@ class AdvisorsController extends BaseController
 	{
 		$request->session()->forget('_old_input');
 		$request->session()->forget('advisor_dashboard_url');
-		if($request->input('toPaginate') === 'true'){
+		if($request->input('toPaginate') === 'true' || $request->input('toPaginate') === null){
 			$ads = $this->advisorsService->findAllSupportsByUserAdvisor(true);
 		}else{
 			$ads = $this->advisorsService->findAllSupportsByUserAdvisor(false);
 		}
 		$vars = $this->getAdvisorDashboardVars();
 		$vars['ads'] = $ads;
+
 		return view('pages.advisors.index', $vars);
 	}
 

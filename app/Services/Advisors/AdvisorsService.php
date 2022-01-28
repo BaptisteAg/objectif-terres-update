@@ -82,6 +82,7 @@ class AdvisorsService
 	{
 		$advisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$advisorLocationTerritoryId = $this->userService->getCurrentUserTerritoryIds();
+
 		$ads = $this->repository->allProjectsInTerritories($advisorLocationTerritoryCodes, $advisorLocationTerritoryId, $toPaginate);
 		return $ads;
 	}
@@ -92,7 +93,7 @@ class AdvisorsService
 	 */
 	public function showForAdvisor(Request $request)
 	{
-		$toPaginate = $request->has('toPaginate') ? true : false;
+		$toPaginate = $request->get('toPaginate') === "true" || $request->get('toPaginate') === null  ? true : false;
 		$ads = $this->adService->filter($request, auth()->user()->role, $toPaginate);
 
 		return $ads;
