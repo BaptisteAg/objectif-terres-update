@@ -709,7 +709,12 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 				$query->orWhere(function (Builder $subQuery) {
 					$subQuery->whereNotNull('project_id');
 					$subQuery->whereHas('attributionAd', function (Builder $query) {
-						$query->whereNotNull('user_advisor_id');
+                        $query->where(function ($subQuery) {
+                            $subQuery->orWhereNotNull('user_advisor_id')
+                                ->orWhereNotNull('user_advisor_2_id')
+                                ->orWhereNotNull('user_advisor_3_id')
+                                ->orWhereNotNull('user_advisor_4_id');
+                        });
 						$query->whereNull('ad_status_id');
 					});
 				});
@@ -719,8 +724,11 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		//Additional filters  : filter by ads attributed to moderator
 		if ($filters->has('user_attribution')) {
 			if (!is_null($filters->input('user_attribution'))) {
-				$adsFiltred->whereHas('attributionAd', function (Builder $subBuilder) {
-					$subBuilder->where('user_advisor_id', '=', auth()->id());
+				$adsFiltred->whereHas('attributionAd', function (Builder $subQuery) {
+					$subQuery->orWhere('user_advisor_id', '=', auth()->id())
+                        ->orWhere('user_advisor_2_id', '=', auth()->id())
+                        ->orWhere('user_advisor_3_id', '=', auth()->id())
+                        ->orWhere('user_advisor_4_id', '=', auth()->id());
 				});
 			}
 		}
