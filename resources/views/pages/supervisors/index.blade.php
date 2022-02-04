@@ -99,21 +99,26 @@
 
                     <div class="" style="float:right">
                         <div class="buttons are-medium">
-                            <a href="{{route('advisor.export')}}" class="button is-light is-link" onmousedown="exportLoader(this)">
+                            <a href="{{route('supervisor.export')}}" class="button is-light is-link" id="exportButton">
                             <span class="icon">
                                 <i class="fas fa-table"></i>
                             </span>
-                                <span>Exporter</span>
+                                <span>Exporter cette page</span>
                             </a>
-
                             <script>
-                                function exportLoader(button) {
+                                document.getElementById("exportButton").addEventListener("click", function (e) {
+                                    e.preventDefault()
+
+                                    const button = document.getElementById("exportButton")
                                     // Get all field data from the form
-                                    let data = new FormData(document.querySelector('.exportable-form'));
-                                    let queryString = new URLSearchParams(data).toString();
-                                    button.href = button.href.split("?")[0] + "?" + queryString
+                                    let urlParts = location.href.split("?")
+                                    let queryString = urlParts[1]
+                                    if(location.href.indexOf("recherche") !== -1) {
+                                        queryString = "search=1" + (queryString ? '&' : '') + queryString
+                                    }
+                                    window.open(button.href + "?" + queryString)
                                     document.getElementById("exportLoader").innerText = "Veuillez patienter un instant pour l'export.."
-                                }
+                                })
                             </script>
 
                         </div>
@@ -427,11 +432,6 @@
             name: 'content'
         });
 
-        const vueSupervisorExportForm = new Vue({
-            el: '#supervisor-form-export-data',
-            name: 'content'
-        });
-
         let deleteButton = document.querySelector('#close-notification-supervisor');
         if (deleteButton != null) {
             deleteButton.addEventListener('click', function (e) {
@@ -439,14 +439,6 @@
                     notification.style.display = 'none';
                 }
             )
-        }
-
-        function submitExport(form) {
-            if(!form.date_from.value) {
-                alert("Vous devez renseigner une tranche de dates pour l'export.")
-                return false
-            }
-            return true;
         }
 
     </script>

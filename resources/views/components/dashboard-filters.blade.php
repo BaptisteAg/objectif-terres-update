@@ -35,15 +35,15 @@
                         @else
                             <div class="column is-2">
                                 <p class="label has-text-centered">Type</p>
-                                <div class="columns is-mobile is-multiline is-centered">
-                                    <div class="column pr-0 pl-0 is-narrow has-text-centered">
+                                <div class="is-mobile is-multiline">
+                                    <div class="column pr-0 pl-0 pb-o pt-0 is-narrow has-text-centered" style="min-width:200px">
                                         <label class="checkbox">
                                             <input name="ads_show" value="true"
                                                    type="checkbox" {{old('ads_show')  ? ' checked' : '' }}>
                                             Annonces
                                         </label>
                                     </div>
-                                    <div class="column is-narrow pr-0 pl-0 has-text-centered">
+                                    <div class="column is-narrow pr-0 pl-0 pb-o pt-0 has-text-centered" style="min-width:200px">
                                         <label class="checkbox">
                                             @if(Route::current()->getName() == 'advisor.index' )
                                                 <input name="projects_show" value="true"
@@ -150,7 +150,7 @@
                         @endif
                 </div>
                 <hr class="navbar-divider">
-                <div class="columns is-desktop is-vcentered ">
+                <div class="columns is-desktop">
                     @if(Route::current()->getName() == 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
                         <div class="column is-3 ">
                             <div class="columns is-mobile">
@@ -211,7 +211,7 @@
                             <p class="label has-text-centered ">
                                 Statut de l'annonce
                             </p>
-                            <div class="columns is-mobile is-multiline is-centered">
+                            <div class="columns is-mobile is-multiline">
                                 @foreach($adStatuses as $adStatus)
                                     <div class="column is-narrow has-text-centered">
                                         <label class="checkbox custom-tooltip has-tooltip-multiline has-tooltip-top"
@@ -245,9 +245,9 @@
                             <p class="label has-text-centered ">
                                 Stade dans l'accompagnement
                             </p>
-                            <div class="columns is-mobile is-multiline is-centered">
+                            <div class="columns is-mobile is-multiline">
                                 @foreach($supportStages as $supportStage)
-                                    <div class="column is-narrow pl-0 pr-0 has-text-centered">
+                                    <div class="column pl-0 pr-0 pb-0 pt-0 has-text-centered" style="min-width:200px">
                                         <label class="checkbox custom-tooltip has-tooltip-multiline has-tooltip-top"
                                                data-tooltip=" {{\App\Models\SupportStage::TOOLTIPS[(int)$supportStage->id]}}">
                                             <input name="support_stages[]" value="{{(int)$supportStage->id}}"
@@ -267,9 +267,9 @@
                             <p class="label has-text-centered  ">
                                 État de la demande
                             </p>
-                            <div class="columns is-mobile is-multiline is-centered">
+                            <div class="columns is-mobile is-multiline">
                                 @foreach($supportStates as $supportState)
-                                    <div class="column is-narrow pl-0 pr-0 has-text-centered">
+                                    <div class="column pl-0 pr-0 pb-0 pt-0 has-text-centered" style="min-width:200px">
                                         <label class="checkbox custom-tooltip has-tooltip-multiline has-tooltip-top"
                                                data-tooltip=" {{\App\Models\SupportState::TOOLTIPS[(int)$supportState->id]}}">
                                             <input name="support_states[]" value="{{(int)$supportState->id}}"
@@ -288,9 +288,9 @@
                             <p class="label has-text-centered">
                                 Avancement du projet
                             </p>
-                            <div class="columns is-mobile is-multiline is-centered">
+                            <div class="columns is-mobile is-multiline">
                                 @foreach($projectStatuses as $projectStatus)
-                                    <div class="column is-narrow pl-0 pr-0 has-text-centered">
+                                    <div class="column pl-0 pr-0 pb-0 pt-0 has-text-centered" style="min-width:200px">
                                         <label class="checkbox custom-tooltip has-tooltip-multiline has-tooltip-top"
                                                data-tooltip=" {{\App\Models\ProjectStatus::TOOLTIPS[(int)$projectStatus->id]}}">
                                             <input name="project_statuses[]" value="{{(int)$projectStatus->id}}"
@@ -315,15 +315,15 @@
                     @if(Route::current()->getName() == 'supervisor.index' || Route::current()->getName() == 'supervisor.show')
                         <div class="column is-2">
                             <p class="label has-text-centered">Suivi</p>
-                            <div class="columns is-mobile is-multiline is-centered">
-                                <div class="column is-narrow pl-0 pr-0 has-text-centered">
+                            <div class="columns is-mobile is-multiline">
+                                <div class="column pl-0 pr-0 pb-0 pt-0 has-text-centered" style="min-width:200px">
                                     <label class="checkbox">
                                         <input name="project_attribution[]" value="true"
                                                type="checkbox" {{old('project_attribution') && in_array('true',old('project_attribution'))  ? ' checked' : '' }}>
                                         Attribué
                                     </label>
                                 </div>
-                                <div class="column is-narrow pl-0 pr-0 has-text-centered">
+                                <div class="column pl-0 pr-0 pb-0 pt-0 has-text-centered" style="min-width:200px">
                                     <label class="checkbox">
                                         @if(Route::current()->getName() == 'supervisor.index' )
                                             <input name="project_attribution[]" value="false"
@@ -345,7 +345,7 @@
                             <span class="icon">
                                 <i class="fas fa-filter"></i>
                             </span>
-                            <span>Filtrer</span>
+                            <span>Rechercher</span>
                         </button>
                         <p style="margin-bottom: 10px"></p>
                         <a v-on:click='isMoreFiltersOpen = !isMoreFiltersOpen'

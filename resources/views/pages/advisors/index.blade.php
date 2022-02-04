@@ -125,7 +125,7 @@
 
                     <div class="" style="float:right">
                         <div class="buttons are-medium">
-                            <a href="{{route('advisor.export')}}" class="button is-light is-link" onmousedown="exportLoader(this)">
+                            <a href="{{route('advisor.export')}}" class="button is-light is-link" id="exportButton">
                             <span class="icon">
                                 <i class="fas fa-table"></i>
                             </span>
@@ -133,13 +133,16 @@
                             </a>
 
                             <script>
-                                function exportLoader(button) {
+                                document.getElementById("exportButton").addEventListener("click", function (e) {
+                                    e.preventDefault()
+
+                                    const button = document.getElementById("exportButton")
                                     // Get all field data from the form
                                     let data = new FormData(document.querySelector('.exportable-form'));
                                     let queryString = new URLSearchParams(data).toString();
-                                    button.href = button.href.split("?")[0] + "?" + queryString
+                                    window.open(button.href.split("?")[0] + "?" + queryString)
                                     document.getElementById("exportLoader").innerText = "Veuillez patienter un instant pour l'export.."
-                                }
+                                })
                             </script>
 
                             <a href="{{route('advisor.createNewPp')}}" class="button  is-light ">

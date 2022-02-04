@@ -820,6 +820,7 @@ class  AdService
 	{
         $toPaginate = $request->get('toPaginate') === "true" || $request->get('toPaginate') === null  ? true : false;
 		$ads = $this->filter($request, auth()->user()->role, $toPaginate);
+
 		return $ads;
 	}
 

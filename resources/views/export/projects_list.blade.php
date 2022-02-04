@@ -1,11 +1,9 @@
 <table>
 	<thead>
 	<tr>
-		<th colspan="10" ><h1>Données générales</h1></th>
-		<th colspan="16"><h1>Détails offres foncières</h1>
-		</th>
-		<th colspan="6"><h1>Détails recherche de
-				foncier</h1></th>
+		<th colspan="20" ><b>Données générales</b></th>
+		<th colspan="15"><b>Détails offres foncières</b></th>
+		<th colspan="9"><b>Détails recherche de foncier</b></th>
 	</tr>
 	</thead>
 	<tr>
@@ -16,7 +14,10 @@
 		<th>Titre du projet</th>
 		<th>Type de projet</th>
 		<th>Nom du porteur de projet</th>
+		<th>Prénom</th>
+		<th>Civilité</th>
 		<th>Adresse mail</th>
+		<th>Téléphone</th>
 		<th>Code Postal du PP</th>
 		<th>Territoire</th>
 		<th>Région(s)</th>
@@ -36,7 +37,7 @@
 		<th>Certification des terres</th>
 		<th>Avec bâtiment(s) agricole(s)</th>
 		<th>Description bâtiment(s) agricole(s)</th>
-		<th>Avec habitationt(s)</th>
+		<th>Avec habitation(s)</th>
 		<th>Description habitation(s)</th>
 		<th>Type d'offre</th>
 		<th>Prix (en €)</th>
@@ -45,9 +46,11 @@
 		<th>Surface recherchée (en ha)</th>
 		<th>Habitation(s) et bâti(s) recherché(s)</th>
 		<th>Projet agriculture bio</th>
+		<th>Production(s) envisagée(s)</th>
 		<th>Productions(s) envisagée(s)</th>
 		<th>Type d'installation</th>
 		<th>Expérience dans le domaine agricole</th>
+		<th>Niveau de formation</th>
 	</tr>
 
 	<tbody>
@@ -60,8 +63,11 @@
 				<td>{{$ad->project->projectStatus->name ?? ''}}</td>
 				<td>{{$ad->title ?? ''}}</td>
 				<td>{{$ad->ad_type_full_name?: ''}}</td>
-				<td>{{$ad->userPp->first_name ?? ''}} {{$ad->userPp->name ?? ''}}</td>
+				<td>{{$ad->userPp->name ?? ''}}</td>
+				<td>{{$ad->userPp->first_name ?? ''}}</td>
+				<td>{{$ad->userPp->civilityFullName ?? ''}}</td>
 				<td>{{$ad->userPP->email ?? ''}}</td>
+				<td>{{$ad->userPP->phone ?? ''}}</td>
 				<td>{{$ad->userPP->zipCode->zip_code ?? ''}}</td>
 				<td>{{$ad->supportRequestTerritoryId->name}}</td>
 				<td>
@@ -173,6 +179,13 @@
 				</td>
 				<td>
 					@if(isset($ad->landSeekAd))
+						@if(isset($ad->landSeekAd->productionGenres))
+							{{$ad->landSeekAd->productionGenres->pluck('name')->implode(', ')}}
+						@endif
+					@endif
+				</td>
+				<td>
+					@if(isset($ad->landSeekAd))
 						@if($ad->landSeekAd->offerGenres)
 							{{$ad->landSeekAd->offerGenres->pluck('name')->implode(', ')}}
 						@endif
@@ -180,6 +193,13 @@
 				</td>
 				<td>{{$ad->landSeekAd->installationType->name ?? '' }}</td>
 				<td>{{$ad->landSeekAd->experience_farming ?? '' }}</td>
+				<td>
+					@if(isset($ad->landSeekAd))
+						@if(isset($ad->landSeekAd->educationLevels))
+							{{$ad->landSeekAd->educationLevels->pluck('name')->implode(', ') }}
+						@endif
+					@endif
+				</td>
 			</tr>
 		@else
 		@endif

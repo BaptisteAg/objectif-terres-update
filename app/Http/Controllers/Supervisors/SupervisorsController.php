@@ -86,18 +86,18 @@ class SupervisorsController extends BaseController
 	 */
 	public function export(Request $request)
 	{
+        if($request->has("search")) {
+            $ads = $this->adService->showForSupervisor($request);
+        }
+        else {
+            $paginate = $request->input('toPaginate') === 'true' || $request->input('toPaginate') === null;
+            $ads = $this->adService->findAllNotAssignedProjectsByUserSupervisor($paginate);
+        }
 
-		if (is_null($request->input('date_from')) && is_null($request->input('date_from'))) {
-			return (new SupervisorsExport($this->adService->findAllByUserSupervisor(false)))->download('export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
-		} else {
-			$dates = [
-				DateTime::createFromFormat('d/m/Y', (string)$request->input('date_from'))->format('Y-m-d'),
-				DateTime::createFromFormat('d/m/Y', (string)$request->input('date_to'))->format('Y-m-d')
-			];
-
-			$ads = $this->adService->findAllByUserSupervisorBetweenDates($dates);
-			return (new SupervisorsExport($ads))->download('export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
-		}
+        return (new SupervisorsExport($ads))->download(
+            'export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx',
+            \Maatwebsite\Excel\Excel::XLSX
+        );
 	}
 
 	/**

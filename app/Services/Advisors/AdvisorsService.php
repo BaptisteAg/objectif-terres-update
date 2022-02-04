@@ -253,7 +253,7 @@ class AdvisorsService
 				'subject' => "Votre compte est suspendu temporairement",
 				'message' => "Votre compte Objectif Terres vient d’être suspendu puisque vous avez dépassé le cadre d’utilisation d’Objectif Terres.\n
                     Pour rappel, notre charte d’utilisation est disponible ici :\n",
-				'action' => ["Charte d'utilisation Objectif Terres", asset('docs/OT_charte_oct2020.pdf'),
+				'action' => ["Charte d'utilisation Objectif Terres", asset('docs/Charte_utilisation_d_Objectif_Terres-Validee_en_CIT_du_21_oct.pdf'),
 					'salutation' => "Merci de votre compréhension,"]
 			]));
 		} catch (\Exception $e) {
