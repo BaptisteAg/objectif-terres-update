@@ -111,7 +111,7 @@
                 <div class="is-pulled-right ">
                     <a href="{{  route('ads.delete', [ $ad->id]) }}"
                        onclick="return confirm('Êtes vous sûr·e ? Cette opération est irréversible.')"
-                       class="button form-button basic danger">
+                       class="button form-button basic danger has-tooltip-multiline" data-tooltip="L'annonce ne sera plus visible par le public et non plus par les modérateurs et RT">
                         <span class="icon is-small">
                             <i class="fas fa-trash-alt"></i>
                         </span>
@@ -122,7 +122,7 @@
                 <div class="is-pulled-right mr-10  ">
                     <a href="{{  route('ads.archive', [ $ad->id]) }}"
                        onclick="return confirm('Êtes vous sûr·e ?')"
-                       class="button form-button basic danger">
+                       class="button form-button basic danger has-tooltip-multiline" data-tooltip="L'annonce ne sera plus visible par le public, par contre, les modérateurs et RT pourront toujours les consulter">
                         <span class="icon is-small">
                             <i class="fas fa-trash-alt"></i>
                         </span>
