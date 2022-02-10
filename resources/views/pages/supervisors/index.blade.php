@@ -243,10 +243,10 @@
                             <tbody>
                             @foreach($ads as $ad)
                                 @if(!is_null($ad->project))
-                                    @if(is_null($ad->attributionAd->userAdvisor))
+                                    @if(!$ad->attributionAd->hasAttributedAdvisors())
                                         <tr style="background-color: mistyrose">
                                     @else
-                                        @if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
+                                        @if($ad->attributionAd->isCurrentUserAdvisorOfAd() )
                                             <tr style=" background-color: #e8e8e8">
                                         @endif
                                     @endif
@@ -327,8 +327,16 @@
                                         </td>
                                         <td>
                                             @if(!is_null($ad->project_id))
-                                                @if(isset($ad->attributionAd->userAdvisor))
-                                                    {{$ad->attributionAd->userAdvisor->first_name}} {{$ad->attributionAd->userAdvisor->name}}
+                                                @if($ad->attributionAd->hasAttributedAdvisors())
+
+                                                    @foreach($ad->attributionAd->getAdvisors() as $i => $advisor)
+                                                        @if($i)
+                                                            et
+                                                        @endif
+                                                        <strong>
+                                                            {{$advisor->first_name}} {{$advisor->name}}
+                                                        </strong>
+                                                    @endforeach
                                                 @else
                                                     <span class="tag is-danger">Non attribué</span>
                                                 @endif

@@ -721,11 +721,11 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			});
 		}
 
-		//Additional filters  : filter by ads attributed to moderator
+		//Additional filters  : filter by ads attributed to advisor
 		if ($filters->has('user_attribution')) {
 			if (!is_null($filters->input('user_attribution'))) {
 				$adsFiltred->whereHas('attributionAd', function (Builder $subQuery) {
-					$subQuery->orWhere('user_advisor_id', '=', auth()->id())
+					$subQuery->where('user_advisor_id', '=', auth()->id())
                         ->orWhere('user_advisor_2_id', '=', auth()->id())
                         ->orWhere('user_advisor_3_id', '=', auth()->id())
                         ->orWhere('user_advisor_4_id', '=', auth()->id());

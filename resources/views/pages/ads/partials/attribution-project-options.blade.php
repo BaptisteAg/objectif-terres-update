@@ -1,12 +1,5 @@
 
 
-<a href="{{route('advisor.showSupport', $ad->id)}}" class="button is-link ">
-                <span class="icon is-small">
-                    <i class="fas fa-arrow-left"></i>
-                </span>
-    <span>Retourner à l'espace de suivi</span>
-</a>
-
 {!! Form::open(['route' => 'supervisor.attribute', 'method'=>'post']) !!}
 <div class="box has-text-centered">
     <div class="container">

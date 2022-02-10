@@ -22,31 +22,6 @@
 @endsection
 
 @section('main-content')
-    @auth
-        @if(auth()->user()->role >= 1 )
-            @if (session()->has('supervisor_dashboard_url'))
-                <div class="content ml-80 mt-30">
-                    <a class="text_size large"
-                       href="{{route('supervisor.show', Session::get('supervisor_dashboard_url') )}}">
-                        <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-                        <span>Aller dans votre tableau de bord </span>
-                    </a>
-                </div>
-            @elseif(session()->has('moderator_dashboard_url'))
-                <div class="content ml-80 mt-30">
-                    <a class="text_size large"
-                       href="{{route('moderator.show', Session::get('moderator_dashboard_url') )}}">
-                        <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-                        <span>Aller sur votre espace de gestion des annonces </span>
-                    </a>
-                </div>
-            @else
-                @include('components.back-links')
-            @endif
-        @endif
-    @endauth
-
-
 
     <section class="section pt-0 ">
         <div class="container">
@@ -96,6 +71,31 @@
             </nav>
             @auth
                 @if(auth()->user()->role >= 1 && $ad->attributionAd)
+
+                    @auth
+                        @if(auth()->user()->role >= 1 )
+                            {{--@if (session()->has('supervisor_dashboard_url'))
+                                <div class="content ml-80 mt-30">
+                                    <a class="text_size large"
+                                       href="{{route('supervisor.show', Session::get('supervisor_dashboard_url') )}}">
+                                        <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
+                                        <span>Retour au tableau de bord </span>
+                                    </a>
+                                </div>
+                            @elseif(session()->has('moderator_dashboard_url'))
+                                <div class="content ml-80 mt-30">
+                                    <a class="text_size large"
+                                       href="{{route('moderator.show', Session::get('moderator_dashboard_url') )}}">
+                                        <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
+                                        <span>Retour à l'espace modérateur </span>
+                                    </a>
+                                </div>
+                            @else--}}
+                                @include('components.back-links')
+                            {{--@endif--}}
+                        @endif
+                    @endauth
+
                     @if($ad->isProject() && auth()->user()->role >= 2)
                         @include ('pages.ads.partials.attribution-project-options')
                     @elseif(! $ad->isProject())

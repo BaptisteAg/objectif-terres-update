@@ -269,15 +269,11 @@
                             </thead>
                             <tbody>
                             @foreach($ads as $ad)
-                                @if(!is_null($ad->attributionAd->userAdvisor))
-                                    @if($ad->attributionAd->userAdvisor->id === auth()->user()->id)
-                                        <tr style=" background-color: #e8e8e8">
-                                    @else
-                                        <tr>
-                                    @endif
+                                @if($ad->attributionAd->isCurrentUserAdvisorOfAd())
+                                    <tr style=" background-color: rgba(125,162,55,0.15)">
                                 @else
                                     <tr>
-                                        @endif
+                                @endif
                                         <td>
                                             @if(!is_null($ad->project))
                                                 <span class="icon is-medium  has-text-link has-tooltip-right"

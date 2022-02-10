@@ -94,9 +94,13 @@ class AttributionAd extends Model implements Decoratable
 
 	const VALIDATION_MESSAGE = "Bonjour,\nVotre annonce vient d’être publiée. Sans intervention de votre part, elle sera en ligne pour 6 mois. Nous espérons qu’Objectif Terres vous permettra d’être contacté. \nCordialement,\nTerre de Liens";
 
-	public function getAdvisors()
+    public function hasAttributedAdvisors()
     {
-        return array_filter($this->getAdvisorsUnfiltered());
+        return (bool)count($this->getAdvisors());
+    }
+    public function getAdvisors()
+    {
+        return array_values(array_filter($this->getAdvisorsUnfiltered()));
     }
 
 	public function getAdvisorsUnfiltered(): array
@@ -134,6 +138,11 @@ class AttributionAd extends Model implements Decoratable
     public function userAdvisor4()
     {
         return $this->belongsTo(User::class, 'user_advisor_4_id');
+    }
+
+    public function isCurrentUserAdvisorOfAd()
+    {
+        return auth()->id() === $this->user_advisor_id || auth()->id() === $this->user_advisor_2_id || auth()->id() === $this->user_advisor_3_id || auth()->id() === $this->user_advisor_4_id;
     }
 
 	/**
@@ -185,9 +194,4 @@ class AttributionAd extends Model implements Decoratable
 	{
 		return AdPresenter::class;
 	}
-
-    public function isCurrentUserAdvisorOfAd()
-    {
-        return auth()->id() === $this->user_advisor_id || auth()->id() === $this->user_advisor_2_id || auth()->id() === $this->user_advisor_3_id || auth()->id() === $this->user_advisor_4_id;
-    }
 }
