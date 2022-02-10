@@ -51,13 +51,17 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
             $ad->userPp->notify(new BasicNotification([
                 'subject' => "Votre annonce va bientôt expirer",
                 'message' => "Nous espérons que ce service a répondu à votre besoin.\n
-                    
+
                     Sans action de votre part d'ici 7 jours, cette annonce ne sera plus visible sur notre site.\n
-                    
+
                     Pour reconduire votre annonce sans modification pour une durée de 6 mois, cliquez sur le bouton ci-dessous.\n
-                    
-                    Vous pouvez également modifier votre annonce.\n
-                    
+
+                    Vous pouvez également modifier votre annonce.\n\n
+
+                    Si vous souhaitez supprimer votre annonce, merci de prendre une minute
+                    <a href='https://framaforms.org/questionnaire-objectif-terres-en-direction-des-annonceurs-qui-suppriment-leur-annonce-1641204728'>pour remplir ce formulaire</a> pour nous
+                    aider à améliorer notre plateforme.\n\n
+
                     En vous remerciant pour votre confiance." . $extraMsg,
                 'action' => ["Etendre l'annonce", route('ads.extend', ["id" => $ad->id])]
             ]));
