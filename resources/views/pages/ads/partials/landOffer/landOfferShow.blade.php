@@ -154,7 +154,7 @@
                         @endif
                         @if($ad->landOfferAd->rent_price)
                             <p>
-                                <span class="is-size-5  ">Loyer mensuel : </span>
+                                <span class="is-size-5  ">Fermage annuel : </span>
                                 <span class="subtitle ">
                                     {{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} € / mois
                                 </span>

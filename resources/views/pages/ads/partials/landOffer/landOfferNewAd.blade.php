@@ -431,6 +431,7 @@
                                     Description des habitations
                                     <i class="fas fa-info-circle has-text-info"></i>
                                 </label>
+                                <p>Vous pouvez mettre le prix de la location de votre habitation dans ce texte</p>
                                 <text-area-counter
                                         name="land_offer[house][description]"
                                         :max-length="1000"
@@ -581,9 +582,13 @@
                             </div>
                             <div class="column is-half" v-if="isRentOffer">
                                 <div class="field">
-                                    {!! Form::label('land_offer[rent_price]', 'Loyer mensuel', [
-                                        'class' => 'label',
-                                    ]); !!}
+
+                                    <label for='land_offer[rent_price]'
+                                           class="label tooltip has-tooltip-multiline has-tooltip-left"
+                                           data-tooltip="Les fermages sont définis avec les bâtiments agricoles qui se trouvent dessus">
+                                        Fermage annuel
+                                        <i class="fas fa-info-circle has-text-info"></i>
+                                    </label>
 
                                     <div class="control has-icons-right">
 
