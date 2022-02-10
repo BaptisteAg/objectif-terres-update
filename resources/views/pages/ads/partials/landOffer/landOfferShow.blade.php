@@ -156,7 +156,7 @@
                             <p>
                                 <span class="is-size-5  ">Fermage annuel : </span>
                                 <span class="subtitle ">
-                                    {{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} € / mois
+                                    {{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} € / an
                                 </span>
                             </p>
                         @endif
