@@ -36,8 +36,8 @@ class Kernel extends ConsoleKernel
             $schedule->command('app:notify-publish-date-extend-before-expiration')->daily()->appendOutputTo($filePath);
         }
         else {
-            $schedule->command('app:send-alert-new-results-research')->everyFiveMinutes()->appendOutputTo($filePath);
-            $schedule->command('app:notify-overdue-moderation')->everyTwoHours()->appendOutputTo($filePath);
+            //$schedule->command('app:send-alert-new-results-research')->everyFiveMinutes()->appendOutputTo($filePath);
+            //$schedule->command('app:notify-overdue-moderation')->everyTwoHours()->appendOutputTo($filePath);
             $schedule->command('app:notify-publish-date-extend-before-expiration')->daily()->appendOutputTo($filePath);
         }
         $schedule->command('app:notify-drafts-unpublished-ads')->hourly()->appendOutputTo($filePath);
