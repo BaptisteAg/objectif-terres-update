@@ -984,8 +984,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 */
 	public function findAllByPublishedOnSince(Carbon $date)
 	{
-		return $this->entity
-			->whereHas('attributionAd', function (Builder $query) use ($date) {
+		return $this->entity->whereHas('attributionAd', function (Builder $query) use ($date) {
 				$query->whereDate('published_on', '<=', $date);
 			})->get();
 	}

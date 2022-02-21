@@ -11,6 +11,9 @@
 |
 */
 
+use App\Notifications\TestSendEmail;
+use Illuminate\Support\Facades\Notification;
+
 Route::get('/', 'HomePage\HomePageController@show')->name('home');
 Route::get('/premiere-visite', 'HomePage\HomePageController@show')->name('site-tour');
 
@@ -216,3 +219,11 @@ Route::prefix('motdepasse')->name('password.')->group(function () {
 });
 
 Route::post('newsletter', 'Newsletter\NewsletterController@create');
+
+Route::get('test-send-email', function(){
+    Notification::route('mail', [
+        'newuser@example.com' => 'Barrett Blair',
+    ])->notify(new TestSendEmail());
+
+    return 'A message has been sent to Mailtrap!';
+});
