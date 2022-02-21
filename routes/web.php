@@ -219,11 +219,3 @@ Route::prefix('motdepasse')->name('password.')->group(function () {
 });
 
 Route::post('newsletter', 'Newsletter\NewsletterController@create');
-
-Route::get('test-send-email', function(){
-    Notification::route('mail', [
-        'newuser@example.com' => 'Barrett Blair',
-    ])->notify(new TestSendEmail());
-
-    return 'A message has been sent to Mailtrap!';
-});
