@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\NotifyPublishDateExtendBeforeExpiration;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Foundation\Console\StorageDocumentsLink;
@@ -15,6 +16,7 @@ class Kernel extends ConsoleKernel
 	 * @var array
 	 */
 	protected $commands = [
+        NotifyPublishDateExtendBeforeExpiration::class,
 	];
 
 	/**
@@ -36,8 +38,8 @@ class Kernel extends ConsoleKernel
             $schedule->command('app:notify-publish-date-extend-before-expiration')->daily()->appendOutputTo($filePath);
         }
         else {
-            //$schedule->command('app:send-alert-new-results-research')->everyFiveMinutes()->appendOutputTo($filePath);
-            //$schedule->command('app:notify-overdue-moderation')->everyTwoHours()->appendOutputTo($filePath);
+            $schedule->command('app:send-alert-new-results-research')->everyFiveMinutes()->appendOutputTo($filePath);
+            $schedule->command('app:notify-overdue-moderation')->everyTwoHours()->appendOutputTo($filePath);
             $schedule->command('app:notify-publish-date-extend-before-expiration')->daily()->appendOutputTo($filePath);
         }
         $schedule->command('app:notify-drafts-unpublished-ads')->hourly()->appendOutputTo($filePath);
