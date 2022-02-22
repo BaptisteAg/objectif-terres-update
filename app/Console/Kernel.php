@@ -30,21 +30,20 @@ class Kernel extends ConsoleKernel
         $filePath = getcwd().'/laravel-scheduler.log';
         // DO NOT UNCOMMENT NOW
         // LE CLIENT DECIDERA QUAND ON DECOMMENTE CETTE TACHE
-        //$schedule->command('app:unpublish-old-ads')->hourly();
-        $schedule->command(UnpublishOldAds::class)->appendOutputTo($filePath);
+        //$schedule->command('app:unpublish-old-ads')->hourly()->appendOutputTo($filePath);
         if(config("app.is_scheduler_live_mode")) {
-            $schedule->command('app:send-alert-new-results-research')->hourly()->appendOutputTo($filePath);
-            $schedule->command('app:notify-overdue-moderation')->weekly()->appendOutputTo($filePath);
+            //$schedule->command('app:send-alert-new-results-research')->hourly()->appendOutputTo($filePath);
+            //$schedule->command('app:notify-overdue-moderation')->weekly()->appendOutputTo($filePath);
             $schedule->command('app:notify-publish-date-extend-before-expiration')->daily()->appendOutputTo($filePath);
         }
         else {
-            $schedule->command('app:send-alert-new-results-research')->everyFiveMinutes()->appendOutputTo($filePath);
-            $schedule->command('app:notify-overdue-moderation')->hourly()->appendOutputTo($filePath);
+            //$schedule->command('app:send-alert-new-results-research')->everyFiveMinutes()->appendOutputTo($filePath);
+            //$schedule->command('app:notify-overdue-moderation')->hourly()->appendOutputTo($filePath);
             $schedule->command('app:notify-publish-date-extend-before-expiration')->daily()->appendOutputTo($filePath);
         }
-        $schedule->command('app:notify-drafts-unpublished-ads')->hourly()->appendOutputTo($filePath);
-        $schedule->command('app:change-support-state-old-support-request')->daily()->appendOutputTo($filePath);
-        $schedule->command('app:notify-6-moths-old-support-request')->daily()->appendOutputTo($filePath);
+        //$schedule->command('app:notify-drafts-unpublished-ads')->hourly()->appendOutputTo($filePath);
+        //$schedule->command('app:change-support-state-old-support-request')->daily()->appendOutputTo($filePath);
+        //$schedule->command('app:notify-6-moths-old-support-request')->daily()->appendOutputTo($filePath);
 
 		$schedule->call(function () {
 			(new PruneStaleAttachments)();
