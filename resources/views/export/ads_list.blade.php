@@ -1,7 +1,7 @@
 <table>
     <thead>
     <tr>
-        <th colspan="16"><b>Données générales</b></th>
+        <th colspan="17"><b>Données générales</b></th>
         <th colspan="16"><b>Détails offres foncières</b></th>
         <th colspan="7"><b>Détails recherche de foncier</b></th>
         <th colspan="4"><b>Détails offre d'emploi</b></th>
@@ -23,6 +23,7 @@
         <th>Département(s)</th>
         <th>Commune(s)</th>
         <th>Nom du modérateur</th>
+        <th>Prénom du modérateur</th>
         <th>Description de l'annonce</th>
         <th>Description du porteur de projet</th>
         <th>Surface (en ha)</th>
@@ -88,9 +89,10 @@
                         <p>{{$ad->citiesList}}</p>
                     @endif
                 </td>
-                <td>{{$ad->attributionAd->userAdvisor->first_name ?? ''}} {{$ad->attributionAd->userAdvisor->name ?? ''}}</td>
-                <td style="width: auto">{{$ad->about_project_content?: ''}}</td>
-                <td>{{$ad->about_content?: ''}}</td>
+                <td>{{$ad->attributionAd->userModerator->name ?? ''}}</td>
+                <td>{{$ad->attributionAd->userModerator->first_name ?? ''}}</td>
+                <td>{{utf8_decode($ad->about_project_content) ?: ''}}</td>
+                <td>{{utf8_encode($ad->about_content) ?: ''}}</td>
                 <td>{{$ad->landOfferAd->surface?? '' }}</td>
                 <td>{{$ad->landOfferAd->sau_description?? '' }}</td>
                 <td>

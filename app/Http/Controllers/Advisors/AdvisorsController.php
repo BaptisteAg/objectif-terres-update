@@ -55,7 +55,6 @@ class AdvisorsController extends BaseController
 		$vars = $this->getAdvisorDashboardVars();
 		$vars['ads'] = $ads;
 		return view('pages.advisors.index', $vars);
-
 	}
 
 	/**
@@ -169,12 +168,17 @@ class AdvisorsController extends BaseController
 	 * @throws \PhpOffice\PhpSpreadsheet\Exception
 	 * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
 	 */
-	public function export()
+	public function export(Request $request)
 	{
-        $request = request()->merge(["projects_show" => true]);
+        if($request->has("search")) {
+            $ads = $this->advisorsService->showForAdvisor($request);
+        }
+        else {
+            $paginate = $request->input('toPaginate') === 'true' || $request->input('toPaginate') === null;
+            $ads = $this->advisorsService->findAllSupportsByUserAdvisor($paginate);
+        }
 
-		return (new AdvisorsExport($this->advisorsService->showForAdvisor($request)))->download('export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
-//		return Excel::download(new AdvisorsExport($this->advisorsService->showForAdvisor(new Request())), 'export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
+		return (new AdvisorsExport($ads))->download('export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx');
 	}
 
 	/**

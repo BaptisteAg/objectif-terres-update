@@ -129,7 +129,7 @@
                             <span class="icon">
                                 <i class="fas fa-table"></i>
                             </span>
-                                <span>Exporter</span>
+                                <span>Exporter cette page</span>
                             </a>
 
                             <script>

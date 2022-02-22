@@ -93,7 +93,8 @@ class AdvisorsService
 	 */
 	public function showForAdvisor(Request $request)
 	{
-		$toPaginate = $request->get('toPaginate') === "true" || $request->get('toPaginate') === null  ? true : false;
+		$toPaginate = $request->get('toPaginate') === "true" || $request->get('toPaginate') === null;
+
 		$ads = $this->adService->filter($request, auth()->user()->role, $toPaginate);
 
 		return $ads;
