@@ -11,6 +11,9 @@
 |
 */
 
+use App\Notifications\TestSendEmail;
+use Illuminate\Support\Facades\Notification;
+
 Route::get('/', 'HomePage\HomePageController@show')->name('home');
 Route::get('/premiere-visite', 'HomePage\HomePageController@show')->name('site-tour');
 

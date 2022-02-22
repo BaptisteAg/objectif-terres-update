@@ -100,6 +100,20 @@
                                                 Vous serez amené(e) à décrire votre projet plus précisément à l’étape
                                                 suivante.
                                             </p>
+                                            <div class="columns is-mobile is-centered">
+                                                <div class="column is-two-thirds">
+                                                    <div class="columns">
+                                                        <div class="column">
+                                                            <div class="has-text-centered mb-10">
+                                                                <p>
+                                                                    <b>Aide</b> : Pour voir la liste des différents champs à remplir,
+                                                                    <a target="_blank" href="/docs/Les_champs_a_saisir_sur_OT_pour_une_demande_d_accompagnement.pdf">cliquez ici</a>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             @guest()
                                                 <p class="mb-20">
                                                     <span class="icon">
@@ -130,26 +144,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-                        <p class="title is-5 has-text-centered mb-0">
-                            Vous serez amené(e) à décrire votre projet plus précisément à l’étape suivante
-                        </p>
-                        <div class="columns is-mobile is-centered">
-                            <div class="column is-two-thirds">
-                                <div class="columns">
-                                    <div class="column">
-                                        <div class="has-text-centered mb-10">
-                                            <p>
-                                                <b>Aide</b> : Pour voir la liste des différents champs à remplir,
-                                                <a target="_blank" href="/docs/Les_champs_a_saisir_sur_OT_pour_une_demande_d_accompagnement.pdf">cliquez ici</a>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
 
                 </div>

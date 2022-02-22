@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\Ad;
 use App\Notifications\BasicNotification;
 use App\Services\Ads\AdService;
 use Carbon\Carbon;
@@ -43,7 +44,7 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
             $extraMsg = " \n(MODE TEST : NOTIFICATION 2 HEURES AVANT, EXPIRATION LE ".$date. ")";
         }
 
-        $soonToExpireAds = $this->adService->findAdsPublishedSince($date);
+       $soonToExpireAds = $this->adService->findAdsPublishedSince($date);
 
         logger("Suggesting soon to expire (".$date.") ads owner to extend the date... ".$soonToExpireAds->count()." found.");
 
