@@ -45,9 +45,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:change-support-state-old-support-request')->daily()->appendOutputTo($filePath);
         $schedule->command('app:notify-6-moths-old-support-request')->daily()->appendOutputTo($filePath);
 
-		$schedule->call(function () {
+		/*$schedule->call(function () {
 			(new PruneStaleAttachments)();
-		})->daily()->appendOutputTo($filePath);
+		})->daily()->appendOutputTo($filePath);*/
 	}
 
 	/**
