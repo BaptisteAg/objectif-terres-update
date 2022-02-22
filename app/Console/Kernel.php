@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use App\Jobs\NotifyPublishDateExtendBeforeExpiration;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Foundation\Console\StorageDocumentsLink;
@@ -16,7 +15,7 @@ class Kernel extends ConsoleKernel
 	 * @var array
 	 */
 	protected $commands = [
-        NotifyPublishDateExtendBeforeExpiration::class,
+        Commands\NotifyPublishDateExtendBeforeExpiration::class,
 	];
 
 	/**
