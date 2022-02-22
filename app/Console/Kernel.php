@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\UnpublishOldAds;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Foundation\Console\StorageDocumentsLink;
@@ -30,7 +31,7 @@ class Kernel extends ConsoleKernel
         // DO NOT UNCOMMENT NOW
         // LE CLIENT DECIDERA QUAND ON DECOMMENTE CETTE TACHE
         //$schedule->command('app:unpublish-old-ads')->hourly();
-        $schedule->command('app:unpublish-old-ads')->appendOutputTo($filePath);
+        $schedule->command(UnpublishOldAds::class)->appendOutputTo($filePath);
         if(config("app.is_scheduler_live_mode")) {
             $schedule->command('app:send-alert-new-results-research')->hourly()->appendOutputTo($filePath);
             $schedule->command('app:notify-overdue-moderation')->weekly()->appendOutputTo($filePath);
