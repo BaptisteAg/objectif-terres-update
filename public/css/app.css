@@ -12540,6 +12540,18 @@ CTA SOUTIEN
   }
 }
 
+/*
+--------------------
+CMS
+--------------------
+*/
+
+.cms-page .image img {
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
 p {
   margin: 0.5em 0;
   line-height: 1.5em;
