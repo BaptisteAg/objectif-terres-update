@@ -2830,6 +2830,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
      * Handler for dropzone event, before documents are uploaded
      */
     onBeforeDocumentsUpload: function onBeforeDocumentsUpload(files, xhr, formData) {
+      console.log(xhr);
+      console.log(files);
+      console.log(formData);
       formData.append('_token', window.csrf_token);
       formData.append('type', this.type);
 
@@ -84582,8 +84585,8 @@ function noIframe() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/jean/devilbox/data/www/objectif-terres/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/jean/devilbox/data/www/objectif-terres/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /shared/httpd/objectif-terres/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /shared/httpd/objectif-terres/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

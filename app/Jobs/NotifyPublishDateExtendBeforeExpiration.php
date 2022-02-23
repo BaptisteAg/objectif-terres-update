@@ -36,11 +36,11 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
     public function handle()
     {
         if(config("app.is_scheduler_live_mode")) {
-            $date = Carbon::now()->subDays(6);
+            $date = Carbon::now()->subMonths(6)->subDays(6);
             $extraMsg = '';
         }
         else {
-            $date = Carbon::now()->subHours(2);
+            $date = Carbon::now()->subMonths(6)->subHours(2);
             $extraMsg = " \n(MODE TEST : NOTIFICATION 2 HEURES AVANT, EXPIRATION LE ".$date. ")";
         }
 
@@ -60,8 +60,7 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
                     Vous pouvez également modifier votre annonce.\n\n
 
                     Si vous souhaitez supprimer votre annonce, merci de prendre une minute
-                    <a href='https://framaforms.org/questionnaire-objectif-terres-en-direction-des-annonceurs-qui-suppriment-leur-annonce-1641204728'>pour remplir ce formulaire</a> pour nous
-                    aider à améliorer notre plateforme.\n\n
+                    <a href='https://framaforms.org/questionnaire-objectif-terres-en-direction-des-annonceurs-qui-suppriment-leur-annonce-1641204728'>pour remplir ce formulaire</a> pour nous aider à améliorer notre plateforme.\n\n
 
                     En vous remerciant pour votre confiance." . $extraMsg,
                 'action' => ["Etendre l'annonce", route('ads.extend', ["id" => $ad->id])]
