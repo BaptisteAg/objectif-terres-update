@@ -50,13 +50,24 @@ BasicNotification extends Notification implements ShouldQueue
             ->cc("objectifterres@terredeliens.org")
             ->replyTo("objectifterres@terredeliens.org");
 
-		foreach (explode("\n", strip_tags($this->data["message"])) as $line) {
+		//foreach (explode("\n", strip_tags($this->data["message"])) as $line) {
+        foreach (explode("\n", $this->data["message"]) as $line) {
 			$message->line($line);
 		}
 
-		$message->action($this->data["action"][0] ?? null, $this->data["action"][1] ?? null)
-			->line($this->data["additional_message"] ?? null)
-			->salutation($this->data['salutation'] ?? 'A bientôt sur Objectif Terres !');
+        if (isset($this->data['action'])) {
+            $message->action($this->data["action"][0] ?? null, $this->data["action"][1] ?? null);
+        }
+        if (isset($this->data['additional_message'])) {
+            $message->line($this->data["additional_message"] ?? null);
+        }
+        if (isset($this->data['additional_action'])) {
+            $message->action($this->data["additional_action"][0] ?? null, $this->data["additional_action"][1] ?? null);
+        }
+
+		//$message->action($this->data["action"][0] ?? null, $this->data["action"][1] ?? null)
+			//->line($this->data["additional_message"] ?? null)
+        $message->salutation($this->data['salutation'] ?? 'A bientôt sur Objectif Terres !');
 
 		return $message;
 	}

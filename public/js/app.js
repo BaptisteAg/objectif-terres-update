@@ -2830,6 +2830,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
      * Handler for dropzone event, before documents are uploaded
      */
     onBeforeDocumentsUpload: function onBeforeDocumentsUpload(files, xhr, formData) {
+      console.log(xhr);
+      console.log(files);
+      console.log(formData);
       formData.append('_token', window.csrf_token);
       formData.append('type', this.type);
 
