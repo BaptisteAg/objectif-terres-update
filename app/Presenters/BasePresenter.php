@@ -15,7 +15,7 @@ abstract class BasePresenter extends OriginalBasePresenter implements \JsonSeria
 	 *
 	 * @return false|mixed|string
 	 */
-	public function jsonSerialize()
+	public function jsonSerialize():array
 	{
 		$serialized = [];
 
