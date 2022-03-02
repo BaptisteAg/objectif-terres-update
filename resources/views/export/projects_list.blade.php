@@ -87,7 +87,7 @@
 				</td>
 				<td>{{$ad->attributionAd->userAdvisor->first_name ?? '' }} {{ $ad->attributionAd->userAdvisor->name ?? ''}}</td>
 				<td>{{$ad->attributionAd->userSupervisor->first_name ?? ''}} {{ $ad->attributionAd->userSupervisor->name ?? ''}}</td>
-				<td style="width: auto">{{$ad->about_project_content ?? ''}}</td>
+				<td>{{$ad->about_project_content ?? ''}}</td>
 				<td>{{$ad->about_content ?? ''}}</td>
 				<td>{{$ad->landOfferAd->surface ?? '' }}</td>
 				<td>{{$ad->landOfferAd->sau_description ?? '' }}</td>
@@ -201,7 +201,6 @@
 					@endif
 				</td>
 			</tr>
-		@else
 		@endif
 	@endforeach
 	</tbody>
