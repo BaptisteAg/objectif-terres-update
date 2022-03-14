@@ -427,6 +427,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
 			->orderByDesc('a.created_at')
 			->with($this->getDashboardsEagerLoading());
+
+
 		if ($toPaginate) {
 			$ads = $models->paginate(15);
 		} else {
