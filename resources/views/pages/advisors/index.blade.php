@@ -138,12 +138,15 @@
 
                                     const button = document.getElementById("exportButton")
                                     // Get all field data from the form
-                                    let data = new FormData(document.querySelector('.exportable-form'));
-                                    let queryString = new URLSearchParams(data).toString();
-                                    window.open(button.href.split("?")[0] + "?" + queryString)
+                                    let urlParts = location.href.split("?")
+                                    let queryString = urlParts[1]
+                                    if(location.href.indexOf("recherche") !== -1) {
+                                        queryString = "search=1" + (queryString ? '&' : '') + queryString
+                                    }
+                                    window.open(button.href + "?" + queryString)
                                     document.getElementById("exportLoader").innerText = "Veuillez patienter un instant pour l'export.."
                                 })
-                            </script>
+                            </script>git
 
                             <a href="{{route('advisor.createNewPp')}}" class="button  is-light ">
                             <span class="icon">

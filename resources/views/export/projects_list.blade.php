@@ -25,7 +25,7 @@
 		<th>Commune(s)</th>
 		<th>Nom du primo-accueillant</th>
 		<th>Nom du responsable territorial</th>
-		<th>Descritpion du projet</th>
+		<th>Description du projet</th>
 		<th>Description du porteur de projet</th>
 		<th>Surface (en ha)</th>
 		<th>Description Surface Agricole Utiles (SAU)</th>
