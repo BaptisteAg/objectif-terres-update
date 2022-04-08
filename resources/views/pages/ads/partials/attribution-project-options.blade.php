@@ -14,7 +14,7 @@
         @if(count($ad->attributionAd->getAdvisors()))
             <p class="">Cette demande est attribuée à :</p>
                 <ul style="list-style-type:none;">
-                @foreach($ad->attributionAd->getAdvisors() as $i => $userAdvisor)
+                @foreach(array_filter($ad->attributionAd->getAdvisorsUnfiltered()) as $i => $userAdvisor)
                     <li>
                         <strong>
                             {{$userAdvisor->first_name}} {{$userAdvisor->name}}
