@@ -81,9 +81,9 @@
                             @endif
                         </div>
                         <div class="row">
-                            <a href="https://terredeliens.org/spip.php?page=contact&contact=2" target="_blank">
+                            <a href="https://terredeliens.org/partager-un-patrimoine-legs.html" target="_blank">
                                 <button class="button is-link">CONTACTEZ-NOUS</button>
-                            </a>
+                            </a><br><br>
 
                         </div>
                     </div>
