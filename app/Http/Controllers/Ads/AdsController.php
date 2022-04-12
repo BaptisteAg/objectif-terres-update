@@ -245,7 +245,6 @@ class AdsController extends BaseController
 		$ad->attributionAd->published_on = Carbon::now();
 		$ad->attributionAd->save();
 
-
 		return redirect()
 			->route('ads.show', ["id" => $ad->id])
 			->with("success", "La durée de publication de de votre annonce a été étendue de 6 mois.");

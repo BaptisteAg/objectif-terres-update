@@ -49,9 +49,10 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
         logger("Suggesting soon to expire (".$date.") ads owner to extend the date... ".$soonToExpireAds->count()." found.");
 
         foreach($soonToExpireAds as $ad) {
-            $ad->userPp->notify(new BasicNotification([
-                'subject' => "Votre annonce va bientôt expirer",
-                'message' => "Nous espérons que ce service a répondu à votre besoin.\n
+            try {
+                $ad->userPp->notify(new BasicNotification([
+                    'subject' => "Votre annonce va bientôt expirer",
+                    'message' => "Nous espérons que ce service a répondu à votre besoin.\n
 
                     Sans action de votre part d'ici 7 jours, cette annonce ne sera plus visible sur notre site.\n
 
@@ -63,8 +64,15 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
                     <a href='https://framaforms.org/questionnaire-objectif-terres-en-direction-des-annonceurs-qui-suppriment-leur-annonce-1641204728'>pour remplir ce formulaire</a> pour nous aider à améliorer notre plateforme.\n\n
 
                     En vous remerciant pour votre confiance." . $extraMsg,
-                'action' => ["Etendre l'annonce", route('ads.extend', ["id" => $ad->id])]
-            ]));
+                    'action' => ["Etendre l'annonce", route('ads.extend', ["id" => $ad->id])]
+                ]));
+                if(env('MAIL_HOST', false) === 'smtp.mailtrap.io'){
+                    sleep(1);
+                }
+            }
+            catch (\Exception $e) {
+
+            }
         }
     }
 }
