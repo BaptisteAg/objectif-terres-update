@@ -67,7 +67,7 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
                     'action' => ["Etendre l'annonce", route('ads.extend', ["id" => $ad->id])]
                 ]));
                 if(env('MAIL_HOST', false) === 'smtp.mailtrap.io'){
-                    sleep(1);
+                    sleep(3);
                 }
             }
             catch (\Exception $e) {
