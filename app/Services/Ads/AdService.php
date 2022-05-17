@@ -843,7 +843,7 @@ class  AdService
 	 */
 	public function findAllAdsNotCompleteAndPublishedSince(Carbon $date): Collection
 	{
-		$adsPublishedSinceDays = $this->repository->findAllByPublishedOnSince($date);
+		$adsPublishedSinceDays = $this->repository->findAllByPublishedOlderThan($date);
 
 		return $adsPublishedSinceDays->mapWithKeys(function ($ad) {
 			if (is_null($ad['about_content']) || is_null($ad['about_project_content']) || isset($ad['documents'])) {
@@ -1047,7 +1047,7 @@ class  AdService
 	 */
 	public function findAdsPublishedSince(Carbon $date)
 	{
-		return $this->repository->findAllByPublishedOnSince($date);
+		return $this->repository->findAllByPublishedOlderThan($date);
 	}
 
 	/**

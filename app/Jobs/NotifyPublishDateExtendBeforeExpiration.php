@@ -60,8 +60,7 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
 
                     Vous pouvez également modifier votre annonce.\n\n
 
-                    Si vous souhaitez supprimer votre annonce, merci de prendre une minute
-                    <a href='https://framaforms.org/questionnaire-objectif-terres-en-direction-des-annonceurs-qui-suppriment-leur-annonce-1641204728'>pour remplir ce formulaire</a> pour nous aider à améliorer notre plateforme.\n\n
+                    Si vous souhaitez supprimer votre annonce, merci de prendre une minute <a href='https://framaforms.org/questionnaire-objectif-terres-en-direction-des-annonceurs-qui-suppriment-leur-annonce-1641204728'>pour remplir ce formulaire</a> et nous aider à améliorer notre plateforme.\n\n
 
                     En vous remerciant pour votre confiance." . $extraMsg,
                     'action' => ["Etendre l'annonce", route('ads.extend', ["id" => $ad->id])]
