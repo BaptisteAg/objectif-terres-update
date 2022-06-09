@@ -127,6 +127,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 */
 	public function update($ad, array $data): Ad
 	{
+        if(!isset($data["accept_share_contact_infos"])) {
+            $data["accept_share_contact_infos"] = 0;
+        }
 		if (!is_a($ad, Ad::class)) {
 			$ad = $this->find($ad);
 		}

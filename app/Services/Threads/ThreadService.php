@@ -171,6 +171,7 @@ class ThreadService
 				["message_id", $unreadMessage->id],
 				["user_id", auth()->id()]])
 				->firstOrFail();
+
 			$unreadMessage->is_read = 1;
 			$unreadMessage->save();
 		}

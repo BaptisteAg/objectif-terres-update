@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div class="list-threads">
     <div class="content" v-if="isDisplay">
       <template v-if="numberThreadsUnreadMessages <=1">

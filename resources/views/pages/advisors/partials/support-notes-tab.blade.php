@@ -51,7 +51,7 @@
 									</div>
 									<p class=" is-6">
 										Note rédigée par
-										<strong>{{$note->user->first_name}} {{$note->user->name}}</strong>
+										<strong>{{$note->user->first_name ?? "[Supprimé]"}} {{$note->user->name ?? ""}}</strong>
 									</p>
 									<time class="is-pulled-right has-text-weight-light ">
 										Le {{$note->created_at->format("d/m/Y")}}</time>
