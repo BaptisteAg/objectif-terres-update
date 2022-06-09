@@ -168,7 +168,7 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 			->orderBy('updated_at', 'desc')
 			->get();
 
-		return $threads;
+		return $threads->unique("id");
 
 	}
 

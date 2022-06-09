@@ -30,7 +30,7 @@ Vue.component('vue-threads', {
             isDisplay: this.isDisplayInThreadPage,
             isUserLoggedAdOwner: this.isUserLoggedAdOwner,
             usersSelected: [],
-            isThreadRelatedToUser: false,
+            isThreadRelatedToUser: true,
             isThreadBlocked: false
         }
     },
