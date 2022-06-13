@@ -40,21 +40,46 @@ class ResizeImages extends Command
     {
         $files = Storage::allFiles("documents");
 
-        foreach($files as $i => $fileName) {
+        $bar = $this->output->createProgressBar(count($files));
+
+        $bar->start();
+
+        foreach ($files as $fileName) {
+
             try  {
                 $image = \Image::make(storage_path('app/'.$fileName));
 
                 if($image->getWidth() > 1600 || $image->getHeight() > 1600) {
-                    echo("Resizing ".$i."/".count($files)."\n");
-                    $image->resize(1600, 1600, function ($constraint) {
+                    $this->info("Resizing ".$fileName);
+                    $resizedImage = $image->resize(1600, 1600, function ($constraint) {
                         $constraint->aspectRatio();
                         $constraint->upsize();
                     })->save();
+
+                    $this->info("Old size : ".$this->readableBytes($image->filesize()).". New size : ".$this->readableBytes($resizedImage->filesize()));
                 }
             }
             catch(\Exception $e) {
 
             }
+
+            $bar->advance();
         }
+
+        $bar->finish();
+        $this->line("");
+    }
+
+    /**
+     * Converts a long string of bytes into a readable format e.g KB, MB, GB, TB, YB
+     *
+     * @param {Int} num The number of bytes.
+     */
+    private function readableBytes($bytes) {
+        $i = floor(log($bytes) / log(1024));
+
+        $sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+
+        return sprintf('%.02F', $bytes / pow(1024, $i)) * 1 . ' ' . $sizes[$i];
     }
 }
