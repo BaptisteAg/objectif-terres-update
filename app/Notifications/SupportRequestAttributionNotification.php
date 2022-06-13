@@ -44,7 +44,7 @@ class SupportRequestAttributionNotification extends Notification implements Shou
 	 */
 	public function toMail($notifiable)
 	{
-		$url = url('/annonces/' . $this->ad->id);
+		$url = url('/gestion-des-accompagnements/espace-suivi/' . $this->ad->id);
 		$mail = (new MailMessage)
 			->from(config('mail.from.address'), "Administration")
 			->subject('Accompagnement de ' . $this->ad->userPp->name)

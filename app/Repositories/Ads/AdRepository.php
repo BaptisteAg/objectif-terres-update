@@ -740,7 +740,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         //Additional filters  : filter by surface range
         if ($filters->has('surfaces_research_min')) {
             if (!is_null($filters->input('surfaces_research_min'))) {
-                $adsFiltred->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('surface_range_min', 'surface', '<=', $filters->input('surfaces_research_min'));
+                $adsFiltred->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('surface_range_min', 'surface', '>=', $filters->input('surfaces_research_min'));
             }
         }
         //Additional filters  : filter by surface range
@@ -805,9 +805,15 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 			$adsFiltred->where(function (Builder $builder) use ($filters) {
 				$builder->whereHas('attributionAd', function (Builder $subBuilder) use ($filters) {
 					if (in_array('true', $filters->input('project_attribution'))) {
-						$subBuilder->whereNotNull('user_advisor_id');
+						$subBuilder->whereNotNull('user_advisor_id')
+                            ->orWhereNotNull('user_advisor_2_id')
+                            ->orWhereNotNull('user_advisor_3_id')
+                            ->orWhereNotNull('user_advisor_4_id');
 					} elseif (in_array('false', $filters->input('project_attribution'))) {
-						$subBuilder->whereNull('user_advisor_id');
+						$subBuilder->whereNull('user_advisor_id')
+                            ->whereNull('user_advisor_2_id')
+                            ->whereNull('user_advisor_3_id')
+                            ->whereNull('user_advisor_4_id');
 					}
 				});
 			});
