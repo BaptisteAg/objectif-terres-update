@@ -38,14 +38,22 @@ class ResizeImages extends Command
      */
     public function handle()
     {
-        foreach(Storage::allFiles("documents") as $fileName) {
-            $image = \Image::make(storage_path('app/'.$fileName));
+        $files = Storage::allFiles("documents");
 
-            if($image->getWidth() > 1600 || $image->getHeight() > 1600) {
-                $image->resize(1600, 1600, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })->save();
+        foreach($files as $i => $fileName) {
+            try  {
+                $image = \Image::make(storage_path('app/'.$fileName));
+
+                if($image->getWidth() > 1600 || $image->getHeight() > 1600) {
+                    echo("Resizing ".$i."/".count($files)."\n");
+                    $image->resize(1600, 1600, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })->save();
+                }
+            }
+            catch(\Exception $e) {
+
             }
         }
     }
