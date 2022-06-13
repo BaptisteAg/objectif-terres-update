@@ -183,7 +183,8 @@ return [
         App\Providers\NovaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
-		NumaxLab\NovaCKEditor5Classic\FieldServiceProvider::class
+		NumaxLab\NovaCKEditor5Classic\FieldServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class
 
     ],
 
