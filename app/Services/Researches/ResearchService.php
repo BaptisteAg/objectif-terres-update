@@ -254,20 +254,12 @@ class ResearchService
 			if ($filters->has('offer_genres')) {
 				$adsFilter->filterWhereHasIn($filters->input('offer_genres'), $adsTypeSelected . '.offerGenres', 'offer_genre_id');
 			}
-			if (!is_null($filters->input('surfaces_research')) && $filters->input('surfaces_research') !== "0") {
-				if ($adsTypeSelected === 'landSeekAd') {
-					if ($filters->input('surfaces_research') === "+100") {
-						$adsFilter->filterWhereHasWhere('100', $adsTypeSelected, '>=', 'surface_range_max');
-					} else {
-						$adsFilter->filterWhereHasWhere($filters->input('surfaces_research'), $adsTypeSelected, '<=', 'surface_range_max');
-					}
-				} else if ($adsTypeSelected === 'landOfferAd') {
 
-					if ($filters->input('surfaces_research') === "+100") {
-						$adsFilter->filterWhereHasWhere('100', $adsTypeSelected, '>=', 'surface');
-					} else {
-						$adsFilter->filterWhereHasWhere($filters->input('surfaces_research'), $adsTypeSelected, '<=', 'surface');
-					}
+			if (!is_null($filters->input('surfaces_research')) && $filters->input('surfaces_research') !== "0" && $filters->input('surfaces_research') !== "100000000000") {
+				if ($adsTypeSelected === 'landSeekAd') {
+                    $adsFilter->filterWhereHasWhere($filters->input('surfaces_research'), $adsTypeSelected, '<=', 'surface_range_max');
+				} else if ($adsTypeSelected === 'landOfferAd') {
+                    $adsFilter->filterWhereHasWhere($filters->input('surfaces_research'), $adsTypeSelected, '<=', 'surface');
 				}
 			}
 

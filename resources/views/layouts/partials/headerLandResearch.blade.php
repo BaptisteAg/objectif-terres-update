@@ -23,9 +23,9 @@
                         20: '20',
                         50: '50',
                         100 : '100',
-                        '+100' : '+100',
+                        '100000000000' : '+100',
                     }"
-					:value="[{{old("surfaces_research_min") ?: '0'}}, {{old("surfaces_research") ?: '+100'}}]"
+					:value="[{{old("surfaces_research_min") ?: '0'}}, {{old("surfaces_research") ?: '100000000000'}}]"
 			></vue-slider-range>
 			<br>
 		</div>
