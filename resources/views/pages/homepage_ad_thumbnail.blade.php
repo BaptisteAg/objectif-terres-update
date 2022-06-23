@@ -48,8 +48,11 @@
                             @if($ad->landOfferAd->price)
                                 {{number_format($ad->landOfferAd->price, 0, ",", " " )}} €
                             @endif
+                            @if($ad->landOfferAd->price && $ad->landOfferAd->rent_price)
+                                ou
+                            @endif
                             @if($ad->landOfferAd->rent_price)
-                                {{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} €/mois
+                                {{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} € / an
                             @endif
                         @else
                             Prix non renseigné
