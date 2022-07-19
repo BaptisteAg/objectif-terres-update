@@ -46,8 +46,8 @@ class BasicNotification extends Notification implements ShouldQueue
 		$message = (new MailMessage)
 			->subject($this->data['subject'])
 			->greeting('Bonjour ' . $notifiable->first_name . ',')
-            ->cc("objectifterres@terredeliens.org")
-            ->replyTo("objectifterres@terredeliens.org");
+            //->cc("objectif-terres@terredeliens.org")
+            ->replyTo("objectif-terres@terredeliens.org");
 
 		//foreach (explode("\n", strip_tags($this->data["message"])) as $line) {
         foreach (explode("\n", $this->data["message"]) as $line) {
