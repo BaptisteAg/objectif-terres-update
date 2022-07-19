@@ -60,7 +60,7 @@
                     {{number_format($ad->landOfferAd->price, 0, ",", " " )}} €
                 @endif
                 @if($ad->landOfferAd->rent_price)
-                    {{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} €/mois
+                    {{number_format($ad->landOfferAd->rent_price, 0, ",", " " )}} €/an
                 @endif
             @else
                 Prix non renseigné
@@ -86,7 +86,7 @@
                     @endif
                 @elseif(isset($ad->landSeekAd->rent_max))
                     Jusqu'à {{number_format($ad->landSeekAd->rent_max, 2, ',', ' ')}}
-                    €/mois
+                    €/an
                 @else
                     Budget non renseigné
                 @endif
