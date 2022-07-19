@@ -50,6 +50,7 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
 
         foreach($soonToExpireAds as $ad) {
             try {
+                logger("Sending email for ".$ad->title);
                 $ad->userPp->notify(new BasicNotification([
                     'subject' => "Votre annonce va bientôt expirer",
                     'message' => "Nous espérons que ce service a répondu à votre besoin.\n
@@ -67,6 +68,7 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
                 ]));
                 if(env('MAIL_HOST', false) === 'smtp.mailtrap.io'){
                     sleep(3);
+                    logger("Sleeping 3 seconds");
                 }
             }
             catch (\Exception $e) {
