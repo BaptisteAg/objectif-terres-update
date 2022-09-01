@@ -65,7 +65,8 @@ class AdNotification extends Notification implements ShouldQueue
 		if (isset($this->data['additional_action'])) {
 			$mailMessage->action($this->data["additional_action"][0] ?? null, $this->data["additional_action"][1] ?? null);
 		}
-		$mailMessage
+
+        return $mailMessage
 			->line('En vous remerciant pour votre confiance,')
 			->salutation('L’équipe d’Objectif Terres.');
 	}

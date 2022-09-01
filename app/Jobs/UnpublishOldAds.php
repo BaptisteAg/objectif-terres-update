@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\AdStatus;
+use App\Models\AttributionAd;
 use App\Models\User;
 use App\Notifications\AdNotification;
 use App\Repositories\Users\UserRepository;
@@ -42,15 +43,18 @@ class UnpublishOldAds implements ShouldQueue
      */
 	public function handle()
 	{
+        $months = 12;
 
-		$attributionAds = $this->attributionAdsService->findAllPublishedSince(Carbon::now()->subDays(7));
+		$attributionAds = $this->attributionAdsService
+            ->findAllPublishedSince(Carbon::now()->subMonths($months))
+            ->filter(fn(AttributionAd $attributionAd) => $attributionAd->ad);
 
-        logger("Unpublishing ads... ".$attributionAds->count()." found.");
+        echo("Unpublishing ads... ".$attributionAds->count()." found.");
 
 		foreach ($attributionAds as $attributionAd) {
 
 			$data['subject'] = 'Votre annonce a été dépubliée';
-			$data['message'] = 'Votre annonce était en ligne depuis 6 mois. Sans intervention de votre part, nous l\'avons archivée.
+			$data['message'] = 'Votre annonce était en ligne depuis '.$months.' mois. Sans intervention de votre part, nous l\'avons archivée.
 			Vous avez toujours la possibilité de la soumettre à nouveau à modération en allant dans votre compte et en cliquant sur "Modifier"';
 
 			$data['url'] = '/annonces/' . $attributionAd->ad->id;
