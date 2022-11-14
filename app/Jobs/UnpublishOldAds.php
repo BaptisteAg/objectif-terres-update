@@ -51,7 +51,7 @@ class UnpublishOldAds implements ShouldQueue
 
         echo("Unpublishing ads... ".$attributionAds->count()." found.");
 
-        dd($attributionAds->random()->toArray());
+        //dd($attributionAds->random()->toArray());
 
 		foreach ($attributionAds as $attributionAd) {
 

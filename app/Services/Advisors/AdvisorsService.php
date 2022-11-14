@@ -230,7 +230,6 @@ class AdvisorsService
 	public function handleSupportDashboardNotifications(Ad $ad)
 	{
 		if (!auth()->user()->unreadNotifications->isEmpty()) {
-			/** @var Notification[] $notifications */
 			$notifications = auth()->user()->unreadNotifications;
 			foreach ($notifications as $notification) {
 				if (array_key_exists('ad_id', $notification->data) && $notification->data['ad_id'] === $ad->id) {
