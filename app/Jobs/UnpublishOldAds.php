@@ -15,6 +15,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 class UnpublishOldAds implements ShouldQueue
 {
@@ -66,7 +67,7 @@ class UnpublishOldAds implements ShouldQueue
                 $userToNotify = $this->userRepository->find($attributionAd->ad->user_pp_id);
                 $userToNotify->notify(new AdNotification($data));
             }
-            catch (\Exception $e) {
+            catch (\Exception|\Error $e) {
                 echo($e->getMessage());
             }
 
