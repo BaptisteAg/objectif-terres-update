@@ -46,7 +46,7 @@ class UnpublishOldAds implements ShouldQueue
         $months = 12;
 
 		$attributionAds = $this->attributionAdsService
-            ->findAllPublishedSince(Carbon::now()->subMonths($months))
+            ->findAllPublishedBefore(Carbon::now()->subMonths($months))
             ->filter(fn(AttributionAd $attributionAd) => $attributionAd->ad);
 
         echo("Unpublishing ads... ".$attributionAds->count()." found.");
@@ -62,8 +62,13 @@ class UnpublishOldAds implements ShouldQueue
 			$data['url'] = '/annonces/' . $attributionAd->ad->id;
 
 			/** @var User $userToNotify */
-			$userToNotify = $this->userRepository->find($attributionAd->ad->user_pp_id);
-			$userToNotify->notify(new AdNotification($data));
+            try {
+                $userToNotify = $this->userRepository->find($attributionAd->ad->user_pp_id);
+                $userToNotify->notify(new AdNotification($data));
+            }
+            catch (\Exception $e) {
+                echo($e->getMessage());
+            }
 
             $attributionAd->ad_status_id = AdStatus::ARCHIVED_ID;
             $attributionAd->published_on = null;

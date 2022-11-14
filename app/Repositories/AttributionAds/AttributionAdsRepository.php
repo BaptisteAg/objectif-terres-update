@@ -91,7 +91,7 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 	 * @param int $monthsNumber
 	 * @return Builder[]|\Illuminate\Database\Eloquent\Collection
 	 */
-	public function findAllApprovedAndPublishedSince(Carbon $date)
+	public function findAllApprovedAndPublishedBefore(Carbon $date)
 	{
 		return $this->entity
 			->whereDate("published_on", '<=', $date)

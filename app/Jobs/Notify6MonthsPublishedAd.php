@@ -39,7 +39,7 @@ class Notify6MonthsPublishedAd implements ShouldQueue
 	 */
 	public function handle()
 	{
-		$attributionAds = $this->attributionAdsService->findAllPublishedSince(Carbon::now()->subDays(173));
+		$attributionAds = $this->attributionAdsService->findAllPublishedBefore(Carbon::now()->subDays(173));
 		foreach ($attributionAds as $attributionAd) {
 			$data['subject'] = 'Dans 7 jours : expiration de votre annonce';
 			$data['message'] = "Il y a bientôt 6 mois que l'annonce '".$attributionAd->ad->title."' que vous avez déposée sur Objectif Terres est en ligne.\n

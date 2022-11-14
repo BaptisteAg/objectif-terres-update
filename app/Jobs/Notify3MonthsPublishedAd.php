@@ -41,7 +41,7 @@ class Notify3MonthsPublishedAd implements ShouldQueue
 	 */
 	public function handle()
 	{
-		$attributionAds = $this->attributionAdsService->findAllPublishedSince(Carbon::now()->subMonthsWithOverflow(3));
+		$attributionAds = $this->attributionAdsService->findAllPublishedBefore(Carbon::now()->subMonthsWithOverflow(3));
 		foreach ($attributionAds as $attributionAd) {
 			$data['subject'] = 'Compléter votre annonce !';
 			$data['message'] = 'Votre annonce est en ligne depuis 3 mois. Complétez les informations de votre annonce pour augmenter vos chances de contacts !';
