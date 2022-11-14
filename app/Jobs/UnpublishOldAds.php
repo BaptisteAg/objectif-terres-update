@@ -74,7 +74,7 @@ class UnpublishOldAds implements ShouldQueue
             $attributionAd->published_on = null;
             $attributionAd->save();
 
-            echo "Unpublished : ".$attributionAd->ad->title . " - " . $attributionAd->ad->created_at;
+            echo "Unpublished : ".$attributionAd->ad->title . " - " . $attributionAd->ad->created_at."\n";
 		}
 	}
 }
