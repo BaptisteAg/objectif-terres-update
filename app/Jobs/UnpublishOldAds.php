@@ -51,6 +51,8 @@ class UnpublishOldAds implements ShouldQueue
 
         echo("Unpublishing ads... ".$attributionAds->count()." found.");
 
+        dd($attributionAds->random()->toArray());
+
 		foreach ($attributionAds as $attributionAd) {
 
 			$data['subject'] = 'Votre annonce a été dépubliée';
