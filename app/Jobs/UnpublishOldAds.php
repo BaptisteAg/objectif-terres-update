@@ -68,6 +68,8 @@ class UnpublishOldAds implements ShouldQueue
             $attributionAd->ad_status_id = AdStatus::ARCHIVED_ID;
             $attributionAd->published_on = null;
             $attributionAd->save();
+
+            echo "Unpublished : ".$attributionAd->ad->title . " - " . $attributionAd->ad->id;
 		}
 	}
 }
