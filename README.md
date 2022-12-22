@@ -85,11 +85,9 @@ Traduction des principaux modèles utilisés :
 
 `User` = utilisateur du site (tous roles confondus)
 
- 
-
-
-
-
+### Compte Test
+test+limousin@terredeliens.org
+TestAlsace974
 
 
 

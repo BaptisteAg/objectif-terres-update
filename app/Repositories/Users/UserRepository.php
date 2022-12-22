@@ -73,7 +73,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
      */
     public function findByEmail(string $email)
     {
-        return $this->entity->where('email', $email)->first();
+        return $this->entity->where('email', $email)->withTrashed()->first();
     }
 
 	/**
