@@ -182,6 +182,8 @@ class SalesforceService
 			]);
         }
 
+        $localUser->deleted_at = null;
+
         // Sync Firstname / Name
         $localUser->first_name = $user["FirstName"];
         $localUser->name = $user["LastName"];
