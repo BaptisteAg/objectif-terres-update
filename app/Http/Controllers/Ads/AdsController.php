@@ -130,6 +130,7 @@ class AdsController extends BaseController
 	{
 
 		$ad = $this->adService->find($adId);
+
 		$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad->id);
 		if ($ad->trashed()) {
 			if ($moderatorInChargeOfModeration) {
