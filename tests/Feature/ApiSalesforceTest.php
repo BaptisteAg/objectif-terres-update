@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
+use App\Repositories\SalesForce\SalesForceRepository;
+use App\Repositories\Users\UserRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -10,52 +13,15 @@ use Tests\TestCase;
 
 class ApiSalesforceTest extends TestCase
 {
-
-    public function setUp(): void
+    public function testCimetiere()
     {
-        parent::setUp();
+        $userRepo = app(UserRepository::class);
+        $repo = app(SalesForceRepository::class);
+        $repo->authenticate();
 
-    }
+        /** @var User $localUser */
+        $user = $repo->findWhere('User', ["Username" => "philippe.cimetiere@wanadoo.fr"]);
 
-
-    public function AuthenticateTest()
-    {
-        Route::get('/authenticate', function()
-        {
-            Forrest::authenticate();
-
-            $this->assertAuthenticated();
-            redirect()->back();
-
-        });
-
-
-    }
-
-    public function AuthenticateUserTest($username, $password) {
-
-        Route::Post('/authenticate', function() use ($username, $password){
-            $url = 'https://test.salesforce.com';
-            Forrest::authenticateUser($url, $username, $password);
-        });
-    }
-
-    public function testCreateAccountTest()
-    {
-        $user = [
-            'name' => 'test test',
-        ];
-
-        $this->AuthenticateTest();
-
-//        $this->assertAuthenticated();
-
-        Forrest::sobjects('Account', [
-            'method' => 'post',
-            'body' => $user
-        ]);
-
-        dd(Forrest::query('SELECT Id FROM Account WHERE Name = "test test"'));
-
+        dd($user);
     }
 }

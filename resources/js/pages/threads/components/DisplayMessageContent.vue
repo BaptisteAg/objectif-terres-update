@@ -123,7 +123,6 @@ export default {
   },
   methods : {
     parseMessageContent : function (message){
-      console.log(message)
       return message.replace(/(?:\r\n|\r|\n)/g, '<br />');
     }
   }
