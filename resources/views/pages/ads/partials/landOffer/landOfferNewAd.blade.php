@@ -563,7 +563,7 @@
 
                                     <p>
                                         Pour connaître le prix moyen des terres dans votre département
-                                        <a href="https://agreste.agriculture.gouv.fr/agreste-web/download/publication/publie/Chd1919/cd2019-19.pdf"
+                                        <a href="https://www.le-prix-des-terres.fr/"
                                            target="_blank">
                                             veuillez consulter ce document <i
                                                     class="fas fa-external-link-square-alt"></i>
