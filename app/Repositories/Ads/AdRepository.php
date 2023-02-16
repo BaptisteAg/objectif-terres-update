@@ -150,14 +150,16 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		foreach (["cities", "departments", "regions"] as $locationableType) {
 			$locationables = $data["locationable"][$locationableType] ?? [];
 
-            $extraFields = [];
-            if (isset($data["locationable_radius"])) {
-                $extraFields = ["radius" => $data["locationable_radius"]];
-            }
-            /** @var MorphToMany $locationableEntityQuery */
-            $locationableEntityQuery = $ad->$locationableType();
+            if (count($locationables)) {
+                $extraFields = [];
+                if (isset($data["locationable_radius"])) {
+                    $extraFields = ["radius" => $data["locationable_radius"]];
+                }
+                /** @var MorphToMany $locationableEntityQuery */
+                $locationableEntityQuery = $ad->$locationableType();
 
-            $locationableEntityQuery->sync(array_fill_keys($locationables, $extraFields));
+                $locationableEntityQuery->sync(array_fill_keys($locationables, $extraFields));
+            }
 		}
 
 
