@@ -77,10 +77,10 @@
                         <div class="field">
                             <label class="checkbox">
                                 <input type="checkbox" required>
-                                <span>J'ai pris connaissance de
-                                    <a href="{{URL::asset('docs/Charte_utilisation_d_Objectif_Terres-Validee_en_CIT_du_21_oct.pdf')}}" target="_blank"> la charte
-                                        d'utilisation de la plateforme d'annonces du site web de Terre de Liens</a>
-                                    .* </span>
+                                <span>J'accepte la
+                                    <a href="{{URL::asset('docs/Charte_utilisation_d_Objectif_Terres-Validee_en_CIT_du_21_oct.pdf')}}" target="_blank">Charte d'utilisation</a>
+                                    et les <a href="{{route('conditions-utilisation')}}" target="_blank">CGU</a>du site d'annonces du site web de Terre de Liens
+                                    .*</span>
                             </label>
                         </div>
                         <div class="field">
@@ -94,8 +94,6 @@
                             </label>
                         </div>
 
-                        <p>En appuyant sur valider, vous consentez <a href="{{route('conditions-utilisation')}}">à
-                                l'utilisation de vos données personnelles</a> par Objectif Terres </p>
                         <br>
                         <div class="field is-grouped is-grouped-centered">
                             <div class="control is-pulled-right">
