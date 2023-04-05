@@ -219,3 +219,7 @@ Route::prefix('motdepasse')->name('password.')->group(function () {
 });
 
 Route::post('newsletter', 'Newsletter\NewsletterController@create');
+
+Route::prefix('v1')->group(function () {
+    Route::get('annonces', 'ApiController@annonces')->name('annonces');
+});
