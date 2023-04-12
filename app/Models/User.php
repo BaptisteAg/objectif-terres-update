@@ -119,6 +119,9 @@ class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 		'email',
 		'password',
 		'first_name',
+        'birthday',
+        'formation',
+        'fromwhere',
 		'phone',
 		'street',
 		'city',
@@ -178,6 +181,21 @@ class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 		3 => "Responsable territorial",
 		4 => "Administrateur",
 	];
+
+    static $formations = [
+        0 => "Diplôme agricole niveau III (BEPA)",
+        1 => "Diplôme agricole niveau IV (BPREA, BAC,)",
+        2 => "Diplôme agricole niveau V (BTS, DUT) ",
+        3 => "Diplôme agricole niveau VI (licence,)",
+        4 => "Diplôme agricole niveau VII ou plus (ingénieur, master2, véto, ...)",
+    ];
+
+    static $fromwheres = [
+		0 => "Issu du monde agricole",
+		1 => "Non Issu du monde agricole",
+		2 => "Ne sait pas répondre à la question"
+	];
+
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

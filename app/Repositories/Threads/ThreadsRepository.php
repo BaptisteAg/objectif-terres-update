@@ -43,6 +43,7 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 		$model = $this->entity
 			->where(['id' => $threadId])
 			->with($this->getEagerLoading())
+            ->forUser(auth()->id())
 			->first();
 
 		if (!$model) {
@@ -64,6 +65,7 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 		$model = $this->entity
 			->where(['ad_id' => $adId])
 			->with($this->getEagerLoading())
+            ->forUser(auth()->id())
 			->first();
 
 		if (!$model) {
@@ -83,6 +85,7 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 			->where(['ad_id' => $adId])
 			->whereHas('messages')
 			->with($this->getEagerLoading())
+            ->forUser(auth()->id())
 			->get();
 
 		return $model;

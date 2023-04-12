@@ -40,6 +40,11 @@
                             </div>
                         </div>
                         <div class="columns">
+                            <div class="column is-half">
+                                @include('auth.partials.inputs.birthday')
+                            </div>
+                        </div>
+                        <div class="columns">
                             <div class="column is-7">
                                 @include('auth.partials.inputs.address')
                             </div>
@@ -50,6 +55,15 @@
                         <div class="columns">
                             @include('auth.partials.inputs.profile')
                         </div>
+                        <div class="columns" v-if="optionProfileSelected === '1' || optionProfileSelected === '2'" >
+                            @include('auth.partials.inputs.formation')
+                        </div>
+
+                        <div class="columns" v-if="optionProfileSelected === '1' || optionProfileSelected === '2'" >
+                            @include('auth.partials.inputs.fromwhere')
+                        </div>
+
+
 
 
 

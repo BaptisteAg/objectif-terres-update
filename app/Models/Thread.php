@@ -81,7 +81,24 @@ class Thread extends Model implements HasPresenter
 		return $this->belongsToMany(User::class, 'thread_users')->withTimestamps();
 	}
 
-	/**
+    /**
+     * Returns threads that the user is associated with.
+     */
+    public function scopeForUser(Builder $query, $userId): mixed
+    {
+        $participantsTable = 'thread_users';
+
+        //if User Is Admin
+        if(auth()->user()->role === 4){
+            return null;
+        }
+        //else returns threads from thread_users
+        return $query->join($participantsTable, $this->getQualifiedKeyName(), '=', $participantsTable . '.thread_id')
+            ->where($participantsTable . '.user_id', $userId);
+    }
+
+
+    /**
 	 * Get the presenter class.
 	 *
 	 * @return string
