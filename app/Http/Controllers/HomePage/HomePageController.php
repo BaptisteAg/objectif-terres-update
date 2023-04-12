@@ -35,7 +35,6 @@ class HomePageController extends Controller
 			$query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
 		})->where('is_draft', '=', 0)->take(4)->orderBy('created_at', 'desc')->get()->shuffle();
 
-
 		$adsPartner = Ad::where('is_partner', 1)->whereHas('attributionAd', function (Builder $query) {
 			$query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
 		})->where('is_draft', '=', 0)->take(4)->orderBy('created_at', 'desc')->get();

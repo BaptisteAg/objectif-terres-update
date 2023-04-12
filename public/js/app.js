@@ -80319,6 +80319,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('user-form', {
   data: function data() {
     return {
       optionProfileSelected: this.oldValues.profile || '',
+      optionHasFormationSelected: this.oldValues.hasformation || '',
       citySelect: this.oldValues.citySelect ? JSON.parse(this.oldValues.citySelect) : [],
       isPasswordToChange: false
     };
