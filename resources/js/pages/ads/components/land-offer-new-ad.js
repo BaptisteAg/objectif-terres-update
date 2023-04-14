@@ -124,6 +124,7 @@ export default {
             } else {
                 this.formInput.rentPrice = ''
             }
+            console.log(this.formInput.rentPrice);
         }
     },
     mounted() {

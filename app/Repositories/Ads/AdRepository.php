@@ -130,6 +130,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         if(!isset($data["accept_share_contact_infos"])) {
             $data["accept_share_contact_infos"] = 0;
         }
+
 		if (!is_a($ad, Ad::class)) {
 			$ad = $this->find($ad);
 		}
