@@ -79306,7 +79306,7 @@ var numberNormalizer = function numberNormalizer(inputName) {
     if (!v) {
       return;
     }
-    v = v.replace(",", ".");
+    v = v.toString().replace(",", ".");
     this.formInput[inputName] = v;
   };
 };
@@ -79388,12 +79388,38 @@ var numberNormalizer = function numberNormalizer(inputName) {
       });
     }
   },
-  methods: {},
+  methods: {
+    choiceOfferGenres: function choiceOfferGenres(value) {
+      console.log(value);
+      console.log(this.oldValues);
+      if (value.includes('1') || value.includes(1)) {
+        if (this.oldValues.land_offer && this.oldValues.land_offer.price) {
+          this.formInput.price = this.oldValues.land_offer.price;
+        }
+      } else {
+        this.formInput.price = '';
+      }
+      if (value.includes('2') || value.includes(2)) {
+        if (this.oldValues.land_offer && this.oldValues.land_offer.rent_price) {
+          this.formInput.rentPrice = this.oldValues.land_offer.rent_price;
+        }
+      } else {
+        this.formInput.rentPrice = '';
+      }
+      console.log(this.formInput.rentPrice);
+    }
+  },
+  mounted: function mounted() {
+    this.choiceOfferGenres(this.formInput.offerGenres);
+  },
   watch: {
     'formInput.surface': numberNormalizer('surface'),
     'formInput.altitude': numberNormalizer('altitude'),
     'formInput.price': numberNormalizer('price'),
-    'formInput.rentPrice': numberNormalizer('rentPrice')
+    'formInput.rentPrice': numberNormalizer('rentPrice'),
+    'formInput.offerGenres': function formInputOfferGenres(value) {
+      this.choiceOfferGenres(value);
+    }
   },
   validations: function validations() {
     var extraValidations = this.isSupportRequest ? {

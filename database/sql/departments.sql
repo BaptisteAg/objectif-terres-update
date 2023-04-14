@@ -140,4 +140,5 @@ INSERT INTO `departments` (`id`, `region_code`, `code`, `name`, `slug`) VALUES
 (98, '02', '972', 'Martinique', 'martinique'),
 (99, '03', '973', 'Guyane', 'guyane'),
 (100, '04', '974', 'La Réunion', 'la reunion'),
-(101, '06', '976', 'Mayotte', 'mayotte');
+(101, '06', '976', 'Mayotte', 'mayotte')
+ON DUPLICATE KEY UPDATE id = id;
