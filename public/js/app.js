@@ -79390,8 +79390,6 @@ var numberNormalizer = function numberNormalizer(inputName) {
   },
   methods: {
     choiceOfferGenres: function choiceOfferGenres(value) {
-      console.log(value);
-      console.log(this.oldValues);
       if (value.includes('1') || value.includes(1)) {
         if (this.oldValues.land_offer && this.oldValues.land_offer.price) {
           this.formInput.price = this.oldValues.land_offer.price;
@@ -81388,8 +81386,8 @@ function noIframe() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /shared/httpd/objectif-terres/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /shared/httpd/objectif-terres/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/jean/devilbox/data/www/objectif-terres/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/jean/devilbox/data/www/objectif-terres/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
