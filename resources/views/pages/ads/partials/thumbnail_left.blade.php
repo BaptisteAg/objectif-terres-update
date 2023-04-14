@@ -1,6 +1,7 @@
 <div class="vignette__image-wrap is-flex">
     @if($ad->hasImages)
         @if($ad->images[0]->path ==="0")
+            {{--
             @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
                 <img src="{{URL::asset('images/new-placeholder-ad.png')}}"
                      class="vignette__image" alt="image generic ferme"/>
@@ -8,11 +9,18 @@
                 <img src="{{URL::asset("images/illustrations/photo_08_bandeau-maous_1920.jpg")}}"
                      class=" vignette__image" alt="image generic emploi ferme"/>
             @endif
+            --}}
+
+            <img src="{{URL::asset("images/illustrations/photo_08_bandeau-maous_1920.jpg")}}"
+                 class=" vignette__image" alt="image generic emploi ferme"/>
         @else
             <img src="{{URL::asset($ad->images[0]->path)}}"
                  class=" vignette__image" alt="{{$ad->images[0]->name}}">
         @endif
     @else
+        <img src="{{URL::asset("images/job-offer-placeholder-ad.png")}}"
+             class=" vignette__image" alt="image générique emploi ferme"/>
+        {{--
         @if($ad->ad_type == "landSeek" or $ad->ad_type == "landOffer")
             <img src="{{URL::asset('images/new-placeholder-ad.png')}}"
                  class="vignette__image" alt="image générique foncier ferme"/>
@@ -20,6 +28,7 @@
             <img src="{{URL::asset("images/job-offer-placeholder-ad.png")}}"
                  class=" vignette__image" alt="image générique emploi ferme"/>
         @endif
+        --}}
     @endif
 </div>
 <ul class="custom-tags custom-list custom-list_v x-large">
