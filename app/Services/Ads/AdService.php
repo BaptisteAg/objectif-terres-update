@@ -237,6 +237,15 @@ class  AdService
 
 		$subAdData = $data[$data["ad_type"]];
 
+        if(isset($subAdData["offer_genres"])) {
+            if(!in_array("1", $subAdData["offer_genres"], true)) {
+                $subAdData["price"] = null;
+            }
+            if(!in_array("2", $subAdData["offer_genres"], true)) {
+                $subAdData["rent_price"] = null;
+            }
+        }
+
 		if ($isUpdate) {
 			$this->updateSubAd($ad, $data["ad_type"], $subAdData);
 		} else {
@@ -246,6 +255,7 @@ class  AdService
 		DB::commit();
 
 		$ad->refresh();
+
 		return $ad;
 	}
 

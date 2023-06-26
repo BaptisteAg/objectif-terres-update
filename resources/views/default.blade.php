@@ -35,7 +35,7 @@
 
 
 @if(app()->environment() === "production")
-        <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="f8fb4eb1-20bb-474a-8b1a-bef062c79ea7" data-blockingmode="auto" type="text/javascript"></script>
+        <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="9e743d8b-bfc8-4eed-8632-b3fc81f18778" data-blockingmode="auto" type="text/javascript"></script>
     @endif
 </head>
 <body lang="fr-FR">
