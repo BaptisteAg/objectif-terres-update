@@ -1,8 +1,8 @@
-<div class="column ">
+<div class="column">
     <div class="field">
         <label for="profile" class="label">Situation*</label>
         <div class="control has-icons-left">
-            <div class="select">
+            <div class="select" style="display: block !important;">
                 <select id="profile"
                         name="profile"
                         required
@@ -12,7 +12,7 @@
                     @foreach(\App\Models\User::$profiles as $id => $prof)
                         <option
                                 value="{{$id}}" {{old('profile') == $id ? 'selected' : ''}} >
-                            {{$prof}}
+                            {{ucfirst($prof)}}
                         </option>
                     @endforeach
                 </select>
@@ -30,7 +30,7 @@
         @enderror
     </div>
 </div>
-<div v-if="optionProfileSelected === '7'" class="column is-half">
+<!--div v-if="optionProfileSelected === '7'" class="column is-half">
     <div class="field">
         <label class="label">Situation autre </label>
         <p class="control has-icons-left has-icons-right">
@@ -52,4 +52,4 @@
         </article>
         @enderror
     </div>
-</div>
+</div-->

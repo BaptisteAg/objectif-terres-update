@@ -35,7 +35,7 @@
 
 
 @if(app()->environment() === "production")
-        <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="f8fb4eb1-20bb-474a-8b1a-bef062c79ea7" data-blockingmode="auto" type="text/javascript"></script>
+        <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="9e743d8b-bfc8-4eed-8632-b3fc81f18778" data-blockingmode="auto" type="text/javascript"></script>
     @endif
 </head>
 <body lang="fr-FR">
@@ -208,11 +208,36 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CZC04WPSVH"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
 
-        gtag('config', 'G-CZC04WPSVH');
+        window.addEventListener('CookiebotOnAccept', function (e) {
+            if (Cookiebot.consent.statistics)
+            {
+                enableGoogleAnalytics();
+                enableMatomoAnalytics();
+            }
+        }, false);
+
+        function enableGoogleAnalytics() {
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-CZC04WPSVH');
+        }
+
+        function enableMatomoAnalytics() {
+            var _paq = window._paq = window._paq || [];
+            /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            (function() {
+                var u="https://objectifterres.matomo.cloud/";
+                _paq.push(['setTrackerUrl', u+'matomo.php']);
+                _paq.push(['setSiteId', '1']);
+                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                g.async=true; g.src='//cdn.matomo.cloud/objectifterres.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+            })();
+        }
     </script>
 @endif
 

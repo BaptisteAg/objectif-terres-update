@@ -130,6 +130,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         if(!isset($data["accept_share_contact_infos"])) {
             $data["accept_share_contact_infos"] = 0;
         }
+
 		if (!is_a($ad, Ad::class)) {
 			$ad = $this->find($ad);
 		}
@@ -646,13 +647,27 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 */
 	public function findAllPublishedWithLocations($selectedAdType): Collection
 	{
-		return $this->entity
-			->whereHas('attributionAd', function (Builder $query) {
-				$query->whereNotNull('published_on');
-			})
+		/*return $this->entity
+            ->whereHas('attributionAd', function (Builder $query) {
+                $query->whereNotNull('published_on');
+            })
 			->filterAdTypes([$selectedAdType])
 			->with($this->getLocationEagerLoading())
 			->get();
+		*/
+
+        return $this->entity
+            ->whereHas('attributionAd', function (Builder $query) {
+                $query->whereNotNull('published_on');
+                $query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
+            })
+            ->join('attribution_ads', "ads.id", '=', "attribution_ads.ad_id")
+            ->select('ads.*')
+            ->filterAdTypes([$selectedAdType])
+            ->with($this->getLocationEagerLoading())
+            ->get();
+
+
 	}
 
 	/**
@@ -664,7 +679,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		return $this->entity
 			->whereHas('attributionAd', function (Builder $query) {
 				$query->whereNotNull('published_on');
+                $query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
 			})
+            ->join('attribution_ads', "ads.id", '=', "attribution_ads.ad_id")
+            ->select('ads.*')
 			->filterAdTypes([$selectedAdType])
 			->filterRegions($regionCode)
 			->with($this->getLocationEagerLoading())

@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\ReallocateAd;
 use App\Rules\SalesforceUniqueEmail;
 use KABBOUCHI\NovaImpersonate\Impersonate;
 use Laravel\Nova\Fields\BelongsTo;
@@ -195,6 +196,8 @@ class User extends Resource
 	 */
 	public function actions(Request $request)
 	{
-		return [];
+		return [
+            new ReallocateAd()
+        ];
 	}
 }
