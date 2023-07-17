@@ -184,6 +184,18 @@ class LocationService
         }
     }
 
+    public function searchCountries(string $q)
+    {
+        $cities = $this->search(
+            'countries',
+            $q,
+            City::select(['id', DB::raw('name_fr_fr as name')]),
+            ["name"]
+        );
+
+        return $cities;
+    }
+
     public function searchCities(string $q)
     {
         $cities = $this->search(
@@ -237,7 +249,7 @@ class LocationService
         };
     }
 
-    /**
+    /***
      * Searches a model with the given query in the specified columns.
      * Orders results by relevance.
      *
@@ -255,7 +267,6 @@ class LocationService
         foreach ($columns as $column) {
             $eloquentQuery = $eloquentQuery->orWhere($column, 'LIKE', '%' . $q . '%');
         }
-
 
         $results = $eloquentQuery
             ->orderBy(DB::raw('LENGTH(name)'))
