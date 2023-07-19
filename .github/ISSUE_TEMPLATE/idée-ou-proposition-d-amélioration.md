@@ -7,14 +7,11 @@ assignees: ''
 
 ---
 
-##Est-ce que votre idée / proposition est liée à un problème ?##
+## Est-ce que votre idée / proposition est liée à un problème ? ##
 (Décrire le problème rencontré qui nécessite une amélioration)
 
-##Description de l'idée / proposition d'amélioration##
+## Description de l'idée / proposition d'amélioration ##
 (Décrire le fonctionnement idéal que vous proposez)
 
-##Alternatives et contexte##
+## Alternatives et contexte ##
 (Si nécessaire, précisez les autres possibilités envisagées et/ou élements de contexte)
-
-**Additional context**
-Add any other context or screenshots about the feature request here.
