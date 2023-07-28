@@ -7470,11 +7470,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "version", function() { return version; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "videoOverlay", function() { return videoOverlay; });
 /* @preserve
- * Leaflet 1.9.3, a JS library for interactive maps. https://leafletjs.com
- * (c) 2010-2022 Vladimir Agafonkin, (c) 2010-2011 CloudMade
+ * Leaflet 1.9.4, a JS library for interactive maps. https://leafletjs.com
+ * (c) 2010-2023 Vladimir Agafonkin, (c) 2010-2011 CloudMade
  */
 
-var version = "1.9.3";
+var version = "1.9.4";
 
 /*
  * @namespace Util
@@ -10091,8 +10091,8 @@ function preventOutline(element) {
 	if (!element.style) { return; }
 	restoreOutline();
 	_outlineElement = element;
-	_outlineStyle = element.style.outline;
-	element.style.outline = 'none';
+	_outlineStyle = element.style.outlineStyle;
+	element.style.outlineStyle = 'none';
 	on(window, 'keydown', restoreOutline);
 }
 
@@ -10100,7 +10100,7 @@ function preventOutline(element) {
 // Cancels the effects of a previous [`L.DomUtil.preventOutline`]().
 function restoreOutline() {
 	if (!_outlineElement) { return; }
-	_outlineElement.style.outline = _outlineStyle;
+	_outlineElement.style.outlineStyle = _outlineStyle;
 	_outlineElement = undefined;
 	_outlineStyle = undefined;
 	off(window, 'keydown', restoreOutline);
@@ -12253,7 +12253,7 @@ var Map = Evented.extend({
 
 		requestAnimFrame(function () {
 			this
-			    ._moveStart(true, false)
+			    ._moveStart(true, options.noMoveStart || false)
 			    ._animateZoom(center, zoom, true);
 		}, this);
 
@@ -12576,6 +12576,7 @@ var Layers = Control.extend({
 		this._layers = [];
 		this._lastZIndex = 0;
 		this._handlingClick = false;
+		this._preventClick = false;
 
 		for (var i in baseLayers) {
 			this._addLayer(baseLayers[i], i);
@@ -12851,6 +12852,11 @@ var Layers = Control.extend({
 	},
 
 	_onInputClick: function () {
+		// expanding the control on mobile with a click can cause adding a layer - we don't want this
+		if (this._preventClick) {
+			return;
+		}
+
 		var inputs = this._layerControlInputs,
 		    input, layer;
 		var addedLayers = [],
@@ -12910,10 +12916,13 @@ var Layers = Control.extend({
 
 	_expandSafely: function () {
 		var section = this._section;
+		this._preventClick = true;
 		on(section, 'click', preventDefault);
 		this.expand();
+		var that = this;
 		setTimeout(function () {
 			off(section, 'click', preventDefault);
+			that._preventClick = false;
 		});
 	}
 
@@ -13602,8 +13611,12 @@ var Draggable = Evented.extend({
 		enableImageDrag();
 		enableTextSelection();
 
-		if (this._moved && this._moving) {
+		var fireDragend = this._moved && this._moving;
 
+		this._moving = false;
+		Draggable._dragging = false;
+
+		if (fireDragend) {
 			// @event dragend: DragEndEvent
 			// Fired when the drag ends.
 			this.fire('dragend', {
@@ -13611,12 +13624,142 @@ var Draggable = Evented.extend({
 				distance: this._newPos.distanceTo(this._startPos)
 			});
 		}
-
-		this._moving = false;
-		Draggable._dragging = false;
 	}
 
 });
+
+/*
+ * @namespace PolyUtil
+ * Various utility functions for polygon geometries.
+ */
+
+/* @function clipPolygon(points: Point[], bounds: Bounds, round?: Boolean): Point[]
+ * Clips the polygon geometry defined by the given `points` by the given bounds (using the [Sutherland-Hodgman algorithm](https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm)).
+ * Used by Leaflet to only show polygon points that are on the screen or near, increasing
+ * performance. Note that polygon points needs different algorithm for clipping
+ * than polyline, so there's a separate method for it.
+ */
+function clipPolygon(points, bounds, round) {
+	var clippedPoints,
+	    edges = [1, 4, 2, 8],
+	    i, j, k,
+	    a, b,
+	    len, edge, p;
+
+	for (i = 0, len = points.length; i < len; i++) {
+		points[i]._code = _getBitCode(points[i], bounds);
+	}
+
+	// for each edge (left, bottom, right, top)
+	for (k = 0; k < 4; k++) {
+		edge = edges[k];
+		clippedPoints = [];
+
+		for (i = 0, len = points.length, j = len - 1; i < len; j = i++) {
+			a = points[i];
+			b = points[j];
+
+			// if a is inside the clip window
+			if (!(a._code & edge)) {
+				// if b is outside the clip window (a->b goes out of screen)
+				if (b._code & edge) {
+					p = _getEdgeIntersection(b, a, edge, bounds, round);
+					p._code = _getBitCode(p, bounds);
+					clippedPoints.push(p);
+				}
+				clippedPoints.push(a);
+
+			// else if b is inside the clip window (a->b enters the screen)
+			} else if (!(b._code & edge)) {
+				p = _getEdgeIntersection(b, a, edge, bounds, round);
+				p._code = _getBitCode(p, bounds);
+				clippedPoints.push(p);
+			}
+		}
+		points = clippedPoints;
+	}
+
+	return points;
+}
+
+/* @function polygonCenter(latlngs: LatLng[], crs: CRS): LatLng
+ * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the passed LatLngs (first ring) from a polygon.
+ */
+function polygonCenter(latlngs, crs) {
+	var i, j, p1, p2, f, area, x, y, center;
+
+	if (!latlngs || latlngs.length === 0) {
+		throw new Error('latlngs not passed');
+	}
+
+	if (!isFlat(latlngs)) {
+		console.warn('latlngs are not flat! Only the first ring will be used');
+		latlngs = latlngs[0];
+	}
+
+	var centroidLatLng = toLatLng([0, 0]);
+
+	var bounds = toLatLngBounds(latlngs);
+	var areaBounds = bounds.getNorthWest().distanceTo(bounds.getSouthWest()) * bounds.getNorthEast().distanceTo(bounds.getNorthWest());
+	// tests showed that below 1700 rounding errors are happening
+	if (areaBounds < 1700) {
+		// getting a inexact center, to move the latlngs near to [0, 0] to prevent rounding errors
+		centroidLatLng = centroid(latlngs);
+	}
+
+	var len = latlngs.length;
+	var points = [];
+	for (i = 0; i < len; i++) {
+		var latlng = toLatLng(latlngs[i]);
+		points.push(crs.project(toLatLng([latlng.lat - centroidLatLng.lat, latlng.lng - centroidLatLng.lng])));
+	}
+
+	area = x = y = 0;
+
+	// polygon centroid algorithm;
+	for (i = 0, j = len - 1; i < len; j = i++) {
+		p1 = points[i];
+		p2 = points[j];
+
+		f = p1.y * p2.x - p2.y * p1.x;
+		x += (p1.x + p2.x) * f;
+		y += (p1.y + p2.y) * f;
+		area += f * 3;
+	}
+
+	if (area === 0) {
+		// Polygon is so small that all points are on same pixel.
+		center = points[0];
+	} else {
+		center = [x / area, y / area];
+	}
+
+	var latlngCenter = crs.unproject(toPoint(center));
+	return toLatLng([latlngCenter.lat + centroidLatLng.lat, latlngCenter.lng + centroidLatLng.lng]);
+}
+
+/* @function centroid(latlngs: LatLng[]): LatLng
+ * Returns the 'center of mass' of the passed LatLngs.
+ */
+function centroid(coords) {
+	var latSum = 0;
+	var lngSum = 0;
+	var len = 0;
+	for (var i = 0; i < coords.length; i++) {
+		var latlng = toLatLng(coords[i]);
+		latSum += latlng.lat;
+		lngSum += latlng.lng;
+		len++;
+	}
+	return toLatLng([latSum / len, lngSum / len]);
+}
+
+var PolyUtil = {
+  __proto__: null,
+  clipPolygon: clipPolygon,
+  polygonCenter: polygonCenter,
+  centroid: centroid
+};
 
 /*
  * @namespace LineUtil
@@ -13872,12 +14015,22 @@ function polylineCenter(latlngs, crs) {
 		latlngs = latlngs[0];
 	}
 
-	var points = [];
-	for (var j in latlngs) {
-		points.push(crs.project(toLatLng(latlngs[j])));
+	var centroidLatLng = toLatLng([0, 0]);
+
+	var bounds = toLatLngBounds(latlngs);
+	var areaBounds = bounds.getNorthWest().distanceTo(bounds.getSouthWest()) * bounds.getNorthEast().distanceTo(bounds.getNorthWest());
+	// tests showed that below 1700 rounding errors are happening
+	if (areaBounds < 1700) {
+		// getting a inexact center, to move the latlngs near to [0, 0] to prevent rounding errors
+		centroidLatLng = centroid(latlngs);
 	}
 
-	var len = points.length;
+	var len = latlngs.length;
+	var points = [];
+	for (i = 0; i < len; i++) {
+		var latlng = toLatLng(latlngs[i]);
+		points.push(crs.project(toLatLng([latlng.lat - centroidLatLng.lat, latlng.lng - centroidLatLng.lng])));
+	}
 
 	for (i = 0, halfDist = 0; i < len - 1; i++) {
 		halfDist += points[i].distanceTo(points[i + 1]) / 2;
@@ -13903,7 +14056,9 @@ function polylineCenter(latlngs, crs) {
 			}
 		}
 	}
-	return crs.unproject(toPoint(center));
+
+	var latlngCenter = crs.unproject(toPoint(center));
+	return toLatLng([latlngCenter.lat + centroidLatLng.lat, latlngCenter.lng + centroidLatLng.lng]);
 }
 
 var LineUtil = {
@@ -13918,109 +14073,6 @@ var LineUtil = {
   isFlat: isFlat,
   _flat: _flat,
   polylineCenter: polylineCenter
-};
-
-/*
- * @namespace PolyUtil
- * Various utility functions for polygon geometries.
- */
-
-/* @function clipPolygon(points: Point[], bounds: Bounds, round?: Boolean): Point[]
- * Clips the polygon geometry defined by the given `points` by the given bounds (using the [Sutherland-Hodgman algorithm](https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm)).
- * Used by Leaflet to only show polygon points that are on the screen or near, increasing
- * performance. Note that polygon points needs different algorithm for clipping
- * than polyline, so there's a separate method for it.
- */
-function clipPolygon(points, bounds, round) {
-	var clippedPoints,
-	    edges = [1, 4, 2, 8],
-	    i, j, k,
-	    a, b,
-	    len, edge, p;
-
-	for (i = 0, len = points.length; i < len; i++) {
-		points[i]._code = _getBitCode(points[i], bounds);
-	}
-
-	// for each edge (left, bottom, right, top)
-	for (k = 0; k < 4; k++) {
-		edge = edges[k];
-		clippedPoints = [];
-
-		for (i = 0, len = points.length, j = len - 1; i < len; j = i++) {
-			a = points[i];
-			b = points[j];
-
-			// if a is inside the clip window
-			if (!(a._code & edge)) {
-				// if b is outside the clip window (a->b goes out of screen)
-				if (b._code & edge) {
-					p = _getEdgeIntersection(b, a, edge, bounds, round);
-					p._code = _getBitCode(p, bounds);
-					clippedPoints.push(p);
-				}
-				clippedPoints.push(a);
-
-			// else if b is inside the clip window (a->b enters the screen)
-			} else if (!(b._code & edge)) {
-				p = _getEdgeIntersection(b, a, edge, bounds, round);
-				p._code = _getBitCode(p, bounds);
-				clippedPoints.push(p);
-			}
-		}
-		points = clippedPoints;
-	}
-
-	return points;
-}
-
-/* @function polygonCenter(latlngs: LatLng[] crs: CRS): LatLng
- * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the passed LatLngs (first ring) from a polygon.
- */
-function polygonCenter(latlngs, crs) {
-	var i, j, p1, p2, f, area, x, y, center;
-
-	if (!latlngs || latlngs.length === 0) {
-		throw new Error('latlngs not passed');
-	}
-
-	if (!isFlat(latlngs)) {
-		console.warn('latlngs are not flat! Only the first ring will be used');
-		latlngs = latlngs[0];
-	}
-
-	var points = [];
-	for (var k in latlngs) {
-		points.push(crs.project(toLatLng(latlngs[k])));
-	}
-
-	var len = points.length;
-	area = x = y = 0;
-
-	// polygon centroid algorithm;
-	for (i = 0, j = len - 1; i < len; j = i++) {
-		p1 = points[i];
-		p2 = points[j];
-
-		f = p1.y * p2.x - p2.y * p1.x;
-		x += (p1.x + p2.x) * f;
-		y += (p1.y + p2.y) * f;
-		area += f * 3;
-	}
-
-	if (area === 0) {
-		// Polygon is so small that all points are on same pixel.
-		center = points[0];
-	} else {
-		center = [x / area, y / area];
-	}
-	return crs.unproject(toPoint(center));
-}
-
-var PolyUtil = {
-  __proto__: null,
-  clipPolygon: clipPolygon,
-  polygonCenter: polygonCenter
 };
 
 /*
@@ -16595,7 +16647,7 @@ function latLngsToCoords(latlngs, levelsDeep, closed, precision) {
 			latLngToCoords(latlngs[i], precision));
 	}
 
-	if (!levelsDeep && closed) {
+	if (!levelsDeep && closed && coords.length > 0) {
 		coords.push(coords[0].slice());
 	}
 
@@ -18398,7 +18450,7 @@ Layer.include({
 	},
 
 	_addFocusListenersOnLayer: function (layer) {
-		var el = layer.getElement();
+		var el = typeof layer.getElement === 'function' && layer.getElement();
 		if (el) {
 			on(el, 'focus', function () {
 				this._tooltip._source = layer;
@@ -18409,7 +18461,7 @@ Layer.include({
 	},
 
 	_setAriaDescribedByOnLayer: function (layer) {
-		var el = layer.getElement();
+		var el = typeof layer.getElement === 'function' && layer.getElement();
 		if (el) {
 			el.setAttribute('aria-describedby', this._tooltip._container.id);
 		}
@@ -18417,9 +18469,21 @@ Layer.include({
 
 
 	_openTooltip: function (e) {
-		if (!this._tooltip || !this._map || (this._map.dragging && this._map.dragging.moving())) {
+		if (!this._tooltip || !this._map) {
 			return;
 		}
+
+		// If the map is moving, we will show the tooltip after it's done.
+		if (this._map.dragging && this._map.dragging.moving() && !this._openOnceFlag) {
+			this._openOnceFlag = true;
+			var that = this;
+			this._map.once('moveend', function () {
+				that._openOnceFlag = false;
+				that._openTooltip(e);
+			});
+			return;
+		}
+
 		this._tooltip._source = e.layer || e.target;
 
 		this.openTooltip(this._tooltip.options.sticky ? e.latlng : undefined);
@@ -19884,9 +19948,8 @@ var Renderer = Layer.extend({
 		if (!this._container) {
 			this._initContainer(); // defined by renderer implementations
 
-			if (this._zoomAnimated) {
-				addClass(this._container, 'leaflet-zoom-animated');
-			}
+			// always keep transform-origin as 0 0
+			addClass(this._container, 'leaflet-zoom-animated');
 		}
 
 		this.getPane().appendChild(this._container);
@@ -21826,612 +21889,6 @@ Map.TouchZoom = TouchZoom;
 
 //# sourceMappingURL=leaflet-src.esm.js.map
 
-
-/***/ }),
-
-/***/ "./node_modules/node-waves/src/js/waves.js":
-/*!*************************************************!*\
-  !*** ./node_modules/node-waves/src/js/waves.js ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * Waves v0.7.6
- * http://fian.my.id/Waves
- *
- * Copyright 2014-2018 Alfiana E. Sibuea and other contributors
- * Released under the MIT license
- * https://github.com/fians/Waves/blob/master/LICENSE
- */
-
-;(function(window, factory) {
-    'use strict';
-
-    // AMD. Register as an anonymous module.  Wrap in function so we have access
-    // to root via `this`.
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function() {
-            window.Waves = factory.call(window);
-            return window.Waves;
-        }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    }
-
-    // Node. Does not work with strict CommonJS, but only CommonJS-like
-    // environments that support module.exports, like Node.
-    else {}
-})(typeof global === 'object' ? global : this, function() {
-    'use strict';
-
-    var Waves            = Waves || {};
-    var $$               = document.querySelectorAll.bind(document);
-    var toString         = Object.prototype.toString;
-    var isTouchAvailable = 'ontouchstart' in window;
-
-
-    // Find exact position of element
-    function isWindow(obj) {
-        return obj !== null && obj === obj.window;
-    }
-
-    function getWindow(elem) {
-        return isWindow(elem) ? elem : elem.nodeType === 9 && elem.defaultView;
-    }
-
-    function isObject(value) {
-        var type = typeof value;
-        return type === 'function' || type === 'object' && !!value;
-    }
-
-    function isDOMNode(obj) {
-        return isObject(obj) && obj.nodeType > 0;
-    }
-
-    function getWavesElements(nodes) {
-        var stringRepr = toString.call(nodes);
-
-        if (stringRepr === '[object String]') {
-            return $$(nodes);
-        } else if (isObject(nodes) && /^\[object (Array|HTMLCollection|NodeList|Object)\]$/.test(stringRepr) && nodes.hasOwnProperty('length')) {
-            return nodes;
-        } else if (isDOMNode(nodes)) {
-            return [nodes];
-        }
-
-        return [];
-    }
-
-    function offset(elem) {
-        var docElem, win,
-            box = { top: 0, left: 0 },
-            doc = elem && elem.ownerDocument;
-
-        docElem = doc.documentElement;
-
-        if (typeof elem.getBoundingClientRect !== typeof undefined) {
-            box = elem.getBoundingClientRect();
-        }
-        win = getWindow(doc);
-        return {
-            top: box.top + win.pageYOffset - docElem.clientTop,
-            left: box.left + win.pageXOffset - docElem.clientLeft
-        };
-    }
-
-    function convertStyle(styleObj) {
-        var style = '';
-
-        for (var prop in styleObj) {
-            if (styleObj.hasOwnProperty(prop)) {
-                style += (prop + ':' + styleObj[prop] + ';');
-            }
-        }
-
-        return style;
-    }
-
-    var Effect = {
-
-        // Effect duration
-        duration: 750,
-
-        // Effect delay (check for scroll before showing effect)
-        delay: 200,
-
-        show: function(e, element, velocity) {
-
-            // Disable right click
-            if (e.button === 2) {
-                return false;
-            }
-
-            element = element || this;
-
-            // Create ripple
-            var ripple = document.createElement('div');
-            ripple.className = 'waves-ripple waves-rippling';
-            element.appendChild(ripple);
-
-            // Get click coordinate and element width
-            var pos       = offset(element);
-            var relativeY = 0;
-            var relativeX = 0;
-            // Support for touch devices
-            if('touches' in e && e.touches.length) {
-                relativeY   = (e.touches[0].pageY - pos.top);
-                relativeX   = (e.touches[0].pageX - pos.left);
-            }
-            //Normal case
-            else {
-                relativeY   = (e.pageY - pos.top);
-                relativeX   = (e.pageX - pos.left);
-            }
-            // Support for synthetic events
-            relativeX = relativeX >= 0 ? relativeX : 0;
-            relativeY = relativeY >= 0 ? relativeY : 0;
-
-            var scale     = 'scale(' + ((element.clientWidth / 100) * 3) + ')';
-            var translate = 'translate(0,0)';
-
-            if (velocity) {
-                translate = 'translate(' + (velocity.x) + 'px, ' + (velocity.y) + 'px)';
-            }
-
-            // Attach data to element
-            ripple.setAttribute('data-hold', Date.now());
-            ripple.setAttribute('data-x', relativeX);
-            ripple.setAttribute('data-y', relativeY);
-            ripple.setAttribute('data-scale', scale);
-            ripple.setAttribute('data-translate', translate);
-
-            // Set ripple position
-            var rippleStyle = {
-                top: relativeY + 'px',
-                left: relativeX + 'px'
-            };
-
-            ripple.classList.add('waves-notransition');
-            ripple.setAttribute('style', convertStyle(rippleStyle));
-            ripple.classList.remove('waves-notransition');
-
-            // Scale the ripple
-            rippleStyle['-webkit-transform'] = scale + ' ' + translate;
-            rippleStyle['-moz-transform'] = scale + ' ' + translate;
-            rippleStyle['-ms-transform'] = scale + ' ' + translate;
-            rippleStyle['-o-transform'] = scale + ' ' + translate;
-            rippleStyle.transform = scale + ' ' + translate;
-            rippleStyle.opacity = '1';
-
-            var duration = e.type === 'mousemove' ? 2500 : Effect.duration;
-            rippleStyle['-webkit-transition-duration'] = duration + 'ms';
-            rippleStyle['-moz-transition-duration']    = duration + 'ms';
-            rippleStyle['-o-transition-duration']      = duration + 'ms';
-            rippleStyle['transition-duration']         = duration + 'ms';
-
-            ripple.setAttribute('style', convertStyle(rippleStyle));
-        },
-
-        hide: function(e, element) {
-            element = element || this;
-
-            var ripples = element.getElementsByClassName('waves-rippling');
-
-            for (var i = 0, len = ripples.length; i < len; i++) {
-                removeRipple(e, element, ripples[i]);
-            }
-
-            if (isTouchAvailable) {
-                element.removeEventListener('touchend', Effect.hide);
-                element.removeEventListener('touchcancel', Effect.hide);
-            }
-
-            element.removeEventListener('mouseup', Effect.hide);
-            element.removeEventListener('mouseleave', Effect.hide);
-        }
-    };
-
-    /**
-     * Collection of wrapper for HTML element that only have single tag
-     * like <input> and <img>
-     */
-    var TagWrapper = {
-
-        // Wrap <input> tag so it can perform the effect
-        input: function(element) {
-
-            var parent = element.parentNode;
-
-            // If input already have parent just pass through
-            if (parent.tagName.toLowerCase() === 'i' && parent.classList.contains('waves-effect')) {
-                return;
-            }
-
-            // Put element class and style to the specified parent
-            var wrapper       = document.createElement('i');
-            wrapper.className = element.className + ' waves-input-wrapper';
-            element.className = 'waves-button-input';
-
-            // Put element as child
-            parent.replaceChild(wrapper, element);
-            wrapper.appendChild(element);
-
-            // Apply element color and background color to wrapper
-            var elementStyle    = window.getComputedStyle(element, null);
-            var color           = elementStyle.color;
-            var backgroundColor = elementStyle.backgroundColor;
-
-            wrapper.setAttribute('style', 'color:' + color + ';background:' + backgroundColor);
-            element.setAttribute('style', 'background-color:rgba(0,0,0,0);');
-
-        },
-
-        // Wrap <img> tag so it can perform the effect
-        img: function(element) {
-
-            var parent = element.parentNode;
-
-            // If input already have parent just pass through
-            if (parent.tagName.toLowerCase() === 'i' && parent.classList.contains('waves-effect')) {
-                return;
-            }
-
-            // Put element as child
-            var wrapper  = document.createElement('i');
-            parent.replaceChild(wrapper, element);
-            wrapper.appendChild(element);
-
-        }
-    };
-
-    /**
-     * Hide the effect and remove the ripple. Must be
-     * a separate function to pass the JSLint...
-     */
-    function removeRipple(e, el, ripple) {
-
-        // Check if the ripple still exist
-        if (!ripple) {
-            return;
-        }
-
-        ripple.classList.remove('waves-rippling');
-
-        var relativeX = ripple.getAttribute('data-x');
-        var relativeY = ripple.getAttribute('data-y');
-        var scale     = ripple.getAttribute('data-scale');
-        var translate = ripple.getAttribute('data-translate');
-
-        // Get delay beetween mousedown and mouse leave
-        var diff = Date.now() - Number(ripple.getAttribute('data-hold'));
-        var delay = 350 - diff;
-
-        if (delay < 0) {
-            delay = 0;
-        }
-
-        if (e.type === 'mousemove') {
-            delay = 150;
-        }
-
-        // Fade out ripple after delay
-        var duration = e.type === 'mousemove' ? 2500 : Effect.duration;
-
-        setTimeout(function() {
-
-            var style = {
-                top: relativeY + 'px',
-                left: relativeX + 'px',
-                opacity: '0',
-
-                // Duration
-                '-webkit-transition-duration': duration + 'ms',
-                '-moz-transition-duration': duration + 'ms',
-                '-o-transition-duration': duration + 'ms',
-                'transition-duration': duration + 'ms',
-                '-webkit-transform': scale + ' ' + translate,
-                '-moz-transform': scale + ' ' + translate,
-                '-ms-transform': scale + ' ' + translate,
-                '-o-transform': scale + ' ' + translate,
-                'transform': scale + ' ' + translate
-            };
-
-            ripple.setAttribute('style', convertStyle(style));
-
-            setTimeout(function() {
-                try {
-                    el.removeChild(ripple);
-                } catch (e) {
-                    return false;
-                }
-            }, duration);
-
-        }, delay);
-    }
-
-
-    /**
-     * Disable mousedown event for 500ms during and after touch
-     */
-    var TouchHandler = {
-
-        /* uses an integer rather than bool so there's no issues with
-         * needing to clear timeouts if another touch event occurred
-         * within the 500ms. Cannot mouseup between touchstart and
-         * touchend, nor in the 500ms after touchend. */
-        touches: 0,
-
-        allowEvent: function(e) {
-
-            var allow = true;
-
-            if (/^(mousedown|mousemove)$/.test(e.type) && TouchHandler.touches) {
-                allow = false;
-            }
-
-            return allow;
-        },
-        registerEvent: function(e) {
-            var eType = e.type;
-
-            if (eType === 'touchstart') {
-
-                TouchHandler.touches += 1; // push
-
-            } else if (/^(touchend|touchcancel)$/.test(eType)) {
-
-                setTimeout(function() {
-                    if (TouchHandler.touches) {
-                        TouchHandler.touches -= 1; // pop after 500ms
-                    }
-                }, 500);
-
-            }
-        }
-    };
-
-
-    /**
-     * Delegated click handler for .waves-effect element.
-     * returns null when .waves-effect element not in "click tree"
-     */
-    function getWavesEffectElement(e) {
-
-        if (TouchHandler.allowEvent(e) === false) {
-            return null;
-        }
-
-        var element = null;
-        var target = e.target || e.srcElement;
-
-        while (target.parentElement) {
-            if ( (!(target instanceof SVGElement)) && target.classList.contains('waves-effect')) {
-                element = target;
-                break;
-            }
-            target = target.parentElement;
-        }
-
-        return element;
-    }
-
-    /**
-     * Bubble the click and show effect if .waves-effect elem was found
-     */
-    function showEffect(e) {
-
-        // Disable effect if element has "disabled" property on it
-        // In some cases, the event is not triggered by the current element
-        // if (e.target.getAttribute('disabled') !== null) {
-        //     return;
-        // }
-
-        var element = getWavesEffectElement(e);
-
-        if (element !== null) {
-
-            // Make it sure the element has either disabled property, disabled attribute or 'disabled' class
-            if (element.disabled || element.getAttribute('disabled') || element.classList.contains('disabled')) {
-                return;
-            }
-
-            TouchHandler.registerEvent(e);
-
-            if (e.type === 'touchstart' && Effect.delay) {
-
-                var hidden = false;
-
-                var timer = setTimeout(function () {
-                    timer = null;
-                    Effect.show(e, element);
-                }, Effect.delay);
-
-                var hideEffect = function(hideEvent) {
-
-                    // if touch hasn't moved, and effect not yet started: start effect now
-                    if (timer) {
-                        clearTimeout(timer);
-                        timer = null;
-                        Effect.show(e, element);
-                    }
-                    if (!hidden) {
-                        hidden = true;
-                        Effect.hide(hideEvent, element);
-                    }
-
-                    removeListeners();
-                };
-
-                var touchMove = function(moveEvent) {
-                    if (timer) {
-                        clearTimeout(timer);
-                        timer = null;
-                    }
-                    hideEffect(moveEvent);
-
-                    removeListeners();
-                };
-
-                element.addEventListener('touchmove', touchMove, false);
-                element.addEventListener('touchend', hideEffect, false);
-                element.addEventListener('touchcancel', hideEffect, false);
-
-                var removeListeners = function() {
-                    element.removeEventListener('touchmove', touchMove);
-                    element.removeEventListener('touchend', hideEffect);
-                    element.removeEventListener('touchcancel', hideEffect);
-                };
-            } else {
-
-                Effect.show(e, element);
-
-                if (isTouchAvailable) {
-                    element.addEventListener('touchend', Effect.hide, false);
-                    element.addEventListener('touchcancel', Effect.hide, false);
-                }
-
-                element.addEventListener('mouseup', Effect.hide, false);
-                element.addEventListener('mouseleave', Effect.hide, false);
-            }
-        }
-    }
-
-    Waves.init = function(options) {
-        var body = document.body;
-
-        options = options || {};
-
-        if ('duration' in options) {
-            Effect.duration = options.duration;
-        }
-
-        if ('delay' in options) {
-            Effect.delay = options.delay;
-        }
-
-        if (isTouchAvailable) {
-            body.addEventListener('touchstart', showEffect, false);
-            body.addEventListener('touchcancel', TouchHandler.registerEvent, false);
-            body.addEventListener('touchend', TouchHandler.registerEvent, false);
-        }
-
-        body.addEventListener('mousedown', showEffect, false);
-    };
-
-
-    /**
-     * Attach Waves to dynamically loaded inputs, or add .waves-effect and other
-     * waves classes to a set of elements. Set drag to true if the ripple mouseover
-     * or skimming effect should be applied to the elements.
-     */
-    Waves.attach = function(elements, classes) {
-
-        elements = getWavesElements(elements);
-
-        if (toString.call(classes) === '[object Array]') {
-            classes = classes.join(' ');
-        }
-
-        classes = classes ? ' ' + classes : '';
-
-        var element, tagName;
-
-        for (var i = 0, len = elements.length; i < len; i++) {
-
-            element = elements[i];
-            tagName = element.tagName.toLowerCase();
-
-            if (['input', 'img'].indexOf(tagName) !== -1) {
-                TagWrapper[tagName](element);
-                element = element.parentElement;
-            }
-
-            if (element.className.indexOf('waves-effect') === -1) {
-                element.className += ' waves-effect' + classes;
-            }
-        }
-    };
-
-
-    /**
-     * Cause a ripple to appear in an element via code.
-     */
-    Waves.ripple = function(elements, options) {
-        elements = getWavesElements(elements);
-        var elementsLen = elements.length;
-
-        options          = options || {};
-        options.wait     = options.wait || 0;
-        options.position = options.position || null; // default = centre of element
-
-
-        if (elementsLen) {
-            var element, pos, off, centre = {}, i = 0;
-            var mousedown = {
-                type: 'mousedown',
-                button: 1
-            };
-            var hideRipple = function(mouseup, element) {
-                return function() {
-                    Effect.hide(mouseup, element);
-                };
-            };
-
-            for (; i < elementsLen; i++) {
-                element = elements[i];
-                pos = options.position || {
-                    x: element.clientWidth / 2,
-                    y: element.clientHeight / 2
-                };
-
-                off      = offset(element);
-                centre.x = off.left + pos.x;
-                centre.y = off.top + pos.y;
-
-                mousedown.pageX = centre.x;
-                mousedown.pageY = centre.y;
-
-                Effect.show(mousedown, element);
-
-                if (options.wait >= 0 && options.wait !== null) {
-                    var mouseup = {
-                        type: 'mouseup',
-                        button: 1
-                    };
-
-                    setTimeout(hideRipple(mouseup, element), options.wait);
-                }
-            }
-        }
-    };
-
-    /**
-     * Remove all ripples from an element.
-     */
-    Waves.calm = function(elements) {
-        elements = getWavesElements(elements);
-        var mouseup = {
-            type: 'mouseup',
-            button: 1
-        };
-
-        for (var i = 0, len = elements.length; i < len; i++) {
-            Effect.hide(mouseup, elements[i]);
-        }
-    };
-
-    /**
-     * Deprecated API fallback
-     */
-    Waves.displayEffect = function(options) {
-        console.error('Waves.displayEffect() has been deprecated and will be removed in future version. Please use Waves.init() to initialize Waves effect');
-        Waves.init(options);
-    };
-
-    return Waves;
-});
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -77601,7 +77058,6 @@ Vue.prototype.$forceCompute = function (computedName, forceUpdate /* default: tr
 //////////////
 // VENDORS
 window.SmoothScroll = __webpack_require__(/*! smooth-scroll */ "./node_modules/smooth-scroll/dist/smooth-scroll.polyfills.min.js");
-window.Waves = __webpack_require__(/*! node-waves */ "./node_modules/node-waves/src/js/waves.js");
 
 //////////////
 // LOCAL LIBS
@@ -78681,13 +78137,6 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
   }
-
-  // Dropdowns
-  initDropdowns();
-  Waves.attach('.secondary .menu__link', ['waves-button', 'waves-float']);
-  Waves.attach('.button:not(.round):not(.button-dropdown):not(.ad-action-button):not(.is-normal):not(.is-large):not(.is-medium), input.is-link', ['waves-button', 'waves-float', 'waves-light']);
-  Waves.attach('.button__icon:not(#main-nav__hamburger__line)', ['waves-circle', 'waves-light']);
-  Waves.init();
 });
 
 /***/ }),
@@ -81386,8 +80835,8 @@ function noIframe() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/jean/devilbox/data/www/objectif-terres/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/jean/devilbox/data/www/objectif-terres/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\objectif-terres\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\objectif-terres\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

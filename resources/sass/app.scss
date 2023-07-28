@@ -6,7 +6,7 @@
 @import "variables";
 
 //import framework bulma
-@import "~bulma/bulma";
+@import "bulma";
 @import "~bulma-accordion/dist/css/bulma-accordion";
 @import "~bulma-tooltip/dist/css/bulma-tooltip.min.css";
 @import "~bulma-divider/dist/css/bulma-divider.min.css";
@@ -20,7 +20,7 @@
 @import url("https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css");
 
 // Waves
-@import "~node-waves/dist/waves.min.css";
+//@import "~node-waves/dist/waves.min.css";
 
 //Vue-Shepherd
 @import '~shepherd.js/dist/css/shepherd.css';
@@ -32,7 +32,7 @@
 @import "bases/titles";
 @import "bases/links";
 @import "bases/backgrounds";
-@import "bases/helpers";
+//@import "bases/helpers";
 
 //Layouts
 @import "layouts/header";

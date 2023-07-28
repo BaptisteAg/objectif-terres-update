@@ -1,0 +1,17 @@
+.contact_form_background {
+  border-radius: 20px;
+  background-color: #dbdbdb;
+  padding: 40px;
+}
+.contact_form_background .radio label {
+  margin-right: 15px;
+  cursor: pointer;
+}
+.contact_form_background .width-input .control, .contact_form_background .width-input .select {
+  width: 100%;
+}
+.contact_form_background .is-full-width {
+  width: 100%;
+}
+
+/*# sourceMappingURL=contactez-nous.css.map */

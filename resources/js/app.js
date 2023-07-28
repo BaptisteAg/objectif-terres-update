@@ -25,9 +25,6 @@ Vue.prototype.$forceCompute= function(computedName, forceUpdate /* default: true
 //////////////
 // VENDORS
 window.SmoothScroll = require('smooth-scroll');
-window.Waves = require('node-waves');
-
-
 
 
 //////////////

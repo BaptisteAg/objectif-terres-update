@@ -1,6 +1,6 @@
 @extends('default')
 
-@section('title', 'Bienvenue sur Objectif Terres')
+@section('title', 'Accueil')
 
 @section('head-script')
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
