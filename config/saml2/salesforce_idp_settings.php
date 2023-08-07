@@ -84,7 +84,7 @@ return $settings = array(
          *  Remove the ':' characters
          */
         //2020 'certFingerprint' => '87c6a10dadf2fa24cf42ee41d12870f84db3b2f0',
-        'certFingerprint' => 'F976030D32D377972B600A3B18539298572DFEA6',
+        'certFingerprint' => env('SAML2_'.$this_idp_env_id.'_IDP_CERT_FINGERPRINT'),
     ),
 
     /***
