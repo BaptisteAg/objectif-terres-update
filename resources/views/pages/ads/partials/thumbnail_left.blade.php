@@ -14,7 +14,7 @@
             <img src="{{URL::asset("images/illustrations/photo_08_bandeau-maous_1920.jpg")}}"
                  class=" vignette__image" alt="image generic emploi ferme"/>
         @else
-            <img src="{{URL::asset($ad->images[0]->path)}}"
+            <img src="{{app('url')->assetFrom('https://objectif-terres.org', $ad->images[0]->path)}}"
                  class=" vignette__image" alt="{{$ad->images[0]->name}}">
         @endif
     @else

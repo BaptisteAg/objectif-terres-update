@@ -14,8 +14,8 @@
                                                  alt="picsum">
                                         @else
                                             <img class="custom-carousel-image-size"
-                                                 data-source="{{URL::asset($document->path)}}"
-                                                 src="{{URL::asset($document->path)}}" style="cursor : pointer;"
+                                                 data-source="{{app('url')->assetFrom('https://objectif-terres.org', $document->path)}}"
+                                                 src="{{app('url')->assetFrom('https://objectif-terres.org', $document->path)}}" style="cursor : pointer;"
                                                  alt="Placeholder image">
                                         @endif
                                     </figure>

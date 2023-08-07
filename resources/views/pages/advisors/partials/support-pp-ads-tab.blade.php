@@ -15,7 +15,7 @@
 											@if($userAd->images->first()->path === "0")
 												<img src="https://picsum.photos/480/320" alt="picsum">
 											@else
-												<img src="{{URL::asset($userAd->images->first()->path)}}"
+												<img src="{{app('url')->assetFrom('https://objectif-terres.org', $userAd->images->first()->path)}}"
 													 alt="Placeholder image">
 											@endif
 										</figure>
@@ -25,7 +25,7 @@
 												@if($userAd->images->first()->path === "0")
 													<img src="https://picsum.photos/480/320" alt="picsum">
 												@else
-													<img src="{{URL::asset($userAd->images->first()->path)}}"
+													<img src="{{app('url')->assetFrom('https://objectif-terres.org', $userAd->images->first()->path)}}"
 														 alt="Placeholder image">
 												@endif
 											</figure>
@@ -35,7 +35,7 @@
 													@if($userAd->images->first()->path === "0")
 														<img src="https://picsum.photos/480/320" alt="picsum">
 													@else
-														<img src="{{URL::asset($userAd->images->first()->path)}}"
+														<img src="{{app('url')->assetFrom('https://objectif-terres.org', $userAd->images->first()->path)}}"
 															 alt="Placeholder image">
 													@endif
 												</figure>

@@ -4,7 +4,7 @@
             <figure class="image vignette__image-wrap vignette__ratio_4-3 is-square">
                 @if($ad->hasImages)
                     @if($ad->images[0]->path !=="0")
-                        <img src="{{URL::asset($ad->images[0]->path)}}"
+                        <img src="{{app('url')->assetFrom('https://objectif-terres.org', $ad->images[0]->path)}}"
                              class=" vignette__image" alt="{{$ad->images[0]->name}}">
                     @endif
                 @endif
