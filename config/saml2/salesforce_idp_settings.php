@@ -33,8 +33,8 @@ return $settings = array(
 
         // Usually x509cert and privateKey of the SP are provided by files placed at
         // the certs folder. But we can also provide them with the following parameters
-        'x509cert' => file_get_contents(__DIR__.'/../../certs/salesforce_api.pem'),
-        'privateKey' => file_get_contents(__DIR__.'/../../certs/salesforce_api.key'),
+        'x509cert' => file_get_contents(__DIR__.'/../../certs/salesforce_api'.(env('SAML2_SALESFORCE_SANDBOX', false) ? '_sandbox':'').'.pem'),
+        'privateKey' => file_get_contents(__DIR__.'/../../certs/salesforce_api'.(env('SAML2_SALESFORCE_SANDBOX', false) ? '_sandbox':'').'.key'),
 
         // Identifier (URI) of the SP entity.
         // Leave blank to use the '{idpName}_metadata' route, e.g. 'test_metadata'.
