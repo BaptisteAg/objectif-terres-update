@@ -2,9 +2,9 @@
 /public/hot
 /public/storage
 /public/mix-manifest.json
-/storage/*.key
-/storage/app/spip
-/storage/framework/laravel-excel
+/public/css
+/public/js
+/storage
 /vendor
 .env
 .env.backup
