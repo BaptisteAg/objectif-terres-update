@@ -51,6 +51,9 @@
                             <div class="column is-5">
                                 @include('auth.partials.inputs.zipcode')
                             </div>
+                            <div class="column is-5">
+                                @include('auth.partials.inputs.country')
+                            </div>
                         </div>
                         <div class="columns">
                             @include('auth.partials.inputs.profile')

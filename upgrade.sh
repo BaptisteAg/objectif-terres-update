@@ -1,7 +1,7 @@
 #!/bin/bash
 
 php artisan down &&
-git pull &&
+git pull origin develop &&
 composer install --no-dev &&
 npm install &&
 npm run production &&
