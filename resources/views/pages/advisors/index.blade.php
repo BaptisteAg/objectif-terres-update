@@ -146,7 +146,7 @@
                                     window.open(button.href + "?" + queryString)
                                     document.getElementById("exportLoader").innerText = "Veuillez patienter un instant pour l'export.."
                                 })
-                            </script>git
+                            </script>
 
                             <a href="{{route('advisor.createNewPp')}}" class="button  is-light ">
                             <span class="icon">

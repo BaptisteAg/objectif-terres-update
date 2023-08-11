@@ -41,7 +41,7 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 	{
 		/** @var Thread $model */
 		$model = $this->entity
-			->where(['id' => $threadId])
+			->where(['threads.id' => $threadId])
 			->with($this->getEagerLoading())
             ->forUser(auth()->id())
 			->first();

@@ -21,7 +21,8 @@ return $settings = array(
     'strict' => true,
 
     // Enable debug mode (to print errors)
-    'debug' => env('APP_DEBUG', false),
+    //'debug' => env('APP_DEBUG', false),
+    'debug' => true,
 
     // Service Provider Data that we are deploying
     'sp' => array(
@@ -84,7 +85,9 @@ return $settings = array(
          *  Remove the ':' characters
          */
         //2020 'certFingerprint' => '87c6a10dadf2fa24cf42ee41d12870f84db3b2f0',
-        'certFingerprint' => 'F976030D32D377972B600A3B18539298572DFEA6',
+        //2022 'certFingerprint' => 'F976030D32D377972B600A3B18539298572DFEA6',
+        'certFingerprint' => '0D980741CAB30FB367DD2422D28D9ACE49B99807',
+
     ),
 
     /***

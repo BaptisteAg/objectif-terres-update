@@ -79390,8 +79390,6 @@ var numberNormalizer = function numberNormalizer(inputName) {
   },
   methods: {
     choiceOfferGenres: function choiceOfferGenres(value) {
-      console.log(value);
-      console.log(this.oldValues);
       if (value.includes('1') || value.includes(1)) {
         if (this.oldValues.land_offer && this.oldValues.land_offer.price) {
           this.formInput.price = this.oldValues.land_offer.price;
