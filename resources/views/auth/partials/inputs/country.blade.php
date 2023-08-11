@@ -1,26 +1,25 @@
 <div class="field">
-    <label class="label">Commune et Code postal*</label>
+    <label class="label">Pays*</label>
     <autocomplete
-            name="citySelect"
-            id="citySelect"
+            name="countrySelect"
+            id="countrySelect"
             autocomplete="off"
-            class="@error('city_id') is-danger @enderror"
+            class="@error('country_id') is-danger @enderror"
             placeholder="Saisissez les premiers caractères"
-            ref='citySelect'
-            src="/locations/cities"
-            v-model="citySelect">
-        <input autocomplete="off" type="hidden" name="city_id" :value="zone.value.id"
-               v-for="(zone,i) in citySelect">
+            ref='countrySelect'
+            src="/locations/countries"
+            v-model="countrySelect">
+        <input autocomplete="off" type="hidden" name="country_id" :value="zone.value.id"
+               v-for="(zone,i) in countrySelect">
         <div class="tag autocomplete-input-tag is-info"
-             v-for="(zone,i) in citySelect"
-             @click="_ => citySelect.splice(i,1)">
+             v-for="(zone,i) in countrySelect"
+             @click="_ => countrySelect.splice(i,1)">
             @{{ zone.label }}
             &nbsp;&nbsp
             <i class="fa fa-trash" style="cursor:pointer"></i>
         </div>
-        <input type="hidden" name="country_id" value="75">
     </autocomplete>
-    @error('city_id')
+    @error('country_id')
     <article class="message is-danger" role="alert">
         <div class="message-body">
             {{ $message }}
