@@ -31,7 +31,7 @@
                         <a href="/" class="breadcrumb__link"> <i class="fas fa-home"></i></a>
                     </li>
                     <li>
-                        @if($ad->ad_type === "landSeek")
+                        @if($ad->type === "landSeekAd")
                             <a class="breadcrumb__link"
                                href="{{route('researches.index',  ["offer_type"=>"SeekAd", 'ad_category' => 'land'])}}">
                                 {{--                                <span class="icon">--}}
@@ -39,7 +39,7 @@
                                 {{--                                </span>--}}
                                 <span>{{$ad->ad_type_full_name}}</span>
                             </a>
-                        @elseif($ad->ad_type === "landOffer")
+                        @elseif($ad->type === "landOfferAd")
                             <a class="breadcrumb__link"
                                href="{{route('researches.index',  ["offer_type"=>"OfferAd", 'ad_category' => 'land'])}}">
                                 {{--                                <span class="icon">--}}
@@ -47,7 +47,7 @@
                                 {{--                                </span>--}}
                                 <span>{{$ad->ad_type_full_name}}</span>
                             </a>
-                        @elseif($ad->ad_type === "jobSeek")
+                        @elseif($ad->type === "jobSeekAd")
                             <a class="breadcrumb__link"
                                href="{{route('researches.index',  ["offer_type"=>"SeekAd", 'ad_category' => 'job'])}}">
                                 {{--                                <span class="icon">--}}
@@ -55,7 +55,7 @@
                                 {{--                                </span>--}}
                                 <span>{{$ad->ad_type_full_name}}</span>
                             </a>
-                        @elseif($ad->ad_type === "jobOffer")
+                        @elseif($ad->type === "jobOfferAd")
                             <a class="breadcrumb__link"
                                href="{{route('researches.index',  ["offer_type"=>"OfferAd", 'ad_category' => 'job'])}}">
                                 {{--                                <span class="icon">--}}
@@ -146,16 +146,16 @@
             <h1 class="title is-1 has-text-link has-text-centered">{{$ad->title}}</h1>
 
             <div>
-                @if($ad->ad_type === 'landSeek')
+                @if($ad->type === 'landSeekAd')
                     @include('pages.ads.partials.landSeek.landSeekShow')
                 @endif
-                @if($ad->ad_type === 'landOffer')
+                @if($ad->type === 'landOfferAd')
                     @include('pages.ads.partials.landOffer.landOfferShow')
                 @endif
-                @if($ad->ad_type === 'jobOffer')
+                @if($ad->type === 'jobOfferAd')
                     @include('pages.ads.partials.jobOffer.jobOfferAdShow')
                 @endif
-                @if($ad->ad_type === 'jobSeek')
+                @if($ad->type === 'jobSeekAd')
                     @include('pages.ads.partials.jobSeek.jobSeekAdShow')
                 @endif
             </div>

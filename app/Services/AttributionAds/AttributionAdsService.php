@@ -65,18 +65,16 @@ class AttributionAdsService
 	 * @param int $adId
 	 * @return bool
 	 */
-	public function moderatorIsChargeOfAdModeration(int $adId): bool
+	public function moderatorIsChargeOfAdModeration(Ad $ad): bool
 	{
 		$moderatorIsChargeOfAdModeration = false;
-		$ad = $this->adRepository->find($adId);
 		if ($ad->attributionAd && auth()->id() === $ad->attributionAd->user_moderator_id) {
-			return $moderatorIsChargeOfAdModeration = true;
+			return true;
 		}
 
 		$moderatorLocationTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$adTerritoriesCodes = $this->adService->getAdDepartmentCodesFromZones($ad);
 		$intersectTerritoriesCodes = array_intersect($adTerritoriesCodes, $moderatorLocationTerritoriesCodes);
-
 
 		if (count($intersectTerritoriesCodes) > 0) {
 			$moderatorIsChargeOfAdModeration = true;

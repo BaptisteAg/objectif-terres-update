@@ -29,12 +29,12 @@ class AdPresenter extends BasePresenter
 		$this->adService = $adService;
 	}
 
-	public function isSupportRequest()
+	public function isSupportRequest(): bool
     {
         return !!$this->wrappedObject->project;
     }
 
-    public function pp_display_name()
+    public function pp_display_name(): string
     {
         $user = $this->wrappedObject->userPp;
 
@@ -45,40 +45,15 @@ class AdPresenter extends BasePresenter
         return $user->first_name. " ". $user->name;
     }
 
-	public function ad_type()
-	{
-		if ($this->wrappedObject->landSeekAd) {
-			return 'landSeek';
-		}
-		if ($this->wrappedObject->landOfferAd) {
-			return 'landOffer';
-		}
-		if ($this->wrappedObject->jobOfferAd) {
-			return 'jobOffer';
-		}
-		if ($this->wrappedObject->jobSeekAd) {
-			return 'jobSeek';
-		}
-
-		return '';
-	}
-
-	public function ad_type_full_name()
-	{
-		if ($this->wrappedObject->landSeekAd) {
-			return 'Recherche de foncier';
-		}
-		if ($this->wrappedObject->landOfferAd) {
-			return 'Offre de foncier';
-		}
-		if ($this->wrappedObject->jobOfferAd) {
-			return 'Offre opportunité professionnelle';
-		}
-		if ($this->wrappedObject->jobSeekAd) {
-			return 'Recherche opportunité professionnelle';
-		}
-
-		return '';
+	public function ad_type_full_name(): string
+    {
+        return match($this->wrappedObject->type) {
+            'landSeekAd' => 'Recherche de foncier',
+            'landOfferAd' => 'Offre de foncier',
+            'jobOfferAd' => 'Offre opportunité professionnelle',
+            'jobSeekAd' => 'Recherche opportunité professionnelle',
+            default => '',
+        };
 	}
 
 	public function created_at()
@@ -271,7 +246,7 @@ class AdPresenter extends BasePresenter
 
 	public function isProject()
 	{
-		return $this->wrappedObject->project()->exists();
+		return $this->wrappedObject->project !== null;
 	}
 
 	public function refused_on()

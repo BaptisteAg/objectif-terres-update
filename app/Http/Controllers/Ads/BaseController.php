@@ -232,20 +232,23 @@ abstract class BaseController extends Controller
 		/** @var User $user */
 		$user = auth()->user();
 		if (isset($user)) {
-			$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad->id);
+			$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad);
 			$data = array(
 				"ad_id" => $ad->id,
 				"user_id" => $user->id,
 			);
 			$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
-			$threads = $this->threadService->findThreadAlreadyExist($user->id, $ad->id);
+			$threads = $ad->threads;
 
-			$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
+			$threadsWithUnreadMessages = $ad->threads->filter(function ($thread) {
+                return $thread->messages->filter(function ($message) {
+                    return $message->is_read === 0;
+                })->count();
+            })->count();
 		}
 
 		if ($user && $user->role >= 1) {
 			$responseTemplates = ResponseTemplate::orderBy('title')->get();
-			$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
 
 			if (is_null($ad->project)) {
 				if (!empty($ad->attributionAd->adStatus) && $ad->attributionAd->adStatus->id === AdStatus::PENDING_MODERATION_STATUS_ID) {
@@ -259,9 +262,6 @@ abstract class BaseController extends Controller
 
 			if ($moderatorInChargeOfModeration) {
 				$isLoggedUserModeratorAd = true;
-				$responseTemplates = ResponseTemplate::orderBy('title')->get();
-				$threads = $this->threadService->findThreadsByAd($ad->id);
-				$threadsWithUnreadMessages = $this->threadService->findThreadsByUnreadMessageAndAdId($ad->id);
 				//set to read if notification about moderation task about the ad exist
 				if (!$user->unreadNotifications->isEmpty()) {
 					$notification = $user->unreadNotifications()->where('data->ad_id', $ad->id)->first();
@@ -271,30 +271,14 @@ abstract class BaseController extends Controller
 					}
 				}
 			}
-			if ($user->role >= 1) {
-				$responseTemplates = ResponseTemplate::orderBy('title')->get();
-			}
 			if ($user->role >= 2) {
-				$responseTemplates = ResponseTemplate::orderBy('title')->get();
-				if ($user->role >= 2) {
-					$responseTemplates = ResponseTemplate::orderBy('title')->get();
-					if (isset($ad->support_request_territory_id)) {
-						$advisorUsers = $this->userService->findByRolesAndTerritory([2, 3], $this->userService->getCurrentUserTerritoryIds());
-					} else {
-						$adDepartmentCodes = $this->adService->getAdDepartmentCodesFromZones($ad);
-						$advisorUsers = $this->userService->findByRolesAndDepartments([2, 3], $adDepartmentCodes);
-					}
-				}
-			}
-			if ($user->role >= 1 && $ad->attributionAd && $ad->attributionAd->user_moderator_id !== $currentUser->id) {
-				if (count(array_intersect($this->adService->getAdDepartmentCodesFromZones($ad), $this->userService->getCurrentUserTerritoryDepartments())) > 0) {
-					$threads = $this->threadService->findThreadsByAd($ad->id);
-				}
-				if (isset($ad->support_request_territory_id)) {
-					if (in_array($ad->support_request_territory_id, $this->userService->getCurrentUserTerritoryIds())) {
-						$threads = $this->threadService->findThreadsByAd($ad->id);
-					}
-				}
+                if (isset($ad->support_request_territory_id)) {
+                    $advisorUsers = $this->userService->findByRolesAndTerritory([2, 3], $this->userService->getCurrentUserTerritoryIds());
+                } else {
+                    $adDepartmentCodes = $this->adService->getAdDepartmentCodesFromZones($ad);
+                    $advisorUsers = $this->userService->findByRolesAndDepartments([2, 3], $adDepartmentCodes);
+                }
+
 			}
 		}
 		return compact(
