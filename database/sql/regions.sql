@@ -51,7 +51,13 @@ INSERT INTO `regions` (`id`, `code`, `name`, `slug`) VALUES
 (15, '76', 'Occitanie', 'occitanie'),
 (16, '84', 'Auvergne-Rhône-Alpes', 'auvergne rhone alpes'),
 (17, '93', 'Provence-Alpes-Côte d\'Azur', 'provence alpes cote dazur'),
-(18, '94', 'Corse', 'corse');
+(18, '94', 'Corse', 'corse'),
+(19, '01', 'Guadeloupe', 'guadeloupe'),
+(20, '02', 'Martinique', 'martinique'),
+(21, '03', 'Guyane', 'guyane'),
+(22, '04', 'La Réunion', 'la reunion'),
+(23, '06', 'Mayotte', 'mayotte');
+
 /*!40000 ALTER TABLE `regions` ENABLE KEYS */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

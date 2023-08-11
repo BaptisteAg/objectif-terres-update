@@ -90,9 +90,9 @@ class AttributionAdsService
 	 * @param Carbon $date
 	 * @return AttributionAd[]|Collection
 	 */
-	public function findAllPublishedSince(Carbon $date)
+	public function findAllPublishedBefore(Carbon $date)
 	{
-		return $this->repository->findAllApprovedAndPublishedSince($date);
+		return $this->repository->findAllApprovedAndPublishedBefore($date);
 	}
 
 	/**

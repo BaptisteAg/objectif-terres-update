@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
 /**
- * This controller needs to exists because we never explicitly logout from salesforce
+ * This controller needs to exist because we never explicitly logout from salesforce
  *
  * Class LegacyLoginController
  * @package App\Http\Controllers\Auth

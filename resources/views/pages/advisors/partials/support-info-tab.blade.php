@@ -276,7 +276,7 @@
                         Jusqu'à {{number_format($ad->landSeekAd->price_max, 2, ',', ' ')}} €
                     @endif
                 @elseif(isset($ad->landSeekAd->rent_max))
-                    Jusqu'à {{number_format($ad->landSeekAd->rent_max, 2, ',', ' ')}} €/mois
+                    Jusqu'à {{number_format($ad->landSeekAd->rent_max, 2, ',', ' ')}} €/an
                 @else
                     Non renseigné
                 @endif

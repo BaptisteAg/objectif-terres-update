@@ -2,7 +2,7 @@
 
     <div class="columns adTypes-container">
         <div class="column"></div>
-        <div class="column is-half">
+        <div class="column is-half" style="z-index:10000">
             <div class="field" v-if="displaySelection">
 
                 <div class="is-pulled-left">

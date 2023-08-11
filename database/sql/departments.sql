@@ -135,5 +135,10 @@ INSERT INTO `departments` (`id`, `region_code`, `code`, `name`, `slug`) VALUES
 (93, '11', '92', 'Hauts-de-Seine', 'hauts de seine'),
 (94, '11', '93', 'Seine-Saint-Denis', 'seine saint denis'),
 (95, '11', '94', 'Val-de-Marne', 'val de marne'),
-(96, '11', '95', 'Val-d\'Oise', 'val doise');
-
+(96, '11', '95', 'Val-d\'Oise', 'val doise'),
+(97, '01', '971', 'Guadeloupe', 'guadeloupe'),
+(98, '02', '972', 'Martinique', 'martinique'),
+(99, '03', '973', 'Guyane', 'guyane'),
+(100, '04', '974', 'La Réunion', 'la reunion'),
+(101, '06', '976', 'Mayotte', 'mayotte')
+ON DUPLICATE KEY UPDATE id = id;

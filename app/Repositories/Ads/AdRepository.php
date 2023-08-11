@@ -150,17 +150,16 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		foreach (["cities", "departments", "regions"] as $locationableType) {
 			$locationables = $data["locationable"][$locationableType] ?? [];
 
+            if (count($locationables)) {
+                $extraFields = [];
+                if (isset($data["locationable_radius"])) {
+                    $extraFields = ["radius" => $data["locationable_radius"]];
+                }
+                /** @var MorphToMany $locationableEntityQuery */
+                $locationableEntityQuery = $ad->$locationableType();
 
-			if (count($locationables)) {
-				$extraFields = [];
-				if (isset($data["locationable_radius"])) {
-					$extraFields = ["radius" => $data["locationable_radius"]];
-				}
-				/** @var MorphToMany $locationableEntityQuery */
-				$locationableEntityQuery = $ad->$locationableType();
-
-				$locationableEntityQuery->sync(array_fill_keys($locationables, $extraFields));
-			}
+                $locationableEntityQuery->sync(array_fill_keys($locationables, $extraFields));
+            }
 		}
 
 
@@ -647,13 +646,27 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 	 */
 	public function findAllPublishedWithLocations($selectedAdType): Collection
 	{
-		return $this->entity
-			->whereHas('attributionAd', function (Builder $query) {
-				$query->whereNotNull('published_on');
-			})
+		/*return $this->entity
+            ->whereHas('attributionAd', function (Builder $query) {
+                $query->whereNotNull('published_on');
+            })
 			->filterAdTypes([$selectedAdType])
 			->with($this->getLocationEagerLoading())
 			->get();
+		*/
+
+        return $this->entity
+            ->whereHas('attributionAd', function (Builder $query) {
+                $query->whereNotNull('published_on');
+                $query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
+            })
+            ->join('attribution_ads', "ads.id", '=', "attribution_ads.ad_id")
+            ->select('ads.*')
+            ->filterAdTypes([$selectedAdType])
+            ->with($this->getLocationEagerLoading())
+            ->get();
+
+
 	}
 
 	/**
@@ -665,7 +678,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 		return $this->entity
 			->whereHas('attributionAd', function (Builder $query) {
 				$query->whereNotNull('published_on');
+                $query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
 			})
+            ->join('attribution_ads', "ads.id", '=', "attribution_ads.ad_id")
+            ->select('ads.*')
 			->filterAdTypes([$selectedAdType])
 			->filterRegions($regionCode)
 			->with($this->getLocationEagerLoading())

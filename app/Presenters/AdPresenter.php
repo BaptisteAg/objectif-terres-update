@@ -230,7 +230,7 @@ class AdPresenter extends BasePresenter
 	public function images()
 	{
 		return $this->wrappedObject->documents->filter(function ($document) {
-			return $this->isPpDocument($document) && $this->isImageDocument($document);
+			return /*$this->isPpDocument($document) &&*/ $this->isImageDocument($document);
 		})->values();
 	}
 

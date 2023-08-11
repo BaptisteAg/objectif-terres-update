@@ -130,6 +130,7 @@ class AdsController extends BaseController
 	{
 
 		$ad = $this->adService->find($adId);
+
 		$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad->id);
 		if ($ad->trashed()) {
 			if ($moderatorInChargeOfModeration) {
@@ -236,7 +237,7 @@ class AdsController extends BaseController
 			abort(403);
 		}
 
-		if (!$ad->attributionAd || !$ad->attributionAd->published_on) {
+		if (!$ad->attributionAd->published_on) {
 			return redirect()
 				->route('ads.show', ["id" => $ad->id])
 				->withErrors("Impossible d'étendre la durée de cette annonce, car elle n'est pas publiée.");

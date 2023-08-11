@@ -27,21 +27,21 @@
                     </div>
                 </div>
                 <div class="CTA_soutien__buttons menu-buttons has-text-centered">
-                    <a href="{{url('https://soutenir.terredeliens.org/adhesion/~mon-don')}}" target="_blank"
+                    <a href="{{url('https://soutenir.terredeliens.org/?reserved_dedie_region=&cid=18')}}" target="_blank"
                        class="button is-uppercase button basic secondary  is-radiusless mt-5">
                         <span class="button__icon">
                             <i class="fas fa-address-card"></i>
                         </span>
                         <span class="button__label">J'adhère</span>
                     </a>
-                    <a target="_blank" href="{{url('https://soutenir.terredeliens.org/objectifterre/~mon-don')}}"
+                    <a target="_blank" href="{{url('https://soutenir.terredeliens.org/?reserved_dedie_region=&cid=50')}}"
                        class="button is-uppercase button basic secondary  is-radiusless mr-5 ml-5 mt-5">
                         <span class="button__icon">
                             <i class="fas fa-hand-holding-heart"></i>
                         </span>
                         <span class="button__label">Je fais un don</span>
                     </a>
-                    <a href="{{url('https://soutenir.terredeliens.org/b/mon-don?cid=1&private_server_time=1601562011353')}}"
+                    <a href="{{url('https://soutenir.terredeliens.org/?reserved_dedie_region=&cid=53')}}"
                        target="_blank" class="button is-uppercase button basic secondary  is-radiusless mt-5">
                         <span class="button__icon">
                             <i class="fas fa-piggy-bank"></i>

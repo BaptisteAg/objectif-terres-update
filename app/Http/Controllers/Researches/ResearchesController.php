@@ -48,6 +48,7 @@ ResearchesController extends Controller
         }
 
 		list ($ads, $adsType) = $this->researchService->index($request);
+
 		$request->flash();
 
         $hasDepartmentPolygons = false;

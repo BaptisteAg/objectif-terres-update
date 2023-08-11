@@ -57,8 +57,8 @@ class SupportRequestAttributionNotification extends Notification implements Shou
 			->line("Porteur : " . $this->ad->userPp->name)
 			->action('Consulter la demande d\'accompagnement', $url)
 			->salutation('A bientôt sur Objectif Terres !')
-            ->cc("objectifterres@terredeliens.org")
-            ->replyTo("objectifterres@terredeliens.org");
+            //->cc("objectif-terres@terredeliens.org")
+            ->replyTo("objectif-terres@terredeliens.org");
 
 		return $mail;
 	}

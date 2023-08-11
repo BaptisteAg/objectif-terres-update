@@ -25,7 +25,7 @@
     <script>
         (function(h,o,t,j,a,r){
             h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-            h._hjSettings={hjid:2158522,hjsv:6};
+            h._hjSettings={hjid:3414514,hjsv:6};
             a=o.getElementsByTagName('head')[0];
             r=o.createElement('script');r.async=1;
             r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
@@ -208,11 +208,36 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CZC04WPSVH"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
 
-        gtag('config', 'G-CZC04WPSVH');
+        window.addEventListener('CookiebotOnAccept', function (e) {
+            if (Cookiebot.consent.statistics)
+            {
+                enableGoogleAnalytics();
+                enableMatomoAnalytics();
+            }
+        }, false);
+
+        function enableGoogleAnalytics() {
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-CZC04WPSVH');
+        }
+
+        function enableMatomoAnalytics() {
+            var _paq = window._paq = window._paq || [];
+            /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            (function() {
+                var u="https://objectifterres.matomo.cloud/";
+                _paq.push(['setTrackerUrl', u+'matomo.php']);
+                _paq.push(['setSiteId', '1']);
+                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                g.async=true; g.src='//cdn.matomo.cloud/objectifterres.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+            })();
+        }
     </script>
 @endif
 

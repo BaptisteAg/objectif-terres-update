@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\AdStatus;
+use App\Models\AttributionAd;
 use App\Models\User;
 use App\Notifications\AdNotification;
 use App\Repositories\Users\UserRepository;
@@ -14,6 +15,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 class UnpublishOldAds implements ShouldQueue
 {
@@ -42,26 +44,38 @@ class UnpublishOldAds implements ShouldQueue
      */
 	public function handle()
 	{
+        $months = 12;
 
-		$attributionAds = $this->attributionAdsService->findAllPublishedSince(Carbon::now()->subDays(7));
+		$attributionAds = $this->attributionAdsService
+            ->findAllPublishedBefore(Carbon::now()->subMonths($months))
+            ->filter(fn(AttributionAd $attributionAd) => $attributionAd->ad);
 
-        logger("Unpublishing ads... ".$attributionAds->count()." found.");
+        echo("Unpublishing ads... ".$attributionAds->count()." found.");
+
+        //dd($attributionAds->random()->toArray());
 
 		foreach ($attributionAds as $attributionAd) {
 
 			$data['subject'] = 'Votre annonce a été dépubliée';
-			$data['message'] = 'Votre annonce était en ligne depuis 6 mois. Sans intervention de votre part, nous l\'avons archivée.
+			$data['message'] = 'Votre annonce était en ligne depuis '.$months.' mois. Sans intervention de votre part, nous l\'avons archivée.
 			Vous avez toujours la possibilité de la soumettre à nouveau à modération en allant dans votre compte et en cliquant sur "Modifier"';
 
 			$data['url'] = '/annonces/' . $attributionAd->ad->id;
 
 			/** @var User $userToNotify */
-			$userToNotify = $this->userRepository->find($attributionAd->ad->user_pp_id);
-			$userToNotify->notify(new AdNotification($data));
+            try {
+                $userToNotify = $this->userRepository->find($attributionAd->ad->user_pp_id);
+                $userToNotify->notify(new AdNotification($data));
+            }
+            catch (\Exception|\Error $e) {
+                echo($e->getMessage());
+            }
 
             $attributionAd->ad_status_id = AdStatus::ARCHIVED_ID;
             $attributionAd->published_on = null;
             $attributionAd->save();
+
+            echo "Unpublished : ".$attributionAd->ad->title . " - " . $attributionAd->ad->created_at."\n";
 		}
 	}
 }
