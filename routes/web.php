@@ -122,6 +122,7 @@ Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->na
 
 Route::prefix('locations')->namespace('Locationables')->group(function () {
 	Route::get('/', 'LocationableController@locations');
+	Route::get('countries', 'LocationableController@countries');
 	Route::get('cities', 'LocationableController@cities');
 	Route::get('cities-and-departments', 'LocationableController@citiesAndDepartments');
 	Route::get('departments-and-regions', 'LocationableController@departmentsAndRegions');
