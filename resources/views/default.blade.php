@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.2.96/css/materialdesignicons.min.css">
     <script src="https://kit.fontawesome.com/c97506cdaa.js" crossorigin="anonymous"></script>
     <!-- Hotjar Tracking Code for https://www.objectif-terres.org/ -->
-    <script>
+<!--    <script>
         (function(h,o,t,j,a,r){
             h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
             h._hjSettings={hjid:3414514,hjsv:6};
@@ -32,12 +32,12 @@
             r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
             a.appendChild(r);
         })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-    </script>
+    </script>-->
 
 
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js"
-            data-cbid="f8fb4eb1-20bb-474a-8b1a-bef062c79ea7" data-blockingmode="auto"
-            type="text/javascript"></script>
+<!--    if(app()->environment() === "production")
+        <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="9e743d8b-bfc8-4eed-8632-b3fc81f18778" data-blockingmode="auto" type="text/javascript"></script>
+    endif-->
 </head>
 <body lang="fr-FR">
 
@@ -210,12 +210,16 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CZC04WPSVH"></script>
     <script>
 
-        window.addEventListener('CookiebotOnAccept', function (e) {
-            if (Cookiebot.consent.statistics) {
-                enableGoogleAnalytics();
-                enableMatomoAnalytics();
-            }
-        }, false);
+        enableGoogleAnalytics();
+        enableMatomoAnalytics();
+
+        //window.addEventListener('CookiebotOnAccept', function (e) {
+        //    if (Cookiebot.consent.statistics)
+        //    {
+        //        enableGoogleAnalytics();
+        //        enableMatomoAnalytics();
+        //    }
+        //}, false);
 
         function enableGoogleAnalytics() {
             window.dataLayer = window.dataLayer || [];
@@ -231,11 +235,11 @@
             _paq.push(['trackPageView']);
             _paq.push(['enableLinkTracking']);
             (function() {
-                var u="https://objectifterres.matomo.cloud/";
+                var u="https://terredeliens.matomo.cloud/";
                 _paq.push(['setTrackerUrl', u+'matomo.php']);
-                _paq.push(['setSiteId', '1']);
+                _paq.push(['setSiteId', '3']);
                 var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-                g.async=true; g.src='//cdn.matomo.cloud/objectifterres.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+                g.async=true; g.src='//cdn.matomo.cloud/terredeliens.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
             })();
         }
     </script>
