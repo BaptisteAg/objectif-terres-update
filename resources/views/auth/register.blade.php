@@ -45,13 +45,16 @@
                             </div>
                         </div>
                         <div class="columns">
-                            <div class="column is-7">
+                            <div class="column is-full-width">
                                 @include('auth.partials.inputs.address')
                             </div>
-                            <div class="column is-5">
+
+                        </div>
+                        <div class="columns">
+                            <div class="column is-half">
                                 @include('auth.partials.inputs.zipcode')
                             </div>
-                            <div class="column is-5">
+                            <div class="column is-half">
                                 @include('auth.partials.inputs.country')
                             </div>
                         </div>
