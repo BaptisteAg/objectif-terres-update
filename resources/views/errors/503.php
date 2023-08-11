@@ -96,7 +96,7 @@
 
 <div class="wrapper">
     <div style="text-align:center">
-        <img src="https://beta.objectif-terres.org/images/logo/logo_TdL_cartouche_blanc-rouge_500.png" style="width:100px" alt="objectif-terres-logo" class="is-rounded">
+        <img src="/images/logo/logo_TdL_cartouche_blanc-rouge_500.png" style="width:100px" alt="objectif-terres-logo" class="is-rounded">
     </div>
     <h1>Objectif Terres revient bientôt !</h1>
     <p style="color:#000;">La plateforme est en cours de maintenance, et sera indisponible pendant 1 heure maximum.</p>

@@ -16,6 +16,7 @@ Vue.component('user-form', {
             optionProfileSelected: this.oldValues.profile || '',
             optionHasFormationSelected: this.oldValues.hasformation || '',
             citySelect: this.oldValues.citySelect ? JSON.parse(this.oldValues.citySelect) : [],
+            countrySelect: this.oldValues.countrySelect ? JSON.parse(this.oldValues.countrySelect) : [],
             isPasswordToChange: false,
         }
     },
