@@ -22,10 +22,19 @@ Vue.prototype.$forceCompute= function(computedName, forceUpdate /* default: true
     }
 }
 
+//Composants vue
+import Header from './components/header/index.vue';
+Vue.component('vue-header', Header);
+
+
+
 //////////////
 // VENDORS
 window.SmoothScroll = require('smooth-scroll');
 
+const app = new Vue({
+    el: '#app',
+});
 
 //////////////
 // LOCAL LIBS
@@ -55,6 +64,3 @@ require('./pages/site-tour/site-tour');
 require('./notifications');
 require('./carrousel');
 require('./main.js');
-
-
-
