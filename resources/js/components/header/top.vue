@@ -1,67 +1,61 @@
 <template>
-  <nav class="navbar" role="navigation" aria-label="main navigation">
+  <nav class="is-hidden-touch navbar is-transparent p-2 is-flex-wrap-wrap is-flex" role="navigation"
+       aria-label="main navigation">
     <div class="navbar-brand">
-      <a class=""
-         href="{{route ('home')}}">
-        <img class="is-rounded"
-             src="/images/logo/logo_TdL_cartouche_blanc-rouge_500.png"
-             alt="objectif-terres-logo">
-      </a>
+      <div class="is-flex">
+        <a class="image is-128x128"
+           :href="homeUrl">
+          <img class="is-rounded"
+               src="/images/logo/logo_TdL_cartouche_blanc-rouge_500.png"
+               alt="objectif-terres-logo">
+        </a>
+        <div class="pl-4 is-flex is-flex-direction-column is-justify-content-center pl-">
+          <h1 class="title mb-0 mt-0">Objectif Terres</h1>
+          <h3 class="mt-0 subtitle">Faites pousser votre projet agricole</h3>
+        </div>
+      </div>
 
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarHeader">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
     </div>
 
-    <div id="navbarBasicExample" class="navbar-menu">
-      <div class="navbar-start">
-        <a class="navbar-item">
-          Home
-        </a>
-
-        <a class="navbar-item">
-          Documentation
-        </a>
-
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">
-            More
-          </a>
-
-          <div class="navbar-dropdown">
-            <a class="navbar-item">
-              About
-            </a>
-            <a class="navbar-item">
-              Jobs
-            </a>
-            <a class="navbar-item">
-              Contact
-            </a>
-            <hr class="navbar-divider">
-            <a class="navbar-item">
-              Report an issue
-            </a>
-          </div>
-        </div>
-      </div>
-
+    <div id="navbarHeader" class="navbar-menu">
       <div class="navbar-end">
         <div class="navbar-item">
-          <div class="buttons">
-            <a class="button is-primary">
-              <strong>Sign up</strong>
-            </a>
-            <a class="button is-light">
-              Log in
-            </a>
-          </div>
+          <a class="button is-danger is-medium is-fullwidth">
+            <strong>Nous soutenir</strong>
+          </a>
         </div>
+        <div class="navbar-item">
+          <a class="navbar-item icon is-medium has-text-info">
+            <i class="mdi mdi-36px mdi-bell-ring-outline"></i>
+          </a>
+        </div>
+        <div class="navbar-item">
+          <a class="navbar-item icon is-medium has-text-info">
+            <i class="mdi mdi-36px mdi-bell-ring-outline"></i>
+          </a>
+        </div>
+        <div class="navbar-item">
+          <a class="icon-text">
+              <span class="icon is-medium">
+                <i class="mdi mdi-36px mdi-bell-ring-outline"></i>
+              </span>
+            <span>Home</span>
+          </a>
+        </div>
+
       </div>
     </div>
   </nav>
 </template>
-<script setup>
+<script>
+export default {
+  props: ['homeUrl']
+}
 </script>
+<style>
+</style>

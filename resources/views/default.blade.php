@@ -2,8 +2,9 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="viewport" content="width=1024">
+    {{--    <meta name="viewport" content="width=device-width, initial-scale=1">--}}
+    {{--    <meta name="viewport" content="width=1024">--}}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         @yield('title')
         | Objectif Terres
@@ -117,7 +118,7 @@
 
     @yield('main-content')
 
-    @include('layouts.footer')
+    {{--@include('layouts.footer')--}}
 </div>
 <script>
     var $buoop = {

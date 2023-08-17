@@ -48,7 +48,7 @@
 			</div>
 		</div>
 	</section>
-	@if(!$adsPartner->isEmpty())
+	{{--@if(!$adsPartner->isEmpty())
 		<section class="section">
 			<div class="">
 				<div class="has-text-centered ">
@@ -71,14 +71,14 @@
 				</div>
 			</div>
 		</section>
-	@endif
+	@endif--}}
 
-	@include('components.partnering')
+	{{--@include('components.partnering')--}}
 
-	<div id="vue-rss">
+{{--	<div id="vue-rss">
 		@include('components.rssNews')
-	</div>
-	@include('components.support-terre-liens')
+	</div>--}}
+	{{--@include('components.support-terre-liens')--}}
 
 @endsection
 
@@ -103,9 +103,6 @@
 
 	</script>
 
-	<script defer>
-        homepageMapInit('global-map');
-	</script>
 	@if(Route::currentRouteName() === "site-tour")
 		<script>
 

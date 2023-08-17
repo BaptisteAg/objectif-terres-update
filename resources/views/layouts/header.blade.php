@@ -1,4 +1,4 @@
-<div id="top-bar-user-menu" class="level-right pt-0 pb-15">
+<div id="top-bar-user-menu" class="level-right pt-0 pb-15" style="display: none">
     @guest
         <div class="level-item">Bienvenue !</div>
         <div class="level-item">
@@ -150,4 +150,4 @@
         </div>
     @endguest
 </div>
-<vue-header></vue-header>
+<vue-header home-url="{{ route('home') }}"></vue-header>
