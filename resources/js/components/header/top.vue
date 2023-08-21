@@ -1,5 +1,5 @@
 <template>
-  <nav class="is-hidden-touch navbar is-transparent p-2 is-flex-wrap-wrap is-flex" role="navigation"
+  <nav class="section is-hidden-touch navbar is-transparent py-2 is-flex-wrap-wrap is-flex" role="navigation"
        aria-label="main navigation">
     <div class="navbar-brand">
       <div class="is-flex">
@@ -25,26 +25,30 @@
     <div id="navbarHeader" class="navbar-menu">
       <div class="navbar-end">
         <div class="navbar-item">
-          <a class="button is-danger is-medium is-fullwidth">
-            <strong>Nous soutenir</strong>
-          </a>
-        </div>
-        <div class="navbar-item">
-          <a class="navbar-item icon is-medium has-text-info">
-            <i class="mdi mdi-36px mdi-bell-ring-outline"></i>
-          </a>
-        </div>
-        <div class="navbar-item">
-          <a class="navbar-item icon is-medium has-text-info">
-            <i class="mdi mdi-36px mdi-bell-ring-outline"></i>
+          <a class="button is-danger is-small is-rounded">
+            <span>Nous soutenir</span>
           </a>
         </div>
         <div class="navbar-item">
           <a class="icon-text">
               <span class="icon is-medium">
-                <i class="mdi mdi-36px mdi-bell-ring-outline"></i>
+                <i class="mdi mdi-24px mdi-bell-ring-outline"></i>
               </span>
-            <span>Home</span>
+          </a>
+        </div>
+        <div class="navbar-item">
+          <a class="icon-text">
+              <span class="icon is-medium">
+                <i class="mdi mdi-24px mdi-email-outline"></i>
+              </span>
+          </a>
+        </div>
+        <div class="navbar-item">
+          <a class="icon-text is-flex is-align-items-center">
+              <span class="icon is-medium">
+                <i class="mdi mdi-24px mdi-account-outline"></i>
+              </span>
+            <strong>Utilisateur</strong>
           </a>
         </div>
 
@@ -58,4 +62,7 @@ export default {
 }
 </script>
 <style>
+i.mdi.mdi-36px.mdi-account-outline{
+  transform: translateY(3px);
+}
 </style>

@@ -22,8 +22,7 @@
 		</div>
 	@endif
 
-
-	<div id="global-map"></div>
+	<global-map home-url="{{ route('home') }}"></global-map>
 
 	<section class="section">
 		<div class="mr-10 ml-10">

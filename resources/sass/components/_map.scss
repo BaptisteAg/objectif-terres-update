@@ -1,22 +1,22 @@
-// Leaflet / OpenStreetmap
-#global-map { /* use the same name as <div id=""> */
-  width: 100vw; /* important! if you need full width display */
+
+.global-map {
+  width: 100vw;
   height: 400px;
   margin: 0;
   border-radius: 5px;
   z-index: 1;
-  /* ... */
+  background-image: url("./images/illustrations/map.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
 }
 
-#map_ad {
-  height: 400px;
-  margin: 0;
-  border-radius: 5px;
-  z-index: 1;
-}
-
-[data-tooltip]:not(.is-disabled).has-tooltip-multiline::before,
-[data-tooltip]:not(.is-loading).has-tooltip-multiline::before,
-[data-tooltip]:not([disabled]).has-tooltip-multiline::before {
-  white-space: pre-line;
+.global-map:after {
+  content: ' ';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, .6);
 }

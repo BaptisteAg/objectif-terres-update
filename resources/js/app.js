@@ -25,6 +25,8 @@ Vue.prototype.$forceCompute= function(computedName, forceUpdate /* default: true
 //Composants vue
 import Header from './components/header/index.vue';
 Vue.component('vue-header', Header);
+import GlobalMap from './components/home/map.vue';
+Vue.component('global-map', GlobalMap);
 
 
 
