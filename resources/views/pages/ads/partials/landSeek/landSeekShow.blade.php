@@ -384,10 +384,4 @@
     @include('pages.ads.partials.projectDataKeys')
 @endif
 
-<div id="map_ad"></div>
-
-<div class="section">
-    @include('pages.ads.partials.threadsDisplay')
-</div>
-
 

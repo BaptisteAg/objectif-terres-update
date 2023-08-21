@@ -67,7 +67,7 @@ class ReallocateModeratorAds extends Action
 
         $new_moderator_id = $fields->new_moderator_id;
         $query = AttributionAd::where('user_moderator_id', $moderators->pluck("id"))
-            ->whereIn('ad_status_id', [AdStatus::PENDING_ID, AdStatus::PENDING_MODERATION_STATUS_ID]);
+            ->whereIn('ad_status_id', [AdStatus::PENDING_ID, AdStatus::PENDING_MODERATION_STATUS_ID, AdStatus::APPROVE_ID, AdStatus::REFUSE_ID]);
 
         $count = $query->count();
         $query->update(["user_moderator_id" => $new_moderator_id]);
