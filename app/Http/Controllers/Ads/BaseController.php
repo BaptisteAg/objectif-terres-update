@@ -29,48 +29,48 @@ use App\Services\Users\UserService;
 
 abstract class BaseController extends Controller
 {
-	/** @var AdService */
-	protected $adService;
-	/** @var ThreadService */
-	protected $threadService;
-	/** @var FavoriteAdRepository */
-	protected $favoriteAdRepository;
-	/** @var UserService */
-	protected $userService;
-	/**
-	 * @var AttributionAdsService
-	 */
-	protected $attributionAdService;
-	/**
-	 * @var LocationService
-	 */
-	protected $locationService;
+    /** @var AdService */
+    protected $adService;
+    /** @var ThreadService */
+    protected $threadService;
+    /** @var FavoriteAdRepository */
+    protected $favoriteAdRepository;
+    /** @var UserService */
+    protected $userService;
+    /**
+     * @var AttributionAdsService
+     */
+    protected $attributionAdService;
+    /**
+     * @var LocationService
+     */
+    protected $locationService;
 
-	/**
-	 * BaseController constructor.
-	 * @param AdService $adService
-	 * @param ThreadService $threadService
-	 * @param FavoriteAdRepository $favoriteAdRepository
-	 * @param UserService $userService
-	 * @param AttributionAdsService $attributionAdService
-	 * @param LocationService $locationService
-	 */
-	public function __construct(
-		AdService $adService,
-		ThreadService $threadService,
-		FavoriteAdRepository $favoriteAdRepository,
-		UserService $userService,
-		AttributionAdsService $attributionAdService,
-		LocationService $locationService
-	)
-	{
-		$this->adService = $adService;
-		$this->threadService = $threadService;
-		$this->favoriteAdRepository = $favoriteAdRepository;
-		$this->userService = $userService;
-		$this->attributionAdService = $attributionAdService;
-		$this->locationService = $locationService;
-	}
+    /**
+     * BaseController constructor.
+     * @param AdService $adService
+     * @param ThreadService $threadService
+     * @param FavoriteAdRepository $favoriteAdRepository
+     * @param UserService $userService
+     * @param AttributionAdsService $attributionAdService
+     * @param LocationService $locationService
+     */
+    public function __construct(
+        AdService             $adService,
+        ThreadService         $threadService,
+        FavoriteAdRepository  $favoriteAdRepository,
+        UserService           $userService,
+        AttributionAdsService $attributionAdService,
+        LocationService       $locationService
+    )
+    {
+        $this->adService = $adService;
+        $this->threadService = $threadService;
+        $this->favoriteAdRepository = $favoriteAdRepository;
+        $this->userService = $userService;
+        $this->attributionAdService = $attributionAdService;
+        $this->locationService = $locationService;
+    }
 
     /**
      * @param Ad $ad
@@ -153,125 +153,125 @@ abstract class BaseController extends Controller
         }
 
 
-
         return $vars;
     }
 
-	/**
-	 * Returns all the vars needed to display an ad creation form
-	 *
-	 * @return array
-	 */
-	protected function getCreateFormVars(): array
-	{
-		$surfaceRanges = SurfaceRange::all();
-		$installationTypes = InstallationType::all();
-		$bioCertifications = BioCertification::all();
-		$jobOfferTypes = JobOfferType::all();
-		$offerGenres = OfferGenre::all();
-		$agriculturalActivities = AgriculturalActivity::all();
-		$educationLevels = EducationLevel::all();
-		$buildingTypes = BuildingType::all();
-		$requirements = Requirement::all();
-		$productionGenres = $this->adService->getProductionGenresFlattened();
-		$productionGenresWithOther = clone $this->adService->getProductionGenresFlattened()
-			->concat([[
-				'id' => 'other',
-				'name' => 'Autre',
-				'children' => []
-			]]);
-		$isSupportRequest = false;
-		$old = old('ad_type') ? old() : [];
+    /**
+     * Returns all the vars needed to display an ad creation form
+     *
+     * @return array
+     */
+    protected function getCreateFormVars(): array
+    {
+        $surfaceRanges = SurfaceRange::all();
+        $installationTypes = InstallationType::all();
+        $bioCertifications = BioCertification::all();
+        $jobOfferTypes = JobOfferType::all();
+        $offerGenres = OfferGenre::all();
+        $agriculturalActivities = AgriculturalActivity::all();
+        $educationLevels = EducationLevel::all();
+        $buildingTypes = BuildingType::all();
+        $requirements = Requirement::all();
+        $productionGenres = $this->adService->getProductionGenresFlattened();
+        $productionGenresWithOther = clone $this->adService->getProductionGenresFlattened()
+            ->concat([[
+                'id' => 'other',
+                'name' => 'Autre',
+                'children' => []
+            ]]);
+        $isSupportRequest = false;
+        $old = old('ad_type') ? old() : [];
 
         if (empty($old["support_request_text"]) && session('support-request.text')) {
             $old["support_request_text"] = session('support-request.text');
         }
 
-		return compact(
-			'installationTypes',
-			'surfaceRanges',
-			'bioCertifications',
-			'jobOfferTypes',
-			'offerGenres',
-			'educationLevels',
-			'productionGenres',
-			'productionGenresWithOther',
-			'agriculturalActivities',
-			'buildingTypes',
-			'requirements',
-			'isSupportRequest',
-			"old"
-		);
-	}
+        return compact(
+            'installationTypes',
+            'surfaceRanges',
+            'bioCertifications',
+            'jobOfferTypes',
+            'offerGenres',
+            'educationLevels',
+            'productionGenres',
+            'productionGenresWithOther',
+            'agriculturalActivities',
+            'buildingTypes',
+            'requirements',
+            'isSupportRequest',
+            "old"
+        );
+    }
 
 
-	/**
-	 * Get all the vars needed to display an ad
-	 *
-	 * @param Ad $ad
-	 * @return array
-	 *
-	 * @throws \Exception
-	 */
-	protected function getShowVars(Ad $ad): array
-	{
-		$userMessage = null;
-		$favoriteAdAlreadyExist = false;
-		$threads = [];
-		$threadsWithUnreadMessages = null;
-		$responseTemplates = '';
-		$isAdToModerate = false;
-		$isLoggedUserModeratorAd = false;
-		$advisorUsers = [];
-		$moderatorInChargeOfModeration = false;
-		$currentUser = auth()->user();
+    /**
+     * Get all the vars needed to display an ad
+     *
+     * @param Ad $ad
+     * @return array
+     *
+     * @throws \Exception
+     */
+    protected function getShowVars(Ad $ad): array
+    {
+        $userMessage = null;
+        $favoriteAdAlreadyExist = false;
+        $threads = [];
+        $threadsWithUnreadMessages = null;
+        $responseTemplates = '';
+        $isAdToModerate = false;
+        $isLoggedUserModeratorAd = false;
+        $advisorUsers = [];
+        $moderatorInChargeOfModeration = false;
+        $currentUser = auth()->user();
         $isSupportRequest = false;
-		$allProjectDataKeys = [];
-		$currentProjectKeyDataValues = [];
+        $allProjectDataKeys = [];
+        $currentProjectKeyDataValues = [];
 
-		/** @var User $user */
-		$user = auth()->user();
-		if (isset($user)) {
-			$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad);
-			$data = array(
-				"ad_id" => $ad->id,
-				"user_id" => $user->id,
-			);
-			$favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
-			$threads = $ad->threads;
-
-			$threadsWithUnreadMessages = $ad->threads->filter(function ($thread) {
-                return $thread->messages->filter(function ($message) {
-                    return $message->is_read === 0;
+        /** @var User $user */
+        $user = auth()->user();
+        if (isset($user)) {
+            $moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad);
+            $data = array(
+                "ad_id" => $ad->id,
+                "user_id" => $user->id,
+            );
+            $favoriteAdAlreadyExist = $this->favoriteAdRepository->findByUserAndAdId($data);
+            if (auth()->user()->role === 4 || $ad->user_pp_id === auth()->user()->id || $moderatorInChargeOfModeration) {
+                $threads = $ad->threads;
+                $threadsWithUnreadMessages = $ad->threads->filter(function ($thread) {
+                    return $thread->messages->filter(function ($message) {
+                        return $message->is_read === 0;
+                    })->count();
                 })->count();
-            })->count();
-		}
+            }
+        }
 
-		if ($user && $user->role >= 1) {
-			$responseTemplates = ResponseTemplate::orderBy('title')->get();
+        if ($user && $user->role >= 1) {
+            $responseTemplates = ResponseTemplate::orderBy('title')->get();
 
-			if (is_null($ad->project)) {
-				if (!empty($ad->attributionAd->adStatus) && $ad->attributionAd->adStatus->id === AdStatus::PENDING_MODERATION_STATUS_ID) {
-					$isAdToModerate = true;
-				}
-			}else{
-				$isSupportRequest = true;
-				$allProjectDataKeys = ProjectDataKey::with('projectDataValues')->where('is_public', '=', 1)->get();
-				$currentProjectKeyDataValues = AdNote::where('ad_id', '=', $ad->id)->whereNotNull('project_data_key_id')->get();
-			}
+            if (is_null($ad->project)) {
+                if (!empty($ad->attributionAd->adStatus) && $ad->attributionAd->adStatus->id === AdStatus::PENDING_MODERATION_STATUS_ID) {
+                    $isAdToModerate = true;
+                }
+            } else {
+                $isSupportRequest = true;
+                $allProjectDataKeys = ProjectDataKey::with('projectDataValues')->where('is_public', '=', 1)->get();
+                $currentProjectKeyDataValues = AdNote::where('ad_id', '=', $ad->id)->whereNotNull('project_data_key_id')->get();
+            }
 
-			if ($moderatorInChargeOfModeration) {
-				$isLoggedUserModeratorAd = true;
-				//set to read if notification about moderation task about the ad exist
-				if (!$user->unreadNotifications->isEmpty()) {
-					$notification = $user->unreadNotifications()->where('data->ad_id', $ad->id)->first();
-					if (!is_null($notification)) {
-						$notification->markAsRead();
-						$notification->delete();
-					}
-				}
-			}
-			if ($user->role >= 2) {
+            if ($moderatorInChargeOfModeration) {
+                $isLoggedUserModeratorAd = true;
+                //set to read if notification about moderation task about the ad exist
+                if (!$user->unreadNotifications->isEmpty()) {
+                    $notification = $user->unreadNotifications()->where('data->ad_id', $ad->id)->first();
+                    if (!is_null($notification)) {
+                        $notification->markAsRead();
+                        $notification->delete();
+                    }
+                }
+            }
+            if ($user->role >= 2) {
                 if (isset($ad->support_request_territory_id)) {
                     $advisorUsers = $this->userService->findByRolesAndTerritory([2, 3], $this->userService->getCurrentUserTerritoryIds());
                 } else {
@@ -279,23 +279,23 @@ abstract class BaseController extends Controller
                     $advisorUsers = $this->userService->findByRolesAndDepartments([2, 3], $adDepartmentCodes);
                 }
 
-			}
-		}
-		return compact(
-			'ad',
-			'userMessage',
-			'favoriteAdAlreadyExist',
-			'threads',
-			'threadsWithUnreadMessages',
-			'responseTemplates',
-			'isAdToModerate',
-			'isLoggedUserModeratorAd',
-			'advisorUsers',
-			'moderatorInChargeOfModeration',
-			'currentUser',
+            }
+        }
+        return compact(
+            'ad',
+            'userMessage',
+            'favoriteAdAlreadyExist',
+            'threads',
+            'threadsWithUnreadMessages',
+            'responseTemplates',
+            'isAdToModerate',
+            'isLoggedUserModeratorAd',
+            'advisorUsers',
+            'moderatorInChargeOfModeration',
+            'currentUser',
             'isSupportRequest',
-			'allProjectDataKeys',
-			'currentProjectKeyDataValues'
-		);
-	}
+            'allProjectDataKeys',
+            'currentProjectKeyDataValues'
+        );
+    }
 }

@@ -43,8 +43,6 @@
 
 <header>
     <div>
-        @include('layouts.header.top-bar')
-
         <a href="{{route('home')}}" class="main-nav__logo logo">
             <img src="/images/logo/logo_TdL_cartouche_blanc-rouge_500.png" alt="logo-terre-de-liens"/>
         </a>

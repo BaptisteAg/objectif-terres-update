@@ -96,7 +96,7 @@ class LocationService
                 }
                 elseif($type === "misc") {
 					$data = explode(";",$q);
-                    $params .="&city=".$data[0]."&postalcode=".$data[1];
+                    $params .="&city=".$data[0].(isset($data[1]) ? "&postalcode=".$data[1] : '');
                     $threshold = 0.002;
                 }
                 else {

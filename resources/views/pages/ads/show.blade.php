@@ -91,7 +91,7 @@
                                     </a>
                                 </div>
                             @else--}}
-                                @include('components.back-links')
+                            @include('components.back-links')
                             {{--@endif--}}
                         @endif
                     @endauth
@@ -111,7 +111,8 @@
                 <div class="is-pulled-right ">
                     <a href="{{  route('ads.delete', [ $ad->id]) }}"
                        onclick="return confirm('Êtes vous sûr·e ? Cette opération est irréversible.')"
-                       class="button form-button basic danger has-tooltip-multiline" data-tooltip="L'annonce ne sera plus visible par le public et non plus par les modérateurs et RT">
+                       class="button form-button basic danger has-tooltip-multiline"
+                       data-tooltip="L'annonce ne sera plus visible par le public et non plus par les modérateurs et RT">
                         <span class="icon is-small">
                             <i class="fas fa-trash-alt"></i>
                         </span>
@@ -122,7 +123,8 @@
                 <div class="is-pulled-right mr-10  ">
                     <a href="{{  route('ads.archive', [ $ad->id]) }}"
                        onclick="return confirm('Êtes vous sûr·e ?')"
-                       class="button form-button basic danger has-tooltip-multiline" data-tooltip="L'annonce ne sera plus visible par le public, par contre, les modérateurs et RT pourront toujours les consulter">
+                       class="button form-button basic danger has-tooltip-multiline"
+                       data-tooltip="L'annonce ne sera plus visible par le public, par contre, les modérateurs et RT pourront toujours les consulter">
                         <span class="icon is-small">
                             <i class="fas fa-trash-alt"></i>
                         </span>
@@ -158,6 +160,12 @@
                 @if($ad->type === 'jobSeekAd')
                     @include('pages.ads.partials.jobSeek.jobSeekAdShow')
                 @endif
+
+                <div id="map_ad"></div>
+
+                <div class="section">
+                    @include('pages.ads.partials.threadsDisplay')
+                </div>
             </div>
         </div>
         <div class="is-pulled-right mr-30 ">
@@ -257,12 +265,12 @@
         }
 
         @auth()
-        @if(auth()->user()->role >= 1 and !$ad->project()->exists())
-        const VueModerationModal = new Vue({
-            el: "#vue-moderation-modal",
-            name: 'content'
-        });
-        @endif
+            @if(auth()->user()->role >= 1 and !$ad->project()->exists())
+                const VueModerationModal = new Vue({
+                    el: "#vue-moderation-modal",
+                    name: 'content'
+                });
+            @endif
         @endauth
     </script>
 
@@ -271,19 +279,19 @@
         let locationsAd = [];
 
         @foreach($ad->regions as $location)
-        locationsAd.push("{{$location->name}}");
+            locationsAd.push("{{$location->name}}");
         @endforeach
 
         @foreach($ad->departments as $location)
-        locationsAd.push("{{$location->name}}");
+            locationsAd.push("{{$location->name}}");
         @endforeach
 
         @foreach($ad->cities as $location)
-        @if($ad->landOfferAd && !$ad->landOfferAd->accept_use_zip_code)
-        locationsAd.push("{{$location->department->name}}");
-        @else
-        locationsAd.push("{{$location->name}};{{$location->zip_code}}");
-        @endif
+            @if($ad->landOfferAd && !$ad->landOfferAd->accept_use_zip_code)
+                locationsAd.push("{{$location->department->name}}");
+            @else
+                locationsAd.push("{{$location->name}};{{$location->zip_code}}");
+            @endif
         @endforeach
         showAdMapInit('map_ad', locationsAd);
     </script>
