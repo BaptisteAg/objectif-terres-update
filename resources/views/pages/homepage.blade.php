@@ -22,7 +22,7 @@
 		</div>
 	@endif
 
-	<global-map home-url="{{ route('home') }}"></global-map>
+	<global-map :regions="{{ $regionsWithAll }}"></global-map>
 
 	<section class="section">
 		<div class="mr-10 ml-10">

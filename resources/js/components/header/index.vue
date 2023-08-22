@@ -1,8 +1,8 @@
 <template>
   <div>
-    <mobile-header :home-url="homeUrl"></mobile-header>
-    <top-header :home-url="homeUrl"></top-header>
-    <bottom-header></bottom-header>
+    <mobile-header :routes="{ home: routes.home, about_us: routes.about_us, create_ads: routes.create_ads, all_ads: routes.all_ads }"></mobile-header>
+    <top-header :routes="{ home: routes.home }"></top-header>
+    <bottom-header :routes="{ about_us: routes.about_us, create_ads: routes.create_ads, all_ads: routes.all_ads }"></bottom-header>
   </div>
 </template>
 <script>
@@ -16,11 +16,6 @@ export default {
     'top-header': TopHeader,
     'bottom-header': BottomHeader
   },
-  props: ['homeUrl']
+  props: ['routes']
 }
 </script>
-<style>
-top-header, BottomHeader {
-  width: 100%;
-}
-</style>

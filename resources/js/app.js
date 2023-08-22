@@ -13,6 +13,12 @@ Vue.use(VueFormWizard);
 import VueCarousel from 'vue-carousel';
 Vue.use(VueCarousel);
 
+import Vue from 'vue'
+import Buefy from 'buefy'
+import 'buefy/dist/buefy.css'
+
+Vue.use(Buefy)
+
 require('vue-pagination-2/dist/vue-pagination-2.min');
 
 Vue.prototype.$forceCompute= function(computedName, forceUpdate /* default: true */) {

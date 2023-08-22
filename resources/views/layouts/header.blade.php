@@ -150,4 +150,9 @@
         </div>
     @endguest
 </div>
-<vue-header home-url="{{ route('home') }}"></vue-header>
+<vue-header :routes="{
+  home: '{{ route('home') }}',
+  about_us: '{{ route('qui-sommes-nous') }}',
+  create_ads: '{{ route('ads.create') }}',
+  all_ads: '{{route('researches.index', ['ad_category' => 'all'])}}',
+}"></vue-header>

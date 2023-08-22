@@ -1,9 +1,10 @@
 <template>
-  <nav class="is-hidden-desktop navbar is-transparent p-2 is-flex-wrap-wrap is-flex" role="navigation" aria-label="main navigation">
+  <nav class="is-hidden-desktop navbar is-transparent p-2 is-flex-wrap-wrap is-flex" role="navigation"
+       aria-label="main navigation">
     <div class="navbar-brand">
       <div class="is-flex">
-        <a class="image is-128x128"
-           :href="homeUrl">
+        <a class="image is-96x96"
+           :href="routes.home">
           <img class="is-rounded"
                src="/images/logo/logo_TdL_cartouche_blanc-rouge_500.png"
                alt="objectif-terres-logo">
@@ -23,7 +24,7 @@
 
     <div id="navbarHeader" class="navbar-menu">
       <div class="navbar-start">
-        <a class="navbar-item title is-5">
+        <a :href="routes" class="navbar-item title is-5">
           Accueil
         </a>
 
@@ -36,24 +37,38 @@
           </a>
 
           <div class="navbar-dropdown">
-            <a class="navbar-item subtitle is-5">
-              M’installer paysan
+            <a class="navbar-item subtitle is-5" href="/minstaller-comme-paysan">
+              M'installer paysan
             </a>
-            <a class="navbar-item subtitle is-5">
+            <a class="navbar-item subtitle is-5" href="/trouver-une-terre-ou-des-financements">
               Trouver une terre
             </a>
-            <a class="navbar-item subtitle is-5">
+            <a class="navbar-item subtitle is-5" href="/transmettre-ma-ferme">
               Transmettre ma ferme
             </a>
-            <a class="navbar-item subtitle is-5">
+            <a class="navbar-item subtitle is-5" href="/confier-mes-terres">
               Faire une donation ou un leg à Terre de Liens
             </a>
           </div>
+
         </div>
 
-        <a class="navbar-item title is-5">
-          Qui sommes nous
-        </a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link title is-5">
+            Qui sommes nous
+          </a>
+
+          <div class="navbar-dropdown">
+            <a class="navbar-item subtitle is-5" :href="`${routes.about_us}#le-mouvement-terre-de-liens`">
+              Le mouvement Terre de Liens
+            </a>
+            <a class="navbar-item subtitle is-5" :href="`${routes.about_us}#a-propos-d-objectif-terres`">
+              A propos d'Objectif Terres
+            </a>
+          </div>
+
+        </div>
+
 
         <a class="navbar-item title is-5">
           FAQ
@@ -62,9 +77,9 @@
 
       <div class="navbar-end">
         <div class="navbar-item">
-            <a class="button is-danger is-medium is-fullwidth">
-              <strong>Nous soutenir</strong>
-            </a>
+          <a class="button is-danger is-medium is-rounded is-fullwidth mt-3">
+            <strong>Nous soutenir</strong>
+          </a>
         </div>
       </div>
     </div>
@@ -72,13 +87,14 @@
 </template>
 <script>
 export default {
-  props: ['homeUrl']
+  props: ['routes']
 }
 </script>
 <style scoped>
 .title {
   margin: 0;
 }
+
 hr {
   background-color: #E3CFB5;
 }

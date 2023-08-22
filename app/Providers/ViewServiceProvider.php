@@ -24,7 +24,7 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer('default', 'App\Http\Composers\ResearchComposer');
+        View::composer('pages.homepage', 'App\Http\Composers\ResearchComposer');
 		View::composer('default', 'App\Http\Composers\MessagesNotificationHeaderComposer');
     }
 }

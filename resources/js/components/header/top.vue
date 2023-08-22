@@ -1,10 +1,10 @@
 <template>
-  <nav class="section is-hidden-touch navbar is-transparent py-2 is-flex-wrap-wrap is-flex" role="navigation"
+  <nav class="container is-hidden-touch navbar is-transparent py-2 is-flex-wrap-wrap is-flex" role="navigation"
        aria-label="main navigation">
     <div class="navbar-brand">
       <div class="is-flex">
         <a class="image is-128x128"
-           :href="homeUrl">
+           :href="routes.home">
           <img class="is-rounded"
                src="/images/logo/logo_TdL_cartouche_blanc-rouge_500.png"
                alt="objectif-terres-logo">
@@ -25,7 +25,7 @@
     <div id="navbarHeader" class="navbar-menu">
       <div class="navbar-end">
         <div class="navbar-item">
-          <a class="button is-danger is-small is-rounded">
+          <a href="https://soutenir.terredeliens.org/objectifterre/~mon-don" class="button is-danger is-small is-rounded">
             <span>Nous soutenir</span>
           </a>
         </div>
@@ -58,7 +58,7 @@
 </template>
 <script>
 export default {
-  props: ['homeUrl']
+  props: ['routes']
 }
 </script>
 <style>

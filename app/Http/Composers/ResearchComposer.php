@@ -15,12 +15,15 @@ class ResearchComposer
 
     public function compose(View $view)
     {
-        $regionsWithAll = Region::orderBy('name')->get()->prepend(
+        //        Gerer coter front
+/*        $regionsWithAll = Region::orderBy('name')->get()->prepend(
             (object)[
                 'id' => -1,
                 'name' => 'Toutes les régions'
             ]
-        );
+        );*/
+
+        $regionsWithAll = Region::orderBy('name')->get();
         $departments = Department::orderBy('name')->get();
 
         $jobOfferTypes = JobOfferType::orderBy('name')->get();
