@@ -6,6 +6,8 @@ use App\Repositories\Documents\DocumentRepositoryInterface;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\ImageManagerStatic;
 use Symfony\Component\HttpFoundation\File\File;
 
 class DocumentService implements DocumentServiceInterface
@@ -30,17 +32,25 @@ class DocumentService implements DocumentServiceInterface
         $directory =  'documents/'.$directory;
 
         if($file instanceof UploadedFile) {
-            $storageDirectory = $file->storeAs($directory, uniqid().$file->getClientOriginalName());
+            $storagePath = $file->storeAs($directory, uniqid().$file->getClientOriginalName());
             $name = $file->getClientOriginalName();
+
+            if(str_starts_with($file->getMimeType(), 'image')) {
+                ImageManagerStatic::make(storage_path('app/'.$storagePath))
+                    ->resize(1200, 1200, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })
+                    ->save();
+            }
         }
         else {
             $name = $file->getFilename();
             $fileName = uniqid().$file->getFilename();
-            $storageDirectory = str_replace(DIRECTORY_SEPARATOR, '/',
+            $storagePath = str_replace(DIRECTORY_SEPARATOR, '/',
                 $directory.'/'.$fileName
             );
 
-            $absolutePath = str_replace('/', DIRECTORY_SEPARATOR, storage_path('app/'.$storageDirectory));
+            $absolutePath = str_replace('/', DIRECTORY_SEPARATOR, storage_path('app/'.$storagePath));
 
             if(!is_dir(dirname($absolutePath))) {
                 mkdir(dirname($absolutePath), 0755, true);
@@ -53,7 +63,7 @@ class DocumentService implements DocumentServiceInterface
         }
 
         $document = $this->repository->create([
-            'path' => $storageDirectory,
+            'path' => $storagePath,
             'name' => $name,
             'size' => $file->getSize(),
             'type' => $file->getMimeType(),

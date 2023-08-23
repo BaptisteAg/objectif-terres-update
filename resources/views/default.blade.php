@@ -2,8 +2,6 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    {{--    <meta name="viewport" content="width=device-width, initial-scale=1">--}}
-    {{--    <meta name="viewport" content="width=1024">--}}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         @yield('title')
@@ -25,26 +23,21 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.2.96/css/materialdesignicons.min.css">
     <script src="https://kit.fontawesome.com/c97506cdaa.js" crossorigin="anonymous"></script>
     <!-- Hotjar Tracking Code for https://www.objectif-terres.org/ -->
-    <script>
-        (function (h, o, t, j, a, r) {
-            h.hj = h.hj || function () {
-                (h.hj.q = h.hj.q || []).push(arguments)
-            };
-            h._hjSettings = {hjid: 3414514, hjsv: 6};
-            a = o.getElementsByTagName('head')[0];
-            r = o.createElement('script');
-            r.async = 1;
-            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+<!--    <script>
+        (function(h,o,t,j,a,r){
+            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+            h._hjSettings={hjid:3414514,hjsv:6};
+            a=o.getElementsByTagName('head')[0];
+            r=o.createElement('script');r.async=1;
+            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
             a.appendChild(r);
-        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
-    </script>
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>-->
 
 
-    @if(app()->environment() === "production")
-        <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js"
-                data-cbid="f8fb4eb1-20bb-474a-8b1a-bef062c79ea7" data-blockingmode="auto"
-                type="text/javascript"></script>
-    @endif
+<!--    if(app()->environment() === "production")
+        <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="9e743d8b-bfc8-4eed-8632-b3fc81f18778" data-blockingmode="auto" type="text/javascript"></script>
+    endif-->
 </head>
 <body lang="fr-FR">
 <div id="app">
@@ -163,20 +156,20 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CZC04WPSVH"></script>
     <script>
 
-        window.addEventListener('CookiebotOnAccept', function (e) {
-            if (Cookiebot.consent.statistics) {
-                enableGoogleAnalytics();
-                enableMatomoAnalytics();
-            }
-        }, false);
+        enableGoogleAnalytics();
+        enableMatomoAnalytics();
+
+        //window.addEventListener('CookiebotOnAccept', function (e) {
+        //    if (Cookiebot.consent.statistics)
+        //    {
+        //        enableGoogleAnalytics();
+        //        enableMatomoAnalytics();
+        //    }
+        //}, false);
 
         function enableGoogleAnalytics() {
             window.dataLayer = window.dataLayer || [];
-
-            function gtag() {
-                dataLayer.push(arguments);
-            }
-
+            function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
             gtag('config', 'G-CZC04WPSVH');
@@ -187,14 +180,12 @@
             /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
             _paq.push(['trackPageView']);
             _paq.push(['enableLinkTracking']);
-            (function () {
-                var u = "https://objectifterres.matomo.cloud/";
-                _paq.push(['setTrackerUrl', u + 'matomo.php']);
-                _paq.push(['setSiteId', '1']);
-                var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-                g.async = true;
-                g.src = '//cdn.matomo.cloud/objectifterres.matomo.cloud/matomo.js';
-                s.parentNode.insertBefore(g, s);
+            (function() {
+                var u="https://terredeliens.matomo.cloud/";
+                _paq.push(['setTrackerUrl', u+'matomo.php']);
+                _paq.push(['setSiteId', '3']);
+                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                g.async=true; g.src='//cdn.matomo.cloud/terredeliens.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
             })();
         }
     </script>

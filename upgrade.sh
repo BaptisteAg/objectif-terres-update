@@ -2,8 +2,6 @@
 
 php artisan down &&
 git pull &&
-composer install --no-dev &&
-npm install &&
-npm run production &&
+composer install
 php artisan app:update &&
 php artisan up

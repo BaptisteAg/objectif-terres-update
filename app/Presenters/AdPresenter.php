@@ -29,12 +29,12 @@ class AdPresenter extends BasePresenter
 		$this->adService = $adService;
 	}
 
-	public function isSupportRequest()
+	public function isSupportRequest(): bool
     {
         return !!$this->wrappedObject->project;
     }
 
-    public function pp_display_name()
+    public function pp_display_name(): string
     {
         $user = $this->wrappedObject->userPp;
 
@@ -45,40 +45,15 @@ class AdPresenter extends BasePresenter
         return $user->first_name. " ". $user->name;
     }
 
-	public function ad_type()
-	{
-		if ($this->wrappedObject->landSeekAd) {
-			return 'landSeek';
-		}
-		if ($this->wrappedObject->landOfferAd) {
-			return 'landOffer';
-		}
-		if ($this->wrappedObject->jobOfferAd) {
-			return 'jobOffer';
-		}
-		if ($this->wrappedObject->jobSeekAd) {
-			return 'jobSeek';
-		}
-
-		return '';
-	}
-
-	public function ad_type_full_name()
-	{
-		if ($this->wrappedObject->landSeekAd) {
-			return 'Recherche de foncier';
-		}
-		if ($this->wrappedObject->landOfferAd) {
-			return 'Offre de foncier';
-		}
-		if ($this->wrappedObject->jobOfferAd) {
-			return 'Offre opportunité professionnelle';
-		}
-		if ($this->wrappedObject->jobSeekAd) {
-			return 'Recherche opportunité professionnelle';
-		}
-
-		return '';
+	public function ad_type_full_name(): string
+    {
+        return match($this->wrappedObject->type) {
+            'landSeekAd' => 'Recherche de foncier',
+            'landOfferAd' => 'Offre de foncier',
+            'jobOfferAd' => 'Offre opportunité professionnelle',
+            'jobSeekAd' => 'Recherche opportunité professionnelle',
+            default => '',
+        };
 	}
 
 	public function created_at()
@@ -271,7 +246,7 @@ class AdPresenter extends BasePresenter
 
 	public function isProject()
 	{
-		return $this->wrappedObject->project()->exists();
+		return $this->wrappedObject->project !== null;
 	}
 
 	public function refused_on()
@@ -401,5 +376,101 @@ class AdPresenter extends BasePresenter
 		return count(array_intersect($userDepartmentsCode, $this->adDepartmentsCodes())) > 0;
 	}
 
+    public function surface(): ?string
+    {
+        $ad = $this->wrappedObject;
 
+        $surface = null;
+
+        if ($ad->type === 'landOfferAd') {
+            $surface = $ad->landOfferAd->surface;
+        } elseif ($ad->type === 'landSeekAd') {
+            $min = $ad->landSeekAd->surface_range_min;
+            $max = $ad->landSeekAd->surface_range_max;
+
+            if ($min === $max) {
+                $surface = $min;
+            } else if ($max === 1000000) {
+                if ($min === 0) {
+                    $surface = "∞";
+                } else {
+                    $surface = 'Au moins ' . $min;
+                }
+            } else if ($min === 0) {
+                $surface = 'Jusqu\'à ' . $max;
+            } else {
+                $surface = $min . ' - ' . $max;
+            }
+        }
+        return $surface;
+    }
+
+    public function formatted_type(): string
+    {
+        $ad = $this->wrappedObject;
+        $type = match ($ad->type) {
+            "landOfferAd" => "Vente",
+            "landSeekAd" => "Recherche",
+            "jobSeekAd" => "Recherche Emploi",
+            "jobOfferAd" => "Offre Emploi",
+        };
+        if ($ad->type === 'landOfferAd') {
+            $type = $ad->landOfferAd->offerGenres->pluck('name')->join(', ');
+        }
+
+        return $type;
+    }
+    public function formatted_location() : string
+    {
+        $ad = $this->wrappedObject;
+
+        $region = null;
+        $foundDepartment = null;
+
+        if ($ad->regions->count()) {
+            $region = $ad->regions->first();
+        }
+
+        if ($ad->departments->count()) {
+            $foundDepartment = $ad->departments->first();
+            if (!$region) {
+                $region = $foundDepartment?->region?->first();
+            }
+        } elseif ($ad->cities->count()) {
+            $foundDepartment = $ad->cities->first()?->department?->first();
+            if (!$region) {
+                $region = $foundDepartment?->region?->first();
+            }
+        }
+        else if($region && !$foundDepartment) {
+            $foundDepartment = $region->departments->first();
+        }
+
+        return $foundDepartment->name . ' (' . $foundDepartment->code . ') • '. $region->name;
+    }
+
+    public function formatted_price() : string
+    {
+        $ad = $this->wrappedObject;
+        //$price =  'Prix non renseigné';
+        $price =  '';
+
+        if($ad->landOfferAd) {
+            if($ad->landOfferAd->price || $ad->landOfferAd->rent_price) {
+                $price = '';
+
+                if($ad->landOfferAd->price) {
+                    $price .= number_format($ad->landOfferAd->price, 0, ",", " " ).' €';
+                }
+                if($ad->landOfferAd->price && $ad->landOfferAd->rent_price) {
+                    $price .= ' ou ';
+                }
+                if($ad->landOfferAd->rent_price) {
+                    $price .= number_format($ad->landOfferAd->rent_price, 0, ",", " " ).' € / an';
+                }
+            }
+        }
+
+        return $price;
+    }
 }
