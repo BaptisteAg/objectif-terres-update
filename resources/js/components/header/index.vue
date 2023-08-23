@@ -19,3 +19,8 @@ export default {
   props: ['routes']
 }
 </script>
+<style lang="scss">
+header, header nav.navbar {
+  background-color: #F8F3EE;
+}
+</style>

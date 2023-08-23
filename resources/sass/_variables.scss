@@ -1,5 +1,5 @@
 // Body
-$body-bg: #f8fafc;
+//$body-bg: #f8fafc;
 
 // Typography
 $family-sans-serif: 'Nunito', sans-serif;
@@ -19,6 +19,7 @@ $yellow: #ffed4a;
 $green: #7da237;
 $teal: #4dc0b5;
 $cyan: #4dc0b5;
+$beige: #F8F3EE;
 
 //margin
 $has_margin: 90px auto;
@@ -70,7 +71,7 @@ $fullhd: 1344px + (2 * $gap);
 
 
 // Bulma input
-$radius : 0px ;
+$radius : 9999px ;
 $input-border-color : $primary ;
 
 

@@ -48,7 +48,7 @@
 @import "components/downloadPDF";
 @import "components/video";
 @import "components/testimony";
-@import "components/map";
+//@import "components/map";
 @import "components/pagination";
 @import "components/multiselect";
 @import "components/notification_sticker";
@@ -63,10 +63,8 @@
 @import "components/hero";
 @import "components/cta";
 @import "components/blockquote";
-//@import "components/input";
 @import "components/card";
 @import "components/post-it";
-//@import "components/tooltip";
 @import "components/messages";
 @import "components/dropzone";
 @import "components/tags";
@@ -77,6 +75,9 @@
 @import "components/rss";
 @import "components/modal";
 @import "components/table";
+
+//@import "components/tooltip";
+//@import "components/input";
 
 // Pages
 @import "pages/ads/ads";
