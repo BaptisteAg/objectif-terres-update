@@ -48,3 +48,14 @@ $tag-background-color: #E3CFB5;
     border-radius: 999px;
   }
 }
+
+@media (min-width: $tablet) {
+  .global-map {
+    min-height: 50vh;
+    padding: 4em 0;
+
+    > div:first-child {
+      width: 90vw;
+    }
+  }
+}

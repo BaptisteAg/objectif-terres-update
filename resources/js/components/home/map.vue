@@ -221,6 +221,7 @@ $overlay-color: rgba(0, 0, 0, .6);
 $border-color: #E3CFB5;
 $background-color: #F8F3EE;
 $tag-background-color: #E3CFB5;
+$tablet: 769px;
 
 .global-map {
   width: 100vw;
@@ -272,6 +273,24 @@ $tag-background-color: #E3CFB5;
     text-overflow: ellipsis;
     white-space: nowrap;
     text-align: left;
+  }
+}
+
+@media (max-width: $tablet) {
+  .global-map {
+    min-height: 80vh;
+    padding: 0;
+    background-position: top;
+    background-size: cover;
+
+    > div:first-child {
+      width: 90vw;
+      padding: 1em;
+    }
+
+    .column.have-border {
+      border-left: none;
+    }
   }
 }
 </style>

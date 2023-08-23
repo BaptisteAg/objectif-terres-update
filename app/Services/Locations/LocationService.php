@@ -1,6 +1,7 @@
 <?php namespace App\Services\Locations;
 
 use App\Models\City;
+use App\Models\Country;
 use App\Models\Department;
 use App\Models\Region;
 use App\Services\Ads\AdService;
@@ -95,7 +96,7 @@ class LocationService
                 }
                 elseif($type === "misc") {
 					$data = explode(";",$q);
-                    $params .="&city=".$data[0]."&postalcode=".$data[1];
+                    $params .="&city=".$data[0].(isset($data[1]) ? "&postalcode=".$data[1] : '');
                     $threshold = 0.002;
                 }
                 else {
@@ -184,18 +185,6 @@ class LocationService
         }
     }
 
-    public function searchCountries(string $q)
-    {
-        $cities = $this->search(
-            'countries',
-            $q,
-            City::select(['id', DB::raw('name_fr_fr as name')]),
-            ["name"]
-        );
-
-        return $cities;
-    }
-
     public function searchCities(string $q)
     {
         $cities = $this->search(
@@ -203,6 +192,19 @@ class LocationService
             $q,
             City::select(['id', 'name', 'zip_code']),
             ["name", "zip_code"]
+        );
+
+        return $cities;
+    }
+
+    public function searchCountries(string $q)
+    {
+        $cities = $this->search(
+            'countries',
+            $q,
+            Country::select(['id', 'name_fr_fr']),
+            ["name_fr_fr"],
+            'name_fr_fr'
         );
 
         return $cities;
@@ -249,7 +251,14 @@ class LocationService
         };
     }
 
-    /***
+    public function getCountryLabelRenderer()
+    {
+        return function ($country) {
+            return $country["name_fr_fr"];
+        };
+    }
+
+    /**
      * Searches a model with the given query in the specified columns.
      * Orders results by relevance.
      *
@@ -260,7 +269,7 @@ class LocationService
      *
      * @return array
      */
-    protected function search(string $type, string $q, $eloquentQuery, array $columns)
+    protected function search(string $type, string $q, $eloquentQuery, array $columns, string $nameColumn = 'name')
     {
         $q = mb_strtolower($q);
 
@@ -269,8 +278,8 @@ class LocationService
         }
 
         $results = $eloquentQuery
-            ->orderBy(DB::raw('LENGTH(name)'))
-            ->orderBy('name')
+            ->orderBy(DB::raw('LENGTH('.$nameColumn.')'))
+            ->orderBy($nameColumn)
             ->get()
             ->toArray();
 
@@ -328,6 +337,9 @@ class LocationService
                 break;
             case "regions" :
                 $labelRenderer = $this->getRegionLabelRenderer();
+                break;
+            case "countries" :
+                $labelRenderer = $this->getCountryLabelRenderer();
                 break;
         }
 

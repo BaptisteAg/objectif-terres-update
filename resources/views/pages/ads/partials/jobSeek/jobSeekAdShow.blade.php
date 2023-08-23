@@ -140,10 +140,6 @@
         <p>  {!! nl2br($ad->about_content ?? "") !!}</p>
     </div>
 @endif
-<div id="map_ad"></div>
-<div class="section">
-    @include('pages.ads.partials.threadsDisplay')
-</div>
 
 
 

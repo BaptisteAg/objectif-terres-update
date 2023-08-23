@@ -32,15 +32,15 @@ class AdsExport implements FromView,  WithTitle, WithColumnWidths
 	public function columnWidths(): array
 	{
 		return [
-			'A' => 10,
-			'C' => 35,
-			'E' => 20,
-			'F' => 25,
-			'M' => 50,
+			'B' => 10,
+			'D' => 35,
+			'F' => 20,
+			'G' => 25,
 			'N' => 50,
-			'P' => 30,
-			'Z' => 30,
-			'AM' => 30,
+			'O' => 50,
+			'Q' => 30,
+			'AA' => 30,
+			'AN' => 30,
 		];
 	}
 

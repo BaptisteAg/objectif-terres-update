@@ -1,10 +1,7 @@
 /node_modules
 /public/hot
 /public/storage
-/public/mix-manifest.json
-/storage/*.key
-/storage/app/spip
-/storage/framework/laravel-excel
+/storage
 /vendor
 .env
 .env.backup
@@ -23,5 +20,3 @@ public/documents
 database/sql/terredelspip.zip
 database/sql/terredelspip.sql
 htdocs
-public/css
-public/js

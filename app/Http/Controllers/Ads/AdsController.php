@@ -131,7 +131,7 @@ class AdsController extends BaseController
 
 		$ad = $this->adService->find($adId);
 
-		$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad->id);
+		$moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad);
 		if ($ad->trashed()) {
 			if ($moderatorInChargeOfModeration) {
 				return view('errors.deleted_ad', compact('ad'));

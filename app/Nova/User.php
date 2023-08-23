@@ -2,23 +2,25 @@
 
 namespace App\Nova;
 
-use App\Nova\Actions\ReallocateAd;
+use App\Nova\Actions\ReallocateModeratorAds;
+use App\Nova\Filters\UserRoleFilter;
 use App\Rules\SalesforceUniqueEmail;
+use Illuminate\Http\Request;
 use KABBOUCHI\NovaImpersonate\Impersonate;
 use Laravel\Nova\Fields\BelongsTo;
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use NumaxLab\NovaCKEditor5Classic\CKEditor5Classic;
 
 class User extends Resource
 {
+    /** @var \App\Models\User|null */
+    public $resource;
 
-	public static function label()
+    public static function label()
 	{
 		return 'Gestion des utilisateurs';
 	}
@@ -35,12 +37,11 @@ class User extends Resource
 	 */
 	public static $model = 'App\\Models\\User';
 
-	/**
-	 * The single value that should be used to represent the resource when being displayed.
-	 *
-	 * @var string
-	 */
-	public static $title = 'name';
+
+    public function title()
+    {
+        return $this->name . ' ' . $this->first_name . ' (' . $this->email . ')';
+    }
 
 	/**
 	 * The columns that should be searched.
@@ -48,7 +49,7 @@ class User extends Resource
 	 * @var array
 	 */
 	public static $search = [
-		'id', 'name', 'email', 'first_name', 'city', 'role'
+		'id', 'name', 'email', 'first_name', 'city'
 	];
 
 
@@ -59,7 +60,12 @@ class User extends Resource
 	 */
 	public static $with = ['cities', 'regions', 'departments', 'zipCode'];
 
-	/**
+    public function __construct($resource)
+    {
+        parent::__construct($resource);
+    }
+
+    /**
 	 * Get the fields displayed by the resource.
 	 *
 	 * @param \Illuminate\Http\Request $request
@@ -139,7 +145,13 @@ class User extends Resource
 				return $arrayValues;
 			})->onlyOnForms(),
 
-			MorphMany::make('Territoires', 'departments', 'App\Nova\Department')->canSee(function($request){
+            HasMany::make('Modération', 'adsModerator', AttributionAd::class)
+                ->canSee(function ($request) {
+                    return isset($this->role) && $this->role >= 1;
+                })
+                ->hideFromIndex(),
+
+			MorphMany::make('Départements', 'departments', 'App\Nova\Department')->canSee(function($request){
 				return isset($this->role) && $this->role >= 1;
 			}),
 
@@ -154,8 +166,7 @@ class User extends Resource
 		];
 	}
 
-
-	/**
+    /**
 	 * Get the cards available for the request.
 	 *
 	 * @param \Illuminate\Http\Request $request
@@ -174,7 +185,7 @@ class User extends Resource
 	 */
 	public function filters(Request $request)
 	{
-		return [];
+		return [new UserRoleFilter()];
 	}
 
 	/**
@@ -197,7 +208,11 @@ class User extends Resource
 	public function actions(Request $request)
 	{
 		return [
-            new ReallocateAd()
+            app(ReallocateModeratorAds::class)
+                ->canSee(function (Request $request) {
+                    return $request->has('new_moderator_id') || $this->resource?->role >= 1;
+                })
+                ->forUser($this->resource),
         ];
 	}
 }

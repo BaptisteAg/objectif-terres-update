@@ -1,6 +1,6 @@
-<div class="column is-one-quarter">
+<div class="column is-one-quarter is-flex is-flex-direction-column">
     <figure class="image is-3by2">
-        @if($ad->hasImages && $ad->images[0]->path !=="0")
+        @if($ad->hasImages && $ad->images[0]?->path)
             <img class="objT-border"
                  src="{{app('url')->assetFrom('https://objectif-terres.org', $ad->images[0]->path)}}"
                  alt="{{$ad->images[0]->name}}">
@@ -10,25 +10,41 @@
                  alt="placeholder">
         @endif
     </figure>
-    <div class="columns">
-        <div class="column">
-            @if($ad->landOfferAd && $ad->landOfferAd->offerGenres->count())
-                <span class="tag is-warning">
-            @foreach($ad->landOfferAd->offerGenres as $offerGenre)
-                        {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Vente' : $offerGenre->name}}
-                        @if(!$loop->last)
-                            ,
-                        @endif
-                    @endforeach
-                </span>
-            @endif
-        </div>
-        <div class="column">
-            <img src="{{ asset('images/icons/Certif.png') }}" alt="Description de l'image">
-        </div>
-        <div class="column">
 
+
+    <div class="columns mt-2 mb-0">
+        <div class="column is-flex is-justify-content-left">
+            <span class="tag is-warning has-text-weight-bold is-uppercase">
+                {{ $ad->formatted_type }}
+            </span>
+        </div>
+
+        @if($ad->is_partner)
+            <div class="column is-flex is-justify-content-center">
+                <div class="columns is-variable is-1">
+                    <div class="column is-flex is-align-items-center">
+                        <figure class="image is-16x16">
+                            <img src="{{ asset('images/icons/Certif.png') }}">
+                        </figure>
+                    </div>
+                    <div class="column">
+                        <p class="">Certifié</p>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        <div class="column is-flex is-justify-content-right">
+            {{ $ad->formatted_price }}
         </div>
     </div>
+
+    <p class="title is-5">{{ $ad->title }}</p>
+
+    <p class="mb-4 mt-auto"><span class="has-text-weight-bold">< ></span> {{ $ad->surface }} Ha @empty($ad->surface)non renseigné@endempty</p>
+
+    <p class="mb-4">{{ $ad->formatted_location }}</p>
+
+    <a class="button is-rounded mb-4 width-fit-content" href="/annonces/{{$ad->id}}">Voir l'annonce</a>
 
 </div>

@@ -96,200 +96,239 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  */
 class Ad extends Model implements HasPresenter
 {
-	use Documentable,
-		ScopeAdTypesFilterable,
-		ScopeDataFilterable,
-		ScopeLocationFilterable,
-		SoftDeletes,
-		HasMorphedByManyEvents,
-		HasRelationshipObservables;
+    use Documentable,
+        ScopeAdTypesFilterable,
+        ScopeDataFilterable,
+        ScopeLocationFilterable,
+        SoftDeletes,
+        HasMorphedByManyEvents,
+        HasRelationshipObservables;
 
-	/**
-	 * @var array
-	 */
-	protected $fillable = [
-		'project_id',
-		'user_pp_id',
-		'is_draft',
-		'title',
-		'about_content',
-		'about_project_content',
-		'accept_share_contact_infos',
-		'support_request_text',
-		'support_request_id_region',
-		'support_request_territory_id',
-		'is_partner',
-		'created_at',
-		'origin'
-	];
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'project_id',
+        'user_pp_id',
+        'is_draft',
+        'title',
+        'about_content',
+        'about_project_content',
+        'accept_share_contact_infos',
+        'support_request_text',
+        'support_request_id_region',
+        'support_request_territory_id',
+        'is_partner',
+        'created_at',
+        'origin'
+    ];
+
+    // Detect the type based on the presence of the foreign key
+    // in the related table
+    public function getTypeAttribute(): ?string
+    {
+        if(isset($this->attributes['type'])) {
+            return $this->attributes['type'];
+        }
+
+        $adTypes = [
+            'jobOfferAd' => JobOfferAd::class,
+            'jobSeekAd' => JobSeekAd::class,
+            'landOfferAd' => LandOfferAd::class,
+            'landSeekAd' => LandSeekAd::class,
+        ];
+
+        $query = $this->newQuery()->where('id', $this->id);
+
+        foreach ($adTypes as $key => $class) {
+            $table = (new $class)->getTable();
+            $query->selectSub(function (\Illuminate\Database\Query\Builder $query) use ($table) {
+                $query->selectRaw('count(*)')
+                    ->from($table)
+                    ->whereColumn($table . '.ad_id', 'ads.id');
+            }, $key);
+        }
+
+        $result = $query->first();
+        $type = null;
+
+        foreach ($adTypes as $key => $class) {
+            if ($result->{$key}) {
+                $type = $key;
+            }
+        }
+
+        $this->attributes['type'] = $type;
+
+        return $type;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userPp()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function attributionAd()
+    {
+        return $this->hasOne(AttributionAd::class)->orderByDesc("id");
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function threads()
+    {
+        return $this->hasMany(Thread::class);
+    }
+
+    /**
+     * @return Builder|\Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function threadAlreadyExist()
+    {
+        return $this->hasOne(Thread::class)
+            ->whereHas('messages', function (Builder $query) {
+                $query->where('sender_user_id', '=', auth()->id());
+            });
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function adNotes()
+    {
+        return $this->hasMany(AdNote::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function favoriteAds()
+    {
+        return $this->hasMany(FavoriteAd::class);
+    }
+
+    public function jobOfferAd()
+    {
+        return $this->hasOne(JobOfferAd::class);
+    }
+
+    public function jobSeekAd()
+    {
+        return $this->hasOne(JobSeekAd::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasOne
+     */
+    public function landOfferAd()
+    {
+        return $this->hasOne(LandOfferAd::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasOne
+     */
+    public function landSeekAd()
+    {
+        return $this->hasOne(LandSeekAd::class);
+    }
+
+    /**
+     * Get all cities 'location' for the ad
+     * @return MorphToMany
+     */
+    public function cities()
+    {
+        return $this->morphedbyMany(City::class, 'locationable_ad')->withPivot('radius');
+    }
+
+    /**
+     * Get all cities 'location' for the ad
+     * @return MorphToMany
+     */
+    public function departments()
+    {
+        return $this->morphedbyMany(Department::class, 'locationable_ad');
+    }
+
+    /**
+     * Get all cities 'location' for the ad
+     * @return MorphToMany
+     */
+    public function regions()
+    {
+        return $this->morphedbyMany(Region::class, 'locationable_ad');
+    }
+
+    /**
+     * TODO delete this column and all occurrences
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function supportRequestIdRegion()
+    {
+        return $this->belongsTo(Region::class, 'support_request_id_region');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function supportRequestTerritoryId()
+    {
+        return $this->belongsTo(Territory::class, 'support_request_territory_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function history()
+    {
+        return $this->morphMany(History::class, 'ads');
+    }
 
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function userPp()
-	{
-		return $this->belongsTo(User::class);
-	}
+    /**
+     * Get the presenter class.
+     *
+     * @return string
+     */
+    public function getPresenterClass()
+    {
+        return AdPresenter::class;
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
-	 */
-	public function attributionAd()
-	{
-		return $this->hasOne(AttributionAd::class)->orderByDesc("id");
-	}
+    protected static function boot()
+    {
+        parent::boot();
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function project()
-	{
-		return $this->belongsTo(Project::class);
-	}
+        /**
+         * Many To Many Polymorphic Relationship Events
+         */
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function threads()
-	{
-		return $this->hasMany(Thread::class);
-	}
-
-	/**
-	 * @return Builder|\Illuminate\Database\Eloquent\Relations\HasOne
-	 */
-	public function threadAlreadyExist()
-	{
-		return $this->hasOne(Thread::class)
-			->whereHas('messages', function (Builder $query) {
-				$query->where('sender_user_id', '=', auth()->id());
-			});
-	}
-
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function adNotes()
-	{
-		return $this->hasMany(AdNote::class);
-	}
-
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function favoriteAds()
-	{
-		return $this->hasMany(FavoriteAd::class);
-	}
-
-	public function jobOfferAd()
-	{
-		return $this->hasOne(JobOfferAd::class);
-	}
-
-	public function jobSeekAd()
-	{
-		return $this->hasOne(JobSeekAd::class);
-	}
-
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\hasOne
-	 */
-	public function landOfferAd()
-	{
-		return $this->hasOne(LandOfferAd::class);
-	}
-
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\hasOne
-	 */
-	public function landSeekAd()
-	{
-		return $this->hasOne(LandSeekAd::class);
-	}
-
-	/**
-	 * Get all cities 'location' for the ad
-	 * @return MorphToMany
-	 */
-	public function cities()
-	{
-		return $this->morphedbyMany(City::class, 'locationable_ad')->withPivot('radius');
-	}
-
-	/**
-	 * Get all cities 'location' for the ad
-	 * @return MorphToMany
-	 */
-	public function departments()
-	{
-		return $this->morphedbyMany(Department::class, 'locationable_ad');
-	}
-
-	/**
-	 * Get all cities 'location' for the ad
-	 * @return MorphToMany
-	 */
-	public function regions()
-	{
-		return $this->morphedbyMany(Region::class, 'locationable_ad');
-	}
-
-	/**
-	 * TODO delete this column and all occurrences
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function supportRequestIdRegion()
-	{
-		return $this->belongsTo(Region::class, 'support_request_id_region');
-	}
-
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function supportRequestTerritoryId()
-	{
-		return $this->belongsTo(Territory::class, 'support_request_territory_id');
-	}
-
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-	 */
-	public function history()
-	{
-		return $this->morphMany(History::class, 'ads');
-	}
-
-
-	/**
-	 * Get the presenter class.
-	 *
-	 * @return string
-	 */
-	public function getPresenterClass()
-	{
-		return AdPresenter::class;
-	}
-
-	protected static function boot()
-	{
-		parent::boot();
-
-		/**
-		 * Many To Many Polymorphic Relationship Events
-		 */
-
-		static::morphedByManyAttaching(function ($relation, $parent, $ids, $attributes) {
-		});
-	}
+        static::morphedByManyAttaching(function ($relation, $parent, $ids, $attributes) {
+        });
+    }
 
 
     public function canEdit()
     {
         return $this->user_pp_id === auth()->id() || (
-            $this->attributionAd->userModerator &&
-            $this->attributionAd->userModerator->id === auth()->id()
-        );
+                $this->attributionAd->userModerator &&
+                $this->attributionAd->userModerator->id === auth()->id()
+            );
     }
 }

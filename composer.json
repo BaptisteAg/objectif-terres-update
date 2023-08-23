@@ -12,6 +12,7 @@
         "ext-json": "*",
         "aacotroneo/laravel-saml2": "^2.1",
         "chelout/laravel-relationship-events": "^1.5",
+        "digital-creative/clickable-table-row": "^0.2.0",
         "fideloper/proxy": "^4.0",
         "gluedev/laravel-stackdriver": "^0.2.2",
         "guzzlehttp/guzzle": "~6.0",
