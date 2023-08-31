@@ -1,21 +1,20 @@
 
 //////////////
 // VUE
-window.Vue = require('vue');
-
-import Vuelidate from 'vuelidate';
-Vue.use(Vuelidate);
-
-import VueFormWizard from 'vue-form-wizard'
-import 'vue-form-wizard/dist/vue-form-wizard.min.css'
-Vue.use(VueFormWizard);
-
-import VueCarousel from 'vue-carousel';
-Vue.use(VueCarousel);
+// window.Vue = require('vue');
+//
+// import Vuelidate from 'vuelidate';
+// Vue.use(Vuelidate);
+//
+// import VueFormWizard from 'vue-form-wizard'
+// import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+// Vue.use(VueFormWizard);
+//
+// import VueCarousel from 'vue-carousel';
+// Vue.use(VueCarousel);
 
 import Vue from 'vue'
 import Buefy from 'buefy'
-// import 'buefy/dist/buefy.css'
 
 Vue.use(Buefy)
 
@@ -31,12 +30,12 @@ Vue.prototype.$forceCompute= function(computedName, forceUpdate /* default: true
 //Composants vue
 import Header from './components/header/index.vue';
 Vue.component('vue-header', Header);
-
-
 const GlobalMap = () => import('./components/home/map.vue');
 Vue.component('global-map', GlobalMap);
 const Newsletter = () => import('./components/Newsletter.vue');
 Vue.component('newsletter', Newsletter);
+const OurPartners = () => import('./components/OurPartners.vue');
+Vue.component('our-partners', OurPartners);
 
 //////////////
 // VENDORS

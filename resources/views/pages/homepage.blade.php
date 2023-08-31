@@ -65,6 +65,14 @@
         </div>
     </section>
 
+    <section class="bg-beige is-flex is-justify-content-center pt-6">
+        <div class="container">
+            <h2 class="title">Nos partenaires</h2>
+            <our-partners></our-partners>
+        </div>
+
+    </section>
+
 @endsection
 
 @section('script')
