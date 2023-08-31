@@ -45,6 +45,6 @@
 
     <p class="mb-4">{{ $ad->formatted_location }}</p>
 
-    <a class="button is-rounded mb-4 width-fit-content" href="/annonces/{{$ad->id}}">Voir l'annonce</a>
+    <a class="button is-rounded mb-4 width-fit-content is-align-self-flex-start" href="/annonces/{{$ad->id}}">Voir l'annonce</a>
 
 </div>

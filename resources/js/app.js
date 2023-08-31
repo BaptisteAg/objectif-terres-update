@@ -15,7 +15,7 @@ Vue.use(VueCarousel);
 
 import Vue from 'vue'
 import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
+// import 'buefy/dist/buefy.css'
 
 Vue.use(Buefy)
 
@@ -31,10 +31,12 @@ Vue.prototype.$forceCompute= function(computedName, forceUpdate /* default: true
 //Composants vue
 import Header from './components/header/index.vue';
 Vue.component('vue-header', Header);
-import GlobalMap from './components/home/map.vue';
+
+
+const GlobalMap = () => import('./components/home/map.vue');
 Vue.component('global-map', GlobalMap);
-
-
+const Newsletter = () => import('./components/Newsletter.vue');
+Vue.component('newsletter', Newsletter);
 
 //////////////
 // VENDORS
