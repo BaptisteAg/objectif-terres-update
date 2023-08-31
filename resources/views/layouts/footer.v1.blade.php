@@ -48,7 +48,7 @@
                 </div>
                 <div class="column is-6-desktop pl-xl-50 pr-xl-50">
                     <form method="post" action="/newsletter">
-                        {{ csrf_field() }}
+                        {{ csrf_token() }}
                         <h6 class="title is-6 text_white footer-site__title">NEWSLETTER TERRE DE LIENS</h6>
                         <p>Suivez notre mouvement en vous abonnant.</p>
                         <div class="columns is-gapless is-mobile">
