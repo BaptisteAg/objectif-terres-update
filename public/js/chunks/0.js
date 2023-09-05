@@ -60,6 +60,7 @@ var render = function render() {
       submit: _vm.checkForm
     }
   }, [_c("b-field", {
+    staticClass: "is-hidden-touch",
     attrs: {
       type: _vm.invalidMail ? "is-danger" : null,
       message: _vm.invalidMail ? "Veuillez renseigner une adresse email valide" : null
@@ -88,6 +89,34 @@ var render = function render() {
       rounded: ""
     }
   }, [_vm._v("M'inscrire")])], 1)], 1), _vm._v(" "), _c("b-field", {
+    staticClass: "is-hidden-desktop",
+    attrs: {
+      type: _vm.invalidMail ? "is-danger" : null,
+      message: _vm.invalidMail ? "Veuillez renseigner une adresse email valide" : null
+    }
+  }, [_c("b-input", {
+    attrs: {
+      placeholder: "Votre email",
+      rounded: ""
+    },
+    model: {
+      value: _vm.email,
+      callback: function callback($$v) {
+        _vm.email = $$v;
+      },
+      expression: "email"
+    }
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "buttons"
+  }, [_c("b-button", {
+    staticClass: "is-hidden-desktop",
+    attrs: {
+      "native-type": "submit",
+      type: "is-primary",
+      rounded: "",
+      expanded: ""
+    }
+  }, [_vm._v("M'inscrire")])], 1), _vm._v(" "), _c("b-field", {
     attrs: {
       message: _vm.invalidCheckbox ? "Veuillez accepter" : null
     }
@@ -102,7 +131,7 @@ var render = function render() {
       },
       expression: "accept"
     }
-  }, [_vm._v("J'accepte de recevoir les actualités et les informations de Terre de Liens\n    ")])], 1), _vm._v(" "), _c("input", {
+  }, [_vm._v("J'accepte de recevoir les actualités et les informations de Terre de\n      Liens\n    ")])], 1), _vm._v(" "), _c("input", {
     attrs: {
       type: "hidden",
       name: "_token"
