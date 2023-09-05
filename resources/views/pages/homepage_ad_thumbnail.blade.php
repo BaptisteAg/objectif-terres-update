@@ -1,4 +1,4 @@
-<div class="column is-one-quarter is-flex is-flex-direction-column">
+<div class="column is-flex is-flex-direction-column">
     <figure class="image is-3by2">
         @if($ad->hasImages && $ad->images[0]?->path)
             <img class="objT-border"
@@ -12,39 +12,42 @@
     </figure>
 
 
-    <div class="columns mt-2 mb-0">
-        <div class="column is-flex is-justify-content-left">
+    <div class="columns is-mobile mt-2 mb-0 mt-4-mobile mb-3-mobile is-justify-content-space-between">
+        <div class="column pl-0-mobile">
             <span class="tag is-warning has-text-weight-bold is-uppercase">
                 {{ $ad->formatted_type }}
             </span>
         </div>
 
         @if($ad->is_partner)
-            <div class="column is-flex is-justify-content-center">
-                <div class="columns is-variable is-1">
-                    <div class="column is-flex is-align-items-center">
+            <div class="column p-0-mobile is-flex is-justify-content-center is-align-items-center">
+                <div class="columns is-mobile is-variable is-1">
+                    <div class="column py-0 is-flex is-align-items-center">
                         <figure class="image is-16x16">
                             <img src="{{ asset('images/icons/Certif.png') }}">
                         </figure>
                     </div>
-                    <div class="column">
+                    <div class="column py-0">
                         <p class="">Certifié</p>
                     </div>
                 </div>
             </div>
         @endif
 
-        <div class="column is-flex is-justify-content-right">
+        <div class="column pr-0-mobile">
             {{ $ad->formatted_price }}
         </div>
     </div>
 
     <p class="title is-5">{{ $ad->title }}</p>
 
-    <p class="mb-4 mt-auto"><span class="has-text-weight-bold">< ></span> {{ $ad->surface }} Ha @empty($ad->surface)non renseigné@endempty</p>
+    <p class="mb-4 mt-auto"><span class="has-text-weight-bold">< ></span> {{ $ad->surface }} Ha @empty($ad->surface)
+            non renseigné
+        @endempty</p>
 
     <p class="mb-4">{{ $ad->formatted_location }}</p>
 
-    <a class="button is-rounded mb-4 width-fit-content is-align-self-flex-start" href="/annonces/{{$ad->id}}">Voir l'annonce</a>
+    <a class="button is-rounded mb-4 width-fit-content is-align-self-flex-start" href="/annonces/{{$ad->id}}">Voir
+        l'annonce</a>
 
 </div>

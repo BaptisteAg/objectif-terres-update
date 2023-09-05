@@ -35,7 +35,7 @@
 @import "bases/titles";
 @import "bases/links";
 @import "bases/backgrounds";
-//@import "bases/helpers";
+@import "bases/helpers";
 
 //Layouts
 @import "layouts/header";
@@ -78,6 +78,7 @@
 @import "components/rss";
 @import "components/modal";
 @import "components/table";
+@import "components/columns";
 
 //@import "components/tooltip";
 //@import "components/input";
