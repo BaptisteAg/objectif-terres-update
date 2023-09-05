@@ -1,17 +1,17 @@
 
 //////////////
 // VUE
-// window.Vue = require('vue');
-//
-// import Vuelidate from 'vuelidate';
-// Vue.use(Vuelidate);
-//
-// import VueFormWizard from 'vue-form-wizard'
-// import 'vue-form-wizard/dist/vue-form-wizard.min.css'
-// Vue.use(VueFormWizard);
-//
-// import VueCarousel from 'vue-carousel';
-// Vue.use(VueCarousel);
+window.Vue = require('vue');
+
+ import Vuelidate from 'vuelidate';
+ Vue.use(Vuelidate);
+
+ import VueFormWizard from 'vue-form-wizard'
+ import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+ Vue.use(VueFormWizard);
+
+import VueCarousel from 'vue-carousel';
+Vue.use(VueCarousel);
 
 import Vue from 'vue'
 import Buefy from 'buefy'
