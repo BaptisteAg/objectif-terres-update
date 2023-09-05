@@ -22,7 +22,7 @@
             </div>
         </div>
         @if(!$adsPartner->isEmpty())
-            <div class="columns is-desktop">
+            <div class="columns columns-slider is-mobile">
                 @foreach ($adsPartner as $ad)
                     @include("pages.homepage_ad_thumbnail")
                 @endforeach
@@ -46,7 +46,7 @@
                     annonces</a>
             </div>
         </div>
-        <div class="columns is-desktop">
+        <div class="columns columns-slider is-mobile">
             @foreach ($ads as $ad)
                 @include("pages.homepage_ad_thumbnail")
             @endforeach
@@ -55,7 +55,7 @@
 
     <section class="bg-beige is-flex is-justify-content-center newsletter">
         <div class="columns container is-desktop">
-            <div class="column is-three-fifths is-flex is-flex-direction-column is-justify-content-center">
+            <div class="column px-0 is-three-fifths is-flex is-flex-direction-column is-justify-content-center">
                 <h2 class="title">Newsletter Terre de Liens</h2>
                 <p>Restez informé des campagnes et de l'actualité en vous inscrivant à la newsletter.</p>
             </div>
@@ -65,13 +65,12 @@
         </div>
     </section>
 
-    <section class="bg-beige is-flex is-justify-content-center pt-6">
+<!--    <section class="bg-beige is-flex is-justify-content-center">
         <div class="container">
             <h2 class="title">Nos partenaires</h2>
             <our-partners></our-partners>
         </div>
-
-    </section>
+    </section>-->
 
 @endsection
 

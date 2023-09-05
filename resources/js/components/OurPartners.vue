@@ -37,27 +37,36 @@ export default {
       ]
     }
   },
-  methods: {
-
-  }
+  methods: {}
 }
 </script>
 <style lang="scss">
-.carousel-slide, .carousel-slide figure{
+.carousel-slide, .carousel-slide figure {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.carousel-slide figure.image{
+
+.carousel-slide figure.image {
   background-color: white;
   border-radius: 20px;
   height: 220px;
   width: 220px;
 }
-.carousel-slide img{
+
+.carousel-slide img {
   width: 70%;
 }
+
 .carousel-list.has-shadow {
   box-shadow: none;
+}
+
+/* Styles pour les petits écrans (mobiles) */
+@media screen and (max-width: 576px) {
+  .carousel-slide figure.image {
+    height: 140px;
+    width: 140px;
+  }
 }
 </style>
