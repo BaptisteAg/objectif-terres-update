@@ -111,7 +111,7 @@
 
     @yield('main-content')
 
-    {{--@include('layouts.footer')--}}
+    @include('layouts.footer')
 </div>
 <script>
     var $buoop = {

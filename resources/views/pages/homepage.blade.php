@@ -53,7 +53,7 @@
         </div>
     </section>
 
-<!--    <section class="bg-beige is-flex is-justify-content-center newsletter">
+    <!--    <section class="bg-beige is-flex is-justify-content-center newsletter">
         <div class="columns container is-desktop">
             <div class="column px-0 is-three-fifths is-flex is-flex-direction-column is-justify-content-center">
                 <h2 class="title">Newsletter Terre de Liens</h2>
@@ -69,7 +69,8 @@
         <div class="columns container is-desktop p-3-mobile">
             <div class="column px-0 is-three-fifths is-flex is-flex-direction-column is-justify-content-center">
                 <h2 class="title has-text-centered has-text-left-desktop">Newsletter Terre de Liens</h2>
-                <p class="has-text-centered has-text-left-desktop">Restez informé des campagnes et de l'actualité en vous inscrivant à la newsletter.</p>
+                <p class="has-text-centered has-text-left-desktop">Restez informé des campagnes et de l'actualité en
+                    vous inscrivant à la newsletter.</p>
             </div>
             <div class="column is-flex is-flex-direction-column is-justify-content-center">
                 <newsletter :csrf_token="'{{ csrf_token() }}'"></newsletter>
@@ -77,12 +78,12 @@
         </div>
     </section>
 
-    <!--    <section class="bg-beige is-flex is-justify-content-center">
-            <div class="container">
-                <h2 class="title">Nos partenaires</h2>
-                <our-partners></our-partners>
-            </div>
-        </section>-->
+    <section class="bg-beige is-flex is-justify-content-center p-3-mobile">
+        <div class="container">
+            <h2 class="title has-text-centered has-text-left-desktop">Nos partenaires</h2>
+            <our-partners></our-partners>
+        </div>
+    </section>
 
 @endsection
 

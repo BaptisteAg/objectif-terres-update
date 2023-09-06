@@ -1,5 +1,5 @@
 <template>
-  <b-carousel-list :data="items" :arrow-hover="false">
+  <b-carousel-list :data="items" :arrow-hover="false" v-bind="al" as-indicator>
     <template #item="list">
       <figure class="image is-128x128">
         <img :src="list.image">
@@ -12,6 +12,14 @@
 export default {
   data() {
     return {
+      al: {
+        itemsToShow: 1,
+        breakpoints: {
+          768: {
+            itemsToShow: 4
+          },
+        }
+      },
       items: [
         {
           image: '/images/logo-partenaires/FADEAR-cmjn-01-01.png',
@@ -41,6 +49,8 @@ export default {
 }
 </script>
 <style lang="scss">
+@import "../../sass/_variables.scss";
+
 .carousel-slide, .carousel-slide figure {
   display: flex;
   justify-content: center;
@@ -61,12 +71,9 @@ export default {
 .carousel-list.has-shadow {
   box-shadow: none;
 }
-
-/* Styles pour les petits écrans (mobiles) */
-@media screen and (max-width: 576px) {
-  .carousel-slide figure.image {
-    height: 140px;
-    width: 140px;
+@media (max-width: $tablet) {
+  .carousel-list {
+    width: 100vw;
   }
 }
 </style>
