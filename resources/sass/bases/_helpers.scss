@@ -1,14 +1,25 @@
-$spacing-values: 0, 0.25rem, 0.5rem, 0.75rem, 1rem, 1.5rem, 2rem, 3rem, 4rem, 6rem, 8rem;
-$spacing-sides: ('t': 'top', 'b': 'bottom', 'l': 'left', 'r': 'right');
+$spacing-values: 0, 0.25rem, 0.5rem, 0.75rem, 1rem, 1.5rem, 3rem, 5rem, 7rem;
+$gap-values: 0, 0.25rem, 0.5rem, 0.75rem, 1rem, 1.5rem, 3rem, 5rem, 7rem;
+$spacing-sides: ('t': 'top', 'b': 'bottom', 'l': 'left', 'r': 'right', 'x': ('left', 'right'), 'y': ('top', 'bottom'));
 $spacing-types: ('m': 'margin', 'p': 'padding');
+$flex-directions: ('c': 'column', 'r': 'row');
+$flex-justifies: ('c': 'center', 'sb': 'space-between', 'sa': 'space-around', 'se': 'space-evenly', 'fs': 'flex-start', 'fe': 'flex-end');
+$flex-aligns: ('c': 'center', 'fs': 'flex-start', 'fe': 'flex-end', 'st': 'stretch', 'b': 'baseline');
 
 @media (max-width: $tablet) {
   @each $type, $type-full in $spacing-types {
-
     @each $side, $side-full in $spacing-sides {
       @each $value in $spacing-values {
-        .#{$type}#{$side}-#{index($spacing-values, $value) - 1}-mobile {
-          #{$type-full}-#{$side-full}: $value;
+        @if type-of($side-full) == 'list' {
+          .#{$type}#{$side}-#{index($spacing-values, $value) - 1}-mobile {
+            @each $individual-side in $side-full {
+              #{$type-full}-#{$individual-side}: $value;
+            }
+          }
+        } @else {
+          .#{$type}#{$side}-#{index($spacing-values, $value) - 1}-mobile {
+            #{$type-full}-#{$side-full}: $value;
+          }
         }
       }
     }
@@ -18,6 +29,76 @@ $spacing-types: ('m': 'margin', 'p': 'padding');
         #{$type-full}: $value;
       }
     }
+  }
 
+  @each $direction, $direction-full in $flex-directions {
+    .fd-#{$direction}-mobile {
+      flex-direction: unquote($direction-full) !important;
+    }
+  }
+
+  @each $justify, $justify-full in $flex-justifies {
+    .jc-#{$justify}-mobile {
+      justify-content: unquote($justify-full) !important;
+    }
+  }
+
+  @each $align, $align-full in $flex-aligns {
+    .ai-#{$align}-mobile {
+      align-items: unquote($align-full) !important;
+    }
+  }
+
+  @each $value in $gap-values {
+    .gap-#{index($gap-values, $value) - 1}-mobile {
+      gap: $value;
+    }
+    .gap-x-#{index($gap-values, $value) - 1}-mobile {
+      column-gap: $value;
+    }
+    .gap-y-#{index($gap-values, $value) - 1}-mobile {
+      row-gap: $value;
+    }
+  }
+
+}
+
+@each $value in $gap-values {
+  .gap-#{index($gap-values, $value) - 1} {
+    gap: $value;
+  }
+  .gap-x-#{index($gap-values, $value) - 1} {
+    column-gap: $value;
+  }
+  .gap-y-#{index($gap-values, $value) - 1} {
+    row-gap: $value;
+  }
+}
+
+@each $type, $type-full in $spacing-types {
+  @each $side, $side-full in $spacing-sides {
+    @each $value in $spacing-values {
+      @if index($spacing-values, $value) > 6 {
+        @if type-of($side-full) == 'list' {
+          .#{$type}#{$side}-#{index($spacing-values, $value) - 1} {
+            @each $individual-side in $side-full {
+              #{$type-full}-#{$individual-side}: $value;
+            }
+          }
+        } @else {
+          .#{$type}#{$side}-#{index($spacing-values, $value) - 1} {
+            #{$type-full}-#{$side-full}: $value;
+          }
+        }
+      }
+    }
+  }
+
+  @each $value in $spacing-values {
+    @if index($spacing-values, $value) > 6 {
+      .#{$type}-#{index($spacing-values, $value) - 1} {
+        #{$type-full}: $value;
+      }
+    }
   }
 }

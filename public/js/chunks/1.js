@@ -12,6 +12,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      al: {
+        itemsToShow: 1,
+        breakpoints: {
+          768: {
+            itemsToShow: 4
+          }
+        }
+      },
       items: [{
         image: '/images/logo-partenaires/FADEAR-cmjn-01-01.png'
       }, {
@@ -48,10 +56,11 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("b-carousel-list", {
+  return _c("b-carousel-list", _vm._b({
     attrs: {
       data: _vm.items,
-      "arrow-hover": false
+      "arrow-hover": false,
+      "as-indicator": ""
     },
     scopedSlots: _vm._u([{
       key: "item",
@@ -65,7 +74,7 @@ var render = function render() {
         })])];
       }
     }])
-  });
+  }, "b-carousel-list", _vm.al, false));
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -85,7 +94,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.carousel-slide, .carousel-slide figure {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n.carousel-slide figure.image {\n  background-color: white;\n  border-radius: 20px;\n  height: 220px;\n  width: 220px;\n}\n.carousel-slide img {\n  width: 70%;\n}\n.carousel-list.has-shadow {\n  box-shadow: none;\n}\n\n/* Styles pour les petits écrans (mobiles) */\n@media screen and (max-width: 576px) {\n.carousel-slide figure.image {\n    height: 140px;\n    width: 140px;\n}\n}", ""]);
+exports.push([module.i, ".carousel-slide, .carousel-slide figure {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n.carousel-slide figure.image {\n  background-color: white;\n  border-radius: 20px;\n  height: 220px;\n  width: 220px;\n}\n.carousel-slide img {\n  width: 70%;\n}\n.carousel-list.has-shadow {\n  box-shadow: none;\n}\n@media (max-width: 769px) {\n.carousel-list {\n    width: 100vw;\n}\n}", ""]);
 
 // exports
 
