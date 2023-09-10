@@ -51,13 +51,13 @@ $flex-aligns: ('c': 'center', 'fs': 'flex-start', 'fe': 'flex-end', 'st': 'stret
 
   @each $value in $gap-values {
     .gap-#{index($gap-values, $value) - 1}-mobile {
-      gap: $value;
+      gap: $value !important
     }
     .gap-x-#{index($gap-values, $value) - 1}-mobile {
-      column-gap: $value;
+      column-gap: $value !important;
     }
     .gap-y-#{index($gap-values, $value) - 1}-mobile {
-      row-gap: $value;
+      row-gap: $value !important;
     }
   }
 
