@@ -48,7 +48,7 @@
               <span class="icon is-medium">
                 <i class="mdi mdi-24px mdi-account-outline"></i>
               </span>
-            <strong>Utilisateur</strong>
+            <strong>Connexion/Inscription</strong>
           </a>
         </div>
 
