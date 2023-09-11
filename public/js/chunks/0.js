@@ -159,7 +159,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".newsletter {\n  min-height: 40vh;\n}\n.newsletter .title {\n  margin-bottom: 1rem;\n}", ""]);
+exports.push([module.i, ".newsletter {\n  min-height: 35vh;\n}\n.newsletter .title {\n  margin-bottom: 1rem;\n}", ""]);
 
 // exports
 

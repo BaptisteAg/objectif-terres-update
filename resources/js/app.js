@@ -74,6 +74,7 @@ require('./notifications');
 require('./carrousel');
 require('./main.js');
 
+Vue.prototype.$user = window.$user
 
 window.app = new Vue({
     el: '#app',

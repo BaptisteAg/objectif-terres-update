@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="container navbar is-hidden-touch is-transparent py-2">
+    <nav class="container navbar is-hidden-touch is-transparent py-2 border-top mt-3">
       <div class="navbar-menu">
         <div class="navbar-start">
 

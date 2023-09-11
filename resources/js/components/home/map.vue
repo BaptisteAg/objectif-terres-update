@@ -261,12 +261,6 @@ $tablet: 769px;
     background-color: $tag-background-color;
   }
 
-  .dropdown button {
-    width: 100%;
-    justify-content: space-between;
-    border-radius: 999px;
-  }
-
   .dropdown div button span {
     width: 300px;
     overflow: hidden;
