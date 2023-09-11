@@ -44,14 +44,12 @@
 
 // Components
 @import "components/navbar";
-//@import "components/buttons";
 @import "components/step-guide";
 @import "components/carrousel-large";
 @import "components/carousel";
 @import "components/downloadPDF";
 @import "components/video";
 @import "components/testimony";
-//@import "components/map";
 @import "components/pagination";
 @import "components/multiselect";
 @import "components/notification_sticker";
@@ -79,9 +77,12 @@
 @import "components/modal";
 @import "components/table";
 @import "components/columns";
+@import "components/input";
 
 //@import "components/tooltip";
-//@import "components/input";
+//@import "components/map";
+//@import "components/buttons";
+
 
 // Pages
 @import "pages/ads/ads";

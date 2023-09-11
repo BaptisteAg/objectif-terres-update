@@ -14,44 +14,102 @@
           <h3 class="mt-0 subtitle">Faites pousser votre projet agricole</h3>
         </div>
       </div>
-
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarHeader">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
     </div>
 
-    <div id="navbarHeader" class="navbar-menu">
+    <div class="navbar-menu">
       <div class="navbar-end">
+
+        <div class="navbar-item" v-if="$user.role>=1">
+          <b-dropdown :triggers="['hover']" aria-role="list">
+            <template #trigger>
+              <b-button
+                  label="Administration"
+                  type="is-text"
+                  icon-right="menu-down"/>
+            </template>
+
+
+            <b-dropdown-item
+                v-if="routes.administration.role_4"
+                aria-role="listitem"
+            >
+              <a :href="routes.administration.role_4">Administration</a>
+            </b-dropdown-item>
+
+            <b-dropdown-item
+                v-if="routes.administration.role_3"
+                aria-role="listitem"
+            >
+              <a :href="routes.administration.role_3">Tableau de bord</a>
+            </b-dropdown-item>
+
+            <b-dropdown-item
+                v-if="$user.role >= 3"
+                aria-role="listitem"
+            >
+              <a :href="routes.administration.role_2">Gestion des accompagnements</a>
+            </b-dropdown-item>
+
+            <b-dropdown-item
+                v-else-if="$user.role >= 2"
+                aria-role="listitem"
+            >
+              <a :href="routes.administration.role_2">Espace primo-accueillant</a>
+            </b-dropdown-item>
+
+            <b-dropdown-item
+                v-if="$user.role >= 3"
+                aria-role="listitem"
+            >
+              <a :href="routes.administration.role_1">Gestion des annonces</a>
+            </b-dropdown-item>
+            <b-dropdown-item
+                v-else
+                aria-role="listitem"
+            >
+              <a :href="routes.administration.role_1">Espace modérateur</a>
+            </b-dropdown-item>
+          </b-dropdown>
+        </div>
+
         <div class="navbar-item">
-          <a href="https://soutenir.terredeliens.org/objectifterre/~mon-don" class="button is-danger is-small is-rounded">
+          <a href="https://soutenir.terredeliens.org/objectifterre/~mon-don"
+             class="button is-danger is-small is-rounded">
             <span>Nous soutenir</span>
           </a>
         </div>
-        <div class="navbar-item">
+
+        <div class="navbar-item" v-if="$user">
           <a class="icon-text">
               <span class="icon is-medium">
                 <i class="mdi mdi-24px mdi-bell-ring-outline"></i>
               </span>
           </a>
         </div>
-        <div class="navbar-item">
+        <div class="navbar-item" v-if="$user">
           <a class="icon-text">
               <span class="icon is-medium">
                 <i class="mdi mdi-24px mdi-email-outline"></i>
               </span>
           </a>
         </div>
-        <div class="navbar-item">
-          <a class="icon-text is-flex is-align-items-center" href="/connexion">
+        <div class="navbar-item" v-if="$user">
+          <a class="icon-text">
               <span class="icon is-medium">
                 <i class="mdi mdi-24px mdi-account-outline"></i>
               </span>
-            <strong>Connexion/Inscription</strong>
           </a>
         </div>
-
+        <div class="navbar-item" v-if="$user">
+          <a class="has-text-weight-semibold navbar-item" :href="routes.logout">
+            Déconnexion
+          </a>
+        </div>
+        <div class="navbar-item" v-else>
+          <a class="has-text-weight-semibold navbar-item" :href="routes.login">
+            Se connecter
+          </a>
+        </div>
       </div>
     </div>
   </nav>
@@ -61,8 +119,3 @@ export default {
   props: ['routes']
 }
 </script>
-<style>
-i.mdi.mdi-36px.mdi-account-outline{
-  transform: translateY(3px);
-}
-</style>
