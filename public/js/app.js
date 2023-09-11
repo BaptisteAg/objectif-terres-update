@@ -4625,7 +4625,7 @@ var staticRenderFns = [function () {
     staticClass: "icon is-medium"
   }, [_c("i", {
     staticClass: "mdi mdi-24px mdi-account-outline"
-  })]), _vm._v(" "), _c("strong", [_vm._v("Utilisateur")])])])])]);
+  })]), _vm._v(" "), _c("strong", [_vm._v("Connexion/Inscription")])])])])]);
 }];
 render._withStripped = true;
 
