@@ -75,6 +75,6 @@ require('./carrousel');
 require('./main.js');
 
 
-const app = new Vue({
+window.app = new Vue({
     el: '#app',
 });

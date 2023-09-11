@@ -138,6 +138,9 @@
 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 <script src="{{ mix('js/app.js') }}"></script>
 <script>
+    Vue.prototype.$user = {!!  json_encode(auth()->user()->only(['first_name', 'name', 'role'])) !!}
+</script>
+<script>
     let closeNotification = document.querySelector('button[data-type=close-main-message]');
     closeNotification && closeNotification.addEventListener('click', function (e) {
         let message = document.querySelector('article[data-type=main-message ]');

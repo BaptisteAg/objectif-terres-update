@@ -98337,7 +98337,7 @@ __webpack_require__(/*! ./pages/site-tour/site-tour */ "./resources/js/pages/sit
 __webpack_require__(/*! ./notifications */ "./resources/js/notifications.js");
 __webpack_require__(/*! ./carrousel */ "./resources/js/carrousel.js");
 __webpack_require__(/*! ./main.js */ "./resources/js/main.js");
-var app = new vue__WEBPACK_IMPORTED_MODULE_4___default.a({
+window.app = new vue__WEBPACK_IMPORTED_MODULE_4___default.a({
   el: '#app'
 });
 
