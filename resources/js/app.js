@@ -44,9 +44,6 @@ Vue.component('our-partners', OurPartners);
 // VENDORS
 window.SmoothScroll = require('smooth-scroll');
 
-const app = new Vue({
-    el: '#app',
-});
 
 //////////////
 // LOCAL LIBS
@@ -76,3 +73,8 @@ require('./pages/site-tour/site-tour');
 require('./notifications');
 require('./carrousel');
 require('./main.js');
+
+
+const app = new Vue({
+    el: '#app',
+});

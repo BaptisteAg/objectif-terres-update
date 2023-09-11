@@ -35,8 +35,8 @@
                                     <span>{{Auth::user()->first_name != null ? Auth::user()->first_name : ""}} {{ Auth::user()->name != null ? Auth::user()->name : "" }} </span>
                                 @endif
                                 <span class="icon is-small">
-                                        <i class="fas fa-angle-down" aria-hidden="true"></i>
-                                    </span>
+                                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                </span>
                             </button>
                         </div>
                         <div class="dropdown-menu" id="header-dropdown-menu" role="menu">
