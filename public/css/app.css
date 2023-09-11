@@ -20193,6 +20193,10 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   }
 }
 
+.border-top {
+  border-top: solid 1px #95854B;
+}
+
 .objT-border {
   border-radius: 12px;
 }
@@ -23990,6 +23994,16 @@ ACCORDEON
   .columns-slider.is-mobile > .column {
     min-width: 80vw;
   }
+}
+
+.input {
+  border-color: hsl(0, 0%, 86%);
+}
+
+.dropdown button {
+  width: 100%;
+  justify-content: space-between;
+  border-radius: 999px;
 }
 
 #new-ad {

@@ -88,7 +88,7 @@
             </div>
         </div>
         <!--CGU-->
-        <div style="border-top: solid 1px #95854B">
+        <div class="border-top">
             <div class="container is-flex fd-c-mobile px-6-mobile pt-6-mobile pt-5 is-justify-content-space-between is-align-items-center">
                 <p class="has-text-centered has-text-left-desktop mb-4-mobile">© Objectif Terres <?= date('Y') ?></p>
                 <div class="is-flex is-justify-content-space-between is-flex-wrap-wrap gap-3">

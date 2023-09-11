@@ -29,7 +29,7 @@
 </template>
 <style lang="scss">
 .newsletter {
-  min-height: 40vh;
+  min-height: 35vh;
 }
 
 .newsletter .title {
