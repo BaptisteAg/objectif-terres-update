@@ -38,7 +38,7 @@
     à Terre de Liens : <br>
 </p>
 
-@component('mail::button', ['url' => "https://soutenir.terredeliens.org/objectifterre/~mon-don", 'color' => "primary"])
+@component('mail::button', ['url' => "https://soutenir.terredeliens.org/OT/", 'color' => "primary"])
     {{ "Faire un don ou soutenir Objectif Terres" }}
 @endcomponent
 
