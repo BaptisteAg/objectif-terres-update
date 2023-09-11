@@ -1,5 +1,13 @@
+@font-face {
+  font-family: TitleFont;
+  src: url(/css/OlsenTF-Bold.otf);
+}
+
 .title, .subtitle {
   color: #292929;
+}
+.title {
+  font-family: TitleFont, 'Source Sans Pro', sans-serif;
 }
 @media (max-width: $tablet) {
 
