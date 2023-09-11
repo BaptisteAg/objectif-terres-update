@@ -1,16 +1,18 @@
-
 //////////////
 // VUE
 window.Vue = require('vue');
 
- import Vuelidate from 'vuelidate';
- Vue.use(Vuelidate);
+import Vuelidate from 'vuelidate';
 
- import VueFormWizard from 'vue-form-wizard'
- import 'vue-form-wizard/dist/vue-form-wizard.min.css'
- Vue.use(VueFormWizard);
+Vue.use(Vuelidate);
+
+import VueFormWizard from 'vue-form-wizard'
+import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+
+Vue.use(VueFormWizard);
 
 import VueCarousel from 'vue-carousel';
+
 Vue.use(VueCarousel);
 
 import Vue from 'vue'
@@ -20,7 +22,7 @@ Vue.use(Buefy)
 
 require('vue-pagination-2/dist/vue-pagination-2.min');
 
-Vue.prototype.$forceCompute= function(computedName, forceUpdate /* default: true */) {
+Vue.prototype.$forceCompute = function (computedName, forceUpdate /* default: true */) {
     if (this._computedWatchers[computedName]) {
         this._computedWatchers[computedName].run();
         if (forceUpdate || typeof forceUpdate == 'undefined') this.$forceUpdate()
@@ -29,6 +31,7 @@ Vue.prototype.$forceCompute= function(computedName, forceUpdate /* default: true
 
 //Composants vue
 import Header from './components/header/index.vue';
+
 Vue.component('vue-header', Header);
 const GlobalMap = () => import('./components/home/map.vue');
 Vue.component('global-map', GlobalMap);
