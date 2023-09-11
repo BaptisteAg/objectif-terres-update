@@ -1,18 +1,35 @@
 <table>
 	<thead>
 	<tr>
-		<th colspan="20" ><b>Données générales</b></th>
+		<th colspan="22" ><b>Données générales</b></th>
 		<th colspan="15"><b>Détails offres foncières</b></th>
 		<th colspan="9"><b>Détails recherche de foncier</b></th>
+		<th colspan="{{ $ads->max('indicator_notes_count') }}"><b>Indicateurs</b></th>
+		<th colspan="{{ $ads->max('classic_notes_count') }}"><b>Notes</b></th>
 	</tr>
 	</thead>
 	<tr>
+		<!-- Ajouter :
+		 	- ID
+		 	- ID PP
+		 	- Code Région
+		 	- Codes départements
+		 	- Codes communes
+		 	- ID Resp. Terr;
+		 	- ID Primo Accueillant
+		 	- Une colonnes contenant tous les indicateurs
+		 	- Une colonne contenant toutes les notes libres chronologiques
+		 	- Séparer en deux colonnes Habitation(s) et bâti(s) recherché(s)
+		 -->
+
+		<th>ID</th>
 		<th>Date de la demande</th>
 		<th>Stade de l'accompagnement</th>
 		<th>Etat de la demande</th>
 		<th>Avancement du projet</th>
 		<th>Titre du projet</th>
 		<th>Type de projet</th>
+		<th>ID PP</th>
 		<th>Nom du porteur de projet</th>
 		<th>Prénom</th>
 		<th>Civilité</th>
@@ -51,6 +68,12 @@
 		<th>Type d'installation</th>
 		<th>Expérience dans le domaine agricole</th>
 		<th>Niveau de formation</th>
+		@for($i = 0; $i < $ads->max('indicator_notes_count'); $i++)
+			<th>{{ $ads[0]?->indicatorNotes[$i]?->projectDataKey?->name }}</th>
+		@endfor
+		@for($i = 0; $i < $ads->max('ad_notes_count'); $i++)
+			<th>Note {{ $i }}</th>
+		@endfor
 	</tr>
 
 	<tbody>
@@ -62,14 +85,14 @@
 				<td>{{$ad->project->supportState->name ?? ''}}</td>
 				<td>{{$ad->project->projectStatus->name ?? ''}}</td>
 				<td>{{$ad->title ?? ''}}</td>
-				<td>{{$ad->ad_type_full_name?: ''}}</td>
+				<td>{{$ad->landSeekAd ? 'Recherche de foncier' : 'Offre de foncier'}}</td>
 				<td>{{$ad->userPp->name ?? ''}}</td>
 				<td>{{$ad->userPp->first_name ?? ''}}</td>
 				<td>{{$ad->userPp->civilityFullName ?? ''}}</td>
-				<td>{{$ad->userPP->email ?? ''}}</td>
-				<td>{{$ad->userPP->phone ?? ''}}</td>
-				<td>{{$ad->userPP->zipCode->zip_code ?? ''}}</td>
-				<td>{{$ad->supportRequestTerritoryId->name}}</td>
+				<td>{{$ad->userPp->email ?? ''}}</td>
+				<td>{{$ad->userPp->phone ?? ''}}</td>
+				<td>{{$ad->userPp->zipCode->zip_code ?? ''}}</td>
+				<td>{{$ad->supportRequestTerritoryId?->name}}</td>
 				<td>
 					@if(! is_null($ad->regionsList))
 						<p>{{$ad->regionsList}}</p>
@@ -200,6 +223,16 @@
 						@endif
 					@endif
 				</td>
+				@foreach($ad->classicNotes as $note)
+					<td>
+						{{$note->value ?? ''}}
+					</td>
+				@endforeach
+				@foreach($ad->indicatorNotes as $indicatorNote)
+					<td>
+						{{$note->indicatorNote->name ?? ''}} : {{$note->indicatorNote->value ?? ''}}
+					</td>
+				@endforeach
 			</tr>
 		@endif
 	@endforeach

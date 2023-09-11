@@ -44,7 +44,7 @@
           </a>
         </div>
         <div class="navbar-item">
-          <a class="icon-text is-flex is-align-items-center">
+          <a class="icon-text is-flex is-align-items-center" href="/connexion">
               <span class="icon is-medium">
                 <i class="mdi mdi-24px mdi-account-outline"></i>
               </span>
