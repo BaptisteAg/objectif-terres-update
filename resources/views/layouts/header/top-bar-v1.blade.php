@@ -2,7 +2,7 @@
     <nav class="level ">
         <div class="level-left">
             <div class="level-item">
-                <a target="_blank" href="{{url('https://soutenir.terredeliens.org/objectifterre/~mon-don')}}"
+                <a target="_blank" href="{{url('https://soutenir.terredeliens.org/OT/')}}"
                    class="button basic secondary button-green ">
                     <span class="button__label">Nous soutenir</span>
                 </a>
