@@ -1,4 +1,4 @@
-<div class="column is-flex is-flex-direction-column">
+<a class="column is-flex is-flex-direction-column" href="/annonces/{{$ad->id}}">
     <figure class="image is-3by2">
         @if($ad->hasImages && $ad->images[0]?->path)
             <img class="objT-border"
@@ -34,20 +34,22 @@
             </div>
         @endif
 
-        <div class="column pr-0-mobile">
+        <div class="column pr-0-mobile" style="color: #A74B2B">
             {{ $ad->formatted_price }}
         </div>
     </div>
 
     <p class="title is-5">{{ $ad->title }}</p>
 
-    <p class="mb-4 mt-auto"><span class="has-text-weight-bold">< ></span> {{ $ad->surface }} Ha @empty($ad->surface)
-            non renseigné
-        @endempty</p>
+    @if(!empty($ad->surface))
+        <p class="mb-4 mt-auto">
+            <span class="has-text-weight-bold">< ></span> {{ $ad->surface }} Ha
+        </p>
+    @endif
 
-    <p class="mb-4">{{ $ad->formatted_location }}</p>
+    <p class="@empty($ad->surface)mt-auto @endempty mb-4">{{ $ad->formatted_location }}</p>
 
-    <a class="button is-rounded mb-4 width-fit-content is-align-self-flex-start" href="/annonces/{{$ad->id}}">Voir
-        l'annonce</a>
-
-</div>
+    <b-button rounded class="mb-4 width-fit-content is-align-self-flex-start" tag="a" href="/annonces/{{$ad->id}}">
+        Voir l'annonce
+    </b-button>
+</a>

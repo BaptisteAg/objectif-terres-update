@@ -20354,6 +20354,8 @@ TEXT FONT
 
 .title {
   font-family: TitleFont, "Source Sans Pro", sans-serif;
+  font-weight: 500;
+  line-height: 30px;
 }
 
 a {
@@ -20419,6 +20421,10 @@ pour des images-liens
 .img-link {
   display: inline-block;
   padding: 0.2em;
+}
+
+a.column {
+  color: unset;
 }
 
 /*
@@ -21642,6 +21648,16 @@ footer {
     background-color: #F8F3EE;
     z-index: 10;
   }
+
+  .bottom-navbar-mobile {
+    filter: drop-shadow(0px -2px 11px rgba(0, 0, 0, 0.1));
+    border-radius: 12px 12px 0px 0px;
+    background: #F8F3EE;
+  }
+
+  .bottom-navbar-mobile > a {
+    flex: 1 1 0px;
+  }
 }
 
 /*
@@ -22185,6 +22201,13 @@ body .multiselect__tag-icon:hover {
   border-radius: 3px;
   padding: 1px 3px;
   font: 10px Verdana;
+}
+
+.notification,
+.notification:not(:last-child) {
+  border-radius: 0;
+  margin-bottom: calc(-0.75rem - 1px) !important;
+  z-index: 1;
 }
 
 @keyframes spin {

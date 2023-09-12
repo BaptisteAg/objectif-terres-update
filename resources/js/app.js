@@ -30,9 +30,13 @@ Vue.prototype.$forceCompute = function (computedName, forceUpdate /* default: tr
 }
 
 //Composants vue
-import Header from './components/header/index.vue';
+import MobileHeader from './components/header/mobile.vue';
+import TopHeader from './components/header/top.vue';
+import BottomHeader from './components/header/bottom.vue';
 
-Vue.component('vue-header', Header);
+Vue.component('mobile-header', MobileHeader);
+Vue.component('top-header', TopHeader);
+Vue.component('bottom-header', BottomHeader);
 const GlobalMap = () => import('./components/home/map.vue');
 Vue.component('global-map', GlobalMap);
 const Newsletter = () => import('./components/Newsletter.vue');
