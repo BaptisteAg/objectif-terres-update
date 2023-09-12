@@ -32,4 +32,13 @@ footer {
     background-color: #F8F3EE;
     z-index: 10;
   }
+
+  .bottom-navbar-mobile {
+    filter: drop-shadow(0px -2px 11px rgba(0, 0, 0, 0.10));
+    border-radius: 12px 12px 0px 0px;
+    background: #F8F3EE;
+  }
+  .bottom-navbar-mobile > a {
+    flex: 1 1 0px;
+  }
 }

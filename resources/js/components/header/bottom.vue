@@ -1,5 +1,4 @@
 <template>
-  <div>
     <nav class="container navbar is-hidden-touch is-transparent py-2 border-top mt-3">
       <div class="navbar-menu">
         <div class="navbar-start">
@@ -59,7 +58,6 @@
         </div>
       </div>
     </nav>
-  </div>
 </template>
 <script>
 export default {
