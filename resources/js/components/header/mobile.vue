@@ -24,12 +24,27 @@
 
     <div id="navbarHeader" class="navbar-menu">
       <div class="navbar-start">
-        <a :href="routes" class="navbar-item title is-5">
-          Accueil
-        </a>
+
+        <div class="navbar-item">
+          <a v-if="$user" class="title is-5" :href="routes.logout">
+            <span class="icon-text is-align-items-center">
+              <span class="icon is-medium">
+                <i class="mdi mdi-36px mdi-account-outline"></i>
+              </span>
+              <span>Déconnexion</span>
+            </span>
+          </a>
+          <a v-else class="title is-5" :href="routes.login">
+            <span class="icon-text is-align-items-center">
+              <span class="icon is-medium">
+                <i class="mdi mdi-36px mdi-account-outline"></i>
+              </span>
+              <span>Se connecter</span>
+            </span>
+          </a>
+        </div>
 
         <hr class="mr-4 ml-4">
-
 
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link title is-5">
@@ -87,15 +102,23 @@
 </template>
 <script>
 export default {
-  props: ['routes']
+  props: ['routes', 'unread_messages', 'unread_notifications']
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .title {
   margin: 0;
 }
-
 hr {
   background-color: #E3CFB5;
+}
+.subtitle {
+  margin-bottom: 0;
+}
+#navbarHeader a.subtitle:before {
+  content:"• ";
+}
+.navbar-brand {
+  width: 100%;
 }
 </style>

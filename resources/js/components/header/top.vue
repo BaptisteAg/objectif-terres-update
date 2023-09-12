@@ -19,7 +19,7 @@
     <div class="navbar-menu">
       <div class="navbar-end">
 
-        <div class="navbar-item" v-if="$user.role>=1">
+        <div class="navbar-item" v-if="$user && $user.role>=1">
           <b-dropdown :triggers="['hover']" aria-role="list">
             <template #trigger>
               <b-button
@@ -29,43 +29,43 @@
             </template>
 
 
-            <b-dropdown-item
-                v-if="routes.administration.role_4"
-                aria-role="listitem"
+            <b-dropdown-item has-link
+                             v-if="routes.administration.role_4"
+                             aria-role="listitem"
             >
               <a :href="routes.administration.role_4">Administration</a>
             </b-dropdown-item>
 
-            <b-dropdown-item
-                v-if="routes.administration.role_3"
-                aria-role="listitem"
+            <b-dropdown-item has-link
+                             v-if="routes.administration.role_3"
+                             aria-role="listitem"
             >
               <a :href="routes.administration.role_3">Tableau de bord</a>
             </b-dropdown-item>
 
-            <b-dropdown-item
-                v-if="$user.role >= 3"
-                aria-role="listitem"
+            <b-dropdown-item has-link
+                             v-if="$user.role >= 3"
+                             aria-role="listitem"
             >
               <a :href="routes.administration.role_2">Gestion des accompagnements</a>
             </b-dropdown-item>
 
-            <b-dropdown-item
-                v-else-if="$user.role >= 2"
-                aria-role="listitem"
+            <b-dropdown-item has-link
+                             v-else-if="$user.role >= 2"
+                             aria-role="listitem"
             >
               <a :href="routes.administration.role_2">Espace primo-accueillant</a>
             </b-dropdown-item>
 
-            <b-dropdown-item
-                v-if="$user.role >= 3"
-                aria-role="listitem"
+            <b-dropdown-item has-link
+                             v-if="$user.role >= 3"
+                             aria-role="listitem"
             >
               <a :href="routes.administration.role_1">Gestion des annonces</a>
             </b-dropdown-item>
-            <b-dropdown-item
-                v-else
-                aria-role="listitem"
+            <b-dropdown-item has-link
+                             v-else
+                             aria-role="listitem"
             >
               <a :href="routes.administration.role_1">Espace modérateur</a>
             </b-dropdown-item>
@@ -74,27 +74,29 @@
 
         <div class="navbar-item">
           <a href="https://soutenir.terredeliens.org/objectifterre/~mon-don"
-             class="button is-danger is-small is-rounded">
+             class="button is-danger is-rounded">
             <span>Nous soutenir</span>
           </a>
         </div>
 
-        <div class="navbar-item" v-if="$user">
-          <a class="icon-text">
+        <div class="navbar-item number-sticker-wrap" v-if="$user">
+          <a class="icon-text" :href="routes.notifications">
               <span class="icon is-medium">
                 <i class="mdi mdi-24px mdi-bell-ring-outline"></i>
               </span>
           </a>
+          <span v-if="unread_notifications" class="number-sticker">{{ unread_notifications }}</span>
         </div>
-        <div class="navbar-item" v-if="$user">
-          <a class="icon-text">
+        <div class="navbar-item number-sticker-wrap" v-if="$user">
+          <a class="icon-text" :href="routes.messages">
               <span class="icon is-medium">
                 <i class="mdi mdi-24px mdi-email-outline"></i>
               </span>
           </a>
+          <span v-if="unread_messages" class="number-sticker">{{ unread_messages }}</span>
         </div>
         <div class="navbar-item" v-if="$user">
-          <a class="icon-text">
+          <a class="icon-text" :href="routes.account">
               <span class="icon is-medium">
                 <i class="mdi mdi-24px mdi-account-outline"></i>
               </span>
@@ -116,6 +118,6 @@
 </template>
 <script>
 export default {
-  props: ['routes']
+  props: ['routes', 'unread_messages', 'unread_notifications']
 }
 </script>
