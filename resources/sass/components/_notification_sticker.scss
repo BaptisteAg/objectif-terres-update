@@ -20,7 +20,11 @@
   font: 10px Verdana;
 }
 
-
+.notification, .notification:not(:last-child) {
+  border-radius: 0;
+  margin-bottom: calc(-0.75rem - 1px) !important;
+  z-index: 1;
+}
 
 @keyframes spin {
   to {
