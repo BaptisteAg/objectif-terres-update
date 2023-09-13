@@ -1,7 +1,7 @@
 <template>
   <div class="control autocomplete-control has-icons-right">
     <input type="search"
-           class="input autocomplete-input"
+           class="input autocomplete-input is-medium is-rounded"
            ref="input"
            v-model="autocompleteValue"
            :placeholder="placeholder"

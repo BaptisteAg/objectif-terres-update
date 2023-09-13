@@ -3521,7 +3521,7 @@ var render = function render() {
       expression: "autocompleteValue"
     }],
     ref: "input",
-    staticClass: "input autocomplete-input",
+    staticClass: "input autocomplete-input is-medium is-rounded",
     attrs: {
       type: "search",
       placeholder: _vm.placeholder
@@ -98312,6 +98312,10 @@ var OurPartners = function OurPartners() {
   return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./components/OurPartners.vue */ "./resources/js/components/OurPartners.vue"));
 };
 vue__WEBPACK_IMPORTED_MODULE_4___default.a.component('our-partners', OurPartners);
+var LoginFrom = function LoginFrom() {
+  return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./pages/auth/login-form.vue */ "./resources/js/pages/auth/login-form.vue"));
+};
+vue__WEBPACK_IMPORTED_MODULE_4___default.a.component('login-form', LoginFrom);
 
 //////////////
 // VENDORS
@@ -98327,7 +98331,7 @@ __webpack_require__(/*! ./pages/support-request-start */ "./resources/js/pages/s
 __webpack_require__(/*! ./pages/ads/new */ "./resources/js/pages/ads/new.js");
 __webpack_require__(/*! ./pages/ads/show */ "./resources/js/pages/ads/show.js");
 __webpack_require__(/*! ./pages/header */ "./resources/js/pages/header.js");
-__webpack_require__(/*! ./pages/auth/login-form */ "./resources/js/pages/auth/login-form.js");
+// require('./pages/auth/login-form');
 __webpack_require__(/*! ./pages/auth/user-form */ "./resources/js/pages/auth/user-form.js");
 __webpack_require__(/*! ./pages/threads/threads */ "./resources/js/pages/threads/threads.js");
 __webpack_require__(/*! ./pages/dashboard */ "./resources/js/pages/dashboard.js");
@@ -101167,87 +101171,6 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('support-request-dashboard'
         }
       }
     };
-  }
-});
-
-/***/ }),
-
-/***/ "./resources/js/pages/auth/login-form.js":
-/*!***********************************************!*\
-  !*** ./resources/js/pages/auth/login-form.js ***!
-  \***********************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('login-form', {
-  components: {},
-  props: {
-    oldValues: {
-      type: Object
-    }
-  },
-  data: function data() {
-    return {
-      email: this.oldValues.email || '',
-      hasPassedCheckpoint: !!this.oldValues.email,
-      isLoading: false
-    };
-  },
-  methods: {
-    onValidate: function onValidate(event) {
-      var _this = this;
-      event.preventDefault();
-      if (!this.email) {
-        alert("Veuillez saisir votre adresse email");
-        return;
-      }
-      if (this.hasPassedCheckpoint) {
-        event.target.submit();
-        return;
-      }
-      var formData = new FormData();
-      formData.append('_token', window.csrf_token);
-      formData.append('email', this.email);
-      this.isLoading = true;
-      fetch('/connexion/checkpoint', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      }).then(function (response) {
-        return response.json();
-      }).then(function (result) {
-        if (result.error) {
-          if (result.status === 419) {
-            alert("La page a expiré et va être rafraîchie. Merci de réessayer.") && location.reload();
-          } else {
-            _this.loginErrorHandler(result.error);
-          }
-        } else if (result.redirect && result.redirect !== '') {
-          location.href = result.redirect;
-        } else {
-          //this.$refs.email.setAttribute("autocomplete", Math.random());
-          _this.hasPassedCheckpoint = true;
-          _this.isLoading = false;
-        }
-      })["catch"](function (error) {
-        return _this.loginErrorHandler(error);
-      });
-    },
-    onEmailChange: function onEmailChange(event) {
-      this.hasPassedCheckpoint = false;
-    },
-    loginErrorHandler: function loginErrorHandler(error) {
-      console.log("checkpoint error :", error);
-      alert("Une erreur imprévue a eu lieu.");
-      this.isLoading = false;
-    }
   }
 });
 

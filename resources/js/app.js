@@ -33,16 +33,18 @@ Vue.prototype.$forceCompute = function (computedName, forceUpdate /* default: tr
 import MobileHeader from './components/header/mobile.vue';
 import TopHeader from './components/header/top.vue';
 import BottomHeader from './components/header/bottom.vue';
-
 Vue.component('mobile-header', MobileHeader);
 Vue.component('top-header', TopHeader);
 Vue.component('bottom-header', BottomHeader);
+
 const GlobalMap = () => import('./components/home/map.vue');
 Vue.component('global-map', GlobalMap);
 const Newsletter = () => import('./components/Newsletter.vue');
 Vue.component('newsletter', Newsletter);
 const OurPartners = () => import('./components/OurPartners.vue');
 Vue.component('our-partners', OurPartners);
+const LoginFrom = () => import('./pages/auth/login-form.vue');
+Vue.component('login-form', LoginFrom);
 
 //////////////
 // VENDORS
@@ -59,7 +61,7 @@ require('./pages/support-request-start');
 require('./pages/ads/new');
 require('./pages/ads/show');
 require('./pages/header');
-require('./pages/auth/login-form');
+// require('./pages/auth/login-form');
 require('./pages/auth/user-form');
 require('./pages/threads/threads');
 require('./pages/dashboard');
