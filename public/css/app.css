@@ -20356,10 +20356,13 @@ TEXT FONT
   color: #292929;
 }
 
+.title.is-5 {
+  line-height: 30px;
+}
+
 .title {
   font-family: TitleFont, "Source Sans Pro", sans-serif;
   font-weight: 500;
-  line-height: 30px;
 }
 
 a {

@@ -14,7 +14,6 @@
                 </p>
                 <br>
                 {!! Form::open(['route'=>'register']) !!}
-                @csrf
                 <div class="columns">
                     <div class="column is-one-fifths">
                         @include('auth.partials.inputs.civility')

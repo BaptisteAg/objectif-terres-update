@@ -1,5 +1,5 @@
 <template>
-  <section class="mh-40 container is-flex is-flex-direction-column is-justify-content-center">
+  <section class="mh-40 container is-flex is-flex-direction-column is-justify-content-center py-6">
     <div class="columns">
       <div class="column is-half mx-auto">
         <form method="post" :action="login_route" @submit.prevent="onSubmit">

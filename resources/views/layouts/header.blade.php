@@ -35,7 +35,7 @@
         :routes="{{ json_encode($routes) }}"
 ></top-header>
 
-@if( (isset($errors) && $errors->count() ) || Session::has('success') || Session::has('warning') || Session::has('info') )
+@if( (isset($errors) && $errors->count() ) || Session::has('success') || Session::has('warning') || Session::has('info') || Session::has('status'))
     @foreach($errors->all() as $message)
         <b-notification
                 type="is-danger"
@@ -52,6 +52,14 @@
             {!! $message !!}
         </b-notification>
             <?php session()->forget('success') ?>
+    @endif
+    @if ($message =  Session::has('status'))
+        <b-notification
+                type="is-info"
+                aria-close-label="Close notification"
+                role="alert">
+            {{ session('status') }}
+        </b-notification>
     @endif
     @if($message = Session::get('warning'))
         <b-notification
