@@ -2,12 +2,12 @@
     <div class="field">
         <label for="profile" class="label">Situation*</label>
         <div class="control has-icons-left">
-            <div class="select" style="display: block !important;">
+            <div class="select is-medium" style="display: block !important;">
                 <select id="profile"
                         name="profile"
                         required
                         v-model="optionProfileSelected"
-                        class="input @error('profile') is-danger @enderror ">
+                        class="input @error('profile') is-danger @enderror">
                     <option disabled="disabled">Vous êtes...</option>
                     @foreach(\App\Models\User::$profiles as $id => $prof)
                         <option

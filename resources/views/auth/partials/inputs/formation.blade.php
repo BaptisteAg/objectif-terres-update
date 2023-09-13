@@ -2,7 +2,7 @@
     <div class="field">
         <label for="hasformation" class="label">Formation agricole*</label>
         <div class="control has-icons-left">
-            <div class="select" style="display: block !important;">
+            <div class="select is-medium" style="display: block !important;">
                 <select id="hasformation"
                         name="hasformation"
                         required
@@ -30,7 +30,7 @@
     <div class="field">
         <label class="label">Liste Formation </label>
         <div class="control has-icons-left">
-            <div class="select">
+            <div class="select is-medium">
                 <select id="formation"
                         name="formation"
                         required

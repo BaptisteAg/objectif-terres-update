@@ -1,9 +1,9 @@
-<div class="field">
+<div class="field pb-3">
     <label class="label">Mot de passe*</label>
     <p class="control has-icons-left">
         <input id="password"
                name="password"
-               class="input @error('password') is-danger @enderror "
+               class="input is-medium is-rounded @error('password') is-danger @enderror "
                type="password"
                required
                autocomplete="new-password"
@@ -22,12 +22,12 @@
     </article>
     @enderror
 </div>
-<div class="field">
+<div class="field pb-3">
     <label class="label">Confirmation mot de passe*</label>
     <p class="control has-icons-left">
         <input id="password-confirm"
                name="password_confirmation"
-               class="input"
+               class="input is-medium is-rounded"
                type="password"
                value="{{ old('password_confirmation') }}"
                autocomplete="new-password"

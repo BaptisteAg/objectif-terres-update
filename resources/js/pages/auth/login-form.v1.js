@@ -1,5 +1,3 @@
-import Vue from 'vue'
-
 Vue.component('login-form', {
     components: {},
     props: {
