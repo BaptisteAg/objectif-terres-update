@@ -224,3 +224,19 @@ Route::post('newsletter', 'Newsletter\NewsletterController@create');
 Route::prefix('api')->group(function () {
     Route::get('annonces', 'ApiController@annonces')->name('annonces');
 });
+
+Route::get('test-alerts', function() {
+
+    $errors = new \Illuminate\Support\ViewErrorBag();
+
+    $bag = $errors->getBags()['default'] ?? new \Illuminate\Support\MessageBag();
+    $bag->add('test', 'Test error');
+
+
+    session()->flash('success', 'Test success');
+    session()->flash('errors', $errors->put('default', $bag));
+    session()->flash('warning', 'Test warning');
+    session()->flash('info', 'Test info');
+
+    return view("auth.login");
+});
