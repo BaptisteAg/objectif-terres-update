@@ -20430,8 +20430,8 @@ pour des images-liens
   padding: 0.2em;
 }
 
-a.column {
-  color: unset;
+a.unset-color {
+  color: unset !important;
 }
 
 /*
@@ -24074,6 +24074,14 @@ ACCORDEON
 
 .control .select select {
   border-radius: 999px;
+}
+
+.fav-button {
+  position: absolute;
+  right: 0;
+  bottom: 0.4em;
+  padding-left: 1em !important;
+  padding-right: 1em !important;
 }
 
 #new-ad {
