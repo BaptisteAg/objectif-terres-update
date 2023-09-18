@@ -29,6 +29,7 @@ class DocumentsController extends Controller
 	{
 	    $path = 'documents/' . $type . '/' . $user_id . '/' . $fileName;
 
+
 		return response()->file(
 			storage_path(
 				$this->getCrossPlatformPath('app/' . $path)
