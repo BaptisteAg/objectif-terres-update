@@ -75,9 +75,9 @@
 
 	@include('components.partnering')
 
-	<div id="vue-rss">
-		@include('components.rssNews')
-	</div>
+	{{--<div id="vue-rss">
+		include('components.rssNews')
+	</div>--}}
 	@include('components.support-terre-liens')
 
 @endsection
@@ -94,12 +94,12 @@
             navigation: true,
         });
 
-        new Vue({
+        /*new Vue({
             el: '#vue-rss',
             data: {
                 ready: true
             }
-        });
+        });*/
 
 	</script>
 

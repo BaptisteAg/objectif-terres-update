@@ -120,5 +120,4 @@
                         class="button__label">Qui sommes-nous ?</span></a>
         </div>
     </div>
-
 </div>
