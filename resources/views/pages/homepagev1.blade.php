@@ -10,7 +10,6 @@
 
 
 @section('main-content')
-
 	@if(Route::currentRouteName() === "site-tour")
 		<div id="vue-site-tour">
 			<site-tour-shepherd inline-template

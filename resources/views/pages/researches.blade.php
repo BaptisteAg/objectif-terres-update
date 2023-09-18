@@ -10,28 +10,14 @@
 @endsection
 
 @section('main-content')
+    <research-tags :productions_searched="{{ json_encode($searchedTypeOfProductions)}}"
+                   :regions_searched="{{ json_encode($searchedRegionNames) }}"></research-tags>
+
     @if($hasDepartmentPolygons)
         <div id="global-map"></div>
     @endif
 
     <section class="container">
-        <div class="is-flex gap-8 is-justify-content-center py-4">
-            <div class="is-flex is-align-items-center gap-2">
-                <p>Je cherche</p>
-                <b-tag rounded type="is-primary" size="is-medium">Un porteur de projet</b-tag>
-            </div>
-
-            <div class="is-flex is-align-items-center gap-2">
-                <p>Je cherche</p>
-                <b-tag rounded type="is-primary" size="is-medium">Un porteur de projet</b-tag>
-            </div>
-
-            <div class="is-flex is-align-items-center gap-2">
-                <p>Je cherche</p>
-                <b-tag rounded type="is-primary" size="is-medium">Un porteur de projet</b-tag>
-            </div>
-        </div>
-
         <h2 class="title mb-3">
             {{ $ads->total() }} annonce{{ $ads->total() > 1 ? 's' : '' }} trouvée{{ $ads->total() > 1 ? 's' : '' }}
         </h2>

@@ -102,3 +102,25 @@ $flex-aligns: ('c': 'center', 'fs': 'flex-start', 'fe': 'flex-end', 'st': 'stret
     }
   }
 }
+
+.flex-fit-content {
+  flex: 0 0 auto;
+}
+
+.three-dots {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.w-max {
+  width: max-content;
+}
+
+.w-37 {
+  max-width: 37%;
+}
+
+.w-30 {
+  max-width: 30%;
+}
