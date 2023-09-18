@@ -110,7 +110,7 @@ class LocationService
 
 				$res = $client->request('GET', 'https://nominatim.openstreetmap.org/search.php?'.$params.'&polygon_geojson=1&format=json&polygon_threshold='.$threshold);
                 $results = json_decode($res->getBody());
-				if(in_array($params,$locationsWithWrongResultsFromAPI)){
+				if(in_array($params,$locationsWithWrongResultsFromAPI) && isset($results[1])){
 					return $results[1];
 				}
 				return $results[0];
