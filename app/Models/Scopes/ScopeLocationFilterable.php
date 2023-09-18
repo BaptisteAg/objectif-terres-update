@@ -41,6 +41,9 @@ trait ScopeLocationFilterable
      */
     function scopeFilterRegions(Builder $query, $regionCode)
     {
+        if(!$regionCode) {
+            return;
+        }
         $query->whereHas('departments', function (Builder $query) use ($regionCode) {
             $query->where('region_code', $regionCode);
         });
