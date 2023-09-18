@@ -903,7 +903,7 @@ class  AdService
 	{
 		$adsCountByDepartmentId = [];
 
-		$regionCode = Region::find($regionId)->code;
+		$regionCode = Region::find($regionId)?->code;
 
 		foreach ($this->repository->findAllPublishedInRegionWithLocations($selectedAdType, $regionCode) as $ad) {
 			$departmentIds = $this->getAdDepartmentIds($ad);
