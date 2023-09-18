@@ -231,6 +231,7 @@ Route::get('test-alerts', function() {
 
     $bag = $errors->getBags()['default'] ?? new \Illuminate\Support\MessageBag();
     $bag->add('test', 'Test error');
+    $bag->add('test2', 'Test error');
 
 
     session()->flash('success', 'Test success');
