@@ -108,7 +108,7 @@
     @endguest
     <div class="top-bar__1__CTA has-text-centered">
         <div class="mb-10">
-            <a target="_blank" href="{{url('https://soutenir.terredeliens.org/objectifterre/~mon-don')}}" class="button basic success ">
+            <a target="_blank" href="{{url('https://soutenir.terredeliens.org/OT/')}}" class="button basic success ">
                 <span class="button__icon"></span><i
                         class="fas fa-hand-holding-heart"></i>
                 <span class="button__label">Nous soutenir</span>
