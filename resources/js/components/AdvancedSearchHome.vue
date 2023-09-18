@@ -16,7 +16,7 @@
                     :icon-right="active ? 'menu-up' : 'menu-down'"/>
               </template>
               <b-dropdown-item aria-role="listitem" value="land">Une terre</b-dropdown-item>
-              <b-dropdown-item aria-role="listitem" value="work">Un emploi</b-dropdown-item>
+              <b-dropdown-item aria-role="listitem" value="job">Un emploi</b-dropdown-item>
             </b-dropdown>
 
           </div>
@@ -144,7 +144,7 @@ export default {
     return {
       categoryLabels: {
         'land': 'Une terre',
-        'work': 'Un emploi',
+        'job': 'Un emploi',
         'viticulture': 'Viticulture',
         'maraichage': 'Maraîchage',
       },
@@ -153,14 +153,14 @@ export default {
         "message": "Recherche avancée"
       },
       adsForm: {
-        category: "",
+        category: "all",
         localisation: [],
         selectedProductions: [],
-        surfaceMin: null,
-        surfaceMax: null,
-        priceMin: null,
-        priceMax: null,
-        keywords: null,
+        surfaceMin: "",
+        surfaceMax: "",
+        priceMin: "",
+        priceMax: "",
+        keywords: "",
       },
     }
   },
@@ -177,13 +177,14 @@ export default {
       params.append('offer_type', 'OfferAd');
       params.append('ad_category', this.adsForm.category);
       this.adsForm.localisation.forEach(id => params.append('regions_location_researches_ids[]', id));
+      this.adsForm.selectedProductions.forEach(id => params.append('regions_production_researches_ids[]', id));
       params.append('surfaces_research_min', this.adsForm.surfaceMin);
       params.append('surfaces_research', this.adsForm.surfaceMax);
       params.append('price_min', this.adsForm.priceMin);
       params.append('price_max', this.adsForm.priceMax);
       params.append('keywords', this.adsForm.keywords);
 
-      window.location.href = `https://beta.objectif-terres.org/recherche?${params.toString()}`;
+      window.location.href = `/recherche?${params.toString()}`;
     },
     getSelectedProductionsLabel() {
       if (!this.adsForm.selectedProductions.length) {

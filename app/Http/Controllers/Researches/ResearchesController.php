@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Researches;
 
 use App\Jobs\NotifyCreationAlertResearch;
+use App\Models\ProductionGenre;
+use App\Models\Region;
 use App\Models\Research;
 use App\Http\Controllers\Controller;
 use App\Services\Locations\LocationService;
@@ -14,31 +16,31 @@ use Illuminate\Support\Facades\Cache;
 class
 ResearchesController extends Controller
 {
-	private $researchService;
-	private $researchNotification;
+    private $researchService;
+    private $researchNotification;
     /**
      * @var LocationService
      */
     private $locationService;
 
     /**
-	 * ResearchesController constructor.
-	 * @param ResearchService $researchService
-	 * @param NotifyCreationAlertResearch $notifyCreationAlertResearch
-	 */
-	public function __construct(ResearchService $researchService, NotifyCreationAlertResearch $notifyCreationAlertResearch, LocationService $locationService)
-	{
-		$this->researchService = $researchService;
-		$this->researchNotification = $notifyCreationAlertResearch;
-		$this->locationService = $locationService;
-	}
+     * ResearchesController constructor.
+     * @param ResearchService $researchService
+     * @param NotifyCreationAlertResearch $notifyCreationAlertResearch
+     */
+    public function __construct(ResearchService $researchService, NotifyCreationAlertResearch $notifyCreationAlertResearch, LocationService $locationService)
+    {
+        $this->researchService = $researchService;
+        $this->researchNotification = $notifyCreationAlertResearch;
+        $this->locationService = $locationService;
+    }
 
-	/**
-	 * @param Request $request
-	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
-	 */
-	public function index(Request $request)
-	{
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function index(Request $request)
+    {
         if ($request->has('ad_category')) {
             $selectedAdType = $request->input('ad_category') . $request->input('offer_type');
         } else {
@@ -47,87 +49,90 @@ ResearchesController extends Controller
             ]);
         }
 
-		list ($ads, $adsType) = $this->researchService->index($request);
+        list ($ads, $adsType) = $this->researchService->index($request);
 
-		$request->flash();
+        $request->flash();
 
         $hasDepartmentPolygons = false;
 
-        if(!empty($request->get("regions_location_researches_ids"))) {
+        if (!empty($request->get("regions_location_researches_ids"))) {
             $regionIds = $request->get("regions_location_researches_ids");
 
-            if(count($regionIds) === 1) {
+            if (count($regionIds) === 1) {
                 $departmentPolygons = $this->locationService->getDepartmentPolygons($regionIds[0], $selectedAdType);
-                if(!empty($departmentPolygons)) {
+                if (!empty($departmentPolygons)) {
                     $hasDepartmentPolygons = true;
                 }
             }
         }
 
-		return view('pages.researches', compact('ads', 'adsType', 'request', 'hasDepartmentPolygons'));
+        $searchedRegionNames = Region::whereIn('id', $request->get("regions_location_researches_ids") ?? [])->pluck('name')->toArray();
+        $searchedTypeOfProductions = ProductionGenre::whereIn('id', $request->get("production_genres") ?? [])->pluck('name')->toArray();
+
+		return view('pages.researches', compact('ads', 'adsType', 'request', 'hasDepartmentPolygons', 'searchedRegionNames', 'searchedTypeOfProductions'));
 	}
 
-	/**
-	 * @param Request $request
-	 * @return \Illuminate\Http\RedirectResponse
-	 * @throws \Throwable
-	 */
-	public function store(Request $request)
-	{
-		$research = $this->researchService->create($request);
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
+     */
+    public function store(Request $request)
+    {
+        $research = $this->researchService->create($request);
 
-		return redirect()->route('researches.show');
-	}
+        return redirect()->route('researches.show');
+    }
 
-	/**
-	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
-	 */
-	public function show()
-	{
-		$researches = $this->researchService->findAllByUser(auth()->user()->id);
-		$numberAlertActives = 0;
-		foreach ($researches as $research) {
-			if ($research->has_alert === 1) {
-				$numberAlertActives++;
-			}
-		}
-		return view('pages.savedResearches.listSavedResearches', compact('researches', 'numberAlertActives'));
-	}
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function show()
+    {
+        $researches = $this->researchService->findAllByUser(auth()->user()->id);
+        $numberAlertActives = 0;
+        foreach ($researches as $research) {
+            if ($research->has_alert === 1) {
+                $numberAlertActives++;
+            }
+        }
+        return view('pages.savedResearches.listSavedResearches', compact('researches', 'numberAlertActives'));
+    }
 
-	/**
-	 * @param Research $research
-	 * @return \Illuminate\Http\RedirectResponse
-	 */
-	public function destroy(Research $research)
-	{
-		if (auth()->id() !== $research->user_id) {
-			abort(404);
-		}
-		$this->researchService->destroy($research);
-		return back()->with('success', 'La recherche a bien été supprimée.');
-	}
+    /**
+     * @param Research $research
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Research $research)
+    {
+        if (auth()->id() !== $research->user_id) {
+            abort(404);
+        }
+        $this->researchService->destroy($research);
+        return back()->with('success', 'La recherche a bien été supprimée.');
+    }
 
-	/**
-	 * @param Research $research
-	 * @return \Illuminate\Http\RedirectResponse
-	 */
-	public function deleteAlert(Research $research)
-	{
-		if (auth()->id() !== $research->user_id) {
-			abort(404);
-		}
-		$this->researchService->deleteAlert($research);
-		return back()->with('success', 'L\'alerte a bien été supprimée');
-	}
+    /**
+     * @param Research $research
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function deleteAlert(Research $research)
+    {
+        if (auth()->id() !== $research->user_id) {
+            abort(404);
+        }
+        $this->researchService->deleteAlert($research);
+        return back()->with('success', 'L\'alerte a bien été supprimée');
+    }
 
-	/**
-	 * @param Request $request
-	 * @return \Illuminate\Http\RedirectResponse
-	 */
-	public function notificationCreateAlert(Request $request)
-	{
-		$this->researchNotification->handle($request->input('research'));
-		return back()->with('success', 'Une alerte a bien été créée. Un email de confirmation vous a été envoyé !');
-	}
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function notificationCreateAlert(Request $request)
+    {
+        $this->researchNotification->handle($request->input('research'));
+        return back()->with('success', 'Une alerte a bien été créée. Un email de confirmation vous a été envoyé !');
+    }
 
 }
