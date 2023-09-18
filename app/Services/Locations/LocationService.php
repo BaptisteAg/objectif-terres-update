@@ -7,6 +7,7 @@ use App\Models\Region;
 use App\Services\Ads\AdService;
 use Cache;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -100,15 +101,22 @@ class LocationService
                     $threshold = 0.002;
                 }
                 else {
-                    $params .="&q=".$q;
+                    $params ="q=".$q;
                     $threshold = 0.2;
                 }
+
 
                 $locationsWithWrongResultsFromAPI = [
 					"country=france&county=Ain"
 				];
 
-				$res = $client->request('GET', 'https://nominatim.openstreetmap.org/search.php?'.$params.'&polygon_geojson=1&format=json&polygon_threshold='.$threshold);
+                try {
+
+                    $res = $client->request('GET', 'https://nominatim.openstreetmap.org/search.php?'.$params.'&polygon_geojson=1&format=json&polygon_threshold='.$threshold);
+                }
+                catch( ClientException $exception) {
+                    dd($exception->getResponse()->getBody()->getContents());
+                }
                 $results = json_decode($res->getBody());
 				if(in_array($params,$locationsWithWrongResultsFromAPI) && isset($results[1])){
 					return $results[1];
