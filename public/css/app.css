@@ -21618,6 +21618,29 @@ BACKGROUNDS
   padding: 7rem;
 }
 
+.flex-fit-content {
+  flex: 0 0 auto;
+}
+
+.three-dots {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.w-max {
+  width: -moz-max-content;
+  width: max-content;
+}
+
+.w-37 {
+  max-width: 37%;
+}
+
+.w-30 {
+  max-width: 30%;
+}
+
 footer {
   background-color: #E3CFB5;
 }
