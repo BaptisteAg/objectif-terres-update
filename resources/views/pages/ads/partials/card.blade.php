@@ -30,7 +30,7 @@
         <p class="title is-5">{{ $ad->title }}</p>
 
         @if(isset($ad->about_project_content))
-            <p>{{ Illuminate\Support\Str::limit($ad->about_project_content, 200)}}</p>
+            <p>{{ Illuminate\Support\Str::limit($ad->about_project_content, 300)}}</p>
         @else
             Pas de description renseignée pour cette annonce
         @endif
