@@ -108,19 +108,19 @@ $flex-aligns: ('c': 'center', 'fs': 'flex-start', 'fe': 'flex-end', 'st': 'stret
 }
 
 .three-dots {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .w-max {
   width: max-content;
 }
 
-.w-37 {
+.mw-37 {
   max-width: 37%;
 }
 
-.w-30 {
+.mw-30 {
   max-width: 30%;
 }

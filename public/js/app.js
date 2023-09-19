@@ -98971,7 +98971,7 @@ vue__WEBPACK_IMPORTED_MODULE_4___default.a.component('login-form', _pages_auth_l
 
 //Autres composants chargés en lazy loading
 var ResearchTags = function ResearchTags() {
-  return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./components/ResearchTags.vue */ "./resources/js/components/ResearchTags.vue"));
+  return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./components/ResearchTags.vue */ "./resources/js/components/ResearchTags.vue"));
 };
 vue__WEBPACK_IMPORTED_MODULE_4___default.a.component('research-tags', ResearchTags);
 var Newsletter = function Newsletter() {
@@ -98982,6 +98982,10 @@ var OurPartners = function OurPartners() {
   return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./components/OurPartners.vue */ "./resources/js/components/OurPartners.vue"));
 };
 vue__WEBPACK_IMPORTED_MODULE_4___default.a.component('our-partners', OurPartners);
+var AdsCarousel = function AdsCarousel() {
+  return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./components/AdsCarouselImages.vue */ "./resources/js/components/AdsCarouselImages.vue"));
+};
+vue__WEBPACK_IMPORTED_MODULE_4___default.a.component('ads-carousel', AdsCarousel);
 
 //////////////
 // VENDORS
