@@ -47,9 +47,9 @@
             </div>
         </div>
         <div class="columns columns-slider is-mobile">
-{{--            @foreach ($ads as $ad)--}}
-{{--                @include("pages.homepage_ad_thumbnail")--}}
-{{--            @endforeach--}}
+            @foreach ($ads as $ad)
+                @include("pages.homepage_ad_thumbnail")
+            @endforeach
         </div>
     </section>
 

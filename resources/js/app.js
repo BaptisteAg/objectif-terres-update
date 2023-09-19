@@ -48,6 +48,8 @@ const Newsletter = () => import('./components/Newsletter.vue');
 Vue.component('newsletter', Newsletter);
 const OurPartners = () => import('./components/OurPartners.vue');
 Vue.component('our-partners', OurPartners);
+const AdsCarousel = () => import('./components/AdsCarouselImages.vue');
+Vue.component('ads-carousel', AdsCarousel);
 
 
 //////////////
