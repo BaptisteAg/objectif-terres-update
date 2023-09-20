@@ -26,8 +26,13 @@
             </b-breadcrumb-item>
         </b-breadcrumb>
 
+        @include('components.back-links')
+
+        @include('pages.ads.partials.moderation-modal')
+
+
         <div class="columns">
-            <div class="column">
+            <div class="column is-flex is-flex-direction-column is-justify-content-space-between">
                 <div class="buttons is-justify-content-space-between is-hidden-touch">
                     <b-button rounded icon-left="share-variant-outline">
                         Partager
@@ -42,35 +47,39 @@
                     <b-button rounded icon-left="download" style="padding-left: 1em; padding-right: 1em;">
                     </b-button>
                 </div>
-                <p>Référence : 1695-V</p>
-                <h1 class="title">
-                    {{$ad->title}}
-                </h1>
-                <p>Publié le 1er juillet 2023</p>
-                <div class="is-flex is-justify-content-space-between">
-                    <b-tag type="is-warning" size="is-medium"
-                           class="has-text-weight-bold is-uppercase">{{ $ad->formatted_type }}
-                    </b-tag>
-                    <div class="title is-5" style="color: #A74B2B">
-                        {{ $ad->formatted_price }}
-                    </div>
+                <div>
+                    <p class="pb-3">Référence : 1695-V</p>
+                    <h1 class="title">
+                        {{$ad->title}}
+                    </h1>
+                    <p>Publié le 1er juillet 2023</p>
                 </div>
-                <div class="is-flex is-flex-wrap-wrap gap-3">
-                    <div class="w-50">
-                        <strong>Surface : </strong>
-                        42 mètres
+                <div>
+                    <div class="is-flex is-justify-content-space-between pb-4">
+                        <b-tag type="is-warning" size="is-medium"
+                               class="has-text-weight-bold is-uppercase">{{ $ad->formatted_type }}
+                        </b-tag>
+                        <div class="title is-5" style="color: #A74B2B">
+                            {{ $ad->formatted_price }}
+                        </div>
                     </div>
-                    <div class="w-50">
-                        <strong>Région : </strong>
-                        Auvergne-Rhône-Alpes
-                    </div>
-                    <div class="w-50">
-                        <strong>Altitude : </strong>
-                        750 mètres
-                    </div>
-                    <div class="w-50">
-                        <strong>Département : </strong>
-                        Rhône
+                    <div class="is-flex is-flex-wrap-wrap gap-3 is-justify-content-space-between">
+                        <div class="w-50">
+                            <strong>Surface : </strong>
+                            42 mètres
+                        </div>
+                        <div class="w-50">
+                            <strong>Région : </strong>
+                            Auvergne-Rhône-Alpes
+                        </div>
+                        <div class="w-50">
+                            <strong>Altitude : </strong>
+                            750 mètres
+                        </div>
+                        <div class="w-50">
+                            <strong>Département : </strong>
+                            Rhône
+                        </div>
                     </div>
                 </div>
                 <div class="buttons">
@@ -150,13 +159,24 @@
                 <a class="is-underlined is-hidden-touch">Signaler un abus</a>
             </div>
             <div class="columns columns-slider is-mobile">
-{{--                @foreach ($ads as $ad)--}}
-{{--                    @include("pages.homepage_ad_thumbnail")--}}
-{{--                @endforeach--}}
+                {{--                @foreach ($ads as $ad)--}}
+                {{--                    @include("pages.homepage_ad_thumbnail")--}}
+                {{--                @endforeach--}}
             </div>
         </div>
     </section>
-
+    <section class="bg-beige is-flex is-justify-content-center newsletter mt-6">
+        <div class="columns container is-desktop p-3-mobile">
+            <div class="column px-0 is-three-fifths is-flex is-flex-direction-column is-justify-content-center">
+                <h2 class="title has-text-centered has-text-left-desktop mb-5">Newsletter Terre de Liens</h2>
+                <p class="has-text-centered has-text-left-desktop">Restez informé des campagnes et de l'actualité en
+                    vous inscrivant à la newsletter.</p>
+            </div>
+            <div class="column is-flex is-flex-direction-column is-justify-content-center">
+                <newsletter :csrf_token="'{{ csrf_token() }}'"></newsletter>
+            </div>
+        </div>
+    </section>
 @endsection
 
 @section('script')

@@ -147,6 +147,7 @@
             <h1 class="title is-1 has-text-link has-text-centered">{{$ad->title}}</h1>
 
             <div>
+
                 @if($ad->type === 'landSeekAd')
                     @include('pages.ads.partials.landSeek.landSeekShow')
                 @endif

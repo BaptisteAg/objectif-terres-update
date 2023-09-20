@@ -1,22 +1,19 @@
-@if(auth()->user()->role === 1)
-    <div class="content ml-20 mt-10">
-        <a class="text_size large" href="{{route('moderator.index')}}">
-            <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-            <span>Retour à l'espace modérateur </span>
-        </a>
-    </div>
-@elseif(auth()->user()->role === 2 )
-    <div class="content ml-20 mt-10">
-        <a class="text_size large" href="{{route('advisor.index')}}">
-            <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-            <span>Retour à l'espace primo-accueillant </span>
-        </a>
-    </div>
-@elseif(auth()->user()->role === 3)
-    <div class="content ml-20 mt-10">
-        <a class="text_size large" href="{{route('supervisor.index')}}">
-            <span class="icon is-medium"><i class="fas fa-arrow-left"></i></span>
-            <span>Retour au tableau de bord </span>
-        </a>
-    </div>
+@php
+    $roles = [
+        1 => ['route' => 'moderator.index', 'text' => 'Retour à l\'espace modérateur'],
+        2 => ['route' => 'advisor.index', 'text' => 'Retour à l\'espace primo-accueillant'],
+        3 => ['route' => 'supervisor.index', 'text' => 'Retour au tableau de bord'],
+    ];
+    $userRole = auth()->user()->role;
+@endphp
+
+@if(array_key_exists($userRole, $roles))
+    <a href="{{route($roles[$userRole]['route'])}}">
+        <span class="icon-text">
+            <span class="icon is-medium is-align-items-baseline">
+                <i class="mdi mdi-24px mdi-arrow-left"></i>
+            </span>
+            <span>{{$roles[$userRole]['text']}}</span>
+        </span>
+    </a>
 @endif
