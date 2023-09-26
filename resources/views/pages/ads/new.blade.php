@@ -157,18 +157,3 @@
         <pre>{{var_export($old, true)}}</pre>
     @endif
 @endsection
-
-@section('script')
-    <script>
-        const vuePage = new Vue({
-            el: '#vue-render',
-            name: 'content',
-            data() {
-                return {
-                    loading: false
-                }
-            }
-        });
-    </script>
-@endsection
-
