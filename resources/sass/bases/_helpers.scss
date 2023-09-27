@@ -107,6 +107,10 @@ $flex-aligns: ('c': 'center', 'fs': 'flex-start', 'fe': 'flex-end', 'st': 'stret
   flex: 0 0 auto;
 }
 
+.flex-same-size {
+  flex: 1 1 0px;
+}
+
 .three-dots {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -123,4 +127,8 @@ $flex-aligns: ('c': 'center', 'fs': 'flex-start', 'fe': 'flex-end', 'st': 'stret
 
 .mw-30 {
   max-width: 30%;
+}
+
+.w-30 {
+  width: 30%;
 }
