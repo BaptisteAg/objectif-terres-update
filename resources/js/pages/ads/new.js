@@ -3,9 +3,9 @@ import LandOfferNewAd from './components/land-offer-new-ad'
 import JobOfferNewAd from './components/job-offer-new-ad'
 import JobSeekNewAd from './components/job-seek-new-ad'
 import AdTypeSelect from '../../components/AdTypeSelect'
+import OldAdTypeSelect from '../../components/AdTypeSelect.v1.vue'
 
 import Vue from 'vue'
-
 
 
 Vue.component('new-ad', {
@@ -14,7 +14,8 @@ Vue.component('new-ad', {
         'new-land-offer-ad': LandOfferNewAd,
         'new-job-offer-ad': JobOfferNewAd,
         'new-job-seek-ad': JobSeekNewAd,
-        AdTypeSelect
+        AdTypeSelect,
+        OldAdTypeSelect
     },
     props: {
         oldAdTypeSelected: String,
@@ -26,7 +27,7 @@ Vue.component('new-ad', {
             createFromSupportRequest: null,
             createFromAd: null,
             enabledForm: null,
-            formAction : this.getPublishAction()
+            formAction: this.getPublishAction()
         }
     },
     mounted() {
@@ -67,9 +68,11 @@ Vue.component('new-ad', {
          * @param {Element} $affix
          */
         document.querySelectorAll('.affix-wizard-footer[data-move-to-ref]').forEach($affix => {
-            const $container = this.$refs[$affix.dataset.moveToRef].$el;
-            const $removedAffix = $affix.parentElement.removeChild($affix);
-            $container.appendChild($removedAffix);
+            const $container = this.$refs[$affix.dataset.moveToRef]?.$el;
+            if ($container) {
+                const $removedAffix = $affix.parentElement.removeChild($affix);
+                $container.appendChild($removedAffix);
+            }
         });
     },
     watch: {
@@ -98,8 +101,7 @@ Vue.component('new-ad', {
 
                 if (this.formAction === this.publishAction && !confirm(text)) {
                     this.isSubmitting = false;
-                }
-                else {
+                } else {
                     this.isSubmitting = true;
                     this.$el.submit()
                 }

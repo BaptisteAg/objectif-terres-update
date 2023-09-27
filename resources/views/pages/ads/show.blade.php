@@ -26,9 +26,13 @@
             </b-breadcrumb-item>
         </b-breadcrumb>
 
-        @include('components.back-links')
+        @auth
+            @if(auth()->user()->role >= 1 )
+                @include('components.back-links')
+            @endif
+        @endauth
 
-        @include('pages.ads.partials.moderation-modal')
+        {{--        @include('pages.ads.partials.moderation-modal')--}}
 
 
         <div class="columns">
