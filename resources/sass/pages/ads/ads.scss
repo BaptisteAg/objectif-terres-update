@@ -31,7 +31,7 @@
   }
 
   .vue-form-wizard {
-    .wizard-header {
+    .wizard-header, .wizard-card-footer {
       padding: 0;
     }
 
@@ -49,6 +49,9 @@
       }
     }
 
+    .wizard-btn {
+      padding: 0;
+    }
   }
 
   .clearfix:after {

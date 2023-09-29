@@ -21,19 +21,19 @@
                     annonces certifiées</a>
             </div>
         </div>
-{{--        @if(!$adsPartner->isEmpty())--}}
-{{--            <div class="columns columns-slider is-mobile">--}}
-{{--                @foreach ($adsPartner as $ad)--}}
-{{--                    @include("pages.homepage_ad_thumbnail")--}}
-{{--                @endforeach--}}
-{{--            </div>--}}
-{{--        @else--}}
-{{--            <article class="message is-danger">--}}
-{{--                <div class="message-body">--}}
-{{--                    Aucune annonce à la une--}}
-{{--                </div>--}}
-{{--            </article>--}}
-{{--        @endif--}}
+        @if(!$adsPartner->isEmpty())
+            <div class="columns columns-slider is-mobile">
+                @foreach ($adsPartner as $ad)
+                    @include("pages.homepage_ad_thumbnail")
+                @endforeach
+            </div>
+        @else
+            <article class="message is-danger">
+                <div class="message-body">
+                    Aucune annonce à la une
+                </div>
+            </article>
+        @endif
     </section>
 
     <section class="container mt-5">

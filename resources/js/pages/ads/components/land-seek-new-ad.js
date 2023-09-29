@@ -10,6 +10,7 @@ import ZoneSelect from '../../../components/ZoneSelect'
 import AdTypeSelect from '../../../components/AdTypeSelect'
 import MultiSelect from "../../../components/MultiSelect";
 import CustomCheckbox from "../../../components/CustomCheckbox"
+import ListSelect from "../../../components/ListSelect"
 import DocumentsUpload from "../../../components/DocumentsUpload"
 
 export default Vue.extend({
@@ -23,7 +24,8 @@ export default Vue.extend({
         MultiSelect,
         CustomCheckbox,
         TextAreaCounter,
-        DocumentsUpload
+        DocumentsUpload,
+        ListSelect
     },
     data() {
         let v = this.oldValues;
