@@ -21654,6 +21654,10 @@ BACKGROUNDS
   width: 30%;
 }
 
+.w-100 {
+  width: 100%;
+}
+
 footer {
   background-color: #E3CFB5;
 }
@@ -24153,7 +24157,8 @@ ACCORDEON
   background: rgba(87, 158, 165, 0.6);
 }
 
-#new-ad .vue-form-wizard .wizard-header {
+#new-ad .vue-form-wizard .wizard-header,
+#new-ad .vue-form-wizard .wizard-card-footer {
   padding: 0;
 }
 
@@ -24170,6 +24175,10 @@ ACCORDEON
   display: block;
   width: 100%;
   animation: fadeInRight 0.5s;
+}
+
+#new-ad .vue-form-wizard .wizard-btn {
+  padding: 0;
 }
 
 #new-ad .clearfix:after {

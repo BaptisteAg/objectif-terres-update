@@ -1,12 +1,60 @@
-<div id="land_seek_form" class="form-container">
+<div id="land_seek_form" class="form-container pt-7">
     <form-wizard
             title=""
             subtitle=""
             step-size="xs"
             @on-complete="$emit('form-complete')"
             @on-change="nextStep"
-            color="#579ea5"
-            ref="formWizard">
+            color="#A74B2B"
+            ref="formWizard"
+            class="is-flex is-flex-direction-column">
+
+        <tab-content title="Informations du territoire">
+            {!! Form::label('land_seek[installation_type_id]', "Vous vous installez", ['class' => 'label']) !!}
+            <section class="is-flex gap-5">
+                @foreach($installationTypes as $i => $installationType)
+                    <div>
+                        {!! Form::radio('land_seek[installation_type_id]', $installationType["id"], null, [':disabled' => 'isInputDisabled', 'id' => 'installation_type_id_'.$installationType["id"]]) !!}
+                        {!! Form::label('installation_type_id_'.$installationType["id"], $installationType["name"]) !!}
+                    </div>
+                @endforeach
+            </section>
+            <section class="mb-7">
+                <zone-select
+                        name="locationable"
+                        label="{{$label ?? "Zones de recherche"}}"
+                        radius-name="locationable_radius"
+                        json-name="selected_zones"
+                        ref="selectedZones"
+                        v-model="formInput.selectedZones"
+                        radius-value="{{$old['locationable_radius'] ?? 0}}"
+                        :vuelidate="$v.formInput.selectedZones"
+                        :disabled="isInputDisabled">
+                </zone-select>
+            </section>
+            {!! Form::label('land_seek_farms_and_buildings', 'Présence d’habitations ?', ['class' => 'label']); !!}
+            <section class="mb-6 is-flex gap-5">
+                @foreach($requirements as $requirement)
+                    <div>
+                        {!! Form::radio('land_seek[buildings][1]', $requirement->id, null, [':disabled' => 'isInputDisabled', 'id' => 'buildings_1_'.$requirement->id]) !!}
+                        {!! Form::label('buildings_1_'.$requirement->id,  $requirement->label ) !!}
+                    </div>
+                @endforeach
+            </section>
+            {!! Form::label('land_seek_farms_and_buildings', 'Présence de bâtiments agricoles ?', ['class' => 'label']); !!}
+            <section class="is-flex gap-5">
+                @foreach($requirements as $requirement)
+                    <div>
+                        {!! Form::radio('land_seek[buildings][2]', $requirement->id, null, [':disabled' => 'isInputDisabled', 'id' => 'buildings_2_'.$requirement->id]) !!}
+                        {!! Form::label('buildings_2_'.$requirement->id,  $requirement->label ) !!}
+                    </div>
+                @endforeach
+            </section>
+        </tab-content>
+
+        <tab-content title="Informations du territoire">
+            @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_seek[production_genres][]', 'productionGenres' => $productionGenresWithOther])
+        </tab-content>
 
         <tab-content title="Localisation" icon="ti-location-arrow">
             @include('pages.ads.partials.inputs.locations')
@@ -319,13 +367,13 @@
                             </div>
                         @endif
 
-						<?php
-						if (empty($isSupportRequest)) {
-							$tooltip = "Pour les cédants ou propriétaires, l’expérience est un plus ! Détaillez ici vos expériences professionnelles agricoles, stages ou bénévolat sur des fermes et vos diplômes agricoles.";
-						} else {
-							$tooltip = "Détaillez ici vos formations, expériences professionnelles agricoles, stages ou bénévolat sur des fermes et vos diplômes agricoles.";
-						}
-						?>
+                        <?php
+                        if (empty($isSupportRequest)) {
+                            $tooltip = "Pour les cédants ou propriétaires, l’expérience est un plus ! Détaillez ici vos expériences professionnelles agricoles, stages ou bénévolat sur des fermes et vos diplômes agricoles.";
+                        } else {
+                            $tooltip = "Détaillez ici vos formations, expériences professionnelles agricoles, stages ou bénévolat sur des fermes et vos diplômes agricoles.";
+                        }
+                        ?>
                         <div class="field">
                             <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
                                    data-tooltip="{{$tooltip}}">
@@ -383,7 +431,7 @@
             </section>
         </tab-content>
 
-        @include('pages.ads.partials.form-wizard-footer', ["moveToRef"=>"land_seek"])
+        @include('pages.ads.partials.new-form-wizard-footer', ["moveToRef"=>"land_seek"])
 
     </form-wizard>
 </div>

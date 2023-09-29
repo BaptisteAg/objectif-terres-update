@@ -8,8 +8,8 @@
 @endif
 
 @section('main-content')
-    <section class="container">
-        <div id="vue-render">
+    <section class="container is-flex is-flex-direction-column is-align-items-center">
+        <div id="vue-render" class="column is-four-fifths">
             @include('components.loader', ['text' => 'Chargement du formulaire'])
             <new-ad id="new-ad"
                     inline-template
@@ -44,6 +44,33 @@
                                     :is-support-request="{{empty($isSupportRequest)?'false':'true'}}">
                     </ad-type-select>
 
+                    @if(empty($old["id"]))
+                        @if(empty($isSupportRequest) && !empty($supportRequests) && count($supportRequests))
+                            <section class="has-text-centered" v-if="!adTypeSelected">
+                                Vous pouvez également remplir votre annonce à partir des champs de votre demande
+                                d'accompagnement :<br>
+                                <select class="select" v-model="createFromSupportRequest">
+                                    <option></option>
+                                    @foreach($supportRequests as $supportRequest)
+                                        <option value="{{$supportRequest->id}}">{{$supportRequest->title}}</option>
+                                    @endforeach
+                                </select>
+                            </section>
+                        @endif
+                        @if(!empty($isSupportRequest) && !empty($ads) && count($ads))
+                            <section class="has-text-centered" v-if="!adTypeSelected">
+                                Vous pouvez également remplir votre demande d'accompagnement à partir des champs de
+                                votre annonce :<br>
+                                <select class="select" v-model="createFromAd">
+                                    <option></option>
+                                    @foreach($ads as $ad)
+                                        <option value="{{$ad->id}}">{{$ad->title}}</option>
+                                    @endforeach
+                                </select>
+                            </section>
+                        @endif
+                    @endif
+
                     <new-land-seek-ad inline-template
                                       v-show="adTypeSelected === 'land_seek'"
                                       :is-input-disabled="adTypeSelected !== 'land_seek'"
@@ -66,7 +93,7 @@
     </section>
 
 
-    <section style="padding-top:50px;padding-bottom:100px;">
+    <section style="padding-top:50px;padding-bottom:100px;" v-if="false">
         {{--        <div class="columns">--}}
         {{--            <div class="column"></div>--}}
         {{--            <div class="column is-half">--}}
@@ -118,9 +145,9 @@
                     @endif
 
                     <old-ad-type-select v-model="adTypeSelected"
-                                    name="ad_type"
-                                    :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
-                                    :is-new="{{ empty($old["id"]) ? 'true' : 'false'}}">
+                                        name="ad_type"
+                                        :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
+                                        :is-new="{{ empty($old["id"]) ? 'true' : 'false'}}">
                     </old-ad-type-select>
 
                     @if(empty($old["id"]))
@@ -163,7 +190,7 @@
                                       @click-save-button="onSaveClick"
                                       @click-publish-button="onPublishClick"
                                       ref="land_seek">
-                        @include('pages.ads.partials.landSeek.landSeekNewAd')
+                        @include('pages.ads.partials.landSeek.landSeekNewAdv1')
                     </new-land-seek-ad>
 
                     <new-land-offer-ad inline-template

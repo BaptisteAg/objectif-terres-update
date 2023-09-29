@@ -1,3 +1,4 @@
+<list-select :production-genres="{{$productionGenres}}"></list-select>
 <div class="checkboxes-production-genre">
     <div class="columns">
         @foreach($productionGenres as $i => $productionGenre)
@@ -10,7 +11,7 @@
                         :exclusive-values="['1']"
                         ref="{{ $ref ?? "productionGenres" }}">
 
-{{--                    <i class="fa fa-home"></i>--}}
+                    {{--                    <i class="fa fa-home"></i>--}}
                     <span style="font-size:16px">
                         {{ $productionGenre["name"] }}
                     </span>
@@ -19,7 +20,7 @@
             @if($i % 2)
     </div>
     <div class="columns">
-            @endif
+        @endif
         @endforeach
     </div>
 </div>
