@@ -147,7 +147,7 @@
             <h1 class="title is-1 has-text-link has-text-centered">{{$ad->title}}</h1>
 
             <div>
-
+                <h1 class="title is-1 bg-beige">{{$ad->type}}</h1>
                 @if($ad->type === 'landSeekAd')
                     @include('pages.ads.partials.landSeek.landSeekShow')
                 @endif
@@ -255,43 +255,43 @@
     </script>
     {{--    @endif--}}
 
-    <script>
-        let vueMessageContainer = document.querySelector('#vue-messages');
-        if (vueMessageContainer !== null) {
-            const vueThreads = new Vue({
-                el: '#vue-messages',
-                name: 'content'
-            });
-        }
-
-        @auth()
-            @if(auth()->user()->role >= 1 and !$ad->project()->exists())
-                const VueModerationModal = new Vue({
-                    el: "#vue-moderation-modal",
+    {{--    <script>
+            let vueMessageContainer = document.querySelector('#vue-messages');
+            if (vueMessageContainer !== null) {
+                const vueThreads = new Vue({
+                    el: '#vue-messages',
                     name: 'content'
                 });
-            @endif
-        @endauth
-    </script>
+            }
+
+            @auth()
+                @if(auth()->user()->role >= 1 and !$ad->project()->exists())
+                    const VueModerationModal = new Vue({
+                        el: "#vue-moderation-modal",
+                        name: 'content'
+                    });
+                @endif
+            @endauth
+        </script>--}}
 
     <script defer>
 
         let locationsAd = [];
 
         @foreach($ad->regions as $location)
-            locationsAd.push("{{$location->name}}");
+        locationsAd.push("{{$location->name}}");
         @endforeach
 
         @foreach($ad->departments as $location)
-            locationsAd.push("{{$location->name}}");
+        locationsAd.push("{{$location->name}}");
         @endforeach
 
         @foreach($ad->cities as $location)
-            @if($ad->landOfferAd && !$ad->landOfferAd->accept_use_zip_code)
-                locationsAd.push("{{$location->department->name}}");
-            @else
-                locationsAd.push("{{$location->name}};{{$location->zip_code}}");
-            @endif
+        @if($ad->landOfferAd && !$ad->landOfferAd->accept_use_zip_code)
+        locationsAd.push("{{$location->department->name}}");
+        @else
+        locationsAd.push("{{$location->name}};{{$location->zip_code}}");
+        @endif
         @endforeach
         showAdMapInit('map_ad', locationsAd);
     </script>

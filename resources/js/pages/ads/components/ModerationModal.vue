@@ -1,6 +1,6 @@
 <template>
   <form @submit="formSubmit">
-    <div class="modal is-active">
+    <div class="modal is-active p-8">
       <div class="modal-background" @click="$emit('close')"></div>
       <div class="modal-content">
         <div class="card">

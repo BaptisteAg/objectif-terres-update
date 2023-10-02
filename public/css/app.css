@@ -21658,6 +21658,10 @@ BACKGROUNDS
   width: 100%;
 }
 
+z-99 {
+  z-index: 99;
+}
+
 footer {
   background-color: #E3CFB5;
 }
@@ -24272,6 +24276,10 @@ ACCORDEON
   padding-bottom: 30px;
   border: none;
   transition: all 0.3s ease-in-out;
+}
+
+div[role=dialog] .animation-content {
+  z-index: 99;
 }
 
 #carousel-quiNousSommes .media {
