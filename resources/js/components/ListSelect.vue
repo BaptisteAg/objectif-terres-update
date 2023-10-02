@@ -8,9 +8,9 @@
               :icon-right="active ? 'menu-up' : 'menu-down'"/>
         </template>
 
-        <b-dropdown-item v-for="(productionGenre, index) in productionGenres"
+        <b-dropdown-item :disabled="isInputDisabled" v-for="(productionGenre, index) in productionGenres"
                          :key="index"
-                         :value="productionGenre.name"
+                         :value="productionGenre"
                          aria-role="listitem">
           {{ productionGenre.name }}
         </b-dropdown-item>
@@ -27,16 +27,23 @@
             closable
             @close="removeSelectedProductions(selectedProductionGenre)"
         >
-          {{ selectedProductionGenre }}
+          {{ selectedProductionGenre.name }}
         </b-tag>
       </b-taglist>
     </div>
-
+    <input v-for="selectedProductionGenre in selectedProductionGenres" type="hidden" :name="name"
+           :value="selectedProductionGenre.id">
   </div>
 </template>
 <script>
 export default {
-  props: ['productionGenres'],
+  props: {
+    name: String,
+    productionGenres: {
+      type: Array,
+      required: true
+    },
+  },
   data() {
     return {
       selectedProductionGenres: [],
@@ -52,9 +59,21 @@ export default {
       if (this.selectedProductionGenres.length === 0) {
         return 'Sélectionner un genre de production'
       } else if (this.selectedProductionGenres.length === 1) {
-        return this.selectedProductionGenres[0]
+        return this.selectedProductionGenres[0].name
       } else {
         return this.selectedProductionGenres.length + ' genres de production sélectionnés'
+      }
+    },
+    checked: {
+      get() {
+        return Array.isArray(this.value) ? this.value.map(v => v.toString()) : this.value.toString()
+      },
+      set(newValue) {
+        if (Array.isArray(newValue)) {
+          this.$emit('input', newValue);
+        } else {
+          this.$emit('input', this.inputValue)
+        }
       }
     }
   },

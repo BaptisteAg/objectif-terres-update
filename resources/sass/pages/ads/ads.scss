@@ -162,3 +162,7 @@
   &.button.is-link:hover, &.button.is-link.is-hovered {
   }
 }
+
+div[role=dialog] .animation-content {
+  z-index: 99;
+}

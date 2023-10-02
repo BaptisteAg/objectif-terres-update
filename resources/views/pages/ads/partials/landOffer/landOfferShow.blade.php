@@ -24,32 +24,32 @@
                         </p>
                     @endif
                 </div>
-                    @if($ad->accept_share_contact_infos === 1)
-                        <div class="content">
-                            <p><span class="is-size-5 ">Publié par : </span>
-                                @if(!empty($ad->userPp))
-                                    @auth()
-                                        @if(auth()->user()->role >= 1 )
-                                            <span class="subtitle">
+                @if($ad->accept_share_contact_infos === 1)
+                    <div class="content">
+                        <p><span class="is-size-5 ">Publié par : </span>
+                            @if(!empty($ad->userPp))
+                                @auth()
+                                    @if(auth()->user()->role >= 1 )
+                                        <span class="subtitle">
                                                 <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->pp_display_name}}</a>
                                             </span>
-                                        @elseif(auth()->user()->role < 1)
-                                            <span class="subtitle">
+                                    @elseif(auth()->user()->role < 1)
+                                        <span class="subtitle">
                                                 {{ $ad->pp_display_name}}
                                             </span>
-                                        @endif
-                                    @endauth
-                                    @guest()
-                                        <span class="subtitle">
+                                    @endif
+                                @endauth
+                                @guest()
+                                    <span class="subtitle">
                                             {{ $ad->pp_display_name}}
                                         </span>
-                                    @endguest()
-                                @else
-                                    <span class="subtitle">[Utilisateur supprimé]</span>
-                                @endif
-                            </p>
-                        </div>
-                    @endif
+                                @endguest()
+                            @else
+                                <span class="subtitle">[Utilisateur supprimé]</span>
+                            @endif
+                        </p>
+                    </div>
+                @endif
                 {{--				<div class="content">--}}
                 {{--					<p><span class="is-size-5 is-capitalized has-text-black">Catégorie : </span><span--}}
                 {{--								class="subtitle">{{$ad->ad_type_full_name}}</span></p>--}}
@@ -162,8 +162,8 @@
                         @endif
                     @else
                         <p>
-                        <span class="is-size-5  ">Prix : </span>
-                        <span class="subtitle ">
+                            <span class="is-size-5  ">Prix : </span>
+                            <span class="subtitle ">
                             Non renseigné
                         </span>
                         </p>
@@ -227,7 +227,7 @@
 
                             @if($ad->landOfferAd->production_type_wanted_add)
                                 @if($ad->landOfferAd->productionGenresPossible->count())
-                                    ,
+                                    ,,
                                 @endif
                                 {{ ucfirst($ad->landOfferAd->production_type_wanted_add) }}
                             @endif
@@ -241,13 +241,13 @@
                     <p class="has-text-link is-size-5"> Certification des terres</p>
 
                     <p class="">
-                        @foreach($ad->landOfferAd->bioCertifications as $bioCertification)
-                            @if($bioCertification->icon == "")
-                                <span>{{$bioCertification->name }}</span>
-                            @endif
-                            <img src="{{ $bioCertification->icon }}">
+                    @foreach($ad->landOfferAd->bioCertifications as $bioCertification)
+                        @if($bioCertification->icon == "")
+                            <p>{{ $bioCertification->name }}</p>
+                        @endif
+                        <img alt="{{ $bioCertification->name }}" src="{{ $bioCertification->icon }}">
                         @endforeach
-                    </p>
+                        </p>
                 </div>
             @endif
 
@@ -262,13 +262,13 @@
                 </p>
             </div>
             @if($ad->landOfferAd->water_access === 1)
-            <div class="mb-20">
-                <p class="has-text-link is-size-5 ">Accès à l'eau</p>
+                <div class="mb-20">
+                    <p class="has-text-link is-size-5 ">Accès à l'eau</p>
 
-                <p class="">
-                    {{$ad->waterAccess}}
-                </p>
-            </div>
+                    <p class="">
+                        {{$ad->waterAccess}}
+                    </p>
+                </div>
             @endif
 
 
@@ -283,10 +283,10 @@
         @endif
         <div class="content">
             @if($ad->landOfferAd->sau_description || $ad->landOfferAd->has_houses || $ad->landOfferAd->has_buildings)
-            <h4 class="title is-3"> Description du foncier</h4>
+                <h4 class="title is-3"> Description du foncier</h4>
 
                 @if($ad->landOfferAd->sau_description)
-                <p>  {!! nl2br($ad->landOfferAd->sau_description ?? "") !!}</p>
+                    <p>  {!! nl2br($ad->landOfferAd->sau_description ?? "") !!}</p>
                 @endif
 
                 @if($ad->landOfferAd->has_houses || $ad->landOfferAd->has_buildings)

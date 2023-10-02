@@ -30,10 +30,13 @@
             @if(auth()->user()->role >= 1 )
                 @include('components.back-links')
             @endif
+
+            @if($ad->isProject() && auth()->user()->role >= 2)
+                @include ('pages.ads.partials.attribution-project-options')
+            @elseif(! $ad->isProject())
+                @include('pages.ads.partials.moderator-options')
+            @endif
         @endauth
-
-        {{--        @include('pages.ads.partials.moderation-modal')--}}
-
 
         <div class="columns">
             <div class="column is-flex is-flex-direction-column is-justify-content-space-between">
@@ -56,6 +59,7 @@
                     <h1 class="title">
                         {{$ad->title}}
                     </h1>
+                    <
                     <p>Publié le 1er juillet 2023</p>
                 </div>
                 <div>
@@ -78,7 +82,11 @@
                         </div>
                         <div class="w-50">
                             <strong>Altitude : </strong>
-                            750 mètres
+                            @if($ad->landOfferAd->altitude)
+                                {{$ad->landOfferAd->altitude }} mètres
+                            @else
+                                Non renseignée
+                            @endif
                         </div>
                         <div class="w-50">
                             <strong>Département : </strong>
@@ -86,7 +94,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="buttons">
+                <div class="buttons mt-3-mobile">
                     <b-button rounded type="is-danger">
                         Répondre à l’annonce
                     </b-button>
@@ -101,24 +109,68 @@
         <div class="is-flex is-flex-direction-column gap-6 bg-beige py-7 px-8 objT-border p-6-mobile mx-3-mobile px-1-mobile">
             <div>
                 <h3 class="title is-4">Production principale</h3>
-                <b-tag type="is-primary" rounded size="is-medium">Medium</b-tag>
+                <b-taglist>
+                    @if($ad->landOfferAd->productionGenres->count() || $ad->landOfferAd->production_type_add)
+                        @foreach($ad->landOfferAd->productionGenres->pluck('name') as $productionGenre)
+                            <b-tag type="is-primary" rounded size="is-medium">
+                                {{$productionGenre}}
+                            </b-tag>
+                        @endforeach
+                        @if($ad->landOfferAd->production_type_add)
+                            <b-tag type="is-primary" rounded size="is-medium">
+                                {{ ucfirst($ad->landOfferAd->production_type_add) }}
+                            </b-tag>
+                        @endif
+                    @else
+                        <b-tag type="is-primary" rounded size="is-medium">
+                            Non renseigné
+                        </b-tag>
+                    @endif
+                </b-taglist>
             </div>
             <div>
                 <h3 class="title is-4">Production secondaires et envisageables</h3>
                 <b-taglist>
-                    <b-tag type="is-primary" rounded size="is-medium">Default</b-tag>
-                    <b-tag type="is-primary" rounded size="is-medium">Medium</b-tag>
-                    <b-tag type="is-primary" rounded size="is-medium">Large</b-tag>
+                    @if($ad->landOfferAd->productionGenresPossible->count() || $ad->landOfferAd->production_type_wanted_add)
+                        @foreach($ad->landOfferAd->productionGenresPossible->pluck('name') as $productionGenresPossible)
+                            <b-tag type="is-primary" rounded size="is-medium">
+                                {{$productionGenresPossible}}
+                            </b-tag>
+                        @endforeach
+                        @if($ad->landOfferAd->production_type_wanted_add)
+                            <b-tag type="is-primary" rounded size="is-medium">
+                                {{ ucfirst($ad->landOfferAd->production_type_wanted_add) }}
+                            </b-tag>
+                        @endif
+                    @else
+                        <b-tag type="is-primary" rounded size="is-medium">
+                            Non renseigné
+                        </b-tag>
+                    @endif
                 </b-taglist>
+
             </div>
             <div class="is-flex is-flex-wrap-wrap gap-6-mobile">
                 <div class="w-50">
                     <h3 class="title is-4">Certification des terres</h3>
-                    <p></p>
+                    @if($ad->landOfferAd->bioCertifications->count() || $ad->landOfferAd->production_type_add)
+                        @foreach($ad->landOfferAd->bioCertifications as $bioCertification)
+                            @if($bioCertification->icon == "")
+                                <p>{{$bioCertification->name }}</p>
+                            @endif
+                            <img src="{{ $bioCertification->icon }}">
+                        @endforeach
+                    @else
+                        <p>Aucune</p>
+                    @endif
                 </div>
                 <div class="w-50">
                     <h3 class="title is-4">Accès à l’eau</h3>
-                    <p>Oui</p>
+                    @if($ad->landOfferAd->water_access === 1)
+                        <p>{{ucfirst($ad->waterAccess)}}</p>
+                    @else
+                        <p>Non renseigné</p>
+                    @endif
                 </div>
             </div>
             <div class="is-flex is-flex-wrap-wrap gap-6-mobile">
@@ -128,6 +180,14 @@
                 </div>
                 <div class="w-50">
                     <h3 class="title is-4">Présence de bâtiments agricoles</h3>
+                    @if($ad->landOfferAd->has_buildings)
+                        <p>{{$ad->landOfferAd->building->description ?? "Non renseignée"}}</p>
+                        @if($isSupportRequest)
+                            , surface totale : {{empty($ad->landOfferAd->building->surface) ? "Non renseignée" : $ad->landOfferAd->building->surface.'m²'}}
+                        @endif
+                    @else
+                        <p>Sans bâtiment agricole</p>
+                    @endif
                     <p>Oui</p>
                 </div>
             </div>
@@ -162,11 +222,11 @@
                 </div>
                 <a class="is-underlined is-hidden-touch">Signaler un abus</a>
             </div>
-            <div class="columns columns-slider is-mobile">
-                {{--                @foreach ($ads as $ad)--}}
-                {{--                    @include("pages.homepage_ad_thumbnail")--}}
-                {{--                @endforeach--}}
-            </div>
+            {{--            <div class="columns columns-slider is-mobile">--}}
+            {{--                @foreach ($ads as $ad)--}}
+            {{--                    @include("pages.homepage_ad_thumbnail")--}}
+            {{--                @endforeach--}}
+            {{--            </div>--}}
         </div>
     </section>
     <section class="bg-beige is-flex is-justify-content-center newsletter mt-6">
