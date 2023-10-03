@@ -149,16 +149,16 @@
             <div>
                 <h1 class="title is-1 bg-beige">{{$ad->type}}</h1>
                 @if($ad->type === 'landSeekAd')
-                    @include('pages.ads.partials.landSeek.landSeekShow')
+                    @include('pages.ads.partials.landSeek.landSeekShowV1')
                 @endif
                 @if($ad->type === 'landOfferAd')
-                    @include('pages.ads.partials.landOffer.landOfferShow')
+                    @include('pages.ads.partials.landOffer.landOfferShowV1')
                 @endif
                 @if($ad->type === 'jobOfferAd')
-                    @include('pages.ads.partials.jobOffer.jobOfferAdShow')
+                    @include('pages.ads.partials.jobOffer.jobOfferAdShowV1')
                 @endif
                 @if($ad->type === 'jobSeekAd')
-                    @include('pages.ads.partials.jobSeek.jobSeekAdShow')
+                    @include('pages.ads.partials.jobSeek.jobSeekAdShowV1')
                 @endif
 
                 <div id="map_ad"></div>
