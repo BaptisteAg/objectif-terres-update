@@ -127,6 +127,7 @@
                                     class="subtitle">{{$ad->landOfferAd->surface}} hectares</span></p>
                     </div>
                 @endif
+
                 <div class="content">
                     @if ($ad->landOfferAd->offerGenres->count() >=1)
                         <p>
@@ -168,6 +169,7 @@
                         </p>
                     @endif
                 </div>
+
                 @if($ad->landOfferAd->is_activity_transfer)
                     <div class="content">
                         <p>
@@ -176,6 +178,7 @@
                         </p>
                     </div>
                 @endif
+
                 @if($ad->accept_share_contact_infos === 1 && !empty($ad->userPp) && $ad->userPp->phone)
                     <div class="content">
                         <p>

@@ -14,6 +14,8 @@ Vue.Component('search', {
     }
 });*/
 
+const FavSearch = () => import('./components/FavSearch.vue');
+Vue.component('fav-search', FavSearch);
 
 window.regionMapInit  = async function (mapId, fetchOptions) {
     const mapController = await OSMapControllerFactory(mapId);

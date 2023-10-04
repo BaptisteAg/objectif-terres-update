@@ -45,8 +45,19 @@
                 <p>{{ $ad->formatted_location }}</p>
             </div>
             <div class="mt-auto is-hidden-touch is-flex">
-                <b-button tag="a" href="" class="mr-2" rounded size="is-medium"
-                          icon-right="star-outline" style="padding-left: 1em; padding-right: 1em;"></b-button>
+                @if($ad->currentUserFavoriteAd)
+                    <b-button tag="a" type="is-warning" rounded icon-left="star-outline" size="is-medium" class="mr-2"
+                              href="{{route ('favoriteAds.destroy', $ad->currentUserFavoriteAd->id)}}"
+                              style="padding-left: 1em; padding-right: 1em;">
+                    </b-button>
+                @else
+                    {!! Form::open(['route'=>'favoriteAds.create', 'method'=>'get']) !!}
+                    <input name="ad_id" value="{{$ad->id}}" type="hidden">
+                    <b-button native-type="submit" rounded icon-left="star-outline" size="is-medium" class="mr-2"
+                              style="padding-left: 1em; padding-right: 1em;">
+                    </b-button>
+                    {!! Form::close() !!}
+                @endif
                 <b-button rounded size="is-medium" tag="a"
                           href="/annonces/{{$ad->id}}">
                     Voir l'annonce

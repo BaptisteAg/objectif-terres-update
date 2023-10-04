@@ -1,5 +1,5 @@
 <template>
-  <div class="modal is-active p-8">
+  <div class="modal is-active p-8 p-0-mobile">
     <div class="modal-background" @click="$emit('close')"></div>
     <div class="modal-content">
       <div class="card">

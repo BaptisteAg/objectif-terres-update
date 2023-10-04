@@ -2,30 +2,18 @@
     @if( $ad->user_pp_id !== auth()->user()->id)
         @if(sizeof($threads) == 0)
             @if(auth()->user()->role < 1)
-                <div class="content">
-                    <div class="columns is-mobile is-centered">
-                        <div class="column is-half">
-                            <div class="box has-background-white-ter ">
-                                <article class="media">
-                                    <div class="media-content">
-                                        <div class="content has-text-centered ">
-                                            <p class="has-text-centered is-size-4">Vous souhaitez répondre à cette
-                                                annonce
-                                                ?</p>
-                                            <button id="open-modal-message-bottom-page"
-                                                    class="button is-link  is-large open-modal-message" type="button">
+
+                <p class="has-text-centered is-size-4">Vous souhaitez répondre à cette
+                    annonce
+                    ?</p>
+                <button id="open-modal-message-bottom-page"
+                        class="button is-link  is-large open-modal-message" type="button">
                                                 <span class="icon is-small">
                                                     <i class="fas fa-reply"></i>
                                                 </span>
-                                                <span> Répondre à l'annonce</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </article>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <span> Répondre à l'annonce</span>
+                </button>
+
             @endif
         @else
             <div id="vue-messages">
@@ -50,21 +38,19 @@
                                     </div>
                                 </div>
                                 <div class="columns" v-else-if="initialLoading === false">
-                                    <div class="column is-one-quarter">
-                                        <list-threads
-                                                v-model="messages"
-                                                :threads="{{json_encode($threads)}}"
-                                                :number-of-unread-messages="0"
-                                                :threads-with-unread-messages="{{$threadsWithUnreadMessages}}"
-                                                :user-role="userRole"
-                                                :is-display="isDisplay"
-                                                :is-user-logged-ad-owner="isUserAdOwner"
-                                                :user-id="{{auth()->id()}}"
-                                                :active-thread="activeThreadId"
-                                                @on-thread-click="onThreadClick"
-                                        >
-                                        </list-threads>
-                                    </div>
+                                    <list-threads
+                                            v-model="messages"
+                                            :threads="{{json_encode($threads)}}"
+                                            :number-of-unread-messages="0"
+                                            :threads-with-unread-messages="{{$threadsWithUnreadMessages}}"
+                                            :user-role="userRole"
+                                            :is-display="isDisplay"
+                                            :is-user-logged-ad-owner="isUserAdOwner"
+                                            :user-id="{{auth()->id()}}"
+                                            :active-thread="activeThreadId"
+                                            @on-thread-click="onThreadClick"
+                                    >
+                                    </list-threads>
                                     <div class="column box ">
                                         <display-message-content
                                                 v-model="messages"
@@ -111,7 +97,7 @@
                                     </div>
                                 </div>
                                 <div class="columns" v-else-if="initialLoading === false">
-                                    <div class="column is-one-quarter" v-if="isUserAdOwner">
+                                    <div v-if="isUserAdOwner">
                                         <list-threads
                                                 :threads="{{json_encode($threads)}}"
                                                 :number-of-unread-messages="0"
@@ -198,7 +184,7 @@
                             </div>
                         </div>
                         <div class="columns" v-else-if="initialLoading === false">
-                            <div class="column is-one-quarter" v-if="isUserAdOwner">
+                            <div v-if="isUserAdOwner">
                                 <list-threads
                                         :threads="{{json_encode($threads)}}"
                                         :number-of-unread-messages="0"
@@ -244,28 +230,16 @@
 @endif
 @else
     <div id="messages-display" class="content">
-        <div class="columns is-mobile is-centered">
-            <div class="column is-half">
-                <div class="box has-background-white-ter ">
-                    <article class="media">
-                        <div class="media-content">
-                            <div class="content has-text-centered ">
-                                <p class="has-text-centered is-size-4">Vous souhaitez répondre à cette
-                                    annonce
-                                    ?</p>
-                                <button id="open-modal-message-bottom-page"
-                                        class="button is-link  is-large open-modal-message">
+        <p class="has-text-centered is-size-4">Vous souhaitez répondre à cette
+            annonce
+            ?</p>
+        <button id="open-modal-message-bottom-page"
+                class="button is-link  is-large open-modal-message">
                                     <span class="icon is-small">
                                         <i class="fas fa-reply"></i>
                                     </span>
-                                    <span> Répondre à l'annonce</span>
-                                </button>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </div>
+            <span> Répondre à l'annonce</span>
+        </button>
     </div>
 @endauth
 
