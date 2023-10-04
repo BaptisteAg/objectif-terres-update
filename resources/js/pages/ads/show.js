@@ -3,6 +3,9 @@ import AdHistoryModal from "./components/AdHistoryModal";
 import ModerationModal from "./components/ModerationModal";
 import OSMapControllerFactory from "../../map";
 
+const ShowDocuments = () => import('./components/ShowDocuments.vue');
+Vue.component('vue-documents-button', ShowDocuments);
+
 Vue.component('vue-moderation-modal', {
     components: {
         ModerationModal,
@@ -11,7 +14,7 @@ Vue.component('vue-moderation-modal', {
     props: {
         responseTemplates: '',
         adId: '',
-        attributionAdId :'',
+        attributionAdId: '',
     },
     data() {
         return {
@@ -22,7 +25,7 @@ Vue.component('vue-moderation-modal', {
             formUrl: '',
             adIdShow: this.adId,
             attributionAd: this.attributionAdId,
-            historyModalOpen : false,
+            historyModalOpen: false,
         }
     },
     created() {
@@ -45,17 +48,17 @@ Vue.component('vue-moderation-modal', {
                 this.showModal = false
             }
         },
-        showHistoryModal(){
+        showHistoryModal() {
             this.historyModalOpen = true;
         },
-        showPreModerationModal(){
+        showPreModerationModal() {
             this.showPreModal = true;
         }
     },
 
 });
 
-window.showAdMapInit  = async function (id, locationsAd) {
+window.showAdMapInit = async function (id, locationsAd) {
 
 
     const mapController = await OSMapControllerFactory(id);

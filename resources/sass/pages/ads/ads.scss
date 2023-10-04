@@ -166,3 +166,11 @@
 div[role=dialog] .animation-content {
   z-index: 99;
 }
+
+
+@media (max-width: $tablet) {
+  .tag.is-primary.is-medium.is-rounded {
+    white-space: normal;
+    height: auto;
+  }
+}

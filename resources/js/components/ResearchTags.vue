@@ -17,11 +17,6 @@
         <p class="three-dots">{{ productions_searched.join(', ') || 'Non définie' }}</p>
       </div>
     </div>
-
-      <div class="is-fullwidth py-3 is-flex is-justify-content-flex-end gap-2 jc-sb-mobile mx-3-mobile">
-          <b-button rounded tag="a" href="/" type="is-danger">Modifier ma recherche</b-button>
-          <b-button rounded icon-left="heart-outline" tag="a" href="/">Sauvegarder</b-button>
-      </div>
   </div>
 </template>
 
