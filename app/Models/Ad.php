@@ -222,6 +222,14 @@ class Ad extends Model implements HasPresenter
         return $this->hasMany(FavoriteAd::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function currentUserFavoriteAd()
+    {
+        return $this->hasOne(FavoriteAd::class)->where('user_id', auth()->id());
+    }
+
     public function jobOfferAd()
     {
         return $this->hasOne(JobOfferAd::class);

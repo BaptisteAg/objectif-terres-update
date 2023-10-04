@@ -1,46 +1,98 @@
 <div class="columns">
     <div class="column is-flex is-flex-direction-column is-justify-content-space-between">
-        <div class="buttons is-justify-content-space-between is-hidden-touch">
-            <b-button rounded icon-left="share-variant-outline">
-                Partager
+
+        <div class="buttons is-justify-content-space-between">
+            <b-button class="rounded-button-mobile" rounded icon-left="share-variant-outline">
+                <span class="is-hidden-touch">Partager</span>
             </b-button>
-            <b-button rounded icon-left="download">
-                Télécharger en PDF
-            </b-button>
+
+            @if($ad->nonImageDocuments->count() > 0)
+
+                <vue-documents-button>
+                    @foreach($ad->nonImageDocuments as $document)
+                        <b-button rounded tag="a" target="_blank"
+                                  href="{{app('url')->assetFrom('https://objectif-terres.org', $document->path)}}"
+                                  icon-left="@php
+                                                  if ($document->type === "application/pdf") {
+                                                      echo 'file-pdf-box';
+                                                  } elseif ($document->type === "application/msword") {
+                                                      echo 'file-word-box';
+                                                  } else {
+                                                      echo 'file-image';
+                                                  }
+                                            @endphp">
+                            {{$document->name}}
+                        </b-button>
+                    @endforeach
+                </vue-documents-button>
+            @endif
         </div>
-        <div class="buttons is-hidden-desktop">
-            <b-button rounded icon-left="share-variant-outline" style="padding-left: 1em; padding-right: 1em;">
-            </b-button>
-            <b-button rounded icon-left="download" style="padding-left: 1em; padding-right: 1em;">
-            </b-button>
-        </div>
+
+
+        {{--Affichage ref/title/date--}}
         <div>
-            <p class="pb-3">Référence : 1695-V</p>
+            <p class="pb-3">Référence : {{$ad->id}}</p>
             <h1 class="title">
                 {{$ad->title}}
             </h1>
-            <p>Publié le 1er juillet 2023</p>
+            <p>Publié le {{ $ad->published_on}}</p>
         </div>
-        <div>
+
+        <div class="mt-3">
+
+            {{--Affichage des tags et du prix--}}
             <div class="is-flex is-justify-content-space-between pb-4">
-                <b-tag type="is-warning" size="is-medium"
-                       class="has-text-weight-bold is-uppercase">{{ $ad->formatted_type }}
-                </b-tag>
+                <b-taglist>
+                    @foreach($ad->landOfferAd->offerGenres as $offerGenre)
+                        <b-tag type="is-warning" size="is-medium"
+                               class="has-text-weight-bold is-uppercase">{{$offerGenre->id === $offerGenre::ID_VENTE ? 'Vente' : $offerGenre->name}}
+                        </b-tag>
+                    @endforeach
+                </b-taglist>
                 <div class="title is-5" style="color: #A74B2B">
-                    {{ $ad->formatted_price }}
+                    {{ !empty($ad->formatted_price) ? $ad->formatted_price : 'Prix non renseigné' }}
                 </div>
             </div>
+
+            {{--Affichage des informations détaillées de l'annonce--}}
             <div class="is-flex is-flex-wrap-wrap gap-3 is-justify-content-space-between">
+
                 @if(!empty($ad->landOfferAd->surface))
                     <div class="w-50">
                         <strong>Surface : </strong>
                         {{$ad->landOfferAd->surface}} hectares
                     </div>
                 @endif
-                <div class="w-50">
-                    <strong>Région : </strong>
-                    Auvergne-Rhône-Alpes
-                </div>
+
+                @auth
+                    @if(auth()->user()->role >= 2 && isset($ad->support_request_id_region))
+                        <div class="w-50">
+                            <strong>Région : </strong>
+                            {{$ad->supportRequestIdRegion->name}}
+                        </div>
+                    @endif
+                @endauth
+
+                @if($ad->accept_share_contact_infos === 1)
+                    <div class="w-50">
+                        <strong>Publié par : </strong>
+                        @if(!empty($ad->userPp))
+                            @auth()
+                                @if(auth()->user()->role >= 1 )
+                                    <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->pp_display_name}}</a>
+                                @elseif(auth()->user()->role < 1)
+                                    {{ $ad->pp_display_name}}
+                                @endif
+                            @endauth
+                            @guest()
+                                {{ $ad->pp_display_name}}
+                            @endguest()
+                        @else
+                            [Utilisateur supprimé]
+                        @endif
+                    </div>
+                @endif
+
                 <div class="w-50">
                     <strong>Altitude : </strong>
                     @if($ad->landOfferAd->altitude)
@@ -49,14 +101,65 @@
                         Non renseignée
                     @endif
                 </div>
-                <div class="w-50">
-                    <strong>Département : </strong>
-                    Rhône
-                </div>
+
+
+                @if($ad->cities->count())
+                    @if($ad->landOfferAd->accept_use_zip_code)
+                        <div class="w-50">
+                            <strong>Code postal :</strong>
+                            {{$ad->cities[0]->zip_code }} ({{$ad->cities[0]->name }})
+                        </div>
+                    @else
+                        <div class="w-50">
+                            @auth
+                                @if( auth()->user()->id === $ad->user_pp_id || auth()->user()->role >=3)
+                                    @if(auth()->user()->id === $ad->user_pp_id)
+                                        <strong>Code Postal (non visible pour les autres
+                                            utilisateurs): </strong>
+                                    @else
+                                        <strong>Code Postal: </strong>
+                                    @endif
+                                    {{$ad->cities[0]->zip_code }} ({{$ad->cities[0]->name }})
+                                @else
+                                    <strong>Département :</strong>
+                                    {{$ad->cities[0]->department->code }} ({{$ad->cities[0]->department->name }})
+                                @endif
+                            @else
+                                <strong>Département :</strong>
+                                {{$ad->cities[0]->department->code }} ({{$ad->cities[0]->department->name }})
+                            @endauth
+                        </div>
+                    @endif
+                @elseif($ad->departments->count())
+                    <div class="w-50">
+                        <strong>Département :</strong>
+                        {{$ad->departments[0]->code }} ({{$ad->departments[0]->name }})
+                    </div>
+                @elseif($ad->regions->count())
+                    <div class="w-50">
+                        <strong>Région : </strong>
+                        {{$ad->regions[0]->name }}
+                    </div>
+                @endif
+
+                @if($ad->landOfferAd->is_activity_transfer)
+                    <div class="w-50">
+                        <strong>Ferme en activité : </strong>
+                        {{ $ad->landOfferAd->is_activity_transfer ? "Oui" : "Non" }}
+                    </div>
+                @endif
+
+                @if($ad->accept_share_contact_infos === 1 && !empty($ad->userPp) && $ad->userPp->phone)
+                    <div class="w-50">
+                        <strong>N° de téléphone : </strong>
+                        {{$ad->userPp->phone}}
+                    </div>
+                @endif
+
             </div>
         </div>
 
-        <div class="buttons mt-3-mobile">
+        <div class="buttons mt-3">
             @include('pages.ads.partials.new-buttons-favorite-and-message')
         </div>
     </div>
@@ -64,7 +167,9 @@
         <ads-carousel :images="{{ json_encode($ad->images ?? []) }}"></ads-carousel>
     </div>
 </div>
-<div class="is-flex is-flex-direction-column gap-6 bg-beige py-7 px-8 objT-border p-6-mobile mx-3-mobile px-1-mobile">
+
+
+<div class="is-flex is-flex-direction-column gap-6 bg-beige py-7 px-8 objT-border py-6-mobile mx-3-mobile px-5-mobile">
     <div>
         <h3 class="title is-4">Production principale</h3>
         <b-taglist>
@@ -157,7 +262,6 @@
             @else
                 <p>Sans habitation</p>
             @endif
-            <p>Oui</p>
         </div>
         <div class="w-50">
             <h3 class="title is-4">Présence de bâtiments agricoles</h3>
@@ -170,7 +274,6 @@
             @else
                 <p>Sans bâtiment agricole</p>
             @endif
-            <p>Oui</p>
         </div>
     </div>
     <div>
@@ -190,12 +293,9 @@
     </div>
     <div class="is-flex is-justify-content-space-between is-align-items-center pt-3">
         <div class="buttons mb-0">
-            <b-button rounded type="is-danger">
-                Répondre à l’annonce
-            </b-button>
-            <b-button rounded icon-left="star-outline" style="padding-left: 1em; padding-right: 1em;">
-            </b-button>
+            @include('pages.ads.partials.new-buttons-favorite-and-message')
         </div>
-        <a href="https://portail-terredeliens.force.com/rhizome/s/signaler-un-abus" target="_blank" class="is-underlined is-hidden-touch">Signaler un abus</a>
+        <a href="https://portail-terredeliens.force.com/rhizome/s/signaler-un-abus" target="_blank"
+           class="is-underlined is-hidden-touch">Signaler un abus</a>
     </div>
 </div>

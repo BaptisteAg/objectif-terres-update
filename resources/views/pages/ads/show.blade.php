@@ -15,26 +15,57 @@
 
 @section('main-content')
     <section class="container">
-        <b-breadcrumb
-                separator="chevron-right"
-                size="is-small"
-        >
-            <b-breadcrumb-item href="/">Page d’accueil</b-breadcrumb-item>
-            <b-breadcrumb-item class="breadcrumb__link"
-                               href="{{route('researches.index',  ['offer_type' => $offerType, 'ad_category' => $adCategory])}}">
-                <span>{{$ad->ad_type_full_name}}</span>
-            </b-breadcrumb-item>
-        </b-breadcrumb>
+
+        @auth
+            @if(auth()->user()->id === $ad->user_pp_id)
+                @include('pages.ads.partials.new-ad-status-message-display')
+            @endif
+        @endauth
+
+        <div class="columns">
+
+            <div class="column">
+                <b-breadcrumb
+                        separator="chevron-right"
+                        size="is-small"
+                >
+                    <b-breadcrumb-item href="/">Page d’accueil</b-breadcrumb-item>
+                    <b-breadcrumb-item class="breadcrumb__link"
+                                       href="{{route('researches.index',  ['offer_type' => $offerType, 'ad_category' => $adCategory])}}">
+                        <span>{{$ad->ad_type_full_name}}</span>
+                    </b-breadcrumb-item>
+                </b-breadcrumb>
+            </div>
+
+            <div class="column">
+                @if($ad->canEdit())
+                    <div class="buttons has-addons is-right">
+                        <b-button
+                                href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ["id" => $ad->id]) }}"
+                                tag="a" icon-left="pencil" rounded>Modifier
+                        </b-button>
+                        <b-button onclick="return confirm('Êtes vous sûr·e ?')" tag="a"
+                                  href="{{  route('ads.archive', [ $ad->id]) }}" icon-left="archive-arrow-down" rounded>
+                            Archiver
+                        </b-button>
+                        <b-button onclick="return confirm('Êtes vous sûr·e ? Cette opération est irréversible.')"
+                                  tag="a" href="{{  route('ads.delete', [ $ad->id]) }}" icon-left="delete" rounded>
+                            Supprimer
+                        </b-button>
+                    </div>
+                @endif
+            </div>
+        </div>
 
         @auth
             @if(auth()->user()->role >= 1 )
                 @include('components.back-links')
-            @endif
 
-            @if($ad->isProject() && auth()->user()->role >= 2)
-                @include ('pages.ads.partials.attribution-project-options')
-            @elseif(! $ad->isProject())
-                @include('pages.ads.partials.moderator-options')
+                @if($ad->isProject() && auth()->user()->role >= 2)
+                    @include ('pages.ads.partials.attribution-project-options')
+                @elseif(! $ad->isProject())
+                    @include('pages.ads.partials.moderator-options')
+                @endif
             @endif
         @endauth
 
@@ -53,7 +84,10 @@
 
     </section>
 
-    @include('pages.ads.partials.threadsDisplay')
+    <section class="container mt-6">
+        @include('pages.ads.partials.threadsDisplay')
+    </section>
+
 
     @include('components.newsletter')
 @endsection

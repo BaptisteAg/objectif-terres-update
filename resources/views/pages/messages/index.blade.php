@@ -113,11 +113,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
     <script>
-        const vueThreads = new Vue({
-            el: '#vue-messages',
-            name: 'content'
-        });
-
         let buttons = document.querySelectorAll('.open-modal-new-message');
         buttons.forEach((button) => {
             button.addEventListener('click', function (event) {

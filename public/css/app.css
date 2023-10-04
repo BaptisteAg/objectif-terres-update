@@ -20205,6 +20205,13 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   border-radius: 12px;
 }
 
+@media (max-width: 1024px) {
+  .rounded-button-mobile {
+    padding-left: 1em !important;
+    padding-right: 0.2em !important;
+  }
+}
+
 /*
 --------------------
 TEXT COLOR
@@ -24280,6 +24287,13 @@ ACCORDEON
 
 div[role=dialog] .animation-content {
   z-index: 99;
+}
+
+@media (max-width: 1024px) {
+  .tag.is-primary.is-medium.is-rounded {
+    white-space: normal;
+    height: auto;
+  }
 }
 
 #carousel-quiNousSommes .media {
