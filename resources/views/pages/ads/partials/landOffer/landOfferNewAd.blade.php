@@ -7,6 +7,7 @@
             @on-change="nextStep"
             color="#579ea5"
             ref="formWizard">
+
         <tab-content title="Foncier" icon="ti-location-arrow">
             <section class="container">
                 <div class="columns">
