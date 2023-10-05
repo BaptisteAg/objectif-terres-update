@@ -165,12 +165,3 @@
 
     </section>
 @endsection
-
-@section('script')
-    <script>
-        const supportRequestVue = new Vue({
-            el: '#support-request-vue',
-            name: 'support-request'
-        });
-    </script>
-@endsection

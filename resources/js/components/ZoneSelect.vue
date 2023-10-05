@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mt-6">
-      <label :for="id" class="label">Vous vous installez</label>
+      <label :for="id" class="label">Localisation</label>
       <autocomplete
           :id="id"
           :placeholder="value.length ? 'Saisissez une autre localisation' : 'Saisissez au moins 2 caractères pour faire apparaître la liste'"
