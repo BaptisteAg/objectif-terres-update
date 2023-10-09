@@ -120,7 +120,8 @@ class Ad extends Model implements HasPresenter
         'support_request_territory_id',
         'is_partner',
         'created_at',
-        'origin'
+        'origin',
+        "department_id"
     ];
 
     // Detect the type based on the presence of the foreign key
