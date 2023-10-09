@@ -55,12 +55,7 @@
 
     @include('components.newsletter')
 
-    <section class="bg-beige is-flex is-justify-content-center p-3-mobile pb-6 pt-7 border-top">
-        <div class="container">
-            <h2 class="title has-text-centered has-text-left-desktop">Nos partenaires</h2>
-            <our-partners></our-partners>
-        </div>
-    </section>
+    @include('components.partnering')
 
 @endsection
 

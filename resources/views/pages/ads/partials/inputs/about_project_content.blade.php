@@ -1,13 +1,13 @@
 <?php
-    if(!isset($title)) {
-        $title = "Et si vous nous en disiez un peu plus sur votre projet ?";
-    }
+if (!isset($title)) {
+    $title = "Et si vous nous en disiez un peu plus sur votre projet ?";
+}
 ?>
-<div class="field">
-    <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
-           data-tooltip="{{$tooltip}}"
+<b-tooltip class="w-100 mb-6"
+           label="{{$tooltip}}.">
+    <label class="label is-inline-block"
            for="about_project_content">
-        {{$title}}{{ ($required ?? true) ? '*' : '' }}
+        {{$title}}{{ ($required ?? true) ? ' *' : '' }}
         <i class="fas fa-info-circle has-text-info"></i>
     </label>
 
@@ -19,4 +19,4 @@
             v-model="formInput.aboutProject"
             :vuelidate="$v.formInput.aboutProject">
     </text-area-counter>
-</div>
+</b-tooltip>

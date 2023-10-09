@@ -15,6 +15,7 @@
           {{ productionGenre.name }}
         </b-dropdown-item>
       </b-dropdown>
+      <slot></slot>
     </div>
     <div class="column">
       <b-taglist>

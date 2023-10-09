@@ -7,7 +7,7 @@
 @endsection
 
 @section('main-content')
-    <section class=" cms-page">
+    <section class="old px-3-mobile cms-page mb-6">
         <div class="container">
             <div class="row is-full">
                 @if($pageContent->count())
@@ -68,7 +68,7 @@
     {{--        @include('components.faq-frequentes')--}}
     {{--    @endif--}}
 
-    <section class=" bg-l-pearl bg-trame_champs_light">
+    <section class="old px-3-mobile bg-l-pearl bg-trame_champs_light">
         <div class="container">
             <div class="rows">
                 <div class="columns">
