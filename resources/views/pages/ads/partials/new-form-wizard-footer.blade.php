@@ -8,7 +8,7 @@
     </div>
     <div class="wizard-footer-right">
 
-        <wizard-button v-if="props.activeTabIndex > 0 && !props.isLastStep">
+        <wizard-button v-if="props.activeTabIndex > 0">
             <b-button @click.native="props.prevTab()"
                       size="is-medium"
                       rounded>Etape précédente
@@ -21,7 +21,8 @@
             </b-button>
         </wizard-button>
         <wizard-button v-else>
-            <b-button size="is-medium"
+            <b-button @click="props.nextTab"
+                      size="is-medium"
                       class="ml-2" rounded type="is-danger">
                 @if(!empty($isSupportRequest))
                     @if(!empty($old["id"]))
