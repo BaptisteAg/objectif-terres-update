@@ -127,7 +127,7 @@ class LocationService
 
         return array_merge(
             //$this->searchRegions($q),
-            $this->searchDepartments($q),
+            //$this->searchDepartments($q),
             $cities
         );
     }

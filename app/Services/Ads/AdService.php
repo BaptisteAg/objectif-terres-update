@@ -469,6 +469,14 @@ class  AdService
 
 		DB::beginTransaction();
 
+        // If department is not set, we set it to the first city's department
+        if (empty($data["department_id"]) && !empty($data["locationable"]["cities"])) {
+            // TODO : find the correct syntax for getting the city ID
+            $cityId = $data["locationable"]["cities"][0]["id"];
+            $city = City::find($cityId);
+            $data["department_id"] = $city->department->id;
+        }
+
 		if ($isUpdate) {
 			$ad = $this->repository->update($data["id"], $data);
 			$ad->attributionAd->ad_status_id = $data['ad_status'];
