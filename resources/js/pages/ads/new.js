@@ -63,6 +63,7 @@ Vue.component('new-ad', {
 
 
         /**
+         * TODO: remove ?
          * Move wizard footer to a container it can stick to ( position:sticky )
          *
          * @param {Element} $affix
