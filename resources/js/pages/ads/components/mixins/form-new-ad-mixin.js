@@ -113,7 +113,7 @@ export default {
 
                     if (isCheckbox || isMultiSelect || isHidden) {
                         let field = input.parentElement;
-                        while (!field.classList.contains('field')) {
+                        while (!field.classList?.contains('field')) {
                             field = field.parentElement
                         }
                         field.style.border = hasDirtyError ? "1px dashed red" : "none"
