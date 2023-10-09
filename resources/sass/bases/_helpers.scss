@@ -140,3 +140,12 @@ $flex-aligns: ('c': 'center', 'fs': 'flex-start', 'fe': 'flex-end', 'st': 'stret
 z-99 {
   z-index: 99;
 }
+
+.help.is-danger {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.wizard-icon {
+  display: none !important;
+}

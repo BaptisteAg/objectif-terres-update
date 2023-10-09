@@ -20372,6 +20372,18 @@ TEXT FONT
   font-weight: 500;
 }
 
+.old h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 1rem 0;
+}
+
+.old h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 1rem 0;
+}
+
 a {
   cursor: pointer;
   color: #A9652B;
@@ -21667,6 +21679,15 @@ BACKGROUNDS
 
 z-99 {
   z-index: 99;
+}
+
+.help.is-danger {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.wizard-icon {
+  display: none !important;
 }
 
 footer {

@@ -158,7 +158,6 @@ export default {
                             }, {once: true});
                         }
                     }
-
                     return true;
                 }
             });
