@@ -10,7 +10,13 @@
             class="is-flex is-flex-direction-column">
 
         <tab-content title="Terres recherchées">
-            <section class="mb-6">
+
+            <section class="mb-6 field">
+                <department-select :departments="{{ $departments }}">
+                </department-select>
+            </section>
+
+            <section class="mb-6 field">
                 <zone-select
                         name="locationable"
                         label="{{$label ?? "Zones de recherche"}}"
@@ -24,7 +30,7 @@
                 </zone-select>
             </section>
 
-            <b-tooltip class="w-100 mb-7" label="Faites glisser les curseurs pour définir la surface recherchée">
+            <b-tooltip class="w-100 mb-7 field" label="Faites glisser les curseurs pour définir la surface recherchée">
                 {!! Form::label('land_seek[surface_range_min]', 'Surface recherchée (en hectares)', ['class' => 'label']); !!}
                 <vue-slider-range
                         ref="surfaceRangeMax"
@@ -37,7 +43,7 @@
                 ></vue-slider-range>
             </b-tooltip>
 
-            <b-tooltip class="w-100 mb-6"
+            <b-tooltip class="w-100 mb-6 field"
                        label="Décrivez le type de surface agricole : altitude, type de terre, besoin en eau, certification...">
                 {!! Form::label('land_seek[land_description]', "Description du terrain recherché", ['class' => 'label']) !!}
                 <text-area-counter
@@ -51,7 +57,7 @@
             </b-tooltip>
 
             {!! Form::label('land_seek_farms_and_buildings', 'Présence d’habitations ?', ['class' => 'label']); !!}
-            <section class="mb-6 is-flex gap-5">
+            <section class="mb-6 is-flex gap-5 field">
                 @foreach($requirements as $requirement)
                     <div>
                         {!! Form::radio('land_seek[buildings][1]', $requirement->id, null, [':disabled' => 'isInputDisabled', 'id' => 'buildings_1_'.$requirement->id]) !!}
@@ -61,7 +67,7 @@
             </section>
 
             {!! Form::label('land_seek_farms_and_buildings', 'Présence de bâtiments agricoles ?', ['class' => 'label']); !!}
-            <section class="is-flex gap-5">
+            <section class="is-flex gap-5 field">
                 @foreach($requirements as $requirement)
                     <div>
                         {!! Form::radio('land_seek[buildings][2]', $requirement->id, null, [':disabled' => 'isInputDisabled', 'id' => 'buildings_2_'.$requirement->id]) !!}
@@ -73,17 +79,17 @@
 
         <tab-content title="Votre projet agricole">
             {!! Form::label('land_seek[production_genres][]', 'Production agricole principale envisagée', ['class' => 'label']); !!}
-            <section class="mb-6">
+            <section class="mb-6 field">
                 @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_seek[production_genres][]', 'productionGenres' => $productionGenresWithOther])
             </section>
 
             {!! Form::label('land_seek[seconde_production_genres][]', 'Production agricole secondaire envisagée', ['class' => 'label']); !!}
-            <section class="mb-6">
+            <section class="mb-6 field">
                 @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_seek[seconde_production_genres][]', 'productionGenres' => $productionGenresWithOther])
             </section>
 
             {!! Form::label('land_seek[is_bio]', "Votre projet est-il en agriculture biologique ?", ['class' => 'label']) !!}
-            <section class="mb-6 is-flex gap-5">
+            <section class="mb-6 is-flex gap-5 field">
                 <div>
                     {!! Form::radio('land_seek[is_bio]', '1', (string)($old['land_seek']['is_bio'] ?? null) === "1" , ['id' => 'land_seek[is_bio]_1', ':disabled' => 'isInputDisabled'] ) !!}
                     {!! Form::label('land_seek[is_bio]_1',  'Oui' ) !!}
@@ -99,7 +105,7 @@
             </section>
 
             {!! Form::label('land_seek[installation_type_id]', "Vous vous installez", ['class' => 'label']) !!}
-            <section class="is-flex gap-5 mb-6 is-flex-wrap-wrap">
+            <section class="is-flex gap-5 mb-6 is-flex-wrap-wrap field">
                 @foreach($installationTypes as $i => $installationType)
                     <div>
                         {!! Form::radio('land_seek[installation_type_id]', $installationType["id"], null, [':disabled' => 'isInputDisabled', 'id' => 'installation_type_id_'.$installationType["id"]]) !!}
@@ -126,13 +132,17 @@
         </tab-content>
 
         <tab-content title="C'est presque fini !">
-            @include('pages.ads.partials.inputs.title')
+            <section class="field">
+                @include('pages.ads.partials.inputs.title')
+            </section>
 
-            <section class="mb-6">
+            <section class="mb-6 field">
                 @include('pages.ads.partials.inputs.documents')
             </section>
 
-            @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'land_seek'])
+            <section class="field">
+                @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'land_seek'])
+            </section>
         </tab-content>
 
         @include('pages.ads.partials.new-form-wizard-footer', ["moveToRef"=>"land_seek"])

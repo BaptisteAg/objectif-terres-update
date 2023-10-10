@@ -65,19 +65,21 @@
                     :icon-right="active ? 'menu-up' : 'menu-down'"/>
               </template>
 
-              <b-dropdown-item aria-role="listitem" value="viticulture">Viticulture</b-dropdown-item>
-              <b-dropdown-item aria-role="listitem" value="maraichage">Maraîchage</b-dropdown-item>
+              <b-dropdown-item v-for="(production, index) in productions" :key="index" aria-role="listitem"
+                               :value="production.id">
+                {{ production.name }}
+              </b-dropdown-item>
             </b-dropdown>
 
             <b-taglist>
               <b-tag
-                  v-for="option in adsForm.selectedProductions"
-                  :key="option"
+                  v-for="(production,index) in adsForm.selectedProductions"
+                  :key="index"
                   rounded
                   closable
-                  @close="removeSelectedProductions(option)"
+                  @close="removeSelectedProductions(production)"
               >
-                {{ categoryLabels[option] }}
+                {{ getProductionById(production).name }}
               </b-tag>
             </b-taglist>
           </div>
@@ -139,7 +141,7 @@
 </template>
 <script>
 export default {
-  props: ['regions'],
+  props: ['regions', 'productions'],
   data() {
     return {
       categoryLabels: {
@@ -186,20 +188,18 @@ export default {
 
       window.location.href = `/recherche?${params.toString()}`;
     },
-    getSelectedProductionsLabel() {
-      if (!this.adsForm.selectedProductions.length) {
-        return 'Sélectionnez une catégorie';
-      }
-
-      return this.adsForm.selectedProductions
-          .map(option => this.categoryLabels[option])
-          .join(', ');
-    },
     toggleAllRegions() {
       if (this.adsForm.localisation.length === this.regions.length + 1) {
         this.adsForm.localisation = [];
       } else {
         this.adsForm.localisation = [...this.regions.map(region => region.id)];
+      }
+    },
+    toggleAllProductions() {
+      if (this.adsForm.selectedProductions.length === this.regions.length + 1) {
+        this.adsForm.selectedProductions = [];
+      } else {
+        this.adsForm.selectedProductions = [...this.productions.map(productions => productions.id)];
       }
     },
     getSelectedRegionsLabel() {
@@ -213,6 +213,21 @@ export default {
             .join(', ');
       }
     },
+    getSelectedProductionsLabel() {
+      if (!this.adsForm.selectedProductions.length) {
+        return 'Sélectionnez une catégorie';
+      }
+      return this.adsForm.selectedProductions
+          .map(id => this.productions.find(production => production.id === id).name)
+          .join(', ');
+    },
+    getProductionById(id) {
+      return this.productions.find(production => production.id === id);
+    }
+  },
+  mounted() {
+    console.log(this.productions);
+    console.log(this.regions);
   },
 }
 </script>

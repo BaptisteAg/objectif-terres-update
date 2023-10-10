@@ -7,6 +7,7 @@ import TextAreaCounter from "../../../components/TextAreaCounter";
 import VueSliderRange from "../../../components/VueSliderRange";
 import VueSlider from "../../../components/VueSlider";
 import ZoneSelect from '../../../components/ZoneSelect'
+import DepartmentSelect from '../../../components/DepartmentSelect'
 import AdTypeSelect from '../../../components/AdTypeSelect'
 import MultiSelect from "../../../components/MultiSelect";
 import CustomCheckbox from "../../../components/CustomCheckbox"
@@ -25,7 +26,8 @@ export default Vue.extend({
         CustomCheckbox,
         TextAreaCounter,
         DocumentsUpload,
-        ListSelect
+        ListSelect,
+        DepartmentSelect
     },
     data() {
         let v = this.oldValues;
