@@ -82,12 +82,12 @@ $flex-aligns: ('c': 'center', 'fs': 'flex-start', 'fe': 'flex-end', 'st': 'stret
         @if type-of($side-full) == 'list' {
           .#{$type}#{$side}-#{index($spacing-values, $value) - 1} {
             @each $individual-side in $side-full {
-              #{$type-full}-#{$individual-side}: $value;
+              #{$type-full}-#{$individual-side}: $value !important;
             }
           }
         } @else {
           .#{$type}#{$side}-#{index($spacing-values, $value) - 1} {
-            #{$type-full}-#{$side-full}: $value;
+            #{$type-full}-#{$side-full}: $value !important;
           }
         }
       }
@@ -97,7 +97,7 @@ $flex-aligns: ('c': 'center', 'fs': 'flex-start', 'fe': 'flex-end', 'st': 'stret
   @each $value in $spacing-values {
     @if index($spacing-values, $value) > 6 {
       .#{$type}-#{index($spacing-values, $value) - 1} {
-        #{$type-full}: $value;
+        #{$type-full}: $value !important;
       }
     }
   }

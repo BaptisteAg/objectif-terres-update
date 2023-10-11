@@ -44,18 +44,28 @@ export default {
       type: Array,
       required: true
     },
-  },
-  data() {
-    return {
-      selectedProductionGenres: [],
+    value: {
+      type: [String, Array],
+      required: true
     }
   },
   methods: {
     removeSelectedProductions(option) {
+      console.log("removeSelectedProductions");
       this.selectedProductionGenres = this.selectedProductionGenres.filter(o => o !== option);
     },
   },
   computed: {
+    selectedProductionGenres: {
+      get() {
+        console.log("get");
+        return this.value;
+      },
+      set(newValue) {
+        console.log("emit");
+        this.$emit('input', newValue);
+      }
+    },
     label() {
       if (this.selectedProductionGenres.length === 0) {
         return 'Sélectionner un genre de production'
@@ -65,18 +75,6 @@ export default {
         return this.selectedProductionGenres.length + ' genres de production sélectionnés'
       }
     },
-    checked: {
-      get() {
-        return Array.isArray(this.value) ? this.value.map(v => v.toString()) : this.value.toString()
-      },
-      set(newValue) {
-        if (Array.isArray(newValue)) {
-          this.$emit('input', newValue);
-        } else {
-          this.$emit('input', this.inputValue)
-        }
-      }
-    }
   },
 }
 </script>

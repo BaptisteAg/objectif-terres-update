@@ -14,7 +14,7 @@ if (!isset($tooltip)) {
            label="{{$tooltip}}.">
     <label class="label is-inline-block"
            for="about_content">
-        {{$title}}{{ (empty($isSupportRequest) ?? true) ? '*' : '' }}
+        {{$title}}{{ (empty($isSupportRequest) ?? true) ? '' : '*' }}
         <i class="fas fa-info-circle has-text-info"></i>
     </label>
 
@@ -23,7 +23,6 @@ if (!isset($tooltip)) {
             :max-length="1000"
             :disabled="isInputDisabled"
             ref="aboutContent"
-            v-model="formInput.aboutContent"
-            :vuelidate="$v.formInput.aboutContent">
+            v-model="formInput.aboutContent">
     </text-area-counter>
 </b-tooltip>

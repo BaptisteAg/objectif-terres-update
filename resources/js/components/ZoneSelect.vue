@@ -1,28 +1,28 @@
 <template>
   <div>
     <div>
-      <label :for="id" class="label">Localisation</label>
+      <label :for="id" class="label">{{ label }}</label>
       <autocomplete
           :id="id"
           :placeholder="value.length ? 'Saisissez une autre localisation' : 'Saisissez au moins 2 caractères pour faire apparaître la liste'"
           :disabled="disabled"
-          src="/locations"
+          :src="src"
           :data-renderer="helper.renderZoneItemData"
           v-model="value"
           :multiple="true">
       </autocomplete>
-      <div v-show="vuelidate.$error">
+      <div v-if="vuelidate" v-show="vuelidate.$error">
         <p class="help is-danger">
           Vous devez sélectionner au minimum une zone géographique.
         </p>
       </div>
 
       <h4 class="pt-2" v-if="value.length">Votre sélection :</h4>
-      <div class="pt-2" v-else>
-          Sélectionner un ou plusieurs département d'installation souhaités <br>
-        Pour trouver une commune utilisez de préférence le code postal sinon respectez bien les accents et les tirets
-        pour qu'elle apparaisse dans la liste.
-      </div>
+      <!--      <div class="pt-2" v-else>-->
+      <!--          Sélectionner un ou plusieurs département d'installation souhaités <br>-->
+      <!--        Pour trouver une commune utilisez de préférence le code postal sinon respectez bien les accents et les tirets-->
+      <!--        pour qu'elle apparaisse dans la liste.-->
+      <!--      </div>-->
 
       <div class="selected-zone is-flex is-align-content-center" v-for="(zone,i) in value">
                     <span @click="_ => value.splice(i, 1)" data-tooltip="Retirer cette localisation">
@@ -158,13 +158,16 @@ export default {
     VueSlider,
   },
   props: {
+    src: {
+      type: String,
+      default: '/locations'
+    },
     value: {
       type: Array,
       required: true
     },
     vuelidate: {
       type: Object,
-      required: true
     },
     name: {
       type: String,
@@ -189,7 +192,7 @@ export default {
     disabled: {
       type: Boolean,
       required: true
-    }
+    },
   },
   data() {
     return {

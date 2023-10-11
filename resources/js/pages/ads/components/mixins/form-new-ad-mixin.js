@@ -11,12 +11,12 @@ export default {
         isInputDisabled: Boolean,
         isSupportRequest: Boolean,
         supportRequestText: String,
-        textContentTerritories : Object,
+        textContentTerritories: Object,
     },
     data() {
         return {
             uploading: false,
-            textTerritoryContent : ''
+            textTerritoryContent: ''
         }
     },
     mounted() {
@@ -37,13 +37,13 @@ export default {
             },
             deep: true
         },
-    "formInput.supportRequestTerritoryId": function (val){
-        Object.keys(this.textContentTerritories).forEach(key => {
-            if (key.split('-')[6] === val) {
-                this.textTerritoryContent = this.textContentTerritories[key].content
-            }
-        });
-}
+        "formInput.supportRequestTerritoryId": function (val) {
+            Object.keys(this.textContentTerritories).forEach(key => {
+                if (key.split('-')[6] === val) {
+                    this.textTerritoryContent = this.textContentTerritories[key].content
+                }
+            });
+        }
     },
     methods: {
         nextStep() {
@@ -63,7 +63,7 @@ export default {
             // Without this check, it bugs when attempting to scroll to the same current position
             // and indefinetly scroll
             const topPositionRelativeToWindow = Math.abs(anchorElement.getBoundingClientRect().top);
-            if(parseInt(topPositionRelativeToWindow) > 0) {
+            if (parseInt(topPositionRelativeToWindow) > 0) {
                 smoothScroll.animateScroll(anchorElement);
             }
 
@@ -80,7 +80,7 @@ export default {
          * @param {Element|Vue} element
          * @returns {Element}
          */
-        findInputElement(element) {
+        findInputContainerElement(element) {
             let input = element;
 
             if (input instanceof Vue) {
@@ -102,24 +102,17 @@ export default {
                 const validation = this.$v.formInput[key];
                 const ref = this.$refs[key];
 
-                // The ref and its validation exists
-                if (validation && ref) {
-                    const input = this.findInputElement(ref);
-                    const hasDirtyError = validation.$dirty && validation.$error;
-                    const type = input.getAttribute("type");
-                    const isCheckbox = type && type.match(/checkbox|radio/i);
-                    const isMultiSelect = input.classList.contains('multiselect__input');
-                    const isHidden = type && type.match(/hidden/i);
 
-                    if (isCheckbox || isMultiSelect || isHidden) {
-                        let field = input.parentElement;
-                        while (!field.classList?.contains('field')) {
-                            field = field.parentElement
-                        }
-                        field.style.border = hasDirtyError ? "1px dashed red" : "none"
-                    } else {
-                        input.style.borderColor = hasDirtyError ? "red" : "#dbdbdb"
+                if (validation && ref) {
+                    let field = this.findInputContainerElement(ref);
+                    const hasDirtyError = validation.$dirty && validation.$error;
+
+                    // /!\ .field class must be placed on the input container
+                    while (!field.classList.contains('field')) {
+                        console.log({field, key});
+                        field = field.parentElement
                     }
+                    field.style.border = hasDirtyError ? "1px dashed red" : "none";
                 }
             }
         },
@@ -130,7 +123,7 @@ export default {
         focusOnFirstError() {
             return Object.keys(this.formInput).find(inputName => {
                 if (this.$v.formInput[inputName] && this.$v.formInput[inputName].$error) {
-                    let input = this.findInputElement(this.$refs[inputName]);
+                    let input = this.findInputContainerElement(this.$refs[inputName]);
                     console.log(inputName);
                     const $form = this.$refs.formWizard;
 

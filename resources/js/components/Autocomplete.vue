@@ -7,7 +7,7 @@
            :placeholder="placeholder"
            v-on:click="onClick"
            v-on:awesomplete-select="onSelect"
-          >
+    >
     <span class="icon is-small right" v-show="isFetching">
       <i class="fas fa-spinner fa-spin has-text-black"></i>
     </span>
@@ -71,7 +71,7 @@ export default {
     },
     placeholder: {
       type: String
-    }
+    },
   },
   data() {
     return {
