@@ -1,4 +1,4 @@
-<b-tooltip class="w-100 mb-6"
+<b-tooltip class="w-100"
            label="Conseil : faites apparaître les points forts de votre projet.">
     <label class="label is-inline-block"
            for="title"

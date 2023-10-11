@@ -126,8 +126,9 @@ class LocationService
         $this->addCitiesRanges($cities);
 
         return array_merge(
+            // Regions are not selectable since a certain version
             //$this->searchRegions($q),
-            //$this->searchDepartments($q),
+            $this->searchDepartments($q),
             $cities
         );
     }

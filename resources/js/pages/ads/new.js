@@ -96,7 +96,6 @@ Vue.component('new-ad', {
 
                 this.isSubmitting = false;
             } else {
-                console.log('ouiiiiiii');
                 const text = this.isSupportRequest ?
                     'Vous êtes sur le point de soumettre une demande d\'accompagnement. Elle sera traitée sous 7 jours par un primo-accueillant.' :
                     'Vous êtes sur le point de demander la publication de votre annonce. Elle sera traitée sous 7 jours par un modérateur.';
