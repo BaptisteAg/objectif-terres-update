@@ -3,7 +3,7 @@ if (!isset($title)) {
     $title = "Et si vous nous en disiez un peu plus sur votre projet ?";
 }
 ?>
-<b-tooltip class="w-100 mb-6"
+<b-tooltip class="w-100"
            label="{{$tooltip}}.">
     <label class="label is-inline-block"
            for="about_project_content">
