@@ -86,6 +86,10 @@
                         @include('pages.ads.partials.landSeek.landSeekNewAd')
                     </new-land-seek-ad>
 
+{{--                    v-show="adTypeSelected === 'land_offer'"--}}
+{{--                    <new-land-offer-ad>--}}
+{{--                        @include('pages.ads.partials.landOffer.landOfferNewAd')--}}
+{{--                    </new-land-offer-ad>--}}
 
                 </form>
             </new-ad>
