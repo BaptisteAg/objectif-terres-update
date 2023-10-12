@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div v-show="displaySelection" class="adTypes-container">
+      <div v-show="value === ''" class="adTypes-container">
 
         <h1 class="title">Formulaire de dépôt d’annonces</h1>
         <p>Objectif Terre est une plateforme ayant pour but de mettre en liens les personnes ayant des projets agricoles
@@ -64,7 +64,6 @@
             {{ adType.label }}
           </div>
         </div>
-        <input type="hidden" :name="name" :value="currentAdType">
 
         <p class="pt-6">Ajouter une phrase de : "Vous allez déposer une annonce de recherche de foncier, n'oubliez pas de
           consulter les annonces d'offres de foncier."</p>
@@ -77,17 +76,23 @@
         </div>
 
       </div>
-      <div class="is-align-self-flex-start py-3" v-show="!displaySelection">
+      <div class="is-align-self-flex-start py-3" v-show="value !== ''">
         <a href="#" @click.prevent="changeAdType()" v-if="isSupportRequest">← Changer de type
           d'accompagnement</a>
         <a href="#" @click.prevent="changeAdType()" v-else>← Changer de type d'annonce</a>
       </div>
+
+      <input type="hidden" :name="name" :value="value">
+
     </div>
 </template>
 
 <script>
 export default {
   props: {
+    value: {
+      type: String
+    },
     name: {
       type: String,
       required: true
@@ -107,7 +112,6 @@ export default {
         phone: '',
         adType: '',
       },
-      displaySelection: !this.value,
       otherPersonAd: {
         value: false,
         first_name: "",
@@ -190,15 +194,16 @@ export default {
 
       return Object.values(this.errors).every(error => !error);
     },
+    created() {
+      this.currentAdType = this.value;
+    },
     setAdType() {
       if (this.validateFields()) {
         this.$emit('input', this.currentAdType);
-        this.displaySelection = false;
       }
     },
     changeAdType() {
-      this.$emit('input', 'pending');
-      this.displaySelection = true;
+      this.$emit('input', '');
     }
   }
 }

@@ -106,7 +106,7 @@ class AdsController extends BaseController
 
             $exceptionMessage = "[51] Désolé, une erreur s'est produite. Nous avons été informé du problème.";
 
-            if(is_a($exception, AttributionAdException::class)){
+            if (is_a($exception, AttributionAdException::class)) {
                 $exceptionMessage = $exception->getMessage();
             }
 
