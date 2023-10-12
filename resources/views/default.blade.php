@@ -48,14 +48,13 @@
         @yield('header')
     </header>
 
-
     @yield('main-content')
 
     @include('layouts.footer')
 </div>
 <script>
     var $buoop = {
-        required: {e: -4, f: -3, o: -3, s: -1, c: -3},
+        required: {e: -4, f: -3, o: -3, s: -1, c: -5},
         reminder: 0,
         reminderClosed: 1,
         insecure: true,
