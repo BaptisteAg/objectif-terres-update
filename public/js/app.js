@@ -3809,11 +3809,17 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _vm.displaySelection ? _c("div", {
+  return _c("div", [_c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.displaySelection,
+      expression: "displaySelection"
+    }],
     staticClass: "adTypes-container"
   }, [_c("h1", {
     staticClass: "title"
-  }, [_vm._v("Formulaire de dépôt d’annonces")]), _vm._v(" "), _c("p", [_vm._v("Objectif Terre est une plateforme ayant pour but de mettre en liens les personnes ayant des projets agricoles\n    professionnels définis. Si votre annonce ne rentre pas dans cette catégorie (exemple : habitat collectif,\n    volontariat, partage de jardin, chantier participatif...), veuillez vous référer à la FAQ mise à votre\n    disposition pour vous rendre sur la plateforme adaptée à votre besoin.")]), _vm._v(" "), _c("p", {
+  }, [_vm._v("Formulaire de dépôt d’annonces")]), _vm._v(" "), _c("p", [_vm._v("Objectif Terre est une plateforme ayant pour but de mettre en liens les personnes ayant des projets agricoles\n      professionnels définis. Si votre annonce ne rentre pas dans cette catégorie (exemple : habitat collectif,\n      volontariat, partage de jardin, chantier participatif...), veuillez vous référer à la FAQ mise à votre\n      disposition pour vous rendre sur la plateforme adaptée à votre besoin.")]), _vm._v(" "), _c("p", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -3821,7 +3827,7 @@ var render = function render() {
       expression: "errors.check"
     }],
     staticClass: "pt-4 has-text-danger"
-  }, [_vm._v("Vous devez certifier que votre annonce concerne un projet\n    agricole professionnel.")]), _vm._v(" "), _c("b-field", {
+  }, [_vm._v("Vous devez certifier que votre annonce concerne un projet\n      agricole professionnel.")]), _vm._v(" "), _c("b-field", {
     staticClass: "is-flex is-flex-direction-column",
     "class": _vm.errors.check ? "pt-1" : "pt-4"
   }, [_c("b-checkbox", {
@@ -3833,11 +3839,11 @@ var render = function render() {
       },
       expression: "isCertified"
     }
-  }, [_vm._v("Je certifie que mon annonce concerne un\n      projet agricole professionnel sur des productions principales nourricières "), _c("a", {
+  }, [_vm._v("Je certifie que mon annonce concerne un\n        projet agricole professionnel sur des productions principales nourricières "), _c("a", {
     attrs: {
       href: "/conditions-utilisation"
     }
-  }, [_vm._v("(charte\n        Objectif Terre)")]), _vm._v(".\n    ")])], 1), _vm._v(" "), _c("hr", {
+  }, [_vm._v("(charte\n          Objectif Terre)")]), _vm._v(".\n      ")])], 1), _vm._v(" "), _c("hr", {
     staticClass: "is-primary"
   }), _vm._v(" "), _c("h3", {
     staticClass: "title is-4"
@@ -3998,7 +4004,7 @@ var render = function render() {
       },
       expression: "isMailOnly"
     }
-  }, [_vm._v("Je ne souhaite pas être contacté par téléphone (dans ce cas,\n      je serais contacté uniquement par email)\n    ")])], 1), _vm._v(" "), _c("input", {
+  }, [_vm._v("Je ne souhaite pas être contacté par téléphone (dans ce cas,\n        je serais contacté uniquement par email)\n      ")])], 1), _vm._v(" "), _c("input", {
     attrs: {
       type: "hidden",
       name: "isMailOnly"
@@ -4029,7 +4035,7 @@ var render = function render() {
           _vm.currentAdType = adTypeValue;
         }
       }
-    }, [_vm._v("\n      " + _vm._s(adType.label) + "\n    ")]);
+    }, [_vm._v("\n        " + _vm._s(adType.label) + "\n      ")]);
   }), 0), _vm._v(" "), _c("input", {
     attrs: {
       type: "hidden",
@@ -4040,9 +4046,9 @@ var render = function render() {
     }
   }), _vm._v(" "), _c("p", {
     staticClass: "pt-6"
-  }, [_vm._v("Ajouter une phrase de : \"Vous allez déposer une annonce de recherche de foncier, n'oubliez pas de\n    consulter les annonces d'offres de foncier.\"")]), _vm._v(" "), _c("p", {
+  }, [_vm._v("Ajouter une phrase de : \"Vous allez déposer une annonce de recherche de foncier, n'oubliez pas de\n      consulter les annonces d'offres de foncier.\"")]), _vm._v(" "), _c("p", {
     staticClass: "pt-5"
-  }, [_vm._v("Votre annonce sera visible uniquement par les personnes qui recherchent des porteurs de projet. Si\n    vous souhaitez qu’elle soit visible par d’autres types de personnes, nous vous recommandons de créer une autre\n    annonce pour multiplier vos chances.")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Votre annonce sera visible uniquement par les personnes qui recherchent des porteurs de projet. Si\n      vous souhaitez qu’elle soit visible par d’autres types de personnes, nous vous recommandons de créer une autre\n      annonce pour multiplier vos chances.")]), _vm._v(" "), _c("div", {
     staticClass: "is-flex is-justify-content-flex-end pt-6"
   }, [_c("b-button", {
     staticClass: "ml-2",
@@ -4054,7 +4060,13 @@ var render = function render() {
     on: {
       click: _vm.setAdType
     }
-  }, [_vm._v("Etape suivante")])], 1)], 1) : _c("div", {
+  }, [_vm._v("Etape suivante")])], 1)], 1), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.displaySelection,
+      expression: "!displaySelection"
+    }],
     staticClass: "is-align-self-flex-start py-3"
   }, [_vm.isSupportRequest ? _c("a", {
     attrs: {
@@ -4066,7 +4078,7 @@ var render = function render() {
         return _vm.changeAdType();
       }
     }
-  }, [_vm._v("← Changer de type\n    d'accompagnement")]) : _c("a", {
+  }, [_vm._v("← Changer de type\n      d'accompagnement")]) : _c("a", {
     attrs: {
       href: "#"
     },
@@ -4076,7 +4088,7 @@ var render = function render() {
         return _vm.changeAdType();
       }
     }
-  }, [_vm._v("← Changer de type d'annonce")])]);
+  }, [_vm._v("← Changer de type d'annonce")])])]);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -103773,8 +103785,8 @@ function noIframe() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\objectif-terres\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\objectif-terres\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /shared/httpd/objectif-terres/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /shared/httpd/objectif-terres/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

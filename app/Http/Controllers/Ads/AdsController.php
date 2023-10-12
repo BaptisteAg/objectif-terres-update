@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Ads;
 
+use App\Exceptions\AttributionAdException;
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
 use App\Models\AdStatus;
@@ -102,8 +103,15 @@ class AdsController extends BaseController
             }
 
         } catch (\Exception $exception) {
+
+            $exceptionMessage = "[51] Désolé, une erreur s'est produite. Nous avons été informé du problème.";
+
+            if(is_a($exception, AttributionAdException::class)){
+                $exceptionMessage = $exception->getMessage();
+            }
+
             report($exception);
-            return back()->withInput()->withErrors("[51] Désolé, une erreur s'est produite. Nous avons été informé du problème.");
+            return back()->withInput()->withErrors($exceptionMessage);
         }
 
         return redirect()->route('ads.show', [$ad->id])
