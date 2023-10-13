@@ -24134,8 +24134,10 @@ ACCORDEON
   }
 }
 
-.input {
+.input,
+.textarea {
   border-color: hsl(0, 0%, 86%);
+  border-radius: 20px;
 }
 
 .dropdown button {
