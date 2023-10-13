@@ -8,6 +8,7 @@ import Autocomplete from '../../../components/Autocomplete'
 import MultiSelect from "../../../components/MultiSelect";
 import DocumentsUpload from "../../../components/DocumentsUpload"
 import CustomCheckbox from "../../../components/CustomCheckbox"
+import ZoneSelect from '../../../components/ZoneSelect'
 
 const numberNormalizer = function (inputName) {
     return function (v) {
@@ -26,7 +27,8 @@ export default {
         Autocomplete,
         MultiSelect,
         DocumentsUpload,
-        CustomCheckbox
+        CustomCheckbox,
+        ZoneSelect,
     },
     mixins: [FormNewAdMixin],
     props: {},
@@ -54,6 +56,7 @@ export default {
 
         return  {
             formInput: {
+                selectedDepartment: v.selected_department || [],
                 selectedZones: v.selected_zones && JSON.parse(v.selected_zones) || [],
 
                 surface: v.land_offer.surface || '',

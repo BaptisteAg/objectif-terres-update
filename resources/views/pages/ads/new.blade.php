@@ -39,7 +39,7 @@
                         <input type="hidden" name="id" value="{{ $old["id"] }}">
                     @endif
 
-                    <ad-type-select v-model="adTypeSelected"
+                    <ad-type-select v-show="false" v-model="adTypeSelected"
                                     name="ad_type"
                                     :is-support-request="{{empty($isSupportRequest)?'false':'true'}}">
                     </ad-type-select>
@@ -87,9 +87,19 @@
                     </new-land-seek-ad>
 
 {{--                    v-show="adTypeSelected === 'land_offer'"--}}
-{{--                    <new-land-offer-ad>--}}
-{{--                        @include('pages.ads.partials.landOffer.landOfferNewAd')--}}
-{{--                    </new-land-offer-ad>--}}
+                    <new-land-offer-ad inline-template
+                                       :is-input-disabled="adTypeSelected !== 'land_offer'"
+                                       :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                       :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
+                                       :text-content-territories="{{!empty($isSupportRequest) && isset($old["id"]) ? json_encode($pageContent):json_encode(new stdClass)}}"
+                                       @input-enabled="setEnabledForm"
+                                       @form-complete="submitProxy"
+                                       @submit-save-button="submitProxy"
+                                       @click-save-button="onSaveClick"
+                                       @click-publish-button="onPublishClick"
+                                       ref="land_offer">
+                        @include('pages.ads.partials.landOffer.landOfferNewAd')
+                    </new-land-offer-ad>
 
                 </form>
             </new-ad>

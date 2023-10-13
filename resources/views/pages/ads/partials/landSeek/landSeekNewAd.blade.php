@@ -12,7 +12,7 @@
         <tab-content title="Terres recherchées">
 
             <section class="mb-6 field">
-                <label class="label">Commune et Code postal*</label>
+                <label class="label">Départements *</label>
                 <autocomplete
                         name="department_id"
                         label="Département*"

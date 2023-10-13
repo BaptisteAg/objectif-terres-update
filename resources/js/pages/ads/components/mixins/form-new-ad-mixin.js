@@ -8,7 +8,6 @@ var smoothScrolls = [];
 export default {
     props: {
         oldValues: Object,
-        isInputDisabled: Boolean,
         isSupportRequest: Boolean,
         supportRequestText: String,
         textContentTerritories: Object,
@@ -16,7 +15,8 @@ export default {
     data() {
         return {
             uploading: false,
-            textTerritoryContent: ''
+            textTerritoryContent: '',
+            isInputDisabled: false,
         }
     },
     mounted() {

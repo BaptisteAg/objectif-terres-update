@@ -183,11 +183,11 @@ export default {
     },
     radiusName: {
       type: String,
-      required: true
+      default: ''
     },
     radiusValue: {
       type: String,
-      default: ''
+      default: '0'
     },
     disabled: {
       type: Boolean,

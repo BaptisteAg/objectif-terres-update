@@ -1,11 +1,14 @@
-.input {
+.input, .textarea {
   border-color: hsl(0, 0%, 86%);
+  border-radius: 20px;
 }
+
 .dropdown button {
   width: 100%;
   justify-content: space-between;
   border-radius: 999px;
 }
+
 .control .select select {
   border-radius: 999px;
 }

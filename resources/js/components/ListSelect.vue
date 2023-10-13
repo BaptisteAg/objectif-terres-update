@@ -39,7 +39,10 @@
 <script>
 export default {
   props: {
-    name: String,
+      isInputDisabled: {
+        type: Boolean,
+      },
+      name: String,
     productionGenres: {
       type: Array,
       required: true
@@ -51,18 +54,15 @@ export default {
   },
   methods: {
     removeSelectedProductions(option) {
-      console.log("removeSelectedProductions");
       this.selectedProductionGenres = this.selectedProductionGenres.filter(o => o !== option);
     },
   },
   computed: {
     selectedProductionGenres: {
       get() {
-        console.log("get");
         return this.value;
       },
       set(newValue) {
-        console.log("emit");
         this.$emit('input', newValue);
       }
     },
