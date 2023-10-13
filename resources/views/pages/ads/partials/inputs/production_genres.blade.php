@@ -1,7 +1,8 @@
 <list-select
         :production-genres="{{$productionGenres}}"
         name="{{$name}}"
-        v-model="{{$vModel}}">
+        v-model="{{$vModel}}"
+        is-input-disable="isInputDisabled">
     @if($isRequired ?? false)
         <p class="help is-danger" id="productionGenresError"
            v-if="$v.{{ $vModel }}.$error">

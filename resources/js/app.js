@@ -90,4 +90,7 @@ Vue.prototype.$user = window.$user
 
 window.app = new Vue({
     el: '#app',
+    data: {
+        loading: false,
+    }
 });
