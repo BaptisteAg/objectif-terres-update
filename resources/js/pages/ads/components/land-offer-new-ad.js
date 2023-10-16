@@ -9,6 +9,7 @@ import MultiSelect from "../../../components/MultiSelect";
 import DocumentsUpload from "../../../components/DocumentsUpload"
 import CustomCheckbox from "../../../components/CustomCheckbox"
 import ZoneSelect from '../../../components/ZoneSelect'
+import ListSelect from "../../../components/ListSelect"
 
 const numberNormalizer = function (inputName) {
     return function (v) {
@@ -29,6 +30,7 @@ export default {
         DocumentsUpload,
         CustomCheckbox,
         ZoneSelect,
+        ListSelect,
     },
     mixins: [FormNewAdMixin],
     props: {},
@@ -85,6 +87,7 @@ export default {
                 title: v.title || '',
                 documents: v.documents && JSON.parse(v.documents) || [],
 
+                secondProductionGenres: v.land_offer.second_production_genres || [],
                 //confirmPriceFermage: hasOld ? !!v.confirm_price_fermage : false,
 
                 ...extraFormInput
