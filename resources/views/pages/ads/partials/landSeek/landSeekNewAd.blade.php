@@ -159,6 +159,7 @@
                 </p>
             </section>
 
+            <section class="field mb-6" ref="aboutProject">
             @php
                 if(empty($isSupportRequest)) {
                     $tooltip = "Pour donner envie à un cédant ou propriétaire de vous proposer du foncier, décrivez votre projet, son histoire, ses valeurs, votre date d'installation envisagées etc.";
@@ -167,7 +168,6 @@
                     $tooltip = "Décrivez votre projet, son histoire, ses valeurs, votre date d'installation envisagée, etc.";
                 }
             @endphp
-            <section class="field mb-6" ref="aboutProject">
                 @include('pages.ads.partials.inputs.about_project_content', ['tooltip' => $tooltip])
             </section>
 
