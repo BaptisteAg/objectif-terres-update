@@ -86,8 +86,8 @@
                         @include('pages.ads.partials.landSeek.landSeekNewAd')
                     </new-land-seek-ad>
 
-{{--                    v-show="adTypeSelected === 'land_offer'"--}}
                     <new-land-offer-ad inline-template
+                                       v-show="adTypeSelected === 'land_offer'"
                                        :is-input-disabled="adTypeSelected !== 'land_offer'"
                                        :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                        :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
@@ -100,6 +100,21 @@
                                        ref="land_offer">
                         @include('pages.ads.partials.landOffer.landOfferNewAd')
                     </new-land-offer-ad>
+
+                    @if(empty($isSupportRequest))
+{{--                        v-show="adTypeSelected === 'job_seek'"--}}
+                        <new-job-seek-ad inline-template
+                                         :is-input-disabled="adTypeSelected !== 'job_seek'"
+                                         :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                         @input-enabled="setEnabledForm"
+                                         @form-complete="submitProxy"
+                                         @submit-save-button="submitProxy"
+                                         @click-save-button="onSaveClick"
+                                         @click-publish-button="onPublishClick"
+                                         ref="job_seek">
+                            @include('pages.ads.partials.jobSeek.jobSeekNewAd')
+                        </new-job-seek-ad>
+                    @endif
 
                 </form>
             </new-ad>
