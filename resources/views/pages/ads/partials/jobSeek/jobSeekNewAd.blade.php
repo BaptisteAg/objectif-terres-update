@@ -1,145 +1,147 @@
-<div id="job_seek_ad_form" class="form-container">
+<div id="job_seek_ad_form" class="form-container pt-6">
     <form-wizard
             title=""
             subtitle=""
             step-size="xs"
             @on-complete="$emit('form-complete')"
             @on-change="nextStep"
-            color="#579ea5"
+            color="#A74B2B"
             ref="formWizard">
 
-        <tab-content title="Localisation" icon="ti-location-arrow">
-            @include('pages.ads.partials.inputs.locations', ['label' => 'Où souhaitez-vous travailler ?'])
-        </tab-content>
+        <tab-content title="Expérience recherchée">
 
-        <tab-content title="Description" icon="ti-location-arrow">
-            <section class="container">
-                <div class="columns">
-                    <div class="column"></div>
-                    <div class="column is-half">
-                        <div class="field">
-                            {!! Form::label('job_seek[offer_types][]', "Quel type d'opportunité professionnelle recherchez-vous ?", ['class' => 'label']); !!}
-
-                            @include('pages.ads.partials.inputs.jobOfferTypes', ["name" => "job_seek[offer_types][]"])
+            <section class="mb-6 field">
+                <label class="label">Départements *</label>
+                <autocomplete
+                        name="department_id"
+                        label="Département*"
+                        id="department_id"
+                        autocomplete="off"
+                        ref="selectedDepartment"
+                        src="/locations/departments"
+                        v-model="formInput.selectedDepartment"
+                        :vuelidate="$v.formInput.selectedDepartment"
+                >
+                    <template v-for="(zone, i) in formInput.selectedDepartment">
+                        <input
+                                key="zone.id"
+                                autocomplete="off"
+                                type="hidden"
+                                name="department_id"
+                                :value="zone.value.id"
+                        >
+                        <div
+                                key="zone.label"
+                                class="tag autocomplete-input-tag is-info"
+                                @click="_ => formInput.selectedDepartment.splice(i, 1)"
+                        >
+                            @{{ zone.label }}
+                            <i class="fa fa-trash" style="cursor:pointer; margin-left: 0.5em;"></i>
                         </div>
+                    </template>
+                </autocomplete>
+            </section>
 
-                    </div>
-                    <div class="column"></div>
-                </div>
+            <section class="field mb-6">
+                <b-tooltip class="w-100"
+                           label="Si votre bien se situe sur plusieurs communes, merci de nous les indiquées">
+                    <zone-select
+                            name="locationable"
+                            label="Code Postal, Commune"
+                            json-name="selected_zones"
+                            ref="selectedZones"
+                            v-model="formInput.selectedZones">
+                    </zone-select>
+                </b-tooltip>
+            </section>
+
+            <section class="mb-6 field" ref="offerTypes">
+                {!! Form::label('job_seek[building][offer_genres][]', 'Quel type d\'expérience professionnelle recherchez-vous ?', [
+                                    'class' => 'label',
+                                ]); !!}
+                @foreach($jobOfferTypes as $jobOfferType)
+                    <b-checkbox name="job_seek[offer_types][]" native-value="{{ $jobOfferType["id"] }}"
+                                v-model="formInput.offerTypes">
+                        {{ $jobOfferType["name"] }}
+                    </b-checkbox>
+                @endforeach
+            </section>
+
+            <section class="mb-6 field" ref="productionGenres">
+                {!! Form::label('job_seek[production_genres][]', 'Production agricole principale envisagée*', ['class' => 'label']); !!}
+                <?php
+                $params = [
+                    'name' => 'job_seek[production_genres][]',
+                    'productionGenres' => $productionGenres,
+                    'vModel' => 'formInput.productionGenres',
+                    'isRequired' => true
+                ];
+                ?>
+                @include('pages.ads.partials.inputs.production_genres', $params)
+            </section>
+
+            <section class="mb-6 field" ref="productionTypeAdd">
+                {!! Form::label('job_seek[secondary_production_genres][]', 'Production agricole secondaire envisagée', ['class' => 'label']); !!}
+                @include('pages.ads.partials.inputs.production_genres', ['name' => 'job_seek[second_production_genres][]', 'productionGenres' => $productionGenresWithOther, 'vModel' => 'formInput.secondProductionGenres'])
+            </section>
+
+        </tab-content>
+
+        <tab-content title="Votre parcours">
+            <section class="mb-6 field" ref="educationLevels">
+                {!! Form::label('land_offer[education_levels][]', 'Niveau de formation', ['class' => 'label']); !!}
+
+                <multi-select
+                        :options="{{json_encode($educationLevels)}}"
+                        name="job_seek[education_levels][]"
+                        v-model="formInput.educationLevels"
+                        placeholder="Sélectionnez un ou plusieurs niveaux"
+                >
+                </multi-select>
+            </section>
+
+            <section class="mb-6 field" ref="experienceFarming">
+                {!! Form::label('job_seek[experience_farming]','Expérience dans le milieu agricole*', ['class' => 'label']); !!}
+                <text-area-counter
+                        name="job_seek[experience_farming]"
+                        :max-length="1000"
+                        v-model="formInput.experienceFarming"
+                        :vuelidate="$v.formInput.experienceFarming">
+                </text-area-counter>
+            </section>
+
+            <section class="mb-6 field" ref="aboutProject">
+                <?php
+                $aboutFarmLabel = "Et si vous nous en disiez un peu plus sur votre projet et vos attentes ?";
+                $aboutFarmTooltip = "Que recherchez-vous plus précisement ? Cette recherche s'inscrit-elle dans une volonté d'installation à plus long terme ?";
+                ?>
+                @include('pages.ads.partials.inputs.about_project_content', ['title' => $aboutFarmLabel, 'tooltip' => $aboutFarmTooltip])
+            </section>
+
+            <section class="mb-6 field" ref="aboutContent">
+                <?php
+                $aboutTitle = "Et si vous nous en disiez un peu plus sur vous ?";
+                $aboutTooltip = "Présentez-vous en quelques lignes pour faciliter la mise en relation : valeurs, compétences spécifiques, mobilité, etc. ";
+                ?>
+                @include('pages.ads.partials.inputs.about_content', ['title' => $aboutTitle, 'tooltip' => $aboutTooltip])
+            </section>
+
+        </tab-content>
+
+        <tab-content title="C'est presque fini !">
+            <section class="field mb-6">
+                @include('pages.ads.partials.inputs.title')
+            </section>
+
+            <section class="field mb-6">
+                @include('pages.ads.partials.inputs.documents')
+            </section>
+
+            <section class="field">
+                @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'land_seek'])
             </section>
         </tab-content>
 
-        <tab-content title="Votre profil" icon="ti-location-arrow">
-            <section class="container">
-                <div class="columns">
-                    <div class="column"></div>
-                    <div class="column is-half">
-
-                        <div class="field">
-                            <label class="label is-inline-block has-tooltip-multiline has-tooltip-left"
-                                   data-tooltip="Vous avez déjà travaillé ou été en stage sur une ferme ?
-                                   Réalisé du wwoofing ? Combien de temps ?
-                                   Racontez-ici votre expérience du milieu agricole."
-                                   for="about_content">
-                                Expérience dans le milieu agricole*
-                                <i class="fas fa-info-circle has-text-info"></i>
-                            </label>
-
-                            <text-area-counter
-                                    name="job_seek[experience_farming]"
-                                    :max-length="1000"
-                                    :disabled="isInputDisabled"
-                                    ref="experienceFarming"
-                                    v-model="formInput.experienceFarming"
-                                    :vuelidate="$v.formInput.experienceFarming">
-                            </text-area-counter>
-                        </div>
-                    </div>
-                    <div class="column"></div>
-                </div>
-            </section>
-        </tab-content>
-
-        <tab-content title="Expérience" icon="ti-location-arrow">
-            <section class="container">
-                <div class="columns">
-                    <div class="column"></div>
-                    <div class="column is-half">
-
-                        <div class="field">
-                            {!! Form::label('land_offer[education_levels][]', 'Niveau de formation', ['class' => 'label']); !!}
-
-                            <multi-select
-                                    :options="{{json_encode($educationLevels)}}"
-                                    name="job_seek[education_levels][]"
-                                    v-model="formInput.educationLevels"
-                                    placeholder="Sélectionnez un ou plusieurs niveaux"
-                                    ref="educationLevels">
-                            </multi-select>
-                        </div>
-
-                    </div>
-                    <div class="column"></div>
-                </div>
-            </section>
-        </tab-content>
-
-
-        <tab-content title="Votre projet et vous" icon="ti-location-arrow">
-            <section class="container">
-                <div class="columns">
-                    <div class="column"></div>
-                    <div class="column is-half">
-
-                        <?php
-                            $aboutFarmLabel = "Et si vous nous en disiez un peu plus sur votre projet et vos attentes ?";
-                            $aboutFarmTooltip = "Que recherchez-vous plus précisement ? Cette recherche s'inscrit-elle dans une volonté d'installation à plus long terme ?";
-                        ?>
-                        @include('pages.ads.partials.inputs.about_project_content', ['title' => $aboutFarmLabel, 'tooltip' => $aboutFarmTooltip])
-
-                        <?php
-                            $aboutTitle = "Et si vous nous en disiez un peu plus sur vous ?";
-                            $aboutTooltip = "Présentez-vous en quelques lignes pour faciliter la mise en relation : valeurs, compétences spécifiques, mobilité, etc. ";
-                        ?>
-                        @include('pages.ads.partials.inputs.about_content', ['title' => $aboutTitle, 'tooltip' => $aboutTooltip])
-                    </div>
-                    <div class="column"></div>
-                </div>
-            </section>
-        </tab-content>
-
-        <tab-content title="C'est presque fini !" icon="ti-share">
-            <section class="container">
-                <div class="columns">
-                    <div class="column"></div>
-                    <div class="column is-half">
-                        <?php
-                        $titleTooltip = "Un titre clair et bien formulé augmentera vos chances de contacts!
-                                        ex : Jeune diplômé recherche emploi en maraîchage bio diversifié";
-                        ?>
-                        @include('pages.ads.partials.inputs.title', ["tooltip"=>$titleTooltip])
-
-                        <?php
-                            $tooltip = "15Mo maximum par document.";
-                        ?>
-                        @include('pages.ads.partials.inputs.documents')
-
-                        @include('pages.ads.partials.inputs.accept-share-contact-infos')
-
-                        <article class="message is-warning" v-if="$v.$error">
-                            <div class="message-header">
-                                <p>Veuillez revoir votre formulaire</p>
-                            </div>
-                            <div class="message-body">
-                                Des erreurs empêchent la publication de votre annonce. Avez-vous tout vérifié ?
-                            </div>
-                        </article>
-                    </div>
-                    <div class="column"></div>
-                </div>
-            </section>
-        </tab-content>
-
-        @include('pages.ads.partials.form-wizard-footer', ["moveToRef"=>"job_seek"])
+        @include('pages.ads.partials.new-form-wizard-footer', ["moveToRef"=>"job_seek"])
     </form-wizard>
 </div>
