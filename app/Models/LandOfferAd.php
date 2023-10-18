@@ -135,11 +135,11 @@ class LandOfferAd extends Model
 		'house_id',
 		'production_type_add',
 		'production_type_wanted_add',
-
 		'is_beneficiary',
 		'is_activity_transfer',
 		'is_call_for_application_community',
 		'is_call_for_application_terre_de_liens',
 		'is_call_for_application_test_area',
+        'secondary_production_type_add',
 	];
 }

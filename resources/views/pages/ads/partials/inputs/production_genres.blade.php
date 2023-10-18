@@ -2,6 +2,7 @@
         :production-genres="{{$productionGenres}}"
         name="{{$name}}"
         v-model="{{$vModel}}"
+        :is-unique="{{ $isUnique ?? 'false' }}"
         is-input-disable="isInputDisabled">
     @if($isRequired ?? false)
         <p class="help is-danger" id="productionGenresError"

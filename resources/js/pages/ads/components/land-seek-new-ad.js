@@ -52,8 +52,8 @@ export default Vue.extend({
                 surfaceRangeMin: v.land_seek.surface_range_min || '0',
                 surfaceRangeMax: v.land_seek.surface_range_max || '1000000',
                 landDescription: v.land_seek.land_description || '',
-                buildingRequirement: v.land_seek.building_requirement || '',
-                farmsRequirement: v.land_seek.farms_requirement || '',
+                buildingRequirement: v.land_seek.buildings[1] || '',
+                farmsRequirement: v.land_seek.buildings[2] || '',
                 productionGenres: v.land_seek.production_genres || [],
                 productionTypeAdd: v.land_seek.production_type_add || '',
                 isBio: v.land_seek.is_bio || undefined,
@@ -64,6 +64,8 @@ export default Vue.extend({
                 title: v.title || '',
                 documents: v.documents && JSON.parse(v.documents) || [],
                 chartConfirmation: v.chart_confirmation || false,
+                secondProductionGenres: v.land_seek.second_production_genres || [],
+                secondProductionTypeAdd: v.land_seek.second_production_type_add || '',
                 ...extraFormInput
             }
         }
@@ -71,7 +73,10 @@ export default Vue.extend({
     computed: {
         productionGenresHasOther() {
             return this.formInput.productionGenres.includes('other');
-        }
+        },
+        secondProductionGenresHasOther() {
+            return this.formInput.secondProductionGenres.includes('other');
+        },
     },
     watch: {
         'formInput.productionGenres': function (productionGenres) {
