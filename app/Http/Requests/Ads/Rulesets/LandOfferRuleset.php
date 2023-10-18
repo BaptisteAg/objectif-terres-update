@@ -9,6 +9,7 @@ class LandOfferRuleset implements RulesetInterface
 	public function get(bool $isSupportRequest): array
 	{
 		$rules = [
+            'locationable' => [new HasZone, 'required'],
 			'land_offer.accept_use_zip_code' => ['boolean'],
 			'land_offer.surface' => ['required', 'numeric'],
 			'land_offer.sau_description' => ['nullable', 'string'],

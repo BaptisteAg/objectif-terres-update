@@ -103,7 +103,7 @@
                 {!! Form::label('land_seek_farms_and_buildings', 'Présence de bâtiments agricoles ?*', ['class' => 'label w-100']); !!}
                 @foreach($requirements as $requirement)
                     <div>
-                        {!! Form::radio('land_seek[buildings][2]', $requirement->id, ((string)($old['land_seek']["buildings"]["2"] ?? 0) === (string)$requirement->id), [':disabled' => 'isInputDisabled', 'id' => 'buildings_2_'.$requirement->id, 'v-model' => 'formInput.farmsRequirement']) !!}
+                        {!! Form::radio('land_seek[buildings][2]', $requirement->id, false, [':disabled' => 'isInputDisabled', 'id' => 'buildings_2_'.$requirement->id, 'v-model' => 'formInput.farmsRequirement']) !!}
                         {!! Form::label('buildings_2_'.$requirement->id,  $requirement->label ) !!}
                     </div>
                 @endforeach
@@ -117,12 +117,40 @@
         <tab-content title="Votre projet agricole">
             <section class="mb-6 field" ref="productionGenres">
                 {!! Form::label('land_seek[production_genres][]', 'Production agricole principale envisagée*', ['class' => 'label']); !!}
-                @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_seek[production_genres][]', 'productionGenres' => $productionGenresWithOther, 'vModel' => 'formInput.productionGenres', 'isRequired' => true])
+                @include('pages.ads.partials.inputs.production_genres', [
+                    'name' => 'land_seek[production_genres][]',
+                    'productionGenres' => $productionGenresWithOther,
+                    'vModel' => 'formInput.productionGenres',
+                    'isRequired' => true,
+                    'isUnique' => true,
+                ])
+            </section>
+
+            <section class="mb-6 field" v-show="productionGenresHasOther">
+                {!! Form::label('land_seek[production_type_add]', 'Autre production principale : Veuillez préciser', ['class' => 'label']); !!}
+                {!! Form::text('land_seek[production_type_add]',
+                     null, [
+                     'class' => 'input',
+                     'v-model' => 'formInput.productionTypeAdd'
+                     ]) !!}
             </section>
 
             <section class="mb-6 field" ref="productionTypeAdd">
                 {!! Form::label('land_seek[secondary_production_genres][]', 'Production agricole secondaire envisagée', ['class' => 'label']); !!}
-                @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_seek[second_production_genres][]', 'productionGenres' => $productionGenresWithOther, 'vModel' => 'formInput.productionTypeAdd'])
+                @include('pages.ads.partials.inputs.production_genres', [
+                    'name' => 'land_seek[second_production_genres][]',
+                    'productionGenres' => $productionGenresWithOther,
+                    'vModel' => 'formInput.secondProductionGenres'
+                ])
+            </section>
+
+            <section class="mb-6 field" v-show="secondProductionGenresHasOther">
+                {!! Form::label('land_seek[second_production_type_add]', 'Autre production secondaire : Veuillez préciser', ['class' => 'label']); !!}
+                {!! Form::text('land_seek[second_production_type_add]',
+                     null, [
+                     'class' => 'input',
+                     'v-model' => 'formInput.secondProductionTypeAdd'
+                     ]) !!}
             </section>
 
             <section class="mb-6 is-flex gap-x-5 field is-flex-wrap-wrap" ref="isBio">
@@ -160,14 +188,14 @@
             </section>
 
             <section class="field mb-6" ref="aboutProject">
-            @php
-                if(empty($isSupportRequest)) {
-                    $tooltip = "Pour donner envie à un cédant ou propriétaire de vous proposer du foncier, décrivez votre projet, son histoire, ses valeurs, votre date d'installation envisagées etc.";
-                }
-                else {
-                    $tooltip = "Décrivez votre projet, son histoire, ses valeurs, votre date d'installation envisagée, etc.";
-                }
-            @endphp
+                @php
+                    if(empty($isSupportRequest)) {
+                        $tooltip = "Pour donner envie à un cédant ou propriétaire de vous proposer du foncier, décrivez votre projet, son histoire, ses valeurs, votre date d'installation envisagées etc.";
+                    }
+                    else {
+                        $tooltip = "Décrivez votre projet, son histoire, ses valeurs, votre date d'installation envisagée, etc.";
+                    }
+                @endphp
                 @include('pages.ads.partials.inputs.about_project_content', ['tooltip' => $tooltip])
             </section>
 

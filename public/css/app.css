@@ -24319,6 +24319,10 @@ div[role=dialog] .animation-content {
   }
 }
 
+.field-error {
+  border: 1px dashed red;
+}
+
 #carousel-quiNousSommes .media {
   justify-content: center;
 }

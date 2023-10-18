@@ -29,7 +29,7 @@ class UpdateAdsAddDepartmentId extends Migration
      */
     public function down()
     {
-        Schema::table('', function (Blueprint $table) {
+        Schema::table('ads', function (Blueprint $table) {
             $table->dropForeign('ads_department_id_foreign');
             $table->dropColumn('department_id');
         });

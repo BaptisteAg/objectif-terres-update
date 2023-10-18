@@ -121,7 +121,7 @@ class Ad extends Model implements HasPresenter
         'is_partner',
         'created_at',
         'origin',
-        "department_id"
+        'department_id'
     ];
 
     // Detect the type based on the presence of the foreign key
