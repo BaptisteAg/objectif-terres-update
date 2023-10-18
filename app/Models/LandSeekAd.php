@@ -92,6 +92,7 @@ class LandSeekAd extends Model
 		'surface_range_max',
 		'rent_max',
 		'price_max',
+        'secondary_production_type_add',
 	];
 
 	/**

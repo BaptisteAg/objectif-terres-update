@@ -80,7 +80,6 @@ class AdsController extends BaseController
                 );
         }
         $data = $request->validated();
-
         /** @var $ad Ad $ad */
         try {
             $ad = $this->adService->requestPublishing($data, $data['is_support_request']);
@@ -111,6 +110,9 @@ class AdsController extends BaseController
             }
 
             report($exception);
+            if(config('app.env') !== 'production') {
+                throw $exception;
+            }
             return back()->withInput()->withErrors($exceptionMessage);
         }
 

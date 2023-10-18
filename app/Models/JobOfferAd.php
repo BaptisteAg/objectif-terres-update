@@ -52,7 +52,9 @@ class JobOfferAd extends Model
 		'ad_id',
 		'is_activity_transmission',
 		'experience_farming',
-		'job_description'
+		'job_description',
+        'secondary_production_type_add',
+        'production_type_add',
 		//'is_beneficiary',
 		//'education_level_id',
 	];

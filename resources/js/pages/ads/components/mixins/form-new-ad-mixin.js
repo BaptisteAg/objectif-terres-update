@@ -109,10 +109,9 @@ export default {
 
                     // /!\ .field class must be placed on the input container
                     while (!field.classList.contains('field')) {
-                        console.log({field, key});
                         field = field.parentElement
                     }
-                    field.style.border = hasDirtyError ? "1px dashed red" : "none";
+                    field.classList.toggle('field-error', hasDirtyError);
                 }
             }
         },

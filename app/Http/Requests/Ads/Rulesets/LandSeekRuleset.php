@@ -2,6 +2,7 @@
 
 use App\Http\Requests\Ads\RulesetInterface;
 use App\Rules\HasProductionGenre;
+use App\Rules\HasZone;
 
 class LandSeekRuleset implements RulesetInterface
 {
@@ -20,6 +21,7 @@ class LandSeekRuleset implements RulesetInterface
         }
 
         return array_merge([
+            'locationable' => [new HasZone, 'nullable'],
             'land_seek.surface_range_min' => ['nullable', 'integer'],
             'land_seek.surface_range_max' => ['nullable', 'integer'],
             'land_seek.land_description' => ['nullable', 'string', 'max:1500'],
