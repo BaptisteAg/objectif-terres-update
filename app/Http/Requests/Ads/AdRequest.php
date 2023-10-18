@@ -31,6 +31,8 @@ class AdRequest extends FormRequest
             'ad_type' => "required",
             'id' => ["nullable", "numeric"],
             'department_id' => ["nullable", "numeric"],
+            'production_genres'=> ['required', 'array'],
+            'production_type_add' => ['nullable', 'string'],
 
             'land_seek' => ['nullable', 'array'],
             'land_offer' => ['nullable', 'array'],

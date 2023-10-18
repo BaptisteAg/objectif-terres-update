@@ -16,23 +16,25 @@ class LandSeekRuleset implements RulesetInterface
             $extraValidations = [
                 'land_seek.offer_genres' => ['nullable', 'array'],
                 'land_seek.experience_levels' => ['nullable', 'array'],
-				'about_content' => [ 'nullable', 'max:1000'],
             ];
         }
 
         return array_merge([
             'locationable' => [new HasZone, 'nullable'],
+            'secondary_production_genres' => ['nullable', 'array'],
+            'second_production_type_add' => ['nullable', 'string'],
+            'installation_type_id' => ['required', 'integer'],
             'land_seek.surface_range_min' => ['nullable', 'integer'],
             'land_seek.surface_range_max' => ['nullable', 'integer'],
-            'land_seek.land_description' => ['nullable', 'string', 'max:1500'],
+            'land_seek.land_description' => ['nullable', 'string', 'max:1000'],
             'land_seek.installation_type_id' => ['required', 'integer'],
-            'land_seek.is_bio' => ['integer'],
+            'land_seek.is_bio' => ['integer', 'required'],
             'land_seek.surface_range' => ['array'],
             'land_seek.production_genre' => [new HasProductionGenre],
             'land_seek.production_type_add' => ['nullable', 'string'],
             'land_seek.experience_farming' => ['nullable', 'string', 'max:1500'],
             'land_seek.chart_confirmation' => ['required'],
-            'land_seek.buildings' => ['nullable', 'array'],
+            'land_seek.buildings' => ['required', 'array'],
             //'land_seek.has_farm_buildings'       => ['boolean'],
             //'land_seek.has_houses'               => ['boolean'],
             //'land_seek.offer_genre_id'           => ['nullable', 'string'],

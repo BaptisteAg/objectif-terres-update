@@ -15,7 +15,6 @@ if (!isset($title)) {
             name="about_project_content"
             :max-length="1500"
             :disabled="isInputDisabled"
-            ref="aboutProject"
             v-model="formInput.aboutProject"
             :vuelidate="$v.formInput.aboutProject">
     </text-area-counter>

@@ -55,11 +55,10 @@
                 </zone-select>
             </section>
 
-            <section class="mb-7 field">
+            <section class="mb-7 field" ref="surfaceRangeMax">
                 <b-tooltip class="w-100" label="Faites glisser les curseurs pour définir la surface recherchée">
                     {!! Form::label('land_seek[surface_range_min]', 'Surface recherchée (en hectares)*', ['class' => 'label']); !!}
                     <vue-slider-range
-                            ref="surfaceRangeMax"
                             name-min="land_seek[surface_range_min]"
                             name-max="land_seek[surface_range_max]"
                             :data="{{ json_encode($surfaceRanges->pluck('label', 'value')) }}"
