@@ -201,7 +201,7 @@ class ResearchService
 	 */
 	public function filter(Request $filters)
 	{
-		$adsFilter = (new Ad)->newQuery();
+		$adsFilter = (new Ad)->newQuery()->with('currentUserFavoriteAd');
 		//Filter by type of ads
 		$adsTypeSelected = '';
 

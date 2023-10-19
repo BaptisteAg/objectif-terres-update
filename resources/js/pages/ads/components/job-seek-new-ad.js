@@ -9,6 +9,7 @@ import Autocomplete from '../../../components/Autocomplete'
 import DocumentsUpload from "../../../components/DocumentsUpload"
 import MultiSelect from "../../../components/MultiSelect";
 import ZoneSelect from '../../../components/ZoneSelect'
+import ListSelect from "../../../components/ListSelect.vue";
 
 export default {
     components: {
@@ -17,7 +18,8 @@ export default {
         CustomCheckbox,
         Autocomplete,
         DocumentsUpload,
-        MultiSelect
+        MultiSelect,
+        ListSelect
     },
     mixins: [FormNewAdMixin],
     props: {},
@@ -37,6 +39,9 @@ export default {
                 aboutContent: hasOld && v.about_content || '',
                 title: hasOld && v.title || '',
                 documents: hasOld && JSON.parse(v.documents) || [],
+                productionGenres: hasOld && v.production_genres || [],
+                secondProductionGenres: hasOld && v.second_production_genres || [],
+                chartConfirmation: hasOld && v.chart_confirmation || false,
                 //beneficiary: hasOld && v.is_beneficiary || '',
                 //agriculturalActivity: hasOld && v.agricultural_activity || [],
             }
@@ -50,6 +55,15 @@ export default {
                     required,
                     minLength: minLength(5),
                     maxLength: maxLength(1000)
+                },
+                productionGenres: {
+                    required,
+                },
+                secondProductionGenres: {
+                    required,
+                },
+                chartConfirmation: {
+                    required
                 },
                 documents: {
                     oneDocument: _ => true,

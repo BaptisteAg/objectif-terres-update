@@ -86,7 +86,7 @@
           </div>
 
 
-          <a class="navbar-item title is-5">
+          <a class="navbar-item title is-5" href="/faq">
             FAQ
           </a>
         </div>

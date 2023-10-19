@@ -120,7 +120,8 @@ class Ad extends Model implements HasPresenter
         'support_request_territory_id',
         'is_partner',
         'created_at',
-        'origin'
+        'origin',
+        'department_id'
     ];
 
     // Detect the type based on the presence of the foreign key
@@ -220,6 +221,14 @@ class Ad extends Model implements HasPresenter
     public function favoriteAds()
     {
         return $this->hasMany(FavoriteAd::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function currentUserFavoriteAd()
+    {
+        return $this->hasOne(FavoriteAd::class)->where('user_id', auth()->id());
     }
 
     public function jobOfferAd()

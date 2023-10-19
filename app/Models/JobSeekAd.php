@@ -45,6 +45,8 @@ class JobSeekAd extends Model
     protected $fillable = [
         'ad_id',
         'experience_farming',
+        'secondary_production_type_add',
+        'production_type_add',
     ];
 
 	/**

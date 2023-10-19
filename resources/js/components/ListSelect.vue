@@ -8,7 +8,7 @@
               :icon-right="active ? 'menu-up' : 'menu-down'"/>
         </template>
 
-        <b-dropdown-item :disabled="isInputDisabled" v-for="(productionGenre, index) in productionGenres"
+        <b-dropdown-item v-for="(productionGenre, index) in productionGenres"
                          :key="index"
                          :value="productionGenre"
                          aria-role="listitem">
@@ -17,7 +17,7 @@
       </b-dropdown>
       <slot></slot>
     </div>
-    <div class="column">
+    <div class="column" v-if="!this.isUnique">
       <b-taglist>
         <b-tag
             v-for="(selectedProductionGenre,index) in selectedProductionGenres"
@@ -39,6 +39,9 @@
 <script>
 export default {
   props: {
+    isInputDisabled: {
+      type: Boolean,
+    },
     name: String,
     productionGenres: {
       type: Array,
@@ -47,23 +50,28 @@ export default {
     value: {
       type: [String, Array],
       required: true
+    },
+    isUnique: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
     removeSelectedProductions(option) {
-      console.log("removeSelectedProductions");
       this.selectedProductionGenres = this.selectedProductionGenres.filter(o => o !== option);
     },
   },
   computed: {
     selectedProductionGenres: {
       get() {
-        console.log("get");
-        return this.value;
+        return this.productionGenres.filter(genre => this.value.includes(genre.id));
       },
       set(newValue) {
-        console.log("emit");
-        this.$emit('input', newValue);
+        if (this.isUnique) {
+          newValue = [newValue.pop()];
+        }
+        let ids = newValue.map(object => object.id);
+        this.$emit('input', ids);
       }
     },
     label() {

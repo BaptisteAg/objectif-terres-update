@@ -127,6 +127,11 @@ BACKGROUNDS
   background-color: $beige;
 }
 
+.bg-blue {
+  background-color: $blue;
+  color: $beige;
+}
+
 [class*="bg-trame"] {
   position: relative;
 
