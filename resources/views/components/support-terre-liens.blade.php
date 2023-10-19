@@ -1,4 +1,4 @@
-<section class="hero CTA CTA_soutien">
+<section class="hero py-6 CTA CTA_soutien">
 {{--    <div class="vignette photo">--}}
 {{--        <div class="vignette__image-wrap">--}}
 {{--            <img src="{{ url('/images/vignette/photo_09_bandeau_1920.jpg') }}"--}}

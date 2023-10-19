@@ -2,7 +2,7 @@
     <label class="label">Date de naissance*</label>
     <p class="control has-icons-left has-icons-right">
         <input id="birthday"
-               class="input @error('birthday') is-danger @enderror"
+               class="input is-medium is-rounded @error('birthday') is-danger @enderror"
                type="date"
                name="birthday"
                value="{{ old('birthday') }}"

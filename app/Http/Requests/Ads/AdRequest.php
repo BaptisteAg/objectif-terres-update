@@ -6,62 +6,63 @@ use App\Http\Requests\Ads\Rulesets\JobOfferRuleset;
 use App\Http\Requests\Ads\Rulesets\JobSeekRuleset;
 use App\Http\Requests\Ads\Rulesets\LandOfferRuleset;
 use App\Http\Requests\Ads\Rulesets\LandSeekRuleset;
-use App\Rules\HasZone;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AdRequest extends FormRequest
 {
-	/**
-	 * Determine if the user is authorized to make this request.
-	 *
-	 * @return bool
-	 */
-	public function authorize()
-	{
-		return true;
-	}
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
 
-	/**
-	 * Get the validation rules that apply to the request.
-	 *
-	 * @return array
-	 */
-	public function rules()
-	{
-		$rules = [
-			'id' => ["nullable", "numeric"],
-			'ad_type' => "required",
-			'land_seek' => ['nullable', 'array'],
-			'land_offer' => ['nullable', 'array'],
-			'job_offer' => ['nullable', 'array'],
-			'job_seek' => ['nullable', 'array'],
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        $rules = [
+            'ad_type' => "required",
+            'id' => ["nullable", "numeric"],
+            'department_id' => ["nullable", "numeric"],
+            'production_genres'=> ['required', 'array'],
+            'production_type_add' => ['nullable', 'string'],
 
-			'locationable' => [new HasZone],
-			'locationable_radius' => ['nullable', 'string'],
+            'land_seek' => ['nullable', 'array'],
+            'land_offer' => ['nullable', 'array'],
+            'job_offer' => ['nullable', 'array'],
+            'job_seek' => ['nullable', 'array'],
 
-			'about_content' => ['required', 'string', 'max:1000'],
-			'about_project_content' => ['required', 'string', 'max:1500'],
-			'title' => ['required', 'string'],
+            'locationable_radius' => ['nullable', 'string'],
 
-			'documents_ids' => ['nullable', 'array'],
-			'accept_share_contact_infos' => ['nullable', 'boolean'],
+            'about_content' => ['nullable', 'string', 'max:1000'],
+            'about_project_content' => ['required', 'string', 'max:1500'],
+            'title' => ['required', 'string'],
 
-			'is_support_request' => ['nullable', 'boolean'],
-			'support_request_text' => ['nullable', 'string', 'max:1500'],
-			'support_request_territory_id' => ['nullable', 'numeric'],
-		];
+            'accept_share_contact_infos' => ['nullable', 'boolean'],
 
-		$rulesetsByAdType = [
-			'land_seek' => LandSeekRuleset::class,
-			'land_offer' => LandOfferRuleset::class,
-			'job_offer' => JobOfferRuleset::class,
-			'job_seek' => JobSeekRuleset::class,
-		];
+            'is_support_request' => ['nullable', 'boolean'],
+            'support_request_text' => ['nullable', 'string', 'max:1500'],
+            'support_request_territory_id' => ['nullable', 'numeric'],
+        ];
 
-		/** @var RulesetInterface $ruleset */
-		$ruleset = app($rulesetsByAdType[$this->get('ad_type')]);
-		$rules = array_merge($rules, $ruleset->get($this->boolean("is_support_request")));
+        $rulesetsByAdType = [
+            'land_seek' => LandSeekRuleset::class,
+            'land_offer' => LandOfferRuleset::class,
+            'job_offer' => JobOfferRuleset::class,
+            'job_seek' => JobSeekRuleset::class,
+        ];
 
-		return $rules;
-	}
+        /** @var RulesetInterface $ruleset */
+        $ruleset = app($rulesetsByAdType[$this->get('ad_type')]);
+        $rules = array_merge($rules, $ruleset->get($this->boolean("is_support_request")));
+
+        return $rules;
+    }
 }

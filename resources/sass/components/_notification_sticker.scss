@@ -26,6 +26,13 @@
   z-index: 1;
 }
 
+.notification .media {
+  margin: auto;
+  max-width: 1344px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
 @keyframes spin {
   to {
     -webkit-transform: rotate(360deg);

@@ -40,6 +40,7 @@ class Ad extends Resource
 
     public static $with = ['attributionAd', 'userPp'];
 
+
     /**
      * The columns that should be searched.
      *
@@ -52,6 +53,12 @@ class Ad extends Resource
         'userPp.first_name',
         'userPp.email',
     ];
+
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        $query->join('users as userPp', 'userPp.id', '=', 'ads.user_pp_id');
+        return $query;
+    }
 
     /**
      * Get the fields displayed by the resource.

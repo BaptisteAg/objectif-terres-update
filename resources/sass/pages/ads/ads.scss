@@ -5,37 +5,41 @@
     -webkit-appearance: none;
     margin: 0;
   }
+
   /* Firefox */
   input[type=number] {
-    -moz-appearance:textfield;
+    -moz-appearance: textfield;
   }
 
-  .field {
-    margin-bottom: 40px;
-    margin-top: 20px;
-    font-size: 19px;
-  }
-  label {
-    font-size: 1.5rem;
-    font-family: "Nunito", sans-serif;
-
-    span, &.checkbox {
-      font-size:15px;
+  /*
+    .field {
+      margin-bottom: 40px;
+      margin-top: 20px;
+      font-size: 19px;
     }
-  }
+    label {
+      font-size: 1.5rem;
+      font-family: "Nunito", sans-serif;
+
+      span, &.checkbox {
+        font-size:15px;
+      }
+    }*/
 
   .button.is-light {
-    background:rgba(87, 158, 165, 0.6);
+    background: rgba(87, 158, 165, 0.6);
   }
 
   .vue-form-wizard {
-    .wizard-header {
+    .wizard-header, .wizard-card-footer {
       padding: 0;
     }
+
     .wizard-navigation {
       position: relative;
       top: -40px;
     }
+
     .wizard-tab-content {
       display: flex; // to avoid horizontal scroll when animating
       .wizard-tab-container {
@@ -45,6 +49,9 @@
       }
     }
 
+    .wizard-btn {
+      padding: 0;
+    }
   }
 
   .clearfix:after {
@@ -55,7 +62,7 @@
 
   .affix-wizard-footer {
     width: 100%;
-    z-index:100;
+    z-index: 100;
 
     position: -webkit-sticky;
     position: sticky;
@@ -67,13 +74,15 @@
       font-size: 25px;
       padding: 10px 30px;
     }
+
     .wizard-footer-left {
-      float:left;
-      padding-left:10px;
+      float: left;
+      padding-left: 10px;
     }
+
     .wizard-footer-right {
-      float:right;
-      padding-right:10px;
+      float: right;
+      padding-right: 10px;
     }
   }
 
@@ -141,15 +150,31 @@
 }
 
 .ad-admin.button__wrap {
-  margin-top:0;
+  margin-top: 0;
 }
 
 .ad-action-button {
-  padding-top:30px;
-  padding-bottom:30px;
-  border:none;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  border: none;
   transition: all 0.3s ease-in-out;
 
   &.button.is-link:hover, &.button.is-link.is-hovered {
   }
+}
+
+div[role=dialog] .animation-content {
+  z-index: 99;
+}
+
+
+@media (max-width: $tablet) {
+  .tag.is-primary.is-medium.is-rounded {
+    white-space: normal;
+    height: auto;
+  }
+}
+
+.field-error {
+  border: 1px dashed red;
 }

@@ -29,20 +29,28 @@ Vue.prototype.$forceCompute = function (computedName, forceUpdate /* default: tr
     }
 }
 
-//Composants vue
+//Composants vue necessaire avant affichage page
 import MobileHeader from './components/header/mobile.vue';
-import TopHeader from './components/header/top.vue';
-import BottomHeader from './components/header/bottom.vue';
-
 Vue.component('mobile-header', MobileHeader);
+import TopHeader from './components/header/top.vue';
 Vue.component('top-header', TopHeader);
+import BottomHeader from './components/header/bottom.vue';
 Vue.component('bottom-header', BottomHeader);
-const GlobalMap = () => import('./components/home/map.vue');
-Vue.component('global-map', GlobalMap);
+import AdvancedSearchHome from './components/AdvancedSearchHome.vue';
+Vue.component('advanced-search', AdvancedSearchHome);
+import LoginFrom from './pages/auth/login-form.vue';
+Vue.component('login-form', LoginFrom);
+
+//Autres composants chargés en lazy loading
+const ResearchTags = () => import('./components/ResearchTags.vue');
+Vue.component('research-tags', ResearchTags);
 const Newsletter = () => import('./components/Newsletter.vue');
 Vue.component('newsletter', Newsletter);
 const OurPartners = () => import('./components/OurPartners.vue');
 Vue.component('our-partners', OurPartners);
+const AdsCarousel = () => import('./components/AdsCarouselImages.vue');
+Vue.component('ads-carousel', AdsCarousel);
+
 
 //////////////
 // VENDORS
@@ -59,7 +67,7 @@ require('./pages/support-request-start');
 require('./pages/ads/new');
 require('./pages/ads/show');
 require('./pages/header');
-require('./pages/auth/login-form');
+// require('./pages/auth/login-form');
 require('./pages/auth/user-form');
 require('./pages/threads/threads');
 require('./pages/dashboard');
@@ -82,4 +90,7 @@ Vue.prototype.$user = window.$user
 
 window.app = new Vue({
     el: '#app',
+    data: {
+        loading: false,
+    }
 });
