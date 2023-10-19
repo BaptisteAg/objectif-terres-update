@@ -1,7 +1,7 @@
 <div class="field">
     <label class="label">Adresse </label>
     <p class="control has-icons-left">
-        <input id="street" class="input @error('street') is-danger @enderror"
+        <input id="street" class="input is-medium is-rounded @error('street') is-danger @enderror"
                type="text"
                name="street"
                value="{{ old('street') }}"

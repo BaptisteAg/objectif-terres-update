@@ -1,13 +1,13 @@
 <template>
   <div class="control autocomplete-control has-icons-right">
     <input type="search"
-           class="input autocomplete-input"
+           class="input autocomplete-input is-rounded"
            ref="input"
            v-model="autocompleteValue"
            :placeholder="placeholder"
            v-on:click="onClick"
            v-on:awesomplete-select="onSelect"
-          >
+    >
     <span class="icon is-small right" v-show="isFetching">
       <i class="fas fa-spinner fa-spin has-text-black"></i>
     </span>
@@ -71,7 +71,7 @@ export default {
     },
     placeholder: {
       type: String
-    }
+    },
   },
   data() {
     return {

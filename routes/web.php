@@ -30,6 +30,11 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
     Route::middleware('auth')->get('archiver/{ad}', 'AdsController@archive')->name('archive');
 	Route::middleware('auth')->get('etendre-expiration/{id}', 'AdsController@extendPublish')->name('extend');
 });
+
+Route::prefix('old_annonces')->name('ads.')->namespace('Ads')->group(function () {
+    Route::get('{id}', 'AdsController@oldshow')->name('oldshow');
+});
+
 Route::prefix('accompagnement')->name('support-request.')->namespace('Ads')->group(function () {
 	Route::middleware([])->get('demarrer', 'SupportRequestsController@start')->name('start');
 	Route::middleware([])->post('demarrer', 'SupportRequestsController@processStart')->name('process-start');
@@ -124,6 +129,7 @@ Route::prefix('locations')->namespace('Locationables')->group(function () {
 	Route::get('/', 'LocationableController@locations');
 	Route::get('countries', 'LocationableController@countries');
 	Route::get('cities', 'LocationableController@cities');
+    Route::get('departments', 'LocationableController@departments');
 	Route::get('cities-and-departments', 'LocationableController@citiesAndDepartments');
 	Route::get('departments-and-regions', 'LocationableController@departmentsAndRegions');
 	Route::prefix('polygon')->group(function () {

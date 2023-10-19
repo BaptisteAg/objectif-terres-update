@@ -2,6 +2,16 @@
   border-top: solid 1px #95854B;
 }
 
+.mh-40 {
+  min-height: 40vh;
+}
+
 .objT-border {
   border-radius: 12px;
+}
+@media (max-width: $tablet) {
+  .rounded-button-mobile {
+    padding-left: 1em !important;
+    padding-right: .2em !important;
+  }
 }

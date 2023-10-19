@@ -12,7 +12,6 @@ use Illuminate\View\View;
 
 class ResearchComposer
 {
-
     public function compose(View $view)
     {
         //        Gerer coter front

@@ -2,23 +2,23 @@ import {maxLength, minLength, required} from "vuelidate/lib/validators";
 
 export default {
     formInput: {
-        selectedZones: {
-            hasZone(zones) {
-                return zones.length;
-            }
-        },
+        // selectedZones: {
+        //     hasZone(zones) {
+        //         return zones.length;
+        //     }
+        // },
         aboutProject: {
             minLength: minLength(5),
             maxLength:
                 maxLength(1500),
             required
         },
-        aboutContent: {
-            minLength: minLength(5),
-            maxLength:
-                maxLength(1000),
-            required
-        },
+        // aboutContent: {
+        //     minLength: minLength(5),
+        //     maxLength:
+        //         maxLength(1000),
+        //     required
+        // },
         title: {
             required,
             minLength:

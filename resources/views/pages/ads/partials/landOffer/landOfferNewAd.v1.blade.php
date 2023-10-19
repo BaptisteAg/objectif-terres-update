@@ -684,19 +684,12 @@
                     <div class="column"></div>
                     <div class="column is-half">
 						<?php
-						$aboutProjectTooltip = "Parce qu’il y a derrière chaque projet et chaque lieu des personnes et des histoires,
-                                nous vous invitons ici à en dire un peu plus sur votre projet.
-                                Qu’est-ce qui motive votre projet ?
-                                Quelles sont vos attentes ?
-                                Quelles sont les valeurs qui vous portent ?
-                                Quelle est l’histoire du lieu ?
-                                Quelles sont les conditions de la transmission le cas échéant ?
-                                Quel type de personnes et de projet agricole recherchez-vous ?";
+						$aboutProjectTooltip = "N'oubliez pas de préciser le calendrier de transmission envisagée";
 						?>
 
                         @include('pages.ads.partials.inputs.about_project_content', ['tooltip' => $aboutProjectTooltip])
 
-                        @include('pages.ads.partials.inputs.about_content', ['required' => false, 'tooltip' => "Présentez-vous brièvement pour faciliter la mise en relation."])
+                        @include('pages.ads.partials.inputs.about_content', ['required' => false, 'tooltip' => "Présentez vous brièvement : êtes-vous agriculteur, êtes-vous propriétaires, depuis quand, ..."])
 
                     </div>
                     <div class="column"></div>

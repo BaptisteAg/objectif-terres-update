@@ -167,6 +167,7 @@ class  AdService
 			$ad = $this->repository->create($data);
 		}
 
+//        dd($ad->department_id);
 
 		if ($isSupportRequest) {
 			if ($data["is_draft"] !== 1) {
@@ -272,10 +273,6 @@ class  AdService
 
 		if (!$data["is_draft"]) {
 			$adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
-
-			if (empty($adDepartmentCodes)) {
-				dd($data);
-			}
 
 			$availableModerators = $this->userService->findByRolesAndDepartments([1], $adDepartmentCodes);
 			$availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
@@ -391,8 +388,12 @@ class  AdService
 	{
 		$departmentsCode = [];
 
+        if($ad->department_id) {
+            $departmentsCode[] = Department::find($ad->department_id)->code;
+        }
+
+        /* OBSOLETE : toutes les annonces ont un département unique attribué
 		if (count($ad->cities)) {
-			/** @var City $city */
 			foreach ($ad->cities as $city) {
 				if ($city->department) {
 					//dd($city);
@@ -402,20 +403,10 @@ class  AdService
 		}
 
 		if (count($ad->departments)) {
-			/** @var Department $department */
 			foreach ($ad->departments as $department) {
 				$departmentsCode[] = $department->code;
 			}
-		}
-
-		if (count($ad->regions)) {
-			/** @var Region $foundRegion */
-			foreach ($ad->regions as $region) {
-				foreach ($region->departments as $department) {
-					$departmentsCode[] = $department->code;
-				}
-			}
-		}
+		}*/
 
 		return array_unique($departmentsCode);
 	}
@@ -468,6 +459,14 @@ class  AdService
 		$isUpdate = !empty($data["id"]);
 
 		DB::beginTransaction();
+
+        // If department is not set, we set it to the first city's department
+        if (empty($data["department_id"]) && !empty($data["locationable"]["cities"])) {
+            // TODO : find the correct syntax for getting the city ID
+            $cityId = $data["locationable"]["cities"][0]["id"];
+            $city = City::find($cityId);
+            $data["department_id"] = $city->department->id;
+        }
 
 		if ($isUpdate) {
 			$ad = $this->repository->update($data["id"], $data);
