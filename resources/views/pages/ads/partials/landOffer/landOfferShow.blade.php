@@ -194,10 +194,10 @@
     <div>
         <h3 class="title is-4">Production secondaires et envisageables</h3>
         <b-taglist>
-            @if($ad->landOfferAd->productionGenresPossible->count() || $ad->landOfferAd->production_type_wanted_add)
-                @foreach($ad->landOfferAd->productionGenresPossible->pluck('name') as $productionGenresPossible)
+            @if($ad->landOfferAd->productionGenresSecondary->count() || $ad->landOfferAd->production_type_wanted_add)
+                @foreach($ad->landOfferAd->productionGenresSecondary->pluck('name') as $productionGenresSecondary)
                     <b-tag type="is-primary" rounded size="is-medium">
-                        {{$productionGenresPossible}}
+                        {{$productionGenresSecondary}}
                     </b-tag>
                 @endforeach
                 @if($ad->landOfferAd->production_type_wanted_add)

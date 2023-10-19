@@ -101,6 +101,12 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read int|null $ads_moderator_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AttributionAd[] $adsSupervisor
  * @property-read int|null $ads_supervisor_count
+ * @property int|null $birthday
+ * @property int|null $formation
+ * @property int|null $fromwhere
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereBirthday($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereFormation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereFromwhere($value)
  */
 class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 {

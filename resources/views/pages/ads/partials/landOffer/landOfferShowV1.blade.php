@@ -220,15 +220,15 @@
                 </div>
             @endif
 
-            @if($ad->landOfferAd->productionGenresPossible->count() || $ad->landOfferAd->production_type_wanted_add)
+            @if($ad->landOfferAd->productionGenresSecondary->count() || $ad->landOfferAd->production_type_wanted_add)
                 <div class="mb-20">
                     <p class="has-text-link is-size-5 ">Productions possibles</p>
                     <p class="">
                         <span>
-                            {{$ad->landOfferAd->productionGenresPossible->pluck('name')->implode(', ') }}
+                            {{$ad->landOfferAd->productionGenresSecondary->pluck('name')->implode(', ') }}
 
                             @if($ad->landOfferAd->production_type_wanted_add)
-                                @if($ad->landOfferAd->productionGenresPossible->count())
+                                @if($ad->landOfferAd->productionGenresSecondary->count())
                                     ,,
                                 @endif
                                 {{ ucfirst($ad->landOfferAd->production_type_wanted_add) }}
@@ -404,11 +404,11 @@
 {{--        </div>--}}
 {{--    @endif--}}
 
-{{--    @if($ad->landOfferAd->productionGenresPossible->count())--}}
+{{--    @if($ad->landOfferAd->productionGenresSecondary->count())--}}
 {{--        <div class="column is-one-third ">--}}
 {{--            <p class="has-text-link is-size-5 has-text-centered">Productions possibles</p>--}}
 {{--            <p class="has-text-centered">--}}
-{{--                <span>{{$ad->landOfferAd->productionGenresPossible->pluck('name')->implode(', ') }}</span>--}}
+{{--                <span>{{$ad->landOfferAd->productionGenresSecondary->pluck('name')->implode(', ') }}</span>--}}
 {{--            </p>--}}
 {{--        </div>--}}
 {{--    @endif--}}
