@@ -12,7 +12,7 @@
         <tab-content title="Terres recherchées">
 
             <section class="mb-6 field">
-                <label class="label">Départements *</label>
+                <label class="label">Département *</label>
                 <autocomplete
                         name="department_id"
                         label="Département*"
@@ -46,7 +46,7 @@
 
             <section class="mb-6 field" v-if="formInput.selectedDepartment.length">
                 <zone-select
-                        name="locationable"
+                        name="land_seek[locationable]"
                         label="Code Postal, Commune"
                         json-name="selected_zones"
                         ref="selectedZones"
@@ -137,15 +137,15 @@
             <section class="mb-6 field" ref="productionTypeAdd">
                 {!! Form::label('land_seek[secondary_production_genres][]', 'Production agricole secondaire envisagée', ['class' => 'label']); !!}
                 @include('pages.ads.partials.inputs.production_genres', [
-                    'name' => 'land_seek[second_production_genres][]',
+                    'name' => 'land_seek[secondary_production_genres][]',
                     'productionGenres' => $productionGenresWithOther,
                     'vModel' => 'formInput.secondProductionGenres'
                 ])
             </section>
 
             <section class="mb-6 field" v-show="secondProductionGenresHasOther">
-                {!! Form::label('land_seek[second_production_type_add]', 'Autre production secondaire : Veuillez préciser', ['class' => 'label']); !!}
-                {!! Form::text('land_seek[second_production_type_add]',
+                {!! Form::label('land_seek[secondary_production_type_add]', 'Autre production secondaire : Veuillez préciser', ['class' => 'label']); !!}
+                {!! Form::text('land_seek[secondary_production_type_add]',
                      null, [
                      'class' => 'input',
                      'v-model' => 'formInput.secondProductionTypeAdd'

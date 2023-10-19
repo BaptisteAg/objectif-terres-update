@@ -296,7 +296,7 @@
 
             <section class="mb-6 field" ref="productionTypeAdd">
                 {!! Form::label('land_offer[secondary_production_genres][]', 'Production agricole secondaire envisagée', ['class' => 'label']); !!}
-                @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_offer[second_production_genres][]', 'productionGenres' => $productionGenresWithOther, 'vModel' => 'formInput.secondProductionGenres'])
+                @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_offer[secondary_production_genres][]', 'productionGenres' => $productionGenresWithOther, 'vModel' => 'formInput.secondProductionGenres'])
             </section>
 
             <section class="mb-6 field" ref="bioCertifications">

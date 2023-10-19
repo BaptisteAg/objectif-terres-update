@@ -55,7 +55,8 @@
       </div>
 
       <b-field>
-        <b-checkbox v-model="isMailOnly" class="is-size-6">Je ne souhaite pas être contacté par téléphone (dans ce
+        <b-checkbox name="accept_share_contact_infos" v-model="isMailOnly" class="is-size-6" value="0">
+            Je ne souhaite pas être contacté par téléphone (dans ce
           cas,
           je serais contacté uniquement par email)
         </b-checkbox>

@@ -165,11 +165,11 @@
                     </ul>
                 </div>
             @endif
-            @if($ad->landSeekAd->productionGenresPossible->count() >0)
+            @if($ad->landSeekAd->productionGenresSecondary->count() >0)
                 <div class="mb-20">
                     <p class="has-text-link is-size-5 "> Production(s) possible(s)</p>
                     <ul class="">
-                        @foreach($ad->landSeekAd->productionGenresPossible as $productionGenre)
+                        @foreach($ad->landSeekAd->productionGenresSecondary as $productionGenre)
                             <li>{{$productionGenre->name}}</li>
                         @endforeach
                     </ul>
@@ -277,7 +277,7 @@
 
 {{--    <div class="column is-one-quarter ">--}}
 {{--        <p class="has-text-link is-size-5 has-text-centered"> Production(s) envisagée(s)</p>--}}
-{{--        --}}{{--                <p class="has-text-centered">{{$ad->landSeekAd->productionGenresPossible->pluck('name')->implode(', ') }}</p>--}}
+{{--        --}}{{--                <p class="has-text-centered">{{$ad->landSeekAd->productionGenresSecondary->pluck('name')->implode(', ') }}</p>--}}
 {{--        <ul class="has-text-centered">--}}
 {{--            @foreach($ad->landSeekAd->productionGenres as $id => $productionGenre)--}}
 {{--                @if($id !== "other")--}}
@@ -290,11 +290,11 @@
 {{--        </ul>--}}
 {{--    </div>--}}
 
-{{--    @if($ad->landSeekAd->productionGenresPossible->count() >0)--}}
+{{--    @if($ad->landSeekAd->productionGenresSecondary->count() >0)--}}
 {{--        <div class="column is-one-quarter ">--}}
 {{--            <p class="has-text-link is-size-5 has-text-centered"> Production(s) envisagée(s)</p>--}}
 {{--            <ul class="has-text-centered">--}}
-{{--                @foreach($ad->landSeekAd->productionGenresPossible as $productionGenre)--}}
+{{--                @foreach($ad->landSeekAd->productionGenresSecondary as $productionGenre)--}}
 {{--                    <li>{{$productionGenre->name}}</li>--}}
 {{--                @endforeach--}}
 {{--            </ul>--}}

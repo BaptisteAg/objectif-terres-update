@@ -87,7 +87,7 @@ export default {
                 title: v.title || '',
                 documents: v.documents && JSON.parse(v.documents) || [],
 
-                secondProductionGenres: v.land_offer.second_production_genres || [],
+                secondProductionGenres: v.land_offer.secondary_production_genres || [],
                 //confirmPriceFermage: hasOld ? !!v.confirm_price_fermage : false,
 
                 ...extraFormInput

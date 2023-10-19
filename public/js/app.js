@@ -2818,6 +2818,7 @@ __webpack_require__.r(__webpack_exports__);
     selectedProductionGenres: {
       get: function get() {
         var _this = this;
+        console.log(this.value, this.productionGenres);
         return this.productionGenres.filter(function (genre) {
           return _this.value.includes(genre.id);
         });
@@ -4014,6 +4015,10 @@ var render = function render() {
     }
   })], 1) : _vm._e(), _vm._v(" "), _c("b-field", [_c("b-checkbox", {
     staticClass: "is-size-6",
+    attrs: {
+      name: "accept_share_contact_infos",
+      value: "0"
+    },
     model: {
       value: _vm.isMailOnly,
       callback: function callback($$v) {
@@ -4021,7 +4026,7 @@ var render = function render() {
       },
       expression: "isMailOnly"
     }
-  }, [_vm._v("Je ne souhaite pas être contacté par téléphone (dans ce\n        cas,\n        je serais contacté uniquement par email)\n      ")])], 1), _vm._v(" "), _c("input", {
+  }, [_vm._v("\n          Je ne souhaite pas être contacté par téléphone (dans ce\n        cas,\n        je serais contacté uniquement par email)\n      ")])], 1), _vm._v(" "), _c("input", {
     attrs: {
       type: "hidden",
       name: "isMailOnly"
@@ -101667,7 +101672,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         title: hasOld && v.title || '',
         documents: hasOld && JSON.parse(v.documents) || [],
         productionGenres: hasOld && v.production_genres || [],
-        secondProductionGenres: hasOld && v.second_production_genres || [],
+        secondProductionGenres: hasOld && v.secondary_production_genres || [],
         chartConfirmation: hasOld && v.chart_confirmation || false
         //beneficiary: hasOld && v.is_beneficiary || '',
         //agriculturalActivity: hasOld && v.agricultural_activity || [],
@@ -101801,7 +101806,7 @@ var numberNormalizer = function numberNormalizer(inputName) {
         aboutContent: v.about_content || '',
         title: v.title || '',
         documents: v.documents && JSON.parse(v.documents) || [],
-        secondProductionGenres: v.land_offer.second_production_genres || []
+        secondProductionGenres: v.land_offer.secondary_production_genres || []
       }, extraFormInput)
     };
   },
@@ -102034,13 +102039,13 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     } : {};
     return {
       formInput: _objectSpread({
-        selectedDepartment: v.selected_department || [],
+        selectedDepartment: v.selected_departments && JSON.parse(v.selected_departments) || [],
         selectedZones: v.selected_zones && JSON.parse(v.selected_zones) || [],
         surfaceRangeMin: v.land_seek.surface_range_min || '0',
         surfaceRangeMax: v.land_seek.surface_range_max || '1000000',
         landDescription: v.land_seek.land_description || '',
-        buildingRequirement: v.land_seek.buildings[1] || '',
-        farmsRequirement: v.land_seek.buildings[2] || '',
+        buildingRequirement: v.land_seek && v.land_seek.buildings ? v.land_seek.buildings[1] : '',
+        farmsRequirement: v.land_seek && v.land_seek.buildings ? v.land_seek.buildings[2] : '',
         productionGenres: v.land_seek.production_genres || [],
         productionTypeAdd: v.land_seek.production_type_add || '',
         isBio: v.land_seek.is_bio || undefined,
@@ -102051,8 +102056,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         title: v.title || '',
         documents: v.documents && JSON.parse(v.documents) || [],
         chartConfirmation: v.chart_confirmation || false,
-        secondProductionGenres: v.land_seek.second_production_genres || [],
-        secondProductionTypeAdd: v.land_seek.second_production_type_add || ''
+        secondProductionGenres: v.land_seek.secondary_production_genres || [],
+        secondProductionTypeAdd: v.land_seek.secondary_production_type_add || ''
       }, extraFormInput)
     };
   },

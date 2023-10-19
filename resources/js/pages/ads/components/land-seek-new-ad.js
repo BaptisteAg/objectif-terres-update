@@ -47,13 +47,13 @@ export default Vue.extend({
 
         return {
             formInput: {
-                selectedDepartment: v.selected_department || [],
+                selectedDepartment: v.selected_departments && JSON.parse(v.selected_departments) || [],
                 selectedZones: v.selected_zones && JSON.parse(v.selected_zones) || [],
                 surfaceRangeMin: v.land_seek.surface_range_min || '0',
                 surfaceRangeMax: v.land_seek.surface_range_max || '1000000',
                 landDescription: v.land_seek.land_description || '',
-                buildingRequirement: v.land_seek.buildings[1] || '',
-                farmsRequirement: v.land_seek.buildings[2] || '',
+                buildingRequirement: v.land_seek && v.land_seek.buildings ? v.land_seek.buildings[1] : '',
+                farmsRequirement: v.land_seek && v.land_seek.buildings ? v.land_seek.buildings[2] : '',
                 productionGenres: v.land_seek.production_genres || [],
                 productionTypeAdd: v.land_seek.production_type_add || '',
                 isBio: v.land_seek.is_bio || undefined,
@@ -64,8 +64,8 @@ export default Vue.extend({
                 title: v.title || '',
                 documents: v.documents && JSON.parse(v.documents) || [],
                 chartConfirmation: v.chart_confirmation || false,
-                secondProductionGenres: v.land_seek.second_production_genres || [],
-                secondProductionTypeAdd: v.land_seek.second_production_type_add || '',
+                secondProductionGenres: v.land_seek.secondary_production_genres || [],
+                secondProductionTypeAdd: v.land_seek.secondary_production_type_add || '',
                 ...extraFormInput
             }
         }
