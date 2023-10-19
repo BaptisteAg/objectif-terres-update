@@ -1,11 +1,11 @@
 <table>
 	<thead>
 	<tr>
-		<th colspan="22" ><b>Données générales</b></th>
-		<th colspan="15"><b>Détails offres foncières</b></th>
+		<th colspan="27" ><b>Données générales</b></th>
+		<th colspan="16"><b>Détails offres foncières</b></th>
 		<th colspan="9"><b>Détails recherche de foncier</b></th>
-		<th colspan="{{ $ads->max('indicator_notes_count') }}"><b>Indicateurs</b></th>
-		<th colspan="{{ $ads->max('classic_notes_count') }}"><b>Notes</b></th>
+		<th><b>Indicateurs</b></th>
+		<th><b>Notes</b></th>
 	</tr>
 	</thead>
 	<tr>
@@ -38,9 +38,14 @@
 		<th>Code Postal du PP</th>
 		<th>Territoire</th>
 		<th>Région(s)</th>
+		<th>Code Région(s)</th>
 		<th>Département(s)</th>
+		<th>Code Département(s)</th>
 		<th>Commune(s)</th>
+		<th>Code Commune(s)</th>
+		<th>ID du primo-accueillant</th>
 		<th>Nom du primo-accueillant</th>
+		<th>ID du responsable territorial</th>
 		<th>Nom du responsable territorial</th>
 		<th>Description du projet</th>
 		<th>Description du porteur de projet</th>
@@ -61,31 +66,34 @@
 		<th>Loyer (en €)</th>
 		<th>Modalité test agricole</th>
 		<th>Surface recherchée (en ha)</th>
-		<th>Habitation(s) et bâti(s) recherché(s)</th>
+		<th>Habitation(s) recherché(s)</th>
+		<th>Bâti(s) recherché(s)</th>
 		<th>Projet agriculture bio</th>
 		<th>Production(s) envisagée(s)</th>
 		<th>Productions(s) envisagée(s)</th>
 		<th>Type d'installation</th>
 		<th>Expérience dans le domaine agricole</th>
 		<th>Niveau de formation</th>
-		@for($i = 0; $i < $ads->max('indicator_notes_count'); $i++)
-			<th>{{ $ads[0]?->indicatorNotes[$i]?->projectDataKey?->name }}</th>
-		@endfor
-		@for($i = 0; $i < $ads->max('ad_notes_count'); $i++)
-			<th>Note {{ $i }}</th>
-		@endfor
+		<th>Indicateurs</th>
+		<th>Notes</th>
 	</tr>
 
 	<tbody>
 	@foreach($ads as $ad)
+
+		<?php /** @var \App\Models\Ad $ad */ ?>
+
+
 		@if(isset($ad->project))
 			<tr>
+				<td>{{$ad->id }}</td>
 				<td>{{$ad->project->created_at?: ''}}</td>
 				<td>{{$ad->project->supportStage->name ?? ''}}</td>
 				<td>{{$ad->project->supportState->name ?? ''}}</td>
 				<td>{{$ad->project->projectStatus->name ?? ''}}</td>
 				<td>{{$ad->title ?? ''}}</td>
 				<td>{{$ad->landSeekAd ? 'Recherche de foncier' : 'Offre de foncier'}}</td>
+				<td>{{$ad->userPp->id ?? ''}}</td>
 				<td>{{$ad->userPp->name ?? ''}}</td>
 				<td>{{$ad->userPp->first_name ?? ''}}</td>
 				<td>{{$ad->userPp->civilityFullName ?? ''}}</td>
@@ -99,8 +107,18 @@
 					@endif
 				</td>
 				<td>
+					@if(! is_null($ad->regions))
+						<p>{{$ad->regions->map(fn(\App\Models\Region $r) => $r->code)->join(', ')}}</p>
+					@endif
+				</td>
+				<td>
 					@if(! is_null($ad->departmentsList))
 						<p>{{$ad->departmentsList}}</p>
+					@endif
+				</td>
+				<td>
+					@if(! is_null($ad->departments))
+						<p>{{$ad->departments->map(fn(\App\Models\Department $r) => $r->code)->join(', ')}}</p>
 					@endif
 				</td>
 				<td>
@@ -108,7 +126,14 @@
 						<p>{{$ad->citiesList}}</p>
 					@endif
 				</td>
+				<td>
+					@if(! is_null($ad->cities))
+						<p>{{$ad->cities->map(fn(\App\Models\City $r) => $r->insee_code)->join(', ')}}</p>
+					@endif
+				</td>
+				<td>{{$ad->attributionAd?->userAdvisor?->id}}</td>
 				<td>{{$ad->attributionAd->userAdvisor->first_name ?? '' }} {{ $ad->attributionAd->userAdvisor->name ?? ''}}</td>
+				<td>{{$ad->attributionAd?->userSupervisor?->id}}</td>
 				<td>{{$ad->attributionAd->userSupervisor->first_name ?? ''}} {{ $ad->attributionAd->userSupervisor->name ?? ''}}</td>
 				<td>{{$ad->about_project_content ?? ''}}</td>
 				<td>{{$ad->about_content ?? ''}}</td>
@@ -187,7 +212,21 @@
 					@if(isset($ad->landSeekAd))
 						@if(isset($ad->landSeekAd->buildings))
 							@foreach($ad->landSeekAd->buildings as $building)
-								{{ $building->buildingType->label }} : {{ $building->requirement->label }}<br>
+								@if($building->buildingType->id === 1)
+									{{ $building->buildingType->label }} : {{ $building->requirement->label }}<br>
+								@endif
+							@endforeach
+						@endif
+					@endif
+				</td>
+				<td>
+					@if(isset($ad->landSeekAd))
+						@if(isset($ad->landSeekAd->buildings))
+								<?php /** @var \App\Models\Ad $ad */ ?>
+							@foreach($ad->landSeekAd->buildings as $building)
+								@if($building->buildingType->id === 2)
+									{{ $building->buildingType->label }} : {{ $building->requirement->label }}<br>
+								@endif
 							@endforeach
 						@endif
 					@endif
@@ -223,16 +262,28 @@
 						@endif
 					@endif
 				</td>
-				@foreach($ad->classicNotes as $note)
-					<td>
-						{{$note->value ?? ''}}
-					</td>
-				@endforeach
-				@foreach($ad->indicatorNotes as $indicatorNote)
-					<td>
-						{{$note->indicatorNote->name ?? ''}} : {{$note->indicatorNote->value ?? ''}}
-					</td>
-				@endforeach
+
+				<td>
+					@if($ad->adNotes)
+						@foreach($ad->adNotes as $note)
+							@if($note->project_data_key_id)
+								- {{$note->projectDataKey->name ?? ''}} :
+								{{$note->value ?? ''}}<br>
+							@endif
+						@endforeach
+					@endif
+				</td>
+				<td>
+					@if($ad->adNotes)
+						@foreach($ad->adNotes as $note)
+							@if(!$note->project_data_key_id)
+								Note {{$note->created_at ?? ''}} :<br>
+								{{$note->value ?? ''}}<br><br>
+							@endif
+						@endforeach
+					@endif
+				</td>
+
 			</tr>
 		@endif
 	@endforeach
