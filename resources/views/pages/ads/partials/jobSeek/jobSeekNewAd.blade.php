@@ -82,7 +82,7 @@
 
             <section class="mb-6 field" ref="productionTypeAdd">
                 {!! Form::label('job_seek[secondary_production_genres][]', 'Production agricole secondaire envisagée', ['class' => 'label']); !!}
-                @include('pages.ads.partials.inputs.production_genres', ['name' => 'job_seek[second_production_genres][]', 'productionGenres' => $productionGenresWithOther, 'vModel' => 'formInput.secondProductionGenres'])
+                @include('pages.ads.partials.inputs.production_genres', ['name' => 'job_seek[secondary_production_genres][]', 'productionGenres' => $productionGenresWithOther, 'vModel' => 'formInput.secondProductionGenres'])
             </section>
 
         </tab-content>

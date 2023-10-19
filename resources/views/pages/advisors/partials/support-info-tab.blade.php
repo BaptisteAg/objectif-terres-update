@@ -219,8 +219,8 @@
             </p>
             <p>
                 <span class="is-italic">Productions possibles</span> :
-                @if($ad->landOfferAd->productionGenresPossible->count() > 0)
-                    {{$ad->landOfferAd->productionGenresPossible->pluck('name')->implode(', ') }}
+                @if($ad->landOfferAd->productionGenresSecondary->count() > 0)
+                    {{$ad->landOfferAd->productionGenresSecondary->pluck('name')->implode(', ') }}
                 @else
                     Non renseignées
                 @endif

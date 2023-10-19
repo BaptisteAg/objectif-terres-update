@@ -40,7 +40,7 @@ export default {
                 title: hasOld && v.title || '',
                 documents: hasOld && JSON.parse(v.documents) || [],
                 productionGenres: hasOld && v.production_genres || [],
-                secondProductionGenres: hasOld && v.second_production_genres || [],
+                secondProductionGenres: hasOld && v.secondary_production_genres || [],
                 chartConfirmation: hasOld && v.chart_confirmation || false,
                 //beneficiary: hasOld && v.is_beneficiary || '',
                 //agriculturalActivity: hasOld && v.agricultural_activity || [],

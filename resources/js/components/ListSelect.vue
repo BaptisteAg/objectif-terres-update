@@ -64,6 +64,7 @@ export default {
   computed: {
     selectedProductionGenres: {
       get() {
+          console.log(this.value, this.productionGenres)
         return this.productionGenres.filter(genre => this.value.includes(genre.id));
       },
       set(newValue) {

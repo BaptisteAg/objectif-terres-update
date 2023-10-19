@@ -52,14 +52,13 @@ class LandOfferAdRepository extends AbstractRepository implements LandOfferAdRep
         }
 		$landOfferAd->productionGenres()->sync($productionGenres);
 
-        $productionGenresWanted = $data["production_genres_wanted"] ?? [];
-		$landOfferAd->productionGenresPossible()->detach();
-		foreach ($productionGenresWanted as $productionGenreId) {
+        $productionGenresSecondary = $data["secondary_production_genres"] ?? [];
+		$landOfferAd->productionGenresSecondary()->detach();
+		foreach ($productionGenresSecondary as $productionGenreId) {
 		    if($productionGenreId !== 'other') {
-                $landOfferAd->productionGenresPossible()->attach($productionGenreId, ["type" => "possible"]);
+                $landOfferAd->productionGenresSecondary()->attach($productionGenreId, ["type" => "secondary"]);
             }
 		}
-
 
 		$landOfferAd->bioCertifications()->sync($data["bio_certifications"] ?? []);
 
