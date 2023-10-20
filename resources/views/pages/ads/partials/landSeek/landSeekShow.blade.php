@@ -73,12 +73,38 @@
                     {{ empty($ad->human_ha) ? 'Non renseigné' :$ad->human_ha }}
                 </div>
 
+                @if(isset($ad->landSeekAd->installationType))
+                    @if($ad->landSeekAd->installationType->name !== "Indifférent")
+                        <div class="w-50">
+                            <strong>Installation souhaitée : </strong>
+                            @if ($ad->landSeekAd->installationType->name === "Seul·e")
+                                Individuelle
+                            @else
+                                {{ $ad->landSeekAd->installationType->name }}
+                            @endif
+                        </div>
+                    @endif
+                @endif
+
                 @foreach($ad->landSeekAd->buildings as $building)
                     <div class="w-50">
                         <strong>{{ $building->buildingType->label }} : </strong>
                         {{ $building->requirement->label }}
                     </div>
                 @endforeach
+
+                @php
+                    $bioStatuses = [
+                        1 => 'Oui',
+                        0 => 'Non',
+                        -1 => 'Ne sais pas',
+                    ];
+                @endphp
+
+                <div class="w-50">
+                    <strong>Souhaite s'installer en bio : </strong>
+                    {{ $bioStatuses[$ad->landSeekAd->is_bio] ?? 'Non précisé' }}
+                </div>
 
             </div>
         </div>
@@ -97,124 +123,62 @@
     <div>
         <h3 class="title is-4">Production principale</h3>
         <b-taglist>
-            {{--            @if($ad->landOfferAd->productionGenres->count() || $ad->landOfferAd->production_type_add)--}}
-            {{--                @foreach($ad->landOfferAd->productionGenres->pluck('name') as $productionGenre)--}}
-            {{--                    <b-tag type="is-primary" rounded size="is-medium">--}}
-            {{--                        {{$productionGenre}}--}}
-            {{--                    </b-tag>--}}
-            {{--                @endforeach--}}
-            {{--                @if($ad->landOfferAd->production_type_add)--}}
-            {{--                    <b-tag type="is-primary" rounded size="is-medium">--}}
-            {{--                        {{ ucfirst($ad->landOfferAd->production_type_add) }}--}}
-            {{--                    </b-tag>--}}
-            {{--                @endif--}}
-            {{--            @else--}}
-            {{--                <b-tag type="is-primary" rounded size="is-medium">--}}
-            {{--                    Non renseigné--}}
-            {{--                </b-tag>--}}
-            {{--            @endif--}}
+            @if($ad->landSeekAd->productionGenres->count() || $ad->landSeekAd->production_type_add)
+                @foreach($ad->landSeekAd->productionGenres->pluck('name') as $productionGenre)
+                    <b-tag type="is-primary" rounded size="is-medium">
+                        {{$productionGenre}}
+                    </b-tag>
+                @endforeach
+                @if($ad->landSeekAd->production_type_add)
+                    <b-tag type="is-primary" rounded size="is-medium">
+                        {{ ucfirst($ad->landSeekAd->production_type_add) }}
+                    </b-tag>
+                @endif
+            @else
+                <b-tag type="is-primary" rounded size="is-medium">
+                    Non renseigné
+                </b-tag>
+            @endif
         </b-taglist>
     </div>
     <div>
         <h3 class="title is-4">Production secondaires et envisageables</h3>
         <b-taglist>
-            {{--            @if($ad->landOfferAd->productionGenresSecondary->count() || $ad->landOfferAd->production_type_wanted_add)--}}
-            {{--                @foreach($ad->landOfferAd->productionGenresSecondary->pluck('name') as $productionGenresSecondary)--}}
-            {{--                    <b-tag type="is-primary" rounded size="is-medium">--}}
-            {{--                        {{$productionGenresSecondary}}--}}
-            {{--                    </b-tag>--}}
-            {{--                @endforeach--}}
-            {{--                @if($ad->landOfferAd->production_type_wanted_add)--}}
-            {{--                    <b-tag type="is-primary" rounded size="is-medium">--}}
-            {{--                        {{ ucfirst($ad->landOfferAd->production_type_wanted_add) }}--}}
-            {{--                    </b-tag>--}}
-            {{--                @endif--}}
-            {{--            @else--}}
-            {{--                <b-tag type="is-primary" rounded size="is-medium">--}}
-            {{--                    Non renseigné--}}
-            {{--                </b-tag>--}}
-            {{--            @endif--}}
+            @if($ad->landSeekAd->secondaryProductionGenres->count())
+                @foreach($ad->landSeekAd->secondaryProductionGenres->pluck('name') as $secondaryProductionGenre)
+                    <b-tag type="is-primary" rounded size="is-medium">
+                        {{$secondaryProductionGenre}}
+                    </b-tag>
+                @endforeach
+            @else
+                <b-tag type="is-primary" rounded size="is-medium">
+                    Non renseigné
+                </b-tag>
+            @endif
         </b-taglist>
 
     </div>
-    <div class="is-flex is-flex-wrap-wrap gap-6-mobile is-justify-content-space-between">
-        <div class="w-50">
-            <h3 class="title is-4">Certification des terres</h3>
-            {{--            @if($ad->landOfferAd->bioCertifications->count() || $ad->landOfferAd->production_type_add)--}}
-            {{--                @foreach($ad->landOfferAd->bioCertifications as $bioCertification)--}}
-            {{--                    @if($bioCertification->icon == "")--}}
-            {{--                        <p>{{$bioCertification->name }}</p>--}}
-            {{--                    @endif--}}
-            {{--                    <img src="{{ $bioCertification->icon }}">--}}
-            {{--                @endforeach--}}
-            {{--            @else--}}
-            {{--                <p>Aucune</p>--}}
-            {{--            @endif--}}
-        </div>
-        <div class="w-50">
-            {{--            <h3 class="title is-4">Accès à l’eau</h3>--}}
-            {{--            @if($ad->landOfferAd->water_access === 1)--}}
-            {{--                <p>{{ucfirst($ad->waterAccess)}}</p>--}}
-            {{--            @else--}}
-            {{--                <p>Non renseigné</p>--}}
-            {{--            @endif--}}
-        </div>
-    </div>
-    <div class="is-flex is-flex-wrap-wrap gap-6-mobile is-justify-content-space-between">
-        <div class="w-50">
-            <h3 class="title is-4">Présence d’habitations</h3>
-            {{--            @if($ad->landOfferAd->has_houses)--}}
-            {{--                <p>--}}
-            {{--                    {{$ad->landOfferAd->house->description ?? "Non renseignée"}}--}}
-            {{--                    @if($isSupportRequest)--}}
-            {{--                        , surface totale--}}
-            {{--                        : {{empty($ad->landOfferAd->house->surface) ? "Non renseignée" : $ad->landOfferAd->house->surface.'m²'}}--}}
-            {{--                    @endif--}}
-            {{--                </p>--}}
-            {{--                <p>Type de cession :--}}
-            {{--                    @if($ad->landOfferAd->house->offerGenres->count() > 0 )--}}
-            {{--                        @foreach($ad->landOfferAd->house->offerGenres as $offerGenre)--}}
-            {{--                            {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Vente' : $offerGenre->name}}--}}
-            {{--                            @if(!$loop->last)--}}
-            {{--                                ,--}}
-            {{--                            @endif--}}
-            {{--                        @endforeach--}}
-            {{--                    @else--}}
-            {{--                        non précisé--}}
-            {{--                    @endif--}}
-            {{--                </p>--}}
-            {{--            @else--}}
-            {{--                <p>Sans habitation</p>--}}
-            {{--            @endif--}}
-        </div>
-        <div class="w-50">
-            <h3 class="title is-4">Présence de bâtiments agricoles</h3>
-            {{--            @if($ad->landOfferAd->has_buildings)--}}
-            {{--                <p>{{$ad->landOfferAd->building->description ?? "Non renseignée"}}</p>--}}
-            {{--                @if($isSupportRequest)--}}
-            {{--                    , surface totale--}}
-            {{--                    : {{empty($ad->landOfferAd->building->surface) ? "Non renseignée" : $ad->landOfferAd->building->surface.'m²'}}--}}
-            {{--                @endif--}}
-            {{--            @else--}}
-            {{--                <p>Sans bâtiment agricole</p>--}}
-            {{--            @endif--}}
-        </div>
+
+    <div>
+        <h3 class="title is-4">Description du terrain recherché</h3>
+        <p>{!! nl2br($ad->landSeekAd->land_description ?? "Non précisée") !!}</p>
     </div>
     <div>
-        <h3 class="title is-4">Description de la terre</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur.</p>
-    </div>
-    <div>
-        <h3 class="title is-4">Description de la transmission agricole</h3>
+        <h3 class="title is-4">Description du projet</h3>
         <p>{!! nl2br($ad->about_project_content ??"") !!}</p>
     </div>
-    <div>
-        <h3 class="title is-4">Description du porteur de projet</h3>
-        <p>{!! nl2br($ad->about_content ?? "") !!}</p>
-    </div>
+    @if($ad->landSeekAd->experience_farming)
+        <div>
+            <h3 class="title is-4">Expérience du porteur de projet</h3>
+            <p>{!! nl2br($ad->landSeekAd->experience_farming ?? "") !!}</p>
+        </div>
+    @endif
+    @if($ad->about_content)
+        <div>
+            <h3 class="title is-4">A propos du porteur de projet</h3>
+            <p>{!! nl2br($ad->about_content ?? "") !!}</p>
+        </div>
+    @endif
     <div class="is-flex is-justify-content-space-between is-align-items-center pt-3">
         <div class="buttons mb-0">
             @include('pages.ads.partials.new-buttons-favorite-and-message')
