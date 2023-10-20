@@ -100,6 +100,9 @@
 <script>
 export default {
   props: {
+    oldValues: {
+      type: Object
+    },
     value: {
       type: String
     },
@@ -113,6 +116,14 @@ export default {
     },
   },
   data() {
+    let v = this.oldValues;
+
+
+    if (!v.before_form) {
+      v.before_form = {}
+    }
+
+
     return {
       errors: {
         check: '',
@@ -123,13 +134,13 @@ export default {
         adType: '',
       },
       otherPersonAd: {
-        value: false,
-        first_name: "",
-        last_name: "",
-        email: "",
-        phone: ""
+        value: v.before_form.is_for_other || false,
+        first_name: v.before_form.other_person_first_name || "",
+        last_name: v.before_form.other_person_last_name || "",
+        email: v.before_form.other_person_email || "",
+        phone: v.before_form.other_person_phone || "",
       },
-      isMailOnly: false,
+      isMailOnly: v.before_form.is_mail_only || false,
       isCertified: false,
       currentAdType: null
     }
