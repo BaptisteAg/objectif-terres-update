@@ -105,6 +105,8 @@ class ApiController extends Controller
                         'region' => $region?->name,
                         'department_name' => $foundDepartment?->name,
                         'department_code' => $foundDepartment?->code,
+                        'created_at' => $ad->created_at->timestamp,
+                        'updated_at' => $ad->updated_at->timestamp,
                     ];
                 });
         }));
