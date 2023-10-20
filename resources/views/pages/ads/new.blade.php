@@ -41,6 +41,7 @@
 
                     <ad-type-select v-model="adTypeSelected"
                                     name="ad_type"
+                                    :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                     :is-support-request="{{empty($isSupportRequest)?'false':'true'}}">
                     </ad-type-select>
 
