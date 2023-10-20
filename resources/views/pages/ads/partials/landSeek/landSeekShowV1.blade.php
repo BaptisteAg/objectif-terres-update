@@ -56,7 +56,7 @@
                             @foreach($ad->landSeekAd->buildings as $building)
                                     <span class="subtitle">{{ $building->buildingType->label }}</span> <i
                                             class="fas fa-arrow-right"></i><span
-                                            class="subtitle"> {{ $building->requirement->label }}</span><br>
+                                            class="subtitle"> </span><br>
                             @endforeach
                         </p>
                     @endif
