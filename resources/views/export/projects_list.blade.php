@@ -159,8 +159,8 @@
 				</td>
 				<td>
 					@if(isset($ad->landOfferAd))
-						@if(isset($ad->landOfferAd->productionGenresPossible))
-							{{$ad->landOfferAd->productionGenresPossible->pluck('name')->implode(', ')}}
+						@if(isset($ad->landOfferAd->productionGenresSecondary))
+							{{$ad->landOfferAd->productionGenresSecondary->pluck('name')->implode(', ')}}
 						@endif
 					@endif
 				</td>

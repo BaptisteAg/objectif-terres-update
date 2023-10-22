@@ -53,7 +53,7 @@ trait ObserverRelationsTrait
 		$ad = $model->ad;
 		$modelNames = [
 			'productionGenres' => "App\Models\ProductionGenre",
-			'productionGenresPossible' => "App\Models\ProductionGenre",
+			'productionGenresSecondary' => "App\Models\ProductionGenre",
 			'offerGenres' => "App\Models\OfferGenre",
 			'educationLevels'=> "App\Models\EducationLevel",
 			'bioCertifications'=>"App\Models\BioCertification",
@@ -62,7 +62,7 @@ trait ObserverRelationsTrait
 		];
 		$readableModelName = [
 			'productionGenres' => "production",
-			'productionGenresPossible' => "production possible",
+			'productionGenresSecondary' => "productions secondaires",
 			'offerGenres' => "installation",
 			'educationLevels' => "niveau formation",
 			'jobOfferTypes' => "type d'offre",

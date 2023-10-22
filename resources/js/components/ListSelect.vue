@@ -1,18 +1,18 @@
 <template>
   <div class="columns">
     <div class="column">
-      <b-dropdown size="is-medium" v-model="selectedProductionGenres" expanded aria-role="list" class="mb-3" multiple>
+      <b-dropdown size="is-medium" v-model="dropdownValue" expanded aria-role="list" class="mb-3" :multiple="!isUnique" :close-on-click="isUnique">
         <template #trigger="{ active }">
           <b-button
               :label="label"
               :icon-right="active ? 'menu-up' : 'menu-down'"/>
         </template>
 
-        <b-dropdown-item v-for="(productionGenre, index) in productionGenres"
+        <b-dropdown-item v-for="(option, index) in options"
                          :key="index"
-                         :value="productionGenre"
+                         :value="option"
                          aria-role="listitem">
-          {{ productionGenre.name }}
+          {{ option.name }}
         </b-dropdown-item>
       </b-dropdown>
       <slot></slot>
@@ -20,20 +20,20 @@
     <div class="column" v-if="!this.isUnique">
       <b-taglist>
         <b-tag
-            v-for="(selectedProductionGenre,index) in selectedProductionGenres"
+            v-for="(selectedOption,index) in selectedOptions"
             :key="index"
             rounded
             size="is-medium"
             type="is-primary"
             closable
-            @close="removeSelectedProductions(selectedProductionGenre)"
+            @close="remove(selectedOption)"
         >
-          {{ selectedProductionGenre.name }}
+          {{ selectedOption.name }}
         </b-tag>
       </b-taglist>
     </div>
-    <input v-for="selectedProductionGenre in selectedProductionGenres" type="hidden" :name="name"
-           :value="selectedProductionGenre.id">
+    <input v-for="selectedOption in selectedOptions" type="hidden" :name="name"
+           :value="selectedOption.id">
   </div>
 </template>
 <script>
@@ -43,7 +43,7 @@ export default {
       type: Boolean,
     },
     name: String,
-    productionGenres: {
+    options: {
       type: Array,
       required: true
     },
@@ -54,33 +54,62 @@ export default {
     isUnique: {
       type: Boolean,
       default: false
-    }
+    },
+    unitLabel: {
+      type: String,
+      default: 'option'
+    },
+    unitLabelGender: {
+        type: String,
+        default: 'f'
+    },
+  },
+  data() {
+      return {
+          dropdownValue: this.isUnique ?
+              this.options.find(o => o.id === this.value) :
+              this.options.filter(o => this.value.includes(o.id))
+      }
+  },
+  watch: {
+      /** @param {Array|Object} val */
+      dropdownValue(val) {
+          if (this.isUnique) {
+              this.$emit('input', [val.id]);
+              return;
+          }
+          this.$emit('input', val.map(o => o.id));
+      }
   },
   methods: {
-    removeSelectedProductions(option) {
-      this.selectedProductionGenres = this.selectedProductionGenres.filter(o => o !== option);
+    remove(option) {
+      if(Array.isArray(this.dropdownValue)) {
+          this.dropdownValue = this.dropdownValue.filter(o => o.id !== option.id);
+          return;
+      }
+      this.dropdownValue = [];
     },
   },
   computed: {
-    selectedProductionGenres: {
-      get() {
-        return this.productionGenres.filter(genre => this.value.includes(genre.id));
-      },
-      set(newValue) {
-        if (this.isUnique) {
-          newValue = [newValue.pop()];
+    selectedOptions() {
+        let ids;
+        if(Array.isArray(this.dropdownValue)) {
+            ids = this.dropdownValue.map(o => o.id)
+        } else if(this.dropdownValue) {
+            ids = [this.dropdownValue.id];
         }
-        let ids = newValue.map(object => object.id);
-        this.$emit('input', ids);
-      }
+        else {
+            return [];
+        }
+        return this.options.filter(option => ids.includes(option.id))
     },
     label() {
-      if (this.selectedProductionGenres.length === 0) {
-        return 'Sélectionner un genre de production'
-      } else if (this.selectedProductionGenres.length === 1) {
-        return this.selectedProductionGenres[0].name
+      if (this.selectedOptions.length === 0) {
+        return 'Sélectionner un'+(this.unitLabelGender === 'f' ? 'e' : '')+' ' + this.unitLabel
+      } else if (this.selectedOptions.length === 1) {
+        return this.selectedOptions[0].name
       } else {
-        return this.selectedProductionGenres.length + ' genres de production sélectionnés'
+        return this.selectedOptions.length + ' ' + this.unitLabel + (this.selectedOptions.length > 1 ? 's' : '') + ' sélectionné'+(this.unitLabelGender === 'f' ? 'e' : '')+'s'
       }
     },
   },

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\EducationLevelable;
 use App\Models\Traits\JobOfferTypable;
 use App\Models\Traits\OfferableGenre;
+use App\Models\Traits\ProductionableGenre;
 use Chelout\RelationshipEvents\Concerns\HasMorphToManyEvents;
 use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 use Illuminate\Database\Eloquent\Model;
@@ -31,10 +32,15 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $secondary_production_type_add
+ * @property string|null $production_type_add
+ * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd whereProductionTypeAdd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd whereSecondaryProductionTypeAdd($value)
  */
 class JobSeekAd extends Model
 {
-    use JobOfferTypable,
+    use ProductionableGenre,
+        JobOfferTypable,
 		EducationLevelable,
 		HasMorphToManyEvents,
 		HasRelationshipObservables;

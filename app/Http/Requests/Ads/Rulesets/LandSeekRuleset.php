@@ -20,18 +20,18 @@ class LandSeekRuleset implements RulesetInterface
         }
 
         return array_merge([
-            'locationable' => [new HasZone, 'nullable'],
-            'secondary_production_genres' => ['nullable', 'array'],
-            'second_production_type_add' => ['nullable', 'string'],
-            'installation_type_id' => ['required', 'integer'],
+            'land_seek.locationable' => [new HasZone, 'nullable'],
+
+            'land_seek.installation_type_id' => ['required', 'integer'],
             'land_seek.surface_range_min' => ['nullable', 'integer'],
             'land_seek.surface_range_max' => ['nullable', 'integer'],
             'land_seek.land_description' => ['nullable', 'string', 'max:1000'],
-            'land_seek.installation_type_id' => ['required', 'integer'],
             'land_seek.is_bio' => ['integer', 'required'],
             'land_seek.surface_range' => ['array'],
             'land_seek.production_genre' => [new HasProductionGenre],
             'land_seek.production_type_add' => ['nullable', 'string'],
+            'land_seek.secondary_production_genres' => ['nullable', 'array'],
+            'land_seek.secondary_production_type_add' => ['nullable', 'string'],
             'land_seek.experience_farming' => ['nullable', 'string', 'max:1500'],
             'land_seek.chart_confirmation' => ['required'],
             'land_seek.buildings' => ['required', 'array'],

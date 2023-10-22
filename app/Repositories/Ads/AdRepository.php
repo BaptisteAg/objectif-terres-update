@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
@@ -141,7 +142,6 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     private function save(Ad $ad, array $data)
     {
         $ad->fill($data);
-
         $ad->save();
 
         foreach (["cities", "departments", "regions"] as $locationableType) {
@@ -162,7 +162,6 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         if (!empty($data["documents_ids"]) && is_array($data["documents_ids"])) {
             $ad->documents()->sync($data["documents_ids"]);
         }
-
         if (!array_key_exists('is_partner', $data)) {
             if (!array_key_exists('documents_ids', $data)) {
                 //In case user remove document when editing his ad
@@ -170,6 +169,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             }
 
         }
+
         $ad->refresh();
 
     }
@@ -783,10 +783,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                         ->orWhereHas('landOfferAd.productionGenres', function (Builder $query) use ($filters) {
                             $query->whereIn('production_genres.id', $filters->input('production_genres'));
                         })
-                        ->orWhereHas('landSeekAd.productionGenresPossible', function (Builder $query) use ($filters) {
+                        ->orWhereHas('landSeekAd.productionGenresSecondary', function (Builder $query) use ($filters) {
                             $query->whereIn('production_genres.id', $filters->input('production_genres'));
                         })
-                        ->orWhereHas('landOfferAd.productionGenresPossible', function (Builder $query) use ($filters) {
+                        ->orWhereHas('landOfferAd.productionGenresSecondary', function (Builder $query) use ($filters) {
                             $query->whereIn('production_genres.id', $filters->input('production_genres'));
                         });
                 });
@@ -1133,7 +1133,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             'landOfferAd' => [
                 'landOfferAd',
                 'landOfferAd.productionGenres',
-                'landOfferAd.productionGenresPossible',
+                'landOfferAd.productionGenresSecondary',
                 'landOfferAd.bioCertifications',
                 'landOfferAd.offerGenres',
                 'landOfferAd.building',

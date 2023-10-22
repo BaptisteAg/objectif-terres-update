@@ -11,18 +11,18 @@
         <tab-content title="Terres proposées">
 
             <section class="mb-6 field">
-                <label class="label">Départements *</label>
+                <label class="label">Département *</label>
                 <autocomplete
                         name="department_id"
                         label="Département*"
                         id="department_id"
                         autocomplete="off"
-                        ref="selectedDepartment"
+                        ref="selectedDepartments"
                         src="/locations/departments"
-                        v-model="formInput.selectedDepartment"
-                        :vuelidate="$v.formInput.selectedDepartment"
+                        v-model="formInput.selectedDepartments"
+                        :vuelidate="$v.formInput.selectedDepartments"
                 >
-                    <template v-for="(zone, i) in formInput.selectedDepartment">
+                    <template v-for="(zone, i) in formInput.selectedDepartments">
                         <input
                                 key="zone.id"
                                 autocomplete="off"
@@ -33,7 +33,7 @@
                         <div
                                 key="zone.label"
                                 class="tag autocomplete-input-tag is-info"
-                                @click="_ => formInput.selectedDepartment.splice(i, 1)"
+                                @click="_ => formInput.selectedDepartments.splice(i, 1)"
                         >
                             @{{ zone.label }}
                             <i class="fa fa-trash" style="cursor:pointer; margin-left: 0.5em;"></i>
@@ -47,9 +47,10 @@
                            label="Si votre bien se situe sur plusieurs communes, merci de nous les indiquées">
                     <zone-select
                             name="locationable"
-                            label="Code Postal, Commune"
+                            label="Code Postal, Commune*"
                             json-name="selected_zones"
                             ref="selectedZones"
+                            :vuelidate="$v.formInput.selectedZones"
                             v-model="formInput.selectedZones">
                     </zone-select>
                 </b-tooltip>
@@ -61,13 +62,13 @@
                     {!! Form::label('land_offer[accept_use_zip_code]', 'Confidentialité', [
                                     'class' => 'label',
                                 ]); !!}
-                    <b-checkbox name="land_offer[accept_use_zip_code]" class="is-size-6">
+                    <b-checkbox name="land_offer[accept_use_zip_code]" class="is-size-6" {{($old["land_offer"]["accept_use_zip_code"] ?? null) == 1 ? 'checked' : ''}}>
                         Je ne souhaite pas que la localisation soit publique.
                     </b-checkbox>
                 </b-tooltip>
             </section>
 
-            <section class="field mb-6" ref="altitude">
+            <section class="field mb-6" ref="surface">
                 <b-tooltip class="w-100"
                            label="Il est nécessaire que nous ayons les informations sur votre bien, à l'échelle de la commune mais l'annonce ne l'affichera pas si vous souhaitez rester plus général sur l'emplacement du foncier. Seul le département apparaitra.">
                     {!! Form::label('land_offer[surface]', 'Surface du foncier agricole*', [
@@ -95,11 +96,11 @@
                 </b-tooltip>
             </section>
 
-            <section class="field mb-6" ref="surface">
+            <section class="field mb-6" ref="altitude">
                 <b-tooltip class="w-100"
                            label="Important pour savoir si votre terrain convient à certains projets agricoles">
 
-                    {!! Form::label('land_offer[altitude]', 'Altitude*', [
+                    {!! Form::label('land_offer[altitude]', 'Altitude', [
                                     'class' => 'label',
                                 ]); !!}
                     <b-field>
@@ -126,7 +127,7 @@
                            label="Décrivez la répartition de la Surface Agricole Utile (SAU) : terres arables (qui peuvent être labourées ou cultivées),
                                    surfaces toujours en herbe (prairies naturelles),
                                    cultures pérennes (vignes, vergers)">
-                    {!! Form::label('land_offer[altitude]', 'Description du foncier agricole*', [
+                    {!! Form::label('land_offer[altitude]', 'Description du foncier agricole', [
                                         'class' => 'label',
                                     ]); !!}
                     <text-area-counter
@@ -175,14 +176,14 @@
                 </b-tooltip>
             </section>
 
-            <section class="mb-6 is-flex gap-x-5 field is-flex-wrap-wrap" ref="">
-                {!! Form::label('land_offer[has_buildings]', "Présence de bâtiment(s) agricole(s)", ['class' => 'label w-100']) !!}
+            <section class="mb-6 is-flex gap-x-5 field is-flex-wrap-wrap" ref="hasBuildings">
+                {!! Form::label('land_offer[has_buildings]', "Présence de bâtiment(s) agricole(s)*", ['class' => 'label w-100']) !!}
                 <div>
-                    {!! Form::radio('land_offer[has_buildings]', '1', null , ['id' => 'land_offer[has_buildings]_1', 'v-model' => 'formInput.hasBuildings'] ) !!}
+                    {!! Form::radio('land_offer[has_buildings]', '1', null , ['id' => 'land_offer[has_buildings]_1', 'v-model' => 'formInput.hasBuildings', ':vuelidate' => '$v.formInput.hasBuildings'] ) !!}
                     {!! Form::label('land_offer[has_buildings]_1',  'Oui' ) !!}
                 </div>
                 <div>
-                    {!! Form::radio('land_offer[has_buildings]', '0', null , ['id' => 'land_offer[has_buildings]_0', 'v-model' => 'formInput.hasBuildings']) !!}
+                    {!! Form::radio('land_offer[has_buildings]', '0', null , ['id' => 'land_offer[has_buildings]_0', 'v-model' => 'formInput.hasBuildings', ':vuelidate' => '$v.formInput.hasBuildings']) !!}
                     {!! Form::label('land_offer[has_buildings]_0',  'Non' ) !!}
                 </div>
             </section>
@@ -204,44 +205,15 @@
                     </text-area-counter>
                 </b-tooltip>
             </section>
-            <!--////////////////////////////-->
-            @if(!empty($isSupportRequest))
-                <section class="mb-6 field" ref="buildingSurface">
-                    {!! Form::label('land_offer[building][surface]', 'Prix de vente'.($isSupportRequest?'':'*'), [
-                                        'class' => 'label',
-                                    ]); !!}
-                    {!! Form::text('land_offer[building][surface]', null, [
-                                                                'class' => 'input',
-                                                                'v-model' => 'formInput.buildingSurface',
-                                                                ':disabled'=>'isInputDisabled',
-                                                            ]) !!}
-                    <template v-if="$v.formInput.buildingSurface.$error">
-                        <p class="help is-danger" v-if="!$v.formInput.buildingSurface.numeric">
-                            Veuillez saisir un nombre.
-                        </p>
-                    </template>
-                </section>
-                <section class="mb-6 field" v-if="isSaleOffer" ref="buildingSurface">
-                    {!! Form::label('land_offer[building][offer_genres][]', 'Type de cession des bâtiments agricoles', [
-                                        'class' => 'label',
-                                    ]); !!}
-                    @foreach($offerGenres as $offerGenre)
-                        <b-checkbox name="land_offer[building][offer_genres][]" native-value="{{ $offerGenre["id"] }}"
-                                    v-model="formInput.buildingOfferGenres">
-                            {{ $offerGenre["land_offer_label"] }}
-                        </b-checkbox>
-                    @endforeach
-                </section>
-                <!--////////////////////////////-->
-            @endif
-            <section class="mb-6 is-flex gap-x-5 field is-flex-wrap-wrap" ref="">
-                {!! Form::label('land_offer[has_houses]', "Présence d'habitation(s)", ['class' => 'label w-100']) !!}
+
+            <section class="mb-6 is-flex gap-x-5 field is-flex-wrap-wrap" ref="hasHouses">
+                {!! Form::label('land_offer[has_houses]', "Présence d'habitation(s)*", ['class' => 'label w-100']) !!}
                 <div>
-                    {!! Form::radio('land_offer[has_houses]', '1', null , ['id' => 'land_offer[has_houses]_1', 'v-model' => 'formInput.hasHouses'] ) !!}
+                    {!! Form::radio('land_offer[has_houses]', '1', null , ['id' => 'land_offer[has_houses]_1', 'v-model' => 'formInput.hasHouses', ':vuelidate' => '$v.formInput.hasHouses'] ) !!}
                     {!! Form::label('land_offer[has_houses]_1',  'Oui' ) !!}
                 </div>
                 <div>
-                    {!! Form::radio('land_offer[has_houses]', '0', null , ['id' => 'land_offer[has_houses]_0', 'v-model' => 'formInput.hasHouses']) !!}
+                    {!! Form::radio('land_offer[has_houses]', '0', null , ['id' => 'land_offer[has_houses]_0', 'v-model' => 'formInput.hasHouses', ':vuelidate' => '$v.formInput.hasHouses']) !!}
                     {!! Form::label('land_offer[has_houses]_0',  'Non' ) !!}
                 </div>
             </section>
@@ -262,22 +234,6 @@
                 </b-tooltip>
             </section>
 
-            @if(!empty($isSupportRequest))
-                <section class="field mb-6" ref="houseSurface">
-                    {!! Form::label('land_offer[house][surface]', "Surface totale d'habitation", [
-                                                            'class' => 'label',
-                                                        ]); !!}
-                    {!! Form::text('land_offer[house][surface]', null, [
-                                            'class' => 'input',
-                                            'v-model' => 'formInput.houseSurface',
-                                        ]) !!}
-                    <template v-if="$v.formInput.houseSurface.$error">
-                        <p class="help is-danger" v-if="!$v.formInput.houseSurface.numeric">
-                            Veuillez saisir un nombre.
-                        </p>
-                    </template>
-                </section>
-            @endif
 
         </tab-content>
         <tab-content title="Potentiel agricole">
@@ -288,6 +244,7 @@
                     'name' => 'land_offer[production_genres][]',
                     'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.productionGenres',
+                    'isUnique' => 'true',
                     'isRequired' => true
                 ];
                 ?>
@@ -295,12 +252,12 @@
             </section>
 
             <section class="mb-6 field" ref="productionTypeAdd">
-                {!! Form::label('land_offer[secondary_production_genres][]', 'Production agricole secondaire envisagée', ['class' => 'label']); !!}
-                @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_offer[second_production_genres][]', 'productionGenres' => $productionGenresWithOther, 'vModel' => 'formInput.secondProductionGenres'])
+                {!! Form::label('land_offer[secondary_production_genres][]', 'Productions agricoles secondaires envisagées', ['class' => 'label']); !!}
+                @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_offer[secondary_production_genres][]', 'productionGenres' => $productionGenresWithOther, 'vModel' => 'formInput.secondProductionGenres'])
             </section>
 
             <section class="mb-6 field" ref="bioCertifications">
-                {!! Form::label('land_offer[bio_certifications][]', 'Certification des terres', ['class' => 'label']); !!}
+                {!! Form::label('land_offer[bio_certifications][]', 'Certification des terres*', ['class' => 'label']); !!}
                 <multi-select
                         :options="{{json_encode($bioCertifications)}}"
                         group-values="children"
@@ -328,15 +285,7 @@
                         </b-checkbox>
                     @endforeach
                 </div>
-                @if(empty($isSupportRequest))
-                    <p>
-                        Afin de favoriser l'accès à la terre au plus grand nombre et pour lutter contre la
-                        spéculation foncière,
-                        sachez que les modérateurs refuseront les annonces dont le prix
-                        des terres sont au dessus des prix du marché ou dont les fermages sont au-dessus des
-                        arrêtés préfectoraux.
-                    </p>
-                @endif
+
                 <p id="offerGenreIdError" class="help is-danger" v-if="$v.formInput.offerGenres.$error">
                     Ce champ est requis.
                 </p>
@@ -344,7 +293,7 @@
 
             <section class="mb-6 columns is-flex-wrap-wrap">
                 <div class="column field" v-if="isSaleOffer" ref="price">
-                    {!! Form::label('land_offer[price]', 'Prix de vente'.($isSupportRequest?'':'*'), [
+                    {!! Form::label('land_offer[price]', 'Prix de vente*', [
                                         'class' => 'label',
                                     ]); !!}
                     {!! Form::text('land_offer[price]', $old['land_offer']['price'] ?? null, [
@@ -380,7 +329,7 @@
                     </template>
                 </div>
                 <div class="column is-full" v-if="isSaleOffer">
-                    <b-checkbox>En cours d'évaluation</b-checkbox>
+                    <b-checkbox name="land_offer.is_sales_offer_evaluation" v-model="formInput.is_sales_offer_evaluation">En cours d'évaluation</b-checkbox>
                 </div>
             </section>
 

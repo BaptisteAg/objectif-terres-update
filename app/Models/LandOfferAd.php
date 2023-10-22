@@ -48,7 +48,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property-read int|null $offer_genres_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenres
  * @property-read int|null $production_genres_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresSecondary
  * @property-read int|null $production_genres_possible_count
  * @method static \Illuminate\Database\Eloquent\Builder|LandOfferAd newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LandOfferAd newQuery()
@@ -78,11 +78,13 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|LandOfferAd whereWaterAccess($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LandOfferAd whereWaterAccessDescription($value)
  * @mixin \Eloquent
+ * @property string|null $secondary_production_type_add
+ * @method static \Illuminate\Database\Eloquent\Builder|LandOfferAd whereSecondaryProductionTypeAdd($value)
  */
 class LandOfferAd extends Model
 {
-	use BioCertifiable,
-		ProductionableGenre,
+	use ProductionableGenre,
+        BioCertifiable,
 		OfferableGenre,
 		HasMorphToManyEvents,
 		HasRelationshipObservables;
@@ -141,5 +143,6 @@ class LandOfferAd extends Model
 		'is_call_for_application_terre_de_liens',
 		'is_call_for_application_test_area',
         'secondary_production_type_add',
+        'is_sales_offer_evaluation'
 	];
 }
