@@ -12,19 +12,19 @@
         <tab-content title="Terres recherchées">
 
             <section class="mb-6 field">
-                <label class="label">Départements *</label>
+                <label class="label">Département *</label>
                 <autocomplete
                         name="department_id"
                         label="Département*"
                         id="department_id"
                         autocomplete="off"
-                        ref="selectedDepartment"
+                        ref="selectedDepartments"
                         src="/locations/departments"
-                        v-model="formInput.selectedDepartment"
-                        :vuelidate="$v.formInput.selectedDepartment"
+                        v-model="formInput.selectedDepartments"
+                        :vuelidate="$v.formInput.selectedDepartments"
                         :disabled="isInputDisabled"
                 >
-                    <template v-for="(zone, i) in formInput.selectedDepartment">
+                    <template v-for="(zone, i) in formInput.selectedDepartments">
                         <input
                                 key="zone.id"
                                 autocomplete="off"
@@ -35,7 +35,7 @@
                         <div
                                 key="zone.label"
                                 class="tag autocomplete-input-tag is-info"
-                                @click="_ => formInput.selectedDepartment.splice(i, 1)"
+                                @click="_ => formInput.selectedDepartments.splice(i, 1)"
                         >
                             @{{ zone.label }}
                             <i class="fa fa-trash" style="cursor:pointer; margin-left: 0.5em;"></i>
@@ -44,10 +44,10 @@
                 </autocomplete>
             </section>
 
-            <section class="mb-6 field" v-if="formInput.selectedDepartment.length">
+            <section class="mb-6 field" v-if="formInput.selectedDepartments.length">
                 <zone-select
-                        name="locationable"
-                        label="Code Postal, Commune"
+                        name="land_seek[locationable]"
+                        label="Code Postal, Commune*"
                         json-name="selected_zones"
                         ref="selectedZones"
                         v-model="formInput.selectedZones"
@@ -137,15 +137,15 @@
             <section class="mb-6 field" ref="productionTypeAdd">
                 {!! Form::label('land_seek[secondary_production_genres][]', 'Production agricole secondaire envisagée', ['class' => 'label']); !!}
                 @include('pages.ads.partials.inputs.production_genres', [
-                    'name' => 'land_seek[second_production_genres][]',
+                    'name' => 'land_seek[secondary_production_genres][]',
                     'productionGenres' => $productionGenresWithOther,
                     'vModel' => 'formInput.secondProductionGenres'
                 ])
             </section>
 
             <section class="mb-6 field" v-show="secondProductionGenresHasOther">
-                {!! Form::label('land_seek[second_production_type_add]', 'Autre production secondaire : Veuillez préciser', ['class' => 'label']); !!}
-                {!! Form::text('land_seek[second_production_type_add]',
+                {!! Form::label('land_seek[secondary_production_type_add]', 'Autre production secondaire : Veuillez préciser', ['class' => 'label']); !!}
+                {!! Form::text('land_seek[secondary_production_type_add]',
                      null, [
                      'class' => 'input',
                      'v-model' => 'formInput.secondProductionTypeAdd'

@@ -6,11 +6,14 @@ use App\Models\Scopes\ScopeAdTypesFilterable;
 use App\Models\Scopes\ScopeDataFilterable;
 use App\Models\Scopes\ScopeLocationFilterable;
 use App\Models\Traits\Documentable;
+use App\Models\Traits\ProductionableGenre;
 use App\Presenters\AdPresenter;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
 use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use McCool\LaravelAutoPresenter\HasPresenter;
@@ -93,6 +96,9 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\History[] $history
  * @property-read int|null $history_count
+ * @property int|null $department_id
+ * @property-read \App\Models\FavoriteAd|null $currentUserFavoriteAd
+ * @method static Builder|Ad whereDepartmentId($value)
  */
 class Ad extends Model implements HasPresenter
 {
@@ -103,6 +109,8 @@ class Ad extends Model implements HasPresenter
         SoftDeletes,
         HasMorphedByManyEvents,
         HasRelationshipObservables;
+
+    private $cached_type = null;
 
     /**
      * @var array
@@ -121,15 +129,15 @@ class Ad extends Model implements HasPresenter
         'is_partner',
         'created_at',
         'origin',
-        'department_id'
+        'department_id',
     ];
 
     // Detect the type based on the presence of the foreign key
     // in the related table
     public function getTypeAttribute(): ?string
     {
-        if(isset($this->attributes['type'])) {
-            return $this->attributes['type'];
+        if(isset($this->cached_type)) {
+            return $this->cached_type;
         }
 
         $adTypes = [
@@ -159,7 +167,7 @@ class Ad extends Model implements HasPresenter
             }
         }
 
-        $this->attributes['type'] = $type;
+        $this->cached_type = $type;
 
         return $type;
     }
@@ -273,6 +281,11 @@ class Ad extends Model implements HasPresenter
     public function departments()
     {
         return $this->morphedbyMany(Department::class, 'locationable_ad');
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 
     /**

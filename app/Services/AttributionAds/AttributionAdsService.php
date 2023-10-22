@@ -199,10 +199,10 @@ class AttributionAdsService
 							->orWhereHas('landOfferAd.productionGenres', function (Builder $query) use ($filters) {
 								$query->whereIn('production_genres.id', $filters->input('production_genres'));
 							})
-							->orWhereHas('landSeekAd.productionGenresPossible', function (Builder $query) use ($filters) {
+							->orWhereHas('landSeekAd.productionGenresSecondary', function (Builder $query) use ($filters) {
 								$query->whereIn('production_genres.id', $filters->input('production_genres'));
 							})
-							->orWhereHas('landOfferAd.productionGenresPossible', function (Builder $query) use ($filters) {
+							->orWhereHas('landOfferAd.productionGenresSecondary', function (Builder $query) use ($filters) {
 								$query->whereIn('production_genres.id', $filters->input('production_genres'));
 							});
 					});

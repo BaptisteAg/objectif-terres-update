@@ -2122,6 +2122,9 @@ function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _ty
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
+    oldValues: {
+      type: Object
+    },
     value: {
       type: String
     },
@@ -2135,6 +2138,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     }
   },
   data: function data() {
+    var old = this.oldValues;
     return {
       errors: {
         check: '',
@@ -2145,15 +2149,15 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         adType: ''
       },
       otherPersonAd: {
-        value: false,
-        first_name: "",
-        last_name: "",
-        email: "",
-        phone: ""
+        value: old.is_for_other || false,
+        first_name: old.other_person_first_name || "",
+        last_name: old.other_person_last_name || "",
+        email: old.other_person_email || "",
+        phone: old.other_person_phone || ""
       },
-      isMailOnly: false,
-      isCertified: false,
-      currentAdType: null
+      isMailOnly: old.is_mail_only || false,
+      isCertified: old.has_certified || false,
+      currentAdType: this.value
     };
   },
   computed: {
@@ -2794,7 +2798,7 @@ __webpack_require__.r(__webpack_exports__);
       type: Boolean
     },
     name: String,
-    productionGenres: {
+    options: {
       type: Array,
       required: true
     },
@@ -2805,40 +2809,71 @@ __webpack_require__.r(__webpack_exports__);
     isUnique: {
       type: Boolean,
       "default": false
+    },
+    unitLabel: {
+      type: String,
+      "default": 'option'
+    },
+    unitLabelGender: {
+      type: String,
+      "default": 'f'
+    }
+  },
+  data: function data() {
+    var _this = this;
+    return {
+      dropdownValue: this.isUnique ? this.options.find(function (o) {
+        return o.id === _this.value;
+      }) : this.options.filter(function (o) {
+        return _this.value.includes(o.id);
+      })
+    };
+  },
+  watch: {
+    /** @param {Array|Object} val */dropdownValue: function dropdownValue(val) {
+      if (this.isUnique) {
+        this.$emit('input', [val.id]);
+        return;
+      }
+      this.$emit('input', val.map(function (o) {
+        return o.id;
+      }));
     }
   },
   methods: {
-    removeSelectedProductions: function removeSelectedProductions(option) {
-      this.selectedProductionGenres = this.selectedProductionGenres.filter(function (o) {
-        return o !== option;
-      });
+    remove: function remove(option) {
+      if (Array.isArray(this.dropdownValue)) {
+        this.dropdownValue = this.dropdownValue.filter(function (o) {
+          return o.id !== option.id;
+        });
+        return;
+      }
+      this.dropdownValue = [];
     }
   },
   computed: {
-    selectedProductionGenres: {
-      get: function get() {
-        var _this = this;
-        return this.productionGenres.filter(function (genre) {
-          return _this.value.includes(genre.id);
+    selectedOptions: function selectedOptions() {
+      var ids;
+      if (Array.isArray(this.dropdownValue)) {
+        ids = this.dropdownValue.map(function (o) {
+          return o.id;
         });
-      },
-      set: function set(newValue) {
-        if (this.isUnique) {
-          newValue = [newValue.pop()];
-        }
-        var ids = newValue.map(function (object) {
-          return object.id;
-        });
-        this.$emit('input', ids);
+      } else if (this.dropdownValue) {
+        ids = [this.dropdownValue.id];
+      } else {
+        return [];
       }
+      return this.options.filter(function (option) {
+        return ids.includes(option.id);
+      });
     },
     label: function label() {
-      if (this.selectedProductionGenres.length === 0) {
-        return 'Sélectionner un genre de production';
-      } else if (this.selectedProductionGenres.length === 1) {
-        return this.selectedProductionGenres[0].name;
+      if (this.selectedOptions.length === 0) {
+        return 'Sélectionner un' + (this.unitLabelGender === 'f' ? 'e' : '') + ' ' + this.unitLabel;
+      } else if (this.selectedOptions.length === 1) {
+        return this.selectedOptions[0].name;
       } else {
-        return this.selectedProductionGenres.length + ' genres de production sélectionnés';
+        return this.selectedOptions.length + ' ' + this.unitLabel + (this.selectedOptions.length > 1 ? 's' : '') + ' sélectionné' + (this.unitLabelGender === 'f' ? 'e' : '') + 's';
       }
     }
   }
@@ -3195,7 +3230,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     disabled: {
       type: Boolean,
-      required: true
+      "default": false
     }
   },
   data: function data() {
@@ -3849,6 +3884,9 @@ var render = function render() {
     }
   }, [_c("b-checkbox", {
     staticClass: "has-text-weight-bold is-size-6",
+    attrs: {
+      name: "has_certified"
+    },
     model: {
       value: _vm.isCertified,
       callback: function callback($$v) {
@@ -4014,6 +4052,10 @@ var render = function render() {
     }
   })], 1) : _vm._e(), _vm._v(" "), _c("b-field", [_c("b-checkbox", {
     staticClass: "is-size-6",
+    attrs: {
+      name: "accept_share_contact_infos",
+      value: "0"
+    },
     model: {
       value: _vm.isMailOnly,
       callback: function callback($$v) {
@@ -4021,7 +4063,7 @@ var render = function render() {
       },
       expression: "isMailOnly"
     }
-  }, [_vm._v("Je ne souhaite pas être contacté par téléphone (dans ce\n        cas,\n        je serais contacté uniquement par email)\n      ")])], 1), _vm._v(" "), _c("input", {
+  }, [_vm._v("\n          Je ne souhaite pas être contacté par téléphone (dans ce\n        cas,\n        je serais contacté uniquement par email)\n      ")])], 1), _vm._v(" "), _c("input", {
     attrs: {
       type: "hidden",
       name: "isMailOnly"
@@ -4862,7 +4904,8 @@ var render = function render() {
       size: "is-medium",
       expanded: "",
       "aria-role": "list",
-      multiple: ""
+      multiple: !_vm.isUnique,
+      "close-on-click": _vm.isUnique
     },
     scopedSlots: _vm._u([{
       key: "trigger",
@@ -4877,23 +4920,23 @@ var render = function render() {
       }
     }]),
     model: {
-      value: _vm.selectedProductionGenres,
+      value: _vm.dropdownValue,
       callback: function callback($$v) {
-        _vm.selectedProductionGenres = $$v;
+        _vm.dropdownValue = $$v;
       },
-      expression: "selectedProductionGenres"
+      expression: "dropdownValue"
     }
-  }, [_vm._v(" "), _vm._l(_vm.productionGenres, function (productionGenre, index) {
+  }, [_vm._v(" "), _vm._l(_vm.options, function (option, index) {
     return _c("b-dropdown-item", {
       key: index,
       attrs: {
-        value: productionGenre,
+        value: option,
         "aria-role": "listitem"
       }
-    }, [_vm._v("\n        " + _vm._s(productionGenre.name) + "\n      ")]);
+    }, [_vm._v("\n        " + _vm._s(option.name) + "\n      ")]);
   })], 2), _vm._v(" "), _vm._t("default")], 2), _vm._v(" "), !this.isUnique ? _c("div", {
     staticClass: "column"
-  }, [_c("b-taglist", _vm._l(_vm.selectedProductionGenres, function (selectedProductionGenre, index) {
+  }, [_c("b-taglist", _vm._l(_vm.selectedOptions, function (selectedOption, index) {
     return _c("b-tag", {
       key: index,
       attrs: {
@@ -4904,18 +4947,18 @@ var render = function render() {
       },
       on: {
         close: function close($event) {
-          return _vm.removeSelectedProductions(selectedProductionGenre);
+          return _vm.remove(selectedOption);
         }
       }
-    }, [_vm._v("\n        " + _vm._s(selectedProductionGenre.name) + "\n      ")]);
-  }), 1)], 1) : _vm._e(), _vm._v(" "), _vm._l(_vm.selectedProductionGenres, function (selectedProductionGenre) {
+    }, [_vm._v("\n        " + _vm._s(selectedOption.name) + "\n      ")]);
+  }), 1)], 1) : _vm._e(), _vm._v(" "), _vm._l(_vm.selectedOptions, function (selectedOption) {
     return _c("input", {
       attrs: {
         type: "hidden",
         name: _vm.name
       },
       domProps: {
-        value: selectedProductionGenre.id
+        value: selectedOption.id
       }
     });
   })], 2);
@@ -101459,11 +101502,11 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   formInput: {
-    // selectedZones: {
-    //     hasZone(zones) {
-    //         return zones.length;
-    //     }
-    // },
+    selectedDepartments: {
+      hasZone: function hasZone(zones) {
+        return zones.length;
+      }
+    },
     aboutProject: {
       minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(5),
       maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(1500),
@@ -101658,7 +101701,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         title: hasOld && v.title || '',
         documents: hasOld && JSON.parse(v.documents) || [],
         productionGenres: hasOld && v.production_genres || [],
-        secondProductionGenres: hasOld && v.second_production_genres || [],
+        secondProductionGenres: hasOld && v.secondary_production_genres || [],
         chartConfirmation: hasOld && v.chart_confirmation || false
         //beneficiary: hasOld && v.is_beneficiary || '',
         //agriculturalActivity: hasOld && v.agricultural_activity || [],
@@ -101753,55 +101796,68 @@ var numberNormalizer = function numberNormalizer(inputName) {
   mixins: [_mixins_form_new_ad_mixin__WEBPACK_IMPORTED_MODULE_2__["default"]],
   props: {},
   data: function data() {
-    var v = this.oldValues;
-    if (!v.land_offer) {
-      v.land_offer = {};
+    var old = this.oldValues;
+    if (!old.land_offer) {
+      old.land_offer = {};
     }
-    var extraFormInput = this.isSupportRequest ? {
-      isBeneficiary: v.land_offer.is_beneficiary || '1',
-      isActivityTransfer: v.land_offer.is_activity_transfer ? v.land_offer.is_activity_transfer.toString() : '',
-      buildingSurface: v.land_offer.building && v.land_offer.building.surface || '',
-      buildingOfferGenres: v.land_offer.building && v.land_offer.building.offer_genres || [],
-      houseSurface: v.land_offer.house && v.land_offer.house.surface || '',
-      houseOfferGenres: v.land_offer.house && v.land_offer.house.offer_genres || [],
-      supportRequestText: v.support_request_text || '',
-      supportRequestTerritoryId: v.support_request_territory_id || ""
-    } : {};
+
+    // TODO: remove
+    //const extraFormInput = this.isSupportRequest ? {
+    //    isBeneficiary: v.land_offer.is_beneficiary || '1',
+    //    isActivityTransfer:  v.land_offer.is_activity_transfer  ?
+    //        v.land_offer.is_activity_transfer.toString() : '',
+    //
+    //    buildingSurface: v.land_offer.building && v.land_offer.building.surface || '',
+    //    buildingOfferGenres: v.land_offer.building && v.land_offer.building.offer_genres || [],
+    //
+    //    houseSurface: v.land_offer.house && v.land_offer.house.surface || '',
+    //    houseOfferGenres: v.land_offer.house && v.land_offer.house.offer_genres || [],
+    //
+    //    supportRequestText: v.support_request_text || '',
+    //    supportRequestTerritoryId : v.support_request_territory_id ||"",
+    //} : {};
+
     return {
-      formInput: _objectSpread({
-        selectedDepartment: v.selected_department || [],
-        selectedZones: v.selected_zones && JSON.parse(v.selected_zones) || [],
-        surface: v.land_offer.surface || '',
-        sauDescription: v.land_offer.sau_description || '',
-        productionGenres: v.land_offer.production_genres || [],
-        productionGenresWanted: v.land_offer.production_genres_wanted || [],
-        bioCertifications: v.land_offer.bio_certifications || [],
-        waterAccess: typeof v.land_offer.water_access !== "undefined" ? v.land_offer.water_access : '',
-        waterAccessDescription: v.land_offer.water_access_description || '',
-        altitude: v.land_offer.altitude || '',
-        hasBuildings: v.land_offer.has_buildings ? v.land_offer.has_buildings.toString() : '',
-        buildingDescription: v.land_offer.building && v.land_offer.building.description || '',
-        hasHouses: v.land_offer.has_houses ? v.land_offer.has_houses.toString() : '',
-        houseDescription: v.land_offer.house && v.land_offer.house.description || '',
-        offerGenres: v.land_offer.offer_genres || [],
-        price: v.land_offer.price || '',
-        rentPrice: v.land_offer.rent_price || '',
-        testDescription: v.land_offer.test_description || '',
-        chartConfirmation: v.chart_confirmation || false,
-        aboutProject: v.about_project_content || '',
-        aboutContent: v.about_content || '',
-        title: v.title || '',
-        documents: v.documents && JSON.parse(v.documents) || [],
-        secondProductionGenres: v.land_offer.second_production_genres || []
-      }, extraFormInput)
+      formInput: {
+        selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
+        selectedZones: old.selected_zones && JSON.parse(old.selected_zones) || [],
+        accept_use_zip_code: old.accept_use_zip_code || false,
+        surface: old.land_offer.surface || '',
+        sauDescription: old.land_offer.sau_description || '',
+        productionGenres: old.land_offer.production_genres || [],
+        productionGenresSecondary: old.land_offer.production_genres_secondary || [],
+        bioCertifications: old.land_offer.bio_certifications || [],
+        waterAccess: typeof old.land_offer.water_access !== "undefined" ? old.land_offer.water_access : '',
+        waterAccessDescription: old.land_offer.water_access_description || '',
+        altitude: old.land_offer.altitude || '',
+        hasBuildings: old.land_offer.has_buildings ? old.land_offer.has_buildings.toString() : '',
+        buildingDescription: old.land_offer.building && old.land_offer.building.description || '',
+        hasHouses: old.land_offer.has_houses ? old.land_offer.has_houses.toString() : '',
+        houseDescription: old.land_offer.house && old.land_offer.house.description || '',
+        offerGenres: old.land_offer.offer_genres || [],
+        price: old.land_offer.price || '',
+        is_sales_offer_evaluation: old.is_sales_offer_evaluation || false,
+        rentPrice: old.land_offer.rent_price || '',
+        testDescription: old.land_offer.test_description || '',
+        chartConfirmation: old.chart_confirmation || false,
+        aboutProject: old.about_project_content || '',
+        aboutContent: old.about_content || '',
+        title: old.title || '',
+        documents: old.documents && JSON.parse(old.documents) || [],
+        secondProductionGenres: old.land_offer.secondary_production_genres || []
+        //confirmPriceFermage: hasOld ? !!v.confirm_price_fermage : false,
+
+        //...extraFormInput
+      }
     };
   },
+
   computed: {
     productionGenresHasOther: function productionGenresHasOther() {
       return this.formInput.productionGenres.includes('other');
     },
-    productionGenresWantedHasOther: function productionGenresWantedHasOther() {
-      return this.formInput.productionGenresWanted.includes('other');
+    productionGenresSecondaryHasOther: function productionGenresSecondaryHasOther() {
+      return this.formInput.productionGenresSecondary.includes('other');
     },
     hasWaterAccess: function hasWaterAccess() {
       return this.formInput.waterAccess && this.formInput.waterAccess.toString() === "1";
@@ -101838,7 +101894,6 @@ var numberNormalizer = function numberNormalizer(inputName) {
       } else {
         this.formInput.rentPrice = '';
       }
-      console.log(this.formInput.rentPrice);
     }
   },
   mounted: function mounted() {
@@ -101877,6 +101932,11 @@ var numberNormalizer = function numberNormalizer(inputName) {
     } : {};
     return {
       formInput: _objectSpread(_objectSpread({}, _base_validations__WEBPACK_IMPORTED_MODULE_1__["default"].formInput), {}, {
+        selectedZones: {
+          hasZone: function hasZone(zones) {
+            return zones.length;
+          }
+        },
         bioCertifications: {
           required: function required(values) {
             return values.length;
@@ -101891,12 +101951,17 @@ var numberNormalizer = function numberNormalizer(inputName) {
           minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(5),
           maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(1000)
         },
+        hasHouses: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+        },
+        hasBuildings: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+        },
         productionGenres: {
           required: function required(values) {
             return values.length;
           }
         },
-        productionGenresWanted: {},
         waterAccess: {
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
         },
@@ -102025,13 +102090,13 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     } : {};
     return {
       formInput: _objectSpread({
-        selectedDepartment: v.selected_department || [],
+        selectedDepartments: v.selected_departments && JSON.parse(v.selected_departments) || [],
         selectedZones: v.selected_zones && JSON.parse(v.selected_zones) || [],
         surfaceRangeMin: v.land_seek.surface_range_min || '0',
         surfaceRangeMax: v.land_seek.surface_range_max || '1000000',
         landDescription: v.land_seek.land_description || '',
-        buildingRequirement: v.land_seek.buildings[1] || '',
-        farmsRequirement: v.land_seek.buildings[2] || '',
+        buildingRequirement: v.land_seek && v.land_seek.buildings ? v.land_seek.buildings[1] : '',
+        farmsRequirement: v.land_seek && v.land_seek.buildings ? v.land_seek.buildings[2] : '',
         productionGenres: v.land_seek.production_genres || [],
         productionTypeAdd: v.land_seek.production_type_add || '',
         isBio: v.land_seek.is_bio || undefined,
@@ -102042,8 +102107,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         title: v.title || '',
         documents: v.documents && JSON.parse(v.documents) || [],
         chartConfirmation: v.chart_confirmation || false,
-        secondProductionGenres: v.land_seek.second_production_genres || [],
-        secondProductionTypeAdd: v.land_seek.second_production_type_add || ''
+        secondProductionGenres: v.land_seek.secondary_production_genres || [],
+        secondProductionTypeAdd: v.land_seek.secondary_production_type_add || ''
       }, extraFormInput)
     };
   },
@@ -102075,7 +102140,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     } : {};
     return {
       formInput: _objectSpread(_objectSpread({}, _base_validations__WEBPACK_IMPORTED_MODULE_1__["default"].formInput), {}, {
-        selectedDepartment: {
+        selectedDepartments: {
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
         },
         surfaceRangeMax: {
@@ -102239,9 +102304,13 @@ var smoothScrolls = [];
           value = _Object$entries$_i[1];
         var validation = this.$v.formInput[key];
         var ref = this.$refs[key];
+        var hasDirtyError = (validation === null || validation === void 0 ? void 0 : validation.$dirty) && (validation === null || validation === void 0 ? void 0 : validation.$error);
+        if (hasDirtyError && !ref) {
+          console.error("Could not highlight error : No ref found for formInput.".concat(key));
+          continue;
+        }
         if (validation && ref) {
           var field = this.findInputContainerElement(ref);
-          var hasDirtyError = validation.$dirty && validation.$error;
 
           // /!\ .field class must be placed on the input container
           while (!field.classList.contains('field')) {
@@ -102257,7 +102326,7 @@ var smoothScrolls = [];
      */
     focusOnFirstError: function focusOnFirstError() {
       var _this2 = this;
-      return Object.keys(this.formInput).find(function (inputName) {
+      var firstError = Object.keys(this.formInput).find(function (inputName) {
         if (_this2.$v.formInput[inputName] && _this2.$v.formInput[inputName].$error) {
           var input = _this2.findInputContainerElement(_this2.$refs[inputName]);
           console.log(inputName);
@@ -102290,6 +102359,14 @@ var smoothScrolls = [];
           return true;
         }
       });
+      if (!firstError) {
+        // Get errors from $v
+        var errors = Object.keys(this.$v.formInput).filter(function (inputName) {
+          return _this2.$v.formInput[inputName] && _this2.$v.formInput[inputName].$error;
+        });
+        console.error('Could not find any error to focus on. Errors left : ' + errors);
+      }
+      return firstError;
     },
     onSaveButtonClick: function onSaveButtonClick(e) {
       this.$emit('click-save-button');
@@ -103828,8 +103905,8 @@ function noIframe() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /shared/httpd/objectif-terres/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /shared/httpd/objectif-terres/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/gael/Work/devilbox/data/www/objectif-terres/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/gael/Work/devilbox/data/www/objectif-terres/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
