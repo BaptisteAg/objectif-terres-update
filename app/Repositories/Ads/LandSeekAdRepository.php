@@ -41,7 +41,7 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
         return $landSeekAd;
     }
 
-    private function save(LandSeekAd $landSeekAd, array $data)
+    private function save(LandSeekAd $landSeekAd, array $data): void
     {
         $landSeekAd->fill($data);
 
@@ -55,11 +55,27 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
         $landSeekAd->installationType()->associate($installationType);
 
         $productionGenres = $data["production_genres"] ?? [];
+
         if(in_array('other', $productionGenres)) {
             //$data["production_type_add"] = "";
             $productionGenres = Arr::where($productionGenres, function($productionGenre) {return $productionGenre !== 'other';});
         }
         $landSeekAd->productionGenres()->sync($productionGenres);
+
+        $secondaryProductionGenres = $data["secondary_production_genres"] ?? [];
+        if(in_array('other', $secondaryProductionGenres)) {
+            //$data["production_type_add"] = "";
+            $secondaryProductionGenres = Arr::where($secondaryProductionGenres, function($secondaryProductionGenre) {return $secondaryProductionGenre !== 'other';});
+        }
+        $productionGenresSecondary = $data["secondary_production_genres"] ?? [];
+        $landSeekAd->productionGenresSecondary()->detach();
+        foreach ($productionGenresSecondary as $productionGenreId) {
+            if($productionGenreId !== 'other') {
+                $landSeekAd->productionGenresSecondary()->attach($productionGenreId, ["type" => "secondary"]);
+            }
+        }
+
+        //dd($landSeekAd, $data);
 
         $landSeekAd->buildings()->delete();
         foreach($data["buildings"] ?? [] as $buildingId => $requirementId) {

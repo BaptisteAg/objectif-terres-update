@@ -101,11 +101,15 @@ export default {
             for (const [key, value] of Object.entries(this.formInput)) {
                 const validation = this.$v.formInput[key];
                 const ref = this.$refs[key];
+                const hasDirtyError = validation?.$dirty && validation?.$error;
 
+                if(hasDirtyError && !ref) {
+                    console.error(`Could not highlight error : No ref found for formInput.${key}`);
+                    continue;
+                }
 
-                if (validation && ref) {
+                if(validation && ref) {
                     let field = this.findInputContainerElement(ref);
-                    const hasDirtyError = validation.$dirty && validation.$error;
 
                     // /!\ .field class must be placed on the input container
                     while (!field.classList.contains('field')) {
@@ -120,7 +124,7 @@ export default {
          * Fails silently
          */
         focusOnFirstError() {
-            return Object.keys(this.formInput).find(inputName => {
+            const firstError = Object.keys(this.formInput).find(inputName => {
                 if (this.$v.formInput[inputName] && this.$v.formInput[inputName].$error) {
                     let input = this.findInputContainerElement(this.$refs[inputName]);
                     console.log(inputName);
@@ -153,6 +157,14 @@ export default {
                     return true;
                 }
             });
+            if(!firstError) {
+                // Get errors from $v
+                const errors = Object.keys(this.$v.formInput).filter(inputName => {
+                    return this.$v.formInput[inputName] && this.$v.formInput[inputName].$error
+                });
+                console.error('Could not find any error to focus on. Errors left : ' + errors);
+            }
+            return firstError;
         },
         onSaveButtonClick(e) {
             this.$emit('click-save-button');
