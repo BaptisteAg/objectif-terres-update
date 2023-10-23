@@ -22169,6 +22169,16 @@ a.navbar-link:focus {
   font-weight: bold;
 }
 
+@media (max-width: 1024px) {
+  .pagination {
+    justify-content: space-evenly;
+  }
+
+  .pagination .page-link {
+    font-size: 1rem;
+  }
+}
+
 .multiselect__tags {
   border-radius: 0 !important;
   border-bottom: 0.25em solid #A9652B !important;

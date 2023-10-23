@@ -1,6 +1,6 @@
 <div class="mt-25">
     <div class="tabs">
-        <ul>
+        <ul class="is-justify-content-center">
             <li class="{{ Route::current()->getName() === 'supervisor.index' || Route::current()->getName() === 'supervisor.show'  ? 'is-active' : '' }}">
                 <a class="" href="{{route('supervisor.index')}}">Suivi de l'activité sur votre territoire</a></li>
             <li class="{{ Route::current()->getName() === 'supervisor.report' || Route::current()->getName() === 'supervisor.report'  ? 'is-active' : '' }}">

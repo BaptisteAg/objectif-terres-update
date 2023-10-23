@@ -69,9 +69,9 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 							$q->whereNull('deleted_at');
 						});
 					});
-					$subQuery->whereHas('departments', function (Builder $builder) use ($territoriesCodes) {
-						$builder->whereIn('code', $territoriesCodes)->orWhere('id', DB::raw('ads.department_id'));
-					});
+//					$subQuery->whereHas('departments', function (Builder $builder) use ($territoriesCodes) {
+//						$builder->whereIn('code', $territoriesCodes)->orWhere('id', DB::raw('ads.department_id'));
+//					});
 					$subQuery->orWhereHas('cities', function (Builder $builder) use ($territoriesCodes) {
 						$builder->whereIn('department_code', $territoriesCodes);
 					});
