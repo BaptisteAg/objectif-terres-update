@@ -2253,22 +2253,19 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _definitions_searchAdTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../definitions/searchAdTypes */ "./resources/js/definitions/searchAdTypes.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['regions', 'productions'],
   data: function data() {
     return {
-      categoryLabels: {
-        'land': 'Une terre',
-        'job': 'Un emploi',
-        'viticulture': 'Viticulture',
-        'maraichage': 'Maraîchage'
-      },
+      categoryLabels: _definitions_searchAdTypes__WEBPACK_IMPORTED_MODULE_0__["searchAdTypes"],
       advancedSearch: {
         "active": false,
         "message": "Recherche avancée"
@@ -2297,7 +2294,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     sendAdsForm: function sendAdsForm() {
       var params = new URLSearchParams();
-      params.append('offer_type', 'OfferAd');
       params.append('ad_category', this.adsForm.category);
       this.adsForm.localisation.forEach(function (id) {
         return params.append('regions_location_researches_ids[]', id);
@@ -2823,7 +2819,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
     return {
       dropdownValue: this.isUnique ? this.options.find(function (o) {
-        return o.id === _this.value;
+        return o.id === _this.value[0];
       }) : this.options.filter(function (o) {
         return _this.value.includes(o.id);
       })
@@ -4207,17 +4203,15 @@ var render = function render() {
       },
       expression: "adsForm.category"
     }
-  }, [_vm._v(" "), _c("b-dropdown-item", {
-    attrs: {
-      "aria-role": "listitem",
-      value: "land"
-    }
-  }, [_vm._v("Une terre")]), _vm._v(" "), _c("b-dropdown-item", {
-    attrs: {
-      "aria-role": "listitem",
-      value: "job"
-    }
-  }, [_vm._v("Un emploi")])], 1)], 1)]), _vm._v(" "), _c("div", {
+  }, [_vm._v(" "), _vm._l(_vm.categoryLabels, function (label, category) {
+    return _c("b-dropdown-item", {
+      key: category,
+      attrs: {
+        "aria-role": "listitem",
+        value: category
+      }
+    }, [_vm._v("\n                " + _vm._s(label) + "\n            ")]);
+  })], 2)], 1)]), _vm._v(" "), _c("div", {
     staticClass: "column have-border"
   }, [_c("div", {
     staticClass: "is-flex is-flex-direction-column is-justify-content-space-between"
@@ -99644,6 +99638,33 @@ __webpack_require__(/*! ./notifications */ "./resources/js/notifications.js");
 __webpack_require__(/*! ./carrousel */ "./resources/js/carrousel.js");
 __webpack_require__(/*! ./main.js */ "./resources/js/main.js");
 vue__WEBPACK_IMPORTED_MODULE_4___default.a.prototype.$user = window.$user;
+
+// Will dynamically change image urls depending on the env ( non production only ) and if the original image is not found
+// This is to avoid having to download all the images from the server while still being able to see locally uploaded images
+if (window.$env !== "production") {
+  var localAlternativeImageRefresh = function localAlternativeImageRefresh(mutations) {
+    var images = document.querySelectorAll('img');
+    images.forEach(function (image) {
+      image.onerror = function () {
+        // Get the original image domain name
+        var originalDomain = image.src.split('/')[2];
+        // Get the current url domain name
+        var currentDomain = window.location.origin.split('/')[2];
+        // Replace the image original domain wil the current url one
+        image.src = image.src.replace(originalDomain, currentDomain);
+        // Fail after 1 try
+        image.onerror = null;
+      };
+    });
+  };
+
+  // Apply the above code for every image inserted; make the code performant
+  var observer = new MutationObserver(localAlternativeImageRefresh);
+  var config = {
+    childList: true
+  };
+  observer.observe(document.body, config);
+}
 window.app = new vue__WEBPACK_IMPORTED_MODULE_4___default.a({
   el: '#app',
   data: {
@@ -100983,6 +101004,27 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/definitions/searchAdTypes.js":
+/*!***************************************************!*\
+  !*** ./resources/js/definitions/searchAdTypes.js ***!
+  \***************************************************/
+/*! exports provided: searchAdTypes */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "searchAdTypes", function() { return searchAdTypes; });
+var searchAdTypes = {
+  'landSeekAd': 'Un porteur de projet agricole',
+  'landOfferAd': 'Une terre',
+  'associateFarmAd': 'Un associé sur une ferme',
+  'associateProjectAd': 'Un associé pour projet d\'installation',
+  'jobOfferAd': 'Une offre d\'emploi',
+  'jobSeekAd': 'Des profils de demandeur d\'emploi'
+};
+
+/***/ }),
+
 /***/ "./resources/js/helpers.js":
 /*!*********************************!*\
   !*** ./resources/js/helpers.js ***!
@@ -101909,27 +101951,29 @@ var numberNormalizer = function numberNormalizer(inputName) {
     }
   },
   validations: function validations() {
-    var extraValidations = this.isSupportRequest ? {
-      //isBeneficiary: {required},
-      isActivityTransfer: {
-        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
-      },
-      buildingSurface: {
-        decimal: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["decimal"]
-      },
-      //buildingOfferGenres: {required},
+    // TOdo: remove
+    //const extraValidations = this.isSupportRequest ? {
+    //    //isBeneficiary: {required},
+    //    isActivityTransfer: {required},
+    //
+    //    buildingSurface: {
+    //        decimal
+    //    },
+    //    //buildingOfferGenres: {required},
+    //
+    //    houseSurface: {
+    //        decimal
+    //    },
+    //    //houseOfferGenres: {required},
+    //
+    //    supportRequestText: {
+    //        required,
+    //        minLength: minLength(10),
+    //        maxLength: maxLength(400),
+    //    }
+    //
+    //} : {};
 
-      houseSurface: {
-        decimal: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["decimal"]
-      },
-      //houseOfferGenres: {required},
-
-      supportRequestText: {
-        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
-        minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(10),
-        maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(400)
-      }
-    } : {};
     return {
       formInput: _objectSpread(_objectSpread({}, _base_validations__WEBPACK_IMPORTED_MODULE_1__["default"].formInput), {}, {
         selectedZones: {
@@ -102011,7 +102055,9 @@ var numberNormalizer = function numberNormalizer(inputName) {
           minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(5),
           maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(1000)
         }
-      }, extraValidations)
+
+        //...extraValidations
+      })
     };
   }
 });
@@ -102076,39 +102122,39 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     ListSelect: _components_ListSelect__WEBPACK_IMPORTED_MODULE_10__["default"]
   },
   data: function data() {
-    var v = this.oldValues;
-    if (!v.land_seek) {
-      v.land_seek = {};
+    var old = this.oldValues;
+    if (!old.land_seek) {
+      old.land_seek = {};
     }
     var extraFormInput = this.isSupportRequest ? {
-      offerGenres: v.land_seek.offer_genres || [],
-      rentMax: v.land_seek.rent_max || '0',
-      priceMax: v.land_seek.price_max || '',
-      educationLevels: v.land_seek.education_levels || [],
-      supportRequestText: v.support_request_text || '',
-      supportRequestTerritoryId: v.support_request_territory_id || ""
+      offerGenres: old.land_seek.offer_genres || [],
+      rentMax: old.land_seek.rent_max || '0',
+      priceMax: old.land_seek.price_max || '',
+      educationLevels: old.land_seek.education_levels || [],
+      supportRequestText: old.support_request_text || '',
+      supportRequestTerritoryId: old.support_request_territory_id || ""
     } : {};
     return {
       formInput: _objectSpread({
-        selectedDepartments: v.selected_departments && JSON.parse(v.selected_departments) || [],
-        selectedZones: v.selected_zones && JSON.parse(v.selected_zones) || [],
-        surfaceRangeMin: v.land_seek.surface_range_min || '0',
-        surfaceRangeMax: v.land_seek.surface_range_max || '1000000',
-        landDescription: v.land_seek.land_description || '',
-        buildingRequirement: v.land_seek && v.land_seek.buildings ? v.land_seek.buildings[1] : '',
-        farmsRequirement: v.land_seek && v.land_seek.buildings ? v.land_seek.buildings[2] : '',
-        productionGenres: v.land_seek.production_genres || [],
-        productionTypeAdd: v.land_seek.production_type_add || '',
-        isBio: v.land_seek.is_bio || undefined,
-        installationTypeId: v.land_seek.installation_type_id || '',
-        aboutProject: v.about_project_content || '',
+        selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
+        selectedZones: old.selected_zones && JSON.parse(old.selected_zones) || [],
+        surfaceRangeMin: old.land_seek.surface_range_min || '0',
+        surfaceRangeMax: old.land_seek.surface_range_max || '1000000',
+        landDescription: old.land_seek.land_description || '',
+        buildingRequirement: old.land_seek && old.land_seek.buildings ? old.land_seek.buildings[1] : '',
+        farmsRequirement: old.land_seek && old.land_seek.buildings ? old.land_seek.buildings[2] : '',
+        productionGenres: old.land_seek.production_genres || [],
+        productionTypeAdd: old.land_seek.production_type_add || '',
+        isBio: old.land_seek.is_bio || undefined,
+        installationTypeId: old.land_seek.installation_type_id || '',
+        aboutProject: old.about_project_content || '',
         // experienceFarming: v.land_seek.experience_farming || '',
-        aboutContent: v.about_content || '',
-        title: v.title || '',
-        documents: v.documents && JSON.parse(v.documents) || [],
-        chartConfirmation: v.chart_confirmation || false,
-        secondProductionGenres: v.land_seek.secondary_production_genres || [],
-        secondProductionTypeAdd: v.land_seek.secondary_production_type_add || ''
+        aboutContent: old.about_content || '',
+        title: old.title || '',
+        documents: old.documents && JSON.parse(old.documents) || [],
+        chartConfirmation: old.chart_confirmation || false,
+        secondProductionGenres: old.land_seek.secondary_production_genres || [],
+        secondProductionTypeAdd: old.land_seek.secondary_production_type_add || ''
       }, extraFormInput)
     };
   },
@@ -102354,6 +102400,8 @@ var smoothScrolls = [];
               }, {
                 once: true
               });
+            } else {
+              console.error("Could not focus on error : No tab found for input ".concat(inputName));
             }
           }
           return true;

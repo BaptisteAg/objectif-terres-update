@@ -148,27 +148,28 @@ export default {
         }
     },
     validations() {
-        const extraValidations = this.isSupportRequest ? {
-            //isBeneficiary: {required},
-            isActivityTransfer: {required},
-
-            buildingSurface: {
-                decimal
-            },
-            //buildingOfferGenres: {required},
-
-            houseSurface: {
-                decimal
-            },
-            //houseOfferGenres: {required},
-
-            supportRequestText: {
-                required,
-                minLength: minLength(10),
-                maxLength: maxLength(400),
-            }
-
-        } : {};
+        // TOdo: remove
+        //const extraValidations = this.isSupportRequest ? {
+        //    //isBeneficiary: {required},
+        //    isActivityTransfer: {required},
+//
+        //    buildingSurface: {
+        //        decimal
+        //    },
+        //    //buildingOfferGenres: {required},
+//
+        //    houseSurface: {
+        //        decimal
+        //    },
+        //    //houseOfferGenres: {required},
+//
+        //    supportRequestText: {
+        //        required,
+        //        minLength: minLength(10),
+        //        maxLength: maxLength(400),
+        //    }
+//
+        //} : {};
 
         return {
             formInput: {
@@ -247,7 +248,7 @@ export default {
                         maxLength(1000),
                 },
 
-                ...extraValidations
+                //...extraValidations
             }
         }
     }
