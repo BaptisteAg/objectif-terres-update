@@ -283,10 +283,6 @@ class Ad extends Model implements HasPresenter
         return $this->morphedbyMany(Department::class, 'locationable_ad');
     }
 
-    /**
-     * Get all cities 'location' for the ad
-     * @return BelongsTo
-     */
     public function department()
     {
         return $this->belongsTo(Department::class);

@@ -1,3 +1,5 @@
+<?php /** @var \App\Models\Ad $ad */ ?>
+
 <div id="land_seek_form" class="form-container pt-6">
     <form-wizard
             title=""
@@ -18,13 +20,13 @@
                         label="Département*"
                         id="department_id"
                         autocomplete="off"
-                        ref="selectedDepartment"
+                        ref="selectedDepartments"
                         src="/locations/departments"
-                        v-model="formInput.selectedDepartment"
-                        :vuelidate="$v.formInput.selectedDepartment"
+                        v-model="formInput.selectedDepartments"
+                        :vuelidate="$v.formInput.selectedDepartments"
                         :disabled="isInputDisabled"
                 >
-                    <template v-for="(zone, i) in formInput.selectedDepartment">
+                    <template v-for="(zone, i) in formInput.selectedDepartments">
                         <input
                                 key="zone.id"
                                 autocomplete="off"
@@ -35,19 +37,20 @@
                         <div
                                 key="zone.label"
                                 class="tag autocomplete-input-tag is-info"
-                                @click="_ => formInput.selectedDepartment.splice(i, 1)"
+                                @click="_ => formInput.selectedDepartments.splice(i, 1)"
                         >
                             @{{ zone.label }}
                             <i class="fa fa-trash" style="cursor:pointer; margin-left: 0.5em;"></i>
                         </div>
                     </template>
+                    <input type="hidden" :disabled="disabled" :name="selectedDepartments" :value="JSON.stringify(formInput.selectedDepartments)">
                 </autocomplete>
             </section>
 
-            <section class="mb-6 field" v-if="formInput.selectedDepartment.length">
+            <section class="mb-6 field" v-if="formInput.selectedDepartments.length">
                 <zone-select
                         name="land_seek[locationable]"
-                        label="Code Postal, Commune"
+                        label="Code Postal, Commune*"
                         json-name="selected_zones"
                         ref="selectedZones"
                         v-model="formInput.selectedZones"

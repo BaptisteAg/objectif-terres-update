@@ -191,7 +191,7 @@ export default {
     },
     disabled: {
       type: Boolean,
-      required: true
+      default: false
     },
   },
   data() {

@@ -17,12 +17,12 @@
                         label="Département*"
                         id="department_id"
                         autocomplete="off"
-                        ref="selectedDepartment"
+                        ref="selectedDepartments"
                         src="/locations/departments"
-                        v-model="formInput.selectedDepartment"
-                        :vuelidate="$v.formInput.selectedDepartment"
+                        v-model="formInput.selectedDepartments"
+                        :vuelidate="$v.formInput.selectedDepartments"
                 >
-                    <template v-for="(zone, i) in formInput.selectedDepartment">
+                    <template v-for="(zone, i) in formInput.selectedDepartments">
                         <input
                                 key="zone.id"
                                 autocomplete="off"
@@ -33,7 +33,7 @@
                         <div
                                 key="zone.label"
                                 class="tag autocomplete-input-tag is-info"
-                                @click="_ => formInput.selectedDepartment.splice(i, 1)"
+                                @click="_ => formInput.selectedDepartments.splice(i, 1)"
                         >
                             @{{ zone.label }}
                             <i class="fa fa-trash" style="cursor:pointer; margin-left: 0.5em;"></i>

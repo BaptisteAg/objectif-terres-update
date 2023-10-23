@@ -30,42 +30,42 @@ export default Vue.extend({
         ListSelect,
     },
     data() {
-        let v = this.oldValues;
+        let old = this.oldValues;
 
-        if (!v.land_seek) {
-            v.land_seek = {}
+        if (!old.land_seek) {
+            old.land_seek = {}
         }
 
         const extraFormInput = this.isSupportRequest ? {
-            offerGenres: v.land_seek.offer_genres || [],
-            rentMax: v.land_seek.rent_max || '0',
-            priceMax: v.land_seek.price_max || '',
-            educationLevels: v.land_seek.education_levels || [],
-            supportRequestText: v.support_request_text || '',
-            supportRequestTerritoryId: v.support_request_territory_id || "",
+            offerGenres: old.land_seek.offer_genres || [],
+            rentMax: old.land_seek.rent_max || '0',
+            priceMax: old.land_seek.price_max || '',
+            educationLevels: old.land_seek.education_levels || [],
+            supportRequestText: old.support_request_text || '',
+            supportRequestTerritoryId: old.support_request_territory_id || "",
         } : {};
 
         return {
             formInput: {
-                selectedDepartment: v.selected_departments && JSON.parse(v.selected_departments) || [],
-                selectedZones: v.selected_zones && JSON.parse(v.selected_zones) || [],
-                surfaceRangeMin: v.land_seek.surface_range_min || '0',
-                surfaceRangeMax: v.land_seek.surface_range_max || '1000000',
-                landDescription: v.land_seek.land_description || '',
-                buildingRequirement: v.land_seek && v.land_seek.buildings ? v.land_seek.buildings[1] : '',
-                farmsRequirement: v.land_seek && v.land_seek.buildings ? v.land_seek.buildings[2] : '',
-                productionGenres: v.land_seek.production_genres || [],
-                productionTypeAdd: v.land_seek.production_type_add || '',
-                isBio: v.land_seek.is_bio || undefined,
-                installationTypeId: v.land_seek.installation_type_id || '',
-                aboutProject: v.about_project_content || '',
+                selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
+                selectedZones: old.selected_zones && JSON.parse(old.selected_zones) || [],
+                surfaceRangeMin: old.land_seek.surface_range_min || '0',
+                surfaceRangeMax: old.land_seek.surface_range_max || '1000000',
+                landDescription: old.land_seek.land_description || '',
+                buildingRequirement: old.land_seek && old.land_seek.buildings ? old.land_seek.buildings[1] : '',
+                farmsRequirement: old.land_seek && old.land_seek.buildings ? old.land_seek.buildings[2] : '',
+                productionGenres: old.land_seek.production_genres || [],
+                productionTypeAdd: old.land_seek.production_type_add || '',
+                isBio: old.land_seek.is_bio || undefined,
+                installationTypeId: old.land_seek.installation_type_id || '',
+                aboutProject: old.about_project_content || '',
                 // experienceFarming: v.land_seek.experience_farming || '',
-                aboutContent: v.about_content || '',
-                title: v.title || '',
-                documents: v.documents && JSON.parse(v.documents) || [],
-                chartConfirmation: v.chart_confirmation || false,
-                secondProductionGenres: v.land_seek.secondary_production_genres || [],
-                secondProductionTypeAdd: v.land_seek.secondary_production_type_add || '',
+                aboutContent: old.about_content || '',
+                title: old.title || '',
+                documents: old.documents && JSON.parse(old.documents) || [],
+                chartConfirmation: old.chart_confirmation || false,
+                secondProductionGenres: old.land_seek.secondary_production_genres || [],
+                secondProductionTypeAdd: old.land_seek.secondary_production_type_add || '',
                 ...extraFormInput
             }
         }
@@ -98,7 +98,7 @@ export default Vue.extend({
         return {
             formInput: {
                 ...baseValidations.formInput,
-                selectedDepartment: {
+                selectedDepartments: {
                     required,
                 },
                 surfaceRangeMax: {

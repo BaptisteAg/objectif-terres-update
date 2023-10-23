@@ -15,8 +15,9 @@
                     :label="categoryLabels[adsForm.category] || 'Sélectionnez une catégorie'"
                     :icon-right="active ? 'menu-up' : 'menu-down'"/>
               </template>
-              <b-dropdown-item aria-role="listitem" value="land">Une terre</b-dropdown-item>
-              <b-dropdown-item aria-role="listitem" value="job">Un emploi</b-dropdown-item>
+              <b-dropdown-item aria-role="listitem" :value="category" v-for="(label, category) of categoryLabels" :key="category">
+                  {{ label }}
+              </b-dropdown-item>
             </b-dropdown>
 
           </div>
@@ -140,16 +141,13 @@
   </section>
 </template>
 <script>
+import {searchAdTypes} from "../definitions/searchAdTypes";
+
 export default {
   props: ['regions', 'productions'],
   data() {
     return {
-      categoryLabels: {
-        'land': 'Une terre',
-        'job': 'Un emploi',
-        'viticulture': 'Viticulture',
-        'maraichage': 'Maraîchage',
-      },
+      categoryLabels: searchAdTypes,
       advancedSearch: {
         "active": false,
         "message": "Recherche avancée"
@@ -176,7 +174,6 @@ export default {
     },
     sendAdsForm() {
       const params = new URLSearchParams();
-      params.append('offer_type', 'OfferAd');
       params.append('ad_category', this.adsForm.category);
       this.adsForm.localisation.forEach(id => params.append('regions_location_researches_ids[]', id));
       this.adsForm.selectedProductions.forEach(id => params.append('regions_production_researches_ids[]', id));

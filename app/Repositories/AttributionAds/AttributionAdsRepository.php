@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 /**
@@ -69,7 +70,7 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 						});
 					});
 					$subQuery->whereHas('departments', function (Builder $builder) use ($territoriesCodes) {
-						$builder->whereIn('code', $territoriesCodes);
+						$builder->whereIn('code', $territoriesCodes)->orWhere('id', DB::raw('ads.department_id'));
 					});
 					$subQuery->orWhereHas('cities', function (Builder $builder) use ($territoriesCodes) {
 						$builder->whereIn('department_code', $territoriesCodes);

@@ -1,3 +1,5 @@
+<?php /** @var \App\Models\Ad $ad */ ?>
+
 <div class="columns">
     <div class="column is-flex is-flex-direction-column is-justify-content-space-between">
 
@@ -144,8 +146,8 @@
     <div>
         <h3 class="title is-4">Production secondaires et envisageables</h3>
         <b-taglist>
-            @if($ad->landSeekAd->secondaryProductionGenres->count())
-                @foreach($ad->landSeekAd->secondaryProductionGenres->pluck('name') as $secondaryProductionGenre)
+            @if($ad->landSeekAd->productionGenresSecondary->count())
+                @foreach($ad->landSeekAd->productionGenresSecondary->pluck('name') as $secondaryProductionGenre)
                     <b-tag type="is-primary" rounded size="is-medium">
                         {{$secondaryProductionGenre}}
                     </b-tag>
