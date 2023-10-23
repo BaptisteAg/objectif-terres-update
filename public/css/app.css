@@ -20197,6 +20197,10 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   border-top: solid 1px #95854B;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .mh-40 {
   min-height: 40vh;
 }

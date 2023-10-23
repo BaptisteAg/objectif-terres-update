@@ -15,7 +15,7 @@
     <div class="columns is-mobile mt-2 mb-0 mt-4-mobile mb-3-mobile is-justify-content-space-between">
         <div class="column pl-0-mobile">
             <span class="tag is-warning has-text-weight-bold is-uppercase">
-                {{ $ad->formatted_type }}
+                {{ Str::words($ad->formatted_type, 1) }}
             </span>
         </div>
 
@@ -35,7 +35,7 @@
         @endif
 
         <div class="column pr-0-mobile" style="color: #A74B2B">
-            {{ $ad->formatted_price }}
+            {{ Str::words($ad->formatted_price, 3) }}
         </div>
     </div>
 

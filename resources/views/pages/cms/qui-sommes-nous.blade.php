@@ -9,7 +9,7 @@
 @section('main-content')
     <div class="cms-page">
         <section class="">
-            <div id="a-propos-d-objectif-terres" class="container">
+            <div id="a-propos-d-objectif-terres" class="container mx-3-mobile">
                 <div>
                     @if($pageContent->count())
                         @if($pageContent->has('qui-sommes-nous-texte-dintroduction-sous-le-titre-principal'))
@@ -25,7 +25,7 @@
         {{--        </div>--}}
         {{--    </section>--}}
 
-        <section id="le-mouvement-terre-de-liens" class="">
+        <section id="le-mouvement-terre-de-liens" class=" mx-3-mobile">
             <div class="container list-partners">
                 <div>
                     @if($pageContent->count())
@@ -64,7 +64,7 @@
         {{--        </div>--}}
         {{--    </section>--}}
 
-        <section  class="">
+        <section class=" mx-3-mobile">
             <div class="container">
                 @if($pageContent->count())
                     @if($pageContent->has('qui-sommes-nous-en-savoir-plus-sur-lassociation-terre-de-liens'))
@@ -119,9 +119,9 @@
 
 @section('script')
     <script>
-let links = document.querySelector('.cms-page').querySelectorAll('a')
-links.forEach((link)=>{
-    link.setAttribute('target', '_blank');
-})
+        let links = document.querySelector('.cms-page').querySelectorAll('a')
+        links.forEach((link) => {
+            link.setAttribute('target', '_blank');
+        })
     </script>
 @endsection
