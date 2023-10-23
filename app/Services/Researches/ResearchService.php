@@ -246,13 +246,13 @@ class ResearchService
 				$adsFilter->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
 			} // filter by regions locations and all locations related to the regions selected
 			else if ($filters->has('regions_location_researches_ids')) {
-				if (!in_array(-1, $filters->input('regions_location_researches_ids'))) {
-					$regionsCodes = Region::whereIn('id', $filters->input('regions_location_researches_ids'))->get('code')->toArray();
-					$departmentsCodes = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
-					$adsFilter->filterLocations('regions', $filters->input('regions_location_researches_ids'));
-					$adsFilter->filterSubLocations('departments', $regionsCodes, 'departments.region_code');
-					$adsFilter->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
-				}
+				//if (!in_array(-1, $filters->input('regions_location_researches_ids'))) {
+				//	$regionsCodes = Region::whereIn('id', $filters->input('regions_location_researches_ids'))->get('code')->toArray();
+				//	$departmentsCodes = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
+				//	$adsFilter->filterLocations('regions', $filters->input('regions_location_researches_ids'));
+				//	$adsFilter->filterSubLocations('departments', $regionsCodes, 'departments.region_code');
+				//	$adsFilter->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
+				//}
 			}
 
 			if ($filters->has('offer_genres')) {

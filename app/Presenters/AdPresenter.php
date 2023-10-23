@@ -423,30 +423,32 @@ class AdPresenter extends BasePresenter
     public function formatted_location() : string
     {
         $ad = $this->wrappedObject;
-
         $region = null;
-        $foundDepartment = null;
+        $department = $this->wrappedObject->department;
+        $region = $department?->region;
 
-        if ($ad->regions->count()) {
-            $region = $ad->regions->first();
-        }
-
-        if ($ad->departments->count()) {
-            $foundDepartment = $ad->departments->first();
-            if (!$region) {
-                $region = $foundDepartment?->region?->first();
+        if(!$department) {
+            if ($ad->regions->count()) {
+                $region = $ad->regions->first();
             }
-        } elseif ($ad->cities->count()) {
-            $foundDepartment = $ad->cities->first()?->department?->first();
-            if (!$region) {
-                $region = $foundDepartment?->region?->first();
+
+            if ($ad->departments->count()) {
+                $department = $ad->departments->first();
+                if (!$region) {
+                    $region = $department?->region?->first();
+                }
+            } elseif ($ad->cities->count()) {
+                $department = $ad->cities->first()?->department?->first();
+                if (!$region) {
+                    $region = $department?->region?->first();
+                }
+            }
+            else if($region && !$department) {
+                $department = $region->departments->first();
             }
         }
-        else if($region && !$foundDepartment) {
-            $foundDepartment = $region->departments->first();
-        }
 
-        return $foundDepartment->name . ' (' . $foundDepartment->code . ') • '. $region->name;
+        return $department?->name . ' (' . $department?->code . ') • '. $region?->name;
     }
 
     public function formatted_price() : string
