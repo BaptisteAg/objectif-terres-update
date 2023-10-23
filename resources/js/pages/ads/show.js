@@ -6,6 +6,9 @@ import OSMapControllerFactory from "../../map";
 const ShowDocuments = () => import('./components/ShowDocuments.vue');
 Vue.component('vue-documents-button', ShowDocuments);
 
+const ContactModal = () => import('./components/ContactModal.vue');
+Vue.component('vue-contact-modal', ContactModal);
+
 Vue.component('vue-moderation-modal', {
     components: {
         ModerationModal,
