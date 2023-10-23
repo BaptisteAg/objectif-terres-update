@@ -42,7 +42,7 @@ ResearchesController extends Controller
     public function index(Request $request)
     {
         if ($request->has('ad_category')) {
-            $selectedAdType = $request->input('ad_category') . $request->input('offer_type');
+            $selectedAdType = $request->input('ad_category');
         } else {
             return back()->withErrors([
                 'error' => 'Aucune catégorie d\'annonce séléctionnée'
@@ -67,7 +67,7 @@ ResearchesController extends Controller
         }
 
         $searchedRegionNames = Region::whereIn('id', $request->get("regions_location_researches_ids") ?? [])->pluck('name')->toArray();
-        $searchedTypeOfProductions = ProductionGenre::whereIn('id', $request->get("production_genres") ?? [])->pluck('name')->toArray();
+        $searchedTypeOfProductions = ProductionGenre::whereIn('id', $request->get("regions_production_researches_ids") ?? [])->pluck('name')->toArray();
 
 		return view('pages.researches', compact('ads', 'adsType', 'request', 'hasDepartmentPolygons', 'searchedRegionNames', 'searchedTypeOfProductions'));
 	}

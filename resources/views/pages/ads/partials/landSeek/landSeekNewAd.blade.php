@@ -1,3 +1,5 @@
+<?php /** @var \App\Models\Ad $ad */ ?>
+
 <div id="land_seek_form" class="form-container pt-6">
     <form-wizard
             title=""
@@ -41,6 +43,7 @@
                             <i class="fa fa-trash" style="cursor:pointer; margin-left: 0.5em;"></i>
                         </div>
                     </template>
+                    <input type="hidden" :disabled="disabled" :name="selectedDepartments" :value="JSON.stringify(formInput.selectedDepartments)">
                 </autocomplete>
             </section>
 

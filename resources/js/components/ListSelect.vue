@@ -66,9 +66,10 @@ export default {
   },
   data() {
       return {
-          dropdownValue: this.isUnique ?
-              this.options.find(o => o.id === this.value) :
+          dropdownValue: (this.isUnique ?
+              this.options.find(o => o.id === this.value[0]) :
               this.options.filter(o => this.value.includes(o.id))
+          )
       }
   },
   watch: {
