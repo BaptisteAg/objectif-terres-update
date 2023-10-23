@@ -3,7 +3,7 @@
         @if(sizeof($threads) == 0)
             @if(auth()->user()->role < 1)
 
-                <p class="has-text-centered is-size-4">Vous souhaitez répondre à cette
+{{--                <p class="has-text-centered is-size-4">Vous souhaitez répondre à cette
                     annonce
                     ?</p>
                 <button id="open-modal-message-bottom-page"
@@ -12,7 +12,7 @@
                                                     <i class="fas fa-reply"></i>
                                                 </span>
                     <span> Répondre à l'annonce</span>
-                </button>
+                </button>--}}
 
             @endif
         @else
@@ -228,7 +228,8 @@
         </div>
     @endif
 @endif
-@else
+@endauth
+{{--@else
     <div id="messages-display" class="content">
         <p class="has-text-centered is-size-4">Vous souhaitez répondre à cette
             annonce
@@ -241,5 +242,5 @@
             <span> Répondre à l'annonce</span>
         </a>
     </div>
-@endauth
+@endauth--}}
 
