@@ -73,7 +73,7 @@
                     @endif
 
                     <new-land-seek-ad inline-template
-                                      v-show="adTypeSelected === 'land_seek'"
+                                      v-if="adTypeSelected === 'land_seek'"
                                       :is-input-disabled="adTypeSelected !== 'land_seek'"
                                       :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                       :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
@@ -88,7 +88,7 @@
                     </new-land-seek-ad>
 
                     <new-land-offer-ad inline-template
-                                       v-show="adTypeSelected === 'land_offer'"
+                                       v-if="adTypeSelected === 'land_offer'"
                                        :is-input-disabled="adTypeSelected !== 'land_offer'"
                                        :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                        :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
@@ -105,8 +105,7 @@
                     @if(empty($isSupportRequest))
                         {{--                    TODO : remove v-if after presentation --}}
                         <new-job-seek-ad inline-template
-                                         v-if="false"
-                                         v-show="adTypeSelected === 'job_seek'"
+                                         v-if="adTypeSelected === 'job_seek'"
                                          :is-input-disabled="adTypeSelected !== 'job_seek'"
                                          :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                          @input-enabled="setEnabledForm"

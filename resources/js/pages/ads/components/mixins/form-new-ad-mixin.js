@@ -153,6 +153,9 @@ export default {
                                 }
                             }, {once: true});
                         }
+                        else {
+                            console.error(`Could not focus on error : No tab found for input ${inputName}`);
+                        }
                     }
                     return true;
                 }
