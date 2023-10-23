@@ -154,7 +154,6 @@ abstract class BaseController extends Controller
             );
         }
 
-
         return $vars;
     }
 
