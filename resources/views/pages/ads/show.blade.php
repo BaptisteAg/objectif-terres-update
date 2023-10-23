@@ -84,7 +84,7 @@
 
     </section>
 
-    <section class="container mt-6">
+    <section class="container mt-6" id="messages-display">
         @include('pages.ads.partials.threadsDisplay')
     </section>
 
