@@ -143,5 +143,6 @@ class LandOfferAd extends Model
 		'is_call_for_application_terre_de_liens',
 		'is_call_for_application_test_area',
         'secondary_production_type_add',
+        'is_sales_offer_evaluation'
 	];
 }

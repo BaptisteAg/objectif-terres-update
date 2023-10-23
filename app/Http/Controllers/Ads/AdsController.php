@@ -82,24 +82,25 @@ class AdsController extends BaseController
         $data = $request->validated();
         /** @var $ad Ad $ad */
         try {
-            $ad = $this->adService->requestPublishing($data, $data['is_support_request']);
-            if (!$data['is_support_request']) {
-                $ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
-                $ad->userPp->notify(new BasicNotification([
-                    'subject' => "Votre annonce va être modérée",
-                    'message' => "Votre annonce '" . $ad->title . "' va être prochainement modérée par un membre de l’équipe, qui rassemble " .
-                        "des bénévoles et salarié·es. Souvent en déplacement sur le terrain, nous faisons notre possible pour vous répondre le plus " .
-                        "rapidement.\n\n
+            $ad = $this->adService->requestPublishing($data);
+            //Todo: remove
+            //if (!$data['is_support_request']) {
+            $ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
+            $ad->userPp->notify(new BasicNotification([
+                'subject' => "Votre annonce va être modérée",
+                'message' => "Votre annonce '" . $ad->title . "' va être prochainement modérée par un membre de l’équipe, qui rassemble " .
+                    "des bénévoles et salarié·es. Souvent en déplacement sur le terrain, nous faisons notre possible pour vous répondre le plus " .
+                    "rapidement.\n\n
 
-                        Vous pouvez gérer vos annonces depuis votre espace personnel Objectif Terres :\n",
-                    'action' => ["Gérer mes annonces", route('ads.list')],
-                    'salutation' => "En vous remerciant pour votre confiance,\n
-                                        L’équipe d’Objectif Terres."
-                ]));
+                    Vous pouvez gérer vos annonces depuis votre espace personnel Objectif Terres :\n",
+                'action' => ["Gérer mes annonces", route('ads.list')],
+                'salutation' => "En vous remerciant pour votre confiance,\n
+                                    L’équipe d’Objectif Terres."
+            ]));
 
-            } elseif ($data['is_support_request'] && isset($ad->attributionAd->user_advisor_id)) {
-                $ad->attributionAd->userAdvisor->notify(new NewSupportRequestNotification($ad));
-            }
+            //} elseif ($data['is_support_request'] && isset($ad->attributionAd->user_advisor_id)) {
+            //    $ad->attributionAd->userAdvisor->notify(new NewSupportRequestNotification($ad));
+            //}
 
         } catch (\Exception $exception) {
 

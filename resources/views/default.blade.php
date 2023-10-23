@@ -77,6 +77,7 @@
 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 <script>
     window.$user = {!!  json_encode(auth()->user()?->only(['first_name', 'name', 'role'])) !!};
+    window.$env = "{{ config('app.env') }}";
 
     // Notifications close button
     let closeNotification = document.querySelector('button[data-type=close-main-message]');

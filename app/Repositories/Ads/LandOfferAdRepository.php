@@ -66,12 +66,12 @@ class LandOfferAdRepository extends AbstractRepository implements LandOfferAdRep
 
 		if (isset($data['has_houses']) && $data['has_houses'] == 1) {
 			$house = House::create($data['house']);
-			$house->offerGenres()->sync($data["house"]['offer_genres'] ?? []);
+			//$house->offerGenres()->sync($data["house"]['offer_genres'] ?? []);
 			$landOfferAd->house()->associate($house)->save();
 		}
 		if (isset($data['has_buildings']) && $data['has_buildings'] == 1) {
 			$building = Building::create($data['building']);
-			$building->offerGenres()->sync($data["building"]['offer_genres'] ?? []);
+			//$building->offerGenres()->sync($data["building"]['offer_genres'] ?? []);
 			$landOfferAd->building()->associate($building)->save();
 		}
 	}

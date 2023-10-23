@@ -10,7 +10,7 @@
       <div :class="errors.check ? 'field-error mt-2 pt-2' : 'mt-2 pt-2'">
         <b-field :type="errors.check ? 'is-danger' : ''" :message="errors.check"
                  class="is-flex is-flex-direction-column">
-          <b-checkbox v-model="isCertified" class="has-text-weight-bold is-size-6">Je certifie que mon annonce
+          <b-checkbox v-model="isCertified" name="has_certified" class="has-text-weight-bold is-size-6">Je certifie que mon annonce
             concerne
             un
             projet agricole professionnel sur des productions principales nourricières <a
@@ -116,13 +116,7 @@ export default {
     },
   },
   data() {
-    let v = this.oldValues;
-
-
-    if (!v.before_form) {
-      v.before_form = {}
-    }
-
+    let old = this.oldValues;
 
     return {
       errors: {
@@ -134,15 +128,15 @@ export default {
         adType: '',
       },
       otherPersonAd: {
-        value: v.before_form.is_for_other || false,
-        first_name: v.before_form.other_person_first_name || "",
-        last_name: v.before_form.other_person_last_name || "",
-        email: v.before_form.other_person_email || "",
-        phone: v.before_form.other_person_phone || "",
+        value: old.is_for_other || false,
+        first_name: old.other_person_first_name || "",
+        last_name: old.other_person_last_name || "",
+        email: old.other_person_email || "",
+        phone: old.other_person_phone || "",
       },
-      isMailOnly: v.before_form.is_mail_only || false,
-      isCertified: false,
-      currentAdType: null
+      isMailOnly: old.is_mail_only || false,
+      isCertified: old.has_certified || false,
+      currentAdType: this.value
     }
   },
   computed: {

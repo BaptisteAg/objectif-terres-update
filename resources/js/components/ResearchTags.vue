@@ -27,6 +27,8 @@
 </style>
 
 <script>
+import {searchAdTypes} from "../definitions/searchAdTypes";
+
 export default {
   props: {
     regions_searched: {
@@ -39,10 +41,7 @@ export default {
   data() {
     return {
       params: new URLSearchParams(window.location.search),
-      categoryLabels: {
-        land: 'Une terre',
-        job: 'Un emploi',
-      },
+      categoryLabels: searchAdTypes,
     }
   },
 }

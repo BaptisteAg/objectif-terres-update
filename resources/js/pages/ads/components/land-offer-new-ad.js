@@ -35,62 +35,65 @@ export default {
     mixins: [FormNewAdMixin],
     props: {},
     data() {
-        let v = this.oldValues;
+        let old = this.oldValues;
 
-        if(!v.land_offer) {
-            v.land_offer = {}
+        if(!old.land_offer) {
+            old.land_offer = {}
         }
 
-        const extraFormInput = this.isSupportRequest ? {
-            isBeneficiary: v.land_offer.is_beneficiary || '1',
-            isActivityTransfer:  v.land_offer.is_activity_transfer  ?
-                v.land_offer.is_activity_transfer.toString() : '',
-
-            buildingSurface: v.land_offer.building && v.land_offer.building.surface || '',
-            buildingOfferGenres: v.land_offer.building && v.land_offer.building.offer_genres || [],
-
-            houseSurface: v.land_offer.house && v.land_offer.house.surface || '',
-            houseOfferGenres: v.land_offer.house && v.land_offer.house.offer_genres || [],
-
-            supportRequestText: v.support_request_text || '',
-            supportRequestTerritoryId : v.support_request_territory_id ||"",
-        } : {};
+        // TODO: remove
+        //const extraFormInput = this.isSupportRequest ? {
+        //    isBeneficiary: v.land_offer.is_beneficiary || '1',
+        //    isActivityTransfer:  v.land_offer.is_activity_transfer  ?
+        //        v.land_offer.is_activity_transfer.toString() : '',
+//
+        //    buildingSurface: v.land_offer.building && v.land_offer.building.surface || '',
+        //    buildingOfferGenres: v.land_offer.building && v.land_offer.building.offer_genres || [],
+//
+        //    houseSurface: v.land_offer.house && v.land_offer.house.surface || '',
+        //    houseOfferGenres: v.land_offer.house && v.land_offer.house.offer_genres || [],
+//
+        //    supportRequestText: v.support_request_text || '',
+        //    supportRequestTerritoryId : v.support_request_territory_id ||"",
+        //} : {};
 
         return  {
             formInput: {
-                selectedDepartment: v.selected_department || [],
-                selectedZones: v.selected_zones && JSON.parse(v.selected_zones) || [],
+                selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
+                selectedZones: old.selected_zones && JSON.parse(old.selected_zones) || [],
 
-                surface: v.land_offer.surface || '',
-                sauDescription: v.land_offer.sau_description || '',
-                productionGenres: v.land_offer.production_genres || [],
-                productionGenresWanted: v.land_offer.production_genres_wanted || [],
-                bioCertifications: v.land_offer.bio_certifications || [],
-                waterAccess: typeof v.land_offer.water_access !== "undefined" ?
-                    v.land_offer.water_access : '',
-                waterAccessDescription: v.land_offer.water_access_description|| '',
-                altitude: v.land_offer.altitude|| '',
+                accept_use_zip_code: old.accept_use_zip_code || false,
+                surface: old.land_offer.surface || '',
+                sauDescription: old.land_offer.sau_description || '',
+                productionGenres: old.land_offer.production_genres || [],
+                productionGenresSecondary: old.land_offer.production_genres_secondary || [],
+                bioCertifications: old.land_offer.bio_certifications || [],
+                waterAccess: typeof old.land_offer.water_access !== "undefined" ?
+                    old.land_offer.water_access : '',
+                waterAccessDescription: old.land_offer.water_access_description|| '',
+                altitude: old.land_offer.altitude|| '',
 
-                hasBuildings: v.land_offer.has_buildings ? v.land_offer.has_buildings.toString() : '',
-                buildingDescription : v.land_offer.building && v.land_offer.building.description|| '',
-                hasHouses: v.land_offer.has_houses ? v.land_offer.has_houses.toString() : '',
-                houseDescription : v.land_offer.house && v.land_offer.house.description || '',
+                hasBuildings: old.land_offer.has_buildings ? old.land_offer.has_buildings.toString() : '',
+                buildingDescription : old.land_offer.building && old.land_offer.building.description|| '',
+                hasHouses: old.land_offer.has_houses ? old.land_offer.has_houses.toString() : '',
+                houseDescription : old.land_offer.house && old.land_offer.house.description || '',
 
-                offerGenres: v.land_offer.offer_genres || [],
-                price: v.land_offer.price || '',
-                rentPrice: v.land_offer.rent_price || '',
-                testDescription : v.land_offer.test_description || '',
-                chartConfirmation: v.chart_confirmation || false,
+                offerGenres: old.land_offer.offer_genres || [],
+                price: old.land_offer.price || '',
+                is_sales_offer_evaluation: old.is_sales_offer_evaluation || false,
+                rentPrice: old.land_offer.rent_price || '',
+                testDescription : old.land_offer.test_description || '',
+                chartConfirmation: old.chart_confirmation || false,
 
-                aboutProject: v.about_project_content || '',
-                aboutContent: v.about_content || '',
-                title: v.title || '',
-                documents: v.documents && JSON.parse(v.documents) || [],
+                aboutProject: old.about_project_content || '',
+                aboutContent: old.about_content || '',
+                title: old.title || '',
+                documents: old.documents && JSON.parse(old.documents) || [],
 
-                secondProductionGenres: v.land_offer.secondary_production_genres || [],
+                secondProductionGenres: old.land_offer.secondary_production_genres || [],
                 //confirmPriceFermage: hasOld ? !!v.confirm_price_fermage : false,
 
-                ...extraFormInput
+                //...extraFormInput
             }
         };
     },
@@ -98,8 +101,8 @@ export default {
         productionGenresHasOther() {
             return this.formInput.productionGenres.includes('other');
         },
-        productionGenresWantedHasOther() {
-            return this.formInput.productionGenresWanted.includes('other');
+        productionGenresSecondaryHasOther() {
+            return this.formInput.productionGenresSecondary.includes('other');
         },
         hasWaterAccess() {
             return this.formInput.waterAccess && this.formInput.waterAccess.toString() === "1";
@@ -130,7 +133,6 @@ export default {
             } else {
                 this.formInput.rentPrice = ''
             }
-            console.log(this.formInput.rentPrice);
         }
     },
     mounted() {
@@ -146,31 +148,37 @@ export default {
         }
     },
     validations() {
-        const extraValidations = this.isSupportRequest ? {
-            //isBeneficiary: {required},
-            isActivityTransfer: {required},
-
-            buildingSurface: {
-                decimal
-            },
-            //buildingOfferGenres: {required},
-
-            houseSurface: {
-                decimal
-            },
-            //houseOfferGenres: {required},
-
-            supportRequestText: {
-                required,
-                minLength: minLength(10),
-                maxLength: maxLength(400),
-            }
-
-        } : {};
+        // TOdo: remove
+        //const extraValidations = this.isSupportRequest ? {
+        //    //isBeneficiary: {required},
+        //    isActivityTransfer: {required},
+//
+        //    buildingSurface: {
+        //        decimal
+        //    },
+        //    //buildingOfferGenres: {required},
+//
+        //    houseSurface: {
+        //        decimal
+        //    },
+        //    //houseOfferGenres: {required},
+//
+        //    supportRequestText: {
+        //        required,
+        //        minLength: minLength(10),
+        //        maxLength: maxLength(400),
+        //    }
+//
+        //} : {};
 
         return {
             formInput: {
                 ...baseValidations.formInput,
+                selectedZones: {
+                    hasZone(zones) {
+                        return zones.length;
+                    }
+                },
                 bioCertifications: {
                     required(values) {
                         return values.length;
@@ -185,12 +193,13 @@ export default {
                     minLength: minLength(5),
                     maxLength: maxLength(1000),
                 },
+                hasHouses: {required},
+                hasBuildings: {required},
                 productionGenres: {
                     required(values) {
                         return values.length;
                     }
                 },
-                productionGenresWanted: {},
                 waterAccess: {required},
                 waterAccessDescription: {
                     minLength: minLength(4),
@@ -239,7 +248,7 @@ export default {
                         maxLength(1000),
                 },
 
-                ...extraValidations
+                //...extraValidations
             }
         }
     }
