@@ -102613,6 +102613,10 @@ var ShowDocuments = function ShowDocuments() {
   return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./components/ShowDocuments.vue */ "./resources/js/pages/ads/components/ShowDocuments.vue"));
 };
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('vue-documents-button', ShowDocuments);
+var ContactModal = function ContactModal() {
+  return __webpack_require__.e(/*! import() */ 6).then(__webpack_require__.bind(null, /*! ./components/ContactModal.vue */ "./resources/js/pages/ads/components/ContactModal.vue"));
+};
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('vue-contact-modal', ContactModal);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('vue-moderation-modal', {
   components: {
     ModerationModal: _components_ModerationModal__WEBPACK_IMPORTED_MODULE_2__["default"],
