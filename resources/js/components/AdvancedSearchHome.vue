@@ -15,8 +15,9 @@
                     :label="categoryLabels[adsForm.category] || 'Sélectionnez une catégorie'"
                     :icon-right="active ? 'menu-up' : 'menu-down'"/>
               </template>
-              <b-dropdown-item aria-role="listitem" :value="category" v-for="(label, category) of categoryLabels" :key="category">
-                  {{ label }}
+              <b-dropdown-item aria-role="listitem" :value="category" v-for="(label, category) of categoryLabels"
+                               :key="category">
+                {{ label }}
               </b-dropdown-item>
             </b-dropdown>
 
@@ -264,6 +265,7 @@ $tablet: 769px;
     position: inherit;
     background-color: $background-color;
     padding: 2em;
+    max-width: 90vw;
   }
 
   .column.have-border {
