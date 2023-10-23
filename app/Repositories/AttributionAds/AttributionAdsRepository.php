@@ -69,17 +69,26 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 							$q->whereNull('deleted_at');
 						});
 					});
-//					$subQuery->whereHas('departments', function (Builder $builder) use ($territoriesCodes) {
-//						$builder->whereIn('code', $territoriesCodes)->orWhere('id', DB::raw('ads.department_id'));
-//					});
-					$subQuery->orWhereHas('cities', function (Builder $builder) use ($territoriesCodes) {
-						$builder->whereIn('department_code', $territoriesCodes);
-					});
-					$subQuery->orWhereHas('regions', function (Builder $builder) use ($territoriesCodes) {
-						$builder->whereHas('departments', function (Builder $q) use ($territoriesCodes) {
-							$q->whereIn('code', $territoriesCodes);
-						});
-					});
+                    // TODO: fix moderator ads filtering
+                    //$subQuery->where(function (Builder $builder) use ($territoriesCodes) {
+                    //    $builder->orwhereHas('departments', function (Builder $builder) use ($territoriesCodes) {
+                    //        $builder
+                    //            ->whereIn('code', $territoriesCodes)
+                    //            ->orWhere('departments.id', DB::raw('ads.department_id'));
+                    //    });
+                    //    $builder->orWhereHas('cities', function (Builder $builder) use ($territoriesCodes) {
+                    //        $builder->whereIn('department_code', $territoriesCodes);
+                    //        $builder->orWhereHas('department', function (Builder $q) use ($territoriesCodes) {
+                    //            $q->where('departments.id', DB::raw('ads.department_id'));
+                    //        });
+                    //    });
+                    //    $builder->orWhereHas('regions', function (Builder $builder) use ($territoriesCodes) {
+                    //        $builder->whereHas('departments', function (Builder $q) use ($territoriesCodes) {
+                    //            $q->whereIn('code', $territoriesCodes)
+                    //            ->orWhere('departments.id', DB::raw('ads.department_id'));
+                    //        });
+                    //    });
+                    //});
 				});
 			})
 			->orderByDesc('created_at')
