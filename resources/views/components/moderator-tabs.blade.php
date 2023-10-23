@@ -1,6 +1,6 @@
 <div class="mt-25">
     <div class="tabs">
-        <ul>
+        <ul class="is-justify-content-center">
             <li class="{{ Route::current()->getName() === 'moderator.index' || Route::current()->getName() === 'moderator.show'   ? 'is-active' : '' }}">
                 <a class="" href="{{route('moderator.index')}}">Vos annonces attribuées</a></li>
             <li class="{{ Route::current()->getName() === 'threads.index' ? 'is-active' : '' }}"><a class=""
