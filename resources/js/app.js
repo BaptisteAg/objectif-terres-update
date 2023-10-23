@@ -88,6 +88,31 @@ require('./main.js');
 
 Vue.prototype.$user = window.$user
 
+// Will dynamically change image urls depending on the env ( non production only ) and if the original image is not found
+// This is to avoid having to download all the images from the server while still being able to see locally uploaded images
+if (window.$env !== "production") {
+    const localAlternativeImageRefresh = function (mutations) {
+        const images = document.querySelectorAll('img');
+        images.forEach(image => {
+            image.onerror = function () {
+                // Get the original image domain name
+                const originalDomain = image.src.split('/')[2];
+                // Get the current url domain name
+                const currentDomain = window.location.origin.split('/')[2];
+                // Replace the image original domain wil the current url one
+                image.src = image.src.replace(originalDomain, currentDomain);
+                // Fail after 1 try
+                image.onerror = null;
+            }
+        })
+    }
+
+    // Apply the above code for every image inserted; make the code performant
+    const observer = new MutationObserver(localAlternativeImageRefresh);
+    const config = {childList: true};
+    observer.observe(document.body, config);
+}
+
 window.app = new Vue({
     el: '#app',
     data: {

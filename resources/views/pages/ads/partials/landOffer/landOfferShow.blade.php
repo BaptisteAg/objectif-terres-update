@@ -1,3 +1,5 @@
+<?php /** @var \App\Models\Ad $ad */ ?>
+
 <div class="columns">
     <div class="column is-flex is-flex-direction-column is-justify-content-space-between">
 
@@ -103,44 +105,24 @@
                 </div>
 
 
-                @if($ad->cities->count())
-                    @if($ad->landOfferAd->accept_use_zip_code)
-                        <div class="w-50">
-                            <strong>Code postal :</strong>
-                            {{$ad->cities[0]->zip_code }} ({{$ad->cities[0]->name }})
-                        </div>
-                    @else
-                        <div class="w-50">
-                            @auth
-                                @if( auth()->user()->id === $ad->user_pp_id || auth()->user()->role >=3)
-                                    @if(auth()->user()->id === $ad->user_pp_id)
-                                        <strong>Code Postal (non visible pour les autres
-                                            utilisateurs): </strong>
-                                    @else
-                                        <strong>Code Postal: </strong>
-                                    @endif
-                                    {{$ad->cities[0]->zip_code }} ({{$ad->cities[0]->name }})
-                                @else
-                                    <strong>Département :</strong>
-                                    {{$ad->cities[0]->department->code }} ({{$ad->cities[0]->department->name }})
-                                @endif
-                            @else
-                                <strong>Département :</strong>
-                                {{$ad->cities[0]->department->code }} ({{$ad->cities[0]->department->name }})
-                            @endauth
-                        </div>
-                    @endif
-                @elseif($ad->departments->count())
+                @if($ad->landOfferAd->accept_use_zip_code || auth()->user()->id === $ad->user_pp_id || auth()->user()->role >= 1)
                     <div class="w-50">
-                        <strong>Département :</strong>
-                        {{$ad->departments[0]->code }} ({{$ad->departments[0]->name }})
-                    </div>
-                @elseif($ad->regions->count())
-                    <div class="w-50">
-                        <strong>Région : </strong>
-                        {{$ad->regions[0]->name }}
+                        <?php $citiesList = $ad->cities->map(function(\App\Models\City $city) {return $city->name . ' ('.$city->zip_code.')';}) ?>
+                        <strong>Commune{{$citiesList->count() > 1 ? 's' : ''}} :</strong>
+                        {{ $citiesList->join(', ')}}
+                        @if(!$ad->landOfferAd->accept_use_zip_code)
+                            <br><small>(non visible pour les autres utilisateurs)</small>
+                        @endif
                     </div>
                 @endif
+                <div class="w-50">
+                    <?php $departmentsList = collect([
+                        $ad->department->name . ' ('.$ad->department->code.')',
+                        ...$ad->departments->map(function(\App\Models\Department $department) {return $department->name . ' ('.$department->code.')';})
+                    ])->unique(); ?>
+                    <strong>Département{{$departmentsList->count() > 1 ? 's' : ''}} :</strong>
+                    {{ $departmentsList->join(', ')}}
+                </div>
 
                 @if($ad->landOfferAd->is_activity_transfer)
                     <div class="w-50">
@@ -194,15 +176,15 @@
     <div>
         <h3 class="title is-4">Production secondaires et envisageables</h3>
         <b-taglist>
-            @if($ad->landOfferAd->productionGenresSecondary->count() || $ad->landOfferAd->production_type_wanted_add)
+            @if($ad->landOfferAd->productionGenresSecondary->count() || $ad->landOfferAd->secondary_production_type_add)
                 @foreach($ad->landOfferAd->productionGenresSecondary->pluck('name') as $productionGenresSecondary)
                     <b-tag type="is-primary" rounded size="is-medium">
                         {{$productionGenresSecondary}}
                     </b-tag>
                 @endforeach
-                @if($ad->landOfferAd->production_type_wanted_add)
+                @if($ad->landOfferAd->secondary_production_type_add)
                     <b-tag type="is-primary" rounded size="is-medium">
-                        {{ ucfirst($ad->landOfferAd->production_type_wanted_add) }}
+                        {{ ucfirst($ad->landOfferAd->secondary_production_type_add) }}
                     </b-tag>
                 @endif
             @else

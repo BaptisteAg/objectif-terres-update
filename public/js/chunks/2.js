@@ -9,6 +9,8 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _definitions_searchAdTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../definitions/searchAdTypes */ "./resources/js/definitions/searchAdTypes.js");
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     regions_searched: {
@@ -21,10 +23,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       params: new URLSearchParams(window.location.search),
-      categoryLabels: {
-        land: 'Une terre',
-        job: 'Un emploi'
-      }
+      categoryLabels: _definitions_searchAdTypes__WEBPACK_IMPORTED_MODULE_0__["searchAdTypes"]
     };
   }
 });
@@ -87,7 +86,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.searchTags {\r\n  background-color: #F8F3EE;\n}\r\n", ""]);
+exports.push([module.i, "\n.searchTags {\n  background-color: #F8F3EE;\n}\n", ""]);
 
 // exports
 

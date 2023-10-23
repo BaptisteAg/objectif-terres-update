@@ -45,9 +45,12 @@ class AdRequest extends FormRequest
 
             'accept_share_contact_infos' => ['nullable'],
 
-            'is_support_request' => ['nullable', 'boolean'],
-            'support_request_text' => ['nullable', 'string', 'max:1500'],
-            'support_request_territory_id' => ['nullable', 'numeric'],
+            'documents_ids' => ['nullable', 'array'],
+
+            // TODO: remove
+            //'is_support_request' => ['nullable', 'boolean'],
+            //'support_request_text' => ['nullable', 'string', 'max:1500'],
+            //'support_request_territory_id' => ['nullable', 'numeric'],
         ];
 
         $rulesetsByAdType = [
