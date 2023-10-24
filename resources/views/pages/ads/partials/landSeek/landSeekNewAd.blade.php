@@ -49,6 +49,7 @@
 
             <section class="mb-6 field" v-if="formInput.selectedDepartments.length">
                 <zone-select
+                        src="/locations/cities"
                         name="land_seek[locationable]"
                         label="Code Postal, Commune*"
                         json-name="selected_zones"

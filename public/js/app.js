@@ -2822,25 +2822,25 @@ __webpack_require__.r(__webpack_exports__);
         return o.id === _this.value[0];
       }) : this.options.filter(function (o) {
         return _this.value.includes(o.id);
+      }).map(function (o) {
+        return o.id;
       })
     };
   },
   watch: {
     /** @param {Array|Object} val */dropdownValue: function dropdownValue(val) {
       if (this.isUnique) {
-        this.$emit('input', [val.id]);
+        this.$emit('input', [val]);
         return;
       }
-      this.$emit('input', val.map(function (o) {
-        return o.id;
-      }));
+      this.$emit('input', val);
     }
   },
   methods: {
     remove: function remove(option) {
       if (Array.isArray(this.dropdownValue)) {
-        this.dropdownValue = this.dropdownValue.filter(function (o) {
-          return o.id !== option.id;
+        this.dropdownValue = this.dropdownValue.filter(function (id) {
+          return id !== option.id;
         });
         return;
       }
@@ -2851,11 +2851,9 @@ __webpack_require__.r(__webpack_exports__);
     selectedOptions: function selectedOptions() {
       var ids;
       if (Array.isArray(this.dropdownValue)) {
-        ids = this.dropdownValue.map(function (o) {
-          return o.id;
-        });
+        ids = this.dropdownValue;
       } else if (this.dropdownValue) {
-        ids = [this.dropdownValue.id];
+        ids = [this.dropdownValue];
       } else {
         return [];
       }
@@ -3938,8 +3936,7 @@ var render = function render() {
       placeholder: "jean.dupont@gmail.com",
       size: "is-medium",
       rounded: "",
-      type: "email",
-      maxlength: "30"
+      type: "email"
     },
     model: {
       value: _vm.otherPersonAd.email,
@@ -3960,8 +3957,7 @@ var render = function render() {
       placeholder: "Jean",
       size: "is-medium",
       rounded: "",
-      type: "text",
-      maxlength: "30"
+      type: "text"
     },
     model: {
       value: _vm.otherPersonAd.first_name,
@@ -3982,8 +3978,7 @@ var render = function render() {
       placeholder: "Dupont",
       size: "is-medium",
       rounded: "",
-      type: "text",
-      maxlength: "30"
+      type: "text"
     },
     model: {
       value: _vm.otherPersonAd.last_name,
@@ -4004,8 +3999,7 @@ var render = function render() {
       placeholder: "06 06 06 06 06",
       size: "is-medium",
       rounded: "",
-      type: "text",
-      maxlength: "30"
+      type: "text"
     },
     model: {
       value: _vm.otherPersonAd.phone,
@@ -4924,10 +4918,10 @@ var render = function render() {
     return _c("b-dropdown-item", {
       key: index,
       attrs: {
-        value: option,
+        value: option.id,
         "aria-role": "listitem"
       }
-    }, [_vm._v("\n        " + _vm._s(option.name) + "\n      ")]);
+    }, [_vm._v("\n\t\t\t\t" + _vm._s(option.name) + "\n\t\t\t")]);
   })], 2), _vm._v(" "), _vm._t("default")], 2), _vm._v(" "), !this.isUnique ? _c("div", {
     staticClass: "column"
   }, [_c("b-taglist", _vm._l(_vm.selectedOptions, function (selectedOption, index) {
@@ -4944,7 +4938,7 @@ var render = function render() {
           return _vm.remove(selectedOption);
         }
       }
-    }, [_vm._v("\n        " + _vm._s(selectedOption.name) + "\n      ")]);
+    }, [_vm._v("\n\t\t\t\t" + _vm._s(selectedOption.name) + "\n\t\t\t")]);
   }), 1)], 1) : _vm._e(), _vm._v(" "), _vm._l(_vm.selectedOptions, function (selectedOption) {
     return _c("input", {
       attrs: {

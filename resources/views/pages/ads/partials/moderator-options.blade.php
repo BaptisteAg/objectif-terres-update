@@ -54,11 +54,25 @@
                         <h3 class="title">Modérer l’annonce</h3>
                         <p>Choisissez l’action à effectuer sur cette annonce.</p>
                         <div class="buttons mt-5">
-                            @foreach($buttons as $button)
-                                @if($isAdToModerate && $isLoggedUserModeratorAd || (!$isAdToModerate && $isLoggedUserModeratorAd && $ad->attributionAd->adStatus->name !== $button['status']))
-                                    <b-button type="{{ $button['type'] }}"
-                                              @click="showModerationModal('{{ $button['action'] }}')"
-                                              rounded>{{ $button['text'] }}</b-button>
+                            @foreach($buttons as $index => $button)
+                                {{--                                @if($isAdToModerate && $isLoggedUserModeratorAd || (!$isAdToModerate && $isLoggedUserModeratorAd && $ad->attributionAd->adStatus->name !== $button['status']))--}}
+                                <b-button type="{{ $button['type'] }}"
+                                          @click="showModerationModal('{{ $button['action'] }}')"
+                                          rounded>{{ $button['text'] }}</b-button>
+                                {{--                                @endif--}}
+                                @if($index === 1)
+                                    <b-button onclick="return confirm('Êtes vous sûr·e ?')" tag="a"
+                                              href="{{  route('ads.archive', [ $ad->id]) }}"
+                                              rounded>
+                                        Archiver
+                                    </b-button>
+                                @endif
+                                @if($index === 2)
+                                    <b-button
+                                            class="ml-8"
+                                            href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ["id" => $ad->id]) }}"
+                                            tag="a" rounded>Modifier
+                                    </b-button>
                                 @endif
                             @endforeach
                         </div>
