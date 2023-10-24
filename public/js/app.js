@@ -99604,6 +99604,10 @@ var AdsCarousel = function AdsCarousel() {
   return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./components/AdsCarouselImages.vue */ "./resources/js/components/AdsCarouselImages.vue"));
 };
 vue__WEBPACK_IMPORTED_MODULE_4___default.a.component('ads-carousel', AdsCarousel);
+var Modal = function Modal() {
+  return __webpack_require__.e(/*! import() */ 7).then(__webpack_require__.bind(null, /*! ./components/Modal.vue */ "./resources/js/components/Modal.vue"));
+};
+vue__WEBPACK_IMPORTED_MODULE_4___default.a.component('modal', Modal);
 
 //////////////
 // VENDORS
@@ -102609,14 +102613,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-var ShowDocuments = function ShowDocuments() {
-  return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./components/ShowDocuments.vue */ "./resources/js/pages/ads/components/ShowDocuments.vue"));
-};
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('vue-documents-button', ShowDocuments);
-var ContactModal = function ContactModal() {
-  return __webpack_require__.e(/*! import() */ 6).then(__webpack_require__.bind(null, /*! ./components/ContactModal.vue */ "./resources/js/pages/ads/components/ContactModal.vue"));
-};
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('vue-contact-modal', ContactModal);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('vue-moderation-modal', {
   components: {
     ModerationModal: _components_ModerationModal__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -103233,10 +103229,6 @@ Vue.Component('search', {
     }
 });*/
 
-var FavSearch = function FavSearch() {
-  return __webpack_require__.e(/*! import() */ 5).then(__webpack_require__.bind(null, /*! ./components/FavSearch.vue */ "./resources/js/pages/researches/components/FavSearch.vue"));
-};
-Vue.component('fav-search', FavSearch);
 window.regionMapInit = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(mapId, fetchOptions) {
     var mapController, departmentsPolygonData, featureGroup;
