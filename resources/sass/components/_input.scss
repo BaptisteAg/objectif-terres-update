@@ -9,6 +9,7 @@
   border-radius: 999px;
 }
 
-.control .select select {
+.control .select select, .select select {
   border-radius: 999px;
+  border-color: hsl(0, 0%, 86%);
 }
