@@ -45,16 +45,16 @@
                         messagerie</a> pour plus d'informations !
                 </div>
             </article>
-        @elseif($ad->attributionAd->adStatus->id === 6)
+        @elseif($ad->attributionAd->adStatus->id === 5)
             <article class="message is-message">
                 <div class="message-body">
-                    Votre annonce n'est plus en ligne, elle a été archivée !
+                    Votre annonce n'est plus en ligne, elle a été archivée.
                 </div>
             </article>
         @else
             <article class="message is-message">
                 <div class="message-body">
-                    Votre annonce n'est pas encore en ligne !
+                    Votre annonce n'est pas encore en ligne.
                 </div>
             </article>
         @endif

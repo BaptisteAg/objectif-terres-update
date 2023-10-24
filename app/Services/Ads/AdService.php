@@ -388,10 +388,6 @@ class  AdService
 	{
 		$departmentsCode = [];
 
-        if($ad->department_id) {
-            $departmentsCode[] = Department::find($ad->department_id)->code;
-        }
-
         /* OBSOLETE : toutes les annonces ont un département unique attribué
 		if (count($ad->cities)) {
 			foreach ($ad->cities as $city) {
@@ -459,14 +455,6 @@ class  AdService
 		$isUpdate = !empty($data["id"]);
 
 		DB::beginTransaction();
-
-        // If department is not set, we set it to the first city's department
-        if (empty($data["department_id"]) && !empty($data["locationable"]["cities"])) {
-            // TODO : find the correct syntax for getting the city ID
-            $cityId = $data["locationable"]["cities"][0]["id"];
-            $city = City::find($cityId);
-            $data["department_id"] = $city->department->id;
-        }
 
 		if ($isUpdate) {
 			$ad = $this->repository->update($data["id"], $data);
