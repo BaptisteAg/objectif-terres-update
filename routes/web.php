@@ -130,6 +130,7 @@ Route::prefix('locations')->namespace('Locationables')->group(function () {
 	Route::get('countries', 'LocationableController@countries');
 	Route::get('cities', 'LocationableController@cities');
     Route::get('departments', 'LocationableController@departments');
+	Route::get('cities-and-regions', 'LocationableController@citiesAndRegions');
 	Route::get('cities-and-departments', 'LocationableController@citiesAndDepartments');
 	Route::get('departments-and-regions', 'LocationableController@departmentsAndRegions');
 	Route::prefix('polygon')->group(function () {
