@@ -51,7 +51,14 @@
             </div>
             <div class="column is-flex is-justify-content-flex-end gap-2 jc-sb-mobile mx-3-mobile">
                 <b-button rounded tag="a" href="/" type="is-danger">Modifier ma recherche</b-button>
-                <fav-search>
+                <modal
+                        title="Sauvgarde d'une recherche"
+                        subtitle="Donner un titre à votre recherche :"
+                        is-responsive="true"
+                        button-label="Sauvegarder"
+                        button-icon="heart-outline"
+                        :is-disable="{{ $_GET["ad_category"] === 'all' ? 'true' : 'false' }}"
+                >
                     <form method="POST" action="{{ route('researches.store', request()->input())}}">
                         @csrf
                         <b-input size="is-medium" name="name" placeholder="Votre titre..." rounded></b-input>
@@ -59,7 +66,7 @@
                                   native-type="submit" expanded>Valider
                         </b-button>
                     </form>
-                </fav-search>
+                </modal>
             </div>
         </div>
     </div>
