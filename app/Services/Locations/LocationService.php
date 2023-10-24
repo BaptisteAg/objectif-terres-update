@@ -133,6 +133,14 @@ class LocationService
         );
     }
 
+    public function searchCitiesAndRegions(string $q)
+    {
+        return array_merge(
+            $this->searchRegions($q),
+            $this->searchCities($q)
+        );
+    }
+
     public function searchCitiesAndDepartments(string $q)
     {
         return array_merge(
