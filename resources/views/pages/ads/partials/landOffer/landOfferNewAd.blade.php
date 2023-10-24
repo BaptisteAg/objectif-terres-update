@@ -44,7 +44,7 @@
 
             <section class="field mb-6">
                 <b-tooltip class="w-100"
-                           label="Si votre bien se situe sur plusieurs communes, merci de nous les indiquées">
+                           label="Si votre bien se situe sur plusieurs communes, merci de nous les indiquer">
                     <zone-select
                             name="locationable"
                             label="Code Postal, Commune*"

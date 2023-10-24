@@ -144,8 +144,29 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         $ad->fill($data);
         $ad->save();
 
+        // If department is not set, we set it to the first city's department
+        if (empty($data["department_id"]) && !empty($data["locationable"]["cities"])) {
+            $cityId = $data["locationable"]["cities"][0]["id"];
+            $city = City::find($cityId);
+            $data["department_id"] = $city->department->id;
+        }
+
+        // If department is set but there are not other locationable
+        if(isset($data["department_id"])) {
+            if(!isset($data["locationable"]["departments"])) {
+                if(!isset($data["locationable"])) {
+                    $data["locationable"] = [];
+                }
+                $data["locationable"]["departments"] = [];
+            }
+
+            // Push into first position of array
+            // This is important because the first department is the main one
+            $data["locationable"]["departments"] = array_merge([$data["department_id"]], $data["locationable"]["departments"]);
+        }
+
         foreach (["cities", "departments", "regions"] as $locationableType) {
-            $locationables = $data["locationable"][$locationableType] ?? [];
+            $locationables = array_unique($data["locationable"][$locationableType]) ?? [];
 
             if (count($locationables)) {
                 $extraFields = [];

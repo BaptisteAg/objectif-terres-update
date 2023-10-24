@@ -32,9 +32,6 @@ trait ScopeLocationFilterable
 	{
 		$query->orWhereHas($relationshipName, function (Builder $subQuery) use ($query, $relationshipName, $locationableCodes, $locationTargetTableName) {
 			$subQuery->whereIn($locationTargetTableName, $locationableCodes);
-            if($query->getModel()->getTable() === 'ads' && $relationshipName === 'departments') {
-                $subQuery->orWhere('departments.id', DB::raw('ads.department_id'));
-            }
 		});
 	}
 
