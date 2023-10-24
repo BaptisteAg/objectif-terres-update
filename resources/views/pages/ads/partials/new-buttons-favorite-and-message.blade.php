@@ -6,9 +6,7 @@
                     Voir les fils de discussion
                 </b-button>
             @else
-                <vue-contact-modal>
-                    @include('pages.ads.partials.newAdMessageModal')
-                </vue-contact-modal>
+                @include('pages.ads.partials.modal-new-ad-message')
             @endif
         @else
             @if(count($threads))
@@ -16,9 +14,7 @@
                     Voir votre fil de discussion
                 </b-button>
             @else
-                <vue-contact-modal>
-                    @include('pages.ads.partials.newAdMessageModal')
-                </vue-contact-modal>
+                @include('pages.ads.partials.modal-new-ad-message')
             @endif
         @endif
     @elseif($ad->user_pp_id !== auth()->user()->id)
@@ -27,9 +23,7 @@
                 Voir votre fil de discussion
             </b-button>
         @else
-            <vue-contact-modal>
-                @include('pages.ads.partials.newAdMessageModal')
-            </vue-contact-modal>
+            @include('pages.ads.partials.modal-new-ad-message')
         @endif
         @if($favoriteAdAlreadyExist)
             <b-button tag="a" class="ml-3" type="is-warning" rounded icon-left="star-outline"

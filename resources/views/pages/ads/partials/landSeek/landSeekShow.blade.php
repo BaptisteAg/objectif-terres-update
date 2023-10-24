@@ -8,26 +8,7 @@
                 <span class="is-hidden-touch">Partager</span>
             </b-button>
 
-            @if($ad->nonImageDocuments->count() > 0)
-
-                <vue-documents-button>
-                    @foreach($ad->nonImageDocuments as $document)
-                        <b-button rounded tag="a" target="_blank"
-                                  href="{{app('url')->assetFrom('https://objectif-terres.org', $document->path)}}"
-                                  icon-left="@php
-                                                  if ($document->type === "application/pdf") {
-                                                      echo 'file-pdf-box';
-                                                  } elseif ($document->type === "application/msword") {
-                                                      echo 'file-word-box';
-                                                  } else {
-                                                      echo 'file-image';
-                                                  }
-                                            @endphp">
-                            {{$document->name}}
-                        </b-button>
-                    @endforeach
-                </vue-documents-button>
-            @endif
+            @include('pages.ads.partials.modal-documents')
         </div>
 
 
