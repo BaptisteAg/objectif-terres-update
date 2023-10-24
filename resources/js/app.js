@@ -50,6 +50,8 @@ const OurPartners = () => import('./components/OurPartners.vue');
 Vue.component('our-partners', OurPartners);
 const AdsCarousel = () => import('./components/AdsCarouselImages.vue');
 Vue.component('ads-carousel', AdsCarousel);
+const Modal = () => import('./components/Modal.vue');
+Vue.component('modal', Modal);
 
 
 //////////////
