@@ -95,10 +95,12 @@
               <div class="mb-3">Surface (en hectares)</div>
               <div class="columns">
                 <div class="column">
-                  <b-input v-model="adsForm.surfaceMin" placeholder="25" rounded></b-input>
+                  <b-input :disabled="!['landOfferAd', 'landSeekAd', 'all'].includes(adsForm.category)"
+                           v-model="adsForm.surfaceMin" placeholder="25" rounded></b-input>
                 </div>
                 <div class="column">
-                  <b-input v-model="adsForm.surfaceMax" placeholder="40" rounded></b-input>
+                  <b-input :disabled="!['landOfferAd', 'landSeekAd', 'all'].includes(adsForm.category)"
+                           v-model="adsForm.surfaceMax" placeholder="40" rounded></b-input>
                 </div>
               </div>
             </div>
@@ -108,10 +110,14 @@
               <div class="mb-3">Prix</div>
               <div class="columns">
                 <div class="column">
-                  <b-input v-model="adsForm.priceMin" placeholder="250000" rounded></b-input>
+                  <b-input :disabled="!['landOfferAd', 'all'].includes(adsForm.category)"
+                           v-model="adsForm.priceMin"
+                           placeholder="250000" rounded></b-input>
                 </div>
                 <div class="column">
-                  <b-input v-model="adsForm.priceMax" placeholder="400000" rounded></b-input>
+                  <b-input :disabled="!['landOfferAd', 'all'].includes(adsForm.category)"
+                           v-model="adsForm.priceMax"
+                           placeholder="400000" rounded></b-input>
                 </div>
               </div>
             </div>
