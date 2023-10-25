@@ -1,35 +1,35 @@
 <a class="unset-color columns is-flex fd-c-mobile" href="/annonces/{{$ad->id}}">
     <div class="column is-two-fifths">
-        {{--         <figure class="image is-3by2">--}}
-        {{--            @if($ad->hasImages && $ad->images[0]?->path)--}}
-        {{--                <img class="objT-border"--}}
-        {{--                     src="{{app('url')->assetFrom('https://objectif-terres.org', $ad->images[0]->path)}}"--}}
-        {{--                     alt="{{$ad->images[0]->name}}">--}}
-        {{--            @else--}}
-        {{--                <img class="objT-border"--}}
-        {{--                     src="https://images.unsplash.com/photo-1557234195-bd9f290f0e4d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"--}}
-        {{--                     alt="placeholder">
-        <b-button tag="a" href="" class="mr-2 fav-button is-hidden-desktop" rounded size="is-medium"
-                  icon-right="star-outline"></b-button>
-                  </figure>--}}
-        {{--            @endif--}}
+        <figure class="image is-3by2">
+            @if($ad->hasImages && $ad->images[0]?->path)
+                <img class="objT-border vignette__image"
+                     src="{{app('url')->assetFrom('https://objectif-terres.org', $ad->images[0]->path)}}"
+                     alt="{{$ad->images[0]->name}}">
+            @else
+                <img class="objT-border vignette__image"
+                     src="https://images.unsplash.com/photo-1557234195-bd9f290f0e4d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                     alt="placeholder">
+                <b-button tag="a" href="" class="mr-2 fav-button is-hidden-desktop" rounded size="is-medium"
+                          icon-right="star-outline"></b-button>
+            @endif
+        </figure>
 
-        @if($ad->hasImages && $ad->images[0]?->path)
-            <figure class="image is-3by2 objT-border"
-                    style="background-image: url({{app('url')->assetFrom('https://objectif-terres.org', str_replace(' ', '%20', $ad->images[0]->path))}});
-               background-repeat: no-repeat;
-               background-position: center;
-               background-size: cover;">
-                <b-button tag="a" href="" class="mr-2 fav-button is-hidden-desktop" rounded size="is-medium"
-                          icon-right="star-outline"></b-button>
-            </figure>
-        @else
-            <figure class="image is-3by2 objT-border"
-                    style="background: url('https://images.unsplash.com/photo-1557234195-bd9f290f0e4d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80') no-repeat center / cover;">
-                <b-button tag="a" href="" class="mr-2 fav-button is-hidden-desktop" rounded size="is-medium"
-                          icon-right="star-outline"></b-button>
-            </figure>
-        @endif
+        {{--        @if($ad->hasImages && $ad->images[0]?->path)
+                    <figure class="image is-3by2 objT-border"
+                            style="background-image: url({{app('url')->assetFrom('https://objectif-terres.org', str_replace(' ', '%20', $ad->images[0]->path))}});
+                       background-repeat: no-repeat;
+                       background-position: center;
+                       background-size: cover;">
+                        <b-button tag="a" href="" class="mr-2 fav-button is-hidden-desktop" rounded size="is-medium"
+                                  icon-right="star-outline"></b-button>
+                    </figure>
+                @else
+                    <figure class="image is-3by2 objT-border"
+                            style="background: url('https://images.unsplash.com/photo-1557234195-bd9f290f0e4d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80') no-repeat center / cover;">
+                        <b-button tag="a" href="" class="mr-2 fav-button is-hidden-desktop" rounded size="is-medium"
+                                  icon-right="star-outline"></b-button>
+                    </figure>
+                @endif--}}
     </div>
     <div class="column is-flex is-flex-direction-column">
         <div class="columns is-mobile mt-2 mb-0 mt-4-mobile mb-3-mobile is-justify-content-space-between">
