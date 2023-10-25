@@ -82,12 +82,12 @@ $flex-aligns: ('c': 'center', 'fs': 'flex-start', 'fe': 'flex-end', 'st': 'stret
         @if type-of($side-full) == 'list' {
           .#{$type}#{$side}-#{index($spacing-values, $value) - 1} {
             @each $individual-side in $side-full {
-              #{$type-full}-#{$individual-side}: $value !important;
+              #{$type-full}-#{$individual-side}: $value;
             }
           }
         } @else {
           .#{$type}#{$side}-#{index($spacing-values, $value) - 1} {
-            #{$type-full}-#{$side-full}: $value !important;
+            #{$type-full}-#{$side-full}: $value;
           }
         }
       }
