@@ -29,43 +29,43 @@
             </h1>
         @endif
 
-{{--        @if($numberOfAdsToModerate !== 0 || $numberOfUnreadMessages !==0)--}}
-{{--            <div id="notification-moderator" class="notification has-background-info">--}}
-{{--                <button id="close-notification-moderator" class="delete"></button>--}}
-{{--                @if($numberOfAdsToModerate === 0)--}}
-{{--                @elseif($numberOfAdsToModerate >1)--}}
-{{--                    <p class="has-text-white-ter">--}}
-{{--                        <i class="far fa-bell has-text-white-ter"></i>--}}
-{{--                        Vous avez<a style="text-decoration: none"--}}
-{{--                                    href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4'])}}">--}}
-{{--                            <strong>{{$numberOfAdsToModerate}}--}}
-{{--                                annonces</strong></a> à modérer !</p>--}}
-{{--                @else--}}
-{{--                    <p class="has-text-white-ter">--}}
-{{--                        <i class="far fa-bell has-text-white-ter"></i>--}}
-{{--                        Vous avez<a style="text-decoration: none"--}}
-{{--                                    href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4'])}}">--}}
-{{--                            <strong>{{$numberOfAdsToModerate}} annonce</strong>--}}
-{{--                        </a>à modérer !</p>--}}
-{{--                @endif--}}
+        {{--        @if($numberOfAdsToModerate !== 0 || $numberOfUnreadMessages !==0)--}}
+        {{--            <div id="notification-moderator" class="notification has-background-info">--}}
+        {{--                <button id="close-notification-moderator" class="delete"></button>--}}
+        {{--                @if($numberOfAdsToModerate === 0)--}}
+        {{--                @elseif($numberOfAdsToModerate >1)--}}
+        {{--                    <p class="has-text-white-ter">--}}
+        {{--                        <i class="far fa-bell has-text-white-ter"></i>--}}
+        {{--                        Vous avez<a style="text-decoration: none"--}}
+        {{--                                    href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4'])}}">--}}
+        {{--                            <strong>{{$numberOfAdsToModerate}}--}}
+        {{--                                annonces</strong></a> à modérer !</p>--}}
+        {{--                @else--}}
+        {{--                    <p class="has-text-white-ter">--}}
+        {{--                        <i class="far fa-bell has-text-white-ter"></i>--}}
+        {{--                        Vous avez<a style="text-decoration: none"--}}
+        {{--                                    href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4'])}}">--}}
+        {{--                            <strong>{{$numberOfAdsToModerate}} annonce</strong>--}}
+        {{--                        </a>à modérer !</p>--}}
+        {{--                @endif--}}
 
-{{--                @if($numberOfUnreadMessages === 0)--}}
-{{--                @elseif($numberOfUnreadMessages > 1 )--}}
-{{--                    <a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i--}}
-{{--                                    class="fas fa-envelope "></i> Vous--}}
-{{--                            avez <strong>{{$numberOfUnreadMessages}}--}}
-{{--                                nouveaux messages--}}
-{{--                                !</strong></p></a>--}}
+        {{--                @if($numberOfUnreadMessages === 0)--}}
+        {{--                @elseif($numberOfUnreadMessages > 1 )--}}
+        {{--                    <a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i--}}
+        {{--                                    class="fas fa-envelope "></i> Vous--}}
+        {{--                            avez <strong>{{$numberOfUnreadMessages}}--}}
+        {{--                                nouveaux messages--}}
+        {{--                                !</strong></p></a>--}}
 
-{{--                @else--}}
-{{--                    <a style="text-decoration: none" href="{{route('threads.index')}}">--}}
-{{--                        <p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez--}}
-{{--                            <strong>{{$numberOfUnreadMessages}} nouveau message !</strong>--}}
-{{--                        </p>--}}
-{{--                    </a>--}}
-{{--                @endif--}}
-{{--            </div>--}}
-{{--        @endif--}}
+        {{--                @else--}}
+        {{--                    <a style="text-decoration: none" href="{{route('threads.index')}}">--}}
+        {{--                        <p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez--}}
+        {{--                            <strong>{{$numberOfUnreadMessages}} nouveau message !</strong>--}}
+        {{--                        </p>--}}
+        {{--                    </a>--}}
+        {{--                @endif--}}
+        {{--            </div>--}}
+        {{--        @endif--}}
 
         {{Form::open(['route'=>'moderator.show', 'method'=>'get'])}}
         <div id="vue-form-moderator" class="mt-50">
@@ -92,17 +92,34 @@
                             <th>
                                 @if(request()->input('sort') !== 'date')
                                     <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date'])) }}">
-                                        <span>Date de soumission</span>
+                                        <span>Date</span>
                                     </a>
                                 @elseif(request()->input('sort') === 'date' && request()->input('order') === 'desc')
                                     <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'date'])) }}">
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Date de soumission</span>
+                                        <span>Date</span>
                                     </a>
                                 @else
                                     <a href="{{ route('moderator.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
                                         <i class="fas fa-arrow-up"></i>
-                                        <span>Date de soumission</span>
+                                        <span>Date</span>
+                                    </a>
+                                @endif
+                            </th>
+                            <th>
+                                @if(request()->input('sort') !== 'id')
+                                    <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'id'])) }}">
+                                        <span>Référence</span>
+                                    </a>
+                                @elseif(request()->input('sort') === 'id' && request()->input('order') === 'asc')
+                                    <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'id'])) }}">
+                                        <i class="fas fa-arrow-up"></i>
+                                        <span>Référence</span>
+                                    </a>
+                                @else
+                                    <a href="{{ route('moderator.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
+                                        <i class="fas fa-arrow-down"></i>
+                                        <span>Référence</span>
                                     </a>
                                 @endif
                             </th>
@@ -127,22 +144,22 @@
                             <th>
                                 @if(request()->input('sort') !== 'name')
                                     <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'name'])) }}">
-                                        <span>Nom du porteur de projet</span>
+                                        <span>Annonceur</span>
                                     </a>
                                 @elseif(request()->input('sort') === 'name' && request()->input('order') === 'asc')
                                     <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'name'])) }}">
                                         <i class="fas fa-arrow-up"></i>
-                                        <span>Nom du porteur de projet</span>
+                                        <span>Annonceur</span>
                                     </a>
                                 @else
                                     <a href="{{ route('moderator.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Nom du porteur de projet</span>
+                                        <span>Annonceur</span>
                                     </a>
                                 @endif
                             </th>
                             <th>Nom du modérateur</th>
-                            <th>Adresse mail</th>
+{{--                            <th>Adresse mail</th>--}}
                             <th>Localisation(s)</th>
                             <th>
                                 @if(request()->input('sort') !== 'ad_statuses.name')
@@ -190,6 +207,7 @@
                                     @endif
 
                                     <td>{{$attributionAd->created_at->format('d/m/Y')}}</td>
+                                    <td>{{$attributionAd->ad->id}}</td>
                                     <td>
                                         <a href="{{route('ads.show', $attributionAd->ad->id)}}">{{$attributionAd->ad->title}}</a>
                                     </td>
@@ -213,7 +231,7 @@
                                             Modérateur non attribué
                                         @endif
                                     </td>
-                                    <td>{{$attributionAd->ad->userPp->email ?? "[Supprimé]"}}</td>
+{{--                                    <td>{{$attributionAd->ad->userPp->email ?? "[Supprimé]"}}</td>--}}
                                     <td>
                                         @if(! is_null($attributionAd->ad->regionsList))
                                             <p>Region(s) : {{$attributionAd->ad->regionsList}}</p>
@@ -278,10 +296,6 @@
 @section('script')
 
     <script>
-        const vueModerator = new Vue({
-            el: '#vue-form-moderator',
-            name: 'content'
-        });
 
         let buttons = document.querySelectorAll('.form-research-buttons');
         let icons = document.querySelectorAll('.form-research-buttons-icons');
