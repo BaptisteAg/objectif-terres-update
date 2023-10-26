@@ -62,7 +62,8 @@
                     {!! Form::label('land_offer[accept_use_zip_code]', 'Confidentialité', [
                                     'class' => 'label',
                                 ]); !!}
-                    <b-checkbox name="land_offer[accept_use_zip_code]" class="is-size-6" {{($old["land_offer"]["accept_use_zip_code"] ?? null) == 1 ? 'checked' : ''}}>
+                    <b-checkbox name="land_offer[accept_use_zip_code]"
+                                class="is-size-6" {{($old["land_offer"]["accept_use_zip_code"] ?? null) == 1 ? 'checked' : ''}}>
                         Je ne souhaite pas que la localisation soit publique.
                     </b-checkbox>
                 </b-tooltip>
@@ -329,7 +330,9 @@
                     </template>
                 </div>
                 <div class="column is-full" v-if="isSaleOffer">
-                    <b-checkbox name="land_offer.is_sales_offer_evaluation" v-model="formInput.is_sales_offer_evaluation">En cours d'évaluation</b-checkbox>
+                    <b-checkbox name="land_offer.is_sales_offer_evaluation"
+                                v-model="formInput.is_sales_offer_evaluation">En cours d'évaluation
+                    </b-checkbox>
                 </div>
             </section>
 
