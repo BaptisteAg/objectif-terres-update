@@ -136,7 +136,7 @@ class Ad extends Model implements HasPresenter
     // in the related table
     public function getTypeAttribute(): ?string
     {
-        if(isset($this->cached_type)) {
+        if (isset($this->cached_type)) {
             return $this->cached_type;
         }
 
@@ -351,6 +351,6 @@ class Ad extends Model implements HasPresenter
         return $this->user_pp_id === auth()->id() || (
                 $this->attributionAd->userModerator &&
                 $this->attributionAd->userModerator->id === auth()->id()
-            );
+            ) || auth()->user()->role >= 4;
     }
 }
