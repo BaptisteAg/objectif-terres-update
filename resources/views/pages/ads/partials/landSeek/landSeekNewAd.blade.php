@@ -59,7 +59,7 @@
                 </zone-select>
             </section>
 
-            <section class="mb-7 field" ref="surfaceRangeMax">
+            <section class="mb-6 field" ref="surfaceRangeMax">
                 <b-tooltip class="w-100" label="Faites glisser les curseurs pour définir la surface recherchée">
                     {!! Form::label('land_seek[surface_range_min]', 'Surface recherchée (en hectares)*', ['class' => 'label']); !!}
                     <vue-slider-range
@@ -122,7 +122,7 @@
                 {!! Form::label('land_seek[production_genres][]', 'Production agricole principale envisagée*', ['class' => 'label']); !!}
                 @include('pages.ads.partials.inputs.production_genres', [
                     'name' => 'land_seek[production_genres][]',
-                    'productionGenres' => $productionGenresWithOther,
+                    'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.productionGenres',
                     'isRequired' => true,
                     'isUnique' => true,
@@ -142,7 +142,7 @@
                 {!! Form::label('land_seek[secondary_production_genres][]', 'Production agricole secondaire envisagée', ['class' => 'label']); !!}
                 @include('pages.ads.partials.inputs.production_genres', [
                     'name' => 'land_seek[secondary_production_genres][]',
-                    'productionGenres' => $productionGenresWithOther,
+                    'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.secondProductionGenres'
                 ])
             </section>

@@ -87,6 +87,7 @@
                         @include('pages.ads.partials.landSeek.landSeekNewAd')
                     </new-land-seek-ad>
 
+
                     <new-land-offer-ad inline-template
                                        v-if="adTypeSelected === 'land_offer'"
                                        :is-input-disabled="adTypeSelected !== 'land_offer'"
