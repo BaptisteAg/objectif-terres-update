@@ -11,14 +11,14 @@
         <tab-content title="Terres proposées">
 
             <section class="mb-6 field">
-                <label class="label">Département *</label>
+                <label class="label">Département de référence*</label>
                 <autocomplete
                         name="department_id"
-                        label="Département*"
                         id="department_id"
                         autocomplete="off"
                         ref="selectedDepartments"
                         src="/locations/departments"
+                        placeholder="Saisissez au moins 2 caractères pour faire apparaître la liste"
                         v-model="formInput.selectedDepartments"
                         :vuelidate="$v.formInput.selectedDepartments"
                 >
@@ -44,10 +44,10 @@
 
             <section class="field mb-6">
                 <b-tooltip class="w-100"
-                           label="Si votre bien se situe sur plusieurs communes, merci de nous les indiquer">
+                           label="Si votre bien se situe sur plusieurs communes, merci de nous les indiquées">
                     <zone-select
                             name="locationable"
-                            label="Code Postal, Commune*"
+                            label="Autre localisation*"
                             json-name="selected_zones"
                             ref="selectedZones"
                             :vuelidate="$v.formInput.selectedZones"
@@ -254,7 +254,7 @@
 
             <section class="mb-6 field" ref="productionTypeAdd">
                 {!! Form::label('land_offer[secondary_production_genres][]', 'Productions agricoles secondaires envisagées', ['class' => 'label']); !!}
-                @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_offer[secondary_production_genres][]', 'productionGenres' => $productionGenresWithOther, 'vModel' => 'formInput.secondProductionGenres'])
+                @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_offer[secondary_production_genres][]', 'productionGenres' => $productionGenres, 'vModel' => 'formInput.secondProductionGenres'])
             </section>
 
             <section class="mb-6 field" ref="bioCertifications">
