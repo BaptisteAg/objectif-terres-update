@@ -80,11 +80,11 @@
                                 @endif
                             @endif
                         </div>
-                        <div class="row">
-                            <a href="https://terredeliens.org/partager-un-patrimoine-legs.html" target="_blank">
-                                <button class="button is-link">CONTACTEZ-NOUS</button>
-                            </a><br><br>
-
+                        <div class="row mb-5">
+                            <b-button rounded type="is-primary" tag="a"
+                                      href="https://terredeliens.org/partager-un-patrimoine-legs.html" target="_blank">
+                                CONTACTEZ-NOUS
+                            </b-button>
                         </div>
                     </div>
                 </div>
@@ -98,11 +98,4 @@
 
     @include('components.support-terre-liens')
 
-
 @endsection
-
-@section('script')
-
-
-@endsection
-

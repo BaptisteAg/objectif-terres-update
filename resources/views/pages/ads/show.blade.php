@@ -69,6 +69,8 @@
             @endif
         @endauth
 
+        <h1 class="title is-1 has-background-black has-text-white">Type : {{$ad->type}}</h1>
+
         @if($ad->type === 'landSeekAd')
             @include('pages.ads.partials.landSeek.landSeekShow')
         @endif

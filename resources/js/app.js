@@ -23,22 +23,27 @@ Vue.use(Buefy)
 require('vue-pagination-2/dist/vue-pagination-2.min');
 
 Vue.prototype.$forceCompute = function (computedName, forceUpdate /* default: true */) {
-    if (this._computedWatchers[computedName]) {
-        this._computedWatchers[computedName].run();
-        if (forceUpdate || typeof forceUpdate == 'undefined') this.$forceUpdate()
-    }
+	if (this._computedWatchers[computedName]) {
+		this._computedWatchers[computedName].run();
+		if (forceUpdate || typeof forceUpdate == 'undefined') this.$forceUpdate()
+	}
 }
 
 //Composants vue necessaire avant affichage page
 import MobileHeader from './components/header/mobile.vue';
+
 Vue.component('mobile-header', MobileHeader);
 import TopHeader from './components/header/top.vue';
+
 Vue.component('top-header', TopHeader);
 import BottomHeader from './components/header/bottom.vue';
+
 Vue.component('bottom-header', BottomHeader);
 import AdvancedSearchHome from './components/AdvancedSearchHome.vue';
+
 Vue.component('advanced-search', AdvancedSearchHome);
 import LoginFrom from './pages/auth/login-form.vue';
+
 Vue.component('login-form', LoginFrom);
 
 //Autres composants chargés en lazy loading
@@ -93,31 +98,41 @@ Vue.prototype.$user = window.$user
 // Will dynamically change image urls depending on the env ( non production only ) and if the original image is not found
 // This is to avoid having to download all the images from the server while still being able to see locally uploaded images
 if (window.$env !== "production") {
-    const localAlternativeImageRefresh = function (mutations) {
-        const images = document.querySelectorAll('img');
-        images.forEach(image => {
-            image.onerror = function () {
-                // Get the original image domain name
-                const originalDomain = image.src.split('/')[2];
-                // Get the current url domain name
-                const currentDomain = window.location.origin.split('/')[2];
-                // Replace the image original domain wil the current url one
-                image.src = image.src.replace(originalDomain, currentDomain);
-                // Fail after 1 try
-                image.onerror = null;
-            }
-        })
-    }
+	const localAlternativeImageRefresh = function (mutations) {
+		const images = document.querySelectorAll('img');
+		images.forEach(image => {
+			image.onerror = function () {
+				// Get the original image domain name
+				const originalDomain = image.src.split('/')[2];
+				// Get the current url domain name
+				const currentDomain = window.location.origin.split('/')[2];
+				// Replace the image original domain wil the current url one
+				image.src = image.src.replace(originalDomain, currentDomain);
+				// Fail after 1 try
+				image.onerror = null;
+			}
+		})
+	}
 
-    // Apply the above code for every image inserted; make the code performant
-    const observer = new MutationObserver(localAlternativeImageRefresh);
-    const config = {childList: true};
-    observer.observe(document.body, config);
+	// Apply the above code for every image inserted; make the code performant
+	const observer = new MutationObserver(localAlternativeImageRefresh);
+	const config = {childList: true};
+	observer.observe(document.body, config);
 }
 
 window.app = new Vue({
-    el: '#app',
-    data: {
-        loading: false,
-    }
+	el: '#app',
+	data: {
+		loading: false,
+	},
+	methods: {
+		async copyUrl() {
+			try {
+				await navigator.clipboard.writeText(window.location.href);
+				document.querySelector('.text-change').textContent = 'Copié';
+			} catch (err) {
+				console.error('Erreur lors de la copie de l\'URL', err);
+			}
+		}
+	}
 });

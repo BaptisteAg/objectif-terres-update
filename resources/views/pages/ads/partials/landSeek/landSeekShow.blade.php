@@ -4,10 +4,7 @@
     <div class="column is-flex is-flex-direction-column is-justify-content-space-between">
 
         <div class="buttons is-justify-content-space-between">
-            <b-button class="rounded-button-mobile" rounded icon-left="share-variant-outline">
-                <span class="is-hidden-touch">Partager</span>
-            </b-button>
-
+            @include('pages.ads.partials.share-button')
             @include('pages.ads.partials.modal-documents')
         </div>
 
