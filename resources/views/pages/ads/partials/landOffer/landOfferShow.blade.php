@@ -4,30 +4,8 @@
     <div class="column is-flex is-flex-direction-column is-justify-content-space-between">
 
         <div class="buttons is-justify-content-space-between">
-            <b-button class="rounded-button-mobile" rounded icon-left="share-variant-outline">
-                <span class="is-hidden-touch">Partager</span>
-            </b-button>
-
-            @if($ad->nonImageDocuments->count() > 0)
-
-                <vue-documents-button>
-                    @foreach($ad->nonImageDocuments as $document)
-                        <b-button rounded tag="a" target="_blank"
-                                  href="{{app('url')->assetFrom('https://objectif-terres.org', $document->path)}}"
-                                  icon-left="@php
-                                                  if ($document->type === "application/pdf") {
-                                                      echo 'file-pdf-box';
-                                                  } elseif ($document->type === "application/msword") {
-                                                      echo 'file-word-box';
-                                                  } else {
-                                                      echo 'file-image';
-                                                  }
-                                            @endphp">
-                            {{$document->name}}
-                        </b-button>
-                    @endforeach
-                </vue-documents-button>
-            @endif
+            @include('pages.ads.partials.share-button')
+            @include('pages.ads.partials.modal-documents')
         </div>
 
 
@@ -104,25 +82,29 @@
                     @endif
                 </div>
 
-
                 @if($ad->landOfferAd->accept_use_zip_code || auth()->user()->id === $ad->user_pp_id || auth()->user()->role >= 1)
                     <div class="w-50">
-                        <?php $citiesList = $ad->cities->map(function(\App\Models\City $city) {return $city->name . ' ('.$city->zip_code.')';}) ?>
-                        <strong>Commune{{$citiesList->count() > 1 ? 's' : ''}} :</strong>
-                        {{ $citiesList->join(', ')}}
+                        <strong>Département :</strong>
+                        {{ $ad->mainDepartment->name }} ({{ $ad->mainDepartment->code }})
+                        @if($ad->secondaryDepartmentsList->count())
+                            <small>
+                                {{ $ad->secondaryDepartmentsList->join(', ') }}
+                            </small>
+                        @endif
+                        @if(!$ad->landOfferAd->accept_use_zip_code)
+                            <br><small>(non visible pour les autres utilisateurs)</small>
+                        @endif
+                    </div>
+
+
+                    <div class="w-50">
+                        <strong>Commune{{$ad->citiesList->count() > 1 ? 's' : ''}} :</strong>
+                        {{ $ad->citiesList->join(', ') }}
                         @if(!$ad->landOfferAd->accept_use_zip_code)
                             <br><small>(non visible pour les autres utilisateurs)</small>
                         @endif
                     </div>
                 @endif
-                <div class="w-50">
-                    <?php $departmentsList = collect([
-                        $ad->department->name . ' ('.$ad->department->code.')',
-                        ...$ad->departments->map(function(\App\Models\Department $department) {return $department->name . ' ('.$department->code.')';})
-                    ])->unique(); ?>
-                    <strong>Département{{$departmentsList->count() > 1 ? 's' : ''}} :</strong>
-                    {{ $departmentsList->join(', ')}}
-                </div>
 
                 @if($ad->landOfferAd->is_activity_transfer)
                     <div class="w-50">
@@ -135,6 +117,18 @@
                     <div class="w-50">
                         <strong>N° de téléphone : </strong>
                         {{$ad->userPp->phone}}
+                    </div>
+                @endif
+
+                @if ($ad->landOfferAd->offerGenres->count() >=1)
+                    <div class="w-50">
+                        <strong>Mode de cession : </strong>
+                        @foreach($ad->landOfferAd->offerGenres as $offerGenre)
+                            {{$offerGenre->id === $offerGenre::ID_VENTE ? 'Vente' : $offerGenre->name}}
+                            @if(!$loop->last)
+                                ,
+                            @endif
+                        @endforeach
                     </div>
                 @endif
 
