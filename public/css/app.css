@@ -23069,6 +23069,10 @@ FORM INPUT FIELD
   background-color: white !important;
 }
 
+.vue-dropzone {
+  border-radius: 20px;
+}
+
 /*
 ==========================================================
 ==========================================================
@@ -24256,6 +24260,10 @@ ACCORDEON
 #new-ad .affix-wizard-footer .wizard-footer-right {
   float: right;
   padding-right: 10px;
+}
+
+#new-ad body .vue-dropzone {
+  border-radius: 20px;
 }
 
 #new-ad body .vue-dropzone > .dz-preview .dz-remove {

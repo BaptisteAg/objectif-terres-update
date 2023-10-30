@@ -1,5 +1,5 @@
 @php
-    $tooltip = "15Mo maximum par document". (!empty($isSupportRequest) ? '' : ' Un seul document de type PDF, DOC ou DOCX est autorisé');
+    $tooltip = "Les annonces avec photos sont en moyenne 3 fois plus consultées ! Nous vous recommandons fortement d'ajouter au moins 3 photos. 15Mo maximum par document"
 @endphp
 <b-tooltip class="w-100"
            label="{{$tooltip}}.">
@@ -9,7 +9,8 @@
         <i class="fas fa-info-circle has-text-info"></i><br>
         <span style="font-weight:normal">
             @if(!$isSupportRequest)
-                Si vous déposez des photos (JPG, GIF, PNG, ... ) elles défileront en entête de votre annonce.
+                La première image importée (JPG, GIF, PNG, ... ) sera l'image principale de votre annonce, les autres
+                défileront en entête de votre annonce
                 <br>Les fichier PDF et DOC seront affichés en pièces jointes.<br>
             @else
                 Ajoutez des photos ou un document PDF ou DOC qui nous aideraient à comprendre votre projet.<br>
