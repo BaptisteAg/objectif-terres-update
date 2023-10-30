@@ -11,7 +11,7 @@
         <tab-content title="Terres proposées">
 
             <section class="mb-6 field">
-                <label class="label">Département de référence*</label>
+                <label class="label">Département de référence *</label>
                 <autocomplete
                         name="department_id"
                         id="department_id"

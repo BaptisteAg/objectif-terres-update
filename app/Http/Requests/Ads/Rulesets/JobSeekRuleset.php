@@ -11,14 +11,15 @@ class JobSeekRuleset implements RulesetInterface
         //dd(request()->all());
         return [
             'locationable' => [new HasZone, 'nullable'],
-            'job_offer.production_genre' => [new HasProductionGenre],
-            'job_offer.production_type_add' => ['nullable', 'string'],
-            'job_offer.secondary_production_genres' => [new HasProductionGenre],
-            'job_offer.secondary_production_type_add' => ['nullable', 'string'],
+            'job_seek.production_genre' => [new HasProductionGenre],
+            'job_seek.production_type_add' => ['nullable', 'string'],
+            'job_seek.secondary_production_genres' => [new HasProductionGenre],
+            'job_seek.secondary_production_type_add' => ['nullable', 'string'],
             'land_description' => ['nullable', 'string', 'max:1000'],
-            'job_offer.offer_types' => ['nullable', 'array'],
-            'job_offer.experience_farming' => ['nullable', 'string'],
-            'job_offer.experience_levels' => ['nullable', 'array'],
+            'job_seek.offer_types' => ['required', 'array'],
+            'job_seek.experience_farming' => ['nullable', 'string'],
+            'job_seek.experience_levels' => ['nullable', 'array'],
+            'job_seek.education_levels' => ['required', 'array'],
         ];
     }
 }
