@@ -5213,7 +5213,9 @@ var render = function render() {
     attrs: {
       "for": _vm.id
     }
-  }, [_vm._v(_vm._s(_vm.label))]), _vm._v(" "), _c("autocomplete", {
+  }, [_vm._v(_vm._s(_vm.label) + " "), _c("i", {
+    staticClass: "fas fa-info-circle has-text-info"
+  })]), _vm._v(" "), _c("autocomplete", {
     attrs: {
       id: _vm.id,
       placeholder: _vm.value.length ? "Saisissez une autre localisation" : "Saisissez au moins 2 caractères pour faire apparaître la liste",
@@ -5238,7 +5240,7 @@ var render = function render() {
     }]
   }, [_c("p", {
     staticClass: "help is-danger"
-  }, [_vm._v("\n        Vous devez sélectionner au minimum une zone géographique.\n      ")])]) : _vm._e(), _vm._v(" "), _vm.value.length ? _c("h4", {
+  }, [_vm._v("\n\t\t\t\t\tVous devez sélectionner au minimum une zone géographique.\n\t\t\t\t")])]) : _vm._e(), _vm._v(" "), _vm.value.length ? _c("h4", {
     staticClass: "pt-2"
   }, [_vm._v("Votre sélection :")]) : _vm._e(), _vm._v(" "), _vm._l(_vm.value, function (zone, i) {
     return _c("div", {
@@ -101774,6 +101776,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     var hasOld = Object.keys(v).length && v.job_seek;
     return {
       formInput: {
+        selectedDepartments: hasOld && JSON.parse(old.selected_departments) || [],
         selectedZones: hasOld && JSON.parse(v.selected_zones) || [],
         offerTypes: hasOld && v.job_seek.offer_types || [],
         experienceFarming: hasOld && v.job_seek.experience_farming || '',
@@ -101798,13 +101801,22 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
           minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(5),
           maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(1000)
         },
+        offerTypes: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+        },
         productionGenres: {
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
         },
         secondProductionGenres: {
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
         },
+        educationLevels: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+        },
         chartConfirmation: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+        },
+        selectedDepartments: {
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
         },
         documents: {

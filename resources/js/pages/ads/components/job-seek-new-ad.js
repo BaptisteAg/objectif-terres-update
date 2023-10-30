@@ -29,6 +29,7 @@ export default {
 
         return {
             formInput: {
+				selectedDepartments: hasOld && JSON.parse(old.selected_departments) || [],
                 selectedZones: hasOld && JSON.parse(v.selected_zones) || [],
 
                 offerTypes: hasOld && v.job_seek.offer_types || [],
@@ -56,15 +57,24 @@ export default {
                     minLength: minLength(5),
                     maxLength: maxLength(1000)
                 },
+				offerTypes: {
+					required
+				},
                 productionGenres: {
                     required,
                 },
                 secondProductionGenres: {
                     required,
                 },
+				educationLevels: {
+					required
+				},
                 chartConfirmation: {
                     required
                 },
+				selectedDepartments: {
+					required
+				},
                 documents: {
                     oneDocument: _ => true,
                     notCurrentlyUploading: baseValidations.formInput.documents.notCurrentlyUploading
