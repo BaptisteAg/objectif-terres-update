@@ -117,6 +117,19 @@
                                          ref="job_seek">
                             @include('pages.ads.partials.jobSeek.jobSeekNewAd')
                         </new-job-seek-ad>
+
+                        <new-job-offer-ad inline-template
+                                          v-show="adTypeSelected === 'job_offer'"
+                                          :is-input-disabled="adTypeSelected !== 'job_offer'"
+                                          :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                          @input-enabled="setEnabledForm"
+                                          @form-complete="submitProxy"
+                                          @submit-save-button="submitProxy"
+                                          @click-save-button="onSaveClick"
+                                          @click-publish-button="onPublishClick"
+                                          ref="job_offer">
+                            @include('pages.ads.partials.jobOffer.jobOfferNewAd')
+                        </new-job-offer-ad>
                     @endif
 
                 </form>

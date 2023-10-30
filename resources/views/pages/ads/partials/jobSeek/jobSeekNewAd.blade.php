@@ -11,14 +11,14 @@
         <tab-content title="Expérience recherchée">
 
             <section class="mb-6 field">
-                <label class="label">Départements *</label>
+                <label class="label">Département de référence *</label>
                 <autocomplete
                         name="department_id"
-                        label="Département*"
                         id="department_id"
                         autocomplete="off"
                         ref="selectedDepartments"
                         src="/locations/departments"
+                        placeholder="Saisissez au moins 2 caractères pour faire apparaître la liste"
                         v-model="formInput.selectedDepartments"
                         :vuelidate="$v.formInput.selectedDepartments"
                 >
@@ -44,52 +44,57 @@
 
             <section class="field mb-6">
                 <b-tooltip class="w-100"
-                           label="Si votre bien se situe sur plusieurs communes, merci de nous les indiquées">
+                           label="Si vous souhaitez préciser la localisation de votre recherche, saisissez les 2 premiers chiffres du code postal">
                     <zone-select
                             name="locationable"
-                            label="Code Postal, Commune"
+                            label="Autre localisation"
                             json-name="selected_zones"
                             ref="selectedZones"
+                            :vuelidate="$v.formInput.selectedZones"
                             v-model="formInput.selectedZones">
                     </zone-select>
                 </b-tooltip>
             </section>
 
             <section class="mb-6 field" ref="offerTypes">
-                {!! Form::label('job_seek[building][offer_genres][]', 'Quel type d\'expérience professionnelle recherchez-vous ?', [
-                                    'class' => 'label',
-                                ]); !!}
+                    {!! Form::label('job_seek[building][offer_genres][]', 'Quel type d\'expérience professionnelle recherchez-vous ? *', [
+                    'class' => 'label',
+                ]); !!}
+
                 @foreach($jobOfferTypes as $jobOfferType)
-                    <b-checkbox name="job_seek[offer_types][]" native-value="{{ $jobOfferType["id"] }}"
-                                v-model="formInput.offerTypes">
-                        {{ $jobOfferType["name"] }}
-                    </b-checkbox>
+                    @if($jobOfferType["id"] !== 3)
+                        <b-checkbox name="job_seek[offer_types][]" native-value="{{ $jobOfferType["id"] }}"
+                                    v-model="formInput.offerTypes">
+                            {{ $jobOfferType["name"] }}
+                        </b-checkbox>
+                    @endif
                 @endforeach
             </section>
 
             <section class="mb-6 field" ref="productionGenres">
-                {!! Form::label('job_seek[production_genres][]', 'Production agricole principale envisagée*', ['class' => 'label']); !!}
+                {!! Form::label('job_seek[production_genres][]', 'Production agricole principale envisagée *', ['class' => 'label']); !!}
                 <?php
                 $params = [
                     'name' => 'job_seek[production_genres][]',
                     'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.productionGenres',
-                    'isRequired' => true
+                    'isRequired' => true,
+                    'isUnique' => true,
                 ];
                 ?>
                 @include('pages.ads.partials.inputs.production_genres', $params)
             </section>
 
             <section class="mb-6 field" ref="productionTypeAdd">
-                {!! Form::label('job_seek[secondary_production_genres][]', 'Production agricole secondaire envisagée', ['class' => 'label']); !!}
-                @include('pages.ads.partials.inputs.production_genres', ['name' => 'job_seek[secondary_production_genres][]', 'productionGenres' => $productionGenresWithOther, 'vModel' => 'formInput.secondProductionGenres'])
+                {!! Form::label('job_seek[secondary_production_genres][]', 'Production agricole secondaire envisagée *', ['class' => 'label']); !!}
+                @include('pages.ads.partials.inputs.production_genres', ['name' => 'job_seek[secondary_production_genres][]', 'productionGenres' => $productionGenres, 'vModel' => 'formInput.secondProductionGenres'])
             </section>
 
         </tab-content>
 
         <tab-content title="Votre parcours">
             <section class="mb-6 field" ref="educationLevels">
-                {!! Form::label('land_offer[education_levels][]', 'Niveau de formation', ['class' => 'label']); !!}
+                {!! Form::label('job_seek[education_levels][]', 'Niveau de formation *', ['class' => 'label']); !!}
 
                 <multi-select
                         :options="{{json_encode($educationLevels)}}"
@@ -138,7 +143,7 @@
             </section>
 
             <section class="field">
-                @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'land_seek'])
+                @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'job_seek'])
             </section>
         </tab-content>
 

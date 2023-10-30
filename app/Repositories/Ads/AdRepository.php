@@ -152,9 +152,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         }
 
         // If department is set but there are not other locationable
-        if(isset($data["department_id"])) {
-            if(!isset($data["locationable"]["departments"])) {
-                if(!isset($data["locationable"])) {
+        if (isset($data["department_id"])) {
+            if (!isset($data["locationable"]["departments"])) {
+                if (!isset($data["locationable"])) {
                     $data["locationable"] = [];
                 }
                 $data["locationable"]["departments"] = [];
@@ -166,7 +166,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         }
 
         foreach (["cities", "departments", "regions"] as $locationableType) {
-            $locationables = array_unique($data["locationable"][$locationableType]) ?? [];
+            $locationables = array_unique($data["locationable"][$locationableType] ?? []);
 
             if (count($locationables)) {
                 $extraFields = [];
@@ -183,12 +183,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         if (!empty($data["documents_ids"]) && is_array($data["documents_ids"])) {
             $ad->documents()->sync($data["documents_ids"]);
         }
-        if (!array_key_exists('is_partner', $data)) {
-            if (!array_key_exists('documents_ids', $data)) {
-                //In case user remove document when editing his ad
-                $ad->documents()->sync([]);
-            }
-
+        if (!array_key_exists('is_partner', $data) && !array_key_exists('documents_ids', $data)) {
+            //In case user remove document when editing his ad
+            $ad->documents()->sync([]);
         }
 
         $ad->refresh();
