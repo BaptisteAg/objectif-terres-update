@@ -4582,7 +4582,7 @@ var render = function render() {
     staticClass: "input autocomplete-input is-rounded",
     attrs: {
       type: "search",
-      placeholder: _vm.placeholder
+      placeholder: _vm.placeholder || _vm.value.length ? "Saisissez une autre localisation" : "Saisissez au moins 2 caractères pour faire apparaître la liste"
     },
     domProps: {
       value: _vm.autocompleteValue
@@ -5218,7 +5218,6 @@ var render = function render() {
   })]), _vm._v(" "), _c("autocomplete", {
     attrs: {
       id: _vm.id,
-      placeholder: _vm.value.length ? "Saisissez une autre localisation" : "Saisissez au moins 2 caractères pour faire apparaître la liste",
       disabled: _vm.disabled,
       src: _vm.src,
       "data-renderer": _vm.helper.renderZoneItemData,
@@ -101649,6 +101648,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Autocomplete__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../components/Autocomplete */ "./resources/js/components/Autocomplete.vue");
 /* harmony import */ var _components_DocumentsUpload__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../components/DocumentsUpload */ "./resources/js/components/DocumentsUpload.vue");
 /* harmony import */ var _components_MultiSelect__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../components/MultiSelect */ "./resources/js/components/MultiSelect.vue");
+/* harmony import */ var _components_ZoneSelect__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../components/ZoneSelect */ "./resources/js/components/ZoneSelect.vue");
+/* harmony import */ var _components_ListSelect_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../components/ListSelect.vue */ "./resources/js/components/ListSelect.vue");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
@@ -101663,13 +101664,17 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 
 
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     TextAreaCounter: _components_TextAreaCounter__WEBPACK_IMPORTED_MODULE_3__["default"],
     CustomCheckbox: _components_CustomCheckbox__WEBPACK_IMPORTED_MODULE_4__["default"],
     Autocomplete: _components_Autocomplete__WEBPACK_IMPORTED_MODULE_5__["default"],
     DocumentsUpload: _components_DocumentsUpload__WEBPACK_IMPORTED_MODULE_6__["default"],
-    MultiSelect: _components_MultiSelect__WEBPACK_IMPORTED_MODULE_7__["default"]
+    MultiSelect: _components_MultiSelect__WEBPACK_IMPORTED_MODULE_7__["default"],
+    ZoneSelect: _components_ZoneSelect__WEBPACK_IMPORTED_MODULE_8__["default"],
+    ListSelect: _components_ListSelect_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
   },
   mixins: [_mixins_form_new_ad_mixin__WEBPACK_IMPORTED_MODULE_2__["default"]],
   props: {},
@@ -101680,13 +101685,17 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       formInput: {
         selectedZones: hasOld && JSON.parse(v.selected_zones) || [],
         offerTypes: hasOld && v.job_offer.offer_types || [],
+        productionGenres: hasOld && v.production_genres || [],
+        secondProductionGenres: hasOld && v.secondary_production_genres || [],
+        isActivityTransmission: hasOld && v.job_offer.is_activity_transmission || undefined,
         jobDescription: hasOld && v.job_offer.job_description || '',
         experienceFarming: hasOld && v.job_offer.experience_farming || '',
         educationLevels: hasOld && v.job_offer.education_levels || [],
         aboutProject: hasOld && v.about_project_content || '',
         aboutContent: hasOld && v.about_content || '',
         title: hasOld && v.title || '',
-        documents: hasOld && JSON.parse(v.documents) || []
+        documents: hasOld && JSON.parse(v.documents) || [],
+        chartConfirmation: hasOld && v.chart_confirmation || false
         //beneficiary: hasOld ? v.is_beneficiary : '',
         //agriculturalActivity: hasOld ? v.agricultural_activity || [],
       }
@@ -101702,6 +101711,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
           minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(5),
           maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(1000)
         },
+        isActivityTransmission: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+        },
         experienceFarming: {
           //required,
           minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(5),
@@ -101715,6 +101727,18 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
             return true;
           },
           notCurrentlyUploading: _base_validations__WEBPACK_IMPORTED_MODULE_1__["default"].formInput.documents.notCurrentlyUploading
+        },
+        selectedZones: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+        },
+        educationLevels: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+        },
+        productionGenres: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+        },
+        chartConfirmation: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
         }
       })
     };
@@ -101805,9 +101829,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
         },
         productionGenres: {
-          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
-        },
-        secondProductionGenres: {
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
         },
         educationLevels: {
@@ -102350,24 +102371,34 @@ var smoothScrolls = [];
     }
   },
   methods: {
+    // nextStep() {
+    //     smoothScrolls.forEach(function (smoothScroll) {
+    //         smoothScroll.destroy();
+    //     });
+    //     smoothScrolls = [];
+    //
+    //     const smoothScroll = new SmoothScroll();
+    //
+    //     const anchorElement = [].slice.call(
+    //         document.querySelectorAll('.form-container')
+    //     ).find(element => element.style.display !== "none");
+    //
+    //
+    //     // Monkey patch for smoothScroll.js
+    //     // Without this check, it bugs when attempting to scroll to the same current position
+    //     // and indefinetly scroll
+    //     const topPositionRelativeToWindow = Math.abs(anchorElement.getBoundingClientRect().top);
+    //     if (parseInt(topPositionRelativeToWindow) > 0) {
+    //         smoothScroll.animateScroll(anchorElement);
+    //     }
+    //
+    //     smoothScrolls.push(smoothScroll);
+    // },
     nextStep: function nextStep() {
-      smoothScrolls.forEach(function (smoothScroll) {
-        smoothScroll.destroy();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
       });
-      smoothScrolls = [];
-      var smoothScroll = new SmoothScroll();
-      var anchorElement = [].slice.call(document.querySelectorAll('.form-container')).find(function (element) {
-        return element.style.display !== "none";
-      });
-
-      // Monkey patch for smoothScroll.js
-      // Without this check, it bugs when attempting to scroll to the same current position
-      // and indefinetly scroll
-      var topPositionRelativeToWindow = Math.abs(anchorElement.getBoundingClientRect().top);
-      if (parseInt(topPositionRelativeToWindow) > 0) {
-        smoothScroll.animateScroll(anchorElement);
-      }
-      smoothScrolls.push(smoothScroll);
     },
     setUploading: function setUploading(bool) {
       this.uploading = bool;
@@ -102424,7 +102455,9 @@ var smoothScrolls = [];
      */
     focusOnFirstError: function focusOnFirstError() {
       var _this2 = this;
+      console.log('focusOnFirstError');
       var firstError = Object.keys(this.formInput).find(function (inputName) {
+        console.log(inputName, _this2.$v.formInput[inputName]);
         if (_this2.$v.formInput[inputName] && _this2.$v.formInput[inputName].$error) {
           var input = _this2.findInputContainerElement(_this2.$refs[inputName]);
           console.log(inputName);
@@ -102582,12 +102615,18 @@ vue__WEBPACK_IMPORTED_MODULE_6___default.a.component('new-ad', {
   methods: {
     submit: function submit(e) {
       e.preventDefault();
+      console.log('before $v.$touch');
       this.enabledForm.$v.$touch();
+      console.log('after $v.$touch');
       if (this.enabledFormHasErrors()) {
+        console.log('before focusOnFirstError');
         this.enabledForm.focusOnFirstError();
+        console.log('after focusOnFirstError');
         this.enabledForm.setInputsBorderColor();
+        console.log('after setInputsBorderColor');
         this.isSubmitting = false;
       } else {
+        console.log('before confirm');
         var text = this.isSupportRequest ? 'Vous êtes sur le point de soumettre une demande d\'accompagnement. Elle sera traitée sous 7 jours par un primo-accueillant.' : 'Vous êtes sur le point de demander la publication de votre annonce. Elle sera traitée sous 7 jours par un modérateur.';
         if (this.formAction === this.publishAction && !confirm(text)) {
           this.isSubmitting = false;
@@ -102598,7 +102637,10 @@ vue__WEBPACK_IMPORTED_MODULE_6___default.a.component('new-ad', {
       }
     },
     enabledFormHasErrors: function enabledFormHasErrors() {
-      return this.enabledForm && this.enabledForm.$v.$error;
+      console.log('enabledFormHasErrors');
+      var ouiiii = this.enabledForm && this.enabledForm.$v.$error;
+      console.log('ouiiii', ouiiii);
+      return ouiiii;
     },
     setEnabledForm: function setEnabledForm(form) {
       this.enabledForm = form;

@@ -18,6 +18,7 @@
                     style="display:none"
                     :style="{display:loading ? 'none': 'block'}">
 
+
                 <form
                         method="post"
                         enctype="multipart/form-data"
@@ -26,7 +27,6 @@
                         ref="form">
 
                     {{ csrf_field() }}
-
 
                     <input type="hidden" name="is_support_request" value="{{empty($isSupportRequest)? 0 : 1}}">
 
@@ -74,7 +74,6 @@
 
                     <new-land-seek-ad inline-template
                                       v-if="adTypeSelected === 'land_seek'"
-                                      :is-input-disabled="adTypeSelected !== 'land_seek'"
                                       :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                       :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
                                       :text-content-territories="{{!empty($isSupportRequest) && isset($old["id"]) ? json_encode($pageContent): json_encode(new stdClass)}}"
@@ -90,7 +89,6 @@
 
                     <new-land-offer-ad inline-template
                                        v-if="adTypeSelected === 'land_offer'"
-                                       :is-input-disabled="adTypeSelected !== 'land_offer'"
                                        :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                        :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
                                        :text-content-territories="{{!empty($isSupportRequest) && isset($old["id"]) ? json_encode($pageContent):json_encode(new stdClass)}}"
@@ -107,7 +105,6 @@
                         {{--                    TODO : remove v-if after presentation --}}
                         <new-job-seek-ad inline-template
                                          v-if="adTypeSelected === 'job_seek'"
-                                         :is-input-disabled="adTypeSelected !== 'job_seek'"
                                          :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                          @input-enabled="setEnabledForm"
                                          @form-complete="submitProxy"
@@ -119,8 +116,7 @@
                         </new-job-seek-ad>
 
                         <new-job-offer-ad inline-template
-                                          v-show="adTypeSelected === 'job_offer'"
-                                          :is-input-disabled="adTypeSelected !== 'job_offer'"
+                                          v-if="adTypeSelected === 'job_offer'"
                                           :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                           @input-enabled="setEnabledForm"
                                           @form-complete="submitProxy"
