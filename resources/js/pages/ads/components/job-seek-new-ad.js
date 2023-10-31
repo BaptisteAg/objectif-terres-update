@@ -63,9 +63,6 @@ export default {
                 productionGenres: {
                     required,
                 },
-                secondProductionGenres: {
-                    required,
-                },
 				educationLevels: {
 					required
 				},

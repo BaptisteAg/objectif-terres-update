@@ -4,7 +4,6 @@
 			<label :for="id" class="label">{{ label }} <i class="fas fa-info-circle has-text-info"></i></label>
 			<autocomplete
 				:id="id"
-				:placeholder="value.length ? 'Saisissez une autre localisation' : 'Saisissez au moins 2 caractères pour faire apparaître la liste'"
 				:disabled="disabled"
 				:src="src"
 				:data-renderer="helper.renderZoneItemData"

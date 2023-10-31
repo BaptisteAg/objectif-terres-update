@@ -10,13 +10,12 @@
 
         <tab-content title="Terres proposées">
 
-            <section class="mb-6 field">
+            <section class="mb-6 field" ref="selectedDepartments">
                 <label class="label">Département de référence *</label>
                 <autocomplete
                         name="department_id"
                         id="department_id"
                         autocomplete="off"
-                        ref="selectedDepartments"
                         src="/locations/departments"
                         placeholder="Saisissez au moins 2 caractères pour faire apparaître la liste"
                         v-model="formInput.selectedDepartments"
@@ -42,14 +41,13 @@
                 </autocomplete>
             </section>
 
-            <section class="field mb-6">
-                <b-tooltip class="w-100"
+            <section class="mb-6">
+                <b-tooltip class="w-100 field" ref="selectedZones"
                            label="Si votre bien se situe sur plusieurs communes, merci de nous les indiquées">
                     <zone-select
                             name="locationable"
-                            label="Autre localisation*"
+                            label="Autre localisation *"
                             json-name="selected_zones"
-                            ref="selectedZones"
                             :vuelidate="$v.formInput.selectedZones"
                             v-model="formInput.selectedZones">
                     </zone-select>
@@ -370,7 +368,7 @@
                 @include('pages.ads.partials.inputs.documents')
             </section>
 
-            <section class="field">
+            <section>
                 @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'land_seek'])
             </section>
         </tab-content>

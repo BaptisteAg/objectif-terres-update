@@ -4,7 +4,7 @@
            class="input autocomplete-input is-rounded"
            ref="input"
            v-model="autocompleteValue"
-           :placeholder="placeholder"
+		   :placeholder="placeholder || value.length ? 'Saisissez une autre localisation' : 'Saisissez au moins 2 caractères pour faire apparaître la liste'"
            v-on:click="onClick"
            v-on:awesomplete-select="onSelect"
     >

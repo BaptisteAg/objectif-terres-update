@@ -4,19 +4,18 @@
             subtitle=""
             step-size="xs"
             @on-complete="$emit('form-complete')"
-            @on-change="nextStep"
+{{--            @on-change="nextStep"--}}
             color="#A74B2B"
             ref="formWizard">
 
         <tab-content title="Expérience recherchée">
 
-            <section class="mb-6 field">
+            <section class="mb-6 field" ref="selectedDepartments">
                 <label class="label">Département de référence *</label>
                 <autocomplete
                         name="department_id"
                         id="department_id"
                         autocomplete="off"
-                        ref="selectedDepartments"
                         src="/locations/departments"
                         placeholder="Saisissez au moins 2 caractères pour faire apparaître la liste"
                         v-model="formInput.selectedDepartments"
@@ -142,7 +141,7 @@
                 @include('pages.ads.partials.inputs.documents')
             </section>
 
-            <section class="field">
+            <section>
                 @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'job_seek'])
             </section>
         </tab-content>
