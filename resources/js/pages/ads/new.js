@@ -87,15 +87,18 @@ Vue.component('new-ad', {
     methods: {
         submit(e) {
             e.preventDefault();
-
+			console.log('before $v.$touch')
             this.enabledForm.$v.$touch();
-
+			console.log('after $v.$touch')
             if (this.enabledFormHasErrors()) {
+				console.log('before focusOnFirstError')
                 this.enabledForm.focusOnFirstError();
+				console.log('after focusOnFirstError');
                 this.enabledForm.setInputsBorderColor();
-
+				console.log('after setInputsBorderColor');
                 this.isSubmitting = false;
             } else {
+				console.log('before confirm')
                 const text = this.isSupportRequest ?
                     'Vous êtes sur le point de soumettre une demande d\'accompagnement. Elle sera traitée sous 7 jours par un primo-accueillant.' :
                     'Vous êtes sur le point de demander la publication de votre annonce. Elle sera traitée sous 7 jours par un modérateur.';
@@ -109,7 +112,10 @@ Vue.component('new-ad', {
             }
         },
         enabledFormHasErrors() {
-            return this.enabledForm && this.enabledForm.$v.$error
+			console.log('enabledFormHasErrors')
+            let ouiiii = this.enabledForm && this.enabledForm.$v.$error
+			console.log('ouiiii', ouiiii)
+			return ouiiii;
         },
         setEnabledForm(form) {
             this.enabledForm = form;
