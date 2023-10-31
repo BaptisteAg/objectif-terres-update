@@ -6,25 +6,23 @@
             subtitle=""
             step-size="xs"
             @on-complete="$emit('form-complete')"
-            @on-change="nextStep"
+{{--            @on-change="nextStep"--}}
             color="#A74B2B"
             ref="formWizard"
             class="is-flex is-flex-direction-column">
 
         <tab-content title="Terres recherchées">
 
-            <section class="mb-6 field">
-                <label class="label">Département *</label>
+            <section class="mb-6 field" ref="selectedDepartments">
+                <label class="label">Département de référence *</label>
                 <autocomplete
                         name="department_id"
-                        label="Département*"
                         id="department_id"
                         autocomplete="off"
-                        ref="selectedDepartments"
                         src="/locations/departments"
+                        placeholder="Saisissez au moins 2 caractères pour faire apparaître la liste"
                         v-model="formInput.selectedDepartments"
                         :vuelidate="$v.formInput.selectedDepartments"
-                        :disabled="isInputDisabled"
                 >
                     <template v-for="(zone, i) in formInput.selectedDepartments">
                         <input
@@ -43,7 +41,6 @@
                             <i class="fa fa-trash" style="cursor:pointer; margin-left: 0.5em;"></i>
                         </div>
                     </template>
-                    <input type="hidden" :disabled="disabled" :name="selectedDepartments" :value="JSON.stringify(formInput.selectedDepartments)">
                 </autocomplete>
             </section>
 
@@ -51,11 +48,10 @@
                 <zone-select
                         src="/locations/cities"
                         name="land_seek[locationable]"
-                        label="Code Postal, Commune*"
+                        label="Autre localisation"
                         json-name="selected_zones"
                         ref="selectedZones"
-                        v-model="formInput.selectedZones"
-                        :disabled="isInputDisabled">
+                        v-model="formInput.selectedZones">
                 </zone-select>
             </section>
 
@@ -68,7 +64,6 @@
                             :data="{{ json_encode($surfaceRanges->pluck('label', 'value')) }}"
                             :value="[formInput.surfaceRangeMin, formInput.surfaceRangeMax]"
                             @input="v => (formInput.surfaceRangeMin = v[0]) && (formInput.surfaceRangeMax = v[1])"
-                            :disabled="isInputDisabled"
                     ></vue-slider-range>
                 </b-tooltip>
             </section>
@@ -80,7 +75,6 @@
                     <text-area-counter
                             name="land_seek[land_description]"
                             :max-length=1500
-                            :disabled="isInputDisabled"
                             ref="landDescription"
                             v-model="formInput.landDescription"
                             :vuelidate="$v.formInput.landDescription">
@@ -92,7 +86,7 @@
                 {!! Form::label('land_seek_farms_and_buildings', 'Présence d’habitations ?*', ['class' => 'label w-100']); !!}
                 @foreach($requirements as $requirement)
                     <div>
-                        {!! Form::radio('land_seek[buildings][1]', $requirement->id, false, [':disabled' => 'isInputDisabled', 'id' => 'buildings_1_'.$requirement->id, 'v-model' => 'formInput.buildingRequirement']) !!}
+                        {!! Form::radio('land_seek[buildings][1]', $requirement->id, false, ['id' => 'buildings_1_'.$requirement->id, 'v-model' => 'formInput.buildingRequirement']) !!}
                         {!! Form::label('buildings_1_'.$requirement->id,  $requirement->label ) !!}
                     </div>
                 @endforeach
@@ -106,7 +100,7 @@
                 {!! Form::label('land_seek_farms_and_buildings', 'Présence de bâtiments agricoles ?*', ['class' => 'label w-100']); !!}
                 @foreach($requirements as $requirement)
                     <div>
-                        {!! Form::radio('land_seek[buildings][2]', $requirement->id, false, [':disabled' => 'isInputDisabled', 'id' => 'buildings_2_'.$requirement->id, 'v-model' => 'formInput.farmsRequirement']) !!}
+                        {!! Form::radio('land_seek[buildings][2]', $requirement->id, false, ['id' => 'buildings_2_'.$requirement->id, 'v-model' => 'formInput.farmsRequirement']) !!}
                         {!! Form::label('buildings_2_'.$requirement->id,  $requirement->label ) !!}
                     </div>
                 @endforeach
@@ -159,15 +153,15 @@
             <section class="mb-6 is-flex gap-x-5 field is-flex-wrap-wrap" ref="isBio">
                 {!! Form::label('land_seek[is_bio]', "Votre projet est-il en agriculture biologique ?*", ['class' => 'label w-100']) !!}
                 <div>
-                    {!! Form::radio('land_seek[is_bio]', '1', ((string)($old['land_seek']['is_bio'] ?? null) === "1") , ['id' => 'land_seek[is_bio]_1', ':disabled' => 'isInputDisabled', 'v-model' => 'formInput.isBio'] ) !!}
+                    {!! Form::radio('land_seek[is_bio]', '1', ((string)($old['land_seek']['is_bio'] ?? null) === "1") , ['id' => 'land_seek[is_bio]_1', 'v-model' => 'formInput.isBio'] ) !!}
                     {!! Form::label('land_seek[is_bio]_1',  'Oui' ) !!}
                 </div>
                 <div>
-                    {!! Form::radio('land_seek[is_bio]', '0', ((string)($old['land_seek']['is_bio'] ?? null) === "0") , ['id' => 'land_seek[is_bio]_0', ':disabled' => 'isInputDisabled', 'v-model' => 'formInput.isBio']) !!}
+                    {!! Form::radio('land_seek[is_bio]', '0', ((string)($old['land_seek']['is_bio'] ?? null) === "0") , ['id' => 'land_seek[is_bio]_0', 'v-model' => 'formInput.isBio']) !!}
                     {!! Form::label('land_seek[is_bio]_0',  'Non' ) !!}
                 </div>
                 <div>
-                    {!! Form::radio('land_seek[is_bio]', '-1', ((string)($old['land_seek']['is_bio'] ?? null) === "-1") , ['id' => 'land_seek[is_bio]__1', ':disabled' => 'isInputDisabled', 'v-model' => 'formInput.isBio']) !!}
+                    {!! Form::radio('land_seek[is_bio]', '-1', ((string)($old['land_seek']['is_bio'] ?? null) === "-1") , ['id' => 'land_seek[is_bio]__1', 'v-model' => 'formInput.isBio']) !!}
                     {!! Form::label('land_seek[is_bio]__1',  'Je ne sais pas encore' ) !!}
                 </div>
                 <p class="help is-danger w-100" id="isBioEror"
@@ -180,7 +174,7 @@
                 {!! Form::label('land_seek[installation_type_id]', "Vous vous installez*", ['class' => 'label w-100']) !!}
                 @foreach($installationTypes as $i => $installationType)
                     <div>
-                        {!! Form::radio('land_seek[installation_type_id]', $installationType["id"], null, [':disabled' => 'isInputDisabled', 'id' => 'installation_type_id_'.$installationType["id"], 'v-model' => 'formInput.installationTypeId']) !!}
+                        {!! Form::radio('land_seek[installation_type_id]', $installationType["id"], null, ['id' => 'installation_type_id_'.$installationType["id"], 'v-model' => 'formInput.installationTypeId']) !!}
                         {!! Form::label('installation_type_id_'.$installationType["id"], $installationType["name"]) !!}
                     </div>
                 @endforeach
@@ -216,7 +210,7 @@
                 @include('pages.ads.partials.inputs.documents')
             </section>
 
-            <section class="field">
+            <section>
                 @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'land_seek'])
             </section>
         </tab-content>

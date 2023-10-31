@@ -4,7 +4,7 @@ if (!isset($title)) {
 }
 ?>
 <b-tooltip class="w-100"
-           label="{{$tooltip}}.">
+           label="{{$tooltip}}">
     <label class="label is-inline-block"
            for="about_project_content">
         {{$title}}{{ ($required ?? true) ? ' *' : '' }}
