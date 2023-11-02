@@ -21,18 +21,12 @@
             </b-button>
         </wizard-button>
         <wizard-button v-else>
-            <b-button @click="props.nextTab"
+            <b-button @mousedown="onPublishButtonClick"
+                      @click="props.nextTab"
+                      @keyup.enter="props.nextTab"
                       size="is-medium"
                       class="ml-2" rounded type="is-danger">
-                @if(!empty($isSupportRequest))
-                    @if(!empty($old["id"]))
-                        Mettre à jour la demande
-                    @else
-                        Soumettre la demande
-                    @endif
-                @else
                     Demander la publication
-                @endif
             </b-button>
         </wizard-button>
     </div>

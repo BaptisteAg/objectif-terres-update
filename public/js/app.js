@@ -102466,11 +102466,16 @@ var smoothScrolls = [];
               });
             });
             if (typeof inputTabIndex !== "undefined") {
+              var _$form$tabs;
               // Change current form step if needed
               $form.changeTab($form.activeTabIndex, inputTabIndex);
 
               //console.log(inputTabIndex, $form.tabs[inputTabIndex]);
 
+              if (!((_$form$tabs = $form.tabs) !== null && _$form$tabs !== void 0 && (_$form$tabs = _$form$tabs[inputTabIndex]) !== null && _$form$tabs !== void 0 && _$form$tabs.$el)) {
+                console.error("Could not focus on error : No tab found for input ".concat(inputName));
+                return;
+              }
               var tab = $form.tabs[inputTabIndex].$el;
               tab.addEventListener('animationend', function (e) {
                 // Lets try to focus
@@ -102624,7 +102629,7 @@ vue__WEBPACK_IMPORTED_MODULE_6___default.a.component('new-ad', {
         this.isSubmitting = false;
       } else {
         console.log('before confirm');
-        var text = this.isSupportRequest ? 'Vous êtes sur le point de soumettre une demande d\'accompagnement. Elle sera traitée sous 7 jours par un primo-accueillant.' : 'Vous êtes sur le point de demander la publication de votre annonce. Elle sera traitée sous 7 jours par un modérateur.';
+        var text = 'Vous êtes sur le point de demander la publication de votre annonce. Elle sera traitée sous 7 jours par un modérateur.';
         if (this.formAction === this.publishAction && !confirm(text)) {
           this.isSubmitting = false;
         } else {
@@ -102634,10 +102639,10 @@ vue__WEBPACK_IMPORTED_MODULE_6___default.a.component('new-ad', {
       }
     },
     enabledFormHasErrors: function enabledFormHasErrors() {
-      console.log('enabledFormHasErrors');
-      var ouiiii = this.enabledForm && this.enabledForm.$v.$error;
-      console.log('ouiiii', ouiiii);
-      return ouiiii;
+      //console.log('enabledFormHasErrors')
+      var hasErrors = this.enabledForm && this.enabledForm.$v.$error;
+      //console.log('hasErrors', hasErrors)
+      return hasErrors;
     },
     setEnabledForm: function setEnabledForm(form) {
       this.enabledForm = form;
@@ -102656,10 +102661,10 @@ vue__WEBPACK_IMPORTED_MODULE_6___default.a.component('new-ad', {
       this.formAction = this.getPublishAction();
     },
     getPublishAction: function getPublishAction() {
-      return this.isSupportRequest ? '/accompagnement/creer' : '/annonces/creer';
+      return '/annonces/creer';
     },
     getSaveAction: function getSaveAction() {
-      return this.isSupportRequest ? '/accompagnement/sauvegarder' : '/annonces/sauvegarder';
+      return '/annonces/sauvegarder';
     }
   }
 });

@@ -30,7 +30,7 @@ class AdRequest extends FormRequest
         $rules = [
             'ad_type' => "required",
             'id' => ["nullable", "numeric"],
-            'department_id' => ["required", "numeric"],
+            'department_id' => ["nullable", "numeric"],
 
             'land_seek' => ['nullable', 'array'],
             'land_offer' => ['nullable', 'array'],
