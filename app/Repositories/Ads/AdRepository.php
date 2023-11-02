@@ -146,7 +146,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
         // If department is not set, we set it to the first city's department
         if (empty($data["department_id"]) && !empty($data["locationable"]["cities"])) {
-            $cityId = $data["locationable"]["cities"][0]["id"];
+            $cityId = $data["locationable"]["cities"][0];
             $city = City::find($cityId);
             $data["department_id"] = $city->department->id;
         }

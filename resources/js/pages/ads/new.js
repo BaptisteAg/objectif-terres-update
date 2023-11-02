@@ -112,10 +112,10 @@ Vue.component('new-ad', {
             }
         },
         enabledFormHasErrors() {
-			console.log('enabledFormHasErrors')
-            let ouiiii = this.enabledForm && this.enabledForm.$v.$error
-			console.log('ouiiii', ouiiii)
-			return ouiiii;
+			//console.log('enabledFormHasErrors')
+            let hasErrors = this.enabledForm && this.enabledForm.$v.$error
+			//console.log('hasErrors', hasErrors)
+			return hasErrors;
         },
         setEnabledForm(form) {
             this.enabledForm = form;
@@ -135,7 +135,7 @@ Vue.component('new-ad', {
         },
 
         getPublishAction() {
-            return this.isSupportRequest ? '/accompagnement/creer' : '/annonces/creer';
+            return this.isSupportRequest ? '/accompagnement/creer' : '/annonces/preview';
         },
 
         getSaveAction() {
