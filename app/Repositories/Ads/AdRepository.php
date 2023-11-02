@@ -6,6 +6,7 @@ use App\Models\AttributionAd;
 use App\Models\City;
 use App\Models\Department;
 use App\Models\Region;
+use App\Models\ThirdPartyAdUser;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -144,15 +145,20 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         $ad->fill($data);
         $ad->save();
 
+//        if (isset($data['is_other_person']) && $data['is_other_person'] === 1) {
+//            $thirdPartyAdUser = $ad->thirdPartyAdUser;
+//            if (!$thirdPartyAdUser) {
+//                $thirdPartyAdUser = $ad->thirdPartyAdUser()->create([]);
+//            }
+//            $thirdPartyAdUser->fill($data['other_person']);
+//            $thirdPartyAdUser->save();
+//        } else {
+//            $ad->thirdPartyAdUser()->delete();
+//        }
+
         if (isset($data['is_other_person']) && $data['is_other_person'] === 1) {
-            $thirdPartyAdUser = $ad->thirdPartyAdUser;
-            if (!$thirdPartyAdUser) {
-                $thirdPartyAdUser = $ad->thirdPartyAdUser()->create([]);
-            }
-            $thirdPartyAdUser->fill($data['other_person']);
-            $thirdPartyAdUser->save();
-        } else {
-            $ad->thirdPartyAdUser()->delete();
+            $thirdPartyUser = ThirdPartyAdUser::create($data['other_person']);
+            $data['third_party_ad_user_id'] = $thirdPartyUser->id;
         }
 
 

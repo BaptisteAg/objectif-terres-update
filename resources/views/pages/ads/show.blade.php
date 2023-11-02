@@ -14,7 +14,7 @@
 @endphp
 
 @section('main-content')
-    <section class="container">
+    <section class="container pb-6">
 
         @if(!isset($isPreview) || !$isPreview)
             @auth
@@ -46,7 +46,8 @@
                                     tag="a" icon-left="pencil" rounded>Modifier
                             </b-button>
                             <b-button onclick="return confirm('Êtes vous sûr·e ?')" tag="a"
-                                      href="{{  route('ads.archive', [ $ad->id]) }}" icon-left="archive-arrow-down" rounded>
+                                      href="{{  route('ads.archive', [ $ad->id]) }}" icon-left="archive-arrow-down"
+                                      rounded>
                                 Archiver
                             </b-button>
                             <b-button onclick="return confirm('Êtes vous sûr·e ? Cette opération est irréversible.')"
@@ -72,15 +73,18 @@
         @endif
 
         @if(isset($isPreview) && $isPreview)
-            PREVISUALISATION DE L'ANNONCE
-
-            <p>Vous êtes en train de prévisualiser l'annonce publique qui apparaîtra sur Objectif Terres. Vous pouvez soumettre la publication ou revenir à l'édition</p>
-
-            <a href="{{route('ads.edit', ['id' => $ad->id])}}">Retour à la création</a>
-            <a href="{{route('ads.request-publishing', ['id' => $ad->id])}}">Soumettre la publication</a>
+            <b-message type="is-warning" has-icon>
+                <h3 class="title is-5">Prévisualisation de l'annonce</h3>
+                <p>Vous êtes en train de prévisualiser l'annonce publique qui apparaîtra sur Objectif Terres. Vous
+                    pouvez soumettre la publication ou revenir à l'édition</p>
+                <div class="buttons pt-4">
+                    <b-button rounded tag="a" href="{{route('ads.edit', ['id' => $ad->id])}}">Modifier</b-button>
+                    <b-button rounded type="is-success" tag="a" href="{{route('ads.request-publishing', ['id' => $ad->id])}}">Soumettre</b-button>
+                </div>
+            </b-message>
         @endif
 
-        <h1 class="title is-1 has-background-black has-text-white">Type : {{$ad->type}}</h1>
+{{--        <h1 class="title is-1 has-background-black has-text-white">Type : {{$ad->type}}</h1>--}}
 
         @if($ad->type === 'landSeekAd')
             @include('pages.ads.partials.landSeek.landSeekShow')
@@ -98,7 +102,7 @@
     </section>
 
     @if(!isset($isPreview) || !$isPreview)
-        <section class="container mt-6" id="messages-display">
+        <section class="container" id="messages-display">
             @include('pages.ads.partials.threadsDisplay')
         </section>
 
