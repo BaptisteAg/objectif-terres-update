@@ -62,18 +62,26 @@ class AdsController extends BaseController
     }
 
     /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Throwable
+     */
+    public function save(AdRequest $request)
+    {
+        $ad = $this->store($request, 0);
+
+        return redirect()->route('ads.preview', ["id" => $ad->id]);
+    }
+
+    /**
      * Display the ad edit form
      * @return \Illuminate\View\View
      * @throws \Exception
      * @throws \Throwable
      */
-    public function preview(AdRequest $request)
+    public function preview(int $id)
     {
-        $data = $request->validated();
-
-        $data['ad_status'] = AdStatus::PENDING_MODERATION_STATUS_ID;
-        $ad = $this->adService->store($data);
-
+        $ad = $this->adService->find($id);
         $currentUser = auth()->user();
         $isPreview = true;
 
@@ -128,10 +136,15 @@ class AdsController extends BaseController
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      * @throws \Throwable
      */
-    public function save(AdRequest $request)
+    public function saveDraft(AdRequest $request)
     {
-        return $this->store($request, 1)
-            ->with('success', 'Votre annonce a bien été sauvegardée.');
+        try {
+            $ad = $this->store($request, 1);
+            return redirect()->route('ads.list', [$ad->id])->with('success', 'Votre annonce a bien été sauvegardée.');
+        } catch (\Exception $exception) {
+            report($exception);
+            return back()->withInput()->withErrors("[52] Désolé, une erreur s'est produite. Nous avons été informé du problème.");
+        }
     }
 
     /**
@@ -317,26 +330,18 @@ class AdsController extends BaseController
     }
 
     /**
-     * @param AdRequest $request
-     * @return \Illuminate\Http\RedirectResponse
      * @throws \Throwable
      */
-    protected function store(AdRequest $request, $isDraft = 1)
+    protected function store(AdRequest $request, $isDraft = 1) : Ad
     {
-        try {
-            $data = $request->validated();
-            $data["is_draft"] = $isDraft;
+        $data = $request->validated();
+        $data["is_draft"] = $isDraft;
 
-            if ($isDraft) {
-                $data['ad_status'] = AdStatus::PENDING_MODERATION_STATUS_ID;
-            }
-            $ad = $this->adService->store($data);
-
-            return redirect()->route('ads.list', [$ad->id]);
-        } catch (\Exception $exception) {
-            report($exception);
-            return back()->withInput()->withErrors("[52] Désolé, une erreur s'est produite. Nous avons été informé du problème.");
+        if ($isDraft) {
+            $data['ad_status'] = AdStatus::PENDING_MODERATION_STATUS_ID;
         }
+        $ad = $this->adService->store($data);
 
+        return $ad;
     }
 }
