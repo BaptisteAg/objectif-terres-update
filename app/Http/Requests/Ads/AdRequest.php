@@ -37,7 +37,7 @@ class AdRequest extends FormRequest
             'other_person.phone'=> 'nullable|string',
 
             'id' => ["nullable", "numeric"],
-            'department_id' => ["required", "numeric"],
+            'department_id' => ["nullable", "numeric"],
 
             'land_seek' => ['nullable', 'array'],
             'land_offer' => ['nullable', 'array'],
