@@ -99,8 +99,7 @@ Vue.component('new-ad', {
                 this.isSubmitting = false;
             } else {
 				console.log('before confirm')
-                const text = this.isSupportRequest ?
-                    'Vous êtes sur le point de soumettre une demande d\'accompagnement. Elle sera traitée sous 7 jours par un primo-accueillant.' :
+                const text =
                     'Vous êtes sur le point de demander la publication de votre annonce. Elle sera traitée sous 7 jours par un modérateur.';
 
                 if (this.formAction === this.publishAction && !confirm(text)) {
@@ -135,11 +134,11 @@ Vue.component('new-ad', {
         },
 
         getPublishAction() {
-            return this.isSupportRequest ? '/accompagnement/creer' : '/annonces/preview';
+            return '/annonces/creer';
         },
 
         getSaveAction() {
-            return this.isSupportRequest ? '/accompagnement/sauvegarder' : '/annonces/sauvegarder';
+            return '/annonces/sauvegarder';
         }
     }
 });
