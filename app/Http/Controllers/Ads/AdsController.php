@@ -62,45 +62,47 @@ class AdsController extends BaseController
     }
 
     /**
+     * Display the ad edit form
+     * @return \Illuminate\View\View
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    public function preview(AdRequest $request)
+    {
+        $data = $request->validated();
+
+        $data['ad_status'] = AdStatus::PENDING_MODERATION_STATUS_ID;
+        $ad = $this->adService->store($data);
+
+        $currentUser = auth()->user();
+        $isPreview = true;
+
+        return view('pages.ads.show', compact('ad', 'currentUser', 'isPreview'));
+    }
+
+    /**
      * @param AdRequest $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      * @throws \Throwable
      */
-    public function requestPublishing(AdRequest $request)
+    public function requestPublishing(int $id)
     {
         /** @var User $user */
         $user = auth()->user();
         $publishedAdsCount = $this->adService->getUserPublishedAdsCount($user);
 
         if ($publishedAdsCount >= self::PUBLISHED_AD_LIMIT_PER_USER) {
-            return $this->store($request)
-                ->withErrors(
-                    "Vous ne pouvez publier que " . self::PUBLISHED_AD_LIMIT_PER_USER . " annonces en même temps.
-                    Votre annonce a été sauvegardée mais ne sera pas soumise à modération."
-                );
+            return back()->withErrors(
+                "Vous ne pouvez publier que " . self::PUBLISHED_AD_LIMIT_PER_USER . " annonces en même temps.
+                Votre annonce a été sauvegardée mais ne sera pas soumise à modération."
+            );
         }
-        $data = $request->validated();
+
+        $ad = $this->adService->find($id);
+
         /** @var $ad Ad $ad */
         try {
-            $ad = $this->adService->requestPublishing($data);
-            //Todo: remove
-            //if (!$data['is_support_request']) {
-            $ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
-            $ad->userPp->notify(new BasicNotification([
-                'subject' => "Votre annonce va être modérée",
-                'message' => "Votre annonce '" . $ad->title . "' va être prochainement modérée par un membre de l’équipe, qui rassemble " .
-                    "des bénévoles et salarié·es. Souvent en déplacement sur le terrain, nous faisons notre possible pour vous répondre le plus " .
-                    "rapidement.\n\n
-
-                    Vous pouvez gérer vos annonces depuis votre espace personnel Objectif Terres :\n",
-                'action' => ["Gérer mes annonces", route('ads.list')],
-                'salutation' => "En vous remerciant pour votre confiance,\n
-                                    L’équipe d’Objectif Terres."
-            ]));
-
-            //} elseif ($data['is_support_request'] && isset($ad->attributionAd->user_advisor_id)) {
-            //    $ad->attributionAd->userAdvisor->notify(new NewSupportRequestNotification($ad));
-            //}
+            $ad = $this->adService->requestPublishing($ad);
 
         } catch (\Exception $exception) {
 
