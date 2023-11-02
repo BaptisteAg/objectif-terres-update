@@ -21,11 +21,14 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
 	Route::middleware(['auth'])->get('creer', 'AdsController@create')->name('create');
 	Route::middleware(['auth'])->get('creer/copier-accompagnement/{ad}', 'AdsController@createFromSupportRequest')
         ->name('create-from-support-request');
-	Route::middleware(['auth'])->post('creer', 'AdsController@requestPublishing')->name('publish');
+	// Deprecated
+    //Route::middleware(['auth'])->post('creer', 'AdsController@requestPublishing')->name('publish');
 	Route::middleware('auth')->post('sauvegarder', 'AdsController@save')->name('save');
-	Route::middleware('auth')->get('mes-annonces', 'AdsController@list')->name('list');
-	Route::get('{id}', 'AdsController@show')->name('show');
-	Route::middleware('auth')->get('modifier/{id}', 'AdsController@edit')->name('edit');
+    Route::middleware('auth')->post('preview', 'AdsController@preview')->name('preview');
+    Route::middleware('auth')->get('modifier/{id}', 'AdsController@edit')->name('edit');
+    Route::middleware('auth')->get('request-publishing/{id}', 'AdsController@requestPublishing')->name('request_publishing');
+    Route::middleware('auth')->get('mes-annonces', 'AdsController@list')->name('list');
+    Route::get('{id}', 'AdsController@show')->name('show');
     Route::middleware('auth')->get('supprimer/{ad}', 'AdsController@delete')->name('delete');
     Route::middleware('auth')->get('archiver/{ad}', 'AdsController@archive')->name('archive');
 	Route::middleware('auth')->get('etendre-expiration/{id}', 'AdsController@extendPublish')->name('extend');
