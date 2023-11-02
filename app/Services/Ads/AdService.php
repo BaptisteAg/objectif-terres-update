@@ -15,6 +15,7 @@ use App\Models\SupportState;
 use App\Models\Territory;
 use App\Models\User;
 use App\Notifications\BasicNotification;
+use App\Notifications\NewAdToModerateNotification;
 use App\Notifications\NewSupportRequestNotification;
 use App\Notifications\SupportRequestAttributionNotification;
 use App\Notifications\SupportRequestTerritoryNotification;
@@ -139,123 +140,62 @@ class  AdService
 	 * @return Ad
 	 * @throws \Throwable
 	 */
-	public function requestPublishing(array $data, bool $isSupportRequest = false)
+	public function requestPublishing(Ad $ad)
 	{
-		$isUpdate = !empty($data["id"]);
-
 		DB::beginTransaction();
 
 		$attributionAdData = [];
-		if ($isSupportRequest) {
-			// Create a project for this ad
-			$project = $this->projectRepository->create([
-				'support_stage_id' => SupportStage::FIRST_CONTACT_ID,
-				'support_state_id' => SupportState::TO_HANDLE_ID,
-			]);
-			$data["project_id"] = $project->id;
-		}
 
-//		$data["is_draft"] = false;
+        $adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
+        $availableModerators = $this->userService->findByRolesAndDepartments([1], $adDepartmentCodes);
+        $availableSupervisors = $this->userService->findByRolesAndDepartments([3], $adDepartmentCodes);
+        $availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
 
-		//TODO delete if this column is not necessary anymore
-		//$data['support_request_id_region'] = 16;
-
-
-		if ($isUpdate) {
-			$ad = $this->repository->update($data["id"], $data);
-		} else {
-			$ad = $this->repository->create($data);
-		}
-
-//        dd($ad->department_id);
-
-		if ($isSupportRequest) {
-			if ($data["is_draft"] !== 1) {
-				$adDepartmentCodes = $this->getAdDepartmentCodesFromSupportRequestTerritoryId($ad);
-				$availableAdvisors = $this->userService->findByRolesAndDepartments([2], $adDepartmentCodes);
-				$availableSupervisors = $this->userService->findByRolesAndDepartments([3], $adDepartmentCodes);
-
-				if ($availableSupervisors->isEmpty() && $availableAdvisors->isEmpty()) {
-					throw new AttributionAdException("Aucun responsable n'a été trouvé dans votre région. Veuillez sauvegarder votre demande et nous contacter.");
-				}
-
-				// S'il n'y a qu'un seul responsable terr. et pas de primo accueillant on saute une étape et on le sélectionne
-				if ($availableAdvisors->count() === 0 && $availableSupervisors->count() === 1) {
-					$supervisor = $availableSupervisors->first();
-					$attributionAdData['user_advisor_id'] = $supervisor->id;
-				}
-				// Else nothing. No attribution needed if no advisor is bound
-
-				$attributionAdData['ad_status_id'] = null;
-			}
-
-		} else {
-			$adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
-			$availableModerators = $this->userService->findByRolesAndDepartments([1], $adDepartmentCodes);
-			$availableSupervisors = $this->userService->findByRolesAndDepartments([3], $adDepartmentCodes);
-			$availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
-
-			if ($availableModerators->isEmpty() && $availableSupervisors->isEmpty() && empty($availableUserWithPermission)) {
-				throw new AttributionAdException("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
-			}
-			// If ad was attributed before, we'll get the same moderator if available
-			if ($ad->attributionAd && $ad->attributionAd->userModerator &&
-				$availableModerators->keyBy("id")->find($ad->attributionAd->user_moderator_id)) {
-				$moderator = $ad->attributionAd->userModerator;
-			} else {
-				if ($availableModerators->count() >= 1) {
-					/** @var User $moderator */
-					$moderator = $availableModerators->random();
-				} else if (!empty($availableUserWithPermission)) {
-					$moderator = $availableUserWithPermission;
-				} else {
-					/** @var User $moderator */
-					$moderator = $availableSupervisors->random();
-				}
-			}
-			$attributionAdData['ad_status_id'] = AdStatus::PENDING_MODERATION_STATUS_ID;
-			$attributionAdData['user_moderator_id'] = $moderator->id;
-		}
+        if ($availableModerators->isEmpty() && $availableSupervisors->isEmpty() && empty($availableUserWithPermission)) {
+            throw new AttributionAdException("Aucun modérateur n'a été trouvé dans votre région. Veuillez sauvegarder votre annonce et nous contacter.");
+        }
+        // If ad was attributed before, we'll get the same moderator if available
+        if ($ad->attributionAd && $ad->attributionAd->userModerator &&
+            $availableModerators->keyBy("id")->find($ad->attributionAd->user_moderator_id)) {
+            $moderator = $ad->attributionAd->userModerator;
+        } else {
+            if ($availableModerators->count() >= 1) {
+                /** @var User $moderator */
+                $moderator = $availableModerators->random();
+            } else if (!empty($availableUserWithPermission)) {
+                $moderator = $availableUserWithPermission;
+            } else {
+                /** @var User $moderator */
+                $moderator = $availableSupervisors->random();
+            }
+        }
+        $attributionAdData['ad_status_id'] = AdStatus::PENDING_MODERATION_STATUS_ID;
+        $attributionAdData['user_moderator_id'] = $moderator->id;
 
 		$attributionAdData['ad_id'] = $ad->id;
 
-		// Ad was already attributed before, and was not refused or archived; then we use the existing one
-		if (!$isSupportRequest) {
-			if ($ad->attributionAd && !in_array($ad->attributionAd->adStatus->id, [AdStatus::REFUSE_ID, AdStatus::ARCHIVED_ID])) {
-				$this->attributionAdsRepository->update($ad->attributionAd->id, $attributionAdData);
-			} else {
-				$this->attributionAdsRepository->create($attributionAdData);
-			}
-		}
-
-		if ($isSupportRequest) {
-			if ($ad->attributionAd) {
-				$this->attributionAdsRepository->update($ad->attributionAd->id, $attributionAdData);
-			} else {
-				$this->attributionAdsRepository->create($attributionAdData);
-			}
-		}
-
-		$subAdData = $data[$data["ad_type"]];
-
-        if(isset($subAdData["offer_genres"])) {
-            if(!in_array("1", $subAdData["offer_genres"], true)) {
-                $subAdData["price"] = null;
-            }
-            if(!in_array("2", $subAdData["offer_genres"], true)) {
-                $subAdData["rent_price"] = null;
-            }
+        if ($ad->attributionAd && !in_array($ad->attributionAd->adStatus->id, [AdStatus::REFUSE_ID, AdStatus::ARCHIVED_ID])) {
+            $this->attributionAdsRepository->update($ad->attributionAd->id, $attributionAdData);
+        } else {
+            $this->attributionAdsRepository->create($attributionAdData);
         }
 
-		if ($isUpdate) {
-			$this->updateSubAd($ad, $data["ad_type"], $subAdData);
-		} else {
-			$subAdData["ad_id"] = $ad->id;
-			$this->createSubAd($data["ad_type"], $subAdData);
-		}
 		DB::commit();
 
 		$ad->refresh();
+
+        $ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
+        $ad->userPp->notify(new BasicNotification([
+            'subject' => "Votre annonce va être modérée",
+            'message' => "Votre annonce '" . $ad->title . "' va être prochainement modérée par un membre de l’équipe, qui rassemble " .
+                "des bénévoles et salarié·es. Souvent en déplacement sur le terrain, nous faisons notre possible pour vous répondre le plus " .
+                "rapidement.\n\n
+
+                    Vous pouvez gérer vos annonces depuis votre espace personnel Objectif Terres :\n",
+            'action' => ["Gérer mes annonces", route('ads.list')],
+            'salutation' => "En vous remerciant pour votre confiance,\n
+                                    L’équipe d’Objectif Terres."
+        ]));
 
 		return $ad;
 	}
@@ -384,11 +324,10 @@ class  AdService
 	 * @param Ad $ad
 	 * @return array
 	 */
-	public function getAdDepartmentCodesFromZones(Ad $ad)
-	{
+	public function getAdDepartmentCodesFromZones(Ad $ad): array
+    {
 		$departmentsCode = [];
 
-        /* OBSOLETE : toutes les annonces ont un département unique attribué
 		if (count($ad->cities)) {
 			foreach ($ad->cities as $city) {
 				if ($city->department) {
@@ -402,7 +341,7 @@ class  AdService
 			foreach ($ad->departments as $department) {
 				$departmentsCode[] = $department->code;
 			}
-		}*/
+		}
 
 		return array_unique($departmentsCode);
 	}
@@ -464,8 +403,23 @@ class  AdService
 			$ad = $this->repository->create($data);
 		}
 
+        if (isset($data[$data["ad_type"]])) {
+            $subAdData = $data[$data["ad_type"]];
+            $subAdData["ad_id"] = $ad->id;
+            $this->createSubAd($data["ad_type"], $subAdData);
+        }
+
 		$subAdData = $data[$data["ad_type"]];
 		$subAdData["ad_id"] = $ad->id;
+
+        if(isset($subAdData["offer_genres"])) {
+            if(!in_array("1", $subAdData["offer_genres"], true)) {
+                $subAdData["price"] = null;
+            }
+            if(!in_array("2", $subAdData["offer_genres"], true)) {
+                $subAdData["rent_price"] = null;
+            }
+        }
 
 		if ($isUpdate) {
 			$this->updateSubAd($ad, $data["ad_type"], $subAdData);
