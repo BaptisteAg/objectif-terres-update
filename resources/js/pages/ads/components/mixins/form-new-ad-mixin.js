@@ -148,6 +148,11 @@ export default {
 
 							//console.log(inputTabIndex, $form.tabs[inputTabIndex]);
 
+                            if(!$form.tabs?.[inputTabIndex]?.$el) {
+                                console.error(`Could not focus on error : No tab found for input ${inputName}`);
+                                return;
+                            }
+
 							const tab = $form.tabs[inputTabIndex].$el;
 							tab.addEventListener('animationend', e => {
 								// Lets try to focus

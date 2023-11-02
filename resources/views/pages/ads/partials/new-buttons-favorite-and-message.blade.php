@@ -39,7 +39,7 @@
             {!! Form::close() !!}
         @endif
     @elseif($ad->user_pp_id === auth()->user()->id)
-        @if(count($threads))
+        @if(isset($threads) && count($threads))
             <b-button tag="a" rounded href="#messages-display" type="is-danger">
                 Voir vos fil de discussion
             </b-button>
