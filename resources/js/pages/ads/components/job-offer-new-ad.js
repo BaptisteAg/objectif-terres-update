@@ -82,8 +82,9 @@ export default {
 					required
 				},
 				chartConfirmation: {
-					required
-				}
+					required,
+					isTrue: value => value === true
+				},
 			}
 		}
 	}

@@ -57,7 +57,10 @@
 
             <section class="mb-6 field" ref="surfaceRangeMax">
                 <b-tooltip class="w-100" label="Faites glisser les curseurs pour définir la surface recherchée">
-                    {!! Form::label('land_seek[surface_range_min]', 'Surface recherchée (en hectares)*', ['class' => 'label']); !!}
+                    <div class="label">
+                        {!! Form::label('land_seek[surface_range_min]', 'Surface recherchée (en hectares) *', ['class' => '']); !!}
+                        <i class="fas fa-info-circle has-text-info"></i>
+                    </div>
                     <vue-slider-range
                             name-min="land_seek[surface_range_min]"
                             name-max="land_seek[surface_range_max]"
@@ -71,7 +74,10 @@
             <section class="mb-6 field">
                 <b-tooltip class="w-100"
                            label="Décrivez le type de surface agricole : altitude, type de terre, besoin en eau, certification...">
-                    {!! Form::label('land_seek[land_description]', "Description du terrain recherché", ['class' => 'label']) !!}
+                    <div class="label">
+                        {!! Form::label('land_seek[land_description]', "Description du terrain recherché", ['class' => '']) !!}
+                        <i class="fas fa-info-circle has-text-info"></i>
+                    </div>
                     <text-area-counter
                             name="land_seek[land_description]"
                             :max-length=1500
@@ -83,7 +89,7 @@
             </section>
 
             <section class="mb-6 is-flex gap-x-5 field is-flex-wrap-wrap" ref="buildingRequirement">
-                {!! Form::label('land_seek_farms_and_buildings', 'Présence d’habitations ?*', ['class' => 'label w-100']); !!}
+                {!! Form::label('land_seek_farms_and_buildings', 'Présence d’habitations ? *', ['class' => 'label w-100']); !!}
                 @foreach($requirements as $requirement)
                     <div>
                         {!! Form::radio('land_seek[buildings][1]', $requirement->id, false, ['id' => 'buildings_1_'.$requirement->id, 'v-model' => 'formInput.buildingRequirement']) !!}
@@ -97,7 +103,7 @@
             </section>
 
             <section class="is-flex gap-x-5 field is-flex-wrap-wrap" ref="farmsRequirement">
-                {!! Form::label('land_seek_farms_and_buildings', 'Présence de bâtiments agricoles ?*', ['class' => 'label w-100']); !!}
+                {!! Form::label('land_seek_farms_and_buildings', 'Présence de bâtiments agricoles ? *', ['class' => 'label w-100']); !!}
                 @foreach($requirements as $requirement)
                     <div>
                         {!! Form::radio('land_seek[buildings][2]', $requirement->id, false, ['id' => 'buildings_2_'.$requirement->id, 'v-model' => 'formInput.farmsRequirement']) !!}
@@ -113,7 +119,7 @@
 
         <tab-content title="Votre projet agricole">
             <section class="mb-6 field" ref="productionGenres">
-                {!! Form::label('land_seek[production_genres][]', 'Production agricole principale envisagée*', ['class' => 'label']); !!}
+                {!! Form::label('land_seek[production_genres][]', 'Production agricole principale envisagée *', ['class' => 'label']); !!}
                 @include('pages.ads.partials.inputs.production_genres', [
                     'name' => 'land_seek[production_genres][]',
                     'productionGenres' => $productionGenres,
@@ -151,7 +157,7 @@
             </section>
 
             <section class="mb-6 is-flex gap-x-5 field is-flex-wrap-wrap" ref="isBio">
-                {!! Form::label('land_seek[is_bio]', "Votre projet est-il en agriculture biologique ?*", ['class' => 'label w-100']) !!}
+                {!! Form::label('land_seek[is_bio]', "Votre projet est-il en agriculture biologique ? *", ['class' => 'label w-100']) !!}
                 <div>
                     {!! Form::radio('land_seek[is_bio]', '1', ((string)($old['land_seek']['is_bio'] ?? null) === "1") , ['id' => 'land_seek[is_bio]_1', 'v-model' => 'formInput.isBio'] ) !!}
                     {!! Form::label('land_seek[is_bio]_1',  'Oui' ) !!}
@@ -210,7 +216,7 @@
                 @include('pages.ads.partials.inputs.documents')
             </section>
 
-            <section>
+            <section class="field" ref="chartConfirmation">
                 @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'land_seek'])
             </section>
         </tab-content>
