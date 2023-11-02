@@ -52,6 +52,9 @@ export default {
         return {
             formInput: {
                 ...baseValidations.formInput,
+                selectedDepartments: {
+                    required
+                },
                 experienceFarming: {
                     required,
                     minLength: minLength(5),
@@ -73,9 +76,6 @@ export default {
                     required,
                     isTrue: value => value === true
                 },
-				selectedDepartments: {
-					required
-				},
                 documents: {
                     oneDocument: _ => true,
                     notCurrentlyUploading: baseValidations.formInput.documents.notCurrentlyUploading

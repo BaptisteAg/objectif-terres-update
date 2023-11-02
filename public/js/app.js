@@ -101576,11 +101576,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   formInput: {
-    selectedDepartments: {
-      hasZone: function hasZone(zones) {
-        return zones.length;
-      }
-    },
     aboutProject: {
       minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(5),
       maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(1500),
@@ -101814,6 +101809,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   validations: function validations() {
     return {
       formInput: _objectSpread(_objectSpread({}, _base_validations__WEBPACK_IMPORTED_MODULE_1__["default"].formInput), {}, {
+        selectedDepartments: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+        },
         experienceFarming: {
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
           minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(5),
@@ -101836,9 +101834,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
           isTrue: function isTrue(value) {
             return value === true;
           }
-        },
-        selectedDepartments: {
-          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
         },
         documents: {
           oneDocument: function oneDocument(_) {
@@ -104041,8 +104036,8 @@ function noIframe() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\objectif-terres\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\objectif-terres\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /shared/httpd/objectif-terres/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /shared/httpd/objectif-terres/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
