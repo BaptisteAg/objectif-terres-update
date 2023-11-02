@@ -227,9 +227,8 @@ export default {
                     maxLength: maxLength(1000),
                 },
                 chartConfirmation: {
-                    checked(v) {
-                        return !!v
-                    }
+                    required,
+                    isTrue: value => value === true
                 },
 
                 buildingDescription: {

@@ -1,9 +1,7 @@
 <b-checkbox
-        class="field"
         name="{{$inputNamePrefix}}[chart_confirmation]"
         v-model="formInput.chartConfirmation"
-        ref="chartConfirmation"
-        aria-describedby='chartConfirmationError'>Je certifie que mon projet correspond à la&nbsp; <a
+        aria-describedby='chartConfirmationError'>Je certifie que mon projet correspond à la <a
             href="{{URL::asset('docs/Charte_utilisation_d_Objectif_Terres-Validee_en_CIT_du_21_oct.pdf')}}"
             target="_blank">charte Objectif Terres *</a>
 </b-checkbox>
