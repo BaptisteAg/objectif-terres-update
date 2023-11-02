@@ -2146,17 +2146,18 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         firstName: '',
         lastName: '',
         phone: '',
+        mail_only: '',
         adType: ''
       },
       otherPersonAd: {
-        value: old.is_for_other || false,
+        value: old.is_for_other || 0,
         first_name: old.other_person_first_name || "",
         last_name: old.other_person_last_name || "",
         email: old.other_person_email || "",
-        phone: old.other_person_phone || ""
+        phone: old.other_person_phone || "",
+        mail_only: old.other_person_mail_only || false
       },
-      isMailOnly: old.is_mail_only || false,
-      isCertified: old.has_certified || false,
+      isCertified: false,
       currentAdType: this.value
     };
   },
@@ -3888,7 +3889,7 @@ var render = function render() {
       },
       expression: "isCertified"
     }
-  }, [_vm._v("Je certifie que mon annonce\n          concerne\n          un\n          projet agricole professionnel sur des productions principales nourricières "), _c("a", {
+  }, [_vm._v("Je certifie que\n          mon annonce\n          concerne\n          un\n          projet agricole professionnel sur des productions principales nourricières "), _c("a", {
     attrs: {
       href: "/conditions-utilisation"
     }
@@ -3900,8 +3901,8 @@ var render = function render() {
     staticClass: "block"
   }, [_c("b-radio", {
     attrs: {
-      name: "false",
-      "native-value": false
+      name: "is_other_person",
+      "native-value": "0"
     },
     model: {
       value: _vm.otherPersonAd.value,
@@ -3912,8 +3913,8 @@ var render = function render() {
     }
   }, [_vm._v("En mon nom")]), _vm._v(" "), _c("b-radio", {
     attrs: {
-      name: "true",
-      "native-value": true
+      name: "is_other_person",
+      "native-value": "1"
     },
     model: {
       value: _vm.otherPersonAd.value,
@@ -3933,6 +3934,7 @@ var render = function render() {
     }
   }, [_c("b-input", {
     attrs: {
+      name: "other_person[email]",
       placeholder: "jean.dupont@gmail.com",
       size: "is-medium",
       rounded: "",
@@ -3954,6 +3956,7 @@ var render = function render() {
     }
   }, [_c("b-input", {
     attrs: {
+      name: "other_person[first_name]",
       placeholder: "Jean",
       size: "is-medium",
       rounded: "",
@@ -3975,6 +3978,7 @@ var render = function render() {
     }
   }, [_c("b-input", {
     attrs: {
+      name: "other_person[last_name]",
       placeholder: "Dupont",
       size: "is-medium",
       rounded: "",
@@ -3996,6 +4000,7 @@ var render = function render() {
     }
   }, [_c("b-input", {
     attrs: {
+      name: "other_person[phone]",
       placeholder: "06 06 06 06 06",
       size: "is-medium",
       rounded: "",
@@ -4008,60 +4013,20 @@ var render = function render() {
       },
       expression: "otherPersonAd.phone"
     }
-  })], 1), _vm._v(" "), _c("input", {
-    attrs: {
-      type: "hidden",
-      name: "otherPersonAdEmail"
-    },
-    domProps: {
-      value: _vm.otherPersonAd.email
-    }
-  }), _vm._v(" "), _c("input", {
-    attrs: {
-      type: "hidden",
-      name: "otherPersonAdFirstName"
-    },
-    domProps: {
-      value: _vm.otherPersonAd.first_name
-    }
-  }), _vm._v(" "), _c("input", {
-    attrs: {
-      type: "hidden",
-      name: "otherPersonAdLastName"
-    },
-    domProps: {
-      value: _vm.otherPersonAd.last_name
-    }
-  }), _vm._v(" "), _c("input", {
-    attrs: {
-      type: "hidden",
-      name: "otherPersonAdPhone"
-    },
-    domProps: {
-      value: _vm.otherPersonAd.phone
-    }
-  })], 1) : _vm._e(), _vm._v(" "), _c("b-field", [_c("b-checkbox", {
+  })], 1), _vm._v(" "), _c("b-field", [_c("b-checkbox", {
     staticClass: "is-size-6",
     attrs: {
-      name: "accept_share_contact_infos",
+      name: "otherPersonAdMailOnly",
       value: "0"
     },
     model: {
-      value: _vm.isMailOnly,
+      value: _vm.otherPersonAd.mail_only,
       callback: function callback($$v) {
-        _vm.isMailOnly = $$v;
+        _vm.$set(_vm.otherPersonAd, "mail_only", $$v);
       },
-      expression: "isMailOnly"
+      expression: "otherPersonAd.mail_only"
     }
-  }, [_vm._v("\n          Je ne souhaite pas être contacté par téléphone (dans ce\n        cas,\n        je serais contacté uniquement par email)\n      ")])], 1), _vm._v(" "), _c("input", {
-    attrs: {
-      type: "hidden",
-      name: "isMailOnly"
-    },
-    domProps: {
-      value: _vm.isMailOnly
-    }
-  }), _vm._v(" "), _c("h3", {
+  }, [_vm._v("\n          Je ne souhaite pas être contacté par téléphone (dans ce\n          cas,\n          je serais contacté uniquement par email)\n        ")])], 1)], 1) : _vm._e(), _vm._v(" "), _c("h3", {
     staticClass: "title is-4"
   }, [_vm._v("Mon projet")]), _vm._v(" "), _c("p", {
     directives: [{
@@ -4101,7 +4066,7 @@ var render = function render() {
     on: {
       click: _vm.setAdType
     }
-  }, [_vm._v("Etape suivante")])], 1)], 1), _vm._v(" "), _c("div", {
+  }, [_vm._v("Etape suivante")])], 1)]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
