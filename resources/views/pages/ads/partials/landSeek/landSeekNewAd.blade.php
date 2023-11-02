@@ -177,7 +177,7 @@
             </section>
 
             <section class="is-flex gap-x-5 mb-6 is-flex-wrap-wrap field" ref="installationTypeId">
-                {!! Form::label('land_seek[installation_type_id]', "Vous vous installez*", ['class' => 'label w-100']) !!}
+                {!! Form::label('land_seek[installation_type_id]', "Vous vous installez *", ['class' => 'label w-100']) !!}
                 @foreach($installationTypes as $i => $installationType)
                     <div>
                         {!! Form::radio('land_seek[installation_type_id]', $installationType["id"], null, ['id' => 'installation_type_id_'.$installationType["id"], 'v-model' => 'formInput.installationTypeId']) !!}

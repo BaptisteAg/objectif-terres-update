@@ -144,6 +144,18 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         $ad->fill($data);
         $ad->save();
 
+        if (isset($data['is_other_person']) && $data['is_other_person'] === 1) {
+            $thirdPartyAdUser = $ad->thirdPartyAdUser;
+            if (!$thirdPartyAdUser) {
+                $thirdPartyAdUser = $ad->thirdPartyAdUser()->create([]);
+            }
+            $thirdPartyAdUser->fill($data['other_person']);
+            $thirdPartyAdUser->save();
+        } else {
+            $ad->thirdPartyAdUser()->delete();
+        }
+
+
         // If department is not set, we set it to the first city's department
         if (empty($data["department_id"]) && !empty($data["locationable"]["cities"])) {
             $cityId = $data["locationable"]["cities"][0];
@@ -189,7 +201,6 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         }
 
         $ad->refresh();
-
     }
 
     /**

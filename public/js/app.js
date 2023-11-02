@@ -2205,25 +2205,19 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         });
       }
       if (this.otherPersonAd.value) {
+        var emailRegex = /^[\w-]+(.[\w-]+)*@([\w-]+.)+[a-zA-Z]{2,7}$/;
+        if (!emailRegex.test(this.otherPersonAd.email)) {
+          this.errors.email = "L'email n'est pas valide.";
+        }
         if (!this.otherPersonAd.first_name) {
           this.errors.firstName = 'Le prénom est requis.';
         }
         if (!this.otherPersonAd.last_name) {
           this.errors.lastName = 'Le nom est requis.';
         }
-        if (!this.otherPersonAd.phone) {
-          this.errors.phone = 'Le téléphone est requis.';
+        if (!this.currentAdType) {
+          this.errors.adType = "Le type d'annonce n'est pas défini.";
         }
-        var emailRegex = /^[\w-]+(.[\w-]+)*@([\w-]+.)+[a-zA-Z]{2,7}$/;
-        if (!emailRegex.test(this.otherPersonAd.email)) {
-          this.errors.email = "L'email n'est pas valide.";
-        }
-      }
-      if (!this.currentAdType) {
-        this.errors.adType = "Le type d'annonce n'est pas défini.";
-      }
-      if (!this.isCertified) {
-        return false;
       }
       return Object.values(this.errors).every(function (error) {
         return !error;
@@ -102599,10 +102593,10 @@ vue__WEBPACK_IMPORTED_MODULE_6___default.a.component('new-ad', {
       }
     },
     enabledFormHasErrors: function enabledFormHasErrors() {
-      console.log('enabledFormHasErrors');
-      var ouiiii = this.enabledForm && this.enabledForm.$v.$error;
-      console.log('ouiiii', ouiiii);
-      return ouiiii;
+      //console.log('enabledFormHasErrors')
+      var hasErrors = this.enabledForm && this.enabledForm.$v.$error;
+      //console.log('hasErrors', hasErrors)
+      return hasErrors;
     },
     setEnabledForm: function setEnabledForm(form) {
       this.enabledForm = form;
@@ -102621,7 +102615,7 @@ vue__WEBPACK_IMPORTED_MODULE_6___default.a.component('new-ad', {
       this.formAction = this.getPublishAction();
     },
     getPublishAction: function getPublishAction() {
-      return this.isSupportRequest ? '/accompagnement/creer' : '/annonces/creer';
+      return this.isSupportRequest ? '/accompagnement/creer' : '/annonces/preview';
     },
     getSaveAction: function getSaveAction() {
       return this.isSupportRequest ? '/accompagnement/sauvegarder' : '/annonces/sauvegarder';
@@ -104001,8 +103995,8 @@ function noIframe() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /shared/httpd/objectif-terres/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /shared/httpd/objectif-terres/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\objectif-terres\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\objectif-terres\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

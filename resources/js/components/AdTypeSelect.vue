@@ -36,17 +36,20 @@
         </b-field>
         <b-field class="w-50 is-size-6" label="Prénom" :type="errors.firstName ? 'is-danger' : ''"
                  :message="errors.firstName">
-          <b-input name="other_person[first_name]" placeholder="Jean" size="is-medium" rounded type="text" v-model="otherPersonAd.first_name"
+          <b-input name="other_person[first_name]" placeholder="Jean" size="is-medium" rounded type="text"
+                   v-model="otherPersonAd.first_name"
           ></b-input>
         </b-field>
         <b-field class="w-50 is-size-6" label="Nom" :type="errors.lastName ? 'is-danger' : ''"
                  :message="errors.lastName">
-          <b-input name="other_person[last_name]" placeholder="Dupont" size="is-medium" rounded type="text" v-model="otherPersonAd.last_name"
+          <b-input name="other_person[last_name]" placeholder="Dupont" size="is-medium" rounded type="text"
+                   v-model="otherPersonAd.last_name"
           ></b-input>
         </b-field>
         <b-field class="w-50 is-size-6" label="Téléphone" :type="errors.phone ? 'is-danger' : ''"
                  :message="errors.phone">
-          <b-input name="other_person[phone]" placeholder="06 06 06 06 06" size="is-medium" rounded type="text" v-model="otherPersonAd.phone"
+          <b-input name="other_person[phone]" placeholder="06 06 06 06 06" size="is-medium" rounded type="text"
+                   v-model="otherPersonAd.phone"
           ></b-input>
         </b-field>
 
@@ -181,28 +184,19 @@ export default {
       }
 
       if (this.otherPersonAd.value) {
+        let emailRegex = /^[\w-]+(.[\w-]+)*@([\w-]+.)+[a-zA-Z]{2,7}$/;
+        if (!emailRegex.test(this.otherPersonAd.email)) {
+          this.errors.email = "L'email n'est pas valide.";
+        }
         if (!this.otherPersonAd.first_name) {
           this.errors.firstName = 'Le prénom est requis.';
         }
         if (!this.otherPersonAd.last_name) {
           this.errors.lastName = 'Le nom est requis.';
         }
-        if (!this.otherPersonAd.phone) {
-          this.errors.phone = 'Le téléphone est requis.';
+        if (!this.currentAdType) {
+          this.errors.adType = "Le type d'annonce n'est pas défini.";
         }
-
-        let emailRegex = /^[\w-]+(.[\w-]+)*@([\w-]+.)+[a-zA-Z]{2,7}$/;
-        if (!emailRegex.test(this.otherPersonAd.email)) {
-          this.errors.email = "L'email n'est pas valide.";
-        }
-      }
-
-      if (!this.currentAdType) {
-        this.errors.adType = "Le type d'annonce n'est pas défini.";
-      }
-
-      if (!this.isCertified) {
-        return false;
       }
 
       return Object.values(this.errors).every(error => !error);
