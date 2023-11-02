@@ -29,6 +29,13 @@ class AdRequest extends FormRequest
     {
         $rules = [
             'ad_type' => "required",
+
+            'is_other_person' => 'required|boolean',
+            'other_person[email]'=> 'required_if:is_other_person,1|email',
+            'other_person[first_name]'=> 'required_if:is_other_person,1|string',
+            'other_person[last_name]'=> 'required_if:is_other_person,1|string',
+            'other_person[phone]'=> 'nullable|string',
+
             'id' => ["nullable", "numeric"],
             'department_id' => ["required", "numeric"],
 

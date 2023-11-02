@@ -10,7 +10,8 @@
       <div :class="errors.check ? 'field-error mt-2 pt-2' : 'mt-2 pt-2'">
         <b-field :type="errors.check ? 'is-danger' : ''" :message="errors.check"
                  class="is-flex is-flex-direction-column">
-          <b-checkbox v-model="isCertified" name="has_certified" class="has-text-weight-bold is-size-6">Je certifie que mon annonce
+          <b-checkbox v-model="isCertified" name="has_certified" class="has-text-weight-bold is-size-6">Je certifie que
+            mon annonce
             concerne
             un
             projet agricole professionnel sur des productions principales nourricières <a
@@ -24,44 +25,39 @@
 
       <h3 class="title is-4">Je dépose cette annonce</h3>
       <div class="block">
-        <b-radio v-model="otherPersonAd.value" name="false" :native-value="false">En mon nom</b-radio>
-        <b-radio v-model="otherPersonAd.value" name="true" :native-value="true">Pour une autre personne</b-radio>
+        <b-radio v-model="otherPersonAd.value" name="is_other_person" native-value="0">En mon nom</b-radio>
+        <b-radio v-model="otherPersonAd.value" name="is_other_person" native-value="1">Pour une autre personne</b-radio>
       </div>
 
       <div class="pb-4 is-flex is-flex-wrap-wrap is-justify-content-space-between" v-if="otherPersonAd.value">
         <b-field class="w-50 is-size-6" label="Email" :type="errors.email ? 'is-danger' : ''" :message="errors.email">
-          <b-input placeholder="jean.dupont@gmail.com" size="is-medium" rounded type="email"
+          <b-input name="other_person[email]" placeholder="jean.dupont@gmail.com" size="is-medium" rounded type="email"
                    v-model="otherPersonAd.email"></b-input>
         </b-field>
         <b-field class="w-50 is-size-6" label="Prénom" :type="errors.firstName ? 'is-danger' : ''"
                  :message="errors.firstName">
-          <b-input placeholder="Jean" size="is-medium" rounded type="text" v-model="otherPersonAd.first_name"
-                   ></b-input>
+          <b-input name="other_person[first_name]" placeholder="Jean" size="is-medium" rounded type="text" v-model="otherPersonAd.first_name"
+          ></b-input>
         </b-field>
         <b-field class="w-50 is-size-6" label="Nom" :type="errors.lastName ? 'is-danger' : ''"
                  :message="errors.lastName">
-          <b-input placeholder="Dupont" size="is-medium" rounded type="text" v-model="otherPersonAd.last_name"
-                   ></b-input>
+          <b-input name="other_person[last_name]" placeholder="Dupont" size="is-medium" rounded type="text" v-model="otherPersonAd.last_name"
+          ></b-input>
         </b-field>
         <b-field class="w-50 is-size-6" label="Téléphone" :type="errors.phone ? 'is-danger' : ''"
                  :message="errors.phone">
-          <b-input placeholder="06 06 06 06 06" size="is-medium" rounded type="text" v-model="otherPersonAd.phone"
-                   ></b-input>
+          <b-input name="other_person[phone]" placeholder="06 06 06 06 06" size="is-medium" rounded type="text" v-model="otherPersonAd.phone"
+          ></b-input>
         </b-field>
-        <input type="hidden" name="otherPersonAdEmail" :value="otherPersonAd.email">
-        <input type="hidden" name="otherPersonAdFirstName" :value="otherPersonAd.first_name">
-        <input type="hidden" name="otherPersonAdLastName" :value="otherPersonAd.last_name">
-        <input type="hidden" name="otherPersonAdPhone" :value="otherPersonAd.phone">
-      </div>
 
-      <b-field>
-        <b-checkbox name="accept_share_contact_infos" v-model="isMailOnly" class="is-size-6" value="0">
+        <b-field>
+          <b-checkbox name="otherPersonAdMailOnly" v-model="otherPersonAd.mail_only" class="is-size-6" value="0">
             Je ne souhaite pas être contacté par téléphone (dans ce
-          cas,
-          je serais contacté uniquement par email)
-        </b-checkbox>
-      </b-field>
-      <input type="hidden" name="isMailOnly" :value="isMailOnly">
+            cas,
+            je serais contacté uniquement par email)
+          </b-checkbox>
+        </b-field>
+      </div>
 
       <h3 class="title is-4">Mon projet</h3>
       <p class="pb-4 has-text-danger" v-show="errors.adType">Le type d'annonce n'est pas défini.</p>
@@ -125,17 +121,18 @@ export default {
         firstName: '',
         lastName: '',
         phone: '',
+        mail_only: '',
         adType: '',
       },
       otherPersonAd: {
-        value: old.is_for_other || false,
+        value: old.is_for_other || 0,
         first_name: old.other_person_first_name || "",
         last_name: old.other_person_last_name || "",
         email: old.other_person_email || "",
         phone: old.other_person_phone || "",
+        mail_only: old.other_person_mail_only || false,
       },
-      isMailOnly: old.is_mail_only || false,
-      isCertified: old.has_certified || false,
+      isCertified: false,
       currentAdType: this.value
     }
   },
