@@ -73,7 +73,7 @@
             <section class="mb-6 field" ref="productionGenres">
                 {!! Form::label('job_seek[production_genres][]', 'Production agricole principale envisagée *', ['class' => 'label']); !!}
                 <?php
-                $params = [
+                $productionGenresParams = [
                     'name' => 'job_seek[production_genres][]',
                     'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.productionGenres',
@@ -81,12 +81,20 @@
                     'isUnique' => true,
                 ];
                 ?>
-                @include('pages.ads.partials.inputs.production_genres', $params)
+                @include('pages.ads.partials.inputs.production_genres', $productionGenresParams)
             </section>
 
-            <section class="mb-6 field" ref="productionTypeAdd">
+            <section class="mb-6 field" ref="secondaryProductionGenres">
                 {!! Form::label('job_seek[secondary_production_genres][]', 'Production agricole secondaire envisagée *', ['class' => 'label']); !!}
-                @include('pages.ads.partials.inputs.production_genres', ['name' => 'job_seek[secondary_production_genres][]', 'productionGenres' => $productionGenres, 'vModel' => 'formInput.secondProductionGenres'])
+                <?php
+                $secondaryProductionGenresParams = [
+                    'name' => 'job_seek[secondary_production_genres][]',
+                    'productionGenres' => $productionGenres,
+                    'vModel' => 'formInput.secondaryProductionGenres',
+                    'isRequired' => true,
+                ];
+                ?>
+                @include('pages.ads.partials.inputs.production_genres', $secondaryProductionGenresParams)
             </section>
 
         </tab-content>
@@ -141,7 +149,7 @@
                 @include('pages.ads.partials.inputs.documents')
             </section>
 
-            <section>
+            <section class="field" ref="chartConfirmation">
                 @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'job_seek'])
             </section>
         </tab-content>

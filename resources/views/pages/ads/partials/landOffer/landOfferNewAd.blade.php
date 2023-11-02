@@ -57,9 +57,10 @@
             <section class="field mb-6">
                 <b-tooltip class="w-100"
                            label="Il est nécessaire que nous ayons les informations sur votre bien, à l'échelle de la commune mais l'annonce ne l'affichera pas si vous souhaitez rester plus général sur l'emplacement du foncier. Seul le département apparaitra.">
-                    {!! Form::label('land_offer[accept_use_zip_code]', 'Confidentialité', [
-                                    'class' => 'label',
-                                ]); !!}
+                    <div class="label">
+                        {!! Form::label('land_offer[accept_use_zip_code]', 'Confidentialité'); !!}
+                        <i class="fas fa-info-circle has-text-info"></i>
+                    </div>
                     <b-checkbox name="land_offer[accept_use_zip_code]"
                                 class="is-size-6" {{($old["land_offer"]["accept_use_zip_code"] ?? null) == 1 ? 'checked' : ''}}>
                         Je ne souhaite pas que la localisation soit publique.
@@ -70,9 +71,10 @@
             <section class="field mb-6" ref="surface">
                 <b-tooltip class="w-100"
                            label="Il est nécessaire que nous ayons les informations sur votre bien, à l'échelle de la commune mais l'annonce ne l'affichera pas si vous souhaitez rester plus général sur l'emplacement du foncier. Seul le département apparaitra.">
-                    {!! Form::label('land_offer[surface]', 'Surface du foncier agricole*', [
-                                    'class' => 'label',
-                                ]); !!}
+                    <div class="label">
+                        {!! Form::label('land_offer[surface]', 'Surface du foncier agricole *'); !!}
+                        <i class="fas fa-info-circle has-text-info"></i>
+                    </div>
                     <b-field>
                         <b-input name="land_offer[surface]" v-model="formInput.surface" placeholder="1ha = 10 000m²"
                         ></b-input>
@@ -98,10 +100,10 @@
             <section class="field mb-6" ref="altitude">
                 <b-tooltip class="w-100"
                            label="Important pour savoir si votre terrain convient à certains projets agricoles">
-
-                    {!! Form::label('land_offer[altitude]', 'Altitude', [
-                                    'class' => 'label',
-                                ]); !!}
+                    <div class="label">
+                        {!! Form::label('land_offer[altitude]', 'Altitude'); !!}
+                        <i class="fas fa-info-circle has-text-info"></i>
+                    </div>
                     <b-field>
                         <b-input name="land_offer[altitude]" v-model="formInput.altitude"
                         ></b-input>
@@ -126,9 +128,10 @@
                            label="Décrivez la répartition de la Surface Agricole Utile (SAU) : terres arables (qui peuvent être labourées ou cultivées),
                                    surfaces toujours en herbe (prairies naturelles),
                                    cultures pérennes (vignes, vergers)">
-                    {!! Form::label('land_offer[altitude]', 'Description du foncier agricole', [
-                                        'class' => 'label',
-                                    ]); !!}
+                    <div class="label">
+                        {!! Form::label('land_offer[altitude]', 'Description du foncier agricole'); !!}
+                        <i class="fas fa-info-circle has-text-info"></i>
+                    </div>
                     <text-area-counter
                             name="land_offer[sau_description]"
                             :max-length="1000"
@@ -141,7 +144,7 @@
             </section>
 
             <section class="mb-6 is-flex gap-x-5 field is-flex-wrap-wrap" ref="waterAccess">
-                {!! Form::label('land_offer[water_access]', "Accès à l'eau existant*", ['class' => 'label w-100']) !!}
+                {!! Form::label('land_offer[water_access]', "Accès à l'eau existant *", ['class' => 'label w-100']) !!}
                 <div>
                     {!! Form::radio('land_offer[water_access]', '1', null , ['id' => 'land_offer[water_access]_1', 'v-model' => 'formInput.waterAccess'] ) !!}
                     {!! Form::label('land_offer[water_access]_1',  'Oui' ) !!}
@@ -176,7 +179,7 @@
             </section>
 
             <section class="mb-6 is-flex gap-x-5 field is-flex-wrap-wrap" ref="hasBuildings">
-                {!! Form::label('land_offer[has_buildings]', "Présence de bâtiment(s) agricole(s)*", ['class' => 'label w-100']) !!}
+                {!! Form::label('land_offer[has_buildings]', "Présence de bâtiment(s) agricole(s) *", ['class' => 'label w-100']) !!}
                 <div>
                     {!! Form::radio('land_offer[has_buildings]', '1', null , ['id' => 'land_offer[has_buildings]_1', 'v-model' => 'formInput.hasBuildings', ':vuelidate' => '$v.formInput.hasBuildings'] ) !!}
                     {!! Form::label('land_offer[has_buildings]_1',  'Oui' ) !!}
@@ -206,7 +209,7 @@
             </section>
 
             <section class="mb-6 is-flex gap-x-5 field is-flex-wrap-wrap" ref="hasHouses">
-                {!! Form::label('land_offer[has_houses]', "Présence d'habitation(s)*", ['class' => 'label w-100']) !!}
+                {!! Form::label('land_offer[has_houses]', "Présence d'habitation(s) *", ['class' => 'label w-100']) !!}
                 <div>
                     {!! Form::radio('land_offer[has_houses]', '1', null , ['id' => 'land_offer[has_houses]_1', 'v-model' => 'formInput.hasHouses', ':vuelidate' => '$v.formInput.hasHouses'] ) !!}
                     {!! Form::label('land_offer[has_houses]_1',  'Oui' ) !!}
@@ -237,7 +240,7 @@
         </tab-content>
         <tab-content title="Potentiel agricole">
             <section class="mb-6 field" ref="productionGenres">
-                {!! Form::label('land_offer[production_genres][]', 'Production agricole principale envisagée*', ['class' => 'label']); !!}
+                {!! Form::label('land_offer[production_genres][]', 'Production agricole principale envisagée *', ['class' => 'label']); !!}
                 <?php
                 $params = [
                     'name' => 'land_offer[production_genres][]',
@@ -256,7 +259,7 @@
             </section>
 
             <section class="mb-6 field" ref="bioCertifications">
-                {!! Form::label('land_offer[bio_certifications][]', 'Certification des terres*', ['class' => 'label']); !!}
+                {!! Form::label('land_offer[bio_certifications][]', 'Certification des terres *', ['class' => 'label']); !!}
                 <multi-select
                         :options="{{json_encode($bioCertifications)}}"
                         group-values="children"
@@ -368,7 +371,7 @@
                 @include('pages.ads.partials.inputs.documents')
             </section>
 
-            <section>
+            <section class="field" ref="chartConfirmation">
                 @include('pages.ads.partials.inputs.chart-confirmation', ['inputNamePrefix' => 'land_seek'])
             </section>
         </tab-content>
