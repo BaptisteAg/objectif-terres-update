@@ -17,4 +17,5 @@ class ThirdPartyAdUser extends Model
     {
         return $this->hasMany(Ad::class);
     }
+
 }
