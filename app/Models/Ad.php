@@ -110,6 +110,7 @@ class Ad extends Model implements HasPresenter
         HasMorphedByManyEvents,
         HasRelationshipObservables;
 
+    public mixed $thirdPartyAdUser;
     private $cached_type = null;
 
     /**
@@ -130,6 +131,7 @@ class Ad extends Model implements HasPresenter
         'created_at',
         'origin',
         'department_id',
+        'third_party_ad_user_id'
     ];
 
     // Detect the type based on the presence of the foreign key
@@ -352,5 +354,10 @@ class Ad extends Model implements HasPresenter
                 $this->attributionAd->userModerator &&
                 $this->attributionAd->userModerator->id === auth()->id()
             ) || auth()->user()->role >= 4;
+    }
+
+    public function thirdPartyAdUser()
+    {
+        return $this->belongsTo(ThirdPartyAdUser::class);
     }
 }
