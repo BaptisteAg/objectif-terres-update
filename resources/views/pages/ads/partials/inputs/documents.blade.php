@@ -5,7 +5,7 @@
            label="{{$tooltip}}.">
     <label class="label is-inline-block"
            for="documents">
-        Documents
+        Photos
         <i class="fas fa-info-circle has-text-info"></i><br>
         <span style="font-weight:normal">
             @if(!$isSupportRequest)

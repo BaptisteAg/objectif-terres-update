@@ -120,9 +120,8 @@ export default Vue.extend({
                     maxLength: maxLength(1500),
                 },
                 chartConfirmation: {
-                    checked(v) {
-                        return !!v
-                    }
+                    required,
+                    isTrue: value => value === true
                 },
                 ...extraValidations
             }
