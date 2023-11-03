@@ -110,7 +110,6 @@ class Ad extends Model implements HasPresenter
         HasMorphedByManyEvents,
         HasRelationshipObservables;
 
-    public mixed $thirdPartyAdUser;
     private $cached_type = null;
 
     /**
@@ -356,7 +355,7 @@ class Ad extends Model implements HasPresenter
             ) || auth()->user()->role >= 4;
     }
 
-    public function thirdPartyAdUser()
+    public function thirdPartyAdUser(): BelongsTo
     {
         return $this->belongsTo(ThirdPartyAdUser::class);
     }

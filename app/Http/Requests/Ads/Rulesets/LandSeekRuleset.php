@@ -20,7 +20,6 @@ class LandSeekRuleset implements RulesetInterface
         }
 
         return array_merge([
-            'land_seek.locationable' => [new HasZone, 'nullable'],
 
             'land_seek.installation_type_id' => ['required', 'integer'],
             'land_seek.surface_range_min' => ['nullable', 'integer'],

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ThirdPartyAdUser extends Model
 {
@@ -13,7 +14,7 @@ class ThirdPartyAdUser extends Model
         'phone',
     ];
 
-    public function ads()
+    public function ads(): HasMany
     {
         return $this->hasMany(Ad::class);
     }

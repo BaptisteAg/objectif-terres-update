@@ -218,10 +218,6 @@
             @if($ad->landOfferAd->has_houses)
                 <p>
                     {{$ad->landOfferAd->house->description ?? "Non renseignée"}}
-                    @if($isSupportRequest)
-                        , surface totale
-                        : {{empty($ad->landOfferAd->house->surface) ? "Non renseignée" : $ad->landOfferAd->house->surface.'m²'}}
-                    @endif
                 </p>
                 <p>Type de cession :
                     @if($ad->landOfferAd->house->offerGenres->count() > 0 )
@@ -243,10 +239,6 @@
             <h3 class="title is-4">Présence de bâtiments agricoles</h3>
             @if($ad->landOfferAd->has_buildings)
                 <p>{{$ad->landOfferAd->building->description ?? "Non renseignée"}}</p>
-                @if($isSupportRequest)
-                    , surface totale
-                    : {{empty($ad->landOfferAd->building->surface) ? "Non renseignée" : $ad->landOfferAd->building->surface.'m²'}}
-                @endif
             @else
                 <p>Sans bâtiment agricole</p>
             @endif

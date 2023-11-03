@@ -10,49 +10,12 @@
 
         <tab-content title="Terres proposées">
 
-            <section class="mb-6 field" ref="selectedDepartments">
-                <label class="label">Département de référence *</label>
-                <autocomplete
-                        name="department_id"
-                        id="department_id"
-                        autocomplete="off"
-                        src="/locations/departments"
-                        placeholder="Saisissez au moins 2 caractères pour faire apparaître la liste"
-                        v-model="formInput.selectedDepartments"
-                        :vuelidate="$v.formInput.selectedDepartments"
-                >
-                    <template v-for="(zone, i) in formInput.selectedDepartments">
-                        <input
-                                key="zone.id"
-                                autocomplete="off"
-                                type="hidden"
-                                name="department_id"
-                                :value="zone.value.id"
-                        >
-                        <div
-                                key="zone.label"
-                                class="tag autocomplete-input-tag is-info"
-                                @click="_ => formInput.selectedDepartments.splice(i, 1)"
-                        >
-                            @{{ zone.label }}
-                            <i class="fa fa-trash" style="cursor:pointer; margin-left: 0.5em;"></i>
-                        </div>
-                    </template>
-                </autocomplete>
-            </section>
+            @include('pages.ads.partials.inputs.main_department')
 
-            <section class="mb-6">
-                <b-tooltip class="w-100 field" ref="selectedZones"
-                           label="Si votre bien se situe sur plusieurs communes, merci de nous les indiquées">
-                    <zone-select
-                            name="locationable"
-                            label="Autre localisation *"
-                            json-name="selected_zones"
-                            :vuelidate="$v.formInput.selectedZones"
-                            v-model="formInput.selectedZones">
-                    </zone-select>
-                </b-tooltip>
-            </section>
+            @include('pages.ads.partials.inputs.other_locations', [
+                'label' => 'Communes concernées*',
+                'tooltip' => 'Si votre bien se situe sur plusieurs communes, merci de nous les indiquer'
+            ])
 
             <section class="field mb-6">
                 <b-tooltip class="w-100"

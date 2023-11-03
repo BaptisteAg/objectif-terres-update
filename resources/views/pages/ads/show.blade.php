@@ -41,6 +41,13 @@
                 <div class="column">
                     @if($ad->canEdit())
                         <div class="buttons has-addons is-right">
+                            @if($ad->is_draft === 0 && !isset($ad->attributionAd))
+                                <b-button
+                                        href="{{ route('ads.request-publishing', ["id" => $ad->id]) }}"
+                                        tag="a" icon-left="check"
+                                        rounded>Soumettre
+                                </b-button>
+                            @endif
                             <b-button
                                     href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ["id" => $ad->id]) }}"
                                     tag="a" icon-left="pencil" rounded>Modifier

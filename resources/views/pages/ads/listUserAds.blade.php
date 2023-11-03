@@ -107,6 +107,17 @@
 
                                     <p class="ad-admin button__wrap button__wrap_right">
 
+                                        @if($ad->is_draft === 0 && !isset($ad->attributionAd))
+                                            <a href="{{route("ads.request-publishing", $ad->id)}}">
+                                                <button class="button basic  small success mr-20">
+                                                    <span class="icon is-small">
+                                                        <i class="fas fa-check text_white"></i>
+                                                    </span>
+                                                    <span>Soumettre</span>
+                                                </button>
+                                            </a>
+                                        @endif
+
                                         <a href="{{route("ads.show", $ad->id)}}">
                                             <button class="button basic  small success mr-20">
                                                 <span class="icon is-small">
