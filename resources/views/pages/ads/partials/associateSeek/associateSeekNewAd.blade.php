@@ -40,9 +40,51 @@
                 @include('pages.ads.partials.inputs.production_genres', $secondaryProductionGenresParams)
             </section>
 
+            <b-field>
+                <b-checkbox name="associate_seek[is_land_already_found]" v-model="formInput.is_land_already_found" class="is-size-6">
+                    Avez-vous déjà trouvé un lieu et des terres agricoles ?
+                </b-checkbox>
+            </b-field>
+
+            <section class="mb-6 field" v-if="formInput.is_land_already_found">
+                <label class="label is-inline-block"
+                       for="associate_seek[land_description]">
+                    Pouvez-vous décrire le lieu et les terres ?
+                </label>
+
+                <text-area-counter
+                        name="associate_seek[land_description]"
+                        :max-length="1500"
+                        v-model="formInput.land_description">
+                </text-area-counter>
+            </section>
+
+            <section class="mb-6 field" ref="aboutProject">
+                @include('pages.ads.partials.inputs.about_project_content', ['title' => 'Et si vous nous en disiez un peu plus sur votre projet ?', 'tooltip' => ''])
+            </section>
+
+
         </tab-content>
 
         <tab-content title="Votre parcours">
+
+            <section class="mb-6 field">
+                <b-tooltip class="w-100"
+                           label="Description du type d’associé.e.s recherché.e.s (le nombre, l’expérience ou la formation recherchée) et des activités à pourvoir sur la ferme">
+                    <label class="label is-inline-block"
+                           for="associate_seek[associate_description]">
+                        Description du type d'associé.e.s recherché.e.s
+                        <i class="fas fa-info-circle has-text-info"></i>
+                    </label>
+
+                    <text-area-counter
+                            name="associate_seek[associate_description]"
+                            :max-length="1500"
+                            v-model="formInput.associate_description">
+                    </text-area-counter>
+                </b-tooltip>
+            </section>
+
             <section class="mb-6 field" ref="educationLevels">
                 {!! Form::label('associate_seek[education_levels][]', 'Niveau de formation *', ['class' => 'label']); !!}
 
@@ -63,14 +105,6 @@
                         v-model="formInput.experienceFarming"
                         :vuelidate="$v.formInput.experienceFarming">
                 </text-area-counter>
-            </section>
-
-            <section class="mb-6 field" ref="aboutProject">
-                <?php
-                $aboutFarmLabel = "Et si vous nous en disiez un peu plus sur votre projet et vos attentes ?";
-                $aboutFarmTooltip = "Que recherchez-vous plus précisement ? Cette recherche s'inscrit-elle dans une volonté d'installation à plus long terme ?";
-                ?>
-                @include('pages.ads.partials.inputs.about_project_content', ['title' => $aboutFarmLabel, 'tooltip' => $aboutFarmTooltip])
             </section>
 
             <section class="mb-6 field" ref="aboutContent">
