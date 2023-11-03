@@ -2,6 +2,7 @@ import LandSeekNewAd from './components/land-seek-new-ad'
 import LandOfferNewAd from './components/land-offer-new-ad'
 import JobOfferNewAd from './components/job-offer-new-ad'
 import JobSeekNewAd from './components/job-seek-new-ad'
+import AssociateSeekNewNad from './components/associate-seek-new-ad'
 import AdTypeSelect from '../../components/AdTypeSelect'
 import OldAdTypeSelect from '../../components/AdTypeSelect.v1.vue'
 
@@ -14,6 +15,7 @@ Vue.component('new-ad', {
         'new-land-offer-ad': LandOfferNewAd,
         'new-job-offer-ad': JobOfferNewAd,
         'new-job-seek-ad': JobSeekNewAd,
+        'new-associate-seek-ad': AssociateSeekNewNad,
         AdTypeSelect,
         OldAdTypeSelect
     },

@@ -2114,12 +2114,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     oldValues: {
@@ -2131,13 +2125,10 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     name: {
       type: String,
       required: true
-    },
-    isSupportRequest: {
-      type: Boolean,
-      required: true
     }
   },
   data: function data() {
+    var _old$third_party, _old$third_party2, _old$third_party3, _old$third_party4;
     var old = this.oldValues;
     return {
       errors: {
@@ -2146,45 +2137,42 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         firstName: '',
         lastName: '',
         phone: '',
-        mail_only: '',
         adType: ''
       },
-      otherPersonAd: {
-        value: old.is_for_other || 0,
-        first_name: old.other_person_first_name || "",
-        last_name: old.other_person_last_name || "",
-        email: old.other_person_email || "",
-        phone: old.other_person_phone || "",
-        mail_only: old.other_person_mail_only || false
+      adContactType: old.ad_contact_type || 'me',
+      thirdParty: {
+        first_name: ((_old$third_party = old.third_party) === null || _old$third_party === void 0 ? void 0 : _old$third_party.first_name) || "",
+        last_name: ((_old$third_party2 = old.third_party) === null || _old$third_party2 === void 0 ? void 0 : _old$third_party2.last_name) || "",
+        email: ((_old$third_party3 = old.third_party) === null || _old$third_party3 === void 0 ? void 0 : _old$third_party3.email) || "",
+        phone: ((_old$third_party4 = old.third_party) === null || _old$third_party4 === void 0 ? void 0 : _old$third_party4.phone) || ""
       },
-      isCertified: false,
+      accept_share_contact_infos: !!old.accept_share_contact_infos ? '1' : '0',
+      hasCertified: false,
       currentAdType: this.value
     };
   },
   computed: {
     adTypes: function adTypes() {
-      var extraAdTypes = this.isSupportRequest ? {} : {
-        job_seek: {
-          label: "Je cherche une opportunité professionnelle"
-        },
-        job_offer: {
-          label: "Je propose une opportunité professionnelle"
-        },
-        job_associate: {
-          label: "Associé pour projet d'installation"
-        }
-      };
-      return _objectSpread({
+      return {
         land_seek: {
           label: "Je cherche du foncier agricole"
         },
         land_offer: {
           label: "Je propose du foncier agricole"
         },
-        land_partner: {
-          label: "Associé sur une ferme "
+        associate_offer: {
+          label: "Associé sur une ferme"
+        },
+        job_seek: {
+          label: "Je cherche une opportunité professionnelle"
+        },
+        job_offer: {
+          label: "Je propose une opportunité professionnelle"
+        },
+        associate_seek: {
+          label: "Associé pour projet d'installation"
         }
-      }, extraAdTypes);
+      };
     }
   },
   methods: {
@@ -2197,22 +2185,22 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         phone: '',
         adType: ''
       };
-      if (!this.isCertified) {
+      if (!this.hasCertified) {
         this.errors.check = 'Vous devez certifier que votre annonce concerne un projet agricole professionnel.';
         window.scrollTo({
           top: 0,
           behavior: 'smooth'
         });
       }
-      if (this.otherPersonAd.value) {
+      if (this.adContactType === 'thirdParty') {
         var emailRegex = /^[\w-]+(.[\w-]+)*@([\w-]+.)+[a-zA-Z]{2,7}$/;
-        if (!emailRegex.test(this.otherPersonAd.email)) {
+        if (!emailRegex.test(this.thirdParty.email)) {
           this.errors.email = "L'email n'est pas valide.";
         }
-        if (!this.otherPersonAd.first_name) {
+        if (!this.thirdParty.first_name) {
           this.errors.firstName = 'Le prénom est requis.';
         }
-        if (!this.otherPersonAd.last_name) {
+        if (!this.thirdParty.last_name) {
           this.errors.lastName = 'Le nom est requis.';
         }
         if (!this.currentAdType) {
@@ -2811,11 +2799,12 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   data: function data() {
-    var _this = this;
+    var _this$options$find,
+      _this = this;
     return {
-      dropdownValue: this.isUnique ? this.options.find(function (o) {
+      dropdownValue: this.isUnique ? (_this$options$find = this.options.find(function (o) {
         return o.id === _this.value[0];
-      }) : this.options.filter(function (o) {
+      })) === null || _this$options$find === void 0 ? void 0 : _this$options$find.id : this.options.filter(function (o) {
         return _this.value.includes(o.id);
       }).map(function (o) {
         return o.id;
@@ -3218,6 +3207,10 @@ __webpack_require__.r(__webpack_exports__);
       "default": '0'
     },
     disabled: {
+      type: Boolean,
+      "default": false
+    },
+    hasTooltip: {
       type: Boolean,
       "default": false
     }
@@ -3877,11 +3870,11 @@ var render = function render() {
       name: "has_certified"
     },
     model: {
-      value: _vm.isCertified,
+      value: _vm.hasCertified,
       callback: function callback($$v) {
-        _vm.isCertified = $$v;
+        _vm.hasCertified = $$v;
       },
-      expression: "isCertified"
+      expression: "hasCertified"
     }
   }, [_vm._v("Je certifie que\n          mon annonce\n          concerne\n          un\n          projet agricole professionnel sur des productions principales nourricières "), _c("a", {
     attrs: {
@@ -3895,29 +3888,29 @@ var render = function render() {
     staticClass: "block"
   }, [_c("b-radio", {
     attrs: {
-      name: "is_other_person",
-      "native-value": "0"
+      name: "ad_contact_type",
+      "native-value": "me"
     },
     model: {
-      value: _vm.otherPersonAd.value,
+      value: _vm.adContactType,
       callback: function callback($$v) {
-        _vm.$set(_vm.otherPersonAd, "value", $$v);
+        _vm.adContactType = $$v;
       },
-      expression: "otherPersonAd.value"
+      expression: "adContactType"
     }
   }, [_vm._v("En mon nom")]), _vm._v(" "), _c("b-radio", {
     attrs: {
-      name: "is_other_person",
-      "native-value": "1"
+      name: "ad_contact_type",
+      "native-value": "thirdParty"
     },
     model: {
-      value: _vm.otherPersonAd.value,
+      value: _vm.adContactType,
       callback: function callback($$v) {
-        _vm.$set(_vm.otherPersonAd, "value", $$v);
+        _vm.adContactType = $$v;
       },
-      expression: "otherPersonAd.value"
+      expression: "adContactType"
     }
-  }, [_vm._v("Pour une autre personne")])], 1), _vm._v(" "), _vm.otherPersonAd.value ? _c("div", {
+  }, [_vm._v("Pour une autre personne")])], 1), _vm._v(" "), _vm.adContactType === "thirdParty" ? _c("div", {
     staticClass: "pb-4 is-flex is-flex-wrap-wrap is-justify-content-space-between"
   }, [_c("b-field", {
     staticClass: "w-50 is-size-6",
@@ -3928,18 +3921,18 @@ var render = function render() {
     }
   }, [_c("b-input", {
     attrs: {
-      name: "other_person[email]",
+      name: "third_party[email]",
       placeholder: "jean.dupont@gmail.com",
       size: "is-medium",
       rounded: "",
       type: "email"
     },
     model: {
-      value: _vm.otherPersonAd.email,
+      value: _vm.thirdParty.email,
       callback: function callback($$v) {
-        _vm.$set(_vm.otherPersonAd, "email", $$v);
+        _vm.$set(_vm.thirdParty, "email", $$v);
       },
-      expression: "otherPersonAd.email"
+      expression: "thirdParty.email"
     }
   })], 1), _vm._v(" "), _c("b-field", {
     staticClass: "w-50 is-size-6",
@@ -3950,18 +3943,18 @@ var render = function render() {
     }
   }, [_c("b-input", {
     attrs: {
-      name: "other_person[first_name]",
+      name: "third_party[first_name]",
       placeholder: "Jean",
       size: "is-medium",
       rounded: "",
       type: "text"
     },
     model: {
-      value: _vm.otherPersonAd.first_name,
+      value: _vm.thirdParty.first_name,
       callback: function callback($$v) {
-        _vm.$set(_vm.otherPersonAd, "first_name", $$v);
+        _vm.$set(_vm.thirdParty, "first_name", $$v);
       },
-      expression: "otherPersonAd.first_name"
+      expression: "thirdParty.first_name"
     }
   })], 1), _vm._v(" "), _c("b-field", {
     staticClass: "w-50 is-size-6",
@@ -3972,18 +3965,18 @@ var render = function render() {
     }
   }, [_c("b-input", {
     attrs: {
-      name: "other_person[last_name]",
+      name: "third_party[last_name]",
       placeholder: "Dupont",
       size: "is-medium",
       rounded: "",
       type: "text"
     },
     model: {
-      value: _vm.otherPersonAd.last_name,
+      value: _vm.thirdParty.last_name,
       callback: function callback($$v) {
-        _vm.$set(_vm.otherPersonAd, "last_name", $$v);
+        _vm.$set(_vm.thirdParty, "last_name", $$v);
       },
-      expression: "otherPersonAd.last_name"
+      expression: "thirdParty.last_name"
     }
   })], 1), _vm._v(" "), _c("b-field", {
     staticClass: "w-50 is-size-6",
@@ -3994,33 +3987,34 @@ var render = function render() {
     }
   }, [_c("b-input", {
     attrs: {
-      name: "other_person[phone]",
+      name: "third_party[phone]",
       placeholder: "06 06 06 06 06",
       size: "is-medium",
       rounded: "",
       type: "text"
     },
     model: {
-      value: _vm.otherPersonAd.phone,
+      value: _vm.thirdParty.phone,
       callback: function callback($$v) {
-        _vm.$set(_vm.otherPersonAd, "phone", $$v);
+        _vm.$set(_vm.thirdParty, "phone", $$v);
       },
-      expression: "otherPersonAd.phone"
+      expression: "thirdParty.phone"
     }
-  })], 1), _vm._v(" "), _c("b-field", [_c("b-checkbox", {
+  })], 1)], 1) : _vm._e(), _vm._v(" "), _c("b-field", [_c("b-checkbox", {
     staticClass: "is-size-6",
     attrs: {
-      name: "otherPersonAdMailOnly",
-      value: "0"
+      name: "accept_share_contact_infos",
+      "true-value": "0",
+      "false-value": "1"
     },
     model: {
-      value: _vm.otherPersonAd.mail_only,
+      value: _vm.accept_share_contact_infos,
       callback: function callback($$v) {
-        _vm.$set(_vm.otherPersonAd, "mail_only", $$v);
+        _vm.accept_share_contact_infos = $$v;
       },
-      expression: "otherPersonAd.mail_only"
+      expression: "accept_share_contact_infos"
     }
-  }, [_vm._v("\n          Je ne souhaite pas être contacté par téléphone (dans ce\n          cas,\n          je serais contacté uniquement par email)\n        ")])], 1)], 1) : _vm._e(), _vm._v(" "), _c("h3", {
+  }, [_vm._v("\n            Je ne souhaite pas être contacté par téléphone (dans ce\n            cas,\n            je serais contacté uniquement par email)\n        ")])], 1), _vm._v(" "), _c("h3", {
     staticClass: "title is-4"
   }, [_vm._v("Mon projet")]), _vm._v(" "), _c("p", {
     directives: [{
@@ -4060,7 +4054,7 @@ var render = function render() {
     on: {
       click: _vm.setAdType
     }
-  }, [_vm._v("Etape suivante")])], 1)]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Etape suivante")])], 1)], 1), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -4068,17 +4062,7 @@ var render = function render() {
       expression: "value !== ''"
     }],
     staticClass: "is-align-self-flex-start py-3"
-  }, [_vm.isSupportRequest ? _c("a", {
-    attrs: {
-      href: "#"
-    },
-    on: {
-      click: function click($event) {
-        $event.preventDefault();
-        return _vm.changeAdType();
-      }
-    }
-  }, [_vm._v("← Changer de type\n      d'accompagnement")]) : _c("a", {
+  }, [_c("a", {
     attrs: {
       href: "#"
     },
@@ -5172,9 +5156,9 @@ var render = function render() {
     attrs: {
       "for": _vm.id
     }
-  }, [_vm._v(_vm._s(_vm.label) + " "), _c("i", {
+  }, [_vm._v(_vm._s(_vm.label) + "\n          "), _vm.hasTooltip ? _c("i", {
     staticClass: "fas fa-info-circle has-text-info"
-  })]), _vm._v(" "), _c("autocomplete", {
+  }) : _vm._e()]), _vm._v(" "), _c("autocomplete", {
     attrs: {
       id: _vm.id,
       disabled: _vm.disabled,
@@ -101521,6 +101505,100 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/pages/ads/components/associate-seek-new-ad.js":
+/*!********************************************************************!*\
+  !*** ./resources/js/pages/ads/components/associate-seek-new-ad.js ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _base_validations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./base-validations */ "./resources/js/pages/ads/components/base-validations.js");
+/* harmony import */ var _mixins_form_new_ad_mixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mixins/form-new-ad-mixin */ "./resources/js/pages/ads/components/mixins/form-new-ad-mixin.js");
+/* harmony import */ var _components_TextAreaCounter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../components/TextAreaCounter */ "./resources/js/components/TextAreaCounter.vue");
+/* harmony import */ var _components_CustomCheckbox__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../components/CustomCheckbox */ "./resources/js/components/CustomCheckbox.vue");
+/* harmony import */ var _components_Autocomplete__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../components/Autocomplete */ "./resources/js/components/Autocomplete.vue");
+/* harmony import */ var _components_DocumentsUpload__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../components/DocumentsUpload */ "./resources/js/components/DocumentsUpload.vue");
+/* harmony import */ var _components_MultiSelect__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../components/MultiSelect */ "./resources/js/components/MultiSelect.vue");
+/* harmony import */ var _components_ZoneSelect__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../components/ZoneSelect */ "./resources/js/components/ZoneSelect.vue");
+/* harmony import */ var _components_ListSelect_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../components/ListSelect.vue */ "./resources/js/components/ListSelect.vue");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+
+
+
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    ZoneSelect: _components_ZoneSelect__WEBPACK_IMPORTED_MODULE_8__["default"],
+    TextAreaCounter: _components_TextAreaCounter__WEBPACK_IMPORTED_MODULE_3__["default"],
+    CustomCheckbox: _components_CustomCheckbox__WEBPACK_IMPORTED_MODULE_4__["default"],
+    Autocomplete: _components_Autocomplete__WEBPACK_IMPORTED_MODULE_5__["default"],
+    DocumentsUpload: _components_DocumentsUpload__WEBPACK_IMPORTED_MODULE_6__["default"],
+    MultiSelect: _components_MultiSelect__WEBPACK_IMPORTED_MODULE_7__["default"],
+    ListSelect: _components_ListSelect_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
+  },
+  mixins: [_mixins_form_new_ad_mixin__WEBPACK_IMPORTED_MODULE_2__["default"]],
+  props: {},
+  data: function data() {
+    var v = this.oldValues;
+    var hasOld = Object.keys(v).length && v.associate_seek;
+    return {
+      formInput: {
+        selectedDepartments: hasOld && JSON.parse(old.selected_departments) || [],
+        selectedZones: hasOld && JSON.parse(v.selected_zones) || [],
+        isLandAlreadyFound: v.is_land_already_found,
+        landDescription: hasOld && v.associate_seek.land_description || '',
+        associateDescription: hasOld && v.associate_seek.associate_description || '',
+        experienceFarming: hasOld && v.associate_seek.experience_farming || '',
+        educationLevels: hasOld && v.associate_seek.education_levels || [],
+        aboutProject: hasOld && v.about_project_content || '',
+        aboutContent: hasOld && v.about_content || '',
+        title: hasOld && v.title || '',
+        documents: hasOld && JSON.parse(v.documents) || [],
+        productionGenres: hasOld && v.production_genres || [],
+        secondaryProductionGenres: hasOld && v.secondary_production_genres || [],
+        chartConfirmation: hasOld && v.chart_confirmation || false
+      }
+    };
+  },
+  validations: function validations() {
+    return {
+      formInput: _objectSpread(_objectSpread({}, _base_validations__WEBPACK_IMPORTED_MODULE_1__["default"].formInput), {}, {
+        selectedDepartments: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+        },
+        associateDescription: {
+          minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(5),
+          maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(1500),
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+        },
+        productionGenres: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+        },
+        educationLevels: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+        }
+      })
+    };
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/pages/ads/components/base-validations.js":
 /*!***************************************************************!*\
   !*** ./resources/js/pages/ads/components/base-validations.js ***!
@@ -101568,6 +101646,12 @@ __webpack_require__.r(__webpack_exports__);
       },
       notCurrentlyUploading: function notCurrentlyUploading() {
         return !this.uploading;
+      }
+    },
+    chartConfirmation: {
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
+      isTrue: function isTrue(value) {
+        return value === true;
       }
     }
   }
@@ -102154,16 +102238,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     if (!old.land_seek) {
       old.land_seek = {};
     }
-    var extraFormInput = this.isSupportRequest ? {
-      offerGenres: old.land_seek.offer_genres || [],
-      rentMax: old.land_seek.rent_max || '0',
-      priceMax: old.land_seek.price_max || '',
-      educationLevels: old.land_seek.education_levels || [],
-      supportRequestText: old.support_request_text || '',
-      supportRequestTerritoryId: old.support_request_territory_id || ""
-    } : {};
     return {
-      formInput: _objectSpread({
+      formInput: {
         selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
         selectedZones: old.selected_zones && JSON.parse(old.selected_zones) || [],
         surfaceRangeMin: old.land_seek.surface_range_min || '0',
@@ -102173,7 +102249,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         farmsRequirement: old.land_seek && old.land_seek.buildings ? old.land_seek.buildings[2] : '',
         productionGenres: old.land_seek.production_genres || [],
         productionTypeAdd: old.land_seek.production_type_add || '',
-        isBio: old.land_seek.is_bio || undefined,
+        isBio: old.land_seek.is_bio,
         installationTypeId: old.land_seek.installation_type_id || '',
         aboutProject: old.about_project_content || '',
         // experienceFarming: v.land_seek.experience_farming || '',
@@ -102183,7 +102259,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         chartConfirmation: old.chart_confirmation || false,
         secondProductionGenres: old.land_seek.secondary_production_genres || [],
         secondProductionTypeAdd: old.land_seek.secondary_production_type_add || ''
-      }, extraFormInput)
+      }
     };
   },
   computed: {
@@ -102203,15 +102279,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   },
   methods: {},
   validations: function validations() {
-    var extraValidations = this.isSupportRequest ? {
-      offerGenres: {
-        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
-      },
-      supportRequestText: {
-        minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(10),
-        maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(400)
-      }
-    } : {};
     return {
       formInput: _objectSpread(_objectSpread({}, _base_validations__WEBPACK_IMPORTED_MODULE_1__["default"].formInput), {}, {
         selectedDepartments: {
@@ -102252,7 +102319,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
             return value === true;
           }
         }
-      }, extraValidations)
+      })
     };
   }
 }));
@@ -102490,10 +102557,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_land_offer_new_ad__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/land-offer-new-ad */ "./resources/js/pages/ads/components/land-offer-new-ad.js");
 /* harmony import */ var _components_job_offer_new_ad__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/job-offer-new-ad */ "./resources/js/pages/ads/components/job-offer-new-ad.js");
 /* harmony import */ var _components_job_seek_new_ad__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/job-seek-new-ad */ "./resources/js/pages/ads/components/job-seek-new-ad.js");
-/* harmony import */ var _components_AdTypeSelect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/AdTypeSelect */ "./resources/js/components/AdTypeSelect.vue");
-/* harmony import */ var _components_AdTypeSelect_v1_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/AdTypeSelect.v1.vue */ "./resources/js/components/AdTypeSelect.v1.vue");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _components_associate_seek_new_ad__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/associate-seek-new-ad */ "./resources/js/pages/ads/components/associate-seek-new-ad.js");
+/* harmony import */ var _components_AdTypeSelect__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/AdTypeSelect */ "./resources/js/components/AdTypeSelect.vue");
+/* harmony import */ var _components_AdTypeSelect_v1_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/AdTypeSelect.v1.vue */ "./resources/js/components/AdTypeSelect.v1.vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_7__);
 
 
 
@@ -102501,14 +102569,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_6___default.a.component('new-ad', {
+
+vue__WEBPACK_IMPORTED_MODULE_7___default.a.component('new-ad', {
   components: {
     'new-land-seek-ad': _components_land_seek_new_ad__WEBPACK_IMPORTED_MODULE_0__["default"],
     'new-land-offer-ad': _components_land_offer_new_ad__WEBPACK_IMPORTED_MODULE_1__["default"],
     'new-job-offer-ad': _components_job_offer_new_ad__WEBPACK_IMPORTED_MODULE_2__["default"],
     'new-job-seek-ad': _components_job_seek_new_ad__WEBPACK_IMPORTED_MODULE_3__["default"],
-    AdTypeSelect: _components_AdTypeSelect__WEBPACK_IMPORTED_MODULE_4__["default"],
-    OldAdTypeSelect: _components_AdTypeSelect_v1_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+    'new-associate-seek-ad': _components_associate_seek_new_ad__WEBPACK_IMPORTED_MODULE_4__["default"],
+    AdTypeSelect: _components_AdTypeSelect__WEBPACK_IMPORTED_MODULE_5__["default"],
+    OldAdTypeSelect: _components_AdTypeSelect_v1_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
   },
   props: {
     oldAdTypeSelected: String,
@@ -104000,8 +104070,8 @@ function noIframe() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\objectif-terres\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\objectif-terres\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/gael/Work/devilbox/data/www/objectif-terres/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/gael/Work/devilbox/data/www/objectif-terres/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

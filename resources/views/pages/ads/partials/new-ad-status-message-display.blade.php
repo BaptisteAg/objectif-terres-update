@@ -60,16 +60,16 @@
         @endif
     @endif
 @else
-    @if($ad->isProject())
+    @if($ad->is_draft === 1)
         <article class="message is-warning">
             <div class="message-body">
-                Votre demande d'accompagnement n'a pas encore été soumise. Cliquez sur modifier pour la finaliser.
+                Votre annonce est en mode brouillon, elle n'a pas été encore soumise à modération !
             </div>
         </article>
     @else
-        <article class="message is-warning">
+        <article class="message is-message">
             <div class="message-body">
-                Votre annonce n'a pas encore été soumise, finalisez sa création !
+                Votre annonce n'est pas encore en ligne. Vous pouvez la modifier ou la soumettre à la modération.
             </div>
         </article>
     @endif

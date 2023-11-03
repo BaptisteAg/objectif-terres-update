@@ -6,6 +6,7 @@ use App\Http\Requests\Ads\Rulesets\JobOfferRuleset;
 use App\Http\Requests\Ads\Rulesets\JobSeekRuleset;
 use App\Http\Requests\Ads\Rulesets\LandOfferRuleset;
 use App\Http\Requests\Ads\Rulesets\LandSeekRuleset;
+use App\Rules\HasZone;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AdRequest extends FormRequest
@@ -30,11 +31,11 @@ class AdRequest extends FormRequest
         $rules = [
             'ad_type' => "required",
 
-            'is_other_person' => 'required|boolean',
-            'other_person.email'=> 'required_if:is_other_person,1|email',
-            'other_person.first_name'=> 'required_if:is_other_person,1|string',
-            'other_person.last_name'=> 'required_if:is_other_person,1|string',
-            'other_person.phone'=> 'nullable|string',
+            'ad_contact_type' => 'required|string',
+            'third_party.email'=> 'required_if:ad_contact_type,thirdParty|email',
+            'third_party.first_name'=> 'required_if:ad_contact_type,thirdParty|string',
+            'third_party.last_name'=> 'required_if:ad_contact_type,thirdParty|string',
+            'third_party.phone'=> 'nullable|string',
 
             'id' => ["nullable", "numeric"],
             'department_id' => ["nullable", "numeric"],
@@ -44,6 +45,7 @@ class AdRequest extends FormRequest
             'job_offer' => ['nullable', 'array'],
             'job_seek' => ['nullable', 'array'],
 
+            'locationable' => [new HasZone, 'nullable'],
             'locationable_radius' => ['nullable', 'string'],
 
             'about_content' => ['nullable', 'string', 'max:1000'],

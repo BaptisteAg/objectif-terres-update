@@ -10,7 +10,6 @@ class JobSeekRuleset implements RulesetInterface
     {
         //dd(request()->all());
         return [
-            'locationable' => [new HasZone, 'nullable'],
             'job_seek.production_genre' => [new HasProductionGenre],
             'job_seek.production_type_add' => ['nullable', 'string'],
             'job_seek.secondary_production_genres' => [new HasProductionGenre],

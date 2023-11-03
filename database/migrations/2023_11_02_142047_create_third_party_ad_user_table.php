@@ -14,8 +14,8 @@ class CreateThirdPartyAdUserTable extends Migration
     public function up()
     {
         //first_name (required), last_name (required), email (required), phone
-        Schema::create('third_party_ad_user', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('third_party_ad_users', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');
@@ -31,6 +31,6 @@ class CreateThirdPartyAdUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('third_party_ad_user');
+        Schema::dropIfExists('third_party_ad_users');
     }
 }

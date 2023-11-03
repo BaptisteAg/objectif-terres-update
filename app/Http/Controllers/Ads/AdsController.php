@@ -34,34 +34,6 @@ class AdsController extends BaseController
     }
 
     /**
-     * Display the ad creation form
-     * @return \Illuminate\View\View
-     * @throws \Exception
-     */
-    public function createFromSupportRequest(Ad $ad)
-    {
-        $vars = $this->getEditFormVars($ad);
-
-        unset($vars["old"]["id"]);
-        $vars["isSupportRequest"] = 0;
-
-        return view('pages.ads.new', $vars);
-    }
-
-    /**
-     * Display the ad edit form
-     * @return \Illuminate\View\View
-     * @throws \Exception
-     */
-    public function edit(int $id)
-    {
-        $ad = $this->adService->find($id);
-
-        $vars = $this->getEditFormVars($ad);
-        return view('pages.ads.new', $vars);
-    }
-
-    /**
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      * @throws \Throwable
@@ -86,6 +58,19 @@ class AdsController extends BaseController
         $isPreview = true;
 
         return view('pages.ads.show', compact('ad', 'currentUser', 'isPreview'));
+    }
+
+    /**
+     * Display the ad edit form
+     * @return \Illuminate\View\View
+     * @throws \Exception
+     */
+    public function edit(int $id)
+    {
+        $ad = $this->adService->find($id);
+
+        $vars = $this->getEditFormVars($ad);
+        return view('pages.ads.new', $vars);
     }
 
     /**
@@ -170,7 +155,7 @@ class AdsController extends BaseController
         }
 
         if ($ad->is_draft !== 1) {
-            if (is_null($ad->project_id) && $ad->attributionAd->ad_status_id !== AdStatus::APPROVE_ID) {
+            if (is_null($ad->project_id) && $ad->attributionAd?->ad_status_id !== AdStatus::APPROVE_ID) {
                 if (!Auth::user()) {
                     abort(404);
                 }

@@ -397,8 +397,6 @@ class  AdService
 
 		if ($isUpdate) {
 			$ad = $this->repository->update($data["id"], $data);
-			$ad->attributionAd->ad_status_id = $data['ad_status'];
-			$ad->attributionAd->save();
 		} else {
 			$ad = $this->repository->create($data);
 		}
