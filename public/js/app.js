@@ -102619,21 +102619,6 @@ vue__WEBPACK_IMPORTED_MODULE_7___default.a.component('new-ad', {
         });
       });
     });
-
-    /**
-     * TODO: remove ?
-     * Move wizard footer to a container it can stick to ( position:sticky )
-     *
-     * @param {Element} $affix
-     */
-    document.querySelectorAll('.affix-wizard-footer[data-move-to-ref]').forEach(function ($affix) {
-      var _this$$refs$$affix$da;
-      var $container = (_this$$refs$$affix$da = _this.$refs[$affix.dataset.moveToRef]) === null || _this$$refs$$affix$da === void 0 ? void 0 : _this$$refs$$affix$da.$el;
-      if ($container) {
-        var $removedAffix = $affix.parentElement.removeChild($affix);
-        $container.appendChild($removedAffix);
-      }
-    });
   },
   watch: {
     createFromSupportRequest: function createFromSupportRequest(id) {
@@ -102646,18 +102631,12 @@ vue__WEBPACK_IMPORTED_MODULE_7___default.a.component('new-ad', {
   methods: {
     submit: function submit(e) {
       e.preventDefault();
-      console.log('before $v.$touch');
       this.enabledForm.$v.$touch();
-      console.log('after $v.$touch');
       if (this.enabledFormHasErrors()) {
-        console.log('before focusOnFirstError');
         this.enabledForm.focusOnFirstError();
-        console.log('after focusOnFirstError');
         this.enabledForm.setInputsBorderColor();
-        console.log('after setInputsBorderColor');
         this.isSubmitting = false;
       } else {
-        console.log('before confirm');
         var text = 'Vous êtes sur le point de demander la publication de votre annonce. Elle sera traitée sous 7 jours par un modérateur.';
         if (this.formAction === this.publishAction && !confirm(text)) {
           this.isSubmitting = false;
@@ -102668,9 +102647,7 @@ vue__WEBPACK_IMPORTED_MODULE_7___default.a.component('new-ad', {
       }
     },
     enabledFormHasErrors: function enabledFormHasErrors() {
-      //console.log('enabledFormHasErrors')
       var hasErrors = this.enabledForm && this.enabledForm.$v.$error;
-      //console.log('hasErrors', hasErrors)
       return hasErrors;
     },
     setEnabledForm: function setEnabledForm(form) {
@@ -104070,8 +104047,8 @@ function noIframe() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/gael/Work/devilbox/data/www/objectif-terres/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/gael/Work/devilbox/data/www/objectif-terres/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\objectif-terres\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\objectif-terres\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

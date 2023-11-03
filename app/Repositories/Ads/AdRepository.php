@@ -1174,6 +1174,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             'jobSeekAd' => [
                 'jobSeekAd',
             ],
+            'associationSeekAd' => [
+                'associationSeekAd',
+            ],
         };
     }
 
