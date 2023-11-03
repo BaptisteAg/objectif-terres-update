@@ -44,6 +44,10 @@ export default {
             notCurrentlyUploading() {
                 return !this.uploading;
             }
+        },
+        chartConfirmation: {
+            required,
+            isTrue: value => value === true
         }
     }
 }

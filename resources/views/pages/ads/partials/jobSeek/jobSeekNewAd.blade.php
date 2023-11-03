@@ -10,43 +10,14 @@
 
         <tab-content title="Expérience recherchée">
 
-            <section class="mb-6 field" ref="selectedDepartments">
-                <label class="label">Département de référence *</label>
-                <autocomplete
-                        name="department_id"
-                        id="department_id"
-                        autocomplete="off"
-                        src="/locations/departments"
-                        placeholder="Saisissez au moins 2 caractères pour faire apparaître la liste"
-                        v-model="formInput.selectedDepartments"
-                        :vuelidate="$v.formInput.selectedDepartments"
-                >
-                    <template v-for="(zone, i) in formInput.selectedDepartments">
-                        <input
-                                key="zone.id"
-                                autocomplete="off"
-                                type="hidden"
-                                name="department_id"
-                                :value="zone.value.id"
-                        >
-                        <div
-                                key="zone.label"
-                                class="tag autocomplete-input-tag is-info"
-                                @click="_ => formInput.selectedDepartments.splice(i, 1)"
-                        >
-                            @{{ zone.label }}
-                            <i class="fa fa-trash" style="cursor:pointer; margin-left: 0.5em;"></i>
-                        </div>
-                    </template>
-                </autocomplete>
-            </section>
+            @include('pages.ads.partials.inputs.main_department')
 
             <section class="field mb-6">
                 <b-tooltip class="w-100"
                            label="Si vous souhaitez préciser la localisation de votre recherche, saisissez les 2 premiers chiffres du code postal">
                     <zone-select
                             name="locationable"
-                            label="Autre localisation"
+                            label="Autre(s) localisation(s)"
                             json-name="selected_zones"
                             ref="selectedZones"
                             :vuelidate="$v.formInput.selectedZones"
@@ -56,7 +27,7 @@
             </section>
 
             <section class="mb-6 field" ref="offerTypes">
-                    {!! Form::label('job_seek[building][offer_genres][]', 'Quel type d\'expérience professionnelle recherchez-vous ? *', [
+                {!! Form::label('job_seek[offer_types][]', 'Quel type d\'expérience professionnelle recherchez-vous ? *', [
                     'class' => 'label',
                 ]); !!}
 
@@ -72,16 +43,13 @@
 
             <section class="mb-6 field" ref="productionGenres">
                 {!! Form::label('job_seek[production_genres][]', 'Production agricole principale envisagée *', ['class' => 'label']); !!}
-                <?php
-                $productionGenresParams = [
+                @include('pages.ads.partials.inputs.production_genres', [
                     'name' => 'job_seek[production_genres][]',
                     'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.productionGenres',
                     'isRequired' => true,
                     'isUnique' => true,
-                ];
-                ?>
-                @include('pages.ads.partials.inputs.production_genres', $productionGenresParams)
+                ])
             </section>
 
             <section class="mb-6 field" ref="secondaryProductionGenres">

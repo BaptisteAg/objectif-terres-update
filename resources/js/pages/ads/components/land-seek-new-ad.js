@@ -36,15 +36,6 @@ export default Vue.extend({
             old.land_seek = {}
         }
 
-        const extraFormInput = this.isSupportRequest ? {
-            offerGenres: old.land_seek.offer_genres || [],
-            rentMax: old.land_seek.rent_max || '0',
-            priceMax: old.land_seek.price_max || '',
-            educationLevels: old.land_seek.education_levels || [],
-            supportRequestText: old.support_request_text || '',
-            supportRequestTerritoryId: old.support_request_territory_id || "",
-        } : {};
-
         return {
             formInput: {
                 selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
@@ -56,7 +47,7 @@ export default Vue.extend({
                 farmsRequirement: old.land_seek && old.land_seek.buildings ? old.land_seek.buildings[2] : '',
                 productionGenres: old.land_seek.production_genres || [],
                 productionTypeAdd: old.land_seek.production_type_add || '',
-                isBio: old.land_seek.is_bio || undefined,
+                isBio: old.land_seek.is_bio,
                 installationTypeId: old.land_seek.installation_type_id || '',
                 aboutProject: old.about_project_content || '',
                 // experienceFarming: v.land_seek.experience_farming || '',
@@ -65,8 +56,7 @@ export default Vue.extend({
                 documents: old.documents && JSON.parse(old.documents) || [],
                 chartConfirmation: old.chart_confirmation || false,
                 secondProductionGenres: old.land_seek.secondary_production_genres || [],
-                secondProductionTypeAdd: old.land_seek.secondary_production_type_add || '',
-                ...extraFormInput
+                secondProductionTypeAdd: old.land_seek.secondary_production_type_add || ''
             }
         }
     },
@@ -87,14 +77,6 @@ export default Vue.extend({
     },
     methods: {},
     validations() {
-        const extraValidations = this.isSupportRequest ? {
-            offerGenres: {required},
-            supportRequestText: {
-                minLength: minLength(10),
-                maxLength: maxLength(400),
-            },
-        } : {};
-
         return {
             formInput: {
                 ...baseValidations.formInput,
@@ -122,8 +104,7 @@ export default Vue.extend({
                 chartConfirmation: {
                     required,
                     isTrue: value => value === true
-                },
-                ...extraValidations
+                }
             }
         }
     }
