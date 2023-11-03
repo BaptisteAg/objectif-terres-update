@@ -83,13 +83,18 @@ abstract class BaseController extends Controller
             abort(404);
         }
 
+        if(old('ad_type')) {
+            return [];
+        }
+
         $selected_departments = json_encode(array_filter(array_merge(
             array_map($this->locationService->getResultRenderer('departments'), [$ad->department->toArray()]),
         )));
 
+        $zoneDepartments = $ad->departments->except($ad->department->id)->toArray();
         $selected_zones = json_encode(array_filter(array_merge(
             array_map($this->locationService->getResultRenderer('regions'), $ad->regions->toArray()),
-            array_map($this->locationService->getResultRenderer('departments'), $ad->departments->toArray()),
+            array_map($this->locationService->getResultRenderer('departments'), $zoneDepartments),
             array_map($this->locationService->getResultRenderer('cities'), $ad->cities->toArray())
         )));
         $locationable = array_filter([
@@ -103,78 +108,74 @@ abstract class BaseController extends Controller
         $documents = $ad->documents->toJson();
         $document_ids = $ad->documents->pluck("id")->toArray();
 
-        if (!is_null($ad->project_id)) {
-            $vars = array_merge($this->getCreateFormVars(), [
-                'isSupportRequest' => 1,
-            ]);
-        } else {
-            $vars = $this->getCreateFormVars();
-        }
+        $ad_contact_type = $ad->thirdPartyAdUser ? 'thirdParty' : 'me';
+        $third_party = $ad->thirdPartyAdUser ? $ad->thirdPartyAdUser->toArray() : null;
 
-        if (!old('ad_type')) {
-            $vars["old"] = array_merge(
-                [
-                    'ad_type' => $this->adService->getAdType($ad),
+        $vars = $this->getCreateFormVars();
 
-                    'land_seek' => $ad->landSeekAd ?
-                        array_merge($ad->landSeekAd->toArray(), [
-                            "buildings" => $ad->landSeekAd->buildings->pluck("requirement.id", "buildingType.id")->toArray(),
-                            'production_genres' => array_merge(
-                                $ad->landSeekAd->productionGenres->pluck("id")->toArray(),
-                                $ad->landSeekAd->production_type_add ? ['other'] : []
-                            ),
-                            "secondary_production_genres" => array_merge(
-                                $ad->landSeekAd->productionGenresSecondary->pluck("id")->toArray(),
-                                $ad->landSeekAd->secondary_production_type_add ? ['other'] : []
-                            ),
-                        ]) : null,
+        $vars["old"] = array_merge(
+            [
+                'ad_type' => $this->adService->getAdType($ad),
 
-                    'land_offer' => $ad->landOfferAd ?
-                        array_merge($ad->landOfferAd->toArray(), [
-                            "bio_certifications" => $ad->landOfferAd->bioCertifications->pluck("id")->toArray(),
-                            "offer_genres" => $ad->landOfferAd->offerGenres->pluck("id")->toArray(),
-                            'production_genres' => array_merge(
-                                $ad->landOfferAd->productionGenres->pluck("id")->toArray(),
-                                $ad->landOfferAd->production_type_add ? ['other'] : []
-                            ),
-                            "secondary_production_genres" => array_merge(
-                                $ad->landOfferAd->productionGenresSecondary->pluck("id")->toArray(),
-                                $ad->landOfferAd->secondary_production_type_add ? ['other'] : []
-                            ),
-                        ]) : null,
+                'land_seek' => $ad->landSeekAd ?
+                    array_merge($ad->landSeekAd->toArray(), [
+                        "buildings" => $ad->landSeekAd->buildings->pluck("requirement.id", "buildingType.id")->toArray(),
+                        'production_genres' => array_merge(
+                            $ad->landSeekAd->productionGenres->pluck("id")->toArray(),
+                            $ad->landSeekAd->production_type_add ? ['other'] : []
+                        ),
+                        "secondary_production_genres" => array_merge(
+                            $ad->landSeekAd->productionGenresSecondary->pluck("id")->toArray(),
+                            $ad->landSeekAd->secondary_production_type_add ? ['other'] : []
+                        ),
+                    ]) : null,
 
-                    'job_offer' => $ad->jobOfferAd ?
-                        array_merge($ad->jobOfferAd->toArray(), [
-                            "offer_types" => $ad->jobOfferAd->jobOfferTypes->pluck("id")->toArray(),
-                            "education_levels" => $ad->jobOfferAd->educationLevels->pluck("id")->toArray(),
-                            'production_genres' => array_merge(
-                                $ad->jobOfferAd->productionGenres->pluck("id")->toArray(),
-                                $ad->jobOfferAd->production_type_add ? ['other'] : []
-                            ),
-                            "secondary_production_genres" => array_merge(
-                                $ad->jobOfferAd->productionGenresSecondary->pluck("id")->toArray(),
-                                $ad->jobOfferAd->secondary_production_type_add ? ['other'] : []
-                            ),
-                        ]) : null,
+                'land_offer' => $ad->landOfferAd ?
+                    array_merge($ad->landOfferAd->toArray(), [
+                        "bio_certifications" => $ad->landOfferAd->bioCertifications->pluck("id")->toArray(),
+                        "offer_genres" => $ad->landOfferAd->offerGenres->pluck("id")->toArray(),
+                        'production_genres' => array_merge(
+                            $ad->landOfferAd->productionGenres->pluck("id")->toArray(),
+                            $ad->landOfferAd->production_type_add ? ['other'] : []
+                        ),
+                        "secondary_production_genres" => array_merge(
+                            $ad->landOfferAd->productionGenresSecondary->pluck("id")->toArray(),
+                            $ad->landOfferAd->secondary_production_type_add ? ['other'] : []
+                        ),
+                    ]) : null,
 
-                    'job_seek' => $ad->jobSeekAd ?
-                        array_merge($ad->jobSeekAd->toArray(), [
-                            "offer_types" => $ad->jobSeekAd->jobOfferTypes->pluck("id")->toArray(),
-                            "education_levels" => $ad->jobSeekAd->educationLevels->pluck("id")->toArray(),
-                            'production_genres' => array_merge(
-                                $ad->jobSeekAd->productionGenres->pluck("id")->toArray(),
-                                $ad->jobSeekAd->production_type_add ? ['other'] : []
-                            ),
-                            "secondary_production_genres" => array_merge(
-                                $ad->jobSeekAd->productionGenresSecondary->pluck("id")->toArray(),
-                                $ad->jobSeekAd->secondary_production_type_add ? ['other'] : []
-                            ),
-                        ]) : null,
-                ],
-                $ad->only(["id", "title", "department_id", "about_content", "about_project_content", "accept_share_contact_infos", "support_request_text", 'is_sales_offer_evaluation']),
-                compact("selected_zones", "locationable", "locationable_radius", "documents", "document_ids", 'selected_departments')
-            );
-        }
+                'job_offer' => $ad->jobOfferAd ?
+                    array_merge($ad->jobOfferAd->toArray(), [
+                        "offer_types" => $ad->jobOfferAd->jobOfferTypes->pluck("id")->toArray(),
+                        "education_levels" => $ad->jobOfferAd->educationLevels->pluck("id")->toArray(),
+                        'production_genres' => array_merge(
+                            $ad->jobOfferAd->productionGenres->pluck("id")->toArray(),
+                            $ad->jobOfferAd->production_type_add ? ['other'] : []
+                        ),
+                        "secondary_production_genres" => array_merge(
+                            $ad->jobOfferAd->productionGenresSecondary->pluck("id")->toArray(),
+                            $ad->jobOfferAd->secondary_production_type_add ? ['other'] : []
+                        ),
+                    ]) : null,
+
+                'job_seek' => $ad->jobSeekAd ?
+                    array_merge($ad->jobSeekAd->toArray(), [
+                        "offer_types" => $ad->jobSeekAd->jobOfferTypes->pluck("id")->toArray(),
+                        "education_levels" => $ad->jobSeekAd->educationLevels->pluck("id")->toArray(),
+                        'production_genres' => array_merge(
+                            $ad->jobSeekAd->productionGenres->pluck("id")->toArray(),
+                            $ad->jobSeekAd->production_type_add ? ['other'] : []
+                        ),
+                        "secondary_production_genres" => array_merge(
+                            $ad->jobSeekAd->productionGenresSecondary->pluck("id")->toArray(),
+                            $ad->jobSeekAd->secondary_production_type_add ? ['other'] : []
+                        ),
+                    ]) : null,
+            ],
+            $ad->only(["id", "title", "department_id", "about_content", "about_project_content", "accept_share_contact_infos", "support_request_text", 'is_sales_offer_evaluation']),
+            compact("selected_zones", "locationable", "locationable_radius", "documents", "document_ids", 'selected_departments', 'third_party' ,'ad_contact_type')
+        );
+
 
         return $vars;
     }

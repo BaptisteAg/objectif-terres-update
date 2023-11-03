@@ -1,7 +1,9 @@
 <template>
 	<div>
 		<div>
-			<label :for="id" class="label">{{ label }} <i class="fas fa-info-circle has-text-info"></i></label>
+			<label :for="id" class="label">{{ label }}
+          <i class="fas fa-info-circle has-text-info" v-if="hasTooltip"></i>
+      </label>
 			<autocomplete
 				:id="id"
 				:disabled="disabled"
@@ -192,6 +194,10 @@ export default {
 			type: Boolean,
 			default: false
 		},
+    hasTooltip: {
+      type: Boolean,
+      default: false
+    }
 	},
 	data() {
 		return {

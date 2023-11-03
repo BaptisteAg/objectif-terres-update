@@ -14,11 +14,12 @@ class UpdateAdsCreateForeignKeyToThirdPartyAdUser extends Migration
     public function up()
     {
         Schema::table('ads', function (Blueprint $table) {
-            $table->unsignedBigInteger('third_party_ad_user_id')->nullable();
+            $table->unsignedInteger('third_party_ad_user_id')->nullable();
             $table->foreign('third_party_ad_user_id')
                 ->references('id')
-                ->on('third_party_ad_user')
-                ->onDelete('cascade');
+                ->on('third_party_ad_users')
+                //null on delete
+                ->onDelete('set null');
         });
     }
 

@@ -1,11 +1,7 @@
 @extends('default')
 
 
-@if(!empty($isSupportRequest))
-    @section('title', isset($old["id"]) ? 'Modifier votre accompagnement':'Demander un accompagnement')
-@else
-    @section('title',isset($old["id"]) ? 'Modifier votre annonce':'Publier une nouvelle annonce')
-@endif
+@section('title',isset($old["id"]) ? 'Modifier votre annonce':'Publier une nouvelle annonce')
 
 @section('main-content')
     <section class="container is-flex is-flex-direction-column is-align-items-center">
@@ -101,32 +97,41 @@
                         @include('pages.ads.partials.landOffer.landOfferNewAd')
                     </new-land-offer-ad>
 
-                    @if(empty($isSupportRequest))
-                        {{--                    TODO : remove v-if after presentation --}}
-                        <new-job-seek-ad inline-template
-                                         v-if="adTypeSelected === 'job_seek'"
-                                         :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
-                                         @input-enabled="setEnabledForm"
-                                         @form-complete="submitProxy"
-                                         @submit-save-button="submitProxy"
-                                         @click-save-button="onSaveClick"
-                                         @click-publish-button="onPublishClick"
-                                         ref="job_seek">
-                            @include('pages.ads.partials.jobSeek.jobSeekNewAd')
-                        </new-job-seek-ad>
+                    <new-job-seek-ad inline-template
+                                     v-if="adTypeSelected === 'job_seek'"
+                                     :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                     @input-enabled="setEnabledForm"
+                                     @form-complete="submitProxy"
+                                     @submit-save-button="submitProxy"
+                                     @click-save-button="onSaveClick"
+                                     @click-publish-button="onPublishClick"
+                                     ref="job_seek">
+                        @include('pages.ads.partials.jobSeek.jobSeekNewAd')
+                    </new-job-seek-ad>
 
-                        <new-job-offer-ad inline-template
-                                          v-if="adTypeSelected === 'job_offer'"
-                                          :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
-                                          @input-enabled="setEnabledForm"
-                                          @form-complete="submitProxy"
-                                          @submit-save-button="submitProxy"
-                                          @click-save-button="onSaveClick"
-                                          @click-publish-button="onPublishClick"
-                                          ref="job_offer">
-                            @include('pages.ads.partials.jobOffer.jobOfferNewAd')
-                        </new-job-offer-ad>
-                    @endif
+                    <new-job-offer-ad inline-template
+                                      v-if="adTypeSelected === 'job_offer'"
+                                      :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                      @input-enabled="setEnabledForm"
+                                      @form-complete="submitProxy"
+                                      @submit-save-button="submitProxy"
+                                      @click-save-button="onSaveClick"
+                                      @click-publish-button="onPublishClick"
+                                      ref="job_offer">
+                        @include('pages.ads.partials.jobOffer.jobOfferNewAd')
+                    </new-job-offer-ad>
+
+                    <new-associate-seek-ad inline-template
+                                     v-if="adTypeSelected === 'associate_seek'"
+                                     :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                     @input-enabled="setEnabledForm"
+                                     @form-complete="submitProxy"
+                                     @submit-save-button="submitProxy"
+                                     @click-save-button="onSaveClick"
+                                     @click-publish-button="onPublishClick"
+                                     ref="associate_seek">
+                        @include('pages.ads.partials.associateSeek.associateSeekNewAd')
+                    </new-associate-seek-ad>
 
                 </form>
             </new-ad>

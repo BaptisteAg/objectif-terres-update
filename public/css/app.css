@@ -23769,6 +23769,10 @@ blockquote > cite {
   background-color: #A9652B !important;
 }
 
+.dropzone .dz-preview .dz-image img {
+  width: 150px;
+}
+
 /*
 --------------------
 TAGS POSITION
@@ -24286,6 +24290,10 @@ ACCORDEON
 
 #new-ad body .vue-dropzone .dz-preview .dz-filename {
   margin-top: 5em;
+}
+
+#new-ad body .vue-dropzone .dz-preview .dz-image img {
+  width: 150px;
 }
 
 #new-ad #slider-container {

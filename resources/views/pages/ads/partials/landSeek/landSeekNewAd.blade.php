@@ -6,54 +6,18 @@
             subtitle=""
             step-size="xs"
             @on-complete="$emit('form-complete')"
-{{--            @on-change="nextStep"--}}
             color="#A74B2B"
             ref="formWizard"
             class="is-flex is-flex-direction-column">
 
         <tab-content title="Terres recherchées">
 
-            <section class="mb-6 field" ref="selectedDepartments">
-                <label class="label">Département de référence *</label>
-                <autocomplete
-                        name="department_id"
-                        id="department_id"
-                        autocomplete="off"
-                        src="/locations/departments"
-                        placeholder="Saisissez au moins 2 caractères pour faire apparaître la liste"
-                        v-model="formInput.selectedDepartments"
-                        :vuelidate="$v.formInput.selectedDepartments"
-                >
-                    <template v-for="(zone, i) in formInput.selectedDepartments">
-                        <input
-                                key="zone.id"
-                                autocomplete="off"
-                                type="hidden"
-                                name="department_id"
-                                :value="zone.value.id"
-                        >
-                        <div
-                                key="zone.label"
-                                class="tag autocomplete-input-tag is-info"
-                                @click="_ => formInput.selectedDepartments.splice(i, 1)"
-                        >
-                            @{{ zone.label }}
-                            <i class="fa fa-trash" style="cursor:pointer; margin-left: 0.5em;"></i>
-                        </div>
-                    </template>
-                </autocomplete>
-            </section>
+            @include('pages.ads.partials.inputs.main_department')
 
-            <section class="mb-6 field" v-if="formInput.selectedDepartments.length">
-                <zone-select
-                        src="/locations/cities"
-                        name="land_seek[locationable]"
-                        label="Autre localisation"
-                        json-name="selected_zones"
-                        ref="selectedZones"
-                        v-model="formInput.selectedZones">
-                </zone-select>
-            </section>
+            @include('pages.ads.partials.inputs.other_locations', [
+                'label' => 'Autre(s) localisation(s)',
+                'condition' => 'v-if="formInput.selectedDepartments.length"'
+            ])
 
             <section class="mb-6 field" ref="surfaceRangeMax">
                 <b-tooltip class="w-100" label="Faites glisser les curseurs pour définir la surface recherchée">

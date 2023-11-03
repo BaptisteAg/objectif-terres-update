@@ -140,27 +140,12 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
      * @param Ad $ad
      * @param array $data
      */
-    private function save(Ad $ad, array $data)
+    private function save(Ad $ad, array $data): void
     {
-        $ad->fill($data);
-        $ad->save();
-
-//        if (isset($data['is_other_person']) && $data['is_other_person'] === 1) {
-//            $thirdPartyAdUser = $ad->thirdPartyAdUser;
-//            if (!$thirdPartyAdUser) {
-//                $thirdPartyAdUser = $ad->thirdPartyAdUser()->create([]);
-//            }
-//            $thirdPartyAdUser->fill($data['other_person']);
-//            $thirdPartyAdUser->save();
-//        } else {
-//            $ad->thirdPartyAdUser()->delete();
-//        }
-
-        if (isset($data['is_other_person']) && $data['is_other_person'] === 1) {
-            $thirdPartyUser = ThirdPartyAdUser::create($data['other_person']);
+        if (isset($data['ad_contact_type']) && $data['ad_contact_type'] === 'thirdParty') {
+            $thirdPartyUser = ThirdPartyAdUser::create($data['third_party']);
             $data['third_party_ad_user_id'] = $thirdPartyUser->id;
         }
-
 
         // If department is not set, we set it to the first city's department
         if (empty($data["department_id"]) && !empty($data["locationable"]["cities"])) {
@@ -169,7 +154,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             $data["department_id"] = $city->department->id;
         }
 
-        // If department is set but there are not other locationable
+        $ad->fill($data);
+        $ad->save();
+
+        // If department is set but there are no other locationable
         if (isset($data["department_id"])) {
             if (!isset($data["locationable"]["departments"])) {
                 if (!isset($data["locationable"])) {
@@ -197,6 +185,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                 $locationableEntityQuery->sync(array_fill_keys($locationables, $extraFields));
             }
         }
+
 
         if (!empty($data["documents_ids"]) && is_array($data["documents_ids"])) {
             $ad->documents()->sync($data["documents_ids"]);
@@ -289,6 +278,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                     $query->withTrashed();
                 }
             ])
+            ->orderByDesc('id')
             ->get();
         return $models;
     }

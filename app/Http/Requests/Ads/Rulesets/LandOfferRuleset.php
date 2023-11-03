@@ -9,7 +9,6 @@ class LandOfferRuleset implements RulesetInterface
 	public function get(bool $isSupportRequest): array
 	{
 		$rules = [
-            'locationable' => [new HasZone, 'required'],
             'land_description' => ['nullable', 'string', 'max:1000'],
             'land_offer.production_genre' => [new HasProductionGenre],
             'land_offer.production_type_add' => ['nullable', 'string'],

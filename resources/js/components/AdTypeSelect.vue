@@ -10,7 +10,7 @@
       <div :class="errors.check ? 'field-error mt-2 pt-2' : 'mt-2 pt-2'">
         <b-field :type="errors.check ? 'is-danger' : ''" :message="errors.check"
                  class="is-flex is-flex-direction-column">
-          <b-checkbox v-model="isCertified" name="has_certified" class="has-text-weight-bold is-size-6">Je certifie que
+          <b-checkbox v-model="hasCertified" name="has_certified" class="has-text-weight-bold is-size-6">Je certifie que
             mon annonce
             concerne
             un
@@ -25,42 +25,42 @@
 
       <h3 class="title is-4">Je dépose cette annonce</h3>
       <div class="block">
-        <b-radio v-model="otherPersonAd.value" name="is_other_person" native-value="0">En mon nom</b-radio>
-        <b-radio v-model="otherPersonAd.value" name="is_other_person" native-value="1">Pour une autre personne</b-radio>
+        <b-radio v-model="adContactType" name="ad_contact_type" native-value="me">En mon nom</b-radio>
+        <b-radio v-model="adContactType" name="ad_contact_type" native-value="thirdParty">Pour une autre personne</b-radio>
       </div>
 
-      <div class="pb-4 is-flex is-flex-wrap-wrap is-justify-content-space-between" v-if="otherPersonAd.value">
+      <div class="pb-4 is-flex is-flex-wrap-wrap is-justify-content-space-between" v-if="adContactType === 'thirdParty'">
         <b-field class="w-50 is-size-6" label="Email" :type="errors.email ? 'is-danger' : ''" :message="errors.email">
-          <b-input name="other_person[email]" placeholder="jean.dupont@gmail.com" size="is-medium" rounded type="email"
-                   v-model="otherPersonAd.email"></b-input>
+          <b-input name="third_party[email]" placeholder="jean.dupont@gmail.com" size="is-medium" rounded type="email"
+                   v-model="thirdParty.email"></b-input>
         </b-field>
         <b-field class="w-50 is-size-6" label="Prénom" :type="errors.firstName ? 'is-danger' : ''"
                  :message="errors.firstName">
-          <b-input name="other_person[first_name]" placeholder="Jean" size="is-medium" rounded type="text"
-                   v-model="otherPersonAd.first_name"
+          <b-input name="third_party[first_name]" placeholder="Jean" size="is-medium" rounded type="text"
+                   v-model="thirdParty.first_name"
           ></b-input>
         </b-field>
         <b-field class="w-50 is-size-6" label="Nom" :type="errors.lastName ? 'is-danger' : ''"
                  :message="errors.lastName">
-          <b-input name="other_person[last_name]" placeholder="Dupont" size="is-medium" rounded type="text"
-                   v-model="otherPersonAd.last_name"
+          <b-input name="third_party[last_name]" placeholder="Dupont" size="is-medium" rounded type="text"
+                   v-model="thirdParty.last_name"
           ></b-input>
         </b-field>
         <b-field class="w-50 is-size-6" label="Téléphone" :type="errors.phone ? 'is-danger' : ''"
                  :message="errors.phone">
-          <b-input name="other_person[phone]" placeholder="06 06 06 06 06" size="is-medium" rounded type="text"
-                   v-model="otherPersonAd.phone"
+          <b-input name="third_party[phone]" placeholder="06 06 06 06 06" size="is-medium" rounded type="text"
+                   v-model="thirdParty.phone"
           ></b-input>
         </b-field>
-
-        <b-field>
-          <b-checkbox name="otherPersonAdMailOnly" v-model="otherPersonAd.mail_only" class="is-size-6" value="0">
-            Je ne souhaite pas être contacté par téléphone (dans ce
-            cas,
-            je serais contacté uniquement par email)
-          </b-checkbox>
-        </b-field>
       </div>
+
+      <b-field>
+          <b-checkbox name="accept_share_contact_infos" v-model="accept_share_contact_infos" true-value="0" false-value="1" class="is-size-6">
+              Je ne souhaite pas être contacté par téléphone (dans ce
+              cas,
+              je serais contacté uniquement par email)
+          </b-checkbox>
+      </b-field>
 
       <h3 class="title is-4">Mon projet</h3>
       <p class="pb-4 has-text-danger" v-show="errors.adType">Le type d'annonce n'est pas défini.</p>
@@ -86,9 +86,7 @@
 
     </div>
     <div class="is-align-self-flex-start py-3" v-show="value !== ''">
-      <a href="#" @click.prevent="changeAdType()" v-if="isSupportRequest">← Changer de type
-        d'accompagnement</a>
-      <a href="#" @click.prevent="changeAdType()" v-else>← Changer de type d'annonce</a>
+      <a href="#" @click.prevent="changeAdType()">← Changer de type d'annonce</a>
     </div>
 
     <input type="hidden" :name="name" :value="value">
@@ -109,10 +107,6 @@ export default {
       type: String,
       required: true
     },
-    isSupportRequest: {
-      type: Boolean,
-      required: true
-    },
   },
   data() {
     let old = this.oldValues;
@@ -124,35 +118,22 @@ export default {
         firstName: '',
         lastName: '',
         phone: '',
-        mail_only: '',
         adType: '',
       },
-      otherPersonAd: {
-        value: old.is_for_other || 0,
-        first_name: old.other_person_first_name || "",
-        last_name: old.other_person_last_name || "",
-        email: old.other_person_email || "",
-        phone: old.other_person_phone || "",
-        mail_only: old.other_person_mail_only || false,
+      adContactType: old.ad_contact_type || 'me',
+      thirdParty: {
+        first_name: old.third_party?.first_name || "",
+        last_name: old.third_party?.last_name || "",
+        email: old.third_party?.email || "",
+        phone: old.third_party?.phone || "",
       },
-      isCertified: false,
+      accept_share_contact_infos: !!old.accept_share_contact_infos ? '1' : '0',
+      hasCertified: false,
       currentAdType: this.value
     }
   },
   computed: {
     adTypes() {
-      let extraAdTypes = this.isSupportRequest ? {} : {
-        job_seek: {
-          label: "Je cherche une opportunité professionnelle",
-        },
-        job_offer: {
-          label: "Je propose une opportunité professionnelle",
-        },
-        job_associate: {
-          label: "Associé pour projet d'installation",
-        }
-      };
-
       return {
         land_seek: {
           label: "Je cherche du foncier agricole",
@@ -160,10 +141,18 @@ export default {
         land_offer: {
           label: "Je propose du foncier agricole",
         },
-        land_partner: {
-          label: "Associé sur une ferme ",
+        associate_offer: {
+          label: "Associé sur une ferme",
         },
-        ...extraAdTypes
+        job_seek: {
+            label: "Je cherche une opportunité professionnelle",
+        },
+        job_offer: {
+            label: "Je propose une opportunité professionnelle",
+        },
+        associate_seek: {
+            label: "Associé pour projet d'installation",
+        }
       }
     },
   },
@@ -178,20 +167,20 @@ export default {
         adType: '',
       };
 
-      if (!this.isCertified) {
+      if (!this.hasCertified) {
         this.errors.check = 'Vous devez certifier que votre annonce concerne un projet agricole professionnel.';
         window.scrollTo({top: 0, behavior: 'smooth'});
       }
 
-      if (this.otherPersonAd.value) {
+      if (this.adContactType === 'thirdParty') {
         let emailRegex = /^[\w-]+(.[\w-]+)*@([\w-]+.)+[a-zA-Z]{2,7}$/;
-        if (!emailRegex.test(this.otherPersonAd.email)) {
+        if (!emailRegex.test(this.thirdParty.email)) {
           this.errors.email = "L'email n'est pas valide.";
         }
-        if (!this.otherPersonAd.first_name) {
+        if (!this.thirdParty.first_name) {
           this.errors.firstName = 'Le prénom est requis.';
         }
-        if (!this.otherPersonAd.last_name) {
+        if (!this.thirdParty.last_name) {
           this.errors.lastName = 'Le nom est requis.';
         }
         if (!this.currentAdType) {
