@@ -28,4 +28,5 @@
         </template>
         <input type="hidden" :disabled="disabled" name="selected_departments" :value="JSON.stringify(formInput.selectedDepartments)">
     </autocomplete>
+    <p class="help is-danger" id="titleError" v-if="$v.formInput.selectedDepartments.$error">Ce champ est requis.</p>
 </section>

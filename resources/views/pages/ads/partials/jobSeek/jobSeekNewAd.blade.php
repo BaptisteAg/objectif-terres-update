@@ -4,7 +4,7 @@
             subtitle=""
             step-size="xs"
             @on-complete="$emit('form-complete')"
-{{--            @on-change="nextStep"--}}
+            @on-change="nextStep"
             color="#A74B2B"
             ref="formWizard">
 

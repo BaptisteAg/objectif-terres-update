@@ -266,6 +266,11 @@ class Ad extends Model implements HasPresenter
         return $this->hasOne(LandSeekAd::class);
     }
 
+    public function associateSeekAd()
+    {
+        return $this->hasOne(AssociateSeekAd::class);
+    }
+
     /**
      * Get all cities 'location' for the ad
      * @return MorphToMany

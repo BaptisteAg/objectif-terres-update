@@ -29,7 +29,7 @@ export default {
 
         return {
             formInput: {
-				selectedDepartments: hasOld && JSON.parse(old.selected_departments) || [],
+                selectedDepartments: hasOld && JSON.parse(old.selected_departments) || [],
                 selectedZones: hasOld && JSON.parse(v.selected_zones) || [],
 
                 isLandAlreadyFound: v.is_land_already_found,
@@ -64,9 +64,9 @@ export default {
                 productionGenres: {
                     required,
                 },
-				educationLevels: {
-					required
-				},
+                educationLevels: {
+                    required
+                },
             }
         }
     }

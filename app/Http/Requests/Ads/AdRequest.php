@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Ads;
 
+use App\Http\Requests\Ads\Rulesets\AssociateSeekRuleset;
 use App\Http\Requests\Ads\Rulesets\JobOfferRuleset;
 use App\Http\Requests\Ads\Rulesets\JobSeekRuleset;
 use App\Http\Requests\Ads\Rulesets\LandOfferRuleset;
@@ -44,6 +45,7 @@ class AdRequest extends FormRequest
             'land_offer' => ['nullable', 'array'],
             'job_offer' => ['nullable', 'array'],
             'job_seek' => ['nullable', 'array'],
+            'associate_seek' => ['nullable', 'array'],
 
             'locationable' => [new HasZone, 'nullable'],
             'locationable_radius' => ['nullable', 'string'],
@@ -67,6 +69,7 @@ class AdRequest extends FormRequest
             'land_offer' => LandOfferRuleset::class,
             'job_offer' => JobOfferRuleset::class,
             'job_seek' => JobSeekRuleset::class,
+            'associate_seek' => AssociateSeekRuleset::class,
         ];
 
         /** @var RulesetInterface $ruleset */
