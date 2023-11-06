@@ -8,7 +8,6 @@ class JobSeekRuleset implements RulesetInterface
 {
     public function get(bool $isSupportRequest): array
     {
-        //dd(request()->all());
         return [
             'job_seek.production_genre' => [new HasProductionGenre],
             'job_seek.production_type_add' => ['nullable', 'string'],
