@@ -8,7 +8,7 @@
             color="#A74B2B"
             ref="formWizard">
 
-        <tab-content title="Expérience recherchée">
+        <tab-content title="Votre projet agricole">
 
             @include('pages.ads.partials.inputs.main_department')
 
@@ -63,10 +63,9 @@
                 @include('pages.ads.partials.inputs.about_project_content', ['title' => 'Et si vous nous en disiez un peu plus sur votre projet ?', 'tooltip' => ''])
             </section>
 
-
         </tab-content>
 
-        <tab-content title="Votre parcours">
+        <tab-content title="Profil recherché">
 
             <section class="mb-6 field">
                 <b-tooltip class="w-100"
