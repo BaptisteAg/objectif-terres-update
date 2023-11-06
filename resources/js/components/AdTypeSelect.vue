@@ -72,9 +72,6 @@
         </div>
       </div>
 
-      <p class="pt-6">Ajouter une phrase de : "Vous allez déposer une annonce de recherche de foncier, n'oubliez pas
-        de
-        consulter les annonces d'offres de foncier."</p>
       <p class="pt-5">Votre annonce sera visible uniquement par les personnes qui recherchent des porteurs de projet.
         Si
         vous souhaitez qu’elle soit visible par d’autres types de personnes, nous vous recommandons de créer une autre
