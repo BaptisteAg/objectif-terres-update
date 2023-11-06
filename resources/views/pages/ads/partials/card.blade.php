@@ -52,6 +52,8 @@
             Pas de description renseignée pour cette annonce
         @endif
 
+        <p class="title is-1">{{$ad->type}}</p>
+
         <div class="is-flex mt-auto mb-4 is-justify-content-space-between">
             <div class="is-flex is-flex-direction-column fd-r-mobile jc-sb-mobile pt-3-mobile" style="width: 100%">
                 <p class="pb-3 pb-0-mobile">

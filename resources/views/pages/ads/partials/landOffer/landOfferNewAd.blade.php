@@ -13,7 +13,7 @@
             @include('pages.ads.partials.inputs.main_department')
 
             @include('pages.ads.partials.inputs.other_locations', [
-                'label' => 'Communes concernées*',
+                'label' => 'Communes concernées *',
                 'tooltip' => 'Si votre bien se situe sur plusieurs communes, merci de nous les indiquer'
             ])
 
@@ -24,11 +24,17 @@
                         {!! Form::label('land_offer[accept_use_zip_code]', 'Confidentialité'); !!}
                         <i class="fas fa-info-circle has-text-info"></i>
                     </div>
-                    <b-checkbox name="land_offer[accept_use_zip_code]"
-                                class="is-size-6" {{($old["land_offer"]["accept_use_zip_code"] ?? null) == 1 ? 'checked' : ''}}>
+                    <b-checkbox true-value="0" false-value="1" native-value="" v-model="formInput.acceptUseZipCode"
+                                class="is-size-6">
                         Je ne souhaite pas que la localisation soit publique.
                     </b-checkbox>
+                    <input type="hidden" name="land_offer[accept_use_zip_code]" :value="formInput.acceptUseZipCode">
                 </b-tooltip>
+                {{--                {!! Form::checkbox('land_offer[accept_use_zip_code]', '0', ((string)($old['land_offer']['accept_use_zip_code'] ?? null) === "0"), [--}}
+                {{--                                        "id" =>"land_offer[accept_use_zip_code]",--}}
+                {{--                                    ]) !!}--}}
+                {{--                <label for="land_offer[accept_use_zip_code]">Je ne souhaite pas que la localisation soit--}}
+                {{--                    publique.</label>--}}
             </section>
 
             <section class="field mb-6" ref="surface">
