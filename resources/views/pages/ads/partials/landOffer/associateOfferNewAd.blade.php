@@ -216,68 +216,12 @@
                 </p>
             </section>
 
-            <section class="mb-6 columns is-flex-wrap-wrap">
-                <div class="column field" v-if="isSaleOffer" ref="price">
-                    {!! Form::label('assocciate_offer[price]', 'Prix de vente*', [
-                                        'class' => 'label',
-                                    ]); !!}
-                    {!! Form::text('assocciate_offer[price]', $old['assocciate_offer']['price'] ?? null, [
-                                                                'class' => 'input',
-                                                                'v-model' => 'formInput.price',
-                                                                ':disabled'=>'isInputDisabled',
-                                                            ]) !!}
-                    <template v-if="$v.formInput.price.$error">
-                        <p class="help is-danger" v-if="$v.formInput.price.required">
-                            Ce champ est requis.
-                        </p>
-                        <p class="help is-danger" v-if="!$v.formInput.price.numeric">
-                            Veuillez saisir un nombre.
-                        </p>
-                    </template>
-                </div>
-                <div class="column field" v-if="isRentOffer" ref="rentPrice">
-                    {!! Form::label('assocciate_offer[rent_price]', 'Fermage annuel', [
-                                        'class' => 'label',
-                                    ]); !!}
-                    {!! Form::text('assocciate_offer[rent_price]', $old['assocciate_offer']['rent_price'] ?? null, [
-                                                                'class' => 'input',
-                                                                'v-model' => 'formInput.rentPrice',
-                                                                ':disabled'=>'isInputDisabled',
-                                                            ]) !!}
-                    <template v-if="$v.formInput.rentPrice.$error">
-                        <p class="help is-danger" v-if="$v.formInput.rentPrice.required">
-                            Ce champ est requis.
-                        </p>
-                        <p class="help is-danger" v-if="!$v.formInput.rentPrice.numeric">
-                            Veuillez saisir un nombre.
-                        </p>
-                    </template>
-                </div>
-                <div class="column is-full" v-if="isSaleOffer">
-                    <b-checkbox name="assocciate_offer.is_sales_offer_evaluation"
-                                v-model="formInput.is_sales_offer_evaluation">En cours d'évaluation
-                    </b-checkbox>
-                </div>
-            </section>
-
-            <section class="mb-6 field" ref="testDescription" v-if="isTestOffer">
-                {!! Form::label('assocciate_offer[test_description]', 'Modalité du test agricole', [
-                                                        'class' => 'label',
-                                                    ]); !!}
-                <text-area-counter
-                        name="assocciate_offer[test_description]"
-                        :max-length="1000"
-                        v-model="formInput.testDescription"
-                        :vuelidate="$v.formInput.testDescription">
-                </text-area-counter>
-            </section>
-
         </tab-content>
 
         <tab-content title="C'est presque fini !">
             <section class="field mb-6" ref="aboutProject">
                 <?php
-                $aboutProjectTooltip = "N'oubliez pas de préciser le calendrier de transmission envisagée";
+                $aboutProjectTooltip = "";
                 ?>
                 @include('pages.ads.partials.inputs.about_project_content', ['title'=> 'Et si vous nous en disiez un peu plus sur la transmission de ces terres ?','tooltip' => $aboutProjectTooltip])
             </section>
