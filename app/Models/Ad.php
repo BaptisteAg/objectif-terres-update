@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\hasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use McCool\LaravelAutoPresenter\HasPresenter;
@@ -182,7 +183,7 @@ class Ad extends Model implements HasPresenter
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      */
     public function attributionAd()
     {
@@ -206,7 +207,7 @@ class Ad extends Model implements HasPresenter
     }
 
     /**
-     * @return Builder|\Illuminate\Database\Eloquent\Relations\HasOne
+     * @return Builder|HasOne
      */
     public function threadAlreadyExist()
     {
@@ -233,7 +234,7 @@ class Ad extends Model implements HasPresenter
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      */
     public function currentUserFavoriteAd()
     {
@@ -251,7 +252,7 @@ class Ad extends Model implements HasPresenter
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\hasOne
+     * @return hasOne
      */
     public function landOfferAd()
     {
@@ -259,11 +260,27 @@ class Ad extends Model implements HasPresenter
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\hasOne
+     * @return hasOne
      */
     public function landSeekAd()
     {
         return $this->hasOne(LandSeekAd::class);
+    }
+
+    /**
+     * @return hasOne
+     */
+    public function associateOfferAd(): hasOne
+    {
+        return $this->hasOne(AssociateOfferAd::class);
+    }
+
+    /**
+     * @return hasOne
+     */
+    public function associateSeekAd(): hasOne
+    {
+        return $this->hasOne(AssociateSeekAd::class);
     }
 
     /**
