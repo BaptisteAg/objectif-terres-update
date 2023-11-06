@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Ads;
 
+use App\Http\Requests\Ads\Rulesets\AssociateSeekRuleset;
 use App\Http\Requests\Ads\Rulesets\JobOfferRuleset;
 use App\Http\Requests\Ads\Rulesets\JobSeekRuleset;
 use App\Http\Requests\Ads\Rulesets\LandOfferRuleset;
