@@ -89,6 +89,8 @@ Traduction des principaux modèles utilisés :
 test+limousin@terredeliens.org
 TestAlsace974
 
+devot+mod_alsace@terredeliens.org
+OTAlsace23
 
 
 
