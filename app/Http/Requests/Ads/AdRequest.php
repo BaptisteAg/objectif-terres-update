@@ -7,6 +7,8 @@ use App\Http\Requests\Ads\Rulesets\JobOfferRuleset;
 use App\Http\Requests\Ads\Rulesets\JobSeekRuleset;
 use App\Http\Requests\Ads\Rulesets\LandOfferRuleset;
 use App\Http\Requests\Ads\Rulesets\LandSeekRuleset;
+use App\Models\AssociateOfferAd;
+use App\Models\AssociateSeekAd;
 use App\Rules\HasZone;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -46,6 +48,7 @@ class AdRequest extends FormRequest
             'job_offer' => ['nullable', 'array'],
             'job_seek' => ['nullable', 'array'],
             'associate_seek' => ['nullable', 'array'],
+            'associate_offer' => ['nullable', 'array'],
 
             'locationable' => [new HasZone, 'nullable'],
             'locationable_radius' => ['nullable', 'string'],
@@ -70,6 +73,7 @@ class AdRequest extends FormRequest
             'job_offer' => JobOfferRuleset::class,
             'job_seek' => JobSeekRuleset::class,
             'associate_seek' => AssociateSeekRuleset::class,
+            'associate_offer' => AssociateOfferRuleset::class,
         ];
 
         /** @var RulesetInterface $ruleset */
