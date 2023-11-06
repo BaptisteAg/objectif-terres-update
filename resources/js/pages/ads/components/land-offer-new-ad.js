@@ -62,7 +62,7 @@ export default {
                 selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
                 selectedZones: old.selected_zones && JSON.parse(old.selected_zones) || [],
 
-                accept_use_zip_code: old.accept_use_zip_code || false,
+                acceptUseZipCode: old.land_offer.accept_use_zip_code || 1,
                 surface: old.land_offer.surface || '',
                 sauDescription: old.land_offer.sau_description || '',
                 productionGenres: old.land_offer.production_genres || [],
@@ -174,6 +174,11 @@ export default {
         return {
             formInput: {
                 ...baseValidations.formInput,
+				selectedDepartments: {
+					hasDepartment(departments) {
+						return departments.length;
+					}
+				},
                 selectedZones: {
                     hasZone(zones) {
                         return zones.length;
