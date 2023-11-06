@@ -267,6 +267,11 @@ class Ad extends Model implements HasPresenter
         return $this->hasOne(LandSeekAd::class);
     }
 
+    public function associateSeekAd()
+    {
+        return $this->hasOne(AssociateSeekAd::class);
+    }
+
     /**
      * @return hasOne
      */
