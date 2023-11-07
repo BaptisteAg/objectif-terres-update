@@ -8,5 +8,5 @@
 </b-checkbox>
 
 <p class="help is-danger" id="chartConfirmationError"
-   v-if="$v.formInput.chartConfirmation.$error">Vous
+   v-if="$v.formInput.chartConfirmation?.$error">Vous
     devez cocher cette case.</p>

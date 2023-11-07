@@ -46,7 +46,7 @@
                               class="button is-static">ha</span>
                         </p>
                     </b-field>
-                    <template v-if="$v.formInput.surface.$error">
+                    <template v-if="$v.formInput.surface?.$error">
                         <p class="help is-danger" v-if="!$v.formInput.surface.maxValue">
                             Surface maximum : @{{$v.formInput.surface.$params.maxValue.max}} hectares.
                         </p>
@@ -75,7 +75,7 @@
                               class="button is-static">m</span>
                         </p>
                     </b-field>
-                    <template v-if="$v.formInput.altitude.$error">
+                    <template v-if="$v.formInput.altitude?.$error">
                         <p class="help is-danger" v-if="$v.formInput.altitude.required">
                             Ce champ est requis.
                         </p>
@@ -101,7 +101,7 @@
                     {!! Form::label('assocciate_offer[water_access]__1',  'Je ne sais pas' ) !!}
                 </div>
                 <p class="help is-danger w-100"
-                   v-if="$v.formInput.waterAccess.$error">
+                   v-if="$v.formInput.waterAccess?.$error">
                     Ce champ est requis.
                 </p>
             </section>
@@ -163,7 +163,7 @@
                         placeholder="Sélectionnez une ou plusieurs certifications"
                         ref="bioCertifications">
                 </multi-select>
-                <p class="help is-danger" v-if="$v.formInput.bioCertifications.$error">
+                <p class="help is-danger" v-if="$v.formInput.bioCertifications?.$error">
                     Ce champ est requis.
                 </p>
             </section>
@@ -174,7 +174,7 @@
             <section class="mb-6 field" ref="associateDescription">
                 {!! Form::label('assocciate_offer[associate_description]','Description du type d\'associé.e.s recherché.e.s', ['class' => 'label']); !!}
                 <text-area-counter
-                        name="assocciate_offer[associate_description]"
+                        name="assocciate_offer[associate_description]">
                         :max-length="1000"
                         v-model="formInput.associateDescription"
                         :vuelidate="$v.formInput.associateDescription">
@@ -190,6 +190,18 @@
                 </text-area-counter>
             </section>
 
+            <section class="mb-6 field" ref="educationLevels">
+                {!! Form::label('associate_offer[education_levels][]', 'Niveau de formation *', ['class' => 'label']); !!}
+
+                <multi-select
+                        :options="{{json_encode($educationLevels)}}"
+                        name="associate_offer[education_levels][]"
+                        v-model="formInput.educationLevels"
+                        placeholder="Sélectionnez un ou plusieurs niveaux"
+                >
+                </multi-select>
+            </section>
+
             <section class="mb-6 field" ref="isActivityTransmission">
                 <b-field>
                     <b-checkbox name="associate_offer[is_activity_transmission]" v-model="formInput.isActivityTransmission"
@@ -200,31 +212,16 @@
                 </b-field>
             </section>
 
-            <section class="mb-6 field" ref="offerGenres">
-                <div class="block">
-                    {!! Form::label('assocciate_offer[offer_genres][]', 'Vous proposez ces terres*', ['class' => 'label']); !!}
-                    @foreach($offerGenres as $offerGenre)
-                        <b-checkbox name="assocciate_offer[offer_genres][]" native-value="{{ $offerGenre["id"] }}"
-                                    v-model="formInput.offerGenres">
-                            {{ $offerGenre["assocciate_offer_label"] }}
-                        </b-checkbox>
-                    @endforeach
-                </div>
-
-                <p id="offerGenreIdError" class="help is-danger" v-if="$v.formInput.offerGenres.$error">
-                    Ce champ est requis.
-                </p>
+            <section class="field mb-6" ref="aboutProject">
+                <?php
+                $aboutProjectTooltip = "";
+                ?>
+                @include('pages.ads.partials.inputs.about_project_content', ['title'=> 'Et si vous nous en disiez un peu plus sur votre projet et vos atttentes ?','tooltip' => $aboutProjectTooltip])
             </section>
 
         </tab-content>
 
         <tab-content title="C'est presque fini !">
-            <section class="field mb-6" ref="aboutProject">
-                <?php
-                $aboutProjectTooltip = "";
-                ?>
-                @include('pages.ads.partials.inputs.about_project_content', ['title'=> 'Et si vous nous en disiez un peu plus sur la transmission de ces terres ?','tooltip' => $aboutProjectTooltip])
-            </section>
 
             <section class="field" ref="aboutContent">
                 @include('pages.ads.partials.inputs.about_content', ['tooltip' => "Présentez vous brièvement : êtes-vous agriculteur, êtes-vous propriétaires, depuis quand, ..."])
