@@ -1,4 +1,3 @@
-{{--if third_party_ad_user_id in php $subtitle = Votre message pour l'annonceur doit ếtre envoyer manuellement --}}
 @php
     $isThirdPartyAd = (bool)$ad->third_party_ad_user_id;
     $subtitle = $isThirdPartyAd ? "Votre message pour l'annonceur doit être envoyé manuellement" : "Votre message";
@@ -19,9 +18,6 @@
     @else
         {!! Form::open(['route' => 'threads.create', 'method'=>'post']) !!}
         <input type="hidden" name="ad_id" value="{{$ad->id}}">
-        {{$ad->thirdPartyAdUser->first_name}}
-        {{$ad->thirdPartyAdUser->last_name}}
-        {{$ad->thirdPartyAdUser->email}}
         <textarea id="textearea_message" required name="content" class="textarea is-medium"
                   placeholder="Votre message..."></textarea>
         @if(auth()->user()->role >= 1 )

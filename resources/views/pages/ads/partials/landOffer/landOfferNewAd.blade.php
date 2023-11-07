@@ -154,6 +154,7 @@
                     {!! Form::label('land_offer[has_buildings]_1',  'Oui' ) !!}
                 </div>
                 <div>
+
                     {!! Form::radio('land_offer[has_buildings]', '0', null , ['id' => 'land_offer[has_buildings]_0', 'v-model' => 'formInput.hasBuildings', ':vuelidate' => '$v.formInput.hasBuildings']) !!}
                     {!! Form::label('land_offer[has_buildings]_0',  'Non' ) !!}
                 </div>
@@ -264,14 +265,20 @@
             </section>
 
             <section class="mb-6 columns is-flex-wrap-wrap">
+                <div class="column is-full" v-if="isSaleOffer">
+                    <b-checkbox class="has-text-weight-bold"
+                                v-model="formInput.isSaleOfferEvaluation">Prix de vente en cours d'évaluation
+                    </b-checkbox>
+                    <input type="hidden" name="land_offer[is_sales_offer_evaluation]" :value="formInput.isSaleOfferEvaluation">
+                </div>
                 <div class="column field" v-if="isSaleOffer" ref="price">
-                    {!! Form::label('land_offer[price]', 'Prix de vente*', [
+                    {!! Form::label('land_offer[price]', 'Prix de vente *', [
                                         'class' => 'label',
                                     ]); !!}
-                    {!! Form::text('land_offer[price]', $old['land_offer']['price'] ?? null, [
+                    {!! Form::text('land_offer[price]', null, [
                                                                 'class' => 'input',
                                                                 'v-model' => 'formInput.price',
-                                                                ':disabled'=>'isInputDisabled',
+                                                                ':disabled'=>'formInput.isSaleOfferEvaluation || false',
                                                             ]) !!}
                     <template v-if="$v.formInput.price.$error">
                         <p class="help is-danger" v-if="$v.formInput.price.required">
@@ -283,13 +290,12 @@
                     </template>
                 </div>
                 <div class="column field" v-if="isRentOffer" ref="rentPrice">
-                    {!! Form::label('land_offer[rent_price]', 'Fermage annuel', [
+                    {!! Form::label('land_offer[rent_price]', 'Fermage annuel *', [
                                         'class' => 'label',
                                     ]); !!}
-                    {!! Form::text('land_offer[rent_price]', $old['land_offer']['rent_price'] ?? null, [
+                    {!! Form::text('land_offer[rent_price]', null, [
                                                                 'class' => 'input',
                                                                 'v-model' => 'formInput.rentPrice',
-                                                                ':disabled'=>'isInputDisabled',
                                                             ]) !!}
                     <template v-if="$v.formInput.rentPrice.$error">
                         <p class="help is-danger" v-if="$v.formInput.rentPrice.required">
@@ -300,15 +306,10 @@
                         </p>
                     </template>
                 </div>
-                <div class="column is-full" v-if="isSaleOffer">
-                    <b-checkbox name="land_offer.is_sales_offer_evaluation"
-                                v-model="formInput.is_sales_offer_evaluation">En cours d'évaluation
-                    </b-checkbox>
-                </div>
             </section>
 
             <section class="mb-6 field" ref="testDescription" v-if="isTestOffer">
-                {!! Form::label('land_offer[test_description]', 'Modalité du test agricole', [
+                {!! Form::label('land_offer[test_description]', 'Modalité du test agricole *', [
                                                         'class' => 'label',
                                                     ]); !!}
                 <text-area-counter
