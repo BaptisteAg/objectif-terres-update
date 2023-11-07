@@ -32,7 +32,7 @@
 
                             </documents-upload>
                             <div><p class="help is-danger"
-                                    v-show="$v.documents.$error && !$v.documents.notCurrentlyUploading"> Vous devez
+                                    v-show="$v.documents?.$error && !$v.documents.notCurrentlyUploading"> Vous devez
                                 attendre la fin du téléversement de vos documents pour envoyer votre message. </p></div>
                         </div>
                         <div v-if='showResponseTemplates === false ' class="control ">

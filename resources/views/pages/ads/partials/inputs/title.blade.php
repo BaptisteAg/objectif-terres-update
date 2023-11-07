@@ -19,7 +19,7 @@
               'v-model.trim' => 'formInput.title',
               'ref' => 'title',
               'aria-describedby'=>'titleError']) !!}
-    <p class="help is-danger" id="titleError" v-if="$v.formInput.title.$error">Ce champ est requis.</p>
+    <p class="help is-danger" id="titleError" v-if="$v.formInput.title?.$error">Ce champ est requis.</p>
     <p class="help is-danger" v-show="!$v.formInput.title.minLength">Le titre de votre annonce doit faire au
         minimum
         @{{$v.formInput.title.$params.minLength.min}} caractères .</p>

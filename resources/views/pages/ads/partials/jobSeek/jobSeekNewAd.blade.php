@@ -32,6 +32,7 @@
                 ]); !!}
 
                 @foreach($jobOfferTypes as $jobOfferType)
+                    {{-- TODO: remove later when there isn't anymore ads with value 3 --}}
                     @if($jobOfferType["id"] !== 3)
                         <b-checkbox name="job_seek[offer_types][]" native-value="{{ $jobOfferType["id"] }}"
                                     v-model="formInput.offerTypes">
