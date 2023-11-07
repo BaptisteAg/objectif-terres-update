@@ -12,7 +12,7 @@
 				v-model="value"
 				:multiple="true">
 			</autocomplete>
-			<div v-if="vuelidate" v-show="vuelidate.$error">
+			<div v-if="vuelidate" v-show="vuelidate?.$error">
 				<p class="help is-danger">
 					Vous devez sélectionner au minimum une zone géographique.
 				</p>
