@@ -125,6 +125,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
      */
     public function update($ad, array $data): Ad
     {
+
         if (!isset($data["accept_share_contact_infos"])) {
             $data["accept_share_contact_infos"] = 0;
         }
@@ -132,6 +133,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         if (!is_a($ad, Ad::class)) {
             $ad = $this->find($ad);
         }
+
         $this->save($ad, $data);
         return $ad;
     }
@@ -154,8 +156,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             $data["department_id"] = $city->department->id;
         }
 
+
         $ad->fill($data);
         $ad->save();
+
 
         // If department is set but there are no other locationable
         if (isset($data["department_id"])) {
