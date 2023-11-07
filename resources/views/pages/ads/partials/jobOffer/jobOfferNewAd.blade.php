@@ -76,7 +76,7 @@
                     {!! Form::label('job_offer[is_activity_transmission]_0',  'Non' ) !!}
                 </div>
                 <p class="help is-danger w-100"
-                   v-if="$v.formInput.isActivityTransmission.$error">
+                   v-if="$v.formInput.isActivityTransmission?.$error">
                     Ce champ est requis.
                 </p>
             </section>

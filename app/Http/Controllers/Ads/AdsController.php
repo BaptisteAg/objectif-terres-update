@@ -42,6 +42,8 @@ class AdsController extends BaseController
     {
         $ad = $this->store($request, 0);
 
+        //return redirect()->back()->withInput()->withErrors("test back with error");
+
         return redirect()->route('ads.preview', ["id" => $ad->id]);
     }
 
