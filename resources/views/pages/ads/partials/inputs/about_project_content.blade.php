@@ -6,7 +6,7 @@ if (!isset($title)) {
 @if(!empty($tooltip))
     <b-tooltip class="w-100"
                label="{{$tooltip}}">
-        @endif
+@endif
         <label class="label is-inline-block"
                for="about_project_content">
             {{$title}}{{ ($required ?? true) ? ' *' : '' }}
@@ -16,9 +16,9 @@ if (!isset($title)) {
         <text-area-counter
                 name="about_project_content"
                 :max-length="1500"
-                :disabled="isInputDisabled"
                 v-model="formInput.aboutProject"
                 :vuelidate="$v.formInput.aboutProject">
         </text-area-counter>
-        @if(!empty($tooltip))</b-tooltip>
+@if(!empty($tooltip))
+    </b-tooltip>
 @endif

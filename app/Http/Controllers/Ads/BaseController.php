@@ -93,7 +93,7 @@ abstract class BaseController extends Controller
             array_map($this->locationService->getResultRenderer('departments'), array_filter([$ad->department?->toArray()])),
         )));
 
-        $zoneDepartments = $ad->departments->except($ad->department->id)->toArray();
+        $zoneDepartments = $ad->departments->except($ad->department?->id)->toArray();
         $selected_zones = json_encode(array_filter(array_merge(
             array_map($this->locationService->getResultRenderer('regions'), $ad->regions->toArray()),
             array_map($this->locationService->getResultRenderer('departments'), $zoneDepartments),
