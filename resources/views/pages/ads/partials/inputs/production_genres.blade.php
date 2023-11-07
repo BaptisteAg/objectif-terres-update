@@ -13,7 +13,7 @@
         :is-input-disabled="isInputDisabled">
     @if($isRequired ?? false)
         <p class="help is-danger" id="productionGenresError"
-           v-if="$v.{{ $vModel }}.$error">
+           v-if="$v.{{ $vModel }}?.$error">
             Ce champ est requis.
         </p>
     @endif
