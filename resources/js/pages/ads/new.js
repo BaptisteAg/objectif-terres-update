@@ -3,6 +3,7 @@ import LandOfferNewAd from './components/land-offer-new-ad'
 import JobOfferNewAd from './components/job-offer-new-ad'
 import JobSeekNewAd from './components/job-seek-new-ad'
 import AssociateSeekNewNad from './components/associate-seek-new-ad'
+import AssociateOfferNewNad from './components/associate-offer-new-ad'
 import AdTypeSelect from '../../components/AdTypeSelect'
 import OldAdTypeSelect from '../../components/AdTypeSelect.v1.vue'
 
@@ -16,6 +17,7 @@ Vue.component('new-ad', {
         'new-job-offer-ad': JobOfferNewAd,
         'new-job-seek-ad': JobSeekNewAd,
         'new-associate-seek-ad': AssociateSeekNewNad,
+        'new-associate-offer-ad': AssociateOfferNewNad,
         AdTypeSelect,
         OldAdTypeSelect
     },
@@ -93,7 +95,7 @@ Vue.component('new-ad', {
             }
         },
         enabledFormHasErrors() {
-            let hasErrors = this.enabledForm && this.enabledForm.$v.$error
+            let hasErrors = this.enabledForm && this.enabledForm.$v?.$error
             return hasErrors;
         },
         setEnabledForm(form) {

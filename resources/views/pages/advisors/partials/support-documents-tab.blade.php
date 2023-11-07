@@ -80,7 +80,7 @@
 						<input type="hidden" name="documents" :value="JSON.stringify(documents)">
 						<div>
 							<p class="help is-danger"
-							   v-show="$v.documents.$error && !$v.documents.notCurrentlyUploading">
+							   v-show="$v.documents?.$error && !$v.documents.notCurrentlyUploading">
 								Vous devez attendre la fin du téléversement de vos documents pour publier.
 							</p>
 						</div>
