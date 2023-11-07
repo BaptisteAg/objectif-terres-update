@@ -160,6 +160,7 @@ class  AdService
     {
         DB::beginTransaction();
 
+
         $attributionAdData = [];
 
         $adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);

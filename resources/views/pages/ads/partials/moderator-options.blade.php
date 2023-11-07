@@ -55,11 +55,11 @@
                         <p>Choisissez l’action à effectuer sur cette annonce.</p>
                         <div class="buttons mt-5">
                             @foreach($buttons as $index => $button)
-                                {{--                                @if($isAdToModerate && $isLoggedUserModeratorAd || (!$isAdToModerate && $isLoggedUserModeratorAd && $ad->attributionAd->adStatus->name !== $button['status']))--}}
-                                <b-button type="{{ $button['type'] }}"
-                                          @click="showModerationModal('{{ $button['action'] }}')"
-                                          rounded>{{ $button['text'] }}</b-button>
-                                {{--                                @endif--}}
+                                @if($isAdToModerate && $isLoggedUserModeratorAd || (!$isAdToModerate && $isLoggedUserModeratorAd && $ad->attributionAd->adStatus->name !== $button['status']))
+                                    <b-button type="{{ $button['type'] }}"
+                                              @click="showModerationModal('{{ $button['action'] }}')"
+                                              rounded>{{ $button['text'] }}</b-button>
+                                @endif
                                 @if($index === 1)
                                     <b-button onclick="return confirm('Êtes vous sûr·e ?')" tag="a"
                                               href="{{  route('ads.archive', [ $ad->id]) }}"

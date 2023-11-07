@@ -102145,11 +102145,12 @@ var numberNormalizer = function numberNormalizer(inputName) {
     //    supportRequestTerritoryId : v.support_request_territory_id ||"",
     //} : {};
 
+    console.log(old.land_offer.accept_use_zip_code);
     return {
       formInput: {
         selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
         selectedZones: old.selected_zones && JSON.parse(old.selected_zones) || [],
-        acceptUseZipCode: old.land_offer.accept_use_zip_code || 1,
+        acceptUseZipCode: old.land_offer.accept_use_zip_code,
         surface: old.land_offer.surface || '',
         sauDescription: old.land_offer.sau_description || '',
         productionGenres: old.land_offer.production_genres || [],
@@ -102158,13 +102159,13 @@ var numberNormalizer = function numberNormalizer(inputName) {
         waterAccess: typeof old.land_offer.water_access !== "undefined" ? old.land_offer.water_access : '',
         waterAccessDescription: old.land_offer.water_access_description || '',
         altitude: old.land_offer.altitude || '',
-        hasBuildings: old.land_offer.has_buildings ? old.land_offer.has_buildings.toString() : '',
+        hasBuildings: old.land_offer.has_buildings ? 1 : 0,
         buildingDescription: old.land_offer.building && old.land_offer.building.description || '',
-        hasHouses: old.land_offer.has_houses ? old.land_offer.has_houses.toString() : '',
+        hasHouses: old.land_offer.has_houses ? 1 : 0,
         houseDescription: old.land_offer.house && old.land_offer.house.description || '',
         offerGenres: old.land_offer.offer_genres || [],
         price: old.land_offer.price || '',
-        is_sales_offer_evaluation: old.is_sales_offer_evaluation || false,
+        isSaleOfferEvaluation: old.land_offer.is_sales_offer_evaluation,
         rentPrice: old.land_offer.rent_price || '',
         testDescription: old.land_offer.test_description || '',
         chartConfirmation: old.chart_confirmation || false,
@@ -102314,17 +102315,12 @@ var numberNormalizer = function numberNormalizer(inputName) {
         },
         price: {
           decimal: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["decimal"],
-          required: function required(v) {
-            return this.isSaleOffer && !this.isSupportRequest ? !!v : true;
-          }
+          required: this.formInput.offerGenres.includes(1) && !this.formInput.isSaleOfferEvaluation
         },
         rentPrice: {
-          decimal: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["decimal"]
-          /*required(v) {
-              return this.isRentOffer ? !!v : true
-          }*/
+          decimal: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["decimal"],
+          required: this.formInput.offerGenres.includes(2)
         },
-
         testDescription: {
           minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(5),
           maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(1000)
