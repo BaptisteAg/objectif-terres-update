@@ -67,7 +67,7 @@ class AdsController extends BaseController
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function edit(int $id)
+    public function edit(int $id): \Illuminate\View\View
     {
         $ad = $this->adService->find($id);
 
@@ -329,7 +329,6 @@ class AdsController extends BaseController
         }
         $ad = $this->adService->store($data);
 
-//        dd($ad);
         return $ad;
     }
 }
