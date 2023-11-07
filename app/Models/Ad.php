@@ -281,32 +281,22 @@ class Ad extends Model implements HasPresenter
     }
 
     /**
-     * @return hasOne
-     */
-    public function associateSeekAd(): hasOne
-    {
-        return $this->hasOne(AssociateSeekAd::class);
-    }
-
-    /**
      * Get all cities 'location' for the ad
-     * @return MorphToMany
      */
-    public function cities()
+    public function cities(): MorphToMany
     {
         return $this->morphedbyMany(City::class, 'locationable_ad')->withPivot('radius');
     }
 
     /**
      * Get all cities 'location' for the ad
-     * @return MorphToMany
      */
-    public function departments()
+    public function departments(): MorphToMany
     {
         return $this->morphedbyMany(Department::class, 'locationable_ad');
     }
 
-    public function department()
+    public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class);
     }

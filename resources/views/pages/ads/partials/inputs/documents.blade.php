@@ -37,7 +37,7 @@
         Vous ne pouvez déposer qu'un seul fichier PDF ou Word. Veuillez supprimer ceux que vous ne souhaitez pas
         conserver.
     </p>
-    <p class="help is-danger" v-show="$v.formInput.documents.$error && !$v.formInput.documents.notCurrentlyUploading">
+    <p class="help is-danger" v-show="$v.formInput.documents?.$error && !$v.formInput.documents.notCurrentlyUploading">
         Vous devez attendre la fin du téléversement de vos documents pour publier.
     </p>
 </div>

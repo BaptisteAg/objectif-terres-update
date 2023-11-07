@@ -15,12 +15,12 @@
             </p>
         </div>
 
-        <div v-if="vuelidate" v-show="vuelidate.$error">
-            <p class="help is-danger" v-show="!vuelidate.minLength">
+        <div v-if="vuelidate" v-show="vuelidate?.$error">
+            <p class="help is-danger" v-show="!vuelidate?.minLength">
                 Le contenu doit faire au minimum
                 {{vuelidate.$params.minLength.min}} caractères.
             </p>
-            <p class="help is-danger" v-if="!vuelidate.maxLength">
+            <p class="help is-danger" v-if="!vuelidate?.maxLength">
                 Vous avez dépassé la limite de
                 {{vuelidate.$params.maxLength.max}} caractères.
             </p>
