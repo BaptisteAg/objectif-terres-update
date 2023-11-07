@@ -7,6 +7,7 @@ use App\Models\AdStatus;
 use App\Models\City;
 use App\Models\CmsPage;
 use App\Models\Department;
+use App\Models\OfferGenre;
 use App\Models\ProjectDataKey;
 use App\Models\ProjectStatus;
 use App\Models\Region;
@@ -423,10 +424,10 @@ class  AdService
         $subAdData["ad_id"] = $ad->id;
 
         if (isset($subAdData["offer_genres"])) {
-            if (!in_array("1", $subAdData["offer_genres"], true)) {
+            if (!in_array(OfferGenre::ID_VENTE, $subAdData["offer_genres"], true)) {
                 $subAdData["price"] = null;
             }
-            if (!in_array("2", $subAdData["offer_genres"], true)) {
+            if (!in_array(OfferGenre::ID_LOCATION, $subAdData["offer_genres"], true)) {
                 $subAdData["rent_price"] = null;
             }
         }

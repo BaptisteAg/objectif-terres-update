@@ -122,16 +122,28 @@
                     </new-job-offer-ad>
 
                     <new-associate-seek-ad inline-template
-                                     v-if="adTypeSelected === 'associate_seek'"
-                                     :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
-                                     @input-enabled="setEnabledForm"
-                                     @form-complete="submitProxy"
-                                     @submit-save-button="submitProxy"
-                                     @click-save-button="onSaveClick"
-                                     @click-publish-button="onPublishClick"
-                                     ref="associate_seek">
+                                           v-if="adTypeSelected === 'associate_seek'"
+                                           :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                           @input-enabled="setEnabledForm"
+                                           @form-complete="submitProxy"
+                                           @submit-save-button="submitProxy"
+                                           @click-save-button="onSaveClick"
+                                           @click-publish-button="onPublishClick"
+                                           ref="associate_seek">
                         @include('pages.ads.partials.associateSeek.associateSeekNewAd')
                     </new-associate-seek-ad>
+
+                    <new-associate-offer-ad inline-template
+                                           v-if="adTypeSelected === 'associate_offer'"
+                                           :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                           @input-enabled="setEnabledForm"
+                                           @form-complete="submitProxy"
+                                           @submit-save-button="submitProxy"
+                                           @click-save-button="onSaveClick"
+                                           @click-publish-button="onPublishClick"
+                                           ref="associate_offer">
+                        @include('pages.ads.partials.associateOffer.associateOfferNewAd')
+                    </new-associate-offer-ad>
 
                 </form>
             </new-ad>
