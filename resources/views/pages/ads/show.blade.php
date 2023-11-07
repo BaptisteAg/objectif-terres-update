@@ -87,13 +87,15 @@
                 <div class="buttons pt-4">
                     <b-button rounded tag="a" href="{{route('ads.edit', ['id' => $ad->id])}}">Modifier</b-button>
                     <b-button rounded type="is-success" tag="a"
-                              href="{{route('ads.request-publishing', ['id' => $ad->id])}}">Soumettre
+                              href="{{route('ads.request-publishing', ['id' => $ad->id])}}">Demander la publication
                     </b-button>
                 </div>
             </b-message>
         @endif
 
         <h1 class="title is-1 has-background-black has-text-white">Type : {{$ad->type}}</h1>
+        <h1 class="title is-1 has-background-black has-text-white">accept_share_contact_infos
+            : {{$ad->accept_share_contact_infos}}</h1>
 
         @if($ad->type === 'landSeekAd')
             @include('pages.ads.partials.landSeek.landSeekShow')
