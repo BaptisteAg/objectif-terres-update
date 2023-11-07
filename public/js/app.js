@@ -4984,8 +4984,59 @@ render._withStripped = true;
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function render() {};
+var render = function render() {
+  var _vm$vuelidate, _vm$vuelidate2, _vm$vuelidate3;
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", {
+    staticClass: "text-area-counter-container"
+  }, [_c("textarea", {
+    staticClass: "textarea",
+    attrs: {
+      id: _vm.name,
+      name: _vm.name,
+      required: _vm.required,
+      disabled: _vm.disabled,
+      maxlength: _vm.maxLength,
+      placeholder: _vm.placeholder
+    },
+    on: {
+      input: _vm.onInput
+    }
+  }, [_vm._v(_vm._s(_vm.text))]), _vm._v(" "), _c("p", {
+    staticClass: "text-area-counter-value is-size-7 is-pulled-right",
+    style: {
+      color: _vm.color
+    }
+  }, [_vm._v("\n            " + _vm._s(_vm.text.length) + "/ " + _vm._s(_vm.maxLength) + "\n        ")])]), _vm._v(" "), _vm.vuelidate ? _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm$vuelidate = _vm.vuelidate) === null || _vm$vuelidate === void 0 ? void 0 : _vm$vuelidate.$error,
+      expression: "vuelidate?.$error"
+    }]
+  }, [_c("p", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !((_vm$vuelidate2 = _vm.vuelidate) !== null && _vm$vuelidate2 !== void 0 && _vm$vuelidate2.minLength),
+      expression: "!vuelidate?.minLength"
+    }],
+    staticClass: "help is-danger"
+  }, [_vm._v("\n            Le contenu doit faire au minimum\n            " + _vm._s(_vm.vuelidate.$params.minLength.min) + " caractères.\n        ")]), _vm._v(" "), !((_vm$vuelidate3 = _vm.vuelidate) !== null && _vm$vuelidate3 !== void 0 && _vm$vuelidate3.maxLength) ? _c("p", {
+    staticClass: "help is-danger"
+  }, [_vm._v("\n            Vous avez dépassé la limite de\n            " + _vm._s(_vm.vuelidate.$params.maxLength.max) + " caractères.\n        ")]) : _vm._e(), _vm._v(" "), _c("p", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: typeof _vm.vuelidate.required !== "undefined" && !_vm.vuelidate.required,
+      expression: "typeof vuelidate.required !== 'undefined' && !vuelidate.required"
+    }],
+    staticClass: "help is-danger"
+  }, [_vm._v("\n            Ce champ est requis.\n        ")])]) : _vm._e()]);
+};
 var staticRenderFns = [];
+render._withStripped = true;
 
 
 /***/ }),
@@ -5103,8 +5154,99 @@ render._withStripped = true;
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function render() {};
+var render = function render() {
+  var _vm$vuelidate;
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("div", [_c("label", {
+    staticClass: "label",
+    attrs: {
+      "for": _vm.id
+    }
+  }, [_vm._v(_vm._s(_vm.label) + "\n          "), _vm.hasTooltip ? _c("i", {
+    staticClass: "fas fa-info-circle has-text-info"
+  }) : _vm._e()]), _vm._v(" "), _c("autocomplete", {
+    attrs: {
+      id: _vm.id,
+      disabled: _vm.disabled,
+      src: _vm.src,
+      "data-renderer": _vm.helper.renderZoneItemData,
+      multiple: true
+    },
+    model: {
+      value: _vm.value,
+      callback: function callback($$v) {
+        _vm.value = $$v;
+      },
+      expression: "value"
+    }
+  }), _vm._v(" "), _vm.vuelidate ? _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm$vuelidate = _vm.vuelidate) === null || _vm$vuelidate === void 0 ? void 0 : _vm$vuelidate.$error,
+      expression: "vuelidate?.$error"
+    }]
+  }, [_c("p", {
+    staticClass: "help is-danger"
+  }, [_vm._v("\n\t\t\t\t\tVous devez sélectionner au minimum une zone géographique.\n\t\t\t\t")])]) : _vm._e(), _vm._v(" "), _vm.value.length ? _c("h4", {
+    staticClass: "pt-2"
+  }, [_vm._v("Votre sélection :")]) : _vm._e(), _vm._v(" "), _vm._l(_vm.value, function (zone, i) {
+    return _c("div", {
+      staticClass: "selected-zone is-flex is-align-content-center"
+    }, [_c("span", {
+      attrs: {
+        "data-tooltip": "Retirer cette localisation"
+      },
+      on: {
+        click: function click(_) {
+          return _vm.value.splice(i, 1);
+        }
+      }
+    }, [_c("b-icon", {
+      staticClass: "is-clickable",
+      attrs: {
+        icon: "delete-outline",
+        size: "is-medium"
+      }
+    })], 1), _vm._v(" "), _c("b", {
+      staticClass: "is-align-self-center"
+    }, [_vm._v(_vm._s(_vm.helper.getLabel(zone.value.type)))]), _vm._v(" "), _c("div", {
+      staticClass: "is-align-self-center"
+    }, [_vm._v(" : " + _vm._s(zone.value.originalLabel || zone.label))]), _vm._v(" "), zone.value.id ? _c("input", {
+      attrs: {
+        type: "hidden",
+        disabled: _vm.disabled,
+        name: _vm.name + "[" + zone.value.type + "][]"
+      },
+      domProps: {
+        value: zone.value.id
+      }
+    }) : _vm._e(), _vm._v(" "), zone.value.ids ? _vm._l(zone.value.ids, function (id) {
+      return _c("input", {
+        attrs: {
+          type: "hidden",
+          disabled: _vm.disabled,
+          name: _vm.name + "[" + _vm.helper.getInputNameRangeMapping(zone.value.type) + "][]"
+        },
+        domProps: {
+          value: id
+        }
+      });
+    }) : _vm._e()], 2);
+  }), _vm._v(" "), _c("input", {
+    attrs: {
+      type: "hidden",
+      disabled: _vm.disabled,
+      name: _vm.jsonName
+    },
+    domProps: {
+      value: JSON.stringify(_vm.value)
+    }
+  })], 2)]);
+};
 var staticRenderFns = [];
+render._withStripped = true;
 
 
 /***/ }),
@@ -6257,8 +6399,189 @@ render._withStripped = true;
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function render() {};
-var staticRenderFns = [];
+var render = function render() {
+  var _vm$$v$documents;
+  var _vm = this,
+    _c = _vm._self._c;
+  return !_vm.isThreadBlocked ? _c("div", [_vm.activeThreadId ? _c("div", {
+    staticClass: "content"
+  }, [_vm.isThreadRelatedToUser ? _c("div", [_c("form", {
+    on: {
+      submit: _vm.formSubmit
+    }
+  }, [_c("label", {
+    staticClass: "label has-text-black",
+    attrs: {
+      id: "reply-input-label",
+      "for": "reply-input"
+    }
+  }, [_vm._v(" Répondre")]), _vm._v(" "), _c("div", {
+    staticClass: "field"
+  }, [_c("div", {
+    "class": [_vm.isLoading ? "control is-expanded  has-icons-left is-loading " : "control is-expanded  has-icons-left"]
+  }, [_c("input", {
+    attrs: {
+      type: "hidden",
+      name: "thread_id"
+    },
+    domProps: {
+      value: _vm.activeThreadId
+    }
+  }), _vm._v(" "), _c("vue-editor", {
+    attrs: {
+      disabled: _vm.isLoading,
+      id: "reply-input",
+      name: "content",
+      type: "text",
+      placeholder: "Votre message...",
+      editorToolbar: [["bold", "underline"], [{
+        list: "ordered"
+      }, {
+        list: "bullet"
+      }], ["link", "image"]]
+    },
+    model: {
+      value: _vm.content,
+      callback: function callback($$v) {
+        _vm.content = $$v;
+      },
+      expression: "content"
+    }
+  })], 1), _vm._v(" "), _c("br"), _vm._v(" "), _c("div", {
+    staticClass: "field is-grouped"
+  }, [_c("a", {}, [_c("p", {
+    staticClass: "control is-expanded text_primary has-text-underline",
+    staticStyle: {
+      cursor: "pointer"
+    },
+    on: {
+      click: function click($event) {
+        _vm.openDocumentUpload = !_vm.openDocumentUpload;
+      }
+    }
+  }, [_vm._m(0), _vm._v(" "), _c("span", [_vm._v("Envoyer un fichier")])])])]), _vm._v(" "), _vm.openDocumentUpload ? _c("div", [_c("documents-upload", {
+    ref: "documents",
+    attrs: {
+      name: "documents",
+      type: "message",
+      url: "/documents/upload",
+      "extra-data": {
+        thread_id: this.activeThreadId
+      }
+    },
+    model: {
+      value: _vm.documents,
+      callback: function callback($$v) {
+        _vm.documents = $$v;
+      },
+      expression: "documents"
+    }
+  }), _vm._v(" "), _c("div", [_c("p", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: ((_vm$$v$documents = _vm.$v.documents) === null || _vm$$v$documents === void 0 ? void 0 : _vm$$v$documents.$error) && !_vm.$v.documents.notCurrentlyUploading,
+      expression: "$v.documents?.$error && !$v.documents.notCurrentlyUploading"
+    }],
+    staticClass: "help is-danger"
+  }, [_vm._v(" Vous devez\n                            attendre la fin du téléversement de vos documents pour envoyer votre message. ")])])], 1) : _vm._e(), _vm._v(" "), _vm.showResponseTemplates === false ? _c("div", {
+    staticClass: "control"
+  }, [_vm._m(1)]) : _vm._e()]), _vm._v(" "), _vm.showResponseTemplates ? _c("div", [_c("label", {
+    staticClass: "label"
+  }, [_vm._v("Envoyer un message type")]), _vm._v(" "), _c("div", {
+    staticClass: "field is-grouped"
+  }, [_c("p", {
+    staticClass: "control is-expanded"
+  }, [_c("span", {
+    "class": [_vm.isLoading ? "select is-fullwidth is-loading " : "select is-fullwidth"]
+  }, [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model.trim",
+      value: _vm.content,
+      expression: "content",
+      modifiers: {
+        trim: true
+      }
+    }],
+    attrs: {
+      disabled: _vm.isLoading
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.content = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      disabled: "",
+      selected: "selected"
+    }
+  }, [_vm._v("Choisissez votre message type...")]), _vm._v(" "), _vm._l(_vm.responseTemplates, function (responseTemplate) {
+    return _c("option", {
+      domProps: {
+        value: responseTemplate.content
+      }
+    }, [_vm._v(_vm._s(responseTemplate.title) + "\n                                ")]);
+  })], 2)])])]), _vm._v(" "), _vm.showLinkNewResponseTemplate ? _c("div", {
+    staticClass: "field is-grouped"
+  }, [_vm._m(2)]) : _vm._e(), _vm._v(" "), _c("br"), _vm._v(" "), _c("p", {
+    staticClass: "control content-send-message-button"
+  }, [_c("button", {
+    staticClass: "button basic form-button primary button-send-message",
+    attrs: {
+      disabled: _vm.isLoading
+    }
+  }, [_vm._m(3), _vm._v(" "), _c("span", [_vm._v("Envoyer")])])])]) : _vm._e()])]) : _vm._e()]) : _vm._e()]) : _vm._e();
+};
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("span", {
+    staticClass: "icon"
+  }, [_c("i", {
+    staticClass: "fas fa-paperclip"
+  })]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("button", {
+    staticClass: "button basic primary form-button button-send-message"
+  }, [_c("span", {
+    staticClass: "icon is-small"
+  }, [_c("i", {
+    staticClass: "fas fa-paper-plane"
+  })]), _vm._v(" "), _c("span", [_vm._v("Envoyer")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("p", {
+    staticClass: "control is-expanded"
+  }, [_c("a", {
+    attrs: {
+      href: "/gestion-reponse-types"
+    }
+  }, [_c("span", {
+    staticClass: "icon"
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  })]), _vm._v(" "), _c("span", [_vm._v("Créer un nouveau message type")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("span", {
+    staticClass: "icon is-small"
+  }, [_c("i", {
+    staticClass: "fas fa-paper-plane"
+  })]);
+}];
+render._withStripped = true;
 
 
 /***/ }),
@@ -101826,11 +102149,12 @@ var numberNormalizer = function numberNormalizer(inputName) {
     //    supportRequestTerritoryId : v.support_request_territory_id ||"",
     //} : {};
 
+    console.log(old.land_offer.accept_use_zip_code);
     return {
       formInput: {
         selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
         selectedZones: old.selected_zones && JSON.parse(old.selected_zones) || [],
-        acceptUseZipCode: old.land_offer.accept_use_zip_code || 1,
+        acceptUseZipCode: old.land_offer.accept_use_zip_code,
         surface: old.land_offer.surface || '',
         sauDescription: old.land_offer.sau_description || '',
         productionGenres: old.land_offer.production_genres || [],
@@ -101839,13 +102163,13 @@ var numberNormalizer = function numberNormalizer(inputName) {
         waterAccess: typeof old.land_offer.water_access !== "undefined" ? old.land_offer.water_access : '',
         waterAccessDescription: old.land_offer.water_access_description || '',
         altitude: old.land_offer.altitude || '',
-        hasBuildings: old.land_offer.has_buildings ? old.land_offer.has_buildings.toString() : '',
+        hasBuildings: old.land_offer.has_buildings ? 1 : 0,
         buildingDescription: old.land_offer.building && old.land_offer.building.description || '',
-        hasHouses: old.land_offer.has_houses ? old.land_offer.has_houses.toString() : '',
+        hasHouses: old.land_offer.has_houses ? 1 : 0,
         houseDescription: old.land_offer.house && old.land_offer.house.description || '',
         offerGenres: old.land_offer.offer_genres || [],
         price: old.land_offer.price || '',
-        is_sales_offer_evaluation: old.is_sales_offer_evaluation || false,
+        isSaleOfferEvaluation: old.land_offer.is_sales_offer_evaluation,
         rentPrice: old.land_offer.rent_price || '',
         testDescription: old.land_offer.test_description || '',
         chartConfirmation: old.chart_confirmation || false,
@@ -101995,17 +102319,12 @@ var numberNormalizer = function numberNormalizer(inputName) {
         },
         price: {
           decimal: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["decimal"],
-          required: function required(v) {
-            return this.isSaleOffer && !this.isSupportRequest ? !!v : true;
-          }
+          required: this.formInput.offerGenres.includes(1) && !this.formInput.isSaleOfferEvaluation
         },
         rentPrice: {
-          decimal: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["decimal"]
-          /*required(v) {
-              return this.isRentOffer ? !!v : true
-          }*/
+          decimal: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["decimal"],
+          required: this.formInput.offerGenres.includes(2)
         },
-
         testDescription: {
           minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(5),
           maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(1000)
