@@ -10,7 +10,7 @@ class LandOfferRuleset implements RulesetInterface
 	{
 		$rules = [
             'land_description' => ['nullable', 'string', 'max:1000'],
-            'land_offer.production_genre' => [new HasProductionGenre],
+            'land_offer.production_genres' => [new HasProductionGenre],
             'land_offer.production_type_add' => ['nullable', 'string'],
             'land_offer.secondary_production_genres' => ['nullable', 'array'],
             'land_offer.secondary_production_type_add' => ['nullable', 'string'],

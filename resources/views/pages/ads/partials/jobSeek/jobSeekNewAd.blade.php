@@ -53,17 +53,17 @@
                 ])
             </section>
 
-            <section class="mb-6 field" ref="secondaryProductionGenres">
+            <section class="mb-6 field" ref="productionGenresSecondary">
                 {!! Form::label('job_seek[secondary_production_genres][]', 'Production agricole secondaire envisagée *', ['class' => 'label']); !!}
                 <?php
-                $secondaryProductionGenresParams = [
+                $productionGenresSecondaryParams = [
                     'name' => 'job_seek[secondary_production_genres][]',
                     'productionGenres' => $productionGenres,
-                    'vModel' => 'formInput.secondaryProductionGenres',
+                    'vModel' => 'formInput.productionGenresSecondary',
                     'isRequired' => true,
                 ];
                 ?>
-                @include('pages.ads.partials.inputs.production_genres', $secondaryProductionGenresParams)
+                @include('pages.ads.partials.inputs.production_genres', $productionGenresSecondaryParams)
             </section>
 
         </tab-content>

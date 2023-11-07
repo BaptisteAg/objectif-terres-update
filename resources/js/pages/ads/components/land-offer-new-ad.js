@@ -66,7 +66,7 @@ export default {
                 surface: old.land_offer.surface || '',
                 sauDescription: old.land_offer.sau_description || '',
                 productionGenres: old.land_offer.production_genres || [],
-                productionGenresSecondary: old.land_offer.production_genres_secondary || [],
+                productionGenresSecondary: old.land_offer.secondary_production_genres || [],
                 bioCertifications: old.land_offer.bio_certifications || [],
                 waterAccess: typeof old.land_offer.water_access !== "undefined" ?
                     old.land_offer.water_access : '',
@@ -90,7 +90,6 @@ export default {
                 title: old.title || '',
                 documents: old.documents && JSON.parse(old.documents) || [],
 
-                secondProductionGenres: old.land_offer.secondary_production_genres || [],
                 //confirmPriceFermage: hasOld ? !!v.confirm_price_fermage : false,
 
                 //...extraFormInput
