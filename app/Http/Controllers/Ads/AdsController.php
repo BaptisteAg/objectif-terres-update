@@ -329,6 +329,7 @@ class AdsController extends BaseController
         }
         $ad = $this->adService->store($data);
 
+//        dd($ad);
         return $ad;
     }
 }

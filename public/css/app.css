@@ -20205,7 +20205,8 @@ html {
   min-height: 40vh;
 }
 
-.objT-border {
+.objT-border,
+.carousel-items {
   border-radius: 12px;
 }
 
@@ -20369,6 +20370,10 @@ TEXT FONT
 
 .title.is-5 {
   line-height: 30px;
+}
+
+.title.is-4 {
+  line-height: 36px;
 }
 
 .title {

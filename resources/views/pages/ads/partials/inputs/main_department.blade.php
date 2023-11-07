@@ -26,7 +26,7 @@
                 <i class="fa fa-trash" style="cursor:pointer; margin-left: 0.5em;"></i>
             </div>
         </template>
-        <input type="hidden" :disabled="disabled" name="selected_departments" :value="JSON.stringify(formInput.selectedDepartments)">
+        <input type="hidden" name="selected_departments" :value="JSON.stringify(formInput.selectedDepartments)">
     </autocomplete>
     <p class="help is-danger" id="titleError" v-if="$v.formInput.selectedDepartments?.$error">Ce champ est requis.</p>
 </section>
