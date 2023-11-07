@@ -55,7 +55,7 @@ export default Vue.extend({
                 title: old.title || '',
                 documents: old.documents && JSON.parse(old.documents) || [],
                 chartConfirmation: old.chart_confirmation || false,
-                secondProductionGenres: old.land_seek.secondary_production_genres || [],
+                productionGenresSecondary: old.land_seek.secondary_production_genres || [],
                 secondProductionTypeAdd: old.land_seek.secondary_production_type_add || ''
             }
         }
@@ -64,8 +64,8 @@ export default Vue.extend({
         productionGenresHasOther() {
             return this.formInput.productionGenres.includes('other');
         },
-        secondProductionGenresHasOther() {
-            return this.formInput.secondProductionGenres.includes('other');
+        productionGenresSecondaryHasOther() {
+            return this.formInput.productionGenresSecondary.includes('other');
         },
     },
     watch: {

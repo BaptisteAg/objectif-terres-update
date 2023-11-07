@@ -102,16 +102,16 @@
                      ]) !!}
             </section>
 
-            <section class="mb-6 field" ref="productionTypeAdd">
+            <section class="mb-6 field" ref="productionGenresSecondary">
                 {!! Form::label('land_seek[secondary_production_genres][]', 'Production agricole secondaire envisagée', ['class' => 'label']); !!}
                 @include('pages.ads.partials.inputs.production_genres', [
                     'name' => 'land_seek[secondary_production_genres][]',
                     'productionGenres' => $productionGenres,
-                    'vModel' => 'formInput.secondProductionGenres'
+                    'vModel' => 'formInput.productionGenresSecondary'
                 ])
             </section>
 
-            <section class="mb-6 field" v-show="secondProductionGenresHasOther">
+            <section class="mb-6 field" v-show="productionGenresSecondaryHasOther">
                 {!! Form::label('land_seek[secondary_production_type_add]', 'Autre production secondaire : Veuillez préciser', ['class' => 'label']); !!}
                 {!! Form::text('land_seek[secondary_production_type_add]',
                      null, [
