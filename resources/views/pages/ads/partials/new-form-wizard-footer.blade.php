@@ -26,7 +26,7 @@
                       @keyup.enter="props.nextTab"
                       size="is-medium"
                       class="ml-2" rounded type="is-danger">
-                    Demander la publication
+                    Visualiser mon annonce
             </b-button>
         </wizard-button>
     </div>
