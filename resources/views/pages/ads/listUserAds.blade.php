@@ -3,162 +3,139 @@
 @section ('title', 'Consulter la liste de vos annonces')
 
 @section('main-content')
-    <section class="section">
-        <div class="container">
-            <h1 class="page__title">Liste de mes annonces</h1>
-            @if(count($ads) <=1)
-                <h2 class="page__subtitle"> {{ count($ads) }} annonce créée</h2>
-            @else
-                <h2 class="page__subtitle"> {{ count($ads) }} annonces créées</h2>
-            @endif
-            <section class="section">
-                @foreach ($ads as $ad)
-                    <ul class="list list_v tiles">
-                        <li class="tile tile_text-image_h">
-                            <div class="tile__link">
-                                <div class="vignette photo is-flex">
-                                    @include('pages.ads.partials.thumbnail_left')
-                                </div>
-                                <div class="tile__content large">
-                                    @include('pages.ads.partials.thumbnail_right')
+    <section class="container mt-6">
+        <h1 class="title mb-3 mx-3-mobile">Liste de mes annonces</h1>
+        <p class="mb-6 mx-3-mobile">{{ count($ads) }} annonce{{ count($ads) > 1 ? 's' : '' }}
+            créée{{ count($ads) > 1 ? 's' : '' }}</p>
+        @foreach($ads as $ad)
+            <div class="unset-color columns is-flex fd-c-mobile">
+                <div class="column is-two-fifths">
+                    <figure class="image is-3by2">
+                        @if($ad->hasImages && $ad->images[0]?->path)
+                            <img class="objT-border vignette__image"
+                                 src="{{app('url')->assetFrom('https://objectif-terres.org', $ad->images[0]->path)}}"
+                                 alt="{{$ad->images[0]->name}}">
+                        @else
+                            <img class="objT-border vignette__image"
+                                 src="https://images.unsplash.com/photo-1557234195-bd9f290f0e4d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                                 alt="placeholder">
+                        @endif
+                    </figure>
+                </div>
+                <div class="column is-flex is-flex-direction-column">
+                    @if(isset($ad->attributionAd->adStatus))
+                        @if($ad->attributionAd->adStatus->id === \App\Models\AdStatus::APPROVE_ID)
+                            <span class="tile__date">Publié {{$ad->published_on_diff}}</span>
+                        @else
+                            <span class="tile__date">Crée  {{$ad->created_at_diff}}</span>
+                        @endif
+                    @else
+                        <span class="tile__date">Crée  {{$ad->created_at_diff}}</span>
+                    @endif
+                    @if(isset($ad->is_partner) && $ad->is_partner === 1 )
+                        <ul class="custom-tags">
+                            <li class="custom-tag warning">Annonce certifiée</li>
+                        </ul>
+                    @endif
+                    <h3 class="title is-4">{{$ad->title ?? "Titre de l'annonce non renseigné"}}</h3>
+                    <p class="mb-4">
+                        @if(isset($ad->about_project_content))
+                            {{ Illuminate\Support\Str::limit($ad->about_project_content, 200)}}
+                        @else
+                            Pas de description renseignée pour cette annonce
+                        @endif
+                    </p>
+                    @if(count($ad->threads) === 0)
+                        <b-message>
+                            Vous n'avez pas reçu de messages concernant
+                            cette annonce
+                        </b-message>
+                    @endif
+                    @if(count($ad->threads) === 1 )
+                        <b-message>Vous avez
+                            <a class="text_charcoal has-text-weight-bold"
+                               href="{{route("threads.index")}}"> {{count($ad->threads)}}
+                                fil de discussion
+                            </a> concernant cette annonce !
+                        </b-message>
+                    @elseif(count($ad->threads) > 1)
+                        <b-message>Vous avez <a class="has-text-weight-bold"
+                                                href="{{route("threads.index")}}"> {{count($ad->threads)}}
+                                fils de discussion
+                            </a>
+                            concernant cette annonce !
+                        </b-message>
+                    @endif
+                    @if(!$ad->attributionAd || $ad->is_draft === 1)
+                        <b-message type="is-warning">
+                            Votre annonce est en mode brouillon, elle n'a pas été encore soumise à
+                            modération !
+                        </b-message>
+                    @else
+                        @if(isset($ad->attributionAd->adStatus))
+                            @if($ad->attributionAd->adStatus->id === \App\Models\AdStatus::APPROVE_ID)
+                                <b-message type="is-success">
+                                    Votre annonce a été validée et est en ligne depuis
+                                    le {{$ad->published_on}} !
+                                </b-message>
+                            @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_ID)
+                                <b-message type="is-warning">
+                                    Votre annonce nécessite quelques modifications,
+                                    <a href="{{route('threads.index')}}">consulter votre
+                                        messagerie
+                                    </a>
+                                    pour
+                                    plus d'informations !
+                                </b-message>
+                            @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::REFUSE_ID)
+                                <b-message type="is-danger">
+                                    Votre annonce a été réfusée,
+                                    <a href="{{route('threads.index')}}">consulter
+                                        votre
+                                        messagerie
+                                    </a>
+                                    pour plus d'informations !
+                                </b-message>
+                            @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::ARCHIVED_ID)
+                                <b-message>
+                                    Votre annonce a été archivée !
+                                </b-message>
+                            @else
+                                <b-message>
+                                    Votre annonce n'as pas été encore approuvée et publiée !
+                                </b-message>
+                            @endif
+                        @endif
+                    @endif
 
-                                    <div class="tile__intro">
-                                        <p class="mt-10 mb-10">
-                                            @if(count($ad->threads) === 0)
-                                                <span class="text_charcoal">Vous n'avez pas reçu de messages concernant
-                                                    cette annonce</span>
-                                            @endif
-                                            @if(count($ad->threads) === 1 )
-                                                <span>Vous avez <span class="text_charcoal has-text-weight-bold">
-                                                        <a
-                                                                href="{{route("threads.index")}}"> {{count($ad->threads)}}
-                                                            fil de discussion
-                                                        </a>
-                                                    </span>concernant cette annonce !</span>
-
-                                            @elseif(count($ad->threads) > 1)
-                                                <span class="text_charcoal">Vous avez <span
-                                                            class="has-text-weight-bold">
-                                                        <a
-                                                                href="{{route("threads.index")}}"> {{count($ad->threads)}}
-                                                            fils de discussion
-                                                        </a>
-                                                    </span>
-                                                    concernant cette annonce ! </span>
-                                            @endif
-                                        </p>
-                                    </div>
-                                    @if(!$ad->attributionAd || $ad->is_draft === 1)
-                                        <article class="message is-warning">
-                                            <div class="message-body">
-                                                Votre annonce est en mode brouillon, elle n'a pas été encore soumise à
-                                                modération !
-                                            </div>
-                                        </article>
-                                    @else
-                                        @if(isset($ad->attributionAd->adStatus))
-                                            @if($ad->attributionAd->adStatus->id === \App\Models\AdStatus::APPROVE_ID)
-                                                <article class="message is-success">
-                                                    <div class="message-body">
-                                                        Votre annonce a été validée et est en ligne depuis
-                                                        le {{$ad->published_on}} !
-                                                    </div>
-                                                </article>
-                                            @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_ID)
-                                                <article class="message is-warning">
-                                                    <div class="message-body">
-                                                        Votre annonce nécessite quelques modifications,
-                                                        <a
-                                                                href="{{route('threads.index')}}">consulter votre
-                                                            messagerie
-                                                        </a>
-                                                        pour
-                                                        plus d'informations !
-                                                    </div>
-                                                </article>
-                                            @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::REFUSE_ID)
-                                                <article class="message is-danger">
-                                                    <div class="message-body">
-                                                        Votre annonce a été réfusée,
-                                                        <a href="{{route('threads.index')}}">consulter
-                                                            votre
-                                                            messagerie
-                                                        </a>
-                                                        pour plus d'informations !
-                                                    </div>
-                                                </article>
-                                            @elseif($ad->attributionAd->adStatus->id === \App\Models\AdStatus::ARCHIVED_ID)
-                                                <article class="message is-message ">
-                                                    <div class="message-body">
-                                                        Votre annonce a été archivée !
-                                                    </div>
-                                                </article>
-                                            @else
-                                                <article class="message is-message message is-dark">
-                                                    <div class="message-body">
-                                                        Votre annonce n'as pas été encore approuvée et publiée !
-                                                    </div>
-                                                </article>
-                                            @endif
-                                        @else
-
-                                        @endif
-                                    @endif
-
-                                    <p class="ad-admin button__wrap button__wrap_right">
-
-                                        @if($ad->is_draft === 0 && !isset($ad->attributionAd))
-                                            <a href="{{route("ads.request-publishing", $ad->id)}}">
-                                                <button class="button basic  small success mr-20">
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-check text_white"></i>
-                                                    </span>
-                                                    <span>Soumettre</span>
-                                                </button>
-                                            </a>
-                                        @endif
-
-                                        <a href="{{route("ads.show", $ad->id)}}">
-                                            <button class="button basic  small success mr-20">
-                                                <span class="icon is-small">
-                                                    <i class="fas fa-eye text_white"></i>
-                                                </span>
-                                                <span>Voir</span>
-                                            </button>
-                                        </a>
-
-                                        <a href="{{route("ads.edit", $ad->id)}}">
-                                            <button class="button basic  small warning mr-20">
-                                                <span class="icon is-small">
-                                                    <i class="fas fa-pencil-alt text_white"></i>
-                                                </span>
-                                                <span>Modifier</span>
-                                            </button>
-                                        </a>
-
-                                        <a href="{{ route('ads.delete', ["ad" => $ad->id]) }}"
-                                           onclick="return confirm('Êtes vous sûr·e ? Cette opération est irréversible.')">
-                                            <button class="button basic small danger">
-                                                <span class="icon text_white">
-                                                    <i class="fas fa-trash"></i>
-                                                </span>
-                                                <span>Supprimer</span>
-                                            </button>
-                                        </a>
-                                    </p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                @endforeach
-
-            </section>
-
-            <section class="section">
-                <pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
-            </section>
-            {{--            @include('components.section-orientation-terre-liens')--}}
-        </div>
+                    <div class="buttons has-addons is-right">
+                        @if($ad->is_draft === 0 && !isset($ad->attributionAd))
+                            <b-button
+                                    href="{{ route('ads.request-publishing', ["id" => $ad->id]) }}"
+                                    tag="a" icon-left="check"
+                                    rounded>Soumettre
+                            </b-button>
+                        @endif
+                        <b-button
+                                href="{{route("ads.show", $ad->id)}}"
+                                tag="a" icon-left="eye" rounded>Voir
+                        </b-button>
+                        <b-button tag="a"
+                                  href="{{route("ads.edit", $ad->id)}}" icon-left="pencil"
+                                  rounded>
+                            Modifier
+                        </b-button>
+                        <b-button onclick="return confirm('Êtes vous sûr·e ? Cette opération est irréversible.')"
+                                  tag="a" href="{{ route('ads.delete', ["ad" => $ad->id]) }}" icon-left="delete"
+                                  rounded>
+                            Supprimer
+                        </b-button>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+        <section class="section">
+            <pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
+        </section>
     </section>
 @endsection
-

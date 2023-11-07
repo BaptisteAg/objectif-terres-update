@@ -72,7 +72,7 @@
 
                     @if($ad->isProject() && auth()->user()->role >= 2)
                         @include ('pages.ads.partials.attribution-project-options')
-                    @elseif(! $ad->isProject())
+                    @elseif(! $ad->isProject() && $ad->attributionAd)
                         @include('pages.ads.partials.moderator-options')
                     @endif
                 @endif
