@@ -209,22 +209,23 @@
         </tab-content>
         <tab-content title="Potentiel agricole">
             <section class="mb-6 field" ref="productionGenres">
-                {!! Form::label('land_offer[production_genres][]', 'Production agricole principale envisagée *', ['class' => 'label']); !!}
-                <?php
-                $params = [
-                    'name' => 'land_offer[production_genres][]',
+                {!! Form::label('associate_offer[production_genres][]', 'Production principale*', ['class' => 'label']); !!}
+                @include('pages.ads.partials.inputs.production_genres', [
+                    'name' => 'associate_offer[production_genres][]',
                     'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.productionGenres',
-                    'isUnique' => 'true',
-                    'isRequired' => true
-                ];
-                ?>
-                @include('pages.ads.partials.inputs.production_genres', $params)
+                    'isRequired' => true,
+                    'isUnique' => true,
+                ])
             </section>
 
-            <section class="mb-6 field" ref="productionTypeAdd">
-                {!! Form::label('land_offer[secondary_production_genres][]', 'Productions agricoles secondaires envisagées', ['class' => 'label']); !!}
-                @include('pages.ads.partials.inputs.production_genres', ['name' => 'land_offer[secondary_production_genres][]', 'productionGenres' => $productionGenres, 'vModel' => 'formInput.secondProductionGenres'])
+            <section class="mb-6 field" ref="productionGenresSecondary">
+                {!! Form::label('associate_offer[secondary_production_genres][]', 'Production(s) secondaire(s)', ['class' => 'label']); !!}
+                @include('pages.ads.partials.inputs.production_genres', [
+                    'name' => 'associate_offer[secondary_production_genres][]',
+                    'productionGenres' => $productionGenres,
+                    'vModel' => 'formInput.productionGenresSecondary'
+                ])
             </section>
 
             <section class="mb-6 field" ref="bioCertifications">
