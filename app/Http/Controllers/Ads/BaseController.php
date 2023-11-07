@@ -76,6 +76,8 @@ abstract class BaseController extends Controller
      * @param Ad $ad
      * @return array
      * @throws \Exception
+     * @noinspection JsonEncodingApiUsageInspection
+     * @noinspection JsonEncodingApiUsageInspection
      */
     protected function getEditFormVars(Ad $ad): array
     {
@@ -88,7 +90,7 @@ abstract class BaseController extends Controller
         }
 
         $selected_departments = json_encode(array_filter(array_merge(
-            array_map($this->locationService->getResultRenderer('departments'), [$ad->department->toArray()]),
+            array_map($this->locationService->getResultRenderer('departments'), array_filter([$ad->department?->toArray()])),
         )));
 
         $zoneDepartments = $ad->departments->except($ad->department->id)->toArray();

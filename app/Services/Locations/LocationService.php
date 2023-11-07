@@ -335,7 +335,7 @@ class LocationService
         );
     }
 
-    public function getResultRenderer($type)
+    public function getResultRenderer($type): \Closure
     {
         switch($type) {
             case "cities" :
@@ -352,7 +352,7 @@ class LocationService
                 break;
         }
 
-        return function ($result) use ($type, $labelRenderer) {
+        return static function ($result) use ($type, $labelRenderer) {
             return [
                 "label" => $labelRenderer($result),
                 "value" => array_merge($result, [
