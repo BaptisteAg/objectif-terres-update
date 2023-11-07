@@ -267,11 +267,6 @@ class Ad extends Model implements HasPresenter
         return $this->hasOne(LandSeekAd::class);
     }
 
-    public function associateSeekAd()
-    {
-        return $this->hasOne(AssociateSeekAd::class);
-    }
-
     /**
      * @return hasOne
      */
@@ -371,10 +366,13 @@ class Ad extends Model implements HasPresenter
 
     public function canEdit()
     {
-        return $this->user_pp_id === auth()->id() || (
-                $this->attributionAd->userModerator &&
-                $this->attributionAd->userModerator->id === auth()->id()
-            ) || auth()->user()->role >= 4;
+        if (auth()->check()) {
+            return $this->user_pp_id === auth()->id() || (
+                    $this->attributionAd->userModerator &&
+                    $this->attributionAd->userModerator->id === auth()->id()
+                ) || auth()->user()->role >= 4;
+        }
+        return false;
     }
 
     public function thirdPartyAdUser(): BelongsTo

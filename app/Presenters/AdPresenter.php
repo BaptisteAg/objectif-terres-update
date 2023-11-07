@@ -490,4 +490,10 @@ class AdPresenter extends BasePresenter
 
         return $price;
     }
+
+    //ads table have column third_party_ad_user_id which is the foreign key of table third_party_ad_users, create function to get the third party ad user
+    public function thirdPartyAdUser()
+    {
+        return $this->wrappedObject->thirdPartyAdUser;
+    }
 }

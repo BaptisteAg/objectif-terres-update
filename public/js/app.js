@@ -2146,7 +2146,7 @@ __webpack_require__.r(__webpack_exports__);
         email: ((_old$third_party3 = old.third_party) === null || _old$third_party3 === void 0 ? void 0 : _old$third_party3.email) || "",
         phone: ((_old$third_party4 = old.third_party) === null || _old$third_party4 === void 0 ? void 0 : _old$third_party4.phone) || ""
       },
-      accept_share_contact_infos: !!old.accept_share_contact_infos ? '1' : '0',
+      accept_share_contact_infos: old.accept_share_contact_infos,
       hasCertified: false,
       currentAdType: this.value
     };
@@ -3856,7 +3856,7 @@ var render = function render() {
     staticClass: "adTypes-container"
   }, [_c("h1", {
     staticClass: "title"
-  }, [_vm._v("Formulaire de dépôt d’annonces")]), _vm._v(" "), _c("p", [_vm._v("Objectif Terre est une plateforme ayant pour but de mettre en liens les personnes ayant des projets agricoles\n      professionnels définis. Si votre annonce ne rentre pas dans cette catégorie (exemple : habitat collectif,\n      volontariat, partage de jardin, chantier participatif...), veuillez vous référer à la FAQ mise à votre\n      disposition pour vous rendre sur la plateforme adaptée à votre besoin.")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Formulaire de dépôt d’annonces")]), _vm._v(" "), _c("p", [_vm._v("Objectif Terre est une plateforme ayant pour but de mettre en liens les personnes ayant des projets\n\t\t\tagricoles\n\t\t\tprofessionnels définis. Si votre annonce ne rentre pas dans cette catégorie (exemple : habitat\n\t\t\tcollectif,\n\t\t\tvolontariat, partage de jardin, chantier participatif...), veuillez vous référer à la FAQ mise à votre\n\t\t\tdisposition pour vous rendre sur la plateforme adaptée à votre besoin.")]), _vm._v(" "), _c("div", {
     "class": _vm.errors.check ? "field-error mt-2 pt-2" : "mt-2 pt-2"
   }, [_c("b-field", {
     staticClass: "is-flex is-flex-direction-column",
@@ -3876,11 +3876,11 @@ var render = function render() {
       },
       expression: "hasCertified"
     }
-  }, [_vm._v("Je certifie que\n          mon annonce\n          concerne\n          un\n          projet agricole professionnel sur des productions principales nourricières "), _c("a", {
+  }, [_vm._v("Je\n\t\t\t\t\tcertifie que\n\t\t\t\t\tmon annonce\n\t\t\t\t\tconcerne\n\t\t\t\t\tun\n\t\t\t\t\tprojet agricole professionnel sur des productions principales nourricières "), _c("a", {
     attrs: {
       href: "/conditions-utilisation"
     }
-  }, [_vm._v("(charte\n            Objectif Terre)")]), _vm._v(".\n        ")])], 1)], 1), _vm._v(" "), _c("hr", {
+  }, [_vm._v("(charte\n\t\t\t\t\t\tObjectif Terre)")]), _vm._v(".\n\t\t\t\t")])], 1)], 1), _vm._v(" "), _c("hr", {
     staticClass: "is-primary"
   }), _vm._v(" "), _c("h3", {
     staticClass: "title is-4"
@@ -3910,7 +3910,7 @@ var render = function render() {
       },
       expression: "adContactType"
     }
-  }, [_vm._v("Pour une autre personne")])], 1), _vm._v(" "), _vm.adContactType === "thirdParty" ? _c("div", {
+  }, [_vm._v("Pour une autre\n\t\t\t\tpersonne\n\t\t\t")])], 1), _vm._v(" "), _vm.adContactType === "thirdParty" ? _c("div", {
     staticClass: "pb-4 is-flex is-flex-wrap-wrap is-justify-content-space-between"
   }, [_c("b-field", {
     staticClass: "w-50 is-size-6",
@@ -4000,10 +4000,9 @@ var render = function render() {
       },
       expression: "thirdParty.phone"
     }
-  })], 1)], 1) : _vm._e(), _vm._v(" "), _c("b-field", [_c("b-checkbox", {
+  })], 1), _vm._v(" "), _c("b-field", [_c("b-checkbox", {
     staticClass: "is-size-6",
     attrs: {
-      name: "accept_share_contact_infos",
       "true-value": "0",
       "false-value": "1"
     },
@@ -4014,7 +4013,15 @@ var render = function render() {
       },
       expression: "accept_share_contact_infos"
     }
-  }, [_vm._v("\n            Je ne souhaite pas être contacté par téléphone (dans ce\n            cas,\n            je serais contacté uniquement par email)\n        ")])], 1), _vm._v(" "), _c("h3", {
+  }, [_vm._v("Je ne souhaite pas être contacté par téléphone (dans\n\t\t\t\t\tce cas, je serais contacté uniquement par email)\n\t\t\t\t")]), _vm._v(" "), _c("input", {
+    attrs: {
+      type: "hidden",
+      name: "accept_share_contact_infos"
+    },
+    domProps: {
+      value: _vm.accept_share_contact_infos
+    }
+  })], 1)], 1) : _vm._e(), _vm._v(" "), _c("h3", {
     staticClass: "title is-4"
   }, [_vm._v("Mon projet")]), _vm._v(" "), _c("p", {
     directives: [{
@@ -4037,10 +4044,10 @@ var render = function render() {
           _vm.currentAdType = adTypeValue;
         }
       }
-    }, [_vm._v("\n        " + _vm._s(adType.label) + "\n      ")]);
+    }, [_vm._v("\n\t\t\t\t" + _vm._s(adType.label) + "\n\t\t\t")]);
   }), 0), _vm._v(" "), _c("p", {
     staticClass: "pt-5"
-  }, [_vm._v("Votre annonce sera visible uniquement par les personnes qui recherchent des porteurs de projet.\n      Si\n      vous souhaitez qu’elle soit visible par d’autres types de personnes, nous vous recommandons de créer une autre\n      annonce pour multiplier vos chances.")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Votre annonce sera visible uniquement par les personnes qui recherchent des porteurs de\n\t\t\tprojet.\n\t\t\tSi\n\t\t\tvous souhaitez qu’elle soit visible par d’autres types de personnes, nous vous recommandons de créer une\n\t\t\tautre\n\t\t\tannonce pour multiplier vos chances.")]), _vm._v(" "), _c("div", {
     staticClass: "is-flex is-justify-content-flex-end pt-6"
   }, [_c("b-button", {
     staticClass: "ml-2",
@@ -4052,7 +4059,7 @@ var render = function render() {
     on: {
       click: _vm.setAdType
     }
-  }, [_vm._v("Etape suivante")])], 1)], 1), _vm._v(" "), _c("div", {
+  }, [_vm._v("Etape suivante\n\t\t\t")])], 1)]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
