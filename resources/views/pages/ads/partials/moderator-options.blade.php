@@ -16,7 +16,7 @@
     <vue-moderation-modal inline-template
                           :response-templates="{{json_encode($responseTemplates)}}"
                           :ad-id="{{$ad->id}}"
-                          :attribution-ad-id="{{$ad->attributionAd->id}}"
+                          :attribution-ad-id="{{$ad->attributionAd?->id}}"
     >
         <div>
             <div class="bg-beige objT-border p-6 p-5-mobile m-3-mobile">
