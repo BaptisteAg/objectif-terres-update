@@ -129,10 +129,8 @@ export default {
 		focusOnFirstError() {
 			console.log('focusOnFirstError')
 			const firstError = Object.keys(this.formInput).find(inputName => {
-				console.log(inputName, this.$v.formInput[inputName])
 				if (this.$v.formInput[inputName] && this.$v.formInput[inputName].$error) {
 					let input = this.findInputContainerElement(this.$refs[inputName]);
-					console.log(inputName);
 					const $form = this.$refs.formWizard;
 
 					if (input) {
@@ -166,6 +164,9 @@ export default {
 							console.error(`Could not focus on error : No tab found for input ${inputName}`);
 						}
 					}
+                    else {
+                        console.error(`Could not focus on error : No ref found for input ${inputName}`);
+                    }
 					return true;
 				}
 			});

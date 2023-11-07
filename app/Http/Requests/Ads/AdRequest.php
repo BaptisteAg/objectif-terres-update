@@ -2,13 +2,12 @@
 
 namespace App\Http\Requests\Ads;
 
+use App\Http\Requests\Ads\Rulesets\AssociateOfferRuleset;
 use App\Http\Requests\Ads\Rulesets\AssociateSeekRuleset;
 use App\Http\Requests\Ads\Rulesets\JobOfferRuleset;
 use App\Http\Requests\Ads\Rulesets\JobSeekRuleset;
 use App\Http\Requests\Ads\Rulesets\LandOfferRuleset;
 use App\Http\Requests\Ads\Rulesets\LandSeekRuleset;
-use App\Models\AssociateOfferAd;
-use App\Models\AssociateSeekAd;
 use App\Rules\HasZone;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -60,11 +59,6 @@ class AdRequest extends FormRequest
             'accept_share_contact_infos' => ['nullable'],
 
             'documents_ids' => ['nullable', 'array'],
-
-            // TODO: remove
-            //'is_support_request' => ['nullable', 'boolean'],
-            //'support_request_text' => ['nullable', 'string', 'max:1500'],
-            //'support_request_territory_id' => ['nullable', 'numeric'],
         ];
 
         $rulesetsByAdType = [

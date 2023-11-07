@@ -62,10 +62,10 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
         }
         $landSeekAd->productionGenres()->sync($productionGenres);
 
-        $secondaryProductionGenres = $data["secondary_production_genres"] ?? [];
-        if(in_array('other', $secondaryProductionGenres)) {
+        $productionGenresSecondary = $data["secondary_production_genres"] ?? [];
+        if(in_array('other', $productionGenresSecondary)) {
             //$data["production_type_add"] = "";
-            $secondaryProductionGenres = Arr::where($secondaryProductionGenres, function($secondaryProductionGenre) {return $secondaryProductionGenre !== 'other';});
+            $productionGenresSecondary = Arr::where($productionGenresSecondary, function($secondaryProductionGenre) {return $secondaryProductionGenre !== 'other';});
         }
         $productionGenresSecondary = $data["secondary_production_genres"] ?? [];
         $landSeekAd->productionGenresSecondary()->detach();

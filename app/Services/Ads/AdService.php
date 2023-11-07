@@ -22,6 +22,7 @@ use App\Notifications\SupportRequestAttributionNotification;
 use App\Notifications\SupportRequestTerritoryNotification;
 use App\Repositories\AdNotes\AdNotesRepository;
 use App\Repositories\Ads\AdRepository;
+use App\Repositories\Ads\AssociateOfferAdRepository;
 use App\Repositories\Ads\JobOfferAdRepository;
 use App\Repositories\Ads\JobSeekAdRepository;
 use App\Repositories\Ads\LandOfferAdRepository;
@@ -65,6 +66,10 @@ class  AdService
      * @var AssociateSeekAdRepository
      */
     protected $associateSeekAdRepository;
+    /**
+     * @var AssociateOfferAdRepository
+     */
+    protected $associateOfferAdRepository;
     /**
      * @var ProductionGenreRepository
      */
@@ -113,6 +118,7 @@ class  AdService
         LandSeekAdRepository      $landSeekAdRepository,
         LandOfferAdRepository     $landOfferAdRepository,
         AssociateSeekAdRepository $associateSeekAdRepository,
+        AssociateOfferAdRepository $associateOfferAdRepository,
         JobOfferAdRepository      $jobOfferAdRepository,
         JobSeekAdRepository       $jobSeekAdRepository,
         ProductionGenreRepository $productionGenreRepository,
@@ -128,6 +134,7 @@ class  AdService
         $this->jobOfferAdRepository = $jobOfferAdRepository;
         $this->jobSeekAdRepository = $jobSeekAdRepository;
         $this->associateSeekAdRepository = $associateSeekAdRepository;
+        $this->associateOfferAdRepository = $associateOfferAdRepository;
         $this->productionGenreRepository = $productionGenreRepository;
         $this->userService = $userService;
         $this->projectRepository = $projectRepository;
@@ -373,12 +380,17 @@ class  AdService
             $subAd = $this->jobSeekAdRepository->update($ad->jobSeekAd, $data);
         } else if ($adType === "associate_seek") {
             $subAd = $this->associateSeekAdRepository->update($ad->associateSeekAd, $data);
+        } else if ($adType === "associate_offer") {
+            $subAd = $this->associateOfferAdRepository->update($ad->associateOfferAd, $data);
         }
 
         return $subAd;
     }
 
-    protected function createSubAd(string $adType, array $data)
+    /**
+     * @throws \Exception
+     */
+    protected function createSubAd(string $adType, array $data): \App\Models\AssociateOfferAd|\App\Models\LandSeekAd|\App\Models\JobSeekAd|\App\Models\LandOfferAd|\App\Models\AssociateSeekAd|\App\Models\JobOfferAd
     {
         if ($adType === "land_seek") {
             $subAd = $this->landSeekAdRepository->create($data);
@@ -390,6 +402,10 @@ class  AdService
             $subAd = $this->jobSeekAdRepository->create($data);
         } else if ($adType === "associate_seek") {
             $subAd = $this->associateSeekAdRepository->create($data);
+        } else if ($adType === "associate_offer") {
+            $subAd = $this->associateOfferAdRepository->create($data);
+        } else {
+            throw new \Exception("Ad type not found");
         }
 
         return $subAd;

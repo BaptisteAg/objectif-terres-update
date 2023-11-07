@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\BioCertifiable;
+use App\Models\Traits\EducationLevelable;
 use App\Models\Traits\OfferableGenre;
 use App\Models\Traits\ProductionableGenre;
 use Chelout\RelationshipEvents\Concerns\HasMorphToManyEvents;
@@ -16,7 +17,7 @@ class AssociateOfferAd extends Model
 {
 	use ProductionableGenre,
         BioCertifiable,
-		OfferableGenre,
+        EducationLevelable,
 		HasMorphToManyEvents,
 		HasRelationshipObservables;
 
@@ -24,29 +25,6 @@ class AssociateOfferAd extends Model
 	{
 		return $this->belongsTo(Ad::class);
 	}
-
-	public function building()
-	{
-		return $this->belongsTo(Building::class);
-	}
-
-	public function house()
-	{
-		return $this->belongsTo(House::class);
-	}
-
-	public static function boot()
-	{
-		parent::boot();
-
-		/**
-		 * Many To Many Polymorphic Relationship Events
-		 */
-
-		static::morphToManyAttaching(function ($relation, $parent, $ids, $attributes) {
-		});
-	}
-
 
 	/**
 	 * @var array

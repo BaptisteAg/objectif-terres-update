@@ -147,6 +147,8 @@ class Ad extends Model implements HasPresenter
             'jobSeekAd' => JobSeekAd::class,
             'landOfferAd' => LandOfferAd::class,
             'landSeekAd' => LandSeekAd::class,
+            'associateSeekAd' => AssociateSeekAd::class,
+            'associateOfferAd' => AssociateOfferAd::class,
         ];
 
         $query = $this->newQuery()->where('id', $this->id);
@@ -265,6 +267,14 @@ class Ad extends Model implements HasPresenter
     public function landSeekAd()
     {
         return $this->hasOne(LandSeekAd::class);
+    }
+
+    /**
+     * @return hasOne
+     */
+    public function associateSeekAd(): hasOne
+    {
+        return $this->hasOne(AssociateSeekAd::class);
     }
 
     /**

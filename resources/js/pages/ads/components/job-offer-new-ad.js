@@ -33,7 +33,7 @@ export default {
 
 				offerTypes: hasOld && v.job_offer.offer_types || [],
 				productionGenres: hasOld && v.production_genres || [],
-				secondProductionGenres: hasOld && v.secondary_production_genres || [],
+				productionGenresSecondary: hasOld && v.secondary_production_genres || [],
 				isActivityTransmission: hasOld && v.job_offer.is_activity_transmission || undefined,
 				jobDescription: hasOld && v.job_offer.job_description || '',
 				experienceFarming: hasOld && v.job_offer.experience_farming || '',

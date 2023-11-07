@@ -46,15 +46,15 @@ export default {
                 selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
                 selectedZones: old.selected_zones && JSON.parse(old.selected_zones) || [],
 
-                accept_use_zip_code: old.accept_use_zip_code || false,
+                accept_use_zip_code: old.associate_offer.accept_use_zip_code || false,
                 surface: old.associate_offer.surface || '',
-                altitude: old.associate_offer.altitude|| '',
+                altitude: old.associate_offer.altitude || '',
                 waterAccess: typeof old.associate_offer.water_access !== "undefined" ?
                     old.associate_offer.water_access : '',
                 hasBuildings: old.associate_offer.has_buildings ? old.associate_offer.has_buildings.toString() : '',
                 hasHouses: old.associate_offer.has_houses ? old.associate_offer.has_houses.toString() : '',
                 productionGenres: old.associate_offer.production_genres || [],
-                productionGenresSecondary: old.associate_offer.production_genres_secondary || [],
+                productionGenresSecondary: old.associate_offer.secondary_production_genres || [],
                 bioCertifications: old.associate_offer.bio_certifications || [],
 
                 associateDescription: old.associate_offer.associate_description || '',
@@ -93,6 +93,11 @@ export default {
         return {
             formInput: {
                 ...baseValidations.formInput,
+                selectedDepartments: {
+                    hasZone(zones) {
+                        return zones.length;
+                    }
+                },
                 selectedZones: {
                     hasZone(zones) {
                         return zones.length;
