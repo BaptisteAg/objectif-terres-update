@@ -85,7 +85,7 @@
             </section>
 
             <section class="mb-6 field" ref="educationLevels">
-                {!! Form::label('associate_seek[education_levels][]', 'Niveau de formation *', ['class' => 'label']); !!}
+                {!! Form::label('associate_seek[education_levels][]', 'Niveau de formation', ['class' => 'label']); !!}
 
                 <multi-select
                         :options="{{json_encode($educationLevels)}}"
