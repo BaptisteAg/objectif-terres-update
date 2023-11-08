@@ -56,7 +56,7 @@ class AdRequest extends FormRequest
             'about_project_content' => ['required', 'string', 'max:1500'],
             'title' => ['required', 'string'],
 
-            'accept_share_contact_infos' => ['nullable'],
+            'accept_share_contact_infos' => ['boolean'],
 
             'documents_ids' => ['nullable', 'array'],
         ];
