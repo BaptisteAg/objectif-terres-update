@@ -17,25 +17,10 @@
                 'tooltip' => 'Si votre bien se situe sur plusieurs communes, merci de nous les indiquer'
             ])
 
-            <section class="field mb-6">
-                <b-tooltip class="w-100"
-                           label="Il est nécessaire que nous ayons les informations sur votre bien, à l'échelle de la commune mais l'annonce ne l'affichera pas si vous souhaitez rester plus général sur l'emplacement du foncier. Seul le département apparaitra.">
-                    <div class="label">
-                        {!! Form::label('land_offer[accept_use_zip_code]', 'Confidentialité'); !!}
-                        <i class="fas fa-info-circle has-text-info"></i>
-                    </div>
-                    <b-checkbox true-value="0" false-value="1" native-value="" v-model="formInput.acceptUseZipCode"
-                                class="is-size-6">
-                        Je ne souhaite pas que la localisation soit publique.
-                    </b-checkbox>
-                    <input type="hidden" name="land_offer[accept_use_zip_code]" :value="formInput.acceptUseZipCode">
-                </b-tooltip>
-                {{--                {!! Form::checkbox('land_offer[accept_use_zip_code]', '0', ((string)($old['land_offer']['accept_use_zip_code'] ?? null) === "0"), [--}}
-                {{--                                        "id" =>"land_offer[accept_use_zip_code]",--}}
-                {{--                                    ]) !!}--}}
-                {{--                <label for="land_offer[accept_use_zip_code]">Je ne souhaite pas que la localisation soit--}}
-                {{--                    publique.</label>--}}
-            </section>
+            @include('pages.ads.partials.inputs.accept_use_zip_code', [
+                'name' => 'land_offer[accept_use_zip_code]',
+                'vModel' => 'formInput.acceptUseZipCode',
+            ])
 
             <section class="field mb-6" ref="surface">
                 <b-tooltip class="w-100"

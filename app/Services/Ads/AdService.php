@@ -465,26 +465,19 @@ class  AdService
     }
 
     /**
-     * @param Ad $ad
-     * @return string
      * @throws \Exception
      */
-    public function getAdType(Ad $ad)
+    public function getAdType(Ad $ad): string
     {
-        if ($ad->landSeekAd) {
-            return 'land_seek';
-        }
-        if ($ad->landOfferAd) {
-            return 'land_offer';
-        }
-        if ($ad->jobOfferAd) {
-            return 'job_offer';
-        }
-        if ($ad->jobSeekAd) {
-            return 'job_seek';
-        }
-
-        throw new \Exception("Ad type not found on id " . $ad->id);
+        return match($ad->type) {
+            'landSeekAd' => 'land_seek',
+            'landOfferAd' => 'land_offer',
+            'jobOfferAd' => 'job_offer',
+            'jobSeekAd' => 'job_seek',
+            'associateSeekAd' => 'associate_seek',
+            'associateOfferAd' => 'associate_offer',
+            default => throw new \Exception("Ad type not found on id " . $ad->id),
+        };
     }
 
     /**

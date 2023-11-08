@@ -93,9 +93,11 @@
             </b-message>
         @endif
 
-        <h1 class="title is-1 has-background-black has-text-white">Type : {{$ad->type}}</h1>
-        <h1 class="title is-1 has-background-black has-text-white">accept_share_contact_infos
-            : {{$ad->accept_share_contact_infos}}</h1>
+        @if(config('app.env') !== 'production')
+            <h1 class="title is-1 has-background-black has-text-white">Type : {{$ad->type}}</h1>
+            <h1 class="title is-1 has-background-black has-text-white">accept_share_contact_infos
+                : {{$ad->accept_share_contact_infos}}</h1>
+        @endif
 
         @if($ad->type === 'landSeekAd')
             @include('pages.ads.partials.landSeek.landSeekShow')
@@ -103,11 +105,17 @@
         @if($ad->type === 'landOfferAd')
             @include('pages.ads.partials.landOffer.landOfferShow')
         @endif
+        @if($ad->type === 'jobSeekAd')
+            @include('pages.ads.partials.jobSeek.jobSeekAdShow')
+        @endif
         @if($ad->type === 'jobOfferAd')
             @include('pages.ads.partials.jobOffer.jobOfferAdShow')
         @endif
-        @if($ad->type === 'jobSeekAd')
-            @include('pages.ads.partials.jobSeek.jobSeekAdShow')
+        @if($ad->type === 'associateSeekAd')
+            @include('pages.ads.partials.associateSeek.associateSeekAdShow')
+        @endif
+        @if($ad->type === 'associateOfferAd')
+            @include('pages.ads.partials.associateOffer.associateOfferAdShow')
         @endif
 
     </section>

@@ -3,6 +3,7 @@
 namespace App\Repositories\Ads;
 
 use App\Models\AssociateOfferAd;
+use App\Models\LandSeekAd;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 class AssociateOfferAdRepository extends AbstractRepository
@@ -27,6 +28,20 @@ class AssociateOfferAdRepository extends AbstractRepository
         return $associateOfferAd;
     }
 
+    /**
+     * Update an ad.
+     *
+     * @param AssociateOfferAd $associateOfferAd
+     * @param array $data
+     * @return LandSeekAd
+     */
+    public function update($associateOfferAd, array $data): AssociateOfferAd
+    {
+        $this->save($associateOfferAd, $data);
+
+        return $associateOfferAd;
+    }
+
     private function save(AssociateOfferAd $associateOfferAd, array $data)
     {
         $associateOfferAd->fill($data);
@@ -36,7 +51,9 @@ class AssociateOfferAdRepository extends AbstractRepository
         $associateOfferAd->productionGenres()->sync($productionGenres);
 
         $productionGenresSecondary = $data["secondary_production_genres"] ?? [];
-        $associateOfferAd->productionGenresSecondary()->sync($productionGenresSecondary);
+        foreach($productionGenresSecondary as $productionGenreSecondary) {
+            $associateOfferAd->productionGenresSecondary()->attach($productionGenreSecondary, ['type' => 'secondary']);
+        }
 
         $associateOfferAd->bioCertifications()->sync($data["bio_certifications"] ?? []);
 
