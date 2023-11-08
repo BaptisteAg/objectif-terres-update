@@ -101579,18 +101579,19 @@ var numberNormalizer = function numberNormalizer(inputName) {
       formInput: {
         selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
         selectedZones: old.selected_zones && JSON.parse(old.selected_zones) || [],
-        accept_use_zip_code: old.associate_offer.accept_use_zip_code || false,
+        acceptUseZipCode: old.associate_offer.accept_use_zip_code,
         surface: old.associate_offer.surface || '',
         altitude: old.associate_offer.altitude || '',
         waterAccess: typeof old.associate_offer.water_access !== "undefined" ? old.associate_offer.water_access : '',
-        hasBuildings: old.associate_offer.has_buildings ? old.associate_offer.has_buildings.toString() : '',
-        hasHouses: old.associate_offer.has_houses ? old.associate_offer.has_houses.toString() : '',
+        hasBuildings: old.associate_offer.has_buildings,
+        hasHouses: old.associate_offer.has_houses,
         productionGenres: old.associate_offer.production_genres || [],
         productionGenresSecondary: old.associate_offer.secondary_production_genres || [],
         bioCertifications: old.associate_offer.bio_certifications || [],
         associateDescription: old.associate_offer.associate_description || '',
-        experienceFarming: old.associate_offer.experienceFarming || '',
+        experienceFarming: old.associate_offer.experience_farming || '',
         aboutProject: old.about_project_content || '',
+        isActivityTransmission: old.associate_offer.is_activity_transmission,
         educationLevels: old.associate_offer.education_levels || [],
         chartConfirmation: old.chart_confirmation || false,
         aboutContent: old.about_content || '',
@@ -101729,24 +101730,26 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   mixins: [_mixins_form_new_ad_mixin__WEBPACK_IMPORTED_MODULE_2__["default"]],
   props: {},
   data: function data() {
-    var v = this.oldValues;
-    var hasOld = Object.keys(v).length && v.associate_seek;
+    var old = this.oldValues;
+    if (!old.associate_seek) {
+      old.associate_seek = {};
+    }
     return {
       formInput: {
-        selectedDepartments: hasOld && JSON.parse(old.selected_departments) || [],
-        selectedZones: hasOld && JSON.parse(v.selected_zones) || [],
-        isLandAlreadyFound: v.is_land_already_found,
-        landDescription: hasOld && v.associate_seek.land_description || '',
-        associateDescription: hasOld && v.associate_seek.associate_description || '',
-        experienceFarming: hasOld && v.associate_seek.experience_farming || '',
-        educationLevels: hasOld && v.associate_seek.education_levels || [],
-        aboutProject: hasOld && v.about_project_content || '',
-        aboutContent: hasOld && v.about_content || '',
-        title: hasOld && v.title || '',
-        documents: hasOld && JSON.parse(v.documents) || [],
-        productionGenres: hasOld && v.production_genres || [],
-        productionGenresSecondary: hasOld && v.secondary_production_genres || [],
-        chartConfirmation: hasOld && v.chart_confirmation || false
+        selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
+        selectedZones: old.selected_zones && JSON.parse(old.selected_zones) || [],
+        isLandAlreadyFound: old.associate_seek.is_land_already_found,
+        landDescription: old.associate_seek.land_description || '',
+        associateDescription: old.associate_seek.associate_description || '',
+        experienceFarming: old.associate_seek.experience_farming || '',
+        educationLevels: old.associate_seek.education_levels || [],
+        productionGenres: old.associate_seek.production_genres || [],
+        productionGenresSecondary: old.associate_seek.secondary_production_genres || [],
+        aboutProject: old.about_project_content || '',
+        aboutContent: old.about_content || '',
+        title: old.title || '',
+        documents: old.documents && JSON.parse(old.documents) || [],
+        chartConfirmation: old.chart_confirmation || false
       }
     };
   },

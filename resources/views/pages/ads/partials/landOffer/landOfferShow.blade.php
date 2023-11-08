@@ -8,15 +8,7 @@
             @include('pages.ads.partials.modal-documents')
         </div>
 
-
-        {{--Affichage ref/title/date--}}
-        <div>
-            <p class="pb-3">Référence : {{$ad->id}}</p>
-            <h1 class="title">
-                {{$ad->title}}
-            </h1>
-            <p>Publié le {{ $ad->published_on}}</p>
-        </div>
+        @include('pages.ads.partials.show-ref-title-date')
 
         <div class="mt-3">
 
@@ -53,25 +45,8 @@
                     @endif
                 @endauth
 
-                @if($ad->accept_share_contact_infos === 1)
-                    <div class="w-50">
-                        <strong>Publié par : </strong>
-                        @if(!empty($ad->userPp))
-                            @auth()
-                                @if(auth()->user()->role >= 1 )
-                                    <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->pp_display_name}}</a>
-                                @elseif(auth()->user()->role < 1)
-                                    {{ $ad->pp_display_name}}
-                                @endif
-                            @endauth
-                            @guest()
-                                {{ $ad->pp_display_name}}
-                            @endguest()
-                        @else
-                            [Utilisateur supprimé]
-                        @endif
-                    </div>
-                @endif
+
+                @include('pages.ads.partials.show-author-infos')
 
                 <div class="w-50">
                     <strong>Altitude : </strong>
@@ -82,29 +57,7 @@
                     @endif
                 </div>
 
-                @if($ad->landOfferAd->accept_use_zip_code || auth()->user()->id === $ad->user_pp_id || auth()->user()->role >= 1)
-                    <div class="w-50">
-                        <strong>Département :</strong>
-                        {{ $ad->mainDepartment->name }} ({{ $ad->mainDepartment->code }})
-                        @if($ad->secondaryDepartmentsList->count())
-                            <small>
-                                {{ $ad->secondaryDepartmentsList->join(', ') }}
-                            </small>
-                        @endif
-                        @if(!$ad->landOfferAd->accept_use_zip_code)
-                            <br><small>(non visible pour les autres utilisateurs)</small>
-                        @endif
-                    </div>
-
-
-                    <div class="w-50">
-                        <strong>Commune{{$ad->citiesList->count() > 1 ? 's' : ''}} :</strong>
-                        {{ $ad->citiesList->join(', ') }}
-                        @if(!$ad->landOfferAd->accept_use_zip_code)
-                            <br><small>(non visible pour les autres utilisateurs)</small>
-                        @endif
-                    </div>
-                @endif
+                @include('pages.ads.partials.show-ad-location', ['showCities' => $ad->landOfferAd->accept_use_zip_code])
 
                 @if($ad->landOfferAd->is_activity_transfer)
                     <div class="w-50">

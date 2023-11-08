@@ -41,7 +41,7 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
         return $landSeekAd;
     }
 
-    private function save(LandSeekAd $landSeekAd, array $data): void
+    public function save(LandSeekAd $landSeekAd, array $data): void
     {
         $landSeekAd->fill($data);
 

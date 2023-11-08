@@ -72,7 +72,6 @@
                                       v-if="adTypeSelected === 'land_seek'"
                                       :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                       :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
-                                      :text-content-territories="{{!empty($isSupportRequest) && isset($old["id"]) ? json_encode($pageContent): json_encode(new stdClass)}}"
                                       @input-enabled="setEnabledForm"
                                       @form-complete="submitProxy"
                                       @submit-save-button="submitProxy"

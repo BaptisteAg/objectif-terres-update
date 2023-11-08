@@ -3,6 +3,7 @@
 namespace App\Repositories\Ads;
 
 use App\Models\AssociateSeekAd;
+use App\Models\LandSeekAd;
 use Illuminate\Support\Arr;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
@@ -28,6 +29,20 @@ class AssociateSeekAdRepository extends AbstractRepository
         return $associateSeekAd;
     }
 
+    /**
+     * Update an ad.
+     *
+     * @param AssociateSeekAd $associateSeekAd
+     * @param array $data
+     * @return AssociateSeekAd
+     */
+    public function update($associateSeekAd, array $data): AssociateSeekAd
+    {
+        $this->save($associateSeekAd, $data);
+
+        return $associateSeekAd;
+    }
+
     private function save(AssociateSeekAd $associateSeekAd, array $data)
     {
         $associateSeekAd->fill($data);
@@ -46,5 +61,7 @@ class AssociateSeekAdRepository extends AbstractRepository
                 $associateSeekAd->productionGenresSecondary()->attach($productionGenreId, ["type" => "secondary"]);
             }
         }
+
+        $associateSeekAd->educationLevels()->sync($data["education_levels"] ?? []);
     }
 }

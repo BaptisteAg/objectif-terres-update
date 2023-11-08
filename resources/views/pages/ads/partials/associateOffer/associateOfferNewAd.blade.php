@@ -14,121 +14,86 @@
 
             @include('pages.ads.partials.inputs.other_locations', [
                 'label' => 'Communes concernées*',
-                'tooltip' => 'Si votre bien se situe sur plusieurs communes, merci de nous les indiquer'
+                'tooltip' => 'Si votre bien se situe sur plusieurs communes, merci de nous les indiquer',
+                'withDepartments' => false
             ])
 
-            <section class="field mb-6">
-                <b-tooltip class="w-100"
-                           label="Il est nécessaire que nous ayons les informations sur votre bien, à l'échelle de la commune mais l'annonce ne l'affichera pas si vous souhaitez rester plus général sur l'emplacement du foncier. Seul le département apparaitra.">
-                    <div class="label">
-                        {!! Form::label('associate_offer[accept_use_zip_code]', 'Confidentialité'); !!}
-                        <i class="fas fa-info-circle has-text-info"></i>
-                    </div>
-                    <b-checkbox name="associate_offer[accept_use_zip_code]"
-                                class="is-size-6" {{($old["associate_offer"]["accept_use_zip_code"] ?? null) == 1 ? 'checked' : ''}}>
-                        Je ne souhaite pas que la localisation soit publique.
-                    </b-checkbox>
-                </b-tooltip>
-            </section>
+            @include('pages.ads.partials.inputs.accept_use_zip_code', [
+                'name' => 'associate_offer[accept_use_zip_code]',
+                'vModel' => 'formInput.acceptUseZipCode',
+            ])
 
             <section class="field mb-6" ref="surface">
-                <b-tooltip class="w-100"
-                           label="Il est nécessaire que nous ayons les informations sur votre bien, à l'échelle de la commune mais l'annonce ne l'affichera pas si vous souhaitez rester plus général sur l'emplacement du foncier. Seul le département apparaitra.">
-                    <div class="label">
-                        {!! Form::label('associate_offer[surface]', 'Surface du foncier agricole *'); !!}
-                        <i class="fas fa-info-circle has-text-info"></i>
-                    </div>
-                    <b-field>
-                        <b-input name="associate_offer[surface]" v-model="formInput.surface" placeholder="1ha = 10 000m²"
-                        ></b-input>
-                        <p class="control">
-                        <span style="border-bottom-right-radius: 999px; border-top-right-radius: 999px;"
-                              class="button is-static">ha</span>
-                        </p>
-                    </b-field>
-                    <template v-if="$v.formInput.surface?.$error">
-                        <p class="help is-danger" v-if="!$v.formInput.surface.maxValue">
-                            Surface maximum : @{{$v.formInput.surface.$params.maxValue.max}} hectares.
-                        </p>
-                        <p class="help is-danger" v-if="!$v.formInput.surface.required">
-                            Ce champ est requis.
-                        </p>
-                        <p class="help is-danger" v-if="!$v.formInput.surface.numeric">
-                            Veuillez saisir un nombre.
-                        </p>
-                    </template>
-                </b-tooltip>
+                <div class="label">
+                    {!! Form::label('associate_offer[surface]', 'Surface du foncier agricole *'); !!}
+                </div>
+                <b-field>
+                    <b-input name="associate_offer[surface]" v-model="formInput.surface" placeholder="1ha = 10 000m²"
+                    ></b-input>
+                    <p class="control">
+                    <span style="border-bottom-right-radius: 999px; border-top-right-radius: 999px;"
+                          class="button is-static">ha</span>
+                    </p>
+                </b-field>
+                <template v-if="$v.formInput.surface?.$error">
+                    <p class="help is-danger" v-if="!$v.formInput.surface.maxValue">
+                        Surface maximum : @{{$v.formInput.surface.$params.maxValue.max}} hectares.
+                    </p>
+                    <p class="help is-danger" v-if="!$v.formInput.surface.required">
+                        Ce champ est requis.
+                    </p>
+                    <p class="help is-danger" v-if="!$v.formInput.surface.numeric">
+                        Veuillez saisir un nombre.
+                    </p>
+                </template>
             </section>
 
             <section class="field mb-6" ref="altitude">
-                <b-tooltip class="w-100"
-                           label="Important pour savoir si votre terrain convient à certains projets agricoles">
-                    <div class="label">
-                        {!! Form::label('associate_offer[altitude]', 'Altitude'); !!}
-                        <i class="fas fa-info-circle has-text-info"></i>
-                    </div>
-                    <b-field>
-                        <b-input name="associate_offer[altitude]" v-model="formInput.altitude"
-                        ></b-input>
-                        <p class="control">
-                        <span style="border-bottom-right-radius: 999px; border-top-right-radius: 999px;"
-                              class="button is-static">m</span>
-                        </p>
-                    </b-field>
-                    <template v-if="$v.formInput.altitude?.$error">
-                        <p class="help is-danger" v-if="$v.formInput.altitude.required">
-                            Ce champ est requis.
-                        </p>
-                        <p class="help is-danger" v-if="!$v.formInput.altitude.numeric">
-                            Veuillez saisir un nombre.
-                        </p>
-                    </template>
-                </b-tooltip>
+                <div class="label">
+                    {!! Form::label('associate_offer[altitude]', 'Altitude'); !!}
+                </div>
+                <b-field>
+                    <b-input name="associate_offer[altitude]" v-model="formInput.altitude"
+                    ></b-input>
+                    <p class="control">
+                    <span style="border-bottom-right-radius: 999px; border-top-right-radius: 999px;"
+                          class="button is-static">m</span>
+                    </p>
+                </b-field>
+                <template v-if="$v.formInput.altitude?.$error">
+                    <p class="help is-danger" v-if="$v.formInput.altitude.required">
+                        Ce champ est requis.
+                    </p>
+                    <p class="help is-danger" v-if="!$v.formInput.altitude.numeric">
+                        Veuillez saisir un nombre.
+                    </p>
+                </template>
             </section>
 
-            <section class="mb-6 is-flex gap-x-5 field is-flex-wrap-wrap" ref="waterAccess">
-                {!! Form::label('associate_offer[water_access]', "Accès à l'eau existant *", ['class' => 'label w-100']) !!}
-                <div>
-                    {!! Form::radio('associate_offer[water_access]', '1', null , ['id' => 'associate_offer[water_access]_1', 'v-model' => 'formInput.waterAccess'] ) !!}
-                    {!! Form::label('associate_offer[water_access]_1',  'Oui' ) !!}
-                </div>
-                <div>
-                    {!! Form::radio('associate_offer[water_access]', '0', null , ['id' => 'associate_offer[water_access]_0', 'v-model' => 'formInput.waterAccess']) !!}
-                    {!! Form::label('associate_offer[water_access]_0',  'Non' ) !!}
-                </div>
-                <div>
-                    {!! Form::radio('associate_offer[water_access]', '-1', null , ['id' => 'associate_offer[water_access]__1', 'v-model' => 'formInput.waterAccess']) !!}
-                    {!! Form::label('associate_offer[water_access]__1',  'Je ne sais pas' ) !!}
-                </div>
-                <p class="help is-danger w-100"
-                   v-if="$v.formInput.waterAccess?.$error">
-                    Ce champ est requis.
-                </p>
-            </section>
+            @include('pages.ads.partials.inputs.yes_no', [
+                'ref' => 'waterAccess',
+                'name' => 'associate_offer[water_access]',
+                'label' => "Accès à l'eau existant *",
+                'vModel' => 'formInput.waterAccess',
+                'vuelidate' => '$v.formInput.waterAccess',
+                'maybe' => true
+            ])
 
-            <section class="mb-6 is-flex gap-x-5 field is-flex-wrap-wrap" ref="hasBuildings">
-                {!! Form::label('associate_offer[has_buildings]', "Présence de bâtiment(s) agricole(s) *", ['class' => 'label w-100']) !!}
-                <div>
-                    {!! Form::radio('associate_offer[has_buildings]', '1', null , ['id' => 'associate_offer[has_buildings]_1', 'v-model' => 'formInput.hasBuildings', ':vuelidate' => '$v.formInput.hasBuildings'] ) !!}
-                    {!! Form::label('associate_offer[has_buildings]_1',  'Oui' ) !!}
-                </div>
-                <div>
-                    {!! Form::radio('associate_offer[has_buildings]', '0', null , ['id' => 'associate_offer[has_buildings]_0', 'v-model' => 'formInput.hasBuildings', ':vuelidate' => '$v.formInput.hasBuildings']) !!}
-                    {!! Form::label('associate_offer[has_buildings]_0',  'Non' ) !!}
-                </div>
-            </section>
+            @include('pages.ads.partials.inputs.yes_no', [
+                'ref' => 'hasBuildings',
+                'name' => 'associate_offer[has_buildings]',
+                'label' => "Présence de bâtiment(s) agricole(s) *",
+                'vModel' => 'formInput.hasBuildings',
+                'vuelidate' => '$v.formInput.hasBuildings'
+            ])
 
-            <section class="mb-6 is-flex gap-x-5 field is-flex-wrap-wrap" ref="hasHouses">
-                {!! Form::label('associate_offer[has_houses]', "Présence d'habitation(s) *", ['class' => 'label w-100']) !!}
-                <div>
-                    {!! Form::radio('associate_offer[has_houses]', '1', null , ['id' => 'associate_offer[has_houses]_1', 'v-model' => 'formInput.hasHouses', ':vuelidate' => '$v.formInput.hasHouses'] ) !!}
-                    {!! Form::label('associate_offer[has_houses]_1',  'Oui' ) !!}
-                </div>
-                <div>
-                    {!! Form::radio('associate_offer[has_houses]', '0', null , ['id' => 'associate_offer[has_houses]_0', 'v-model' => 'formInput.hasHouses', ':vuelidate' => '$v.formInput.hasHouses']) !!}
-                    {!! Form::label('associate_offer[has_houses]_0',  'Non' ) !!}
-                </div>
-            </section>
+            @include('pages.ads.partials.inputs.yes_no', [
+                'ref' => 'hasHouses',
+                'name' => 'associate_offer[has_houses]',
+                'label' => "Présence d'habitation(s) *",
+                'vModel' => 'formInput.hasHouses',
+                'vuelidate' => '$v.formInput.hasHouses'
+            ])
 
             <section class="mb-6 field" ref="productionGenres">
                 {!! Form::label('associate_offer[production_genres][]', 'Production agricole principale envisagée *', ['class' => 'label']); !!}
@@ -144,7 +109,7 @@
                 @include('pages.ads.partials.inputs.production_genres', $params)
             </section>
 
-            <section class="mb-6 field" ref="productionTypeAdd">
+            <section class="mb-6 field" ref="productionGenresSecondary">
                 {!! Form::label('associate_offer[secondary_production_genres][]', 'Productions agricoles secondaires envisagées', ['class' => 'label']); !!}
                 @include('pages.ads.partials.inputs.production_genres', ['name' => 'associate_offer[secondary_production_genres][]', 'productionGenres' => $productionGenres, 'vModel' => 'formInput.productionGenresSecondary'])
             </section>
@@ -172,7 +137,7 @@
         <tab-content title="Profil recherché">
 
             <section class="mb-6 field" ref="associateDescription">
-                {!! Form::label('associate_offer[associate_description]',"Description du type d'associé.e.s recherché.e.s", ['class' => 'label']); !!}
+                {!! Form::label('associate_offer[associate_description]',"Description du type d'associé.e.s recherché.e.s*", ['class' => 'label']); !!}
                 <text-area-counter
                         name="associate_offer[associate_description]"
                         :max-length="1000"
@@ -202,15 +167,13 @@
                 </multi-select>
             </section>
 
-            <section class="mb-6 field" ref="isActivityTransmission">
-                <b-field>
-                    <b-checkbox name="associate_offer[is_activity_transmission]" v-model="formInput.isActivityTransmission"
-                                :vuelidate="$v.formInput.isActivityTransmission"
-                                class="is-size-6">
-                        Une transmission de l’activité agricole est-elle envisagée par la suite ?*
-                    </b-checkbox>
-                </b-field>
-            </section>
+            @include('pages.ads.partials.inputs.yes_no', [
+                'ref' => 'isActivityTransmission',
+                'name' => 'associate_offer[is_activity_transmission]',
+                'label' => "Une transmission de l’activité agricole est-elle envisagée par la suite ?*",
+                'vModel' => 'formInput.isActivityTransmission',
+                'vuelidate' => '$v.formInput.isActivityTransmission'
+            ])
 
             <section class="field mb-6" ref="aboutProject">
                 <?php
