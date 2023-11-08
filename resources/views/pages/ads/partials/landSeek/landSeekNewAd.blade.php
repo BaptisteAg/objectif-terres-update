@@ -16,7 +16,8 @@
 
             @include('pages.ads.partials.inputs.other_locations', [
                 'label' => 'Autre(s) localisation(s)',
-                'condition' => 'v-if="formInput.selectedDepartments.length"'
+                'condition' => 'v-if="formInput.selectedDepartments.length"',
+                'withDepartments' => true
             ])
 
             <section class="mb-6 field" ref="surfaceRangeMax">

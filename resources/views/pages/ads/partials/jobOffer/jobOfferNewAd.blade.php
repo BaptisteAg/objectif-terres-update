@@ -25,7 +25,7 @@
             </section>
 
             <section class="mb-6 field" ref="offerTypes">
-                {!! Form::label('job_seek[building][offer_genres][]', 'Quel type d\'expérience professionnelle recherchez-vous ? *', [
+                {!! Form::label('job_seek[building][offer_genres][]', 'Type d\'offre*', [
                 'class' => 'label',
             ]); !!}
 
@@ -82,7 +82,7 @@
             </section>
 
             <section class="mb-6 field" ref="jobDescription">
-                {!! Form::label('job_offer[job_description]', "Niveau de formation souhaité *", ['class' => 'label']) !!}
+                {!! Form::label('job_offer[job_description]', "Description du poste proposé *", ['class' => 'label']) !!}
                 <text-area-counter
                         name="job_offer[job_description]"
                         :max-length="1000"
@@ -95,7 +95,7 @@
 
         <tab-content title="Profil recherché">
             <section class="mb-6 field" ref="educationLevels">
-                {!! Form::label('job_offer[education_levels][]', "Description du poste proposé *", ['class' => 'label']) !!}
+                {!! Form::label('job_offer[education_levels][]', "Niveau de formation souhaité *", ['class' => 'label']) !!}
                 <?php
                 $educationLevelsParams = [
                     'name' => 'job_offer[education_levels][]',
