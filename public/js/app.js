@@ -2157,20 +2157,20 @@ __webpack_require__.r(__webpack_exports__);
         land_seek: {
           label: "Je cherche du foncier agricole"
         },
+        job_seek: {
+          label: "Je cherche une expérience agricole"
+        },
+        associate_offer: {
+          label: "Je cherche un associé sur une ferme existante"
+        },
         land_offer: {
           label: "Je propose du foncier agricole"
         },
-        associate_offer: {
-          label: "Associé sur une ferme"
-        },
-        job_seek: {
-          label: "Je cherche une opportunité professionnelle"
-        },
         job_offer: {
-          label: "Je propose une opportunité professionnelle"
+          label: "Je propose une expérience agricole"
         },
         associate_seek: {
-          label: "Associé pour projet d'installation"
+          label: "Je cherche un associé pour projet d'installation"
         }
       };
     }
@@ -3856,7 +3856,7 @@ var render = function render() {
     staticClass: "adTypes-container"
   }, [_c("h1", {
     staticClass: "title"
-  }, [_vm._v("Formulaire de dépôt d’annonces")]), _vm._v(" "), _c("p", [_vm._v("Objectif Terre est une plateforme ayant pour but de mettre en liens les personnes ayant des projets\n\t\t\tagricoles\n\t\t\tprofessionnels définis. Si votre annonce ne rentre pas dans cette catégorie (exemple : habitat\n\t\t\tcollectif,\n\t\t\tvolontariat, partage de jardin, chantier participatif...), veuillez vous référer à la FAQ mise à votre\n\t\t\tdisposition pour vous rendre sur la plateforme adaptée à votre besoin.")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Formulaire de dépôt d’annonces")]), _vm._v(" "), _c("p", [_vm._v("Objectif Terre est une plateforme ayant pour but de mettre en liens les personnes ayant des projets\n\t\t\t\tagricoles\n\t\t\t\tprofessionnels définis. Si votre annonce ne rentre pas dans cette catégorie (exemple : habitat\n\t\t\t\tcollectif,\n\t\t\t\tvolontariat, partage de jardin, chantier participatif...), veuillez vous référer à la FAQ mise à votre\n\t\t\t\tdisposition pour vous rendre sur la plateforme adaptée à votre besoin.")]), _vm._v(" "), _c("div", {
     "class": _vm.errors.check ? "field-error mt-2 pt-2" : "mt-2 pt-2"
   }, [_c("b-field", {
     staticClass: "is-flex is-flex-direction-column",
@@ -3876,11 +3876,11 @@ var render = function render() {
       },
       expression: "hasCertified"
     }
-  }, [_vm._v("Je\n\t\t\t\t\tcertifie que\n\t\t\t\t\tmon annonce\n\t\t\t\t\tconcerne\n\t\t\t\t\tun\n\t\t\t\t\tprojet agricole professionnel sur des productions principales nourricières "), _c("a", {
+  }, [_vm._v("Je\n\t\t\t\t\t\tcertifie que\n\t\t\t\t\t\tmon annonce\n\t\t\t\t\t\tconcerne\n\t\t\t\t\t\tun\n\t\t\t\t\t\tprojet agricole professionnel sur des productions principales nourricières "), _c("a", {
     attrs: {
       href: "/conditions-utilisation"
     }
-  }, [_vm._v("(charte\n\t\t\t\t\t\tObjectif Terre)")]), _vm._v(".\n\t\t\t\t")])], 1)], 1), _vm._v(" "), _c("hr", {
+  }, [_vm._v("(charte\n\t\t\t\t\t\t\tObjectif Terre)")]), _vm._v(".\n\t\t\t\t\t")])], 1)], 1), _vm._v(" "), _c("hr", {
     staticClass: "is-primary"
   }), _vm._v(" "), _c("h3", {
     staticClass: "title is-4"
@@ -3910,9 +3910,9 @@ var render = function render() {
       },
       expression: "adContactType"
     }
-  }, [_vm._v("Pour une autre\n\t\t\t\tpersonne\n\t\t\t")])], 1), _vm._v(" "), _vm.adContactType === "thirdParty" ? _c("div", {
+  }, [_vm._v("Pour une autre\n\t\t\t\t\tpersonne\n\t\t\t\t")])], 1), _vm._v(" "), _vm.adContactType === "thirdParty" ? _c("div", {
     staticClass: "pb-4 is-flex is-flex-wrap-wrap is-justify-content-space-between"
-  }, [_c("b-field", {
+  }, [_c("p", [_vm._v("\n              Les coordonnées de la personne pour qui je dépose l'annonce, qui seront visibles par les personnes qui\n              consultent l'annonce.\n          ")]), _c("br"), _c("br"), _vm._v(" "), _c("b-field", {
     staticClass: "w-50 is-size-6",
     attrs: {
       label: "Email",
@@ -4000,7 +4000,7 @@ var render = function render() {
       },
       expression: "thirdParty.phone"
     }
-  })], 1), _vm._v(" "), _c("b-field", [_c("b-checkbox", {
+  })], 1)], 1) : _c("div", [_c("b-field", [_c("b-checkbox", {
     staticClass: "is-size-6",
     attrs: {
       "true-value": "0",
@@ -4013,7 +4013,7 @@ var render = function render() {
       },
       expression: "accept_share_contact_infos"
     }
-  }, [_vm._v("Je ne souhaite pas être contacté par téléphone (dans\n\t\t\t\t\tce cas, je serais contacté uniquement par email)\n\t\t\t\t")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Je ne souhaite pas être contacté par téléphone (dans\n                  ce cas, je serais contacté uniquement par email)\n              ")]), _vm._v(" "), _c("input", {
     attrs: {
       type: "hidden",
       name: "accept_share_contact_infos"
@@ -4021,7 +4021,7 @@ var render = function render() {
     domProps: {
       value: _vm.accept_share_contact_infos
     }
-  })], 1)], 1) : _vm._e(), _vm._v(" "), _c("h3", {
+  })], 1), _vm._v(" "), _c("br"), _c("br")], 1), _vm._v(" "), _c("h3", {
     staticClass: "title is-4"
   }, [_vm._v("Mon projet")]), _vm._v(" "), _c("p", {
     directives: [{
@@ -4044,10 +4044,10 @@ var render = function render() {
           _vm.currentAdType = adTypeValue;
         }
       }
-    }, [_vm._v("\n\t\t\t\t" + _vm._s(adType.label) + "\n\t\t\t")]);
+    }, [_vm._v("\n\t\t\t\t\t" + _vm._s(adType.label) + "\n\t\t\t\t")]);
   }), 0), _vm._v(" "), _c("p", {
     staticClass: "pt-5"
-  }, [_vm._v("Votre annonce sera visible uniquement par les personnes qui recherchent des porteurs de\n\t\t\tprojet.\n\t\t\tSi\n\t\t\tvous souhaitez qu’elle soit visible par d’autres types de personnes, nous vous recommandons de créer une\n\t\t\tautre\n\t\t\tannonce pour multiplier vos chances.")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Votre annonce sera visible uniquement par les personnes qui recherchent des porteurs de\n\t\t\t\tprojet.\n\t\t\t\tSi\n\t\t\t\tvous souhaitez qu’elle soit visible par d’autres types de personnes, nous vous recommandons de créer une\n\t\t\t\tautre\n\t\t\t\tannonce pour multiplier vos chances.")]), _vm._v(" "), _c("div", {
     staticClass: "is-flex is-justify-content-flex-end pt-6"
   }, [_c("b-button", {
     staticClass: "ml-2",
@@ -4059,7 +4059,7 @@ var render = function render() {
     on: {
       click: _vm.setAdType
     }
-  }, [_vm._v("Etape suivante\n\t\t\t")])], 1)]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Etape suivante\n\t\t\t\t")])], 1)]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
