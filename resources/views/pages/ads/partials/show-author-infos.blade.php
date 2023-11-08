@@ -23,4 +23,12 @@
             {{$ad->userPp->phone}}
         </div>
     @endif
+
+    @if($ad->userPp?->phone)
+        <div class="w-50">
+            <strong>N° de téléphone : </strong>
+            {{$ad->userPp->phone}}
+        </div>
+    @endif
+
 @endif

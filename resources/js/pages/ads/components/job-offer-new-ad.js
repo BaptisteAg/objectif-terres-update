@@ -29,6 +29,7 @@ export default {
 
 		return {
 			formInput: {
+				selectedDepartments: hasOld && JSON.parse(v.selected_departments) || [],
 				selectedZones: hasOld && JSON.parse(v.selected_zones) || [],
 
 				offerTypes: hasOld && v.job_offer.offer_types || [],

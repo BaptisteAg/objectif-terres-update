@@ -9,9 +9,9 @@ class JobSeekRuleset implements RulesetInterface
     public function get(bool $isSupportRequest): array
     {
         return [
-            'job_seek.production_genre' => [new HasProductionGenre],
+            'job_seek.production_genres' => [new HasProductionGenre, 'required', 'array'],
             'job_seek.production_type_add' => ['nullable', 'string'],
-            'job_seek.secondary_production_genres' => [new HasProductionGenre],
+            'job_seek.secondary_production_genres' => [new HasProductionGenre, 'required', 'array'],
             'job_seek.secondary_production_type_add' => ['nullable', 'string'],
             'land_description' => ['nullable', 'string', 'max:1000'],
             'job_seek.offer_types' => ['required', 'array'],

@@ -13,7 +13,7 @@
             @include('pages.ads.partials.inputs.main_department')
 
             @include('pages.ads.partials.inputs.other_locations', [
-                'label' => 'Communes concernées*',
+                'label' => 'Communes concernées *',
                 'tooltip' => 'Si votre bien se situe sur plusieurs communes, merci de nous les indiquer',
                 'withDepartments' => false
             ])
@@ -96,22 +96,26 @@
             ])
 
             <section class="mb-6 field" ref="productionGenres">
-                {!! Form::label('associate_offer[production_genres][]', 'Production agricole principale envisagée *', ['class' => 'label']); !!}
                 <?php
                 $params = [
                     'name' => 'associate_offer[production_genres][]',
                     'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.productionGenres',
                     'isUnique' => 'true',
-                    'isRequired' => true
+                    'isRequired' => true,
+                    'label' => 'Production agricole principale envisagée'
                 ];
                 ?>
                 @include('pages.ads.partials.inputs.production_genres', $params)
             </section>
 
             <section class="mb-6 field" ref="productionGenresSecondary">
-                {!! Form::label('associate_offer[secondary_production_genres][]', 'Productions agricoles secondaires envisagées', ['class' => 'label']); !!}
-                @include('pages.ads.partials.inputs.production_genres', ['name' => 'associate_offer[secondary_production_genres][]', 'productionGenres' => $productionGenres, 'vModel' => 'formInput.productionGenresSecondary'])
+                @include('pages.ads.partials.inputs.production_genres',[
+                'name' => 'associate_offer[secondary_production_genres][]',
+                'productionGenres' => $productionGenres,
+                'vModel' => 'formInput.productionGenresSecondary',
+                'label' => 'Productions agricoles secondaires envisagées'
+                ])
             </section>
 
             <section class="mb-6 field" ref="bioCertifications">
