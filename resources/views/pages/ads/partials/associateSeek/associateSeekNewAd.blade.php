@@ -14,7 +14,8 @@
 
             @include('pages.ads.partials.inputs.other_locations', [
                 'label' => 'Autre(s) localisation(s)',
-                'tooltip' => 'Si vous souhaitez préciser la localisation de votre recherche, saisissez les 2 premiers chiffres du code postal'
+                'tooltip' => 'Si vous souhaitez préciser la localisation de votre recherche, saisissez les 2 premiers chiffres du code postal',
+                'withDepartments' => true
             ])
 
             <section class="mb-6 field" ref="productionGenres">
@@ -41,15 +42,14 @@
             </section>
 
             <section class="mb-6 field">
-                <b-checkbox true-value="0"
-                            false-value="1" name="associate_seek[is_land_already_found]"
-                            v-model="formInput.is_land_already_found"
+                <b-checkbox name="associate_seek[is_land_already_found]"
+                            v-model="formInput.isLandAlreadyFound"
                             class="is-size-6">
                     Avez-vous déjà trouvé un lieu et des terres agricoles ?
                 </b-checkbox>
             </section>
 
-            <section class="mb-6 field" v-if="formInput.is_land_already_found">
+            <section class="mb-6 field" v-if="formInput.isLandAlreadyFound">
                 {!! Form::label('associate_seek[land_description]', 'Pouvez-vous décrire le lieu et les terres ?', ['class' => 'label']); !!}
                 <text-area-counter
                         name="associate_seek[land_description]"

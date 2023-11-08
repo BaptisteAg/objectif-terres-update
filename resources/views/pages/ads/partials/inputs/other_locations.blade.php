@@ -3,6 +3,7 @@
     <b-tooltip class="w-100 field" ref="selectedZones" label="{{$tooltip}}">
     @endif
         <zone-select
+                src="{{ isset($withDepartments) && $withDepartments ? '/locations' : '/locations/cities' }}"
                 name="locationable"
                 label="{{$label}}"
                 json-name="selected_zones"

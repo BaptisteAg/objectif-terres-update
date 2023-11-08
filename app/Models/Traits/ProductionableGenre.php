@@ -38,6 +38,6 @@ Trait ProductionableGenre
     {
         return $this->morphToMany('App\Models\ProductionGenre', 'productionable_genre')
             ->withPivot('type')
-            ->wherePivot('type', 'secondary');
+            ->wherePivotIn('type', ['secondary', 'possible']);
     }
 }
