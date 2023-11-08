@@ -36,6 +36,13 @@
 
 			<div class="pb-4 is-flex is-flex-wrap-wrap is-justify-content-space-between"
 				 v-if="adContactType === 'thirdParty'">
+
+
+          <p>
+              Les coordonnées de la personne pour qui je dépose l'annonce, qui seront visibles par les personnes qui
+              consultent l'annonce.
+          </p><br><br>
+
 				<b-field class="w-50 is-size-6" label="Email" :type="errors.email ? 'is-danger' : ''"
 						 :message="errors.email">
 					<b-input name="third_party[email]" placeholder="jean.dupont@gmail.com" size="is-medium" rounded
@@ -60,16 +67,19 @@
 							 v-model="thirdParty.phone"
 					></b-input>
 				</b-field>
-
-
-				<b-field>
-					<b-checkbox v-model="accept_share_contact_infos" true-value="0"
-								false-value="1" class="is-size-6">Je ne souhaite pas être contacté par téléphone (dans
-						ce cas, je serais contacté uniquement par email)
-					</b-checkbox>
-					<input type="hidden" name="accept_share_contact_infos" :value="accept_share_contact_infos">
-				</b-field>
 			</div>
+      <div v-else>
+
+
+          <b-field>
+              <b-checkbox v-model="accept_share_contact_infos" true-value="0"
+                          false-value="1" class="is-size-6">Je ne souhaite pas être contacté par téléphone (dans
+                  ce cas, je serais contacté uniquement par email)
+              </b-checkbox>
+              <input type="hidden" name="accept_share_contact_infos" :value="accept_share_contact_infos">
+          </b-field>
+          <br><br>
+      </div>
 
 			<h3 class="title is-4">Mon projet</h3>
 			<p class="pb-4 has-text-danger" v-show="errors.adType">Le type d'annonce n'est pas défini.</p>
@@ -147,20 +157,20 @@ export default {
 				land_seek: {
 					label: "Je cherche du foncier agricole",
 				},
+        job_seek: {
+            label: "Je cherche une expérience agricole",
+        },
+        associate_offer: {
+            label: "Je cherche un associé sur une ferme existante",
+        },
 				land_offer: {
 					label: "Je propose du foncier agricole",
 				},
-				associate_offer: {
-					label: "Associé sur une ferme",
-				},
-				job_seek: {
-					label: "Je cherche une opportunité professionnelle",
-				},
 				job_offer: {
-					label: "Je propose une opportunité professionnelle",
+					label: "Je propose une expérience agricole",
 				},
 				associate_seek: {
-					label: "Associé pour projet d'installation",
+					label: "Je cherche un associé pour projet d'installation",
 				}
 			}
 		},
