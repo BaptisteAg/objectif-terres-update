@@ -76,7 +76,7 @@
                           false-value="1" class="is-size-6">Je ne souhaite pas être contacté par téléphone (dans
                   ce cas, je serais contacté uniquement par email)
               </b-checkbox>
-              <input type="hidden" name="accept_share_contact_infos" :value="accept_share_contact_infos">
+              <input type="hidden" name="accept_share_contact_infos" :value="accept_share_contact_infos || 1">
           </b-field>
           <br><br>
       </div>

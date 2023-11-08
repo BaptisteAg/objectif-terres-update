@@ -30,7 +30,7 @@
                         <i class="fas fa-info-circle has-text-info"></i>
                     </div>
                     <b-field>
-                        <b-input name="land_offer[surface]" v-model="formInput.surface" placeholder="1ha = 10 000m²"
+                        <b-input name="land_offer[surface]" v-model="formInput.surface"
                         ></b-input>
                         <p class="control">
                         <span style="border-bottom-right-radius: 999px; border-top-right-radius: 999px;"
@@ -194,23 +194,24 @@
 
         </tab-content>
         <tab-content title="Potentiel agricole">
+
             <section class="mb-6 field" ref="productionGenres">
-                {!! Form::label('associate_offer[production_genres][]', 'Production principale*', ['class' => 'label']); !!}
                 @include('pages.ads.partials.inputs.production_genres', [
-                    'name' => 'associate_offer[production_genres][]',
+                    'name' => 'land_offer[production_genres][]',
                     'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.productionGenres',
                     'isRequired' => true,
                     'isUnique' => true,
+                    'label' => 'Production principale',
                 ])
             </section>
 
             <section class="mb-6 field" ref="productionGenresSecondary">
-                {!! Form::label('associate_offer[secondary_production_genres][]', 'Production(s) secondaire(s)', ['class' => 'label']); !!}
                 @include('pages.ads.partials.inputs.production_genres', [
-                    'name' => 'associate_offer[secondary_production_genres][]',
+                    'name' => 'land_offer[secondary_production_genres][]',
                     'productionGenres' => $productionGenres,
-                    'vModel' => 'formInput.productionGenresSecondary'
+                    'vModel' => 'formInput.productionGenresSecondary',
+                    'label' => 'Production(s) secondaire(s)',
                 ])
             </section>
 
@@ -254,7 +255,8 @@
                     <b-checkbox class="has-text-weight-bold"
                                 v-model="formInput.isSaleOfferEvaluation">Prix de vente en cours d'évaluation
                     </b-checkbox>
-                    <input type="hidden" name="land_offer[is_sales_offer_evaluation]" :value="formInput.isSaleOfferEvaluation">
+                    <input type="hidden" name="land_offer[is_sales_offer_evaluation]"
+                           :value="formInput.isSaleOfferEvaluation">
                 </div>
                 <div class="column field" v-if="isSaleOffer" ref="price">
                     {!! Form::label('land_offer[price]', 'Prix de vente *', [

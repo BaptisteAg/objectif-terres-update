@@ -35,6 +35,10 @@
                         <input type="hidden" name="id" value="{{ $old["id"] }}">
                     @endif
 
+                    @if(config('app.env') !== 'production')
+                        <p class="is-1 title">@{{ adTypeSelected }}NewAd</p>
+                    @endif
+
                     <ad-type-select v-model="adTypeSelected"
                                     name="ad_type"
                                     :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
@@ -133,14 +137,14 @@
                     </new-associate-seek-ad>
 
                     <new-associate-offer-ad inline-template
-                                           v-if="adTypeSelected === 'associate_offer'"
-                                           :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
-                                           @input-enabled="setEnabledForm"
-                                           @form-complete="submitProxy"
-                                           @submit-save-button="submitProxy"
-                                           @click-save-button="onSaveClick"
-                                           @click-publish-button="onPublishClick"
-                                           ref="associate_offer">
+                                            v-if="adTypeSelected === 'associate_offer'"
+                                            :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                            @input-enabled="setEnabledForm"
+                                            @form-complete="submitProxy"
+                                            @submit-save-button="submitProxy"
+                                            @click-save-button="onSaveClick"
+                                            @click-publish-button="onPublishClick"
+                                            ref="associate_offer">
                         @include('pages.ads.partials.associateOffer.associateOfferNewAd')
                     </new-associate-offer-ad>
 

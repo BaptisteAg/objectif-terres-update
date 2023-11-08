@@ -29,7 +29,7 @@ export default {
 
         return {
             formInput: {
-				selectedDepartments: hasOld && JSON.parse(old.selected_departments) || [],
+				selectedDepartments: hasOld && JSON.parse(v.selected_departments) || [],
                 selectedZones: hasOld && JSON.parse(v.selected_zones) || [],
 
                 offerTypes: hasOld && v.job_seek.offer_types || [],
@@ -40,8 +40,8 @@ export default {
                 aboutContent: hasOld && v.about_content || '',
                 title: hasOld && v.title || '',
                 documents: hasOld && JSON.parse(v.documents) || [],
-                productionGenres: hasOld && v.production_genres || [],
-                productionGenresSecondary: hasOld && v.secondary_production_genres || [],
+                productionGenres: hasOld && v.job_seek.production_genres || [],
+                productionGenresSecondary: hasOld && v.job_seek.secondary_production_genres || [],
                 chartConfirmation: hasOld && v.chart_confirmation || false,
                 //beneficiary: hasOld && v.is_beneficiary || '',
                 //agriculturalActivity: hasOld && v.agricultural_activity || [],
