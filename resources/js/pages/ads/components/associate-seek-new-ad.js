@@ -24,27 +24,30 @@ export default {
     mixins: [FormNewAdMixin],
     props: {},
     data() {
-        const v = this.oldValues;
-        const hasOld = Object.keys(v).length && v.associate_seek;
+        const old = this.oldValues;
+
+        if(!old.associate_seek) {
+            old.associate_seek = {}
+        }
 
         return {
             formInput: {
-                selectedDepartments: hasOld && JSON.parse(old.selected_departments) || [],
-                selectedZones: hasOld && JSON.parse(v.selected_zones) || [],
+                selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
+                selectedZones: old.selected_zones && JSON.parse(old.selected_zones) || [],
 
-                isLandAlreadyFound: v.is_land_already_found,
-                landDescription: hasOld && v.associate_seek.land_description || '',
-                associateDescription: hasOld && v.associate_seek.associate_description || '',
-                experienceFarming: hasOld && v.associate_seek.experience_farming || '',
-                educationLevels: hasOld && v.associate_seek.education_levels || [],
+                isLandAlreadyFound: old.associate_seek.is_land_already_found,
+                landDescription: old.associate_seek.land_description || '',
+                associateDescription: old.associate_seek.associate_description || '',
+                experienceFarming: old.associate_seek.experience_farming || '',
+                educationLevels: old.associate_seek.education_levels || [],
+                productionGenres: old.associate_seek.production_genres || [],
+                productionGenresSecondary: old.associate_seek.secondary_production_genres || [],
 
-                aboutProject: hasOld && v.about_project_content || '',
-                aboutContent: hasOld && v.about_content || '',
-                title: hasOld && v.title || '',
-                documents: hasOld && JSON.parse(v.documents) || [],
-                productionGenres: hasOld && v.production_genres || [],
-                productionGenresSecondary: hasOld && v.secondary_production_genres || [],
-                chartConfirmation: hasOld && v.chart_confirmation || false,
+                aboutProject: old.about_project_content || '',
+                aboutContent: old.about_content || '',
+                title: old.title || '',
+                documents: old.documents && JSON.parse(old.documents) || [],
+                chartConfirmation: old.chart_confirmation || false,
             }
         }
     },

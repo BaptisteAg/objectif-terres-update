@@ -2,7 +2,6 @@
 
 use App\Models\ProductionGenre;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 

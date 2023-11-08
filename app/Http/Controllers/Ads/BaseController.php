@@ -173,11 +173,37 @@ abstract class BaseController extends Controller
                             $ad->jobSeekAd->secondary_production_type_add ? ['other'] : []
                         ),
                     ]) : null,
+
+                'associate_seek' => $ad->associateSeekAd ?
+                    array_merge($ad->associateSeekAd->toArray(), [
+                        "education_levels" => $ad->associateSeekAd->educationLevels->pluck("id")->toArray(),
+                        'production_genres' => array_merge(
+                            $ad->associateSeekAd->productionGenres->pluck("id")->toArray(),
+                            $ad->associateSeekAd->production_type_add ? ['other'] : []
+                        ),
+                        "secondary_production_genres" => array_merge(
+                            $ad->associateSeekAd->productionGenresSecondary->pluck("id")->toArray(),
+                            $ad->associateSeekAd->secondary_production_type_add ? ['other'] : []
+                        ),
+                    ]) : null,
+
+                'associate_offer' => $ad->associateOfferAd ?
+                    array_merge($ad->associateOfferAd->toArray(), [
+                        "bio_certifications" => $ad->associateOfferAd->bioCertifications->pluck("id")->toArray(),
+                        "education_levels" => $ad->associateOfferAd->educationLevels->pluck("id")->toArray(),
+                        'production_genres' => array_merge(
+                            $ad->associateOfferAd->productionGenres->pluck("id")->toArray(),
+                            $ad->associateOfferAd->production_type_add ? ['other'] : []
+                        ),
+                        "secondary_production_genres" => array_merge(
+                            $ad->associateOfferAd->productionGenresSecondary->pluck("id")->toArray(),
+                            $ad->associateOfferAd->secondary_production_type_add ? ['other'] : []
+                        ),
+                    ]) : null,
             ],
             $ad->only(["id", "title", "department_id", "about_content", "about_project_content", "accept_share_contact_infos", "support_request_text", 'is_sales_offer_evaluation']),
             compact("selected_zones", "locationable", "locationable_radius", "documents", "document_ids", 'selected_departments', 'third_party' ,'ad_contact_type')
         );
-
 
         return $vars;
     }
