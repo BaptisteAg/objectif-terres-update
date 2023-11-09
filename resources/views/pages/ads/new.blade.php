@@ -36,10 +36,11 @@
                     @endif
 
                     @if(config('app.env') !== 'production')
-                        <p class="is-1 title">@{{ adTypeSelected }}NewAd</p>
+                        <p class="title is-1 has-background-black has-text-white">@{{ adTypeSelected }}NewAd</p>
                     @endif
 
                     <ad-type-select v-model="adTypeSelected"
+                                    :on-edit="{{isset($old["id"]) ? 'true' : 'false'}}"
                                     name="ad_type"
                                     :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                     :is-support-request="{{empty($isSupportRequest)?'false':'true'}}">
