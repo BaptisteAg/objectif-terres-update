@@ -52,7 +52,9 @@
             Pas de description renseignée pour cette annonce
         @endif
 
-        <p class="title is-1">{{$ad->type}}</p>
+        @if(config('app.env') !== 'production')
+            <p class="title is-1 has-background-black has-text-white">Type : {{$ad->type}}</p>
+        @endif
 
         <div class="is-flex mt-auto mb-4 is-justify-content-space-between">
             <div class="is-flex is-flex-direction-column fd-r-mobile jc-sb-mobile pt-3-mobile" style="width: 100%">

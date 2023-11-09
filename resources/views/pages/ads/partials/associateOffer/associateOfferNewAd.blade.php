@@ -23,30 +23,9 @@
                 'vModel' => 'formInput.acceptUseZipCode',
             ])
 
-            <section class="field mb-6" ref="surface">
-                <div class="label">
-                    {!! Form::label('associate_offer[surface]', 'Surface du foncier agricole *'); !!}
-                </div>
-                <b-field>
-                    <b-input name="associate_offer[surface]" v-model="formInput.surface" placeholder="1ha = 10 000m²"
-                    ></b-input>
-                    <p class="control">
-                    <span style="border-bottom-right-radius: 999px; border-top-right-radius: 999px;"
-                          class="button is-static">ha</span>
-                    </p>
-                </b-field>
-                <template v-if="$v.formInput.surface?.$error">
-                    <p class="help is-danger" v-if="!$v.formInput.surface.maxValue">
-                        Surface maximum : @{{$v.formInput.surface.$params.maxValue.max}} hectares.
-                    </p>
-                    <p class="help is-danger" v-if="!$v.formInput.surface.required">
-                        Ce champ est requis.
-                    </p>
-                    <p class="help is-danger" v-if="!$v.formInput.surface.numeric">
-                        Veuillez saisir un nombre.
-                    </p>
-                </template>
-            </section>
+            @include('pages.ads.partials.inputs.surface',[
+                'adType' => 'associate_offer',
+            ])
 
             <section class="field mb-6" ref="altitude">
                 <div class="label">
@@ -141,7 +120,7 @@
         <tab-content title="Profil recherché">
 
             <section class="mb-6 field" ref="associateDescription">
-                {!! Form::label('associate_offer[associate_description]',"Description du type d'associé.e.s recherché.e.s*", ['class' => 'label']); !!}
+                {!! Form::label('associate_offer[associate_description]',"Description du type d'associé.e.s recherché.e.s *", ['class' => 'label']); !!}
                 <text-area-counter
                         name="associate_offer[associate_description]"
                         :max-length="1000"
@@ -160,15 +139,16 @@
             </section>
 
             <section class="mb-6 field" ref="educationLevels">
-                {!! Form::label('associate_offer[education_levels][]', 'Niveau de formation *', ['class' => 'label']); !!}
-
-                <multi-select
-                        :options="{{json_encode($educationLevels)}}"
-                        name="associate_offer[education_levels][]"
-                        v-model="formInput.educationLevels"
-                        placeholder="Sélectionnez un ou plusieurs niveaux"
-                >
-                </multi-select>
+                <?php
+                $educationLevelsParams = [
+                    'name' => 'associate_offer[education_levels][]',
+                    'productionGenres' => $educationLevels,
+                    'vModel' => 'formInput.educationLevels',
+                    'isRequired' => true,
+                    'label' => 'Niveau de formation'
+                ];
+                ?>
+                @include('pages.ads.partials.inputs.production_genres', $educationLevelsParams)
             </section>
 
             @include('pages.ads.partials.inputs.yes_no', [

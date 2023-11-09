@@ -70,14 +70,16 @@
 
         <tab-content title="Votre parcours">
             <section class="mb-6 field" ref="educationLevels">
-                {!! Form::label('job_seek[education_levels][]', 'Niveau de formation *', ['class' => 'label']); !!}
-                <multi-select
-                        :options="{{json_encode($educationLevels)}}"
-                        name="job_seek[education_levels][]"
-                        v-model="formInput.educationLevels"
-                        placeholder="Sélectionnez un ou plusieurs niveaux"
-                >
-                </multi-select>
+                <?php
+                $educationLevelsParams = [
+                    'name' => 'job_seek[education_levels][]',
+                    'productionGenres' => $educationLevels,
+                    'vModel' => 'formInput.educationLevels',
+                    'isRequired' => true,
+                    'label' => 'Niveau de formation'
+                ];
+                ?>
+                @include('pages.ads.partials.inputs.production_genres', $educationLevelsParams)
             </section>
 
             <section class="mb-6 field" ref="experienceFarming">
