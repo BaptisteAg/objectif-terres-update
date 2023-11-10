@@ -57,7 +57,6 @@ export default {
 		//    supportRequestTerritoryId : v.support_request_territory_id ||"",
 		//} : {};
 
-		console.log(old.land_offer.accept_use_zip_code);
 		return {
 			formInput: {
 				selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
