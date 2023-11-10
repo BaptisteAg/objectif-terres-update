@@ -127,7 +127,6 @@ export default {
 		 * Fails silently
 		 */
 		focusOnFirstError() {
-			console.log('focusOnFirstError')
 			const firstError = Object.keys(this.formInput).find(inputName => {
 				if (this.$v.formInput[inputName] && this.$v.formInput[inputName].$error) {
 					let input = this.findInputContainerElement(this.$refs[inputName]);
