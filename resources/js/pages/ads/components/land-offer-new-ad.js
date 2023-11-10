@@ -74,9 +74,9 @@ export default {
 				waterAccessDescription: old.land_offer.water_access_description || '',
 				altitude: old.land_offer.altitude || '',
 
-				hasBuildings: old.land_offer.has_buildings ? 1 : 0,
+				hasBuildings: typeof old.land_offer.has_buildings !== 'undefined' ? old.land_offer.has_buildings : '',
 				buildingDescription: old.land_offer.building && old.land_offer.building.description || '',
-				hasHouses: old.land_offer.has_houses ? 1 : 0,
+				hasHouses: typeof old.land_offer.has_houses !== 'undefined' ? old.land_offer.has_houses : '',
 				houseDescription: old.land_offer.house && old.land_offer.house.description || '',
 
 				offerGenres: old.land_offer.offer_genres || [],

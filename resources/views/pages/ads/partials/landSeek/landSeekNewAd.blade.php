@@ -84,13 +84,13 @@
 
         <tab-content title="Votre projet agricole">
             <section class="mb-6 field" ref="productionGenres">
-                {!! Form::label('land_seek[production_genres][]', 'Production agricole principale envisagée *', ['class' => 'label']); !!}
                 @include('pages.ads.partials.inputs.production_genres', [
                     'name' => 'land_seek[production_genres][]',
                     'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.productionGenres',
                     'isRequired' => true,
                     'isUnique' => true,
+                    'label' => 'Production agricole principale envisagée',
                 ])
             </section>
 
@@ -104,11 +104,11 @@
             </section>
 
             <section class="mb-6 field" ref="productionGenresSecondary">
-                {!! Form::label('land_seek[secondary_production_genres][]', 'Production agricole secondaire envisagée', ['class' => 'label']); !!}
                 @include('pages.ads.partials.inputs.production_genres', [
                     'name' => 'land_seek[secondary_production_genres][]',
                     'productionGenres' => $productionGenres,
-                    'vModel' => 'formInput.productionGenresSecondary'
+                    'vModel' => 'formInput.productionGenresSecondary',
+                    'label' => 'Production agricole secondaire envisagée',
                 ])
             </section>
 
