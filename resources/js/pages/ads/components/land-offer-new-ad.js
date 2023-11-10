@@ -83,7 +83,7 @@ export default {
 				isSaleOfferEvaluation: old.land_offer.is_sales_offer_evaluation,
 				rentPrice: old.land_offer.rent_price || '',
 				testDescription: old.land_offer.test_description || '',
-				chartConfirmation: old.chart_confirmation || false,
+				chartConfirmation: old.chart_confirmation || true,
 
 				aboutProject: old.about_project_content || '',
 				aboutContent: old.about_content || '',
