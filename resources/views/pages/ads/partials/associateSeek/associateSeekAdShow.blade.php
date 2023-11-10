@@ -18,6 +18,17 @@
 
                 @include('pages.ads.partials.show-author-infos')
 
+{{--                TODO : Inclure departement ??--}}
+
+                <div class="w-50">
+                    <strong>Niveau de formation : </strong>
+                    @if( isset ($ad->jobSeekAd->educationLevels))
+                        @if ($ad->jobSeekAd->educationLevels->count() >=1)
+                            {{$ad->jobSeekAd->educationLevels->pluck('name')->implode(', ') }}
+                        @endif
+                    @endif
+                </div>
+
             </div>
         </div>
 
@@ -59,17 +70,18 @@
         </div>
     @endif
 
-    @if($ad->associateSeekAd->educationLevels->count())
-        <div class="w-50">
-            <h3 class="title is-4">Niveau de formation souhaité</h3>
-            @foreach($ad->associateSeekAd->educationLevels as $educationLevel)
-                @if($educationLevel->name == "")
-                    <p>{{$educationLevel->name }}</p>
-                @endif
-                <img src="{{ $educationLevel->icon }}">
-            @endforeach
-        </div>
-    @endif
+    {{--    TODO : formation ??--}}
+    {{--    @if($ad->associateSeekAd->educationLevels->count())--}}
+    {{--        <div class="w-50">--}}
+    {{--            <h3 class="title is-4">Niveau de formation souhaité</h3>--}}
+    {{--            @foreach($ad->associateSeekAd->educationLevels as $educationLevel)--}}
+    {{--                @if($educationLevel->name == "")--}}
+    {{--                    <p>{{$educationLevel->name }}</p>--}}
+    {{--                @endif--}}
+    {{--                <img src="{{ $educationLevel->icon }}">--}}
+    {{--            @endforeach--}}
+    {{--        </div>--}}
+    {{--    @endif--}}
 
     @if($ad->about_content)
         <div>

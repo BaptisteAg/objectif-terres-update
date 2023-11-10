@@ -5,7 +5,6 @@ import JobSeekNewAd from './components/job-seek-new-ad'
 import AssociateSeekNewNad from './components/associate-seek-new-ad'
 import AssociateOfferNewNad from './components/associate-offer-new-ad'
 import AdTypeSelect from '../../components/AdTypeSelect'
-import OldAdTypeSelect from '../../components/AdTypeSelect.v1.vue'
 
 import Vue from 'vue'
 
@@ -19,7 +18,6 @@ Vue.component('new-ad', {
         'new-associate-seek-ad': AssociateSeekNewNad,
         'new-associate-offer-ad': AssociateOfferNewNad,
         AdTypeSelect,
-        OldAdTypeSelect
     },
     props: {
         oldAdTypeSelected: String,
