@@ -29,11 +29,12 @@ export default {
 
 		return {
 			formInput: {
+				selectedDepartments: hasOld && JSON.parse(v.selected_departments) || [],
 				selectedZones: hasOld && JSON.parse(v.selected_zones) || [],
 
 				offerTypes: hasOld && v.job_offer.offer_types || [],
-				productionGenres: hasOld && v.production_genres || [],
-				productionGenresSecondary: hasOld && v.secondary_production_genres || [],
+				productionGenres: hasOld && v.job_offer.production_genres || [],
+				productionGenresSecondary: hasOld && v.job_offer.secondary_production_genres || [],
 				isActivityTransmission: hasOld && v.job_offer.is_activity_transmission || undefined,
 				jobDescription: hasOld && v.job_offer.job_description || '',
 				experienceFarming: hasOld && v.job_offer.experience_farming || '',

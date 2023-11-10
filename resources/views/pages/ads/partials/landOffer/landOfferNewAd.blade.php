@@ -22,34 +22,9 @@
                 'vModel' => 'formInput.acceptUseZipCode',
             ])
 
-            <section class="field mb-6" ref="surface">
-                <b-tooltip class="w-100"
-                           label="Il est nécessaire que nous ayons les informations sur votre bien, à l'échelle de la commune mais l'annonce ne l'affichera pas si vous souhaitez rester plus général sur l'emplacement du foncier. Seul le département apparaitra.">
-                    <div class="label">
-                        {!! Form::label('land_offer[surface]', 'Surface du foncier agricole *'); !!}
-                        <i class="fas fa-info-circle has-text-info"></i>
-                    </div>
-                    <b-field>
-                        <b-input name="land_offer[surface]" v-model="formInput.surface" placeholder="1ha = 10 000m²"
-                        ></b-input>
-                        <p class="control">
-                        <span style="border-bottom-right-radius: 999px; border-top-right-radius: 999px;"
-                              class="button is-static">ha</span>
-                        </p>
-                    </b-field>
-                    <template v-if="$v.formInput.surface.$error">
-                        <p class="help is-danger" v-if="!$v.formInput.surface.maxValue">
-                            Surface maximum : @{{$v.formInput.surface.$params.maxValue.max}} hectares.
-                        </p>
-                        <p class="help is-danger" v-if="!$v.formInput.surface.required">
-                            Ce champ est requis.
-                        </p>
-                        <p class="help is-danger" v-if="!$v.formInput.surface.numeric">
-                            Veuillez saisir un nombre.
-                        </p>
-                    </template>
-                </b-tooltip>
-            </section>
+            @include('pages.ads.partials.inputs.surface',[
+                'adType' => 'associate_offer',
+            ])
 
             <section class="field mb-6" ref="altitude">
                 <b-tooltip class="w-100"
@@ -194,23 +169,24 @@
 
         </tab-content>
         <tab-content title="Potentiel agricole">
+
             <section class="mb-6 field" ref="productionGenres">
-                {!! Form::label('associate_offer[production_genres][]', 'Production principale*', ['class' => 'label']); !!}
                 @include('pages.ads.partials.inputs.production_genres', [
-                    'name' => 'associate_offer[production_genres][]',
+                    'name' => 'land_offer[production_genres][]',
                     'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.productionGenres',
                     'isRequired' => true,
                     'isUnique' => true,
+                    'label' => 'Production principale',
                 ])
             </section>
 
             <section class="mb-6 field" ref="productionGenresSecondary">
-                {!! Form::label('associate_offer[secondary_production_genres][]', 'Production(s) secondaire(s)', ['class' => 'label']); !!}
                 @include('pages.ads.partials.inputs.production_genres', [
-                    'name' => 'associate_offer[secondary_production_genres][]',
+                    'name' => 'land_offer[secondary_production_genres][]',
                     'productionGenres' => $productionGenres,
-                    'vModel' => 'formInput.productionGenresSecondary'
+                    'vModel' => 'formInput.productionGenresSecondary',
+                    'label' => 'Production(s) secondaire(s)',
                 ])
             </section>
 
@@ -254,7 +230,8 @@
                     <b-checkbox class="has-text-weight-bold"
                                 v-model="formInput.isSaleOfferEvaluation">Prix de vente en cours d'évaluation
                     </b-checkbox>
-                    <input type="hidden" name="land_offer[is_sales_offer_evaluation]" :value="formInput.isSaleOfferEvaluation">
+                    <input type="hidden" name="land_offer[is_sales_offer_evaluation]"
+                           :value="formInput.isSaleOfferEvaluation">
                 </div>
                 <div class="column field" v-if="isSaleOffer" ref="price">
                     {!! Form::label('land_offer[price]', 'Prix de vente *', [

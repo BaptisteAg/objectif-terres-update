@@ -120,7 +120,7 @@
 
     @if($ad->jobSeekAd->experience_farming)
         <div class="column is-one-third ">
-            <p class="has-text-link is-size-5 has-text-centered"> Expérience dans le monde agricole</p>
+            <p class="has-text-link is-size-5 has-text-centered">Expérience dans le monde agricole</p>
             <p class="has-text-centered">{{$ad->jobSeekAd->experience_farming}}</p>
         </div>
     @endif
