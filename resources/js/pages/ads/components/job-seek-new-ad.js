@@ -42,7 +42,7 @@ export default {
                 documents: hasOld && JSON.parse(v.documents) || [],
                 productionGenres: hasOld && v.job_seek.production_genres || [],
                 productionGenresSecondary: hasOld && v.job_seek.secondary_production_genres || [],
-                chartConfirmation: hasOld && v.chart_confirmation || false,
+                chartConfirmation: hasOld && v.chart_confirmation || true,
                 //beneficiary: hasOld && v.is_beneficiary || '',
                 //agriculturalActivity: hasOld && v.agricultural_activity || [],
             }

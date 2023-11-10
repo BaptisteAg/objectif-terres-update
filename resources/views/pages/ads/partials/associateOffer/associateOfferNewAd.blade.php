@@ -97,24 +97,7 @@
                 ])
             </section>
 
-            <section class="mb-6 field" ref="bioCertifications">
-                {!! Form::label('associate_offer[bio_certifications][]', 'Certification des terres *', ['class' => 'label']); !!}
-                <multi-select
-                        :options="{{json_encode($bioCertifications)}}"
-                        group-values="children"
-                        name="associate_offer[bio_certifications][]"
-                        v-model="formInput.bioCertifications"
-                        :clear-other-values="{{json_encode($bioCertifications->filter(function ($v) {
-                                        return in_array($v->name, ['Aucune', 'En conversion', 'Je ne sais pas']);
-                                    })->values())}}"
-                        :show-icons="true"
-                        placeholder="Sélectionnez une ou plusieurs certifications"
-                        ref="bioCertifications">
-                </multi-select>
-                <p class="help is-danger" v-if="$v.formInput.bioCertifications?.$error">
-                    Ce champ est requis.
-                </p>
-            </section>
+            @include('pages.ads.partials.inputs.bio_certifications')
 
         </tab-content>
         <tab-content title="Profil recherché">

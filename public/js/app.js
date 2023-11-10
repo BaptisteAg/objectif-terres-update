@@ -2074,7 +2074,7 @@ __webpack_require__.r(__webpack_exports__);
         phone: ((_old$third_party4 = old.third_party) === null || _old$third_party4 === void 0 ? void 0 : _old$third_party4.phone) || ""
       },
       accept_share_contact_infos: old.accept_share_contact_infos,
-      hasCertified: false,
+      hasCertified: !!old.id,
       currentAdType: this.value
     };
   },
@@ -3666,7 +3666,7 @@ var render = function render() {
     staticClass: "adTypes-container"
   }, [_c("h1", {
     staticClass: "title"
-  }, [_vm._v("Formulaire de " + _vm._s(_vm.onEdit ? "modification" : "dépôt") + " d’annonces")]), _vm._v(" "), _c("p", [_vm._v("Objectif Terre est une plateforme ayant pour but de mettre en liens les personnes ayant des projets\n      agricoles\n      professionnels définis. Si votre annonce ne rentre pas dans cette catégorie (exemple : habitat\n      collectif,\n      volontariat, partage de jardin, chantier participatif...), veuillez vous référer à la FAQ mise à votre\n      disposition pour vous rendre sur la plateforme adaptée à votre besoin.")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Formulaire de " + _vm._s(_vm.onEdit ? "modification" : "dépôt") + " d’annonces")]), _vm._v(" "), _c("p", [_vm._v("Objectif Terre est une plateforme ayant pour but de mettre en liens les personnes ayant des projets\n\t\t\tagricoles\n\t\t\tprofessionnels définis. Si votre annonce ne rentre pas dans cette catégorie (exemple : habitat\n\t\t\tcollectif,\n\t\t\tvolontariat, partage de jardin, chantier participatif...), veuillez vous référer à la FAQ mise à votre\n\t\t\tdisposition pour vous rendre sur la plateforme adaptée à votre besoin.")]), _vm._v(" "), _c("div", {
     "class": _vm.errors.check ? "field-error mt-2 pt-2" : "mt-2 pt-2"
   }, [_c("b-field", {
     staticClass: "is-flex is-flex-direction-column",
@@ -3686,11 +3686,11 @@ var render = function render() {
       },
       expression: "hasCertified"
     }
-  }, [_vm._v("Je\n          certifie que\n          mon annonce\n          concerne\n          un\n          projet agricole professionnel sur des productions principales nourricières "), _c("a", {
+  }, [_vm._v("Je\n\t\t\t\t\tcertifie que\n\t\t\t\t\tmon annonce\n\t\t\t\t\tconcerne\n\t\t\t\t\tun\n\t\t\t\t\tprojet agricole professionnel sur des productions principales nourricières "), _c("a", {
     attrs: {
       href: "/conditions-utilisation"
     }
-  }, [_vm._v("(charte\n            Objectif Terre)")]), _vm._v(".\n        ")])], 1)], 1), _vm._v(" "), _c("hr", {
+  }, [_vm._v("(charte\n\t\t\t\t\t\tObjectif Terre)")]), _vm._v(".\n\t\t\t\t")])], 1)], 1), _vm._v(" "), _c("hr", {
     staticClass: "is-primary"
   }), _vm._v(" "), _c("h3", {
     staticClass: "title is-4"
@@ -3720,9 +3720,9 @@ var render = function render() {
       },
       expression: "adContactType"
     }
-  }, [_vm._v("Pour une autre\n        personne\n      ")])], 1), _vm._v(" "), _vm.adContactType === "thirdParty" ? _c("div", {
+  }, [_vm._v("Pour une autre\n\t\t\t\tpersonne\n\t\t\t")])], 1), _vm._v(" "), _vm.adContactType === "thirdParty" ? _c("div", {
     staticClass: "pb-4 is-flex is-flex-wrap-wrap is-justify-content-space-between"
-  }, [_c("p", [_vm._v("\n        Les coordonnées de la personne pour qui je dépose l'annonce, qui seront visibles par les personnes qui\n        consultent l'annonce.\n      ")]), _c("br"), _c("br"), _vm._v(" "), _c("b-field", {
+  }, [_c("p", [_vm._v("\n\t\t\t\tLes coordonnées de la personne pour qui je dépose l'annonce, qui seront visibles par les personnes\n\t\t\t\tqui\n\t\t\t\tconsultent l'annonce.\n\t\t\t")]), _c("br"), _c("br"), _vm._v(" "), _c("b-field", {
     staticClass: "w-50 is-size-6",
     attrs: {
       label: "Email",
@@ -3823,7 +3823,7 @@ var render = function render() {
       },
       expression: "accept_share_contact_infos"
     }
-  }, [_vm._v("Je ne souhaite pas être contacté par téléphone (dans\n          ce cas, je serais contacté uniquement par email)\n        ")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Je ne souhaite pas être contacté par téléphone (dans\n\t\t\t\t\tce cas, je serais contacté uniquement par email)\n\t\t\t\t")]), _vm._v(" "), _c("input", {
     attrs: {
       type: "hidden",
       name: "accept_share_contact_infos"
@@ -3862,7 +3862,7 @@ var render = function render() {
           _vm.currentAdType = adTypeValue;
         }
       }
-    }, [_vm._v("\n          " + _vm._s(adType.label) + "\n        ")]);
+    }, [_vm._v("\n\t\t\t\t\t" + _vm._s(adType.label) + "\n\t\t\t\t")]);
   }), 0)]), _vm._v(" "), _c("div", {
     staticClass: "is-flex is-justify-content-flex-end pt-6"
   }, [_c("b-button", {
@@ -3875,7 +3875,7 @@ var render = function render() {
     on: {
       click: _vm.setAdType
     }
-  }, [_vm._v("Etape suivante\n      ")])], 1)]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Etape suivante\n\t\t\t")])], 1)]), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -3893,7 +3893,7 @@ var render = function render() {
         return _vm.changeAdType();
       }
     }
-  }, [_vm._v("← Changer de type d'annonce")])]), _vm._v(" "), _c("input", {
+  }, [_vm._v("← Paramètres de l'annonce")])]), _vm._v(" "), _c("input", {
     attrs: {
       type: "hidden",
       name: _vm.name
@@ -101280,7 +101280,7 @@ var numberNormalizer = function numberNormalizer(inputName) {
         aboutProject: old.about_project_content || '',
         isActivityTransmission: old.associate_offer.is_activity_transmission,
         educationLevels: old.associate_offer.education_levels || [],
-        chartConfirmation: old.chart_confirmation || false,
+        chartConfirmation: old.chart_confirmation || true,
         aboutContent: old.about_content || '',
         title: old.title || '',
         documents: old.documents && JSON.parse(old.documents) || []
@@ -101298,8 +101298,6 @@ var numberNormalizer = function numberNormalizer(inputName) {
       return this.formInput.waterAccess && this.formInput.waterAccess.toString() === "1";
     }
   },
-  methods: {},
-  mounted: function mounted() {},
   watch: {
     'formInput.surface': numberNormalizer('surface'),
     'formInput.altitude': numberNormalizer('altitude')
@@ -101326,6 +101324,9 @@ var numberNormalizer = function numberNormalizer(inputName) {
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
           decimal: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["decimal"],
           maxValue: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxValue"])(1000)
+        },
+        educationLevels: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
         },
         hasHouses: {
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
@@ -101436,7 +101437,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         aboutContent: old.about_content || '',
         title: old.title || '',
         documents: old.documents && JSON.parse(old.documents) || [],
-        chartConfirmation: old.chart_confirmation || false
+        chartConfirmation: old.chart_confirmation || true
       }
     };
   },
@@ -101590,7 +101591,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         aboutContent: hasOld && v.about_content || '',
         title: hasOld && v.title || '',
         documents: hasOld && JSON.parse(v.documents) || [],
-        chartConfirmation: hasOld && v.chart_confirmation || false
+        chartConfirmation: hasOld && v.chart_confirmation || true
         //beneficiary: hasOld ? v.is_beneficiary : '',
         //agriculturalActivity: hasOld ? v.agricultural_activity || [],
       }
@@ -101709,7 +101710,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         documents: hasOld && JSON.parse(v.documents) || [],
         productionGenres: hasOld && v.job_seek.production_genres || [],
         productionGenresSecondary: hasOld && v.job_seek.secondary_production_genres || [],
-        chartConfirmation: hasOld && v.chart_confirmation || false
+        chartConfirmation: hasOld && v.chart_confirmation || true
         //beneficiary: hasOld && v.is_beneficiary || '',
         //agriculturalActivity: hasOld && v.agricultural_activity || [],
       }
@@ -101858,7 +101859,7 @@ var numberNormalizer = function numberNormalizer(inputName) {
         isSaleOfferEvaluation: old.land_offer.is_sales_offer_evaluation,
         rentPrice: old.land_offer.rent_price || '',
         testDescription: old.land_offer.test_description || '',
-        chartConfirmation: old.chart_confirmation || false,
+        chartConfirmation: old.chart_confirmation || true,
         aboutProject: old.about_project_content || '',
         aboutContent: old.about_content || '',
         title: old.title || '',
@@ -102122,7 +102123,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         aboutContent: old.about_content || '',
         title: old.title || '',
         documents: old.documents && JSON.parse(old.documents) || [],
-        chartConfirmation: old.chart_confirmation || false,
+        chartConfirmation: old.chart_confirmation || true,
         productionGenresSecondary: old.land_seek.secondary_production_genres || [],
         secondProductionTypeAdd: old.land_seek.secondary_production_type_add || ''
       }
