@@ -22208,12 +22208,8 @@ body .multiselect__option--highlight::after {
   background: #A9652B;
 }
 
-body .multiselect__tag {
-  background: #ffffff;
-  color: #7da237;
-  font-family: "Bebas Neue", "Source Sans Pro", sans-serif;
-  text-transform: uppercase;
-  white-space: initial;
+.multiselect--above .multiselect__content-wrapper {
+  border-radius: 12px;
 }
 
 body .multiselect__tag-icon:hover {

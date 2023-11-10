@@ -44,7 +44,7 @@ export default {
 				aboutContent: hasOld && v.about_content || '',
 				title: hasOld && v.title || '',
 				documents: hasOld && JSON.parse(v.documents) || [],
-				chartConfirmation: hasOld && v.chart_confirmation || false,
+				chartConfirmation: hasOld && v.chart_confirmation || true,
 				//beneficiary: hasOld ? v.is_beneficiary : '',
 				//agriculturalActivity: hasOld ? v.agricultural_activity || [],
 			}
