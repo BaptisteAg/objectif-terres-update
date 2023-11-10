@@ -124,9 +124,10 @@
                 <b-tooltip class="w-100"
                            label="Décrivez la nature des bâtiments agricoles présents sur la ferme (stabulation, hangar, tunnel, ...),
                                    leur surface ou leur prix si une estimation a déjà été réalisée, leur état (s'il y a des travaux à prévoir).">
-                    {!! Form::label('land_offer[building][description]',  'Description des bâtiments' , [
-                                                            'class' => 'label',
-                                                        ]);  !!}
+                    <div class="label">
+                        {!! Form::label('land_offer[building][description]', 'Description des bâtiments'); !!}
+                        <i class="fas fa-info-circle has-text-info"></i>
+                    </div>
                     <text-area-counter
                             name="land_offer[building][description]"
                             :max-length="1000"
@@ -153,9 +154,10 @@
             <section class="field mb-6" v-show="formInput.hasHouses == '1'" ref="houseDescription">
                 <b-tooltip class="w-100"
                            label="Décrivez les habitations présentes sur la ferme (nombre de pièces, surface, état, prix ou modalité de cession imaginé, etc.).">
-                    {!! Form::label('land_offer[house][description]',  'Description des habitations', [
-                                                            'class' => 'label',
-                                                        ]); !!}
+                    <div class="label">
+                        {!! Form::label('land_offer[house][description]', 'Description des habitations'); !!}
+                        <i class="fas fa-info-circle has-text-info"></i>
+                    </div>
                     <p>Vous pouvez mettre le prix de la location de votre habitation dans ce texte</p>
                     <text-area-counter
                             name="land_offer[house][description]"
@@ -190,24 +192,7 @@
                 ])
             </section>
 
-            <section class="mb-6 field" ref="bioCertifications">
-                {!! Form::label('land_offer[bio_certifications][]', 'Certification des terres *', ['class' => 'label']); !!}
-                <multi-select
-                        :options="{{json_encode($bioCertifications)}}"
-                        group-values="children"
-                        name="land_offer[bio_certifications][]"
-                        v-model="formInput.bioCertifications"
-                        :clear-other-values="{{json_encode($bioCertifications->filter(function ($v) {
-                                        return in_array($v->name, ['Aucune', 'En conversion', 'Je ne sais pas']);
-                                    })->values())}}"
-                        :show-icons="true"
-                        placeholder="Sélectionnez une ou plusieurs certifications"
-                        ref="bioCertifications">
-                </multi-select>
-                <p class="help is-danger" v-if="$v.formInput.bioCertifications.$error">
-                    Ce champ est requis.
-                </p>
-            </section>
+            @include('pages.ads.partials.inputs.bio_certifications')
 
             <section class="mb-6 field" ref="offerGenres">
                 <div class="block">
