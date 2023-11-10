@@ -44,7 +44,7 @@
             <section class="mb-6 field">
                 <b-checkbox name="associate_seek[is_land_already_found]"
                             v-model="formInput.isLandAlreadyFound"
-                            class="is-size-6">
+                            class="is-size-6 has-text-weight-bold">
                     Avez-vous déjà trouvé un lieu et des terres agricoles ?
                 </b-checkbox>
             </section>

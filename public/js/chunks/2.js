@@ -86,7 +86,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.searchTags {\r\n  background-color: #F8F3EE;\n}\r\n", ""]);
+exports.push([module.i, "\n.searchTags {\n  background-color: #F8F3EE;\n}\n", ""]);
 
 // exports
 
