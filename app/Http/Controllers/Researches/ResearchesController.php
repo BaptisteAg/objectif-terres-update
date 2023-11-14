@@ -66,6 +66,8 @@ ResearchesController extends Controller
             }
         }
 
+        dd($hasDepartmentPolygons, $departmentPolygons, $regionIds);
+
         $searchedRegionNames = Region::whereIn('id', $request->get("regions_location_researches_ids") ?? [])->pluck('name')->toArray();
         $searchedTypeOfProductions = ProductionGenre::whereIn('id', $request->get("regions_production_researches_ids") ?? [])->pluck('name')->toArray();
 
