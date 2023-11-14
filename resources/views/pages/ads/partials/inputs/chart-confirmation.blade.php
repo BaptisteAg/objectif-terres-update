@@ -1,4 +1,5 @@
 <b-checkbox
+        v-show="false"
         name="{{$inputNamePrefix}}[chart_confirmation]"
         class="has-text-weight-semibold"
         v-model="formInput.chartConfirmation"

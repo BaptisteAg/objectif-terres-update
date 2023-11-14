@@ -47,7 +47,7 @@ export default {
                 aboutContent: old.about_content || '',
                 title: old.title || '',
                 documents: old.documents && JSON.parse(old.documents) || [],
-                chartConfirmation: old.chart_confirmation || false,
+                chartConfirmation: old.chart_confirmation || true,
             }
         }
     },
