@@ -66,11 +66,10 @@
 					<b-input name="third_party[phone]" placeholder="06 06 06 06 06" size="is-medium" rounded type="text"
 							 v-model="thirdParty.phone"
 					></b-input>
+
 				</b-field>
 			</div>
       <div v-else>
-
-
           <b-field>
               <b-checkbox v-model="accept_share_contact_infos" true-value="0"
                           false-value="1" class="is-size-6">Je ne souhaite pas être contacté par téléphone (dans
@@ -89,7 +88,11 @@
 					 :class="{'bg-blue': currentAdType === adTypeValue}" @click="currentAdType = adTypeValue">
 					{{ adType.label }}
 				</div>
+
+
 			</div>
+
+
 
 			<p class="pt-5">Votre annonce sera visible uniquement par les personnes qui recherchent des porteurs de
 				projet.

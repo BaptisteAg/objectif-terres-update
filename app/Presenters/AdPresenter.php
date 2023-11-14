@@ -119,19 +119,6 @@ class AdPresenter extends BasePresenter
         return $regions;
     }
 
-    public function mainDepartment()
-    {
-        $mainDepartment = null;
-        if ($this->wrappedObject->departments->count()) {
-            $mainDepartment = $this->wrappedObject->departments->first();
-        } elseif ($this->wrappedObject->cities->count()) {
-            $mainDepartment = $this->wrappedObject->cities->first()?->department;
-        } elseif ($this->wrappedObject->regions->count()) {
-            $mainDepartment = $this->wrappedObject->regions->first()?->departments->first();
-        }
-        return $mainDepartment;
-    }
-
     public function secondaryDepartmentsList()
     {
         $ad = $this->wrappedObject;
@@ -144,7 +131,7 @@ class AdPresenter extends BasePresenter
 
         return $departments->unique('code')
             ->filter(function ($department) {
-                return $department->code !== $this->mainDepartment()?->code;
+                return $department->code !== $this->wrappedObject->main_department?->code;
             })
             ->map(function ($department) {
                 return $department->name . ' (' . $department->code . ')';

@@ -163,7 +163,8 @@ class  AdService
 
         $attributionAdData = [];
 
-        $adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
+        //$adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
+        $adDepartmentCodes = [$ad->main_department->code];
         $availableModerators = $this->userService->findByRolesAndDepartments([1], $adDepartmentCodes);
         $availableSupervisors = $this->userService->findByRolesAndDepartments([3], $adDepartmentCodes);
         $availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
