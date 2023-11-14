@@ -2,7 +2,7 @@
 	<div>
 		<div v-show="value === ''" class="adTypes-container">
 
-			<h1 class="title">Formulaire de dépôt d’annonces</h1>
+			<h1 class="title">Formulaire de {{ onEdit ? 'modification' : 'dépôt' }} d’annonces</h1>
 			<p>Objectif Terre est une plateforme ayant pour but de mettre en liens les personnes ayant des projets
 				agricoles
 				professionnels définis. Si votre annonce ne rentre pas dans cette catégorie (exemple : habitat
@@ -26,7 +26,7 @@
 
 			<hr class="is-primary">
 
-			<h3 class="title is-4">Je dépose cette annonce</h3>
+			<h3 class="title is-4">Je {{ onEdit ? 'modifie' : 'dépose' }} cette annonce</h3>
 			<div class="block">
 				<b-radio v-model="adContactType" name="ad_contact_type" native-value="me">En mon nom</b-radio>
 				<b-radio v-model="adContactType" name="ad_contact_type" native-value="thirdParty">Pour une autre
@@ -38,10 +38,11 @@
 				 v-if="adContactType === 'thirdParty'">
 
 
-          <p>
-              Les coordonnées de la personne pour qui je dépose l'annonce, qui seront visibles par les personnes qui
-              consultent l'annonce.
-          </p><br><br>
+				<p>
+					Les coordonnées de la personne pour qui je dépose l'annonce, qui seront visibles par les personnes
+					qui
+					consultent l'annonce.
+				</p><br><br>
 
 				<b-field class="w-50 is-size-6" label="Email" :type="errors.email ? 'is-danger' : ''"
 						 :message="errors.email">
@@ -66,40 +67,38 @@
 					<b-input name="third_party[phone]" placeholder="06 06 06 06 06" size="is-medium" rounded type="text"
 							 v-model="thirdParty.phone"
 					></b-input>
-
 				</b-field>
 			</div>
-      <div v-else>
-          <b-field>
-              <b-checkbox v-model="accept_share_contact_infos" true-value="0"
-                          false-value="1" class="is-size-6">Je ne souhaite pas être contacté par téléphone (dans
-                  ce cas, je serais contacté uniquement par email)
-              </b-checkbox>
-              <input type="hidden" name="accept_share_contact_infos" :value="accept_share_contact_infos">
-          </b-field>
-          <br><br>
-      </div>
-
-			<h3 class="title is-4">Mon projet</h3>
-			<p class="pb-4 has-text-danger" v-show="errors.adType">Le type d'annonce n'est pas défini.</p>
-			<div class="is-flex-wrap-wrap is-flex is-justify-content-space-between gap-5">
-				<div v-for="(adType,adTypeValue) in adTypes"
-					 class="bg-beige is-clickable p-5 w-30 is-flex is-justify-content-center is-align-items-center has-text-centered objT-border"
-					 :class="{'bg-blue': currentAdType === adTypeValue}" @click="currentAdType = adTypeValue">
-					{{ adType.label }}
-				</div>
+			<div v-else>
 
 
+				<b-field>
+					<b-checkbox v-model="accept_share_contact_infos" true-value="0"
+								false-value="1" class="is-size-6">Je ne souhaite pas être contacté par téléphone (dans
+						ce cas, je serais contacté uniquement par email)
+					</b-checkbox>
+					<input type="hidden" name="accept_share_contact_infos" :value="accept_share_contact_infos || 1">
+				</b-field>
 			</div>
 
+			<section class="mt-5" v-show="!onEdit">
+				<h3 class="title is-4">Mon projet</h3>
+				<p class="pb-4 has-text-danger" v-show="errors.adType">Le type d'annonce n'est pas défini.</p>
+				<div class="is-flex-wrap-wrap is-flex is-justify-content-space-between gap-5">
+					<div v-for="(adType,adTypeValue) in adTypes"
+						 class="bg-beige is-clickable p-5 w-30 is-flex is-justify-content-center is-align-items-center has-text-centered objT-border"
+						 :class="{'bg-blue': currentAdType === adTypeValue}" @click="currentAdType = adTypeValue">
+						{{ adType.label }}
+					</div>
+				</div>
+			</section>
 
-
-			<p class="pt-5">Votre annonce sera visible uniquement par les personnes qui recherchent des porteurs de
-				projet.
-				Si
-				vous souhaitez qu’elle soit visible par d’autres types de personnes, nous vous recommandons de créer une
-				autre
-				annonce pour multiplier vos chances.</p>
+			<!--			<p class="pt-5">Votre annonce sera visible uniquement par les personnes qui recherchent des porteurs de-->
+			<!--				projet.-->
+			<!--				Si-->
+			<!--				vous souhaitez qu’elle soit visible par d’autres types de personnes, nous vous recommandons de créer une-->
+			<!--				autre-->
+			<!--				annonce pour multiplier vos chances.</p>-->
 
 			<div class="is-flex is-justify-content-flex-end pt-6">
 				<b-button size="is-medium" class="ml-2" rounded type="is-danger" @click="setAdType">Etape suivante
@@ -108,7 +107,7 @@
 
 		</div>
 		<div class="is-align-self-flex-start py-3" v-show="value !== ''">
-			<a href="#" @click.prevent="changeAdType()">← Changer de type d'annonce</a>
+			<a href="#" @click.prevent="changeAdType()">← Paramètres de l'annonce</a>
 		</div>
 
 		<input type="hidden" :name="name" :value="value">
@@ -129,6 +128,10 @@ export default {
 			type: String,
 			required: true
 		},
+		onEdit: {
+			type: Boolean,
+			default: false
+		}
 	},
 	data() {
 		let old = this.oldValues;
@@ -150,7 +153,7 @@ export default {
 				phone: old.third_party?.phone || "",
 			},
 			accept_share_contact_infos: old.accept_share_contact_infos,
-			hasCertified: false,
+			hasCertified: !!old.id,
 			currentAdType: this.value
 		}
 	},
@@ -160,12 +163,12 @@ export default {
 				land_seek: {
 					label: "Je cherche du foncier agricole",
 				},
-        job_seek: {
-            label: "Je cherche une expérience agricole",
-        },
-        associate_offer: {
-            label: "Je cherche un associé sur une ferme existante",
-        },
+				job_seek: {
+					label: "Je cherche une expérience agricole",
+				},
+				associate_offer: {
+					label: "Je cherche un associé sur une ferme existante",
+				},
 				land_offer: {
 					label: "Je propose du foncier agricole",
 				},
@@ -223,6 +226,6 @@ export default {
 		changeAdType() {
 			this.$emit('input', '');
 		}
-	}
+	},
 }
 </script>

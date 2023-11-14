@@ -9,29 +9,21 @@
             ref="formWizard">
 
         <tab-content title="Expérience proposée">
-            <section class="field mb-6">
-                <b-tooltip class="w-100"
-                           label="Si vous souhaitez préciser la localisation de votre recherche, saisissez les 2 premiers chiffres du code postal">
-                    <zone-select
-                            src="/locations/cities-and-regions"
-                            name="locationable"
-                            label="Code Postal, Commune *"
-                            json-name="selected_zones"
-                            ref="selectedZones"
-                            :vuelidate="$v.formInput.selectedZones"
-                            v-model="formInput.selectedZones">
-                    </zone-select>
-                </b-tooltip>
-            </section>
+            @include('pages.ads.partials.inputs.main_department')
+
+            @include('pages.ads.partials.inputs.other_locations', [
+                'label' => 'Communes concernées *',
+                'withDepartments' => false
+            ])
 
             <section class="mb-6 field" ref="offerTypes">
-                {!! Form::label('job_seek[building][offer_genres][]', 'Type d\'offre*', [
+                {!! Form::label('job_offer[building][offer_genres][]', 'Type d\'offre*', [
                 'class' => 'label',
             ]); !!}
 
                 @foreach($jobOfferTypes as $jobOfferType)
                     @if($jobOfferType["id"] !== 3)
-                        <b-checkbox name="job_seek[offer_types][]" native-value="{{ $jobOfferType["id"] }}"
+                        <b-checkbox name="job_offer[offer_types][]" native-value="{{ $jobOfferType["id"] }}"
                                     v-model="formInput.offerTypes">
                             {{ $jobOfferType["name"] }}
                         </b-checkbox>
@@ -40,26 +32,27 @@
             </section>
 
             <section class="mb-6 field" ref="productionGenres">
-                {!! Form::label('job_seek[production_genres][]', 'Production agricole principale envisagée *', ['class' => 'label']); !!}
                 <?php
                 $productionGenresParams = [
-                    'name' => 'job_seek[production_genres][]',
+                    'name' => 'job_offer[production_genres][]',
                     'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.productionGenres',
                     'isRequired' => true,
                     'isUnique' => true,
+                    'label' => 'Production agricole principale envisagée'
                 ];
                 ?>
                 @include('pages.ads.partials.inputs.production_genres', $productionGenresParams)
             </section>
 
             <section class="mb-6 field" ref="productionTypeAdd">
-                {!! Form::label('job_seek[secondary_production_genres][]', 'Production agricole secondaire envisagée *', ['class' => 'label']); !!}
                 <?php
                 $productionGenresSecondaryParams = [
-                    'name' => 'job_seek[secondary_production_genres][]',
+                    'name' => 'job_offer[secondary_production_genres][]',
                     'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.productionGenresSecondary',
+                    'isRequired' => true,
+                    'label' => 'Production agricole secondaire envisagée'
                 ];
                 ?>
                 @include('pages.ads.partials.inputs.production_genres', $productionGenresSecondaryParams)
@@ -95,13 +88,13 @@
 
         <tab-content title="Profil recherché">
             <section class="mb-6 field" ref="educationLevels">
-                {!! Form::label('job_offer[education_levels][]', "Niveau de formation souhaité *", ['class' => 'label']) !!}
                 <?php
                 $educationLevelsParams = [
                     'name' => 'job_offer[education_levels][]',
                     'productionGenres' => $educationLevels,
                     'vModel' => 'formInput.educationLevels',
                     'isRequired' => true,
+                    'label' => 'Niveau de formation souhaité'
                 ];
                 ?>
                 @include('pages.ads.partials.inputs.production_genres', $educationLevelsParams)
