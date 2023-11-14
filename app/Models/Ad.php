@@ -306,6 +306,22 @@ class Ad extends Model implements HasPresenter
         return $this->belongsTo(Department::class);
     }
 
+    public function getMainDepartmentAttribute(): ?Department
+    {
+        if($this->department) {
+            return $this->department;
+        }
+        else if ($this->departments->count()) {
+            return $this->departments->first();
+        } elseif ($this->cities->count()) {
+            return $this->cities->first()?->department;
+        } elseif ($this->regions->count()) {
+            return $this->regions->first()?->departments->first();
+        }
+
+        return null;
+    }
+
     /**
      * Get all cities 'location' for the ad
      * @return MorphToMany

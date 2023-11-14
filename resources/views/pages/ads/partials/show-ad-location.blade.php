@@ -1,6 +1,6 @@
 <div class="w-50">
     <strong>Département :</strong>
-    {{ $ad->mainDepartment->name }} ({{ $ad->mainDepartment->code }})
+    {{ $ad->main_department->name }} ({{ $ad->main_department->code }})
     @if($ad->secondaryDepartmentsList->count())
         <br><small>
             {{ $ad->secondaryDepartmentsList->join(', ') }}
