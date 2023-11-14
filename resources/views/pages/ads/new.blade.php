@@ -35,7 +35,12 @@
                         <input type="hidden" name="id" value="{{ $old["id"] }}">
                     @endif
 
+                    @if(config('app.env') !== 'production')
+                        <p class="title is-1 has-background-black has-text-white">@{{ adTypeSelected }}NewAd</p>
+                    @endif
+
                     <ad-type-select v-model="adTypeSelected"
+                                    :on-edit="{{isset($old["id"]) ? 'true' : 'false'}}"
                                     name="ad_type"
                                     :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                     :is-support-request="{{empty($isSupportRequest)?'false':'true'}}">
@@ -133,14 +138,14 @@
                     </new-associate-seek-ad>
 
                     <new-associate-offer-ad inline-template
-                                           v-if="adTypeSelected === 'associate_offer'"
-                                           :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
-                                           @input-enabled="setEnabledForm"
-                                           @form-complete="submitProxy"
-                                           @submit-save-button="submitProxy"
-                                           @click-save-button="onSaveClick"
-                                           @click-publish-button="onPublishClick"
-                                           ref="associate_offer">
+                                            v-if="adTypeSelected === 'associate_offer'"
+                                            :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                            @input-enabled="setEnabledForm"
+                                            @form-complete="submitProxy"
+                                            @submit-save-button="submitProxy"
+                                            @click-save-button="onSaveClick"
+                                            @click-publish-button="onPublishClick"
+                                            ref="associate_offer">
                         @include('pages.ads.partials.associateOffer.associateOfferNewAd')
                     </new-associate-offer-ad>
 

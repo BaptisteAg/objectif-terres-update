@@ -10,9 +10,7 @@
 >
     @if($isThirdPartyAd)
         <div class="is-flex is-flex-direction-column">
-            @if($ad->accept_share_contact_infos)
-                <strong>Téléphone : </strong>{{$ad->thirdPartyAdUser->phone}}
-            @endif
+            <strong>Téléphone : </strong>{{$ad->thirdPartyAdUser->phone}}
             <strong>Email : </strong>{{$ad->thirdPartyAdUser->email}}
         </div>
     @else
