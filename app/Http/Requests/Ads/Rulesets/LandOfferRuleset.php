@@ -11,7 +11,7 @@ class LandOfferRuleset implements RulesetInterface
     {
         $rules = [
             'land_description' => ['nullable', 'string', 'max:1000'],
-            'land_offer.production_genres' => [new HasProductionGenre],
+            'land_offer.production_genres' => [new HasProductionGenre, 'required', 'array'],
             'land_offer.production_type_add' => ['nullable', 'string'],
             'land_offer.secondary_production_genres' => ['nullable', 'array'],
             'land_offer.secondary_production_type_add' => ['nullable', 'string'],
@@ -19,7 +19,7 @@ class LandOfferRuleset implements RulesetInterface
             'land_offer.surface' => ['required', 'numeric'],
             'land_offer.sau_description' => ['nullable', 'string'],
             'land_offer.bio_certifications' => ['required', 'array'],
-            'land_offer.water_access' => ['nullable', 'numeric'],
+            'land_offer.water_access' => ['required', 'numeric'],
             'land_offer.water_access_description' => ['nullable', 'string'],
             'land_offer.altitude' => ['nullable', 'numeric'],
             'land_offer.has_buildings' => ['boolean', 'required'],
@@ -59,13 +59,11 @@ class LandOfferRuleset implements RulesetInterface
     protected function getPriceRules(): array
     {
         $rules = ['numeric'];
-        if (in_array(1, Request::input('land_offer.offer_genres'))) {
-            $rules[] = 'required';
-        }
         if (Request::input('land_offer.is_sales_offer_evaluation')) {
             $rules[] = 'nullable';
+        } elseif (in_array(1, Request::input('land_offer.offer_genres'))) {
+            $rules[] = 'required';
         }
-
         return $rules;
     }
 }

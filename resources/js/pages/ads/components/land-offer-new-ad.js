@@ -57,7 +57,6 @@ export default {
 		//    supportRequestTerritoryId : v.support_request_territory_id ||"",
 		//} : {};
 
-		console.log(old.land_offer.accept_use_zip_code);
 		return {
 			formInput: {
 				selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
@@ -74,9 +73,9 @@ export default {
 				waterAccessDescription: old.land_offer.water_access_description || '',
 				altitude: old.land_offer.altitude || '',
 
-				hasBuildings: old.land_offer.has_buildings ? 1 : 0,
+				hasBuildings: typeof old.land_offer.has_buildings !== 'undefined' ? old.land_offer.has_buildings : '',
 				buildingDescription: old.land_offer.building && old.land_offer.building.description || '',
-				hasHouses: old.land_offer.has_houses ? 1 : 0,
+				hasHouses: typeof old.land_offer.has_houses !== 'undefined' ? old.land_offer.has_houses : '',
 				houseDescription: old.land_offer.house && old.land_offer.house.description || '',
 
 				offerGenres: old.land_offer.offer_genres || [],
@@ -84,7 +83,7 @@ export default {
 				isSaleOfferEvaluation: old.land_offer.is_sales_offer_evaluation,
 				rentPrice: old.land_offer.rent_price || '',
 				testDescription: old.land_offer.test_description || '',
-				chartConfirmation: old.chart_confirmation || false,
+				chartConfirmation: old.chart_confirmation || true,
 
 				aboutProject: old.about_project_content || '',
 				aboutContent: old.about_content || '',

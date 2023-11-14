@@ -9,6 +9,6 @@
                     class="is-size-6">
             Je ne souhaite pas que la localisation soit publique.
         </b-checkbox>
-        <input type="hidden" name="{{$name}}" :value="{{ $vModel }}">
+        <input type="hidden" name="{{$name}}" :value="{{ $vModel }} || 1">
     </b-tooltip>
 </section>

@@ -43,24 +43,24 @@
             </section>
 
             <section class="mb-6 field" ref="productionGenres">
-                {!! Form::label('job_seek[production_genres][]', 'Production agricole principale envisagée *', ['class' => 'label']); !!}
                 @include('pages.ads.partials.inputs.production_genres', [
                     'name' => 'job_seek[production_genres][]',
                     'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.productionGenres',
                     'isRequired' => true,
                     'isUnique' => true,
+                    'label' => 'Production agricole principale envisagée'
                 ])
             </section>
 
             <section class="mb-6 field" ref="productionGenresSecondary">
-                {!! Form::label('job_seek[secondary_production_genres][]', 'Production agricole secondaire envisagée *', ['class' => 'label']); !!}
                 <?php
                 $productionGenresSecondaryParams = [
                     'name' => 'job_seek[secondary_production_genres][]',
                     'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.productionGenresSecondary',
                     'isRequired' => true,
+                    'label' => 'Production agricole secondaire envisagée',
                 ];
                 ?>
                 @include('pages.ads.partials.inputs.production_genres', $productionGenresSecondaryParams)
@@ -70,19 +70,20 @@
 
         <tab-content title="Votre parcours">
             <section class="mb-6 field" ref="educationLevels">
-                {!! Form::label('job_seek[education_levels][]', 'Niveau de formation *', ['class' => 'label']); !!}
-
-                <multi-select
-                        :options="{{json_encode($educationLevels)}}"
-                        name="job_seek[education_levels][]"
-                        v-model="formInput.educationLevels"
-                        placeholder="Sélectionnez un ou plusieurs niveaux"
-                >
-                </multi-select>
+                <?php
+                $educationLevelsParams = [
+                    'name' => 'job_seek[education_levels][]',
+                    'productionGenres' => $educationLevels,
+                    'vModel' => 'formInput.educationLevels',
+                    'isRequired' => true,
+                    'label' => 'Niveau de formation'
+                ];
+                ?>
+                @include('pages.ads.partials.inputs.production_genres', $educationLevelsParams)
             </section>
 
             <section class="mb-6 field" ref="experienceFarming">
-                {!! Form::label('job_seek[experience_farming]','Expérience dans le milieu agricole*', ['class' => 'label']); !!}
+                {!! Form::label('job_seek[experience_farming]','Expérience dans le milieu agricole *', ['class' => 'label']); !!}
                 <text-area-counter
                         name="job_seek[experience_farming]"
                         :max-length="1000"

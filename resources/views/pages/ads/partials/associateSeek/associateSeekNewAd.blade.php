@@ -19,23 +19,23 @@
             ])
 
             <section class="mb-6 field" ref="productionGenres">
-                {!! Form::label('associate_seek[production_genres][]', 'Production agricole principale envisagée *', ['class' => 'label']); !!}
                 @include('pages.ads.partials.inputs.production_genres', [
                     'name' => 'associate_seek[production_genres][]',
                     'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.productionGenres',
                     'isRequired' => true,
                     'isUnique' => true,
+                    'label' => 'Production agricole principale envisagée',
                 ])
             </section>
 
             <section class="mb-6 field" ref="productionGenresSecondary">
-                {!! Form::label('associate_seek[secondary_production_genres][]', 'Production agricole secondaire(s) envisagée(s)', ['class' => 'label']); !!}
                 <?php
                 $productionGenresSecondaryParams = [
                     'name' => 'associate_seek[secondary_production_genres][]',
                     'productionGenres' => $productionGenres,
-                    'vModel' => 'formInput.productionGenresSecondary'
+                    'vModel' => 'formInput.productionGenresSecondary',
+                    'label' => 'Production agricole secondaire(s) envisagée(s)',
                 ];
                 ?>
                 @include('pages.ads.partials.inputs.production_genres', $productionGenresSecondaryParams)
@@ -44,7 +44,7 @@
             <section class="mb-6 field">
                 <b-checkbox name="associate_seek[is_land_already_found]"
                             v-model="formInput.isLandAlreadyFound"
-                            class="is-size-6">
+                            class="is-size-6 has-text-weight-bold">
                     Avez-vous déjà trouvé un lieu et des terres agricoles ?
                 </b-checkbox>
             </section>
@@ -85,15 +85,16 @@
             </section>
 
             <section class="mb-6 field" ref="educationLevels">
-                {!! Form::label('associate_seek[education_levels][]', 'Niveau de formation', ['class' => 'label']); !!}
-
-                <multi-select
-                        :options="{{json_encode($educationLevels)}}"
-                        name="associate_seek[education_levels][]"
-                        v-model="formInput.educationLevels"
-                        placeholder="Sélectionnez un ou plusieurs niveaux"
-                >
-                </multi-select>
+                <?php
+                $educationLevelsParams = [
+                    'name' => 'associate_seek[education_levels][]',
+                    'productionGenres' => $educationLevels,
+                    'vModel' => 'formInput.educationLevels',
+                    'isRequired' => true,
+                    'label' => 'Niveau de formation'
+                ];
+                ?>
+                @include('pages.ads.partials.inputs.production_genres', $educationLevelsParams)
             </section>
 
             <section class="mb-6 field" ref="experienceFarming">

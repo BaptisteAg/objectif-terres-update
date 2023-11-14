@@ -54,7 +54,7 @@ export default Vue.extend({
                 aboutContent: old.about_content || '',
                 title: old.title || '',
                 documents: old.documents && JSON.parse(old.documents) || [],
-                chartConfirmation: old.chart_confirmation || false,
+                chartConfirmation: old.chart_confirmation || true,
                 productionGenresSecondary: old.land_seek.secondary_production_genres || [],
                 secondProductionTypeAdd: old.land_seek.secondary_production_type_add || ''
             }

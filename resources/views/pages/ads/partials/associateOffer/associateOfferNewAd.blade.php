@@ -13,7 +13,7 @@
             @include('pages.ads.partials.inputs.main_department')
 
             @include('pages.ads.partials.inputs.other_locations', [
-                'label' => 'Communes concernées*',
+                'label' => 'Communes concernées *',
                 'tooltip' => 'Si votre bien se situe sur plusieurs communes, merci de nous les indiquer',
                 'withDepartments' => false
             ])
@@ -23,30 +23,9 @@
                 'vModel' => 'formInput.acceptUseZipCode',
             ])
 
-            <section class="field mb-6" ref="surface">
-                <div class="label">
-                    {!! Form::label('associate_offer[surface]', 'Surface du foncier agricole *'); !!}
-                </div>
-                <b-field>
-                    <b-input name="associate_offer[surface]" v-model="formInput.surface" placeholder="1ha = 10 000m²"
-                    ></b-input>
-                    <p class="control">
-                    <span style="border-bottom-right-radius: 999px; border-top-right-radius: 999px;"
-                          class="button is-static">ha</span>
-                    </p>
-                </b-field>
-                <template v-if="$v.formInput.surface?.$error">
-                    <p class="help is-danger" v-if="!$v.formInput.surface.maxValue">
-                        Surface maximum : @{{$v.formInput.surface.$params.maxValue.max}} hectares.
-                    </p>
-                    <p class="help is-danger" v-if="!$v.formInput.surface.required">
-                        Ce champ est requis.
-                    </p>
-                    <p class="help is-danger" v-if="!$v.formInput.surface.numeric">
-                        Veuillez saisir un nombre.
-                    </p>
-                </template>
-            </section>
+            @include('pages.ads.partials.inputs.surface',[
+                'adType' => 'associate_offer',
+            ])
 
             <section class="field mb-6" ref="altitude">
                 <div class="label">
@@ -96,48 +75,35 @@
             ])
 
             <section class="mb-6 field" ref="productionGenres">
-                {!! Form::label('associate_offer[production_genres][]', 'Production agricole principale envisagée *', ['class' => 'label']); !!}
                 <?php
                 $params = [
                     'name' => 'associate_offer[production_genres][]',
                     'productionGenres' => $productionGenres,
                     'vModel' => 'formInput.productionGenres',
                     'isUnique' => 'true',
-                    'isRequired' => true
+                    'isRequired' => true,
+                    'label' => 'Production agricole principale envisagée'
                 ];
                 ?>
                 @include('pages.ads.partials.inputs.production_genres', $params)
             </section>
 
             <section class="mb-6 field" ref="productionGenresSecondary">
-                {!! Form::label('associate_offer[secondary_production_genres][]', 'Productions agricoles secondaires envisagées', ['class' => 'label']); !!}
-                @include('pages.ads.partials.inputs.production_genres', ['name' => 'associate_offer[secondary_production_genres][]', 'productionGenres' => $productionGenres, 'vModel' => 'formInput.productionGenresSecondary'])
+                @include('pages.ads.partials.inputs.production_genres',[
+                'name' => 'associate_offer[secondary_production_genres][]',
+                'productionGenres' => $productionGenres,
+                'vModel' => 'formInput.productionGenresSecondary',
+                'label' => 'Productions agricoles secondaires envisagées'
+                ])
             </section>
 
-            <section class="mb-6 field" ref="bioCertifications">
-                {!! Form::label('associate_offer[bio_certifications][]', 'Certification des terres *', ['class' => 'label']); !!}
-                <multi-select
-                        :options="{{json_encode($bioCertifications)}}"
-                        group-values="children"
-                        name="associate_offer[bio_certifications][]"
-                        v-model="formInput.bioCertifications"
-                        :clear-other-values="{{json_encode($bioCertifications->filter(function ($v) {
-                                        return in_array($v->name, ['Aucune', 'En conversion', 'Je ne sais pas']);
-                                    })->values())}}"
-                        :show-icons="true"
-                        placeholder="Sélectionnez une ou plusieurs certifications"
-                        ref="bioCertifications">
-                </multi-select>
-                <p class="help is-danger" v-if="$v.formInput.bioCertifications?.$error">
-                    Ce champ est requis.
-                </p>
-            </section>
+            @include('pages.ads.partials.inputs.bio_certifications')
 
         </tab-content>
         <tab-content title="Profil recherché">
 
             <section class="mb-6 field" ref="associateDescription">
-                {!! Form::label('associate_offer[associate_description]',"Description du type d'associé.e.s recherché.e.s*", ['class' => 'label']); !!}
+                {!! Form::label('associate_offer[associate_description]',"Description du type d'associé.e.s recherché.e.s *", ['class' => 'label']); !!}
                 <text-area-counter
                         name="associate_offer[associate_description]"
                         :max-length="1000"
@@ -156,15 +122,16 @@
             </section>
 
             <section class="mb-6 field" ref="educationLevels">
-                {!! Form::label('associate_offer[education_levels][]', 'Niveau de formation *', ['class' => 'label']); !!}
-
-                <multi-select
-                        :options="{{json_encode($educationLevels)}}"
-                        name="associate_offer[education_levels][]"
-                        v-model="formInput.educationLevels"
-                        placeholder="Sélectionnez un ou plusieurs niveaux"
-                >
-                </multi-select>
+                <?php
+                $educationLevelsParams = [
+                    'name' => 'associate_offer[education_levels][]',
+                    'productionGenres' => $educationLevels,
+                    'vModel' => 'formInput.educationLevels',
+                    'isRequired' => true,
+                    'label' => 'Niveau de formation'
+                ];
+                ?>
+                @include('pages.ads.partials.inputs.production_genres', $educationLevelsParams)
             </section>
 
             @include('pages.ads.partials.inputs.yes_no', [
