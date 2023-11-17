@@ -700,17 +700,23 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
      */
     public function findAllPublishedInRegionWithLocations($selectedAdType, $regionCode): Collection
     {
-        return $this->entity
+        $adsQuery = $this->entity
             ->whereHas('attributionAd', function (Builder $query) {
                 $query->whereNotNull('published_on');
                 $query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
             })
             ->join('attribution_ads', "ads.id", '=', "attribution_ads.ad_id")
             ->select('ads.*')
-            ->filterAdTypes([$selectedAdType])
-            ->filterRegions($regionCode)
-            ->with($this->getLocationEagerLoading())
-            ->get();
+            ->with($this->getLocationEagerLoading());
+
+        if($regionCode) {
+            $adsQuery->filterRegions($regionCode);
+        }
+        if($selectedAdType !== "all") {
+            $adsQuery->filterAdTypes([$selectedAdType]);
+        }
+
+        return $adsQuery->get();
     }
 
     /**

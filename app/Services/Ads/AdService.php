@@ -860,6 +860,7 @@ class  AdService
 
     /**
      * @param $selectedAdType
+     * @param $regionId
      * @return array
      */
     public function getPublishedAdsCountByDepartmentId($selectedAdType, $regionId)
@@ -867,9 +868,10 @@ class  AdService
         $adsCountByDepartmentId = [];
 
         $regionCode = Region::find($regionId)?->code;
+        $regionDepartmentIds = Department::where('region_code', $regionCode)->pluck('id');
 
         foreach ($this->repository->findAllPublishedInRegionWithLocations($selectedAdType, $regionCode) as $ad) {
-            $departmentIds = $this->getAdDepartmentIds($ad);
+            $departmentIds = array_intersect($this->getAdDepartmentIds($ad), $regionDepartmentIds->toArray());
 
             foreach ($departmentIds as $departmentId) {
                 if (!isset($adsCountByDepartmentId[$departmentId])) {
@@ -878,6 +880,7 @@ class  AdService
                 $adsCountByDepartmentId[$departmentId]++;
             }
         }
+
         return $adsCountByDepartmentId;
     }
 

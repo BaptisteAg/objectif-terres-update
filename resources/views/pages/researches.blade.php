@@ -1,7 +1,72 @@
 @extends ('default')
 
 @section ('title', 'Rechercher parmi les annonces postées sur Objectif Terres')
+
 @section('head-script')
+    @if($hasDepartmentPolygons)
+        <!-- Import Leaflet CSS Style Sheet -->
+        <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css"/>
+        <style>
+            #global-map {
+                width: 100%;
+                min-height: 50vh;
+                margin: 0;
+                border-radius: 5px;
+                z-index: 1;
+                background-image: url("/images/illustrations/map.png");
+                background-position: center;
+                background-repeat: no-repeat;
+                position: relative;
+                padding: 2em 0;
+                margin-bottom: 2em;
+            }
+            #global-map:after {
+                content: ' ';
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, .6);
+                z-index: -1;
+            }
+            #global-map > div:first-child {
+                min-width: 70vw;
+                position: inherit;
+                background-color: #f8f3ee;
+                padding: 2em;
+                max-width: 90vw;
+            }
+            #global-map .column.have-border {
+                border-left: 2px solid #e3cfb5;
+            }
+            #global-map span.tag {
+                background-color: #e3cfb5;
+            }
+            #global-map .dropdown div button span {
+                width: 300px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                text-align: left;
+            }
+            @media (max-width: 769px) {
+                #global-map {
+                    min-height: 80vh;
+                    padding: 0;
+                    background-position: top;
+                    background-size: cover;
+                }
+                #global-map > div:first-child {
+                    width: 90vw;
+                    padding: 1em;
+                }
+                #global-map .column.have-border {
+                    border-left: none;
+                }
+            }
+        </style>
+    @endif
 @endsection
 
 @section('main-content')
@@ -54,7 +119,7 @@
                 <modal
                         title="Sauvgarde d'une recherche"
                         subtitle="Donner un titre à votre recherche :"
-                        is-responsive="true"
+                        :is-responsive="true"
                         button-label="Sauvegarder"
                         button-icon="heart-outline"
                         :is-disable="{{ $_GET["ad_category"] === 'all' ? 'true' : 'false' }}"
@@ -72,7 +137,13 @@
     </div>
 
     @if($hasDepartmentPolygons)
-        <div id="global-map"></div>
+        @if($hasDepartmentPolygons)
+            <section class="section pt-0">
+                <div class="container">
+                    <div id="global-map"></div>
+                </div>
+            </section>
+        @endif
     @endif
 
     <section class="container">
@@ -98,7 +169,6 @@
         <script defer>
             regionMapInit('global-map', {
                 region_id: "{{$request->get("regions_location_researches_ids")[0]}}",
-                offer_type: "{{$request->get("offer_type")}}",
                 ad_category: "{{$request->get("ad_category")}}"
             });
         </script>
