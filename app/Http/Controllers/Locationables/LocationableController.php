@@ -111,23 +111,18 @@ class LocationableController extends Controller
 
     public function departmentsPolygon(Request $request, AdService $adService)
     {
-        if ($request->has('ad_category') && $request->has('offer_type')) {
-            $selectedAdType = $request->input('ad_category') . $request->input('offer_type');
-        } else {
+        if (!$request->has('ad_category')) {
             return response()->json([
                 'error' => 'Aucune catégorie d\'annonce séléctionnée'
             ]);
         }
-
-
-        if ($request->has('region_id')) {
-            $regionId = $request->get("region_id");
-        } else {
+        if (!$request->has('region_id')) {
             return response()->json([
                 'error' => 'Aucune région séléctionnée'
             ]);
         }
-        return response()->json($this->service->getDepartmentPolygons($regionId, $selectedAdType));
+
+        return response()->json($this->service->getDepartmentPolygons($request->get('region_id'), $request->get('ad_category')));
     }
 
     public function adLocations(Request $request, AdService $adService)
