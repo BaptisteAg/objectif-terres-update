@@ -23,7 +23,7 @@
             ])
 
             @include('pages.ads.partials.inputs.surface',[
-                'adType' => 'associate_offer',
+                'adType' => 'land_offer',
             ])
 
             <section class="field mb-6" ref="altitude">
@@ -192,7 +192,9 @@
                 ])
             </section>
 
-            @include('pages.ads.partials.inputs.bio_certifications')
+            @include('pages.ads.partials.inputs.bio_certifications', [
+                "adType" => "land_offer",
+            ])
 
             <section class="mb-6 field" ref="offerGenres">
                 <div class="block">

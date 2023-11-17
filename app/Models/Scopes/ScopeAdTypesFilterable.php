@@ -3,6 +3,7 @@
 namespace App\Models\Scopes;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 trait ScopeAdTypesFilterable
 {

@@ -52,7 +52,7 @@
             Pas de description renseignée pour cette annonce
         @endif
 
-        @if(config('app.env') !== 'production')
+        @if(config('app.env') === 'local')
             <p class="title is-1 has-background-black has-text-white">Type : {{$ad->type}}</p>
         @endif
 

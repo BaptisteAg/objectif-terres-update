@@ -93,7 +93,7 @@
             </b-message>
         @endif
 
-        @if(config('app.env') !== 'production')
+        @if(config('app.env') === 'local')
             <h1 class="title is-1 has-background-black has-text-white">Type : {{$ad->type}}</h1>
             <h1 class="title is-1 has-background-black has-text-white">accept_share_contact_infos
                 : {{$ad->accept_share_contact_infos}}</h1>
