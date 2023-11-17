@@ -49,7 +49,9 @@ ResearchesController extends Controller
             ]);
         }
 
-        list ($ads, $adsType) = $this->researchService->index($request);
+        $adsType = $request->get('ad_category');
+
+        $ads = $this->researchService->index($request);
 
         $request->flash();
 
@@ -66,7 +68,6 @@ ResearchesController extends Controller
             }
         }
 
-        dd($hasDepartmentPolygons, $departmentPolygons, $regionIds);
 
         $searchedRegionNames = Region::whereIn('id', $request->get("regions_location_researches_ids") ?? [])->pluck('name')->toArray();
         $searchedTypeOfProductions = ProductionGenre::whereIn('id', $request->get("regions_production_researches_ids") ?? [])->pluck('name')->toArray();

@@ -56,11 +56,10 @@ class LocationService
     public function getDepartmentPolygons($regionId, $selectedAdType)
     {
 
-        $cacheKey = 'departmentspolygon.'.$regionId.'.';
+        $cacheKey = 'departmentspolygon.'.$regionId.'.'.$selectedAdType;
 
-        //return Cache::rememberForever($cacheKey, function () use ($selectedAdType, $regionId) {
+        return Cache::rememberForever($cacheKey, function () use ($selectedAdType, $regionId) {
             $adsCountByDepartmentId = $this->adService->getPublishedAdsCountByDepartmentId($selectedAdType, $regionId);
-
 
             /** @var Department[] $departments */
             $departments = Department::whereIn('id', array_keys($adsCountByDepartmentId))->get();
@@ -74,7 +73,7 @@ class LocationService
             }
 
             return $data;
-        //});
+        });
     }
 
     public function getLocationGeoPolygon(string $q, $type = "")

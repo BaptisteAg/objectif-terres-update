@@ -97,7 +97,9 @@
                 ])
             </section>
 
-            @include('pages.ads.partials.inputs.bio_certifications')
+            @include('pages.ads.partials.inputs.bio_certifications', [
+                "adType" => "associate_offer",
+            ])
 
         </tab-content>
         <tab-content title="Profil recherché">

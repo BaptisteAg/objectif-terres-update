@@ -19,6 +19,7 @@ window.regionMapInit  = async function (mapId, fetchOptions) {
 
     const departmentsPolygonData = await fetchJson('/locations/polygon/departments/', fetchOptions);
 
+
     let featureGroup = mapController.addFeatureGroup();
 
     departmentsPolygonData.forEach(polygonData => {
@@ -31,8 +32,7 @@ window.regionMapInit  = async function (mapId, fetchOptions) {
 
         polygon.addEventListener('click', _ => {
             location.href = "/recherche?" +
-                "offer_type=" + fetchOptions.offer_type +
-                "&ad_category=" + fetchOptions.ad_category +
+                "ad_category=" + fetchOptions.ad_category +
                 '&departments_location_researches_ids[]=' + polygonData.department_id;
         });
 
