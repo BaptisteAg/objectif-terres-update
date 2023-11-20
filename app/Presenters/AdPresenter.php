@@ -53,6 +53,8 @@ class AdPresenter extends BasePresenter
             'landOfferAd' => 'Offre de foncier',
             'jobOfferAd' => 'Offre opportunité professionnelle',
             'jobSeekAd' => 'Recherche opportunité professionnelle',
+            'associateOfferAd' => 'Je cherche un associé sur une ferme existante',
+            'associateSeekAd' => 'Je cherche un associé pour projet d\'installation',
             default => '',
         };
     }
