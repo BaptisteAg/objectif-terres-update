@@ -2082,22 +2082,22 @@ __webpack_require__.r(__webpack_exports__);
     adTypes: function adTypes() {
       return {
         land_seek: {
-          label: "Je cherche du foncier agricole"
-        },
-        job_seek: {
-          label: "Je cherche une expérience agricole"
-        },
-        associate_offer: {
-          label: "Je cherche un associé sur une ferme existante"
-        },
-        land_offer: {
-          label: "Je propose du foncier agricole"
-        },
-        job_offer: {
-          label: "Je propose une expérience agricole"
+          label: "Recherche de terres agricoles"
         },
         associate_seek: {
-          label: "Je cherche un associé pour projet d'installation"
+          label: "Recherche d'associé.es pour projet d'installation"
+        },
+        job_seek: {
+          label: "Recherche d'experience agricole (emploi salarié, stage, espace-test)"
+        },
+        land_offer: {
+          label: "Offre de terres agricoles"
+        },
+        associate_offer: {
+          label: "Recherche d'associé.es sur ferme existante"
+        },
+        job_offer: {
+          label: "Offre de stages, d'emploi ou de tests, agricoles"
         }
       };
     }
@@ -3937,7 +3937,7 @@ var render = function render() {
     staticClass: "is-flex is-flex-direction-column is-justify-content-space-between"
   }, [_c("div", {
     staticClass: "mb-3"
-  }, [_vm._v("Je cherche")]), _vm._v(" "), _c("b-dropdown", {
+  }, [_vm._v("Je souhaite consulter les annonces")]), _vm._v(" "), _c("b-dropdown", {
     attrs: {
       expanded: "",
       "aria-role": "list"
