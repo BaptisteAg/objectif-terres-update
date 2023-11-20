@@ -415,6 +415,8 @@ class AdPresenter extends BasePresenter
             "landSeekAd" => "Recherche",
             "jobSeekAd" => "Recherche Emploi",
             "jobOfferAd" => "Offre Emploi",
+            'associateOfferAd' => 'Un associé sur une ferme',
+            'associateSeekAd' => 'Un associé pour projet d\'installation',
         };
         if ($ad->type === 'landOfferAd') {
             $type = $ad->landOfferAd->offerGenres->pluck('name')->join(', ');
