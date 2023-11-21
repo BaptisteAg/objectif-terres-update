@@ -93,13 +93,6 @@
 				</div>
 			</section>
 
-			<!--			<p class="pt-5">Votre annonce sera visible uniquement par les personnes qui recherchent des porteurs de-->
-			<!--				projet.-->
-			<!--				Si-->
-			<!--				vous souhaitez qu’elle soit visible par d’autres types de personnes, nous vous recommandons de créer une-->
-			<!--				autre-->
-			<!--				annonce pour multiplier vos chances.</p>-->
-
 			<div class="is-flex is-justify-content-flex-end pt-6">
 				<b-button size="is-medium" class="ml-2" rounded type="is-danger" @click="setAdType">Etape suivante
 				</b-button>
@@ -161,23 +154,23 @@ export default {
 		adTypes() {
 			return {
 				land_seek: {
-					label: "Je cherche du foncier agricole",
-				},
-				job_seek: {
-					label: "Je cherche une expérience agricole",
-				},
-				associate_offer: {
-					label: "Je cherche un associé sur une ferme existante",
-				},
-				land_offer: {
-					label: "Je propose du foncier agricole",
-				},
-				job_offer: {
-					label: "Je propose une expérience agricole",
+					label: "Recherche de terres agricoles",
 				},
 				associate_seek: {
-					label: "Je cherche un associé pour projet d'installation",
-				}
+					label: "Recherche d'associé.es pour projet d'installation",
+				},
+				job_seek: {
+					label: "Recherche d'experience agricole (emploi salarié, stage, espace-test)",
+				},
+				land_offer: {
+					label: "Offre de terres agricoles",
+				},
+				associate_offer: {
+					label: "Recherche d'associé.es sur ferme existante",
+				},
+				job_offer: {
+					label: "Offre de stages, d'emploi ou de tests, agricoles",
+				},
 			}
 		},
 	},
