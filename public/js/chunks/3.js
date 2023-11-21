@@ -10,7 +10,19 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['images']
+  props: {
+    images: {
+      type: Array,
+      "default": function _default() {
+        return [];
+      }
+    }
+  },
+  methods: {
+    getImageUrl: function getImageUrl(imagePath) {
+      return window.location.origin + '/' + imagePath;
+    }
+  }
 });
 
 /***/ }),
@@ -35,7 +47,7 @@ var render = function render() {
     }, [_c("b-image", {
       staticClass: "image is-3by2 vignette__image",
       attrs: {
-        src: "https://objectif-terres.org/" + image.path
+        src: _vm.getImageUrl(image.path)
       }
     })], 1);
   }) : _c("b-carousel-item", [_c("b-image", {
