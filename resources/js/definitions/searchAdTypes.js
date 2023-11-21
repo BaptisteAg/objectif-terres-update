@@ -1,8 +1,8 @@
 export const searchAdTypes = {
-    'landSeekAd': 'Un porteur de projet agricole',
-    'landOfferAd': 'Une terre',
-    'associateOfferAd': 'Un associé sur une ferme',
-    'associateSeekAd': 'Un associé pour projet d\'installation',
-    'jobOfferAd': 'Une offre d\'emploi',
-    'jobSeekAd': 'Des profils de demandeur d\'emploi',
+    'landSeekAd': 'Recherche de terres agricoles',
+    'landOfferAd': 'Offre de terres agricoles',
+    'associateOfferAd': 'Recherche d\'associé.es sur ferme existante',
+    'associateSeekAd': 'Recherche d\'associé.es pour projet d\'installation',
+    'jobOfferAd': 'Offre de stages, d\'emploi ou de tests, agricoles',
+    'jobSeekAd': 'Recherche d\'experience agricole (emploi salarié, stage, espace-test)',
 }
