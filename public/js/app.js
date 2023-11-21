@@ -99324,7 +99324,7 @@ var AdsCarousel = function AdsCarousel() {
 };
 vue__WEBPACK_IMPORTED_MODULE_4___default.a.component('ads-carousel', AdsCarousel);
 var Modal = function Modal() {
-  return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./components/Modal.vue */ "./resources/js/components/Modal.vue"));
+  return __webpack_require__.e(/*! import() */ 6).then(__webpack_require__.bind(null, /*! ./components/Modal.vue */ "./resources/js/components/Modal.vue"));
 };
 vue__WEBPACK_IMPORTED_MODULE_4___default.a.component('modal', Modal);
 
