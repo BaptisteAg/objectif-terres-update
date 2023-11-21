@@ -53,6 +53,8 @@ class AdPresenter extends BasePresenter
             'landOfferAd' => 'Offre de foncier',
             'jobOfferAd' => 'Offre opportunité professionnelle',
             'jobSeekAd' => 'Recherche opportunité professionnelle',
+            'associateOfferAd' => 'Je cherche un associé sur une ferme existante',
+            'associateSeekAd' => 'Je cherche un associé pour projet d\'installation',
             default => '',
         };
     }
@@ -415,6 +417,8 @@ class AdPresenter extends BasePresenter
             "landSeekAd" => "Recherche",
             "jobSeekAd" => "Recherche Emploi",
             "jobOfferAd" => "Offre Emploi",
+            'associateOfferAd' => 'Un associé sur une ferme',
+            'associateSeekAd' => 'Un associé pour projet d\'installation',
         };
         if ($ad->type === 'landOfferAd') {
             $type = $ad->landOfferAd->offerGenres->pluck('name')->join(', ');
