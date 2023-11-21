@@ -8,7 +8,7 @@
       <div class="columns is-desktop">
         <div class="column">
           <div class="is-flex is-flex-direction-column is-justify-content-space-between">
-            <div class="mb-3">Je cherche</div>
+            <div class="mb-3">Je souhaite consulter les annonces</div>
             <b-dropdown v-model="adsForm.category" expanded aria-role="list">
               <template #trigger="{ active }">
                 <b-button

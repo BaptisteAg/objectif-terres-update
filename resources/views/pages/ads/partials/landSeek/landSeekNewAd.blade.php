@@ -177,7 +177,7 @@
                 @include('pages.ads.partials.inputs.title')
             </section>
 
-            <section class="field mb-6">
+            <section class="field mb-6" ref="documents">
                 @include('pages.ads.partials.inputs.documents')
             </section>
 

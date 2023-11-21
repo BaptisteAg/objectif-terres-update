@@ -2188,8 +2188,8 @@ fieldset[disabled] .button {
 
 .button.is-loading::after {
   position: absolute;
-  left: calc(50% - 1em * 0.5);
-  top: calc(50% - 1em * 0.5);
+  left: calc(50% - (1em * 0.5));
+  top: calc(50% - (1em * 0.5));
   position: absolute !important;
 }
 
@@ -15337,7 +15337,7 @@ div.b-colorpicker-square .colorpicker-square-slider-sl .sl-range-thumb:active {
 
 .field.is-floating-in-label > .label + .control.datepicker .input,
 .field.is-floating-in-label > .label + .control.timepicker .input {
-  padding-top: calc(3.25em * 0.5 - 1.5rem * 0.75 * 0.5);
+  padding-top: calc(3.25em * 0.5 - (1.5rem * 0.75) * 0.5);
   padding-bottom: 1px;
   height: 3.25em;
 }
@@ -15345,7 +15345,7 @@ div.b-colorpicker-square .colorpicker-square-slider-sl .sl-range-thumb:active {
 .field.is-floating-in-label > .label + .control:not(.datepicker):not(.timepicker):not(.taginput) .input,
 .field.is-floating-in-label > .label + .control:not(.datepicker):not(.timepicker):not(.taginput) .textarea,
 .field.is-floating-in-label > .label + .control:not(.datepicker):not(.timepicker):not(.taginput) select {
-  padding-top: calc(3.25em * 0.5 - 1.5rem * 0.75 * 0.5);
+  padding-top: calc(3.25em * 0.5 - (1.5rem * 0.75) * 0.5);
   padding-bottom: 1px;
   height: 3.25em;
 }
@@ -15355,7 +15355,7 @@ div.b-colorpicker-square .colorpicker-square-slider-sl .sl-range-thumb:active {
 }
 
 .field.is-floating-in-label > .label + .control:not(.datepicker):not(.timepicker):not(.taginput) .select:not(multiple).is-loading::after {
-  margin-top: calc(3.25em * 0.5 - 1.5rem * 0.75 * 0.5);
+  margin-top: calc(3.25em * 0.5 - (1.5rem * 0.75) * 0.5);
 }
 
 .field.is-floating-in-label > .label + .control:not(.datepicker):not(.timepicker):not(.taginput) .select:not(multiple)::after {
@@ -15363,7 +15363,7 @@ div.b-colorpicker-square .colorpicker-square-slider-sl .sl-range-thumb:active {
 }
 
 .field.is-floating-in-label > .label + .control.taginput .taginput-container {
-  padding-top: calc(3.25em * 0.5 - 1.5rem * 0.75 * 0.5 + 0.275em - 1px);
+  padding-top: calc(3.25em * 0.5 - (1.5rem * 0.75) * 0.5 + (0.275em - 1px));
 }
 
 .field.is-floating-in-label > .label + .control:not(.taginput) .is-left.icon,
@@ -15372,11 +15372,11 @@ div.b-colorpicker-square .colorpicker-square-slider-sl .sl-range-thumb:active {
 }
 
 .field.is-floating-in-label > .label + .control:not(.taginput) .is-left.icon {
-  padding-top: calc(3.25em * 0.5 - 1.5rem * 0.75 * 0.5);
+  padding-top: calc(3.25em * 0.5 - (1.5rem * 0.75) * 0.5);
 }
 
 .field.is-floating-in-label > .label + .control.is-loading::after {
-  margin-top: calc(3.25em * 0.5 - 1.5rem * 0.75 * 0.5);
+  margin-top: calc(3.25em * 0.5 - (1.5rem * 0.75) * 0.5);
 }
 
 .field.is-floating-in-label > .label + .field-body > .is-grouped .control .input,
@@ -15385,7 +15385,7 @@ div.b-colorpicker-square .colorpicker-square-slider-sl .sl-range-thumb:active {
 .field.is-floating-in-label > .label + .field-body > .has-addons .control .input,
 .field.is-floating-in-label > .label + .field-body > .has-addons .control .textarea,
 .field.is-floating-in-label > .label + .field-body > .has-addons .control select {
-  padding-top: calc(3.25em * 0.5 - 1.5rem * 0.75 * 0.5);
+  padding-top: calc(3.25em * 0.5 - (1.5rem * 0.75) * 0.5);
   padding-bottom: 1px;
 }
 
@@ -16909,14 +16909,6 @@ div.b-colorpicker-square .colorpicker-square-slider-sl .sl-range-thumb:active {
     width: 100%;
     max-width: 100%;
   }
-}
-
-.b-sidebar .sidebar-content .sidebar-close {
-  background: rgba(10, 10, 10, 0.3);
-}
-
-.b-sidebar .sidebar-content .sidebar-close:hover {
-  background: rgba(10, 10, 10, 0.86);
 }
 
 .b-sidebar .sidebar-background {
