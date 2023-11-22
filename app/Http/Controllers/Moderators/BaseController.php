@@ -32,8 +32,8 @@ abstract class BaseController
             ['name' => 'Recherche foncière', 'value' => 'landSeekAd'],
             ['name' => 'Offre d\'emploi', 'value' => 'jobOfferAd'],
             ['name' => 'Recherche d\'emploi', 'value' => 'jobSeekAd'],
-            ['name' => 'Associé sur une ferme', 'value' => 'associateFarmAd'],
-            ['name' => 'Associé pour projet d\'installation', 'value' => 'associateProjectAd'],
+            ['name' => 'Associé sur une ferme', 'value' => 'associateOfferAd'],
+            ['name' => 'Associé pour projet d\'installation', 'value' => 'associateSeekAd'],
         ];
         $this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access", "fa-user-tie", "fa-user-tie"];
     }
