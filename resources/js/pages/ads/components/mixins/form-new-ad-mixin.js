@@ -122,6 +122,7 @@ export default {
 				}
 			}
 		},
+
 		/**
 		 * Try to focus on the first error found
 		 * Fails silently
