@@ -141,11 +141,17 @@ class AdPresenter extends BasePresenter
     }
 
 
-    public function citiesList()
+    public function citiesList() //Cette fonction renvoi "["Saint-Michel-de-D\u00e8ze (48160)"]" mais elle devrais renvoyer quelque chose de lisible
     {
-        return $this->wrappedObject->cities->map(function ($city) {
-            return $city->name . ' (' . $city->zip_code . ')';
-        });
+        $cities = null;
+        foreach ($this->wrappedObject->cities as $key => $attribute) {
+            if ($key === 0) {
+                $cities = $cities . $attribute['name'] . ' (' . $attribute['zip_code'] . ')';
+            } else {
+                $cities = $cities . ', ' . $attribute['name'] . ' (' . $attribute['zip_code'] . ')';
+            }
+        }
+        return $cities;
     }
 
     public function shortLocationsList()
