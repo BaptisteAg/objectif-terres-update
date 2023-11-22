@@ -7,7 +7,7 @@
 @endsection
 
 @section('main-content')
-    <div class="section pt-0">
+    <div class="section">
         <h1 class="title is-2 has-text-link">Bienvenue sur votre tableau de bord <span
                     class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
 
