@@ -35,10 +35,6 @@
                         <input type="hidden" name="id" value="{{ $old["id"] }}">
                     @endif
 
-                    @if(config('app.env') !== 'production')
-                        <p class="title is-1 has-background-black has-text-white">@{{ adTypeSelected }}NewAd</p>
-                    @endif
-
                     <ad-type-select v-model="adTypeSelected"
                                     :on-edit="{{isset($old["id"]) ? 'true' : 'false'}}"
                                     name="ad_type"
