@@ -61,41 +61,41 @@
 					<p class="">Aucun document n'a été uploadé.</p>
 				@endif
 			</div>
-			@if(! $ad->userPp->trashed())
-				<br>
-				<div class="content">
-					<div class=" has-text-centered">
-						{!! Form::open(['route' => 'advisor.uploadDocuments', 'method'=>'post']) !!}
-						<documents-upload
-								url="/documents/upload"
-								type="ads"
-								:extra-data="{}"
-								name="documents"
-								v-model="documents"
-								@uploading="setUploading"
-								ref="documents">
-						</documents-upload>
-						<input type="hidden" name="ad_id" value="{{$ad->id}}">
-						<input type="hidden" name="documents_ids[]" :value="document.id" v-for="document in documents">
-						<input type="hidden" name="documents" :value="JSON.stringify(documents)">
-						<div>
-							<p class="help is-danger"
-							   v-show="$v.documents?.$error && !$v.documents.notCurrentlyUploading">
-								Vous devez attendre la fin du téléversement de vos documents pour publier.
-							</p>
-						</div>
-						<br>
-						<button :disabled="uploading"
-								v-bind:class="[uploading ?'button is-link is-loading ' : 'button is-link']">
-								<span class="icon">
-								<i class="fas fa-file-upload"></i>
-								</span>
-							<span>Téléverser</span>
-						</button>
-						{!! Form::close() !!}
-					</div>
-				</div>
-			@endif
+{{--			@if(! $ad->userPp->trashed())--}}
+{{--				<br>--}}
+{{--				<div class="content">--}}
+{{--					<div class=" has-text-centered">--}}
+{{--						{!! Form::open(['route' => 'advisor.uploadDocuments', 'method'=>'post']) !!}--}}
+{{--						<documents-upload--}}
+{{--								url="/documents/upload"--}}
+{{--								type="ads"--}}
+{{--								:extra-data="{}"--}}
+{{--								name="documents"--}}
+{{--								v-model="documents"--}}
+{{--								@uploading="setUploading"--}}
+{{--								ref="documents">--}}
+{{--						</documents-upload>--}}
+{{--						<input type="hidden" name="ad_id" value="{{$ad->id}}">--}}
+{{--						<input type="hidden" name="documents_ids[]" :value="document.id" v-for="document in documents">--}}
+{{--						<input type="hidden" name="documents" :value="JSON.stringify(documents)">--}}
+{{--						<div>--}}
+{{--							<p class="help is-danger"--}}
+{{--							   v-show="$v.documents?.$error && !$v.documents.notCurrentlyUploading">--}}
+{{--								Vous devez attendre la fin du téléversement de vos documents pour publier.--}}
+{{--							</p>--}}
+{{--						</div>--}}
+{{--						<br>--}}
+{{--						<button :disabled="uploading"--}}
+{{--								v-bind:class="[uploading ?'button is-link is-loading ' : 'button is-link']">--}}
+{{--								<span class="icon">--}}
+{{--								<i class="fas fa-file-upload"></i>--}}
+{{--								</span>--}}
+{{--							<span>Téléverser</span>--}}
+{{--						</button>--}}
+{{--						{!! Form::close() !!}--}}
+{{--					</div>--}}
+{{--				</div>--}}
+{{--			@endif--}}
 		</div>
 	</div>
 
