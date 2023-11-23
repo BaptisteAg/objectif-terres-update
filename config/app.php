@@ -2,6 +2,10 @@
 
 return [
 
+    // Salesforce urls
+    'sf_support_requests_url' => env('SF_SUPPORT_REQUESTS_URL', null),
+    'sf_support_requests_url_adm' => env('SF_SUPPORT_REQUESTS_URL_ADM', null),
+
     // OT General params
     'is_coming_soon' => env('COMING_SOON', false),
     'is_scheduler_live_mode' => env('IS_SCHEDULER_LIVE_MODE', false),
