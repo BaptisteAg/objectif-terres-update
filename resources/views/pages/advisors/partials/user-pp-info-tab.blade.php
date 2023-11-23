@@ -50,38 +50,38 @@
 			: {{$ad->about_content ?? "Non renseigné"}}</p>
 		<p>Nombre d'annonces soumises : {{$listUserAds->count()}}</p>
 		<p>Membre depuis le <strong>{{$ad->userPp->created_at}}</strong></p>
-		@if(! $ad->userPp->trashed())
-			<div class="columns ">
-				<div class="column is-2">
-					<a href="{{route('user.edit', $ad->userPp->id)}}">
-					<span class="icon  has-text-link">
-						<i class="fas fa-user-edit "></i>
-					</span>
-						<span>Modifier </span>
-					</a>
-				</div>
-				<div class="column is-2">
-					<a>
-					<span class="icon  has-text-link">
-						<i class="fas fa-table "></i>
-					</span>
-						<span>Exporter </span>
-					</a>
-				</div>
-				<div class="column is-2">
-					{!! Form::open(['route'=>'advisor.blockUser']) !!}
-					<input type="hidden" name="user_pp_id" value="{{$ad->userPp->id}}">
-					<a @click="showUserBlockedValidationModal = true">
-						<span class="icon  has-text-link">
-							<i class="fas fa-ban"></i>
-						</span>
-						<span>Bloquer </span>
-					</a>
-					@include('pages.advisors.partials.block-user-confiramtion-modal')
-					{!! Form::close() !!}
-				</div>
-			</div>
-		@endif
+{{--		@if(! $ad->userPp->trashed())--}}
+{{--			<div class="columns ">--}}
+{{--				<div class="column is-2">--}}
+{{--					<a href="{{route('user.edit', $ad->userPp->id)}}">--}}
+{{--					<span class="icon  has-text-link">--}}
+{{--						<i class="fas fa-user-edit "></i>--}}
+{{--					</span>--}}
+{{--						<span>Modifier </span>--}}
+{{--					</a>--}}
+{{--				</div>--}}
+{{--				<div class="column is-2">--}}
+{{--					<a>--}}
+{{--					<span class="icon  has-text-link">--}}
+{{--						<i class="fas fa-table "></i>--}}
+{{--					</span>--}}
+{{--						<span>Exporter </span>--}}
+{{--					</a>--}}
+{{--				</div>--}}
+{{--				<div class="column is-2">--}}
+{{--					{!! Form::open(['route'=>'advisor.blockUser']) !!}--}}
+{{--					<input type="hidden" name="user_pp_id" value="{{$ad->userPp->id}}">--}}
+{{--					<a @click="showUserBlockedValidationModal = true">--}}
+{{--						<span class="icon  has-text-link">--}}
+{{--							<i class="fas fa-ban"></i>--}}
+{{--						</span>--}}
+{{--						<span>Bloquer </span>--}}
+{{--					</a>--}}
+{{--					@include('pages.advisors.partials.block-user-confiramtion-modal')--}}
+{{--					{!! Form::close() !!}--}}
+{{--				</div>--}}
+{{--			</div>--}}
+{{--		@endif--}}
 	</div>
 </div>
 
