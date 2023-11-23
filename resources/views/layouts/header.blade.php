@@ -5,6 +5,7 @@
         'login' => route('login'),
         'about_us' => route('qui-sommes-nous'),
         'create_ads' => route('ads.create'),
+        'support_requests' => config('app.sf_support_requests_url'),
         'all_ads' => route('researches.index', ['ad_category' => 'all']),
     ];
     if (auth()->user()) {
@@ -16,7 +17,8 @@
             'administration' => [
                 'role_4' => auth()->user()->role >= 4 ? \Laravel\Nova\Nova::path() : null,
                 'role_3' => auth()->user()->role >= 3 ? route('supervisor.index') : null,
-                'role_2' => auth()->user()->role >= 2 ? route('advisor.index') : null,
+//                'role_2' => auth()->user()->role >= 2 ? route('advisor.index') : null,
+                'role_2' => auth()->user()->role >= 2 ? config('app.sf_support_requests_url_adm') : null,
                 'role_1' => auth()->user()->role >= 1 ? route('moderator.index') : null,
             ]
         ]);

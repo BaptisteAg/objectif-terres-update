@@ -57,71 +57,71 @@
 										Le {{$note->created_at->format("d/m/Y")}}</time>
 								</div>
 								<br>
-								<div v-if="noteToModify === {{$note->id}}">
-									<button v-on:click="modifyNote(0)"
-											class="is-size-7 is-pulled-right has-text-link"
-											style="border: none; background: transparent">
-										<a>
-										<span class="icon">
-										<i class="fas fa-times"></i>
-									</span>
-											<span>Annuler</span>
-										</a>
-									</button>
-								</div>
-								<div v-else>
-									<button v-on:click="modifyNote({{$note->id}})"
-											class="is-size-6 is-pulled-right has-text-link ml-20"
-											style="border: none; background: transparent">
-										<a>
-										<span class="icon">
-										<i class="fas fa-pen"></i>
-									</span>
-											<span>Modifier</span>
-										</a>
-									</button>
-								</div>
-								{!! Form::open(['route' => 'advisor.deleteNote', 'method'=>'post']) !!}
-								<input type="hidden" name="ad_note_id" value="{{$note->id}}">
-									<a class="is-pulled-right" v-on:click="showDeleteNoteValidationModal({{$note->id}})">
-										<span class="icon">
-										<i class="fas fa-trash-alt"></i>
-									</span>
-										<span>Supprimer</span>
-									</a>
-								@include('pages.advisors.partials.delete-note-validation-modal')
-								{!! Form::close() !!}
+{{--								<div v-if="noteToModify === {{$note->id}}">--}}
+{{--									<button v-on:click="modifyNote(0)"--}}
+{{--											class="is-size-7 is-pulled-right has-text-link"--}}
+{{--											style="border: none; background: transparent">--}}
+{{--										<a>--}}
+{{--										<span class="icon">--}}
+{{--										<i class="fas fa-times"></i>--}}
+{{--									</span>--}}
+{{--											<span>Annuler</span>--}}
+{{--										</a>--}}
+{{--									</button>--}}
+{{--								</div>--}}
+{{--								<div v-else>--}}
+{{--									<button v-on:click="modifyNote({{$note->id}})"--}}
+{{--											class="is-size-6 is-pulled-right has-text-link ml-20"--}}
+{{--											style="border: none; background: transparent">--}}
+{{--										<a>--}}
+{{--										<span class="icon">--}}
+{{--										<i class="fas fa-pen"></i>--}}
+{{--									</span>--}}
+{{--											<span>Modifier</span>--}}
+{{--										</a>--}}
+{{--									</button>--}}
+{{--								</div>--}}
+{{--								{!! Form::open(['route' => 'advisor.deleteNote', 'method'=>'post']) !!}--}}
+{{--								<input type="hidden" name="ad_note_id" value="{{$note->id}}">--}}
+{{--									<a class="is-pulled-right" v-on:click="showDeleteNoteValidationModal({{$note->id}})">--}}
+{{--										<span class="icon">--}}
+{{--										<i class="fas fa-trash-alt"></i>--}}
+{{--									</span>--}}
+{{--										<span>Supprimer</span>--}}
+{{--									</a>--}}
+{{--								@include('pages.advisors.partials.delete-note-validation-modal')--}}
+{{--								{!! Form::close() !!}--}}
 							</div>
 						</div>
 						<br>
 					@endforeach
 				</div>
 			@endif
-			<div class="is-divider"></div>
-			{!! Form::open(['route' => 'advisor.createNote', 'method'=>'post']) !!}
-			<div class="field">
-				<label class=" label has-text-black"> Écrire une note</label>
-				<p class="is-italic">Ces notes sont internes. Le porteur de projet n’y a pas accès.</p>
-				<br>
-				<div class="field ">
-					<div class="control is-expanded">
-						<input type="hidden" name="ad_id" value="{{$ad->id}}">
-						<input type="hidden" name="user_id" value="{{auth()->id()}}">
-						<textarea required class=" textarea has-fixed-size" name="value" type="text"
-								  placeholder="Votre note..."></textarea>
-					</div>
-					<br>
-					<div class="control ">
-						<button class="button is-link">
-							 <span class="icon is-small">
-							<i class="fas fa-plus-circle"></i>
-							</span>
-							<span>Ajouter une note</span>
-						</button>
-					</div>
-				</div>
-			</div>
-			{!! Form::close() !!}
+{{--			<div class="is-divider"></div>--}}
+{{--			{!! Form::open(['route' => 'advisor.createNote', 'method'=>'post']) !!}--}}
+{{--			<div class="field">--}}
+{{--				<label class=" label has-text-black"> Écrire une note</label>--}}
+{{--				<p class="is-italic">Ces notes sont internes. Le porteur de projet n’y a pas accès.</p>--}}
+{{--				<br>--}}
+{{--				<div class="field ">--}}
+{{--					<div class="control is-expanded">--}}
+{{--						<input type="hidden" name="ad_id" value="{{$ad->id}}">--}}
+{{--						<input type="hidden" name="user_id" value="{{auth()->id()}}">--}}
+{{--						<textarea required class=" textarea has-fixed-size" name="value" type="text"--}}
+{{--								  placeholder="Votre note..."></textarea>--}}
+{{--					</div>--}}
+{{--					<br>--}}
+{{--					<div class="control ">--}}
+{{--						<button class="button is-link">--}}
+{{--							 <span class="icon is-small">--}}
+{{--							<i class="fas fa-plus-circle"></i>--}}
+{{--							</span>--}}
+{{--							<span>Ajouter une note</span>--}}
+{{--						</button>--}}
+{{--					</div>--}}
+{{--				</div>--}}
+{{--			</div>--}}
+{{--			{!! Form::close() !!}--}}
 		</div>
 	</div>
 </div>
