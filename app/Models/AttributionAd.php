@@ -150,6 +150,7 @@ class AttributionAd extends Model implements Decoratable
 	 */
 	public function userModerator()
 	{
+//        dd('ghjhgjghjghj');
 		return $this->belongsTo(User::class, 'user_moderator_id');
 	}
 
