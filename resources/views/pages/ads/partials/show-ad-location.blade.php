@@ -12,8 +12,8 @@
 
 @if($showCities || auth()->user()->id === $ad->user_pp_id || auth()->user()->role >= 1)
     <div class="w-50">
-        <strong>Commune{{$ad->citiesList->count() > 1 ? 's' : ''}} :</strong>
-        {{ $ad->citiesList->join(', ') }}
+        <strong>Commune{{$ad->citiesCount > 1 ? 's' : ''}} :</strong>
+        {{ $ad->citiesList }}
         @if(!$showCities)
             <br><small>(non visible pour les autres utilisateurs)</small>
         @endif

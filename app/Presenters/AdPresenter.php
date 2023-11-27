@@ -141,7 +141,7 @@ class AdPresenter extends BasePresenter
     }
 
 
-    public function citiesList() //Cette fonction renvoi "["Saint-Michel-de-D\u00e8ze (48160)"]" mais elle devrais renvoyer quelque chose de lisible
+    public function citiesList()
     {
         $cities = null;
         foreach ($this->wrappedObject->cities as $key => $attribute) {
@@ -152,6 +152,11 @@ class AdPresenter extends BasePresenter
             }
         }
         return $cities;
+    }
+
+    public function citiesCount()
+    {
+        return count($this->wrappedObject->cities);
     }
 
     public function shortLocationsList()
