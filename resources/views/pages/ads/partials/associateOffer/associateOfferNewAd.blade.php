@@ -130,7 +130,9 @@
                     'productionGenres' => $educationLevels,
                     'vModel' => 'formInput.educationLevels',
                     'isRequired' => true,
-                    'label' => 'Niveau de formation'
+                    'label' => 'Niveau de formation',
+                    'unitLabel' => 'formation',
+                    'unitLabelGender' => 'f'
                 ];
                 ?>
                 @include('pages.ads.partials.inputs.production_genres', $educationLevelsParams)
