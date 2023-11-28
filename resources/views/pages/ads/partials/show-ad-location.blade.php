@@ -8,7 +8,7 @@
     @endif
 </div>
 
-<?php if(!isset($showCities)) $showCities = false; ?>
+<?php if (!isset($showCities)) $showCities = false; ?>
 
 @if($showCities || auth()->user()->id === $ad->user_pp_id || auth()->user()->role >= 1)
     <div class="w-50">
