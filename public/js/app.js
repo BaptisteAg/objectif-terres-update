@@ -5133,6 +5133,7 @@ var render = function render() {
   }, [_vm._v("\n          Déposer une annonce\n        ")]), _vm._v(" "), _c("b-button", {
     attrs: {
       tag: "a",
+      target: "_blank",
       href: _vm.routes.support_requests,
       rounded: "",
       type: "is-warning",
@@ -5288,6 +5289,7 @@ var render = function render() {
   }, [_vm._v("Déposer une annonce")])]), _vm._v(" "), _c("a", {
     staticClass: "has-text-centered",
     attrs: {
+      target: "_blank",
       href: _vm.routes.support_requests
     }
   }, [_vm._m(8), _vm._v(" "), _c("p", {
@@ -5500,6 +5502,7 @@ var render = function render() {
     }
   }, [_c("a", {
     attrs: {
+      target: "_blank",
       href: _vm.routes.administration.role_2
     }
   }, [_vm._v("Gestion des accompagnements")])]) : _vm.$user.role >= 2 ? _c("b-dropdown-item", {
@@ -5509,6 +5512,7 @@ var render = function render() {
     }
   }, [_c("a", {
     attrs: {
+      target: "_blank",
       href: _vm.routes.administration.role_2
     }
   }, [_vm._v("Espace primo-accueillant")])]) : _vm._e(), _vm._v(" "), _vm.$user.role >= 3 ? _c("b-dropdown-item", {
