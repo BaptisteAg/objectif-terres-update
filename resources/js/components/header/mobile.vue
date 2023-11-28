@@ -123,7 +123,7 @@
         <p class="is-size-7 has-text-weight-bold">Déposer une annonce</p>
       </a>
 
-      <a class="has-text-centered" :href="routes.support_requests">
+      <a target="_blank" class="has-text-centered" :href="routes.support_requests">
           <span class="icon is-medium">
             <i class="mdi mdi-24px mdi-handshake-outline"></i>
           </span>
