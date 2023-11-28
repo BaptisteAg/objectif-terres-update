@@ -435,11 +435,6 @@
 
 @section('script')
     <script>
-        const vueSupervisorFilters = new Vue({
-            el: '#vue-form-supervisor',
-            name: 'content'
-        });
-
         let deleteButton = document.querySelector('#close-notification-supervisor');
         if (deleteButton != null) {
             deleteButton.addEventListener('click', function (e) {
@@ -448,7 +443,5 @@
                 }
             )
         }
-
     </script>
-
 @endsection
