@@ -51,7 +51,7 @@
             <b-button tag="a" :href="routes.create_ads" rounded type="is-info" icon-left="plus">
               Déposer une annonce
             </b-button>
-            <b-button tag="a" :href="routes.support_requests" rounded type="is-warning" icon-left="handshake-outline">
+            <b-button tag="a" target="_blank" :href="routes.support_requests" rounded type="is-warning" icon-left="handshake-outline">
               Être accompagné
             </b-button>
           </div>

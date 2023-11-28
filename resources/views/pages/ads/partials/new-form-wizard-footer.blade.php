@@ -2,7 +2,7 @@
     <div class="wizard-footer-left">
         <wizard-button>
             <b-button size="is-medium" rounded type="is-warning" @mousedown="onSaveButtonClick"
-                      @click="onSaveButtonSubmit">Enregistrer l’annonce en tant que brouillon
+                      @click="onSaveButtonSubmit">Enregistrer en brouillon
             </b-button>
         </wizard-button>
     </div>
