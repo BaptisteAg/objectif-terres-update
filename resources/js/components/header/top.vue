@@ -47,14 +47,14 @@
                              v-if="$user.role >= 3"
                              aria-role="listitem"
             >
-              <a :href="routes.administration.role_2">Gestion des accompagnements</a>
+              <a target="_blank" :href="routes.administration.role_2">Gestion des accompagnements</a>
             </b-dropdown-item>
 
             <b-dropdown-item has-link
                              v-else-if="$user.role >= 2"
                              aria-role="listitem"
             >
-              <a :href="routes.administration.role_2">Espace primo-accueillant</a>
+              <a target="_blank" :href="routes.administration.role_2">Espace primo-accueillant</a>
             </b-dropdown-item>
 
             <b-dropdown-item has-link

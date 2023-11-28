@@ -1,11 +1,13 @@
 @php
     $isUnique = isset($isUnique) ? $isUnique : false;
     $isRequired = isset($isRequired) ? $isRequired : false;
+    $unitLabel = isset($unitLabel) ? $unitLabel : 'production';
+    $unitLabelGender = isset($unitLabelGender) ? $unitLabelGender : 'f';
 @endphp
 {!! Form::label($name, (string)$label . ($isRequired ? ' *' : ''), ['class' => 'label']); !!}
 <list-select
-        unit-label="production"
-        unit-label-gender="f"
+        unit-label="{{$unitLabel}}"
+        unit-label-gender="{{$unitLabelGender}}"
         :options="{{$productionGenres}}"
         name="{{$name}}"
         v-model="{{$vModel}}"
