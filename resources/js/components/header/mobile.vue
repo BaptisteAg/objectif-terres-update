@@ -32,7 +32,7 @@
               <span class="icon is-medium">
                 <i class="mdi mdi-36px mdi-account-outline"></i>
               </span>
-              <span>Mon compte</span>
+              <span>Mon compte - {{ $user.first_name}}</span>
             </span>
             </a>
             <a v-else class="title is-5" :href="routes.login">
