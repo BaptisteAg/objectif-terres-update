@@ -96,10 +96,11 @@
           <span v-if="unread_messages" class="number-sticker">{{ unread_messages }}</span>
         </div>
         <div class="navbar-item" v-if="$user">
-          <a class="icon-text" :href="routes.account">
+          <a class="icon-text is-flex is-align-items-center" :href="routes.account">
               <span class="icon is-medium">
                 <i class="mdi mdi-24px mdi-account-outline"></i>
               </span>
+			  <span>{{ $user.first_name}}</span>
           </a>
         </div>
         <div class="navbar-item" v-if="$user">

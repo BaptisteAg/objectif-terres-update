@@ -2205,17 +2205,24 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     sendAdsForm: function sendAdsForm() {
       var params = new URLSearchParams();
       params.append('ad_category', this.adsForm.category);
-      this.adsForm.localisation.forEach(function (id) {
-        return params.append('regions_location_researches_ids[]', id);
-      });
-      this.adsForm.selectedProductions.forEach(function (id) {
-        return params.append('regions_production_researches_ids[]', id);
-      });
+      if (this.adsForm.localisation.length > 0) {
+        this.adsForm.localisation.forEach(function (id) {
+          return params.append('regions_location_researches_ids[]', id);
+        });
+        console.log(this.adsForm.localisation);
+      }
+      if (this.adsForm.selectedProductions.length > 0) {
+        this.adsForm.selectedProductions.forEach(function (id) {
+          return params.append('production_genres[]', id);
+        });
+        console.log(this.adsForm.selectedProductions);
+      }
       params.append('surfaces_research_min', this.adsForm.surfaceMin);
       params.append('surfaces_research', this.adsForm.surfaceMax);
       params.append('price_min', this.adsForm.priceMin);
       params.append('price_max', this.adsForm.priceMax);
       params.append('keywords', this.adsForm.keywords);
+      console.log(params.toString());
       window.location.href = "/recherche?".concat(params.toString());
     },
     toggleAllRegions: function toggleAllRegions() {
@@ -2266,10 +2273,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         return production.id === id;
       });
     }
-  },
-  mounted: function mounted() {
-    console.log(this.productions);
-    console.log(this.regions);
   }
 });
 
@@ -3968,7 +3971,7 @@ var render = function render() {
         "aria-role": "listitem",
         value: category
       }
-    }, [_vm._v("\n              " + _vm._s(label) + "\n            ")]);
+    }, [_vm._v("\n\t\t\t\t\t\t\t" + _vm._s(label) + "\n\t\t\t\t\t\t")]);
   })], 2)], 1)]), _vm._v(" "), _c("div", {
     staticClass: "column have-border"
   }, [_c("div", {
@@ -4010,7 +4013,7 @@ var render = function render() {
     on: {
       click: _vm.toggleAllRegions
     }
-  }, [_vm._v("\n              Toutes les régions\n            ")]), _vm._v(" "), _c("b-dropdown-item", {
+  }, [_vm._v("\n\t\t\t\t\t\t\tToutes les régions\n\t\t\t\t\t\t")]), _vm._v(" "), _c("b-dropdown-item", {
     attrs: {
       separator: ""
     }
@@ -4021,7 +4024,7 @@ var render = function render() {
         "aria-role": "listitem",
         value: region.id
       }
-    }, [_vm._v("\n              " + _vm._s(region.name) + "\n            ")]);
+    }, [_vm._v("\n\t\t\t\t\t\t\t" + _vm._s(region.name) + "\n\t\t\t\t\t\t")]);
   })], 2)], 1)]), _vm._v(" "), _c("div", {
     staticClass: "column have-border"
   }, [_c("div", {
@@ -4031,6 +4034,7 @@ var render = function render() {
   }, [_vm._v("Production principale")]), _vm._v(" "), _c("b-dropdown", {
     staticClass: "mb-3",
     attrs: {
+      disabled: _vm.adsForm.category === "all",
       expanded: "",
       "aria-role": "list",
       multiple: ""
@@ -4061,7 +4065,7 @@ var render = function render() {
         "aria-role": "listitem",
         value: production.id
       }
-    }, [_vm._v("\n              " + _vm._s(production.name) + "\n            ")]);
+    }, [_vm._v("\n\t\t\t\t\t\t\t" + _vm._s(production.name) + "\n\t\t\t\t\t\t")]);
   })], 2), _vm._v(" "), _c("b-taglist", _vm._l(_vm.adsForm.selectedProductions, function (production, index) {
     return _c("b-tag", {
       key: index,
@@ -4074,7 +4078,7 @@ var render = function render() {
           return _vm.removeSelectedProductions(production);
         }
       }
-    }, [_vm._v("\n              " + _vm._s(_vm.getProductionById(production).name) + "\n            ")]);
+    }, [_vm._v("\n\t\t\t\t\t\t\t" + _vm._s(_vm.getProductionById(production).name) + "\n\t\t\t\t\t\t")]);
   }), 1)], 1)])]), _vm._v(" "), _c("transition", {
     attrs: {
       name: "fade"
@@ -5226,7 +5230,9 @@ var render = function render() {
     attrs: {
       href: _vm.routes.account
     }
-  }, [_vm._m(2)]) : _c("a", {
+  }, [_c("span", {
+    staticClass: "icon-text is-align-items-center"
+  }, [_vm._m(2), _vm._v(" "), _c("span", [_vm._v("Mon compte - " + _vm._s(_vm.$user.first_name))])])]) : _c("a", {
     staticClass: "title is-5",
     attrs: {
       href: _vm.routes.login
@@ -5334,12 +5340,10 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("span", {
-    staticClass: "icon-text is-align-items-center"
-  }, [_c("span", {
     staticClass: "icon is-medium"
   }, [_c("i", {
     staticClass: "mdi mdi-36px mdi-account-outline"
-  })]), _vm._v(" "), _c("span", [_vm._v("Mon compte")])]);
+  })]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -5554,25 +5558,25 @@ var render = function render() {
   }, [_vm._v(_vm._s(_vm.unread_messages))]) : _vm._e()]) : _vm._e(), _vm._v(" "), _vm.$user ? _c("div", {
     staticClass: "navbar-item"
   }, [_c("a", {
-    staticClass: "icon-text",
+    staticClass: "icon-text is-flex is-align-items-center",
     attrs: {
       href: _vm.routes.account
     }
-  }, [_vm._m(4)])]) : _vm._e(), _vm._v(" "), _vm.$user ? _c("div", {
+  }, [_vm._m(4), _vm._v(" "), _c("span", [_vm._v(_vm._s(_vm.$user.first_name))])])]) : _vm._e(), _vm._v(" "), _vm.$user ? _c("div", {
     staticClass: "navbar-item"
   }, [_c("a", {
     staticClass: "has-text-weight-semibold navbar-item",
     attrs: {
       href: _vm.routes.logout
     }
-  }, [_vm._v("\n          Déconnexion\n        ")])]) : _c("div", {
+  }, [_vm._v("\n            Déconnexion\n          ")])]) : _c("div", {
     staticClass: "navbar-item"
   }, [_c("a", {
     staticClass: "has-text-weight-semibold navbar-item",
     attrs: {
       href: _vm.routes.login
     }
-  }, [_vm._v("\n          Se connecter\n        ")])])])])]);
+  }, [_vm._v("\n            Se connecter\n          ")])])])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
