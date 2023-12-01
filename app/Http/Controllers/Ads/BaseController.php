@@ -204,7 +204,6 @@ abstract class BaseController extends Controller
             $ad->only(["id", "title", "department_id", "about_content", "about_project_content", "accept_share_contact_infos", "support_request_text", 'is_sales_offer_evaluation']),
             compact("selected_zones", "locationable", "locationable_radius", "documents", "document_ids", 'selected_departments', 'third_party' ,'ad_contact_type')
         );
-
         return $vars;
     }
 
@@ -252,7 +251,7 @@ abstract class BaseController extends Controller
             'buildingTypes',
             'requirements',
             'isSupportRequest',
-            "old"
+            'old'
         );
     }
 

@@ -20,6 +20,7 @@
                 padding: 2em 0;
                 margin-bottom: 2em;
             }
+
             #global-map:after {
                 content: ' ';
                 position: absolute;
@@ -30,6 +31,7 @@
                 background: rgba(0, 0, 0, .6);
                 z-index: -1;
             }
+
             #global-map > div:first-child {
                 min-width: 70vw;
                 position: inherit;
@@ -37,12 +39,15 @@
                 padding: 2em;
                 max-width: 90vw;
             }
+
             #global-map .column.have-border {
                 border-left: 2px solid #e3cfb5;
             }
+
             #global-map span.tag {
                 background-color: #e3cfb5;
             }
+
             #global-map .dropdown div button span {
                 width: 300px;
                 overflow: hidden;
@@ -50,6 +55,7 @@
                 white-space: nowrap;
                 text-align: left;
             }
+
             @media (max-width: 769px) {
                 #global-map {
                     min-height: 80vh;
@@ -57,10 +63,12 @@
                     background-position: top;
                     background-size: cover;
                 }
+
                 #global-map > div:first-child {
                     width: 90vw;
                     padding: 1em;
                 }
+
                 #global-map .column.have-border {
                     border-left: none;
                 }
@@ -137,13 +145,11 @@
     </div>
 
     @if($hasDepartmentPolygons)
-        @if($hasDepartmentPolygons)
-            <section class="section pt-0">
-                <div class="container">
-                    <div id="global-map"></div>
-                </div>
-            </section>
-        @endif
+        <section class="section pt-0">
+            <div class="container">
+                <div id="global-map"></div>
+            </div>
+        </section>
     @endif
 
     <section class="container">
