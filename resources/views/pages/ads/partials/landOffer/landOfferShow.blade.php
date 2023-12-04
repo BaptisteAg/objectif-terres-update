@@ -209,7 +209,7 @@
         <p>{!! nl2br($ad->about_project_content ??"") !!}</p>
     </div>
     <div>
-        <h3 class="title is-4">Description du porteur de projet</h3>
+        <h3 class="title is-4">A propos de l'annonceur</h3>
         <p>{!! nl2br($ad->about_content ?? "") !!}</p>
     </div>
     <div class="is-flex is-justify-content-space-between is-align-items-center pt-3">

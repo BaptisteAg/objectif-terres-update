@@ -2119,6 +2119,9 @@ __webpack_require__.r(__webpack_exports__);
           behavior: 'smooth'
         });
       }
+      if (!this.currentAdType) {
+        this.errors.adType = true;
+      }
       if (this.adContactType === 'thirdParty') {
         var emailRegex = /^[\w-]+(.[\w-]+)*@([\w-]+.)+[a-zA-Z]{2,7}$/;
         if (!emailRegex.test(this.thirdParty.email)) {
@@ -3689,11 +3692,7 @@ var render = function render() {
       },
       expression: "hasCertified"
     }
-  }, [_vm._v("Je\n\t\t\t\t\tcertifie que\n\t\t\t\t\tmon annonce\n\t\t\t\t\tconcerne\n\t\t\t\t\tun\n\t\t\t\t\tprojet agricole professionnel sur des productions principales nourricières "), _c("a", {
-    attrs: {
-      href: "/conditions-utilisation"
-    }
-  }, [_vm._v("(charte\n\t\t\t\t\t\tObjectif Terre)")]), _vm._v(".\n\t\t\t\t")])], 1)], 1), _vm._v(" "), _c("hr", {
+  }, [_vm._t("certified")], 2)], 1)], 1), _vm._v(" "), _c("hr", {
     staticClass: "is-primary"
   }), _vm._v(" "), _c("h3", {
     staticClass: "title is-4"
@@ -3728,7 +3727,7 @@ var render = function render() {
   }, [_c("p", [_vm._v("\n\t\t\t\tLes coordonnées de la personne pour qui je dépose l'annonce, qui seront visibles par les personnes\n\t\t\t\tqui\n\t\t\t\tconsultent l'annonce.\n\t\t\t")]), _c("br"), _c("br"), _vm._v(" "), _c("b-field", {
     staticClass: "w-50 is-size-6",
     attrs: {
-      label: "Email",
+      label: "Email *",
       type: _vm.errors.email ? "is-danger" : "",
       message: _vm.errors.email
     }
@@ -3750,7 +3749,7 @@ var render = function render() {
   })], 1), _vm._v(" "), _c("b-field", {
     staticClass: "w-50 is-size-6",
     attrs: {
-      label: "Prénom",
+      label: "Prénom *",
       type: _vm.errors.firstName ? "is-danger" : "",
       message: _vm.errors.firstName
     }
@@ -3772,7 +3771,7 @@ var render = function render() {
   })], 1), _vm._v(" "), _c("b-field", {
     staticClass: "w-50 is-size-6",
     attrs: {
-      label: "Nom",
+      label: "Nom *",
       type: _vm.errors.lastName ? "is-danger" : "",
       message: _vm.errors.lastName
     }
@@ -3841,7 +3840,7 @@ var render = function render() {
       value: !_vm.onEdit,
       expression: "!onEdit"
     }],
-    staticClass: "mt-5"
+    "class": _vm.errors.check ? "field-error mt-5" : "mt-5"
   }, [_c("h3", {
     staticClass: "title is-4"
   }, [_vm._v("Mon projet")]), _vm._v(" "), _c("p", {
@@ -3851,7 +3850,7 @@ var render = function render() {
       value: _vm.errors.adType,
       expression: "errors.adType"
     }],
-    staticClass: "pb-4 has-text-danger"
+    staticClass: "pb-4 help is-danger"
   }, [_vm._v("Le type d'annonce n'est pas défini.")]), _vm._v(" "), _c("div", {
     staticClass: "is-flex-wrap-wrap is-flex is-justify-content-space-between gap-5"
   }, _vm._l(_vm.adTypes, function (adType, adTypeValue) {
@@ -5122,7 +5121,7 @@ var render = function render() {
   }, [_c("b-button", {
     attrs: {
       tag: "a",
-      href: _vm.routes.all_ads,
+      href: "/",
       rounded: "",
       "icon-left": "magnify"
     }
@@ -5278,14 +5277,7 @@ var render = function render() {
     attrs: {
       role: "navigation"
     }
-  }, [_c("a", {
-    staticClass: "has-text-centered",
-    attrs: {
-      href: _vm.routes.all_ads
-    }
-  }, [_vm._m(6), _vm._v(" "), _c("p", {
-    staticClass: "is-size-7 has-text-weight-bold"
-  }, [_vm._v("Consulter les annonces")])]), _vm._v(" "), _c("a", {
+  }, [_vm._m(6), _vm._v(" "), _c("a", {
     staticClass: "has-text-centered",
     attrs: {
       href: _vm.routes.create_ads
@@ -5395,11 +5387,18 @@ var staticRenderFns = [function () {
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("span", {
+  return _c("a", {
+    staticClass: "has-text-centered",
+    attrs: {
+      href: "/"
+    }
+  }, [_c("span", {
     staticClass: "icon is-medium"
   }, [_c("i", {
     staticClass: "mdi mdi-24px mdi-magnify"
-  })]);
+  })]), _vm._v(" "), _c("p", {
+    staticClass: "is-size-7 has-text-weight-bold"
+  }, [_vm._v("Consulter les annonces")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -6038,7 +6037,7 @@ var render = function render() {
       tag: "a",
       href: _vm.routes.register,
       rounded: "",
-      type: "is-light",
+      type: "is-danger",
       size: "is-medium",
       expanded: ""
     }
@@ -99424,6 +99423,9 @@ window.app = new vue__WEBPACK_IMPORTED_MODULE_4___default.a({
           }
         }, _callee, null, [[0, 6]]);
       }))();
+    },
+    goBack: function goBack() {
+      window.history.go(-1);
     }
   }
 });
@@ -101633,9 +101635,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
           notCurrentlyUploading: _base_validations__WEBPACK_IMPORTED_MODULE_1__["default"].formInput.documents.notCurrentlyUploading
         },
         selectedZones: {
-          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
-        },
-        educationLevels: {
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
         },
         productionGenres: {

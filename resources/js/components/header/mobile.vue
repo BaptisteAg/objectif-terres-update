@@ -110,7 +110,7 @@
     <nav
         class="navbar is-fixed-bottom is-hidden-desktop is-flex is-justify-content-space-between p-1 py-2 bottom-navbar-mobile"
         role="navigation">
-      <a class="has-text-centered" :href="routes.all_ads">
+      <a class="has-text-centered" href="/">
           <span class="icon is-medium">
             <i class="mdi mdi-24px mdi-magnify"></i>
           </span>

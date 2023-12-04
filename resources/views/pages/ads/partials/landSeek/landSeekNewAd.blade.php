@@ -8,6 +8,7 @@
             @on-complete="$emit('form-complete')"
             color="#A74B2B"
             ref="formWizard"
+            @on-change="nextStep"
             class="is-flex is-flex-direction-column">
 
         <tab-content title="Terres recherchées">
