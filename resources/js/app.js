@@ -133,6 +133,9 @@ window.app = new Vue({
 			} catch (err) {
 				console.error('Erreur lors de la copie de l\'URL', err);
 			}
+		},
+		goBack() {
+			window.history.go(-1);
 		}
 	}
 });

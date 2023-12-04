@@ -5,6 +5,9 @@
     $unitLabelGender = isset($unitLabelGender) ? $unitLabelGender : 'f';
 @endphp
 {!! Form::label($name, (string)$label . ($isRequired ? ' *' : ''), ['class' => 'label']); !!}
+@if(!$isUnique)
+    <p>Vous pouvez renseigner plusieurs valeurs</p>
+@endif
 <list-select
         unit-label="{{$unitLabel}}"
         unit-label-gender="{{$unitLabelGender}}"

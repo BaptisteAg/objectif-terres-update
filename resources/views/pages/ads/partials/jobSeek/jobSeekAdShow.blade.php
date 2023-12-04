@@ -8,7 +8,6 @@
             @include('pages.ads.partials.modal-documents')
         </div>
 
-
         @include('pages.ads.partials.show-ref-title-date')
 
         <div class="mt-3">
@@ -21,7 +20,7 @@
                 @include('pages.ads.partials.show-ad-location', ['showCities' => true])
 
                 <div class="w-50">
-                    <strong>Expérience recehrcher : </strong>
+                    <strong>Expérience(s) recherchée(s) : </strong>
                     {{$ad->jobSeekAd->jobOfferTypes->pluck('name')->implode(', ') }}
                 </div>
 

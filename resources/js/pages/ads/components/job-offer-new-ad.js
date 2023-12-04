@@ -76,9 +76,6 @@ export default {
 				selectedZones: {
 					required
 				},
-				educationLevels: {
-					required
-				},
 				productionGenres: {
 					required
 				},
