@@ -1,9 +1,11 @@
-@if($ad->third_party_ad_user_id && auth()->user()->role >= 1)
-    <div class="w-50">
-        <strong>Publié par : </strong>
-        <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->pp_display_name}}</a>
-    </div>
-@endif
+@auth()
+    @if($ad->third_party_ad_user_id && auth()->user()->role >= 1)
+        <div class="w-50">
+            <strong>Publié par : </strong>
+            <a href="{{route('user.show', $ad->userPp->id)}}">{{ $ad->pp_display_name}}</a>
+        </div>
+    @endif
+@endauth
 
 <div class="w-50">
     <strong>Publié @if($ad->third_party_ad_user_id)

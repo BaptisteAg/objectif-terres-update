@@ -40,7 +40,7 @@
 								<span v-else>Suivant</span>
 							</b-button>
 						</div>
-						<b-button tag="a" :href="routes.register" rounded type="is-light" size="is-medium" expanded>
+						<b-button tag="a" :href="routes.register" rounded type="is-danger" size="is-medium" expanded>
 							Créer un compte
 						</b-button>
 					</div>

@@ -124,21 +124,22 @@
                                 @endif
                             </th>
                             <th>
-                                @if(request()->input('sort') !== 'title')
-                                    <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">
-                                        <span>Titre de l'annonce</span>
-                                    </a>
-                                @elseif(request()->input('sort') === 'title' && request()->input('order') === 'asc')
-                                    <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'title'])) }}">
-                                        <i class="fas fa-arrow-up"></i>
-                                        <span>Titre de l'annonce</span>
-                                    </a>
-                                @else
-                                    <a href="{{ route('moderator.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
-                                        <i class="fas fa-arrow-down"></i>
-                                        <span>Titre de l'annonce</span>
-                                    </a>
-                                @endif
+                                {{--                                @if(request()->input('sort') !== 'title')--}}
+                                {{--                                    <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">--}}
+                                {{--                                        <span>Titre de l'annonce</span>--}}
+                                {{--                                    </a>--}}
+                                {{--                                @elseif(request()->input('sort') === 'title' && request()->input('order') === 'asc')--}}
+                                {{--                                    <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'title'])) }}">--}}
+                                {{--                                        <i class="fas fa-arrow-up"></i>--}}
+                                {{--                                        <span>Titre de l'annonce</span>--}}
+                                {{--                                    </a>--}}
+                                {{--                                @else--}}
+                                {{--                                    <a href="{{ route('moderator.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">--}}
+                                {{--                                        <i class="fas fa-arrow-down"></i>--}}
+                                {{--                                        <span>Titre de l'annonce</span>--}}
+                                {{--                                    </a>--}}
+                                {{--                                @endif--}}
+                                <span>Titre de l'annonce</span>
                             </th>
                             <th>Type d'annonce</th>
                             <th>
@@ -159,7 +160,7 @@
                                 @endif
                             </th>
                             <th>Nom du modérateur</th>
-{{--                            <th>Adresse mail</th>--}}
+                            {{--                            <th>Adresse mail</th>--}}
                             <th>Localisation(s)</th>
                             <th>
                                 @if(request()->input('sort') !== 'ad_statuses.name')
@@ -231,7 +232,7 @@
                                             Modérateur non attribué
                                         @endif
                                     </td>
-{{--                                    <td>{{$attributionAd->ad->userPp->email ?? "[Supprimé]"}}</td>--}}
+                                    {{--                                    <td>{{$attributionAd->ad->userPp->email ?? "[Supprimé]"}}</td>--}}
                                     <td>
                                         @if(! is_null($attributionAd->ad->regionsList))
                                             <p>Region(s) : {{$attributionAd->ad->regionsList}}</p>

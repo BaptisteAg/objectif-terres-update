@@ -40,6 +40,12 @@
                                     name="ad_type"
                                     :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
                                     :is-support-request="{{empty($isSupportRequest)?'false':'true'}}">
+                        <template v-slot:certified>
+                            Je certifie que mon annonce concerne un projet agricole professionnel sur des productions
+                            principales nourricières
+                            <a target="_blank" href="{{URL::asset('docs/Charte_utilisation_d_Objectif_Terres-Validee_en_CIT_du_21_oct.pdf')}}">(charte
+                                Objectif Terre)</a>.
+                        </template>
                     </ad-type-select>
 
                     @if(empty($old["id"]))
