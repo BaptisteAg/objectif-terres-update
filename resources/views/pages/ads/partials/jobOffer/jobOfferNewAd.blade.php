@@ -93,7 +93,6 @@
                     'name' => 'job_offer[education_levels][]',
                     'productionGenres' => $educationLevels,
                     'vModel' => 'formInput.educationLevels',
-                    'isRequired' => true,
                     'label' => 'Niveau de formation souhaité',
                     'unitLabel' => 'formation',
                     'unitLabelGender' => 'f'

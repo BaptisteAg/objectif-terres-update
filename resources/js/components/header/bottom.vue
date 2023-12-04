@@ -45,7 +45,7 @@
 
         <div class="navbar-end">
           <div class="navbar-item buttons">
-            <b-button tag="a" :href="routes.all_ads" rounded icon-left="magnify">
+            <b-button tag="a" href="/" rounded icon-left="magnify">
               Consulter les annonces
             </b-button>
             <b-button tag="a" :href="routes.create_ads" rounded type="is-info" icon-left="plus">

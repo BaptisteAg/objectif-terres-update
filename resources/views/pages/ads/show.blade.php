@@ -31,10 +31,11 @@
                             size="is-small"
                     >
                         <b-breadcrumb-item href="/">Page d’accueil</b-breadcrumb-item>
-                        <b-breadcrumb-item class="breadcrumb__link"
-                                           href="{{route('researches.index',  ['offer_type' => $offerType, 'ad_category' => $adCategory])}}">
-                            <span>{{$ad->ad_type_full_name}}</span>
-                        </b-breadcrumb-item>
+{{--                        <b-breadcrumb-item class="breadcrumb__link"--}}
+{{--                                           href="{{route('researches.index',  ['offer_type' => $offerType, 'ad_category' => $adCategory])}}">--}}
+{{--                            <span>{{$ad->ad_type_full_name}}</span>--}}
+{{--                        </b-breadcrumb-item>--}}
+                        <b-breadcrumb-item class="breadcrumb__link" @click="goBack">{{$ad->ad_type_full_name}}</b-breadcrumb-item>
                     </b-breadcrumb>
                 </div>
 
