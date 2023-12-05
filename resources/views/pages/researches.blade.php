@@ -94,7 +94,7 @@
                             Date: du plus ancien au plus récent
                         </option>
 
-                        @if($adsType =='landSeekAd' or $adsType== 'landOfferAd')
+                        @if($adsType =='landSeekAd' || $adsType== 'landOfferAd')
                             @if($adsType == 'landOfferAd')
                                 <option {{request()->input('order') === 'asc' && request()->input('sort') === 'price' ? 'selected' : '' }} value="{{ route('researches.index', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'price', 'page'=> 0])) }}">
                                     Prix : du moins au plus élevé

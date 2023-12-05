@@ -73,7 +73,7 @@
 				</b-field>
 			</div>
 
-			<section :class="errors.check ? 'field-error mt-5' : 'mt-5'" v-show="!onEdit">
+			<section :class="errors.adType ? 'field-error mt-5' : 'mt-5'" v-show="!onEdit">
 				<h3 class="title is-4">Mon projet</h3>
 				<p class="pb-4 help is-danger" v-show="errors.adType">Le type d'annonce n'est pas défini.</p>
 				<div class="is-flex-wrap-wrap is-flex is-justify-content-space-between gap-5">

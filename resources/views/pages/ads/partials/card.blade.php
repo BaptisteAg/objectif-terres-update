@@ -39,6 +39,8 @@
                  </span>
             </div>
 
+            @include('pages.ads.partials.is-certified')
+
             <div class="column pr-0-mobile title is-6 has-text-right" style="color: #A74B2B">
                 {{ $ad->formatted_price }}
             </div>
@@ -65,6 +67,7 @@
                 </p>
                 <p>{{ $ad->formatted_location }}</p>
             </div>
+
             <div class="mt-auto is-hidden-touch is-flex">
                 @if($ad->currentUserFavoriteAd)
                     <b-button tag="a" type="is-warning" rounded icon-left="star-outline" size="is-medium" class="mr-2"
