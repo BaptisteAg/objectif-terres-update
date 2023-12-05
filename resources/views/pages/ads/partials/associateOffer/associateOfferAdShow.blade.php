@@ -5,6 +5,7 @@
 
         <div class="buttons is-justify-content-space-between">
             @include('pages.ads.partials.share-button')
+            @include('pages.ads.partials.is-certified')
             @include('pages.ads.partials.modal-documents')
         </div>
 

@@ -1,6 +1,6 @@
-<section class="mb-6" {!! $condition ?? ''  !!}>
+<section class="mb-6 field" {!! $condition ?? ''  !!}>
     @if(isset($tooltip) && $tooltip)
-    <b-tooltip class="w-100 field" ref="selectedZones" label="{{$tooltip}}">
+    <b-tooltip class="w-100" ref="selectedZones" label="{{$tooltip}}">
     @endif
         <zone-select
                 src="{{ isset($withDepartments) && $withDepartments ? '/locations' : '/locations/cities' }}"

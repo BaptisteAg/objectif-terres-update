@@ -5,6 +5,7 @@
 
         <div class="buttons is-justify-content-space-between">
             @include('pages.ads.partials.share-button')
+            @include('pages.ads.partials.is-certified')
             @include('pages.ads.partials.modal-documents')
         </div>
 
@@ -197,13 +198,12 @@
             @endif
         </div>
     </div>
-    <div>
-        <h3 class="title is-4">Description de la terre</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur.</p>
-    </div>
+    @if($ad->landOfferAd->sau_description)
+        <div>
+            <h3 class="title is-4">Description de la terre</h3>
+            <p>{!! nl2br($ad->landOfferAd->sau_description ?? "") !!}</p>
+        </div>
+    @endif
     <div>
         <h3 class="title is-4">Description de la transmission agricole</h3>
         <p>{!! nl2br($ad->about_project_content ??"") !!}</p>

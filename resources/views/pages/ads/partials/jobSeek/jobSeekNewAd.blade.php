@@ -12,19 +12,25 @@
 
             @include('pages.ads.partials.inputs.main_department')
 
-            <section class="field mb-6">
-                <b-tooltip class="w-100"
-                           label="Si vous souhaitez préciser la localisation de votre recherche, saisissez les 2 premiers chiffres du code postal">
-                    <zone-select
-                            name="locationable"
-                            label="Autre(s) localisation(s)"
-                            json-name="selected_zones"
-                            ref="selectedZones"
-                            :vuelidate="$v.formInput.selectedZones"
-                            v-model="formInput.selectedZones">
-                    </zone-select>
-                </b-tooltip>
-            </section>
+    {{--            <section class="field mb-6">--}}
+    {{--                <b-tooltip class="w-100"--}}
+    {{--                           label="Si vous souhaitez préciser la localisation de votre recherche, saisissez les 2 premiers chiffres du code postal">--}}
+    {{--                    <zone-select--}}
+    {{--                            name="locationable"--}}
+    {{--                            label="Autre(s) localisation(s)"--}}
+    {{--                            json-name="selected_zones"--}}
+    {{--                            ref="selectedZones"--}}
+    {{--                            :vuelidate="$v.formInput.selectedZones"--}}
+    {{--                            v-model="formInput.selectedZones">--}}
+    {{--                    </zone-select>--}}
+    {{--                </b-tooltip>--}}
+    {{--            </section>--}}
+
+            @include('pages.ads.partials.inputs.other_locations', [
+                'label' => 'Autre(s) localisation(s)',
+                'tooltip' => 'Si vous souhaitez préciser la localisation de votre recherche, saisissez les 2 premiers chiffres du code postal',
+                'withDepartments' => true
+            ])
 
             <section class="mb-6 field" ref="offerTypes">
                 {!! Form::label('job_seek[offer_types][]', 'Quel type d\'expérience professionnelle recherchez-vous ? *', [

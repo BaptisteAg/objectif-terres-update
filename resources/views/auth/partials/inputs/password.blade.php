@@ -3,7 +3,7 @@
     <p class="control has-icons-left">
         <input id="password"
                name="password"
-               class="input is-medium is-rounded @error('password') is-danger @enderror "
+               class="input  is-rounded @error('password') is-danger @enderror "
                type="password"
                required
                autocomplete="new-password"
@@ -27,7 +27,7 @@
     <p class="control has-icons-left">
         <input id="password-confirm"
                name="password_confirmation"
-               class="input is-medium is-rounded"
+               class="input  is-rounded"
                type="password"
                value="{{ old('password_confirmation') }}"
                autocomplete="new-password"
