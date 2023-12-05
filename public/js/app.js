@@ -3840,7 +3840,7 @@ var render = function render() {
       value: !_vm.onEdit,
       expression: "!onEdit"
     }],
-    "class": _vm.errors.check ? "field-error mt-5" : "mt-5"
+    "class": _vm.errors.adType ? "field-error mt-5" : "mt-5"
   }, [_c("h3", {
     staticClass: "title is-4"
   }, [_vm._v("Mon projet")]), _vm._v(" "), _c("p", {
@@ -102337,7 +102337,7 @@ var smoothScrolls = [];
         }
         if (validation && ref) {
           var field = this.findInputContainerElement(ref);
-
+          console.log(field);
           // /!\ .field class must be placed on the input container
           while (!field.classList.contains('field')) {
             field = field.parentElement;
@@ -102893,8 +102893,9 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('user-form', {
   },
   data: function data() {
     return {
-      optionProfileSelected: this.oldValues.profile || '',
-      optionHasFormationSelected: this.oldValues.hasformation || '',
+      optionProfileSelected: JSON.parse(this.oldValues.profile) || '',
+      optionHasFormationSelected: this.oldValues.formation !== null ? '1' : '0',
+      formationSelected: JSON.parse(this.oldValues.formation),
       citySelect: this.oldValues.citySelect ? JSON.parse(this.oldValues.citySelect) : [],
       countrySelect: this.oldValues.countrySelect ? JSON.parse(this.oldValues.countrySelect) : [],
       isPasswordToChange: false
@@ -102904,6 +102905,9 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('user-form', {
     show_password_inputs: function show_password_inputs() {
       this.isPasswordToChange = this.isPasswordToChange !== true;
     }
+  },
+  mounted: function mounted() {
+    console.log(this.oldValues);
   }
 });
 

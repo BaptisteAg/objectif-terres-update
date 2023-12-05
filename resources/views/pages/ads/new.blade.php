@@ -35,6 +35,10 @@
                         <input type="hidden" name="id" value="{{ $old["id"] }}">
                     @endif
 
+                    @if(config('app.env') === 'local')
+                        <h1 class="title has-background-black has-text-white">Type : @{{adTypeSelected}}</h1>
+                    @endif
+
                     <ad-type-select v-model="adTypeSelected"
                                     :on-edit="{{isset($old["id"]) ? 'true' : 'false'}}"
                                     name="ad_type"
@@ -43,7 +47,8 @@
                         <template v-slot:certified>
                             Je certifie que mon annonce concerne un projet agricole professionnel sur des productions
                             principales nourricières
-                            <a target="_blank" href="{{URL::asset('docs/Charte_utilisation_d_Objectif_Terres-Validee_en_CIT_du_21_oct.pdf')}}">(charte
+                            <a target="_blank"
+                               href="{{URL::asset('docs/Charte_utilisation_d_Objectif_Terres-Validee_en_CIT_du_21_oct.pdf')}}">(charte
                                 Objectif Terre)</a>.
                         </template>
                     </ad-type-select>

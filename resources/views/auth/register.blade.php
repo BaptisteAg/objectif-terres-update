@@ -53,13 +53,12 @@
                 <div class="columns">
                     @include('auth.partials.inputs.profile')
                 </div>
-                <div class="columns" v-if="optionProfileSelected === '1' || optionProfileSelected === '2'">
-                    @include('auth.partials.inputs.formation')
-                </div>
 
                 <div class="columns" v-if="optionProfileSelected === '1' || optionProfileSelected === '2'">
+                    @include('auth.partials.inputs.formation')
                     @include('auth.partials.inputs.fromwhere')
                 </div>
+
 
                 <div class="px-3-mobile pb-4">
                     @include('auth.partials.inputs.password')

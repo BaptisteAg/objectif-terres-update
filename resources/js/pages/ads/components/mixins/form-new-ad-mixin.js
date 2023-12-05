@@ -113,7 +113,7 @@ export default {
 
 				if (validation && ref) {
 					let field = this.findInputContainerElement(ref);
-
+					console.log(field)
 					// /!\ .field class must be placed on the input container
 					while (!field.classList.contains('field')) {
 						field = field.parentElement
