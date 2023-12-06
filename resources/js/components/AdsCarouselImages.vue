@@ -21,9 +21,12 @@ export default {
 		},
 	},
 	methods: {
+		// getImageUrl(imagePath) {
+		// 	return window.location.origin + '/' + imagePath;
+		// },
 		getImageUrl(imagePath) {
-			return window.location.origin + '/' + imagePath;
-		}
+			return 'https://objectif-terres.org' + '/' + imagePath;
+		},
 	},
 }
 </script>
