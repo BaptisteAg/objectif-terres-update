@@ -27,13 +27,14 @@ class DocumentsController extends Controller
 	 */
 	public function show(string $type, string $user_id, string $fileName)
 	{
-	    $path = 'documents/' . $type . '/' . $user_id . '/' . $fileName;
+	    $path = storage_path('app/' . 'documents/' . $type . '/' . $user_id . '/' . $fileName);
 
-		return response()->file(
-			storage_path(
-				$this->getCrossPlatformPath('app/' . $path)
-			)
-		);
+        $content = file_get_contents($path);
+        $mimeType = mime_content_type($path);
+        return response()->make($content, 200, [
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => 'inline; filename="' . $fileName . '"'
+        ]);
 	}
 
 	/**
