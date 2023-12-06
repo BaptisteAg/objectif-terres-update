@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
+        "ext-fileinfo": "*",
         "aacotroneo/laravel-saml2": "^2.1",
         "chelout/laravel-relationship-events": "^1.5",
         "digital-creative/clickable-table-row": "^0.2.0",
