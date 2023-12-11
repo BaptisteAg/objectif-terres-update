@@ -6,7 +6,7 @@
     <div id="vue-update-user-form" class="section  pt-0">
         <user-form id="update-form"
                    inline-template
-                   :old-values="{{$user }}">
+                   :old-values="{{$user}}">
             <div class="container">
                 @if($isUserConnectedEditHisOwnAccount)
                     <h1 class="title is-4">Vos informations personnelles</h1>
