@@ -83,11 +83,13 @@
     @endif
 @endif
 
-{{--TODO : DEV--}}
-{{--@php--}}
-{{--    echo '<h1 class="title is-1">' . $getCmsContent() . '</h1>';--}}
-{{--@endphp--}}
-
+@if($infoBanner && $infoBanner !== '')
+    <b-notification
+            type="is-info"
+            role="alert">
+        {!! $infoBanner !!}
+    </b-notification>
+@endif
 <bottom-header
         :routes="{{ json_encode($routes) }}"
 ></bottom-header>
