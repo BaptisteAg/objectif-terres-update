@@ -19,8 +19,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    // getImageUrl(imagePath) {
+    // 	return window.location.origin + '/' + imagePath;
+    // },
     getImageUrl: function getImageUrl(imagePath) {
-      return window.location.origin + '/' + imagePath;
+      return 'https://objectif-terres.org' + '/' + imagePath;
     }
   }
 });
