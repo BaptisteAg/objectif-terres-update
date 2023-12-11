@@ -21,6 +21,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.2.96/css/materialdesignicons.min.css">
+    <style>
+        .bg-beige {
+            background-color: #F8F3EE;
+        }
+    </style>
     <script src="https://kit.fontawesome.com/c97506cdaa.js" crossorigin="anonymous"></script>
     <!-- Hotjar Tracking Code for https://www.objectif-terres.org/ -->
     <!--    <script>

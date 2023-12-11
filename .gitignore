@@ -20,5 +20,5 @@ public/documents
 database/sql/terredelspip.zip
 database/sql/terredelspip.sql
 htdocs
-/public/js/chunks
 /public/js/app.js
+public/js/chunks/
