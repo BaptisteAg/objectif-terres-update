@@ -1,6 +1,6 @@
 <?php
 if (!isset($title)) {
-    $title = "Et si vous nous en disiez un peu plus sur vous ? (expérience agricole, expérience professionnelle)";
+    $title = "Et si vous nous en disiez un peu plus sur vous ?";
 }
 if (!isset($tooltip)) {
     if (empty($isSupportRequest)) {
