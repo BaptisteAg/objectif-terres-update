@@ -102893,9 +102893,9 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.component('user-form', {
   },
   data: function data() {
     return {
-      optionProfileSelected: JSON.parse(this.oldValues.profile) || '',
+      optionProfileSelected: this.oldValues.profile ? JSON.parse(this.oldValues.profile) : '',
       optionHasFormationSelected: this.oldValues.formation !== null ? '1' : '0',
-      formationSelected: JSON.parse(this.oldValues.formation),
+      formationSelected: this.oldValues.formation ? JSON.parse(this.oldValues.formation) : '',
       citySelect: this.oldValues.citySelect ? JSON.parse(this.oldValues.citySelect) : [],
       countrySelect: this.oldValues.countrySelect ? JSON.parse(this.oldValues.countrySelect) : [],
       isPasswordToChange: false
