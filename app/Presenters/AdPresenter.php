@@ -441,26 +441,20 @@ class AdPresenter extends BasePresenter
     public function formatted_location(): string
     {
         $ad = $this->wrappedObject;
-        $region = null;
         $department = $this->wrappedObject->department;
         $region = $department?->region;
 
         if (!$department) {
-            if ($ad->regions->count()) {
-                $region = $ad->regions->first();
-            }
-
             if ($ad->departments->count()) {
                 $department = $ad->departments->first();
-                if (!$region) {
-                    $region = $department?->region?->first();
-                }
-            } elseif ($ad->cities->count()) {
-                $department = $ad->cities->first()?->department?->first();
-                if (!$region) {
-                    $region = $department?->region?->first();
-                }
-            } else if ($region && !$department) {
+                $region = $department->region;
+            }
+            elseif ($ad->cities->count()) {
+                $department = $ad->cities->first()->department->first();
+                $region = $department->region;
+            }
+            else if ($ad->regions->count()) {
+                $region = $ad->regions->first();
                 $department = $region->departments->first();
             }
         }
