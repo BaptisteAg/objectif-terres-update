@@ -4,7 +4,7 @@
            class="input autocomplete-input is-rounded"
            ref="input"
            v-model="autocompleteValue"
-		   :placeholder="placeholder || value.length ? 'Saisissez une autre localisation' : 'Saisissez au moins 2 caractères pour faire apparaître la liste'"
+           :placeholder="placeholder || value.length ? 'Saisissez une autre localisation' : 'Saisissez au moins 2 caractères pour faire apparaître la liste'"
            v-on:click="onClick"
            v-on:awesomplete-select="onSelect"
     >
@@ -103,6 +103,9 @@ export default {
       /*if(!e.text.value.id) {
           return
       }*/
+      if (e.text.label === "Pas de résultat pour " + this.autocompleteValue + " :(") {
+        return;
+      }
 
       if (!this.multiple) {
         this.value.splice(0, 1)
