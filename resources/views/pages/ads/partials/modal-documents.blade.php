@@ -8,7 +8,8 @@
     >
         @foreach($ad->nonImageDocuments as $document)
             <b-button rounded tag="a" target="_blank"
-                      href="{{app('url')->assetFrom('https://objectif-terres.org', $document->path)}}"
+                      {{--                      href="{{app('url')->assetFrom('https://objectif-terres.org', $document->path)}}"--}}
+                      href="{{ url($document->path) }}"
                       icon-left="@php
                             if ($document->type === "application/pdf") {
                                 echo 'file-pdf-box';
