@@ -20223,6 +20223,10 @@ TEXT COLOR
 --------------------
 */
 
+.text-color {
+  color: hsl(0, 0%, 29%) !important;
+}
+
 .text_color,
 .text_success {
   color: #7da237 !important;
