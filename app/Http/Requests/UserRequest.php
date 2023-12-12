@@ -34,8 +34,8 @@ class UserRequest extends FormRequest
 
         }
         return array_merge([
-            'name' => ['required', 'string', 'max:1000', 'alpha_dash'],
-            'first_name' => ['required', 'string', 'max:255', 'alpha_dash'],
+            'name' => ['required', 'string', 'max:1000', 'regex:/^[\pL\s\-]+$/u'],
+            'first_name' => ['required', 'string', 'max:255', 'regex:/^[\pL\s\-]+$/u'],
             'phone' => ['nullable', 'string', 'min:10', 'max:255'],
             'address' => ['nullable', 'string', 'min:5'],
             'civility' => ['required'],
