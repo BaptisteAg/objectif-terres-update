@@ -92,7 +92,13 @@
 
 		</div>
 		<div class="is-align-self-flex-start py-3" v-show="value !== ''">
-			<a href="#" @click.prevent="changeAdType()">← Paramètres de l'annonce</a>
+			<a class="button is-rounded is-danger" href="#" @click.prevent="changeAdType()">
+				<b-icon
+					class="mr-1"
+					icon="chevron-left"
+					size="is-small">
+				</b-icon>
+				Changer de formulaire ou de bénéficiaire</a>
 		</div>
 
 		<input type="hidden" :name="name" :value="value">
