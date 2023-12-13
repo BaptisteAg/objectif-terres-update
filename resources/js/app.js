@@ -34,16 +34,14 @@ import MobileHeader from './components/header/mobile.vue';
 
 Vue.component('mobile-header', MobileHeader);
 import TopHeader from './components/header/top.vue';
-
 Vue.component('top-header', TopHeader);
 import BottomHeader from './components/header/bottom.vue';
-
 Vue.component('bottom-header', BottomHeader);
-import AdvancedSearchHome from './components/AdvancedSearchHome.vue';
-
+import AdvancedSearchHome from './pages/homepage/AdvancedSearchHome.vue';
 Vue.component('advanced-search', AdvancedSearchHome);
+import AdvancedSearchHomev1 from './components/AdvancedSearchHomev1.vue';
+Vue.component('advanced-searchv1', AdvancedSearchHomev1);
 import LoginFrom from './pages/auth/login-form.vue';
-
 Vue.component('login-form', LoginFrom);
 
 //Autres composants chargés en lazy loading
