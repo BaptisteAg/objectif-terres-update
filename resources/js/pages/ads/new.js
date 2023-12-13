@@ -8,7 +8,6 @@ import AdTypeSelect from '../../components/AdTypeSelect'
 
 import Vue from 'vue'
 
-
 Vue.component('new-ad', {
     components: {
         'new-land-seek-ad': LandSeekNewAd,

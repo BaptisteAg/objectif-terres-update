@@ -250,3 +250,8 @@ Route::prefix('api')->group(function () {
 Route::prefix('old_annonces')->name('ads.')->namespace('Ads')->group(function () {
     Route::get('{id}', 'AdsController@oldshow')->name('oldshow');
 });*/
+
+//TODO:Remove
+Route::get('test', function () {
+    return view('baptiste.test');
+})->name('baptiste');
