@@ -8,7 +8,7 @@
 
 @section('main-content')
 
-    <advanced-search :productions="{{$productionGenres}}" :regions="{{ $regionsWithAll }}"></advanced-search>
+    <advanced-searchv1 :productions="{{$productionGenres}}" :regions="{{ $regionsWithAll }}"></advanced-searchv1>
 
     <section class="container mt-6">
         <div class="columns is-desktop">
