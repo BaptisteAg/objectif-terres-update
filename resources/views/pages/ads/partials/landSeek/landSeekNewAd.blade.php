@@ -21,19 +21,40 @@
                 'withDepartments' => true
             ])
 
-            <section class="mb-6 field" ref="surfaceRangeMax">
+            <section class="mb-6 field" ref="surfaceRange">
                 <b-tooltip class="w-100" label="Faites glisser les curseurs pour définir la surface recherchée">
                     <div class="label">
-                        {!! Form::label('land_seek[surface_range_min]', 'Surface recherchée (en hectares) *', ['class' => '']); !!}
+                        {!! Form::label('land_seek[surface_range]', 'Surface recherchée (en hectares) *', ['class' => '']); !!}
                         <i class="fas fa-info-circle has-text-info"></i>
                     </div>
-                    <vue-slider-range
-                            name-min="land_seek[surface_range_min]"
-                            name-max="land_seek[surface_range_max]"
-                            :data="{{ json_encode($surfaceRanges->pluck('label', 'value')) }}"
-                            :value="[formInput.surfaceRangeMin, formInput.surfaceRangeMax]"
-                            @input="v => (formInput.surfaceRangeMin = v[0]) && (formInput.surfaceRangeMax = v[1])"
-                    ></vue-slider-range>
+{{--                    <vue-slider-range--}}
+{{--                            name-min="land_seek[surface_range_min]"--}}
+{{--                            name-max="land_seek[surface_range_max]"--}}
+{{--                            :data="{{ json_encode($surfaceRanges->pluck('label', 'value')) }}"--}}
+{{--                            :value="[formInput.surfaceRangeMin, formInput.surfaceRangeMax]"--}}
+{{--                            @input="v => (formInput.surfaceRangeMin = v[0]) && (formInput.surfaceRangeMax = v[1])"--}}
+{{--                    ></vue-slider-range>--}}
+
+                    <b-field>
+                        <b-input name="land_seek[surface_range]" v-model="formInput.surfaceRange"
+                        ></b-input>
+                        <p class="control">
+                    <span style="border-bottom-right-radius: 999px; border-top-right-radius: 999px;"
+                          class="button is-static">ha</span>
+                        </p>
+                    </b-field>
+                    <template v-if="$v.formInput.surface?.$error">
+                        <p class="help is-danger" v-if="!$v.formInput.surface.maxValue">
+                            Surface maximum : @{{$v.formInput.surface.$params.maxValue.max}} hectares.
+                        </p>
+                        <p class="help is-danger" v-if="!$v.formInput.surface.required">
+                            Ce champ est requis.
+                        </p>
+                        <p class="help is-danger" v-if="!$v.formInput.surface.numeric">
+                            Veuillez saisir un nombre.
+                        </p>
+                    </template>
+
                 </b-tooltip>
             </section>
 
