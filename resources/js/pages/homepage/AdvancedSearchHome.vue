@@ -7,82 +7,145 @@
 
 			<div class="columns is-desktop">
 				<div class="column is-one-third">
-					<div class="is-flex is-flex-direction-column is-justify-content-space-between">
-						<div class="mb-3">Je souhaite consulter ...</div>
-						<b-dropdown v-model="adsForm.category" expanded aria-role="list">
-							<template #trigger="{ active }">
-								<b-button
-									:label="categoryLabels[adsForm.category] || 'Sélectionnez une catégorie'"
-									:icon-right="active ? 'menu-up' : 'menu-down'"/>
-							</template>
-							<b-dropdown-item aria-role="listitem" :value="category"
-											 v-for="(label, category) of categoryLabels"
-											 :key="category">
-								{{ label }}
-							</b-dropdown-item>
-						</b-dropdown>
-
-					</div>
+					<single-selector
+						label="Je souhaite consulter ..."
+						:option-labels="categoryLabels"
+						v-model="adsForm.selectedCategory">
+					</single-selector>
 				</div>
 
-				<div class="column have-border is-one-third">
+				<div class="column is-one-third">
 					<multiple-selector
 						label="Région"
 						unit-label="région"
 						unit-label-gender="f"
 						:list-options="regions"
-						v-model="adsForm.localisation"
+						v-model="adsForm.selectedLocalisation"
 						:has-toggle-all="true"
 					>
 					</multiple-selector>
 				</div>
 
-
-				<div class="column have-border is-one-third">
+				<div class="column is-one-third">
 					<multiple-selector
 						label="Production principale"
 						unit-label="production"
 						unit-label-gender="f"
-						:conditionDisabled="adsForm.category === 'all'"
+						:conditionDisabled="adsForm.selectedCategory === 'all'"
 						:listOptions="productions"
 						v-model="adsForm.selectedProductions"
 						:have-tags="true"
-
 					>
 					</multiple-selector>
 				</div>
 			</div>
 
 			<transition name="fade">
-				<div class="columns is-desktop" v-if="advancedSearch.active">
+				<div class="columns is-desktop is-flex-wrap-wrap" v-if="advancedSearch.active">
+
 					<div class="column is-one-third"
-						 v-if="['landSeekAd', 'landOfferAd', 'associateOfferAd'].includes(adsForm.category)">
+						 v-if="['landSeekAd', 'landOfferAd', 'associateOfferAd'].includes(adsForm.selectedCategory)">
+						<range-input
+							label="Surface (en hectares)"
+							v-model="adsForm.selectedSurface"
+							:error="error.surface"
+						>
+						</range-input>
+					</div>
+
+					<div class="column is-one-third"
+						 v-if="['jobOfferAd'].includes(adsForm.selectedCategory)">
+						<multiple-selector
+							label="Type d'expérience"
+							unit-label="expérience"
+							unit-label-gender="f"
+							:listOptions="experiences"
+							v-model="adsForm.selectedExperiences"
+						>
+						</multiple-selector>
+					</div>
+
+					<div class="column is-one-third"
+						 v-if="['jobSeekAd'].includes(adsForm.selectedCategory)">
+						<multiple-selector
+							label="Niveau de formation"
+							unit-label="formation"
+							unit-label-gender="f"
+							:listOptions="formations"
+							v-model="adsForm.selectedFormations"
+						>
+						</multiple-selector>
+					</div>
+
+					<div class="column is-one-third"
+						 v-if="['landOfferAd', 'associateOfferAd'].includes(adsForm.selectedCategory)">
+						<single-selector
+							label="Accès à l'eau existant"
+							:option-labels="waterAccess"
+							v-model="adsForm.selectedWaterAccess">
+						</single-selector>
+					</div>
+
+					<div class="column is-one-third"
+						 v-if="['landSeekAd'].includes(adsForm.selectedCategory)">
+						<single-selector
+							label="Vous êtes installées ou comptez vous installer"
+							:option-labels="installation"
+							v-model="adsForm.selectedInstallation">
+						</single-selector>
+					</div>
+
+					<div class="column is-one-third"
+						 v-if="['landOfferAd'].includes(adsForm.selectedCategory)">
+						<multiple-selector
+							label="Type de transmission"
+							unit-label="transmission"
+							unit-label-gender="f"
+							:listOptions="transmission"
+							v-model="adsForm.selectedTransmissions"
+						>
+						</multiple-selector>
+					</div>
+
+					<div class="column is-one-third"
+						 v-if="['landOfferAd'].includes(adsForm.selectedCategory)">
+						<range-input
+							label="Prix de vente"
+							v-model="adsForm.selectedPrice"
+							:error="error.price"
+						>
+						</range-input>
+					</div>
+
+					<div class="column is-one-third"
+						 v-if="['landOfferAd'].includes(adsForm.selectedCategory)">
+						<range-input
+							label="Fermage annuel"
+							v-model="adsForm.selectedFermage"
+							:error="error.fermage"
+						>
+						</range-input>
+					</div>
+
+					<div class="column is-one-third">
 						<div class="is-flex is-flex-direction-column is-justify-content-space-between">
-							<div class="mb-3">Surface (en hectares)</div>
+							<div class="mb-3">Par mots clés</div>
 							<div class="columns">
 								<div class="column">
-									<b-input
-										:disabled="!['landOfferAd', 'landSeekAd', 'all'].includes(adsForm.category)"
-										v-model="adsForm.surfaceMin" placeholder="Minimum" rounded></b-input>
-								</div>
-								<div class="column">
-									<b-input
-										:disabled="!['landOfferAd', 'landSeekAd', 'all'].includes(adsForm.category)"
-										v-model="adsForm.surfaceMax" placeholder="Maximum" rounded></b-input>
+									<b-input v-model="adsForm.selectedKeywords" placeholder="Mots clés..."
+											 rounded></b-input>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="column is-one-third">
-						<!--						TODO:continuer-->
-					</div>
+
 				</div>
 			</transition>
 		</div>
 
 		<div class="columns is-desktop mt-5">
 			<div class="column">
-				<b-button @click="advancedSearchButton()" :disabled="adsForm.category==='all'" rounded>
+				<b-button @click="advancedSearchButton()" :disabled="adsForm.selectedCategory==='all'" rounded>
 					{{ advancedSearch.message }}
 				</b-button>
 			</div>
@@ -94,11 +157,42 @@
 </template>
 <script>
 import {searchAdTypes} from "../../definitions/searchAdTypes";
-import MultipleSelector from "./composants/MultipleSelector.vue";
+import SingleSelector from "./composants/SingleSelectorInput.vue";
+import MultipleSelector from "./composants/MultipleSelectorInput.vue";
+import RangeInput from "./composants/RangeInput.vue";
 
 export default {
-	components: {MultipleSelector},
-	props: ['regions', 'productions'],
+	components: {RangeInput, MultipleSelector, SingleSelector},
+	props: {
+		regions: {
+			type: Array,
+			default: () => []
+		},
+		productions: {
+			type: Array,
+			default: () => []
+		},
+		experiences: {
+			type: Array,
+			default: () => []
+		},
+		formations: {
+			type: Array,
+			default: () => []
+		},
+		waterAccess: {
+			type: Array,
+			default: () => []
+		},
+		installation: {
+			type: Array,
+			default: () => []
+		},
+		transmission: {
+			type: Array,
+			default: () => []
+		},
+	},
 	data() {
 		return {
 			categoryLabels: searchAdTypes,
@@ -107,15 +201,33 @@ export default {
 				"message": "Recherche avancée"
 			},
 			adsForm: {
-				category: "all",
-				localisation: [],
+				selectedCategory: "all",
+				selectedLocalisation: [],
 				selectedProductions: [],
-				surfaceMin: "",
-				surfaceMax: "",
-				priceMin: "",
-				priceMax: "",
-				keywords: "",
+				selectedExperiences: [],
+				selectedFormations: [],
+				selectedWaterAccess: '',
+				selectedInstallation: '',
+				selectedTransmissions: [],
+				selectedSurface: {
+					min: "",
+					max: "",
+				},
+				selectedPrice: {
+					min: "",
+					max: "",
+				},
+				selectedFermage: {
+					min: "",
+					max: "",
+				},
+				selectedKeywords: "",
 			},
+			error: {
+				surface: false,
+				price: false,
+				fermage: false,
+			}
 		}
 	},
 	methods: {
@@ -124,26 +236,57 @@ export default {
 			this.advancedSearch.message = this.advancedSearch.active ? "Recherche simple" : "Recherche avancée"
 		},
 		sendAdsForm() {
-			const params = new URLSearchParams();
-			params.append('ad_category', this.adsForm.category);
+			this.error = {
+				surface: false,
+				price: false,
+				fermage: false,
+			}
+			let error = false;
 
-			if (this.adsForm.localisation.length > 0) {
-				this.adsForm.localisation.forEach(id => params.append('regions_location_researches_ids[]', id));
-				console.log(this.adsForm.localisation)
+			if (this.adsForm.selectedSurface.min > this.adsForm.selectedSurface.max) {
+				this.error.surface = true;
+				error = true;
+			}
+			if (this.adsForm.selectedPrice.min > this.adsForm.selectedPrice.max) {
+				this.error.price = true;
+				error = true;
+			}
+			if (this.adsForm.selectedFermage.min > this.adsForm.selectedFermage.max) {
+				this.error.fermage = true;
+				error = true;
+			}
+
+			if (error) return;
+
+			const params = new URLSearchParams();
+			params.append('ad_category', this.adsForm.selectedCategory);
+
+			if (this.adsForm.selectedLocalisation.length > 0) {
+				this.adsForm.selectedLocalisation.forEach(id => params.append('regions_location_researches_ids[]', id));
 			}
 
 			if (this.adsForm.selectedProductions.length > 0) {
 				this.adsForm.selectedProductions.forEach(id => params.append('production_genres[]', id));
-				console.log(this.adsForm.selectedProductions)
 			}
 
-			params.append('surfaces_research_min', this.adsForm.surfaceMin);
-			params.append('surfaces_research', this.adsForm.surfaceMax);
-			params.append('price_min', this.adsForm.priceMin);
-			params.append('price_max', this.adsForm.priceMax);
-			params.append('keywords', this.adsForm.keywords);
+			if (this.adsForm.selectedExperiences.length > 0) {
+				this.adsForm.selectedExperiences.forEach(id => params.append('experiences[]', id));
+			}
 
-			console.log(params.toString())
+			if (this.adsForm.selectedFormations.length > 0) {
+				this.adsForm.selectedFormations.forEach(id => params.append('formations[]', id));
+			}
+
+			params.append('surfaces_research_min', this.adsForm.selectedSurface.min);
+			params.append('surfaces_research_max', this.adsForm.selectedSurface.max);
+			params.append('price_min', this.adsForm.selectedPrice.min);
+			params.append('price_max', this.adsForm.selectedPrice.max);
+			params.append('fermage_min', this.adsForm.selectedFermage.min);
+			params.append('fermage_max', this.adsForm.selectedFermage.max);
+			params.append('water_access', this.adsForm.selectedWaterAccess);
+			params.append('installation', this.adsForm.selectedInstallation);
+			params.append('keywords', this.adsForm.selectedKeywords);
+
 			window.location.href = `/recherche?${params.toString()}`;
 		},
 	},
@@ -173,6 +316,14 @@ $tablet: 769px;
 	position: relative;
 	padding: 2em 0;
 
+	//> div {
+	//	> .columns {
+	//		> .column:not(:last-child) {
+	//				border-right: 2px solid $border-color;
+	//		}
+	//	}
+	//}
+
 	&:after {
 		content: ' ';
 		position: absolute;
@@ -185,7 +336,7 @@ $tablet: 769px;
 	}
 
 	> div:first-child {
-		min-width: 70vw;
+		width: 70vw;
 		position: inherit;
 		background-color: $background-color;
 		padding: 2em;
@@ -207,6 +358,10 @@ $tablet: 769px;
 		white-space: nowrap;
 		text-align: left;
 	}
+
+	.column.is-full {
+		padding-top: 0;
+	}
 }
 
 @media (max-width: $tablet) {
@@ -221,9 +376,6 @@ $tablet: 769px;
 			padding: 1em;
 		}
 
-		.column.have-border {
-			border-left: none;
-		}
 	}
 }
 </style>
