@@ -26,7 +26,7 @@ class LandSeekRuleset implements RulesetInterface
             'land_seek.surface_range_max' => ['nullable', 'integer'],
             'land_seek.land_description' => ['nullable', 'string', 'max:1500'],
             'land_seek.is_bio' => ['integer', 'required'],
-            'land_seek.surface_range' => ['array'],
+            'land_seek.surface_range' => ['required', 'integer'],
             'land_seek.production_genre' => [new HasProductionGenre],
             'land_seek.production_type_add' => ['nullable', 'string'],
             'land_seek.secondary_production_genres' => ['nullable', 'array'],
