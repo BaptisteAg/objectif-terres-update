@@ -422,6 +422,12 @@ class  AdService
      */
     public function store(array $data)
     {
+
+        if (isset($data["ad_type"]) && $data["ad_type"] === "land_seek") {
+            $data["land_seek"]["surface_range_min"] = $data["land_seek"]["surface_range"] - 5;
+            $data["land_seek"]["surface_range_max"] = $data["land_seek"]["surface_range"] + 5;
+        }
+
         $isUpdate = !empty($data["id"]);
 
         DB::beginTransaction();

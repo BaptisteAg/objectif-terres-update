@@ -102990,6 +102990,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       formInput: {
         selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
         selectedZones: old.selected_zones && JSON.parse(old.selected_zones) || [],
+        surfaceRange: old.land_seek.surface_range_min !== undefined && old.land_seek.surface_range_min !== null ? old.land_seek.surface_range_min + 5 : '',
         surfaceRangeMin: old.land_seek.surface_range_min || '0',
         surfaceRangeMax: old.land_seek.surface_range_max || '1000000',
         landDescription: old.land_seek.land_description || '',
@@ -103032,8 +103033,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         selectedDepartments: {
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
         },
-        surfaceRangeMax: {
-          minValue: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minValue"])(5)
+        surfaceRange: {
+          required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
         },
         landDescription: {
           minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(5),
