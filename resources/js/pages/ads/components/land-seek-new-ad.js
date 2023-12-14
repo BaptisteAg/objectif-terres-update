@@ -40,6 +40,7 @@ export default Vue.extend({
             formInput: {
                 selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
                 selectedZones: old.selected_zones && JSON.parse(old.selected_zones) || [],
+				surfaceRange: (old.land_seek.surface_range_min !== undefined && old.land_seek.surface_range_min !== null) ? (old.land_seek.surface_range_min + 5) : '',
                 surfaceRangeMin: old.land_seek.surface_range_min || '0',
                 surfaceRangeMax: old.land_seek.surface_range_max || '1000000',
                 landDescription: old.land_seek.land_description || '',
@@ -83,9 +84,9 @@ export default Vue.extend({
                 selectedDepartments: {
                     required,
                 },
-                surfaceRangeMax: {
-                    minValue: minValue(5)
-                },
+				surfaceRange: {
+					required,
+				},
                 landDescription: {
                     minLength: minLength(5),
                     maxLength: maxLength(1500),
