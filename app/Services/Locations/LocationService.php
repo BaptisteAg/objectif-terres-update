@@ -55,7 +55,6 @@ class LocationService
 
     public function getDepartmentPolygons($regionId, $selectedAdType)
     {
-
         $cacheKey = 'departmentspolygon.'.$regionId.'.'.$selectedAdType;
 
         return Cache::rememberForever($cacheKey, function () use ($selectedAdType, $regionId) {
