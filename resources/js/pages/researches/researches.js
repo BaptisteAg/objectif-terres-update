@@ -19,7 +19,6 @@ window.regionMapInit  = async function (mapId, fetchOptions) {
 
     const departmentsPolygonData = await fetchJson('/locations/polygon/departments/', fetchOptions);
 
-
     let featureGroup = mapController.addFeatureGroup();
 
     departmentsPolygonData.forEach(polygonData => {
