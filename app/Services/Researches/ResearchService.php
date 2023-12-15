@@ -191,7 +191,7 @@ class ResearchService
 
 	/**
 	 * @param Request $filters
-	 * @return array
+	 * @return array|Ad[]|Collection
 	 */
 	public function index(Request $filters)
 	{

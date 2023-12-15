@@ -61,7 +61,7 @@ ResearchesController extends Controller
             $regionIds = $request->get("regions_location_researches_ids");
 
             if (count($regionIds) === 1) {
-                $departmentPolygons = $this->locationService->getDepartmentPolygons($regionIds[0], $selectedAdType);
+                $departmentPolygons = $this->locationService->getDepartmentPolygons($regionIds[0], $selectedAdType, $ads->pluck('id')->toArray());
                 if (!empty($departmentPolygons)) {
                     $hasDepartmentPolygons = true;
                 }
