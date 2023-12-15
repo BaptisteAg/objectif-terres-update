@@ -121,8 +121,15 @@ class LocationableController extends Controller
                 'error' => 'Aucune région séléctionnée'
             ]);
         }
+        if (!$request->has('ad_ids')) {
+            return response()->json([
+                'error' => 'Aucune annonce séléctionnée'
+            ]);
+        }
 
-        return response()->json($this->service->getDepartmentPolygons($request->get('region_id'), $request->get('ad_category')));
+        $adIds = is_string($request->get('ad_ids')) ? explode(',', $request->get('ad_ids')) : $request->get('ad_ids');
+
+        return response()->json($this->service->getDepartmentPolygons($request->get('region_id'), $request->get('ad_category'), $adIds));
     }
 
     public function adLocations(Request $request, AdService $adService)
