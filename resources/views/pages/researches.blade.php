@@ -175,7 +175,8 @@
         <script defer>
             regionMapInit('global-map', {
                 region_id: "{{$request->get("regions_location_researches_ids")[0]}}",
-                ad_category: "{{$request->get("ad_category")}}"
+                ad_category: "{{$request->get("ad_category")}}",
+                ad_ids: {{json_encode($ads->pluck('id')->toArray())}},
             });
         </script>
     @endif
