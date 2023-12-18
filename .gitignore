@@ -22,3 +22,5 @@ database/sql/terredelspip.sql
 htdocs
 /public/js/app.js
 public/js/chunks/
+public/js
+public/css
