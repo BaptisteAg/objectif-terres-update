@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -38,7 +39,7 @@ class Ad extends Resource
         return $this->resource->id." - ".$this->title . ' (' . $this->resource->userPp?->name . ' ' . $this->resource->userPp?->first_name .  ')';
     }
 
-    public static $with = ['attributionAd', 'userPp'];
+    public static $with = ['attributionAd', 'userPp', 'userModerator'];
 
 
     /**
@@ -71,7 +72,12 @@ class Ad extends Resource
         return [
             ID::make()->sortable(),
             Text::make(__('Titre'), 'title')->resolveUsing(fn($title) => Str::words($title, 10)),
-            BelongsTo::make('Annonceur', 'userPp', User::class),
+            BelongsTo::make('Annonceur', 'userPp', User::class)
+                ->searchable()
+                ->sortable(),
+            BelongsTo::make('Modérateur', 'userModerator', UserModerator::class)
+                ->searchable()
+                ->sortable(),
             Badge::make('Statut', 'attributionAd.ad_status_id')
                 ->map([
                     '' => 'danger',
@@ -127,5 +133,15 @@ class Ad extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    public static function authorizedToCreate(Request $request)
+    {
+        return false;
+    }
+
+    public function authorizedToUpdate(Request $request)
+    {
+        return false;
     }
 }
