@@ -23,7 +23,7 @@ class ReallocateModeratorAds extends Action
 
     public function __construct()
     {
-        $this->availableModerators = User::whereRole(1)
+        $this->availableModerators = User::where('role', '>', 0)
             ->orderBy('name')
             ->get()
             ->keyBy('id')
@@ -40,7 +40,7 @@ class ReallocateModeratorAds extends Action
 
     public function forUser(?User $user): self
     {
-        if (!$user || $user->role != 1) {
+        if (!$user || $user->role < 1) {
             return $this;
         }
         $static = clone $this;
@@ -58,7 +58,7 @@ class ReallocateModeratorAds extends Action
     public function handle(ActionFields $fields, Collection $users)
     {
         $moderators = $users->filter(function (User $user) {
-            return $user->role == 1;
+            return $user->role > 0;
         });
 
         if (!$moderators->count()) {

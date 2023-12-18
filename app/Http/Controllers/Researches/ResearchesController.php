@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Researches;
 
 use App\Jobs\NotifyCreationAlertResearch;
+use App\Models\OfferGenre;
 use App\Models\ProductionGenre;
 use App\Models\Region;
 use App\Models\Research;
@@ -71,8 +72,29 @@ ResearchesController extends Controller
             'min' => $request->get('surfaces_research_min'),
             'max' => $request->get('surfaces_research_max')
         ];
+        $transmissions = OfferGenre::whereIn('id', $request->get("offer_genres") ?? [])->pluck('name')->toArray();
+        $waterAccess = match($request->get('water_access')) {
+            1 => 'Oui',
+            2 => 'Non',
+            -1 => 'Ne sait pas',
+            default => null
+        };
+        $keywords = $request->get('keywords');
+        $searchedPrice = [
+            'min' => $request->get('price_min'),
+            'max' => $request->get('price_max')
+        ];
+        $searchedRent = [
+            'min' => $request->get('fermage_min'),
+            'max' => $request->get('fermage_max')
+        ];
 
-		return view('pages.researches', compact('ads', 'adsType', 'request', 'hasDepartmentPolygons', 'searchedRegionNames', 'searchedTypeOfProductions', 'searchedSurface'));
+
+		return view('pages.researches', compact(
+            'ads', 'adsType', 'request', 'hasDepartmentPolygons',
+            'searchedRegionNames', 'searchedTypeOfProductions', 'searchedSurface', 'transmissions',
+            'waterAccess', 'keywords', 'searchedPrice', 'searchedRent'
+        ));
 	}
 
     /**

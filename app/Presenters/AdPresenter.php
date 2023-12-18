@@ -480,7 +480,7 @@ class AdPresenter extends BasePresenter
                     $price .= ' ou ';
                 }
                 if ($ad->landOfferAd->rent_price) {
-                    $price .= number_format($ad->landOfferAd->rent_price, 0, ",", " ") . ' € / an';
+                    $price .= number_format($ad->landOfferAd->rent_price, 0, ",", " ") . ' € ' /*+ '/ an'*/;
                 }
             }
         }
