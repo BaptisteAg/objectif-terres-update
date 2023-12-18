@@ -54,7 +54,7 @@ export default {
 			default: false
 		},
 		listOptions: {
-			type: Array,
+			type: Array|Object,
 			required: true
 		},
 		value: {

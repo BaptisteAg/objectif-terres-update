@@ -19,7 +19,7 @@
 
                 @include('pages.ads.partials.show-author-infos')
 
-{{--                TODO : Inclure departement ??--}}
+                @include('pages.ads.partials.show-ad-location', ['showCities' => true])
 
                 <div class="w-50">
                     <strong>Niveau de formation : </strong>

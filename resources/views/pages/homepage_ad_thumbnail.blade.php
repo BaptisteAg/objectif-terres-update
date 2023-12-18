@@ -2,7 +2,7 @@
     <figure class="image is-3by2">
         @if($ad->hasImages && $ad->images[0]?->path)
             <img class="objT-border vignette__image"
-                 src="{{app('url')->assetFrom('https://objectif-terres.org', $ad->images[0]->path)}}"
+                 src="{{$ad->images[0]->url}}"
                  alt="{{$ad->images[0]->name}}">
         @else
             <img class="objT-border vignette__image"

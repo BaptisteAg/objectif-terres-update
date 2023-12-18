@@ -1,6 +1,6 @@
 export const searchAdTypes = {
-    'landSeekAd': 'Les annonces d\'offre de terres agricoles',
-    'landOfferAd': 'Les annonces de recherche de terres agricoles',
+    'landOfferAd': 'Les annonces d\'offre de terres agricoles',
+    'landSeekAd': 'Les annonces de recherche de terres agricoles',
     'associateOfferAd': 'Les annonces de recherche d\'associé·e·s sur ferme existante',
     'associateSeekAd': 'Les annonces de recherche d\'associé·e·s pour projet d\'installation',
     'jobOfferAd': 'Les annonces d\'offre de stages, d’emplois ou de tests agricoles',

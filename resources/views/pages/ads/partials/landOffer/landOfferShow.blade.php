@@ -13,6 +13,10 @@
 
         <div class="mt-3">
 
+            @include('pages.ads.partials.show-author-infos')
+
+            @include('pages.ads.partials.show-ad-location', ['showCities' => true])
+
             {{--Affichage des tags et du prix--}}
             <div class="is-flex is-justify-content-space-between pb-4">
                 <b-taglist>

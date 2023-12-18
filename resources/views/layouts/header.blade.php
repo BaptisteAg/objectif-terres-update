@@ -85,6 +85,7 @@
 
 @if($infoBanner && $infoBanner !== '')
     <b-notification
+            id="info-banner"
             type="is-info"
             role="alert">
         {!! $infoBanner !!}

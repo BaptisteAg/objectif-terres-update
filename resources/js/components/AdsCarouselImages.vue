@@ -2,7 +2,7 @@
 	<b-carousel>
 		<template v-if="images.length > 0">
 			<b-carousel-item v-for="(image, i) in images" :key="i">
-				<b-image class="image is-3by2 vignette__image" :src="getImageUrl(image.path)"></b-image>
+				<b-image class="image is-3by2 vignette__image" :src="image.url"></b-image>
 			</b-carousel-item>
 		</template>
 		<b-carousel-item v-else>
@@ -21,9 +21,6 @@ export default {
 		},
 	},
 	methods: {
-		getImageUrl(imagePath) {
-			return window.location.origin + '/' + imagePath;
-		},
 		// getImageUrl(imagePath) {
 		// 	return 'https://objectif-terres.org' + '/' + imagePath;
 		// },

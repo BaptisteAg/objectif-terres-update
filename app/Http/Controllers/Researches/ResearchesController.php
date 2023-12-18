@@ -60,18 +60,19 @@ ResearchesController extends Controller
         if (!empty($request->get("regions_location_researches_ids"))) {
             $regionIds = $request->get("regions_location_researches_ids");
 
-            if (count($regionIds) === 1) {
-                $departmentPolygons = $this->locationService->getDepartmentPolygons($regionIds[0], $selectedAdType, $ads->pluck('id')->toArray());
-                if (!empty($departmentPolygons)) {
-                    $hasDepartmentPolygons = true;
-                }
+            if (count($regionIds) === 1 && !$request->get("departments_location_researches_ids")) {
+                $hasDepartmentPolygons = true;
             }
         }
 
         $searchedRegionNames = Region::whereIn('id', $request->get("regions_location_researches_ids") ?? [])->pluck('name')->toArray();
         $searchedTypeOfProductions = ProductionGenre::whereIn('id', $request->get("production_genres") ?? [])->pluck('name')->toArray();
+        $searchedSurface = [
+            'min' => $request->get('surfaces_research_min'),
+            'max' => $request->get('surfaces_research_max')
+        ];
 
-		return view('pages.researches', compact('ads', 'adsType', 'request', 'hasDepartmentPolygons', 'searchedRegionNames', 'searchedTypeOfProductions'));
+		return view('pages.researches', compact('ads', 'adsType', 'request', 'hasDepartmentPolygons', 'searchedRegionNames', 'searchedTypeOfProductions', 'searchedSurface'));
 	}
 
     /**

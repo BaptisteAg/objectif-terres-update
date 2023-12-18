@@ -2296,8 +2296,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -3449,6 +3449,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _composants_SingleSelectorInput_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./composants/SingleSelectorInput.vue */ "./resources/js/pages/homepage/composants/SingleSelectorInput.vue");
 /* harmony import */ var _composants_MultipleSelectorInput_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./composants/MultipleSelectorInput.vue */ "./resources/js/pages/homepage/composants/MultipleSelectorInput.vue");
 /* harmony import */ var _composants_RangeInput_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./composants/RangeInput.vue */ "./resources/js/pages/homepage/composants/RangeInput.vue");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
@@ -3487,7 +3493,16 @@ __webpack_require__.r(__webpack_exports__);
     waterAccess: {
       type: Array,
       "default": function _default() {
-        return [];
+        return [{
+          id: '1',
+          name: 'Oui'
+        }, {
+          id: '0',
+          name: 'Non'
+        }, {
+          id: '-1',
+          name: 'Ne sait pas'
+        }];
       }
     },
     installation: {
@@ -3499,13 +3514,30 @@ __webpack_require__.r(__webpack_exports__);
     transmission: {
       type: Array,
       "default": function _default() {
-        return [];
+        return [{
+          id: '1',
+          name: 'Vente'
+        }, {
+          id: '2',
+          name: 'Location'
+        }, {
+          id: '3',
+          name: 'Test Agricole'
+        }];
       }
     }
   },
   data: function data() {
     return {
-      categoryLabels: _definitions_searchAdTypes__WEBPACK_IMPORTED_MODULE_0__["searchAdTypes"],
+      categoryLabels: Object.entries(_definitions_searchAdTypes__WEBPACK_IMPORTED_MODULE_0__["searchAdTypes"]).map(function (_ref) {
+        var _ref2 = _slicedToArray(_ref, 2),
+          key = _ref2[0],
+          value = _ref2[1];
+        return {
+          id: key,
+          name: value
+        };
+      }),
       advancedSearch: {
         "active": false,
         "message": "Recherche avancée"
@@ -3552,15 +3584,15 @@ __webpack_require__.r(__webpack_exports__);
         fermage: false
       };
       var error = false;
-      if (this.adsForm.selectedSurface.min > this.adsForm.selectedSurface.max) {
+      if (parseInt(this.adsForm.selectedSurface.min) > parseInt(this.adsForm.selectedSurface.max)) {
         this.error.surface = true;
         error = true;
       }
-      if (this.adsForm.selectedPrice.min > this.adsForm.selectedPrice.max) {
+      if (parseInt(this.adsForm.selectedPrice.min) > parseInt(this.adsForm.selectedPrice.max)) {
         this.error.price = true;
         error = true;
       }
-      if (this.adsForm.selectedFermage.min > this.adsForm.selectedFermage.max) {
+      if (parseInt(this.adsForm.selectedFermage.min) > parseInt(this.adsForm.selectedFermage.max)) {
         this.error.fermage = true;
         error = true;
       }
@@ -3587,15 +3619,15 @@ __webpack_require__.r(__webpack_exports__);
           return params.append('formations[]', id);
         });
       }
-      params.append('surfaces_research_min', this.adsForm.selectedSurface.min);
-      params.append('surfaces_research_max', this.adsForm.selectedSurface.max);
-      params.append('price_min', this.adsForm.selectedPrice.min);
-      params.append('price_max', this.adsForm.selectedPrice.max);
-      params.append('fermage_min', this.adsForm.selectedFermage.min);
-      params.append('fermage_max', this.adsForm.selectedFermage.max);
-      params.append('water_access', this.adsForm.selectedWaterAccess);
-      params.append('installation', this.adsForm.selectedInstallation);
-      params.append('keywords', this.adsForm.selectedKeywords);
+      this.adsForm.selectedSurface.min && params.append('surfaces_research_min', this.adsForm.selectedSurface.min);
+      this.adsForm.selectedSurface.max && params.append('surfaces_research_max', this.adsForm.selectedSurface.max);
+      this.adsForm.selectedPrice.min && params.append('price_min', this.adsForm.selectedPrice.min);
+      this.adsForm.selectedPrice.max && params.append('price_max', this.adsForm.selectedPrice.max);
+      this.adsForm.selectedFermage.min && params.append('fermage_min', this.adsForm.selectedFermage.min);
+      this.adsForm.selectedFermage.max && params.append('fermage_max', this.adsForm.selectedFermage.max);
+      this.adsForm.selectedWaterAccess && params.append('water_access', this.adsForm.selectedWaterAccess);
+      this.adsForm.selectedInstallation && params.append('installation', this.adsForm.selectedInstallation);
+      this.adsForm.selectedKeywords && params.append('keywords', this.adsForm.selectedKeywords);
       window.location.href = "/recherche?".concat(params.toString());
     }
   }
@@ -3630,7 +3662,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       "default": false
     },
     listOptions: {
-      type: Array,
+      type: Array | Object,
       required: true
     },
     value: {
@@ -3764,7 +3796,7 @@ __webpack_require__.r(__webpack_exports__);
       type: String,
       "default": ''
     },
-    optionLabels: {
+    options: {
       required: true
     },
     value: {
@@ -4761,8 +4793,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
@@ -6443,7 +6475,7 @@ var render = function render() {
   }, [_c("single-selector", {
     attrs: {
       label: "Je souhaite consulter ...",
-      "option-labels": _vm.categoryLabels
+      options: _vm.categoryLabels
     },
     model: {
       value: _vm.adsForm.selectedCategory,
@@ -6544,7 +6576,7 @@ var render = function render() {
   }, [_c("single-selector", {
     attrs: {
       label: "Accès à l'eau existant",
-      "option-labels": _vm.waterAccess
+      options: _vm.waterAccess
     },
     model: {
       value: _vm.adsForm.selectedWaterAccess,
@@ -6558,7 +6590,7 @@ var render = function render() {
   }, [_c("single-selector", {
     attrs: {
       label: "Vous êtes installées ou comptez vous installer",
-      "option-labels": _vm.installation
+      options: _vm.installation
     },
     model: {
       value: _vm.adsForm.selectedInstallation,
@@ -6847,10 +6879,13 @@ var render = function render() {
     scopedSlots: _vm._u([{
       key: "trigger",
       fn: function fn(_ref) {
+        var _vm$options$find;
         var active = _ref.active;
         return [_c("b-button", {
           attrs: {
-            label: _vm.optionLabels[_vm.selectedOption] || "Sélectionnez une catégorie",
+            label: ((_vm$options$find = _vm.options.find(function (o) {
+              return o.id === _vm.selectedOption;
+            })) === null || _vm$options$find === void 0 ? void 0 : _vm$options$find.name) || "Sélectionnez une catégorie",
             "icon-right": active ? "menu-up" : "menu-down"
           }
         })];
@@ -6863,14 +6898,14 @@ var render = function render() {
       },
       expression: "selectedOption"
     }
-  }, [_vm._v(" "), _vm._l(_vm.optionLabels, function (labelOption, category) {
+  }, [_vm._v(" "), _vm._l(_vm.options, function (option, key) {
     return _c("b-dropdown-item", {
-      key: category,
+      key: key,
       attrs: {
         "aria-role": "listitem",
-        value: category
+        value: option.id
       }
-    }, [_vm._v("\n\t\t\t" + _vm._s(labelOption) + "\n\t\t")]);
+    }, [_vm._v("\n\t\t\t\t" + _vm._s(option.name) + "\n\t\t\t")]);
   })], 2)], 1);
 };
 var staticRenderFns = [];
@@ -101600,8 +101635,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "searchAdTypes", function() { return searchAdTypes; });
 var searchAdTypes = {
-  'landSeekAd': 'Les annonces d\'offre de terres agricoles',
-  'landOfferAd': 'Les annonces de recherche de terres agricoles',
+  'landOfferAd': 'Les annonces d\'offre de terres agricoles',
+  'landSeekAd': 'Les annonces de recherche de terres agricoles',
   'associateOfferAd': 'Les annonces de recherche d\'associé·e·s sur ferme existante',
   'associateSeekAd': 'Les annonces de recherche d\'associé·e·s pour projet d\'installation',
   'jobOfferAd': 'Les annonces d\'offre de stages, d’emplois ou de tests agricoles',
@@ -101624,8 +101659,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 var LocationHelper = {
   LABELS: {
     cities: 'Code postal',
@@ -101798,8 +101833,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 var LeafletLazy = function LeafletLazy(_) {
   return __webpack_require__.e(/*! import() | leaflet */ "vendors~leaflet~leaflet-esri").then(__webpack_require__.t.bind(null, /*! leaflet */ "./node_modules/leaflet/dist/leaflet-src.js", 7));
@@ -102148,8 +102183,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 
 
@@ -102270,7 +102305,6 @@ var numberNormalizer = function numberNormalizer(inputName) {
           decimal: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["decimal"]
           //required
         },
-
         associateDescription: {
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
           minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(5),
@@ -102317,8 +102351,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 
 
@@ -102473,8 +102507,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 
 
@@ -102521,7 +102555,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }
     };
   },
-
   watch: {},
   validations: function validations() {
     return {
@@ -102591,8 +102624,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 
 
@@ -102703,8 +102736,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 
 
@@ -102792,7 +102825,6 @@ var numberNormalizer = function numberNormalizer(inputName) {
       }
     };
   },
-
   computed: {
     productionGenresHasOther: function productionGenresHasOther() {
       return this.formInput.productionGenres.includes('other');
@@ -102921,7 +102953,6 @@ var numberNormalizer = function numberNormalizer(inputName) {
           decimal: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["decimal"]
           //required
         },
-
         offerGenres: {
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
         },
@@ -102991,8 +103022,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 
 
@@ -104406,7 +104437,7 @@ Vue.Component('search', {
 });*/
 
 window.regionMapInit = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(mapId, fetchOptions) {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(mapId, queryString) {
     var mapController, departmentsPolygonData, featureGroup;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
@@ -104416,7 +104447,7 @@ window.regionMapInit = /*#__PURE__*/function () {
         case 2:
           mapController = _context.sent;
           _context.next = 5;
-          return fetchJson('/locations/polygon/departments/', fetchOptions);
+          return fetchJson('/locations/polygon/departments/?' + queryString);
         case 5:
           departmentsPolygonData = _context.sent;
           featureGroup = mapController.addFeatureGroup();
@@ -104426,7 +104457,7 @@ window.regionMapInit = /*#__PURE__*/function () {
             });
             featureGroup.addLayer(polygon);
             polygon.addEventListener('click', function (_) {
-              location.href = "/recherche?" + "ad_category=" + fetchOptions.ad_category + '&departments_location_researches_ids[]=' + polygonData.department_id;
+              location.href = "/recherche?" + queryString + '&departments_location_researches_ids[]=' + polygonData.department_id;
             });
             mapController.bindTooltip(polygon, polygonData.ads_count.toString(), {
               className: "leaflet-tooltip-big"
