@@ -254,20 +254,25 @@ class ResearchService
             }
         }
 
-        if (!is_null($filters->input('price_min'))) {
-            if ($adType === 'landOfferAd') {
+        if (in_array($adType, ['landOfferAd', 'associateOfferAd'])) {
+            if (!is_null($filters->input('price_min'))) {
                 $adsFilter->whereHas($adType, function (Builder $query) use ($filters) {
                     $query->where('price', '>=', $filters->input('price_min'));
-                    $query->orWhere('rent_price', '>=', $filters->input('price_min'));
                 });
             }
-        }
-
-        if (!is_null($filters->input('price_max'))) {
-            if ($adType === 'landOfferAd') {
+            if (!is_null($filters->input('price_max'))) {
                 $adsFilter->whereHas($adType, function (Builder $query) use ($filters) {
-                    $query->where('price', '<=', $filters->input('price_max'));
-                    $query->orWhere('rent_price', '<=', $filters->input('price_max'));
+                    $query->where('price', '>=', $filters->input('price_max'));
+                });
+            }
+            if (!is_null($filters->input('fermage_min'))) {
+                $adsFilter->whereHas($adType, function (Builder $query) use ($filters) {
+                    $query->orWhere('rent_price', '>=', $filters->input('fermage_min'));
+                });
+            }
+            if (!is_null($filters->input('fermage_max'))) {
+                $adsFilter->whereHas($adType, function (Builder $query) use ($filters) {
+                    $query->orWhere('rent_price', '>=', $filters->input('fermage_max'));
                 });
             }
         }
@@ -308,7 +313,6 @@ class ResearchService
 
         //Filter ads by keywords
         if (!is_null($filters->input('keywords'))) {
-            //TODO refactor properly ans use trait scope
             $adsFilter->where(function (Builder $query) use ($filters) {
                 $query->where('title', 'like', '%' . $filters->input('keywords') . '%');
                 $query->orWhere('about_content', 'like', '%' . $filters->input('keywords') . '%');
@@ -336,7 +340,27 @@ class ResearchService
                         $q->orWhere('land_description', 'like', '%' . $filters->input('keywords') . '%');
                     });
                 });
+                $query->orWhere(function (Builder $subQuery) use ($filters) {
+                    $subQuery->whereHas('associateOfferAd', function (Builder $q) use ($filters) {
+                        $q->where('associate_description', 'like', '%' . $filters->input('keywords') . '%');
+                        $q->where('experience_farming', 'like', '%' . $filters->input('keywords') . '%');
+                    });
+                });
+            });
+        }
 
+        if($filters->has('water_access')) {
+            $adsFilter->where(function (Builder $query) use ($filters, $adType) {
+                if ($adType === 'landOfferAd') {
+                    $query->whereHas('landOfferAd', function (Builder $q) use ($filters) {
+                        $q->where('water_access', $filters->get('water_access'));
+                    });
+                }
+                if ($adType === 'associateOfferAd') {
+                    $query->orWhereHas('associateOfferAd', function (Builder $q) use ($filters) {
+                        $q->where('water_access', $filters->get('water_access'));
+                    });
+                }
             });
         }
 

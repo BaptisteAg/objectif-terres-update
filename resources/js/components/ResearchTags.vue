@@ -32,7 +32,21 @@ export default {
         },
         surface_searched: {
             type: Object
-        }
+        },
+        transmissions: Array,
+        price_searched: {
+            type: Object
+        },
+        rent_searched: {
+            type: Object
+        },
+        water_access: {
+            type: Number
+        },
+        keywords: {
+            type: String
+        },
+
     },
     data() {
         return {
@@ -70,6 +84,56 @@ export default {
                 tags.push({
                     label: 'Surface',
                     value
+                });
+            }
+            if(this.transmissions) {
+                tags.push({
+                    label: 'Transmissions',
+                    value: this.transmissions.join(', ') || 'Non définie'
+                });
+            }
+            if(this.price_searched) {
+                let value = 'Entre ' + this.price_searched.min + ' et ' + this.price_searched.max + ' €';
+                if(this.price_searched.min === this.price_searched.max) {
+                    value = this.price_searched.min + ' €';
+                }
+                if(!this.price_searched.min) {
+                    value = 'Jusqu\'à ' + this.price_searched.max + ' €';
+                }
+                if(!this.price_searched.max) {
+                    value = 'A partir de ' + this.price_searched.min + ' €';
+                }
+                tags.push({
+                    label: 'Prix',
+                    value
+                });
+            }
+            if(this.rent_searched) {
+                let value = 'Entre ' + this.rent_searched.min + ' et ' + this.rent_searched.max + ' €';
+                if(this.rent_searched.min === this.rent_searched.max) {
+                    value = this.rent_searched.min + ' €';
+                }
+                if(!this.rent_searched.min) {
+                    value = 'Jusqu\'à ' + this.rent_searched.max + ' €';
+                }
+                if(!this.rent_searched.max) {
+                    value = 'A partir de ' + this.rent_searched.min + ' €';
+                }
+                tags.push({
+                    label: 'Loyer',
+                    value
+                });
+            }
+            if(this.water_access) {
+                tags.push({
+                    label: 'Accès à l\'eau',
+                    value: this.water_access === 1 ? 'Oui' : this.water_access === 0 ? 'Non' : 'Ne sait pas'
+                });
+            }
+            if(this.keywords) {
+                tags.push({
+                    label: 'Mots clés',
+                    value: this.keywords
                 });
             }
 

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\hasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use McCool\LaravelAutoPresenter\HasPresenter;
@@ -283,6 +284,11 @@ class Ad extends Model implements HasPresenter
     public function associateOfferAd(): hasOne
     {
         return $this->hasOne(AssociateOfferAd::class);
+    }
+
+    public function userModerator(): HasOneThrough
+    {
+        return $this->hasOneThrough(User::class, AttributionAd::class, 'ad_id', 'id', 'id', 'user_moderator_id');
     }
 
     /**

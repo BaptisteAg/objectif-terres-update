@@ -20,6 +20,7 @@ class User extends Resource
     /** @var \App\Models\User|null */
     public $resource;
 
+
     public static function label()
 	{
 		return 'Gestion des utilisateurs';

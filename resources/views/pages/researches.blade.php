@@ -81,6 +81,11 @@
     <research-tags :productions_searched="{{ json_encode($searchedTypeOfProductions)}}"
                    :regions_searched="{{ json_encode($searchedRegionNames) }}"
                    :surface_searched="{{ json_encode($searchedSurface) }}"
+                   :transmissions="{{ json_encode($transmissions) }}"
+                   :water_access="{{ json_encode($waterAccess) }}"
+                   :price_searched="{{ json_encode($searchedPrice) }}"
+                   :rent_searched="{{ json_encode($searchedRent) }}"
+                   :keywords="{{ json_encode($keywords) }}"
     ></research-tags>
 
     <div class="container py-4">
