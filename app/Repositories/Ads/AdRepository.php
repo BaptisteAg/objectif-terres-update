@@ -791,9 +791,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             }
         }
         //Additional filters  : filter by surface range
-        if ($filters->has('surfaces_research')) {
-            if (!is_null($filters->input('surfaces_research'))) {
-                $adsFiltred->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('surface_range_max', 'surface', '<=', $filters->input('surfaces_research'));
+        if ($filters->has('surfaces_research_max')) {
+            if (!is_null($filters->input('surfaces_research_max'))) {
+                $adsFiltred->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('surface_range_max', 'surface', '<=', $filters->input('surfaces_research_max'));
             }
         }
         //Additional filters  : filter by min_price

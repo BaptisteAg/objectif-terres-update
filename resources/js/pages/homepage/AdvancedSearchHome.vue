@@ -9,7 +9,7 @@
 				<div class="column is-one-third">
 					<single-selector
 						label="Je souhaite consulter ..."
-						:option-labels="categoryLabels"
+						:options="categoryLabels"
 						v-model="adsForm.selectedCategory">
 					</single-selector>
 				</div>
@@ -81,7 +81,7 @@
 						 v-if="['landOfferAd', 'associateOfferAd'].includes(adsForm.selectedCategory)">
 						<single-selector
 							label="Accès à l'eau existant"
-							:option-labels="waterAccess"
+							:options="waterAccess"
 							v-model="adsForm.selectedWaterAccess">
 						</single-selector>
 					</div>
@@ -90,7 +90,7 @@
 						 v-if="['landSeekAd'].includes(adsForm.selectedCategory)">
 						<single-selector
 							label="Vous êtes installées ou comptez vous installer"
-							:option-labels="installation"
+							:options="installation"
 							v-model="adsForm.selectedInstallation">
 						</single-selector>
 					</div>
@@ -182,7 +182,11 @@ export default {
 		},
 		waterAccess: {
 			type: Array,
-			default: () => []
+			default: () => [
+                { id: '1', name: 'Oui' },
+                { id: '0', name: 'Non' },
+                { id: '-1', name: 'Ne sait pas' },
+            ]
 		},
 		installation: {
 			type: Array,
@@ -190,12 +194,16 @@ export default {
 		},
 		transmission: {
 			type: Array,
-			default: () => []
+			default: () => [
+                { id: '1', name: 'Vente' },
+                { id: '2', name: 'Location' },
+                { id: '3', name: 'Test Agricole' },
+            ]
 		},
 	},
 	data() {
 		return {
-			categoryLabels: searchAdTypes,
+			categoryLabels: Object.entries(searchAdTypes).map(([key, value]) => ({id: key, name: value})),
 			advancedSearch: {
 				"active": false,
 				"message": "Recherche avancée"
@@ -243,15 +251,15 @@ export default {
 			}
 			let error = false;
 
-			if (this.adsForm.selectedSurface.min > this.adsForm.selectedSurface.max) {
+			if (parseInt(this.adsForm.selectedSurface.min) > parseInt(this.adsForm.selectedSurface.max)) {
 				this.error.surface = true;
 				error = true;
 			}
-			if (this.adsForm.selectedPrice.min > this.adsForm.selectedPrice.max) {
+			if (parseInt(this.adsForm.selectedPrice.min) > parseInt(this.adsForm.selectedPrice.max)) {
 				this.error.price = true;
 				error = true;
 			}
-			if (this.adsForm.selectedFermage.min > this.adsForm.selectedFermage.max) {
+			if (parseInt(this.adsForm.selectedFermage.min) > parseInt(this.adsForm.selectedFermage.max)) {
 				this.error.fermage = true;
 				error = true;
 			}
@@ -277,15 +285,15 @@ export default {
 				this.adsForm.selectedFormations.forEach(id => params.append('formations[]', id));
 			}
 
-			params.append('surfaces_research_min', this.adsForm.selectedSurface.min);
-			params.append('surfaces_research_max', this.adsForm.selectedSurface.max);
-			params.append('price_min', this.adsForm.selectedPrice.min);
-			params.append('price_max', this.adsForm.selectedPrice.max);
-			params.append('fermage_min', this.adsForm.selectedFermage.min);
-			params.append('fermage_max', this.adsForm.selectedFermage.max);
-			params.append('water_access', this.adsForm.selectedWaterAccess);
-			params.append('installation', this.adsForm.selectedInstallation);
-			params.append('keywords', this.adsForm.selectedKeywords);
+			this.adsForm.selectedSurface.min && params.append('surfaces_research_min', this.adsForm.selectedSurface.min);
+			this.adsForm.selectedSurface.max && params.append('surfaces_research_max', this.adsForm.selectedSurface.max);
+			this.adsForm.selectedPrice.min && params.append('price_min', this.adsForm.selectedPrice.min);
+			this.adsForm.selectedPrice.max && params.append('price_max', this.adsForm.selectedPrice.max);
+			this.adsForm.selectedFermage.min && params.append('fermage_min', this.adsForm.selectedFermage.min);
+			this.adsForm.selectedFermage.max && params.append('fermage_max', this.adsForm.selectedFermage.max);
+			this.adsForm.selectedWaterAccess && params.append('water_access', this.adsForm.selectedWaterAccess);
+			this.adsForm.selectedInstallation && params.append('installation', this.adsForm.selectedInstallation);
+			this.adsForm.selectedKeywords && params.append('keywords', this.adsForm.selectedKeywords);
 
 			window.location.href = `/recherche?${params.toString()}`;
 		},
