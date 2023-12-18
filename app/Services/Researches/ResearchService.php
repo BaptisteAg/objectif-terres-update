@@ -18,24 +18,8 @@ use Illuminate\Support\Facades\DB;
 
 class ResearchService
 {
-	/**
-	 * @var ResearchRepository
-	 */
-	protected $repository;
-	protected $locationService;
-	protected $adRepository;
-
-	/**
-	 * ResearchService constructor.
-	 * @param ResearchRepository $repository
-	 * @param LocationService $locationService
-	 * @param AdRepository $adRepository
-	 */
-	public function __construct(ResearchRepository $repository, LocationService $locationService, AdRepository $adRepository)
+	public function __construct(private ResearchRepository $repository)
 	{
-		$this->repository = $repository;
-		$this->locationService = $locationService;
-		$this->adRepository = $adRepository;
 	}
 
 
@@ -196,16 +180,19 @@ class ResearchService
 	public function index(Request $filters)
 	{
 		$ads = $this->filter($filters);
-		return $ads;
+		return $ads->paginate(15);
 	}
 
 	/**
 	 * @param Request $filters
-	 * @return array
-	 */
-	public function filter(Request $filters)
+	 * @return Ad|Builder|\LaravelIdea\Helper\App\Models\_IH_Ad_QB
+     */
+	public function filter(Request $filters, $with = null)
 	{
 		$adsFilter = (new Ad)->newQuery()->with('currentUserFavoriteAd', 'documents');
+        if($with) {
+            $adsFilter->with($with);
+        }
 		//Filter by type of ads
 		$adType = '';
 
@@ -232,7 +219,7 @@ class ResearchService
         $adsFilter->whereNull('project_id');
         if ($filters->has('cities_location_researches_ids')) {
             if (!is_null($filters->input('radius_research'))) {
-                $cityIds = $this->locationService->getCitiesInRadius($filters->input('cities_location_researches_ids'), $filters->input('radius_research'));
+                $cityIds = $this->getCitiesInRadius($filters->input('cities_location_researches_ids'), $filters->input('radius_research'));
                 $adsFilter->filterLocations('cities', $cityIds);
             } else {
                 $adsFilter->filterLocations('cities', $filters->input('cities_location_researches_ids'));
@@ -258,11 +245,12 @@ class ResearchService
             $adsFilter->filterWhereHasIn($filters->input('offer_genres'), $adType . '.offerGenres', 'offer_genre_id');
         }
 
-        if (!is_null($filters->input('surfaces_research')) && $filters->input('surfaces_research') !== "0" && $filters->input('surfaces_research') !== "100000000000") {
+        if (!is_null($filters->input('surfaces_research_max')) && $filters->input('surfaces_research_max') !== "0" && $filters->input('surfaces_research_max') !== "100000000000") {
             if ($adType === 'landSeekAd') {
-                $adsFilter->filterWhereHasWhere($filters->input('surfaces_research'), $adType, '<=', 'surface_range_max');
-            } else if ($adType === 'landOfferAd') {
-                $adsFilter->filterWhereHasWhere($filters->input('surfaces_research'), $adType, '<=', 'surface');
+                $adsFilter->filterWhereHasWhere($filters->input('surfaces_research_max'), $adType, '<=', 'surface_range_max');
+            }
+            else if (in_array($adType, ['landOfferAd', 'associateOfferAd'])) {
+                $adsFilter->filterWhereHasWhere($filters->input('surfaces_research_max'), $adType, '<=', 'surface');
             }
         }
 
@@ -386,11 +374,39 @@ class ResearchService
 			'landOfferAd',
 			'jobOfferAd',
 			'jobSeekAd'
-		)
-			->paginate(15);
+		);
 
 		return $ads;
 	}
+
+    /**
+     * @param $cityId
+     * @param $radius
+     * @return array
+     */
+    public function getCitiesInRadius ($cityId, $radius){
+        $city = City::whereId($cityId)->first();
+        $cities = DB::select(
+            'SELECT id FROM (
+                SELECT *,
+                    (
+                        (
+                            (
+                                acos(
+                                    sin(( '.(float)$city->gps_lat.' * pi() / 180))
+                                    *
+                                    sin(( `gps_lat` * pi() / 180)) + cos(( '.(float)$city->gps_lat.' * pi() /180 ))
+                                    *
+                                    cos(( `gps_lat` * pi() / 180)) * cos((( '.(float)$city->gps_lng.' - `gps_lng`) * pi()/180)))
+                            ) * 180/pi()
+                        ) * 60 * 1.1515 * 1.609344
+                    )
+                as distance FROM `cities`
+            ) myTable
+            WHERE distance <= '.(int)$radius.';'
+        );
+        return array_column($cities, 'id');
+    }
 
 	/**
 	 * @param Research $research

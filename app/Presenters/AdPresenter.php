@@ -7,6 +7,8 @@ use App\Models\Region;
 use App\Models\User;
 use App\Nova\Department;
 use App\Services\Ads\AdService;
+use Illuminate\Database\Eloquent\Collection;
+use LaravelIdea\Helper\App\Models\_IH_Document_C;
 use McCool\LaravelAutoPresenter\BasePresenter;
 
 /**
@@ -215,7 +217,7 @@ class AdPresenter extends BasePresenter
         return $this->nonImageDocuments()->count();
     }
 
-    public function images()
+    public function images(): Collection|_IH_Document_C|array
     {
         return $this->wrappedObject->documents->filter(function ($document) {
             return /*$this->isPpDocument($document) &&*/ $this->isImageDocument($document);
@@ -442,19 +444,17 @@ class AdPresenter extends BasePresenter
     {
         $ad = $this->wrappedObject;
 
-        $department = $ad->department;
+        $department = $ad->main_department;
         $region = $department?->region;
 
         if (!$department) {
-            if ($ad->departments->count()) {
-                $department = $ad->departments->first();
-                $region = $department->region;
-            }
-            elseif ($ad->cities->count()) {
+            if ($ad->cities->count()) {
                 $department = $ad->cities->first()->department;
                 $region = $department->region;
-            }
-            else if ($ad->regions->count()) {
+            } else if ($ad->departments->count()) {
+                $department = $ad->departments->first();
+                $region = $department->region;
+            } else if ($ad->regions->count()) {
                 $region = $ad->regions->first();
                 $department = $region->departments->first();
             }
