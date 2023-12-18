@@ -6,22 +6,20 @@ use App\Models\Country;
 use App\Models\Department;
 use App\Models\Region;
 use App\Services\Ads\AdService;
+use App\Services\Researches\ResearchService;
 use Cache;
 use GuzzleHttp\Client;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class LocationService
 {
-    /**
-     * @var AdService
-     */
-    private $adService;
 
-    public function __construct(AdService $adService)
+    public function __construct(private AdService $adService, private ResearchService $researchService)
     {
-        $this->adService = $adService;
     }
 
     /**
@@ -54,33 +52,39 @@ class LocationService
         });
     }
 
-    public function getDepartmentPolygons($regionId, $selectedAdType, $adIds)
+    public function getDepartmentPolygons(Request $request)
     {
-        $cacheKey = 'departmentspolygon.'.$regionId.'.'.$selectedAdType;
+        $cacheKey = 'departmentspolygon.'.$request->get('ad_category');
 
-        $ads = Ad::whereIn('id', $adIds)->get();
+        $ads = $this->researchService->filter($request, ['departments', 'department', 'cities', 'cities.department'])->get();
 
-        //return Cache::rememberForever($cacheKey, function () use ($selectedAdType, $regionId) {
-            //$adsCountByDepartmentId = $this->adService->getPublishedAdsCountByDepartmentId($selectedAdType, $regionId);
-            $adsCountByDepartmentId = $ads->groupBy(function (Ad $ad) {
-                return $ad->main_department->id;
-            })->map(function ($ads) {
-                return $ads->count();
-            })->toArray();
-
-            /** @var Department[] $departments */
-            $departments = Department::whereIn('id', array_keys($adsCountByDepartmentId))->get();
-            $data = [];
-
-            foreach ($departments as $department) {
-                $geoPolygon = $this->getLocationGeoPolygon($department->name, 'department');
-                $geoPolygon->department_id = $department->id;
-                $geoPolygon->ads_count = $adsCountByDepartmentId[$department->id];
-                $data[] = $geoPolygon;
+        $adsCountByDepartmentId = [];
+        foreach($ads as $ad) {
+            $departments = $ad->departments
+                ->push($ad->department)
+                ->concat($ad->cities->map(function ($city) {return $city->department;}))
+                ->filter()
+                ->unique('id');
+            foreach($departments as $department) {
+                $adsCountByDepartmentId[$department->id] = $adsCountByDepartmentId[$department->id] ?? 0;
+                $adsCountByDepartmentId[$department->id]++;
             }
+        }
 
-            return $data;
-        //});
+        /** @var Department[]|Collection $departments */
+        $departments = Department::whereIn('id', array_keys($adsCountByDepartmentId))->get();
+
+        $polygons =  Cache::rememberForever($cacheKey, fn() => $departments->map(function ($department) use ($adsCountByDepartmentId) {
+            $geoPolygon = $this->getLocationGeoPolygon($department->name, 'department');
+            $geoPolygon->department_id = $department->id;
+            return $geoPolygon;
+        }));
+
+        foreach ($polygons as $polygon) {
+            $polygon->ads_count = $adsCountByDepartmentId[$polygon->department_id] ?? 0;
+        }
+
+        return $polygons;
     }
 
     public function getLocationGeoPolygon(string $q, $type = "")
@@ -367,34 +371,5 @@ class LocationService
             ];
         };
     }
-
-	/**
-	 * @param $cityId
-	 * @param $radius
-	 * @return array
-	 */
-	public function getCitiesInRadius ($cityId, $radius){
-		$city = City::whereId($cityId)->first();
-		$cities = DB::select(
-		    'SELECT id FROM (
-                SELECT *,
-                    (
-                        (
-                            (
-                                acos(
-                                    sin(( '.(float)$city->gps_lat.' * pi() / 180))
-                                    *
-                                    sin(( `gps_lat` * pi() / 180)) + cos(( '.(float)$city->gps_lat.' * pi() /180 ))
-                                    *
-                                    cos(( `gps_lat` * pi() / 180)) * cos((( '.(float)$city->gps_lng.' - `gps_lng`) * pi()/180)))
-                            ) * 180/pi()
-                        ) * 60 * 1.1515 * 1.609344
-                    )
-                as distance FROM `cities`
-            ) myTable
-            WHERE distance <= '.(int)$radius.';'
-        );
-		return array_column($cities, 'id');
-	}
 
 }

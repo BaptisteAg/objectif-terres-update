@@ -4,13 +4,14 @@
 		<b-dropdown v-model="selectedOption" expanded aria-role="list">
 			<template #trigger="{ active }">
 				<b-button
-					:label="optionLabels[selectedOption] || 'Sélectionnez une catégorie'"
+					:label="options.find(o => o.id === selectedOption)?.name || 'Sélectionnez une catégorie'"
 					:icon-right="active ? 'menu-up' : 'menu-down'"/>
 			</template>
-			<b-dropdown-item aria-role="listitem" :value="category"
-							 v-for="(labelOption, category) of optionLabels"
-							 :key="category">
-				{{ labelOption }}
+			<b-dropdown-item aria-role="listitem"
+							 v-for="(option, key) of options"
+                             :value="option.id"
+							 :key="key">
+				{{ option.name }}
 			</b-dropdown-item>
 		</b-dropdown>
 	</div>
@@ -23,7 +24,7 @@ export default {
 			type: String,
 			default: ''
 		},
-		optionLabels: {
+		options: {
 			required: true
 		},
 		value: {

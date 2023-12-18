@@ -79,7 +79,9 @@
 
 @section('main-content')
     <research-tags :productions_searched="{{ json_encode($searchedTypeOfProductions)}}"
-                   :regions_searched="{{ json_encode($searchedRegionNames) }}"></research-tags>
+                   :regions_searched="{{ json_encode($searchedRegionNames) }}"
+                   :surface_searched="{{ json_encode($searchedSurface) }}"
+    ></research-tags>
 
     <div class="container py-4">
         <div class="columns">
@@ -156,9 +158,11 @@
         <h2 class="title mb-3 mx-3-mobile">
             {{ $ads->total() }} annonce{{ $ads->total() > 1 ? 's' : '' }} trouvée{{ $ads->total() > 1 ? 's' : '' }}
         </h2>
-        <p class="mb-6 mx-3-mobile">
-            Certaines annonces peuvent être comptabilisées plusieurs fois selon leur localisation
-        </p>
+            <p class="mb-6 mx-3-mobile">
+                @if($hasDepartmentPolygons)
+                    Certaines annonces peuvent être comptabilisées plusieurs fois selon leur localisation
+                @endif
+            </p>
         @foreach($ads as $ad)
             @include('pages.ads.partials.card')
         @endforeach
@@ -173,11 +177,7 @@
 @section('script')
     @if($hasDepartmentPolygons)
         <script defer>
-            regionMapInit('global-map', {
-                region_id: "{{$request->get("regions_location_researches_ids")[0]}}",
-                ad_category: "{{$request->get("ad_category")}}",
-                ad_ids: {{json_encode($ads->pluck('id')->toArray())}},
-            });
+            regionMapInit('global-map', '{!!  http_build_query(request()->all()) !!}');
         </script>
     @endif
 @endsection

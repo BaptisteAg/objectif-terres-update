@@ -1,9 +1,13 @@
+<?php /** @var \App\Models\Ad $ad */ ?>
 <div class="w-50">
     <strong>Département :</strong>
     {{ $ad->main_department->name }} ({{ $ad->main_department->code }})
     @if($ad->secondaryDepartmentsList->count())
         <br><small>
-            {{ $ad->secondaryDepartmentsList->join(', ') }}
+            {{ $ad->secondaryDepartmentsList->take(3)->join(', ') }}
+            @if($ad->secondaryDepartmentsList->count() > 3)
+                , ... ({{ $ad->secondaryDepartmentsList->count() - 3 }} autres)
+            @endif
         </small>
     @endif
 </div>

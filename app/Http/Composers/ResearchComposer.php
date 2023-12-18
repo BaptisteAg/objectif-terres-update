@@ -8,10 +8,15 @@ use App\Models\JobOfferType;
 use App\Models\OfferGenre;
 use App\Models\ProductionGenre;
 use App\Models\Region;
+use App\Services\Ads\AdService;
 use Illuminate\View\View;
 
 class ResearchComposer
 {
+    public function __construct(private AdService $adService)
+    {
+    }
+
     public function compose(View $view)
     {
         //        Gerer coter front
@@ -26,7 +31,7 @@ class ResearchComposer
         $departments = Department::orderBy('name')->get();
 
         $jobOfferTypes = JobOfferType::orderBy('name')->get();
-        $productionGenres = ProductionGenre::orderBy('name')->get();
+        $productionGenres = $this->adService->getProductionGenresFlattened();
         $bioCertifications = BioCertification::orderBy('name')->get();
 		$offerGenres = OfferGenre::where('id', '!=', OfferGenre::ID_LED_OU_DONATION)->orderBy('name')->get();
 

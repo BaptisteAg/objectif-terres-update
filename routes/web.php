@@ -133,7 +133,7 @@ Route::prefix('locations')->namespace('Locationables')->group(function () {
     Route::get('departments-and-regions', 'LocationableController@departmentsAndRegions');
     Route::prefix('polygon')->group(function () {
         Route::post('regions', 'LocationableController@regionsPolygon');
-        Route::post('departments', 'LocationableController@departmentsPolygon');
+        Route::get('departments', 'LocationableController@departmentsPolygon');
         Route::get('france', 'LocationableController@france');
         Route::post('ad-locations', 'LocationableController@adLocations');
     });
