@@ -47,9 +47,9 @@
 
                 @php
                     $bioStatuses = [
-                        1 => 'Oui',
-                        0 => 'Non',
                         -1 => 'Ne sais pas',
+                        0 => 'Non',
+                        1 => 'Oui',
                     ];
                 @endphp
 
