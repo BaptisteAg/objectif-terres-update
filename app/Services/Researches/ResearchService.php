@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use LaravelIdea\Helper\App\Models\_IH_Ad_QB;
 
 class ResearchService
 {
@@ -183,9 +184,10 @@ class ResearchService
 		return $ads->paginate(15);
 	}
 
-	/**
-	 * @param Request $filters
-	 * @return Ad|Builder|\LaravelIdea\Helper\App\Models\_IH_Ad_QB
+    /**
+     * @param Request $filters
+     * @param null $with
+     * @return Ad|Builder|_IH_Ad_QB
      */
 	public function filter(Request $filters, $with = null)
 	{
@@ -241,38 +243,34 @@ class ResearchService
             }
         }
 
-        if ($filters->has('offer_genres') && $adType !== "all") {
-            $adsFilter->filterWhereHasIn($filters->input('offer_genres'), $adType . '.offerGenres', 'offer_genre_id');
-        }
-
         if (!is_null($filters->input('surfaces_research_max')) && $filters->input('surfaces_research_max') !== "0" && $filters->input('surfaces_research_max') !== "100000000000") {
             if ($adType === 'landSeekAd') {
-                $adsFilter->filterWhereHasWhere($filters->input('surfaces_research_max'), $adType, '<=', 'surface_range_max');
+                $adsFilter->filterWhereHasWhere((int)$filters->input('surfaces_research_max'), $adType, '<=', 'surface_range_max');
             }
             else if (in_array($adType, ['landOfferAd', 'associateOfferAd'])) {
-                $adsFilter->filterWhereHasWhere($filters->input('surfaces_research_max'), $adType, '<=', 'surface');
+                $adsFilter->filterWhereHasWhere((int)$filters->input('surfaces_research_max'), $adType, '<=', 'surface');
             }
         }
 
         if (in_array($adType, ['landOfferAd', 'associateOfferAd'])) {
             if (!is_null($filters->input('price_min'))) {
                 $adsFilter->whereHas($adType, function (Builder $query) use ($filters) {
-                    $query->where('price', '>=', $filters->input('price_min'));
+                    $query->where('price', '>=', (int)$filters->input('price_min'));
                 });
             }
             if (!is_null($filters->input('price_max'))) {
                 $adsFilter->whereHas($adType, function (Builder $query) use ($filters) {
-                    $query->where('price', '>=', $filters->input('price_max'));
+                    $query->where('price', '<=', (int)$filters->input('price_max'));
                 });
             }
             if (!is_null($filters->input('fermage_min'))) {
                 $adsFilter->whereHas($adType, function (Builder $query) use ($filters) {
-                    $query->orWhere('rent_price', '>=', $filters->input('fermage_min'));
+                    $query->where('rent_price', '>=', (int)$filters->input('fermage_min'));
                 });
             }
             if (!is_null($filters->input('fermage_max'))) {
                 $adsFilter->whereHas($adType, function (Builder $query) use ($filters) {
-                    $query->orWhere('rent_price', '>=', $filters->input('fermage_max'));
+                    $query->where('rent_price', '<=', (int)$filters->input('fermage_max'));
                 });
             }
         }
@@ -297,14 +295,12 @@ class ResearchService
                 $adsFilter->filterWhereHasIn($filters->input('bio_certifications'), $adType . '.bioCertifications', 'bio_certifications.id');
             }
 
-            if ($filters->has('offer_genres')) {
-                $adsFilter->filterWhereHasIn($filters->input('offer_genres'), $adType . '.offerGenres', 'offer_genres.id');
-            }
+
             if (!is_null($filters->input('jobOfferType'))) {
                 $adsFilter->filterWhereHasWhere($filters->input('jobOfferType'), $adType . '.jobOfferTypes', '=', 'job_offer_types.id');
             }
 
-            $adsFilter->filterAdTypes([$adType], '');
+            $adsFilter->filterAdTypes([$adType]);
         }
 
         $validatedStatus = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first();
@@ -313,7 +309,7 @@ class ResearchService
 
         //Filter ads by keywords
         if (!is_null($filters->input('keywords'))) {
-            $adsFilter->where(function (Builder $query) use ($filters) {
+            $adsFilter->where(function (Builder $query) use ($filters, $adType) {
                 $query->where('title', 'like', '%' . $filters->input('keywords') . '%');
                 $query->orWhere('about_content', 'like', '%' . $filters->input('keywords') . '%');
                 $query->orWhere('about_project_content', 'like', '%' . $filters->input('keywords') . '%');
@@ -334,18 +330,22 @@ class ResearchService
 
                     });
                 });
-                $query->orWhere(function (Builder $subQuery) use ($filters) {
-                    $subQuery->whereHas('landSeekAd', function (Builder $q) use ($filters) {
-                        $q->where('experience_farming', 'like', '%' . $filters->input('keywords') . '%');
-                        $q->orWhere('land_description', 'like', '%' . $filters->input('keywords') . '%');
+                if($adType === 'landOfferAd') {
+                    $query->orWhere(function (Builder $subQuery) use ($filters) {
+                        $subQuery->whereHas('landSeekAd', function (Builder $q) use ($filters) {
+                            $q->where('experience_farming', 'like', '%' . $filters->input('keywords') . '%');
+                            $q->orWhere('land_description', 'like', '%' . $filters->input('keywords') . '%');
+                        });
                     });
-                });
-                $query->orWhere(function (Builder $subQuery) use ($filters) {
-                    $subQuery->whereHas('associateOfferAd', function (Builder $q) use ($filters) {
-                        $q->where('associate_description', 'like', '%' . $filters->input('keywords') . '%');
-                        $q->where('experience_farming', 'like', '%' . $filters->input('keywords') . '%');
+                }
+                if($adType === 'associateOfferAd') {
+                    $query->orWhere(function (Builder $subQuery) use ($filters) {
+                        $subQuery->whereHas('associateOfferAd', function (Builder $q) use ($filters) {
+                            $q->where('associate_description', 'like', '%' . $filters->input('keywords') . '%');
+                            $q->where('experience_farming', 'like', '%' . $filters->input('keywords') . '%');
+                        });
                     });
-                });
+                }
             });
         }
 
@@ -379,28 +379,9 @@ class ResearchService
 			$adsFilter->join('attribution_ads', "ads.id", '=', "attribution_ads.ad_id")
 				->orderByDesc('published_on')
 				->select('ads.*');
-		}
+		};
 
-		$ads = $adsFilter->with(
-			'project',
-			'userPp',
-			'project.projectStatus',
-			'attributionAd',
-
-			'cities',
-			'cities.department',
-			'cities.department.region',
-			'departments',
-			'departments.region',
-			'regions',
-
-			'landSeekAd',
-			'landOfferAd',
-			'jobOfferAd',
-			'jobSeekAd'
-		);
-
-		return $ads;
+		return $adsFilter;
 	}
 
     /**
