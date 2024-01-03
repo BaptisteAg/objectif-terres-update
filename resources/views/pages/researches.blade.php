@@ -130,7 +130,7 @@
                 </div>
             </div>
             <div class="column is-flex is-justify-content-flex-end gap-2 jc-sb-mobile mx-3-mobile">
-                <b-button rounded tag="a" href="/" type="is-danger">Modifier ma recherche</b-button>
+                <b-button rounded tag="a" href="javascript:window.history.back();" type="is-danger">Modifier ma recherche</b-button>
                 <modal
                         title="Sauvgarde d'une recherche"
                         subtitle="Donner un titre à votre recherche :"

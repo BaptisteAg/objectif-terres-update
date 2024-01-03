@@ -55,7 +55,7 @@
         @endif
 
         @if(config('app.env') === 'local')
-            <p class="title is-1 has-background-black has-text-white">Type : {{$ad->type}}</p>
+{{--            <p class="title is-1 has-background-black has-text-white">Type : {{$ad->type}}</p>--}}
         @endif
 
         <div class="is-flex mt-auto mb-4 is-justify-content-space-between">

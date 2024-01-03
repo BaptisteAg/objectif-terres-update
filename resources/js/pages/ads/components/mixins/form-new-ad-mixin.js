@@ -1,7 +1,7 @@
 import Vue from "vue";
 
 // Whitelist of html form inputs
-const INPUT_TAGS = ['input', 'textarea', 'select'];
+const INPUT_TAGS = ['input', 'textarea', 'select', 'section'];
 
 var smoothScrolls = [];
 
@@ -140,14 +140,14 @@ export default {
 							)
 						);
 
-						if (typeof inputTabIndex !== "undefined") {
+						if (typeof inputTabIndex !== -1) {
 							// Change current form step if needed
 							$form.changeTab($form.activeTabIndex, inputTabIndex);
 
 							//console.log(inputTabIndex, $form.tabs[inputTabIndex]);
 
                             if(!$form.tabs?.[inputTabIndex]?.$el) {
-                                console.error(`Could not focus on error : No tab found for input ${inputName}`);
+                                console.error(`Could not focus on error : $el not found in tab ${inputTabIndex} for input ${inputName}`);
                                 return;
                             }
 
@@ -161,7 +161,7 @@ export default {
 								}
 							}, {once: true});
 						} else {
-							console.error(`Could not focus on error : No tab found for input ${inputName}`);
+							console.error(`Could not focus on error : No tab found ( ${inputTabIndex} ) for input ${inputName}`);
 						}
 					}
                     else {
