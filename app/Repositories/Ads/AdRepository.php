@@ -1161,7 +1161,6 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             'landSeekAd',
             'landSeekAd.productionGenres',
             'landSeekAd.productionGenresSecondary',
-            'landSeekAd.bioCertifications',
         ];
         $landOfferAdEagerLoading = [
             'landOfferAd',
