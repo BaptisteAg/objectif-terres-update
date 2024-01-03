@@ -16,7 +16,7 @@
         <h1 class="title is-4">Bienvenue sur votre messagerie</h1>
         @if(count($threads)===0)
             <div class="content">
-                <p class="page__subtitle has-text-centered">Vous n'avez pas encore reçu de messages !</p>
+                <p class="page__subtitle has-text-centered">Vous n'avez pas encore reçu de message !</p>
             </div>
             @if(auth()->user()->role >= 1 )
                 <div id="vue-messages">

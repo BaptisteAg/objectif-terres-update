@@ -14,7 +14,7 @@
 
 <?php if (!isset($showCities)) $showCities = false; ?>
 
-@if($showCities || auth()->user()->id === $ad->user_pp_id || auth()->user()->role >= 1)
+@if(($showCities || auth()->user()->id === $ad->user_pp_id || auth()->user()->role >= 1) && $ad->citiesList)
     <div class="w-50">
         <strong>Commune{{$ad->citiesCount > 1 ? 's' : ''}} :</strong>
         {{ $ad->citiesList }}
