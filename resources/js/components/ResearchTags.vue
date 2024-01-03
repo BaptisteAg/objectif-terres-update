@@ -7,7 +7,7 @@
                 :key="tag.label"
                 :class="'gap-2 column is-4' + (i % 3 === 1 ? ' has-text-centered' : '') + (i % 3 === 2 ? ' has-text-right' : '')">
                 <strong class="flex-fit-content">{{ tag.label }}</strong>
-                <span class="three-dots">{{ tag.value }}</span>
+                <span class="xthree-dots">{{ tag.value }}</span>
             </div>
         </div>
     </div>
@@ -92,7 +92,7 @@ export default {
                     value: this.transmissions.join(', ') || 'Non définie'
                 });
             }
-            if(this.price_searched) {
+            if(this.price_searched && this.price_searched.min || this.price_searched.max) {
                 let value = 'Entre ' + this.price_searched.min + ' et ' + this.price_searched.max + ' €';
                 if(this.price_searched.min === this.price_searched.max) {
                     value = this.price_searched.min + ' €';
@@ -108,7 +108,7 @@ export default {
                     value
                 });
             }
-            if(this.rent_searched) {
+            if(this.rent_searched && this.rent_searched.min || this.rent_searched.max) {
                 let value = 'Entre ' + this.rent_searched.min + ' et ' + this.rent_searched.max + ' €';
                 if(this.rent_searched.min === this.rent_searched.max) {
                     value = this.rent_searched.min + ' €';

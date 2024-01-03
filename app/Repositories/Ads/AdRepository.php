@@ -49,7 +49,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         if (auth()->user()) {
             $eagerLoading = $this->getEagerLoading($ad);
         } else {
-            $eagerLoading = $this->getVisitorEagerLoading($ad);
+            $eagerLoading = $this->getVisitorEagerLoading($ad->type);
         }
 
         $ad->load($eagerLoading);
@@ -741,7 +741,6 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
      */
     public function filterAds(Request $filters, int $roleUser, array $userTerritories, array $userTerritoriesRegionsId, bool $toPaginate)
     {
-        //TODO move this method to the related repository
         //START QUERY
         $adsFiltred = (new Ad())->newQuery();
 
@@ -1079,7 +1078,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     }
 
     // Get eager loading based on the type of ad and role of the user
-    private function getEagerLoading(Ad $ad): array
+    public static function getEagerLoading(Ad $ad): array
     {
         $eagerLoading = [
             'project',
@@ -1102,22 +1101,22 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
         return array_merge(
             $eagerLoading,
-            $this->getSubAdEagerLoading($ad),
-            $this->getLocationEagerLoading(),
-            $this->getAttributionEagerLoading()
+            static::getSubAdEagerLoading($ad->type),
+            static::getLocationEagerLoading(),
+            static::getAttributionEagerLoading()
         );
     }
 
     // Get eager loading for any anonymous visitor
-    private function getVisitorEagerLoading(Ad $ad): array
+    public static function getVisitorEagerLoading(?string $adType = null): array
     {
         return array_merge([
             'userPp',
             'documents',
-        ], $this->getSubAdEagerLoading($ad), $this->getLocationEagerLoading());
+        ], static::getSubAdEagerLoading($adType), static::getLocationEagerLoading());
     }
 
-    private function getDashboardsEagerLoading()
+    public static function getDashboardsEagerLoading()
     {
         return array_merge([
             'userPp' => function ($query) {
@@ -1128,10 +1127,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             'landOfferAd',
             'jobOfferAd',
             'jobSeekAd'
-        ], $this->getLocationEagerLoading(), $this->getAttributionEagerLoading());
+        ], static::getLocationEagerLoading(), static::getAttributionEagerLoading());
     }
 
-    private function getLocationEagerLoading()
+    public static function getLocationEagerLoading()
     {
         return [
             'cities',
@@ -1144,7 +1143,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         ];
     }
 
-    private function getAttributionEagerLoading()
+    public static function getAttributionEagerLoading()
     {
         return [
             'project',
@@ -1156,47 +1155,62 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         ];
     }
 
-    private function getSubAdEagerLoading(Ad $ad): array
+    public static function getSubAdEagerLoading(?string $adType): array
     {
-        return match ($ad->type) {
-            'landSeekAd' => [
-                'landSeekAd',
-                'landSeekAd.buildings',
-                'landSeekAd.buildings.buildingType',
-                'landSeekAd.buildings.requirement',
-            ],
-            'landOfferAd' => [
-                'landOfferAd',
-                'landOfferAd.productionGenres',
-                'landOfferAd.productionGenresSecondary',
-                'landOfferAd.bioCertifications',
-                'landOfferAd.offerGenres',
-                'landOfferAd.building',
-                'landOfferAd.building.offerGenres',
-                'landOfferAd.house',
-                'landOfferAd.house.offerGenres',
-            ],
-            'jobOfferAd' => [
-                'jobOfferAd',
-                'jobOfferAd.educationLevels',
-                'jobOfferAd.jobOfferTypes',
-            ],
-            'jobSeekAd' => [
-                'jobSeekAd',
-            ],
-            'associateSeekAd' => [
-                'associateSeekAd',
-                'associateSeekAd.educationLevels',
-                'associateSeekAd.productionGenres',
-                'associateSeekAd.productionGenresSecondary',
-            ],
-            'associateOfferAd' => [
-                'associateOfferAd',
-                'associateSeekAd.productionGenres',
-                'associateSeekAd.productionGenresSecondary',
-                'associateSeekAd.bioCertifications',
-                'associateSeekAd.educationLevels',
-            ],
+        $landSeekAdEagerLoading = [
+            'landSeekAd',
+            'landSeekAd.productionGenres',
+            'landSeekAd.productionGenresSecondary',
+            'landSeekAd.bioCertifications',
+        ];
+        $landOfferAdEagerLoading = [
+            'landOfferAd',
+            'landOfferAd.productionGenres',
+            'landOfferAd.productionGenresSecondary',
+            'landOfferAd.bioCertifications',
+            'landOfferAd.offerGenres',
+            'landOfferAd.building',
+            'landOfferAd.building.offerGenres',
+            'landOfferAd.house',
+            'landOfferAd.house.offerGenres',
+        ];
+        $jobOfferAdEagerLoading = [
+            'jobOfferAd',
+            'jobOfferAd.educationLevels',
+            'jobOfferAd.jobOfferTypes',
+        ];
+        $jobSeekAdEagerLoading = [
+            'jobSeekAd',
+        ];
+        $associateSeekAdEagerLoading = [
+            'associateSeekAd',
+            'associateSeekAd.educationLevels',
+            'associateSeekAd.productionGenres',
+            'associateSeekAd.productionGenresSecondary',
+        ];
+        $associateOfferAdEagerLoading = [
+            'associateOfferAd',
+            'associateSeekAd.productionGenres',
+            'associateSeekAd.productionGenresSecondary',
+            'associateSeekAd.bioCertifications',
+            'associateSeekAd.educationLevels',
+        ];
+
+        return match ($adType) {
+            'landSeekAd' => $landSeekAdEagerLoading,
+            'landOfferAd' => $landOfferAdEagerLoading,
+            'jobOfferAd' => $jobOfferAdEagerLoading,
+            'jobSeekAd' => $jobSeekAdEagerLoading,
+            'associateSeekAd' => $associateSeekAdEagerLoading,
+            'associateOfferAd' => $associateOfferAdEagerLoading,
+            default => array_merge(
+                $landSeekAdEagerLoading,
+                $landOfferAdEagerLoading,
+                $jobOfferAdEagerLoading,
+                $jobSeekAdEagerLoading,
+                $associateSeekAdEagerLoading,
+                $associateOfferAdEagerLoading
+            )
         };
     }
 
