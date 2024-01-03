@@ -179,7 +179,7 @@ class ResearchService
 	 */
 	public function index(Request $filters)
 	{
-		$ads = $this->filter($filters);
+		$ads = $this->filter($filters, AdRepository::getVisitorEagerLoading());
 		return $ads->paginate(15);
 	}
 
@@ -189,7 +189,7 @@ class ResearchService
      */
 	public function filter(Request $filters, $with = null)
 	{
-		$adsFilter = (new Ad)->newQuery()->with('currentUserFavoriteAd', 'documents');
+		$adsFilter = (new Ad)->newQuery();
         if($with) {
             $adsFilter->with($with);
         }
