@@ -39,7 +39,8 @@ class ResearchComposer
 
         $installationTypes = InstallationType::all();
         $educationLevels = EducationLevel::all();
+        $jobOfferTypes = JobOfferType::all();
 
-        $view->with(compact('regionsWithAll','departments', 'jobOfferTypes', 'productionGenres', 'bioCertifications', 'offerGenres', 'installationTypes', 'educationLevels'));
+        $view->with(compact('regionsWithAll','departments', 'jobOfferTypes', 'productionGenres', 'bioCertifications', 'offerGenres', 'installationTypes', 'educationLevels', 'jobOfferTypes'));
     }
 }

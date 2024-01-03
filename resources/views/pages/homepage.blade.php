@@ -13,6 +13,7 @@
             :regions="{{ $regionsWithAll }}"
             :installation="{{ $installationTypes }}"
             :formations="{{ $educationLevels }}"
+            :experiences="{{ $jobOfferTypes }}"
     >
     </advanced-search>
 
