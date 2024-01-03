@@ -2,7 +2,7 @@
 	<b-carousel>
 		<template v-if="images.length > 0">
 			<b-carousel-item v-for="(image, i) in images" :key="i">
-				<b-image class="image is-3by2 vignette__image" :src="image.url"></b-image>
+				<b-image class="image is-3by2 vignette__image" :src="getImageUrl(image.url)"></b-image>
 			</b-carousel-item>
 		</template>
 		<b-carousel-item v-else>
@@ -21,9 +21,29 @@ export default {
 		},
 	},
 	methods: {
-		// getImageUrl(imagePath) {
-		// 	return 'https://objectif-terres.org' + '/' + imagePath;
-		// },
+		getImageUrl(imagePath) {
+			let baseUrl = 'https://objectif-terres.org';
+			let newBaseUrl = 'https://objectif-terres.kaffein.tech';
+			let newBaseUrlDev = 'https://objectif-terres.dvl.to';
+
+			if (window.location.hostname === 'objectif-terres.kaffein.tech') {
+				if (imagePath.startsWith(baseUrl)) {
+					return imagePath.replace(baseUrl, newBaseUrl);
+				}
+				if (!imagePath.startsWith('http')) {
+					return newBaseUrl + '/' + imagePath;
+				}
+			}
+			if (window.location.hostname === 'objectif-terres.dvl.to') {
+				if (imagePath.startsWith(baseUrl)) {
+					return imagePath.replace(baseUrl, newBaseUrlDev);
+				}
+				if (!imagePath.startsWith('http')) {
+					return newBaseUrlDev + '/' + imagePath;
+				}
+			}
+			return imagePath;
+		}
 	},
 }
 </script>
