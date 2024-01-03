@@ -24,6 +24,7 @@ export default {
 		getImageUrl(imagePath) {
 			let baseUrl = 'https://objectif-terres.org';
 			let newBaseUrl = 'https://objectif-terres.kaffein.tech';
+			let newBaseUrlDev = 'https://objectif-terres.dvl.to';
 
 			if (window.location.hostname === 'objectif-terres.kaffein.tech') {
 				if (imagePath.startsWith(baseUrl)) {
@@ -31,6 +32,14 @@ export default {
 				}
 				if (!imagePath.startsWith('http')) {
 					return newBaseUrl + '/' + imagePath;
+				}
+			}
+			if (window.location.hostname === 'objectif-terres.dvl.to') {
+				if (imagePath.startsWith(baseUrl)) {
+					return imagePath.replace(baseUrl, newBaseUrlDev);
+				}
+				if (!imagePath.startsWith('http')) {
+					return newBaseUrlDev + '/' + imagePath;
 				}
 			}
 			return imagePath;
