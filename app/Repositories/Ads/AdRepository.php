@@ -1161,7 +1161,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             'landSeekAd',
             'landSeekAd.productionGenres',
             'landSeekAd.productionGenresSecondary',
-            'landSeekAd.bioCertifications',
+//            TODO: FIX last bug Call to undefined relationship [bioCertifications] on model [App\Models\LandSeekAd].
+//            'landSeekAd.bioCertifications',
         ];
         $landOfferAdEagerLoading = [
             'landOfferAd',
