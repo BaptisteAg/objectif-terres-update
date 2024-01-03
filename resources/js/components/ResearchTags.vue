@@ -86,10 +86,10 @@ export default {
                     value
                 });
             }
-            if(this.transmissions) {
+            if(this.transmissions.length) {
                 tags.push({
                     label: 'Transmissions',
-                    value: this.transmissions.join(', ') || 'Non définie'
+                    value: this.transmissions.join(', ')
                 });
             }
             if(this.price_searched && this.price_searched.min || this.price_searched.max) {

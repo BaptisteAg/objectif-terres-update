@@ -209,13 +209,15 @@ export default {
         },
     },
     data() {
+        const savedState = JSON.parse(sessionStorage.getItem('homeSearchState') || '{}');
+
         return {
             categoryLabels: Object.entries(searchAdTypes).map(([key, value]) => ({id: key, name: value})),
             advancedSearch: {
-                "active": false,
-                "message": "Recherche avancée"
+                "active": savedState.advancedSearchActive || false,
+                "message": savedState.advancedSearchActive ? "Recherche simple" : "Recherche avancée"
             },
-            adsForm: {
+            adsForm: savedState.adsForm || {
                 selectedCategory: "all",
                 selectedLocalisation: [],
                 selectedProductions: [],
@@ -239,14 +241,34 @@ export default {
                 selectedKeywords: "",
             },
             error: {
-				formEmpty: false,
+                formEmpty: false,
                 surface: false,
                 price: false,
                 fermage: false,
             }
         }
     },
+    watch: {
+        adsForm: {
+            handler(adsForm) {
+                this.saveState({
+                    advancedSearchActive: this.advancedSearch.active,
+                    adsForm
+                });
+            },
+            deep: true
+        },
+        'advancedSearch.active': function (advancedSearchActive) {
+            this.saveState({
+                advancedSearchActive,
+                adsForm: this.adsForm
+            });
+        }
+    },
     methods: {
+        saveState(state) {
+            sessionStorage.setItem('homeSearchState', JSON.stringify(state));
+        },
         advancedSearchButton() {
             this.advancedSearch.active = !this.advancedSearch.active
             this.advancedSearch.message = this.advancedSearch.active ? "Recherche simple" : "Recherche avancée"
@@ -291,27 +313,41 @@ export default {
                 this.adsForm.selectedProductions.forEach(id => params.append('production_genres[]', id));
             }
 
-            if (this.adsForm.selectedExperiences.length > 0) {
-                this.adsForm.selectedExperiences.forEach(id => params.append('experiences[]', id));
-            }
+            if(this.advancedSearch.active) {
+                if (['jobOfferAd', 'jobSeekAd'].includes(this.adsForm.selectedCategory)) {
+                    this.adsForm.selectedExperiences.forEach(id => params.append('experiences[]', id));
+                }
 
-            if (this.adsForm.selectedFormations.length > 0) {
-                this.adsForm.selectedFormations.forEach(id => params.append('formations[]', id));
-            }
+                if (['jobSeekAd'].includes(this.adsForm.selectedCategory)) {
+                    this.adsForm.selectedFormations.forEach(id => params.append('formations[]', id));
+                }
 
-            if (this.adsForm.selectedTransmissions.length > 0) {
-                this.adsForm.selectedTransmissions.forEach(id => params.append('offer_genres[]', id));
-            }
+                if (['landOfferAd'].includes(this.adsForm.selectedCategory)) {
+                    this.adsForm.selectedTransmissions.forEach(id => params.append('offer_genres[]', id));
+                }
 
-            this.adsForm.selectedSurface.min && params.append('surfaces_research_min', this.adsForm.selectedSurface.min);
-            this.adsForm.selectedSurface.max && params.append('surfaces_research_max', this.adsForm.selectedSurface.max);
-            this.adsForm.selectedPrice.min && params.append('price_min', this.adsForm.selectedPrice.min);
-            this.adsForm.selectedPrice.max && params.append('price_max', this.adsForm.selectedPrice.max);
-            this.adsForm.selectedFermage.min && params.append('fermage_min', this.adsForm.selectedFermage.min);
-            this.adsForm.selectedFermage.max && params.append('fermage_max', this.adsForm.selectedFermage.max);
-            this.adsForm.selectedWaterAccess && params.append('water_access', this.adsForm.selectedWaterAccess);
-            this.adsForm.selectedInstallation && params.append('installation', this.adsForm.selectedInstallation);
-            this.adsForm.selectedKeywords && params.append('keywords', this.adsForm.selectedKeywords);
+                if (['landSeekAd', 'landOfferAd', 'associateOfferAd'].includes(this.adsForm.selectedCategory)) {
+                    this.adsForm.selectedSurface.min && params.append('surfaces_research_min', this.adsForm.selectedSurface.min);
+                    this.adsForm.selectedSurface.max && params.append('surfaces_research_max', this.adsForm.selectedSurface.max);
+                }
+
+                if (['landOfferAd'].includes(this.adsForm.selectedCategory)) {
+                    this.adsForm.selectedPrice.min && params.append('price_min', this.adsForm.selectedPrice.min);
+                    this.adsForm.selectedPrice.max && params.append('price_max', this.adsForm.selectedPrice.max);
+                    this.adsForm.selectedFermage.min && params.append('fermage_min', this.adsForm.selectedFermage.min);
+                    this.adsForm.selectedFermage.max && params.append('fermage_max', this.adsForm.selectedFermage.max);
+                }
+
+                if(['landOfferAd', 'associateOfferAd'].includes(this.adsForm.selectedCategory)) {
+                    this.adsForm.selectedWaterAccess && params.append('water_access', this.adsForm.selectedWaterAccess);
+                }
+
+                if(['landSeekAd'].includes(this.adsForm.selectedCategory)) {
+                    this.adsForm.selectedInstallation && params.append('installation', this.adsForm.selectedInstallation);
+                }
+
+                this.adsForm.selectedKeywords && params.append('keywords', this.adsForm.selectedKeywords);
+            }
 
             window.location.href = `/recherche?${params.toString()}`;
         },
