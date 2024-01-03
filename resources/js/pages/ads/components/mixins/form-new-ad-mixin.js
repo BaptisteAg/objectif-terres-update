@@ -46,29 +46,6 @@ export default {
 		}
 	},
 	methods: {
-		// nextStep() {
-		//     smoothScrolls.forEach(function (smoothScroll) {
-		//         smoothScroll.destroy();
-		//     });
-		//     smoothScrolls = [];
-		//
-		//     const smoothScroll = new SmoothScroll();
-		//
-		//     const anchorElement = [].slice.call(
-		//         document.querySelectorAll('.form-container')
-		//     ).find(element => element.style.display !== "none");
-		//
-		//
-		//     // Monkey patch for smoothScroll.js
-		//     // Without this check, it bugs when attempting to scroll to the same current position
-		//     // and indefinetly scroll
-		//     const topPositionRelativeToWindow = Math.abs(anchorElement.getBoundingClientRect().top);
-		//     if (parseInt(topPositionRelativeToWindow) > 0) {
-		//         smoothScroll.animateScroll(anchorElement);
-		//     }
-		//
-		//     smoothScrolls.push(smoothScroll);
-		// },
 		nextStep() {
 			window.scrollTo({top: 0, behavior: 'smooth'})
 		},

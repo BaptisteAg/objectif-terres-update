@@ -3,6 +3,11 @@
 
         <div class="is-flex is-flex-direction-column is-justify-content-space-around objT-border">
 
+			<b-message v-if="error.formEmpty" type="is-danger">
+				Merci de remplir le formulaire ci-dessous pour accéder aux annonces.
+			</b-message>
+
+
             <form @submit.prevent="sendAdsForm()">
                 <h3 class="title is-5">Consulter les annonces :</h3>
 
@@ -234,6 +239,7 @@ export default {
                 selectedKeywords: "",
             },
             error: {
+				formEmpty: false,
                 surface: false,
                 price: false,
                 fermage: false,
@@ -247,11 +253,17 @@ export default {
         },
         sendAdsForm() {
             this.error = {
+				formEmpty: false,
                 surface: false,
                 price: false,
                 fermage: false,
             }
             let error = false;
+
+			if (this.adsForm.selectedCategory === 'all') {
+				this.error.formEmpty = true;
+				error = true;
+			}
 
             if (parseInt(this.adsForm.selectedSurface.min) > parseInt(this.adsForm.selectedSurface.max)) {
                 this.error.surface = true;
