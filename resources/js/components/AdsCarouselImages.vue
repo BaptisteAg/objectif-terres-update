@@ -22,11 +22,18 @@ export default {
 	},
 	methods: {
 		getImageUrl(imagePath) {
+			let baseUrl = 'https://objectif-terres.org';
+			let newBaseUrl = 'https://objectif-terres.kaffein.tech';
+
 			if (window.location.hostname === 'objectif-terres.kaffein.tech') {
-				return 'https://objectif-terres.kaffein.tech/' + imagePath;
-			} else {
-				return imagePath;
+				if (imagePath.startsWith(baseUrl)) {
+					return imagePath.replace(baseUrl, newBaseUrl);
+				}
+				if (!imagePath.startsWith('http')) {
+					return newBaseUrl + '/' + imagePath;
+				}
 			}
+			return imagePath;
 		}
 	},
 }
