@@ -13,10 +13,6 @@
 
         <div class="mt-3">
 
-            @include('pages.ads.partials.show-author-infos')
-
-            @include('pages.ads.partials.show-ad-location', ['showCities' => true])
-
             {{--Affichage des tags et du prix--}}
             <div class="is-flex is-justify-content-space-between pb-4">
                 <b-taglist>
@@ -34,6 +30,8 @@
             {{--Affichage des informations détaillées de l'annonce--}}
             <div class="is-flex is-flex-wrap-wrap gap-3 is-justify-content-space-between">
 
+                @include('pages.ads.partials.show-author-infos')
+
                 @if(!empty($ad->landOfferAd->surface))
                     <div class="w-50">
                         <strong>Surface : </strong>
@@ -49,9 +47,6 @@
                         </div>
                     @endif
                 @endauth
-
-
-                @include('pages.ads.partials.show-author-infos')
 
                 <div class="w-50">
                     <strong>Altitude : </strong>
