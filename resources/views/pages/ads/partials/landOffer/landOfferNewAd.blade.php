@@ -122,8 +122,7 @@
 
             <section class="field mb-6" v-show="formInput.hasBuildings == '1'">
                 <b-tooltip class="w-100"
-                           label="Décrivez la nature des bâtiments agricoles présents sur la ferme (stabulation, hangar, tunnel, ...),
-                                   leur surface ou leur prix si une estimation a déjà été réalisée, leur état (s'il y a des travaux à prévoir).">
+                           label="Décrivez la nature des bâtiments agricoles présents sur la ferme (stabulation, hangar, tunnel, ...) et leur surface si une estimation a déjà été réalisée">
                     <div class="label">
                         {!! Form::label('land_offer[building][description]', 'Description des bâtiments'); !!}
                         <i class="fas fa-info-circle has-text-info"></i>

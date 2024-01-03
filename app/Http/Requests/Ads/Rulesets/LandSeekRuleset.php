@@ -8,8 +8,6 @@ class LandSeekRuleset implements RulesetInterface
 {
     public function get(bool $isSupportRequest): array
     {
-        //dd(request()->all());
-
         $extraValidations = [];
 
         if($isSupportRequest) {
