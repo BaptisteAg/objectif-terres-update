@@ -17,7 +17,7 @@
             ])
 
             <section class="mb-6 field" ref="offerTypes">
-                {!! Form::label('job_offer[building][offer_genres][]', 'Type d\'offre*', [
+                {!! Form::label('job_offer[offer_types][]', 'Type d\'offre*', [
                 'class' => 'label',
             ]); !!}
 
