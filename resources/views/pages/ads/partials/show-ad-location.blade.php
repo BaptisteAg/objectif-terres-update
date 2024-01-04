@@ -1,4 +1,4 @@
-<?php /** @var \App\Models\Ad $ad */ ?>
+ <?php /** @var \App\Models\Ad $ad */ ?>
 <div class="w-50">
     <strong>Département :</strong>
     {{ $ad->main_department->name }} ({{ $ad->main_department->code }})
@@ -23,3 +23,8 @@
         @endif
     </div>
 @endif
+{{--<show-more-button--}}
+{{--        :ad="{{$ad}}"--}}
+{{--        :user="{{auth()->user()}}"--}}
+{{--        :show-cities="{{ $showCities ? 'true' : 'false' }}"--}}
+{{--></show-more-button>--}}
