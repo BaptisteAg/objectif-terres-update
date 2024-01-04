@@ -28,8 +28,7 @@ class Kernel extends ConsoleKernel
 	protected function schedule(Schedule $schedule):void
 	{
         $filePath = getcwd().'/laravel-scheduler.log';
-        // DO NOT UNCOMMENT NOW
-        // LE CLIENT DECIDERA QUAND ON DECOMMENTE CETTE TACHE
+
         if(config("app.is_scheduler_live_mode")) {
             //$schedule->command('app:send-alert-new-results-research')->hourly()->appendOutputTo($filePath);
             //$schedule->command('app:notify-overdue-moderation')->weekly()->appendOutputTo($filePath);
