@@ -32,6 +32,8 @@
 
                 @include('pages.ads.partials.show-author-infos')
 
+                @include('pages.ads.partials.show-ad-location', ['showCities' => $ad->landOfferAd->accept_use_zip_code])
+
                 @if(!empty($ad->landOfferAd->surface))
                     <div class="w-50">
                         <strong>Surface : </strong>
@@ -56,8 +58,6 @@
                         Non renseignée
                     @endif
                 </div>
-
-                @include('pages.ads.partials.show-ad-location', ['showCities' => $ad->landOfferAd->accept_use_zip_code])
 
                 @if($ad->landOfferAd->is_activity_transfer)
                     <div class="w-50">

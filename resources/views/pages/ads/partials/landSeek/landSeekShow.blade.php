@@ -16,6 +16,7 @@
 
             {{--Affichage des informations détaillées de l'annonce--}}
             <div class="is-flex is-flex-wrap-wrap gap-3 is-justify-content-space-between">
+
                 @include('pages.ads.partials.show-author-infos')
 
                 @include('pages.ads.partials.show-ad-location', ['showCities' => true])

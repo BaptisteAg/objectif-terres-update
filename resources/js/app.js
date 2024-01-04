@@ -55,7 +55,8 @@ const AdsCarousel = () => import('./components/AdsCarouselImages.vue');
 Vue.component('ads-carousel', AdsCarousel);
 const Modal = () => import('./components/Modal.vue');
 Vue.component('modal', Modal);
-
+const ShowMoreButton = () => import('./pages/ads/components/ShowMoreButton.vue');
+Vue.component('show-more-button', ShowMoreButton);
 
 //////////////
 // VENDORS
