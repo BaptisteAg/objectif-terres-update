@@ -35,11 +35,10 @@ class ResearchComposer
         $jobOfferTypes = JobOfferType::orderBy('name')->get();
         $productionGenres = $this->adService->getProductionGenresFlattened();
         $bioCertifications = BioCertification::orderBy('name')->get();
-		$offerGenres = OfferGenre::where('id', '!=', OfferGenre::ID_LED_OU_DONATION)->orderBy('name')->get();
+		$offerGenres = OfferGenre::where('id', '!=', OfferGenre::ID_LEG_OU_DONATION)->orderBy('name')->get();
 
         $installationTypes = InstallationType::all();
         $educationLevels = EducationLevel::all();
-        $jobOfferTypes = JobOfferType::all();
 
         $view->with(compact('regionsWithAll','departments', 'jobOfferTypes', 'productionGenres', 'bioCertifications', 'offerGenres', 'installationTypes', 'educationLevels', 'jobOfferTypes'));
     }

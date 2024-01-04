@@ -44,10 +44,17 @@ class UnpublishOldAds implements ShouldQueue
      */
 	public function handle()
 	{
-        $months = 12;
+        if(config("app.is_scheduler_live_mode")) {
+            $before = Carbon::now()->subMonths(12);
+            $since = "12 mois";
+        }
+        else {
+            $before = Carbon::now()->subMinutes(10);
+            $since = "10 minutes";
+        }
 
 		$attributionAds = $this->attributionAdsService
-            ->findAllPublishedBefore(Carbon::now()->subMonths($months))
+            ->findAllPublishedBefore($before)
             ->filter(fn(AttributionAd $attributionAd) => $attributionAd->ad);
 
         echo("Unpublishing ads... ".$attributionAds->count()." found.");
@@ -57,7 +64,7 @@ class UnpublishOldAds implements ShouldQueue
 		foreach ($attributionAds as $attributionAd) {
 
 			$data['subject'] = 'Votre annonce a été dépubliée';
-			$data['message'] = 'Votre annonce était en ligne depuis '.$months.' mois. Sans intervention de votre part, nous l\'avons archivée.
+			$data['message'] = 'Votre annonce était en ligne depuis '.$since.'. Sans intervention de votre part, nous l\'avons archivée.
 			Vous avez toujours la possibilité de la soumettre à nouveau à modération en allant dans votre compte et en cliquant sur "Modifier"';
 
 			$data['url'] = '/annonces/' . $attributionAd->ad->id;
