@@ -28,6 +28,7 @@ class ProductionGenreRepository extends AbstractRepository
     {
         $productionGenresWithDepth = ProductionGenre::with('children')
             ->whereNull('parent_id')
+            ->orderBy('name')
             ->get()
             ->map
             ->only(['name', 'id', 'children']);

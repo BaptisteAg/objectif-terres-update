@@ -86,6 +86,9 @@
                    :price_searched="{{ json_encode($searchedPrice) }}"
                    :rent_searched="{{ json_encode($searchedRent) }}"
                    :keywords="{{ json_encode($keywords) }}"
+                   :installation_searched="{{ json_encode($installation) }}"
+                   :educations_searched="{{ json_encode($educationsSearched) }}"
+                   :experiences_searched="{{ json_encode($experiencesSearched) }}"
     ></research-tags>
 
     <div class="container py-4">

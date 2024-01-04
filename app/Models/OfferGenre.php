@@ -35,7 +35,7 @@ class OfferGenre extends Model
     const ID_VENTE = 1;
     const ID_LOCATION = 2;
     const ID_TEST_AGRICOLE = 3;
-    const ID_LED_OU_DONATION = 4;
+    const ID_LEG_OU_DONATION = 4;
 
     /**
      * @var array

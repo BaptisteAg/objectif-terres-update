@@ -163,23 +163,36 @@ class SalesforceService
      */
     public function getSyncedLocalUserFromSaml(\Aacotroneo\Saml2\Saml2User $samlUser) : User
     {
-		$this->repository->authenticate();
-
         $email = $samlUser->getAttribute('email')[0];
         $sfId = $samlUser->getAttribute('userId')[0];
 
+        return $this->syncLocalUser($email, $sfId);
+    }
+
+    /**
+     * @param string $email
+     * @param string $sfId
+     * @return User
+     * @throws \Throwable
+     */
+    public function syncLocalUser(string $email, string $sfId) : User {
+        $this->repository->authenticate();
+
         /** @var User $localUser */
         $user = $this->repository->find('User', $sfId, ['FirstName', 'LastName', 'ProfileId', 'Role_Objectif_Terre__c']);
+        if(!$user) {
+            throw new \Exception("Nous n'avons pas pu vous identifier. Veuillez contacter un administrateur.");
+        }
         $localUser = $this->localUserRepository->findByEmail($email);
 
         // Reverse user creation : if no user has been found, then we'll create it on the fly
         // to allow every salesforce-only user to pass the registration form
         if(!$localUser) {
-			$localUser = $this->localUserRepository->create([
-				'first_name' => $user["FirstName"],
-				'name' => $user["LastName"],
-				'email' => $email
-			]);
+            $localUser = $this->localUserRepository->create([
+                'first_name' => $user["FirstName"],
+                'name' => $user["LastName"],
+                'email' => $email
+            ]);
         }
 
         $localUser->deleted_at = null;

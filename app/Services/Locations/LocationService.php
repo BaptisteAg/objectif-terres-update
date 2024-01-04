@@ -209,7 +209,7 @@ class LocationService
         $cities = $this->search(
             'cities',
             $q,
-            City::select(['id', 'name', 'zip_code']),
+            City::with(['department'])->select(['id', 'name', 'zip_code']),
             ["name", "zip_code"]
         );
 
@@ -231,8 +231,9 @@ class LocationService
 
     public function getCityLabelRenderer()
     {
-        return function ($city) {
-            return $city["name"] . " (" . $city["zip_code"] . ")";
+        return function (City $city) {
+            $detail = $city->zip_code ? $city->zip_code : $city->department?->name;
+            return $city->name . ($detail ? " (" . $detail . ")" : "");
         };
     }
 
@@ -282,7 +283,6 @@ class LocationService
      * Orders results by relevance.
      *
      * @param string $q
-     * @param Builder $eloquentQuery
      * @param array $columns
      * @param \Closure|null $renderer
      *
@@ -293,14 +293,13 @@ class LocationService
         $q = mb_strtolower($q);
 
         foreach ($columns as $column) {
-            $eloquentQuery = $eloquentQuery->orWhere($column, 'LIKE', '%' . $q . '%');
+            $eloquentQuery = $eloquentQuery->orWhere($column, 'LIKE', DB::raw('"%'.$q.'%"'));
         }
 
         $results = $eloquentQuery
             ->orderBy(DB::raw('LENGTH('.$nameColumn.')'))
             ->orderBy($nameColumn)
-            ->get()
-            ->toArray();
+            ->get();
 
         /*
         $resultsByScore = [];
@@ -339,10 +338,10 @@ class LocationService
 
         //dd($results);
 
-        return array_map(
-            $this->getResultRenderer($type),
-            array_slice($results, 0, 20)
-        );
+        return $results
+            ->map($this->getResultRenderer($type))
+            ->slice(0, 20)
+            ->toArray();
     }
 
     public function getResultRenderer($type): \Closure
@@ -365,7 +364,7 @@ class LocationService
         return static function ($result) use ($type, $labelRenderer) {
             return [
                 "label" => $labelRenderer($result),
-                "value" => array_merge($result, [
+                "value" => array_merge($result->toArray(), [
                     "type" => $type
                 ]),
             ];

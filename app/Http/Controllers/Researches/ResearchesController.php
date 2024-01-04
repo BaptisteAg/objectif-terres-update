@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Researches;
 
 use App\Jobs\NotifyCreationAlertResearch;
+use App\Models\EducationLevel;
+use App\Models\InstallationType;
+use App\Models\JobOfferType;
 use App\Models\OfferGenre;
 use App\Models\ProductionGenre;
 use App\Models\Region;
@@ -74,9 +77,9 @@ ResearchesController extends Controller
         ];
         $transmissions = OfferGenre::whereIn('id', $request->get("offer_genres") ?? [])->pluck('name')->toArray();
         $waterAccess = match($request->get('water_access')) {
-            1 => 'Oui',
-            2 => 'Non',
-            -1 => 'Ne sait pas',
+            '1' => 'Oui',
+            '2' => 'Non',
+            '-1' => 'Ne sait pas',
             default => null
         };
         $keywords = $request->get('keywords');
@@ -88,12 +91,14 @@ ResearchesController extends Controller
             'min' => $request->get('fermage_min'),
             'max' => $request->get('fermage_max')
         ];
-
+        $installation = InstallationType::where('id', $request->get('installation'))->first()->name ?? null;
+        $educationsSearched = $request->get('formations') ? EducationLevel::whereIn('id', $request->get('formations'))->pluck('name')->toArray() : [];
+        $experiencesSearched = $request->get('experiences') ? JobOfferType::whereIn('id', $request->get('experiences'))->pluck('name')->toArray() : [];
 
 		return view('pages.researches', compact(
             'ads', 'adsType', 'request', 'hasDepartmentPolygons',
             'searchedRegionNames', 'searchedTypeOfProductions', 'searchedSurface', 'transmissions',
-            'waterAccess', 'keywords', 'searchedPrice', 'searchedRent'
+            'waterAccess', 'keywords', 'searchedPrice', 'searchedRent', 'installation', 'educationsSearched', 'experiencesSearched'
         ));
 	}
 
