@@ -42,6 +42,9 @@ class Kernel extends ConsoleKernel
             $schedule->command('app:notify-publish-date-extend-before-expiration')->appendOutputTo($filePath);
             $schedule->command('app:unpublish-old-ads')->appendOutputTo($filePath);
         }
+
+        $schedule->command('app:sync-salesforce-sso-users-permissions')->daily()->appendOutputTo($filePath);
+
         //$schedule->command('app:notify-drafts-unpublished-ads')->hourly()->appendOutputTo($filePath);
         //$schedule->command('app:change-support-state-old-support-request')->daily()->appendOutputTo($filePath);
         //$schedule->command('app:notify-6-moths-old-support-request')->daily()->appendOutputTo($filePath);
