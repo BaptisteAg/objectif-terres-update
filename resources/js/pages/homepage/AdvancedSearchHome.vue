@@ -314,7 +314,7 @@ export default {
             }
 
             if(this.advancedSearch.active) {
-                if (['jobOfferAd', 'jobSeekAd'].includes(this.adsForm.selectedCategory)) {
+                if (['jobOfferAd'].includes(this.adsForm.selectedCategory)) {
                     this.adsForm.selectedExperiences.forEach(id => params.append('experiences[]', id));
                 }
 

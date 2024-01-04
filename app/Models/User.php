@@ -115,7 +115,13 @@ class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 	use SoftDeletes;
 	use ScopeLocationFilterable;
 
-	/**
+    const ROLE_PP = 0;
+    const ROLE_MODERATOR = 1;
+    const ROLE_PRIMO_ACCUEILLANT = 2;
+    const ROLE_RESPONSABLE_TERRITORIAL = 3;
+    const ROLE_ADMIN = 4;
+
+    /**
 	 * The attributes that are mass assignable.
 	 *
 	 * @var array

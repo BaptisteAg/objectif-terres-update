@@ -156,7 +156,7 @@ class User extends Resource
 				return isset($this->role) && $this->role >= 1;
 			}),
 
-			HasMany::make('Permission de l\'utilisateur', 'userPermissions', 'App\Nova\UserPermission')->canSee(function ($request) {
+			HasMany::make('Permissions spéciales', 'userPermissions', 'App\Nova\UserPermission')->canSee(function ($request) {
 				return isset($this->role) && $this->role >= 1;
 			}),
 
