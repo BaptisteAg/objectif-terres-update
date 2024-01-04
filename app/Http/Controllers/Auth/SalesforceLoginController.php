@@ -56,6 +56,10 @@ class SalesforceLoginController extends Saml2Controller
             logger()->error('Saml2 error', $errors);
             session()->flash('saml2_error', $errors);
 
+            if(config('app.env') === 'local') {
+                throw new \Exception("Could not login : ".json_encode($errors));
+            }
+
             return redirect("/connexion")->withErrors("Une erreur empêche l'identification depuis Salesforce. Merci de <a href='https://terredeliens.lightning.force.com/secur/logout.jsp' target='_blank'>cliquer ici</a> pour vous déconnecter de Salesforce, puis réessayez");
         }
 

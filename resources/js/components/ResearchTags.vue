@@ -5,7 +5,7 @@
             <div
                 v-for="(tag,i) in tags"
                 :key="tag.label"
-                :class="'gap-2 column is-4' + (i % 3 === 1 ? ' has-text-centered' : '') + (i % 3 === 2 ? ' has-text-right' : '')">
+                :class="'gap-2 column is-4' + (i % 3 === 1 && i !== tags.length-1 ? ' has-text-centered' : '') + (i % 3 === 2 || i === tags.length-1 ? ' has-text-right' : '')">
                 <strong class="flex-fit-content">{{ tag.label }}</strong>
                 <span class="xthree-dots">{{ tag.value }}</span>
             </div>
@@ -41,12 +41,20 @@ export default {
             type: Object
         },
         water_access: {
-            type: Number
+            type: String
         },
         keywords: {
             type: String
         },
-
+        installation_searched: {
+            type: String
+        },
+        educations_searched: {
+            type: Array
+        },
+        experiences_searched: {
+            type: Array
+        },
     },
     data() {
         return {
@@ -86,10 +94,10 @@ export default {
                     value
                 });
             }
-            if(this.transmissions) {
+            if(this.transmissions.length) {
                 tags.push({
                     label: 'Transmissions',
-                    value: this.transmissions.join(', ') || 'Non définie'
+                    value: this.transmissions.join(', ')
                 });
             }
             if(this.price_searched && this.price_searched.min || this.price_searched.max) {
@@ -127,7 +135,25 @@ export default {
             if(this.water_access) {
                 tags.push({
                     label: 'Accès à l\'eau',
-                    value: this.water_access === 1 ? 'Oui' : this.water_access === 0 ? 'Non' : 'Ne sait pas'
+                    value: this.water_access
+                });
+            }
+            if(this.installation_searched) {
+                tags.push({
+                    label: 'Installation',
+                    value: this.installation_searched
+                });
+            }
+            if(this.educations_searched.length) {
+                tags.push({
+                    label: 'Formations',
+                    value: this.educations_searched.join(', ')
+                });
+            }
+            if(this.experiences_searched.length) {
+                tags.push({
+                    label: 'Expériences',
+                    value: this.experiences_searched.join(', ')
                 });
             }
             if(this.keywords) {
