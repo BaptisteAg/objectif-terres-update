@@ -243,7 +243,7 @@ class  AdService
             if ($availableModerators->count() >= 1) {
                 /** @var User $moderator */
                 $moderator = $availableModerators->random();
-            } // Sinon utilisateurs avec permissions spéciales
+            } // Sinon utilisateur random avec permissions spéciales
             else if (!empty($availableUserWithPermission)) {
                 $moderator = $availableUserWithPermission;
             }

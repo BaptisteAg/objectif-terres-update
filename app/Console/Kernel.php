@@ -28,19 +28,22 @@ class Kernel extends ConsoleKernel
 	protected function schedule(Schedule $schedule):void
 	{
         $filePath = getcwd().'/laravel-scheduler.log';
-        // DO NOT UNCOMMENT NOW
-        // LE CLIENT DECIDERA QUAND ON DECOMMENTE CETTE TACHE
-        //$schedule->command('app:unpublish-old-ads')->hourly()->appendOutputTo($filePath);
+
         if(config("app.is_scheduler_live_mode")) {
             //$schedule->command('app:send-alert-new-results-research')->hourly()->appendOutputTo($filePath);
             //$schedule->command('app:notify-overdue-moderation')->weekly()->appendOutputTo($filePath);
             $schedule->command('app:notify-publish-date-extend-before-expiration')->daily()->appendOutputTo($filePath);
+            $schedule->command('app:unpublish-old-ads')->daily()->appendOutputTo($filePath);
         }
         else {
             //$schedule->command('app:send-alert-new-results-research')->everyFiveMinutes()->appendOutputTo($filePath);
             //$schedule->command('app:notify-overdue-moderation')->hourly()->appendOutputTo($filePath);
             $schedule->command('app:notify-publish-date-extend-before-expiration')->appendOutputTo($filePath);
+            $schedule->command('app:unpublish-old-ads')->appendOutputTo($filePath);
         }
+
+        $schedule->command('app:sync-salesforce-sso-users-permissions')->daily()->appendOutputTo($filePath);
+
         //$schedule->command('app:notify-drafts-unpublished-ads')->hourly()->appendOutputTo($filePath);
         //$schedule->command('app:change-support-state-old-support-request')->daily()->appendOutputTo($filePath);
         //$schedule->command('app:notify-6-moths-old-support-request')->daily()->appendOutputTo($filePath);

@@ -41,16 +41,6 @@ class Department extends Resource
 	public static $displayInNavigation = false;
 
 
-	public static function indexQuery(NovaRequest $request, $query)
-	{
-		if ($request->findParentModel()->role >= 2) {
-			return $query
-				->distinct()
-				->select('territory_id')
-				->groupBy('territory_id');
-		}
-	}
-
 	/**
 	 * Get the fields displayed by the resource.
 	 *
@@ -61,9 +51,7 @@ class Department extends Resource
 	{
 		return [
 			BelongsTo::make('Territoire', 'territory', Territory::class)->searchable()->sortable(),
-			Text::make('Name')->canSee(function ($request) {
-				return $request->findParentModel()->role < 2;
-			}),
+			Text::make('Nom', 'name')->sortable(),
 		];
 	}
 
