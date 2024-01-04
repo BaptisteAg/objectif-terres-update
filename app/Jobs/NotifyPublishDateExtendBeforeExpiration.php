@@ -40,8 +40,8 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
             $extraMsg = '';
         }
         else {
-            $date = Carbon::now()->subMonths(6)->subHours(2);
-            $extraMsg = " \n(MODE TEST : NOTIFICATION 2 HEURES AVANT, EXPIRATION LE ".$date. ")";
+            $date = Carbon::now()->subMinutes(5);
+            $extraMsg = " \n(MODE TEST : NOTIFICATION 5 MINUTES APRES, EXPIRATION DANS 5 MINUTES DE PLUS)";
         }
 
        $soonToExpireAds = $this->adService->findAdsPublishedSince($date);

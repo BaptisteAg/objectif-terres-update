@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use LaravelIdea\Helper\App\Models\_IH_Ad_QB;
 
 class ResearchService
 {
@@ -183,25 +184,26 @@ class ResearchService
 		return $ads->paginate(15);
 	}
 
-	/**
-	 * @param Request $filters
-	 * @return Ad|Builder|\LaravelIdea\Helper\App\Models\_IH_Ad_QB
+    /**
+     * @param Request $filters
+     * @param null $with
+     * @return Ad|Builder|_IH_Ad_QB
      */
 	public function filter(Request $filters, $with = null)
 	{
-		$adsFilter = (new Ad)->newQuery();
+		$query = (new Ad)->newQuery();
         if($with) {
-            $adsFilter->with($with);
+            $query->with($with);
         }
 		//Filter by type of ads
 		$adType = '';
 
 		if ($filters->has('certified')) {
-			$adsFilter->where('is_partner', '=', 1);
+			$query->where('is_partner', '=', 1);
 		}
 
 		if ($filters->has('ad_category') && $filters->input('ad_category') === "all") {
-			$adsFilter->whereHas('attributionAd', function (Builder $query) {
+			$query->whereHas('attributionAd', function (Builder $query) {
 				$query->whereNotNull('published_on');
 				$query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
 			})
@@ -216,110 +218,111 @@ class ResearchService
 		}
 
         // filter by departments locations and all locations related to the departments selected
-        $adsFilter->whereNull('project_id');
+        $query->whereNull('project_id');
         if ($filters->has('cities_location_researches_ids')) {
             if (!is_null($filters->input('radius_research'))) {
                 $cityIds = $this->getCitiesInRadius($filters->input('cities_location_researches_ids'), $filters->input('radius_research'));
-                $adsFilter->filterLocations('cities', $cityIds);
+                $query->filterLocations('cities', $cityIds);
             } else {
-                $adsFilter->filterLocations('cities', $filters->input('cities_location_researches_ids'));
+                $query->filterLocations('cities', $filters->input('cities_location_researches_ids'));
             }
 
         } // filter by departments locations and all locations related to the departments selected
         else if ($filters->has('departments_location_researches_ids')) {
             $departmentsCodes = Department::whereIn('id', $filters->input('departments_location_researches_ids'))->get('code')->toArray();
-            $adsFilter->filterLocations('departments', $filters->input('departments_location_researches_ids'));
-            $adsFilter->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
+            $query->filterLocations('departments', $filters->input('departments_location_researches_ids'));
+            $query->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
         } // filter by regions locations and all locations related to the regions selected
         else if ($filters->has('regions_location_researches_ids')) {
             if (!in_array(-1, $filters->input('regions_location_researches_ids'))) {
                 $regionsCodes = Region::whereIn('id', $filters->input('regions_location_researches_ids'))->get('code')->toArray();
                 $departmentsCodes = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
-                $adsFilter->filterLocations('regions', $filters->input('regions_location_researches_ids'));
-                $adsFilter->filterSubLocations('departments', $regionsCodes, 'departments.region_code');
-                $adsFilter->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
+                $query->filterLocations('regions', $filters->input('regions_location_researches_ids'));
+                $query->filterSubLocations('departments', $regionsCodes, 'departments.region_code');
+                $query->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
             }
-        }
-
-        if ($filters->has('offer_genres') && $adType !== "all") {
-            $adsFilter->filterWhereHasIn($filters->input('offer_genres'), $adType . '.offerGenres', 'offer_genre_id');
         }
 
         if (!is_null($filters->input('surfaces_research_max')) && $filters->input('surfaces_research_max') !== "0" && $filters->input('surfaces_research_max') !== "100000000000") {
             if ($adType === 'landSeekAd') {
-                $adsFilter->filterWhereHasWhere($filters->input('surfaces_research_max'), $adType, '<=', 'surface_range_max');
+                $query->filterWhereHasWhere((int)$filters->input('surfaces_research_max'), $adType, '<=', 'surface_range_max');
             }
             else if (in_array($adType, ['landOfferAd', 'associateOfferAd'])) {
-                $adsFilter->filterWhereHasWhere($filters->input('surfaces_research_max'), $adType, '<=', 'surface');
+                $query->filterWhereHasWhere((int)$filters->input('surfaces_research_max'), $adType, '<=', 'surface');
             }
         }
 
         if (in_array($adType, ['landOfferAd', 'associateOfferAd'])) {
             if (!is_null($filters->input('price_min'))) {
-                $adsFilter->whereHas($adType, function (Builder $query) use ($filters) {
-                    $query->where('price', '>=', $filters->input('price_min'));
+                $query->whereHas($adType, function (Builder $query) use ($filters) {
+                    $query->where('price', '>=', (int)$filters->input('price_min'));
                 });
             }
             if (!is_null($filters->input('price_max'))) {
-                $adsFilter->whereHas($adType, function (Builder $query) use ($filters) {
-                    $query->where('price', '>=', $filters->input('price_max'));
+                $query->whereHas($adType, function (Builder $query) use ($filters) {
+                    $query->where('price', '<=', (int)$filters->input('price_max'));
                 });
             }
             if (!is_null($filters->input('fermage_min'))) {
-                $adsFilter->whereHas($adType, function (Builder $query) use ($filters) {
-                    $query->orWhere('rent_price', '>=', $filters->input('fermage_min'));
+                $query->whereHas($adType, function (Builder $query) use ($filters) {
+                    $query->where('rent_price', '>=', (int)$filters->input('fermage_min'));
                 });
             }
             if (!is_null($filters->input('fermage_max'))) {
-                $adsFilter->whereHas($adType, function (Builder $query) use ($filters) {
-                    $query->orWhere('rent_price', '>=', $filters->input('fermage_max'));
+                $query->whereHas($adType, function (Builder $query) use ($filters) {
+                    $query->where('rent_price', '<=', (int)$filters->input('fermage_max'));
                 });
             }
         }
 
         if ($filters->has('has_buildings') && $adType !== "all") {
-            $adsFilter->filterWhereHasWhere($filters->input('has_buildings'), $adType, '=', 'has_buildings');
+            $query->filterWhereHasWhere($filters->input('has_buildings'), $adType, '=', 'has_buildings');
         }
 
         if ($filters->has('has_picture')) {
-            $adsFilter->whereHas('documents', function (Builder $query) {
+            $query->whereHas('documents', function (Builder $query) {
                 $query->where('type', 'like', 'image/%');
             });
 
         }
 
+        if($filters->has('installation')) {
+            $query->filterWhereHasWhere($filters->input('installation'), $adType, '=', 'installation_type_id');
+        }
+
         if($adType !== "all") {
             if ($filters->has('production_genres')) {
-                $adsFilter->filterWhereHasIn($filters->input('production_genres'), $adType . '.productionGenres', 'production_genres.id');
+                $query->filterWhereHasIn($filters->input('production_genres'), $adType . '.productionGenres', 'production_genres.id');
             };
 
             if ($filters->has('bio_certifications')) {
-                $adsFilter->filterWhereHasIn($filters->input('bio_certifications'), $adType . '.bioCertifications', 'bio_certifications.id');
+                $query->filterWhereHasIn($filters->input('bio_certifications'), $adType . '.bioCertifications', 'bio_certifications.id');
             }
 
-            if ($filters->has('offer_genres')) {
-                $adsFilter->filterWhereHasIn($filters->input('offer_genres'), $adType . '.offerGenres', 'offer_genres.id');
-            }
+
             if (!is_null($filters->input('jobOfferType'))) {
-                $adsFilter->filterWhereHasWhere($filters->input('jobOfferType'), $adType . '.jobOfferTypes', '=', 'job_offer_types.id');
+                $query->filterWhereHasWhere($filters->input('jobOfferType'), $adType . '.jobOfferTypes', '=', 'job_offer_types.id');
             }
 
-            $adsFilter->filterAdTypes([$adType], '');
+            $query->filterAdTypes([$adType]);
         }
 
         $validatedStatus = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first();
-        $adsFilter->filterWhereHasWhere($validatedStatus->id, 'attributionAd', '=', 'ad_status_id');
-        $adsFilter->where("is_draft", '=', 0);
+        $query->filterWhereHasWhere($validatedStatus->id, 'attributionAd', '=', 'ad_status_id');
+        $query->where("is_draft", '=', 0);
 
         //Filter ads by keywords
         if (!is_null($filters->input('keywords'))) {
-            $adsFilter->where(function (Builder $query) use ($filters) {
+            $query->where(function (Builder $query) use ($filters, $adType) {
                 $query->where('title', 'like', '%' . $filters->input('keywords') . '%');
                 $query->orWhere('about_content', 'like', '%' . $filters->input('keywords') . '%');
                 $query->orWhere('about_project_content', 'like', '%' . $filters->input('keywords') . '%');
-                $query->orWhere(function (Builder $subQuery) use ($filters) {
-                    $subQuery->whereHas('landOfferAd', function (Builder $q) use ($filters) {
-                        $q->where('sau_description', 'like', '%' . $filters->input('keywords') . '%');
+
+                if($adType === 'landOfferAd') {
+                    $query->orWhereHas('landOfferAd', function (Builder $q) use ($filters) {
+                        $q->where('experience_farming', 'like', '%' . $filters->input('keywords') . '%');
+                        $q->orWhere('land_description', 'like', '%' . $filters->input('keywords') . '%');
+                        $q->orWhere('sau_description', 'like', '%' . $filters->input('keywords') . '%');
                         $q->orWhere('water_access_description', 'like', '%' . $filters->input('keywords') . '%');
                         $q->orWhere('test_description', 'like', '%' . $filters->input('keywords') . '%');
                         $q->orWhere(function (Builder $q) use ($filters) {
@@ -333,74 +336,51 @@ class ResearchService
                         });
 
                     });
-                });
-                $query->orWhere(function (Builder $subQuery) use ($filters) {
-                    $subQuery->whereHas('landSeekAd', function (Builder $q) use ($filters) {
-                        $q->where('experience_farming', 'like', '%' . $filters->input('keywords') . '%');
-                        $q->orWhere('land_description', 'like', '%' . $filters->input('keywords') . '%');
-                    });
-                });
-                $query->orWhere(function (Builder $subQuery) use ($filters) {
-                    $subQuery->whereHas('associateOfferAd', function (Builder $q) use ($filters) {
+                }
+
+                if($adType === 'associateOfferAd') {
+                    $query->orWhereHas('associateOfferAd', function (Builder $q) use ($filters) {
                         $q->where('associate_description', 'like', '%' . $filters->input('keywords') . '%');
                         $q->where('experience_farming', 'like', '%' . $filters->input('keywords') . '%');
                     });
-                });
+                }
             });
         }
 
         if($filters->has('water_access')) {
-            $adsFilter->where(function (Builder $query) use ($filters, $adType) {
-                if ($adType === 'landOfferAd') {
-                    $query->whereHas('landOfferAd', function (Builder $q) use ($filters) {
-                        $q->where('water_access', $filters->get('water_access'));
-                    });
-                }
-                if ($adType === 'associateOfferAd') {
-                    $query->orWhereHas('associateOfferAd', function (Builder $q) use ($filters) {
-                        $q->where('water_access', $filters->get('water_access'));
-                    });
-                }
+            $query->whereHas($adType, function (Builder $q) use ($filters) {
+                $q->where('water_access', (int)$filters->get('water_access'));
             });
         }
 
+        if($filters->has('formations')) {
+            $query->filterWhereHasIn($filters->input('formations'), $adType . '.educationLevels', 'education_levels.id');
+        }
+
+        if($filters->has('experiences')) {
+            $query->filterWhereHasIn($filters->input('experiences'), $adType . '.jobOfferTypes', 'job_offer_types.id');
+        }
+
+
+
 		if ($filters->has('order') && $filters->has('sort')) {
 			if ($filters->input('sort') === 'date') {
-				$adsFilter->join('attribution_ads', "ads.id", '=', "attribution_ads.ad_id")
+				$query->join('attribution_ads', "ads.id", '=', "attribution_ads.ad_id")
 					->orderBy('published_on', $filters->input('order'))
 					->select('ads.*');
 			} else {
 				$adsTypeSelectedTableName = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $adType)) . 's';
-				$adsFilter->join($adsTypeSelectedTableName, 'ads.id', '=', $adsTypeSelectedTableName . '.ad_id')
+				$query->join($adsTypeSelectedTableName, 'ads.id', '=', $adsTypeSelectedTableName . '.ad_id')
 					->orderBy($filters->input('sort'), $filters->input('order'))
 					->select('ads.*');
 			}
 		} else {
-			$adsFilter->join('attribution_ads', "ads.id", '=', "attribution_ads.ad_id")
+			$query->join('attribution_ads', "ads.id", '=', "attribution_ads.ad_id")
 				->orderByDesc('published_on')
 				->select('ads.*');
-		}
+		};
 
-		$ads = $adsFilter->with(
-			'project',
-			'userPp',
-			'project.projectStatus',
-			'attributionAd',
-
-			'cities',
-			'cities.department',
-			'cities.department.region',
-			'departments',
-			'departments.region',
-			'regions',
-
-			'landSeekAd',
-			'landOfferAd',
-			'jobOfferAd',
-			'jobSeekAd'
-		);
-
-		return $ads;
+		return $query;
 	}
 
     /**

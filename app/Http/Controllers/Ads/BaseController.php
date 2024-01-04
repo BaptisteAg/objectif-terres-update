@@ -90,15 +90,16 @@ abstract class BaseController extends Controller
         }
 
         $selected_departments = json_encode(array_filter(array_merge(
-            array_map($this->locationService->getResultRenderer('departments'), array_filter([$ad->department?->toArray()])),
+            array_map($this->locationService->getResultRenderer('departments'), array_filter([$ad->department])),
+
         )));
 
-        $zoneDepartments = $ad->departments->except($ad->department?->id)->toArray();
-        $selected_zones = json_encode(array_filter(array_merge(
-            array_map($this->locationService->getResultRenderer('regions'), $ad->regions->toArray()),
-            array_map($this->locationService->getResultRenderer('departments'), $zoneDepartments),
-            array_map($this->locationService->getResultRenderer('cities'), $ad->cities->toArray())
-        )));
+        $zoneDepartments = $ad->departments->except($ad->department?->id);
+        $selected_zones = collect([
+            ...$ad->regions->map($this->locationService->getResultRenderer('regions')),
+            ...$zoneDepartments->map($this->locationService->getResultRenderer('departments')),
+            ...$ad->cities->map($this->locationService->getResultRenderer('cities'))
+        ])->filter()->toJson();
         $locationable = array_filter([
             "cities" => $ad->cities->pluck('id')->toArray(),
             "departments" => $ad->departments->pluck('id')->toArray(),

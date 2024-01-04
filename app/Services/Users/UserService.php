@@ -282,10 +282,9 @@ class UserService
     public function findOneByUserPermissionAndDepartments(int $permission, array $departmentCodes): ?User
     {
         $users = $this->repository->findAllByUserPermissionAndDepartments($permission, $departmentCodes);
-        if (!empty($users)) {
-            return $users->first();
+        if (!$users->isEmpty()) {
+            return $users->random();
         }
         return null;
     }
-
 }

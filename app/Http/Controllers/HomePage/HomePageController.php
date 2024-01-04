@@ -40,7 +40,7 @@ class HomePageController extends Controller
         $ads = $adsQuery->get();
         $adsPartner = $adsQuery->where('is_partner', 1)->get();
 
-        $rssNews = $rssService->getTdlNews();
-        return view('pages.homepage', compact('ads', 'adsPartner', 'rssNews'));
+        //$rssNews = $rssService->getTdlNews();
+        return view('pages.homepage', compact('ads', 'adsPartner'));
     }
 }
