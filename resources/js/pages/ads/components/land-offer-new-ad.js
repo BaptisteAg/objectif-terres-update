@@ -1,4 +1,4 @@
-import {maxLength, maxValue, minLength, required, decimal} from 'vuelidate/lib/validators'
+import {decimal, maxLength, maxValue, minLength, required, requiredIf} from 'vuelidate/lib/validators'
 import baseValidations from './base-validations'
 
 import FormNewAdMixin from "./mixins/form-new-ad-mixin";
@@ -41,22 +41,6 @@ export default {
 			old.land_offer = {}
 		}
 
-		// TODO: remove
-		//const extraFormInput = this.isSupportRequest ? {
-		//    isBeneficiary: v.land_offer.is_beneficiary || '1',
-		//    isActivityTransfer:  v.land_offer.is_activity_transfer  ?
-		//        v.land_offer.is_activity_transfer.toString() : '',
-//
-		//    buildingSurface: v.land_offer.building && v.land_offer.building.surface || '',
-		//    buildingOfferGenres: v.land_offer.building && v.land_offer.building.offer_genres || [],
-//
-		//    houseSurface: v.land_offer.house && v.land_offer.house.surface || '',
-		//    houseOfferGenres: v.land_offer.house && v.land_offer.house.offer_genres || [],
-//
-		//    supportRequestText: v.support_request_text || '',
-		//    supportRequestTerritoryId : v.support_request_territory_id ||"",
-		//} : {};
-
 		return {
 			formInput: {
 				selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
@@ -90,10 +74,10 @@ export default {
 				title: old.title || '',
 				documents: old.documents && JSON.parse(old.documents) || [],
 
-                //confirmPriceFermage: hasOld ? !!v.confirm_price_fermage : false,
+				//confirmPriceFermage: hasOld ? !!v.confirm_price_fermage : false,
 
 				//...extraFormInput
-			}
+			},
 		};
 	},
 	computed: {
@@ -114,7 +98,7 @@ export default {
 		},
 		isTestOffer() {
 			return this.formInput.offerGenres.find(offerGenreId => offerGenreId.toString() === "3");
-		}
+		},
 	},
 	methods: {
 		choiceOfferGenres(value) {
@@ -147,29 +131,6 @@ export default {
 		}
 	},
 	validations() {
-		// TOdo: remove
-		//const extraValidations = this.isSupportRequest ? {
-		//    //isBeneficiary: {required},
-		//    isActivityTransfer: {required},
-//
-		//    buildingSurface: {
-		//        decimal
-		//    },
-		//    //buildingOfferGenres: {required},
-//
-		//    houseSurface: {
-		//        decimal
-		//    },
-		//    //houseOfferGenres: {required},
-//
-		//    supportRequestText: {
-		//        required,
-		//        minLength: minLength(10),
-		//        maxLength: maxLength(400),
-		//    }
-//
-		//} : {};
-
 		return {
 			formInput: {
 				...baseValidations.formInput,
@@ -216,15 +177,22 @@ export default {
 				offerGenres: {required},
 				price: {
 					decimal,
-					required: this.formInput.offerGenres.includes(1) && !this.formInput.isSaleOfferEvaluation,
+					required: requiredIf(() => {
+						return Object.values(this.formInput.offerGenres).includes('1')
+					})
 				},
 				rentPrice: {
 					decimal,
-					required: this.formInput.offerGenres.includes(2)
+					required: requiredIf(() => {
+						return Object.values(this.formInput.offerGenres).includes('2')
+					})
 				},
 				testDescription: {
 					minLength: minLength(5),
 					maxLength: maxLength(1000),
+					required: requiredIf(() => {
+						return Object.values(this.formInput.offerGenres).includes('3')
+					})
 				},
 				chartConfirmation: {
 					required,
