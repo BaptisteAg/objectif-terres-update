@@ -9,7 +9,6 @@
         'citiesList' => $ad->citiesArray,
         'showCities' => $showCities,
     ];
-   dump($adsMoreButton);
 @endphp
 
 <show-more-button :ad='{{ json_encode($adsMoreButton) }}'>
