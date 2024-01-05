@@ -85,7 +85,7 @@ class LocationService
         return $departments->map(function ($department) use ($adsCountByDepartmentId) {
             $geoPolygon = $this->getLocationGeoPolygon($department->name, 'department');
             $geoPolygon->department_id = $department->id;
-            $geoPolygon->ads_count = $adsCountByDepartmentId[$polygon->department_id] ?? 0;
+            $geoPolygon->ads_count = $adsCountByDepartmentId[$department->id] ?? 0;
             return $geoPolygon;
         })->filter(fn($p) => $p->ads_count > 0)->toArray();
     }
