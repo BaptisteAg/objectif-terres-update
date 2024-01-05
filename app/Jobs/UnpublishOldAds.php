@@ -53,11 +53,21 @@ class UnpublishOldAds implements ShouldQueue
             $since = "10 minutes";
         }
 
+        // Log sql
+        DB::enableQueryLog();
+
 		$attributionAds = $this->attributionAdsService
             ->findAllPublishedBefore($before)
             ->filter(fn(AttributionAd $attributionAd) => $attributionAd->ad);
 
-        echo("Unpublishing ads... ".$attributionAds->count()." found.");
+        // Log sql
+        $queries = DB::getQueryLog();
+        $formattedQueries = array_map(function ($query) {
+            return vsprintf(str_replace(['%', '?'], ['%%', '%s'], $query['query']), $query['bindings']);
+        }, $queries);
+        logger(implode("\n", $formattedQueries));
+
+        echo("Unpublishing ads older than ".$before."... ".$attributionAds->count()." found.");
 
         //dd($attributionAds->random()->toArray());
 

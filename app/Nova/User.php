@@ -211,7 +211,11 @@ class User extends Resource
 		return [
             app(ReallocateModeratorAds::class)
                 ->canSee(function (Request $request) {
-                    return $request->has('new_moderator_id') || $this->resource?->role >= 1;
+                    if($request->resourceId) {
+                        $user = \App\Models\User::find($request->resourceId);
+                        return $user->role > 0;
+                    }
+                    return $request->has('new_moderator_id') || $this->resource->role > 0;
                 })
                 ->forUser($this->resource),
         ];
