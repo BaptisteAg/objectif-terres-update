@@ -219,7 +219,7 @@
                     <input type="hidden" name="land_offer[is_sales_offer_evaluation]"
                            :value="formInput.isSaleOfferEvaluation">
                 </div>
-                <div class="column field" v-if="isSaleOffer" ref="price">
+                <div class="column field" v-show="isSaleOffer && !formInput.isSaleOfferEvaluation" ref="price">
                     {!! Form::label('land_offer[price]', 'Prix de vente *', [
                                         'class' => 'label',
                                     ]); !!}
@@ -243,7 +243,7 @@
                         département, nous pouvons refuser la publication de votre annonce.
                     </p>
                 </div>
-                <div class="column field" v-if="isRentOffer" ref="rentPrice">
+                <div class="column field" v-show="isRentOffer" ref="rentPrice">
                     {!! Form::label('land_offer[rent_price]', 'Fermage annuel *', [
                                         'class' => 'label',
                                     ]); !!}
@@ -262,7 +262,7 @@
                 </div>
             </section>
 
-            <section class="mb-6 field" ref="testDescription" v-if="isTestOffer">
+            <section class="mb-6 field" ref="testDescription" v-show="isTestOffer">
                 {!! Form::label('land_offer[test_description]', 'Modalité du test agricole *', [
                                                         'class' => 'label',
                                                     ]); !!}
