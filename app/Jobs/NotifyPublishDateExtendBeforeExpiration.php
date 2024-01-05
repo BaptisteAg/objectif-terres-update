@@ -51,7 +51,7 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
         foreach($soonToExpireAds as $ad) {
             try {
                 logger("Sending email for ".$ad->title);
-                $ad->userPp->notify(new BasicNotification([
+                $ad->userPp?->notify(new BasicNotification([
                     'subject' => "Votre annonce va bientôt expirer",
                     'message' => "Nous espérons que ce service a répondu à votre besoin.\n
 
