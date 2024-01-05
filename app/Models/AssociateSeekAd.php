@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\BioCertifiable;
 use App\Models\Traits\EducationLevelable;
 use App\Models\Traits\ProductionableGenre;
 use Chelout\RelationshipEvents\Concerns\HasMorphToManyEvents;
@@ -12,6 +13,7 @@ class AssociateSeekAd extends Model
 {
     use ProductionableGenre,
 		EducationLevelable,
+        BioCertifiable,
 		HasMorphToManyEvents,
 		HasRelationshipObservables;
 
