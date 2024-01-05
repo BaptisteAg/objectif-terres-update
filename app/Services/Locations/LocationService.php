@@ -55,8 +55,6 @@ class LocationService
 
     public function getDepartmentPolygons(Request $request)
     {
-        $cacheKey = 'departmentspolygon.'.$request->get('ad_category');
-
         $ads = $this->researchService->filter($request, ['departments', 'department', 'cities', 'cities.department'])->get();
 
         $departmentIds = Region::find($request->get('regions_location_researches_ids')[0])
@@ -82,13 +80,6 @@ class LocationService
 
         /** @var Department[]|Collection $departments */
         $departments = Department::whereIn('id', array_keys($adsCountByDepartmentId))->get();
-
-        //$polygons =  Cache::rememberForever($cacheKey, fn() => $departments->map(function ($department) use ($adsCountByDepartmentId) {
-        //    $geoPolygon = $this->getLocationGeoPolygon($department->name, 'department');
-        //    $geoPolygon->department_id = $department->id;
-        //    $geoPolygon->ads_count = $adsCountByDepartmentId[$department->id] ?? 0;
-        //    return $geoPolygon;
-        //}));
 
         return $departments->map(function ($department) use ($adsCountByDepartmentId) {
             $geoPolygon = $this->getLocationGeoPolygon($department->name, 'department');

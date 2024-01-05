@@ -51,7 +51,7 @@ class AttributionAd extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make('ID', 'ad.id')->sortable()->readonly(),
+            Text::make('ID', 'ad.id')->sortable()->readonly(),
             BelongsTo::make('Annonce', 'ad', Ad::class)->readonly(),
             BelongsTo::make('Modérateur', 'userModerator', UserModerator::class),
             Badge::make('Statut', 'ad_status_id')
