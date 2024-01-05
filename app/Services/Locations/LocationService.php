@@ -75,17 +75,19 @@ class LocationService
         /** @var Department[]|Collection $departments */
         $departments = Department::whereIn('id', array_keys($adsCountByDepartmentId))->get();
 
-        $polygons =  Cache::rememberForever($cacheKey, fn() => $departments->map(function ($department) use ($adsCountByDepartmentId) {
+        //$polygons =  Cache::rememberForever($cacheKey, fn() => $departments->map(function ($department) use ($adsCountByDepartmentId) {
+        //    $geoPolygon = $this->getLocationGeoPolygon($department->name, 'department');
+        //    $geoPolygon->department_id = $department->id;
+        //    $geoPolygon->ads_count = $adsCountByDepartmentId[$department->id] ?? 0;
+        //    return $geoPolygon;
+        //}));
+
+        return $departments->map(function ($department) use ($adsCountByDepartmentId) {
             $geoPolygon = $this->getLocationGeoPolygon($department->name, 'department');
             $geoPolygon->department_id = $department->id;
+            $geoPolygon->ads_count = $adsCountByDepartmentId[$polygon->department_id] ?? 0;
             return $geoPolygon;
-        }));
-
-        foreach ($polygons as $polygon) {
-            $polygon->ads_count = $adsCountByDepartmentId[$polygon->department_id] ?? 0;
-        }
-
-        return $polygons;
+        })->filter(fn($p) => $p->ads_count > 0)->toArray();
     }
 
     public function getLocationGeoPolygon(string $q, $type = "")
