@@ -33,7 +33,7 @@ class UserModerator extends User
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return parent::indexQuery($request, $query)->where('role', '>', 0);
+        return parent::indexQuery($request, $query)->whereIn('role', [1,3,4]);
     }
 
     public function actions(Request $request)
