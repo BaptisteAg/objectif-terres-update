@@ -55,37 +55,38 @@ class LocationService
 
     public function getDepartmentPolygons(Request $request)
     {
-        $cacheKey = 'departmentspolygon.'.$request->get('ad_category');
-
         $ads = $this->researchService->filter($request, ['departments', 'department', 'cities', 'cities.department'])->get();
+
+        $departmentIds = Region::find($request->get('regions_location_researches_ids')[0])
+            ->departments
+            ->pluck('id');
 
         $adsCountByDepartmentId = [];
         foreach($ads as $ad) {
-            $departments = $ad->departments
+            $adDepartmentIds = $ad->departments
                 ->push($ad->department)
                 ->concat($ad->cities->map(function ($city) {return $city->department;}))
                 ->filter()
-                ->unique('id');
-            foreach($departments as $department) {
-                $adsCountByDepartmentId[$department->id] = $adsCountByDepartmentId[$department->id] ?? 0;
-                $adsCountByDepartmentId[$department->id]++;
+                ->unique('id')
+                ->pluck('id');
+
+            foreach($departmentIds as $departmentId) {
+                $adsCountByDepartmentId[$departmentId] = $adsCountByDepartmentId[$departmentId] ?? 0;
+                if($adDepartmentIds->contains($departmentId)) {
+                    $adsCountByDepartmentId[$departmentId]++;
+                }
             }
         }
 
         /** @var Department[]|Collection $departments */
         $departments = Department::whereIn('id', array_keys($adsCountByDepartmentId))->get();
 
-        $polygons =  Cache::rememberForever($cacheKey, fn() => $departments->map(function ($department) use ($adsCountByDepartmentId) {
+        return $departments->map(function ($department) use ($adsCountByDepartmentId) {
             $geoPolygon = $this->getLocationGeoPolygon($department->name, 'department');
             $geoPolygon->department_id = $department->id;
+            $geoPolygon->ads_count = $adsCountByDepartmentId[$department->id] ?? 0;
             return $geoPolygon;
-        }));
-
-        foreach ($polygons as $polygon) {
-            $polygon->ads_count = $adsCountByDepartmentId[$polygon->department_id] ?? 0;
-        }
-
-        return $polygons;
+        })->filter(fn($p) => $p->ads_count > 0)->toArray();
     }
 
     public function getLocationGeoPolygon(string $q, $type = "")
