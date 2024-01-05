@@ -57,7 +57,7 @@ class UnpublishOldAds implements ShouldQueue
             ->findAllPublishedBefore($before)
             ->filter(fn(AttributionAd $attributionAd) => $attributionAd->ad);
 
-        echo("Unpublishing ads... ".$attributionAds->count()." found.");
+        echo("Unpublishing ads older than ".$before."... ".$attributionAds->count()." found.");
 
         //dd($attributionAds->random()->toArray());
 
