@@ -180,11 +180,13 @@ class  AdService
             if ($availableModerators->count() >= 1) {
                 /** @var User $moderator */
                 $moderator = $availableModerators->random();
-            } else if (!empty($availableUserWithPermission)) {
-                $moderator = $availableUserWithPermission;
-            } else {
+            }
+            else if($availableSupervisors->count() >= 1) {
                 /** @var User $moderator */
                 $moderator = $availableSupervisors->random();
+            }
+            else if (!empty($availableUserWithPermission)) {
+                $moderator = $availableUserWithPermission;
             }
         }
         $attributionAdData['ad_status_id'] = AdStatus::PENDING_MODERATION_STATUS_ID;

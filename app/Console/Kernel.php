@@ -38,8 +38,8 @@ class Kernel extends ConsoleKernel
         else {
             //$schedule->command('app:send-alert-new-results-research')->everyFiveMinutes()->appendOutputTo($filePath);
             //$schedule->command('app:notify-overdue-moderation')->hourly()->appendOutputTo($filePath);
-            $schedule->command('app:notify-publish-date-extend-before-expiration')->appendOutputTo($filePath);
-            $schedule->command('app:unpublish-old-ads')->appendOutputTo($filePath);
+            //$schedule->command('app:notify-publish-date-extend-before-expiration')->appendOutputTo($filePath);
+            //$schedule->command('app:unpublish-old-ads')->appendOutputTo($filePath);
         }
 
         $schedule->command('app:sync-salesforce-sso-users-permissions')->daily()->appendOutputTo($filePath);
