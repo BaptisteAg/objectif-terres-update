@@ -156,6 +156,15 @@ class AdPresenter extends BasePresenter
         return $cities;
     }
 
+    public function citiesArray()
+    {
+        $cities = [];
+        foreach ($this->wrappedObject->cities as $key => $attribute) {
+            $cities[] = $attribute['name'] . ' (' . $attribute['zip_code'] . ')';
+        }
+        return $cities;
+    }
+
     public function citiesCount()
     {
         return count($this->wrappedObject->cities);
