@@ -135,7 +135,7 @@
             </div>
         @endforeach
         <section class="section">
-            <pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
+            <pagination :per-page="10" :records="500"></pagination>
         </section>
     </section>
 @endsection
