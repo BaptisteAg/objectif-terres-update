@@ -94,6 +94,7 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 	 */
 	public function findAllApprovedAndPublishedBefore(Carbon $date)
 	{
+        dd($date);
 		return $this->entity
 			->whereDate("published_on", '<=', $date)
 			->where('ad_status_id', [AdStatus::APPROVE_ID])
