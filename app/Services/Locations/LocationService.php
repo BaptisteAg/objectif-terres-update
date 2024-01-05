@@ -59,16 +59,24 @@ class LocationService
 
         $ads = $this->researchService->filter($request, ['departments', 'department', 'cities', 'cities.department'])->get();
 
+        $departmentIds = Department::where('region_code', $request->get('regions_location_researches_ids')[0])
+            ->get()
+            ->pluck('id');
+
         $adsCountByDepartmentId = [];
         foreach($ads as $ad) {
-            $departments = $ad->departments
+            $adDepartmentIds = $ad->departments
                 ->push($ad->department)
                 ->concat($ad->cities->map(function ($city) {return $city->department;}))
                 ->filter()
-                ->unique('id');
-            foreach($departments as $department) {
+                ->unique('id')
+                ->pluck('id');
+
+            foreach($departmentIds as $department) {
                 $adsCountByDepartmentId[$department->id] = $adsCountByDepartmentId[$department->id] ?? 0;
-                $adsCountByDepartmentId[$department->id]++;
+                if($adDepartmentIds->contains($department->id)) {
+                    $adsCountByDepartmentId[$department->id]++;
+                }
             }
         }
 
