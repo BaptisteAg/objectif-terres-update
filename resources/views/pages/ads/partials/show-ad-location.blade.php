@@ -1,30 +1,15 @@
- <?php /** @var \App\Models\Ad $ad */ ?>
-<div class="w-50">
-    <strong>Département :</strong>
-    {{ $ad->main_department->name }} ({{ $ad->main_department->code }})
-    @if($ad->secondaryDepartmentsList->count())
-        <br><small>
-            {{ $ad->secondaryDepartmentsList->take(3)->join(', ') }}
-            @if($ad->secondaryDepartmentsList->count() > 3)
-                , ... ({{ $ad->secondaryDepartmentsList->count() - 3 }} autres)
-            @endif
-        </small>
-    @endif
-</div>
+<?php /** @var \App\Models\Ad $ad */ ?>
+@php
+    $adsMoreButton = [
+        'mainDepartment' => [
+               'name' => $ad->main_department->name,
+               'code' => $ad->main_department->code,
+           ],
+        'secondaryDepartmentsList' => $ad->secondaryDepartmentsList->all(),
+        'citiesList' => $ad->citiesArray,
+        'showCities' => $showCities,
+    ];
+@endphp
 
-<?php if (!isset($showCities)) $showCities = false; ?>
-
-@if(($showCities || auth()->user()->id === $ad->user_pp_id || auth()->user()->role >= 1) && $ad->citiesList)
-    <div class="w-50">
-        <strong>Commune{{$ad->citiesCount > 1 ? 's' : ''}} :</strong>
-        {{ $ad->citiesList }}
-        @if(!$showCities)
-            <br><small>(non visible pour les autres utilisateurs)</small>
-        @endif
-    </div>
-@endif
-{{--<show-more-button--}}
-{{--        :ad="{{$ad}}"--}}
-{{--        :user="{{auth()->user()}}"--}}
-{{--        :show-cities="{{ $showCities ? 'true' : 'false' }}"--}}
-{{--></show-more-button>--}}
+<show-more-button :ad='{{ json_encode($adsMoreButton) }}'>
+</show-more-button>
