@@ -1116,4 +1116,28 @@ class  AdService
             }
         }
     }
+
+
+    /**
+     * Get ads by date range.
+     *
+     * @param string $from
+     * @param string $to
+     * @return \Illuminate\Database\Eloquent\Collection|Ad[]
+     */
+    public function getAdsByDate(string $from, string $to): \Illuminate\Database\Eloquent\Collection|array
+    {
+        $fromDate = Carbon::createFromFormat('Y-m-d', $from);
+        $toDate = Carbon::createFromFormat('Y-m-d', $to);
+
+        return Ad::whereHas('attributionAd')
+            ->where('is_draft', false)
+            ->whereNotNull('published_on')
+            ->where('ad_status_id', AdStatus::APPROVE_ID)
+            ->where(fn($q) => $q
+                ->whereBetween('created_at', [$fromDate, $toDate])
+                ->orWhereBetween('updated_at', [$fromDate, $toDate])
+            )
+            ->get();
+    }
 }

@@ -101,6 +101,15 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property int|null $department_id
  * @property-read \App\Models\FavoriteAd|null $currentUserFavoriteAd
  * @method static Builder|Ad whereDepartmentId($value)
+ * @property int|null $third_party_ad_user_id
+ * @property-read \App\Models\AssociateOfferAd|null $associateOfferAd
+ * @property-read \App\Models\AssociateSeekAd|null $associateSeekAd
+ * @property-read \App\Models\Department|null $department
+ * @property-read \App\Models\Department|null $main_department
+ * @property-read string|null $type
+ * @property-read \App\Models\ThirdPartyAdUser|null $thirdPartyAdUser
+ * @property-read \App\Models\User|null $userModerator
+ * @method static Builder|Ad whereThirdPartyAdUserId($value)
  */
 class Ad extends Model implements HasPresenter
 {
