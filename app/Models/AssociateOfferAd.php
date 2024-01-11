@@ -13,6 +13,51 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 
+/**
+ * App\Models\AssociateOfferAd
+ *
+ * @property int $id
+ * @property int $accept_use_zip_code
+ * @property float $surface
+ * @property float|null $altitude
+ * @property int $water_access
+ * @property int $has_buildings
+ * @property int $has_houses
+ * @property string $associate_description
+ * @property string|null $experience_farming
+ * @property int $is_activity_transmission
+ * @property int $ad_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Ad $ad
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BioCertification[] $bioCertifications
+ * @property-read int|null $bio_certifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EducationLevel[] $educationLevels
+ * @property-read int|null $education_levels_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenres
+ * @property-read int|null $production_genres_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
+ * @property-read int|null $production_genres_possible_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresSecondary
+ * @property-read int|null $production_genres_secondary_count
+ * @method static \Illuminate\Database\Eloquent\Builder|AssociateOfferAd newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AssociateOfferAd newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AssociateOfferAd query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AssociateOfferAd whereAcceptUseZipCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssociateOfferAd whereAdId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssociateOfferAd whereAltitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssociateOfferAd whereAssociateDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssociateOfferAd whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssociateOfferAd whereExperienceFarming($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssociateOfferAd whereHasBuildings($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssociateOfferAd whereHasHouses($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssociateOfferAd whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssociateOfferAd whereIsActivityTransmission($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssociateOfferAd whereSurface($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssociateOfferAd whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssociateOfferAd whereWaterAccess($value)
+ * @mixin \Eloquent
+ */
 class AssociateOfferAd extends Model
 {
 	use ProductionableGenre,

@@ -69,6 +69,8 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|Research whereUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Research whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
+ * @property-read int|null $production_genres_secondary_count
  */
 class Research extends Model
 {

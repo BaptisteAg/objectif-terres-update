@@ -20,11 +20,9 @@ class LandSeekRuleset implements RulesetInterface
         return array_merge([
 
             'land_seek.installation_type_id' => ['required', 'integer'],
-            'land_seek.surface_range_min' => ['nullable', 'integer'],
-            'land_seek.surface_range_max' => ['nullable', 'integer'],
+            'land_seek.surface' => ['required', 'integer'],
             'land_seek.land_description' => ['nullable', 'string', 'max:1500'],
             'land_seek.is_bio' => ['integer', 'required'],
-            'land_seek.surface_range' => ['required', 'integer'],
             'land_seek.production_genre' => [new HasProductionGenre],
             'land_seek.production_type_add' => ['nullable', 'string'],
             'land_seek.secondary_production_genres' => ['nullable', 'array'],
@@ -32,6 +30,8 @@ class LandSeekRuleset implements RulesetInterface
             'land_seek.experience_farming' => ['nullable', 'string', 'max:1500'],
             'land_seek.chart_confirmation' => ['required'],
             'land_seek.buildings' => ['required', 'array'],
+            //'land_seek.surface_range_min' => ['nullable', 'integer'],
+            //'land_seek.surface_range_max' => ['nullable', 'integer'],
             //'land_seek.has_farm_buildings'       => ['boolean'],
             //'land_seek.has_houses'               => ['boolean'],
             //'land_seek.offer_genre_id'           => ['nullable', 'string'],

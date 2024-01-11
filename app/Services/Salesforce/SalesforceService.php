@@ -1,11 +1,13 @@
 <?php namespace App\Services\Salesforce;
 
+use App\Models\Ad;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Department;
 use App\Models\User;
 use App\Repositories\SalesForce\SalesForceRepository;
 use App\Repositories\Users\UserRepository;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
 use Omniphx\Forrest\Repositories\TokenRepository;
 
@@ -69,7 +71,7 @@ class SalesforceService
 
         if(count($contactsFound)) {
             $contactId = $contactsFound[0]["Id"];
-            $contact = $this->repository->update('Contact', $contactId, $sfPayload);
+            $contact = $this->repository->upsert('Contact', $contactId, $sfPayload);
         }
         else {
             /**
@@ -90,7 +92,7 @@ class SalesforceService
     {
         $this->repository->authenticate();
 
-        $this->repository->update('Contact', $contactId, $data);
+        $this->repository->upsert('Contact', $contactId, $data);
     }
 
     /**
@@ -244,5 +246,80 @@ class SalesforceService
         return !!$this->repository->findWhere($object, [
             'Username' => $email
         ]);
+    }
+
+    /**
+     * @param Collection|array|Ad[] $ads
+     * @param callable|null $log
+     * @return void
+     */
+    public function upsertAds(Collection|array $ads, callable $log = null): void
+    {
+        $this->repository->authenticate();
+        $log = $log ?? function() {};
+
+        $ads->load([
+            'user',
+            'user.zipCode',
+            'department',
+            'department.region',
+            'departments',
+            'departments.region',
+            'city',
+            'productionGenres',
+        ]);
+
+        $users = $ads->pluck('user')->unique('email');
+
+        $log("Upserting ".count($users)." users");
+
+        $contactsByEmail = $users->map(function(User $user, $i) use($log, $users) {
+            $log("Creating Contact $i / ".count($users)." ( $user->email )");
+
+             return $this->repository->upsert('Contact/Email', $user->email, [
+                "AccountId" => "0011r00002XFjaeAAD",
+                "Email" => $user->email,
+                "LastName" => $user->name,
+                'FirstName' => $user->first_name,
+                "Phone" => $user->phone,
+                "MailingStreet" => $user->street,
+                "MailingPostalCode" => $user->zipCode->zip_code,
+                "MailingCity" => $user->zipCode->name,
+                "MailingCountry" => Country::findOrFail($user->country_id)->name_fr_fr,
+                "LeadSource" => "Petites annonces",
+                "role__c" => 'Annonceur Objectif Terres',
+                "Recevoir_les_infos_de_TDL__c" => empty($user->accept_communication) ? 0 : 1
+            ]);
+        });
+
+        $departmentsByCode = collect($this->repository->findWhere('Territoire_Principal__c', [
+            'Code__c' => $ads->pluck('department')->pluck('code')->unique()->toArray()
+        ], ['Id', 'Code__c']))->keyBy('Code__c');
+
+        $log("Upserting ".count($ads)." ads");
+
+        foreach($ads as $i => $ad) {
+            $log("Upserting Ad $i / ".count($ads)." ( $ad->id )");
+
+            $this->repository->upsert('Dossier_de_demande_d_accompagnement__c/ID_Laravel', $ad->id, [
+                "ID_Laravel" => $ad->id,
+                "Type_d_annonce__c" => match($ad->type) {
+                    'landOffer' => 'Recherche Terre',
+                    'landSeek' => 'Offre Terre',
+                    'jobOffer' => 'Recherche Expérience',
+                    'jobSeek' => 'Offre Expérience',
+                    'associateOffer' => 'Associé pour installation',
+                    'associateSeek' => 'Associé sur ferme',
+                },
+                "Name" => $ad->title,
+                "Contact__c" => $contactsByEmail[$ad->user->email]["Id"],
+                "Territoire_Principal__c" => $departmentsByCode[$ad->department->code]["Id"],
+                "Surface_ha__c" => $ad->landOfferAd->surface ?? $ad->landSeekAd->surface ?? $ad->associateOfferAd->surface ?? null,
+
+            ]);
+        }
+
+        //$this->repository->upsert($ad)
+
     }
 }

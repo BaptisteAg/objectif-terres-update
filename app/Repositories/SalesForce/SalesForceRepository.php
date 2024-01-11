@@ -42,10 +42,14 @@ class SalesForceRepository
     {
         $query = "SELECT ".implode(',', $select)." FROM $objectName WHERE ";
         array_walk($where, function (&$value, $key) {
-            $value = "$key='".addslashes($value)."'";
+            if(is_array($value)) {
+                $value = $key . " IN ('" . implode("','", $value) . "')";
+            }
+            else {
+                $value = $key . " = '" . $value . "'";
+            }
         });
         $query .= implode(' AND ', $where);
-
 
         $result = $this->forrest->query($query);
 
@@ -73,7 +77,7 @@ class SalesForceRepository
      * @param $sfId
      * @param array $params
      */
-    public function update($objectName, $id, array $params)
+    public function upsert($objectName, $id, array $params)
     {
         return $this->forrest->sobjects($objectName. '/' . $id,[
             'method' => 'patch',
@@ -87,7 +91,7 @@ class SalesForceRepository
      */
     public function updateUserPassword($userId, $newPassword)
     {
-        $this->update('User', $userId . '/password', [
+        $this->upsert('User', $userId . '/password', [
             "NewPassword" => $newPassword
         ]);
     }
@@ -111,10 +115,5 @@ class SalesForceRepository
 		if(!$forrestToken->has()) {
 			$this->forrest->authenticate();
 		}
-    }
-
-    public function testFloGetRelationships()
-    {
-        return $this->forrest->sobjects('Contact/updated?start='.date("Y-m-d").'T15:27:00Z&end='.date("Y-m-d").'T18:00:00Z');
     }
 }
