@@ -42,6 +42,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $production_type_add
  * @method static \Illuminate\Database\Eloquent\Builder|JobOfferAd whereProductionTypeAdd($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JobOfferAd whereSecondaryProductionTypeAdd($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenres
+ * @property-read int|null $production_genres_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
+ * @property-read int|null $production_genres_possible_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresSecondary
+ * @property-read int|null $production_genres_secondary_count
  */
 class JobOfferAd extends Model
 {
