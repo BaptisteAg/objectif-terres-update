@@ -100,6 +100,23 @@
     }
 </style>
 
+@if(config('analytics.matomo.enabled'))
+    <script async>
+        var _paq = window._paq = window._paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function () {
+            var u = "https://{{config('analytics.matomo.domain')}}/";
+            _paq.push(['setTrackerUrl', u + 'matomo.php']);
+            _paq.push(['setSiteId', '{{ config('analytics.matomo.site_id')}}']);
+            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+            g.async = true;
+            g.src = '//cdn.matomo.cloud/{{config('analytics.matomo.domain')}}/matomo.js';
+            s.parentNode.insertBefore(g, s);
+        })();
+    </script>
+@endif
 
 @if(app()->environment() === "production")
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -107,7 +124,6 @@
     <script>
 
         enableGoogleAnalytics();
-        enableMatomoAnalytics();
 
         //window.addEventListener('CookiebotOnAccept', function (e) {
         //    if (Cookiebot.consent.statistics)
@@ -127,22 +143,6 @@
             gtag('js', new Date());
 
             gtag('config', 'G-CZC04WPSVH');
-        }
-
-        function enableMatomoAnalytics() {
-            var _paq = window._paq = window._paq || [];
-            /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-            _paq.push(['trackPageView']);
-            _paq.push(['enableLinkTracking']);
-            (function () {
-                var u = "https://terredeliens.matomo.cloud/";
-                _paq.push(['setTrackerUrl', u + 'matomo.php']);
-                _paq.push(['setSiteId', '3']);
-                var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-                g.async = true;
-                g.src = '//cdn.matomo.cloud/terredeliens.matomo.cloud/matomo.js';
-                s.parentNode.insertBefore(g, s);
-            })();
         }
     </script>
 @endif

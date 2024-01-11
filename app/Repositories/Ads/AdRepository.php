@@ -1155,7 +1155,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         ];
     }
 
-    public static function getSubAdEagerLoading(?string $adType): array
+    public static function getSubAdEagerLoading(?string $adType = null): array
     {
         $landSeekAdEagerLoading = [
             'landSeekAd',

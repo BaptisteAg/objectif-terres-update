@@ -1,10 +1,13 @@
 <?php namespace App\Services\Salesforce;
 
 use App\Models\Ad;
+use App\Models\AdStatus;
+use App\Models\AttributionAd;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Department;
 use App\Models\User;
+use App\Repositories\Ads\AdRepository;
 use App\Repositories\SalesForce\SalesForceRepository;
 use App\Repositories\Users\UserRepository;
 use Illuminate\Database\Eloquent\Collection;
@@ -259,33 +262,29 @@ class SalesforceService
         $log = $log ?? function() {};
 
         $ads->load([
-            'user',
-            'user.zipCode',
-            'department',
-            'department.region',
-            'departments',
-            'departments.region',
-            'city',
-            'productionGenres',
+            'userPp',
+            'userPp.zipCode',
+            'attributionAd',
+            ...AdRepository::getSubAdEagerLoading(),
+            ...AdRepository::getLocationEagerLoading()
         ]);
 
-        $users = $ads->pluck('user')->unique('email');
+        $users = $ads->pluck('userPp')->unique('email');
 
         $log("Upserting ".count($users)." users");
 
         $contactsByEmail = $users->map(function(User $user, $i) use($log, $users) {
-            $log("Creating Contact $i / ".count($users)." ( $user->email )");
+            $log("Creating Contact " . ($i+1) . " / ".count($users)." ( $user->email )");
 
              return $this->repository->upsert('Contact/Email', $user->email, [
                 "AccountId" => "0011r00002XFjaeAAD",
-                "Email" => $user->email,
                 "LastName" => $user->name,
                 'FirstName' => $user->first_name,
                 "Phone" => $user->phone,
                 "MailingStreet" => $user->street,
                 "MailingPostalCode" => $user->zipCode->zip_code,
                 "MailingCity" => $user->zipCode->name,
-                "MailingCountry" => Country::findOrFail($user->country_id)->name_fr_fr,
+                "MailingCountry" => $user->country_id ? Country::findOrFail($user->country_id)->name_fr_fr : 'France',
                 "LeadSource" => "Petites annonces",
                 "role__c" => 'Annonceur Objectif Terres',
                 "Recevoir_les_infos_de_TDL__c" => empty($user->accept_communication) ? 0 : 1
@@ -299,27 +298,45 @@ class SalesforceService
         $log("Upserting ".count($ads)." ads");
 
         foreach($ads as $i => $ad) {
-            $log("Upserting Ad $i / ".count($ads)." ( $ad->id )");
+            $log("Upserting Ad " . ($i+1) . " / ".count($ads)." ( $ad->id )");
 
             $this->repository->upsert('Dossier_de_demande_d_accompagnement__c/ID_Laravel', $ad->id, [
-                "ID_Laravel" => $ad->id,
                 "Type_d_annonce__c" => match($ad->type) {
-                    'landOffer' => 'Recherche Terre',
-                    'landSeek' => 'Offre Terre',
-                    'jobOffer' => 'Recherche Expérience',
-                    'jobSeek' => 'Offre Expérience',
-                    'associateOffer' => 'Associé pour installation',
-                    'associateSeek' => 'Associé sur ferme',
+                    'landOfferAd' => 'Recherche Terre',
+                    'landSeekAd' => 'Offre Terre',
+                    'jobOfferAd' => 'Recherche Expérience',
+                    'jobSeekAd' => 'Offre Expérience',
+                    'associateOfferAd' => 'Associé pour installation',
+                    'associateSeekAd' => 'Associé sur ferme',
                 },
                 "Name" => $ad->title,
                 "Contact__c" => $contactsByEmail[$ad->user->email]["Id"],
                 "Territoire_Principal__c" => $departmentsByCode[$ad->department->code]["Id"],
-                "Surface_ha__c" => $ad->landOfferAd->surface ?? $ad->landSeekAd->surface ?? $ad->associateOfferAd->surface ?? null,
-
+                "Surface_ha__c" => $ad->{$ad->type}->surface ?? null,
+                "Production_agricole_prinicipale__c" => $ad->{$ad->type}->productionGenres[0]->name ?? null,
+                "Autres_productions_agricoles__c" => $ad->{$ad->type}->productionGenresSecondary->pluck('name')->join(', ') ?? null,
+                "Experience_professionnelle_recherchee__c" => $ad->{$ad->type}->jobOfferTypes->pluck('name')->join(', ') ?? null,
+                "Transmission_d_activit_agricole__c" => $ad->{$ad->type}->is_activity_transmission ? 'Oui' : 'Non',
+                "Certification_des_terres__c" => $ad->{$ad->type}->bioCertifications->pluck('name')->join(', ') ?? null,
+                "Acces_eau__c" => match($ad->{$ad->type}->has_water_access) {
+                    -1 => 'Je ne sais pas',
+                    0 => 'Non',
+                    1 => 'Oui',
+                },
+                "Presence_d_habitations__c" => $ad->{$ad->type}->has_houses ? 'Oui' : 'Non',
+                "Presence_de_batiments_agricoles__c" => $ad->{$ad->type}->has_buildings ? 'Oui' : 'Non',
+                "Modalite_d_installation__c" => $ad->{$ad->type}->installationType->name ?? null,
+                "Type_de_transmission__c" => $ad->{$ad->type}->offerGenres->pluck('name')->join(', ') ?? null,
+                "Prix__c" => $ad->{$ad->type}->price ?? null,
+                "Fermage_annuel__c" => $ad->{$ad->type}->rent_price ?? null,
+                "Statut__c" => match($ad->attributionAd->ad_status_id) {
+                    AdStatus::APPROVE_ID => 'Validée',
+                    AdStatus::PENDING_ID => 'En attente',
+                    AdStatus::REFUSE_ID => 'Refusée',
+                    AdStatus::PENDING_MODERATION_STATUS_ID => 'À modérer',
+                    AdStatus::ARCHIVED_ID => 'Archivée',
+                },
             ]);
         }
-
-        //$this->repository->upsert($ad)
-
     }
 }
