@@ -1,44 +1,43 @@
 <template>
-	<div>
-		<div class="w-50">
+	<div :class="(ad.showCities ? 'w-100' : 'w-50') + ' is-flex is-flex-wrap-wrap is-justify-content-space-between'">
+		<div :class="ad.showCities ? 'w-50' : 'w-100'">
 			<strong>Département :</strong>
-			{{ ad.departments.name }} ({{ ad.departments.code }})
-			<div v-if="ad.secondaryDepartmentsList && ad.secondaryDepartmentsList.length">
-				<br><small>
-				{{ slicedSecondaryDepartments.join(', ') }}
-				<span v-if="ad.secondaryDepartmentsList.length > 3 && !showAllDepartments">
-            , ... ({{ ad.secondaryDepartmentsList.length - 3 }} autres)
-          </span>
-				<button @click="showAllDepartments = !showAllDepartments">
-					{{ showAllDepartments ? 'Afficher moins' : 'Afficher plus' }}
-				</button>
-			</small>
+			{{ ad.mainDepartment.name }} ({{ ad.mainDepartment.code }})
+			<div v-if="Object.keys(ad.secondaryDepartmentsList).length">
+				<small v-if="!showAllDepartments">
+					{{ secondaryDepartments() }}
+					<br>
+					(+ {{ Object.keys(ad.secondaryDepartmentsList).length - 3 }} autres)
+					<a @click.prevent="showAllDepartments = !showAllDepartments">Tout afficher</a>
+				</small>
+				<div v-else>
+					{{
+						Object.keys(ad.secondaryDepartmentsList).map(key => ad.secondaryDepartmentsList[key]).join(', ')
+					}}
+				</div>
 			</div>
 		</div>
-
-		<div class="w-50" v-if="displayCitiesCondition">
-			<strong>Commune{{ ad.citiesList.length > 1 ? 's' : '' }} :</strong>
-			{{ slicedCitiesList }}
-			<div v-if="!showCities">
-				<br><small>(non visible pour les autres utilisateurs)</small>
+		<div class="w-50" v-if="ad.showCities && Object.keys(ad.citiesList).length">
+			<strong>Commune{{ Object.keys(ad.citiesList).length > 2 ? 's' : '' }} :</strong>
+			<div v-if="!showAllCities">
+				{{ Object.keys(ad.citiesList).slice(0, 3).map(key => ad.citiesList[key]).join(', ') + '...' }}
+				<br>
+				<small>(+ {{ Object.keys(ad.secondaryDepartmentsList).length - 3 }} autres)
+					<a @click.prevent="showAllCities = !showAllCities">Tout afficher</a>
+				</small>
 			</div>
-			<button v-if="ad.citiesList.length > 3" @click="showAllCities = !showAllCities">
-				{{ showAllCities ? 'Afficher moins' : 'Afficher plus' }}
-			</button>
+			<div v-else>
+				{{ Object.keys(ad.citiesList).map(key => ad.citiesList[key]).join(', ') }}
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
 export default {
-	name: 'AdDetail',
+	name: 'ShowMoreButton',
 	props: {
 		ad: Object,
-		user: Object,
-		showCities: {
-			type: Boolean,
-			default: false
-		},
 	},
 	data() {
 		return {
@@ -46,23 +45,18 @@ export default {
 			showAllCities: false,
 		};
 	},
-	created() {
-		console.log(this.ad)
+	methods: {
+		secondaryDepartments() {
+			let secondaryDepartmentsList = [];
+			if (this.ad.secondaryDepartmentsList) {
+				secondaryDepartmentsList = Object.keys(this.ad.secondaryDepartmentsList).slice(0, 3).map(key => this.ad.secondaryDepartmentsList[key])
+				secondaryDepartmentsList = secondaryDepartmentsList.join(', ') + '...';
+			}
+			return secondaryDepartmentsList;
+		}
 	},
-	computed: {
-		displayCitiesCondition() {
-			return this.showCities || this.user.id === this.ad.user_pp_id || this.user.role >= 1;
-		},
-		slicedSecondaryDepartments() {
-			return this.showAllDepartments ?
-				this.ad.secondaryDepartmentsList :
-				this.ad.secondaryDepartmentsList.slice(0, 3);
-		},
-		slicedCitiesList() {
-			return this.showAllCities ?
-				this.ad.citiesList :
-				this.ad.citiesList.slice(0, 3);
-		},
-	}
+	mounted() {
+	},
+	computed: {}
 };
 </script>
