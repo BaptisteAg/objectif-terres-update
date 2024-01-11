@@ -80,6 +80,10 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @mixin \Eloquent
  * @property string|null $secondary_production_type_add
  * @method static \Illuminate\Database\Eloquent\Builder|LandOfferAd whereSecondaryProductionTypeAdd($value)
+ * @property int|null $is_sales_offer_evaluation
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
+ * @property-read int|null $production_genres_secondary_count
+ * @method static \Illuminate\Database\Eloquent\Builder|LandOfferAd whereIsSalesOfferEvaluation($value)
  */
 class LandOfferAd extends Model
 {

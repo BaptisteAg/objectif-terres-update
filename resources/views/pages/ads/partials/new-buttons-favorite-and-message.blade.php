@@ -1,31 +1,14 @@
 @if(!isset($isPreview) || !$isPreview)
     @auth
-        @if(auth()->user()->role >= 1)
-            @if($moderatorInChargeOfModeration)
-                @if(count($threads))
-                    <b-button tag="a" rounded href="#messages-display" type="is-danger">
-                        Voir les fils de discussion
-                    </b-button>
-                @else
-                    @include('pages.ads.partials.modal-new-ad-message')
-                @endif
-            @else
-                @if(count($threads))
-                    <b-button tag="a" rounded href="#messages-display" type="is-danger">
-                        Voir votre fil de discussion
-                    </b-button>
-                @else
-                    @include('pages.ads.partials.modal-new-ad-message')
-                @endif
-            @endif
-        @elseif($ad->user_pp_id !== auth()->user()->id)
-            @if(count($threads))
-                <b-button tag="a" rounded href="#messages-display" type="is-danger">
-                    Voir votre fil de discussion
-                </b-button>
-            @else
-                @include('pages.ads.partials.modal-new-ad-message')
-            @endif
+        @if(count($threads))
+            <b-button tag="a" rounded href="#messages-display" type="is-danger">
+                Voir les fils de discussion
+            </b-button>
+        @else
+            @include('pages.ads.partials.modal-new-ad-message')
+        @endif
+
+        @if($ad->user_pp_id !== auth()->user()->id)
             @if($favoriteAdAlreadyExist)
                 <b-button tag="a" class="ml-3" type="is-warning" rounded icon-left="star-outline"
                           href="{{route ('favoriteAds.destroy', $favoriteAdAlreadyExist->id)}}"
@@ -38,12 +21,6 @@
                           onclick="this.form.submit()">
                 </b-button>
                 {!! Form::close() !!}
-            @endif
-        @elseif($ad->user_pp_id === auth()->user()->id)
-            @if(isset($threads) && count($threads))
-                <b-button tag="a" rounded href="#messages-display" type="is-danger">
-                    Voir vos fil de discussion
-                </b-button>
             @endif
         @endif
     @else

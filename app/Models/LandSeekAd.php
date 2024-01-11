@@ -60,6 +60,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @mixin \Eloquent
  * @property string|null $secondary_production_type_add
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereSecondaryProductionTypeAdd($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
+ * @property-read int|null $production_genres_secondary_count
+ * @property int|null $surface
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereSurface($value)
  */
 class LandSeekAd extends Model
 {
