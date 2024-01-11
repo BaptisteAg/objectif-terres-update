@@ -14,7 +14,7 @@ class SyncSalesforceAds extends Command
      *
      * @var string
      */
-    protected $signature = 'app:sync-salesforce-ads {date: The date to sync ads from in the format YYYY-MM-DD}';
+    protected $signature = 'app:sync-salesforce-ads {date : The date to sync ads from in the format YYYY-MM-DD}';
 
     /**
      * The console command description.
@@ -43,12 +43,12 @@ class SyncSalesforceAds extends Command
      */
     public function handle()
     {
-        $from = $this->argument('date') ?? Carbon::now()->subDays(1)->format('Y-m-d');
-        $to = $this->argument('date') ?? Carbon::now()->format('Y-m-d');
+        $from = $this->argument('date');
+        $to = Carbon::now()->format('Y-m-d');
 
         $ads = $this->adService->getAdsByDate($from, $to);
 
-        $this->confirm("Start Syncing {$ads->count()} ads to Salesforce ?");
+        //$this->confirm("Start Syncing {$ads->count()} ads to Salesforce ?");
 
         $this->salesforceService->upsertAds($ads, fn($msg) => $this->info($msg));
     }
