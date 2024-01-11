@@ -424,12 +424,6 @@ class  AdService
      */
     public function store(array $data)
     {
-
-        if (isset($data["ad_type"]) && $data["ad_type"] === "land_seek") {
-            $data["land_seek"]["surface_range_min"] = $data["land_seek"]["surface_range"] - 5;
-            $data["land_seek"]["surface_range_max"] = $data["land_seek"]["surface_range"] + 5;
-        }
-
         $isUpdate = !empty($data["id"]);
 
         DB::beginTransaction();
@@ -1130,14 +1124,16 @@ class  AdService
         $fromDate = Carbon::createFromFormat('Y-m-d', $from);
         $toDate = Carbon::createFromFormat('Y-m-d', $to);
 
-        return Ad::whereHas('attributionAd')
+        return Ad::withTrashed()
             ->where('is_draft', false)
-            ->whereNotNull('published_on')
-            ->where('ad_status_id', AdStatus::APPROVE_ID)
+            ->whereHas('attributionAd')
+            ->whereHas('userPp')
             ->where(fn($q) => $q
                 ->whereBetween('created_at', [$fromDate, $toDate])
                 ->orWhereBetween('updated_at', [$fromDate, $toDate])
+                ->orWhereBetween('deleted_at', [$fromDate, $toDate])
             )
+            ->limit(2)
             ->get();
     }
 }

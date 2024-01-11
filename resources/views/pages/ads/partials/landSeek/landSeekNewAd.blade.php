@@ -23,7 +23,7 @@
 
             <section class="mb-6 field" ref="surfaceRange">
                 <div class="label">
-                    {!! Form::label('land_seek[surface_range]', 'Surface recherchée (en hectares) *', ['class' => '']); !!}
+                    {!! Form::label('land_seek[surface]', 'Surface recherchée (en hectares) *', ['class' => '']); !!}
                     <i class="fas fa-info-circle has-text-info"></i>
                 </div>
 {{--                    <vue-slider-range--}}
@@ -35,7 +35,7 @@
 {{--                    ></vue-slider-range>--}}
 
                 <b-field>
-                    <b-input name="land_seek[surface_range]" v-model="formInput.surfaceRange"
+                    <b-input name="land_seek[surface]" v-model="formInput.surfaceRange"
                     ></b-input>
                     <p class="control">
                 <span style="border-bottom-right-radius: 999px; border-top-right-radius: 999px;"
