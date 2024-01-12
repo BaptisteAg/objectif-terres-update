@@ -1,8 +1,7 @@
 <?php return [
     'matomo' => [
         'enabled' => env('MATOMO_ENABLED', false),
-        'domain' => env('MATOMO_DOMAIN', 'terredeliens.matomo.cloud'),
-        'site_id' => env('MATOMO_SITE_ID'),
+        'domain' => env('MATOMO_URL', 'https://cdn.matomo.cloud/terredeliens.matomo.cloud/container_jbj2ARO0.js'),
     ],
     'google' => [
         'enabled' => env('GOOGLE_ENABLED', false),
