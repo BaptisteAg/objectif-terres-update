@@ -144,6 +144,24 @@ class Ad extends Model implements HasPresenter
         'third_party_ad_user_id'
     ];
 
+    const AD_TYPES = [
+        'jobOfferAd' => JobOfferAd::class,
+        'jobSeekAd' => JobSeekAd::class,
+        'landOfferAd' => LandOfferAd::class,
+        'landSeekAd' => LandSeekAd::class,
+        'associateSeekAd' => AssociateSeekAd::class,
+        'associateOfferAd' => AssociateOfferAd::class,
+    ];
+
+    public function getSubAdAttribute(): LandSeekAd|LandOfferAd|JobOfferAd|JobSeekAd|AssociateSeekAd|AssociateOfferAd|null
+    {
+        if ($this->type) {
+            return $this->{$this->type};
+        }
+
+        return null;
+    }
+
     // Detect the type based on the presence of the foreign key
     // in the related table
     public function getTypeAttribute(): ?string
@@ -152,18 +170,16 @@ class Ad extends Model implements HasPresenter
             return $this->cached_type;
         }
 
-        $adTypes = [
-            'jobOfferAd' => JobOfferAd::class,
-            'jobSeekAd' => JobSeekAd::class,
-            'landOfferAd' => LandOfferAd::class,
-            'landSeekAd' => LandSeekAd::class,
-            'associateSeekAd' => AssociateSeekAd::class,
-            'associateOfferAd' => AssociateOfferAd::class,
-        ];
+        foreach (static::AD_TYPES as $key => $class) {
+            if ($this->relationLoaded($key) && $this->{$key} !== null) {
+                $this->cached_type = $key;
+                return $key;
+            }
+        }
 
         $query = $this->newQuery()->where('id', $this->id);
 
-        foreach ($adTypes as $key => $class) {
+        foreach (static::AD_TYPES as $key => $class) {
             $table = (new $class)->getTable();
             $query->selectSub(function (\Illuminate\Database\Query\Builder $query) use ($table) {
                 $query->selectRaw('count(*)')
@@ -175,7 +191,7 @@ class Ad extends Model implements HasPresenter
         $result = $query->first();
         $type = null;
 
-        foreach ($adTypes as $key => $class) {
+        foreach (static::AD_TYPES as $key => $class) {
             if ($result->{$key}) {
                 $type = $key;
             }
