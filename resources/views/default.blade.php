@@ -101,21 +101,16 @@
 </style>
 
 @if(config('analytics.matomo.enabled'))
-    <script async>
-        var _paq = window._paq = window._paq || [];
-        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-        _paq.push(['trackPageView']);
-        _paq.push(['enableLinkTracking']);
-        (function () {
-            var u = "https://{{config('analytics.matomo.domain')}}/";
-            _paq.push(['setTrackerUrl', u + 'matomo.php']);
-            _paq.push(['setSiteId', '{{ config('analytics.matomo.site_id')}}']);
-            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-            g.async = true;
-            g.src = '//cdn.matomo.cloud/{{config('analytics.matomo.domain')}}/matomo.js';
-            s.parentNode.insertBefore(g, s);
+    <!-- Matomo Tag Manager -->
+    <script>
+        var _mtm = window._mtm = window._mtm || [];
+        _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+        (function() {
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.async=true; g.src='{{ config('analytics.matomo.url') }}'; s.parentNode.insertBefore(g,s);
         })();
     </script>
+    <!-- End Matomo Tag Manager -->
 @endif
 
 @if(config('analytics.google.enabled'))
