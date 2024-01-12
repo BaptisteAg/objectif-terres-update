@@ -26,7 +26,7 @@
       </p>
       <ul class="menu-list">
         <template v-for="thread in threads">
-          <li :class="{'thread-with-unread-messages' : threadsUnreadMessages.includes(thread.id), 'active-thread' : thread.id === activeThread }"
+          <li :class="{'thread-with-unread-messages' : threadsUnreadMessages?.includes(thread.id), 'active-thread' : thread.id === activeThread }"
               style=" list-style-type: none">
             <template v-if="isDisplay">
               <template v-if="thread.users.length > 2">
