@@ -85,8 +85,10 @@ abstract class BaseController extends Controller
             abort(404);
         }
 
+        $vars = $this->getCreateFormVars();
+
         if(old('ad_type')) {
-            return [];
+            return $vars;
         }
 
         $selected_departments = json_encode(array_filter(array_merge(
@@ -113,8 +115,6 @@ abstract class BaseController extends Controller
 
         $ad_contact_type = $ad->thirdPartyAdUser ? 'thirdParty' : 'me';
         $third_party = $ad->thirdPartyAdUser ? $ad->thirdPartyAdUser->toArray() : null;
-
-        $vars = $this->getCreateFormVars();
 
         $vars["old"] = array_merge(
             [

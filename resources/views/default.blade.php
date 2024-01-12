@@ -118,9 +118,9 @@
     </script>
 @endif
 
-@if(app()->environment() === "production")
+@if(config('analytics.google.enabled'))
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CZC04WPSVH"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{config('analytics.google.site_id')}}"></script>
     <script>
 
         enableGoogleAnalytics();
@@ -142,7 +142,7 @@
 
             gtag('js', new Date());
 
-            gtag('config', 'G-CZC04WPSVH');
+            gtag('config', '{{config('analytics.google.site_id')}}');
         }
     </script>
 @endif
