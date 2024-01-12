@@ -21,6 +21,8 @@ window.regionMapInit  = async function (mapId, queryString) {
 
     let featureGroup = mapController.addFeatureGroup();
 
+    console.log({departmentsPolygonData})
+
     departmentsPolygonData.forEach(polygonData => {
 
         const polygon = mapController.addPolygon(polygonData, {
