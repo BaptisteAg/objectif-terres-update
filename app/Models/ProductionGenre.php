@@ -36,6 +36,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  */
 class ProductionGenre extends Model
 {
+    const NONE_ID = 1;
+
     /**
      * @var array
      */

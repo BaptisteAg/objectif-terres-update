@@ -42,7 +42,7 @@
                     <ad-type-select v-model="adTypeSelected"
                                     :on-edit="{{isset($old["id"]) ? 'true' : 'false'}}"
                                     name="ad_type"
-                                    :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                    :old-values="{{json_encode(count($old??[]) ? $old : new stdClass)}}"
                                     :is-support-request="{{empty($isSupportRequest)?'false':'true'}}">
                         <template v-slot:certified>
                             Je certifie que mon annonce concerne un projet agricole professionnel sur des productions
@@ -82,7 +82,7 @@
 
                     <new-land-seek-ad inline-template
                                       v-if="adTypeSelected === 'land_seek'"
-                                      :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                      :old-values="{{json_encode(count($old??[]) ? $old : new stdClass)}}"
                                       :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
                                       @input-enabled="setEnabledForm"
                                       @form-complete="submitProxy"
@@ -96,7 +96,7 @@
 
                     <new-land-offer-ad inline-template
                                        v-if="adTypeSelected === 'land_offer'"
-                                       :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                       :old-values="{{json_encode(count($old??[]) ? $old : new stdClass)}}"
                                        :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
                                        :text-content-territories="{{!empty($isSupportRequest) && isset($old["id"]) ? json_encode($pageContent):json_encode(new stdClass)}}"
                                        @input-enabled="setEnabledForm"
@@ -110,7 +110,7 @@
 
                     <new-job-seek-ad inline-template
                                      v-if="adTypeSelected === 'job_seek'"
-                                     :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                     :old-values="{{json_encode(count($old??[]) ? $old : new stdClass)}}"
                                      @input-enabled="setEnabledForm"
                                      @form-complete="submitProxy"
                                      @submit-save-button="submitProxy"
@@ -122,7 +122,7 @@
 
                     <new-job-offer-ad inline-template
                                       v-if="adTypeSelected === 'job_offer'"
-                                      :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                      :old-values="{{json_encode(count($old??[]) ? $old : new stdClass)}}"
                                       @input-enabled="setEnabledForm"
                                       @form-complete="submitProxy"
                                       @submit-save-button="submitProxy"
@@ -134,7 +134,7 @@
 
                     <new-associate-seek-ad inline-template
                                            v-if="adTypeSelected === 'associate_seek'"
-                                           :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                           :old-values="{{json_encode(count($old??[]) ? $old : new stdClass)}}"
                                            @input-enabled="setEnabledForm"
                                            @form-complete="submitProxy"
                                            @submit-save-button="submitProxy"
@@ -146,7 +146,7 @@
 
                     <new-associate-offer-ad inline-template
                                             v-if="adTypeSelected === 'associate_offer'"
-                                            :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                            :old-values="{{json_encode(count($old??[]) ? $old : new stdClass)}}"
                                             @input-enabled="setEnabledForm"
                                             @form-complete="submitProxy"
                                             @submit-save-button="submitProxy"

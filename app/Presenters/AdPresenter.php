@@ -236,8 +236,8 @@ class AdPresenter extends BasePresenter
     public function nonImageDocuments()
     {
         return $this->wrappedObject->documents->filter(function ($document) {
-            return $this->isPpDocument($document) && !$this->isImageDocument($document);
-        })->values();
+            return /*$this->isPpDocument($document) && */!$this->isImageDocument($document);
+        })->unique('id')->values();
     }
 
     public function documentsUploadedByUser()
