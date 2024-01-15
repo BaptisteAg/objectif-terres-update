@@ -21,7 +21,7 @@ window.regionMapInit  = async function (mapId, queryString) {
 
     let featureGroup = mapController.addFeatureGroup();
 
-    if(departmentsPolygonData instanceof 'object') {
+    if(typeof departmentsPolygonData === 'object') {
         departmentsPolygonData = Object.values(departmentsPolygonData);
     }
 

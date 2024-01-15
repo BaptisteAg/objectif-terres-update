@@ -86,7 +86,7 @@ class LocationService
             $geoPolygon->department_id = $department->id;
             $geoPolygon->ads_count = $adsCountByDepartmentId[$department->id] ?? 0;
             return $geoPolygon;
-        })->filter(fn($p) => $p->ads_count > 0)->toArray();
+        })->filter(fn($p) => $p->ads_count > 0)->values()->toArray();
     }
 
     public function getLocationGeoPolygon(string $q, $type = "")
