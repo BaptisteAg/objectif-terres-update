@@ -17,11 +17,13 @@ Vue.Component('search', {
 window.regionMapInit  = async function (mapId, queryString) {
     const mapController = await OSMapControllerFactory(mapId);
 
-    const departmentsPolygonData = await fetchJson('/locations/polygon/departments/?' + queryString);
+    let departmentsPolygonData = await fetchJson('/locations/polygon/departments/?' + queryString);
 
     let featureGroup = mapController.addFeatureGroup();
 
-    console.log({departmentsPolygonData})
+    if(departmentsPolygonData instanceof 'object') {
+        departmentsPolygonData = Object.values(departmentsPolygonData);
+    }
 
     departmentsPolygonData.forEach(polygonData => {
 
