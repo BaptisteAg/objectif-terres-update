@@ -1133,7 +1133,7 @@ class  AdService
                 ->orWhereBetween('updated_at', [$fromDate, $toDate])
                 ->orWhereBetween('deleted_at', [$fromDate, $toDate])
             )
-            ->limit(2)
+            ->limit(3)
             ->get();
     }
 }

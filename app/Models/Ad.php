@@ -332,6 +332,23 @@ class Ad extends Model implements HasPresenter
         return $this->morphedbyMany(Department::class, 'locationable_ad');
     }
 
+    /**
+     * @return \Illuminate\Support\Collection|array|Department[]
+     */
+    public function getSecondaryDepartmentsAttribute(): \Illuminate\Support\Collection|array
+    {
+        $departments = $this->departments->concat($this->cities->map(function (City $city) {
+            return $city->department;
+        }))->concat($this->regions->map(function (Region $region) {
+            return $region->departments;
+        })->flatten());
+
+        return $departments->unique('code')
+            ->filter(function (Department $department) {
+                return $department->code !== $this->main_department?->code;
+            });
+    }
+
     public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class);

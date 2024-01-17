@@ -1136,6 +1136,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             'cities',
             'cities.department',
             'cities.department.region',
+            'department',
             'departments',
             'departments.region',
             'regions',
