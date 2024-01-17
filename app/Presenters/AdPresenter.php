@@ -127,16 +127,7 @@ class AdPresenter extends BasePresenter
     {
         $ad = $this->wrappedObject;
 
-        $departments = $ad->departments->concat($ad->cities->map(function ($city) {
-            return $city->department;
-        }))->concat($ad->regions->map(function ($region) {
-            return $region->departments;
-        })->flatten());
-
-        return $departments->unique('code')
-            ->filter(function ($department) {
-                return $department->code !== $this->wrappedObject->main_department?->code;
-            })
+        return $ad->secondary_departments
             ->map(function ($department) {
                 return $department->name . ' (' . $department->code . ')';
             });
