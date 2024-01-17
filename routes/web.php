@@ -60,6 +60,7 @@ Route::namespace('Cms')->group(function () {
     Route::get('contactez-nous', 'CmsController@contactezNous')->name('contactez-nous');
     Route::get('proprietaire-de-foncier', 'CmsController@proprietaireDeFoncier')->name('proprietaire-de-foncier');
     Route::get('conditions-utilisation', 'CmsController@conditionsUtilisation')->name('conditions-utilisation');
+    Route::get('charte', 'CmsController@charte')->name('charte');
 });
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {
