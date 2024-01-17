@@ -34,12 +34,12 @@
 
 @endisset
 
-<p>Vous pouvez aussi soutenir notre initiative gratuite Objectif Terres en faisant un don*
-    à Terre de Liens : <br>
+<p>
+    Si vous êtes satisfait de nos services gratuits, n’hésitez pas à nous soutenir pour développer la plateforme Objectif Terres. <br>
 </p>
 
 @component('mail::button', ['url' => "https://soutenir.terredeliens.org/OT/", 'color' => "primary"])
-    {{ "Faire un don ou soutenir Objectif Terres" }}
+    {{ "Faire un don" }}
 @endcomponent
 
 

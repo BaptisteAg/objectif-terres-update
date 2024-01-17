@@ -51,7 +51,7 @@ class SalesForceRepository
         });
         $query .= implode(' AND ', $where);
 
-        $result = $this->forrest->query($query);
+        $result = $this->authenticated(fn() => $this->forrest->query($query));
 
         return $result["records"];
     }
@@ -63,13 +63,13 @@ class SalesForceRepository
      */
     public function create($objectName, array $params, $sForceAutoAssign = false)
     {
-        return $this->forrest->sobjects($objectName, [
+        return $this->authenticated(fn() => $this->forrest->sobjects($objectName, [
             'method' => 'post',
             'body' => $params,
             /*'headers' => [
                 'Sforce-Auto-Assign' => $sForceAutoAssign
             ]*/
-        ]);
+        ]));
     }
 
     /**
@@ -79,10 +79,10 @@ class SalesForceRepository
      */
     public function upsert($objectName, $id, array $params)
     {
-        return $this->forrest->sobjects($objectName. '/' . $id,[
+        return $this->authenticated(fn() => $this->forrest->sobjects($objectName. '/' . $id,[
             'method' => 'patch',
             'body'   => $params
-        ]);
+        ]));
     }
 
     /**
@@ -115,5 +115,38 @@ class SalesForceRepository
 		if(!$forrestToken->has()) {
 			$this->forrest->authenticate();
 		}
+    }
+
+    private function authenticated(\Closure $closure)
+    {
+        $this->authenticate();
+
+        return $closure();
+    }
+
+    public function deleteWhere(string $table, array $where)
+    {
+        $query = "SELECT Id FROM $table WHERE ";
+        array_walk($where, function (&$value, $key) {
+            if(is_array($value)) {
+                $value = $key . " IN ('" . implode("','", $value) . "')";
+            }
+            else {
+                $value = $key . " = '" . $value . "'";
+            }
+        });
+        $query .= implode(' AND ', $where);
+
+        $result = $this->authenticated(fn() => $this->forrest->query($query));
+
+        if(!count($result["records"])) {
+            return null;
+        }
+
+        $ids = array_map(fn($record) => $record["Id"], $result["records"]);
+
+        return collect($ids)->map(fn($id) => $this->authenticated(fn() =>
+            $this->forrest->query("DELETE FROM $table WHERE Id = '$id'")
+        ));
     }
 }

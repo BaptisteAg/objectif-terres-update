@@ -6,6 +6,8 @@ use App\Services\Ads\AdService;
 use App\Services\Salesforce\SalesforceService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class SyncSalesforceAds extends Command
 {
@@ -50,6 +52,8 @@ class SyncSalesforceAds extends Command
 
         //$this->confirm("Start Syncing {$ads->count()} ads to Salesforce ?");
 
-        $this->salesforceService->upsertAds($ads, fn($msg) => $this->info($msg));
+        ProgressBar::setFormatDefinition('custom', "<fg=white;bg=cyan> %message:-45s%</>\n%current%/%max% %percent:3s%%\n?  %estimated:-20s%  %memory:20s%");
+
+        $this->salesforceService->upsertAds($ads, $this->output);
     }
 }
