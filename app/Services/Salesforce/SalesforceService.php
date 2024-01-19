@@ -485,9 +485,11 @@ class SalesforceService
 
                 if ($response["success"]) {
                     $id = $response["id"];
-                    //$this->repository->deleteWhere('Territoire_du_dossier__c', [
-                    //    'Dossier_Objectif_Terres__c' => $id
-                    //]);
+
+                    $this->repository->deleteWhere('Territoire_du_dossier__c', [
+                        'Dossier_Objectif_Terres__c' => $id
+                    ]);
+
                     if($ad->departments?->count()) {
                         $this->repository->create('Territoire_du_dossier__c', [
                             'Dossier_Objectif_Terres__c' => $id,
