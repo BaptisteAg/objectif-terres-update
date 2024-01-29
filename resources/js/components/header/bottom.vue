@@ -20,6 +20,9 @@
               <a class="navbar-item" href="/confier-mes-terres">
                 Faire une donation ou un leg à Terre de Liens
               </a>
+              <a class="navbar-item" href="/proprietaire-de-foncier">
+                M'informer en tant que propriétaire foncier
+              </a>
             </div>
           </div>
 
