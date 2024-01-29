@@ -176,10 +176,10 @@ export default {
 				},
 				offerGenres: {required},
 				price: {
-					decimal,
 					required: requiredIf(() => {
-						return Object.values(this.formInput.offerGenres).includes('1')
-					})
+						return Object.values(this.formInput.offerGenres).includes('1') && !this.formInput.isSaleOfferEvaluation
+					}),
+					decimal,
 				},
 				rentPrice: {
 					decimal,

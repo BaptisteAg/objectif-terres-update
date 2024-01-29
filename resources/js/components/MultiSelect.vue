@@ -80,7 +80,7 @@ export default {
   },
   data() {
     return {
-      selectedIds: this.value || []
+      selectedIds: this.value || [],
     };
   },
   computed: {
@@ -91,7 +91,7 @@ export default {
         )
       },
       set(options) {
-        console.log(options)
+        //console.log(options)
         if (options.length === 0) {
           return this.selectedIds = []
         }
