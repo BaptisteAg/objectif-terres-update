@@ -1,6 +1,6 @@
 <template>
   <form @submit="formSubmit">
-    <div class="modal is-active">
+    <div class="modal is-active p-8 p-0-mobile">
       <div class="modal-background" @click="$emit('close')"></div>
       <div class="modal-content">
         <div class="card">
@@ -91,7 +91,7 @@
                   </div>
                   <label class="checkbox" v-if="moderationChoice === 'acceptAd'">
                     <input type="checkbox" v-model="isPartner">
-                    Mettre cette annonce à la une (annonceur certifié)
+                      Certifier l'annonce (lorsque l'annonce provient de Terre de Liens ou de ses partenaires)
                   </label>
                 </div>
               </div>

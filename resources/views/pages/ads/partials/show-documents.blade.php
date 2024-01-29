@@ -4,7 +4,7 @@
 			<span class="is-size-5 ad-show-feature-label has-text-black">Documents joints au projet : </span><br>
 			@foreach($ad->nonImageDocuments as $document)
 				@if(strstr($document->type,'/',true) !== "image")
-					<a href="{{URL::asset($document->path)}}"
+					<a href="{{app('url')->assetFrom('https://objectif-terres.org', $document->path)}}"
 					   target="_blank">
 						<button class="button is-link is-light" style="margin-bottom: 10px">
 						<span class="icon is-small">

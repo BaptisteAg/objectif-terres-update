@@ -31,9 +31,13 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|ProductionGenre whereParentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductionGenre whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $allAds
+ * @property-read int|null $all_ads_count
  */
 class ProductionGenre extends Model
 {
+    const NONE_ID = 1;
+
     /**
      * @var array
      */

@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromView;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
@@ -10,6 +11,8 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 
 class ProjectExport implements FromView, WithTitle, WithColumnWidths
 {
+    use Exportable;
+
 	protected $ads;
 
 	/**

@@ -1,0 +1,24 @@
+.title-slider {
+  color: #fff;
+  z-index: 5000;
+  position: absolute;
+  top: 150px;
+  left: 150px;
+  max-width: 450px;
+}
+.title-slider h2 {
+  color: #fff;
+}
+
+.text-slider {
+  color: #fff;
+  z-index: 5000;
+  position: absolute;
+  bottom: 150px;
+  left: 150px;
+}
+.text-slider p {
+  max-width: 450px;
+}
+
+/*# sourceMappingURL=louer-vendre-mes-terres.css.map */

@@ -42,6 +42,7 @@ class AdStatus extends Model
 
 
 	public const TOOLTIPS = [
+        '' => 'Brouillon',
 		self::APPROVE_ID => "Validée : annonce modérée publiée",
 		self::PENDING_ID => "En attente :annonce modérée en attente d’une réponse ou de modification par l'annonceur",
 		self::REFUSE_ID => "Refusée : annonce modérée non publiée",

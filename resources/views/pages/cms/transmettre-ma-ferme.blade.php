@@ -7,8 +7,8 @@
 @endsection
 
 @section('main-content')
-    <section class=" cms-page">
-        <div class="container">
+    <section class="cms-page">
+        <div class="container px-3-mobile">
             <div class="rows">
                 <div class="row is-full">
                     @if($pageContent->count())
@@ -57,7 +57,7 @@
             </div>
         </div>
     </section>
-    <div class="container">
+    <div class="container px-3-mobile">
         <p>Quelques ressources issues de ce dossier : </p>
     </div>
     <div class="columns is-centered">

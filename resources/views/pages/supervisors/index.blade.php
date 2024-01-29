@@ -7,7 +7,7 @@
 @endsection
 
 @section('main-content')
-    <div class="section pt-0">
+    <div class="section">
         <h1 class="title is-2 has-text-link">Bienvenue sur votre tableau de bord <span
                     class="is-italic">{{ Auth::user()->first_name }} {{ Auth::user()->name }}</span></h1>
 
@@ -435,11 +435,6 @@
 
 @section('script')
     <script>
-        const vueSupervisorFilters = new Vue({
-            el: '#vue-form-supervisor',
-            name: 'content'
-        });
-
         let deleteButton = document.querySelector('#close-notification-supervisor');
         if (deleteButton != null) {
             deleteButton.addEventListener('click', function (e) {
@@ -448,7 +443,5 @@
                 }
             )
         }
-
     </script>
-
 @endsection

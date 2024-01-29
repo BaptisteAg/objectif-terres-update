@@ -2,7 +2,6 @@
 
 use App\Models\ProductionGenre;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
@@ -29,6 +28,7 @@ class ProductionGenreRepository extends AbstractRepository
     {
         $productionGenresWithDepth = ProductionGenre::with('children')
             ->whereNull('parent_id')
+            ->orderBy('name')
             ->get()
             ->map
             ->only(['name', 'id', 'children']);

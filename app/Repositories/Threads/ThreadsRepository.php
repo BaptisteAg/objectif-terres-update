@@ -34,14 +34,14 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 
 
 	/**
-	 * @param string $threadId
+	 * @param string $id
 	 * @return Thread|null
 	 */
-	public function find($threadId): ?Thread
+	public function find($id): ?Thread
 	{
 		/** @var Thread $model */
 		$model = $this->entity
-			->where(['threads.id' => $threadId])
+			->where(['threads.id' => $id])
 			->with($this->getEagerLoading())
             ->forUser(auth()->id())
 			->first();
@@ -49,7 +49,7 @@ class ThreadsRepository extends AbstractRepository implements ThreadsRepositoryI
 		if (!$model) {
 			throw (new ModelNotFoundException)->setModel(
 				get_class($this->entity->getModel()),
-				$threadId
+				$id
 			);
 		}
 		return $model;

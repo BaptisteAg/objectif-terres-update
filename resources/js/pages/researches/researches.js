@@ -14,13 +14,16 @@ Vue.Component('search', {
     }
 });*/
 
-
-window.regionMapInit  = async function (mapId, fetchOptions) {
+window.regionMapInit  = async function (mapId, queryString) {
     const mapController = await OSMapControllerFactory(mapId);
 
-    const departmentsPolygonData = await fetchJson('/locations/polygon/departments/', fetchOptions);
+    let departmentsPolygonData = await fetchJson('/locations/polygon/departments/?' + queryString);
 
     let featureGroup = mapController.addFeatureGroup();
+
+    if(typeof departmentsPolygonData === 'object') {
+        departmentsPolygonData = Object.values(departmentsPolygonData);
+    }
 
     departmentsPolygonData.forEach(polygonData => {
 
@@ -31,10 +34,7 @@ window.regionMapInit  = async function (mapId, fetchOptions) {
         featureGroup.addLayer(polygon);
 
         polygon.addEventListener('click', _ => {
-            location.href = "/recherche?" +
-                "offer_type=" + fetchOptions.offer_type +
-                "&ad_category=" + fetchOptions.ad_category +
-                '&departments_location_researches_ids[]=' + polygonData.department_id;
+            location.href = "/recherche?" + queryString + '&departments_location_researches_ids[]=' + polygonData.department_id;
         });
 
         mapController.bindTooltip(polygon, polygonData.ads_count.toString(), {

@@ -10,12 +10,15 @@ import ZoneSelect from '../../../components/ZoneSelect'
 import AdTypeSelect from '../../../components/AdTypeSelect'
 import MultiSelect from "../../../components/MultiSelect";
 import CustomCheckbox from "../../../components/CustomCheckbox"
+import ListSelect from "../../../components/ListSelect"
 import DocumentsUpload from "../../../components/DocumentsUpload"
+import Autocomplete from "../../../components/Autocomplete"
 
 export default Vue.extend({
     mixins: [FormNewAdMixin],
     props: {},
     components: {
+        Autocomplete,
         AdTypeSelect,
         ZoneSelect,
         VueSliderRange,
@@ -23,47 +26,48 @@ export default Vue.extend({
         MultiSelect,
         CustomCheckbox,
         TextAreaCounter,
-        DocumentsUpload
+        DocumentsUpload,
+        ListSelect,
     },
     data() {
-        let v = this.oldValues;
+        let old = this.oldValues;
 
-        if(!v.land_seek) {
-            v.land_seek = {}
+        if (!old.land_seek) {
+            old.land_seek = {}
         }
-
-        const extraFormInput = this.isSupportRequest ? {
-            offerGenres: v.land_seek.offer_genres || [],
-            rentMax : v.land_seek.rent_max || '0',
-            priceMax : v.land_seek.price_max || '',
-            educationLevels: v.land_seek.education_levels || [],
-            supportRequestText: v.support_request_text || '',
-            supportRequestTerritoryId : v.support_request_territory_id ||"",
-        } : {};
 
         return {
             formInput: {
-                selectedZones: v.selected_zones && JSON.parse(v.selected_zones) || [],
-                surfaceRangeMin : v.land_seek.surface_range_min || '0',
-                surfaceRangeMax : v.land_seek.surface_range_max || '1000000',
-                landDescription: v.land_seek.land_description || '',
-                productionGenres: v.land_seek.production_genres || [],
-                productionTypeAdd: v.land_seek.production_type_add || '',
-                installationTypeId: v.land_seek.installation_type_id || '',
-                aboutProject: v.about_project_content || '',
-                experienceFarming: v.land_seek.experience_farming || '',
-                aboutContent: v.about_content || '',
-                title: v.title || '',
-                documents: v.documents && JSON.parse(v.documents) || [],
-                chartConfirmation: v.chart_confirmation || false,
-                ...extraFormInput
+                selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
+                selectedZones: old.selected_zones && JSON.parse(old.selected_zones) || [],
+				surfaceRange: (old.land_seek.surface_range_min !== undefined && old.land_seek.surface_range_min !== null) ? (old.land_seek.surface_range_min + 5) : '',
+                surfaceRangeMin: old.land_seek.surface_range_min || '0',
+                surfaceRangeMax: old.land_seek.surface_range_max || '1000000',
+                landDescription: old.land_seek.land_description || '',
+                buildingRequirement: old.land_seek && old.land_seek.buildings ? old.land_seek.buildings[1] : '',
+                farmsRequirement: old.land_seek && old.land_seek.buildings ? old.land_seek.buildings[2] : '',
+                productionGenres: old.land_seek.production_genres || [],
+                productionTypeAdd: old.land_seek.production_type_add || '',
+                isBio: old.land_seek.is_bio,
+                installationTypeId: old.land_seek.installation_type_id || '',
+                aboutProject: old.about_project_content || '',
+                // experienceFarming: v.land_seek.experience_farming || '',
+                aboutContent: old.about_content || '',
+                title: old.title || '',
+                documents: old.documents && JSON.parse(old.documents) || [],
+                chartConfirmation: old.chart_confirmation || true,
+                productionGenresSecondary: old.land_seek.secondary_production_genres || [],
+                secondProductionTypeAdd: old.land_seek.secondary_production_type_add || ''
             }
         }
     },
     computed: {
         productionGenresHasOther() {
             return this.formInput.productionGenres.includes('other');
-        }
+        },
+        productionGenresSecondaryHasOther() {
+            return this.formInput.productionGenresSecondary.includes('other');
+        },
     },
     watch: {
         'formInput.productionGenres': function (productionGenres) {
@@ -72,45 +76,36 @@ export default Vue.extend({
             }
         },
     },
-    methods: {
-    },
+    methods: {},
     validations() {
-        const extraValidations = this.isSupportRequest ? {
-            offerGenres: {required},
-            supportRequestText: {
-                minLength: minLength(10),
-                maxLength: maxLength(400),
-            },
-            aboutContent: {
-                minLength: minLength(5),
-                maxLength:
-                    maxLength(1000),
-            },
-        } : {};
-
         return {
             formInput: {
                 ...baseValidations.formInput,
-                surfaceRangeMax: {
-                    minValue: minValue(5)
+                selectedDepartments: {
+                    required,
                 },
+				surfaceRange: {
+					required,
+				},
                 landDescription: {
                     minLength: minLength(5),
                     maxLength: maxLength(1500),
                 },
                 productionGenres: {required},
+                buildingRequirement: {required},
+                farmsRequirement: {required},
                 installationTypeId: {required},
                 rentMax: {numeric},
+                isBio: {required},
+
                 experienceFarming: {
                     minLength: minLength(5),
                     maxLength: maxLength(1500),
                 },
                 chartConfirmation: {
-                    checked(v) {
-                        return !!v
-                    }
-                },
-                ...extraValidations
+                    required,
+                    isTrue: value => value === true
+                }
             }
         }
     }

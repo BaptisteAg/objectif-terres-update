@@ -37,21 +37,24 @@
             @if(count($ad->attributionAd->getAdvisors()))
                 @if($ad->isProjectAttributedToAdvisor)
                     <div class="notification is-primary">
-                        Vous êtes le primo-accueillant pour cette demande ! (<a href="/annonces/{{$ad->id}}">Modifier</a>) <br>
-                        N'oubliez pas de mettre à jour le stade et l'état de la demande ainsi que l'avancement du projet !
+                        Vous êtes le primo-accueillant pour cette demande ! (<a
+                                href="/annonces/{{$ad->id}}">Modifier</a>) <br>
+                        N'oubliez pas de mettre à jour le stade et l'état de la demande ainsi que l'avancement du projet
+                        !
                     </div>
                 @endif
-                <p>Cette demande est attribuée à (<a href="/annonces/{{$ad->id}}">Modifier</a>) :
-                    <ul style="list-style-type:none;">
-                        @foreach($ad->attributionAd->getAdvisors() as $i => $userAdvisor)
-                            <li>
-                                <strong>
-                                    {{$userAdvisor->first_name}} {{$userAdvisor->name}}
-                                    <a href="/mon-tableau-de-bord/supprimer-attribution/{{$ad->id}}/{{$i+1}}"></a>
-                                </strong>
-                            </li>
-                        @endforeach
-                    </ul>
+                {{--<p>Cette demande est attribuée à (<a href="/annonces/{{$ad->id}}">Modifier</a>) :--}}
+                <p>Cette demande est attribuée à :
+                <ul style="list-style-type:none;">
+                    @foreach($ad->attributionAd->getAdvisors() as $i => $userAdvisor)
+                        <li>
+                            <strong>
+                                {{$userAdvisor->first_name}} {{$userAdvisor->name}}
+                                <a href="/mon-tableau-de-bord/supprimer-attribution/{{$ad->id}}/{{$i+1}}"></a>
+                            </strong>
+                        </li>
+                    @endforeach
+                </ul>
                 </p>
             @else
                 <p>Cette demande n'a pas été encore attribuée à un primo-accueillant</p>
@@ -90,14 +93,14 @@ Accompagnement : plusieurs échanges, au moins une rencontre physique avec le po
                                     @else
                                         <span class="tag is-light">Non défini</span>
                                     @endif
-                                    @if(! $ad->userPp->trashed())
-                                        <a>
-                                            <span v-on:click='isSupportStageSelectOpen = !isSupportStageSelectOpen'
-                                                  class="icon text_warning_dark">
-                                                <i class="fas fa-pen"></i>
-                                            </span>
-                                        </a>
-                                    @endif
+                                    {{--                                    @if(! $ad->userPp->trashed())--}}
+                                    {{--                                        <a>--}}
+                                    {{--                                            <span v-on:click='isSupportStageSelectOpen = !isSupportStageSelectOpen'--}}
+                                    {{--                                                  class="icon text_warning_dark">--}}
+                                    {{--                                                <i class="fas fa-pen"></i>--}}
+                                    {{--                                            </span>--}}
+                                    {{--                                        </a>--}}
+                                    {{--                                    @endif--}}
                                 </p>
                             </div>
                             <div v-show="isSupportStageSelectOpen === true" class="field">
@@ -131,14 +134,14 @@ Archivé : cet accompagnement est terminé
                                     @else
                                         <span class="tag is-light">Non défini</span>
                                     @endif
-                                    @if(! $ad->userPp->trashed())
-                                        <a>
-                                            <span v-on:click='isSupportStateSelectOpen = !isSupportStateSelectOpen'
-                                                  class="icon text_warning_dark">
-                                                <i class="fas fa-pen"></i>
-                                            </span>
-                                        </a>
-                                    @endif
+                                    {{--                                    @if(! $ad->userPp->trashed())--}}
+                                    {{--                                        <a>--}}
+                                    {{--                                            <span v-on:click='isSupportStateSelectOpen = !isSupportStateSelectOpen'--}}
+                                    {{--                                                  class="icon text_warning_dark">--}}
+                                    {{--                                                <i class="fas fa-pen"></i>--}}
+                                    {{--                                            </span>--}}
+                                    {{--                                        </a>--}}
+                                    {{--                                    @endif--}}
                                 </p>
                             </div>
                             <div v-show="isSupportStateSelectOpen === true" class="field">
@@ -178,14 +181,14 @@ Abandonné : le projet d’installation ou de transmission a finalement été ab
 Abouti : le projet d’installation ou de transmission s’est concrétisé
 ">Non défini</span>
                                     @endif
-                                    @if(! $ad->userPp->trashed())
-                                        <a>
-                                            <span v-on:click='isProjectStatusSelectOpen = !isProjectStatusSelectOpen'
-                                                  class="icon text_warning_dark">
-                                                <i class="fas fa-pen"></i>
-                                            </span>
-                                        </a>
-                                    @endif
+                                    {{--                                    @if(! $ad->userPp->trashed())--}}
+                                    {{--                                        <a>--}}
+                                    {{--                                            <span v-on:click='isProjectStatusSelectOpen = !isProjectStatusSelectOpen'--}}
+                                    {{--                                                  class="icon text_warning_dark">--}}
+                                    {{--                                                <i class="fas fa-pen"></i>--}}
+                                    {{--                                            </span>--}}
+                                    {{--                                        </a>--}}
+                                    {{--                                    @endif--}}
                                 </p>
                             </div>
                             <div v-show="isProjectStatusSelectOpen === true" class="field">
@@ -294,13 +297,6 @@ Abouti : le projet d’installation ou de transmission s’est concrétisé
 @endsection
 
 @section('script')
-
-    <script>
-        const vueAdvisorSupportRequestDashboard = new Vue({
-            el: '#advisor-support-request-dashboard',
-            name: 'content'
-        });
-    </script>
     @if(count($ad->images) > 1)
         <script src="{{asset('/js/bulma-carousel.js')}}"></script>
         <script>
@@ -311,6 +307,5 @@ Abouti : le projet d’installation ou de transmission s’est concrétisé
                 navigation: true,
             });
         </script>
-
     @endif
 @endsection

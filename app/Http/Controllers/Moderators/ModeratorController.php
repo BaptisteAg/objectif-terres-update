@@ -43,7 +43,6 @@ class ModeratorController extends BaseController
 		$vars = $this->getModeratorDashboardVars();
 		$vars['attributionAds'] = $this->service->showForModerators($request);
 		return view('pages.moderator.index', $vars);
-
 	}
 
 	/**
