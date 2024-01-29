@@ -16,13 +16,6 @@ use Illuminate\Http\Request;
 Route::get('/', 'HomePage\HomePageController@show')->name('home');
 Route::get('/premiere-visite', 'HomePage\HomePageController@show')->name('site-tour');
 
-
-
-Route::post('/info-banner/close', function(Request $request) {
-    session()->put('info-banner-closed', $request->input('closed'));
-    return response()->json(['success' => true]);
-});
-
 Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
     Route::middleware(['auth'])->get('creer', 'AdsController@create')->name('create');
     Route::middleware('auth')->post('sauvegarder', 'AdsController@saveDraft')->name('save-draft');
@@ -236,6 +229,9 @@ Route::post('newsletter', 'Newsletter\NewsletterController@create');
 Route::prefix('api')->group(function () {
     Route::get('annonces', 'ApiController@annonces')->name('annonces');
 });
+
+
+Route::post('/info-banner/close', 'InfoBannerController@close')->name('info-banner.close');
 
 /*Route::get('test-alerts', function() {
 
