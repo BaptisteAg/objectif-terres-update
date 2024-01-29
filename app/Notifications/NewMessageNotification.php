@@ -45,8 +45,10 @@ class NewMessageNotification extends Notification implements ShouldQueue
 	{
 		$mailMessage = new MailMessage();
 
+        $aboutAd = isset($this->data['ad_name']) ? ' à propos de l\'annonce ' . $this->data['ad_name'] : '';
+
 		$mailMessage
-			->subject('Vous avez un nouveau message de ' . $this->data['sender_first_name'] . ' ' . $this->data['sender_name'] . ' à propos de votre annonce N°'. $this->data['ad_id'])
+			->subject('Vous avez un nouveau message de ' . $this->data['sender_first_name'] . ' ' . $this->data['sender_name'] . $aboutAd)
 			->greeting('Bonjour, ' . $notifiable->fisrt_name)
             ->line('Vous avez reçu un nouveau message de ' . $this->data['sender_first_name'] . ' ' . $this->data['sender_name'].".")
 			->action('Consulter votre messagerie', url('/mon-espace/messagerie'))

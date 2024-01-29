@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Researches;
 
+use App\Http\Controllers\Controller;
 use App\Jobs\NotifyCreationAlertResearch;
 use App\Models\EducationLevel;
 use App\Models\InstallationType;
@@ -10,39 +11,19 @@ use App\Models\OfferGenre;
 use App\Models\ProductionGenre;
 use App\Models\Region;
 use App\Models\Research;
-use App\Http\Controllers\Controller;
-use App\Services\Locations\LocationService;
 use App\Services\Researches\ResearchService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
-
-class
-ResearchesController extends Controller
+class ResearchesController extends Controller
 {
-    private $researchService;
-    private $researchNotification;
-    /**
-     * @var LocationService
-     */
-    private $locationService;
 
-    /**
-     * ResearchesController constructor.
-     * @param ResearchService $researchService
-     * @param NotifyCreationAlertResearch $notifyCreationAlertResearch
-     */
-    public function __construct(ResearchService $researchService, NotifyCreationAlertResearch $notifyCreationAlertResearch, LocationService $locationService)
+    public function __construct(
+        private ResearchService $researchService,
+        private NotifyCreationAlertResearch $researchNotification
+    )
     {
-        $this->researchService = $researchService;
-        $this->researchNotification = $notifyCreationAlertResearch;
-        $this->locationService = $locationService;
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function index(Request $request)
     {
         if ($request->has('ad_category')) {
