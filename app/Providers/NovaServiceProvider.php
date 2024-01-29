@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
+use App\Nova\Actions\ReallocateModeratorAds;
+use App\Nova\Dashboards\Main;
 use App\Nova\Metrics\NewUsers;
 use App\Nova\Metrics\UsersPerDay;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Nova;
@@ -88,6 +92,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 	 */
 	public function register()
 	{
-		//
+        $this->app->singleton(ReallocateModeratorAds::class);
 	}
 }

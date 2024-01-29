@@ -7,7 +7,7 @@
 @endsection
 
 @section('main-content')
-    <section class=" cms-page">
+    <section class="cms-page old px-3-mobile">
         <div class="container">
             <div class="rows">
                 <div class="row is-full">
@@ -21,7 +21,7 @@
         </div>
     </section>
 
-    <section class="">
+    <section class="cms-page old px-3-mobile">
         <div class="container">
             @if($pageContent->count())
                 @if($pageContent->has('minstaller-comme-paysan-votre-projet-dinstallations'))
@@ -68,7 +68,7 @@
             </div>
         </div>
     </section>
-    <div class="container">
+    <div class="container cms-page px-3-mobile">
         <p >Quelques ressources issues de ce dossier : </p>
     </div>
     <div class="columns is-centered">

@@ -1,25 +1,24 @@
-<div class="checkboxes-production-genre">
-    <div class="columns">
-        @foreach($productionGenres as $i => $productionGenre)
-            <div class="column is-half">
-                <custom-checkbox
-                        name="{{$name}}"
-                        input-value="{{$productionGenre["id"]}}"
-                        :disabled="isInputDisabled"
-                        v-model="{{ $vModel ?? "formInput.productionGenres" }}"
-                        :exclusive-values="['1']"
-                        ref="{{ $ref ?? "productionGenres" }}">
-
-{{--                    <i class="fa fa-home"></i>--}}
-                    <span style="font-size:16px">
-                        {{ $productionGenre["name"] }}
-                    </span>
-                </custom-checkbox>
-            </div>
-            @if($i % 2)
-    </div>
-    <div class="columns">
-            @endif
-        @endforeach
-    </div>
-</div>
+@php
+    $isUnique = isset($isUnique) ? $isUnique : false;
+    $isRequired = isset($isRequired) ? $isRequired : false;
+    $unitLabel = isset($unitLabel) ? $unitLabel : 'production';
+    $unitLabelGender = isset($unitLabelGender) ? $unitLabelGender : 'f';
+@endphp
+{!! Form::label($name, (string)$label . ($isRequired ? ' *' : ''), ['class' => 'label']); !!}
+@if(!$isUnique)
+    <p>Vous pouvez renseigner plusieurs valeurs</p>
+@endif
+<list-select
+        unit-label="{{$unitLabel}}"
+        unit-label-gender="{{$unitLabelGender}}"
+        :options="{{$productionGenres}}"
+        name="{{$name}}"
+        v-model="{{$vModel}}"
+        :is-unique="{{ $isUnique ? 'true' : 'false' }}">
+    @if($isRequired ?? false)
+        <p class="help is-danger" id="productionGenresError"
+           v-if="$v.{{ $vModel }}?.$error">
+            Ce champ est requis.
+        </p>
+    @endif
+</list-select>

@@ -1,0 +1,169 @@
+// Global scss
+html {
+  scroll-behavior: smooth;
+}
+//Body
+body {
+  font-size: 1em;
+  margin: 0;
+  padding: 0;
+  font-family: $family-sans-serif;
+  color: $charcoal;
+  max-width: 100vw;
+}
+
+//.container {
+//  max-width: 1055px;
+//}
+
+.container-custom {
+  padding: 0.5rem 2rem;
+}
+
+.control.has-icons-left .icon, .control.has-icons-right .icon {
+  right: 0;
+}
+
+.has_margin {
+  margin: $has_margin;
+}
+
+.width-fit-content {
+  width: fit-content;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+[v-cloak] {
+  display: none;
+}
+
+.level-item{
+  flex-shrink: 1;
+}
+
+.objT-border {
+  border-radius: 12px;
+}
+
+
+/*.subtitle {
+  color: $success !important;
+}*/
+
+ul{
+  list-style: disc;
+}
+
+
+/*
+==========================================================
+==========================================================
+CALL TO ACTION
+==========================================================
+==========================================================
+*/
+
+/*
+--------------------
+CTA
+--------------------
+*/
+
+.CTA {
+  text-align: center;
+  overflow: hidden;
+}
+
+.CTA__container {
+  max-width: 40em;
+  margin: auto;
+}
+
+/*
+--------------------
+CTA CONTENT
+--------------------
+*/
+
+.CTA__title {
+  text-align: center;
+  font-size: 2.5em;
+  margin: 0.5rem 0;
+}
+
+.CTA__subtitle {
+  font-size: 1.5em;
+  margin: 1rem 0;
+}
+
+.CTA__content {
+  margin: 0.5rem 0 1rem;
+  padding: 1px 0;
+}
+
+/*
+--------------------
+CTA RAPPORT
+--------------------
+*/
+
+.CTA_rapport {
+  text-align: center;
+}
+
+/*
+--------------------
+CTA SOUTIEN
+--------------------
+*/
+
+.CTA_soutien {
+  font-size: 1em !important;
+  background-color: $success;
+  text-align: left;
+}
+
+.CTA_soutien__title,
+.CTA_soutien__subtitle {
+  text-align: left;
+}
+
+.CTA_soutien__buttons {
+  justify-content: center;
+  font-size: 0.8em;
+}
+
+@media (min-width: $tablet) {
+  .CTA_soutien .section__container {
+    width: 50% !important;
+    left: 50%;
+  }
+}
+
+@media (min-width: 600px) and (max-width: $tablet - 1) {
+  .CTA_soutien .section__container {
+    width: 60% !important;
+    left: 35%;
+  }
+}
+
+@media (max-width: $tablet - 1) {
+  .CTA_soutien .section__container {
+    margin-top: -2em;
+  }
+}
+
+/*
+--------------------
+CMS
+--------------------
+*/
+
+.cms-page .image img {
+  width:auto;
+  max-width:100%;
+  margin: 0 auto;
+}

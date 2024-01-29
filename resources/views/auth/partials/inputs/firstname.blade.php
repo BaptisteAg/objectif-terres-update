@@ -2,7 +2,7 @@
     <label class="label">Prénom*</label>
     <div class="control has-icons-left">
         <input id="first_name" name="first_name"
-               class="input @error('first_name')is-danger @enderror" type="text"
+               class="input is-rounded @error('first_name')is-danger @enderror" type="text"
                value="{{ old('first_name') }}" required autocomplete="first_name"
                autofocus
                placeholder="Votre prénom...">
