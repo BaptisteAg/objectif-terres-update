@@ -83,11 +83,12 @@
     @endif
 @endif
 
-@if($infoBanner && $infoBanner !== '')
+@if($infoBanner && ( !session('info-banner-closed') || session('info-banner-closed') !== md5($infoBanner)))
     <b-notification
             id="info-banner"
             type="is-info"
-            role="alert">
+            role="alert"
+            @close="() => { fetch('/info-banner/close', { method: 'POST',headers: {'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': '{{csrf_token()}}'}, body: JSON.stringify({closed: '{{md5($infoBanner)}}'}) }) }">
         {!! $infoBanner !!}
     </b-notification>
 @endif

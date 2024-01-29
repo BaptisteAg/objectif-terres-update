@@ -90,7 +90,7 @@ export default {
 
 				if (validation && ref) {
 					let field = this.findInputContainerElement(ref);
-					console.log(field)
+					//console.log(field)
 					// /!\ .field class must be placed on the input container
 					while (!field.classList.contains('field')) {
 						field = field.parentElement
@@ -132,6 +132,7 @@ export default {
 							tab.addEventListener('animationend', e => {
 								// Lets try to focus
 								try {
+									console.log({input})
 									input.focus();
 								} catch (error) {
 									console.log(error)
