@@ -60,6 +60,7 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 		$model = $this->entity
 			->where(["user_id" => $id])
 			->with($this->getEagerLoading())
+            ->orderByDesc('created_at')
 			->get();
 
 		if (!$model) {

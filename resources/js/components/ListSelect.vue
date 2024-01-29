@@ -68,7 +68,7 @@ export default {
 	data() {
 		return {
 			dropdownValue: (this.isUnique ?
-					this.options.find(o => o.id.toString() === this.value[0].toString())?.id :
+					this.options.find(o => o.id.toString() === this.value[0]?.toString())?.id :
 					this.options.filter(o => this.value.map(v => v.toString()).includes(o.id.toString())).map(o => o.id)
 			)
 		}
