@@ -219,7 +219,7 @@
                     <input type="hidden" name="land_offer[is_sales_offer_evaluation]"
                            :value="formInput.isSaleOfferEvaluation">
                 </div>
-                <div class="column field" v-show="isSaleOffer && !formInput.isSaleOfferEvaluation" ref="price">
+                <div class="column field" v-if="isSaleOffer && !formInput.isSaleOfferEvaluation" ref="price">
                     {!! Form::label('land_offer[price]', 'Prix de vente *', [
                                         'class' => 'label',
                                     ]); !!}
