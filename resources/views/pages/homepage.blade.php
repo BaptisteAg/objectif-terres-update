@@ -1,120 +1,70 @@
 @extends('default')
 
-@section('title', 'Bienvenue sur Objectif Terres')
+@section('title', 'Accueil')
 
 @section('head-script')
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
-	<!-- Import Leaflet CSS Style Sheet -->
-	<link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css"/>
 @endsection
 
 
 @section('main-content')
 
-	@if(Route::currentRouteName() === "site-tour")
-		<div id="vue-site-tour">
-			<site-tour-shepherd inline-template
-								image-path="{{asset('/images/cms/screenshot-site-tour.png')}}">
-				<template>
+    <advanced-search
+            :productions="{{$productionGenres}}"
+            :regions="{{ $regionsWithAll }}"
+            :installation="{{ $installationTypes }}"
+            :formations="{{ $educationLevels }}"
+            :experiences="{{ $jobOfferTypes }}"
+    >
+    </advanced-search>
 
-				</template>
-			</site-tour-shepherd>
-		</div>
-	@endif
+    <section class="container mt-6">
+        <div class="columns is-desktop">
+            <div class="column is-flex-grow-5">
+                <h2 class="title">Les annonces à la une</h2>
+                <p>Les annonces publiées par Terre de Liens et ses partenaires.</p>
+            </div>
+            <div class="column">
+                <a href="/recherche?ad_category=all&certified=true" class="button is-light is-rounded">Voir toutes les
+                    annonces certifiées</a>
+            </div>
+        </div>
+        @if(!$adsPartner->isEmpty())
+            <div class="columns columns-slider is-mobile">
+                @foreach ($adsPartner as $ad)
+                    @include("pages.homepage_ad_thumbnail")
+                @endforeach
+            </div>
+        @else
+            <article class="message is-danger">
+                <div class="message-body">
+                    Aucune annonce à la une
+                </div>
+            </article>
+        @endif
+    </section>
 
+    <section class="container mt-5">
+        <div class="columns is-desktop mb-5">
+            <div class="column is-flex-grow-5">
+                <h2 class="title">Les dernières annonces publiées</h2>
+            </div>
+            <div class="column">
+                <a href="/recherche?ad_category=all" class="button is-light is-rounded">Voir toutes les
+                    annonces</a>
+            </div>
+        </div>
+        <div class="columns columns-slider is-mobile">
+            @foreach ($ads as $ad)
+                @include("pages.homepage_ad_thumbnail")
+            @endforeach
+        </div>
+    </section>
 
-	<div id="global-map"></div>
+    @include('components.newsletter')
 
-	<section class="section">
-		<div class="mr-10 ml-10">
-			<div class="has-text-centered ">
-				<h2 class="title is-1 text_warning_orange">Dernières annonces publiées</h2>
-			</div>
-			<div class="columns is-multiline is-mobile">
-				@foreach ($ads as $ad)
-					@include("pages.homepage_ad_thumbnail")
-				@endforeach
-			</div>
-			<div class="columns is-centered">
-				<div class="column is-half has-text-centered">
-					<a href="{{route('researches.index', ['ad_category' => 'all'])}}">
-						<button class="button is-link is-medium basic secondary">
-
-							<span class="button__icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
-							<span class="button__label">Toutes les annonces</span>
-						</button>
-					</a>
-				</div>
-			</div>
-		</div>
-	</section>
-	@if(!$adsPartner->isEmpty())
-		<section class="section">
-			<div class="">
-				<div class="has-text-centered ">
-					<h2 class="title is-1 text_warning_orange">Annonces à la une</h2>
-				</div>
-				<div class="columns is-mobile is-centered">
-					@foreach ($adsPartner as $ad)
-						@include("pages.homepage_ad_thumbnail")
-					@endforeach
-				</div>
-				<div class="columns is-centered">
-					<div class="column is-half has-text-centered">
-						<a href="{{route('researches.index', ['ad_category' => 'all', 'certified' =>"true"])}}">
-							<button class="button is-link is-medium basic secondary">
-								<span class="button__icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
-								<span class="button__label">Toutes les annonces certifiées</span>
-							</button>
-						</a>
-					</div>
-				</div>
-			</div>
-		</section>
-	@endif
-
-	@include('components.partnering')
-
-	<div id="vue-rss">
-		@include('components.rssNews')
-	</div>
-	@include('components.support-terre-liens')
+    @include('components.partnering')
 
 @endsection
 
 @section('script')
-	<script src="{{ asset('js/bulma-accordion.js') }}"></script>
-	<script>let accordions = bulmaAccordion.attach();</script>
-	<script src="{{ asset('js/bulma-carousel.js') }}"></script>
-	<script>
-        bulmaCarousel.attach('#post_images', {
-            slidesToScroll: 1,
-            slidesToShow: 2,
-            loop: true,
-            navigation: true,
-        });
-
-        new Vue({
-            el: '#vue-rss',
-            data: {
-                ready: true
-            }
-        });
-
-	</script>
-
-	<script defer>
-        homepageMapInit('global-map');
-	</script>
-	@if(Route::currentRouteName() === "site-tour")
-		<script>
-
-            const vueSiteTour = new Vue({
-                el: '#vue-site-tour',
-                name: 'content'
-            });
-		</script>
-
-	@endif
-
 @endsection

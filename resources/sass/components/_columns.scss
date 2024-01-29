@@ -1,0 +1,12 @@
+@media (max-width: $tablet) {
+ .columns {
+    margin: 0 !important;
+  }
+  .columns-slider.is-mobile {
+    width: 100vw;
+    overflow-y: scroll;
+  }
+  .columns-slider.is-mobile > .column {
+    min-width: 80vw;
+  }
+}

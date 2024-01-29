@@ -1,88 +1,110 @@
 <footer>
-    <section class="bg-d-danger bg-trame_champs_dark">
-        <div class="container is-full-width pt-50 pb-80">
-            <div class="columns has-text-centered is-multiline is-marginless">
-                <div class="column is-2-desktop is-half-tablet">
-                    <h6 class="title is-6 text_white footer-site__title">TERRE DE LIENS</h6>
-                    <p><a class="" target="_blank" href="{{ url('https://terredeliens.org/-un-mouvement-trois-piliers-.html') }}">Qui sommes nous ?</a>
-                    </p>
-                    <p><a class="" target="_blank" href="{{ url('https://terredeliens.org/-un-mouvement-trois-piliers-.html') }}">Notre mission</a></p>
-                    <p><a class="" target="_blank" href="{{ url('https://terredeliens.org/-proteger-les-terres-.html') }}">Nos actions</a></p>
-                    <p><a class="" target="_blank"
-                          href="{{ url('https://terredeliens.org/-les-chiffres-clefs-.html') }}">Chiffres clés</a>
-                    </p>
-                    <p><a class="button is-normal is-link form-button basic primary" target="_blank" href="https://portail-terredeliens.force.com/rhizome/s/formulaires/question-objectif-terres ">Une question ? </a>
-                    </p>
-                </div>
-                <div class="column is-2-desktop is-half-tablet">
-                    <h6 class="title is-6 text_white footer-site__title">NOS AUTRES SITES</h6>
-                    <p><a class="" target="_blank" href="{{ url('https://terredeliens.org/') }}">Terre de Liens</a></p>
-                    <p><a class="" target="_blank" href="{{ url('https://ressources.terredeliens.org/') }}">Centre de
-                            Ressources</a></p>
-                    <p><a class="" target="_blank" href="{{ url('https://parcel-app.org/') }}">PARCEL</a></p>
-                    <p><a class="" target="_blank" href="{{ url('https://www.accesstoland.eu/') }}">Access to land</a>
-                    </p>
-                </div>
-                <div class="column is-2-desktop is-half-tablet">
-                    <h6 class="title is-6 text_white footer-site__title">SUIVEZ-NOUS</h6>
-                    <div class="level-item">
-                        <a target="_blank" href="{{ url('https://www.facebook.com/terredeliens/') }}"
-                           class="button round small secondary mr-10">
-                            <span class="button__icon"><i class="fab fa-facebook-f" aria-hidden="true"></i></span>
-                        </a>
-                        <a target="_blank" href="{{ url('https://www.youtube.com/channel/UCFDSg22G3RXJ4th9imzaG1Q') }}"
-                           class="button round small secondary mr-10"><span
-                                    class="button__icon"><i class="fab fa-youtube" aria-hidden="true"></i></span>
-                        </a>
-                        <a target="_blank" href="{{ url('https://www.instagram.com/terredeliens/') }}"
-                           class="button round small secondary mr-10"><span
-                                    class="button__icon"><i class="fab fa-instagram" aria-hidden="true"></i></span>
-                        </a>
-                        <a target="_blank"
-                           href="{{ url('https://twitter.com/Terredeliens?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor') }}"
-                           class="button round small secondary"><span
-                                    class="button__icon"><i
-                                        class="fab fa-twitter" aria-hidden="true"></i></span>
-                        </a>
-                    </div>
-                </div>
-                <div class="column is-6-desktop pl-xl-50 pr-xl-50">
-                    <form method="post" action="/newsletter">
-                        {{ csrf_field() }}
-                        <h6 class="title is-6 text_white footer-site__title">NEWSLETTER TERRE DE LIENS</h6>
-                        <p>Suivez notre mouvement en vous abonnant.</p>
-                        <div class="columns is-gapless is-mobile">
-                            <div class="column">
-                                <div class="field">
-                                    <p class="control has-icons-left has-icons-right is-marginless">
-                                        <input class="input" type="email" placeholder="email" name="email">
-                                        <span class="icon is-small is-left">
-                                            <i class="fas fa-envelope"></i>
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="column is-narrow">
-                                <button class="button is-normal is-link form-button basic primary">S'abonner</button>
-                            </div>
+    <section class="py-6-mobile pt-6 pb-5">
+        <div class="container is-flex fd-c-mobile gap-7 gap-0-mobile mb-6">
+            <!--Logo-->
+            <div class="is-flex is-flex-direction-column ai-c-mobile px-8-mobile">
+                <img class="is-rounded image is-96x96"
+                     src="/images/logo/logo_TdL_cartouche_blanc-rouge_500.png"
+                     alt="objectif-terres-logo">
+
+                <h3 class="is-size-6 mb-2 pt-3 title has-text-centered has-text-left-desktop">Objectif Terres</h3>
+                <p class=" has-text-centered has-text-left-desktop">Faites pousser votre projet agricole</p>
+            </div>
+
+            <!--Social-->
+            <div class="is-flex is-flex-direction-column fd-r-mobile py-7-mobile is-justify-content-space-between px-7-mobile gap-3">
+                <a href="https://www.facebook.com/terredeliens/">
+                    <figure class="image is-48x48">
+                        <img src="/images/icons/facebook.png">
+                    </figure>
+                </a>
+                <a href="https://twitter.com/terredeliens">
+                    <figure class="image is-48x48">
+                        <img src="/images/icons/twitter.png">
+                    </figure>
+                </a>
+                <a href="https://fr.linkedin.com/company/terre-de-liens">
+                    <figure class="image is-48x48">
+                        <img src="/images/icons/linkedin.png">
+                    </figure>
+                </a>
+                <a href="https://www.instagram.com/terredeliens/">
+                    <figure class="image is-48x48">
+                        <img src="/images/icons/instagram.png">
+                    </figure>
+                </a>
+                <a href="https://www.youtube.com/@terre-de-liens">
+                    <figure class="image is-48x48">
+                        <img src="/images/icons/youtube.png">
+                    </figure>
+                </a>
+            </div>
+
+            <!--External links-->
+            <div class="is-flex is-flex-wrap-wrap px-5-mobile gap-5 jc-fe-mobile is-justify-content-flex-end" style="width: fit-content">
+                <a href="https://terredeliens.org/" class="is-flex w-50">
+                    <img class="image is-96x96" src="/images/logo-partenaires/Logo-TDL-v2.png">
+                    <div class="mt-2 ml-4">
+                        <div class="is-flex">
+                            <h4 class="title is-size-6 mb-1">Terre de liens</h4>
+                            <figure class="image ml-1 is-16x16">
+                                <img src="/images/icons/Fleche-carre-noir.png">
+                            </figure>
                         </div>
-                    </form>
+                        <p class="text-color">Notre site web pour mieux comprendre Terre de Liens et soutenir notre action.</p>
+                    </div>
+                </a>
+                <a href="https://ressources.terredeliens.org/" class="is-flex w-50">
+                    <img class="image is-96x96" src="/images/logo-partenaires/Logo-CdR-v2.png">
+                    <div class="mt-2 ml-4">
+                        <div class="is-flex">
+                            <h4 style="width: fit-content;" class="title is-size-6 mb-1">Le Centre de ressources</h4>
+                            <figure class="image ml-1 is-16x16">
+                                <img src="/images/icons/Fleche-carre-noir.png">
+                            </figure>
+                        </div>
+                        <p class="text-color">Retrouvez les ressources produites par Terre de Liens et ses partenaires sur les questions agricoles et foncières.</p>
+                    </div>
+                </a>
+                <a href="https://parcel-app.org/" class="is-flex w-50">
+                    <img class="image is-96x96" src="/images/logo-partenaires/Logo-Parcel-v2.png">
+                    <div class="mt-2 ml-4">
+                        <div class="is-flex">
+                            <h4 class="title is-size-6 mb-1">PARCEL</h4>
+                            <figure class="image ml-1 is-16x16">
+                                <img src="/images/icons/Fleche-carre-noir.png">
+                            </figure>
+                        </div>
+                        <p class="text-color">Un outil web simple et ludique pour évaluer les surfaces agricoles nécessaires pour se nourrir localement.</p>
+                    </div>
+                </a>
+                <a href="https://www.accesstoland.eu/" class="is-flex w-50">
+                    <img class="image is-96x96" src="/images/logo-partenaires/Logo-A2L-v2.png">
+                    <div class="mt-2 ml-4">
+                        <div class="is-flex">
+                            <h4 class="title is-size-6 mb-1">Access to Land</h4>
+                            <figure class="image ml-1 is-16x16">
+                                <img src="/images/icons/Fleche-carre-noir.png">
+                            </figure>
+                        </div>
+                        <p class="text-color">Le réseau européen, coordonné par Terre de Liens, autour de l'accès à la terre pour l'agroécologie et le renouvellement des générations.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!--CGU-->
+        <div class="border-top">
+            <div class="container is-flex fd-c-mobile px-6-mobile pt-6-mobile pt-5 is-justify-content-space-between is-align-items-center">
+                <p class="has-text-centered has-text-left-desktop mb-4-mobile">© Objectif Terres <?= date('Y') ?></p>
+                <div class="is-flex is-justify-content-space-between is-flex-wrap-wrap gap-3">
+                    <a>Plan du site</a>
+                    <a href="/conditions-utilisation">CGU</a>
+                    <a href="/mentions-legales">Mentions légales</a>
+                    <a class="mx-auto">Gestion des cookies</a>
                 </div>
             </div>
         </div>
-    </section>
-    <section class="bottom-bar_2">
-        <div class="container">
-            <div class="columns menu menu-intersites">
-                <div class="column is-narrow menu__item is-paddingless"><a class="menu__link " href="/mentions-legales">Mentions
-                        légales</a></div>
-{{--                <div class="column is-narrow is-paddingless"><a class="menu__link " href="{{url('/')}}">Politique de--}}
-{{--                        cookie</a></div>--}}
-                <div class="column is-narrow is-paddingless"><a class="menu__link " href="{{route('conditions-utilisation')}}">Conditions
-                        d'utilisation</a></div>
-                <div class="column"><span>Tous droits réservés | © Terre de Liens - <?=date('Y')?></span></div>
-            </div>
-        </div>
+
     </section>
 </footer>
-

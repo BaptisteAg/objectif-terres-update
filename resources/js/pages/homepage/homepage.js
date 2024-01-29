@@ -1,3 +1,4 @@
+/*
 import OSMapControllerFactory from "../../map"
 
 window.homepageMapInit  = async function (id) {
@@ -69,4 +70,4 @@ window.homepageMapInit  = async function (id) {
 
         mapController.fitBounds(featureGroup.getBounds());
     });
-};
+};*/

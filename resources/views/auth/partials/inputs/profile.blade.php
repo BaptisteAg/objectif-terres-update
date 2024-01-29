@@ -2,12 +2,12 @@
     <div class="field">
         <label for="profile" class="label">Situation*</label>
         <div class="control has-icons-left">
-            <div class="select" style="display: block !important;">
+            <div class="select " style="display: block !important;">
                 <select id="profile"
                         name="profile"
                         required
                         v-model="optionProfileSelected"
-                        class="input @error('profile') is-danger @enderror ">
+                        class="input @error('profile') is-danger @enderror">
                     <option disabled="disabled">Vous êtes...</option>
                     @foreach(\App\Models\User::$profiles as $id => $prof)
                         <option
@@ -30,13 +30,14 @@
         @enderror
     </div>
 </div>
-<!--div v-if="optionProfileSelected === '7'" class="column is-half">
+<div v-if="optionProfileSelected === '7'" class="column is-half">
     <div class="field">
         <label class="label">Situation autre </label>
         <p class="control has-icons-left has-icons-right">
             <input id="other_profile"
                    class="input @error('other_profile') is-danger @enderror"
                    type="text"
+                   v-model="otherProfile"
                    name="other_profile" value="{{ old('other_profile') }}" required
                    autocomplete="other_profile"
                    placeholder="Veuillez préciser ...">
@@ -52,4 +53,4 @@
         </article>
         @enderror
     </div>
-</div-->
+</div>

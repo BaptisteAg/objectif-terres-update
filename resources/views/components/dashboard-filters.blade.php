@@ -36,14 +36,14 @@
                             <div class="column is-2">
                                 <p class="label has-text-centered">Type</p>
                                 <div class="is-mobile is-multiline">
-                                    <div class="column pr-0 pl-0 pb-o pt-0 is-narrow has-text-centered" style="min-width:200px">
+                                    <div class="column pr-0 pl-0 pb-0 pt-0 is-narrow" style="min-width:200px">
                                         <label class="checkbox">
                                             <input name="ads_show" value="true"
                                                    type="checkbox" {{old('ads_show')  ? ' checked' : '' }}>
                                             Annonces
                                         </label>
                                     </div>
-                                    <div class="column is-narrow pr-0 pl-0 pb-o pt-0 has-text-centered" style="min-width:200px">
+                                    <div class="column is-narrow pr-0 pl-0 pb-o pt-0" style="min-width:200px">
                                         <label class="checkbox">
                                             @if(Route::current()->getName() == 'advisor.index' )
                                                 <input name="projects_show" value="true"
@@ -73,11 +73,7 @@
                         @if(Route::current()->getName() == 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
                             <div class="column is-one-fifth">
                                 <div class="control has-icons-right ">
-                                    @if(Route::current()->getName() === 'moderator.index' &&  Route::current()->getName() === 'moderator.show')
-                                        <label class="label"> Date de soumission de l'annonce </label>
-                                    @else
-                                        <label class="label"> Date de soumission de la demande </label>
-                                    @endif
+                                    <label class="label"> Date de dernière modification </label>
                                     <date-range old-value-selected={{old('date-range-selected')}}></date-range>
                                 </div>
                             </div>
@@ -214,26 +210,20 @@
                             <div class="columns is-mobile is-multiline">
                                 @foreach($adStatuses as $adStatus)
                                     <div class="column is-narrow has-text-centered">
-                                        <label class="checkbox custom-tooltip has-tooltip-multiline has-tooltip-top"
-                                               data-tooltip=" {{\App\Models\AdStatus::TOOLTIPS[(int)$adStatus->id]}}"
-                                        >
-                                            <input name="ad_statuses[]" value="{{(int)$adStatus->id}}"
-                                                   type="checkbox" {{old('ad_statuses') && in_array((int)$adStatus->id,old('ad_statuses'))  ? ' checked' : '' }}>
-                                            <span class="icon">
-                                                <i class="fas fa-info-circle has-text-info"></i>
-                                            </span>
-                                            <span>{{$adStatus->name}}</span>
-                                        </label>
+                                        <b-tooltip label="{{\App\Models\AdStatus::TOOLTIPS[(int)$adStatus->id]}}" type="is-info" position="is-top">
+                                            <b-checkbox name="ad_statuses[]" :native-value="{{(int)$adStatus->id}}" :value="{{old('ad_statuses') && in_array((int)$adStatus->id,old('ad_statuses'))  ? 'true' : 'false' }}">
+                                                <span>{{$adStatus->name}}</span>
+                                            </b-checkbox>
+                                        </b-tooltip>
                                     </div>
                                 @endforeach
                             </div>
                         </div>
                         <div class="column is-2">
-                            <label class="checkbox">
-                                <input name="user_attribution" value="true"
-                                       type="checkbox" {{old('user_attribution') ? ' checked' : '' }}>
+                            <br>
+                            <b-checkbox name="user_attribution" native-value="true" {{old('user_attribution') ? ' checked' : '' }}>
                                 <span>Mes attributions</span>
-                            </label>
+                            </b-checkbox>
                         </div>
                         <div class="column ">
                             <label class="label">Recherche par mot clé</label>
@@ -247,7 +237,7 @@
                             </p>
                             <div class="columns is-mobile is-multiline">
                                 @foreach($supportStages as $supportStage)
-                                    <div class="column pl-0 pr-0 pb-0 pt-0 has-text-centered" style="min-width:200px">
+                                    <div class="column pl-0 pr-0 pb-0 pt-0" style="min-width:200px">
                                         <label class="checkbox custom-tooltip has-tooltip-multiline has-tooltip-top"
                                                data-tooltip=" {{\App\Models\SupportStage::TOOLTIPS[(int)$supportStage->id]}}">
                                             <input name="support_stages[]" value="{{(int)$supportStage->id}}"
@@ -269,7 +259,7 @@
                             </p>
                             <div class="columns is-mobile is-multiline">
                                 @foreach($supportStates as $supportState)
-                                    <div class="column pl-0 pr-0 pb-0 pt-0 has-text-centered" style="min-width:200px">
+                                    <div class="column pl-0 pr-0 pb-0 pt-0" style="min-width:200px">
                                         <label class="checkbox custom-tooltip has-tooltip-multiline has-tooltip-top"
                                                data-tooltip=" {{\App\Models\SupportState::TOOLTIPS[(int)$supportState->id]}}">
                                             <input name="support_states[]" value="{{(int)$supportState->id}}"
@@ -290,7 +280,7 @@
                             </p>
                             <div class="columns is-mobile is-multiline">
                                 @foreach($projectStatuses as $projectStatus)
-                                    <div class="column pl-0 pr-0 pb-0 pt-0 has-text-centered" style="min-width:200px">
+                                    <div class="column pl-0 pr-0 pb-0 pt-0" style="min-width:200px">
                                         <label class="checkbox custom-tooltip has-tooltip-multiline has-tooltip-top"
                                                data-tooltip=" {{\App\Models\ProjectStatus::TOOLTIPS[(int)$projectStatus->id]}}">
                                             <input name="project_statuses[]" value="{{(int)$projectStatus->id}}"
@@ -316,14 +306,14 @@
                         <div class="column is-2">
                             <p class="label has-text-centered">Suivi</p>
                             <div class="columns is-mobile is-multiline">
-                                <div class="column pl-0 pr-0 pb-0 pt-0 has-text-centered" style="min-width:200px">
+                                <div class="column pl-0 pr-0 pb-0 pt-0" style="min-width:200px">
                                     <label class="checkbox">
                                         <input name="project_attribution[]" value="true"
                                                type="checkbox" {{old('project_attribution') && in_array('true',old('project_attribution'))  ? ' checked' : '' }}>
                                         Attribué
                                     </label>
                                 </div>
-                                <div class="column pl-0 pr-0 pb-0 pt-0 has-text-centered" style="min-width:200px">
+                                <div class="column pl-0 pr-0 pb-0 pt-0" style="min-width:200px">
                                     <label class="checkbox">
                                         @if(Route::current()->getName() == 'supervisor.index' )
                                             <input name="project_attribution[]" value="false"
@@ -341,7 +331,7 @@
                     @endif
                     <div class="column is-1 ">
                         <br>
-                        <button type="submit" class="button basic form-button primary ">
+                        <button type="submit" class="button is-danger is-rounded basic form-button primary ">
                             <span class="icon">
                                 <i class="fas fa-filter"></i>
                             </span>
@@ -418,7 +408,7 @@
 
                         <div class="column">
                             <div class="field">
-                                {!! Form::label('production_genres', 'Système de production en place', ['class' => 'label']); !!}
+                                {!! Form::label('production_genres', 'Types de production', ['class' => 'label']); !!}
                                 <multi-select
                                         :options="{{ json_encode($productionGenres) }}"
                                         name="production_genres[]"

@@ -1,26 +1,26 @@
 <?php namespace App\Services\Locations;
 
+use App\Models\Ad;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Department;
 use App\Models\Region;
 use App\Services\Ads\AdService;
+use App\Services\Researches\ResearchService;
 use Cache;
 use GuzzleHttp\Client;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class LocationService
 {
-    /**
-     * @var AdService
-     */
-    private $adService;
 
-    public function __construct(AdService $adService)
+    public function __construct(private AdService $adService, private ResearchService $researchService)
     {
-        $this->adService = $adService;
     }
 
     /**
@@ -53,28 +53,40 @@ class LocationService
         });
     }
 
-    public function getDepartmentPolygons($regionId, $selectedAdType)
+    public function getDepartmentPolygons(Request $request)
     {
+        $ads = $this->researchService->filter($request, ['departments', 'department', 'cities', 'cities.department'])->get();
 
-        $cacheKey = 'departmentspolygon.'.$regionId.'.';
+        $departmentIds = Region::find($request->get('regions_location_researches_ids')[0])
+            ->departments
+            ->pluck('id');
 
-        return Cache::rememberForever($cacheKey, function () use ($selectedAdType, $regionId) {
-            $adsCountByDepartmentId = $this->adService->getPublishedAdsCountByDepartmentId($selectedAdType, $regionId);
+        $adsCountByDepartmentId = [];
+        foreach($ads as $ad) {
+            $adDepartmentIds = $ad->departments
+                ->push($ad->department)
+                ->concat($ad->cities->map(function ($city) {return $city->department;}))
+                ->filter()
+                ->unique('id')
+                ->pluck('id');
 
-
-            /** @var Department[] $departments */
-            $departments = Department::whereIn('id', array_keys($adsCountByDepartmentId))->get();
-            $data = [];
-
-            foreach ($departments as $department) {
-                $geoPolygon = $this->getLocationGeoPolygon($department->name, 'department');
-                $geoPolygon->department_id = $department->id;
-                $geoPolygon->ads_count = $adsCountByDepartmentId[$department->id];
-                $data[] = $geoPolygon;
+            foreach($departmentIds as $departmentId) {
+                $adsCountByDepartmentId[$departmentId] = $adsCountByDepartmentId[$departmentId] ?? 0;
+                if($adDepartmentIds->contains($departmentId)) {
+                    $adsCountByDepartmentId[$departmentId]++;
+                }
             }
+        }
 
-            return $data;
-        });
+        /** @var Department[]|Collection $departments */
+        $departments = Department::whereIn('id', array_keys($adsCountByDepartmentId))->get();
+
+        return $departments->map(function ($department) use ($adsCountByDepartmentId) {
+            $geoPolygon = $this->getLocationGeoPolygon($department->name, 'department');
+            $geoPolygon->department_id = $department->id;
+            $geoPolygon->ads_count = $adsCountByDepartmentId[$department->id] ?? 0;
+            return $geoPolygon;
+        })->filter(fn($p) => $p->ads_count > 0)->values()->toArray();
     }
 
     public function getLocationGeoPolygon(string $q, $type = "")
@@ -96,7 +108,7 @@ class LocationService
                 }
                 elseif($type === "misc") {
 					$data = explode(";",$q);
-                    $params .="&city=".$data[0]."&postalcode=".$data[1];
+                    $params .="&city=".$data[0].(isset($data[1]) ? "&postalcode=".$data[1] : '');
                     $threshold = 0.002;
                 }
                 else {
@@ -110,7 +122,7 @@ class LocationService
 
 				$res = $client->request('GET', 'https://nominatim.openstreetmap.org/search.php?'.$params.'&polygon_geojson=1&format=json&polygon_threshold='.$threshold);
                 $results = json_decode($res->getBody());
-				if(in_array($params,$locationsWithWrongResultsFromAPI)){
+				if(in_array($params,$locationsWithWrongResultsFromAPI) && isset($results[1])){
 					return $results[1];
 				}
 				return $results[0];
@@ -126,9 +138,18 @@ class LocationService
         $this->addCitiesRanges($cities);
 
         return array_merge(
+            // Regions are not selectable since a certain version
             //$this->searchRegions($q),
             $this->searchDepartments($q),
             $cities
+        );
+    }
+
+    public function searchCitiesAndRegions(string $q)
+    {
+        return array_merge(
+            $this->searchRegions($q),
+            $this->searchCities($q)
         );
     }
 
@@ -190,7 +211,7 @@ class LocationService
         $cities = $this->search(
             'cities',
             $q,
-            City::select(['id', 'name', 'zip_code']),
+            City::with(['department'])->select(['id', 'name', 'zip_code']),
             ["name", "zip_code"]
         );
 
@@ -212,8 +233,9 @@ class LocationService
 
     public function getCityLabelRenderer()
     {
-        return function ($city) {
-            return $city["name"] . " (" . $city["zip_code"] . ")";
+        return function (City $city) {
+            $detail = $city->zip_code ? $city->zip_code : $city->department?->name;
+            return $city->name . ($detail ? " (" . $detail . ")" : "");
         };
     }
 
@@ -263,7 +285,6 @@ class LocationService
      * Orders results by relevance.
      *
      * @param string $q
-     * @param Builder $eloquentQuery
      * @param array $columns
      * @param \Closure|null $renderer
      *
@@ -274,14 +295,13 @@ class LocationService
         $q = mb_strtolower($q);
 
         foreach ($columns as $column) {
-            $eloquentQuery = $eloquentQuery->orWhere($column, 'LIKE', '%' . $q . '%');
+            $eloquentQuery = $eloquentQuery->orWhere($column, 'LIKE', DB::raw('"%'.$q.'%"'));
         }
 
         $results = $eloquentQuery
             ->orderBy(DB::raw('LENGTH('.$nameColumn.')'))
             ->orderBy($nameColumn)
-            ->get()
-            ->toArray();
+            ->get();
 
         /*
         $resultsByScore = [];
@@ -320,13 +340,13 @@ class LocationService
 
         //dd($results);
 
-        return array_map(
-            $this->getResultRenderer($type),
-            array_slice($results, 0, 20)
-        );
+        return $results
+            ->map($this->getResultRenderer($type))
+            ->slice(0, 20)
+            ->toArray();
     }
 
-    public function getResultRenderer($type)
+    public function getResultRenderer($type): \Closure
     {
         switch($type) {
             case "cities" :
@@ -343,43 +363,14 @@ class LocationService
                 break;
         }
 
-        return function ($result) use ($type, $labelRenderer) {
+        return static function ($result) use ($type, $labelRenderer) {
             return [
                 "label" => $labelRenderer($result),
-                "value" => array_merge($result, [
+                "value" => array_merge($result->toArray(), [
                     "type" => $type
                 ]),
             ];
         };
     }
-
-	/**
-	 * @param $cityId
-	 * @param $radius
-	 * @return array
-	 */
-	public function getCitiesInRadius ($cityId, $radius){
-		$city = City::whereId($cityId)->first();
-		$cities = DB::select(
-		    'SELECT id FROM (
-                SELECT *,
-                    (
-                        (
-                            (
-                                acos(
-                                    sin(( '.(float)$city->gps_lat.' * pi() / 180))
-                                    *
-                                    sin(( `gps_lat` * pi() / 180)) + cos(( '.(float)$city->gps_lat.' * pi() /180 ))
-                                    *
-                                    cos(( `gps_lat` * pi() / 180)) * cos((( '.(float)$city->gps_lng.' - `gps_lng`) * pi()/180)))
-                            ) * 180/pi()
-                        ) * 60 * 1.1515 * 1.609344
-                    )
-                as distance FROM `cities`
-            ) myTable
-            WHERE distance <= '.(int)$radius.';'
-        );
-		return array_column($cities, 'id');
-	}
 
 }

@@ -94,4 +94,12 @@ class CmsController extends Controller
 	{
 		return view('pages/cms/conditions-utilisation', $this->getCmsContent(Route::currentRouteName(), false, false));
 	}
+
+	/**
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function charte()
+	{
+		return view('pages/cms/charte', $this->getCmsContent(Route::currentRouteName(), false, false));
+	}
 }

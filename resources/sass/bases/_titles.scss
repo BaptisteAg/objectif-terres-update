@@ -1,126 +1,36 @@
-/*
---------------------
-TITLES H1, H2, H3, H4, H5, H6
---------------------
-*/
-
-h1, h2, h3, h4, h5 {
-  line-height: 1.125em;
-  margin: 0.75em 0;
+@font-face {
+  font-family: TitleFont;
+  src: url(/css/OlsenTF-Bold.otf);
 }
 
-@media (max-width: $tablet - 1) {
-  h1, h2, h3, h4, h5, h6 {
-    text-align: center;
-  }
+.title, .subtitle {
+  color: #292929;
 }
 
-/* ----- H1 ----- */
-
-h1 {
-  font-family: $family-sans-serif-title;
-  letter-spacing: 0.025em;
-  font-weight: normal;
+.title.is-5 {
+  line-height: 30px;
+}
+.title.is-4 {
+  line-height: 36px;
 }
 
-@media (min-width: 500px) {
-  h1 {
-    font-size: 3em !important;
-  }
+.title {
+  font-family: TitleFont, 'Source Sans Pro', sans-serif;
+  font-weight: 500;
 }
 
-@media (max-width: 499px) {
-  h1 {
-    font-size: calc(0.106 * 100vw) !important;
-  }
+.old h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 1rem 0;
 }
 
-/* ----- H2 ----- */
-
-h2 {
-  font-family: $family-sans-serif-title;
-  letter-spacing: 0.025em;
-  font-weight: normal;
+.old h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 1rem 0;
 }
 
-@media (min-width: 500px) {
-  h2 {
-    font-size: 2.5em !important;
-  }
-}
-
-@media (max-width: 499px) {
-  h2 {
-    font-size: calc(0.1 * 75vw) !important;
-  }
+@media (max-width: $tablet) {
 
 }
-
-/* ----- H3 ----- */
-
-h3 {
-  font-family: $family-sans-serif-title-second;
-  margin: 1em 0 0.5em;
-  font-weight: normal;
-}
-
-@media (min-width: 500px) {
-  h3 {
-    font-size: 2em !important;
-  }
-}
-
-@media (max-width: 499px) {
-  h3 {
-    font-size: calc(0.08 * 80vw) !important;
-  }
-}
-
-/* ----- H4 ----- */
-
-h4 {
-  font-family: $family-sans-serif-title;
-  letter-spacing: 0.025em;
-  font-weight: normal;
-  font-size: 1.5em;
-}
-
-/* ----- H5 ----- */
-
-h5 {
-  font-family: $family-sans-serif-title-second;
-  letter-spacing: 0.03em;
-  font-size: 1.5em;
-  margin: 1em 0 0.5em;
-}
-
-/* ----- H6 ----- */
-
-h6 {
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 1em;
-  margin: 1em 0;
-}
-
-/*
---------------------
-PAGE TITLES AND SUBTITLES
---------------------
-*/
-.page {
-  &__title {
-    text-align: center;
-    margin-bottom: 0px;
-  }
-
-  &__subtitle {
-    color: $success;
-    text-align: center;
-    font-size: 2em;
-    margin-top: 0.2em;
-    margin-bottom: 1em;
-  }
-}
-
-

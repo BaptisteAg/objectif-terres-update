@@ -12,7 +12,7 @@
     color: #fff;
     z-index: 5000;
     position: absolute;
-    @media (min-width: $tablet +1) {
+    @media (min-width: $tablet (+1)) {
       max-width: 750px;
     }
     @media (max-width: $tablet) {

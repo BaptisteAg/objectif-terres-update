@@ -6,10 +6,13 @@
 @import "variables";
 
 //import framework bulma
+//@import "~bulma";
 @import "~bulma/bulma";
-@import "~bulma-accordion/dist/css/bulma-accordion";
-@import "~bulma-tooltip/dist/css/bulma-tooltip.min.css";
-@import "~bulma-divider/dist/css/bulma-divider.min.css";
+@import "~buefy/src/scss/buefy";
+
+//@import "~bulma-accordion/dist/css/bulma-accordion";
+//@import "~bulma-tooltip/dist/css/bulma-tooltip.min.css";
+//@import "~bulma-divider/dist/css/bulma-divider.min.css";
 //import Awesomplete
 @import "~awesomplete/awesomplete.css";
 
@@ -20,7 +23,7 @@
 @import url("https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css");
 
 // Waves
-@import "~node-waves/dist/waves.min.css";
+//@import "~node-waves/dist/waves.min.css";
 
 //Vue-Shepherd
 @import '~shepherd.js/dist/css/shepherd.css';
@@ -40,14 +43,13 @@
 @import "layouts/navigation";
 
 // Components
-@import "components/buttons";
+@import "components/navbar";
 @import "components/step-guide";
 @import "components/carrousel-large";
 @import "components/carousel";
 @import "components/downloadPDF";
 @import "components/video";
 @import "components/testimony";
-@import "components/map";
 @import "components/pagination";
 @import "components/multiselect";
 @import "components/notification_sticker";
@@ -62,10 +64,8 @@
 @import "components/hero";
 @import "components/cta";
 @import "components/blockquote";
-@import "components/input";
 @import "components/card";
 @import "components/post-it";
-//@import "components/tooltip";
 @import "components/messages";
 @import "components/dropzone";
 @import "components/tags";
@@ -76,6 +76,12 @@
 @import "components/rss";
 @import "components/modal";
 @import "components/table";
+@import "components/columns";
+@import "components/input";
+@import "components/buttons";
+
+//@import "components/tooltip";
+//@import "components/map";
 
 // Pages
 @import "pages/ads/ads";

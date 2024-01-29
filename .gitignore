@@ -2,6 +2,10 @@
 /public/hot
 /public/storage
 /public/mix-manifest.json
+/public/js/app.js
+public/js/chunks/
+public/js
+public/css/app.css
 /storage
 /vendor
 .env
@@ -21,5 +25,3 @@ public/documents
 database/sql/terredelspip.zip
 database/sql/terredelspip.sql
 htdocs
-public/css
-public/js
