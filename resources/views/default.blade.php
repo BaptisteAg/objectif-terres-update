@@ -210,6 +210,7 @@
     <script>
 
         enableGoogleAnalytics();
+        enableMatomoAnalytics();
 
         //window.addEventListener('CookiebotOnAccept', function (e) {
         //    if (Cookiebot.consent.statistics)
@@ -233,11 +234,11 @@
             _paq.push(['trackPageView']);
             _paq.push(['enableLinkTracking']);
             (function() {
-                var u="https://objectifterres.matomo.cloud/";
+                var u="https://terredeliens.matomo.cloud/";
                 _paq.push(['setTrackerUrl', u+'matomo.php']);
-                _paq.push(['setSiteId', '1']);
+                _paq.push(['setSiteId', '3']);
                 var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-                g.async=true; g.src='//cdn.matomo.cloud/objectifterres.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+                g.async=true; g.src='//cdn.matomo.cloud/terredeliens.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
             })();
         }
     </script>
