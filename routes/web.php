@@ -11,11 +11,17 @@
 |
 */
 
-use App\Notifications\TestSendEmail;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Http\Request;
 
 Route::get('/', 'HomePage\HomePageController@show')->name('home');
 Route::get('/premiere-visite', 'HomePage\HomePageController@show')->name('site-tour');
+
+
+
+Route::post('/info-banner/close', function(Request $request) {
+    session()->put('info-banner-closed', $request->input('closed'));
+    return response()->json(['success' => true]);
+});
 
 Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
     Route::middleware(['auth'])->get('creer', 'AdsController@create')->name('create');
@@ -201,7 +207,7 @@ Route::middleware('auth')->prefix('notification')->name('notification.')->namesp
     Route::patch('{notification}', 'NotificationsController@update')->name('update');
 });
 
-// Authentication Routes for authentification
+// Authentication
 Route::get('connexion', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('connexion', 'Auth\LoginController@login')->name('login');
 Route::post('connexion/checkpoint', 'Auth\LoginController@checkpoint')->name('checkpoint');
@@ -213,11 +219,11 @@ Route::get('email/verify', 'Auth\VerificationController@show')->name('verificati
 Route::get('email/verify/{id}/{hash}', 'Auth\VerificationController@verify')->name('verification.verify');
 Route::post('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
 
-// Registration Routes...
+// Registration
 Route::get('inscription', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('inscription', 'Auth\RegisterController@register');
 
-// Password Reset Routes...
+// Password Reset
 Route::prefix('motdepasse')->name('password.')->group(function () {
     Route::get('reinitialiser', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('request');
     Route::post('email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('email');
@@ -238,7 +244,6 @@ Route::prefix('api')->group(function () {
     $bag = $errors->getBags()['default'] ?? new \Illuminate\Support\MessageBag();
     $bag->add('test', 'Test error');
     $bag->add('test2', 'Test error');
-
 
     session()->flash('success', 'Test success');
     session()->flash('errors', $errors->put('default', $bag));

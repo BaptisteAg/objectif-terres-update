@@ -30,7 +30,7 @@ class LandOfferRuleset implements RulesetInterface
             'land_offer.price' => $this->getPriceRules(),
             'land_offer.is_sales_offer_evaluation' => ['nullable'],
             'land_offer.rent_price' => ['required_if:land_offer.offer_genres.*,2', 'numeric'],
-            'land_offer.test_description' => ['required_if:land_offer.offer_genres.*,3', 'string'],
+            'land_offer.test_description' => ['required_if:land_offer.offer_genres.*,3'],
 
             //'land_offer.is_beneficiary'                          => ['required', 'boolean'],
             //'land_offer.house_offer_genre'                       => ['array'],
