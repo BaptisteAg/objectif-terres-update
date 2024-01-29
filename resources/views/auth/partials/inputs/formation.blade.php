@@ -1,8 +1,8 @@
 <div class="column">
     <div class="field">
-        <label for="hasformation" class="label">Formation agricole*</label>
+        <label for="hasformation" class="label">Formation agricole *</label>
         <div class="control has-icons-left">
-            <div class="select" style="display: block !important;">
+            <div class="select " style="display: block !important;">
                 <select id="hasformation"
                         name="hasformation"
                         required
@@ -26,14 +26,15 @@
         @enderror
     </div>
 </div>
-<div  class="column is-half" v-if="optionHasFormationSelected === '1'">
+<div class="column" v-if="optionHasFormationSelected === '1'">
     <div class="field">
-        <label class="label">Liste Formation </label>
+        <label class="label">Liste Formation *</label>
         <div class="control has-icons-left">
-            <div class="select">
+            <div class="select ">
                 <select id="formation"
                         name="formation"
                         required
+                        v-model="formationSelected"
                         class="input @error('formation') is-danger @enderror ">
                         <option disabled="disabled">Sélectionner une formation</option>
                         @foreach(\App\Models\User::$formations as $id => $formation)

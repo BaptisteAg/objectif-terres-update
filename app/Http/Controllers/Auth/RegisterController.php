@@ -77,6 +77,8 @@ class RegisterController extends Controller
 	 */
 	public function register(Request $request)
 	{
+        $data = $request->all();
+        $data['locationable'] = $request->input('locationable');
 		$this->registerService->validator(
 		    $request->all(),
             [

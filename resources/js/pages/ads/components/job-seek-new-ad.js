@@ -9,6 +9,7 @@ import Autocomplete from '../../../components/Autocomplete'
 import DocumentsUpload from "../../../components/DocumentsUpload"
 import MultiSelect from "../../../components/MultiSelect";
 import ZoneSelect from '../../../components/ZoneSelect'
+import ListSelect from "../../../components/ListSelect.vue";
 
 export default {
     components: {
@@ -17,7 +18,8 @@ export default {
         CustomCheckbox,
         Autocomplete,
         DocumentsUpload,
-        MultiSelect
+        MultiSelect,
+        ListSelect
     },
     mixins: [FormNewAdMixin],
     props: {},
@@ -27,6 +29,7 @@ export default {
 
         return {
             formInput: {
+				selectedDepartments: hasOld && JSON.parse(v.selected_departments) || [],
                 selectedZones: hasOld && JSON.parse(v.selected_zones) || [],
 
                 offerTypes: hasOld && v.job_seek.offer_types || [],
@@ -37,6 +40,9 @@ export default {
                 aboutContent: hasOld && v.about_content || '',
                 title: hasOld && v.title || '',
                 documents: hasOld && JSON.parse(v.documents) || [],
+                productionGenres: hasOld && v.job_seek.production_genres || [],
+                productionGenresSecondary: hasOld && v.job_seek.secondary_production_genres || [],
+                chartConfirmation: hasOld && v.chart_confirmation || true,
                 //beneficiary: hasOld && v.is_beneficiary || '',
                 //agriculturalActivity: hasOld && v.agricultural_activity || [],
             }
@@ -46,10 +52,29 @@ export default {
         return {
             formInput: {
                 ...baseValidations.formInput,
+                selectedDepartments: {
+                    required
+                },
                 experienceFarming: {
                     required,
                     minLength: minLength(5),
                     maxLength: maxLength(1000)
+                },
+				offerTypes: {
+					required
+				},
+                productionGenres: {
+                    required,
+                },
+                productionGenresSecondary: {
+                    required
+                },
+				educationLevels: {
+					required
+				},
+                chartConfirmation: {
+                    required,
+                    isTrue: value => value === true
                 },
                 documents: {
                     oneDocument: _ => true,

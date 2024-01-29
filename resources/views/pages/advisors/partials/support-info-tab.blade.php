@@ -14,8 +14,8 @@
                                                  alt="picsum">
                                         @else
                                             <img class="custom-carousel-image-size"
-                                                 data-source="{{URL::asset($document->path)}}"
-                                                 src="{{URL::asset($document->path)}}" style="cursor : pointer;"
+                                                 data-source="{{app('url')->assetFrom('https://objectif-terres.org', $document->path)}}"
+                                                 src="{{app('url')->assetFrom('https://objectif-terres.org', $document->path)}}" style="cursor : pointer;"
                                                  alt="Placeholder image">
                                         @endif
                                     </figure>
@@ -219,8 +219,8 @@
             </p>
             <p>
                 <span class="is-italic">Productions possibles</span> :
-                @if($ad->landOfferAd->productionGenresPossible->count() > 0)
-                    {{$ad->landOfferAd->productionGenresPossible->pluck('name')->implode(', ') }}
+                @if($ad->landOfferAd->productionGenresSecondary->count() > 0)
+                    {{$ad->landOfferAd->productionGenresSecondary->pluck('name')->implode(', ') }}
                 @else
                     Non renseignées
                 @endif
@@ -319,14 +319,14 @@
         <div class="content is-flex" style="justify-content: center">
             <p class="has-text-centered title is-5">Indicateurs concernant cette demande</p>
 
-            <div class="control is-pulled-right ml-60">
-                <button {{$ad->userPp->trashed()? 'disabled' : ''}} class="button is-link">
-                    <span class="icon is-small">
-                        <i class="fas fa-save"></i>
-                    </span>
-                    <span>Sauvegarder</span>
-                </button>
-            </div>
+{{--            <div class="control is-pulled-right ml-60">--}}
+{{--                <button {{$ad->userPp->trashed()? 'disabled' : ''}} class="button is-link">--}}
+{{--                    <span class="icon is-small">--}}
+{{--                        <i class="fas fa-save"></i>--}}
+{{--                    </span>--}}
+{{--                    <span>Sauvegarder</span>--}}
+{{--                </button>--}}
+{{--            </div>--}}
 
         </div>
         <p class="mb-20">Ces indicateurs sont <strong>optionnels</strong>. Néanmoins, ils sont pour nous importants : ils nous permettent de mieux vous accompagner mais aussi d'observer les signaux faibles de l'installation et de la transmission en France en anonymisant ces informations et en les croisant au niveau national, à la manière d'un observatoire. Merci pour votre contribution !</p>

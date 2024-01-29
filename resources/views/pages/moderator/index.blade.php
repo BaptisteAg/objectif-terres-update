@@ -1,3 +1,4 @@
+@php use App\Models\AdStatus; @endphp
 @extends ('default')
 
 @if(auth()->user()->role >=3)
@@ -29,43 +30,43 @@
             </h1>
         @endif
 
-{{--        @if($numberOfAdsToModerate !== 0 || $numberOfUnreadMessages !==0)--}}
-{{--            <div id="notification-moderator" class="notification has-background-info">--}}
-{{--                <button id="close-notification-moderator" class="delete"></button>--}}
-{{--                @if($numberOfAdsToModerate === 0)--}}
-{{--                @elseif($numberOfAdsToModerate >1)--}}
-{{--                    <p class="has-text-white-ter">--}}
-{{--                        <i class="far fa-bell has-text-white-ter"></i>--}}
-{{--                        Vous avez<a style="text-decoration: none"--}}
-{{--                                    href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4'])}}">--}}
-{{--                            <strong>{{$numberOfAdsToModerate}}--}}
-{{--                                annonces</strong></a> à modérer !</p>--}}
-{{--                @else--}}
-{{--                    <p class="has-text-white-ter">--}}
-{{--                        <i class="far fa-bell has-text-white-ter"></i>--}}
-{{--                        Vous avez<a style="text-decoration: none"--}}
-{{--                                    href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4'])}}">--}}
-{{--                            <strong>{{$numberOfAdsToModerate}} annonce</strong>--}}
-{{--                        </a>à modérer !</p>--}}
-{{--                @endif--}}
+        {{--        @if($numberOfAdsToModerate !== 0 || $numberOfUnreadMessages !==0)--}}
+        {{--            <div id="notification-moderator" class="notification has-background-info">--}}
+        {{--                <button id="close-notification-moderator" class="delete"></button>--}}
+        {{--                @if($numberOfAdsToModerate === 0)--}}
+        {{--                @elseif($numberOfAdsToModerate >1)--}}
+        {{--                    <p class="has-text-white-ter">--}}
+        {{--                        <i class="far fa-bell has-text-white-ter"></i>--}}
+        {{--                        Vous avez<a style="text-decoration: none"--}}
+        {{--                                    href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4'])}}">--}}
+        {{--                            <strong>{{$numberOfAdsToModerate}}--}}
+        {{--                                annonces</strong></a> à modérer !</p>--}}
+        {{--                @else--}}
+        {{--                    <p class="has-text-white-ter">--}}
+        {{--                        <i class="far fa-bell has-text-white-ter"></i>--}}
+        {{--                        Vous avez<a style="text-decoration: none"--}}
+        {{--                                    href="{{route('moderator.show', ['citySelect=[]&radius_research=&ad_statuses[]=4'])}}">--}}
+        {{--                            <strong>{{$numberOfAdsToModerate}} annonce</strong>--}}
+        {{--                        </a>à modérer !</p>--}}
+        {{--                @endif--}}
 
-{{--                @if($numberOfUnreadMessages === 0)--}}
-{{--                @elseif($numberOfUnreadMessages > 1 )--}}
-{{--                    <a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i--}}
-{{--                                    class="fas fa-envelope "></i> Vous--}}
-{{--                            avez <strong>{{$numberOfUnreadMessages}}--}}
-{{--                                nouveaux messages--}}
-{{--                                !</strong></p></a>--}}
+        {{--                @if($numberOfUnreadMessages === 0)--}}
+        {{--                @elseif($numberOfUnreadMessages > 1 )--}}
+        {{--                    <a style="text-decoration: none" href="{{route('threads.index')}}"><p class="has-text-white"><i--}}
+        {{--                                    class="fas fa-envelope "></i> Vous--}}
+        {{--                            avez <strong>{{$numberOfUnreadMessages}}--}}
+        {{--                                nouveaux messages--}}
+        {{--                                !</strong></p></a>--}}
 
-{{--                @else--}}
-{{--                    <a style="text-decoration: none" href="{{route('threads.index')}}">--}}
-{{--                        <p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez--}}
-{{--                            <strong>{{$numberOfUnreadMessages}} nouveau message !</strong>--}}
-{{--                        </p>--}}
-{{--                    </a>--}}
-{{--                @endif--}}
-{{--            </div>--}}
-{{--        @endif--}}
+        {{--                @else--}}
+        {{--                    <a style="text-decoration: none" href="{{route('threads.index')}}">--}}
+        {{--                        <p class="has-text-white"><i class="fas fa-envelope"></i> Vous avez--}}
+        {{--                            <strong>{{$numberOfUnreadMessages}} nouveau message !</strong>--}}
+        {{--                        </p>--}}
+        {{--                    </a>--}}
+        {{--                @endif--}}
+        {{--            </div>--}}
+        {{--        @endif--}}
 
         {{Form::open(['route'=>'moderator.show', 'method'=>'get'])}}
         <div id="vue-form-moderator" class="mt-50">
@@ -78,12 +79,10 @@
             @if (count($attributionAds) == 0)
                 <p class="has-text-centered">Aucun résultat</p>
             @else
-                <div class="mb-30">
-                    @if($attributionAds->count() <=1)
-                        <p class="has-text-weight-bold">{{$attributionAds->total()}} résultat</p>
-                    @else
-                        <p class="has-text-weight-bold">{{$attributionAds->total()}} résultats</p>
-                    @endif
+                <div class="mb-4">
+                    <span class="tag is-large is-info">
+                        {{$attributionAds->total()}} résultat{{ $attributionAds->count() > 1 ? 's' : '' }}
+                    </span>
                 </div>
                 <div class="table-container">
                     <table id="moderator-list-ads" class="table is-striped is-hoverable is-fullwidth ">
@@ -92,96 +91,96 @@
                             <th>
                                 @if(request()->input('sort') !== 'date')
                                     <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'date'])) }}">
-                                        <span>Date de soumission</span>
+                                        <span>Date</span>
                                     </a>
                                 @elseif(request()->input('sort') === 'date' && request()->input('order') === 'desc')
                                     <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'date'])) }}">
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Date de soumission</span>
+                                        <span>Date</span>
                                     </a>
                                 @else
                                     <a href="{{ route('moderator.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
                                         <i class="fas fa-arrow-up"></i>
-                                        <span>Date de soumission</span>
+                                        <span>Date</span>
                                     </a>
                                 @endif
                             </th>
                             <th>
-                                @if(request()->input('sort') !== 'title')
-                                    <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">
-                                        <span>Titre de l'annonce</span>
+                                @if(request()->input('sort') !== 'id')
+                                    <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'id'])) }}">
+                                        <span>Référence</span>
                                     </a>
-                                @elseif(request()->input('sort') === 'title' && request()->input('order') === 'asc')
-                                    <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'title'])) }}">
+                                @elseif(request()->input('sort') === 'id' && request()->input('order') === 'asc')
+                                    <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'id'])) }}">
                                         <i class="fas fa-arrow-up"></i>
-                                        <span>Titre de l'annonce</span>
+                                        <span>Référence</span>
                                     </a>
                                 @else
                                     <a href="{{ route('moderator.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Titre de l'annonce</span>
+                                        <span>Référence</span>
                                     </a>
                                 @endif
                             </th>
+                            <th>
+                                {{--                                @if(request()->input('sort') !== 'title')--}}
+                                {{--                                    <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'title'])) }}">--}}
+                                {{--                                        <span>Titre de l'annonce</span>--}}
+                                {{--                                    </a>--}}
+                                {{--                                @elseif(request()->input('sort') === 'title' && request()->input('order') === 'asc')--}}
+                                {{--                                    <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'title'])) }}">--}}
+                                {{--                                        <i class="fas fa-arrow-up"></i>--}}
+                                {{--                                        <span>Titre de l'annonce</span>--}}
+                                {{--                                    </a>--}}
+                                {{--                                @else--}}
+                                {{--                                    <a href="{{ route('moderator.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">--}}
+                                {{--                                        <i class="fas fa-arrow-down"></i>--}}
+                                {{--                                        <span>Titre de l'annonce</span>--}}
+                                {{--                                    </a>--}}
+                                {{--                                @endif--}}
+                                <span>Titre de l'annonce</span>
+                            </th>
                             <th>Type d'annonce</th>
+                            {{--<th>Production(s)</th>--}}
                             <th>
                                 @if(request()->input('sort') !== 'name')
                                     <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'name'])) }}">
-                                        <span>Nom du porteur de projet</span>
+                                        <span>Annonceur</span>
                                     </a>
                                 @elseif(request()->input('sort') === 'name' && request()->input('order') === 'asc')
                                     <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'name'])) }}">
                                         <i class="fas fa-arrow-up"></i>
-                                        <span>Nom du porteur de projet</span>
+                                        <span>Annonceur</span>
                                     </a>
                                 @else
                                     <a href="{{ route('moderator.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
                                         <i class="fas fa-arrow-down"></i>
-                                        <span>Nom du porteur de projet</span>
+                                        <span>Annonceur</span>
                                     </a>
                                 @endif
                             </th>
-                            <th>Nom du modérateur</th>
-                            <th>Adresse mail</th>
-                            <th>Localisation(s)</th>
+                            <th>Modérateur</th>
+                            {{--                            <th>Adresse mail</th>--}}
+                            <th>Localisation</th>
                             <th>
-                                @if(request()->input('sort') !== 'ad_statuses.name')
-                                    <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'ad_statuses.name'])) }}">
-                                        <span>Statut de l'annonce</span>
-                                    </a>
-                                @elseif(request()->input('sort') === 'ad_statuses.name' && request()->input('order') === 'asc')
-                                    <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'ad_statuses.name'])) }}">
-                                        <i class="fas fa-arrow-up"></i>
-                                        <span>Statut de l'annonce</span>
-                                    </a>
-                                @else
-                                    <a href="{{ route('moderator.show', array_diff_key(Request::all(), ['order'=>'', 'sort'=>''])) }}">
-                                        <i class="fas fa-arrow-down"></i>
-                                        <span>Statut de l'annonce</span>
-                                    </a>
-                                @endif
+                                @php
+                                    $order = request()->input('sort') === 'ad_statuses.name' && request()->input('order') === 'asc' ? 'desc' : 'asc';
+                                    $sort = request()->input('sort') !== 'ad_statuses.name' ? 'ad_statuses.name' : '';
+                                    $icon = request()->input('sort') === 'ad_statuses.name' ? (request()->input('order') === 'asc' ? 'fa-arrow-up' : 'fa-arrow-down') : '';
+                                @endphp
+
+                                <a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>$order, 'sort'=>$sort])) }}">
+                                    @if($icon)
+                                        <i class="fas {{$icon}}"></i>
+                                    @endif
+                                    <span>Statut de l'annonce</span>
+                                </a>
                             </th>
-                            {{--							<th>--}}
-                            {{--								@if(request()->input('sort') !== 'project_statuses.name')--}}
-                            {{--									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'asc', 'sort'=>'project_statuses.name'])) }}">--}}
-                            {{--										<span>Statut du projet</span>--}}
-                            {{--									</a>--}}
-                            {{--								@elseif(request()->input('sort') === 'project_statuses.name' && request()->input('order') === 'asc')--}}
-                            {{--									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'desc', 'sort'=>'project_statuses.name'])) }}">--}}
-                            {{--										<i class="fas fa-arrow-up"></i>--}}
-                            {{--										<span>Statut du projet</span>--}}
-                            {{--									</a>--}}
-                            {{--								@else--}}
-                            {{--									<a href="{{ route('moderator.show', array_merge(Request::all(), ['order'=>'', 'sort'=>''])) }}">--}}
-                            {{--										<i class="fas fa-arrow-down"></i>--}}
-                            {{--										<span>Statut du projet</span>--}}
-                            {{--									</a>--}}
-                            {{--								@endif--}}
-                            {{--							</th>--}}
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
+                            <?php /** @var \App\Models\AttributionAd[] $attributionAds */ ?>
                         @foreach($attributionAds as $attributionAd)
                             @if($attributionAd->adStatus && $attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID and $attributionAd->userModerator && $attributionAd->userModerator->id === auth()->id())
                                 <tr style="background-color: mistyrose">
@@ -189,9 +188,26 @@
                                 <tr>
                                     @endif
 
-                                    <td>{{$attributionAd->created_at->format('d/m/Y')}}</td>
+                                    <td>{{$attributionAd->updated_at->format('d/m/Y')}}</td>
                                     <td>
-                                        <a href="{{route('ads.show', $attributionAd->ad->id)}}">{{$attributionAd->ad->title}}</a>
+                                        <span class="tag">
+                                          {{$attributionAd->ad->id}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{{route('ads.show', $attributionAd->ad->id)}}" class="bold"
+                                           style="font-family: TitleFont, 'Source Sans Pro', sans-serif;">
+                                            @if($attributionAd->ad->sub_ad->productionGenres->count())
+                                                <b-tooltip position="is-top" multilined>
+                                                    <p>{{ $attributionAd->ad->title }}</p>
+                                                    <template v-slot:content>
+                                                        {{ $attributionAd->ad->sub_ad->productionGenres->pluck('name')->join(', ') }}
+                                                    </template>
+                                                </b-tooltip>
+                                            @else
+                                                {{$attributionAd->ad->title}}
+                                            @endif
+                                        </a>
                                     </td>
                                     <td>{{$attributionAd->ad->ad_type_full_name}}</td>
                                     <td>
@@ -213,47 +229,57 @@
                                             Modérateur non attribué
                                         @endif
                                     </td>
-                                    <td>{{$attributionAd->ad->userPp->email ?? "[Supprimé]"}}</td>
+                                    {{--                                    <td>{{$attributionAd->ad->userPp->email ?? "[Supprimé]"}}</td>--}}
                                     <td>
-                                        @if(! is_null($attributionAd->ad->regionsList))
-                                            <p>Region(s) : {{$attributionAd->ad->regionsList}}</p>
-                                        @endif
-                                        @if(! is_null($attributionAd->ad->departmentsList))
-                                            <p>Département(s) : {{$attributionAd->ad->departmentsList}}</p>
-                                        @endif
-                                        @if(! is_null($attributionAd->ad->citiesList))
-                                            <p>Communes(s) : {{$attributionAd->ad->citiesList}}</p>
-                                        @endif
+                                        <b-tooltip position="is-top" multilined>
+                                            <p><b>{{ $attributionAd->ad->main_department->name }}</b></p>
+                                            <template v-slot:content>
+                                                <div class="has-text-left">
+                                                    @if(!empty($attributionAd->ad->main_department->territory))
+                                                        <p><b>Territoire</b>
+                                                            : {{$attributionAd->ad->main_department->territory->name}}
+                                                        </p>
+                                                    @endif
+                                                    @if($attributionAd->ad->secondaryDepartmentsList->count() > 0)
+                                                        <p><b>Départment(s) secondaire(s)</b> :
+                                                            <br>{{$attributionAd->ad->secondaryDepartmentsList->join(',')}}
+                                                        </p>
+                                                    @endif
+                                                    @if(! is_null($attributionAd->ad->citiesList))
+                                                        <p><b>Communes(s)</b> : {{$attributionAd->ad->citiesList}}</p>
+                                                    @endif
+                                                </div>
+                                            </template>
+                                        </b-tooltip>
                                     </td>
                                     <td>
                                         @if(!is_null($attributionAd->adStatus))
-                                            @if($attributionAd->adStatus->id === \App\Models\AdStatus::APPROVE_ID)
-                                                <span class="custom-tag success has-tooltip-bottom"
-                                                      data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
-                                            @elseif($attributionAd->adStatus->id ===\App\Models\AdStatus::PENDING_ID)
-                                                <span class="custom-tag warning has-tooltip-bottom"
-                                                      data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
-                                            @elseif($attributionAd->adStatus->id === \App\Models\AdStatus::REFUSE_ID)
-                                                <span class="custom-tag info  has-tooltip-bottom"
-                                                      data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
-                                            @elseif($attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID)
-                                                <span class="custom-tag danger has-tooltip-bottom"
-                                                      data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
-                                            @else
-                                                <span class="custom-tag has-tooltip-bottom"
-                                                      data-tooltip="{{\App\Models\AdStatus::TOOLTIPS[$attributionAd->adStatus->id]}}">{{$attributionAd->adStatus->name}}</span>
-                                            @endif
-                                        @else
-                                            Non défini
+                                            @php
+                                                $statusId = $attributionAd->adStatus->id ?? null;
+                                                $statusName = $attributionAd->adStatus->name ?? 'Non défini';
+                                                $tooltip = AdStatus::TOOLTIPS[$statusId] ?? '';
+                                                $statusClasses = [
+                                                    \App\Models\AdStatus::APPROVE_ID => 'is-success',
+                                                    \App\Models\AdStatus::PENDING_ID => 'is-warning',
+                                                    \App\Models\AdStatus::REFUSE_ID => 'is-info',
+                                                    \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID => 'is-danger',
+                                                ];
+                                                $class = $statusClasses[$statusId] ?? '';
+                                            @endphp
+                                            <b-tooltip label="{{ $tooltip }}">
+                                                <span class="tag {{ $class }} is-bottom">
+                                                    {{ $statusName }}
+                                                </span>
+                                            </b-tooltip>
                                         @endif
                                     </td>
-                                    <td><a href="{{route('ads.show', $attributionAd->ad->id)}}"><span>
-                                                @if($attributionAd->adStatus && $attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID and $attributionAd->userModerator && $attributionAd->userModerator->id === auth()->id())
-                                                    <i class="fas fa-ruler"></i>
-                                                    <span>Modérer l'annonce</span>
-                                                @else
-                                                    <i class="fas fa-search"></i></span>
-                                            <span>Voir le détail</span>
+                                    <td><a href="{{route('ads.show', $attributionAd->ad->id)}}">
+                                            @if($attributionAd->adStatus && $attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID and $attributionAd->userModerator && $attributionAd->userModerator->id === auth()->id())
+                                                <i class="fas fa-ruler"></i>
+                                                <span>Modérer l'annonce</span>
+                                            @else
+                                                <i class="fas fa-search"></i>
+                                                <span>Voir</span>
                                             @endif
                                         </a>
                                     </td>
@@ -278,10 +304,6 @@
 @section('script')
 
     <script>
-        const vueModerator = new Vue({
-            el: '#vue-form-moderator',
-            name: 'content'
-        });
 
         let buttons = document.querySelectorAll('.form-research-buttons');
         let icons = document.querySelectorAll('.form-research-buttons-icons');
