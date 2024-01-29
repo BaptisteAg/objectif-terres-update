@@ -104,7 +104,7 @@
 
                                 @if($research->productionGenres->count()> 0 )
                                     <p>
-                                        <span class="has-text-grey-dark">Type(s) de productions recherché(s)  : </span><span
+                                        <span class="has-text-grey-dark">Production(s) principale(s)  : </span><span
                                                 class="has-text-black">{{ $research->productionGenres->pluck('name')->implode(', ') }}</span>
                                     </p>
                                 @endif
