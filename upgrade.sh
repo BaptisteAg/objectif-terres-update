@@ -1,8 +1,7 @@
 #!/bin/bash
 
 php artisan down &&
-git pull origin develop &&
+git pull &&
 composer install
 php artisan app:update &&
-npm run production && 
 php artisan up
