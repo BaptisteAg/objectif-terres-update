@@ -1,6 +1,6 @@
 @php
     $isThirdPartyAd = (bool)$ad->third_party_ad_user_id;
-    $subtitle = $isThirdPartyAd ? "Votre message pour l'annonceur doit être envoyé manuellement" : "Votre message";
+    $subtitle = $isThirdPartyAd ? "Cet annonceur doit être contacté manuellement :" : "Votre message";
 @endphp
 <modal
         title="Envoyer un message à l'annonceur"
@@ -11,7 +11,9 @@
     @if($isThirdPartyAd)
         <div class="is-flex is-flex-direction-column">
             <strong>Téléphone : </strong>{{$ad->thirdPartyAdUser->phone}}
+            @if($ad->thirdPartyAdUser->email)
             <strong>Email : </strong>{{$ad->thirdPartyAdUser->email}}
+            @endif
         </div>
     @else
         {!! Form::open(['route' => 'threads.create', 'method'=>'post']) !!}
