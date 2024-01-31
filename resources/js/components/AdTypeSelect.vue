@@ -37,7 +37,7 @@
 					consultent l'annonce.
 				</p><br><br>
 
-				<b-field class="w-50 is-size-6" label="Email *" :type="errors.email ? 'is-danger' : ''"
+				<b-field class="w-50 is-size-6" label="Email" :type="errors.email ? 'is-danger' : ''"
 						 :message="errors.email">
 					<b-input name="third_party[email]" placeholder="jean.dupont@gmail.com" size="is-medium" rounded
 							 type="email"
@@ -193,8 +193,14 @@ export default {
 			}
 
 			if (this.adContactType === 'thirdParty') {
-				let emailRegex = /^[\w-]+(.[\w-]+)*@([\w-]+.)+[a-zA-Z]{2,7}$/;
-				if (!emailRegex.test(this.thirdParty.email)) {
+                const validateEmail = (email) => {
+                    return String(email)
+                        .toLowerCase()
+                        .match(
+                            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                        );
+                };
+				if (this.thirdParty.email && !validateEmail(this.thirdParty.email)) {
 					this.errors.email = "L'email n'est pas valide.";
 				}
 				if (!this.thirdParty.first_name) {
