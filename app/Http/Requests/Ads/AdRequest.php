@@ -34,7 +34,7 @@ class AdRequest extends FormRequest
             'ad_type' => "required",
 
             'ad_contact_type' => 'required|string',
-            'third_party.email'=> 'required_if:ad_contact_type,thirdParty|email',
+            'third_party.email'=> 'nullable|email',
             'third_party.first_name'=> 'required_if:ad_contact_type,thirdParty|string',
             'third_party.last_name'=> 'required_if:ad_contact_type,thirdParty|string',
             'third_party.phone'=> 'nullable|string',
