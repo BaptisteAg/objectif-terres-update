@@ -24,7 +24,7 @@
             </span>
         </div>
     </div>
-    <p class="help is-danger" v-if="$v.formInput.selectedZones.$error">
+    <p class="help is-danger" v-if="$v.formInput.selectedZones?.$error">
         Ce champ est requis. Vous devez sélectionner un code postal dans la liste.
     </p>
 </div>

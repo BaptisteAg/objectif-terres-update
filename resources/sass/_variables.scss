@@ -1,5 +1,5 @@
 // Body
-$body-bg: #f8fafc;
+//$body-bg: #f8fafc;
 
 // Typography
 $family-sans-serif: 'Nunito', sans-serif;
@@ -9,7 +9,7 @@ $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
 // Bulma Colors
-$blue: #579ea5;
+$blue: #009DA8;
 $indigo: #6574cd;
 $purple: #9561e2;
 $pink: #f66d9b;
@@ -19,6 +19,7 @@ $yellow: #ffed4a;
 $green: #7da237;
 $teal: #4dc0b5;
 $cyan: #4dc0b5;
+$beige: #F8F3EE;
 
 //margin
 $has_margin: 90px auto;
@@ -26,7 +27,7 @@ $has_margin: 90px auto;
 
 //Colors Theme
 
-$primary: #579ea5;
+$primary: #A9652B;
 $secondary: #42767a;
 $blue-bright: #00c3d6;
 
@@ -34,7 +35,7 @@ $success: #7da237;
 $success-dark: #466b32 ;
 $success-bright: #82c700;
 
-$warning: #db9500;
+$warning: #E4C400;
 $warning-dark: #a86e00 ;
 $warning-bright: #ffad00;
 $warning-orange: #b34818;
@@ -60,7 +61,8 @@ $white : #ffffff;
 $gap: 32px;
 $mobile: 480px;
 // 960, 1152, and 1344 have been chosen because they are divisible by both 12 and 16
-$tablet: 769px;
+// $tablet: 769px;
+$tablet: 960px + (2 * $gap);
 // 960px container + 4rem
 $desktop: 960px + (2 * $gap);
 // 1152px container + 4rem
@@ -70,7 +72,6 @@ $fullhd: 1344px + (2 * $gap);
 
 
 // Bulma input
-$radius : 0px ;
 $input-border-color : $primary ;
 
 

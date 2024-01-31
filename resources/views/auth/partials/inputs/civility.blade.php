@@ -1,7 +1,7 @@
 <div class="field">
     <label class="label" for="civility">Civilité*</label>
     <div class="control has-icons-left">
-        <div class="select">
+        <div class="select is-fullwidth">
             <select id="civility" name="civility"
                     class="input @error('civility') is-danger @enderror "
                     required>

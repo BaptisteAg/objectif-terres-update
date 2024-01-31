@@ -65,18 +65,16 @@ class AttributionAdsService
 	 * @param int $adId
 	 * @return bool
 	 */
-	public function moderatorIsChargeOfAdModeration(int $adId): bool
+	public function moderatorIsChargeOfAdModeration(Ad $ad): bool
 	{
 		$moderatorIsChargeOfAdModeration = false;
-		$ad = $this->adRepository->find($adId);
 		if ($ad->attributionAd && auth()->id() === $ad->attributionAd->user_moderator_id) {
-			return $moderatorIsChargeOfAdModeration = true;
+			return true;
 		}
 
 		$moderatorLocationTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$adTerritoriesCodes = $this->adService->getAdDepartmentCodesFromZones($ad);
 		$intersectTerritoriesCodes = array_intersect($adTerritoriesCodes, $moderatorLocationTerritoriesCodes);
-
 
 		if (count($intersectTerritoriesCodes) > 0) {
 			$moderatorIsChargeOfAdModeration = true;
@@ -124,7 +122,8 @@ class AttributionAdsService
 	{
 		$attributionAds = collect();
 		//START QUERY
-		$attributionAdsFiltered = (new AttributionAd)->newQuery();
+		$attributionAdsFiltered = (new AttributionAd)->newQuery()->select('attribution_ads.*');
+
 		//Filter ads based on moderation attribution and moderator territories
 		$moderatorTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
 		$attributionAdsFiltered->where(function (Builder $query) use ($moderatorTerritoriesCodes) {
@@ -195,18 +194,14 @@ class AttributionAdsService
 			if (!is_null($filters->input('production_genres'))) {
 				$attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
 					$query->where(function (Builder $query) use ($filters) {
-						$query->whereHas('landSeekAd.productionGenres', function (Builder $query) use ($filters) {
-							$query->whereIn('production_genres.id', $filters->input('production_genres'));
-						})
-							->orWhereHas('landOfferAd.productionGenres', function (Builder $query) use ($filters) {
-								$query->whereIn('production_genres.id', $filters->input('production_genres'));
-							})
-							->orWhereHas('landSeekAd.productionGenresPossible', function (Builder $query) use ($filters) {
-								$query->whereIn('production_genres.id', $filters->input('production_genres'));
-							})
-							->orWhereHas('landOfferAd.productionGenresPossible', function (Builder $query) use ($filters) {
-								$query->whereIn('production_genres.id', $filters->input('production_genres'));
-							});
+                        foreach(array_keys(Ad::AD_TYPES) as $adType){
+                            $query->orWhereHas($adType.'.productionGenres', function (Builder $query) use ($filters) {
+                                $query->whereIn('production_genres.id', $filters->input('production_genres'));
+                            })
+                            ->orWhereHas($adType.'.productionGenresSecondary', function (Builder $query) use ($filters) {
+                                $query->whereIn('production_genres.id', $filters->input('production_genres'));
+                            });
+                        }
 					});
 				});
 			}
@@ -262,12 +257,12 @@ class AttributionAdsService
 		if (!is_null($filters->input('date_from')) && !is_null($filters->input('date_to'))) {
 			$dateStartFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_from'))->format('Y-m-d');
 			$dateEndFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_to'))->format('Y-m-d');
-			$attributionAdsFiltered->whereBetween('attribution_ads.created_at', [$dateStartFormatted, $dateEndFormatted . " 23:59:59"]);
+
+			$attributionAdsFiltered->whereBetween('attribution_ads.updated_at', [$dateStartFormatted, $dateEndFormatted . " 23:59:59"]);
 		}
 
 		//If one or many ad status are selected, filter attribution ads based on their status
 		if ($filters->has('ad_statuses')) {
-
 			$attributionAdsFiltered->whereIn('ad_status_id', $filters->input('ad_statuses'));
 		}
 
@@ -319,20 +314,19 @@ class AttributionAdsService
 			});
 		}
 
+        $attributionAdsFiltered
+            ->join('ads', 'attribution_ads.id', '=', 'ads.id');
+
 		//Handling sort of research results
 		if ($filters->has('order') && $filters->has('sort')) {
-			if ($filters->input('sort') === 'date') {
-				$attributionAdsFiltered->orderBy('created_at', $filters->input('order'));
-			} else if ($filters->input('sort') === 'title') {
+			if ($filters->input('sort') === 'title') {
 				$attributionAdsFiltered
-					->join('ads', 'attribution_ads.id', '=', 'ads.id')
 					->orderBy($filters->input('sort'), $filters->input('order'));
 
 			} else if ($filters->input('sort') === 'name') {
 				$attributionAdsFiltered
 					->select('attribution_ads.*')
-					->join('ads as a1', 'attribution_ads.ad_id', '=', 'a1.id')
-					->join('users', 'users.id', '=', 'a1.user_pp_id')
+					->join('users', 'users.id', '=', 'ads.user_pp_id')
 					->orderBy('first_name', $filters->input('order'));
 
 			} else if ($filters->input('sort') === 'ad_statuses.name') {
@@ -342,14 +336,14 @@ class AttributionAdsService
 			} else if ($filters->input('sort') === 'project_statuses.name') {
 				$attributionAdsFiltered
 					->select('attribution_ads.*')
-					->join('ads as a1', 'attribution_ads.ad_id', '=', 'a1.id')
-					->leftJoin('projects as p1', 'p1.id', '=', 'a1.project_id')
+					->leftJoin('projects as p1', 'p1.id', '=', 'ads.project_id')
 					->leftJoin('project_statuses', 'p1.project_status_id', 'project_statuses.id')
 					->orderBy('name', $filters->input('order'));
 			}
-		} else {
-			$attributionAdsFiltered->orderByDesc('created_at');
 		}
+
+        $attributionAdsFiltered->orderByDesc('updated_at');
+
 		$attributionAds = $attributionAdsFiltered
 			->with($this->getEagerLoading())
 			->paginate(15);
@@ -523,23 +517,37 @@ class AttributionAdsService
 	private function getEagerLoading()
 	{
 		return [
+            'userModerator',
 			'ad',
 			'ad.userPp',
 			'adStatus',
 			'ad.project.projectStatus',
 
 			'ad.cities',
-			'ad.cities.department',
+            'ad.cities.department',
+            'ad.cities.department.territory',
 			'ad.cities.department.region',
+            'ad.department',
+            'ad.department.territory',
 			'ad.departments',
+            'ad.departments.territory',
 			'ad.departments.region',
 			'ad.regions',
 			'ad.regions.departments',
 			'ad.regions.departments.cities',
 
 			'ad.landSeekAd',
+            'ad.landSeekAd.productionGenres',
 			'ad.landOfferAd',
-			'ad.jobOfferAd'
+            'ad.landOfferAd.productionGenres',
+			'ad.jobOfferAd',
+            'ad.jobOfferAd.productionGenres',
+            'ad.jobSeekAd',
+            'ad.jobSeekAd.productionGenres',
+            'ad.associateOfferAd',
+            'ad.associateOfferAd.productionGenres',
+            'ad.associateSeekAd',
+            'ad.associateSeekAd.productionGenres',
 		];
 	}
 }

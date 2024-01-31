@@ -41,7 +41,7 @@ class AppUpdate extends Command
      */
     public function handle()
     {
-        $this->call('migrate');
+        $this->call('migrate', ['--force' => true]);
         $this->call('view:clear');
         $this->call('optimize');
     }

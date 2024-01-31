@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\EducationLevelable;
 use App\Models\Traits\JobOfferTypable;
 use App\Models\Traits\OfferableGenre;
+use App\Models\Traits\ProductionableGenre;
 use Chelout\RelationshipEvents\Concerns\HasMorphToManyEvents;
 use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 use Illuminate\Database\Eloquent\Model;
@@ -37,10 +38,21 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|JobOfferAd whereJobDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JobOfferAd whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $secondary_production_type_add
+ * @property string|null $production_type_add
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferAd whereProductionTypeAdd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JobOfferAd whereSecondaryProductionTypeAdd($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenres
+ * @property-read int|null $production_genres_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
+ * @property-read int|null $production_genres_possible_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresSecondary
+ * @property-read int|null $production_genres_secondary_count
  */
 class JobOfferAd extends Model
 {
-	use JobOfferTypable,
+	use ProductionableGenre,
+        JobOfferTypable,
 		EducationLevelable,
 		HasMorphToManyEvents,
 		HasRelationshipObservables;
@@ -52,7 +64,9 @@ class JobOfferAd extends Model
 		'ad_id',
 		'is_activity_transmission',
 		'experience_farming',
-		'job_description'
+		'job_description',
+        'secondary_production_type_add',
+        'production_type_add',
 		//'is_beneficiary',
 		//'education_level_id',
 	];

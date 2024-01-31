@@ -1,0 +1,65 @@
+
+
+// Set your colors
+$primary: #A9652B;
+$secondary: #42767a;
+$danger-darken-orange: #85170f;
+$primary-light: findLightColor($primary);
+$primary-dark: findDarkColor($primary);
+$primary-invert: findColorInvert($primary);
+$twitter: #4099FF;
+$twitter-invert: findColorInvert($twitter);
+
+$warning-orange: #b34818;
+$beige: #F8F3EE;
+$charcoal : #33383d;
+$mouse : #999a9f;
+$cream : #eae6cf;
+$pearl : #f5f5f5;
+$white : #ffffff;
+$family-sans-serif: 'Nunito', sans-serif;
+$family-sans-serif-title: "Bebas Neue", "Source Sans Pro", sans-serif;
+$family-sans-serif-title-second: 'Kalam', cursive;
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+$blue-bright: #00c3d6;
+$success-bright: #82c700;
+$danger-bright: #e10000;
+$yellow-note : #ffff99;
+$warning-bright: #ffad00;
+$night : rgba(1, 50, 73, 1);
+// The container horizontal gap, which acts as the offset for breakpoints
+$gap: 32px;
+$mobile: 480px;
+// 960, 1152, and 1344 have been chosen because they are divisible by both 12 and 16
+$tablet: 769px;
+// 960px container + 4rem
+$desktop: 960px + (2 * $gap);
+// 1152px container + 4rem
+$widescreen: 1152px + (2 * $gap);
+// 1344px container + 4rem
+$fullhd: 1344px + (2 * $gap);
+
+
+// Bulma input
+$radius : 9999px ;
+$input-border-color : $primary ;
+
+
+
+
+// Lists and maps
+$custom-colors: null !default;
+$custom-shades: null !default;
+
+// Links
+$link: $primary;
+$link-invert: $primary-invert;
+$link-focus-border: $primary;
+
+// Import Bulma's core
+@import "~bulma/sass/utilities/_all";
+
+// Import Bulma and Buefy styles
+@import "~bulma";
+@import "~buefy/src/scss/buefy";

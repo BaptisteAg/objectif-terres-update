@@ -113,7 +113,7 @@ class AttributionAd extends Model implements Decoratable
      */
     public function userAdvisor()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_advisor_id');
     }
 
     /**
@@ -150,7 +150,8 @@ class AttributionAd extends Model implements Decoratable
 	 */
 	public function userModerator()
 	{
-		return $this->belongsTo(User::class);
+//        dd('ghjhgjghjghj');
+		return $this->belongsTo(User::class, 'user_moderator_id');
 	}
 
 	/**
@@ -158,7 +159,7 @@ class AttributionAd extends Model implements Decoratable
 	 */
 	public function userSupervisor()
 	{
-		return $this->belongsTo(User::class);
+		return $this->belongsTo(User::class, 'user_supervisor_id');
 	}
 
 	/**

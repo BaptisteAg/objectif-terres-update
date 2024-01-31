@@ -33,8 +33,8 @@ return $settings = array(
 
         // Usually x509cert and privateKey of the SP are provided by files placed at
         // the certs folder. But we can also provide them with the following parameters
-        'x509cert' => file_get_contents(__DIR__.'/../../certs/salesforce_api.pem'),
-        'privateKey' => file_get_contents(__DIR__.'/../../certs/salesforce_api.key'),
+        'x509cert' => file_get_contents(__DIR__.'/../../certs/salesforce_api'.(env('SAML2_SALESFORCE_SANDBOX', false) ? '_sandbox':'').'.pem'),
+        'privateKey' => file_get_contents(__DIR__.'/../../certs/salesforce_api'.(env('SAML2_SALESFORCE_SANDBOX', false) ? '_sandbox':'').'.key'),
 
         // Identifier (URI) of the SP entity.
         // Leave blank to use the '{idpName}_metadata' route, e.g. 'test_metadata'.
@@ -84,7 +84,7 @@ return $settings = array(
          *  Remove the ':' characters
          */
         //2020 'certFingerprint' => '87c6a10dadf2fa24cf42ee41d12870f84db3b2f0',
-        'certFingerprint' => 'F976030D32D377972B600A3B18539298572DFEA6',
+        'certFingerprint' => env('SAML2_'.$this_idp_env_id.'_IDP_CERT_FINGERPRINT'),
     ),
 
     /***

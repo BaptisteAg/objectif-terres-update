@@ -1,0 +1,37 @@
+#carousel-quiNousSommes .media {
+  justify-content: center;
+}
+
+.market-background {
+  background: url("https://picsum.photos/2000/1600?random=1");
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 110px 210px 370px 170px;
+}
+.market-background h2 {
+  max-width: 420px;
+}
+
+.margin-p {
+  margin: 90px auto;
+}
+.margin-p .row {
+  margin: 20px auto;
+}
+.margin-p p {
+  margin: 20px auto;
+}
+
+.partners-block h2 {
+  margin-bottom: 50px !important;
+}
+.partners-block img {
+  max-height: 150px;
+}
+
+.list-partners > div > .image > img {
+  margin: 0 auto;
+  width: auto;
+}
+
+/*# sourceMappingURL=qui-sommes-nous.css.map */

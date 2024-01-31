@@ -6,14 +6,14 @@
     <div id="vue-update-user-form" class="section  pt-0">
         <user-form id="update-form"
                    inline-template
-                   :old-values="{{$user }}">
+                   :old-values="{{$user}}">
             <div class="container">
                 @if($isUserConnectedEditHisOwnAccount)
-                    <h1 class="page__title">Vos informations personnelles</h1>
-                    <h2 class="page__subtitle"> Modifiez si besoin les informations liées à votre compte</h2>
+                    <h1 class="title is-4">Vos informations personnelles</h1>
+                    <h2 class="subtitle"> Modifiez si besoin les informations liées à votre compte</h2>
                 @else
-                    <h1 class="page__title">Compte de {{$user->first_name ?: ""}} {{$user->name ?: ""}}</h1>
-                    <h2 class="page__subtitle"> Modifiez si besoin les informations liées à ce porteur de projet</h2>
+                    <h1 class="title is-4">Compte de {{$user->first_name ?: ""}} {{$user->name ?: ""}}</h1>
+                    <h2 class="subtitle"> Modifiez si besoin les informations liées à ce porteur de projet</h2>
                 @endif
                 {!! Form::open(['route'=>'user.update', 'method'=>'post']) !!}
                 @csrf
@@ -200,6 +200,12 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="columns" v-if="optionProfileSelected == '1' || optionProfileSelected == '2'">
+                    @include('auth.partials.inputs.formation')
+                    @include('auth.partials.inputs.fromwhere')
+                </div>
+
                 <div class="columns">
                     <div class="column is-7">
                         <div class="field">
@@ -346,13 +352,4 @@
             </div>
         </user-form>
     </div>
-@endsection
-
-@section('script')
-    <script>
-        const vueUpdateForm = new Vue({
-            el: '#vue-update-user-form',
-            name: 'content'
-        });
-    </script>
 @endsection

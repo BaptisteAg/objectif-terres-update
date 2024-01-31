@@ -42,6 +42,39 @@ class LocationableController extends Controller
         );
     }
 
+    public function departments(Request $request)
+    {
+        if (!$request->get('q')) {
+            return response()->json(['error' => 'La requête est vide.']);
+        }
+
+        return response()->json(
+            $this->service->searchDepartments($request->get('q'))
+        );
+    }
+
+    public function countries(Request $request)
+    {
+        if (!$request->get('q')) {
+            return response()->json(['error' => 'La requête est vide.']);
+        }
+
+        return response()->json(
+            $this->service->searchCountries($request->get('q'))
+        );
+    }
+
+    public function citiesAndRegions(Request $request)
+    {
+        if (!$request->get('q')) {
+            return response()->json(['error' => 'La requête est vide.']);
+        }
+
+        return response()->json(
+            $this->service->searchCitiesAndRegions($request->get('q'))
+        );
+    }
+
     public function citiesAndDepartments(Request $request)
     {
         if (!$request->get('q')) {
@@ -78,23 +111,18 @@ class LocationableController extends Controller
 
     public function departmentsPolygon(Request $request, AdService $adService)
     {
-        if ($request->has('ad_category') && $request->has('offer_type')) {
-            $selectedAdType = $request->input('ad_category') . $request->input('offer_type');
-        } else {
+        if (!$request->has('ad_category')) {
             return response()->json([
                 'error' => 'Aucune catégorie d\'annonce séléctionnée'
             ]);
         }
-
-
-        if ($request->has('region_id')) {
-            $regionId = $request->get("region_id");
-        } else {
+        if (!$request->has('regions_location_researches_ids')) {
             return response()->json([
                 'error' => 'Aucune région séléctionnée'
             ]);
         }
-        return response()->json($this->service->getDepartmentPolygons($regionId, $selectedAdType));
+
+        return response()->json($this->service->getDepartmentPolygons($request));
     }
 
     public function adLocations(Request $request, AdService $adService)

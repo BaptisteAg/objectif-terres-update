@@ -52,14 +52,13 @@ class LandOfferAdRepository extends AbstractRepository implements LandOfferAdRep
         }
 		$landOfferAd->productionGenres()->sync($productionGenres);
 
-        $productionGenresWanted = $data["production_genres_wanted"] ?? [];
-		$landOfferAd->productionGenresPossible()->detach();
-		foreach ($productionGenresWanted as $productionGenreId) {
+        $productionGenresSecondary = $data["secondary_production_genres"] ?? [];
+		$landOfferAd->productionGenresSecondary()->detach();
+		foreach ($productionGenresSecondary as $productionGenreId) {
 		    if($productionGenreId !== 'other') {
-                $landOfferAd->productionGenresPossible()->attach($productionGenreId, ["type" => "possible"]);
+                $landOfferAd->productionGenresSecondary()->attach($productionGenreId, ["type" => "secondary"]);
             }
 		}
-
 
 		$landOfferAd->bioCertifications()->sync($data["bio_certifications"] ?? []);
 
@@ -67,12 +66,12 @@ class LandOfferAdRepository extends AbstractRepository implements LandOfferAdRep
 
 		if (isset($data['has_houses']) && $data['has_houses'] == 1) {
 			$house = House::create($data['house']);
-			$house->offerGenres()->sync($data["house"]['offer_genres'] ?? []);
+			//$house->offerGenres()->sync($data["house"]['offer_genres'] ?? []);
 			$landOfferAd->house()->associate($house)->save();
 		}
 		if (isset($data['has_buildings']) && $data['has_buildings'] == 1) {
 			$building = Building::create($data['building']);
-			$building->offerGenres()->sync($data["building"]['offer_genres'] ?? []);
+			//$building->offerGenres()->sync($data["building"]['offer_genres'] ?? []);
 			$landOfferAd->building()->associate($building)->save();
 		}
 	}

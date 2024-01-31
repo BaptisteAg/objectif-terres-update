@@ -35,6 +35,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static Builder|Thread whereTitle($value)
  * @method static Builder|Thread whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static Builder|Thread forUser($userId)
  */
 class Thread extends Model implements HasPresenter
 {
@@ -93,7 +94,9 @@ class Thread extends Model implements HasPresenter
             return null;
         }
         //else returns threads from thread_users
-        return $query->join($participantsTable, $this->getQualifiedKeyName(), '=', $participantsTable . '.thread_id')
+        return $query
+            ->select('threads.*')
+            ->join($participantsTable, $this->getQualifiedKeyName(), '=', $participantsTable . '.thread_id')
             ->where($participantsTable . '.user_id', $userId);
     }
 

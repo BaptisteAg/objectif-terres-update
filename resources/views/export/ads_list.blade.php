@@ -1,7 +1,7 @@
 <table>
     <thead>
     <tr>
-        <th colspan="17"><b>Données générales</b></th>
+        <th colspan="18"><b>Données générales</b></th>
         <th colspan="16"><b>Détails offres foncières</b></th>
         <th colspan="7"><b>Détails recherche de foncier</b></th>
         <th colspan="4"><b>Détails offre d'emploi</b></th>
@@ -9,6 +9,7 @@
     </tr>
     </thead>
     <tr>
+        <th>ID</th>
         <th>Date de la soumission</th>
         <th>Date de mise en ligne</th>
         <th>Titre de l'annonce</th>
@@ -64,6 +65,7 @@
     @foreach($ads as $ad)
         @if(! isset($ad->project) )
             <tr>
+                <td>{{$ad->id}}</td>
                 <td>{{$ad->attributionAd->created_at ?? ''}}</td>
                 <td>{{$ad->attributionAd->published_on ?? ''}}</td>
                 <td>{{$ad->title?: ''}}</td>
@@ -115,8 +117,8 @@
                 </td>
                 <td>
                     @if(isset($ad->landOfferAd))
-                        @if(isset($ad->landOfferAd->productionGenresPossible))
-                            {{$ad->landOfferAd->productionGenresPossible->pluck('name')->implode(', ') ?? '' }}
+                        @if(isset($ad->landOfferAd->productionGenresSecondary))
+                            {{$ad->landOfferAd->productionGenresSecondary->pluck('name')->implode(', ') ?? '' }}
                         @endif
                     @endif
                 </td>

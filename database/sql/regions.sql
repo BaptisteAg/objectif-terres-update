@@ -36,30 +36,11 @@ CREATE TABLE `regions` (
 -- Dumping data for table `regions`
 --
 
-
+LOCK TABLES `regions` WRITE;
 /*!40000 ALTER TABLE `regions` DISABLE KEYS */;
-INSERT INTO `regions` (`id`, `code`, `name`, `slug`) VALUES
-(6, '11', 'Île-de-France', 'ile de france'),
-(7, '24', 'Centre-Val de Loire', 'centre val de loire'),
-(8, '27', 'Bourgogne-Franche-Comté', 'bourgogne franche comte'),
-(9, '28', 'Normandie', 'normandie'),
-(10, '32', 'Hauts-de-France', 'hauts de france'),
-(11, '44', 'Grand Est', 'grand est'),
-(12, '52', 'Pays de la Loire', 'pays de la loire'),
-(13, '53', 'Bretagne', 'bretagne'),
-(14, '75', 'Nouvelle-Aquitaine', 'nouvelle aquitaine'),
-(15, '76', 'Occitanie', 'occitanie'),
-(16, '84', 'Auvergne-Rhône-Alpes', 'auvergne rhone alpes'),
-(17, '93', 'Provence-Alpes-Côte d\'Azur', 'provence alpes cote dazur'),
-(18, '94', 'Corse', 'corse'),
-(19, '01', 'Guadeloupe', 'guadeloupe'),
-(20, '02', 'Martinique', 'martinique'),
-(21, '03', 'Guyane', 'guyane'),
-(22, '04', 'La Réunion', 'la reunion'),
-(23, '06', 'Mayotte', 'mayotte');
-
+INSERT INTO `regions` VALUES (1,'01','Guadeloupe','guadeloupe'),(2,'02','Martinique','martinique'),(3,'03','Guyane','guyane'),(4,'04','La Réunion','la reunion'),(5,'06','Mayotte','mayotte'),(6,'11','Île-de-France','ile de france'),(7,'24','Centre-Val de Loire','centre val de loire'),(8,'27','Bourgogne-Franche-Comté','bourgogne franche comte'),(9,'28','Normandie','normandie'),(10,'32','Hauts-de-France','hauts de france'),(11,'44','Grand Est','grand est'),(12,'52','Pays de la Loire','pays de la loire'),(13,'53','Bretagne','bretagne'),(14,'75','Nouvelle-Aquitaine','nouvelle aquitaine'),(15,'76','Occitanie','occitanie'),(16,'84','Auvergne-Rhône-Alpes','auvergne rhone alpes'),(17,'93','Provence-Alpes-Côte d\'Azur','provence alpes cote dazur'),(18,'94','Corse','corse'),(19,'COM','Collectivités d\'Outre-Mer','collectivites doutre mer');
 /*!40000 ALTER TABLE `regions` ENABLE KEYS */;
-
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
