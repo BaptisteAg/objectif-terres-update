@@ -135,6 +135,13 @@ window.app = new Vue({
 		},
 		goBack() {
 			window.history.go(-1);
+		},
+		closeInfoBanner(hash) {
+			fetch('/info-banner/close', {
+				method: 'POST',
+				headers: {'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': window.csrf_token},
+				body: JSON.stringify({closed: hash})
+			})
 		}
 	}
 });

@@ -153,6 +153,11 @@ class Ad extends Model implements HasPresenter
         'associateOfferAd' => AssociateOfferAd::class,
     ];
 
+    const SALESFORCE_FORM_BY_AD_TYPE = [
+        'landSeekAd' => 'https://terredeliens--ot.sandbox.my.site.com/objectifterre/survey/runtimeApp.app?invitationId=0KiAU00000055zx&surveyName=ot_annonce_recherche_foncier&UUID=045e8e84-841d-4f59-bb04-c8776c667989',
+        'landOfferAd' => 'https://terredeliens--ot.sandbox.my.site.com/objectifterre/survey/runtimeApp.app?invitationId=0KiAU000000563B&surveyName=ot_annonce_offre_de_foncier&UUID=2e5cbe1b-5dc4-42a1-a134-e1676857d976'
+    ];
+
     public function getSubAdAttribute(): LandSeekAd|LandOfferAd|JobOfferAd|JobSeekAd|AssociateSeekAd|AssociateOfferAd|null
     {
         if ($this->type) {

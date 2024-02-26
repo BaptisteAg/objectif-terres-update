@@ -64,7 +64,7 @@
         </div>
     </section>
 
-    @include('components.support-terre-liens')
+    {{-- @include('components.support-terre-liens') --}}
 
 @endsection
 

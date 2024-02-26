@@ -88,7 +88,7 @@
             id="info-banner"
             type="is-info"
             role="alert"
-            @close="() => { fetch('/info-banner/close', { method: 'POST',headers: {'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': '{{csrf_token()}}'}, body: JSON.stringify({closed: '{{md5($infoBanner)}}'}) }) }">
+            @close="() => closeInfoBanner('{{md5($infoBanner)}}')">
         {!! $infoBanner !!}
     </b-notification>
 @endif

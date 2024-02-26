@@ -73,7 +73,8 @@
         </div>
 
         <div class="navbar-item">
-          <a href="https://soutenir.terredeliens.org/objectifterre/~mon-don"
+          <a href="https://soutenir.terredeliens.org/OT/~mon-don"
+             target="_blank"
              class="button is-danger is-rounded">
             <span>Nous soutenir</span>
           </a>

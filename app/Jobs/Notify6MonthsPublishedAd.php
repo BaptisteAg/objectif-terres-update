@@ -17,8 +17,8 @@ class Notify6MonthsPublishedAd implements ShouldQueue
 {
 	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-	private $attributionAdsService;
-	private $userRepository;
+	private AttributionAdsService $attributionAdsService;
+	private UserRepository $userRepository;
 
 	/**
 	 * Create a new job instance.
@@ -37,9 +37,9 @@ class Notify6MonthsPublishedAd implements ShouldQueue
 	 *
 	 * @return void
 	 */
-	public function handle()
-	{
-		$attributionAds = $this->attributionAdsService->findAllPublishedBefore(Carbon::now()->subDays(173));
+	public function handle(): void
+    {
+		$attributionAds = $this->attributionAdsService->findAllPublishedBefore(Carbon::now()->subMonths(6)->addDays(7));
 		foreach ($attributionAds as $attributionAd) {
 			$data['subject'] = 'Dans 7 jours : expiration de votre annonce';
 			$data['message'] = "Il y a bientôt 6 mois que l'annonce '".$attributionAd->ad->title."' que vous avez déposée sur Objectif Terres est en ligne.\n
@@ -51,11 +51,7 @@ class Notify6MonthsPublishedAd implements ShouldQueue
 			$data['additional_message'] = "Pour modifier votre annonce :";
 			$data["additional_action"] =  ["Modifier l'annonce", route("ads.edit", [$attributionAd->ad->id])];
 
-
-
-			/** @var User $userToNotify */
-			$userToNotify = $this->userRepository->find($attributionAd->ad->user_pp_id);
-			$userToNotify->notify(new AdNotification($data));
+			$attributionAd->ad->userPp->notify(new AdNotification($data));
 
 		}
 	}
