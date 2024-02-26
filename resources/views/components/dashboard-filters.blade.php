@@ -1,4 +1,3 @@
-{{--TODO, refactor this file with multiple partials ? --}}
 <dashboard-form-filter
         inline-template
         :old-input-selected="{{json_encode(old())}}"
@@ -7,144 +6,144 @@
     <div class="dashboard-filters">
         <div class="columns is-desktop is-vcentered">
             @if(Route::current()->getName() == 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
-                <div class="column ">
-                    @else
-                        <div class="column is-4 ">
-                            @endif
-                            <div class="columns is-desktop is-vcentered">
-                                @foreach($adTypes as $i => $adType)
-                                    <div class="column is-desktop is-vcentered">
-                                        <custom-checkbox
-                                                name="ad_type[]"
-                                                input-value="{{$adType['value']}}"
-                                                v-model="adTypeSelected"
-                                                ref="typeSelected"
-                                                value="true"
-                                                :is-radio="false">
-                                            <i class="fa {{ $adTypesFaIcons[$i] }}"
-                                               style="font-size: 30px;"></i><br><br>
-                                            <span style="font-size:16px">
-                                                {{$adType['name']}}
-                                            </span>
-                                        </custom-checkbox>
-                                    </div>
-                                @endforeach
-                            </div>
+            <div class="column ">
+            @else
+            <div class="column is-6">
+            @endif
+                <div class="columns is-desktop is-vcentered">
+                    @foreach($adTypes as $i => $adType)
+                        <div class="column is-desktop is-vcentered">
+                            <custom-checkbox
+                                    name="ad_type[]"
+                                    input-value="{{$adType['value']}}"
+                                    v-model="adTypeSelected"
+                                    ref="typeSelected"
+                                    value="true"
+                                    :is-radio="false">
+                                <i class="fa {{ $adTypesFaIcons[$i] }}"
+                                   style="font-size: 30px;"></i><br><br>
+                                <span style="font-size:16px">
+                                    {{$adType['name']}}
+                                </span>
+                            </custom-checkbox>
                         </div>
-                        @if(Route::current()->getName() == 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
-                        @else
-                            <div class="column is-2">
-                                <p class="label has-text-centered">Type</p>
-                                <div class="is-mobile is-multiline">
-                                    <div class="column pr-0 pl-0 pb-0 pt-0 is-narrow" style="min-width:200px">
-                                        <label class="checkbox">
-                                            <input name="ads_show" value="true"
-                                                   type="checkbox" {{old('ads_show')  ? ' checked' : '' }}>
-                                            Annonces
-                                        </label>
-                                    </div>
-                                    <div class="column is-narrow pr-0 pl-0 pb-o pt-0" style="min-width:200px">
-                                        <label class="checkbox">
-                                            @if(Route::current()->getName() == 'advisor.index' )
-                                                <input name="projects_show" value="true"
-                                                       type="checkbox" checked>
-                                            @else
-                                                <input name="projects_show" value="true"
-                                                       type="checkbox" {{old('projects_show') ? ' checked' : '' }}>
-                                            @endif
-
-                                            Accompagnements
-                                        </label>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            @if(Route::current()->getName() == 'advisor.index' ||  Route::current()->getName() == 'advisor.show')
-                                <div class="column is-1">
+                    @endforeach
+                </div>
+            </div>
+                    @if(Route::current()->getName() == 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
+                    @else
+                        <div class="column is-2">
+                            <p class="label has-text-centered">Type</p>
+                            <div class="is-mobile is-multiline">
+                                <div class="column pr-0 pl-0 pb-0 pt-0 is-narrow" style="min-width:200px">
                                     <label class="checkbox">
-                                        <input name="user_attribution" value="true"
-                                               type="checkbox" {{old('user_attribution') ? ' checked' : '' }}>
-                                        <span>Mes attributions</span>
+                                        <input name="ads_show" value="true"
+                                               type="checkbox" {{old('ads_show')  ? ' checked' : '' }}>
+                                        Annonces
                                     </label>
                                 </div>
-                            @endif
-                        @endif
-                        @if(Route::current()->getName() == 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
-                            <div class="column is-one-fifth">
-                                <div class="control has-icons-right ">
-                                    <label class="label"> Date de dernière modification </label>
-                                    <date-range old-value-selected={{old('date-range-selected')}}></date-range>
+                                <div class="column is-narrow pr-0 pl-0 pb-o pt-0" style="min-width:200px">
+                                    <label class="checkbox">
+                                        @if(Route::current()->getName() == 'advisor.index' )
+                                            <input name="projects_show" value="true"
+                                                   type="checkbox" checked>
+                                        @else
+                                            <input name="projects_show" value="true"
+                                                   type="checkbox" {{old('projects_show') ? ' checked' : '' }}>
+                                        @endif
+
+                                        Accompagnements
+                                    </label>
                                 </div>
+
                             </div>
-                        @else
-                            <div class="column is-3 ">
-                                <div class="columns is-mobile">
-                                    <div class="column ">
-                                        <div v-cloak class="field">
-                                            <label class="label">Localisations (département ou région)</label>
-                                            <autocomplete
-                                                    id="localisations"
-                                                    :placeholder="locations.length ? 'Saisissez une autre localisation' : 'Saisissez au moins 2 caractères pour faire apparaître la liste'"
-                                                    src="/locations/departments-and-regions"
-                                                    v-model="locations"
-                                                    :data-renderer="helper.renderZoneItemData"
-                                                    :multiple="true">
-                                            </autocomplete>
-                                            <div class="selected-zone" v-for="(location,i) in locations">
-                                                <span @click="function() { locations.splice(i, 1); }"
-                                                      data-tooltip="Retirer cette localisation">
-                                                    <i class="fa fa-trash-alt" style="cursor:pointer;"></i>
-                                                </span>
-                                                <b>@{{helper.getLabel(location.value.type)}}</b> :
-                                                @{{location.value.originalLabel}}
-                                                <input type="hidden" :name="'locations['+location.value.type+'][]'"
-                                                       :value="location.value.id" v-if="location.value.id">
-                                                <template v-if="location.value.ids">
-                                                    <input type="hidden"
-                                                           :name="'locations['+helper.getInputNameRangeMapping(location.value.type)+'][]'"
-                                                           :value="id" v-for="id in location.value.ids">
-                                                </template>
-                                                <input type="hidden" name="json_locations"
-                                                       :value="JSON.stringify(locations)">
-                                            </div>
+                        </div>
+
+                        @if(Route::current()->getName() == 'advisor.index' ||  Route::current()->getName() == 'advisor.show')
+                            <div class="column is-1">
+                                <label class="checkbox">
+                                    <input name="user_attribution" value="true"
+                                           type="checkbox" {{old('user_attribution') ? ' checked' : '' }}>
+                                    <span>Mes attributions</span>
+                                </label>
+                            </div>
+                        @endif
+                    @endif
+                    @if(Route::current()->getName() == 'moderator.index' ||  Route::current()->getName() == 'moderator.show')
+                        <div class="column is-one-fifth">
+                            <div class="control has-icons-right ">
+                                <label class="label"> Date de dernière modification </label>
+                                <date-range old-value-selected={{old('date-range-selected')}}></date-range>
+                            </div>
+                        </div>
+                    @else
+                        <div class="column is-3">
+                            <div class="columns is-mobile">
+                                <div class="column ">
+                                    <div v-cloak class="field">
+                                        <label class="label">Localisations (département)</label>
+                                        <autocomplete
+                                                id="localisations"
+                                                :placeholder="locations.length ? 'Saisissez une autre localisation' : 'Saisissez au moins 2 caractères pour faire apparaître la liste'"
+                                                src="/locations/departments-and-regions"
+                                                v-model="locations"
+                                                :data-renderer="helper.renderZoneItemData"
+                                                :multiple="true">
+                                        </autocomplete>
+                                        <div class="selected-zone" v-for="(location,i) in locations">
+                                            <span @click="function() { locations.splice(i, 1); }"
+                                                  data-tooltip="Retirer cette localisation">
+                                                <i class="fa fa-trash-alt" style="cursor:pointer;"></i>
+                                            </span>
+                                            <b>@{{helper.getLabel(location.value.type)}}</b> :
+                                            @{{location.value.originalLabel}}
+                                            <input type="hidden" :name="'locations['+location.value.type+'][]'"
+                                                   :value="location.value.id" v-if="location.value.id">
+                                            <template v-if="location.value.ids">
+                                                <input type="hidden"
+                                                       :name="'locations['+helper.getInputNameRangeMapping(location.value.type)+'][]'"
+                                                       :value="id" v-for="id in location.value.ids">
+                                            </template>
+                                            <input type="hidden" name="json_locations"
+                                                   :value="JSON.stringify(locations)">
                                         </div>
                                     </div>
-                                    <!--					TODO delete if research by cities is not necessary anymore-->
-                                    {{--					<div class="column is-half"  v-show="hasCities">--}}
-                                    {{--						<div class="field">--}}
-                                    {{--							<p class="label">(Communes) Dans un rayon de </p>--}}
-                                    {{--							<vue-slider--}}
-                                    {{--									name="radius_research"--}}
-                                    {{--									:old-data="{--}}
-                                    {{--											'value' : {{json_encode(old('radius_research'))}},--}}
-                                    {{--											'textValue' : {{json_encode(old('radius_research'))}}+'km'--}}
-                                    {{--											}"--}}
-                                    {{--									:data="{--}}
-                                    {{--													0: '0km',--}}
-                                    {{--													5: '5km',--}}
-                                    {{--													10: '10km',--}}
-                                    {{--													20: '20km',--}}
-                                    {{--													50: '50km'--}}
-                                    {{--												}"--}}
-                                    {{--							></vue-slider>--}}
-                                    {{--							<br>--}}
-                                    {{--						</div>--}}
-                                    {{--					</div>--}}
+
+
+                                    <div class="control has-icons-right ">
+                                        @if(Route::current()->getName() === 'moderator.index' &&  Route::current()->getName() === 'moderator.show')
+                                            <label class="label"> Date de soumission de l'annonce </label>
+                                        @else
+                                            <label class="label"> Date </label>
+                                        @endif
+                                        <date-range old-value-selected={{old('date-range-selected')}}></date-range>
+                                    </div>
                                 </div>
+                                <!--					TODO delete if research by cities is not necessary anymore-->
+                                {{--					<div class="column is-half"  v-show="hasCities">--}}
+                                {{--						<div class="field">--}}
+                                {{--							<p class="label">(Communes) Dans un rayon de </p>--}}
+                                {{--							<vue-slider--}}
+                                {{--									name="radius_research"--}}
+                                {{--									:old-data="{--}}
+                                {{--											'value' : {{json_encode(old('radius_research'))}},--}}
+                                {{--											'textValue' : {{json_encode(old('radius_research'))}}+'km'--}}
+                                {{--											}"--}}
+                                {{--									:data="{--}}
+                                {{--													0: '0km',--}}
+                                {{--													5: '5km',--}}
+                                {{--													10: '10km',--}}
+                                {{--													20: '20km',--}}
+                                {{--													50: '50km'--}}
+                                {{--												}"--}}
+                                {{--							></vue-slider>--}}
+                                {{--							<br>--}}
+                                {{--						</div>--}}
+                                {{--					</div>--}}
                             </div>
-                            <div class="column is-2">
-                                <div class="control has-icons-right ">
-                                    @if(Route::current()->getName() === 'moderator.index' &&  Route::current()->getName() === 'moderator.show')
-                                        <label class="label"> Date de soumission de l'annonce </label>
-                                    @else
-                                        <label class="label"> Date </label>
-                                    @endif
-                                    <date-range old-value-selected={{old('date-range-selected')}}></date-range>
-                                </div>
-                            </div>
-                        @endif
-                </div>
+                        </div>
+                    @endif
+            </div>
                 <hr class="navbar-divider">
                 <div class="columns is-desktop">
                     @if(Route::current()->getName() == 'moderator.index' ||  Route::current()->getName() == 'moderator.show')

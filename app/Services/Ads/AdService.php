@@ -18,6 +18,7 @@ use App\Models\User;
 use App\Notifications\BasicNotification;
 use App\Notifications\NewAdToModerateNotification;
 use App\Notifications\NewSupportRequestNotification;
+use App\Notifications\PendingModerationNotification;
 use App\Notifications\SupportRequestAttributionNotification;
 use App\Notifications\SupportRequestTerritoryNotification;
 use App\Repositories\AdNotes\AdNotesRepository;
@@ -205,17 +206,7 @@ class  AdService
         $ad->refresh();
 
         $ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
-        $ad->userPp->notify(new BasicNotification([
-            'subject' => "Votre annonce va être modérée",
-            'message' => "Votre annonce '" . $ad->title . "' va être prochainement modérée par un membre de l’équipe, qui rassemble " .
-                "des bénévoles et salarié·es. Souvent en déplacement sur le terrain, nous faisons notre possible pour vous répondre le plus " .
-                "rapidement.\n\n
-
-                    Vous pouvez gérer vos annonces depuis votre espace personnel Objectif Terres :\n",
-            'action' => ["Gérer mes annonces", route('ads.list')],
-            'salutation' => "En vous remerciant pour votre confiance,\n
-                                    L’équipe d’Objectif Terres."
-        ]));
+        $ad->userPp->notify(new PendingModerationNotification($ad));
 
         return $ad;
     }

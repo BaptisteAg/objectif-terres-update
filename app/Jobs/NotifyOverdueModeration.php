@@ -78,10 +78,8 @@ class NotifyOverdueModeration implements ShouldQueue
 				continue;
 			}*/
 
-			$notificationData['subject'] = $attributions->count() . "annonce" . ($attributions->count() <= 1 ? '' : 's') . "à modérer de plus de 7 jours";
-			$notificationData['message'] = "Une ou plusieurs annonces attendent d'être modérées depuis plus de 7 jours.";
-			$moderatorToNotify
-				->notify(new OverdueModerationNotification($notificationData, $attributions));
+			$notificationData['subject'] = $attributions->count() . " annonce" . ($attributions->count() <= 1 ? '' : 's') . " sont en attente de modération depuis plus de 7 jours";
+			$moderatorToNotify->notify(new OverdueModerationNotification($notificationData, $attributions));
 		}
 	}
 }

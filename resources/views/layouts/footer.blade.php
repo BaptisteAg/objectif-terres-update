@@ -13,27 +13,27 @@
 
             <!--Social-->
             <div class="is-flex is-flex-direction-column fd-r-mobile py-7-mobile is-justify-content-space-between px-7-mobile gap-3">
-                <a href="https://www.facebook.com/terredeliens/">
+                <a href="https://www.facebook.com/terredeliens/" target="_blank">
                     <figure class="image is-48x48">
                         <img src="/images/icons/facebook.png">
                     </figure>
                 </a>
-                <a href="https://twitter.com/terredeliens">
+                <a href="https://twitter.com/terredeliens" target="_blank">
                     <figure class="image is-48x48">
                         <img src="/images/icons/twitter.png">
                     </figure>
                 </a>
-                <a href="https://fr.linkedin.com/company/terre-de-liens">
+                <a href="https://fr.linkedin.com/company/terre-de-liens" target="_blank">
                     <figure class="image is-48x48">
                         <img src="/images/icons/linkedin.png">
                     </figure>
                 </a>
-                <a href="https://www.instagram.com/terredeliens/">
+                <a href="https://www.instagram.com/terredeliens/" target="_blank">
                     <figure class="image is-48x48">
                         <img src="/images/icons/instagram.png">
                     </figure>
                 </a>
-                <a href="https://www.youtube.com/@terre-de-liens">
+                <a href="https://www.youtube.com/@terre-de-liens" target="_blank">
                     <figure class="image is-48x48">
                         <img src="/images/icons/youtube.png">
                     </figure>
@@ -42,7 +42,7 @@
 
             <!--External links-->
             <div class="is-flex is-flex-wrap-wrap px-5-mobile gap-5 jc-fe-mobile is-justify-content-flex-end" style="width: fit-content">
-                <a href="https://terredeliens.org/" class="is-flex w-50">
+                <a href="https://terredeliens.org/" target="_blank" class="is-flex w-50">
                     <img class="image is-96x96" src="/images/logo-partenaires/Logo-TDL-v2.png">
                     <div class="mt-2 ml-4">
                         <div class="is-flex">
@@ -54,7 +54,7 @@
                         <p class="text-color">Notre site web pour mieux comprendre Terre de Liens et soutenir notre action.</p>
                     </div>
                 </a>
-                <a href="https://ressources.terredeliens.org/" class="is-flex w-50">
+                <a href="https://ressources.terredeliens.org/" target="_blank" class="is-flex w-50">
                     <img class="image is-96x96" src="/images/logo-partenaires/Logo-CdR-v2.png">
                     <div class="mt-2 ml-4">
                         <div class="is-flex">
@@ -66,7 +66,7 @@
                         <p class="text-color">Retrouvez les ressources produites par Terre de Liens et ses partenaires sur les questions agricoles et foncières.</p>
                     </div>
                 </a>
-                <a href="https://parcel-app.org/" class="is-flex w-50">
+                <a href="https://parcel-app.org/" target="_blank" class="is-flex w-50">
                     <img class="image is-96x96" src="/images/logo-partenaires/Logo-Parcel-v2.png">
                     <div class="mt-2 ml-4">
                         <div class="is-flex">
@@ -78,7 +78,7 @@
                         <p class="text-color">Un outil web simple et ludique pour évaluer les surfaces agricoles nécessaires pour se nourrir localement.</p>
                     </div>
                 </a>
-                <a href="https://www.accesstoland.eu/" class="is-flex w-50">
+                <a href="https://www.accesstoland.eu/" target="_blank" class="is-flex w-50">
                     <img class="image is-96x96" src="/images/logo-partenaires/Logo-A2L-v2.png">
                     <div class="mt-2 ml-4">
                         <div class="is-flex">

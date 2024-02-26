@@ -238,7 +238,7 @@
                     </template>
                     <p>
                         Vous pouvez vérifier votre prix de vente en consultant le site de la SAFER : <a
-                                href="https://www.le-prix-des-terres.fr">Le prix des terres</a>.
+                                href="https://www.le-prix-des-terres.fr" target="_blank">Le prix des terres</a>.
                         <br>Si votre prix n'est pas dans la moyenne des prix de votre
                         département, nous pouvons refuser la publication de votre annonce.
                     </p>

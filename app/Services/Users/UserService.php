@@ -262,7 +262,7 @@ class UserService
         foreach ($usersGroupedByTerritoryNames as $territoryName => $value) {
             foreach ($users as $user) {
                 foreach ($user->departments as $department) {
-                    if ($department->territory->name == $territoryName) {
+                    if ($department->territory?->name == $territoryName) {
                         if (!in_array($user, $usersGroupedByTerritoryNames[$territoryName])) {
                             array_push($usersGroupedByTerritoryNames[$territoryName], $user);
                         }
