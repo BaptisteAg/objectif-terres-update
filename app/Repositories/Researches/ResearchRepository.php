@@ -73,9 +73,7 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 		return $model;
 	}
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
-	 */
+
 	public function findAllResearchesWithAlertActive()
 	{
 		$model = $this->entity

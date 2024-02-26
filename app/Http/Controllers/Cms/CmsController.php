@@ -39,6 +39,11 @@ class CmsController extends Controller
 		return view('pages/cms/qui-sommes-nous', $this->getCmsContent(Route::currentRouteName(), false, false));
 	}
 
+	public function mouvementTerreDeLiens()
+	{
+		return view('pages/cms/qui-sommes-nous', $this->getCmsContent(Route::currentRouteName(), false, false));
+	}
+
 	public function minstallerCommePaysan()
 	{
 		return view('pages/cms/minstaller-comme-paysan', $this->getCmsContent(Route::currentRouteName(), false, true));

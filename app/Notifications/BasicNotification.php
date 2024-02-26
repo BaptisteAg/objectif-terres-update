@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\HtmlString;
 
 class BasicNotification extends Notification implements ShouldQueue
 {
@@ -49,10 +50,7 @@ class BasicNotification extends Notification implements ShouldQueue
             //->cc("objectif-terres@terredeliens.org")
             ->replyTo("objectif-terres@terredeliens.org");
 
-		//foreach (explode("\n", strip_tags($this->data["message"])) as $line) {
-        foreach (explode("\n", $this->data["message"]) as $line) {
-			$message->line($line);
-		}
+        $message->line(new HtmlString(nl2br($this->data["message"])));
 
         if (isset($this->data['action'])) {
             $message->action($this->data["action"][0] ?? null, $this->data["action"][1] ?? null);
@@ -61,12 +59,10 @@ class BasicNotification extends Notification implements ShouldQueue
             $message->line($this->data["additional_message"] ?? null);
         }
         if (isset($this->data['additional_action'])) {
-            $message->action($this->data["additional_action"][0] ?? null, $this->data["additional_action"][1] ?? null);
+            $message->viewData["additional_action"] = [$this->data["additional_action"][0] ?? null, $this->data["additional_action"][1] ?? null];
         }
 
-		//$message->action($this->data["action"][0] ?? null, $this->data["action"][1] ?? null)
-			//->line($this->data["additional_message"] ?? null)
-        $message->salutation($this->data['salutation'] ?? 'A bientôt sur Objectif Terres !');
+        $message->salutation(isset($this->data['salutation']) ? nl2br($this->data['salutation']) : 'A bientôt sur Objectif Terres !');
 
 		return $message;
 	}
