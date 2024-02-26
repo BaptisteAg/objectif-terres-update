@@ -44,6 +44,6 @@ class SendAlertsPublishedDateAd extends Command
     public function handle()
     {
        $this->notify3MonthsPublishedAd->handle();
-       $this->notify5MonthsPublishedAd->handle();
+       $this->notify6MonthsPublishedAd->handle();
     }
 }

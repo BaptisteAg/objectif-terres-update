@@ -39,10 +39,11 @@ abstract class BaseController extends Controller
 			['name' => 'Recherche foncière', 'value' => 'landSeekAd'],
 			['name' => 'Offre d\'emploi', 'value' => 'jobOfferAd'],
 			['name' => 'Recherche d\'emploi', 'value' => 'jobSeekAd'],
+            ['name' => 'Associé sur une ferme', 'value' => 'associateOfferAd'],
+            ['name' => 'Associé pour projet d\'installation', 'value' => 'associateSeekAd'],
 		];
 
-		// TODO : remove ?
-		$this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access"];
+        $this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access", "fa-user-tie", "fa-user-tie"];
 	}
 
 	/**

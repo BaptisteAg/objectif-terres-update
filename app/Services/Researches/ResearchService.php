@@ -92,12 +92,6 @@ class ResearchService
 				$adsFilter->filterLocations('departments', $research->departments()->pluck('departments.id')->toArray());
 				$adsFilter->filterSubLocations('cities', $research->departments()->pluck('code')->toArray(), 'cities.department_code');
 
-			} else if ($research->regions()->exists()) {
-				$regionsCodes = $research->regions()->pluck('code')->toArray();
-				$departmentsCodes = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
-				$adsFilter->filterLocations('regions', $research->regions()->pluck('regions.id')->toArray());
-				$adsFilter->filterSubLocations('departments', $regionsCodes, 'departments.region_code');
-				$adsFilter->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
 			}
 			if ($research->offerGenres()->exists()) {
 				$adsFilter->filterWhereHasIn($research->offerGenres()->pluck('offer_genres.id')->toArray(), $research->ad_type . '.offerGenres', 'offer_genre_id');
@@ -431,4 +425,16 @@ class ResearchService
 	{
 		return $this->repository->delete($research->id);
 	}
+
+    public function getAllResearchesWithActiveAlertsOlderThan(Carbon $subDate): \LaravelIdea\Helper\App\Models\_IH_Research_C|array|\Illuminate\Database\Eloquent\Collection
+    {
+        return Research::where('has_alert', 1)
+            ->where('created_at', '<', $subDate)
+            ->get();
+    }
+
+    public function disableAlerts(\LaravelIdea\Helper\App\Models\_IH_Research_C|\Illuminate\Database\Eloquent\Collection|array $researches)
+    {
+        Research::whereIn('id', $researches->pluck('id'))->update(['has_alert' => 0]);
+    }
 }

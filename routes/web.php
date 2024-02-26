@@ -49,6 +49,7 @@ Route::prefix('accompagnement')->name('support-request.')->namespace('Ads')->gro
 Route::namespace('Cms')->group(function () {
     Route::get('faq', 'CmsController@faq')->name('faq');
     Route::get('qui-sommes-nous', 'CmsController@quiSommesNous')->name('qui-sommes-nous');
+    Route::get('mouvement-terre-de-liens', 'CmsController@mouvementTerreDeLiens')->name('mouvement-terre-de-liens');
     Route::get('minstaller-comme-paysan', 'CmsController@minstallerCommePaysan')->name('minstaller-comme-paysan');
     Route::get('trouver-une-terre-ou-des-financements', 'CmsController@trouverUneTerreOuDesFinancements')->name('trouver-une-terre-ou-des-financements');
     Route::get('transmettre-ma-ferme', 'CmsController@cederMaFerme')->name('transmettre-ma-ferme');

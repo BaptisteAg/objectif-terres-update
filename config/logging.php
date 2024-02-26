@@ -37,7 +37,7 @@ return [
 	'channels' => [
 		'stack' => [
 			'driver' => 'stack',
-			'channels' => ['daily'],
+			'channels' => ['daily', 'stdout'],
 			'ignore_exceptions' => false,
 		],
 
@@ -80,6 +80,16 @@ return [
 				'stream' => 'php://stderr',
 			],
 		],
+
+        'stdout' => [
+            'driver' => 'monolog',
+            'handler' => StreamHandler::class,
+            // Dont use env
+            'formatter' => \Monolog\Formatter\LineFormatter::class,
+            'with' => [
+                'stream' => 'php://stdout',
+            ],
+        ],
 
 		'syslog' => [
 			'driver' => 'syslog',
