@@ -149,6 +149,8 @@ class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 		'is_blocked',
 		'deleted_at ',
 		'origin',
+        "formation"
+
 	];
 
 	/**
@@ -195,11 +197,11 @@ class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 	];
 
     static $formations = [
-        0 => "Diplôme agricole niveau III (BEPA)",
-        1 => "Diplôme agricole niveau IV (BPREA, BAC,)",
-        2 => "Diplôme agricole niveau V (BTS, DUT) ",
-        3 => "Diplôme agricole niveau VI (licence,)",
-        4 => "Diplôme agricole niveau VII ou plus (ingénieur, master2, véto, ...)",
+        1 => "Diplôme agricole niveau III (BEPA)",
+        2 => "Diplôme agricole niveau IV (BPREA, BAC,)",
+        3 => "Diplôme agricole niveau V (BTS, DUT) ",
+        4 => "Diplôme agricole niveau VI (licence,)",
+        5 => "Diplôme agricole niveau VII ou plus (ingénieur, master2, véto, ...)",
     ];
 
     static $fromwheres = [

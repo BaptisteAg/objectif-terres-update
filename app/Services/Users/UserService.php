@@ -78,7 +78,7 @@ class UserService
             $data['password'] = Hash::make($data['password']);
         }
 
-        if (isset($data['hasformation']) && $data['hasformation'] === 0) {
+        if (!isset($data['formation']) || !$data['formation']) {
             $data['formation'] = null;
         }
 

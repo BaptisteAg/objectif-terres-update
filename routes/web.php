@@ -70,7 +70,6 @@ Route::prefix('documents')->name('documents.')->namespace('Documents')->group(fu
 
 Route::get('/register', 'Salesforces\SalesForceAuthController@register');
 
-
 Route::prefix('recherche')->name('researches.')->namespace('Researches')->group(function () {
     Route::get('/', 'ResearchesController@index')->name('index');
 
@@ -226,11 +225,6 @@ Route::prefix('motdepasse')->name('password.')->group(function () {
 });
 
 Route::post('newsletter', 'Newsletter\NewsletterController@create');
-
-Route::prefix('api')->group(function () {
-    Route::get('annonces', 'ApiController@annonces')->name('annonces');
-});
-
 
 Route::post('/info-banner/close', 'InfoBannerController@close')->name('info-banner.close');
 
