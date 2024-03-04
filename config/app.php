@@ -2,6 +2,8 @@
 
 return [
 
+    'api_token' => env('API_TOKEN', 'secret'),
+
     // Salesforce urls
     'sf_support_requests_url' => env('SF_SUPPORT_REQUESTS_URL', null),
     'sf_support_requests_url_adm' => env('SF_SUPPORT_REQUESTS_URL_ADM', null),

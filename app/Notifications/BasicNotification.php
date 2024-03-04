@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\HtmlString;
@@ -39,14 +40,13 @@ class BasicNotification extends Notification implements ShouldQueue
 	/**
 	 * Get the mail representation of the notification.
 	 *
-	 * @param mixed $notifiable
 	 * @return \Illuminate\Notifications\Messages\MailMessage
 	 */
-	public function toMail(User $notifiable)
+	public function toMail(User|AnonymousNotifiable $notifiable)
 	{
 		$message = (new MailMessage)
 			->subject($this->data['subject'])
-			->greeting('Bonjour ' . $notifiable->first_name . ',')
+			->greeting('Bonjour ' . ($notifiable->first_name ?? '') . ',')
             //->cc("objectif-terres@terredeliens.org")
             ->replyTo("objectif-terres@terredeliens.org");
 

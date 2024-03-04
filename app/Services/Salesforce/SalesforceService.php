@@ -21,6 +21,8 @@ use Carbon\Carbon;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Omniphx\Forrest\Repositories\TokenRepository;
 
@@ -226,6 +228,12 @@ class SalesforceService
         // Sync role
         if ($localUser->role !== $role) {
             $localUser->role = $role;
+
+            Notification::route('mail', [
+                config('mail.from.address') => config('mail.from.name')
+            ])->notify(
+                new \App\Notifications\SalesforceUserRoleChanged($localUser, $role)
+            );
         }
 
         $localUser->save();
