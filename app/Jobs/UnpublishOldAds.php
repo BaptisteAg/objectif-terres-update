@@ -2,10 +2,12 @@
 
 namespace App\Jobs;
 
+use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\User;
 use App\Notifications\AdNotification;
+use App\Notifications\UnpublishedAdNotification;
 use App\Repositories\Users\UserRepository;
 use App\Services\AttributionAds\AttributionAdsService;
 use Carbon\Carbon;
@@ -44,28 +46,38 @@ class UnpublishOldAds implements ShouldQueue
      */
 	public function handle()
 	{
-        $months = 12;
+        if(config("app.is_scheduler_live_mode")) {
+            $before = Carbon::now()->subMonths(6);
+            $since = "6 mois";
+        }
+        else {
+            $before = Carbon::now()->subMinutes(60);
+            $since = "60 minutes";
+        }
+
+        // Log sql
+        DB::enableQueryLog();
 
 		$attributionAds = $this->attributionAdsService
-            ->findAllPublishedBefore(Carbon::now()->subMonths($months))
+            ->findAllPublishedBefore($before)
             ->filter(fn(AttributionAd $attributionAd) => $attributionAd->ad);
 
-        echo("Unpublishing ads... ".$attributionAds->count()." found.");
+        // Log sql
+        $queries = DB::getQueryLog();
+        $formattedQueries = array_map(function ($query) {
+            return vsprintf(str_replace(['%', '?'], ['%%', '%s'], $query['query']), $query['bindings']);
+        }, $queries);
+        logger(implode("\n", $formattedQueries));
+
+        echo("Unpublishing ads older than ".$before."... ".$attributionAds->count()." found.");
 
         //dd($attributionAds->random()->toArray());
 
 		foreach ($attributionAds as $attributionAd) {
-
-			$data['subject'] = 'Votre annonce a été dépubliée';
-			$data['message'] = 'Votre annonce était en ligne depuis '.$months.' mois. Sans intervention de votre part, nous l\'avons archivée.
-			Vous avez toujours la possibilité de la soumettre à nouveau à modération en allant dans votre compte et en cliquant sur "Modifier"';
-
-			$data['url'] = '/annonces/' . $attributionAd->ad->id;
-
 			/** @var User $userToNotify */
             try {
                 $userToNotify = $this->userRepository->find($attributionAd->ad->user_pp_id);
-                $userToNotify->notify(new AdNotification($data));
+                $userToNotify->notify(new UnpublishedAdNotification($attributionAd, $since));
             }
             catch (\Exception|\Error $e) {
                 echo($e->getMessage());

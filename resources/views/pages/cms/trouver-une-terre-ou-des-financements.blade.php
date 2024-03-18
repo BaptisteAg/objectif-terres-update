@@ -7,7 +7,7 @@
 @endsection
 
 @section('main-content')
-    <section class=" cms-page">
+    <section class="old px-3-mobile cms-page">
         <div class="container">
             <div class="rows">
                 <div class="row is-full">
@@ -57,8 +57,8 @@
                 </div>
 
                 <p>Quelques ressources issues de ce dossier :</p>
-                <div class="columns is-centered mb-60">
-                    <div class="column is-one-quarter">
+                <div class="columns mb-6">
+                    <div class="column">
                         <a target="_blank" class="tile__link card"
                            href="{{url('https://ressources.terredeliens.org/les-ressources/trouver-une-terre-pour-mon-projet-agricole')}}">
                             <div class="card-image vignette photo">
@@ -94,7 +94,7 @@
                             </div>
                         </a>
                     </div>
-                    <div class="column is-one-quarter">
+                    <div class="column">
                         <a target="_blank" class="tile__link card"
                            href="{{url('https://ressources.terredeliens.org/les-ressources/recherche-une-terre-pour-accueillir-son-projet')}}">
                             <div class="card-image vignette photo">
@@ -130,7 +130,7 @@
                             </div>
                         </a>
                     </div>
-                    <div class="column is-one-quarter">
+                    <div class="column">
                         <a target="_blank" class="tile__link card"
                            href="{{url('https://ressources.terredeliens.org/les-ressources/et-si-on-restructurait-les-fermes ')}}">
                             <div class="card-image vignette photo">
@@ -217,7 +217,7 @@
 
     @include('components.partnering')
 
-    @include('components.support-terre-liens')
+    {{-- @include('components.support-terre-liens') --}}
 
 @endsection
 

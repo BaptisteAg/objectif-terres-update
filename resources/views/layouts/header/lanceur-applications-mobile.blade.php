@@ -117,7 +117,7 @@
 																						src="/images/icons/objectif-terre.png"></span>
 									<div class="tile__content">
 										<p class="tile__title">
-											Objectif Terre
+											Objectif Terres
 										</p>
 									</div>
 								</a>

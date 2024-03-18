@@ -45,6 +45,14 @@ class JobSeekAdRepository extends AbstractRepository
         $jobSeekAd->fill($data);
         $jobSeekAd->save();
 
+        $productionGenres = $data["production_genres"] ?? [];
+        $jobSeekAd->productionGenres()->sync($productionGenres);
+
+        $productionGenresSecondary = $data["secondary_production_genres"] ?? [];
+        foreach($productionGenresSecondary as $productionGenreSecondary) {
+            $jobSeekAd->productionGenresSecondary()->attach($productionGenreSecondary, ['type' => 'secondary']);
+        }
+
         $jobSeekAd->jobOfferTypes()->sync($data["offer_types"] ?? []);
         $jobSeekAd->educationLevels()->sync($data["education_levels"] ?? []);
     }

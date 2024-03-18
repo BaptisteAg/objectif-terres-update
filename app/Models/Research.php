@@ -44,7 +44,7 @@ use Illuminate\Notifications\Notifiable;
  * @property-read int|null $offer_genres_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenres
  * @property-read int|null $production_genres_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresSecondary
  * @property-read int|null $production_genres_possible_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProjectStatus[] $projectStatuses
  * @property-read int|null $project_statuses_count
@@ -69,6 +69,8 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|Research whereUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Research whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
+ * @property-read int|null $production_genres_secondary_count
  */
 class Research extends Model
 {

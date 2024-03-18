@@ -1,9 +1,9 @@
 export const LocationHelper = {
     LABELS : {
-        cities: 'Code postal',
+        cities: 'Commune',
         departments: 'Département',
         regions: 'Région',
-        zipcodesrange: 'Commune',
+        zipcodesrange: 'Tous codes postaux',
         citiesrange: 'Toutes communes'
     },
 

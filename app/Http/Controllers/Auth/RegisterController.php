@@ -77,6 +77,12 @@ class RegisterController extends Controller
 	 */
 	public function register(Request $request)
 	{
+        $data = $request->all();
+        $data['locationable'] = $request->input('locationable');
+
+        if($data["formation"]){
+            $user['hasformation'] = true;
+        }
 		$this->registerService->validator(
 		    $request->all(),
             [

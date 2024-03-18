@@ -64,13 +64,13 @@
                 @endforeach
             </section>
             <section class="section">
-                <pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
+                <pagination :per-page="10" :records="500"></pagination>
             </section>
 
 {{--            @include('components.partnering')--}}
 
         </div>
     </section>
-    @include('components.support-terre-liens')
+    {{-- @include('components.support-terre-liens') --}}
 @endsection
 

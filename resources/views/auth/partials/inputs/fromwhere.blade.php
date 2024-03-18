@@ -1,8 +1,8 @@
 <div class="column">
     <div class="field">
-        <label for="fromwhere" class="label">Êtes-vous*</label>
+        <label for="fromwhere" class="label">Êtes-vous *</label>
         <div class="control has-icons-left">
-            <div class="select" style="display: block !important;">
+            <div class="select w-100">
                 <select id="fromwhere"
                         name="fromwhere"
                         required

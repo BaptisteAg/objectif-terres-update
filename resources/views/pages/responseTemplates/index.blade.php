@@ -1,6 +1,6 @@
 @extends('default')
 
-@section('title', 'Gestion des messages types | Objectif Terress')
+@section('title', 'Gestion des messages types | Objectif Terres')
 
 @section('header')
 	@if(auth()->user()->role >= 3)
@@ -12,7 +12,7 @@
 
 @section('main-content')
 	<div class="section " style="padding-top: 0px">
-		<h1 class="title is-2 has-text-link">Gestion des messages types </h1>
+		<h1 class="title is-2 has-text-link has-text-centered">Gestion des messages types </h1>
 		{{Form::open(['route'=>'responseTemplates.create', 'method'=>'post'])}}
 		<div class="content ">
 			<h3 class="title is-3 has-text-centered">Créer un nouveau message type</h3>
@@ -142,7 +142,7 @@
 											</button>
 										</div>
 										<div v-else>
-											<button v-on:click="modifyResponseTemplate({{$response->id}})"
+											<button @click="modifyResponseTemplate({{$response->id}})"
 													class="is-size-6 is-pulled-right has-text-link"
 													style="border: none; background: transparent">
 												<a>
@@ -153,17 +153,16 @@
 												</a>
 											</button>
 										</div>
-										{!! Form::open(['route' => 'responseTemplates.delete', 'method'=>'post']) !!}
-										<input type="hidden" name="response_template_id"
-											   value="{{$response->id}}">
-										<a type="submit" class="is-pulled-right"
-										   v-on:click="showValidationModal({{$response->id}})">
-                                            <span class="icon">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </span>
-											<span>Supprimer</span>
-										</a>
-										@include('pages.responseTemplates.partials.response-templates-validation-modal')
+										{!! Form::open(['route' => 'responseTemplates.delete', 'method'=>'post', 'id' => 'delete-response'. $response->id]) !!}
+											<input type="hidden" name="response_template_id"
+												   value="{{$response->id}}">
+											<a type="submit" class="is-pulled-right" onclick="confirm('Êtes vous sur de vouloir supprimer ?') && document.getElementById('delete-response{{$response->id}}').submit()">
+												<span class="icon">
+													<i class="fas fa-trash-alt"></i>
+												</span>
+												<span>Supprimer</span>
+											</a>
+											@include('pages.responseTemplates.partials.response-templates-validation-modal')
 										{!! Form::close() !!}
 									</div>
 								</div>
@@ -177,10 +176,4 @@
 @endsection
 
 @section('script')
-	<script>
-        const vueResponseTemplate = new Vue({
-            el: "#response-template-dashboard",
-            name: "content"
-        })
-	</script>
 @endsection

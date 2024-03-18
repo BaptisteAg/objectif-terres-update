@@ -24,7 +24,7 @@
 								@if($document->path === "0")
 									<img src="https://picsum.photos/480/320" alt="picsum">
 								@else
-									<img src="{{URL::asset($document->path)}}" alt="Placeholder image">
+									<img src="{{app('url')->assetFrom('https://objectif-terres.org', $document->path)}}" alt="Placeholder image">
 								@endif
 							</figure>
 						</div>

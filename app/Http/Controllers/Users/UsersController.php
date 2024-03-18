@@ -81,6 +81,9 @@ class UsersController extends Controller
 
 			$user['citySelect'] = json_encode([$cityData]);
 		}
+        if($user->formation){
+            $user['hasformation'] = true;
+        }
 		return view('pages.users.edit', compact('cities', 'user', 'isUserConnectedEditHisOwnAccount'));
 
 	}

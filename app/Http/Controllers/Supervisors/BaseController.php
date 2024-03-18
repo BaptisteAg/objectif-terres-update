@@ -38,13 +38,16 @@ abstract class BaseController
 		$this->threadService = $threadService;
 		$this->userService = $userService;
 		$this->adService = $adService;
-		$this->adTypes = [
-			['name' => 'Offre foncière', 'value' => 'landOfferAd'],
-			['name' => 'Recherche foncière', 'value' => 'landSeekAd'],
-			['name' => 'Offre d\'emploi', 'value' => 'jobOfferAd'],
-			['name' => 'Recherche d\'emploi', 'value' => 'jobSeekAd'],
-		];
-		$this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access"];
+        $this->adTypes = [
+            ['name' => 'Offre foncière', 'value' => 'landOfferAd'],
+            ['name' => 'Recherche foncière', 'value' => 'landSeekAd'],
+            ['name' => 'Offre d\'emploi', 'value' => 'jobOfferAd'],
+            ['name' => 'Recherche d\'emploi', 'value' => 'jobSeekAd'],
+            ['name' => 'Associé sur une ferme', 'value' => 'associateOfferAd'],
+            ['name' => 'Associé pour projet d\'installation', 'value' => 'associateSeekAd'],
+        ];
+
+        $this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access", "fa-user-tie", "fa-user-tie"];
 	}
 
 

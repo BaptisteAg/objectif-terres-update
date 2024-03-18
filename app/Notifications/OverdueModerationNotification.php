@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
+use Illuminate\Support\HtmlString;
 
 class OverdueModerationNotification extends Notification implements ShouldQueue
 {
@@ -48,15 +49,22 @@ class OverdueModerationNotification extends Notification implements ShouldQueue
 	{
 
 		$url = url('/gestion-des-annonces/recherche?ad_statuses[0]=4');
-		return (new MailMessage)
-			->from(env('MAIL_FROM_ADDRESS'), "Administration")
-			->subject(isset($this->data['subject']) ?? 'Des annonces sont en attente de modération')
+		$mail =  (new MailMessage)
+			->from(config('mail.from.address'), "Objectif Terres")
+			->subject($this->data['subject'] ?? 'Des annonces sont en attente de modération')
 			->greeting('Bonjour, ' . $notifiable->first_name)
-			->line($this->data['message'])
-			->action('Aller sur l\'espace Modérateur', $url)
-			->salutation('A bientôt sur Objectif Terres !')
+			->line("Depuis 7 jours, une ou plusieurs annonces sont en attente d’être modérées.")
+			->line("Merci de consulter votre espace modérateur.")
+			->action('Mon espace Modérateur', $url)
+            ->line(new HtmlString('Lien vers la charte Objectif Terres : <a href="'.url('/charte').'">'.url('/charte').'</a>'))
+            ->line("Merci pour votre aide dans la gestion de la plateforme")
+            ->salutation('A bientôt sur Objectif Terres !')
             //->cc("objectif-terres@terredeliens.org")
             ->replyTo("objectif-terres@terredeliens.org");
+
+        $mail->viewData['disable_donation_button'] = true;
+
+        return $mail;
 	}
 
 	/**

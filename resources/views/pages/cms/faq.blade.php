@@ -3,29 +3,23 @@
 @section('title', 'Foire aux questions | Objectif Terres')
 
 @section('main-content')
-    <div class=" cms-page">
-        <div class="container">
-            <div class="rows">
-                <div class="row is-full">
-                    @if($pageContent->count())
-                        @if($pageContent->has('faq'))
-                            {!! $pageContent['faq']->content !!}
-                        @endif
-                    @endif
-                </div>
-            </div>
-        </div>
+    <section class="container px-2-mobile mb-4 old">
+        @if($pageContent->count())
+            @if($pageContent->has('faq'))
+                {!! $pageContent['faq']->content !!}
+            @endif
+        @endif
+    </section>
 
 
-        {{--	@include('components.faqAccordion')--}}
+    {{--	@include('components.faqAccordion')--}}
 
-        {{--	@include('components/downloadPDF')--}}
+    {{--	@include('components/downloadPDF')--}}
 
-        {{--	@include('components/step-guide')--}}
+    {{--	@include('components/step-guide')--}}
 
 
-    </div>
-    @include('components.support-terre-liens')
+    {{-- @include('components.support-terre-liens') --}}
 
 @endsection
 

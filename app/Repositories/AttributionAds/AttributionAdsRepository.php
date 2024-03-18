@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 /**
@@ -49,6 +50,8 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 	public function findAllByModeratorIdAndTerritories(array $territoriesCodes)
 	{
 		return $this->entity
+            ->select('attribution_ads.*')
+            ->join('ads', 'ads.id', '=', 'attribution_ads.ad_id')
 			->where(function (Builder $query) {
 				$query->where("user_moderator_id", '=', auth()->id());
 				$query->whereNotNull('ad_status_id');
@@ -68,21 +71,22 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 							$q->whereNull('deleted_at');
 						});
 					});
-					$subQuery->whereHas('departments', function (Builder $builder) use ($territoriesCodes) {
-						$builder->whereIn('code', $territoriesCodes);
-					});
-					$subQuery->orWhereHas('cities', function (Builder $builder) use ($territoriesCodes) {
-						$builder->whereIn('department_code', $territoriesCodes);
-					});
-					$subQuery->orWhereHas('regions', function (Builder $builder) use ($territoriesCodes) {
-						$builder->whereHas('departments', function (Builder $q) use ($territoriesCodes) {
-							$q->whereIn('code', $territoriesCodes);
-						});
-					});
+                    $subQuery->whereHas('departments', function (Builder $builder) use ($territoriesCodes) {
+                        $builder->whereIn('code', $territoriesCodes);
+                    });
+                    $subQuery->orWhereHas('cities', function (Builder $builder) use ($territoriesCodes) {
+                        $builder->whereIn('department_code', $territoriesCodes);
+                    });
+                    $subQuery->orWhereHas('regions', function (Builder $builder) use ($territoriesCodes) {
+                        $builder->whereHas('departments', function (Builder $q) use ($territoriesCodes) {
+                            $q->whereIn('code', $territoriesCodes);
+                        });
+                    });
 				});
 			})
-			->orderByDesc('created_at')
+			->orderByDesc('updated_at')
 			->with($this->getEagerLoading())
+            ->groupBy('ads.id')
 			->paginate(15);
 	}
 
@@ -94,7 +98,8 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 	public function findAllApprovedAndPublishedBefore(Carbon $date)
 	{
 		return $this->entity
-			->whereDate("published_on", '<=', $date)
+            ->with('ad', 'ad.userPp')
+			->where("published_on", '<=', $date->format('Y-m-d H:i:s'))
 			->where('ad_status_id', [AdStatus::APPROVE_ID])
 			->get();
 	}
@@ -155,20 +160,35 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 	private function getEagerLoading()
 	{
 		return [
+            'userModerator',
+
 			'ad',
 			'ad.userPp',
 			'adStatus',
 			'ad.project.projectStatus',
-
 			'ad.cities',
 			'ad.cities.department',
-			'ad.cities.department.region',
+            'ad.cities.department.region',
+            'ad.cities.department.territory',
+            'ad.department',
+            'ad.department.territory',
 			'ad.departments',
+            'ad.departments.territory',
 			'ad.departments.region',
 			'ad.regions',
-			'ad.landSeekAd',
-			'ad.landOfferAd',
-			'ad.jobOfferAd',
+
+            'ad.landSeekAd',
+            'ad.landSeekAd.productionGenres',
+            'ad.landOfferAd',
+            'ad.landOfferAd.productionGenres',
+            'ad.jobOfferAd',
+            'ad.jobOfferAd.productionGenres',
+            'ad.jobSeekAd',
+            'ad.jobSeekAd.productionGenres',
+            'ad.associateOfferAd',
+            'ad.associateOfferAd.productionGenres',
+            'ad.associateSeekAd',
+            'ad.associateSeekAd.productionGenres',
 		];
 	}
 

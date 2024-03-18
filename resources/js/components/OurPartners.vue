@@ -1,0 +1,113 @@
+<template>
+	<b-carousel-list :data="items" :arrow-hover="false" v-bind="al" as-indicator>
+		<template #item="item">
+			<figure class="image is-48x48 is-clickable" @click="openDialog(item)"
+					@touchend="openDialog(item)">
+				<img :src="item.image">
+			</figure>
+		</template>
+	</b-carousel-list>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			al: {
+				itemsToShow: 1,
+				breakpoints: {
+					768: {
+						itemsToShow: 5
+					},
+					1400: {
+						itemsToShow: 7
+					}
+				}
+			},
+			items: [
+				{
+					image: '/images/logo-partenaires/FADEAR-cmjn-01-01.png',
+					title: 'Les ADEAR',
+                    link: 'https://www.agriculturepaysanne.org/',
+					text: 'Ce sont les associations de développement de l’emploi agricole et rural. Présentes dans une soixantaine de départements, elles ont mis en place un dispositif d’accompagnement des porteurs de projet qui souhaitent s’installer en agriculture ou transmettre. Elles soutiennent les valeurs de l’agriculture paysanne et accompagnent une grande diversité de projets. Plus d\'informations'
+				},
+				{
+					image: '/images/logo-partenaires/LOGO_RESEAU_CIVAM_FOND_TRANSPARENT.PNG',
+					title: 'Les CIVAM',
+                    link: 'https://www.civam.org/',
+					text: 'Ce sont les Centres d’Initiatives pour Valoriser l’Agriculture et le Milieu rural. Ils ont pour mission de rassembler agriculteurs et ruraux d’un même territoire pour développer de nouvelles initiatives, se former, échanger, expérimenter et innover. Plus de 140 groupes existent sur l’ensemble du territoire. Plus d\'informations en cliquant sur ce lien'
+				},
+				{
+					image: '/images/logo-partenaires/logo_inpact_Plan%20de%20travail%201.png',
+					title: 'InPACT',
+                    link: 'https://www.pole-inpact.fr/',
+					text: 'Initiatives pour une Agriculture citoyenne et territoriale est un regroupement de 10 réseaux associatifs agricoles partageant une même vision de l’agriculture. Avec des champs d’action et des approches de l’accompagnement variés, le réseau InPACT dont est membre Terre de Liens est un acteur central de l’accompagnement à l’installation et à la transmission. Des déclinaisons régionales ou plus locales d’InPACT associent parfois une diversité plus grande encore d’acteurs qui font des pas de côté en agriculture (GAB, association d’éducation populaire, couveuse d’activité, ...). Plus d\'informations en cliquant sur ce lien'
+				},
+				{
+					image: '/images/logo-partenaires/logo%20IA%20fond%20transparent.png',
+					title: 'Les AFOCG',
+                    link: 'https://www.interafocg.org/',
+					text: 'Ce sont les Associations de Formation collective à la gestion. Elles ont pour mission de rendre leur adhérents autonome dans leur comptabilité et dans leur gestion, et de les accompagner dans les différentes étapes de développement de leur entreprise (création, évolution, etc.).'
+				},
+				{
+					image: '/images/logo-partenaires/logo-fnab-new.png',
+					title: 'Les GAB',
+                    link: 'https://www.fnab.org/',
+					text: 'Les groupements d’agriculture biologique sont présents au niveau départemental. Ils accueillent et accompagnent les porteurs de projet en agriculture biologique ou en conversion à la bio, organisent des formations et des temps d’échanges entre agriculteurs et consommateurs Plus d\'informations'
+				},
+				{
+					image: '/images/logo-partenaires/Logo%20Reneta%20-%20RVB.png',
+					title: 'Le RENETA',
+                    link: 'https://www.reneta.fr/',
+					text: 'C’est le réseau national des espaces test agricoles, dispositifs permettant à des porteurs de projet de tester la viabilité et la vivabilité de leur projet agricole Plus d\'informations'
+				},
+				{
+					image: '/images/logo/logo_TdL_cartouche_blanc-rouge_500.png',
+					title: 'Terre de Liens',
+                    link: 'https://terredeliens.org/',
+					text: 'Le réseau associatif Terre de Liens peut vous accueillir, vous orienter et vous accompagner sur le volet foncier de votre projet.'
+				},
+			]
+		}
+	},
+	methods: {
+		openDialog(item) {
+			this.$buefy.dialog.alert({
+				title: item.title,
+				confirmText: 'Fermer',
+                message: item.text + '<br><br><div class="has-text-centered"><a href="' + item.link + '" target="_blank" class="button is-primary">En savoir plus</a></div>'
+            })
+		}
+	}
+}
+</script>
+<style lang="scss">
+@import "../../sass/_variables.scss";
+
+.carousel-slide, .carousel-slide figure {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.carousel-slide figure.image {
+	background-color: white;
+	border-radius: 20px;
+	height: 160px;
+	width: 160px;
+}
+
+.carousel-slide img {
+	width: 70%;
+}
+
+.carousel-list.has-shadow {
+	box-shadow: none;
+}
+
+@media (max-width: $tablet) {
+	.carousel-list {
+		width: 100vw;
+	}
+}
+</style>

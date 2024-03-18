@@ -39,7 +39,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read int|null $offer_genres_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenres
  * @property-read int|null $production_genres_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresSecondary
  * @property-read int|null $production_genres_possible_count
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd newQuery()
@@ -58,11 +58,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereSurfaceRangeMin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $secondary_production_type_add
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereSecondaryProductionTypeAdd($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
+ * @property-read int|null $production_genres_secondary_count
+ * @property int|null $surface
+ * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereSurface($value)
  */
 class LandSeekAd extends Model
 {
 	use ProductionableGenre,
-		OfferableGenre,
+        OfferableGenre,
 		EducationLevelable,
 		HasMorphToManyEvents,
 		HasManyEvents,
@@ -88,10 +94,10 @@ class LandSeekAd extends Model
 		'production_type_add',
 		'experience_farming',
 		'land_description',
-		'surface_range_min',
-		'surface_range_max',
+		'surface',
 		'rent_max',
 		'price_max',
+        'secondary_production_type_add',
 	];
 
 	/**

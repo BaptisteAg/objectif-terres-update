@@ -35,6 +35,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static Builder|Thread whereTitle($value)
  * @method static Builder|Thread whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static Builder|Thread forUser($userId)
  */
 class Thread extends Model implements HasPresenter
 {

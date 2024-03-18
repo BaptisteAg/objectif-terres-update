@@ -1,36 +1,12 @@
 @extends('default')
 
 
-@if(!empty($isSupportRequest))
-    @section('title', isset($old["id"]) ? 'Modifier votre accompagnement':'Demander un accompagnement')
-@else
-    @section('title',isset($old["id"]) ? 'Modifier votre annonce':'Publier une nouvelle annonce')
-@endif
+@section('title',isset($old["id"]) ? 'Modifier votre annonce':'Publier une nouvelle annonce')
 
 @section('main-content')
-    <section style="padding-top:50px;padding-bottom:100px;">
-{{--        <div class="columns">--}}
-{{--            <div class="column"></div>--}}
-{{--            <div class="column is-half">--}}
-{{--                <div>--}}
-{{--                    <h2 class="title is-1">Publiez votre annonce</h2>--}}
-{{--                    <p>Vous avez un projet agricole ? Vous avez besoin d’aide ou d’un suivi sur mesure ?--}}
-{{--                        Vous avez une idée de projet mais il n’est pas encore finalisé ? Eget risus varius--}}
-{{--                        blandit sit amet non magna. Sed posuere consectetur est at lobortis.</p>--}}
-{{--                </div>--}}
-{{--                <br>--}}
-{{--                <div>--}}
-{{--                    <p class="has-text-grey">Pour nous permettre de vous valider votre annonce, veuillez nous en dire en--}}
-{{--                        peu plus…<br>--}}
-{{--                        Les champ marqués d'un astérisque (*) sont obligatoires--}}
-{{--                    </p>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <div class="column"></div>--}}
-{{--        </div>--}}
-        <div id="vue-render">
+    <section class="container is-flex is-flex-direction-column is-align-items-center">
+        <div id="vue-render" class="column is-four-fifths">
             @include('components.loader', ['text' => 'Chargement du formulaire'])
-
             <new-ad id="new-ad"
                     inline-template
                     :old-ad-type-selected="'{{$old['ad_type'] ?? ''}}'"
@@ -38,64 +14,64 @@
                     style="display:none"
                     :style="{display:loading ? 'none': 'block'}">
 
+
                 <form
-                    method="post"
-                    enctype="multipart/form-data"
-                    @submit="submit"
-                    :action="formAction"
-                    ref="form">
+                        method="post"
+                        enctype="multipart/form-data"
+                        @submit="submit"
+                        :action="formAction"
+                        ref="form">
 
                     {{ csrf_field() }}
-
 
                     <input type="hidden" name="is_support_request" value="{{empty($isSupportRequest)? 0 : 1}}">
 
                     @if(session('support-request.territory_id'))
-                        <input type="hidden" name="support_request_territory_id" value="{{ session('support-request.territory_id') }}">
+                        <input type="hidden" name="support_request_territory_id"
+                               value="{{ session('support-request.territory_id') }}">
                     @endif
 
                     @if(!empty($old["id"]))
                         <input type="hidden" name="id" value="{{ $old["id"] }}">
                     @endif
 
+                    @if(config('app.env') === 'local')
+                        <h1 class="title has-background-black has-text-white">Type : @{{adTypeSelected}}</h1>
+                    @endif
+
                     <ad-type-select v-model="adTypeSelected"
+                                    :on-edit="{{isset($old["id"]) ? 'true' : 'false'}}"
                                     name="ad_type"
-                                    :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
-                                    :is-new="{{ empty($old["id"]) ? 'true' : 'false'}}">
+                                    :old-values="{{json_encode(count($old??[]) ? $old : new stdClass)}}"
+                                    :is-support-request="{{empty($isSupportRequest)?'false':'true'}}">
+                        <template v-slot:certified>
+                            Je certifie que mon annonce concerne un projet agricole professionnel sur des productions
+                            principales nourricières
+                            <a target="_blank"
+                               href="{{URL::asset('docs/Charte_utilisation_d_Objectif_Terres-Validee_en_CIT_du_21_oct.pdf')}}">(charte
+                                Objectif Terres)</a>.
+                        </template>
                     </ad-type-select>
 
                     @if(empty($old["id"]))
                         @if(empty($isSupportRequest) && !empty($supportRequests) && count($supportRequests))
                             <section class="has-text-centered" v-if="!adTypeSelected">
-                                Vous pouvez également remplir votre annonce à partir des champs de votre demande d'accompagnement :<br>
+                                Vous pouvez également remplir votre annonce à partir des champs de votre demande
+                                d'accompagnement :<br>
                                 <select class="select" v-model="createFromSupportRequest">
                                     <option></option>
-                                @foreach($supportRequests as $supportRequest)
-                                    <option value="{{$supportRequest->id}}">{{$supportRequest->title}}</option>
-                                @endforeach
-                                </select>
-                            </section>
-                        @endif
-                        @if(!empty($isSupportRequest) && !empty($ads) && count($ads))
-                            <section class="has-text-centered" v-if="!adTypeSelected">
-                                Vous pouvez également remplir votre demande d'accompagnement à partir des champs de votre annonce :<br>
-                                <select class="select" v-model="createFromAd">
-                                    <option></option>
-                                    @foreach($ads as $ad)
-                                        <option value="{{$ad->id}}">{{$ad->title}}</option>
+                                    @foreach($supportRequests as $supportRequest)
+                                        <option value="{{$supportRequest->id}}">{{$supportRequest->title}}</option>
                                     @endforeach
                                 </select>
                             </section>
                         @endif
                     @endif
 
-
                     <new-land-seek-ad inline-template
-                                      v-show="adTypeSelected === 'land_seek'"
-                                      :is-input-disabled="adTypeSelected !== 'land_seek'"
-                                      :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                      v-if="adTypeSelected === 'land_seek'"
+                                      :old-values="{{json_encode(count($old??[]) ? $old : new stdClass)}}"
                                       :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
-                                      :text-content-territories="{{!empty($isSupportRequest) && isset($old["id"]) ? json_encode($pageContent): json_encode(new stdClass)}}"
                                       @input-enabled="setEnabledForm"
                                       @form-complete="submitProxy"
                                       @submit-save-button="submitProxy"
@@ -105,10 +81,10 @@
                         @include('pages.ads.partials.landSeek.landSeekNewAd')
                     </new-land-seek-ad>
 
+
                     <new-land-offer-ad inline-template
-                                       v-show="adTypeSelected === 'land_offer'"
-                                       :is-input-disabled="adTypeSelected !== 'land_offer'"
-                                       :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
+                                       v-if="adTypeSelected === 'land_offer'"
+                                       :old-values="{{json_encode(count($old??[]) ? $old : new stdClass)}}"
                                        :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
                                        :text-content-territories="{{!empty($isSupportRequest) && isset($old["id"]) ? json_encode($pageContent):json_encode(new stdClass)}}"
                                        @input-enabled="setEnabledForm"
@@ -120,33 +96,53 @@
                         @include('pages.ads.partials.landOffer.landOfferNewAd')
                     </new-land-offer-ad>
 
-                    @if(empty($isSupportRequest))
-                        <new-job-seek-ad inline-template
-                                         v-show="adTypeSelected === 'job_seek'"
-                                         :is-input-disabled="adTypeSelected !== 'job_seek'"
-                                         :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
-                                         @input-enabled="setEnabledForm"
-                                         @form-complete="submitProxy"
-                                         @submit-save-button="submitProxy"
-                                         @click-save-button="onSaveClick"
-                                         @click-publish-button="onPublishClick"
-                                         ref="job_seek">
-                            @include('pages.ads.partials.jobSeek.jobSeekNewAd')
-                        </new-job-seek-ad>
+                    <new-job-seek-ad inline-template
+                                     v-if="adTypeSelected === 'job_seek'"
+                                     :old-values="{{json_encode(count($old??[]) ? $old : new stdClass)}}"
+                                     @input-enabled="setEnabledForm"
+                                     @form-complete="submitProxy"
+                                     @submit-save-button="submitProxy"
+                                     @click-save-button="onSaveClick"
+                                     @click-publish-button="onPublishClick"
+                                     ref="job_seek">
+                        @include('pages.ads.partials.jobSeek.jobSeekNewAd')
+                    </new-job-seek-ad>
 
-                        <new-job-offer-ad inline-template
-                                          v-show="adTypeSelected === 'job_offer'"
-                                          :is-input-disabled="adTypeSelected !== 'job_offer'"
-                                          :old-values="{{json_encode(count($old) ? $old : new stdClass)}}"
-                                          @input-enabled="setEnabledForm"
-                                          @form-complete="submitProxy"
-                                          @submit-save-button="submitProxy"
-                                          @click-save-button="onSaveClick"
-                                          @click-publish-button="onPublishClick"
-                                          ref="job_offer">
-                            @include('pages.ads.partials.jobOffer.jobOfferNewAd')
-                        </new-job-offer-ad>
-                    @endif
+                    <new-job-offer-ad inline-template
+                                      v-if="adTypeSelected === 'job_offer'"
+                                      :old-values="{{json_encode(count($old??[]) ? $old : new stdClass)}}"
+                                      @input-enabled="setEnabledForm"
+                                      @form-complete="submitProxy"
+                                      @submit-save-button="submitProxy"
+                                      @click-save-button="onSaveClick"
+                                      @click-publish-button="onPublishClick"
+                                      ref="job_offer">
+                        @include('pages.ads.partials.jobOffer.jobOfferNewAd')
+                    </new-job-offer-ad>
+
+                    <new-associate-seek-ad inline-template
+                                           v-if="adTypeSelected === 'associate_seek'"
+                                           :old-values="{{json_encode(count($old??[]) ? $old : new stdClass)}}"
+                                           @input-enabled="setEnabledForm"
+                                           @form-complete="submitProxy"
+                                           @submit-save-button="submitProxy"
+                                           @click-save-button="onSaveClick"
+                                           @click-publish-button="onPublishClick"
+                                           ref="associate_seek">
+                        @include('pages.ads.partials.associateSeek.associateSeekNewAd')
+                    </new-associate-seek-ad>
+
+                    <new-associate-offer-ad inline-template
+                                            v-if="adTypeSelected === 'associate_offer'"
+                                            :old-values="{{json_encode(count($old??[]) ? $old : new stdClass)}}"
+                                            @input-enabled="setEnabledForm"
+                                            @form-complete="submitProxy"
+                                            @submit-save-button="submitProxy"
+                                            @click-save-button="onSaveClick"
+                                            @click-publish-button="onPublishClick"
+                                            ref="associate_offer">
+                        @include('pages.ads.partials.associateOffer.associateOfferNewAd')
+                    </new-associate-offer-ad>
 
                 </form>
             </new-ad>
@@ -157,18 +153,3 @@
         <pre>{{var_export($old, true)}}</pre>
     @endif
 @endsection
-
-@section('script')
-    <script>
-        const vuePage = new Vue({
-            el: '#vue-render',
-            name: 'content',
-            data() {
-                return {
-                    loading: false
-                }
-            }
-        });
-    </script>
-@endsection
-

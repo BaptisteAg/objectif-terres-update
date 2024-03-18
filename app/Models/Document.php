@@ -13,6 +13,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property string $name
  * @property string $path
  * @property string $type
+ * @property string $url
  * @property int $size
  * @property int $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -44,6 +45,8 @@ class Document extends Model
         'name', 'path', 'type', 'size', 'user_id'
     ];
 
+    protected $appends = ['url'];
+
     /**
      * Get all of the ads who have documents.
      *
@@ -70,5 +73,16 @@ class Document extends Model
 	public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getUrlAttribute()
+    {
+        $fromUrl = config('app.url');
+
+        if (!app('filesystem')->disk('public')->exists($this->path)) {
+            $fromUrl = 'https://objectif-terres.org';
+        }
+
+        return app('url')->assetFrom($fromUrl, $this->path);
     }
 }
