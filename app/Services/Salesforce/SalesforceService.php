@@ -78,7 +78,7 @@ class SalesforceService
             "MailingCountry" => Country::findOrFail($data["country_id"])->name_fr_fr,
             "LeadSource" => "Petites annonces",
             "OT_Password__c" => Hash::make($data["password"]),
-            "role__c" => 'Annonceur Objectif Terre',
+            "role__c" => 'Annonceur Objectif Terres',
             "Recevoir_les_infos_de_TDL__c" => empty($data["accept_communication"]) ? 0 : 1
         ];
 

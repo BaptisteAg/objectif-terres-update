@@ -49,7 +49,7 @@
                             principales nourricières
                             <a target="_blank"
                                href="{{URL::asset('docs/Charte_utilisation_d_Objectif_Terres-Validee_en_CIT_du_21_oct.pdf')}}">(charte
-                                Objectif Terre)</a>.
+                                Objectif Terres)</a>.
                         </template>
                     </ad-type-select>
 
@@ -62,18 +62,6 @@
                                     <option></option>
                                     @foreach($supportRequests as $supportRequest)
                                         <option value="{{$supportRequest->id}}">{{$supportRequest->title}}</option>
-                                    @endforeach
-                                </select>
-                            </section>
-                        @endif
-                        @if(!empty($isSupportRequest) && !empty($ads) && count($ads))
-                            <section class="has-text-centered" v-if="!adTypeSelected">
-                                Vous pouvez également remplir votre demande d'accompagnement à partir des champs de
-                                votre annonce :<br>
-                                <select class="select" v-model="createFromAd">
-                                    <option></option>
-                                    @foreach($ads as $ad)
-                                        <option value="{{$ad->id}}">{{$ad->title}}</option>
                                     @endforeach
                                 </select>
                             </section>

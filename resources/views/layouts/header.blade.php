@@ -4,6 +4,7 @@
         'home' => route('home'),
         'login' => route('login'),
         'about_us' => route('qui-sommes-nous'),
+        'about_tdl' => route('mouvement-terre-de-liens'),
         'create_ads' => route('ads.create'),
         'support_requests' => config('app.sf_support_requests_url'),
         'all_ads' => route('researches.index', ['ad_category' => 'all']),

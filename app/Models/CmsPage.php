@@ -66,17 +66,4 @@ class CmsPage extends Model
 		'accompagnement/démarrer' => 'Être accompagné',
 		'mentions-legales' => 'Mentions légales'
 	];
-
-	/**
-	 * Create the slug from the title
-	 */
-	public function setSlugAttribute()
-	{
-		// grab the title and slugify it for seeds
-		if (! is_null($this->description) && $this->description!=="") {
-			return $this->attributes['slug'] = Str::slug($this->page_name) . '-' . Str::slug($this->description);
-		}
-		return $this->attributes['slug'] = Str::slug($this->page_name);
-
-	}
 }

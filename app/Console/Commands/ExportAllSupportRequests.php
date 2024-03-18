@@ -43,23 +43,23 @@ class ExportAllSupportRequests extends Command
     public function handle()
     {
         $i = 0;
-        DB::listen(function ($query) use(&$i) {
-            // send this to a log or whatever
-            $backtrace = debug_backtrace();
-
-            print_r([
-                "i" => $i++,
-                "backtrace" => collect($backtrace)
-                    ->filter(function ($item) {
-                        return isset($item['file']) && strpos($item['file'], 'vendor') === false;
-                    })
-                    ->map(function ($item) {
-                        return $item['file'] . ':' . $item['line'] . ' ' . $item['function'] . '()';
-                    })
-                    ->toArray(),
-                "query" => $query->sql,
-            ]);
-        });
+        //DB::listen(function ($query) use(&$i) {
+        //    // send this to a log or whatever
+        //    $backtrace = debug_backtrace();
+//
+        //    print_r([
+        //        "i" => $i++,
+        //        "backtrace" => collect($backtrace)
+        //            ->filter(function ($item) {
+        //                return isset($item['file']) && strpos($item['file'], 'vendor') === false;
+        //            })
+        //            ->map(function ($item) {
+        //                return $item['file'] . ':' . $item['line'] . ' ' . $item['function'] . '()';
+        //            })
+        //            ->toArray(),
+        //        "query" => $query->sql,
+        //    ]);
+        //});
         $ads = Ad::query()
             ->whereNotNull('project_id')
             ->orderByDesc('created_at')

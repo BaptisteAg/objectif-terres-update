@@ -8,7 +8,7 @@
                         required
                         v-model="optionHasFormationSelected"
                         class="input @error('hasformation') is-danger @enderror ">
-                        <option disabled="disabled" value=""></option>
+                        <option value="" selected></option>
                         <option value="1">Oui</option>
                         <option value="0">Non</option>
                 </select>
@@ -38,18 +38,10 @@
                         class="input @error('formation') is-danger @enderror ">
                         <option disabled="disabled">Sélectionner une formation</option>
                         @foreach(\App\Models\User::$formations as $id => $formation)
-                            @if($id !== 4)
-                                <option
-                                        value="{{$id}}" {{old('formation') == $id ? 'selected' : ''}} >
-                                    {{$formation}}
-                                </option>
-                                @else
-                                <option
-                                        v-if="optionProfileSelected === '1'"
-                                        value="{{$id}}" {{old('formation') == $id ? 'selected' : ''}} >
-                                    {{$formation}}
-                                </option>
-                            @endif
+                            <option
+                                    value="{{$id}}" {{old('formation') == $id ? 'selected' : ''}} >
+                                {{$formation}}
+                            </option>
                         @endforeach
                 </select>
             </div>

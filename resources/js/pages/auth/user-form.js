@@ -12,9 +12,9 @@ Vue.component('user-form', {
 	},
 	data() {
 		return {
-			optionProfileSelected: this.oldValues.profile ? JSON.parse(this.oldValues.profile) : '',
-			optionHasFormationSelected: this.oldValues.formation !== null ? 1 : 0,
-			formationSelected: this.oldValues.formation ? JSON.parse(this.oldValues.formation) : '',
+			optionProfileSelected: this.oldValues.profile ? this.oldValues.profile : '',
+			optionHasFormationSelected: this.oldValues.formation ? '1' : '',
+			formationSelected: this.oldValues.formation ? this.oldValues.formation : '',
 			citySelect: this.oldValues.citySelect ? JSON.parse(this.oldValues.citySelect) : [],
 			countrySelect: this.oldValues.countrySelect ? JSON.parse(this.oldValues.countrySelect) : [],
 			isPasswordToChange: false,

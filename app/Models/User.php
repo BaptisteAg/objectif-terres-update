@@ -142,7 +142,6 @@ class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 		'country_id',
 		'profile',
 		'civility',
-		'profile',
 		'other_profile',
 		'accept_share_contact_infos',
 		'role',
@@ -200,7 +199,7 @@ class User extends Authenticatable implements HasPresenter, MustVerifyEmail
         1 => "Diplôme agricole niveau III (BEPA)",
         2 => "Diplôme agricole niveau IV (BPREA, BAC,)",
         3 => "Diplôme agricole niveau V (BTS, DUT) ",
-        4 => "Diplôme agricole niveau VI (licence,)",
+        4 => "Diplôme agricole niveau VI (licence)",
         5 => "Diplôme agricole niveau VII ou plus (ingénieur, master2, véto, ...)",
     ];
 

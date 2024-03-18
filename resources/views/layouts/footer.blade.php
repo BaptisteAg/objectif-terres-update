@@ -98,7 +98,7 @@
             <div class="container is-flex fd-c-mobile px-6-mobile pt-6-mobile pt-5 is-justify-content-space-between is-align-items-center">
                 <p class="has-text-centered has-text-left-desktop mb-4-mobile">© Objectif Terres <?= date('Y') ?></p>
                 <div class="is-flex is-justify-content-space-between is-flex-wrap-wrap gap-3">
-                    <a>Plan du site</a>
+                    <a href="/plan-du-site">Plan du site</a>
                     <a href="/conditions-utilisation">CGU</a>
                     <a href="/mentions-legales">Mentions légales</a>
                     <a class="mx-auto">Gestion des cookies</a>

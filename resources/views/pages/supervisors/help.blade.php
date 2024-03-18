@@ -1,6 +1,6 @@
 @extends('default')
 
-@section('title', 'Espace aide & ressources | Objectif Terress')
+@section('title', 'Espace aide & ressources | Objectif Terres')
 
 
 @section('header')

@@ -111,7 +111,7 @@ export default {
 					maxValue: maxValue(1000)
 				},
 				educationLevels: {
-					required
+
 				},
 				hasHouses: {required},
 				hasBuildings: {required},

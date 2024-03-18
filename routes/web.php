@@ -61,6 +61,7 @@ Route::namespace('Cms')->group(function () {
     Route::get('proprietaire-de-foncier', 'CmsController@proprietaireDeFoncier')->name('proprietaire-de-foncier');
     Route::get('conditions-utilisation', 'CmsController@conditionsUtilisation')->name('conditions-utilisation');
     Route::get('charte', 'CmsController@charte')->name('charte');
+    Route::get('plan-du-site', 'CmsController@plan')->name('plan-du-site');
 });
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {

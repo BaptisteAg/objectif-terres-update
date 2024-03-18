@@ -199,7 +199,7 @@
     </div>
     @if($ad->landOfferAd->sau_description)
         <div>
-            <h3 class="title is-4">Description de la terre</h3>
+            <h3 class="title is-4">Description des terres agricoles</h3>
             <p>{!! nl2br($ad->landOfferAd->sau_description ?? "") !!}</p>
         </div>
     @endif
