@@ -10,7 +10,7 @@
         :unread_notifications = "unread_notifications"
     ></top-header>
     <bottom-header
-        :routes="{ about_us: routes.about_us, create_ads: routes.create_ads, all_ads: routes.all_ads }"></bottom-header>
+        :routes="{ about_us: routes.about_us, about_tdl: routes.about_tdl, create_ads: routes.create_ads, all_ads: routes.all_ads }"></bottom-header>
   </div>
 </template>
 <script>

@@ -1,9 +1,9 @@
 <table>
 	<thead>
 	<tr>
-		<th colspan="27" ><b>Données générales</b></th>
+		<th colspan="28" ><b>Données générales</b></th>
 		<th colspan="16"><b>Détails offres foncières</b></th>
-		<th colspan="9"><b>Détails recherche de foncier</b></th>
+		<th colspan="10"><b>Détails recherche de foncier</b></th>
 		<th><b>Indicateurs</b></th>
 		<th><b>Notes</b></th>
 	</tr>
@@ -31,6 +31,7 @@
 		<th>Type de projet</th>
 		<th>ID PP</th>
 		<th>Nom du porteur de projet</th>
+		<th>Profil</th>
 		<th>Prénom</th>
 		<th>Civilité</th>
 		<th>Adresse mail</th>
@@ -74,6 +75,7 @@
 		<th>Type d'installation</th>
 		<th>Expérience dans le domaine agricole</th>
 		<th>Niveau de formation</th>
+		<th>Description du terrain recherché</th>
 		<th>Indicateurs</th>
 		<th>Notes</th>
 	</tr>
@@ -95,6 +97,7 @@
 				<td>{{$ad->landSeekAd ? 'Recherche de foncier' : 'Offre de foncier'}}</td>
 				<td>{{$ad->userPp->id ?? ''}}</td>
 				<td>{{$ad->userPp->name ?? ''}}</td>
+				<td>{{$ad->userPp->profile}}</td>
 				<td>{{$ad->userPp->first_name ?? ''}}</td>
 				<td>{{$ad->userPp->civilityFullName ?? ''}}</td>
 				<td>{{$ad->userPp->email ?? ''}}</td>
@@ -203,9 +206,7 @@
 				<td>{{$ad->landOfferAd->test_description ?? '' }}</td>
 				<td>
 					@if(isset($ad->landSeekAd))
-						@if(isset($ad->landSeekAd->surface_range_min) and isset($ad->landSeekAd->surface_range_max))
-							{{'entre '.$ad->landSeekAd->surface_range_min. ' et '.$ad->landSeekAd->surface_range_max }}
-						@endif
+						{{ $ad->landSeekAd->surface ?: ''}}
 					@endif
 				</td>
 				<td>
@@ -260,6 +261,11 @@
 						@if(isset($ad->landSeekAd->educationLevels))
 							{{$ad->landSeekAd->educationLevels->pluck('name')->implode(', ') }}
 						@endif
+					@endif
+				</td>
+				<td>
+					@if(isset($ad->landSeekAd))
+						{{$ad->landSeekAd->land_description ?? ''}}
 					@endif
 				</td>
 

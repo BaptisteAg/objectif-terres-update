@@ -22,26 +22,27 @@
             ])
 
             <section class="mb-6 field" ref="surfaceRange">
-                <div class="label">
-                    {!! Form::label('land_seek[surface]', 'Surface recherchée (en hectares) *', ['class' => '']); !!}
-                    <i class="fas fa-info-circle has-text-info"></i>
-                </div>
-{{--                    <vue-slider-range--}}
-{{--                            name-min="land_seek[surface_range_min]"--}}
-{{--                            name-max="land_seek[surface_range_max]"--}}
-{{--                            :data="{{ json_encode($surfaceRanges->pluck('label', 'value')) }}"--}}
-{{--                            :value="[formInput.surfaceRangeMin, formInput.surfaceRangeMax]"--}}
-{{--                            @input="v => (formInput.surfaceRangeMin = v[0]) && (formInput.surfaceRangeMax = v[1])"--}}
-{{--                    ></vue-slider-range>--}}
-
-                <b-field>
-                    <b-input name="land_seek[surface]" v-model="formInput.surfaceRange"
-                    ></b-input>
-                    <p class="control">
-                <span style="border-bottom-right-radius: 999px; border-top-right-radius: 999px;"
-                      class="button is-static">ha</span>
-                    </p>
-                </b-field>
+                <b-tooltip label="Préciser la surface moyenne recherchée (en ha)">
+                    <div class="label">
+                        {!! Form::label('land_seek[surface]', 'Surface recherchée (en hectares) *', ['class' => '']); !!}
+                        <i class="fas fa-info-circle has-text-info"></i>
+                    </div>
+    {{--                    <vue-slider-range--}}
+    {{--                            name-min="land_seek[surface_range_min]"--}}
+    {{--                            name-max="land_seek[surface_range_max]"--}}
+    {{--                            :data="{{ json_encode($surfaceRanges->pluck('label', 'value')) }}"--}}
+    {{--                            :value="[formInput.surfaceRangeMin, formInput.surfaceRangeMax]"--}}
+    {{--                            @input="v => (formInput.surfaceRangeMin = v[0]) && (formInput.surfaceRangeMax = v[1])"--}}
+    {{--                    ></vue-slider-range>--}}
+                    <b-field>
+                        <b-input name="land_seek[surface]" v-model="formInput.surfaceRange"
+                        ></b-input>
+                        <p class="control">
+                    <span style="border-bottom-right-radius: 999px; border-top-right-radius: 999px;"
+                          class="button is-static">ha</span>
+                        </p>
+                    </b-field>
+                </b-tooltip>
                 <template v-if="$v.formInput.surface?.$error">
                     <p class="help is-danger" v-if="!$v.formInput.surface.maxValue">
                         Surface maximum : @{{$v.formInput.surface.$params.maxValue.max}} hectares.
@@ -175,15 +176,10 @@
             </section>
 
             <section class="field mb-6" ref="aboutProject">
-                @php
-                    if(empty($isSupportRequest)) {
-                        $tooltip = "Pour donner envie à un cédant ou propriétaire de vous proposer du foncier, décrivez votre projet, son histoire, ses valeurs, votre date d'installation envisagées etc.";
-                    }
-                    else {
-                        $tooltip = "Décrivez votre projet, son histoire, ses valeurs, votre date d'installation envisagée, etc.";
-                    }
-                @endphp
-                @include('pages.ads.partials.inputs.about_project_content', ['tooltip' => $tooltip])
+                @include('pages.ads.partials.inputs.about_project_content', ['tooltip' =>
+                    "Pour donner envie à un cédant ou propriétaire de vous proposer du foncier, décrivez votre projet,
+                    votre histoire, vos valeurs, votre date d'installation envisagée etc."
+                ])
             </section>
 
             <section class="field" ref="aboutContent">

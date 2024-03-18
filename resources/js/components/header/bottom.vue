@@ -31,10 +31,10 @@
               Qui sommes nous ?
             </a>
             <div class="navbar-dropdown is-boxed">
-              <a class="navbar-item" :href="`${routes.about_us}#le-mouvement-terre-de-liens`">
+              <a class="navbar-item" :href="`${routes.about_tdl}`">
                 Le mouvement Terre de Liens
               </a>
-              <a class="navbar-item" :href="`${routes.about_us}#a-propos-d-objectif-terres`">
+              <a class="navbar-item" :href="`${routes.about_us}`">
                 A propos d'Objectif Terres
               </a>
             </div>

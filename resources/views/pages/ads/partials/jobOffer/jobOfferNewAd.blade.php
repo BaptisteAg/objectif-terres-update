@@ -13,7 +13,8 @@
 
             @include('pages.ads.partials.inputs.other_locations', [
                 'label' => 'Communes concernées *',
-                'withDepartments' => false
+                'withDepartments' => false,
+                'tooltip' => "Si vous souhaitez préciser la localisation de votre recherche, saisissez les 2 premiers chiffres du code postal"
             ])
 
             <section class="mb-6 field" ref="offerTypes">

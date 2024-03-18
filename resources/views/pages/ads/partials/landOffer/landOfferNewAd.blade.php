@@ -14,7 +14,7 @@
 
             @include('pages.ads.partials.inputs.other_locations', [
                 'label' => 'Communes concernées *',
-                'tooltip' => 'Si votre bien se situe sur plusieurs communes, merci de nous les indiquer'
+                'tooltip' => 'Si votre bien se situe sur plusieurs communes, merci de toutes les indiquer : Sélectionnez les communes dans la liste à partir du nom ou du code postal'
             ])
 
             @include('pages.ads.partials.inputs.accept_use_zip_code', [
@@ -54,9 +54,7 @@
 
             <section class="mb-6 field" ref="sauDescription">
                 <b-tooltip class="w-100"
-                           label="Décrivez la répartition de la Surface Agricole Utile (SAU) : terres arables (qui peuvent être labourées ou cultivées),
-                                   surfaces toujours en herbe (prairies naturelles),
-                                   cultures pérennes (vignes, vergers)">
+                           label="Décrivez la répartition de la SAU (Surface Agricole Utile) avec la nature des terres et leur mode de faire valoir : Propriétés, fermages.">
                     <div class="label">
                         {!! Form::label('land_offer[altitude]', 'Description du foncier agricole'); !!}
                         <i class="fas fa-info-circle has-text-info"></i>
@@ -121,21 +119,19 @@
             </section>
 
             <section class="field mb-6" v-show="formInput.hasBuildings == '1'">
-                <b-tooltip class="w-100"
-                           label="Décrivez la nature des bâtiments agricoles présents sur la ferme (stabulation, hangar, tunnel, ...) et leur surface si une estimation a déjà été réalisée">
-                    <div class="label">
-                        {!! Form::label('land_offer[building][description]', 'Description des bâtiments'); !!}
-                        <i class="fas fa-info-circle has-text-info"></i>
-                    </div>
-                    <text-area-counter
-                            name="land_offer[building][description]"
-                            :max-length="1000"
-                            :disabled="isInputDisabled"
-                            ref="buildingDescription"
-                            v-model="formInput.buildingDescription"
-                            :vuelidate="$v.formInput.buildingDescription">
-                    </text-area-counter>
-                </b-tooltip>
+                <div class="label">
+                    {!! Form::label('land_offer[building][description]', 'Description des bâtiments'); !!}
+                    <i class="fas fa-info-circle has-text-info"></i>
+                </div>
+                <p>Vous pouvez indiquer ici le prix (vente ou location) de vos bâtiments agricoles</p>
+                <text-area-counter
+                        name="land_offer[building][description]"
+                        :max-length="1000"
+                        :disabled="isInputDisabled"
+                        ref="buildingDescription"
+                        v-model="formInput.buildingDescription"
+                        :vuelidate="$v.formInput.buildingDescription">
+                </text-area-counter>
             </section>
 
             <section class="mb-6 is-flex gap-x-5 field is-flex-wrap-wrap" ref="hasHouses">
@@ -151,20 +147,17 @@
             </section>
 
             <section class="field mb-6" v-show="formInput.hasHouses == '1'" ref="houseDescription">
-                <b-tooltip class="w-100"
-                           label="Décrivez les habitations présentes sur la ferme (nombre de pièces, surface, état, prix ou modalité de cession imaginé, etc.).">
-                    <div class="label">
-                        {!! Form::label('land_offer[house][description]', 'Description des habitations'); !!}
-                        <i class="fas fa-info-circle has-text-info"></i>
-                    </div>
-                    <p>Vous pouvez mettre le prix de la location de votre habitation dans ce texte</p>
-                    <text-area-counter
-                            name="land_offer[house][description]"
-                            :max-length="1000"
-                            v-model="formInput.houseDescription"
-                            :vuelidate="$v.formInput.houseDescription">
-                    </text-area-counter>
-                </b-tooltip>
+                <div class="label">
+                    {!! Form::label('land_offer[house][description]', 'Description des bâtiments d\'habitation'); !!}
+                    <i class="fas fa-info-circle has-text-info"></i>
+                </div>
+                <p>Vous pouvez indiquer ici le prix (vente ou location) des habitations</p>
+                <text-area-counter
+                        name="land_offer[house][description]"
+                        :max-length="1000"
+                        v-model="formInput.houseDescription"
+                        :vuelidate="$v.formInput.houseDescription">
+                </text-area-counter>
             </section>
 
 
@@ -244,13 +237,15 @@
                     </p>
                 </div>
                 <div class="column field" v-show="isRentOffer" ref="rentPrice">
-                    {!! Form::label('land_offer[rent_price]', 'Fermage annuel *', [
-                                        'class' => 'label',
-                                    ]); !!}
-                    {!! Form::text('land_offer[rent_price]', null, [
-                                                                'class' => 'input',
-                                                                'v-model' => 'formInput.rentPrice',
-                                                            ]) !!}
+                    <b-tooltip label="Les fermages sont définis avec les bâtiments agricoles qui se trouvent dessus.">
+                        {!! Form::label('land_offer[rent_price]', 'Fermage annuel *', [
+                                            'class' => 'label',
+                                        ]); !!}
+                        {!! Form::text('land_offer[rent_price]', null, [
+                                                                    'class' => 'input',
+                                                                    'v-model' => 'formInput.rentPrice',
+                                                                ]) !!}
+                    </b-tooltip>
                     <template v-if="$v.formInput.rentPrice.$error">
                         <p class="help is-danger" v-if="$v.formInput.rentPrice.required">
                             Ce champ est requis.

@@ -82,7 +82,7 @@
                     'vModel' => 'formInput.productionGenres',
                     'isUnique' => 'true',
                     'isRequired' => true,
-                    'label' => 'Production agricole principale envisagée'
+                    'label' => 'Production agricole principale actuelle'
                 ];
                 ?>
                 @include('pages.ads.partials.inputs.production_genres', $params)
@@ -93,7 +93,7 @@
                 'name' => 'associate_offer[secondary_production_genres][]',
                 'productionGenres' => $productionGenres,
                 'vModel' => 'formInput.productionGenresSecondary',
-                'label' => 'Productions agricoles secondaires envisagées'
+                'label' => 'Productions agricoles secondaires et/ou envisagées'
                 ])
             </section>
 
@@ -105,17 +105,20 @@
         <tab-content title="Profil recherché">
 
             <section class="mb-6 field" ref="associateDescription">
-                {!! Form::label('associate_offer[associate_description]',"Description du type d'associé.e.s recherché.e.s *", ['class' => 'label']); !!}
-                <text-area-counter
-                        name="associate_offer[associate_description]"
-                        :max-length="1000"
-                        v-model="formInput.associateDescription"
-                        :vuelidate="$v.formInput.associateDescription">
-                </text-area-counter>
+                <b-tooltip class="w-100"
+                           label="Description du type d'associé.e.s recherché.e.s (le nombre, l’expérience ou la formation recherchée) et des activités à pourvoir sur la ferme">
+                    {!! Form::label('associate_offer[associate_description]',"Description du type d'associé.e.s recherché.e.s *", ['class' => 'label']); !!}
+                    <text-area-counter
+                            name="associate_offer[associate_description]"
+                            :max-length="1000"
+                            v-model="formInput.associateDescription"
+                            :vuelidate="$v.formInput.associateDescription">
+                    </text-area-counter>
+                </b-tooltip>
             </section>
 
             <section class="mb-6 field" ref="experienceFarming">
-                {!! Form::label('associate_offer[experience_farming]','Expérience dans le milieu agricole', ['class' => 'label']); !!}
+                {!! Form::label('associate_offer[experience_farming]','Expérience souhaitée dans le milieu agricole', ['class' => 'label']); !!}
                 <text-area-counter
                         name="associate_offer[experience_farming]"
                         :max-length="1000"
@@ -129,8 +132,7 @@
                     'name' => 'associate_offer[education_levels][]',
                     'productionGenres' => $educationLevels,
                     'vModel' => 'formInput.educationLevels',
-                    'isRequired' => true,
-                    'label' => 'Niveau de formation',
+                    'label' => 'Niveau de formation agricole souhaité',
                     'unitLabel' => 'formation',
                     'unitLabelGender' => 'f'
                 ];
@@ -150,7 +152,7 @@
                 <?php
                 $aboutProjectTooltip = "";
                 ?>
-                @include('pages.ads.partials.inputs.about_project_content', ['title'=> 'Et si vous nous en disiez un peu plus sur votre projet et vos atttentes ?','tooltip' => $aboutProjectTooltip])
+                @include('pages.ads.partials.inputs.about_project_content', ['title'=> 'Et si vous nous en disiez un peu plus sur votre ferme, votre projet et vos attentes ?','tooltip' => $aboutProjectTooltip])
             </section>
 
         </tab-content>
