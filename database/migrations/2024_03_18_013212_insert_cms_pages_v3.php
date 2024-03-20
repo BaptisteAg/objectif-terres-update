@@ -16,6 +16,7 @@ class InsertCmsPagesV3 extends Migration
             [
                 'page_name' => 'Plan du site',
                 'slug' => 'plan-du-site',
+                'description' => 'Plan du site',
                 'content' => 'Plan du site',
                 'created_at' => now(),
                 'updated_at' => now()
