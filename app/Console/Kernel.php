@@ -30,8 +30,10 @@ class Kernel extends ConsoleKernel
 	{
         $filePath = getcwd().'/laravel-scheduler.log';
 
+        $schedule->command(DisableOldResearchAlerts::class)->daily()->appendOutputTo($filePath);
+
         if(config("app.is_scheduler_live_mode")) {
-            $schedule->command('app:send-alert-new-results-research')->hourly()->appendOutputTo($filePath);
+            $schedule->command('app:send-alert-new-results-research')->daily()->appendOutputTo($filePath);
             $schedule->command('app:notify-overdue-moderation')->weekly()->appendOutputTo($filePath);
             //$schedule->command('app:notify-publish-date-extend-before-expiration')->daily()->appendOutputTo($filePath);
             //$schedule->command('app:unpublish-old-ads')->daily()->appendOutputTo($filePath);
@@ -43,9 +45,7 @@ class Kernel extends ConsoleKernel
             //$schedule->command('app:unpublish-old-ads')->everyFiveMinutes()->appendOutputTo($filePath);
         }
 
-        $schedule->command(DisableOldResearchAlerts::class)->daily()->appendOutputTo($filePath);
         $schedule->command('app:sync-salesforce-sso-users-permissions')->daily()->appendOutputTo($filePath);
-
         $schedule->command('app:notify-drafts-unpublished-ads')->hourly()->appendOutputTo($filePath);
         //$schedule->command('app:change-support-state-old-support-request')->daily()->appendOutputTo($filePath);
         //$schedule->command('app:notify-6-moths-old-support-request')->daily()->appendOutputTo($filePath);
