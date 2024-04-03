@@ -142,6 +142,10 @@
     </script>
 @endif
 
+@if(config('jira.widget_enabled'))
+    <script data-jsd-embedded data-key="6cc7e1b1-ff31-49eb-93bf-0016d2cab165" data-base-url="https://jsd-widget.atlassian.com" src="https://jsd-widget.atlassian.com/assets/embed.js"></script>
+@endif
+
 @yield('script')
 
 </body>
