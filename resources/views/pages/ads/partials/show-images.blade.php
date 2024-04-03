@@ -8,7 +8,7 @@
                                 <!-- <img class="custom-carousel-image-size" src="/images/new-placeholder-ad.png" alt="picsum" > -->
                                 <img class="custom-carousel-image-size" src="/images/job-offer-placeholder-ad.png" alt="picsum" >
                             @else
-                                <img class="custom-carousel-image-size" data-source="{{URL::asset($document->path)}}" src="{{URL::asset($document->path)}}" style="cursor: pointer">
+                                <img class="custom-carousel-image-size" data-source="{{app('url')->assetFrom('https://objectif-terres.org', $document->path)}}" src="{{app('url')->assetFrom('https://objectif-terres.org', $document->path)}}" style="cursor: pointer">
                             @endif
                     </div>
                 </div>

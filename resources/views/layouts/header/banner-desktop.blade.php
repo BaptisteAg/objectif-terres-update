@@ -1,144 +1,193 @@
 <div id="top-bar__1__desktop">
+
+    <!-- TODO: supprimer cette div quand template terminé -->
+    <div id="top-bar-user-menu" class="level-right pt-0 pb-15">
+        @guest
+            <div class="level-item">Bienvenue !</div>
+            <div class="level-item">
+                <a class="link-header" href="{{ route('login') }}">Connectez-vous</a>
+            </div>
+            <div class="level-item">ou</div>
+            @if (Route::has('register'))
+                <div class="level-item">
+                    <a class="link-header" href="{{ route('register') }}">Créez un compte</a>
+                </div>
+            @endif
+        @else
+            <div class="level-item">
+                @if(auth()->user()->role === 0 )
+                    <span class="icon">
+                            <i class="far fa-user"></i>
+                        </span>
+                    <span>Bonjour, {{Auth::user()->first_name}} {{ Auth::user()->name }}</span>
+                @else
+                    <div class="dropdown">
+                        <div class="dropdown-trigger">
+                            <button class="button button-dropdown front-office-button" aria-haspopup="true"
+                                    aria-controls="dropdown-menu">
+                                    <span class="icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                @if((Auth::user()->first_name == null) && (Auth::user()->name == null))
+                                    <span>{{Auth::user()->email}} </span>
+
+                                @else
+                                    <span>{{Auth::user()->first_name != null ? Auth::user()->first_name : ""}} {{ Auth::user()->name != null ? Auth::user()->name : "" }} </span>
+                                @endif
+                                <span class="icon is-small">
+                                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="header-dropdown-menu" role="menu">
+                            <div class="dropdown-content" onclick="">
+                                @if(auth()->user()->role >= 4 )
+                                    <a href="{{\Laravel\Nova\Nova::path()}}"
+                                       class="dropdown-item  text_charcoal ">
+                                        Administration
+                                    </a>
+                                @endif
+                                @if(auth()->user()->role >= 3 )
+                                    <a href="{{route('supervisor.index')}}"
+                                       class="dropdown-item  text_charcoal ">
+                                        Tableau de bord
+                                    </a>
+                                @endif
+                                @if(auth()->user()->role >= 2 )
+                                    @if(auth()->user()->role >=3)
+                                        <a href="https://terredeliens.my.site.com/objectifterres/s/demande/Case/00B6900000CHKFBEA5" target="_blank">
+                                           class="dropdown-item  text_charcoal">
+                                            Gestion des accompagnements
+                                        </a>
+                                    @else
+                                        <a href="{{route('advisor.index')}}"
+                                           class="dropdown-item  text_charcoal">
+                                            Espace primo-accueillant
+                                        </a>
+                                    @endif
+                                @endif
+
+                                @if(auth()->user()->role >= 1 )
+                                    @if(auth()->user()->role >=3)
+                                        <a href="{{route('moderator.index')}}"
+                                           class="dropdown-item  text_charcoal">
+                                            Gestion des annonces
+                                        </a>
+                                    @else
+                                        <a href="{{route('moderator.index')}}"
+                                           class="dropdown-item  text_charcoal">
+                                            Espace modérateur
+                                        </a>
+                                    @endif
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            </div>
+
+            {{--                <div class="level-item">--}}
+            {{--                    <p class="button__wrap">--}}
+            {{--                        <a href="{{route('favoriteAds.show')}}"--}}
+            {{--                           class="button round small secondary " title="Annonces favorites">--}}
+            {{--                            <span class="button__icon"><i class="fas fa-star" aria-hidden="true"></i></span>--}}
+            {{--                        </a>--}}
+            {{--                    </p>--}}
+            {{--                </div>--}}
+            {{--                <div class="level-item">--}}
+            {{--                    <p class="button__wrap">--}}
+            {{--                        <a href="{{route('researches.show')}}"--}}
+            {{--                           class="button round small secondary " title="Mes recherches">--}}
+            {{--                            <span class="button__icon"><i class="fas fa-save" aria-hidden="true"></i></span>--}}
+            {{--                        </a>--}}
+            {{--                    </p>--}}
+            {{--                </div>--}}
+            <div class="level-item">
+                <p class="button__wrap">
+                    <a href="{{route('notification.index')}}"
+                       class="button round small secondary number-sticker-wrap "
+                       title="Consulter mes notifications">
+                        <span class="button__icon"><i class="fas fa-bell"></i></span>
+                        @unless(auth()->user()->unreadNotifications->isEmpty())
+                            <span class="number-sticker">{{auth()->user()->unreadNotifications->count()}}</span>
+                        @endunless
+                    </a>
+                </p>
+            </div>
+            <div class="level-item ">
+                <p class="button__wrap ">
+                    <a href="{{route('threads.index')}}"
+                       class="button round small secondary number-sticker-wrap "
+                       title="Consulter mes messages">
+                        <span class="button__icon"><i class="fas fa-envelope"></i></span>
+                        @if($numberOfUnreadMessages >0)
+                            <span class="number-sticker">{{$numberOfUnreadMessages}}</span>
+                        @endif
+                    </a>
+                </p>
+
+            </div>
+            <div class="level-item">
+                <p class="button__wrap">
+                    <a href="{{route('user.index')}}"
+                       class="button round small secondary " title="Accéder à mon compte">
+                        <span class="button__icon"><i class="fas fa-user"></i></span>
+                    </a>
+                </p>
+            </div>
+            <div class="level-item logout">
+                <a class="link-header" href="{{ route('logout') }}"
+                   onclick="event.preventDefault();
+												 document.getElementById('logout-form').submit();">
+                        <span class="icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </span>
+                    <span>Se déconnecter</span>
+                </a>
+                {{--                    <span class="icon">--}}
+                {{--								<form id="logout-form" action="{{ route('logout') }}" method="POST"--}}
+                {{--                                      style="display: none;">--}}
+                {{--									@csrf--}}
+                {{--								</form>--}}
+                {{--							</span>--}}
+            </div>
+        @endguest
+    </div>
+
+
     <header-page id="header-page" inline-template
                  :old-search-values="{{json_encode(old())}}">
-        {!! Form::open(['route' => 'researches.index', 'method' => 'get']) !!}
-        <div class="container-custom bg-trame_champs_dark pb-20 pt-20">
-            <div class="columns is-mobile is-vcentered is-multiline">
-                <div class="column is-full-tablet is-paddingless is-5-widescreen">
-                    <div class="columns is-vcentered is-centered">
-                        <div class="column is-2-desktop is-3-widescreen is-one-fifth-tablet">
-                            <figure class="image is-square">
-                                <a class=" logo logo_TdL"
-                                   href="{{route ('home')}}">
-                                    <img class="is-rounded"
-                                         src="/images/logo/logo_TdL_cartouche_blanc-rouge_500.png"
-                                         alt="objectif-terres-logo">
-                                </a>
-                            </figure>
-                        </div>
-                        <div class="column is-narrow-tablet is-narrow-widescreen">
-                            <h1 class="title is-1 mb-0">
-                                <a class="text_charcoal" href="{{route ('home')}}">
-                                    Objectif Terres
-                                </a>
-                            </h1>
-
-                            <h4 class=" text_success mt-5 has-font-cursive">Faites pousser votre projet agricole</h4>
-{{--                            <p>Une initiative Terre de Liens</p>--}}
-                        </div>
-                    </div>
+        <section class="header is-flex is-justify-content-space-between is-align-items-center">
+            <div class="is-flex">
+                <figure class="image is-128x128">
+                    <a class=""
+                       href="{{route ('home')}}">
+                        <img class="is-rounded"
+                             src="/images/logo/logo_TdL_cartouche_blanc-rouge_500.png"
+                             alt="objectif-terres-logo">
+                    </a>
+                </figure>
+                <div class="pl-4 is-flex is-flex-direction-column is-justify-content-center pl-">
+                    <h1 class="title mb-0 mt-0">Objectif Terres</h1>
+                    <p class="mt-0">Faites pousser votre projet agricole</p>
                 </div>
-                <div id="header-main-filters" class="column is-7-widescreen">
-                    <div class="columns is-vcentered">
-                        <div class="column has-text-right">
-                            <div style="display:inline-block;&">
-                                <p class="pr-10">Je</p>
-                            </div>
-                            <div class="select form-field">
-                                <label for="select"></label>
-                                {{ Form::select('offer_type',
-                                    ['OfferAd' => 'Cherche ', 'SeekAd' => 'Propose'],
-                                    null,
-                                    ['v-model' => 'offerTypeSelected', "class"=> 'form-field'  ]
-                                ) }}
-                            </div>
-
-                            <div class="select form-field">
-                                <label for="select form-field"></label>
-                                {{ Form::select('ad_category',
-                                    ['land' => 'une terre ', 'job' => 'un emploi'],
-                                    null,
-                                    ['v-model' => 'adCategorySelected',
-                                    "class"=> 'form-field'
-                                   ]
-                                ) }}
-                            </div>
-
-                            <div style="display:inline-block; padding-top: 2px;">
-                                <p>ici : </p>
-                            </div>
-                            <div style="display:inline-block">
-                                <multi-select
-                                        ref="header_regions"
-                                        :options="{{ $regionsWithAll }}"
-                                        v-model="selectedRegions"
-                                        :multiple="true"
-                                        name="regions_location_researches_ids[]"
-                                        selected-count-text="région(s) sélectionnée(s)"
-                                        placeholder="Choisissez une/des région(s)">
-                                </multi-select>
-                            </div>
-                        </div>
-                        <div class="column is-narrow-tablet has-text-centered"
-                             style="padding-top: 38px;">
-                            <button class="button basic primary">Rechercher</button>
-                            <br>
-                            <a class="has-text-left plus-de-criteres" href="#" @click="more_criteria()">Plus de critères</a>
-                        </div>
-                    </div>
-                </div>
-                {{--<div class="column is-3-desktop is-one-third-tablet has-text-centered pt-40">
-                    <div style="display:inline-block; padding-top: 7px;">
-                        <p class="pr-10">Je</p>
-                    </div>
-                    <div class="select form-field">
-                        <label for="select"></label>
-                        {{ Form::select('offer_type',
-                            ['OfferAd' => 'Cherche ', 'SeekAd' => 'Propose'],
-                            null,
-                            ['v-model' => 'offerTypeSelected', "class"=> 'form-field'  ]
-                        ) }}
-                    </div>
-
-                    <div class="select form-field">
-                        <label for="select form-field"></label>
-                        {{ Form::select('ad_category',
-                            ['land' => 'une terre ', 'job' => 'un emploi'],
-                            null,
-                            ['v-model' => 'adCategorySelected',
-                            "class"=> 'form-field'
-                           ]
-                        ) }}
-                    </div>
-                </div>
-                <div class="column is-2-desktop is-one-third-tablet pt-40">
-                    <div style="display:inline-block; padding-top: 2px;">
-                        <p>ici : </p>
-                    </div>
-                    <div style="display:inline-block">
-                        <multi-select
-                                :options="{{ $regionsWithAll }}"
-                                v-model="selectedRegions"
-                                :multiple="true"
-                                name="regions_location_researches_ids[]"
-                                selected-count-text="région(s) sélectionnée(s)"
-                                placeholder="Choississez une/des région(s)">
-                        </multi-select>
-                    </div>
-                </div>
-                <div class="column is-2-desktop is-one-third-tablet has-text-centered pt-40"
-                     style="padding-top: 38px;">
-                    {!! Form::submit('Rechercher', ['class' => ' button basic primary']) !!}
-                    <br>
-                    <a class="has-text-left" href="#" @click="more_criteria()">Plus de critères</a>
-                </div>--}}
-
             </div>
-        </div>
-        <div v-show="isFormOpen" class="background-more-criteria pb-15 pt-15 " style="display:none">
-            <div class="container-custom"
-                 v-if="adCategorySelected === 'job'">
-                @include('layouts.partials.headerJobResearch')
+            <div class="is-flex is-align-items-center">
+                <a class="button is-danger">Nous soutenir</a>
+                <span class="icon ml-5">
+                    <span class="mdi mdi-24px mdi-bell-outline"></span>
+                </span>
+                <span class="icon ml-5">
+                    <span class="mdi mdi-24px mdi-email-outline"></span>
+                </span>
+                <span class="icon-text ml-5">
+                  <span class="icon">
+                    <span class="mdi mdi-24px mdi-account-outline"></span>
+                  </span>
+                  <span>Utilisateur</span>
+                </span>
             </div>
-            <div class="container-custom"
-                 v-if="adCategorySelected === 'land'">
-                @include('layouts.partials.headerLandResearch')
-            </div>
-            <div class="column is-narrow-tablet has-text-right"
-                 style="margin-right:20px;">
-                <button class="button basic primary">Rechercher</button>
-            </div>
-        </div>
-        {!! Form::close() !!}
+        </section>
+
     </header-page>
 </div>

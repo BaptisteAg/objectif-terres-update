@@ -1,22 +1,61 @@
-// Leaflet / OpenStreetmap
-#global-map { /* use the same name as <div id=""> */
-  width: 100vw; /* important! if you need full width display */
-  height: 400px;
+$map-background: url("./images/illustrations/map.png");
+$overlay-color: rgba(0, 0, 0, .6);
+$border-color: #E3CFB5;
+$background-color: #F8F3EE;
+$tag-background-color: #E3CFB5;
+
+.global-map {
+  width: 100vw;
+  min-height: 70vh;
   margin: 0;
   border-radius: 5px;
   z-index: 1;
-  /* ... */
+  background-image: $map-background;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  padding: 2em 0;
+
+  &:after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: $overlay-color;
+    z-index: -1;
+  }
+
+  > div:first-child {
+    min-width: 70vw;
+    position: inherit;
+    background-color: $background-color;
+    padding: 2em;
+  }
+
+  .column.have-border {
+    border-left: 2px solid $border-color;
+  }
+
+  span.tag {
+    background-color: $tag-background-color;
+  }
+
+  .dropdown button {
+    width: 100%;
+    justify-content: space-between;
+    border-radius: 999px;
+  }
 }
 
-#map_ad {
-  height: 400px;
-  margin: 0;
-  border-radius: 5px;
-  z-index: 1;
-}
+@media (min-width: $tablet) {
+  .global-map {
+    min-height: 50vh;
+    padding: 4em 0;
 
-[data-tooltip]:not(.is-disabled).has-tooltip-multiline::before,
-[data-tooltip]:not(.is-loading).has-tooltip-multiline::before,
-[data-tooltip]:not([disabled]).has-tooltip-multiline::before {
-  white-space: pre-line;
+    > div:first-child {
+      width: 90vw;
+    }
+  }
 }

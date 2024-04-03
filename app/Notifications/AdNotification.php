@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\HtmlString;
 
 class AdNotification extends Notification implements ShouldQueue
 {
@@ -49,7 +50,7 @@ class AdNotification extends Notification implements ShouldQueue
 		$mailMessage
 			->subject($this->data['subject'])
 			->greeting('Bonjour ' . $notifiable->first_name . ',')
-			->line($this->data['message'])
+			->line(new HtmlString(nl2br($this->data['message'])))
             //->cc("objectif-terres@terredeliens.org")
             ->replyTo("objectif-terres@terredeliens.org");
 
@@ -68,7 +69,7 @@ class AdNotification extends Notification implements ShouldQueue
 
         return $mailMessage
 			->line('En vous remerciant pour votre confiance,')
-			->salutation('L’équipe d’Objectif Terres.');
+			->salutation('L’équipe Terre de Liens.');
 	}
 
 	/**

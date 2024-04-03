@@ -84,7 +84,11 @@ class RegisterService
             'street' => ['nullable', 'string', 'min:5'],
             'civility' => ['required'],
             'profile' => ['required'],
-            'city_id' => ['required']
+            'city_id' => ['required'],
+
+            'hasformation' => ['required_if:profile,1,2'],
+            'formation' => ['required_if:hasformation,1'],
+            'fromwhere' => ['required_if:profile,1,2'],
         ], $extraRules), [
             'city_id.required' => "Veuillez sélectionner un lieu dans la liste en saisissant les premiers caractères"
         ]);

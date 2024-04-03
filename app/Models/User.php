@@ -101,6 +101,12 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read int|null $ads_moderator_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AttributionAd[] $adsSupervisor
  * @property-read int|null $ads_supervisor_count
+ * @property int|null $birthday
+ * @property int|null $formation
+ * @property int|null $fromwhere
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereBirthday($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereFormation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereFromwhere($value)
  */
 class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 {
@@ -109,7 +115,13 @@ class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 	use SoftDeletes;
 	use ScopeLocationFilterable;
 
-	/**
+    const ROLE_PP = 0;
+    const ROLE_MODERATOR = 1;
+    const ROLE_PRIMO_ACCUEILLANT = 2;
+    const ROLE_RESPONSABLE_TERRITORIAL = 3;
+    const ROLE_ADMIN = 4;
+
+    /**
 	 * The attributes that are mass assignable.
 	 *
 	 * @var array
@@ -130,13 +142,14 @@ class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 		'country_id',
 		'profile',
 		'civility',
-		'profile',
 		'other_profile',
 		'accept_share_contact_infos',
 		'role',
 		'is_blocked',
 		'deleted_at ',
 		'origin',
+        "formation"
+
 	];
 
 	/**
@@ -183,11 +196,11 @@ class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 	];
 
     static $formations = [
-        0 => "Diplôme agricole niveau III (BEPA)",
-        1 => "Diplôme agricole niveau IV (BPREA, BAC,)",
-        2 => "Diplôme agricole niveau V (BTS, DUT) ",
-        3 => "Diplôme agricole niveau VI (licence,)",
-        4 => "Diplôme agricole niveau VII ou plus (ingénieur, master2, véto, ...)",
+        1 => "Diplôme agricole niveau III (BEPA)",
+        2 => "Diplôme agricole niveau IV (BPREA, BAC,)",
+        3 => "Diplôme agricole niveau V (BTS, DUT) ",
+        4 => "Diplôme agricole niveau VI (licence)",
+        5 => "Diplôme agricole niveau VII ou plus (ingénieur, master2, véto, ...)",
     ];
 
     static $fromwheres = [

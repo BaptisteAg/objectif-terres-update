@@ -30,8 +30,8 @@ trait ScopeLocationFilterable
 	 */
 	function scopeFilterSubLocations(Builder $query, $relationshipName, $locationableCodes, $locationTargetTableName)
 	{
-		$query->orWhereHas($relationshipName, function (Builder $query) use ($locationableCodes, $locationTargetTableName) {
-			$query->whereIn($locationTargetTableName, $locationableCodes);
+		$query->orWhereHas($relationshipName, function (Builder $subQuery) use ($query, $relationshipName, $locationableCodes, $locationTargetTableName) {
+			$subQuery->whereIn($locationTargetTableName, $locationableCodes);
 		});
 	}
 
@@ -41,8 +41,9 @@ trait ScopeLocationFilterable
      */
     function scopeFilterRegions(Builder $query, $regionCode)
     {
-        if(!$regionCode) return;
-
+        if(!$regionCode) {
+            return;
+        }
         $query->whereHas('departments', function (Builder $query) use ($regionCode) {
             $query->where('region_code', $regionCode);
         });

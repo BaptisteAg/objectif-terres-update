@@ -33,9 +33,15 @@ NUMBER STICKER
   position: relative;
 }
 
+//.number-sticker-wrap > .number-sticker {
+//  position: absolute;
+//  z-index: 2;
+//  left: calc(100% - 1em);
+//  top: calc(100% - 1.6em);
+//}
 .number-sticker-wrap > .number-sticker {
   position: absolute;
   z-index: 2;
-  left: calc(100% - 1em);
-  top: calc(100% - 1.6em);
+  right: calc(100% - 4.5em);
+  top: 3em;
 }

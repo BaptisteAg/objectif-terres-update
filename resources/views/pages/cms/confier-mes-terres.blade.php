@@ -7,7 +7,7 @@
 @endsection
 
 @section('main-content')
-    <section class=" cms-page">
+    <section class="old px-3-mobile cms-page mb-6">
         <div class="container">
             <div class="row is-full">
                 @if($pageContent->count())
@@ -68,7 +68,7 @@
     {{--        @include('components.faq-frequentes')--}}
     {{--    @endif--}}
 
-    <section class=" bg-l-pearl bg-trame_champs_light">
+    <section class="old px-3-mobile bg-l-pearl bg-trame_champs_light">
         <div class="container">
             <div class="rows">
                 <div class="columns">
@@ -80,11 +80,11 @@
                                 @endif
                             @endif
                         </div>
-                        <div class="row">
-                            <a href="https://terredeliens.org/partager-un-patrimoine-legs.html" target="_blank">
-                                <button class="button is-link">CONTACTEZ-NOUS</button>
-                            </a><br><br>
-
+                        <div class="row mb-5">
+                            <b-button rounded type="is-primary" tag="a"
+                                      href="https://terredeliens.org/partager-un-patrimoine-legs.html" target="_blank">
+                                CONTACTEZ-NOUS
+                            </b-button>
                         </div>
                     </div>
                 </div>
@@ -96,13 +96,6 @@
 
     {{--    @include('components.partnering')--}}
 
-    @include('components.support-terre-liens')
-
-
-@endsection
-
-@section('script')
-
+    {{-- @include('components.support-terre-liens') --}}
 
 @endsection
-

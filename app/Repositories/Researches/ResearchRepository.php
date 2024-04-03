@@ -60,6 +60,7 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 		$model = $this->entity
 			->where(["user_id" => $id])
 			->with($this->getEagerLoading())
+            ->orderByDesc('created_at')
 			->get();
 
 		if (!$model) {
@@ -72,9 +73,7 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 		return $model;
 	}
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
-	 */
+
 	public function findAllResearchesWithAlertActive()
 	{
 		$model = $this->entity
@@ -94,7 +93,7 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 		$research = new Research();
 		$researchData = $data;
 		$research->fill($researchData);
-		$research->ad_type = $data['ad_category'] . $data['offer_type'];
+		$research->ad_type = $data['ad_category'];
 		$research->user_id = auth()->user()->id;
 		$research->save();
 

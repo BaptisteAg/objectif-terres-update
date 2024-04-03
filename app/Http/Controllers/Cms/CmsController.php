@@ -29,6 +29,11 @@ class CmsController extends Controller
 		return compact('pageContent', "cmsFaq", "cmsCommonContent");
 	}
 
+    public function plan()
+    {
+        return view('pages/cms/cms', ['page' => CmsPage::whereSlug('plan-du-site')->first()]);
+    }
+
 	public function faq()
 	{
 		return view('pages/cms/faq', $this->getCmsContent(Route::currentRouteName(), false, false));
@@ -37,6 +42,11 @@ class CmsController extends Controller
 	public function quiSommesNous()
 	{
 		return view('pages/cms/qui-sommes-nous', $this->getCmsContent(Route::currentRouteName(), false, false));
+	}
+
+	public function mouvementTerreDeLiens()
+	{
+		return view('pages/cms/mouvement-terre-de-liens', $this->getCmsContent(Route::currentRouteName(), false, false));
 	}
 
 	public function minstallerCommePaysan()
@@ -93,5 +103,13 @@ class CmsController extends Controller
 	public function conditionsUtilisation()
 	{
 		return view('pages/cms/conditions-utilisation', $this->getCmsContent(Route::currentRouteName(), false, false));
+	}
+
+	/**
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function charte()
+	{
+		return view('pages/cms/charte', $this->getCmsContent(Route::currentRouteName(), false, false));
 	}
 }

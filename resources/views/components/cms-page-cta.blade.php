@@ -1,44 +1,35 @@
-<div class="content has-text-centered mt-60  fw-section CTA bg-trame_champs_light bg-l-cream pt-100 pb-100 mb-0">
-    <div class=" mb-50">
-        <h4 class="text_size x-large ">Bénéficiez des services d'Objectif Terres</h4>
+<div class="CTA bg-trame_champs_light bg-l-cream py-6">
+    <div class="container mb-4">
+        <h4 class="title is-2">Bénéficiez des services d'Objectif Terres</h4>
         @if(Route::currentRouteName() === "trouver-une-terre-ou-des-financements")
-            <p class="has-text-centered">Pour votre recherche de terres agricoles nous vous invitons à :</p>
+            <p class="subtitle has-text-centered">Pour votre recherche de terres agricoles nous vous invitons à :</p>
         @elseif(Route::currentRouteName() === "transmettre-ma-ferme")
-            <p class="has-text-centered">Pour votre projet de transmission nous vous invitons à :</p>
+            <p class="subtitle has-text-centered">Pour votre projet de transmission nous vous invitons à :</p>
         @endif
     </div>
 
     <div class="container">
-        <div class=" columns is-centered">
-            <div class="column has-text-centered">
+        <div class="columns">
+            <div class="column is-flex is-flex-direction-column">
                 @if(Route::currentRouteName() === "trouver-une-terre-ou-des-financements")
-                    <p>Déposer une annonce pour rendre visible votre recherche</p>
+                    <p class="mb-3">Déposer une annonce pour rendre visible votre recherche</p>
                 @elseif(Route::currentRouteName() === "transmettre-ma-ferme")
-                    <p>Déposer une annonce pour rendre visible votre offre</p>
+                    <p class="mb-3">Déposer une annonce pour rendre visible votre offre</p>
                 @endif
-                <a href="{{route('ads.create')}}">
-                    <button class="button is-link basic primary">
-                        <span class="button__label"> Déposer une annonce</span>
-                    </button>
-                </a>
+                <b-button class="mt-auto" tag="a" rounded type="is-primary" href="{{route('ads.create')}}">Déposer une annonce
+                </b-button>
             </div>
-            <div class="column has-text-centered">
+            <div class="column is-flex is-flex-direction-column">
                 @if(Route::currentRouteName() === "trouver-une-terre-ou-des-financements")
-                    <p>Solliciter un accompagnement sur le volet foncier de votre projet auprès de l’une des dix-neuf
+                    <p class="mb-3">Solliciter un accompagnement sur le volet foncier de votre projet auprès de l’une des dix-neuf
                         associations territoriales Terre de Liens </p>
                 @elseif(Route::currentRouteName() === "transmettre-ma-ferme")
-                    <p>Solliciter un accompagnement de votre projet auprès de l’une des dix-neuf
+                    <p class="mb-3">Solliciter un accompagnement de votre projet auprès de l’une des dix-neuf
                         associations territoriales Terre de Liens </p>
                 @endif
 
-
-                <a href="/accompagnement/demarrer">
-                    <button class="button is-link  basic primary">
-                        <span class="button__label">
-                            Être accompagné
-                        </span>
-                    </button>
-                </a>
+                <b-button class="mt-auto" tag="a" rounded type="is-primary" href="https://terredeliens.my.site.com/objectifterres/s/" target="_blank">Être accompagné
+                </b-button>
             </div>
         </div>
     </div>

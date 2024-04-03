@@ -1,0 +1,26 @@
+#carousel-installations .columns-carousel {
+  padding: 0px 20px;
+}
+#carousel-installations .slider-item {
+  margin: auto;
+}
+
+.block-numbers p {
+  max-width: 520px;
+  margin: auto;
+}
+
+.block-result-text p {
+  margin: 20px auto;
+}
+
+.block-demarrer p {
+  margin: 20px 0 20px 0;
+  max-width: 330px;
+}
+.block-demarrer button {
+  width: 100%;
+  max-width: 330px;
+}
+
+/*# sourceMappingURL=minstaller-comme-paysan.css.map */

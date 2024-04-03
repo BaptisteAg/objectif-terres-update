@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\HtmlString;
 
 class NewAdToModerateNotification extends Notification implements ShouldQueue
 {
@@ -50,19 +51,19 @@ class NewAdToModerateNotification extends Notification implements ShouldQueue
 	public function toMail($notifiable)
 	{
 		$url = url('/annonces/' . $this->ad->id);
-		$isNewAd = $this->ad->updated_at->eq($this->ad->created_at);
+		$isNewAd = $this->ad->attributionAd->created_at == $this->ad->attributionAd->updated_at;
 		
 		$mailMessage = new MailMessage();
 		if ($isNewAd) {
-			$mailMessage->subject('MODEREZ l\'annonce n°[' . $this->ad->id . ']');
+			$mailMessage->subject('Modérez l\'annonce n°[' . $this->ad->id . ']');
 		} else {
-			$mailMessage->subject('MODEREZ l\'annonce n°[' . $this->ad->id . '] MODIFIÉE par son auteur');
+			$mailMessage->subject('Modérez l\'annonce n°[' . $this->ad->id . '] MODIFIÉE par son auteur');
 		}
 
 		$mailMessage->greeting('Bonjour, ' . $notifiable->first_name);
 
 		if ($isNewAd) {
-			$mailMessage->line('Cette annonce attend d\'être modérée. ');
+			$mailMessage->line('Une annonce doit être modérée. ');
 		} else {
 			$mailMessage->line('Cette annonce a été modifiée par son auteur·e et doit être modérée à nouveau.');
 
@@ -70,9 +71,16 @@ class NewAdToModerateNotification extends Notification implements ShouldQueue
 		$mailMessage->line('Titre : "' . $this->ad->title . '"')
 			->line('Auteur·e :"' . $this->userPP->name . '"')
 			->action('Modérer l\'annonce', $url)
-			->salutation('A bientôt sur Objectif Terres !')
+            ->line(new HtmlString('Pour accéder à l\'annonce vous pouvez copier-coller l\'adresse ci-dessous dans votre moteur de recherche : <a href="'.$url.'">'.$url.'</a>'))
+            ->line(new HtmlString('Lien vers la charte Objectif Terres : <a href="'.url('/charte').'">'.url('/charte').'</a>'))
+			->line('Merci pour votre aide dans la gestion de la plateforme.')
+			->line('Cordialement')
+			->salutation('L’équipe support d’Objectif Terres')
             //->cc("objectif-terres@terredeliens.org")
             ->replyTo("objectif-terres@terredeliens.org");
+
+
+        $mailMessage->viewData['disable_donation_button'] = true;
 
 		return $mailMessage;
 	}

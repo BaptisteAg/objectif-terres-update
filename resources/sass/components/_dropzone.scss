@@ -12,3 +12,7 @@
 .vue-dropzone > .dz-preview .dz-details {
   background-color: $primary !important;
 }
+
+.dropzone .dz-preview .dz-image img {
+  width:150px;
+}

@@ -104,7 +104,7 @@
 
                                 @if($research->productionGenres->count()> 0 )
                                     <p>
-                                        <span class="has-text-grey-dark">Type(s) de productions recherché(s)  : </span><span
+                                        <span class="has-text-grey-dark">Production(s) principale(s)  : </span><span
                                                 class="has-text-black">{{ $research->productionGenres->pluck('name')->implode(', ') }}</span>
                                     </p>
                                 @endif
@@ -162,7 +162,7 @@
             </section>
 
             <section class="section">
-                <pagination :per-page="10" :records="500" @paginate="myCallback"></pagination>
+                <pagination :per-page="10" :records="500"></pagination>
             </section>
 {{--            @include('components.section-orientation-terre-liens')--}}
         </div>
@@ -170,7 +170,7 @@
     </section>
 
 {{--    @include('components.partnering')--}}
-    @include('components.support-terre-liens')
+    {{-- @include('components.support-terre-liens') --}}
 @endsection
 @section('script')
     <script src="{{ asset('js/bulma-accordion.js') }}"></script>

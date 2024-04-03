@@ -19,6 +19,7 @@ class SalesForceRepository
     /**
      * @param $objectName
      * @param $id
+     * @param string[] $select
      * @return mixed
      */
     public function find($objectName, $id, $select = ["Id"])
@@ -42,12 +43,16 @@ class SalesForceRepository
     {
         $query = "SELECT ".implode(',', $select)." FROM $objectName WHERE ";
         array_walk($where, function (&$value, $key) {
-            $value = "$key='".addslashes($value)."'";
+            if(is_array($value)) {
+                $value = $key . " IN ('" . implode("','", $value) . "')";
+            }
+            else {
+                $value = $key . " = '" . $value . "'";
+            }
         });
         $query .= implode(' AND ', $where);
 
-
-        $result = $this->forrest->query($query);
+        $result = $this->authenticated(fn() => $this->forrest->query($query));
 
         return $result["records"];
     }
@@ -59,13 +64,13 @@ class SalesForceRepository
      */
     public function create($objectName, array $params, $sForceAutoAssign = false)
     {
-        return $this->forrest->sobjects($objectName, [
+        return $this->authenticated(fn() => $this->forrest->sobjects($objectName, [
             'method' => 'post',
             'body' => $params,
             /*'headers' => [
                 'Sforce-Auto-Assign' => $sForceAutoAssign
             ]*/
-        ]);
+        ]));
     }
 
     /**
@@ -73,12 +78,12 @@ class SalesForceRepository
      * @param $sfId
      * @param array $params
      */
-    public function update($objectName, $id, array $params)
+    public function upsert($objectName, $id, array $params)
     {
-        return $this->forrest->sobjects($objectName. '/' . $id,[
+        return $this->authenticated(fn() => $this->forrest->sobjects($objectName. '/' . $id,[
             'method' => 'patch',
             'body'   => $params
-        ]);
+        ]));
     }
 
     /**
@@ -87,7 +92,7 @@ class SalesForceRepository
      */
     public function updateUserPassword($userId, $newPassword)
     {
-        $this->update('User', $userId . '/password', [
+        $this->upsert('User', $userId . '/password', [
             "NewPassword" => $newPassword
         ]);
     }
@@ -113,8 +118,36 @@ class SalesForceRepository
 		}
     }
 
-    public function testFloGetRelationships()
+    private function authenticated(\Closure $closure)
     {
-        return $this->forrest->sobjects('Contact/updated?start='.date("Y-m-d").'T15:27:00Z&end='.date("Y-m-d").'T18:00:00Z');
+        $this->authenticate();
+
+        return $closure();
+    }
+
+    public function deleteWhere(string $table, array $where)
+    {
+        $query = "SELECT Id FROM $table WHERE ";
+        array_walk($where, function (&$value, $key) {
+            if(is_array($value)) {
+                $value = $key . " IN ('" . implode("','", $value) . "')";
+            }
+            else {
+                $value = $key . " = '" . $value . "'";
+            }
+        });
+        $query .= implode(' AND ', $where);
+
+        $result = $this->authenticated(fn() => $this->forrest->query($query));
+
+        if(!count($result["records"])) {
+            return null;
+        }
+
+        $ids = array_map(fn($record) => $record["Id"], $result["records"]);
+
+        return collect($ids)->map(fn($id) => $this->authenticated(fn() =>
+            $this->forrest->query("DELETE FROM $table WHERE Id = '$id'")
+        ));
     }
 }

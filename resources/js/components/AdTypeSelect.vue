@@ -1,149 +1,232 @@
 <template>
+	<div>
+		<div v-show="value === ''" class="adTypes-container">
 
-    <div class="columns adTypes-container">
-        <div class="column"></div>
-        <div class="column is-half" style="z-index:10000">
-            <div class="field" v-if="displaySelection">
+			<h1 class="title">Formulaire de {{ onEdit ? 'modification' : 'dépôt' }} d’annonces</h1>
+			<p>Objectif Terres est une plateforme ayant pour but de mettre en liens les personnes ayant des projets
+				agricoles
+				professionnels définis. Si votre annonce ne rentre pas dans cette catégorie (exemple : habitat
+				collectif,
+				volontariat, partage de jardin, chantier participatif...), veuillez vous référer à la FAQ mise à votre
+				disposition pour vous rendre sur la plateforme adaptée à votre besoin.</p>
+			<div :class="errors.check ? 'field-error mt-2 pt-2' : 'mt-2 pt-2'">
+				<b-field :type="errors.check ? 'is-danger' : ''" :message="errors.check"
+						 class="is-flex is-flex-direction-column">
+					<b-checkbox v-model="hasCertified" name="has_certified" class="has-text-weight-bold is-size-6">
+						<slot name="certified"></slot>
+					</b-checkbox>
+				</b-field>
+			</div>
 
-                <div class="is-pulled-left">
-                    <label class="label" v-if="isSupportRequest">De quel accompagnement avez-vous besoin ?</label>
-                    <label class="label" v-else>Quel type d'annonce souhaitez-vous publier ?</label>
-                </div>
-                <div class="is-pulled-right">
-                    <a href="/faq" target="_blank">
-                        Aide
-                    </a>
-                </div>
-                <div class="clearfix"></div>
-                <div class="columns adTypes" style="clear:both">
-                    <div class="column adType"
-                         v-for="(adType,adTypeValue) in adTypes"
-                         :class="{active: value === adTypeValue}"
-                         @click="_ => setAdType(adTypeValue)">
+			<hr class="is-primary">
 
-                        <img :src="'/images/icons/' + adType.img" v-if="adType.img" style="max-width: 80px">
-                        <i :class="'fa-4x fa '+adType.icon" v-if="adType.icon"></i>
+			<h3 class="title is-4">Je {{ onEdit ? 'modifie' : 'dépose' }} cette annonce</h3>
+			<div class="block">
+				<b-radio v-model="adContactType" name="ad_contact_type" native-value="me">En mon nom</b-radio>
+				<b-radio v-model="adContactType" name="ad_contact_type" native-value="thirdParty">Pour une autre
+					personne
+				</b-radio>
+			</div>
 
-                        <br>
-                        {{ adType.label }}
-                        <br><br>
-                        <small>Ex :{{ adType.examples }}</small>
-                    </div>
-                </div>
-            </div>
-            <div class="adType-selected" v-else>
-                <label>
-                    <img :src="'/images/icons/' + currentAdType.img" v-if="currentAdType.img" style="width:20px">
-                    <i :class="'fa '+currentAdType.icon" v-if="currentAdType.icon"></i>
+			<div class="pb-4 is-flex is-flex-wrap-wrap is-justify-content-space-between"
+				 v-if="adContactType === 'thirdParty'">
 
-                    {{currentAdType.label}}
-                </label><br>
-              <template>
-                <a href="#" @click.prevent="displaySelection = true" v-if="isSupportRequest">← Changer de type d'accompagnement</a>
-                <a href="#" @click.prevent="displaySelection = true" v-else>← Changer de type d'annonce</a>
-              </template>
+				<p>
+                    Votre messagerie Objectif terres pour cette annonce est désactivée.
+                    Vous devez indiquer ci-dessous les coordonnées de le personne à contacter concernant cette annonce.
+                    Ces informations seront visibles lorsque le visiteur sélectionne "répondre à l'annonce".<br><br>
+				</p>
 
-            </div>
-            <input type="hidden" :name="name" :value="value">
-        </div>
-        <div class="column"></div>
-    </div>
+				<b-field class="w-50 is-size-6" label="Email" :type="errors.email ? 'is-danger' : ''"
+						 :message="errors.email">
+					<b-input name="third_party[email]" placeholder="jean.dupont@gmail.com" size="is-medium" rounded
+							 type="email"
+							 v-model="thirdParty.email"></b-input>
+				</b-field>
+				<b-field class="w-50 is-size-6" label="Prénom *" :type="errors.firstName ? 'is-danger' : ''"
+						 :message="errors.firstName">
+					<b-input name="third_party[first_name]" placeholder="Jean" size="is-medium" rounded type="text"
+							 v-model="thirdParty.first_name"
+					></b-input>
+				</b-field>
+				<b-field class="w-50 is-size-6" label="Nom *" :type="errors.lastName ? 'is-danger' : ''"
+						 :message="errors.lastName">
+					<b-input name="third_party[last_name]" placeholder="Dupont" size="is-medium" rounded type="text"
+							 v-model="thirdParty.last_name"
+					></b-input>
+				</b-field>
+				<b-field class="w-50 is-size-6" label="Téléphone" :type="errors.phone ? 'is-danger' : ''"
+						 :message="errors.phone">
+					<b-input name="third_party[phone]" placeholder="06 06 06 06 06" size="is-medium" rounded type="text"
+							 v-model="thirdParty.phone"
+					></b-input>
+				</b-field>
+			</div>
+			<div v-else>
+
+				<b-field>
+					<b-checkbox v-model="accept_share_contact_infos" true-value="0"
+								false-value="1" class="is-size-6">Je ne souhaite pas être contacté par téléphone (dans
+						ce cas, je serais contacté uniquement par email)
+					</b-checkbox>
+					<input type="hidden" name="accept_share_contact_infos" :value="accept_share_contact_infos || 1">
+				</b-field>
+			</div>
+
+			<section :class="errors.adType ? 'field-error mt-5' : 'mt-5'" v-show="!onEdit">
+				<h3 class="title is-4">Mon projet</h3>
+				<p class="pb-4 help is-danger" v-show="errors.adType">Le type d'annonce n'est pas défini.</p>
+				<div class="is-flex-wrap-wrap is-flex is-justify-content-space-between gap-5">
+					<div v-for="(adType,adTypeValue) in adTypes"
+						 class="bg-beige is-clickable p-5 w-30 is-flex is-justify-content-center is-align-items-center has-text-centered objT-border"
+						 :class="{'bg-blue': currentAdType === adTypeValue}" @click="currentAdType = adTypeValue">
+						{{ adType.label }}
+					</div>
+				</div>
+			</section>
+
+			<div class="is-flex is-justify-content-flex-end pt-6">
+				<b-button size="is-medium" class="ml-2" rounded type="is-danger" @click="setAdType">Etape suivante
+				</b-button>
+			</div>
+
+		</div>
+		<div class="is-align-self-flex-start py-3" v-show="value !== ''">
+			<a class="button is-rounded is-danger" href="#" @click.prevent="changeAdType()">
+				<b-icon
+					class="mr-1"
+					icon="chevron-left"
+					size="is-small">
+				</b-icon>
+				Changer de formulaire ou de bénéficiaire</a>
+		</div>
+
+		<input type="hidden" :name="name" :value="value">
+
+	</div>
 </template>
 
-<style lang="scss" scoped>
-    @import "../../sass/variables";
-
-    label {
-        font-size: 30px;
-        font-family: $family-sans-serif;
-    }
-
-    .adTypes-container {
-        background: rgba(0, 0, 0, 0.05);
-        padding-bottom: 40px;
-    }
-
-    .adType {
-        width: 300px;
-        line-height: 23px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        padding: 20px;
-        font-size: 20px;
-        font-family: $family-sans-serif;
-        cursor: pointer;
-        margin: 0 10px;
-        text-align: center;
-        background: #fff;
-        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-
-        &.active {
-            background: $blue;
-            color: white;
-        }
-    }
-</style>
-
 <script>
-    export default {
-        props: {
-            value: {
-                type: String,
-                required: true
-            },
-            name: {
-                type: String,
-                required: true
-            },
-            isSupportRequest: {
-                type: Boolean,
-                required: true
-            },
-            isNew: Boolean
-        },
-        data() {
-            return {
-                displaySelection: !this.value
-            }
-        },
-        computed: {
-            adTypes() {
-                let extraAdTypes = this.isSupportRequest ? {} : {
-                    job_seek: {
-                        label: "Je cherche une opportunité professionnelle",
-                        icon: "fa-universal-access",
-                        examples: "Emploi, stage, associé.."
-                    },
-                    job_offer: {
-                        label: "Je propose une opportunité professionnelle",
-                        icon: "fa-universal-access",
-                        examples: "Emploi, stage, associé.."
-                    }
-                };
+export default {
+	props: {
+		oldValues: {
+			type: Object
+		},
+		value: {
+			type: String
+		},
+		name: {
+			type: String,
+			required: true
+		},
+		onEdit: {
+			type: Boolean,
+			default: false
+		}
+	},
+	data() {
+		let old = this.oldValues;
 
-                return {
-                    land_seek: {
-                        label: "Je cherche du foncier agricole",
-                        img: "land_ad_type.png",
-                        examples: "Terrain, ferme, parcelle..."
-                    },
-                    land_offer: {
-                        label: "Je propose du foncier agricole",
-                        img: "land_ad_type.png",
-                        examples: "Terrain, ferme, parcelle..."
-                    },
-                    ...extraAdTypes
-                }
-            },
-            currentAdType() {
-                return this.adTypes[this.value];
-            }
-        },
-        methods: {
-            setAdType(adType) {
-                this.$emit('input', adType);
-                this.displaySelection = false;
-            }
-        }
-    }
+		return {
+			errors: {
+				check: '',
+				email: '',
+				firstName: '',
+				lastName: '',
+				phone: '',
+				adType: '',
+			},
+			adContactType: old.ad_contact_type || 'me',
+			thirdParty: {
+				first_name: old.third_party?.first_name || "",
+				last_name: old.third_party?.last_name || "",
+				email: old.third_party?.email || "",
+				phone: old.third_party?.phone || "",
+			},
+			accept_share_contact_infos: old.accept_share_contact_infos,
+			hasCertified: !!old.id,
+			currentAdType: this.value
+		}
+	},
+	computed: {
+		adTypes() {
+			return {
+				land_seek: {
+					label: "Recherche de terres agricoles",
+				},
+				associate_seek: {
+					label: "Recherche d'associé.es pour projet d'installation",
+				},
+				job_seek: {
+					label: "Recherche d'experience agricole (emploi salarié, stage, espace-test)",
+				},
+				land_offer: {
+					label: "Offre de terres agricoles",
+				},
+				associate_offer: {
+					label: "Recherche d'associé.es sur ferme existante",
+				},
+				job_offer: {
+					label: "Offre de stages, d'emploi ou de tests, agricoles",
+				},
+			}
+		},
+	},
+	methods: {
+		validateFields() {
+			this.errors = {
+				check: '',
+				email: '',
+				firstName: '',
+				lastName: '',
+				phone: '',
+				adType: '',
+			};
+
+			if (!this.hasCertified) {
+				this.errors.check = 'Vous devez certifier que votre annonce concerne un projet agricole professionnel.';
+				window.scrollTo({top: 0, behavior: 'smooth'});
+			}
+
+			if (!this.currentAdType) {
+				this.errors.adType = true;
+			}
+
+			if (this.adContactType === 'thirdParty') {
+                const validateEmail = (email) => {
+                    return String(email)
+                        .toLowerCase()
+                        .match(
+                            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                        );
+                };
+				if (this.thirdParty.email && !validateEmail(this.thirdParty.email)) {
+					this.errors.email = "L'email n'est pas valide.";
+				}
+				if (!this.thirdParty.first_name) {
+					this.errors.firstName = 'Le prénom est requis.';
+				}
+				if (!this.thirdParty.last_name) {
+					this.errors.lastName = 'Le nom est requis.';
+				}
+				if (!this.currentAdType) {
+					this.errors.adType = "Le type d'annonce n'est pas défini.";
+				}
+			}
+
+			return Object.values(this.errors).every(error => !error);
+		},
+		created() {
+			this.currentAdType = this.value;
+		},
+		setAdType() {
+			if (this.validateFields()) {
+				this.$emit('input', this.currentAdType);
+			}
+		},
+		changeAdType() {
+			this.$emit('input', '');
+		}
+	},
+}
 </script>
