@@ -6,6 +6,18 @@
 
 @section('head-script')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
+    <style>
+        .section {
+            padding: 2rem 0;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .cms-page .image img {
+            width:auto;
+        }
+    </style>
 @endsection
 
 @section('main-content')

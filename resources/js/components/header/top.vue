@@ -47,7 +47,7 @@
                              v-if="$user.role >= 3"
                              aria-role="listitem"
             >
-              <a target="_blank" :href="routes.administration.role_2">Gestion des accompagnements</a>
+              <a target="_blank" href="https://terredeliens.my.site.com/objectifterres/s/demande/Case/00B6900000CHKFBEA5">Gestion des accompagnements</a>
             </b-dropdown-item>
 
             <b-dropdown-item has-link

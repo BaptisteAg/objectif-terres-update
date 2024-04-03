@@ -1,15 +1,13 @@
 <div class="tabs is-centered is-medium">
 	<ul>
-		@if(auth()->user()->supportRequests()->count())
-			<li class="{{ Route::current()->getName() === 'support-request.show' ? 'is-active' : '' }}">
-				<a class="" href="{{route ('support-request.show')}}">
-					<span class="icon is-small">
-						<i class="fas fa-rocket" aria-hidden="true"></i>
-					</span>
-					<span>Mon Accompagnement</span>
-				</a>
-			</li>
-		@endif
+		<li class="{{ Route::current()->getName() === 'support-request.show' ? 'is-active' : '' }}">
+			<a class="" href="https://terredeliens.my.site.com/objectifterres/s/mes-demandes" target="_blank">
+				<span class="icon is-small">
+					<i class="fas fa-rocket" aria-hidden="true"></i>
+				</span>
+				<span>Mon Accompagnement</span>
+			</a>
+		</li>
 		@if(auth()->user()->ads()->count())
 			<li class="{{ Route::current()->getName() === 'ads.list' ? 'is-active' : '' }}">
 				<a class="" href="{{route ('ads.list')}}">

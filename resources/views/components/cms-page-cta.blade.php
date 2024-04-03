@@ -28,7 +28,7 @@
                         associations territoriales Terre de Liens </p>
                 @endif
 
-                <b-button class="mt-auto" tag="a" rounded type="is-primary" href="/accompagnement/demarrer">Être accompagné
+                <b-button class="mt-auto" tag="a" rounded type="is-primary" href="https://terredeliens.my.site.com/objectifterres/s/" target="_blank">Être accompagné
                 </b-button>
             </div>
         </div>

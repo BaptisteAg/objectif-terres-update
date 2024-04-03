@@ -1,7 +1,7 @@
 <table>
 	<thead>
 	<tr>
-		<th colspan="28" ><b>Données générales</b></th>
+		<th colspan="34" ><b>Données générales</b></th>
 		<th colspan="16"><b>Détails offres foncières</b></th>
 		<th colspan="10"><b>Détails recherche de foncier</b></th>
 		<th><b>Indicateurs</b></th>
@@ -46,6 +46,12 @@
 		<th>Code Commune(s)</th>
 		<th>ID du primo-accueillant</th>
 		<th>Nom du primo-accueillant</th>
+		<th>ID du primo-accueillant 2</th>
+		<th>Nom du primo-accueillant 2</th>
+		<th>ID du primo-accueillant 3</th>
+		<th>Nom du primo-accueillant 3</th>
+		<th>ID du primo-accueillant 4</th>
+		<th>Nom du primo-accueillant 4</th>
 		<th>ID du responsable territorial</th>
 		<th>Nom du responsable territorial</th>
 		<th>Description du projet</th>
@@ -136,6 +142,12 @@
 				</td>
 				<td>{{$ad->attributionAd?->userAdvisor?->id}}</td>
 				<td>{{$ad->attributionAd->userAdvisor->first_name ?? '' }} {{ $ad->attributionAd->userAdvisor->name ?? ''}}</td>
+				<td>{{$ad->attributionAd?->userAdvisor2?->id}}</td>
+				<td>{{$ad->attributionAd->userAdvisor2->first_name ?? '' }} {{ $ad->attributionAd->userAdvisor2->name ?? ''}}</td>
+				<td>{{$ad->attributionAd?->userAdvisor3?->id}}</td>
+				<td>{{$ad->attributionAd->userAdvisor3->first_name ?? '' }} {{ $ad->attributionAd->userAdvisor3->name ?? ''}}</td>
+				<td>{{$ad->attributionAd?->userAdvisor4?->id}}</td>
+				<td>{{$ad->attributionAd->userAdvisor4->first_name ?? '' }} {{ $ad->attributionAd->userAdvisor4->name ?? ''}}</td>
 				<td>{{$ad->attributionAd?->userSupervisor?->id}}</td>
 				<td>{{$ad->attributionAd->userSupervisor->first_name ?? ''}} {{ $ad->attributionAd->userSupervisor->name ?? ''}}</td>
 				<td>{{$ad->about_project_content ?? ''}}</td>

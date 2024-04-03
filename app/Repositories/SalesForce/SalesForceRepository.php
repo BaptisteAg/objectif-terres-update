@@ -19,6 +19,7 @@ class SalesForceRepository
     /**
      * @param $objectName
      * @param $id
+     * @param string[] $select
      * @return mixed
      */
     public function find($objectName, $id, $select = ["Id"])

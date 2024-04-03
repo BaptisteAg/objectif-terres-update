@@ -15,10 +15,20 @@ use App\Notifications\UnpublishedAdNotification;
 use App\Repositories\SalesForce\SalesForceRepository;
 use App\Repositories\Users\UserRepository;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class MailTest extends TestCase
 {
+    public function testAdminAlert()
+    {
+        Notification::route('mail', [
+            config('mail.from.address') => config('mail.from.name')
+        ])->notify(
+            new \App\Notifications\SalesforceUserRoleChanged(User::inRandomOrder()->first(), 3)
+        );
+    }
+
     public function testOverdueModeration()
     {
         $notificationData['subject'] = "3 annonces sont en attente de modération depuis plus de 7 jours";

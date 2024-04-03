@@ -36,32 +36,29 @@
                 </div>
             @endif
 
-            @if(auth()->user()->supportRequest)
-                <div class="column is-one-third">
-                    {{--                    <a class="" href="{{route("support-request.show")}}">--}}
-                    <a href="{{config('app.sf_support_personal_requests_url')}}">
-                        <div class="card custom-card ">
-                            <div class="card-content">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <figure class="image is-48x48 custom-card custom-card-image">
-												<span class="icon is-large">
-												  <i class="fas fa-3x fa-hands-helping"></i>
-												</span>
-                                        </figure>
-                                    </div>
-                                    <div class="media-content">
-                                        <p class="custom-card custom-card-text-title">Mon accompagnement</p>
-                                    </div>
+            <div class="column is-one-third">
+                <a href="https://terredeliens.my.site.com/objectifterres/s/mes-demandes" target="_blank">
+                    <div class="card custom-card ">
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-48x48 custom-card custom-card-image">
+                                            <span class="icon is-large">
+                                              <i class="fas fa-3x fa-hands-helping"></i>
+                                            </span>
+                                    </figure>
                                 </div>
-                                <div class="content">
-                                    Consulter et suivre votre demande d'accompagnement
+                                <div class="media-content">
+                                    <p class="custom-card custom-card-text-title">Mon accompagnement</p>
                                 </div>
                             </div>
+                            <div class="content">
+                                Consulter et suivre votre demande d'accompagnement
+                            </div>
                         </div>
-                    </a>
-                </div>
-            @endif
+                    </div>
+                </a>
+            </div>
 
             <div class="column is-one-third">
                 <a class="" href="{{route("researches.show")}}">

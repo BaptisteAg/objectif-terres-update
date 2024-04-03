@@ -102,6 +102,9 @@ class ExportAllSupportRequests extends Command
                 'attributionAd',
                 'attributionAd.adStatus',
                 'attributionAd.userAdvisor',
+                'attributionAd.userAdvisor2',
+                'attributionAd.userAdvisor3',
+                'attributionAd.userAdvisor4',
                 'attributionAd.userSupervisor',
                 'supportRequestTerritoryId'
             ])
