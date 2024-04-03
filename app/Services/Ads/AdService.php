@@ -877,10 +877,7 @@ class  AdService
         return $adsCountByDepartmentId;
     }
 
-    /**
-     * @param Ad $ad
-     * @return Region[]
-     */
+
     public function getAdRegions(Ad $ad)
     {
         $regions = collect();
