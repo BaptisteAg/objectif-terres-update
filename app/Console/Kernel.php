@@ -33,14 +33,14 @@ class Kernel extends ConsoleKernel
         if(config("app.is_scheduler_live_mode")) {
             $schedule->command('app:send-alert-new-results-research')->hourly()->appendOutputTo($filePath);
             $schedule->command('app:notify-overdue-moderation')->weekly()->appendOutputTo($filePath);
-            $schedule->command('app:notify-publish-date-extend-before-expiration')->daily()->appendOutputTo($filePath);
-            $schedule->command('app:unpublish-old-ads')->daily()->appendOutputTo($filePath);
+            //$schedule->command('app:notify-publish-date-extend-before-expiration')->daily()->appendOutputTo($filePath);
+            //$schedule->command('app:unpublish-old-ads')->daily()->appendOutputTo($filePath);
         }
         else {
             $schedule->command('app:send-alert-new-results-research')->daily()->appendOutputTo($filePath);
             $schedule->command('app:notify-overdue-moderation')->hourly()->appendOutputTo($filePath);
-            $schedule->command('app:notify-publish-date-extend-before-expiration')->everyFiveMinutes()->appendOutputTo($filePath);
-            $schedule->command('app:unpublish-old-ads')->everyFiveMinutes()->appendOutputTo($filePath);
+            //$schedule->command('app:notify-publish-date-extend-before-expiration')->everyFiveMinutes()->appendOutputTo($filePath);
+            //$schedule->command('app:unpublish-old-ads')->everyFiveMinutes()->appendOutputTo($filePath);
         }
 
         $schedule->command(DisableOldResearchAlerts::class)->daily()->appendOutputTo($filePath);
