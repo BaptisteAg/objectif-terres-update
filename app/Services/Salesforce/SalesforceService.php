@@ -230,7 +230,7 @@ class SalesforceService
             $localUser->role = $role;
 
             Notification::route('mail', [
-                config('mail.from.address') => config('mail.from.name')
+                'objectif-terres@terredeliens.org' => config('mail.from.name')
             ])->notify(
                 new \App\Notifications\SalesforceUserRoleChanged($localUser, $role)
             );

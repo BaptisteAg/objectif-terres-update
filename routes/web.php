@@ -69,7 +69,7 @@ Route::prefix('documents')->name('documents.')->namespace('Documents')->group(fu
     Route::get('{type}/{user_id}/{filename}', 'DocumentsController@show')->name('show');
 });
 
-Route::get('/register', 'Salesforces\SalesForceAuthController@register');
+//Route::get('/register', 'Salesforces\SalesForceAuthController@register');
 
 Route::prefix('recherche')->name('researches.')->namespace('Researches')->group(function () {
     Route::get('/', 'ResearchesController@index')->name('index');

@@ -80,7 +80,7 @@ class RegisterController extends Controller
         $data = $request->all();
         $data['locationable'] = $request->input('locationable');
 
-        if($data["formation"]){
+        if(isset($data["formation"])){
             $user['hasformation'] = true;
         }
 		$this->registerService->validator(
