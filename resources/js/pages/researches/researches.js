@@ -17,7 +17,7 @@ Vue.Component('search', {
 window.regionMapInit  = async function (mapId, queryString) {
     const mapController = await OSMapControllerFactory(mapId);
 
-    let departmentsPolygonData = await fetchJson('/locations/polygon/departments/?' + queryString);
+    let departmentsPolygonData = await fetchJson('https://www.objectif-terres.org/locations/polygon/departments/?' + queryString);
 
     let featureGroup = mapController.addFeatureGroup();
 
