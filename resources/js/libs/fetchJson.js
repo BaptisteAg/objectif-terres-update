@@ -1,4 +1,6 @@
 window.fetchJson = async function(url, formData) {
+
+	console.log({url})
     if(typeof formData === "object" && !(formData instanceof FormData)) {
         let formDataOnTheFly = new FormData();
 
@@ -13,7 +15,7 @@ window.fetchJson = async function(url, formData) {
         formData.append('_token', window.csrf_token);
     }
 
-    const response = await fetch(url, {
+    const response = await fetch(url.replace('http://', 'https://'), {
         method: formData ? 'POST' : 'GET',
         body: formData
     });
