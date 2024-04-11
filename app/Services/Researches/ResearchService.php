@@ -314,8 +314,8 @@ class ResearchService
 
                 if($adType === 'landOfferAd') {
                     $query->orWhereHas('landOfferAd', function (Builder $q) use ($filters) {
-                        $q->where('experience_farming', 'like', '%' . $filters->input('keywords') . '%');
-                        $q->orWhere('land_description', 'like', '%' . $filters->input('keywords') . '%');
+                        //$q->where('experience_farming', 'like', '%' . $filters->input('keywords') . '%');
+                        //$q->orWhere('land_description', 'like', '%' . $filters->input('keywords') . '%');
                         $q->orWhere('sau_description', 'like', '%' . $filters->input('keywords') . '%');
                         $q->orWhere('water_access_description', 'like', '%' . $filters->input('keywords') . '%');
                         $q->orWhere('test_description', 'like', '%' . $filters->input('keywords') . '%');

@@ -75,7 +75,8 @@ class LoginController extends Controller
      */
     public function logout(Request $request, SalesforceService $salesforceService)
     {
-        if($salesforceService->usernameExists(auth()->user()->email, 'User')) {
+        $user = auth()->user();
+        if($user && $salesforceService->usernameExists($user->email, 'User')) {
             return redirect('/deconnexion/sso');
         }
 
