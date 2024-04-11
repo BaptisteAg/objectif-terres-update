@@ -13,7 +13,7 @@
     </script>
 
     @yield('head-script')
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}?3">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}?4">
     <link href="https://fonts.googleapis.com/css?family=Bebas+Neue|Kalam:700|Source+Sans+Pro&display=swap"
           rel="stylesheet">
     <link rel="icon" type="image/png" href="/images/favicon/favicon-32x32.png"/>
@@ -91,7 +91,7 @@
         message.style.display = 'none';
     });
 </script>
-<script src="{{ mix('js/app.js') }}?3"></script>
+<script src="{{ mix('js/app.js') }}?4"></script>
 <script>
 </script>
 <style>

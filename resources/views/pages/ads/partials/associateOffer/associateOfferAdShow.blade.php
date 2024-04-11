@@ -29,8 +29,6 @@
                     </div>
                 @endif
 
-                @include('pages.ads.partials.show-author-infos')
-
                 <div class="w-50">
                     <strong>Altitude : </strong>
                     @if($ad->associateOfferAd->altitude)

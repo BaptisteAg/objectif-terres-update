@@ -36,7 +36,7 @@ class Ad extends Resource
 
     public function title()
     {
-        return $this->resource->id." - ".$this->title . ' (' . $this->resource->userPp?->name . ' ' . $this->resource->userPp?->first_name .  ')';
+        return $this->id." - ".$this->title . ' (' . $this->resource->userPp?->name . ' ' . $this->resource->userPp?->first_name .  ')';
     }
 
     public static $with = ['attributionAd', 'userPp', 'userModerator'];
@@ -48,8 +48,9 @@ class Ad extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'ads.id',
         'title',
+        'userPp.id',
         'userPp.name',
         'userPp.first_name',
         'userPp.email',
@@ -57,7 +58,9 @@ class Ad extends Resource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        $query->join('users as userPp', 'userPp.id', '=', 'ads.user_pp_id');
+        $query
+            ->select('*', 'ads.id as id')
+            ->join('users as userPp', 'userPp.id', '=', 'ads.user_pp_id');
         return $query;
     }
 
