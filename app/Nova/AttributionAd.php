@@ -13,6 +13,16 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class AttributionAd extends Resource
 {
+    public static function label()
+    {
+        return 'Modérations';
+    }
+
+    public static function singularLabel()
+    {
+        return 'Modération';
+    }
+
     /**
      * The model the resource corresponds to.
      *
@@ -21,13 +31,15 @@ class AttributionAd extends Resource
     public static $model = 'App\Models\AttributionAd';
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
+     * @return string
      */
-    public static $title = 'ad.title';
+    public function title(): string
+    {
+        $moderator = ' '. $this->userModerator ? ' - ' . $this->userModerator->name . ' ' . $this->userModerator->first_name : 'Aucun modérateur';
+        return '(' . $this->ad?->id . ')' . $this->ad?->title . $moderator;
+    }
 
-    public static $with = ['ad'];
+    public static $with = ['ad', 'userModerator'];
 
     public static $displayInNavigation = false;
 
@@ -38,9 +50,20 @@ class AttributionAd extends Resource
      */
     public static $search = [
         'id',
-        'ad.title',
+        'ads.id',
+        'ads.title',
         'userModerator',
     ];
+
+
+    public static function applySearch($query, $search)
+    {
+        return $query->orWhereHas('ad', function ($query) use ($search) {
+            $query->where('title', 'LIKE', "%$search%")->orWhere('id', 'LIKE', "%$search%");
+        })->orWhereHas('userModerator', function ($query) use ($search) {
+            $query->where('name', 'LIKE', "%$search%")->orWhere('first_name', 'LIKE', "%$search%");
+        })->orWhere('id', 'LIKE', "%$search%");
+    }
 
     /**
      * Get the fields displayed by the resource.

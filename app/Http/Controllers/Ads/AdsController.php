@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
 
-class AdsController extends BaseController
+class  AdsController extends BaseController
 {
     public const PUBLISHED_AD_LIMIT_PER_USER = 50;
 

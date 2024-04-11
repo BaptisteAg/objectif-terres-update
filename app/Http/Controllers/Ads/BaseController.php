@@ -92,8 +92,7 @@ abstract class BaseController extends Controller
         }
 
         $selected_departments = json_encode(array_filter(array_merge(
-            array_map($this->locationService->getResultRenderer('departments'), array_filter([$ad->department])),
-
+            array_map($this->locationService->getResultRenderer('departments'), array_filter([$ad->main_department])),
         )));
 
         $zoneDepartments = $ad->departments->except($ad->department?->id);

@@ -425,20 +425,14 @@ class  AdService
             $ad = $this->repository->create($data);
         }
 
-        if (isset($data[$data["ad_type"]])) {
-            $subAdData = $data[$data["ad_type"]];
-            $subAdData["ad_id"] = $ad->id;
-            $this->createSubAd($data["ad_type"], $subAdData);
-        }
-
         $subAdData = $data[$data["ad_type"]];
         $subAdData["ad_id"] = $ad->id;
 
         if (isset($subAdData["offer_genres"])) {
-            if (!in_array(OfferGenre::ID_VENTE, $subAdData["offer_genres"], true)) {
+            if (!in_array(OfferGenre::ID_VENTE, $subAdData["offer_genres"])) {
                 $subAdData["price"] = null;
             }
-            if (!in_array(OfferGenre::ID_LOCATION, $subAdData["offer_genres"], true)) {
+            if (!in_array(OfferGenre::ID_LOCATION, $subAdData["offer_genres"])) {
                 $subAdData["rent_price"] = null;
             }
         }
@@ -446,7 +440,6 @@ class  AdService
         if ($isUpdate) {
             $this->updateSubAd($ad, $data["ad_type"], $subAdData);
         } else {
-            $subAdData["ad_id"] = $ad->id;
             $this->createSubAd($data["ad_type"], $subAdData);
         }
 
