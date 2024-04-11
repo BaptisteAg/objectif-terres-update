@@ -236,7 +236,7 @@ class Ad extends Model implements HasPresenter
      */
     public function threads()
     {
-        return $this->hasMany(Thread::class);
+        return $this->hasMany(Thread::class)->orderByDesc('updated_at');
     }
 
     /**

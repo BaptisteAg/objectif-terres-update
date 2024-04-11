@@ -116,7 +116,7 @@ Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->na
     Route::get('actualisation', 'ThreadsController@refreshUnreadMessages')->name('refreshUnreadMessages');
     Route::get('/', 'ThreadsController@index')->name('index');
     Route::post('creer', 'ThreadsController@create')->name('create');
-    Route::get('{thread}', 'MessagesController@show')->name('show');
+    Route::get('{id}', 'MessagesController@show')->name('show');
     Route::post('envoi', 'MessagesController@create')->name('send');
     Route::post('upload', 'MessagesController@uploadDocuments')->name('upload');
     Route::get('delete/{id}', 'MessagesController@delete')->name('delete-message');

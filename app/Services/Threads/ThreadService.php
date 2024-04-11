@@ -303,7 +303,7 @@ class ThreadService
 	public function convertContentToHTML(string $content): string
 	{
 		$content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
-		$content = strip_tags($content, '<strong><u><i><a><ul><li><br><img>');
+		$content = strip_tags($content, '<strong><u><i><a><ul><li><br><img><p>');
 //		$match_href = '|((https?://)?([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i';
 //		$match_hash = '|\B#([\d\w_]+)|i';
 //		$match_plus = '|\B\+([\d\w_]+)|i';
