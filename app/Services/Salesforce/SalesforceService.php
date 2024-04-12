@@ -226,7 +226,7 @@ class SalesforceService
         $role = (int)$roleAndDepartments[0] ?: 0;
 
         // Sync role
-        if ($localUser->role !== $role) {
+        if ((int)$localUser->role !== $role) {
             $localUser->role = $role;
 
             Notification::route('mail', [
