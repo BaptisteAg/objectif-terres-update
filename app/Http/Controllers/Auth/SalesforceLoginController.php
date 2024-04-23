@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Aacotroneo\Saml2\Http\Controllers\Saml2Controller;
 use Aacotroneo\Saml2\Saml2Auth;
 use App\Services\Salesforce\SalesforceService;
+use Illuminate\Http\Request;
 
 class SalesforceLoginController extends Saml2Controller
 {
@@ -94,11 +95,15 @@ class SalesforceLoginController extends Saml2Controller
      * @throws \OneLogin\Saml2\Error
      * @throws \Exception
      */
-    public function salesforceLogout()
+    public function salesforceLogout(Request $request)
     {
         $returnTo = route('saml2_sls', 'salesforce');
         $nameId = session('saml_name_id');
         $sessionIndex = session('saml_session_index');
+
+        auth()->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         $saml2Auth = new Saml2Auth(Saml2Auth::loadOneLoginAuthFromIpdConfig('salesforce'));
         return $saml2Auth->logout($returnTo, $nameId, $sessionIndex); //will actually end up in the sls endpoint
