@@ -225,6 +225,8 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         /** @var Ad $ad */
         $ad = Ad::find($id);
         $ad->attributionAd->ad_status_id = AdStatus::ARCHIVED_ID;
+        $ad->attributionAd->archived_at = Carbon::now();
+        $ad->attributionAd->published_on = null;
         $ad->attributionAd->save();
     }
 
@@ -1212,6 +1214,15 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                 $associateOfferAdEagerLoading
             )
         };
+    }
+
+    public function findAllPublishedAt(Carbon $date)
+    {
+        return $this->entity
+            ->whereHas('attributionAd', function (Builder $query) use ($date) {
+                $query->whereDate('published_on', '=', $date);
+            })
+            ->get();
     }
 
 

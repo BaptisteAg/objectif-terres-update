@@ -42,7 +42,7 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
         else {
             $date = Carbon::now()->subMinutes(30);
         }
-       $soonToExpireAds = $this->adService->findAdsPublishedSince($date);
+       $soonToExpireAds = $this->adService->findAdsPublishedAt($date);
 
         logger("Suggesting soon to expire (".$date.") ads owner to extend the date... ".$soonToExpireAds->count()." found.");
 

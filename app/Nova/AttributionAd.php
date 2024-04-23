@@ -84,6 +84,7 @@ class AttributionAd extends Resource
                     AdStatus::REFUSE_ID => "danger",
                     AdStatus::PENDING_MODERATION_STATUS_ID => "info",
                     AdStatus::ARCHIVED_ID => "warning",
+                    null => 'danger',
                 ])
                 ->labels(AdStatus::TOOLTIPS),
         ];

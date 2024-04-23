@@ -58,25 +58,25 @@
     @include('layouts.footer')
 </div>
 <script>
-    var $buoop = {
-        required: {e: -4, f: -3, o: -3, s: -1, c: -5},
-        reminder: 0,
-        reminderClosed: 1,
-        insecure: true,
-        unsupported: true,
-        api: 2020.12
-    };
-
-    function $buo_f() {
-        var e = document.createElement("script");
-        e.src = "//browser-update.org/update.min.js";
-        document.body.appendChild(e);
-    };
-    try {
-        document.addEventListener("DOMContentLoaded", $buo_f, false)
-    } catch (e) {
-        window.attachEvent("onload", $buo_f)
-    }
+    //var $buoop = {
+    //    required: {e: -4, f: -3, o: -3, s: -1, c: -2},
+    //    reminder: 0,
+    //    reminderClosed: 1,
+    //    insecure: true,
+    //    unsupported: true,
+    //    api: 2020.12
+    //};
+//
+    //function $buo_f() {
+    //    var e = document.createElement("script");
+    //    e.src = "//browser-update.org/update.min.js";
+    //    document.body.appendChild(e);
+    //};
+    //try {
+    //    document.addEventListener("DOMContentLoaded", $buo_f, false)
+    //} catch (e) {
+    //    window.attachEvent("onload", $buo_f)
+    //}
 </script>
 
 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>

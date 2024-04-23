@@ -157,9 +157,11 @@ class UserService
             return [];
         }
 
-        $userDepartments = User::with('departments')->find(auth()->id());
-        foreach ($userDepartments->departments as $department) {
-            array_push($supervisorLocationTerritoryCodes, $department->code);
+        /** @var User $user */
+        $user = User::with('departments')->find(auth()->id());
+
+        foreach ($user->departments as $department) {
+            $supervisorLocationTerritoryCodes[] = $department->code;
         }
         return $supervisorLocationTerritoryCodes;
     }

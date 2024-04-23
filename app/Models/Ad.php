@@ -154,8 +154,10 @@ class Ad extends Model implements HasPresenter
     ];
 
     const SALESFORCE_FORM_BY_AD_TYPE = [
-        'landSeekAd' => 'https://terredeliens--ot.sandbox.my.site.com/objectifterre/survey/runtimeApp.app?invitationId=0KiAU00000055zx&surveyName=ot_annonce_recherche_foncier&UUID=045e8e84-841d-4f59-bb04-c8776c667989',
-        'landOfferAd' => 'https://terredeliens--ot.sandbox.my.site.com/objectifterre/survey/runtimeApp.app?invitationId=0KiAU000000563B&surveyName=ot_annonce_offre_de_foncier&UUID=2e5cbe1b-5dc4-42a1-a134-e1676857d976'
+        'landSeekAd' => 'https://terredeliens.my.site.com/objectifterres/survey/runtimeApp.app?invitationId=0KibD0000000l6z&surveyName=annonce_recherche_de_foncier&UUID=54bcd02b-92d1-4ead-aaad-44c18c1dcb87',
+        'landOfferAd' => 'https://terredeliens.my.site.com/objectifterres/survey/runtimeApp.app?invitationId=0KibD0000000lAD&surveyName=annonce_offre_de_foncier&UUID=5ac6ea4f-7f6e-4a1e-8f2a-52072a7d1bf3',
+        'associateOfferAd' => 'https://terredeliens.my.site.com/objectifterres/survey/runtimeApp.app?invitationId=0KibD0000000l29&surveyName=annonce_recherche_d_associ_s_pour_ferme_en_activit&UUID=d37f60a2-f5b4-48ae-8b54-9aa06a7e31c6',
+        'associateSeekAd' => 'https://terredeliens.my.site.com/objectifterres/survey/runtimeApp.app?invitationId=0KibD0000000l8b&surveyName=annonce_recherche_d_associ_pour_projet&UUID=fc0c6ab5-abc6-4b9b-a61c-a75aafb03883'
     ];
 
     public function getSubAdAttribute(): LandSeekAd|LandOfferAd|JobOfferAd|JobSeekAd|AssociateSeekAd|AssociateOfferAd|null
