@@ -1004,9 +1004,9 @@ class  AdService
      * @param Carbon $date
      * @return Ad[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function findAdsPublishedSince(Carbon $date)
+    public function findAdsPublishedAt(Carbon $date)
     {
-        return $this->repository->findAllByPublishedOlderThan($date);
+        return $this->repository->findAllPublishedAt($date);
     }
 
     /**

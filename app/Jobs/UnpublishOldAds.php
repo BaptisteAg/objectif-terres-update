@@ -17,6 +17,9 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 class UnpublishOldAds implements ShouldQueue
@@ -56,22 +59,26 @@ class UnpublishOldAds implements ShouldQueue
         }
 
         // Log sql
-        DB::enableQueryLog();
+        ////DB::enableQueryLog();
 
 		$attributionAds = $this->attributionAdsService
             ->findAllPublishedBefore($before)
             ->filter(fn(AttributionAd $attributionAd) => $attributionAd->ad);
 
         // Log sql
-        $queries = DB::getQueryLog();
-        $formattedQueries = array_map(function ($query) {
-            return vsprintf(str_replace(['%', '?'], ['%%', '%s'], $query['query']), $query['bindings']);
-        }, $queries);
-        logger(implode("\n", $formattedQueries));
+        //$queries = DB::getQueryLog();
+        //$formattedQueries = array_map(function ($query) {
+        //    return vsprintf(str_replace(['%', '?'], ['%%', '%s'], $query['query']), $query['bindings']);
+        //}, $queries);
+        //logger(implode("\n", $formattedQueries));
 
-        echo("Unpublishing ads older than ".$before."... ".$attributionAds->count()." found.");
+        echo("Unpublishing ads older than ".$before."... ".$attributionAds->count()." found.\n");
 
         //dd($attributionAds->random()->toArray());
+
+        $progressBar = new ProgressBar(new ConsoleOutput(Output::VERBOSITY_NORMAL), $attributionAds->count());
+        $progressBar->setMaxSteps($attributionAds->count());
+        $progressBar->start();
 
 		foreach ($attributionAds as $attributionAd) {
 			/** @var User $userToNotify */
@@ -80,14 +87,19 @@ class UnpublishOldAds implements ShouldQueue
                 $userToNotify->notify(new UnpublishedAdNotification($attributionAd, $since));
             }
             catch (\Exception|\Error $e) {
-                echo($e->getMessage());
+                echo($e->getMessage() . "\n\n");
             }
 
             $attributionAd->ad_status_id = AdStatus::ARCHIVED_ID;
             $attributionAd->published_on = null;
+            $attributionAd->archived_at = Carbon::now();
             $attributionAd->save();
 
-            echo "Unpublished : ".$attributionAd->ad->title . " - " . $attributionAd->ad->created_at."\n";
+            echo "Unpublished : ".$attributionAd->ad->title . " - " . $attributionAd->ad->created_at . "\n";
+            $progressBar->advance();
+            $progressBar->display();
 		}
+
+        $progressBar->finish();
 	}
 }

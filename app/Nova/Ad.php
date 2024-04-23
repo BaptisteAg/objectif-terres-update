@@ -3,10 +3,13 @@
 namespace App\Nova;
 
 use App\Models\AdStatus;
+use App\Nova\Filters\DepartmentFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -75,12 +78,13 @@ class Ad extends Resource
         return [
             ID::make()->sortable(),
             Text::make(__('Titre'), 'title')->resolveUsing(fn($title) => Str::words($title, 10)),
+            BelongsTo::make('Départment', 'department', Department::class)
+                ->searchable()
+                ->sortable(),
             BelongsTo::make('Annonceur', 'userPp', User::class)
                 ->searchable()
-                ->sortable(),
-            BelongsTo::make('Modérateur', 'userModerator', UserModerator::class)
-                ->searchable()
-                ->sortable(),
+                ->sortable()
+                ->readonly(),
             Badge::make('Statut', 'attributionAd.ad_status_id')
                 ->map([
                     '' => 'danger',
@@ -91,6 +95,9 @@ class Ad extends Resource
                     AdStatus::ARCHIVED_ID => "warning",
                 ])
                 ->labels(array_map(fn($tooltip) => Str::words($tooltip, 5), AdStatus::TOOLTIPS)),
+
+            HasOne::make('Modération', 'attributionAd', AttributionAd::class)
+                ->hideFromIndex(),
         ];
     }
 
@@ -113,7 +120,7 @@ class Ad extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [new DepartmentFilter()];
     }
 
     /**
@@ -145,6 +152,6 @@ class Ad extends Resource
 
     public function authorizedToUpdate(Request $request)
     {
-        return false;
+        return true;
     }
 }

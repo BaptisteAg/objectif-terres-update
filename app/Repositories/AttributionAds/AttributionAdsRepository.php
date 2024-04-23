@@ -99,6 +99,9 @@ class AttributionAdsRepository extends AbstractRepository implements Attribution
 	{
 		return $this->entity
             ->with('ad', 'ad.userPp')
+            ->whereHas('ad', function (Builder $query) {
+                $query->where('is_draft', '=', 0);
+            })
 			->where("published_on", '<=', $date->format('Y-m-d H:i:s'))
 			->where('ad_status_id', [AdStatus::APPROVE_ID])
 			->get();

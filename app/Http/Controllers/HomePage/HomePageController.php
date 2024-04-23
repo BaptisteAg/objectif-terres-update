@@ -31,8 +31,10 @@ class HomePageController extends Controller
 
         $adsQuery = Ad::query()
             ->whereHas('attributionAd', function (Builder $query) {
-                $query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
+                $query->where('ad_status_id', '=', AdStatus::APPROVE_ID)
+                    ->whereNull('archived_at');
             })
+            ->whereNull('deleted_at')
             ->where('is_draft', '=', 0)
             ->take(4)
             ->orderBy('created_at', 'desc');
