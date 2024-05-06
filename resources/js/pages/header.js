@@ -19,8 +19,8 @@ Vue.component('header-page', {
         return {
             offerTypeSelected: hasOld ? this.oldSearchValues.offer_type : 'OfferAd',
             adCategorySelected: hasOld ? this.oldSearchValues.ad_category : 'land',
-            selectedRegions: hasOld ? this.oldSearchValues.regions_location_researches_ids : [],
-            selectedDepartments: hasOld ? this.oldSearchValues.departments_location_researches_ids : [],
+            selectedRegions: hasOld ? this.oldSearchValues.regions : [],
+            selectedDepartments: hasOld ? this.oldSearchValues.departments : [],
             selectedCities: hasOld ? this.oldSearchValues.cities_location_researches_ids : [],
             selectedProductions: hasOld ? this.oldSearchValues.production_genres : [],
             selectedBioCertifications: hasOld ? this.oldSearchValues.bio_certifications : [],

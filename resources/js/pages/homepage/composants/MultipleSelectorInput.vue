@@ -87,7 +87,7 @@ export default {
     getSelectedLabel() {
       if (!this.selectedOptions.length) return 'Sélectionnez un' + (this.unitLabelGender === 'f' ? 'e' : '') + ' ' + this.unitLabel;
       if (this.selectedOptions.length === this.listOptions.length) return 'Tou' + (this.unitLabelGender === 'f' ? 'te' : '') + 's les ' + this.unitLabel + 's';
-      return this.selectedOptions.map(id => this.listOptions.find(listOption => listOption.id === id).name).join(', ');
+      return this.selectedOptions.map(id => this.listOptions.find(listOption => listOption.id === id)?.name).filter(v => v).join(', ');
     },
     removeSelectedOption(option) {
       this.selectedOptions = this.selectedOptions.filter(o => o !== option);

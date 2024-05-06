@@ -80,6 +80,7 @@
 @section('main-content')
     <research-tags :productions_searched="{{ json_encode($searchedTypeOfProductions)}}"
                    :regions_searched="{{ json_encode($searchedRegionNames) }}"
+                   :departments_searched="{{ json_encode($searchedDepartmentNames) }}"
                    :surface_searched="{{ json_encode($searchedSurface) }}"
                    :transmissions="{{ json_encode($transmissions) }}"
                    :water_access="{{ json_encode($waterAccess) }}"

@@ -34,7 +34,7 @@ window.regionMapInit  = async function (mapId, queryString) {
         featureGroup.addLayer(polygon);
 
         polygon.addEventListener('click', _ => {
-            location.href = "/recherche?" + queryString + '&departments_location_researches_ids[]=' + polygonData.department_id;
+            location.href = "/recherche?" + queryString + '&departments[]=' + polygonData.department_id;
         });
 
         mapController.bindTooltip(polygon, polygonData.ads_count.toString(), {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Researches;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\NotifyCreationAlertResearch;
+use App\Models\Department;
 use App\Models\EducationLevel;
 use App\Models\InstallationType;
 use App\Models\JobOfferType;
@@ -42,15 +43,16 @@ class ResearchesController extends Controller
 
         $hasDepartmentPolygons = false;
 
-        if (!empty($request->get("regions_location_researches_ids"))) {
-            $regionIds = $request->get("regions_location_researches_ids");
+        if (!empty($request->get("regions"))) {
+            $regionIds = $request->get("regions");
 
-            if (count($regionIds) === 1 && !$request->get("departments_location_researches_ids")) {
+            if (count($regionIds) === 1 && !$request->get("departments")) {
                 $hasDepartmentPolygons = true;
             }
         }
 
-        $searchedRegionNames = Region::whereIn('id', $request->get("regions_location_researches_ids") ?? [])->pluck('name')->toArray();
+        $searchedRegionNames = Region::whereIn('id', $request->get("regions") ?? [])->pluck('name')->toArray();
+        $searchedDepartmentNames = Department::whereIn('id', $request->get("departments") ?? [])->pluck('name')->toArray();
         $searchedTypeOfProductions = ProductionGenre::whereIn('id', $request->get("production_genres") ?? [])->pluck('name')->toArray();
         $searchedSurface = [
             'min' => $request->get('surfaces_research_min'),
@@ -79,7 +81,8 @@ class ResearchesController extends Controller
 		return view('pages.researches', compact(
             'ads', 'adsType', 'request', 'hasDepartmentPolygons',
             'searchedRegionNames', 'searchedTypeOfProductions', 'searchedSurface', 'transmissions',
-            'waterAccess', 'keywords', 'searchedPrice', 'searchedRent', 'installation', 'educationsSearched', 'experiencesSearched'
+            'waterAccess', 'keywords', 'searchedPrice', 'searchedRent', 'installation', 'educationsSearched', 'experiencesSearched',
+            'searchedDepartmentNames'
         ));
 	}
 

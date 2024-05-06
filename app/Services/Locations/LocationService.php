@@ -57,7 +57,7 @@ class LocationService
     {
         $ads = $this->researchService->filter($request, ['departments', 'department', 'cities', 'cities.department'])->get();
 
-        $departmentIds = Region::find($request->get('regions_location_researches_ids')[0])
+        $departmentIds = Region::find($request->get('regions')[0])
             ->departments
             ->pluck('id');
 
