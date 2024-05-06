@@ -60,7 +60,7 @@ window.homepageMapInit  = async function (id) {
                 location.href = "/recherche?" +
                     "offer_type=" + formData.get('offer_type') +
                     "&ad_category=" + formData.get('ad_category') +
-                    '&regions_location_researches_ids[]=' + polygonData.region_id;
+                    '&regions[]=' + polygonData.region_id;
             });
 
             mapController.bindTooltip(polygon, polygonData.ads_count.toString(), {

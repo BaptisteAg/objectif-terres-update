@@ -26,7 +26,9 @@
 {{--            background-color: #F8F3EE;--}}
 {{--        }--}}
 {{--    </style>--}}
+{{--
     <script src="https://kit.fontawesome.com/c97506cdaa.js" crossorigin="anonymous"></script>
+--}}
     <!-- Hotjar Tracking Code for https://www.objectif-terres.org/ -->
     <!--    <script>
             (function(h,o,t,j,a,r){

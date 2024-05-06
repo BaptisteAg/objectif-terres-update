@@ -116,7 +116,7 @@ class LocationableController extends Controller
                 'error' => 'Aucune catégorie d\'annonce séléctionnée'
             ]);
         }
-        if (!$request->has('regions_location_researches_ids')) {
+        if (!$request->has('regions')) {
             return response()->json([
                 'error' => 'Aucune région séléctionnée'
             ]);

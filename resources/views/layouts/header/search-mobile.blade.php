@@ -42,7 +42,7 @@
                             :options="{{ $regionsWithAll }}"
                             v-model="selectedRegions"
                             :multiple="true"
-                            name="regions_location_researches_ids[]"
+                            name="regions[]"
                             selected-count-text="région(s) sélectionnée(s)"
                             placeholder="Choisissez une/des région(s)">
                     </multi-select>

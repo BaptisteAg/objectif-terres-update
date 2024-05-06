@@ -102,9 +102,9 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \App\Models\FavoriteAd|null $currentUserFavoriteAd
  * @method static Builder|Ad whereDepartmentId($value)
  * @property int|null $third_party_ad_user_id
- * @property-read \App\Models\AssociateOfferAd|null $associateOfferAd
+ * @property-read \App\Models\AssociateOfferAd|null $associateOfferAd²²
  * @property-read \App\Models\AssociateSeekAd|null $associateSeekAd
- * @property-read \App\Models\Department|null $department
+ * @property-read  \App\Models\Department|null $department
  * @property-read \App\Models\Department|null $main_department
  * @property-read string|null $type
  * @property-read \App\Models\ThirdPartyAdUser|null $thirdPartyAdUser
@@ -124,7 +124,7 @@ class Ad extends Model implements HasPresenter
     private $cached_type = null;
 
     /**
-     * @var array
+     * @var array²
      */
     protected $fillable = [
         'project_id',

@@ -5,7 +5,7 @@
 				:options="{{ json_encode($departments) }}"
 				:multiple="true"
 				v-model = "selectedDepartments"
-				name="departments_location_researches_ids[]"
+				name="departments[]"
 				selected-count-text="département(s) sélectionné(s)"
 				placeholder="Choisissez un/des département(s)"
 				:close-on-select="true">

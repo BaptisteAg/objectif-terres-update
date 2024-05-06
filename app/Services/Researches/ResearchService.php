@@ -222,16 +222,16 @@ class ResearchService
             }
 
         } // filter by departments locations and all locations related to the departments selected
-        else if ($filters->has('departments_location_researches_ids')) {
-            $departmentsCodes = Department::whereIn('id', $filters->input('departments_location_researches_ids'))->get('code')->toArray();
-            $query->filterLocations('departments', $filters->input('departments_location_researches_ids'));
+        else if ($filters->has('departments')) {
+            $departmentsCodes = Department::whereIn('id', $filters->input('departments'))->get('code')->toArray();
+            $query->filterLocations('departments', $filters->input('departments'));
             $query->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
         } // filter by regions locations and all locations related to the regions selected
-        else if ($filters->has('regions_location_researches_ids')) {
-            if (!in_array(-1, $filters->input('regions_location_researches_ids'))) {
-                $regionsCodes = Region::whereIn('id', $filters->input('regions_location_researches_ids'))->get('code')->toArray();
+        else if ($filters->has('regions')) {
+            if (!in_array(-1, $filters->input('regions'))) {
+                $regionsCodes = Region::whereIn('id', $filters->input('regions'))->get('code')->toArray();
                 $departmentsCodes = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
-                $query->filterLocations('regions', $filters->input('regions_location_researches_ids'));
+                $query->filterLocations('regions', $filters->input('regions'));
                 $query->filterSubLocations('departments', $regionsCodes, 'departments.region_code');
                 $query->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
             }
