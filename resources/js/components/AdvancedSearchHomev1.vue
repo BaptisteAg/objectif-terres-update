@@ -190,7 +190,7 @@ export default {
 			params.append('ad_category', this.adsForm.category);
 
 			if (this.adsForm.localisation.length > 0) {
-				this.adsForm.localisation.forEach(id => params.append('regions_location_researches_ids[]', id));
+				this.adsForm.localisation.forEach(id => params.append('regions[]', id));
 				console.log(this.adsForm.localisation)
 			}
 

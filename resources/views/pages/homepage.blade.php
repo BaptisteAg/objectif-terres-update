@@ -11,6 +11,7 @@
     <advanced-search
             :productions="{{$productionGenres}}"
             :regions="{{ $regionsWithAll }}"
+            :departments="{{ $departments }}"
             :installation="{{ $installationTypes }}"
             :formations="{{ $educationLevels }}"
             :experiences="{{ $jobOfferTypes }}"

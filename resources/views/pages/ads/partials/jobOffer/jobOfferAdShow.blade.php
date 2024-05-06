@@ -65,10 +65,17 @@
         'secondaryProductionLabel' => 'Production secondaires et envisageables',
     ])
 
+    @if($ad->jobOfferAd->job_description)
+        <div>
+            <h3 class="title is-4">Description du poste proposé</h3>
+            <p>{!! nl2br(strip_tags($ad->jobOfferAd->job_description ?? "")) !!}</p>
+        </div>
+    @endif
+
     @if($ad->jobOfferAd->experience_farming)
         <div>
             <h3 class="title is-4">Expérience souhaitée dans le milieu agricole</h3>
-            <p>{!! nl2br($ad->jobOfferAd->experience_farming ?? "") !!}</p>
+            <p>{!! nl2br(strip_tags($ad->jobOfferAd->experience_farming ?? "")) !!}</p>
         </div>
     @endif
 
