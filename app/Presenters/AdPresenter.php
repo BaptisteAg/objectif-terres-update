@@ -300,31 +300,8 @@ class AdPresenter extends BasePresenter
         $ad = $this->wrappedObject;
 
         if ($ad->landSeekAd) {
-            if ($ad->landSeekAd->surface_range_max) {
-                $max = $ad->landSeekAd->surface_range_max;
-                $min = $ad->landSeekAd->surface_range_min;
-
-                if ($min === 0 && $max === 0) {
-                    return "";
-                }
-
-                if ($max === 1000000 && $min === 0) {
-                    return "De 1 à + de 100ha";
-                }
-                if ($max === 1000000) {
-                    $max = '+ de 100';
-                }
-
-                if ($min && $max === 1000000) {
-                    return "Surface non précisée";
-                }
-                if ($min) {
-                    return "De " . $min . "ha à " . $max . "ha";
-                }
-                return "Moins de " . $max . "ha";
-            } else if ($ad->landSeekAd->surface_range_min) {
-                $min = $ad->landSeekAd->surface_range_min;
-                return "Plus de " . $min . "ha";
+            if ($ad->landSeekAd->surface) {
+                return $ad->landSeekAd->surface . " ha";
             } else {
                 return "Surface non renseignée";
             }

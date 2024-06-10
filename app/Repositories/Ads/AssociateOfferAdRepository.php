@@ -51,6 +51,7 @@ class AssociateOfferAdRepository extends AbstractRepository
         $associateOfferAd->productionGenres()->sync($productionGenres);
 
         $productionGenresSecondary = $data["secondary_production_genres"] ?? [];
+        $associateOfferAd->productionGenresSecondary()->detach();
         foreach($productionGenresSecondary as $productionGenreSecondary) {
             $associateOfferAd->productionGenresSecondary()->attach($productionGenreSecondary, ['type' => 'secondary']);
         }

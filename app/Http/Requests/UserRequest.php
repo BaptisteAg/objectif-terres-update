@@ -37,7 +37,7 @@ class UserRequest extends FormRequest
             'name' => ['required', 'string', 'max:1000', 'regex:/^[\pL\s\-]+$/u'],
             'first_name' => ['required', 'string', 'max:255', 'regex:/^[\pL\s\-]+$/u'],
             'phone' => ['nullable', 'string', 'min:10', 'max:255'],
-            'address' => ['nullable', 'string', 'min:5'],
+            'street' => ['nullable', 'string', 'min:5'],
             'civility' => ['required'],
             'profile' => ['required'],
 
@@ -51,7 +51,9 @@ class UserRequest extends FormRequest
             'city_id' => ['nullable', "integer"],
             'current_password' => ['min:5'],
             'password' => ['confirmed', 'min:5'],
-            'user_id' => ['integer']
+            'user_id' => ['integer'],
+
+            'accept_communication' => ['required', 'boolean'],
 
         ], $emailRule);
     }
