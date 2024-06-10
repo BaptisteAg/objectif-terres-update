@@ -26,7 +26,7 @@
                             unit-label="région"
                             unit-label-gender="f"
                             :list-options="regions"
-                            v-model="adsForm.selectedLocalisation"
+                            v-model="adsForm.selectedRegions"
                             :has-toggle-all="true"
                         >
                         </multiple-selector>
@@ -235,7 +235,7 @@ export default {
             },
             adsForm: savedState.adsForm || {
                 selectedCategory: "all",
-                selectedLocalisation: [],
+                selectedRegions: [],
                 selectedDepartments: [],
                 selectedProductions: [],
                 selectedExperiences: [],
@@ -270,7 +270,7 @@ export default {
         this.filterDepartments();
     },
     watch: {
-        'adsForm.selectedLocalisation': function() {
+        'adsForm.selectedRegions': function() {
             this.filterDepartments();
         },
         adsForm: {
@@ -291,9 +291,9 @@ export default {
     },
     methods: {
         filterDepartments() {
-            let regions = this.adsForm.selectedLocalisation;
+            let regions = this.adsForm.selectedRegions;
             if(regions.length === 0) {
-               regions = this.regions
+               regions = this.regions.map(region => region.id);
             }
             const filteredRegionCodes = this.regions.filter(region => regions.includes(region.id)).map(region => region.code);
             this.filteredDepartments = this.departments.filter(department => filteredRegionCodes.includes(department.region_code));
@@ -338,8 +338,8 @@ export default {
             const params = new URLSearchParams();
             params.append('ad_category', this.adsForm.selectedCategory);
 
-            if (this.adsForm.selectedLocalisation.length > 0) {
-                this.adsForm.selectedLocalisation.forEach(id => params.append('regions[]', id));
+            if (this.adsForm.selectedRegions.length > 0) {
+                this.adsForm.selectedRegions.forEach(id => params.append('regions[]', id));
             }
             if(this.adsForm.selectedDepartments.length > 0) {
                 this.adsForm.selectedDepartments.forEach(id => params.append('departments[]', id));
