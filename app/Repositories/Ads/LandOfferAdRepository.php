@@ -54,6 +54,7 @@ class LandOfferAdRepository extends AbstractRepository implements LandOfferAdRep
 
         $productionGenresSecondary = $data["secondary_production_genres"] ?? [];
 		$landOfferAd->productionGenresSecondary()->detach();
+        dd($landOfferAd->productionGenresSecondary->toArray());
 		foreach ($productionGenresSecondary as $productionGenreId) {
 		    if($productionGenreId !== 'other') {
                 $landOfferAd->productionGenresSecondary()->attach($productionGenreId, ["type" => "secondary"]);

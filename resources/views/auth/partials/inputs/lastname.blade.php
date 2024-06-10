@@ -3,7 +3,10 @@
     <div class="control has-icons-left">
         <input id="name" name="name" class="input is-rounded @error('name')is-danger @enderror"
                type="text"
-               value="{{ old('name') }}" required autocomplete="name" autofocus
+               value="{{ old('name') }}"
+               required
+               autocomplete="lastname"
+               autofocus
                placeholder="Votre nom...">
         <span class="icon is-small is-left">
             <i class="fas fa-user"></i>

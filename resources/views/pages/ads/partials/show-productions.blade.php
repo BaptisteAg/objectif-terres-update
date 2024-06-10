@@ -1,4 +1,4 @@
-<?php /** @var \App\Models\LandSeekAd|\App\Models\LandOfferAd $subAd */ ?>
+<?php /** @var \App\Models\LandSeekAd|\App\Models\LandOfferAd|\App\Models\AssociateOfferAd $subAd */ ?>
 
 <div>
     <h3 class="title is-4">{{ $mainProductionLabel }}</h3>

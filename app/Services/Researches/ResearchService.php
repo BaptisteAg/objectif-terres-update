@@ -356,6 +356,21 @@ class ResearchService
         }
 
 
+        if ($filters->has('offer_genres')) {
+            $query->filterWhereHasIn($filters->input('offer_genres'), $adType . '.offerGenres', 'offer_genres.id');
+        }
+
+        if($filters->has('surfaces_research_min') && $filters->input('surfaces_research_min') !== "0") {
+            if (in_array($adType, ['landOfferAd', 'associateOfferAd', 'landSeekAd'])) {
+                $query->filterWhereHasWhere((int)$filters->input('surfaces_research_min'), $adType, '>=', 'surface');
+            }
+        }
+        if($filters->has('surfaces_research_max') && $filters->input('surfaces_research_max') !== "0") {
+            if (in_array($adType, ['landOfferAd', 'associateOfferAd', 'landSeekAd'])) {
+                $query->filterWhereHasWhere((int)$filters->input('surfaces_research_max'), $adType, '<=', 'surface');
+            }
+        }
+
 
 		if ($filters->has('order') && $filters->has('sort')) {
 			if ($filters->input('sort') === 'date') {

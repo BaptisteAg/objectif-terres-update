@@ -124,7 +124,7 @@ class Ad extends Model implements HasPresenter
     private $cached_type = null;
 
     /**
-     * @var array²
+     * @var array
      */
     protected $fillable = [
         'project_id',
