@@ -30,6 +30,7 @@
         "omniphx/forrest": "^2.5",
         "ozankurt/repoist": "^3.2",
         "predis/predis": "^1.1",
+        "symfony/mailgun-mailer": "^6.0",
         "vedmant/laravel-feed-reader": "^1.4"
     },
     "require-dev": {
