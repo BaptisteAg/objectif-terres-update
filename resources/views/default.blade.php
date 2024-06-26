@@ -93,7 +93,7 @@
         message.style.display = 'none';
     });
 </script>
-<script src="{{ mix('js/app.js') }}?4"></script>
+<script src="{{ mix('js/app.js') }}?5"></script>
 <script>
 </script>
 <style>
