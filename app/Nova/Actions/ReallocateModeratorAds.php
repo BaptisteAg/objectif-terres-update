@@ -24,8 +24,14 @@ class ReallocateModeratorAds extends Action
     public function __construct()
     {
         $this->availableModerators = User::whereIn('role', [1,3,4])
-            ->orderBy('name')
             ->get()
+            ->concat(
+                User::where('role', 2)
+                    ->whereHas('userPermissions', function ($query) {
+                        $query->where('permission', 1);
+                    })->get()
+            )
+            ->sortBy('name')
             ->keyBy('id')
             ->map(function (User $user) {
                 return $user->name . ' ' . $user->first_name . ' (' . $user->email . ')';
