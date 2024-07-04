@@ -10,6 +10,8 @@ use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use App\Models\User;
+use Laravel\Nova\Fields\Select;
 
 class AttributionAd extends Resource
 {
@@ -73,10 +75,26 @@ class AttributionAd extends Resource
      */
     public function fields(Request $request)
     {
+        $moderators1 = User::whereIn('role', [1, 3, 4])->get();
+
+        $moderators2 = User::where('role', 2)
+            ->whereHas('userPermissions', function ($query) {
+                $query->where('permission', 1);
+            })
+            ->get();
+
+        $moderators = $moderators1->concat($moderators2)
+            ->sortBy('name')
+            ->keyBy('id')
+            ->map(function (User $user) {
+                return $user->name . ' ' . $user->first_name . ' (' . $user->email . ')';
+            });
+
         return [
             Text::make('ID', 'ad.id')->sortable()->readonly(),
             BelongsTo::make('Annonce', 'ad', Ad::class)->readonly(),
-            BelongsTo::make('Modérateur', 'userModerator', UserModerator::class),
+            //BelongsTo::make('Modérateur', 'userModerator', UserModerator::class),
+            Select::make('Modérateur', 'user_moderator_id')->options($moderators),
             Badge::make('Statut', 'ad_status_id')
                 ->map([
                     AdStatus::APPROVE_ID => "success",
