@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use App\Models\User;
 
 class AttributionAd extends Resource
 {
@@ -91,9 +92,8 @@ class AttributionAd extends Resource
         return [
             Text::make('ID', 'ad.id')->sortable()->readonly(),
             BelongsTo::make('Annonce', 'ad', Ad::class)->readonly(),
-            BelongsTo::make('Modérateur', 'userModerator', UserModerator::class),
             Select::make('Modérateur','user_moderator_id')->options($moderators),
-	    Badge::make('Statut', 'ad_status_id')
+            Badge::make('Statut', 'ad_status_id')
                 ->map([
                     AdStatus::APPROVE_ID => "success",
                     AdStatus::PENDING_ID => "info",
