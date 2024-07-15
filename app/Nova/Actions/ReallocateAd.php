@@ -43,9 +43,20 @@ class ReallocateAd extends Action
      */
     public function fields()
     {
-        $users = DB::table("users")->whereIn('role', [1,2,3,4])
-            ->orderBy('name', 'asc')
-            ->pluck('name','id');
+        $users = User::whereIn('role', [1,3,4])
+            ->get()
+            ->concat(
+                User::where('role', 2)
+                    ->whereHas('userPermissions', function ($query) {
+                        $query->where('permission', 1);
+                    })->get()
+            )
+            ->sortBy('name')
+            ->keyBy('id')
+            ->map(function (User $user) {
+                return $user->name . ' ' . $user->first_name . ' (' . $user->email . ')';
+            });
+
         return [
             Select::make('Utilisateur','new_user_id')->options($users),
         ];

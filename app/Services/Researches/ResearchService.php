@@ -238,10 +238,7 @@ class ResearchService
         }
 
         if (!is_null($filters->input('surfaces_research_max')) && $filters->input('surfaces_research_max') !== "0" && $filters->input('surfaces_research_max') !== "100000000000") {
-            if ($adType === 'landSeekAd') {
-                $query->filterWhereHasWhere((int)$filters->input('surfaces_research_max'), $adType, '<=', 'surface_range_max');
-            }
-            else if (in_array($adType, ['landOfferAd', 'associateOfferAd'])) {
+            if (in_array($adType, ['landOfferAd', 'associateOfferAd', 'landSeekAd'])) {
                 $query->filterWhereHasWhere((int)$filters->input('surfaces_research_max'), $adType, '<=', 'surface');
             }
         }

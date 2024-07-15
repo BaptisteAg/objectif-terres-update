@@ -1106,7 +1106,13 @@ class  AdService
         $toDate = Carbon::createFromFormat('Y-m-d', $to);
 
         return Ad::withTrashed()
-            ->where('is_draft', false)
+            ->whereNull('support_request_territory_id')
+            ->whereHas('attributionAd', function (Builder $query) {
+                $query->where('ad_status_id', '=', AdStatus::APPROVE_ID)
+                    ->whereNull('archived_at');
+            })
+            ->whereNull('deleted_at')
+            ->where('is_draft', '=', 0)
             ->whereHas('attributionAd')
             ->whereHas('userPp')
             ->where(fn($q) => $q
@@ -1114,7 +1120,6 @@ class  AdService
                 ->orWhereBetween('updated_at', [$fromDate, $toDate])
                 ->orWhereBetween('deleted_at', [$fromDate, $toDate])
             )
-            ->limit(3)
             ->get();
     }
 }
