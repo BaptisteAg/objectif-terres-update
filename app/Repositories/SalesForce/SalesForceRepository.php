@@ -57,6 +57,15 @@ class SalesForceRepository
         return $result["records"];
     }
 
+    public function findAll(string $objectName, array $select = ["Id"])
+    {
+        $query = "SELECT ".implode(',', $select)." FROM $objectName";
+
+        $result = $this->authenticated(fn() => $this->forrest->query($query));
+
+        return $result["records"];
+    }
+
     /**
      * @param $objectName
      * @param array $params
@@ -78,11 +87,24 @@ class SalesForceRepository
      * @param $sfId
      * @param array $params
      */
-    public function upsert($objectName, $id, array $params)
+    public function update($objectName, $id, array $params)
     {
         return $this->authenticated(fn() => $this->forrest->sobjects($objectName. '/' . $id,[
             'method' => 'patch',
             'body'   => $params
+        ]));
+    }
+
+    public function batchCreate($objectName, $rows)
+    {
+        return $this->authenticated(fn() => $this->forrest->composite('batch', [
+            'allOrNone' => true,
+            'records' => array_map(fn($row) => [
+                'method' => 'POST',
+                'url' => '/services/data/v52.0/sobjects/'.$objectName.'/',
+                'referenceId' => $row['referenceId'],
+                'body' => $row['body']
+            ], $rows)
         ]));
     }
 
@@ -92,7 +114,7 @@ class SalesForceRepository
      */
     public function updateUserPassword($userId, $newPassword)
     {
-        $this->upsert('User', $userId . '/password', [
+        $this->update('User', $userId . '/password', [
             "NewPassword" => $newPassword
         ]);
     }
@@ -123,31 +145,5 @@ class SalesForceRepository
         $this->authenticate();
 
         return $closure();
-    }
-
-    public function deleteWhere(string $table, array $where)
-    {
-        $query = "SELECT Id FROM $table WHERE ";
-        array_walk($where, function (&$value, $key) {
-            if(is_array($value)) {
-                $value = $key . " IN ('" . implode("','", $value) . "')";
-            }
-            else {
-                $value = $key . " = '" . $value . "'";
-            }
-        });
-        $query .= implode(' AND ', $where);
-
-        $result = $this->authenticated(fn() => $this->forrest->query($query));
-
-        if(!count($result["records"])) {
-            return null;
-        }
-
-        $ids = array_map(fn($record) => $record["Id"], $result["records"]);
-
-        return collect($ids)->map(fn($id) => $this->authenticated(fn() =>
-            $this->forrest->query("DELETE FROM $table WHERE Id = '$id'")
-        ));
     }
 }
