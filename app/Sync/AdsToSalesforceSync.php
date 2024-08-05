@@ -38,8 +38,13 @@ class AdsToSalesforceSync
             ...AdRepository::getLocationEagerLoading()
         ]);
 
-        $ads = $ads->filter(function ($ad) {
-            return $ad->userPp->id === 14117;
+        $passed = false;
+        $ads = $ads->filter(function ($ad) use(&$passed) {
+            //if($ad->userPp->id === 14104) {
+            if($ad->id === 5128) {
+                $passed = true;
+            }
+            return $passed;
         });
 
         \DB::enableQueryLog();

@@ -24,9 +24,9 @@ class AdsExport implements FromView,  WithTitle, WithColumnWidths
 	 */
 	public function view(): View
 	{
-		return view('export.ads_list', [
-			'ads' => $this->ads
-		]);
+        return view('export.ads_list', [
+            'ads' => $this->ads
+        ]);
 	}
 
 	public function columnWidths(): array

@@ -99,27 +99,28 @@
 
                     <div class="" style="float:right">
                         <div class="buttons are-medium">
-                            <a href="{{route('supervisor.export')}}" class="button is-light is-link" id="exportButton">
-                            <span class="icon">
-                                <i class="fas fa-table"></i>
-                            </span>
-                                <span>Exporter cette page</span>
-                            </a>
                             <script>
-                                document.getElementById("exportButton").addEventListener("click", function (e) {
-                                    e.preventDefault()
+                                function exportPage() {
+                                    console.log("ppl")
 
                                     const button = document.getElementById("exportButton")
                                     // Get all field data from the form
                                     let urlParts = location.href.split("?")
                                     let queryString = urlParts[1]
+
                                     if(location.href.indexOf("recherche") !== -1) {
                                         queryString = "search=1" + (queryString ? '&' : '') + queryString
                                     }
-                                    window.open(button.href + "?" + queryString)
+                                    window.open( "{{route('supervisor.export')}}?" + queryString)
                                     document.getElementById("exportLoader").innerText = "Veuillez patienter un instant pour l'export.."
-                                })
+                                }
                             </script>
+                            <a href="javascript:exportPage()" class="button is-light is-link" id="exportButton">
+                            <span class="icon">
+                                <i class="fas fa-table"></i>
+                            </span>
+                                <span>Exporter cette page</span>
+                            </a>
 
                         </div>
                         <div id="exportLoader"></div>

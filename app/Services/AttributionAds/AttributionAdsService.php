@@ -386,7 +386,7 @@ class AttributionAdsService
         $attributionAd->archived_at = null;
         $attributionAd->refusal_type_id = null;
 
-		$attributionAd->ad->userPp->notify(new AcceptedAdNotification($attributionAd));
+		$attributionAd->ad->userPp?->notify(new AcceptedAdNotification($attributionAd));
 
 		$attributionAd->save();
 

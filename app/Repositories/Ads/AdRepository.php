@@ -1129,7 +1129,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             'landOfferAd',
             'jobOfferAd',
             'jobSeekAd'
-        ], static::getLocationEagerLoading(), static::getAttributionEagerLoading());
+        ], static::getLocationEagerLoading(), static::getAttributionEagerLoading(), static::getSubAdEagerLoading());
     }
 
     public static function getLocationEagerLoading()
@@ -1155,6 +1155,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             'project.projectStatus',
             'attributionAd',
             'attributionAd.adStatus',
+            'attributionAd.userModerator',
         ];
     }
 
