@@ -94,18 +94,6 @@ class SupervisorsController extends BaseController
             $ads = $this->adService->findAllNotAssignedProjectsByUserSupervisor($paginate);
         }
 
-        /*view('export.pp_list', [
-            'ads' => $ads
-        ]);
-
-        view('export.projects_list', [
-            'ads' => $ads
-        ]);
-
-        return view('export.ads_list', [
-            'ads' => $ads->take(2)
-        ]);*/
-
         return (new SupervisorsExport($ads))->download(
             'export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx',
             \Maatwebsite\Excel\Excel::XLSX

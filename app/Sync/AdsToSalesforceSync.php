@@ -1,8 +1,10 @@
 <?php namespace App\Sync;
 
+use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\AssociateOfferAd;
 use App\Models\AssociateSeekAd;
+use App\Models\BioCertification;
 use App\Models\Country;
 use App\Models\InstallationType;
 use App\Models\JobOfferAd;
@@ -11,6 +13,7 @@ use App\Models\LandOfferAd;
 use App\Models\LandSeekAd;
 use App\Models\OfferGenre;
 use App\Models\User;
+use App\Presenters\AdPresenter;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\SalesForce\SalesForceRepository;
 use Carbon\Carbon;
@@ -38,20 +41,20 @@ class AdsToSalesforceSync
             ...AdRepository::getLocationEagerLoading()
         ]);
 
-        $passed = false;
-        $ads = $ads->filter(function ($ad) use(&$passed) {
-            //if($ad->userPp->id === 14104) {
-            if($ad->id === 5128) {
-                $passed = true;
-            }
-            return $passed;
-        });
+        //$ads = $ads->filter(function ($ad) use(&$passed) {
+        //    //if($ad->userPp->id === 14104) {
+        //    if($ad->id === 7466) {
+        //        return true;
+        //    }
+        //    return false;
+        //});
 
         \DB::enableQueryLog();
 
         $users = $ads->pluck('userPp')->unique('email')->values();
 
-        $existingContacts = $this->fetchExistingContactsInChunks($users->pluck('email')->toArray());
+        $existingContactsById = $this->fetchExistingContactsInChunks($users->pluck('OT_user_id__c')->toArray());
+        $existingContactsByEmail = $this->fetchExistingContactsInChunks($users->pluck('email')->toArray());
 
         $output->text("Upserting " . count($users) . " users");
 
@@ -59,7 +62,7 @@ class AdsToSalesforceSync
         $progressBar->setFormat('custom');
 
         $upsertedContacts = $users
-            ->map(function (User $user, $i) use ($users, $progressBar, $output, $existingContacts) {
+            ->map(function (User $user, $i) use ($users, $progressBar, $output, $existingContactsById, $existingContactsByEmail) {
                 $lastError = null;
                 $tries = 0;
                 do {
@@ -94,7 +97,22 @@ class AdsToSalesforceSync
                         $progressBar->advance();
                         $progressBar->display();
 
-                        $existingContact = $existingContacts[$user->email] ?? null;
+                        $existingContact = $existingContactsById[$user->id] ?? null;
+
+                        if ($existingContact) {
+                            $progressBar->setMessage("Updating Contact " . ($i + 1) . " / " . count($users) . " ( $user->email ) " . json_encode($values). "\n");
+
+                            // Fixing OT Phone Data Quality because stuck for update
+                            if($existingContact["MobilePhone"] && $this->isInvalidPhoneNumber($existingContact["MobilePhone"])) {
+                                // try to fix it. Data should be kept intact as much as possible
+                                // Only if the phone number is still invalid should we replace it with the new one
+                                $values["MobilePhone"] = $this->fixPhoneNumber($existingContact["MobilePhone"]);
+
+                            }
+                            return $this->repository->update('Contact/Id', $existingContact["Id"], $values);
+                        }
+
+                        $existingContact = $existingContactsByEmail[$user->email] ?? null;
 
                         if ($existingContact) {
                             $progressBar->setMessage("Updating Contact " . ($i + 1) . " / " . count($users) . " ( $user->email ) " . json_encode($values). "\n");
@@ -112,7 +130,7 @@ class AdsToSalesforceSync
                         $progressBar->setMessage("Creating Contact " . ($i + 1) . " / " . count($users) . " ( $user->email ) " . json_encode($values). "\n");
 
                         return $this->repository->create('Contact', array_merge($values,[
-                            "AccountId" => "0011r00002XFjaeAAD",
+                            "AccountId" => config('salesforce.contact_account_id'),
                             "LastName" => $user->name ?: 'Vide',
                             'FirstName' => $user->first_name ?: 'Vide',
                         ]));
@@ -162,21 +180,19 @@ class AdsToSalesforceSync
         $productionGenreMapper = function ($productionGenre) {
             return match ($productionGenre->name) {
                 "Maraîchage" => "Maraichage",
-                "Autres petites cultures (PPAM, petits fruits)" => "Autres productions",
-                "Arboriculture" => "Arboriculture",
+                "Autres petites cultures (PPAM, petits fruits)" => "Petits Fruits",
                 "Céréales et légumineuses" => "Grandes cultures",
-                "Viticulture" => "Viticulture",
                 "Paysan boulanger / paysan brasseur" => "Autres productions",
                 "Autres productions végétales" => "Autres productions",
-                "Apiculture" => "Apiculture",
-                "Elevage" => "Autres productions",
-                "Gros ruminants - Bovins (lait ou viande)" => "Bovin viande",
-                "Petits ruminants - caprins ou ovins (lait ou viande)" => "Ovins viande",
-                "Volailles (oeuf ou chair)" => "Volailles de chair",
+                "Elevage" => "Bovins",
+                "Gros ruminants - Bovins (lait ou viande)" => "Bovins",
+                "Petits ruminants - caprins ou ovins (lait ou viande)" => "Ovins / Caprins",
+                "Volailles (oeuf ou chair)" => "Volailles",
                 "Porcin" => "Porcins",
-                "Petits animaux (lapins, escargots, poissons)" => "Autres productions",
+                "Petits animaux (lapins, escargots, poissons)" => "Petits animaux",
                 "Autres (chevaux, ...)" => "Autres productions",
-                default => null,
+                "Aucune" => null,
+                default => $productionGenre->name,
             };
         };
 
@@ -201,37 +217,42 @@ class AdsToSalesforceSync
 
         $output->text("Upserting " . count($ads) . " ads");
 
+        /** @var Ad $ad */
         foreach ($ads as $ad) {
             $this->repository->authenticate();
             /** @var LandSeekAd|LandOfferAd|JobSeekAd|JobOfferAd|AssociateOfferAd|AssociateSeekAd $subAd */
             $subAd = $ad->{$ad->type};
+            /** @var AdPresenter $presenter */
+            $presenter = app(AdPresenter::class)->setWrappedObject($ad);
 
             try {
                 $values = array_filter([
                     "RecordType" => ["Name" => "Annonce"],
                     "Type_d_annonce__c" => match ($ad->type) {
-                        'landOfferAd' => 'Recherche Terre',
-                        'landSeekAd' => 'Offre Terre',
-                        'jobOfferAd' => 'Recherche Expérience',
-                        'jobSeekAd' => 'Offre Expérience',
-                        'associateOfferAd' => 'Associé pour installation',
-                        'associateSeekAd' => 'Associé sur ferme',
+                        'landOfferAd' => 'Offre Terre',
+                        'landSeekAd' => 'Recherche Terre',
+                        'jobOfferAd' => 'Offre Expérience',
+                        'jobSeekAd' => 'Recherche Expérience',
+                        'associateOfferAd' => 'Associé sur ferme',
+                        'associateSeekAd' => 'Associé pour installation',
                     },
                     "Name" => \Str::limit($ad->title,  80, ''),
                     "Contact__c" => $contactsById[$ad->userPp->id]["Id"],
                     "Territoire_Principal__c" => $ad->mainDepartment ? $departmentsByCode[$ad->mainDepartment->code]["Id"] : null,
-                    "Surface_ha__c" => $subAd->surface ?? null,
-                    "Production_agricole_prinicipale__c" => $subAd?->productionGenres->map($productionGenreMapper)[0] ?? null,
-                    "Autres_productions_agricoles__c" => $subAd->productionGenresSecondary?->map($productionGenreMapper)?->unique()?->join(';') ?? null,
+                    "Surface_ha__c" => $presenter->surface ?? null,
+                    "Production_agricole_prinicipale__c" => $subAd?->productionGenres->map($productionGenreMapper)->filter()[0] ?? null,
+                    "Autres_productions_agricoles__c" => $subAd->productionGenresSecondary?->map($productionGenreMapper)?->unique()?->filter()?->join(';') ?? null,
                     "Experience_professionnelle_recherchee__c" => $subAd->jobOfferTypes?->map($jobOfferTypeMapper)?->unique()?->join(';') ?? null,
                     "Transmission_d_activit_agricole__c" => $subAd->is_activity_transmission ? 'Oui' : 'Non',
-                    "Agriculture_biologique__c" => match ($subAd->is_bio) {
+                    "Agriculture_biologique__c" => /*$subAd->bioCertifications?->count() ? 'oui' :*/ match ($subAd->is_bio) {
                         -1 => 'je ne sais pas encore',
                         0 => 'non',
                         1 => 'oui',
-                        default => null,
+                        default => 'je ne sais pas encore',
                     },
-                    "Certification_des_terres__c" => $subAd->is_bio ? $subAd->bioCertifications?->pluck('name')->join(';') ?? null : null,
+                    "Certification_des_terres__c" => $subAd->bioCertifications?->pluck('name')
+                        ->filter(fn($c) => $c !== "Aucune")
+                        ->join(';'),
                     "Acces_eau__c" => match ($subAd->water_access) {
                         -1 => 'Je ne sais pas',
                         0 => 'Non',
@@ -252,10 +273,14 @@ class AdsToSalesforceSync
                         AdStatus::ARCHIVED_ID => 'Archivé',
                         default => null,
                     },
-                    "Date_de_creation_OT__c" => $ad->created_at->format('Y-m-d'),
-                    "Date_de_modification_OT__c" => $ad->updated_at->format('Y-m-d'),
-                    "Date_de_suppression_OT__c" => $ad->deleted_at?->format('Y-m-d'),
-                    "Date_de_publication_OT__c" => Carbon::make($ad->attributionAd->published_on)?->format('Y-m-d'),
+                    "Date_de_creation_OT__c" => $ad->created_at->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z'),
+                    "Date_de_modification_OT__c" => $ad->updated_at->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z'),
+                    "Date_de_suppression_OT__c" => $ad->deleted_at?->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z'),
+                    "Date_de_publication_OT__c" => Carbon::make($ad->attributionAd->published_on)?->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z'),
+                    "Descr__c" => $ad->about_project_content,
+                    "Informations_compl_mentaires_demandeur__c" => $ad->about_content,
+                    "Description__c" => $subAd->sau_description ?: $subAd->land_description ?: '',
+                    "Altitude_m__c" => $subAd->altitude ?? null,
                 ], fn($value) => $value !== null);
 
                 $progressBar->advance();
@@ -392,7 +417,7 @@ class AdsToSalesforceSync
         foreach ($chunks as $chunk) {
             $queryResult = collect($this->repository->findWhere('Contact', [
                 'Email' => $chunk->toArray()
-            ], ["Id", 'Email', 'Phone', 'MobilePhone']));
+            ], ["Id", 'Email', 'Phone', 'MobilePhone', 'OT_user_id__c']));
 
             $results = $results->merge($queryResult);
         }
