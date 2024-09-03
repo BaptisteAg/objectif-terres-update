@@ -149,15 +149,15 @@ class AdsToSalesforceSync
                                 continue;
                             }
                             if($errorCode === "DUPLICATES_DETECTED") {
-                                $lastError = "DUPLICATE";
-                                continue;
+                                return null;
                             }
                             $lastError = $errorCode;
                         }
                     }
                 } while($tries < 3);
                 eval(\Psy\sh());
-            });
+                return null;
+            })->filter();
 
 
         \DB::getQueryLog();
