@@ -148,6 +148,10 @@ class AdsToSalesforceSync
                                 $lastError = "INVALID_PHONE";
                                 continue;
                             }
+                            if($errorCode === "DUPLICATES_DETECTED") {
+                                $lastError = "DUPLICATE";
+                                continue;
+                            }
                             $lastError = $errorCode;
                         }
                     }
