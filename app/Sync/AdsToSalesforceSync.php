@@ -148,7 +148,7 @@ class AdsToSalesforceSync
                                 $lastError = "INVALID_PHONE";
                                 continue;
                             }
-                            if($errorCode === "DUPLICATES_DETECTED") {
+                            if(isset($json[0]["duplicateResult"])) {
                                 return null;
                             }
                             $lastError = $errorCode;
