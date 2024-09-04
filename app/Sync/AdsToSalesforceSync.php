@@ -148,7 +148,8 @@ class AdsToSalesforceSync
                             }
                             if(isset($json[0]["duplicateResult"])) {
                                 // fetch the existing contact using the duplicate id
-                                return $this->repository->find('Contact', $json[0]["duplicateResult"]["id"]);
+                                continue;
+                                //return $this->repository->find('Contact', $json[0]["duplicateResult"]["id"]);
                             }
                             $lastError = $errorCode;
                         }
