@@ -53,7 +53,7 @@ class AdsToSalesforceSync
 
         $users = $ads->pluck('userPp')->unique('email')->values();
 
-        $existingContactsById = $this->fetchExistingContactsInChunks($users->pluck('OT_user_id__c')->toArray());
+        //$existingContactsById = $this->fetchExistingContactsInChunks($users->pluck('OT_user_id__c')->toArray());
         $existingContactsByEmail = $this->fetchExistingContactsInChunks($users->pluck('email')->toArray());
 
         $output->text("Upserting " . count($users) . " users");
@@ -97,23 +97,21 @@ class AdsToSalesforceSync
                         $progressBar->advance();
                         $progressBar->display();
 
-                        $existingContact = $existingContactsById[$user->id] ?? null;
-
-                        if ($existingContact) {
-                            $progressBar->setMessage("Updating Contact " . ($i + 1) . " / " . count($users) . " ( $user->email ) " . json_encode($values). "\n");
-
-                            // Fixing OT Phone Data Quality because stuck for update
-                            if($existingContact["MobilePhone"] && $this->isInvalidPhoneNumber($existingContact["MobilePhone"])) {
-                                // try to fix it. Data should be kept intact as much as possible
-                                // Only if the phone number is still invalid should we replace it with the new one
-                                $values["MobilePhone"] = $this->fixPhoneNumber($existingContact["MobilePhone"]);
-
-                            }
-                            return $this->repository->update('Contact/Id', $existingContact["Id"], $values);
-                        }
+                        //$existingContact = $existingContactsById[$user->id] ?? null;
+                        //if ($existingContact) {
+                        //    $progressBar->setMessage("Updating Contact " . ($i + 1) . " / " . count($users) . " ( $user->email ) " . json_encode($values). "\n");
+//
+                        //    // Fixing OT Phone Data Quality because stuck for update
+                        //    if($existingContact["MobilePhone"] && $this->isInvalidPhoneNumber($existingContact["MobilePhone"])) {
+                        //        // try to fix it. Data should be kept intact as much as possible
+                        //        // Only if the phone number is still invalid should we replace it with the new one
+                        //        $values["MobilePhone"] = $this->fixPhoneNumber($existingContact["MobilePhone"]);
+//
+                        //    }
+                        //    return $this->repository->update('Contact/Id', $existingContact["Id"], $values);
+                        //}
 
                         $existingContact = $existingContactsByEmail[$user->email] ?? null;
-
                         if ($existingContact) {
                             $progressBar->setMessage("Updating Contact " . ($i + 1) . " / " . count($users) . " ( $user->email ) " . json_encode($values). "\n");
 
@@ -149,7 +147,8 @@ class AdsToSalesforceSync
                                 continue;
                             }
                             if(isset($json[0]["duplicateResult"])) {
-                                return null;
+                                // fetch the existing contact using the duplicate id
+                                return $this->repository->find('Contact', $json[0]["duplicateResult"]["id"]);
                             }
                             $lastError = $errorCode;
                         }
