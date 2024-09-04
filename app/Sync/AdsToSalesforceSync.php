@@ -240,7 +240,7 @@ class AdsToSalesforceSync
                         'associateSeekAd' => 'Associé pour installation',
                     },
                     "Name" => \Str::limit($ad->title,  80, ''),
-                    "Contact__c" => $contactsById[$ad->userPp->id]["Id"],
+                    "Contact__c" => $contactsById[$ad->userPp->id]["Id"] ?? null,
                     "Territoire_Principal__c" => $ad->mainDepartment ? $departmentsByCode[$ad->mainDepartment->code]["Id"] : null,
                     "Surface_ha__c" => $presenter->surface ?? null,
                     "Production_agricole_prinicipale__c" => $subAd?->productionGenres->map($productionGenreMapper)->filter()[0] ?? null,
