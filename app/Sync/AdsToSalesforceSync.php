@@ -148,7 +148,7 @@ class AdsToSalesforceSync
                             }
                             if(isset($json[0]["duplicateResult"])) {
                                 $id = $json[0]["duplicateResult"]["matchResults"][0]["matchRecords"][0]["record"]["Id"];
-                                return $this->repository->find('Contact', $id);
+                                return $this->repository->find('Contact', $id, ["Id", 'OT_user_id__c']);
                             }
                             $lastError = $errorCode;
                         }
