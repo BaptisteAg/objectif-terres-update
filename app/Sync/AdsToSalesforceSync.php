@@ -62,7 +62,7 @@ class AdsToSalesforceSync
         $progressBar->setFormat('custom');
 
         $upsertedContacts = $users
-            ->map(function (User $user, $i) use ($users, $progressBar, $output, $existingContactsById, $existingContactsByEmail) {
+            ->map(function (User $user, $i) use ($users, $progressBar, $output, /*$existingContactsById,*/ $existingContactsByEmail) {
                 $lastError = null;
                 $tries = 0;
                 do {
