@@ -91,6 +91,7 @@ class AdsToSalesforceSync
                             "MailingCountry" => $user->country_id ? Country::find($user->country_id)?->name_fr_fr : 'France',
                             "LeadSource" => "Petites annonces",
                             "role__c" => 'Annonceur Objectif Terres',
+                            "Profil_Objectif_Terres__c" => $user->profile,
                             "Recevoir_les_infos_de_TDL__c" => empty($user->accept_communication) ? 0 : 1
                         ]);
 
@@ -316,6 +317,7 @@ class AdsToSalesforceSync
                         $ad->departments->pluck('code')->map(fn($code) =>
                             $this->attachTerritory('Département', $id, $departmentsByCode[$code]["Id"])
                         );
+                        $ad->departments->
                     }
                     if($ad->regions?->count()) {
                         $ad->regions->pluck('code')->map(fn($code) =>
