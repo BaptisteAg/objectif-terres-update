@@ -92,12 +92,6 @@ class ResearchService
 				$adsFilter->filterLocations('departments', $research->departments()->pluck('departments.id')->toArray());
 				$adsFilter->filterSubLocations('cities', $research->departments()->pluck('code')->toArray(), 'cities.department_code');
 
-			} else if ($research->regions()->exists()) {
-				$regionsCodes = $research->regions()->pluck('code')->toArray();
-				$departmentsCodes = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
-				$adsFilter->filterLocations('regions', $research->regions()->pluck('regions.id')->toArray());
-				$adsFilter->filterSubLocations('departments', $regionsCodes, 'departments.region_code');
-				$adsFilter->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
 			}
 			if ($research->offerGenres()->exists()) {
 				$adsFilter->filterWhereHasIn($research->offerGenres()->pluck('offer_genres.id')->toArray(), $research->ad_type . '.offerGenres', 'offer_genre_id');
@@ -228,26 +222,23 @@ class ResearchService
             }
 
         } // filter by departments locations and all locations related to the departments selected
-        else if ($filters->has('departments_location_researches_ids')) {
-            $departmentsCodes = Department::whereIn('id', $filters->input('departments_location_researches_ids'))->get('code')->toArray();
-            $query->filterLocations('departments', $filters->input('departments_location_researches_ids'));
+        else if ($filters->has('departments')) {
+            $departmentsCodes = Department::whereIn('id', $filters->input('departments'))->get('code')->toArray();
+            $query->filterLocations('departments', $filters->input('departments'));
             $query->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
         } // filter by regions locations and all locations related to the regions selected
-        else if ($filters->has('regions_location_researches_ids')) {
-            if (!in_array(-1, $filters->input('regions_location_researches_ids'))) {
-                $regionsCodes = Region::whereIn('id', $filters->input('regions_location_researches_ids'))->get('code')->toArray();
+        else if ($filters->has('regions')) {
+            if (!in_array(-1, $filters->input('regions'))) {
+                $regionsCodes = Region::whereIn('id', $filters->input('regions'))->get('code')->toArray();
                 $departmentsCodes = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
-                $query->filterLocations('regions', $filters->input('regions_location_researches_ids'));
+                $query->filterLocations('regions', $filters->input('regions'));
                 $query->filterSubLocations('departments', $regionsCodes, 'departments.region_code');
                 $query->filterSubLocations('cities', $departmentsCodes, 'cities.department_code');
             }
         }
 
         if (!is_null($filters->input('surfaces_research_max')) && $filters->input('surfaces_research_max') !== "0" && $filters->input('surfaces_research_max') !== "100000000000") {
-            if ($adType === 'landSeekAd') {
-                $query->filterWhereHasWhere((int)$filters->input('surfaces_research_max'), $adType, '<=', 'surface_range_max');
-            }
-            else if (in_array($adType, ['landOfferAd', 'associateOfferAd'])) {
+            if (in_array($adType, ['landOfferAd', 'associateOfferAd', 'landSeekAd'])) {
                 $query->filterWhereHasWhere((int)$filters->input('surfaces_research_max'), $adType, '<=', 'surface');
             }
         }
@@ -320,8 +311,8 @@ class ResearchService
 
                 if($adType === 'landOfferAd') {
                     $query->orWhereHas('landOfferAd', function (Builder $q) use ($filters) {
-                        $q->where('experience_farming', 'like', '%' . $filters->input('keywords') . '%');
-                        $q->orWhere('land_description', 'like', '%' . $filters->input('keywords') . '%');
+                        //$q->where('experience_farming', 'like', '%' . $filters->input('keywords') . '%');
+                        //$q->orWhere('land_description', 'like', '%' . $filters->input('keywords') . '%');
                         $q->orWhere('sau_description', 'like', '%' . $filters->input('keywords') . '%');
                         $q->orWhere('water_access_description', 'like', '%' . $filters->input('keywords') . '%');
                         $q->orWhere('test_description', 'like', '%' . $filters->input('keywords') . '%');
@@ -361,6 +352,21 @@ class ResearchService
             $query->filterWhereHasIn($filters->input('experiences'), $adType . '.jobOfferTypes', 'job_offer_types.id');
         }
 
+
+        if ($filters->has('offer_genres')) {
+            $query->filterWhereHasIn($filters->input('offer_genres'), $adType . '.offerGenres', 'offer_genres.id');
+        }
+
+        if($filters->has('surfaces_research_min') && $filters->input('surfaces_research_min') !== "0") {
+            if (in_array($adType, ['landOfferAd', 'associateOfferAd', 'landSeekAd'])) {
+                $query->filterWhereHasWhere((int)$filters->input('surfaces_research_min'), $adType, '>=', 'surface');
+            }
+        }
+        if($filters->has('surfaces_research_max') && $filters->input('surfaces_research_max') !== "0") {
+            if (in_array($adType, ['landOfferAd', 'associateOfferAd', 'landSeekAd'])) {
+                $query->filterWhereHasWhere((int)$filters->input('surfaces_research_max'), $adType, '<=', 'surface');
+            }
+        }
 
 
 		if ($filters->has('order') && $filters->has('sort')) {
@@ -431,4 +437,16 @@ class ResearchService
 	{
 		return $this->repository->delete($research->id);
 	}
+
+    public function getAllResearchesWithActiveAlertsOlderThan(Carbon $subDate): \LaravelIdea\Helper\App\Models\_IH_Research_C|array|\Illuminate\Database\Eloquent\Collection
+    {
+        return Research::where('has_alert', 1)
+            ->where('created_at', '<', $subDate)
+            ->get();
+    }
+
+    public function disableAlerts(\LaravelIdea\Helper\App\Models\_IH_Research_C|\Illuminate\Database\Eloquent\Collection|array $researches)
+    {
+        Research::whereIn('id', $researches->pluck('id'))->update(['has_alert' => 0]);
+    }
 }

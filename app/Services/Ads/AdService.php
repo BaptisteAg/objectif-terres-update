@@ -18,6 +18,7 @@ use App\Models\User;
 use App\Notifications\BasicNotification;
 use App\Notifications\NewAdToModerateNotification;
 use App\Notifications\NewSupportRequestNotification;
+use App\Notifications\PendingModerationNotification;
 use App\Notifications\SupportRequestAttributionNotification;
 use App\Notifications\SupportRequestTerritoryNotification;
 use App\Repositories\AdNotes\AdNotesRepository;
@@ -205,17 +206,7 @@ class  AdService
         $ad->refresh();
 
         $ad->attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
-        $ad->userPp->notify(new BasicNotification([
-            'subject' => "Votre annonce va être modérée",
-            'message' => "Votre annonce '" . $ad->title . "' va être prochainement modérée par un membre de l’équipe, qui rassemble " .
-                "des bénévoles et salarié·es. Souvent en déplacement sur le terrain, nous faisons notre possible pour vous répondre le plus " .
-                "rapidement.\n\n
-
-                    Vous pouvez gérer vos annonces depuis votre espace personnel Objectif Terres :\n",
-            'action' => ["Gérer mes annonces", route('ads.list')],
-            'salutation' => "En vous remerciant pour votre confiance,\n
-                                    L’équipe d’Objectif Terres."
-        ]));
+        $ad->userPp->notify(new PendingModerationNotification($ad));
 
         return $ad;
     }
@@ -434,20 +425,14 @@ class  AdService
             $ad = $this->repository->create($data);
         }
 
-        if (isset($data[$data["ad_type"]])) {
-            $subAdData = $data[$data["ad_type"]];
-            $subAdData["ad_id"] = $ad->id;
-            $this->createSubAd($data["ad_type"], $subAdData);
-        }
-
         $subAdData = $data[$data["ad_type"]];
         $subAdData["ad_id"] = $ad->id;
 
         if (isset($subAdData["offer_genres"])) {
-            if (!in_array(OfferGenre::ID_VENTE, $subAdData["offer_genres"], true)) {
+            if (!in_array(OfferGenre::ID_VENTE, $subAdData["offer_genres"])) {
                 $subAdData["price"] = null;
             }
-            if (!in_array(OfferGenre::ID_LOCATION, $subAdData["offer_genres"], true)) {
+            if (!in_array(OfferGenre::ID_LOCATION, $subAdData["offer_genres"])) {
                 $subAdData["rent_price"] = null;
             }
         }
@@ -455,7 +440,6 @@ class  AdService
         if ($isUpdate) {
             $this->updateSubAd($ad, $data["ad_type"], $subAdData);
         } else {
-            $subAdData["ad_id"] = $ad->id;
             $this->createSubAd($data["ad_type"], $subAdData);
         }
 
@@ -886,10 +870,7 @@ class  AdService
         return $adsCountByDepartmentId;
     }
 
-    /**
-     * @param Ad $ad
-     * @return Region[]
-     */
+
     public function getAdRegions(Ad $ad)
     {
         $regions = collect();
@@ -1023,9 +1004,9 @@ class  AdService
      * @param Carbon $date
      * @return Ad[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function findAdsPublishedSince(Carbon $date)
+    public function findAdsPublishedAt(Carbon $date)
     {
-        return $this->repository->findAllByPublishedOlderThan($date);
+        return $this->repository->findAllPublishedAt($date);
     }
 
     /**
@@ -1125,7 +1106,13 @@ class  AdService
         $toDate = Carbon::createFromFormat('Y-m-d', $to);
 
         return Ad::withTrashed()
-            ->where('is_draft', false)
+            ->whereNull('support_request_territory_id')
+            ->whereHas('attributionAd', function (Builder $query) {
+                $query->where('ad_status_id', '=', AdStatus::APPROVE_ID)
+                    ->whereNull('archived_at');
+            })
+            ->whereNull('deleted_at')
+            ->where('is_draft', '=', 0)
             ->whereHas('attributionAd')
             ->whereHas('userPp')
             ->where(fn($q) => $q
@@ -1133,7 +1120,6 @@ class  AdService
                 ->orWhereBetween('updated_at', [$fromDate, $toDate])
                 ->orWhereBetween('deleted_at', [$fromDate, $toDate])
             )
-            ->limit(3)
             ->get();
     }
 }

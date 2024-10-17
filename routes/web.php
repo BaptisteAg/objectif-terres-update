@@ -49,6 +49,7 @@ Route::prefix('accompagnement')->name('support-request.')->namespace('Ads')->gro
 Route::namespace('Cms')->group(function () {
     Route::get('faq', 'CmsController@faq')->name('faq');
     Route::get('qui-sommes-nous', 'CmsController@quiSommesNous')->name('qui-sommes-nous');
+    Route::get('mouvement-terre-de-liens', 'CmsController@mouvementTerreDeLiens')->name('mouvement-terre-de-liens');
     Route::get('minstaller-comme-paysan', 'CmsController@minstallerCommePaysan')->name('minstaller-comme-paysan');
     Route::get('trouver-une-terre-ou-des-financements', 'CmsController@trouverUneTerreOuDesFinancements')->name('trouver-une-terre-ou-des-financements');
     Route::get('transmettre-ma-ferme', 'CmsController@cederMaFerme')->name('transmettre-ma-ferme');
@@ -60,6 +61,7 @@ Route::namespace('Cms')->group(function () {
     Route::get('proprietaire-de-foncier', 'CmsController@proprietaireDeFoncier')->name('proprietaire-de-foncier');
     Route::get('conditions-utilisation', 'CmsController@conditionsUtilisation')->name('conditions-utilisation');
     Route::get('charte', 'CmsController@charte')->name('charte');
+    Route::get('plan-du-site', 'CmsController@plan')->name('plan-du-site');
 });
 
 Route::prefix('documents')->name('documents.')->namespace('Documents')->group(function () {
@@ -67,8 +69,7 @@ Route::prefix('documents')->name('documents.')->namespace('Documents')->group(fu
     Route::get('{type}/{user_id}/{filename}', 'DocumentsController@show')->name('show');
 });
 
-Route::get('/register', 'Salesforces\SalesForceAuthController@register');
-
+//Route::get('/register', 'Salesforces\SalesForceAuthController@register');
 
 Route::prefix('recherche')->name('researches.')->namespace('Researches')->group(function () {
     Route::get('/', 'ResearchesController@index')->name('index');
@@ -115,7 +116,7 @@ Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->na
     Route::get('actualisation', 'ThreadsController@refreshUnreadMessages')->name('refreshUnreadMessages');
     Route::get('/', 'ThreadsController@index')->name('index');
     Route::post('creer', 'ThreadsController@create')->name('create');
-    Route::get('{thread}', 'MessagesController@show')->name('show');
+    Route::get('{id}', 'MessagesController@show')->name('show');
     Route::post('envoi', 'MessagesController@create')->name('send');
     Route::post('upload', 'MessagesController@uploadDocuments')->name('upload');
     Route::get('delete/{id}', 'MessagesController@delete')->name('delete-message');
@@ -225,11 +226,6 @@ Route::prefix('motdepasse')->name('password.')->group(function () {
 });
 
 Route::post('newsletter', 'Newsletter\NewsletterController@create');
-
-Route::prefix('api')->group(function () {
-    Route::get('annonces', 'ApiController@annonces')->name('annonces');
-});
-
 
 Route::post('/info-banner/close', 'InfoBannerController@close')->name('info-banner.close');
 

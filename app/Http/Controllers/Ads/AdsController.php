@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
 
-class AdsController extends BaseController
+class  AdsController extends BaseController
 {
     public const PUBLISHED_AD_LIMIT_PER_USER = 50;
 
@@ -144,7 +144,7 @@ class AdsController extends BaseController
         $ad = $this->adService->find($adId);
 
         $moderatorInChargeOfModeration = $this->attributionAdService->moderatorIsChargeOfAdModeration($ad);
-        if ($ad->trashed()) {
+        if ($ad->trashed() || !$ad->userPp) {
             if ($moderatorInChargeOfModeration) {
                 return view('errors.deleted_ad', compact('ad'));
             } else {

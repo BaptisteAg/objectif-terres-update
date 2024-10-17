@@ -45,7 +45,7 @@
                 <b-checkbox name="associate_seek[is_land_already_found]"
                             v-model="formInput.isLandAlreadyFound"
                             class="is-size-6 has-text-weight-bold">
-                    Avez-vous déjà trouvé un lieu et des terres agricoles ?
+                    Cochez cette case si vous avez des pistes de fermes à reprendre
                 </b-checkbox>
             </section>
 
@@ -100,7 +100,7 @@
             </section>
 
             <section class="mb-6 field" ref="experienceFarming">
-                {!! Form::label('associate_seek[experience_farming]','Expérience dans le milieu agricole', ['class' => 'label']); !!}
+                {!! Form::label('associate_seek[experience_farming]','Expérience souhaitée dans le milieu agricole', ['class' => 'label']); !!}
                 <text-area-counter
                         name="associate_seek[experience_farming]"
                         :max-length="1000"

@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\DisableOldResearchAlerts;
 use App\Console\Commands\UnpublishOldAds;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -29,22 +30,25 @@ class Kernel extends ConsoleKernel
 	{
         $filePath = getcwd().'/laravel-scheduler.log';
 
+        $schedule->command('app:sync-salesforce-ads '.date('Y-m-d', strtotime('-2 day')))->daily()->appendOutputTo($filePath);
+
+        $schedule->command(DisableOldResearchAlerts::class)->daily()->appendOutputTo($filePath);
+
         if(config("app.is_scheduler_live_mode")) {
-            //$schedule->command('app:send-alert-new-results-research')->hourly()->appendOutputTo($filePath);
+            //$schedule->command('app:send-alert-new-results-research')->daily()->appendOutputTo($filePath);
             //$schedule->command('app:notify-overdue-moderation')->weekly()->appendOutputTo($filePath);
             $schedule->command('app:notify-publish-date-extend-before-expiration')->daily()->appendOutputTo($filePath);
             $schedule->command('app:unpublish-old-ads')->daily()->appendOutputTo($filePath);
         }
         else {
-            //$schedule->command('app:send-alert-new-results-research')->everyFiveMinutes()->appendOutputTo($filePath);
+            //$schedule->command('app:send-alert-new-results-research')->daily()->appendOutputTo($filePath);
             //$schedule->command('app:notify-overdue-moderation')->hourly()->appendOutputTo($filePath);
-            //$schedule->command('app:notify-publish-date-extend-before-expiration')->appendOutputTo($filePath);
-            //$schedule->command('app:unpublish-old-ads')->appendOutputTo($filePath);
+            //$schedule->command('app:notify-publish-date-extend-before-expiration')->everyFiveMinutes()->appendOutputTo($filePath);
+            //$schedule->command('app:unpublish-old-ads')->everyFiveMinutes()->appendOutputTo($filePath);
         }
 
         $schedule->command('app:sync-salesforce-sso-users-permissions')->daily()->appendOutputTo($filePath);
-
-        //$schedule->command('app:notify-drafts-unpublished-ads')->hourly()->appendOutputTo($filePath);
+        //$schedule->command('app:notify-drafts-unpublished-ads')->weekly()->appendOutputTo($filePath);
         //$schedule->command('app:change-support-state-old-support-request')->daily()->appendOutputTo($filePath);
         //$schedule->command('app:notify-6-moths-old-support-request')->daily()->appendOutputTo($filePath);
 

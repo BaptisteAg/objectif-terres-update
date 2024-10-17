@@ -73,9 +73,7 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 		return $model;
 	}
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
-	 */
+
 	public function findAllResearchesWithAlertActive()
 	{
 		$model = $this->entity
@@ -106,12 +104,12 @@ class ResearchRepository extends AbstractRepository implements ResearchRepositor
 				$research->cities()->attach($data['cities_location_researches_ids']);
 			}
 		}
-		if (isset ($data['departments_location_researches_ids'])) {
-			$research->departments()->attach($data['departments_location_researches_ids']);
+		if (isset ($data['departments'])) {
+			$research->departments()->attach($data['departments']);
 		}
 
-		if (isset ($data['regions_location_researches_ids'])) {
-			$research->regions()->attach($data['regions_location_researches_ids']);
+		if (isset ($data['regions'])) {
+			$research->regions()->attach($data['regions']);
 		}
 
 		if (isset ($data['production_genres'])){

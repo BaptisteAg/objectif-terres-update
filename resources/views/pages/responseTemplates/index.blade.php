@@ -1,6 +1,6 @@
 @extends('default')
 
-@section('title', 'Gestion des messages types | Objectif Terress')
+@section('title', 'Gestion des messages types | Objectif Terres')
 
 @section('header')
 	@if(auth()->user()->role >= 3)
@@ -12,7 +12,7 @@
 
 @section('main-content')
 	<div class="section " style="padding-top: 0px">
-		<h1 class="title is-2 has-text-link">Gestion des messages types </h1>
+		<h1 class="title is-2 has-text-link has-text-centered">Gestion des messages types </h1>
 		{{Form::open(['route'=>'responseTemplates.create', 'method'=>'post'])}}
 		<div class="content ">
 			<h3 class="title is-3 has-text-centered">Créer un nouveau message type</h3>
@@ -176,10 +176,4 @@
 @endsection
 
 @section('script')
-	<script>
-        const vueResponseTemplate = new Vue({
-            el: "#response-template-dashboard",
-            name: "content"
-        })
-	</script>
 @endsection

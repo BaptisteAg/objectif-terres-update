@@ -19,7 +19,7 @@
     {{--	@include('components/step-guide')--}}
 
 
-    @include('components.support-terre-liens')
+    {{-- @include('components.support-terre-liens') --}}
 
 @endsection
 

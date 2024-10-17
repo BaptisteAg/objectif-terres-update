@@ -69,8 +69,8 @@
                         <input type="checkbox" required>
                         <span>J'accepte la
                                     <a href="{{URL::asset('docs/Charte_utilisation_d_Objectif_Terres-Validee_en_CIT_du_21_oct.pdf')}}"
-                                       target="_blank">Charte d'utilisation</a>
-                                    et les <a href="{{route('conditions-utilisation')}}" target="_blank">CGU</a> du site d'annonces du site web de Terre de Liens
+                                       target="_blank">Charte</a>
+                                    et les <a href="{{route('conditions-utilisation')}}" target="_blank">CGU</a> du site Objectif Terres
                                     .*</span>
                     </label>
                 </div>

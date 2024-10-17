@@ -3,10 +3,13 @@
 namespace App\Nova;
 
 use App\Models\AdStatus;
+use App\Nova\Filters\DepartmentFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -36,7 +39,7 @@ class Ad extends Resource
 
     public function title()
     {
-        return $this->resource->id." - ".$this->title . ' (' . $this->resource->userPp?->name . ' ' . $this->resource->userPp?->first_name .  ')';
+        return $this->id." - ".$this->title . ' (' . $this->resource->userPp?->name . ' ' . $this->resource->userPp?->first_name .  ')';
     }
 
     public static $with = ['attributionAd', 'userPp', 'userModerator'];
@@ -48,8 +51,9 @@ class Ad extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'ads.id',
         'title',
+        'userPp.id',
         'userPp.name',
         'userPp.first_name',
         'userPp.email',
@@ -57,7 +61,9 @@ class Ad extends Resource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        $query->join('users as userPp', 'userPp.id', '=', 'ads.user_pp_id');
+        $query
+            ->select('*', 'ads.id as id')
+            ->join('users as userPp', 'userPp.id', '=', 'ads.user_pp_id');
         return $query;
     }
 
@@ -72,12 +78,13 @@ class Ad extends Resource
         return [
             ID::make()->sortable(),
             Text::make(__('Titre'), 'title')->resolveUsing(fn($title) => Str::words($title, 10)),
+            BelongsTo::make('Départment', 'department', Department::class)
+                ->searchable()
+                ->sortable(),
             BelongsTo::make('Annonceur', 'userPp', User::class)
                 ->searchable()
-                ->sortable(),
-            BelongsTo::make('Modérateur', 'userModerator', UserModerator::class)
-                ->searchable()
-                ->sortable(),
+                ->sortable()
+                ->readonly(),
             Badge::make('Statut', 'attributionAd.ad_status_id')
                 ->map([
                     '' => 'danger',
@@ -88,6 +95,9 @@ class Ad extends Resource
                     AdStatus::ARCHIVED_ID => "warning",
                 ])
                 ->labels(array_map(fn($tooltip) => Str::words($tooltip, 5), AdStatus::TOOLTIPS)),
+
+            HasOne::make('Modération', 'attributionAd', AttributionAd::class)
+                ->hideFromIndex(),
         ];
     }
 
@@ -110,7 +120,7 @@ class Ad extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [new DepartmentFilter()];
     }
 
     /**
@@ -142,6 +152,6 @@ class Ad extends Resource
 
     public function authorizedToUpdate(Request $request)
     {
-        return false;
+        return true;
     }
 }

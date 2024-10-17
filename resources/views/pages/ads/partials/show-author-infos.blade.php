@@ -1,3 +1,4 @@
+{{--
 @auth()
     @if($ad->third_party_ad_user_id && auth()->user()->role >= 1)
         <div class="w-50">
@@ -49,3 +50,4 @@
     @endif
 @endif
 
+--}}

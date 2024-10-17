@@ -27,6 +27,9 @@ export default {
         regions_searched: {
             type: Array
         },
+        departments_searched: {
+            type: Array
+        },
         productions_searched: {
             type: Array
         },
@@ -71,7 +74,9 @@ export default {
             });
             tags.push({
                 label: 'Localisation(s)',
-                value: this.regions_searched.join(', ') || 'Non définie'
+                value: this.regions_searched.map(r => 'Région : ' + r)
+                    .concat(this.departments_searched.map(r => 'Départment : ' + r))
+                    .join(', ') || 'Non définie'
             });
             tags.push({
                 label: 'Production principale',

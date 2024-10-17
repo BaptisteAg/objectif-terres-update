@@ -87,7 +87,7 @@
                                     @endif
                                     @if(auth()->user()->role >= 2 )
                                         @if(auth()->user()->role >=3)
-                                            <a href="{{route('advisor.index')}}"
+                                            <a href="https://terredeliens.my.site.com/objectifterres/s/demande/Case/00B6900000CHKFBEA5" target="_blank"
                                                class="dropdown-item  text_charcoal">
                                                 Gestion des accompagnements
                                             </a>

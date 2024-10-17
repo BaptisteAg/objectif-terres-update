@@ -7,6 +7,7 @@ use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\Department;
 use App\Models\Region;
+use App\Notifications\AcceptedAdNotification;
 use App\Notifications\BasicNotification;
 use App\Notifications\ModerationPpNotification;
 use App\Repositories\Ads\AdRepository;
@@ -340,6 +341,10 @@ class AttributionAdsService
 					->leftJoin('project_statuses', 'p1.project_status_id', 'project_statuses.id')
 					->orderBy('name', $filters->input('order'));
 			}
+            else if($filters->input('sort') === 'id'){
+                $attributionAdsFiltered
+                    ->orderBy('ads.id', $filters->input('order'));
+            }
 		}
 
         $attributionAdsFiltered->orderByDesc('updated_at');
@@ -372,43 +377,17 @@ class AttributionAdsService
 	{
 		/** @var AttributionAd $attributionAd */
 		$attributionAd = $this->repository->find($data['attribution_ad_id']);
-		//TODO if the pp want a support from Tdl, a special method as to be created.The moderator doesn't take part of the attribution process.
-		//If on the territory related to the ad, there is advisors dedicated to specific departments, the ad is automatically attributed to the advisor and we create a project related to the ad.
-		//$toAssignStatus = AdStatus::where('id', '=',AdStatus::APPROVE_ID)->first();
-		//$attributionAd->ad_status_id = $toAssignStatus->id;
-		//$supportStage = SupportStage::where('id', '=', SupportStage::FIRST_CONTACT_ID)->first();
-		//$supportState = SupportState::where('id', '=', SupportStage::TO_HANDLE_ID)->first();
-		//$attributionAd->ad->project()->create(['support_stage_id'=> $supportStage, 'support_state_id' => $supportState]);
-
-		//Else, by default, the ad is attributed to an supervisor based on his territory saved in Salesforce . If there is many supervisors, one supervisor is pick randomly.
-		//$toAssignStatus = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first();
-		//$attributionAd->ad_status_id = $toAssignStatus->id;
-		//$unassistedStatus = ProjectStatus::where('id', '=', ProjectStatus::UNASSISTED_ID)->first();
-		//$attributionAd->ad->project()->create(['project_status_id'=> $unassistedStatus]);
-		//$supervisor = User::where('role', '=', 3)->inRandomOrder()->first();
-		//$attributionAd->user_supervisor_id = $supervisor->id;
-
-		//If the pp doesn't need a support from Tdl, the ad is validated and published
 
 		$ad = $this->adRepository->find($attributionAd->ad->id);
 		$this->adService->updateAdPartnerStatus($ad, ['is_partner' => $data['is_partner'] ?? null]);
 
 		$attributionAd->ad_status_id = AdStatus::APPROVE_ID;
 		$attributionAd->published_on = Carbon::now();
-		$adModerator = $attributionAd->userModerator ?? auth()->user();
-		$attributionAd->ad->userPp->notify(new BasicNotification(
-			['subject' => "Votre annonce n°" . $attributionAd->ad->id . " a été validée",
-				'message' => "Votre annonce a été publiée sur Objectif Terres. Elle sera en ligne durant 6 mois.\n\n
+        $attributionAd->archived_at = null;
+        $attributionAd->refusal_type_id = null;
 
-				    Veuillez prendre note que la modification de votre annonce ne la fera pas remonter dans la liste de recherche.\n\n
+		$attributionAd->ad->userPp?->notify(new AcceptedAdNotification($attributionAd));
 
-                    Si besoin vous pouvez la modifier ou la supprimer.\n",
-				'action' => ["Gérer mes annonces", route('ads.list')],
-				'salutation' => "A bientôt sur Objectif Terres !"]
-		));
-		if ($attributionAd->refusal_type_id) {
-			$attributionAd->refusal_type_id = null;
-		}
 		$attributionAd->save();
 
 		$ad = $this->adRepository->find($attributionAd->ad->id);

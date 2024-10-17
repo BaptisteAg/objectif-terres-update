@@ -63,10 +63,11 @@ class MessagesController extends Controller
 	 * @param Thread $thread
 	 * @return JsonResponse
 	 */
-	public function show(Thread $thread)
+	public function show(int $threadId)
 	{
+        $thread = $this->threadService->find($threadId);
 		$messages = $this->threadService->findAllByThread($thread->id);
-		$thread = $this->threadService->find($thread->id);
+
 		$this->threadService->setToReadAllUnreadMessagesInThread($thread->id);
 		foreach ($messages as $key => $message) {
 			$date = Carbon::parse($message->created_at);

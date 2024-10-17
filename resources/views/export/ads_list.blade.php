@@ -73,9 +73,9 @@
                 <td>{{$ad->userPp->name ?? ''}}</td>
                 <td>{{$ad->userPp->first_name ?? ''}}</td>
                 <td>{{$ad->userPp->civilityFullName ?? ''}}</td>
-                <td>{{$ad->userPP->email ?? ''}}</td>
-                <td>{{$ad->userPP->phone ?? ''}}</td>
-                <td>{{$ad->userPP->zipCode->zip_code ?? ''}}</td>
+                <td>{{$ad->userPp->email ?? ''}}</td>
+                <td>{{$ad->userPp->phone ?? ''}}</td>
+                <td>{{$ad->userPp->zipCode->zip_code ?? ''}}</td>
                 <td>
                     @if(! is_null($ad->regionsList))
                         <p>{{$ad->regionsList}}</p>

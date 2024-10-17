@@ -44,5 +44,6 @@ class AppUpdate extends Command
         $this->call('migrate', ['--force' => true]);
         $this->call('view:clear');
         $this->call('optimize');
+        $this->call('queue:restart');
     }
 }

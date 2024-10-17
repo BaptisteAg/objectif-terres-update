@@ -3,16 +3,28 @@
 namespace App\Nova;
 
 use App\Models\AdStatus;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class AttributionAd extends Resource
 {
+    public static function label()
+    {
+        return 'Modérations';
+    }
+
+    public static function singularLabel()
+    {
+        return 'Modération';
+    }
+
     /**
      * The model the resource corresponds to.
      *
@@ -21,13 +33,15 @@ class AttributionAd extends Resource
     public static $model = 'App\Models\AttributionAd';
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
+     * @return string
      */
-    public static $title = 'ad.title';
+    public function title(): string
+    {
+        $moderator = ' '. $this->userModerator ? ' - ' . $this->userModerator->name . ' ' . $this->userModerator->first_name : 'Aucun modérateur';
+        return '(' . $this->ad?->id . ')' . $this->ad?->title . $moderator;
+    }
 
-    public static $with = ['ad'];
+    public static $with = ['ad', 'userModerator'];
 
     public static $displayInNavigation = false;
 
@@ -38,9 +52,20 @@ class AttributionAd extends Resource
      */
     public static $search = [
         'id',
-        'ad.title',
+        'ads.id',
+        'ads.title',
         'userModerator',
     ];
+
+
+    public static function applySearch($query, $search)
+    {
+        return $query->orWhereHas('ad', function ($query) use ($search) {
+            $query->where('title', 'LIKE', "%$search%")->orWhere('id', 'LIKE', "%$search%");
+        })->orWhereHas('userModerator', function ($query) use ($search) {
+            $query->where('name', 'LIKE', "%$search%")->orWhere('first_name', 'LIKE', "%$search%");
+        })->orWhere('id', 'LIKE', "%$search%");
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -50,10 +75,25 @@ class AttributionAd extends Resource
      */
     public function fields(Request $request)
     {
+        $moderators = User::whereIn('role', [1,3,4])
+            ->get()
+            ->concat(
+                User::where('role', 2)
+                    ->whereHas('userPermissions', function ($query) {
+                        $query->where('permission', 1);
+                    })->get()
+            )
+            ->sortBy('name')
+            ->keyBy('id')
+            ->map(function (User $user) {
+                return $user->name . ' ' . $user->first_name . ' (' . $user->email . ')';
+            });
+
         return [
             Text::make('ID', 'ad.id')->sortable()->readonly(),
             BelongsTo::make('Annonce', 'ad', Ad::class)->readonly(),
-            BelongsTo::make('Modérateur', 'userModerator', UserModerator::class),
+            //BelongsTo::make('Modérateur', 'userModerator', UserModerator::class),
+            Select::make('Modérateur','user_moderator_id')->options($moderators),
             Badge::make('Statut', 'ad_status_id')
                 ->map([
                     AdStatus::APPROVE_ID => "success",
@@ -61,6 +101,7 @@ class AttributionAd extends Resource
                     AdStatus::REFUSE_ID => "danger",
                     AdStatus::PENDING_MODERATION_STATUS_ID => "info",
                     AdStatus::ARCHIVED_ID => "warning",
+                    null => 'danger',
                 ])
                 ->labels(AdStatus::TOOLTIPS),
         ];

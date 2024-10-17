@@ -102,9 +102,9 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \App\Models\FavoriteAd|null $currentUserFavoriteAd
  * @method static Builder|Ad whereDepartmentId($value)
  * @property int|null $third_party_ad_user_id
- * @property-read \App\Models\AssociateOfferAd|null $associateOfferAd
+ * @property-read \App\Models\AssociateOfferAd|null $associateOfferAd²²
  * @property-read \App\Models\AssociateSeekAd|null $associateSeekAd
- * @property-read \App\Models\Department|null $department
+ * @property-read  \App\Models\Department|null $department
  * @property-read \App\Models\Department|null $main_department
  * @property-read string|null $type
  * @property-read \App\Models\ThirdPartyAdUser|null $thirdPartyAdUser
@@ -151,6 +151,13 @@ class Ad extends Model implements HasPresenter
         'landSeekAd' => LandSeekAd::class,
         'associateSeekAd' => AssociateSeekAd::class,
         'associateOfferAd' => AssociateOfferAd::class,
+    ];
+
+    const SALESFORCE_FORM_BY_AD_TYPE = [
+        'landSeekAd' => 'https://terredeliens.my.site.com/objectifterres/survey/runtimeApp.app?invitationId=0KibD0000000l6z&surveyName=annonce_recherche_de_foncier&UUID=54bcd02b-92d1-4ead-aaad-44c18c1dcb87',
+        'landOfferAd' => 'https://terredeliens.my.site.com/objectifterres/survey/runtimeApp.app?invitationId=0KibD0000000lAD&surveyName=annonce_offre_de_foncier&UUID=5ac6ea4f-7f6e-4a1e-8f2a-52072a7d1bf3',
+        'associateOfferAd' => 'https://terredeliens.my.site.com/objectifterres/survey/runtimeApp.app?invitationId=0KibD0000000l29&surveyName=annonce_recherche_d_associ_s_pour_ferme_en_activit&UUID=d37f60a2-f5b4-48ae-8b54-9aa06a7e31c6',
+        'associateSeekAd' => 'https://terredeliens.my.site.com/objectifterres/survey/runtimeApp.app?invitationId=0KibD0000000l8b&surveyName=annonce_recherche_d_associ_pour_projet&UUID=fc0c6ab5-abc6-4b9b-a61c-a75aafb03883'
     ];
 
     public function getSubAdAttribute(): LandSeekAd|LandOfferAd|JobOfferAd|JobSeekAd|AssociateSeekAd|AssociateOfferAd|null
@@ -231,7 +238,7 @@ class Ad extends Model implements HasPresenter
      */
     public function threads()
     {
-        return $this->hasMany(Thread::class);
+        return $this->hasMany(Thread::class)->orderByDesc('updated_at');
     }
 
     /**
@@ -434,8 +441,8 @@ class Ad extends Model implements HasPresenter
     {
         if (auth()->check()) {
             return $this->user_pp_id === auth()->id() || (
-                    $this->attributionAd->userModerator &&
-                    $this->attributionAd->userModerator->id === auth()->id()
+                    $this->attributionAd?->userModerator &&
+                    $this->attributionAd?->userModerator->id === auth()->id()
                 ) || auth()->user()->role >= 4;
         }
         return false;

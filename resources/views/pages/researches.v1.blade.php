@@ -218,7 +218,7 @@
         </div>
     </section>
     {{--    @include('components.partnering')--}}
-    @include('components.support-terre-liens')
+    {{-- @include('components.support-terre-liens') --}}
 @endsection
 
 @section('script')
@@ -246,7 +246,7 @@
     @if($hasDepartmentPolygons)
         <script defer>
             regionMapInit('global-map', {
-                region_id: "{{$request->get("regions_location_researches_ids")[0]}}",
+                region_id: "{{$request->get("regions")[0]}}",
                 offer_type: "{{$request->get("offer_type")}}",
                 ad_category: "{{$request->get("ad_category")}}"
             });

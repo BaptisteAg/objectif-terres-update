@@ -3,7 +3,7 @@
 		<div v-show="value === ''" class="adTypes-container">
 
 			<h1 class="title">Formulaire de {{ onEdit ? 'modification' : 'dépôt' }} d’annonces</h1>
-			<p>Objectif Terre est une plateforme ayant pour but de mettre en liens les personnes ayant des projets
+			<p>Objectif Terres est une plateforme ayant pour but de mettre en liens les personnes ayant des projets
 				agricoles
 				professionnels définis. Si votre annonce ne rentre pas dans cette catégorie (exemple : habitat
 				collectif,
@@ -32,10 +32,10 @@
 				 v-if="adContactType === 'thirdParty'">
 
 				<p>
-					Les coordonnées de la personne pour qui je dépose l'annonce, qui seront visibles par les personnes
-					qui
-					consultent l'annonce.
-				</p><br><br>
+                    Votre messagerie Objectif terres pour cette annonce est désactivée.
+                    Vous devez indiquer ci-dessous les coordonnées de le personne à contacter concernant cette annonce.
+                    Ces informations seront visibles lorsque le visiteur sélectionne "répondre à l'annonce".<br><br>
+				</p>
 
 				<b-field class="w-50 is-size-6" label="Email" :type="errors.email ? 'is-danger' : ''"
 						 :message="errors.email">

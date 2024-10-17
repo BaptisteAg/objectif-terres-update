@@ -12,7 +12,7 @@
                 <h3 class="title is-5">Consulter les annonces :</h3>
 
                 <div class="columns is-desktop">
-                    <div class="column is-one-third">
+                    <div class="column is-one-quarter">
                         <single-selector
                             label="Je souhaite consulter ..."
                             :options="categoryLabels"
@@ -20,21 +20,33 @@
                         </single-selector>
                     </div>
 
-                    <div class="column is-one-third">
+                    <div class="column is-one-quarter">
                         <multiple-selector
-                            label="Région"
+                            label="Région(s)"
                             unit-label="région"
                             unit-label-gender="f"
                             :list-options="regions"
-                            v-model="adsForm.selectedLocalisation"
+                            v-model="adsForm.selectedRegions"
                             :has-toggle-all="true"
                         >
                         </multiple-selector>
                     </div>
 
-                    <div class="column is-one-third">
+                    <div class="column is-one-quarter">
                         <multiple-selector
-                            label="Production principale"
+                            label="Département(s)"
+                            unit-label="département"
+                            unit-label-gender="h"
+                            :list-options="filteredDepartments"
+                            v-model="adsForm.selectedDepartments"
+                            :has-toggle-all="false"
+                        >
+                        </multiple-selector>
+                    </div>
+
+                    <div class="column is-one-quarter">
+                        <multiple-selector
+                            label="Production(s) principale(s)"
                             unit-label="production"
                             unit-label-gender="f"
                             :conditionDisabled="adsForm.selectedCategory === 'all'"
@@ -175,6 +187,10 @@ export default {
             type: Array,
             default: () => []
         },
+        departments: {
+            type: Array,
+            default: () => []
+        },
         productions: {
             type: Array,
             default: () => []
@@ -219,7 +235,8 @@ export default {
             },
             adsForm: savedState.adsForm || {
                 selectedCategory: "all",
-                selectedLocalisation: [],
+                selectedRegions: [],
+                selectedDepartments: [],
                 selectedProductions: [],
                 selectedExperiences: [],
                 selectedFormations: [],
@@ -245,10 +262,17 @@ export default {
                 surface: false,
                 price: false,
                 fermage: false,
-            }
+            },
+            filteredDepartments: [],
         }
     },
+    mounted() {
+        this.filterDepartments();
+    },
     watch: {
+        'adsForm.selectedRegions': function() {
+            this.filterDepartments();
+        },
         adsForm: {
             handler(adsForm) {
                 this.saveState({
@@ -266,6 +290,15 @@ export default {
         }
     },
     methods: {
+        filterDepartments() {
+            let regions = this.adsForm.selectedRegions;
+            if(regions.length === 0) {
+               regions = this.regions.map(region => region.id);
+            }
+            const filteredRegionCodes = this.regions.filter(region => regions.includes(region.id)).map(region => region.code);
+            this.filteredDepartments = this.departments.filter(department => filteredRegionCodes.includes(department.region_code));
+            this.adsForm.selectedDepartments = this.adsForm.selectedDepartments.filter(department => this.filteredDepartments.map(department => department.id).includes(department));
+        },
         saveState(state) {
             sessionStorage.setItem('homeSearchState', JSON.stringify(state));
         },
@@ -305,8 +338,11 @@ export default {
             const params = new URLSearchParams();
             params.append('ad_category', this.adsForm.selectedCategory);
 
-            if (this.adsForm.selectedLocalisation.length > 0) {
-                this.adsForm.selectedLocalisation.forEach(id => params.append('regions_location_researches_ids[]', id));
+            if (this.adsForm.selectedRegions.length > 0) {
+                this.adsForm.selectedRegions.forEach(id => params.append('regions[]', id));
+            }
+            if(this.adsForm.selectedDepartments.length > 0) {
+                this.adsForm.selectedDepartments.forEach(id => params.append('departments[]', id));
             }
 
             if (this.adsForm.selectedProductions.length > 0) {

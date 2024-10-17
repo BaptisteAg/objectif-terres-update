@@ -390,7 +390,7 @@
 
         @include('components.partnering')
 
-        @include('components.support-terre-liens')
+        {{-- @include('components.support-terre-liens') --}}
     </div>
 
 @endsection

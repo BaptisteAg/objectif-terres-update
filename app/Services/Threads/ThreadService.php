@@ -303,7 +303,7 @@ class ThreadService
 	public function convertContentToHTML(string $content): string
 	{
 		$content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
-		$content = strip_tags($content, '<strong><u><i><a><ul><li><br><img>');
+		$content = strip_tags($content, '<strong><u><i><a><ul><li><br><img><p>');
 //		$match_href = '|((https?://)?([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i';
 //		$match_hash = '|\B#([\d\w_]+)|i';
 //		$match_plus = '|\B\+([\d\w_]+)|i';
@@ -334,7 +334,7 @@ class ThreadService
 		$message->thread->update(['updated_at' => Carbon::now()]);
 		$notificationData = $this->getMessageNotificationAdData($message->thread);
 		foreach ($message->thread->users as $user) {
-			$user = User::find($user->id);
+			$user = User::withTrashed()->find($user->id);
 			if ($user->id !== auth()->id()) {
 				if (isset($data['supervisor_id'])) {
 					//in case of an automatic message from the supervisor
@@ -345,13 +345,15 @@ class ThreadService
 							"user_id" => $user->id,
 						]);
 						$threadUser->save();
-						$user->notify(new NewMessageNotification([
-							'sender_name' => $supervisor->name,
-							'sender_first_name' => $supervisor->first_name,
-							'message_content' => $message->content,
-							'ad_type' => $notificationData['ad_type'],
-							'ad_title' => $notificationData['ad_title']
-						]));
+                        if($user) {
+                            $user->notify(new NewMessageNotification([
+                                'sender_name' => $supervisor->name,
+                                'sender_first_name' => $supervisor->first_name,
+                                'message_content' => $message->content,
+                                'ad_type' => $notificationData['ad_type'],
+                                'ad_title' => $notificationData['ad_title']
+                            ]));
+                        }
 					}
 				} else {
 					$threadUser = new ReadMessage([
@@ -359,13 +361,15 @@ class ThreadService
 						"user_id" => $user->id,
 					]);
 					$threadUser->save();
-					$user->notify(new NewMessageNotification([
-						'sender_name' => auth()->user()->name,
-						'sender_first_name' => auth()->user()->first_name,
-						'message_content' => $message->content,
-						'ad_type' => $notificationData['ad_type'],
-						'ad_title' => $notificationData['ad_title']
-					]));
+                    if($user) {
+                        $user->notify(new NewMessageNotification([
+                            'sender_name' => auth()->user()->name,
+                            'sender_first_name' => auth()->user()->first_name,
+                            'message_content' => $message->content,
+                            'ad_type' => $notificationData['ad_type'],
+                            'ad_title' => $notificationData['ad_title']
+                        ]));
+                    }
 				}
 			}
 		}

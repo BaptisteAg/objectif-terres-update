@@ -40,7 +40,7 @@ export default Vue.extend({
             formInput: {
                 selectedDepartments: old.selected_departments && JSON.parse(old.selected_departments) || [],
                 selectedZones: old.selected_zones && JSON.parse(old.selected_zones) || [],
-				surfaceRange: (old.land_seek.surface_range_min !== undefined && old.land_seek.surface_range_min !== null) ? (old.land_seek.surface_range_min + 5) : '',
+				surfaceRange: old.land_seek.surface || '0',
                 surfaceRangeMin: old.land_seek.surface_range_min || '0',
                 surfaceRangeMax: old.land_seek.surface_range_max || '1000000',
                 landDescription: old.land_seek.land_description || '',

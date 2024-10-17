@@ -28,6 +28,7 @@ class ProductionGenreRepository extends AbstractRepository
     {
         $productionGenresWithDepth = ProductionGenre::with('children')
             ->whereNull('parent_id')
+            ->where('hidden', 0)
             ->orderBy('name')
             ->get()
             ->map
@@ -39,7 +40,7 @@ class ProductionGenreRepository extends AbstractRepository
                 /** @var Model $child */
                 foreach($productionGenre["children"] as $child) {
                     $child["name"] = $productionGenre["name"]." - ".$child["name"];
-                    $productionGenresFlattened[] = $child->only(['name', 'id', 'children']);
+                    $productionGenresFlattened[] = $child->only(['name', 'id', 'children', 'hidden']);
                 }
             }
             else {
@@ -47,6 +48,6 @@ class ProductionGenreRepository extends AbstractRepository
             }
         }
 
-        return $productionGenresFlattened;
+        return $productionGenresFlattened->where('hidden', 0)->values();
     }
 }

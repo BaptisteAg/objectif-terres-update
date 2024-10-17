@@ -13,7 +13,7 @@
     </script>
 
     @yield('head-script')
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}?4">
     <link href="https://fonts.googleapis.com/css?family=Bebas+Neue|Kalam:700|Source+Sans+Pro&display=swap"
           rel="stylesheet">
     <link rel="icon" type="image/png" href="/images/favicon/favicon-32x32.png"/>
@@ -26,7 +26,9 @@
 {{--            background-color: #F8F3EE;--}}
 {{--        }--}}
 {{--    </style>--}}
+{{--
     <script src="https://kit.fontawesome.com/c97506cdaa.js" crossorigin="anonymous"></script>
+--}}
     <!-- Hotjar Tracking Code for https://www.objectif-terres.org/ -->
     <!--    <script>
             (function(h,o,t,j,a,r){
@@ -58,25 +60,25 @@
     @include('layouts.footer')
 </div>
 <script>
-    var $buoop = {
-        required: {e: -4, f: -3, o: -3, s: -1, c: -5},
-        reminder: 0,
-        reminderClosed: 1,
-        insecure: true,
-        unsupported: true,
-        api: 2020.12
-    };
-
-    function $buo_f() {
-        var e = document.createElement("script");
-        e.src = "//browser-update.org/update.min.js";
-        document.body.appendChild(e);
-    };
-    try {
-        document.addEventListener("DOMContentLoaded", $buo_f, false)
-    } catch (e) {
-        window.attachEvent("onload", $buo_f)
-    }
+    //var $buoop = {
+    //    required: {e: -4, f: -3, o: -3, s: -1, c: -2},
+    //    reminder: 0,
+    //    reminderClosed: 1,
+    //    insecure: true,
+    //    unsupported: true,
+    //    api: 2020.12
+    //};
+//
+    //function $buo_f() {
+    //    var e = document.createElement("script");
+    //    e.src = "//browser-update.org/update.min.js";
+    //    document.body.appendChild(e);
+    //};
+    //try {
+    //    document.addEventListener("DOMContentLoaded", $buo_f, false)
+    //} catch (e) {
+    //    window.attachEvent("onload", $buo_f)
+    //}
 </script>
 
 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
@@ -91,7 +93,7 @@
         message.style.display = 'none';
     });
 </script>
-<script src="{{ mix('js/app.js') }}"></script>
+<script src="{{ mix('js/app.js') }}?5"></script>
 <script>
 </script>
 <style>
@@ -140,6 +142,10 @@
             gtag('config', '{{config('analytics.google.site_id')}}');
         }
     </script>
+@endif
+
+@if(config('jira.widget_enabled'))
+    <script data-jsd-embedded data-key="6cc7e1b1-ff31-49eb-93bf-0016d2cab165" data-base-url="https://jsd-widget.atlassian.com" src="https://jsd-widget.atlassian.com/assets/embed.js"></script>
 @endif
 
 @yield('script')

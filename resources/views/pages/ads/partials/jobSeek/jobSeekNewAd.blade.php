@@ -103,7 +103,7 @@
             <section class="mb-6 field" ref="aboutProject">
                 <?php
                 $aboutFarmLabel = "Et si vous nous en disiez un peu plus sur votre projet et vos attentes ?";
-                $aboutFarmTooltip = "Que recherchez-vous plus précisement ? Cette recherche s'inscrit-elle dans une volonté d'installation à plus long terme ?";
+                $aboutFarmTooltip = "N'hésitez pas à préciser votre projet d'installation si vous l'envisagez. (Calendrier d'installation si prévu)";
                 ?>
                 @include('pages.ads.partials.inputs.about_project_content', ['title' => $aboutFarmLabel, 'tooltip' => $aboutFarmTooltip])
             </section>

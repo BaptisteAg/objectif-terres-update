@@ -78,7 +78,7 @@ class UserService
             $data['password'] = Hash::make($data['password']);
         }
 
-        if (isset($data['hasformation']) && $data['hasformation'] === 0) {
+        if (!isset($data['formation']) || !$data['formation']) {
             $data['formation'] = null;
         }
 
@@ -157,9 +157,11 @@ class UserService
             return [];
         }
 
-        $userDepartments = User::with('departments')->find(auth()->id());
-        foreach ($userDepartments->departments as $department) {
-            array_push($supervisorLocationTerritoryCodes, $department->code);
+        /** @var User $user */
+        $user = User::with('departments')->find(auth()->id());
+
+        foreach ($user->departments as $department) {
+            $supervisorLocationTerritoryCodes[] = $department->code;
         }
         return $supervisorLocationTerritoryCodes;
     }
@@ -262,7 +264,7 @@ class UserService
         foreach ($usersGroupedByTerritoryNames as $territoryName => $value) {
             foreach ($users as $user) {
                 foreach ($user->departments as $department) {
-                    if ($department->territory->name == $territoryName) {
+                    if ($department->territory?->name == $territoryName) {
                         if (!in_array($user, $usersGroupedByTerritoryNames[$territoryName])) {
                             array_push($usersGroupedByTerritoryNames[$territoryName], $user);
                         }

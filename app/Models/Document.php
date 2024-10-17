@@ -77,6 +77,12 @@ class Document extends Model
 
     public function getUrlAttribute()
     {
-        return app('url')->assetFrom('https://objectif-terres.org', $this->path);
+        $fromUrl = config('app.url');
+
+        if (!app('filesystem')->disk('public')->exists($this->path)) {
+            $fromUrl = 'https://objectif-terres.org';
+        }
+
+        return app('url')->assetFrom($fromUrl, $this->path);
     }
 }

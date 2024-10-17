@@ -44,17 +44,10 @@
             </b-dropdown-item>
 
             <b-dropdown-item has-link
-                             v-if="$user.role >= 3"
+                             v-if="$user.role >= 2"
                              aria-role="listitem"
             >
-              <a target="_blank" :href="routes.administration.role_2">Gestion des accompagnements</a>
-            </b-dropdown-item>
-
-            <b-dropdown-item has-link
-                             v-else-if="$user.role >= 2"
-                             aria-role="listitem"
-            >
-              <a target="_blank" :href="routes.administration.role_2">Espace primo-accueillant</a>
+              <a target="_blank" href="https://terredeliens.my.site.com/objectifterres/s/demande/Case/00B6900000CHKFBEA5">Gestion des accompagnements</a>
             </b-dropdown-item>
 
             <b-dropdown-item has-link
@@ -73,7 +66,8 @@
         </div>
 
         <div class="navbar-item">
-          <a href="https://soutenir.terredeliens.org/objectifterre/~mon-don"
+          <a href="https://soutenir.terredeliens.org/OT/~mon-don"
+             target="_blank"
              class="button is-danger is-rounded">
             <span>Nous soutenir</span>
           </a>

@@ -79,6 +79,10 @@ class RegisterController extends Controller
 	{
         $data = $request->all();
         $data['locationable'] = $request->input('locationable');
+
+        if(isset($data["formation"])){
+            $user['hasformation'] = true;
+        }
 		$this->registerService->validator(
 		    $request->all(),
             [
@@ -99,7 +103,7 @@ class RegisterController extends Controller
                 Merci de confirmer votre email.",
             'action' => [
                 "Confirmer mon email",
-                $this->registerService->getVerifyUrl($user)
+                app('App\Services\Auth\RegisterService')->getVerifyUrl($user)
             ]
         ]));
 

@@ -20,7 +20,7 @@
 
                 @include('pages.ads.partials.show-author-infos')
 
-                @include('pages.ads.partials.show-ad-location', ['showCities' => true])
+                @include('pages.ads.partials.show-ad-location', ['showCities' => $ad->associateOfferAd->accept_use_zip_code])
 
                 @if(!empty($ad->associateOfferAd->surface))
                     <div class="w-50">
@@ -28,8 +28,6 @@
                         {{$ad->associateOfferAd->surface}} hectares
                     </div>
                 @endif
-
-                @include('pages.ads.partials.show-author-infos')
 
                 <div class="w-50">
                     <strong>Altitude : </strong>
@@ -39,8 +37,6 @@
                         Non renseignée
                     @endif
                 </div>
-
-                @include('pages.ads.partials.show-ad-location', ['showCities' => $ad->associateOfferAd->accept_use_zip_code])
 
                 @if($ad->associateOfferAd->is_activity_transmission)
                     <div class="w-50">

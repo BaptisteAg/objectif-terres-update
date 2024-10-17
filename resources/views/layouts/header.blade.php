@@ -4,6 +4,7 @@
         'home' => route('home'),
         'login' => route('login'),
         'about_us' => route('qui-sommes-nous'),
+        'about_tdl' => route('mouvement-terre-de-liens'),
         'create_ads' => route('ads.create'),
         'support_requests' => config('app.sf_support_requests_url'),
         'all_ads' => route('researches.index', ['ad_category' => 'all']),
@@ -88,7 +89,7 @@
             id="info-banner"
             type="is-info"
             role="alert"
-            @close="() => { fetch('/info-banner/close', { method: 'POST',headers: {'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': '{{csrf_token()}}'}, body: JSON.stringify({closed: '{{md5($infoBanner)}}'}) }) }">
+            @close="() => closeInfoBanner('{{md5($infoBanner)}}')">
         {!! $infoBanner !!}
     </b-notification>
 @endif
