@@ -39,6 +39,8 @@ class ApiController extends Controller
      *     @OA\Parameter(name="limit", in="query", description="Nombre d'annonces à retourner", required=false, @OA\Schema(type="integer", minimum=1, maximum=100, default="4")),
      *     @OA\Parameter(name="type", in="query", description="Type d'annonce. Par défaut les annonces de type landOfferAd et landSeekAd sont retournées.", required=false, @OA\Schema(type="string", enum={"landOfferAd", "landSeekAd", "jobOfferAd", "jobSeekAd", "associateOfferAd", "associateSeekAd"})),
      *     @OA\Parameter(name="region", in="query", description="Code INSEE de la région", required=false, @OA\Schema(type="string")),
+     *     @OA\Parameter(name="department", in="query", description="Code INSEE du département", required=false, @OA\Schema(type="string")),
+     *     @OA\Parameter(name="territory", in="query", description="Nom du Territoire", required=false, @OA\Schema(type="string")),
      *     security={{"api_key": {}}},
      * )
      * @OA\Tag(name="Lire des annonces. Les requêtes sont mises en cache pendant 1 heure."),
@@ -57,6 +59,8 @@ class ApiController extends Controller
             'limit' => 'integer|min:1|max:100',
             'type' => 'string|in:landOfferAd,landSeekAd,jobOfferAd,jobSeekAd,associateOfferAd,associateSeekAd',
             'region' => 'string|exists:regions,code',
+            'department' => 'string|exists:departements,code',
+            'territory' => 'string|exists:departements,name',
         ]);
 
         if(config('app.env') === 'production'){

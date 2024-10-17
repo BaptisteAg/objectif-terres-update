@@ -84,6 +84,17 @@
     @endif
 @endif
 
+@if(($formUrl = \App\Models\Ad::SALESFORCE_FORM_BY_AD_TYPE["landSeekAd"]) || ($formUrl = Session::get('display_survey')))
+    <b-notification
+            type="is-danger"
+            aria-close-label="Close notification"
+            role="alert">
+        Nous avons besoin de savoir combien de personnes trouvent leur ferme, ou vendent leur ferme grâce à Objectif Terres, c’est pourquoi nous vous proposons de répondre à quelques questions.
+        Cela ne prendra que quelques minutes et nous permettra d’améliorer notre service.<br>
+        <a href="{{ $formUrl }}" target="_blank">Répondre au questionnaire</a>
+    </b-notification>
+@endif
+
 @if($infoBanner && ( !session('info-banner-closed') || session('info-banner-closed') !== md5($infoBanner)))
     <b-notification
             id="info-banner"

@@ -153,10 +153,12 @@
                                             class="input @error('profile') is-danger @enderror ">
                                         <option disabled="disabled" selected>Vous êtes...</option>
                                         @foreach(\App\Models\User::$profiles as $id => $prof)
-                                            <option
-                                                    value="{{$id}}" {{old('profile') === $id || $user->profile === $id ? 'selected' : ''}} >
-                                                {{$prof}}
-                                            </option>
+                                            @if($id !== 7)
+                                                <option
+                                                        value="{{$id}}" {{old('profile') === $id || $user->profile === $id ? 'selected' : ''}} >
+                                                    {{$prof}}
+                                                </option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>

@@ -267,7 +267,11 @@ class  AdsController extends BaseController
         }
         $this->adService->delete($ad);
         if (is_null($ad->project_id)) {
-            return redirect()->route('user.index')->with('success', 'Votre annonce a bien été supprimée');
+            $formUrl = Ad::SALESFORCE_FORM_BY_AD_TYPE[$ad->type] ?? '';
+
+            return redirect()->route('user.index')
+                ->with('success', 'Votre annonce a bien été supprimée')
+                ->with('display_survey', $formUrl);
         }
 
         return redirect()->route('user.index')->with('success', 'Votre demande d\'accomapgnement a été supprimée avec succès');
@@ -285,7 +289,11 @@ class  AdsController extends BaseController
         }
         $this->adService->archive($ad);
         if (is_null($ad->project_id)) {
-            return back()->with('success', 'Votre annonce a bien été archivée');
+            $formUrl = Ad::SALESFORCE_FORM_BY_AD_TYPE[$ad->type] ?? '';
+
+            return back()
+                ->with('success', 'Votre annonce a bien été archivée')
+                ->with('display_survey', $formUrl);
         }
         return redirect()->route('user.index')->with('success', 'Votre demande d\'accomapgnement a été archivée avec succès');
     }
