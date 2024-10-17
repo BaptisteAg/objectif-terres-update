@@ -31,38 +31,47 @@
                             size="is-small"
                     >
                         <b-breadcrumb-item href="/">Page d’accueil</b-breadcrumb-item>
-{{--                        <b-breadcrumb-item class="breadcrumb__link"--}}
-{{--                                           href="{{route('researches.index',  ['offer_type' => $offerType, 'ad_category' => $adCategory])}}">--}}
-{{--                            <span>{{$ad->ad_type_full_name}}</span>--}}
-{{--                        </b-breadcrumb-item>--}}
-                        <b-breadcrumb-item class="breadcrumb__link" @click="goBack">{{$ad->ad_type_full_name}}</b-breadcrumb-item>
+                        {{--                        <b-breadcrumb-item class="breadcrumb__link"--}}
+                        {{--                                           href="{{route('researches.index',  ['offer_type' => $offerType, 'ad_category' => $adCategory])}}">--}}
+                        {{--                            <span>{{$ad->ad_type_full_name}}</span>--}}
+                        {{--                        </b-breadcrumb-item>--}}
+                        <b-breadcrumb-item class="breadcrumb__link"
+                                           @click="goBack">{{$ad->ad_type_full_name}}</b-breadcrumb-item>
                     </b-breadcrumb>
                 </div>
 
                 <div class="column">
                     @if($ad->canEdit())
-                        <div class="buttons has-addons is-right">
-                            @if($ad->is_draft === 0 && !isset($ad->attributionAd))
-                                <b-button
-                                        href="{{ route('ads.request-publishing', ["id" => $ad->id]) }}"
-                                        tag="a" icon-left="check"
-                                        rounded>Soumettre
-                                </b-button>
-                            @endif
-                            <b-button
-                                    href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ["id" => $ad->id]) }}"
-                                    tag="a" icon-left="pencil" rounded>Modifier
-                            </b-button>
-                            <b-button onclick="return confirm('Êtes vous sûr·e ?')" tag="a"
-                                      href="{{  route('ads.archive', [ $ad->id]) }}" icon-left="archive-arrow-down"
-                                      rounded>
-                                Archiver
-                            </b-button>
-                            <b-button onclick="return confirm('Êtes vous sûr·e ? Cette opération est irréversible.')"
-                                      tag="a" href="{{  route('ads.delete', [ $ad->id]) }}" icon-left="delete" rounded>
-                                Supprimer
-                            </b-button>
-                        </div>
+                        @php
+                        echo 'ioufodhsofihsu' . ($ad->is_draft === 0 && !isset($ad->attributionAd));
+                        @endphp
+                                                    @if($ad->is_draft === 0 && !isset($ad->attributionAd))
+                                                        <b-button
+                                                                href="{{ route('ads.request-publishing', ["id" => $ad->id]) }}"
+                                                                tag="a" icon-left="check"
+                                                                rounded>Soumettre
+                                                        </b-button>
+                                                    @endif
+                        {{--                            <b-button--}}
+                        {{--                                    href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ["id" => $ad->id]) }}"--}}
+                        {{--                                    tag="a" icon-left="pencil" rounded>Modifier--}}
+                        {{--                            </b-button>--}}
+                        {{--                            <b-button onclick="return confirm('Êtes vous sûr·e ?')" tag="a"--}}
+                        {{--                                      href="{{  route('ads.archive', [ $ad->id]) }}" icon-left="archive-arrow-down"--}}
+                        {{--                                      rounded>--}}
+                        {{--                                Archiver--}}
+                        {{--                            </b-button>--}}
+                        {{--                            <b-button onclick="return confirm('Êtes vous sûr·e ? Cette opération est irréversible.')"--}}
+                        {{--                                      tag="a" href="{{  route('ads.delete', [ $ad->id]) }}" icon-left="delete" rounded>--}}
+                        {{--                                Supprimer--}}
+                        {{--                            </b-button>--}}
+                        <survey-modal
+                                is-archive="{{ $ad->is_draft === 0 && !isset($ad->attributionAd) }}"
+                                is-archive-href="{{ route('ads.request-publishing', ["id" => $ad->id]) }}"
+                                edit-href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ["id" => $ad->id]) }}"
+                                archive-route="{{ route('ads.survey', [$ad->id, 'action' => 'archive']) }}"
+                                delete-route="{{ route('ads.survey', [$ad->id, 'action' => 'delete']) }}"
+                        ></survey-modal>
                     @endif
                 </div>
             </div>
@@ -95,8 +104,8 @@
         @endif
 
         @if(config('app.env') === 'local')
-            <h1 class="title is-1 has-background-black has-text-white">Type : {{$ad->type}}</h1>
-            <h1 class="title is-1 has-background-black has-text-white">accept_share_contact_infos
+            <h1 class="title has-background-black has-text-white">Type : {{$ad->type}}</h1>
+            <h1 class="title has-background-black has-text-white">accept_share_contact_infos
                 : {{$ad->accept_share_contact_infos}}</h1>
         @endif
 

@@ -175,7 +175,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div v-if="optionProfileSelected == {{array_search('autre', \App\Models\User::$profiles)}}"
+                    <div v-if="optionProfileSelected == '{{ array_search('autre', \App\Models\User::$profiles) }}'"
                          class="column is-half">
                         <div class="field">
                             <label class="label">Situation autre </label>

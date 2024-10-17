@@ -57,6 +57,8 @@ const Modal = () => import('./components/Modal.vue');
 Vue.component('modal', Modal);
 const ShowMoreButton = () => import('./pages/ads/components/ShowMoreButton.vue');
 Vue.component('show-more-button', ShowMoreButton);
+const SurveyModal = () => import('./pages/ads/components/SurveyModal.vue');
+Vue.component('survey-modal', SurveyModal);
 
 //////////////
 // VENDORS

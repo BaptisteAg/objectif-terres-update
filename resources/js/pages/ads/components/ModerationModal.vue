@@ -18,12 +18,12 @@
             </template>
 
             <div>
-              <h5 class="has-text-link is-size-5">Détaillez votre choix en envoyant un message au porteur
-                de
-                projet
-              </h5>
-              <br>
               <div class="container">
+                <h5 class="is-size-5">Détaillez votre choix en envoyant un message au porteur
+                  de
+                  projet
+                </h5>
+                <br>
                 <div class="field">
                   <div v-if="isRejectedChoice" class="field">
                     <label class="label has-text-left">Choisir un motif de

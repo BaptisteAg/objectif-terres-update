@@ -108,7 +108,7 @@ class  AdsController extends BaseController
             }
 
             report($exception);
-            if(config('app.env') !== 'production') {
+            if (config('app.env') !== 'production') {
                 throw $exception;
             }
             return back()->withInput()->withErrors($exceptionMessage);
@@ -254,6 +254,10 @@ class  AdsController extends BaseController
         return view('pages.ads.listUserAds', compact('ads'));
     }
 
+    public function survey(Request $request, Ad $ad, $action)
+    {
+        return redirect()->route('user.index')->with('success');
+    }
 
     /**
      * @param Ad $ad
@@ -298,6 +302,7 @@ class  AdsController extends BaseController
         return redirect()->route('user.index')->with('success', 'Votre demande d\'accomapgnement a été archivée avec succès');
     }
 
+
     /**
      * @param int $adId
      * @return \Illuminate\Http\RedirectResponse
@@ -327,7 +332,7 @@ class  AdsController extends BaseController
     /**
      * @throws \Throwable
      */
-    protected function store(AdRequest $request, $isDraft = 1) : Ad
+    protected function store(AdRequest $request, $isDraft = 1): Ad
     {
         $data = $request->validated();
         $data["is_draft"] = $isDraft;
