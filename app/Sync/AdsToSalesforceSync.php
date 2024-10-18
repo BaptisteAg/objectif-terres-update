@@ -91,8 +91,8 @@ class AdsToSalesforceSync
                             "MailingCountry" => $user->country_id ? Country::find($user->country_id)?->name_fr_fr : 'France',
                             "LeadSource" => "Petites annonces",
                             "role__c" => 'Annonceur Objectif Terres',
-                            "Profil_Objectif_Terres__c" => $user->profile,
-                            "Recevoir_les_infos_de_TDL__c" => empty($user->accept_communication) ? 0 : 1
+                            "Profil_Objectif_Terres__c" => \App\Models\User::$profiles[$user->profile],
+                            "Recevoir_les_infos_de_TDL__c" => empty($user->accept_communication) ? 0 : 1,
                         ]);
 
                         $progressBar->advance();
@@ -242,7 +242,8 @@ class AdsToSalesforceSync
                     },
                     "Name" => \Str::limit($ad->title,  80, ''),
                     "Contact__c" => $contactsById[$ad->userPp->id]["Id"] ?? null,
-                    "Territoire_Principal__c" => $ad->mainDepartment ? $departmentsByCode[$ad->mainDepartment->code]["Id"] : null,
+                    "Territoire_Principal__c" => $ad->main_department ? $departmentsByCode[$ad->mainDepartment->code]["Id"] : null,
+                    "Territoire_concerne__c" => $ad->main_department->territory->name ?? null,
                     "Surface_ha__c" => $presenter->surface ?? null,
                     "Production_agricole_prinicipale__c" => $subAd?->productionGenres->map($productionGenreMapper)->filter()[0] ?? null,
                     "Autres_productions_agricoles__c" => $subAd->productionGenresSecondary?->map($productionGenreMapper)?->unique()?->filter()?->join(';') ?? null,
@@ -285,6 +286,9 @@ class AdsToSalesforceSync
                     "Informations_compl_mentaires_demandeur__c" => $ad->about_content,
                     "Description__c" => $subAd->sau_description ?: $subAd->land_description ?: '',
                     "Altitude_m__c" => $subAd->altitude ?? null,
+                    // TODO Baptiste : mapping des champs suivants
+                    //"Aboutie_grace_a_OT__c" => $ad->closed_because_ot ? 'Oui' : 'Non',
+                    //"Commentaires_suite_cloture__c" => $ad->closed_comment,
                 ], fn($value) => $value !== null);
 
                 $progressBar->advance();
@@ -317,7 +321,6 @@ class AdsToSalesforceSync
                         $ad->departments->pluck('code')->map(fn($code) =>
                             $this->attachTerritory('Département', $id, $departmentsByCode[$code]["Id"])
                         );
-                        $ad->departments->
                     }
                     if($ad->regions?->count()) {
                         $ad->regions->pluck('code')->map(fn($code) =>
