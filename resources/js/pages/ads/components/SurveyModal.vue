@@ -1,13 +1,12 @@
 <template>
   <div>
     <div class="buttons has-addons is-right">
-<!--      <b-button-->
-<!--          v-if="isArchive"-->
-<!--          :href="isArchiveHref"-->
-<!--          tag="a" icon-left="check"-->
-<!--          rounded>Soumettre-->
-<!--      </b-button>-->
-
+      <b-button
+          v-if="isArchive"
+          :href="isArchiveHref"
+          tag="a" icon-left="check"
+          rounded>Soumettre
+      </b-button>
       <b-button
           :href="editHref"
           tag="a" icon-left="pencil" rounded>Modifier
@@ -19,52 +18,67 @@
         Supprimer
       </b-button>
     </div>
-    <b-modal v-model="isModalActive" :destroy-on-hide="false" aria-role="dialog" aria-modal>
-      <div class="card">
-        <header class="card-header">
-          <p class="card-header-title">
-            {{ modalTitle }}
-          </p>
-        </header>
-        <div class="card-content">
-          <form :action="formAction" method="POST">
-            <input type="hidden" name="_token" :value="csrfToken">
+    <b-modal
+        v-model="isModalActive"
+        has-modal-card
+        trap-focus
+        :destroy-on-hide="false"
+        aria-role="dialog"
+        aria-label="Modal"
+        close-button-aria-label="Close"
+        aria-modal
+    >
+      <template #default="props">
+        <div class="bg-beige objT-border p-6 p-5-mobile">
+          <h3 class="title">{{ modalTitle }}</h3>
+          <div class="mt-5">
+            <form :action="formAction" method="POST">
+              <input type="hidden" name="_token" :value="csrfToken">
 
-            <b-field label="Si votre annonce est retirée, c'est que :">
-              <b-radio v-model="reason" name="reason" native-value="installed">
-                Vous vous êtes installé.e
-              </b-radio>
-              <b-radio v-model="reason" name="reason" native-value="in_progress">
-                Votre installation est en cours
-              </b-radio>
-              <b-radio v-model="reason" name="reason" native-value="abandoned">
-                Vous avez abandonné votre projet d'installation
-              </b-radio>
-              <b-radio v-model="reason" name="reason" native-value="continue">
-                Vous souhaitez poursuivre la publication de votre annonce
-              </b-radio>
-            </b-field>
+              <div class="mb-4">
+                <p class="has-text-weight-bold mb-2">Si votre annonce est retirée, c'est que :</p>
+                <b-field>
+                  <b-radio v-model="reason" name="reason" native-value="Vous vous êtes installé.e">
+                    Vous vous êtes installé.e
+                  </b-radio>
+                </b-field>
+                <b-field>
+                  <b-radio v-model="reason" name="reason" native-value="Votre installation est en cours">
+                    Votre installation est en cours
+                  </b-radio>
+                </b-field>
+                <b-field>
+                  <b-radio v-model="reason" name="reason" native-value="Vous avez abandonné votre projet d'installation">
+                    Vous avez abandonné votre projet d'installation
+                  </b-radio>
+                </b-field>
+                <b-field>
+                  <b-radio v-model="reason" name="reason" native-value="Vous souhaitez poursuivre la publication de votre annonce">
+                    Vous souhaitez poursuivre la publication de votre annonce
+                  </b-radio>
+                </b-field>
+              </div>
 
-            <b-field v-if="['installed', 'in_progress'].includes(reason)"
-                     label="Si votre recherche a abouti, est-ce grâce à la plateforme Objectif Terres ?">
-              <b-radio v-model="thanksToPlatform" name="thanks_to_platform" native-value="yes">Oui</b-radio>
-              <b-radio v-model="thanksToPlatform" name="thanks_to_platform" native-value="no">Non</b-radio>
-              <b-radio v-model="thanksToPlatform" name="thanks_to_platform" native-value="unknown">Je ne sais pas
-              </b-radio>
-            </b-field>
+              <b-field v-if="['Vous vous êtes installé.e', 'Votre installation est en cours'].includes(reason)"
+                       label="Si votre recherche a abouti, est-ce grâce à la plateforme Objectif Terres ?">
+                <b-radio v-model="thanksToPlatform" name="thanks_to_platform" native-value="Oui">Oui</b-radio>
+                <b-radio v-model="thanksToPlatform" name="thanks_to_platform" native-value="Non">Non</b-radio>
+                <b-radio v-model="thanksToPlatform" name="thanks_to_platform" native-value="Je ne sais pas">Je ne sais pas</b-radio>
+              </b-field>
 
-            <b-field
-                label="Si vous avez des remarques à nous faire pour améliorer notre plateforme, ce champ est à votre disposition.">
-              <b-input v-model="remarks" name="remarks" type="textarea"></b-input>
-            </b-field>
+              <b-field
+                  label="Si vous avez des remarques à nous faire pour améliorer notre plateforme, ce champ est à votre disposition.">
+                <b-input v-model="remarks" name="remarks" type="textarea"></b-input>
+              </b-field>
 
-            <div class="buttons">
-              <b-button type="is-primary" native-type="submit">Envoyer</b-button>
-              <b-button @click="isModalActive = false">Annuler</b-button>
-            </div>
-          </form>
+              <div class="buttons">
+                <b-button type="is-primary" native-type="submit">Envoyer</b-button>
+                <b-button @click="props.close">Annuler</b-button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      </template>
     </b-modal>
   </div>
 </template>
@@ -74,7 +88,8 @@ export default {
   props: {
     isArchive: {
       type: Boolean,
-      required: true
+      required: true,
+      default: false
     },
     isArchiveHref: {
       type: String,
@@ -92,6 +107,10 @@ export default {
     deleteRoute: {
       type: String,
       required: true
+    },
+    csrfToken: {
+      type: String,
+      required: true
     }
   },
   data() {
@@ -102,7 +121,6 @@ export default {
       thanksToPlatform: '',
       remarks: '',
       formAction: '',
-      csrfToken: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
     }
   },
   methods: {
@@ -111,6 +129,83 @@ export default {
       this.formAction = type === 'archive' ? this.archiveRoute : this.deleteRoute;
       this.isModalActive = true;
     }
-  }
+  },
 }
 </script>
+
+<style scoped>
+.modal-card-body .field:not(:last-child) {
+  margin-bottom: 1.5rem;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+</style>
+
+<script>
+export default {
+  props: {
+    isArchive: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
+    isArchiveHref: {
+      type: String,
+      required: false,
+      default: ''
+    },
+    editHref: {
+      type: String,
+      required: true
+    },
+    archiveRoute: {
+      type: String,
+      required: true
+    },
+    deleteRoute: {
+      type: String,
+      required: true
+    },
+    csrfToken: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      isModalActive: false,
+      modalTitle: '',
+      reason: '',
+      thanksToPlatform: '',
+      remarks: '',
+      formAction: '',
+    }
+  },
+  methods: {
+    openModal(type) {
+      this.modalTitle = type === 'archive' ? 'Archiver l\'annonce' : 'Supprimer l\'annonce';
+      this.formAction = type === 'archive' ? this.archiveRoute : this.deleteRoute;
+      this.isModalActive = true;
+    }
+  },
+}
+</script>
+<style scoped>
+.modal-card-body .field:not(:last-child) {
+  margin-bottom: 1.5rem;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+</style>

@@ -141,7 +141,10 @@ class Ad extends Model implements HasPresenter
         'created_at',
         'origin',
         'department_id',
-        'third_party_ad_user_id'
+        'third_party_ad_user_id',
+        'survey_reason',
+        'survey_thanks_to_platform',
+        'survey_remarks',
     ];
 
     const AD_TYPES = [
@@ -173,6 +176,10 @@ class Ad extends Model implements HasPresenter
     // in the related table
     public function getTypeAttribute(): ?string
     {
+        if ($this->trashed()) {
+            return null;
+        }
+
         if (isset($this->cached_type)) {
             return $this->cached_type;
         }

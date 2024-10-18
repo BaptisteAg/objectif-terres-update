@@ -42,35 +42,13 @@
 
                 <div class="column">
                     @if($ad->canEdit())
-                        @php
-                        echo 'ioufodhsofihsu' . ($ad->is_draft === 0 && !isset($ad->attributionAd));
-                        @endphp
-                                                    @if($ad->is_draft === 0 && !isset($ad->attributionAd))
-                                                        <b-button
-                                                                href="{{ route('ads.request-publishing', ["id" => $ad->id]) }}"
-                                                                tag="a" icon-left="check"
-                                                                rounded>Soumettre
-                                                        </b-button>
-                                                    @endif
-                        {{--                            <b-button--}}
-                        {{--                                    href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ["id" => $ad->id]) }}"--}}
-                        {{--                                    tag="a" icon-left="pencil" rounded>Modifier--}}
-                        {{--                            </b-button>--}}
-                        {{--                            <b-button onclick="return confirm('Êtes vous sûr·e ?')" tag="a"--}}
-                        {{--                                      href="{{  route('ads.archive', [ $ad->id]) }}" icon-left="archive-arrow-down"--}}
-                        {{--                                      rounded>--}}
-                        {{--                                Archiver--}}
-                        {{--                            </b-button>--}}
-                        {{--                            <b-button onclick="return confirm('Êtes vous sûr·e ? Cette opération est irréversible.')"--}}
-                        {{--                                      tag="a" href="{{  route('ads.delete', [ $ad->id]) }}" icon-left="delete" rounded>--}}
-                        {{--                                Supprimer--}}
-                        {{--                            </b-button>--}}
                         <survey-modal
-                                is-archive="{{ $ad->is_draft === 0 && !isset($ad->attributionAd) }}"
-                                is-archive-href="{{ route('ads.request-publishing', ["id" => $ad->id]) }}"
-                                edit-href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ["id" => $ad->id]) }}"
+                                :is-archive="{{ $ad->is_draft === 0 && !isset($ad->attributionAd) ? 'true' : 'false' }}"
+                                is-archive-href="{{ route('ads.request-publishing', ['id' => $ad->id]) }}"
+                                edit-href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ['id' => $ad->id]) }}"
                                 archive-route="{{ route('ads.survey', [$ad->id, 'action' => 'archive']) }}"
                                 delete-route="{{ route('ads.survey', [$ad->id, 'action' => 'delete']) }}"
+                                csrf-token="{{ csrf_token() }}"
                         ></survey-modal>
                     @endif
                 </div>

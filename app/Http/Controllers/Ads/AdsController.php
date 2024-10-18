@@ -13,7 +13,7 @@ use App\Notifications\NewSupportRequestNotification;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 
 class  AdsController extends BaseController
@@ -256,7 +256,29 @@ class  AdsController extends BaseController
 
     public function survey(Request $request, Ad $ad, $action)
     {
-        return redirect()->route('user.index')->with('success');
+        if (!$ad->canEdit()) {
+            abort(404);
+        }
+
+        $validatedData = $request->validate([
+            'reason' => 'required|string',
+            'thanks_to_platform' => 'nullable|string',
+            'remarks' => 'nullable|string',
+        ]);
+
+        $ad->update([
+            'survey_reason' => $validatedData['reason'],
+            'survey_thanks_to_platform' => $validatedData['thanks_to_platform'] ?? null,
+            'survey_remarks' => $validatedData['remarks'] ?? null,
+        ]);
+
+        if ($action === 'delete') {
+            return $this->delete($ad);
+        } elseif ($action === 'archive') {
+            return $this->archive($ad);
+        }
+
+        return redirect()->route('user.index')->with('error', 'Action non reconnue.');
     }
 
     /**
