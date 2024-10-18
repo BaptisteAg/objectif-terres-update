@@ -91,7 +91,7 @@ class AdsToSalesforceSync
                             "MailingCountry" => $user->country_id ? Country::find($user->country_id)?->name_fr_fr : 'France',
                             "LeadSource" => "Petites annonces",
                             "role__c" => 'Annonceur Objectif Terres',
-                            "Profil_Objectif_Terres__c" => \App\Models\User::$profiles[$user->profile],
+                            "Profil_Objectif_Terres__c" => $user->profile ? \App\Models\User::$profiles[$user->profile] : null,
                             "Recevoir_les_infos_de_TDL__c" => empty($user->accept_communication) ? 0 : 1,
                         ]);
 
