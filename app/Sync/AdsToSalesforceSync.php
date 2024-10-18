@@ -245,6 +245,7 @@ class AdsToSalesforceSync
                     "Territoire_Principal__c" => $ad->main_department ? $departmentsByCode[$ad->mainDepartment->code]["Id"] : null,
                     "Territoire_concerne__c" => trim(match($ad->main_department?->territory?->name) {
                         "Bourgogne / Franche-Comté" => "Bourgogne-Franche-Comté",
+                        "Languedoc-Roussillon" => "Languedoc",
                         null => null,
                         default => $ad->main_department->territory->name,
                     }),
