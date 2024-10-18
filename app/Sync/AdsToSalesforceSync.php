@@ -248,7 +248,7 @@ class AdsToSalesforceSync
                         "Languedoc-Roussillon" => "Languedoc",
                         null => null,
                         default => trim($ad->main_department->territory->name),
-                    }),
+                    },
                     "Surface_ha__c" => $presenter->surface ?? null,
                     "Production_agricole_prinicipale__c" => $subAd?->productionGenres->map($productionGenreMapper)->filter()[0] ?? null,
                     "Autres_productions_agricoles__c" => $subAd->productionGenresSecondary?->map($productionGenreMapper)?->unique()?->filter()?->join(';') ?? null,
