@@ -1107,6 +1107,7 @@ class  AdService
 
         return Ad::withTrashed()
             ->whereNull('support_request_territory_id')
+            ->whereNull('project_id')
             ->whereHas('attributionAd', function (Builder $query) {
                 $query->where('ad_status_id', '=', AdStatus::APPROVE_ID)
                     ->whereNull('archived_at');

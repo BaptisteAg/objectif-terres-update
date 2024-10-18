@@ -243,7 +243,11 @@ class AdsToSalesforceSync
                     "Name" => \Str::limit($ad->title,  80, ''),
                     "Contact__c" => $contactsById[$ad->userPp->id]["Id"] ?? null,
                     "Territoire_Principal__c" => $ad->main_department ? $departmentsByCode[$ad->mainDepartment->code]["Id"] : null,
-                    "Territoire_concerne__c" => $ad->main_department->territory->name ?? null,
+                    "Territoire_concerne__c" => trim(match($ad->main_department?->territory?->name) {
+                        "Bourgogne / Franche-Comté" => "Bourgogne-Franche-Comté",
+                        null => null,
+                        default => $ad->main_department->territory->name,
+                    }),
                     "Surface_ha__c" => $presenter->surface ?? null,
                     "Production_agricole_prinicipale__c" => $subAd?->productionGenres->map($productionGenreMapper)->filter()[0] ?? null,
                     "Autres_productions_agricoles__c" => $subAd->productionGenresSecondary?->map($productionGenreMapper)?->unique()?->filter()?->join(';') ?? null,
@@ -319,18 +323,18 @@ class AdsToSalesforceSync
 
                     if($ad->departments?->count()) {
                         $ad->departments->pluck('code')->map(fn($code) =>
-                            $this->attachTerritory('Département', $id, $departmentsByCode[$code]["Id"])
+                            $this->attachLocation('Département', $id, $departmentsByCode[$code]["Id"])
                         );
                     }
                     if($ad->regions?->count()) {
                         $ad->regions->pluck('code')->map(fn($code) =>
-                            $this->attachTerritory('Région', $id, $regionsByCode[$code]["Id"])
+                            $this->attachLocation('Région', $id, $regionsByCode[$code]["Id"])
                         );
                     }
                     if($ad->cities?->count()) {
                         $cities = $ad->cities->pluck('insee_code')->map(fn($code) => $citiesByCode[$code]["Id"] ?? null)->filter();
                         if($cities->count()) {
-                            $cities->map(fn($cityId) => $this->attachTerritory('Commune', $id, $cityId));
+                            $cities->map(fn($cityId) => $this->attachLocation('Commune', $id, $cityId));
                         }
                     }
                 }
@@ -379,12 +383,12 @@ class AdsToSalesforceSync
         return $results->keyBy('ID_Laravel__c');
     }
 
-    private function attachTerritory(string $name, mixed $adId, $territoryId)
+    private function attachLocation(string $type, mixed $adId, $locationId)
     {
         return $this->repository->create('Territoire_du_dossier__c', [
             'Dossier_Objectif_Terres__c' => $adId,
-            'Territoire__c' => $territoryId,
-            'Name' => $name
+            'Territoire__c' => $locationId,
+            'Name' => $type
         ]);
     }
 
