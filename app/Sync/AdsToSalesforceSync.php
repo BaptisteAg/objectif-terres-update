@@ -243,11 +243,11 @@ class AdsToSalesforceSync
                     "Name" => \Str::limit($ad->title,  80, ''),
                     "Contact__c" => $contactsById[$ad->userPp->id]["Id"] ?? null,
                     "Territoire_Principal__c" => $ad->main_department ? $departmentsByCode[$ad->mainDepartment->code]["Id"] : null,
-                    "Territoire_concerne__c" => trim(match($ad->main_department?->territory?->name) {
+                    "Territoire_concerne__c" => match(trim($ad->main_department?->territory?->name)) {
                         "Bourgogne / Franche-Comté" => "Bourgogne-Franche-Comté",
                         "Languedoc-Roussillon" => "Languedoc",
                         null => null,
-                        default => $ad->main_department->territory->name,
+                        default => trim($ad->main_department->territory->name),
                     }),
                     "Surface_ha__c" => $presenter->surface ?? null,
                     "Production_agricole_prinicipale__c" => $subAd?->productionGenres->map($productionGenreMapper)->filter()[0] ?? null,
