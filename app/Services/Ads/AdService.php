@@ -1107,6 +1107,7 @@ class  AdService
 
         return Ad::withTrashed()
             ->whereNull('support_request_territory_id')
+            ->whereNull('project_id')
             ->where('is_draft', '=', 0)
             ->whereHas('attributionAd')
             ->whereHas('userPp')

@@ -41,13 +41,17 @@ class AdsToSalesforceSync
             ...AdRepository::getLocationEagerLoading()
         ]);
 
-        //$ads = $ads->filter(function ($ad) use(&$passed) {
-        //    //if($ad->userPp->id === 14104) {
-        //    if($ad->id === 7466) {
-        //        return true;
-        //    }
-        //    return false;
-        //});
+        $passed = false;
+        $ads = $ads->filter(function ($ad) use(&$passed) {
+            //if($ad->userPp->id === 14104) {
+            if($ad->id ===  4488) {
+                $passed = true;
+            }
+            if($passed) {
+                return true;
+            }
+            return false;
+        });
 
         \DB::enableQueryLog();
 
@@ -91,8 +95,8 @@ class AdsToSalesforceSync
                             "MailingCountry" => $user->country_id ? Country::find($user->country_id)?->name_fr_fr : 'France',
                             "LeadSource" => "Petites annonces",
                             "role__c" => 'Annonceur Objectif Terres',
-                            "Profil_Objectif_Terres__c" => \App\Models\User::$profiles[$user->profile],
-                            "Recevoir_les_infos_de_TDL__c" => empty($user->accept_communication) ? 0 : 1
+                            "Profil_Objectif_Terres__c" => $user->profile ? \App\Models\User::$profiles[$user->profile] : null,
+                            "Recevoir_les_infos_de_TDL__c" => empty($user->accept_communication) ? 0 : 1,
                         ]);
 
                         $progressBar->advance();
@@ -242,7 +246,15 @@ class AdsToSalesforceSync
                     },
                     "Name" => \Str::limit($ad->title,  80, ''),
                     "Contact__c" => $contactsById[$ad->userPp->id]["Id"] ?? null,
-                    "Territoire_Principal__c" => $ad->mainDepartment ? $departmentsByCode[$ad->mainDepartment->code]["Id"] : null,
+                    "Territoire_Principal__c" => $ad->main_department ? $departmentsByCode[$ad->mainDepartment->code]["Id"] : null,
+                    "Territoire_concerne__c" => match(trim($ad->main_department?->territory?->name)) {
+                        "Bourgogne / Franche-Comté" => "Bourgogne-Franche-Comté",
+                        "Languedoc-Roussillon" => "Languedoc",
+                        "Champagne-Ardenne" => "Champagne",
+                        "Corsica" => "Corse",
+                        null => null,
+                        default => trim($ad->main_department->territory->name ?? ""),
+                    },
                     "Surface_ha__c" => $presenter->surface ?? null,
                     "Production_agricole_prinicipale__c" => $subAd?->productionGenres->map($productionGenreMapper)->filter()[0] ?? null,
                     "Autres_productions_agricoles__c" => $subAd->productionGenresSecondary?->map($productionGenreMapper)?->unique()?->filter()?->join(';') ?? null,
@@ -285,6 +297,9 @@ class AdsToSalesforceSync
                     "Informations_compl_mentaires_demandeur__c" => $ad->about_content,
                     "Description__c" => $subAd->sau_description ?: $subAd->land_description ?: '',
                     "Altitude_m__c" => $subAd->altitude ?? null,
+                    // TODO Baptiste : mapping des champs suivants
+                    //"Aboutie_grace_a_OT__c" => $ad->closed_because_ot ? 'Oui' : 'Non',
+                    //"Commentaires_suite_cloture__c" => $ad->closed_comment,
                 ], fn($value) => $value !== null);
 
                 $progressBar->advance();
@@ -315,18 +330,18 @@ class AdsToSalesforceSync
 
                     if($ad->departments?->count()) {
                         $ad->departments->pluck('code')->map(fn($code) =>
-                            $this->attachTerritory('Département', $id, $departmentsByCode[$code]["Id"])
+                            $this->attachLocation('Département', $id, $departmentsByCode[$code]["Id"])
                         );
                     }
                     if($ad->regions?->count()) {
                         $ad->regions->pluck('code')->map(fn($code) =>
-                            $this->attachTerritory('Région', $id, $regionsByCode[$code]["Id"])
+                            $this->attachLocation('Région', $id, $regionsByCode[$code]["Id"])
                         );
                     }
                     if($ad->cities?->count()) {
                         $cities = $ad->cities->pluck('insee_code')->map(fn($code) => $citiesByCode[$code]["Id"] ?? null)->filter();
                         if($cities->count()) {
-                            $cities->map(fn($cityId) => $this->attachTerritory('Commune', $id, $cityId));
+                            $cities->map(fn($cityId) => $this->attachLocation('Commune', $id, $cityId));
                         }
                     }
                 }
@@ -375,12 +390,12 @@ class AdsToSalesforceSync
         return $results->keyBy('ID_Laravel__c');
     }
 
-    private function attachTerritory(string $name, mixed $adId, $territoryId)
+    private function attachLocation(string $type, mixed $adId, $locationId)
     {
         return $this->repository->create('Territoire_du_dossier__c', [
             'Dossier_Objectif_Terres__c' => $adId,
-            'Territoire__c' => $territoryId,
-            'Name' => $name
+            'Territoire__c' => $locationId,
+            'Name' => $type
         ]);
     }
 

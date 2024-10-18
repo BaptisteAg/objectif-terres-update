@@ -178,8 +178,8 @@ class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 	];
 
 	static $profiles = [
-		1 => "Candidat à l‘installation",
-		2 => "personne en recherche d’expérience ou de travail dans le domaine agricole",
+		1 => "Candidat à l'installation",
+		2 => "Personne en recherche d’expérience ou de travail dans le domaine agricole",
 		3 => "Agriculteur qui souhaite consolider sa ferme",
 		4 => "Agriculteur qui souhaite transmettre sa ferme",
 		5 => "Propriétaire privé qui souhaite vendre ou louer sa ferme",
