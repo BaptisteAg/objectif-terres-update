@@ -246,6 +246,7 @@ class AdsToSalesforceSync
                     "Territoire_concerne__c" => match(trim($ad->main_department?->territory?->name)) {
                         "Bourgogne / Franche-Comté" => "Bourgogne-Franche-Comté",
                         "Languedoc-Roussillon" => "Languedoc",
+                        "Champagne-Ardenne" => "Champagne",
                         null => null,
                         default => trim($ad->main_department->territory->name),
                     },
