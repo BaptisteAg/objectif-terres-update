@@ -1112,7 +1112,6 @@ class  AdService
                 $query->where('ad_status_id', '=', AdStatus::APPROVE_ID)
                     ->whereNull('archived_at');
             })
-            ->whereNull('deleted_at')
             ->where('is_draft', '=', 0)
             ->whereHas('attributionAd')
             ->whereHas('userPp')

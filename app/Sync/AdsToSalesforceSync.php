@@ -247,6 +247,7 @@ class AdsToSalesforceSync
                         "Bourgogne / Franche-Comté" => "Bourgogne-Franche-Comté",
                         "Languedoc-Roussillon" => "Languedoc",
                         "Champagne-Ardenne" => "Champagne",
+                        "Corsica" => "Corse",
                         null => null,
                         default => trim($ad->main_department->territory->name),
                     },
