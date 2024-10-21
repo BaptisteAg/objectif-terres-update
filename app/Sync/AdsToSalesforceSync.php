@@ -97,6 +97,7 @@ class AdsToSalesforceSync
                             "role__c" => 'Annonceur Objectif Terres',
                             "Profil_Objectif_Terres__c" => $user->profile ? \App\Models\User::$profiles[$user->profile] : null,
                             "Recevoir_les_infos_de_TDL__c" => empty($user->accept_communication) ? 0 : 1,
+                            // TODO: Add deleted_at date ( only works if soft deleted users are fetched )
                         ]);
 
                         $progressBar->advance();
@@ -294,6 +295,8 @@ class AdsToSalesforceSync
                     "Date_de_suppression_OT__c" => $ad->deleted_at?->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z'),
                     "Date_de_publication_OT__c" => Carbon::make($ad->attributionAd->published_on)?->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z'),
                     "Descr__c" => $ad->about_project_content,
+                    // TODO: add archived date
+
                     "Informations_compl_mentaires_demandeur__c" => $ad->about_content,
                     "Description__c" => $subAd->sau_description ?: $subAd->land_description ?: '',
                     "Altitude_m__c" => $subAd->altitude ?? null,

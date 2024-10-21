@@ -1109,7 +1109,9 @@ class  AdService
             ->whereNull('support_request_territory_id')
             ->whereNull('project_id')
             ->where('is_draft', '=', 0)
+            // TODO: remove
             ->whereHas('attributionAd')
+            // TODO: also get soft deleted users
             ->whereHas('userPp')
             ->where(fn($q) => $q
                 ->whereBetween('created_at', [$fromDate, $toDate])

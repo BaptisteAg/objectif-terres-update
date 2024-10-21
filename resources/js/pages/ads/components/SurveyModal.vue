@@ -2,7 +2,7 @@
   <div>
     <div class="buttons has-addons is-right">
       <b-button
-          v-if="isArchive"
+          v-if="ad.is_draft"
           :href="isArchiveHref"
           tag="a" icon-left="check"
           rounded>Soumettre
@@ -52,11 +52,11 @@
                     Vous avez abandonné votre projet d'installation
                   </b-radio>
                 </b-field>
-                <b-field>
+                <!--<b-field>
                   <b-radio v-model="reason" name="reason" native-value="Vous souhaitez poursuivre la publication de votre annonce">
                     Vous souhaitez poursuivre la publication de votre annonce
                   </b-radio>
-                </b-field>
+                </b-field>-->
               </div>
 
               <b-field v-if="['Vous vous êtes installé.e', 'Votre installation est en cours'].includes(reason)"
@@ -86,74 +86,9 @@
 <script>
 export default {
   props: {
-    isArchive: {
-      type: Boolean,
-      required: true,
-      default: false
-    },
-    isArchiveHref: {
-      type: String,
-      required: false,
-      default: ''
-    },
-    editHref: {
-      type: String,
+    ad: {
+      type: Object,
       required: true
-    },
-    archiveRoute: {
-      type: String,
-      required: true
-    },
-    deleteRoute: {
-      type: String,
-      required: true
-    },
-    csrfToken: {
-      type: String,
-      required: true
-    }
-  },
-  data() {
-    return {
-      isModalActive: false,
-      modalTitle: '',
-      reason: '',
-      thanksToPlatform: '',
-      remarks: '',
-      formAction: '',
-    }
-  },
-  methods: {
-    openModal(type) {
-      this.modalTitle = type === 'archive' ? 'Archiver l\'annonce' : 'Supprimer l\'annonce';
-      this.formAction = type === 'archive' ? this.archiveRoute : this.deleteRoute;
-      this.isModalActive = true;
-    }
-  },
-}
-</script>
-
-<style scoped>
-.modal-card-body .field:not(:last-child) {
-  margin-bottom: 1.5rem;
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s;
-}
-
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
-</style>
-
-<script>
-export default {
-  props: {
-    isArchive: {
-      type: Boolean,
-      required: true,
-      default: false
     },
     isArchiveHref: {
       type: String,

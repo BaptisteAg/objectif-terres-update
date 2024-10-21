@@ -43,7 +43,7 @@
                 <div class="column">
                     @if($ad->canEdit())
                         <survey-modal
-                                :is-archive="{{ $ad->is_draft === 0 && !isset($ad->attributionAd) ? 'true' : 'false' }}"
+                                :ad="{{ json_encode($ad->with('attributionAd')) }}"
                                 is-archive-href="{{ route('ads.request-publishing', ['id' => $ad->id]) }}"
                                 edit-href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ['id' => $ad->id]) }}"
                                 archive-route="{{ route('ads.survey', [$ad->id, 'action' => 'archive']) }}"
