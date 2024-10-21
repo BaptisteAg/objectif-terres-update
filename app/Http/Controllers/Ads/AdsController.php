@@ -261,13 +261,11 @@ class  AdsController extends BaseController
         }
 
         $validatedData = $request->validate([
-            'reason' => 'required|string',
             'thanks_to_platform' => 'nullable|string',
             'remarks' => 'nullable|string',
         ]);
 
         $ad->update([
-            'survey_reason' => $validatedData['reason'],
             'survey_thanks_to_platform' => $validatedData['thanks_to_platform'] ?? null,
             'survey_remarks' => $validatedData['remarks'] ?? null,
         ]);
@@ -293,11 +291,9 @@ class  AdsController extends BaseController
         }
         $this->adService->delete($ad);
         if (is_null($ad->project_id)) {
-            $formUrl = Ad::SALESFORCE_FORM_BY_AD_TYPE[$ad->type] ?? '';
 
             return redirect()->route('user.index')
-                ->with('success', 'Votre annonce a bien été supprimée')
-                ->with('display_survey', $formUrl);
+                ->with('success', 'Votre annonce a bien été supprimée');
         }
 
         return redirect()->route('user.index')->with('success', 'Votre demande d\'accomapgnement a été supprimée avec succès');

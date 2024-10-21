@@ -11,19 +11,18 @@ class AddSurveyColumnsToAdsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('ads', function (Blueprint $table) {
-            $table->text('survey_reason')->nullable();
+        Schema::table('ads', static function (Blueprint $table) {
             $table->text('survey_thanks_to_platform')->nullable();
             $table->text('survey_remarks')->nullable();
         });
     }
 
-    public function down()
+    public function down(): void
     {
-        Schema::table('ads', function (Blueprint $table) {
-            $table->dropColumn(['survey_reason', 'survey_thanks_to_platform', 'survey_remarks']);
+        Schema::table('ads', static function (Blueprint $table) {
+            $table->dropColumn(['survey_thanks_to_platform', 'survey_remarks']);
         });
     }
 }

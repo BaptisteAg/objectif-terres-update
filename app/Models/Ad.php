@@ -142,7 +142,6 @@ class Ad extends Model implements HasPresenter
         'origin',
         'department_id',
         'third_party_ad_user_id',
-        'survey_reason',
         'survey_thanks_to_platform',
         'survey_remarks',
     ];

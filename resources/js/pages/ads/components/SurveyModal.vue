@@ -29,51 +29,50 @@
         aria-modal
     >
       <template #default="props">
-        <div class="bg-beige objT-border p-6 p-5-mobile">
+        <div class="bg-beige custo-modal objT-border p-6 p-5-mobile">
           <h3 class="title">{{ modalTitle }}</h3>
           <div class="mt-5">
             <form :action="formAction" method="POST">
               <input type="hidden" name="_token" :value="csrfToken">
 
-              <div class="mb-4">
-                <p class="has-text-weight-bold mb-2">Si votre annonce est retirée, c'est que :</p>
-                <b-field>
-                  <b-radio v-model="reason" name="reason" native-value="Vous vous êtes installé.e">
-                    Vous vous êtes installé.e
-                  </b-radio>
-                </b-field>
-                <b-field>
-                  <b-radio v-model="reason" name="reason" native-value="Votre installation est en cours">
-                    Votre installation est en cours
-                  </b-radio>
-                </b-field>
-                <b-field>
-                  <b-radio v-model="reason" name="reason" native-value="Vous avez abandonné votre projet d'installation">
-                    Vous avez abandonné votre projet d'installation
-                  </b-radio>
-                </b-field>
-                <!--<b-field>
-                  <b-radio v-model="reason" name="reason" native-value="Vous souhaitez poursuivre la publication de votre annonce">
-                    Vous souhaitez poursuivre la publication de votre annonce
-                  </b-radio>
-                </b-field>-->
-              </div>
-
-              <b-field v-if="['Vous vous êtes installé.e', 'Votre installation est en cours'].includes(reason)"
-                       label="Si votre recherche a abouti, est-ce grâce à la plateforme Objectif Terres ?">
+              <!--              <div class="mb-4">-->
+              <!--                <p class="has-text-weight-bold mb-2">Si votre annonce est retirée, c'est que :</p>-->
+              <!--                <b-field>-->
+              <!--                  <b-radio v-model="reason" name="reason" native-value="Vous vous êtes installé.e">-->
+              <!--                    Vous vous êtes installé.e-->
+              <!--                  </b-radio>-->
+              <!--                </b-field>-->
+              <!--                <b-field>-->
+              <!--                  <b-radio v-model="reason" name="reason" native-value="Votre installation est en cours">-->
+              <!--                    Votre installation est en cours-->
+              <!--                  </b-radio>-->
+              <!--                </b-field>-->
+              <!--                <b-field>-->
+              <!--                  <b-radio v-model="reason" name="reason" native-value="Vous avez abandonné votre projet d'installation">-->
+              <!--                    Vous avez abandonné votre projet d'installation-->
+              <!--                  </b-radio>-->
+              <!--                </b-field>-->
+              <!--<b-field>
+                <b-radio v-model="reason" name="reason" native-value="Vous souhaitez poursuivre la publication de votre annonce">
+                  Vous souhaitez poursuivre la publication de votre annonce
+                </b-radio>
+              </b-field>-->
+              <!--              </div>-->
+              <b-field label="Si votre recherche a abouti, est-ce grâce à la plateforme Objectif Terres ?">
+                <!--              <b-field v-if="['Vous vous êtes installé.e', 'Votre installation est en cours'].includes(reason)"-->
+                <!--                       label="Si votre recherche a abouti, est-ce grâce à la plateforme Objectif Terres ?">-->
                 <b-radio v-model="thanksToPlatform" name="thanks_to_platform" native-value="Oui">Oui</b-radio>
                 <b-radio v-model="thanksToPlatform" name="thanks_to_platform" native-value="Non">Non</b-radio>
-                <b-radio v-model="thanksToPlatform" name="thanks_to_platform" native-value="Je ne sais pas">Je ne sais pas</b-radio>
               </b-field>
 
               <b-field
-                  label="Si vous avez des remarques à nous faire pour améliorer notre plateforme, ce champ est à votre disposition.">
+                  label="Vos suggestions pour améliorer notre plateforme (facultatif)">
                 <b-input v-model="remarks" name="remarks" type="textarea"></b-input>
               </b-field>
 
               <div class="buttons">
-                <b-button type="is-primary" native-type="submit">Envoyer</b-button>
-                <b-button @click="props.close">Annuler</b-button>
+                <b-button rounded type="is-primary" native-type="submit">Envoyer</b-button>
+                <b-button rounded @click="props.close">Annuler</b-button>
               </div>
             </form>
           </div>
@@ -132,15 +131,9 @@ export default {
 }
 </script>
 <style scoped>
-.modal-card-body .field:not(:last-child) {
-  margin-bottom: 1.5rem;
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s;
-}
-
-.fade-enter, .fade-leave-to {
-  opacity: 0;
+@media (min-width: 1024px) {
+  .custo-modal {
+    min-width: 1000px;
+  }
 }
 </style>
