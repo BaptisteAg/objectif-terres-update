@@ -34,8 +34,9 @@ class AdsToSalesforceSync
         $this->repository->authenticate();
 
         $ads = $ads->load([
-            'userPp',
-            'userPp.zipCode',
+            'userPp' => function ($query) {
+                $query->withTrashed()->with('zipCode');
+            },
             'attributionAd',
             ...AdRepository::getSubAdEagerLoading(),
             ...AdRepository::getLocationEagerLoading()
@@ -249,7 +250,7 @@ class AdsToSalesforceSync
                         "Champagne-Ardenne" => "Champagne",
                         "Corsica" => "Corse",
                         null => null,
-                        default => trim($ad->main_department->territory->name),
+                        default => trim($ad->main_department->territory->name ?? ""),
                     },
                     "Surface_ha__c" => $presenter->surface ?? null,
                     "Production_agricole_prinicipale__c" => $subAd?->productionGenres->map($productionGenreMapper)->filter()[0] ?? null,
@@ -277,7 +278,7 @@ class AdsToSalesforceSync
                     "Type_de_transmission__c" => $this->getMainOfferGenre($subAd->offerGenres),
                     "Prix__c" => $subAd->price ?? null,
                     "Fermage_annuel__c" => $subAd->rent_price ?? null,
-                    "Statut__c" => match ($ad->attributionAd->ad_status_id) {
+                    "Statut__c" => match ($ad->attributionAd?->ad_status_id) {
                         AdStatus::APPROVE_ID => 'Validé',
                         AdStatus::PENDING_ID => 'En attente',
                         AdStatus::REFUSE_ID => 'Refusé',
@@ -288,7 +289,7 @@ class AdsToSalesforceSync
                     "Date_de_creation_OT__c" => $ad->created_at->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z'),
                     "Date_de_modification_OT__c" => $ad->updated_at->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z'),
                     "Date_de_suppression_OT__c" => $ad->deleted_at?->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z'),
-                    "Date_de_publication_OT__c" => Carbon::make($ad->attributionAd->published_on)?->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z'),
+                    "Date_de_publication_OT__c" => Carbon::make($ad->attributionAd?->published_on)?->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z'),
                     "Descr__c" => $ad->about_project_content,
                     "Informations_compl_mentaires_demandeur__c" => $ad->about_content,
                     "Description__c" => $subAd->sau_description ?: $subAd->land_description ?: '',
