@@ -1108,17 +1108,7 @@ class  AdService
         return Ad::withTrashed()
             ->whereNull('support_request_territory_id')
             ->whereNull('project_id')
-            ->where('is_draft', '=', 0)
-            ->where(fn($q) => $q
-                ->whereBetween('created_at', [$fromDate, $toDate])
-                ->orWhereBetween('updated_at', [$fromDate, $toDate])
-                ->orWhereBetween('deleted_at', [$fromDate, $toDate])
-                ->orWhereHas('attributionAd', fn($q) => $q
-                    ->whereBetween('published_on', [$fromDate, $toDate])
-                    ->orWhereBetween('archived_at', [$fromDate, $toDate])
-                    ->orWhereBetween('updated_at', [$fromDate, $toDate])
-                )
-            )
+
             ->get();
     }
 }
