@@ -228,13 +228,14 @@ class SalesforceService
 
         // Sync role
         if ((int)$localUser->role !== $role) {
-            $localUser->role = $role;
 
             Notification::route('mail', [
                 'objectif-terres@terredeliens.org' => config('mail.from.name')
             ])->notify(
                 new \App\Notifications\SalesforceUserRoleChanged($localUser, $role)
             );
+
+            $localUser->role = $role;
         }
 
         $localUser->save();
