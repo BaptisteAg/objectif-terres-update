@@ -42,17 +42,21 @@ class AdsToSalesforceSync
             ...AdRepository::getLocationEagerLoading()
         ]);
 
+        //$passed = false;
         //$ads = $ads->filter(function ($ad) use(&$passed) {
-        //    //if($ad->userPp->id === 14104) {
-        //    if($ad->id === 7466) {
-        //        return true;
+        //    if($ad->userPp->id === 4620) {
+        //        $passed = true;
         //    }
-        //    return false;
+        //    return $passed;
         //});
 
         \DB::enableQueryLog();
 
         $users = $ads->pluck('userPp')->unique('email')->values();
+
+        // TODO utiliser les 2 et pas juste un ou l'autre
+        // - All contacts created through laravel should use OT_user_id__c
+        // - All contacts created through Salesforce should use Email
 
         //$existingContactsById = $this->fetchExistingContactsInChunks($users->pluck('OT_user_id__c')->toArray());
         $existingContactsByEmail = $this->fetchExistingContactsInChunks($users->pluck('email')->toArray());
@@ -82,8 +86,13 @@ class AdsToSalesforceSync
                             $phone = null;
                         }
 
+                        $email = str_replace(' ', '',$user->email);
+                        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                            $email = null;
+                        }
+
                         $values = array_filter([
-                            "Email" => $user->email,
+                            "Email" => $email,
                             "OT_user_id__c" => $user->id,
                             "Phone" => $phone,
                             "MailingStreet" => $user->street,
@@ -114,16 +123,16 @@ class AdsToSalesforceSync
                         //}
 
                         $existingContact = $existingContactsByEmail[$user->email] ?? null;
+                        return $existingContact;
                         if ($existingContact) {
                             $progressBar->setMessage("Updating Contact " . ($i + 1) . " / " . count($users) . " ( $user->email ) " . json_encode($values). "\n");
 
                             // Fixing OT Phone Data Quality because stuck for update
-                            if($existingContact["MobilePhone"] && $this->isInvalidPhoneNumber($existingContact["MobilePhone"])) {
-                                // try to fix it. Data should be kept intact as much as possible
-                                // Only if the phone number is still invalid should we replace it with the new one
-                                $values["MobilePhone"] = $this->fixPhoneNumber($existingContact["MobilePhone"]);
-
-                            }
+                            //if($existingContact["MobilePhone"] && $this->isInvalidPhoneNumber($existingContact["MobilePhone"])) {
+                            //    // try to fix it. Data should be kept intact as much as possible
+                            //    // Only if the phone number is still invalid should we replace it with the new one
+                            //    $values["MobilePhone"] = $this->fixPhoneNumber($existingContact["MobilePhone"]);
+                            //}
                             return $this->repository->update('Contact/Id', $existingContact["Id"], $values);
                         }
 
@@ -446,7 +455,7 @@ class AdsToSalesforceSync
         // Array of valid patterns
         $validPatterns = [
             '/^\(\d{3}\) \d{3}-\d{4}$/',    // (999) 999-9999
-            '/^\+?\d{10,13}$/',             // +9999999999 (10 à 13 chiffres)
+            '/^\+?\d{10}$/',             // +9999999999 (10 chiffres)
             '/^\d{3}-\d{3}-\d{4}$/'         // 999-999-9999
         ];
 

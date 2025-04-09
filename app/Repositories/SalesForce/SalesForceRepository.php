@@ -82,6 +82,21 @@ class SalesForceRepository
         ]));
     }
 
+    public function batchCreate($objectName, $rows)
+    {
+        return collect($rows)->chunk(200)->map(function ($chunk) use ($objectName) {
+            return $this->authenticated(fn() => $this->forrest->composite('batch', [
+                'allOrNone' => true,
+                'records' => $chunk->map(fn($row) => [
+                    'method' => 'POST',
+                    'url' => '/services/data/v52.0/sobjects/' . $objectName . '/',
+                    'referenceId' => $row['referenceId'],
+                    'body' => $row['body']
+                ])->toArray()
+            ]));
+        });
+    }
+
     /**
      * @param $objectName
      * @param $sfId
@@ -92,19 +107,6 @@ class SalesForceRepository
         return $this->authenticated(fn() => $this->forrest->sobjects($objectName. '/' . $id,[
             'method' => 'patch',
             'body'   => $params
-        ]));
-    }
-
-    public function batchCreate($objectName, $rows)
-    {
-        return $this->authenticated(fn() => $this->forrest->composite('batch', [
-            'allOrNone' => true,
-            'records' => array_map(fn($row) => [
-                'method' => 'POST',
-                'url' => '/services/data/v52.0/sobjects/'.$objectName.'/',
-                'referenceId' => $row['referenceId'],
-                'body' => $row['body']
-            ], $rows)
         ]));
     }
 
