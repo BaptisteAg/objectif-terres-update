@@ -190,7 +190,7 @@ class  AdService
                 $moderator = $availableSupervisors->random();
             }
             else {
-                /** @var User $moderator */
+                /** @var User|null $moderator */
                 $moderator = User::find(18552); // objectif-terres@terredeliens.org
             }
         }
