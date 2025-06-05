@@ -13,4 +13,4 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('annonces', [\App\Http\Controllers\Api\ApiController::class, 'annonces'])->name('annonces');
+Route::get('/v1/annonces', [\App\Http\Controllers\Api\ApiController::class, 'annonces'])->name('annonces');
