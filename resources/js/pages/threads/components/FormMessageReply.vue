@@ -1,7 +1,7 @@
 <template>
     <div v-if="!isThreadBlocked">
         <div v-if="activeThreadId" class="content">
-            <div v-if="isThreadRelatedToUser">
+            <div v-if="isThreadRelatedToUser || userRole >= 2">
                 <form @submit="formSubmit"><label id="reply-input-label" for="reply-input"
                                                   class=" label has-text-black"> Répondre</label>
                     <div class="field ">
