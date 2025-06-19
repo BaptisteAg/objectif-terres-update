@@ -261,7 +261,7 @@ class  AdsController extends BaseController
         }
 
         $validatedData = $request->validate([
-            'thanks_to_platform' => 'nullable|string',
+            'thanks_to_platform' => 'string',
             'remarks' => 'nullable|string',
         ]);
 
