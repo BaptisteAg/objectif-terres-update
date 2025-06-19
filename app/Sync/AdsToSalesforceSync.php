@@ -34,24 +34,29 @@ class AdsToSalesforceSync
         $this->repository->authenticate();
 
         $ads = $ads->load([
-            'userPp',
-            'userPp.zipCode',
+            'userPp' => function ($query) {
+                $query->withTrashed()->with('zipCode');
+            },
             'attributionAd',
             ...AdRepository::getSubAdEagerLoading(),
             ...AdRepository::getLocationEagerLoading()
         ]);
 
+        //$passed = false;
         //$ads = $ads->filter(function ($ad) use(&$passed) {
-        //    //if($ad->userPp->id === 14104) {
-        //    if($ad->id === 7466) {
-        //        return true;
+        //    if($ad->userPp->id === 4620) {
+        //        $passed = true;
         //    }
-        //    return false;
+        //    return $passed;
         //});
 
         \DB::enableQueryLog();
 
         $users = $ads->pluck('userPp')->unique('email')->values();
+
+        // TODO utiliser les 2 et pas juste un ou l'autre
+        // - All contacts created through laravel should use OT_user_id__c
+        // - All contacts created through Salesforce should use Email
 
         //$existingContactsById = $this->fetchExistingContactsInChunks($users->pluck('OT_user_id__c')->toArray());
         $existingContactsByEmail = $this->fetchExistingContactsInChunks($users->pluck('email')->toArray());
@@ -81,8 +86,13 @@ class AdsToSalesforceSync
                             $phone = null;
                         }
 
+                        $email = str_replace(' ', '',$user->email);
+                        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                            $email = null;
+                        }
+
                         $values = array_filter([
-                            "Email" => $user->email,
+                            "Email" => $email,
                             "OT_user_id__c" => $user->id,
                             "Phone" => $phone,
                             "MailingStreet" => $user->street,
@@ -91,7 +101,8 @@ class AdsToSalesforceSync
                             "MailingCountry" => $user->country_id ? Country::find($user->country_id)?->name_fr_fr : 'France',
                             "LeadSource" => "Petites annonces",
                             "role__c" => 'Annonceur Objectif Terres',
-                            "Recevoir_les_infos_de_TDL__c" => empty($user->accept_communication) ? 0 : 1
+                            "Profil_Objectif_Terres__c" => $user->profile ? \App\Models\User::$profiles[$user->profile] : null,
+                            "Recevoir_les_infos_de_TDL__c" => empty($user->accept_communication) ? 0 : 1,
                         ]);
 
                         $progressBar->advance();
@@ -112,16 +123,16 @@ class AdsToSalesforceSync
                         //}
 
                         $existingContact = $existingContactsByEmail[$user->email] ?? null;
+                        return $existingContact;
                         if ($existingContact) {
                             $progressBar->setMessage("Updating Contact " . ($i + 1) . " / " . count($users) . " ( $user->email ) " . json_encode($values). "\n");
 
                             // Fixing OT Phone Data Quality because stuck for update
-                            if($existingContact["MobilePhone"] && $this->isInvalidPhoneNumber($existingContact["MobilePhone"])) {
-                                // try to fix it. Data should be kept intact as much as possible
-                                // Only if the phone number is still invalid should we replace it with the new one
-                                $values["MobilePhone"] = $this->fixPhoneNumber($existingContact["MobilePhone"]);
-
-                            }
+                            //if($existingContact["MobilePhone"] && $this->isInvalidPhoneNumber($existingContact["MobilePhone"])) {
+                            //    // try to fix it. Data should be kept intact as much as possible
+                            //    // Only if the phone number is still invalid should we replace it with the new one
+                            //    $values["MobilePhone"] = $this->fixPhoneNumber($existingContact["MobilePhone"]);
+                            //}
                             return $this->repository->update('Contact/Id', $existingContact["Id"], $values);
                         }
 
@@ -147,8 +158,8 @@ class AdsToSalesforceSync
                                 continue;
                             }
                             if(isset($json[0]["duplicateResult"])) {
-                                // fetch the existing contact using the duplicate id
-                                return $this->repository->find('Contact', $json[0]["duplicateResult"]["id"]);
+                                $id = $json[0]["duplicateResult"]["matchResults"][0]["matchRecords"][0]["record"]["Id"];
+                                return $this->repository->find('Contact', $id, ["Id", 'OT_user_id__c']);
                             }
                             $lastError = $errorCode;
                         }
@@ -240,8 +251,16 @@ class AdsToSalesforceSync
                         'associateSeekAd' => 'Associé pour installation',
                     },
                     "Name" => \Str::limit($ad->title,  80, ''),
-                    "Contact__c" => $contactsById[$ad->userPp->id]["Id"],
-                    "Territoire_Principal__c" => $ad->mainDepartment ? $departmentsByCode[$ad->mainDepartment->code]["Id"] : null,
+                    "Contact__c" => $contactsById[$ad->userPp->id]["Id"] ?? null,
+                    "Territoire_Principal__c" => $ad->main_department ? $departmentsByCode[$ad->mainDepartment->code]["Id"] : null,
+                    "Territoire_concerne__c" => match(trim($ad->main_department?->territory?->name)) {
+                        "Bourgogne / Franche-Comté" => "Bourgogne-Franche-Comté",
+                        "Languedoc-Roussillon" => "Languedoc",
+                        "Champagne-Ardenne" => "Champagne",
+                        "Corsica" => "Corse",
+                        null => null,
+                        default => trim($ad->main_department->territory->name ?? ""),
+                    },
                     "Surface_ha__c" => $presenter->surface ?? null,
                     "Production_agricole_prinicipale__c" => $subAd?->productionGenres->map($productionGenreMapper)->filter()[0] ?? null,
                     "Autres_productions_agricoles__c" => $subAd->productionGenresSecondary?->map($productionGenreMapper)?->unique()?->filter()?->join(';') ?? null,
@@ -268,7 +287,7 @@ class AdsToSalesforceSync
                     "Type_de_transmission__c" => $this->getMainOfferGenre($subAd->offerGenres),
                     "Prix__c" => $subAd->price ?? null,
                     "Fermage_annuel__c" => $subAd->rent_price ?? null,
-                    "Statut__c" => match ($ad->attributionAd->ad_status_id) {
+                    "Statut__c" => match ($ad->attributionAd?->ad_status_id) {
                         AdStatus::APPROVE_ID => 'Validé',
                         AdStatus::PENDING_ID => 'En attente',
                         AdStatus::REFUSE_ID => 'Refusé',
@@ -279,11 +298,14 @@ class AdsToSalesforceSync
                     "Date_de_creation_OT__c" => $ad->created_at->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z'),
                     "Date_de_modification_OT__c" => $ad->updated_at->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z'),
                     "Date_de_suppression_OT__c" => $ad->deleted_at?->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z'),
-                    "Date_de_publication_OT__c" => Carbon::make($ad->attributionAd->published_on)?->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z'),
+                    "Date_de_publication_OT__c" => Carbon::make($ad->attributionAd?->published_on)?->setTimezone('UTC')->format('Y-m-d\TH:i:s.v\Z'),
                     "Descr__c" => $ad->about_project_content,
                     "Informations_compl_mentaires_demandeur__c" => $ad->about_content,
                     "Description__c" => $subAd->sau_description ?: $subAd->land_description ?: '',
                     "Altitude_m__c" => $subAd->altitude ?? null,
+                    // TODO Baptiste : mapping des champs suivants
+                    //"Aboutie_grace_a_OT__c" => $ad->closed_because_ot ? 'Oui' : 'Non',
+                    //"Commentaires_suite_cloture__c" => $ad->closed_comment,
                 ], fn($value) => $value !== null);
 
                 $progressBar->advance();
@@ -314,18 +336,18 @@ class AdsToSalesforceSync
 
                     if($ad->departments?->count()) {
                         $ad->departments->pluck('code')->map(fn($code) =>
-                            $this->attachTerritory('Département', $id, $departmentsByCode[$code]["Id"])
+                            $this->attachLocation('Département', $id, $departmentsByCode[$code]["Id"])
                         );
                     }
                     if($ad->regions?->count()) {
                         $ad->regions->pluck('code')->map(fn($code) =>
-                            $this->attachTerritory('Région', $id, $regionsByCode[$code]["Id"])
+                            $this->attachLocation('Région', $id, $regionsByCode[$code]["Id"])
                         );
                     }
                     if($ad->cities?->count()) {
                         $cities = $ad->cities->pluck('insee_code')->map(fn($code) => $citiesByCode[$code]["Id"] ?? null)->filter();
                         if($cities->count()) {
-                            $cities->map(fn($cityId) => $this->attachTerritory('Commune', $id, $cityId));
+                            $cities->map(fn($cityId) => $this->attachLocation('Commune', $id, $cityId));
                         }
                     }
                 }
@@ -374,12 +396,12 @@ class AdsToSalesforceSync
         return $results->keyBy('ID_Laravel__c');
     }
 
-    private function attachTerritory(string $name, mixed $adId, $territoryId)
+    private function attachLocation(string $type, mixed $adId, $locationId)
     {
         return $this->repository->create('Territoire_du_dossier__c', [
             'Dossier_Objectif_Terres__c' => $adId,
-            'Territoire__c' => $territoryId,
-            'Name' => $name
+            'Territoire__c' => $locationId,
+            'Name' => $type
         ]);
     }
 
@@ -433,7 +455,7 @@ class AdsToSalesforceSync
         // Array of valid patterns
         $validPatterns = [
             '/^\(\d{3}\) \d{3}-\d{4}$/',    // (999) 999-9999
-            '/^\+?\d{10,13}$/',             // +9999999999 (10 à 13 chiffres)
+            '/^\+?\d{10}$/',             // +9999999999 (10 chiffres)
             '/^\d{3}-\d{3}-\d{4}$/'         // 999-999-9999
         ];
 

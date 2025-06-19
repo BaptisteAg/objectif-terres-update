@@ -8,6 +8,7 @@ use App\Models\City;
 use App\Models\Country;
 use App\Models\User;
 use App\Services\Ads\AdService;
+use App\Services\Salesforce\SalesforceService;
 use App\Services\Users\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -23,7 +24,7 @@ class UsersController extends Controller
 	 * @param AdService $adService
 	 * @param UserService $userService
 	 */
-	public function __construct(AdService $adService, UserService $userService)
+	public function __construct(AdService $adService, UserService $userService, protected SalesforceService $salesforceService)
 	{
 		$this->adService = $adService;
 		$this->userService = $userService;
@@ -84,6 +85,7 @@ class UsersController extends Controller
         if($user->formation){
             $user['hasformation'] = true;
         }
+
 		return view('pages.users.edit', compact('cities', 'user', 'isUserConnectedEditHisOwnAccount'));
 
 	}
@@ -95,7 +97,23 @@ class UsersController extends Controller
 	public function update(UserRequest $request)
 	{
 		$data = $request->validated();
-		$this->userService->update($data);
+
+        if(auth()->id() !== $data['user_id']){
+            abort(Response::HTTP_FORBIDDEN);
+        }
+
+        $user = User::where('email', '=', $data['email'])->first();
+
+        if ($user !== null) {
+            try {
+                $this->salesforceService->updateContact($user->sf_id, $this->salesforceService::getOTUserToSalesforceContactMapping($data));
+            }
+            catch (\Exception $e) {
+                // Do nothing
+            }
+        }
+
+        $this->userService->update($data);
 		return redirect()->route('user.edit', $data['user_id'])->with('success', 'Mise à jour effectuée avec succès !');
 	}
 }

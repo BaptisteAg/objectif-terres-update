@@ -305,27 +305,24 @@ class ResearchService
         //Filter ads by keywords
         if (!is_null($filters->input('keywords'))) {
             $query->where(function (Builder $query) use ($filters, $adType) {
-                $query->where('title', 'like', '%' . $filters->input('keywords') . '%');
-                $query->orWhere('about_content', 'like', '%' . $filters->input('keywords') . '%');
-                $query->orWhere('about_project_content', 'like', '%' . $filters->input('keywords') . '%');
+                $query->where('title', 'like', '%' . $filters->input('keywords') . '%')
+                    ->orWhere('about_content', 'like', '%' . $filters->input('keywords') . '%')
+                    ->orWhere('about_project_content', 'like', '%' . $filters->input('keywords') . '%');
 
-                if($adType === 'landOfferAd') {
+                if ($adType === 'landOfferAd') {
                     $query->orWhereHas('landOfferAd', function (Builder $q) use ($filters) {
-                        //$q->where('experience_farming', 'like', '%' . $filters->input('keywords') . '%');
-                        //$q->orWhere('land_description', 'like', '%' . $filters->input('keywords') . '%');
-                        $q->orWhere('sau_description', 'like', '%' . $filters->input('keywords') . '%');
-                        $q->orWhere('water_access_description', 'like', '%' . $filters->input('keywords') . '%');
-                        $q->orWhere('test_description', 'like', '%' . $filters->input('keywords') . '%');
-                        $q->orWhere(function (Builder $q) use ($filters) {
-                            $q->whereHas('building', function (Builder $r) use ($filters) {
-                                $r->where('description', 'like', '%' . $filters->input('keywords') . '%');
-
-                            });
-                            $q->orWhereHas('house', function (Builder $r) use ($filters) {
-                                $r->where('description', 'like', '%' . $filters->input('keywords') . '%');
-                            });
+                        $q->where(function (Builder $q) use ($filters) {
+                            $q->where('sau_description', 'like', '%' . $filters->input('keywords') . '%')
+                                ->orWhere('water_access_description', 'like', '%' . $filters->input('keywords') . '%')
+                                ->orWhere('test_description', 'like', '%' . $filters->input('keywords') . '%')
+                                ->orWhere(function (Builder $q) use ($filters) {
+                                    $q->whereHas('building', function (Builder $r) use ($filters) {
+                                        $r->where('description', 'like', '%' . $filters->input('keywords') . '%');
+                                    })->orWhereHas('house', function (Builder $r) use ($filters) {
+                                        $r->where('description', 'like', '%' . $filters->input('keywords') . '%');
+                                    });
+                                });
                         });
-
                     });
                 }
 
@@ -337,6 +334,7 @@ class ResearchService
                 }
             });
         }
+
 
         if($filters->has('water_access')) {
             $query->whereHas($adType, function (Builder $q) use ($filters) {

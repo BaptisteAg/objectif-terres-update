@@ -178,7 +178,10 @@ class  AdService
             $availableModerators->keyBy("id")->find($ad->attributionAd->user_moderator_id)) {
             $moderator = $ad->attributionAd->userModerator;
         } else {
-            if ($availableModerators->count() >= 1) {
+            if (!empty($availableUserWithPermission)) {
+                $moderator = $availableUserWithPermission;
+            }
+            else if ($availableModerators->count() >= 1) {
                 /** @var User $moderator */
                 $moderator = $availableModerators->random();
             }
@@ -186,8 +189,9 @@ class  AdService
                 /** @var User $moderator */
                 $moderator = $availableSupervisors->random();
             }
-            else if (!empty($availableUserWithPermission)) {
-                $moderator = $availableUserWithPermission;
+            else {
+                /** @var User|null $moderator */
+                $moderator = User::find(18552); // objectif-terres@terredeliens.org
             }
         }
         $attributionAdData['ad_status_id'] = AdStatus::PENDING_MODERATION_STATUS_ID;
@@ -1107,19 +1111,15 @@ class  AdService
 
         return Ad::withTrashed()
             ->whereNull('support_request_territory_id')
-            ->whereHas('attributionAd', function (Builder $query) {
-                $query->where('ad_status_id', '=', AdStatus::APPROVE_ID)
-                    ->whereNull('archived_at');
+            ->whereNull('project_id')
+            ->where(function ($query) use ($fromDate, $toDate) {
+                $query->whereBetween('created_at', [$fromDate, $toDate])
+                    ->orWhereBetween('updated_at', [$fromDate, $toDate])
+                    ->orWhereHas('attributionAd', function ($query) use ($fromDate, $toDate) {
+                        $query->whereBetween('published_on', [$fromDate, $toDate])
+                            ->orWhereBetween('updated_at', [$fromDate, $toDate]);
+                    });
             })
-            ->whereNull('deleted_at')
-            ->where('is_draft', '=', 0)
-            ->whereHas('attributionAd')
-            ->whereHas('userPp')
-            ->where(fn($q) => $q
-                ->whereBetween('created_at', [$fromDate, $toDate])
-                ->orWhereBetween('updated_at', [$fromDate, $toDate])
-                ->orWhereBetween('deleted_at', [$fromDate, $toDate])
-            )
             ->get();
     }
 }

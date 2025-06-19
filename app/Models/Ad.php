@@ -441,8 +441,8 @@ class Ad extends Model implements HasPresenter
     {
         if (auth()->check()) {
             return $this->user_pp_id === auth()->id() || (
-                    $this->attributionAd->userModerator &&
-                    $this->attributionAd->userModerator->id === auth()->id()
+                    $this->attributionAd?->userModerator &&
+                    $this->attributionAd?->userModerator->id === auth()->id()
                 ) || auth()->user()->role >= 4;
         }
         return false;

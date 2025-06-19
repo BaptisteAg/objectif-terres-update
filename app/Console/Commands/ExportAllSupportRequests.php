@@ -61,6 +61,7 @@ class ExportAllSupportRequests extends Command
         //    ]);
         //});
         $ads = Ad::query()
+            ->whereIn('id', [7869, 7856])
             ->whereNotNull('project_id')
             ->orderByDesc('created_at')
             ->with([

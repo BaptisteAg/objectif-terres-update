@@ -48,6 +48,29 @@ class SalesforceService
         $this->localUserRepository = $userRepository;
     }
 
+    public static function getOTUserToSalesforceContactMapping(array|User $data): array
+    {
+        $city = City::findOrFail($data["city_id"] ?? $data["zip_code_id"]);
+
+        if (empty($data["country_id"])) {
+            // France
+            $data["country_id"] = 75;
+        }
+
+        return [
+            "Email" => $data["email"],
+            "LastName" => $data["name"],
+            'FirstName' => $data["first_name"],
+            "Phone" => $data["email"],
+            "MailingStreet" => $data["street"],
+            "MailingPostalCode" => $city->zip_code,
+            "MailingCity" => $city->name,
+            "MailingCountry" => Country::findOrFail($data["country_id"])->name_fr_fr,
+            "Profil_Objectif_Terres__c" => \App\Models\User::$profiles[$data["profile"]] ?? null,
+            "Recevoir_les_infos_de_TDL__c" => empty($user->accept_communication) ? 0 : 1,
+        ];
+    }
+
     /**
      * Registers a basic user ( role : Porteur de projet )
      * in Salesforce.
@@ -80,7 +103,8 @@ class SalesforceService
             "LeadSource" => "Petites annonces",
             "OT_Password__c" => Hash::make($data["password"]),
             "role__c" => 'Annonceur Objectif Terres',
-            "Recevoir_les_infos_de_TDL__c" => empty($data["accept_communication"]) ? 0 : 1
+            "Recevoir_les_infos_de_TDL__c" => empty($data["accept_communication"]) ? 0 : 1,
+            "Profil_Objectif_Terres__c" => \App\Models\User::$profiles[$data["profile"]] ?? null,
         ];
 
         $contactsFound = $this->repository->findWhere('Contact', ["Email" => $data["email"]]);
@@ -201,7 +225,11 @@ class SalesforceService
         if (!$user) {
             throw new \Exception("Nous n'avons pas pu vous identifier. Veuillez contacter un administrateur.");
         }
-        $localUser = $this->localUserRepository->findByEmail($email);
+        $localUser = $this->localUserRepository->findWhere('sf_id', $sfId)->first();
+
+        if(!$localUser) {
+            $localUser = $this->localUserRepository->findWhere('email', $email)->first();
+        }
 
         // Reverse user creation : if no user has been found, then we'll create it on the fly
         // to allow every salesforce-only user to pass the registration form
@@ -218,6 +246,7 @@ class SalesforceService
         // Sync Firstname / Name
         $localUser->first_name = $user["FirstName"];
         $localUser->name = $user["LastName"];
+        $localUser->email = $email;
 
         // Sync SF ID
         $localUser->sf_id = $sfId;
@@ -228,13 +257,16 @@ class SalesforceService
 
         // Sync role
         if ((int)$localUser->role !== $role) {
-            $localUser->role = $role;
+
+            $oldRole = $localUser->role;
 
             Notification::route('mail', [
                 'objectif-terres@terredeliens.org' => config('mail.from.name')
             ])->notify(
-                new \App\Notifications\SalesforceUserRoleChanged($localUser, $role)
+                new \App\Notifications\SalesforceUserRoleChanged($localUser, $oldRole, $role)
             );
+
+            $localUser->role = $role;
         }
 
         $localUser->save();

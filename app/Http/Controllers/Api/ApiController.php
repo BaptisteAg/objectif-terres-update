@@ -19,7 +19,7 @@ class ApiController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/annonces",
+     *     path="/api/v1/annonces",
      *     @OA\Response(response="200", description="Annonces", @OA\JsonContent(type="array", @OA\Items(
      *          @OA\Property(property="id", type="integer"),
      *          @OA\Property(property="link", type="string"),
@@ -38,7 +38,7 @@ class ApiController extends Controller
      *     ))),
      *     @OA\Parameter(name="limit", in="query", description="Nombre d'annonces à retourner", required=false, @OA\Schema(type="integer", minimum=1, maximum=100, default="4")),
      *     @OA\Parameter(name="type", in="query", description="Type d'annonce. Par défaut les annonces de type landOfferAd et landSeekAd sont retournées.", required=false, @OA\Schema(type="string", enum={"landOfferAd", "landSeekAd", "jobOfferAd", "jobSeekAd", "associateOfferAd", "associateSeekAd"})),
-     *     @OA\Parameter(name="region", in="query", description="Code INSEE de la région", required=false, @OA\Schema(type="string")),
+     *     @OA\Parameter(name="region_code", in="query", description="Code INSEE de la région", required=false, @OA\Schema(type="string")),
      *     security={{"api_key": {}}},
      * )
      * @OA\Tag(name="Lire des annonces. Les requêtes sont mises en cache pendant 1 heure."),
@@ -56,7 +56,7 @@ class ApiController extends Controller
         $request->validate([
             'limit' => 'integer|min:1|max:100',
             'type' => 'string|in:landOfferAd,landSeekAd,jobOfferAd,jobSeekAd,associateOfferAd,associateSeekAd',
-            'region' => 'string|exists:regions,code',
+            'region_code' => 'string|exists:regions,code',
         ]);
 
         if(config('app.env') === 'production'){
@@ -86,8 +86,8 @@ class ApiController extends Controller
                 });
             }
 
-            if($request->has('region')) {
-                $adsQuery->filterRegions($request->get('region'));
+            if($request->has('region_code')) {
+                $adsQuery->filterRegions($request->get('region_code'));
             }
 
             return $adsQuery
@@ -132,13 +132,15 @@ class ApiController extends Controller
 
                     $region = null;
                     $foundDepartment = null;
+                    //dd(json_encode($ad->regions->all()), json_encode($ad->departments->all()), json_encode($ad->cities->all()));
                     if ($ad->regions->count()) {
                         $region = $ad->regions->first();
                     }
                     if ($ad->departments->count()) {
                         $foundDepartment = $ad->departments->first();
+                        //dd($foundDepartment->toArray());
                         if (!$region) {
-                            $region = $foundDepartment?->region?->first();
+                            $region = $foundDepartment->region;
                         }
                     } elseif ($ad->cities->count()) {
                         $foundDepartment = $ad->cities->first()?->department?->first();
@@ -156,8 +158,8 @@ class ApiController extends Controller
                         'offer_types' => $offerTypes,
                         'image' => $firstImageDocument->url,
                         'surface' => $surface,
-                        'region_name' => $region?->code,
-                        'region_code' => $region?->name,
+                        'region_code' => $region?->code,
+                        'region_name' => $region?->name,
                         'department_name' => $foundDepartment?->name,
                         'department_code' => $foundDepartment?->code,
                         'created_at' => $ad->created_at->timestamp,

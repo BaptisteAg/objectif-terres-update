@@ -30,6 +30,8 @@ class Kernel extends ConsoleKernel
 	{
         $filePath = getcwd().'/laravel-scheduler.log';
 
+        $schedule->command('app:sync-salesforce-ads '.date('Y-m-d', strtotime('-2 day')))->daily()->appendOutputTo($filePath);
+
         $schedule->command(DisableOldResearchAlerts::class)->daily()->appendOutputTo($filePath);
 
         if(config("app.is_scheduler_live_mode")) {

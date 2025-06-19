@@ -48,6 +48,6 @@ class ProductionGenreRepository extends AbstractRepository
             }
         }
 
-        return $productionGenresFlattened->where('hidden', 0);
+        return $productionGenresFlattened->where('hidden', 0)->values();
     }
 }
