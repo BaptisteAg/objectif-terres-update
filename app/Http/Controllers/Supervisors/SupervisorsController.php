@@ -30,7 +30,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class SupervisorsController extends BaseController
 {
-
 	/**
 	 * @param Request $request
 	 * @return Factory|View

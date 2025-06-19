@@ -64,7 +64,6 @@ class UserService
 
     /**
      * @param array $data
-     * @param User $user
      * @return mixed
      */
     public function update(array $data)
@@ -82,15 +81,10 @@ class UserService
             $data['formation'] = null;
         }
 
-        $user = User::where('email', '=', $data['email'])->first();
-        if ($user !== null) {
-            if ($user->id !== (int)$data['user_id']) {
-                return back()->withInput()->withErrors("Cette adresse email est déjà utilisée par un autre utilisateur");
-            }
-        }
-        $user = $this->repository->update($data['user_id'], $data);
+        $this->repository->update($data['user_id'], $data);
 
         $user = User::find($data['user_id']);
+
         try {
             $user->notify(new BasicNotification([
                 'subject' => "Modifications de vos informations personnelles",

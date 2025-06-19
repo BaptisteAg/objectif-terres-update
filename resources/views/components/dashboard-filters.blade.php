@@ -114,7 +114,7 @@
                                         @if(Route::current()->getName() === 'moderator.index' &&  Route::current()->getName() === 'moderator.show')
                                             <label class="label"> Date de soumission de l'annonce </label>
                                         @else
-                                            <label class="label"> Date </label>
+                                            <label class="label">Date de 1ère soumission</label>
                                         @endif
                                         <date-range old-value-selected={{old('date-range-selected')}}></date-range>
                                     </div>

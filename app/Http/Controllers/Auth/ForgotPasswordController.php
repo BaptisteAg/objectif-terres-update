@@ -37,7 +37,7 @@ class ForgotPasswordController extends Controller
         $email = $request->get('email');
 
         if($salesforceService->usernameExists($email, 'User')) {
-            return redirect('https://portail-terredeliens.force.com/objectifterre/s/login/ForgotPassword');
+            return redirect('https://terredeliens.my.site.com/objectifterres/s/login/ForgotPassword');
         }
 
         $this->validateEmail($request);

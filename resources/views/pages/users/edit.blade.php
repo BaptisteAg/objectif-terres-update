@@ -153,12 +153,10 @@
                                             class="input @error('profile') is-danger @enderror ">
                                         <option disabled="disabled" selected>Vous êtes...</option>
                                         @foreach(\App\Models\User::$profiles as $id => $prof)
-                                            @if($id !== 7)
-                                                <option
-                                                        value="{{$id}}" {{old('profile') === $id || $user->profile === $id ? 'selected' : ''}} >
-                                                    {{$prof}}
-                                                </option>
-                                            @endif
+                                            <option
+                                                    value="{{$id}}" {{old('profile') === $id || $user->profile === $id ? 'selected' : ''}} >
+                                                {{$prof}}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -175,7 +173,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div v-if="optionProfileSelected == '{{ array_search('autre', \App\Models\User::$profiles) }}'"
+                    <div v-if="optionProfileSelected == {{array_search('autre', \App\Models\User::$profiles) || "''"}}"
                          class="column is-half">
                         <div class="field">
                             <label class="label">Situation autre </label>
