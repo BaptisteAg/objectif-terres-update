@@ -1,7 +1,10 @@
 @auth
-    @if( $ad->user_pp_id !== auth()->user()->id)
+@if( $ad->user_pp_id !== auth()->user()->id)
+
         @if(sizeof($threads) == 0)
+
             @if(auth()->user()->role < 1)
+
 
 {{--                <p class="has-text-centered is-size-4">Vous souhaitez répondre à cette
                     annonce
@@ -16,8 +19,10 @@
 
             @endif
         @else
+
             <div id="vue-messages">
                 @if(auth()->user()->role >= 1)
+
                     <div id="messages-display" class="content">
                         <h3 class="title is-3 has-text-link has-text-centered"> Fils de discussion </h3>
                     </div>

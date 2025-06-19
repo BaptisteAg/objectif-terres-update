@@ -62,27 +62,29 @@ class AttributionAdsService
 		return $this->repository->findAllByModeratorIdAndTerritories($moderatorLocationTerritoriesCodes);
 	}
 
-	/**
-	 * @param int $adId
-	 * @return bool
-	 */
-	public function moderatorIsChargeOfAdModeration(Ad $ad): bool
-	{
-		$moderatorIsChargeOfAdModeration = false;
-		if ($ad->attributionAd && auth()->id() === $ad->attributionAd->user_moderator_id) {
-			return true;
-		}
+    /**
+     * @param int $adId
+     * @return bool
+     */
+    public function moderatorIsChargeOfAdModeration(Ad $ad): bool
+    {
+        $moderatorIsChargeOfAdModeration = false;
+        if ($ad->attributionAd && auth()->id() === $ad->attributionAd->user_moderator_id) {
+            return true;
+        }
 
-		$moderatorLocationTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$adTerritoriesCodes = $this->adService->getAdDepartmentCodesFromZones($ad);
-		$intersectTerritoriesCodes = array_intersect($adTerritoriesCodes, $moderatorLocationTerritoriesCodes);
+        $moderatorLocationTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
+        $adTerritoriesCodes = $this->adService->getAdDepartmentCodesFromZones($ad);
+        $intersectTerritoriesCodes = array_intersect($adTerritoriesCodes, $moderatorLocationTerritoriesCodes);
 
-		if (count($intersectTerritoriesCodes) > 0) {
-			$moderatorIsChargeOfAdModeration = true;
-		}
 
-		return $moderatorIsChargeOfAdModeration;
-	}
+
+        if (count($intersectTerritoriesCodes) > 0) {
+            $moderatorIsChargeOfAdModeration = true;
+        }
+
+        return $moderatorIsChargeOfAdModeration;
+    }
 
 	/**
 	 * Find all attributions ads published since specific number of month
