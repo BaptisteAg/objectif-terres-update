@@ -67,6 +67,43 @@ class LoginController extends Controller
         return response()->json(['redirect' => false]);
     }
 
+    public function testSalesforceConnection(Request $request)
+    {
+        // Vérifie si l'IP est autorisée
+        if (!in_array($request->ip(), explode(',', env('DEBUG_IPS', '')))) {
+            abort(404);
+        }
+
+        try {
+            $status = [
+                'env_check' => [
+                    'SF_USERNAME' => !empty(env('SF_USERNAME')),
+                    'SF_PASSWORD' => !empty(env('SF_PASSWORD')),
+                    'SF_TOKEN' => !empty(env('SF_TOKEN')),
+                    'SF_LOGIN_URL' => env('SF_LOGIN_URL'),
+                ],
+                'forrest_config' => config('forrest'),
+            ];
+
+            // Test de la connexion Salesforce
+            try {
+                \Omniphx\Forrest\Providers\Laravel\Facades\Forrest::authenticate();
+                $status['salesforce_auth'] = 'Success';
+            } catch (\Exception $e) {
+                $status['salesforce_auth'] = [
+                    'error' => $e->getMessage(),
+                    'type' => get_class($e)
+                ];
+            }
+
+            return response()->json($status);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * Log the user out of the application.
      *

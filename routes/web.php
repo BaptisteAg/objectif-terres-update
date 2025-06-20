@@ -12,6 +12,7 @@
 */
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\SalesforceOAuthController;
 
 Route::get('/', 'HomePage\HomePageController@show')->name('home');
 Route::get('/premiere-visite', 'HomePage\HomePageController@show')->name('site-tour');
@@ -230,6 +231,24 @@ Route::prefix('motdepasse')->name('password.')->group(function () {
 Route::post('newsletter', 'Newsletter\NewsletterController@create');
 
 Route::post('/info-banner/close', 'InfoBannerController@close')->name('info-banner.close');
+
+
+// Routes pour l'authentification Salesforce OAuth
+Route::prefix('salesforce/oauth')->name('salesforce.oauth.')->group(function () {
+    // Route pour initier la redirection vers Salesforce
+    Route::get('connect', [SalesforceOAuthController::class, 'redirectToSalesforce'])->name('connect');
+
+    // Route de callback que Salesforce appellera
+    // L'URI de cette route DOIT correspondre exactement à la 'callbackURI'
+    // configurée dans votre Application Connectée Salesforce et dans forrest.php / .env
+    Route::get('callback', [SalesforceOAuthController::class, 'handleSalesforceCallback'])->name('callback');
+
+    // Route optionnelle pour tester la connexion
+    //Route::get('test', [SalesforceOAuthController::class, 'testSalesforceConnection'])->name('test');
+
+    // Route optionnelle pour révoquer le token (déconnexion)
+    //Route::get('revoke', [SalesforceOAuthController::class, 'revokeSalesforceToken'])->name('revoke');
+});
 
 /*Route::get('test-alerts', function() {
 
