@@ -7,7 +7,7 @@ return [
     /*
      * Options include WebServer, UserPassword, and UserPasswordSoap
      */
-    'authentication' => 'UserPasswordSoap',
+    'authentication' => 'WebServer',
 
     /*
      * Enter your credentials
