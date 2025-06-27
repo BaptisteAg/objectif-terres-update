@@ -384,7 +384,7 @@ class ResearchService
 				->select('ads.*');
 		};
 
-		return $query;
+		return $query->distinct();
 	}
 
     /**
