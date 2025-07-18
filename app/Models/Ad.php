@@ -205,7 +205,7 @@ class Ad extends Model implements HasPresenter
         $type = null;
 
         foreach (static::AD_TYPES as $key => $class) {
-            if ($result->{$key}) {
+            if ($result->{$key} ?? 0) {
                 $type = $key;
             }
         }
