@@ -85,7 +85,7 @@
         <div class="buttons mb-0">
             @include('pages.ads.partials.new-buttons-favorite-and-message')
         </div>
-        <a href="https://portail-terredeliens.force.com/rhizome/s/signaler-un-abus" target="_blank"
+        <a href="https://terredeliens.my.site.com/rhizome/s/signaler-un-abus" target="_blank"
            class="is-underlined is-hidden-touch">Signaler un abus</a>
     </div>
 </div>
