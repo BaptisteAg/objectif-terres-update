@@ -11,7 +11,7 @@
                     <p><a class="" target="_blank"
                           href="{{ url('https://terredeliens.org/-les-chiffres-clefs-.html') }}">Chiffres clés</a>
                     </p>
-                    <p><a class="button is-normal is-link form-button basic primary" target="_blank" href="https://portail-terredeliens.force.com/rhizome/s/formulaires/question-objectif-terres ">Une question ? </a>
+                    <p><a class="button is-normal is-link form-button basic primary" target="_blank" href="https://terredeliens.my.site.com/rhizome/s/formulaires/question-objectif-terres ">Une question ? </a>
                     </p>
                 </div>
                 <div class="column is-2-desktop is-half-tablet">

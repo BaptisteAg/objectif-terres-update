@@ -11,7 +11,7 @@
                 <div class="bubble__scrollable">
                     <ul class="custom-menu menu-submenu tiles">
 {{--                        <li class="tile_icon-label">--}}
-{{--                            <a href="{{url('https://portail-terredeliens.force.com/rhizome/s/')}}"--}}
+{{--                            <a href="{{url('https://terredeliens.my.site.com/rhizome/s/')}}"--}}
 {{--                               class="menu__link tile__link"--}}
 {{--                               title="Rhizôme">--}}
 {{--                                <span class="tile__icon"><i class="fad fa-address-card"></i></span>--}}

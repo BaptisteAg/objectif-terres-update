@@ -276,7 +276,12 @@ class SalesforceService
             $localUser->departments()->sync($newDepartmentIds);
         } else if ($role > 0) {
             if (!isset($roleAndDepartments[1])) {
-                throw new \Exception("Nous n'avons pas pu lire votre territoire renseigné dans Salesforce. Veuillez contacter un administrateur.");
+                // More specific error message for data format issues
+                $errorMsg = "Erreur de configuration Salesforce : le format des données de votre compte est incorrect. " .
+                           "Veuillez transmettre ce message à l'administrateur Salesforce de Terre de Liens : " .
+                           "\"Role_Objectif_Terre__c = '{$user["Role_Objectif_Terre__c"]}' pour {$email} - " .
+                           "Le format attendu est 'role-departement' (ex: '2-84') mais '{$user["Role_Objectif_Terre__c"]}' a été trouvé.\"";
+                throw new \Exception($errorMsg);
             }
 
             $departments = explode('_', $roleAndDepartments[1]);
