@@ -13,4 +13,5 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/v1/annonces', [\App\Http\Controllers\Api\ApiController::class, 'annonces'])->name('annonces');
+// API endpoint for Salesforce synchronization
+Route::get('/v1/ads', [\App\Http\Controllers\Api\ApiController::class, 'ads'])->name('api.ads');
