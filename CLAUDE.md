@@ -36,11 +36,14 @@ php artisan cache:clear
 # Generate application key
 php artisan key:generate
 
-# Run tests
-php vendor/bin/phpunit
+# Run tests (must be run in PHP container)
+docker compose exec php bash -c "cd /shared/httpd/objectif-terres && vendor/bin/phpunit"
 
-# Run a specific test
-php vendor/bin/phpunit tests/Feature/ApiTest.php
+# Run a specific test class
+docker compose exec php bash -c "cd /shared/httpd/objectif-terres && vendor/bin/phpunit tests/Feature/ApiTest.php"
+
+# Run a specific test method
+docker compose exec php bash -c "cd /shared/httpd/objectif-terres && vendor/bin/phpunit --filter=testMethodName"
 
 # Access Laravel Tinker REPL
 php artisan tinker
