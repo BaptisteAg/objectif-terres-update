@@ -2,7 +2,11 @@
 
 return [
 
-    'api_token' => env('API_TOKEN', 'secret'),
+    // API Authentication - API keys for each client (REQUIRED - no defaults)
+    'api_keys' => [
+        env('API_KEY_SALESFORCE'),  // Required: Salesforce API key
+        env('API_KEY_TDL'),          // Required: Terre de Liens parent website API key
+    ],
 
     // Salesforce urls
     'sf_support_requests_url' => env('SF_SUPPORT_REQUESTS_URL', null),
