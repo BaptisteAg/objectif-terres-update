@@ -69,6 +69,7 @@ class Kernel extends HttpKernel
 		'admin' => \App\Http\Middleware\AdminMiddleware::class,
 		'supervisor' => \App\Http\Middleware\SupervisorMiddleware::class,
 		'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+		'api.doc.auth' => \App\Http\Middleware\ApiDocBasicAuth::class,
 		'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
 		'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
 		'can' => \Illuminate\Auth\Middleware\Authorize::class,

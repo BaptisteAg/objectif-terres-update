@@ -55,9 +55,9 @@ return [
         |--------------------------------------------------------------------------
          */
         'middleware' => [
-            'api' => ['web', 'auth', 'admin'],     // Swagger UI - requires web session + admin authentication
-            'asset' => [],                         // CSS/JS assets remain public
-            'docs' => ['web', 'auth', 'admin'],    // API JSON/YAML - requires web session + admin authentication
+            'api' => ['api.doc.auth'],     // Swagger UI - requires HTTP Basic Auth
+            'asset' => [],                 // CSS/JS assets remain public
+            'docs' => ['api.doc.auth'],    // API JSON/YAML - requires HTTP Basic Auth
             'oauth2_callback' => [],
         ],
     ],
