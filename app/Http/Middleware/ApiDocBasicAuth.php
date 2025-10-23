@@ -24,11 +24,16 @@ class ApiDocBasicAuth
             return $next($request);
         }
 
-        // Check HTTP Basic Auth credentials
-        if ($request->getUser() !== $username || $request->getPassword() !== $password) {
-            return response('Unauthorized', 401, [
-                'WWW-Authenticate' => 'Basic realm="API Documentation"'
-            ]);
+        // Check if credentials are provided
+        $providedUsername = $request->getUser();
+        $providedPassword = $request->getPassword();
+
+        // If no credentials provided or credentials are invalid, return 401 with WWW-Authenticate header
+        if (empty($providedUsername) || empty($providedPassword) ||
+            $providedUsername !== $username || $providedPassword !== $password) {
+
+            $headers = ['WWW-Authenticate' => 'Basic realm="API Documentation"'];
+            abort(401, 'Unauthorized', $headers);
         }
 
         return $next($request);
