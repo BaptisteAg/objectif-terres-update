@@ -16,13 +16,18 @@ class ApiDocBasicAuth
      */
     public function handle(Request $request, Closure $next)
     {
-        $username = env('API_DOC_USERNAME', 'api_admin');
-        $password = env('API_DOC_PASSWORD');
-
-        // Skip authentication in local development if no password is set
-        if (app()->environment('local') && empty($password)) {
+        // Skip if API doc auth is explicitly disabled
+        if (config('apidoc.auth_enabled') === false) {
             return $next($request);
         }
+
+        // Skip authentication in local development if no password is set
+        if (app()->environment('local') && empty(config('apidoc.password'))) {
+            return $next($request);
+        }
+
+        $username = config('apidoc.username');
+        $password = config('apidoc.password');
 
         // Check if credentials are provided
         $providedUsername = $request->getUser();
