@@ -30,9 +30,13 @@ class AdCollection extends ResourceCollection
         if ($this->resource instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator) {
             $result['pagination'] = [
                 'current_page' => $this->resource->currentPage(),
-                'per_page' => $this->resource->perPage(),
+                'per_page' => (int) $this->resource->perPage(),
                 'total' => $this->resource->total(),
+                'last_page' => $this->resource->lastPage(),
             ];
+
+            // Add pagination links with preserved query parameters
+            $result['links'] = $this->getPaginationLinks($request);
         }
 
         return $result;
@@ -75,6 +79,37 @@ class AdCollection extends ResourceCollection
             'types' => $request->get('types'),
             'region_code' => $request->get('region_code'),
         ];
+    }
+
+    /**
+     * Get pagination links with preserved query parameters
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function getPaginationLinks($request)
+    {
+        $paginator = $this->resource;
+        $currentPage = $paginator->currentPage();
+        $lastPage = $paginator->lastPage();
+
+        // Preserve query parameters
+        $queryParams = $request->except('page');
+
+        // Build URLs with preserved parameters
+        $buildUrl = function ($page) use ($queryParams) {
+            $params = array_merge($queryParams, ['page' => $page]);
+            return url()->current() . '?' . http_build_query($params);
+        };
+
+        $links = [
+            'first' => $buildUrl(1),
+            'last' => $buildUrl($lastPage),
+            'prev' => $currentPage > 1 ? $buildUrl($currentPage - 1) : null,
+            'next' => $currentPage < $lastPage ? $buildUrl($currentPage + 1) : null,
+        ];
+
+        return $links;
     }
 
     /**

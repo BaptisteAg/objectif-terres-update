@@ -10,6 +10,18 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 class AdIndexRequest extends FormRequest
 {
     /**
+     * Map snake_case type names to camelCase type names
+     */
+    const TYPE_MAP = [
+        'land_offer' => 'landOfferAd',
+        'land_seek' => 'landSeekAd',
+        'job_offer' => 'jobOfferAd',
+        'job_seek' => 'jobSeekAd',
+        'associate_offer' => 'associateOfferAd',
+        'associate_seek' => 'associateSeekAd',
+    ];
+
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -27,18 +39,37 @@ class AdIndexRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation()
+    {
+        // Handle comma-separated types parameter
+        if ($this->has('types') && is_string($this->types)) {
+            $this->merge([
+                'types' => array_filter(explode(',', $this->types))
+            ]);
+        }
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
     public function rules()
     {
-        return [
-            // Types parameter - now accepts array
-            'types' => 'nullable|array',
-            'types.*' => 'string|in:' . implode(',', array_keys(Ad::AD_TYPES)),
+        // Accept both snake_case and camelCase formats
+        $validTypes = array_merge(
+            array_keys(Ad::AD_TYPES),
+            array_keys(self::TYPE_MAP)
+        );
 
-            // Date filter - ISO 8601 format
+        return [
+            // Types parameter - accepts array or comma-separated string
+            'types' => 'nullable|array',
+            'types.*' => 'string|in:' . implode(',', $validTypes),
+
+            // Date filter - ISO 8601 format (UTC timezone)
             'updated_since' => 'nullable|date_format:Y-m-d\TH:i:s\Z',
 
             // Pagination
@@ -47,7 +78,7 @@ class AdIndexRequest extends FormRequest
 
             // Legacy parameters (to be removed)
             'limit' => 'nullable|integer|min:1|max:100',
-            'type' => 'nullable|string|in:' . implode(',', array_keys(Ad::AD_TYPES)),
+            'type' => 'nullable|string|in:' . implode(',', $validTypes),
         ];
     }
 
@@ -59,9 +90,9 @@ class AdIndexRequest extends FormRequest
     public function messages()
     {
         return [
-            'types.array' => 'The types parameter must be an array.',
-            'types.*.in' => 'Invalid ad type provided. Valid types are: ' . implode(', ', array_keys(Ad::AD_TYPES)),
-            'updated_since.date_format' => 'The updated_since parameter must be in ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ).',
+            'types.array' => 'The types parameter must be an array or comma-separated string.',
+            'types.*.in' => 'Invalid ad type provided. Valid types are: ' . implode(', ', array_keys(self::TYPE_MAP)),
+            'updated_since.date_format' => 'The updated_since parameter must be in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SSZ). Clients must convert their local times to UTC.',
             'page.integer' => 'The page parameter must be a valid integer.',
             'page.min' => 'The page parameter must be at least 1.',
             'per_page.integer' => 'The per_page parameter must be a valid integer.',
@@ -110,23 +141,31 @@ class AdIndexRequest extends FormRequest
     }
 
     /**
-     * Get the types parameter as an array
+     * Get the types parameter as an array, converting snake_case to camelCase
      *
      * @return array|null
      */
     public function getTypes()
     {
+        $types = null;
+
         // If new 'types' parameter is provided, use it
         if ($this->has('types')) {
-            return $this->input('types');
+            $types = $this->input('types');
         }
-
         // Fall back to legacy 'type' parameter for backward compatibility
-        if ($this->has('type')) {
-            return [$this->input('type')];
+        elseif ($this->has('type')) {
+            $types = [$this->input('type')];
         }
 
-        return null;
+        if (!$types) {
+            return null;
+        }
+
+        // Convert snake_case types to camelCase
+        return array_map(function ($type) {
+            return self::TYPE_MAP[$type] ?? $type;
+        }, $types);
     }
 
     /**

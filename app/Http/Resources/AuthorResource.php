@@ -57,7 +57,26 @@ class AuthorResource extends JsonResource
             }
         }
 
-        return $authorData;
+        return $this->filterNullValues($authorData);
+    }
+
+    /**
+     * Recursively remove null values from array
+     *
+     * @param array $data
+     * @return array
+     */
+    protected function filterNullValues(array $data): array
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $data[$key] = $this->filterNullValues($value);
+            } elseif (is_null($value)) {
+                unset($data[$key]);
+            }
+        }
+
+        return $data;
     }
 
     /**
@@ -72,15 +91,15 @@ class AuthorResource extends JsonResource
             return null;
         }
 
-        // Map profile ID to string key
+        // Map profile ID to English string key
         $profileMap = [
-            1 => 'candidat_installation',
-            2 => 'en_recherche',
-            3 => 'agriculteur_consolidation',
-            4 => 'agriculteur_transmission',
-            5 => 'proprietaire_vente_location',
-            6 => 'proprietaire_don_legs',
-            7 => 'autre',
+            1 => 'installation_candidate',
+            2 => 'seeking',
+            3 => 'farmer_consolidation',
+            4 => 'farmer_succession',
+            5 => 'owner_sale_rental',
+            6 => 'owner_donation_bequest',
+            7 => 'other',
         ];
 
         return $profileMap[$user->profile] ?? null;

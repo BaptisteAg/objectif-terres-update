@@ -246,6 +246,50 @@ class SalesforceService
         // Sync Firstname / Name
         $localUser->first_name = $user["FirstName"];
         $localUser->name = $user["LastName"];
+
+        // Handle email conflicts: if another user has this email, we need to resolve it
+        if ($localUser->email !== $email) {
+            $conflictingUser = User::where('email', $email)
+                ->where('id', '!=', $localUser->id)
+                ->first();
+
+            if ($conflictingUser) {
+                // Only archive local-only users (no Salesforce ID)
+                // For Salesforce users, this is a conflict that needs manual resolution
+                if ($conflictingUser->sf_id) {
+                    $errorMsg = "Conflit d'adresse email détecté : l'email '{$email}' est déjà utilisé par un autre utilisateur Salesforce " .
+                               "(ID local: {$conflictingUser->id}, SF ID: {$conflictingUser->sf_id}). " .
+                               "Ce conflit nécessite une intervention manuelle de l'administrateur. " .
+                               "Veuillez contacter le support technique.";
+
+                    logger()->error('Salesforce SSO email conflict - both users have SF IDs', [
+                        'current_sf_id' => $sfId,
+                        'current_email' => $email,
+                        'current_local_id' => $localUser->id,
+                        'conflicting_user_id' => $conflictingUser->id,
+                        'conflicting_user_email' => $conflictingUser->email,
+                        'conflicting_user_sf_id' => $conflictingUser->sf_id,
+                    ]);
+
+                    throw new \Exception($errorMsg);
+                }
+
+                // Safe to archive: this is a local-only account
+                $archivedEmail = $conflictingUser->email . '.archived.' . time();
+                logger()->warning('Salesforce SSO email conflict resolved - archived local-only user', [
+                    'sf_user_id' => $sfId,
+                    'sf_user_email' => $email,
+                    'local_user_id' => $localUser->id,
+                    'conflicting_user_id' => $conflictingUser->id,
+                    'conflicting_user_email' => $conflictingUser->email,
+                    'archived_email' => $archivedEmail
+                ]);
+
+                $conflictingUser->email = $archivedEmail;
+                $conflictingUser->save();
+            }
+        }
+
         $localUser->email = $email;
 
         // Sync SF ID
