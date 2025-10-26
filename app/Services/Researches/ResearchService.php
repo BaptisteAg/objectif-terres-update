@@ -298,8 +298,7 @@ class ResearchService
             $query->filterAdTypes([$adType]);
         }
 
-        $validatedStatus = AdStatus::where('id', '=', AdStatus::APPROVE_ID)->first();
-        $query->filterWhereHasWhere($validatedStatus->id, 'attributionAd', '=', 'ad_status_id');
+        $query->filterWhereHasWhere(AdStatus::APPROVE_ID, 'attributionAd', '=', 'ad_status_id');
         $query->where("is_draft", '=', 0);
 
         //Filter ads by keywords
