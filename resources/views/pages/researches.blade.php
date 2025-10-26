@@ -167,11 +167,6 @@
         <h2 class="title mb-3 mx-3-mobile">
             {{ $ads->total() }} annonce{{ $ads->total() > 1 ? 's' : '' }} trouvée{{ $ads->total() > 1 ? 's' : '' }}
         </h2>
-            <p class="mb-6 mx-3-mobile">
-                @if($hasDepartmentPolygons)
-                    Certaines annonces peuvent être comptabilisées plusieurs fois selon leur localisation
-                @endif
-            </p>
         @foreach($ads as $ad)
             @include('pages.ads.partials.card')
         @endforeach

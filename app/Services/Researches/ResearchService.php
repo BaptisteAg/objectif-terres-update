@@ -383,6 +383,8 @@ class ResearchService
 				->select('ads.*');
 		};
 
+		$query->groupBy('ads.id');
+
 		return $query;
 	}
 
