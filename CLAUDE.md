@@ -85,6 +85,27 @@ docker-compose logs -f
 docker compose exec php php /shared/httpd/objectif-terres/artisan [command]
 ```
 
+### Database Management
+```bash
+# Sync production database to local development
+# Script location: ~/Work/backups/sync-ot-prod-db.sh
+# This script:
+# - Dumps production database from remote server (54.37.149.176)
+# - Saves backup to ~/Work/backups/ with timestamp
+# - Recreates local ObjectifTerreProd database
+# - Imports production data
+# - Runs Laravel migrations
+# - Clears caches
+cd ~/Work/backups
+./sync-ot-prod-db.sh
+
+# Manually import a specific backup
+docker exec -i devilbox-mysql-1 mysql -u root ObjectifTerreProd < ~/Work/backups/objectif-terres-latest.sql
+
+# Create manual database backup
+docker exec devilbox-mysql-1 mysqldump -u root ObjectifTerreProd > ~/Work/backups/manual-backup-$(date +%Y%m%d_%H%M%S).sql
+```
+
 ## Architecture & Code Structure
 
 ### Core Domain Models
