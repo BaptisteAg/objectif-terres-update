@@ -36,7 +36,7 @@ class TestExpirationNotification extends Command
             $this->info('No ad ID provided. Showing recent ads:');
             $this->info('');
 
-            $ads = Ad::with(['user', 'attributionAd'])
+            $ads = Ad::with(['userPp', 'attributionAd'])
                 ->whereHas('attributionAd')
                 ->latest()
                 ->take(10)
@@ -53,7 +53,7 @@ class TestExpirationNotification extends Command
                     $ad->id,
                     $ad->title,
                     $ad->type,
-                    $ad->user->email ?? 'N/A',
+                    $ad->userPp->email ?? 'N/A',
                     $ad->created_at->format('Y-m-d H:i:s'),
                 ];
             });
@@ -66,14 +66,14 @@ class TestExpirationNotification extends Command
         }
 
         // Load the ad
-        $ad = Ad::with(['user', 'attributionAd'])->find($adId);
+        $ad = Ad::with(['userPp', 'attributionAd'])->find($adId);
 
         if (!$ad) {
             $this->error("Ad with ID {$adId} not found.");
             return 1;
         }
 
-        if (!$ad->user) {
+        if (!$ad->userPp) {
             $this->error("Ad #{$adId} has no associated user.");
             return 1;
         }
@@ -85,7 +85,7 @@ class TestExpirationNotification extends Command
 
         // Check for email override
         $overrideEmail = $this->option('email');
-        $recipient = $ad->user;
+        $recipient = $ad->userPp;
 
         if ($overrideEmail) {
             $recipient = \App\Models\User::where('email', $overrideEmail)->first();
@@ -100,7 +100,7 @@ class TestExpirationNotification extends Command
         $this->info("  Ad ID: {$ad->id}");
         $this->info("  Title: {$ad->title}");
         $this->info("  Type: {$ad->type}");
-        $this->info("  Ad Owner: {$ad->user->email}");
+        $this->info("  Ad Owner: {$ad->userPp->email}");
         $this->info("  Created: {$ad->attributionAd->created_at->format('d/m/Y H:i:s')}");
 
         if ($overrideEmail) {
