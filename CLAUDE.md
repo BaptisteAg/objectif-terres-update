@@ -85,17 +85,15 @@ docker-compose logs -f
 docker compose exec php php /shared/httpd/objectif-terres/artisan [command]
 ```
 
+### Remote Servers & Deployment
+
+See `REMOTE.md` (gitignored) for server credentials and deployment commands for staging/production.
+
 ### Database Management
 ```bash
 # Sync production database to local development
 # Script location: ~/Work/backups/sync-ot-prod-db.sh
-# This script:
-# - Dumps production database from remote server (54.37.149.176)
-# - Saves backup to ~/Work/backups/ with timestamp
-# - Recreates local ObjectifTerreProd database
-# - Imports production data
-# - Runs Laravel migrations
-# - Clears caches
+# See REMOTE.md for server details
 cd ~/Work/backups
 ./sync-ot-prod-db.sh
 
