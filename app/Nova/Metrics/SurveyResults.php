@@ -21,7 +21,16 @@ class SurveyResults extends Partition
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, Ad::whereNotNull('survey_submitted_at'), 'survey_success_via_platform')
+        $query = Ad::whereNotNull('survey_submitted_at');
+
+        // Check if there are any results to avoid empty partition error
+        if ($query->count() === 0) {
+            return $this->result([
+                'Aucune réponse' => 0,
+            ]);
+        }
+
+        return $this->count($request, $query, 'survey_success_via_platform')
             ->label(function ($value) {
                 switch ($value) {
                     case 'oui':
