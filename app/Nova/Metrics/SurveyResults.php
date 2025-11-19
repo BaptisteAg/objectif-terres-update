@@ -40,11 +40,7 @@ class SurveyResults extends Partition
                     default:
                         return $value ?? 'Non répondu';
                 }
-            })
-            ->colors([
-                'oui' => '#22c55e',
-                'non' => '#ef4444',
-            ]);
+            });
     }
 
     /**
