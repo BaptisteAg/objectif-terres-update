@@ -322,6 +322,77 @@ class  AdsController extends BaseController
 
 
     /**
+     * Republish an archived ad
+     *
+     * @param Ad $ad
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function republish(Ad $ad)
+    {
+        if (!$ad->canEdit()) {
+            abort(404);
+        }
+
+        if (!$ad->isArchived()) {
+            return back()->with('error', 'Cette annonce n\'est pas archivée');
+        }
+
+        $this->adService->republish($ad);
+
+        return back()->with('success', 'Votre annonce a été republiée avec succès');
+    }
+
+    /**
+     * Handle survey submission before archive or delete
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param Ad $ad
+     * @param string $action
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function survey(\Illuminate\Http\Request $request, Ad $ad, string $action)
+    {
+        // Check if user can edit this ad
+        if (!$ad->canEdit()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        // Validate action
+        if (!in_array($action, ['archive', 'delete'])) {
+            return response()->json(['error' => 'Invalid action'], 400);
+        }
+
+        // Validate survey response
+        $request->validate([
+            'survey_success_via_platform' => 'required|in:oui,non',
+            'survey_comments' => 'nullable|string|max:5000'
+        ]);
+
+        // Store survey data
+        $ad->survey_success_via_platform = $request->input('survey_success_via_platform');
+        $ad->survey_comments = $request->input('survey_comments');
+        $ad->survey_submitted_at = now();
+        $ad->save();
+
+        // Execute the action (archive or delete)
+        if ($action === 'archive') {
+            $this->adService->archive($ad);
+            $message = 'Votre annonce a bien été archivée';
+        } else {
+            $this->adService->delete($ad);
+            $message = 'Votre annonce a bien été supprimée';
+        }
+
+        // Return success with redirect
+        return response()->json([
+            'success' => true,
+            'message' => $message,
+            'redirect' => route('ads.list')
+        ]);
+    }
+
+    /**
      * @param int $adId
      * @return \Illuminate\Http\RedirectResponse
      */

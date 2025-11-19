@@ -125,6 +125,12 @@ window.app = new Vue({
 	el: '#app',
 	data: {
 		loading: false,
+		// Survey modal properties (used in ad show/list pages)
+		surveyModalOpen: false,
+		surveyAction: null,
+		selectedAd: null,
+		ad: null,
+		ads: [],
 	},
 	methods: {
 		async copyUrl() {

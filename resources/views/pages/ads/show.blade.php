@@ -14,7 +14,7 @@
 @endphp
 
 @section('main-content')
-    <section class="container pb-6">
+    <section class="container pb-6" id="ad-show-page">
 
         @if(!isset($isPreview) || !$isPreview)
             @auth
@@ -42,14 +42,40 @@
 
                 <div class="column">
                     @if($ad->canEdit())
-                        <survey-modal
-                                :ad="{{ json_encode($ad->with('attributionAd')) }}"
-                                is-archive-href="{{ route('ads.request-publishing', ['id' => $ad->id]) }}"
-                                edit-href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ['id' => $ad->id]) }}"
-                                archive-route="{{ route('ads.survey', [$ad->id, 'action' => 'archive']) }}"
-                                delete-route="{{ route('ads.survey', [$ad->id, 'action' => 'delete']) }}"
-                                csrf-token="{{ csrf_token() }}"
-                        ></survey-modal>
+                        <div class="buttons has-addons is-right">
+                            @if($ad->is_draft === 0 && !isset($ad->attributionAd))
+                                <b-button
+                                        href="{{ route('ads.request-publishing', ["id" => $ad->id]) }}"
+                                        tag="a" icon-left="check"
+                                        rounded>Soumettre
+                                </b-button>
+                            @endif
+                            <b-button
+                                    href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ["id" => $ad->id]) }}"
+                                    tag="a" icon-left="pencil" rounded>Modifier
+                            </b-button>
+                            @if(!$ad->isArchived())
+                                <b-button
+                                          @click="openSurveyModal('archive')"
+                                          icon-left="archive-arrow-down"
+                                          rounded>
+                                    Archiver
+                                </b-button>
+                            @else
+                                <b-button
+                                          href="{{route('ads.republish', $ad->id)}}"
+                                          tag="a"
+                                          icon-left="publish"
+                                          rounded>
+                                    Republier
+                                </b-button>
+                            @endif
+                            <b-button
+                                      @click="openSurveyModal('delete')"
+                                      icon-left="delete" rounded>
+                                Supprimer
+                            </b-button>
+                        </div>
                     @endif
                 </div>
             </div>
@@ -106,6 +132,14 @@
             @include('pages.ads.partials.associateOffer.associateOfferAdShow')
         @endif
 
+        @if($ad->canEdit())
+            <survey-modal
+                v-if="surveyModalOpen"
+                :ad="ad"
+                :action="surveyAction"
+                @close="closeSurveyModal"
+            ></survey-modal>
+        @endif
     </section>
 
     @if(!isset($isPreview) || !$isPreview)
@@ -118,4 +152,22 @@
 @endsection
 
 @section('script')
+    @if($ad->canEdit())
+        <script>
+            // Initialize survey modal data for this page
+            window.app.surveyModalOpen = false;
+            window.app.surveyAction = null;
+            window.app.ad = @json($ad);
+
+            window.app.openSurveyModal = function(action) {
+                this.surveyAction = action;
+                this.surveyModalOpen = true;
+            };
+
+            window.app.closeSurveyModal = function() {
+                this.surveyModalOpen = false;
+                this.surveyAction = null;
+            };
+        </script>
+    @endif
 @endsection

@@ -30,6 +30,8 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
     Route::middleware('auth')->post('survey/{ad}/{action}', 'AdsController@survey')->name('survey');
     Route::middleware('auth')->get('supprimer/{ad}', 'AdsController@delete')->name('delete');
     Route::middleware('auth')->get('archiver/{ad}', 'AdsController@archive')->name('archive');
+    Route::middleware('auth')->get('republier/{ad}', 'AdsController@republish')->name('republish');
+    Route::middleware('auth')->post('survey/{ad}/{action}', 'AdsController@survey')->name('survey');
     Route::middleware('auth')->get('etendre-expiration/{id}', 'AdsController@extendPublish')->name('extend');
 });
 

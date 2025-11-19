@@ -59,7 +59,7 @@ class ApiController extends Controller
      *     @OA\Parameter(
      *         name="types[]",
      *         in="query",
-     *         description="Filter by ad types (array). Use multiple parameters for multiple types.",
+     *         description="Filter by ad types. Accepts array format (?types[]=land_offer&types[]=land_seek) or comma-separated string (?types=land_offer,land_seek)",
      *         required=false,
      *         style="form",
      *         explode=true,
@@ -67,15 +67,15 @@ class ApiController extends Controller
      *             type="array",
      *             @OA\Items(
      *                 type="string",
-     *                 enum={"landOfferAd", "landSeekAd", "jobOfferAd", "jobSeekAd", "associateOfferAd", "associateSeekAd"}
+     *                 enum={"land_offer", "land_seek", "job_offer", "job_seek", "associate_offer", "associate_seek"}
      *             )
      *         ),
-     *         example={"landOfferAd", "landSeekAd"}
+     *         example={"land_offer", "land_seek"}
      *     ),
      *     @OA\Parameter(
      *         name="updated_since",
      *         in="query",
-     *         description="Get ads updated after this date (ISO 8601 format)",
+     *         description="Get ads updated after this date. MUST be in UTC timezone with ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ). Clients must convert their local times to UTC before making the request.",
      *         required=false,
      *         @OA\Schema(
      *             type="string",
@@ -187,12 +187,26 @@ class ApiController extends Controller
             }
         });
 
-        // Return using the new resource collection
+        // Validate page number if paginated
         if ($data instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator) {
-            return (new AdCollection($data))->response();
-        } else {
-            return response()->json(new AdCollection($data));
+            $currentPage = $data->currentPage();
+            $lastPage = $data->lastPage();
+
+            if ($currentPage > $lastPage && $lastPage > 0) {
+                return response()->json([
+                    'error' => 'bad_request',
+                    'message' => "Page {$currentPage} does not exist. The last available page is {$lastPage}.",
+                    'details' => [
+                        'parameter' => 'page',
+                        'requested_page' => $currentPage,
+                        'last_page' => $lastPage,
+                    ],
+                ], 400);
+            }
         }
+
+        // Return using the new resource collection
+        return response()->json(new AdCollection($data));
     }
 
     /**

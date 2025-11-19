@@ -39,7 +39,7 @@
 @endforeach
 
 @if(isset($additional_action) && $additional_action)
-@component('mail::button', ['url' => $additional_action[1], 'color' => "primary"])
+@component('mail::button', ['url' => $additional_action[1], 'color' => isset($additional_action[2]) ? $additional_action[2] : "primary"])
     {{ $additional_action[0] }}
 @endcomponent
 @endif

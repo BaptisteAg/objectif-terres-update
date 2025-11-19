@@ -1,274 +1,143 @@
 <template>
-  <div>
-    <div class="buttons has-addons is-right">
-      <b-button
-          v-if="ad.is_draft"
-          :href="isArchiveHref"
-          tag="a" icon-left="check"
-          rounded>Soumettre
-      </b-button>
-      <b-button
-          :href="editHref"
-          tag="a" icon-left="pencil" rounded>Modifier
-      </b-button>
-      <b-button @click="openModal('archive')" icon-left="archive-arrow-down" rounded>
-        Archiver
-      </b-button>
-      <b-button @click="openModal('delete')" icon-left="delete" rounded>
-        Supprimer
-      </b-button>
-    </div>
-    <b-modal
-        v-model="isModalActive"
-        has-modal-card
-        trap-focus
-        :destroy-on-hide="false"
-        aria-role="dialog"
-        aria-label="Modal"
-        close-button-aria-label="Close"
-        aria-modal
-    >
-      <template #default="props">
-        <div class="bg-beige custo-modal objT-border p-6 p-5-mobile">
-          <h3 class="title">{{ modalTitle }}</h3>
-          <div class="mt-5">
-            <form @submit.prevent="submitForm" method="POST">
-              <input type="hidden" name="_token" :value="csrfToken">
+  <div class="modal is-active p-8 p-0-mobile">
+    <div class="modal-background" @click="handleClose"></div>
+    <div class="modal-content">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            Archivage ou suppression d'une annonce - Enquête de succès
+          </p>
+        </header>
+        <div class="card-content">
+          <div v-if="isLoading">
+            <p>Envoi en cours...</p>
+          </div>
+          <div v-else>
+            <p class="mb-4">
+              Afin d'archiver ou supprimer une annonce, veuillez répondre à la question suivante pour nous permettre d'améliorer Objectif-Terres
+            </p>
 
-
-              <b-field
-                  label="Êtes-vous satisfait de la plateforme ? *">
-                <div class="feedback-options">
-                  <b-radio v-model="thanksToPlatform"
-                           name="thanks_to_platform"
-                           native-value="Oui"
-                           class="custom-radio mr-5">
-                    <span class="radio-label">
-                      <b-icon icon="thumb-up" size="is-small" class="mr-2"></b-icon>
-                      Oui
-                    </span>
-                  </b-radio>
-                  <b-radio v-model="thanksToPlatform"
-                           name="thanks_to_platform"
-                           native-value="Non"
-                           class="custom-radio">
-                    <span class="radio-label">
-                      <b-icon icon="thumb-down" size="is-small" class="mr-2"></b-icon>
-                      Non
-                    </span>
-                  </b-radio>
-                </div>
-                <p v-if="showError" class="has-text-danger mt-2">
-                  <b-icon icon="alert" size="is-small"></b-icon>
-                  <span class="ml-2">Veuillez sélectionner une option</span>
-                </p>
-              </b-field>
-
-              <b-field
-                  label="Un partage, une remarque ou autre à nous transmettre ? (facultatif)">
-                <b-input v-model="remarks" name="remarks" type="textarea"></b-input>
-              </b-field>
-
-              <div class="buttons">
-                <b-button rounded
-                          type="is-primary"
-                          native-type="submit"
-                          :loading="isLoading">
-                  Envoyer
-                </b-button>
-                <b-button rounded @click="closeModal(props.close)">Annuler</b-button>
+            <div class="field">
+              <label class="label">
+                Votre annonce a-t-elle aboutie grâce à Objectif-Terres ? <span class="has-text-danger">*</span>
+              </label>
+              <div class="control">
+                <label class="radio">
+                  <input type="radio" name="survey_response" value="oui" v-model="surveyResponse">
+                  Oui
+                </label>
+                <label class="radio ml-4">
+                  <input type="radio" name="survey_response" value="non" v-model="surveyResponse">
+                  Non
+                </label>
               </div>
-            </form>
+              <p v-if="showError" class="help is-danger">Veuillez répondre à cette question</p>
+            </div>
+
+            <div class="field mt-4">
+              <label class="label">
+                Si vous avez des remarques à nous faire pour nous améliorer (optionnel)
+              </label>
+              <div class="control">
+                <textarea
+                  class="textarea"
+                  v-model="surveyComments"
+                  placeholder="N'hésitez pas à nous faire part de vos remarques..."
+                  rows="4"
+                ></textarea>
+              </div>
+            </div>
           </div>
         </div>
-      </template>
-    </b-modal>
+        <footer class="card-footer">
+          <div class="buttons card-footer-item">
+            <button @click="handleClose" class="button form-button basic secondary" :disabled="isLoading">
+              <span>Annuler</span>
+            </button>
+            <button @click="handleSubmit" class="button form-button basic is-danger" :disabled="isLoading">
+              <span v-if="action === 'archive'">Archiver mon annonce</span>
+              <span v-else>Supprimer mon annonce</span>
+            </button>
+          </div>
+          <button id="close-modal" class="modal-close is-large" aria-label="close"
+                  @click="handleClose" v-if="!isLoading"></button>
+        </footer>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   props: {
     ad: {
       type: Object,
       required: true
     },
-    isArchiveHref: {
+    action: {
       type: String,
-      required: false,
-      default: ''
-    },
-    editHref: {
-      type: String,
-      required: true
-    },
-    archiveRoute: {
-      type: String,
-      required: true
-    },
-    deleteRoute: {
-      type: String,
-      required: true
-    },
-    csrfToken: {
-      type: String,
-      required: true
+      required: true,
+      validator: value => ['archive', 'delete'].includes(value)
     }
   },
   data() {
     return {
-      isModalActive: false,
-      modalTitle: '',
-      reason: '',
-      thanksToPlatform: '',
-      remarks: '',
-      formAction: '',
-      showError: false,
-      isLoading: false
+      surveyResponse: null,
+      surveyComments: '',
+      isLoading: false,
+      showError: false
     }
   },
   methods: {
-    openModal(type) {
-      this.modalTitle = type === 'archive' ? 'Archiver l\'annonce' : 'Supprimer l\'annonce';
-      this.formAction = type === 'archive' ? this.archiveRoute : this.deleteRoute;
-      this.isModalActive = true;
-      this.showError = false;
-      this.thanksToPlatform = '';
-      this.remarks = '';
+    handleClose() {
+      if (!this.isLoading) {
+        this.$emit('close')
+      }
     },
-    closeModal(close) {
-      this.showError = false;
-      this.thanksToPlatform = '';
-      this.remarks = '';
-      close();
-    },
-    async submitForm() {
-      if (!this.thanksToPlatform) {
-        this.showError = true;
+    handleSubmit() {
+      // Validate that a response is selected
+      if (!this.surveyResponse) {
+        this.showError = true
+        return
+      }
 
-        // Utilisation du toast au lieu de la notification
-        this.$buefy.toast.open({
-          message: 'Veuillez indiquer si vous êtes satisfait de la plateforme',
-          type: 'is-danger',
-          position: 'is-top',
-          duration: 3000,
-          queue: false,
-          animation: 'fade'
+      this.showError = false
+      this.isLoading = true
+
+      // Submit survey data
+      axios
+        .post(`/annonces/survey/${this.ad.id}/${this.action}`, {
+          survey_success_via_platform: this.surveyResponse,
+          survey_comments: this.surveyComments
         })
-        return;
-      }
-
-      this.isLoading = true;
-
-      try {
-        const formData = new FormData();
-        formData.append('_token', this.csrfToken);
-        formData.append('thanks_to_platform', this.thanksToPlatform);
-        formData.append('remarks', this.remarks);
-
-        await fetch(this.formAction, {
-          method: 'POST',
-          body: formData
-        });
-
-        this.isModalActive = false;
-        this.$buefy.toast.open({
-          message: 'Opération effectuée avec succès',
-          type: 'is-success',
-          position: 'is-top',
-          duration: 3000
-        });
-
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-
-      } catch (error) {
-        this.$buefy.toast.open({
-          message: 'Une erreur est survenue',
-          type: 'is-danger',
-          position: 'is-top',
-          duration: 3000
-        });
-      } finally {
-        this.isLoading = false;
-      }
+        .then(response => {
+          // Redirect or reload after successful submission
+          if (response.data.redirect) {
+            window.location.href = response.data.redirect
+          } else {
+            window.location.reload()
+          }
+        })
+        .catch(error => {
+          console.error('Survey submission error:', error)
+          alert('Une erreur est survenue. Veuillez réessayer.')
+          this.isLoading = false
+        })
     }
-  },
+  }
 }
 </script>
 
 <style scoped>
-@media (min-width: 1024px) {
-  .custo-modal {
-    min-width: 1000px;
-  }
+.mb-4 {
+  margin-bottom: 1rem;
 }
-
-.feedback-question {
-  background-color: #f5f5f5;
-  padding: 1.5rem;
-  border-radius: 8px;
+.mt-4 {
+  margin-top: 1rem;
 }
-
-.feedback-options {
-  display: flex;
-  align-items: center;
-}
-
-.custom-radio {
-  transition: all 0.3s ease;
-}
-
-.custom-radio:hover {
-  transform: translateY(-2px);
-}
-
-.radio-label {
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-}
-
-.has-text-danger {
-  font-size: 0.9rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  background-color: #fff5f7;
-  padding: 0.5rem;
-  border-radius: 4px;
-  margin-top: 0.5rem !important;
-}
-
-.feedback-question {
-  background-color: #f5f5f5;
-  padding: 1.5rem;
-  border-radius: 8px;
-  border: 1px solid #dbdbdb;
-}
-
-.feedback-question.error {
-  border-color: #ff3860;
-  animation: shake 0.5s ease-in-out;
-}
-
-@keyframes shake {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-5px);
-  }
-  75% {
-    transform: translateX(5px);
-  }
-}
-</style>
-
-@keyframes shake {
-0%, 100% { transform: translateX(0); }
-25% { transform: translateX(-5px); }
-75% { transform: translateX(5px); }
+.ml-4 {
+  margin-left: 1rem;
 }
 </style>

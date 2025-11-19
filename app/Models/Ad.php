@@ -142,8 +142,9 @@ class Ad extends Model implements HasPresenter
         'origin',
         'department_id',
         'third_party_ad_user_id',
-        'survey_thanks_to_platform',
-        'survey_remarks',
+        'survey_success_via_platform',
+        'survey_comments',
+        'survey_submitted_at'
     ];
 
     const AD_TYPES = [
@@ -452,6 +453,12 @@ class Ad extends Model implements HasPresenter
                 ) || auth()->user()->role >= 4;
         }
         return false;
+    }
+
+    public function isArchived(): bool
+    {
+        return $this->attributionAd &&
+               $this->attributionAd->ad_status_id === AdStatus::ARCHIVED_ID;
     }
 
     public function thirdPartyAdUser(): BelongsTo

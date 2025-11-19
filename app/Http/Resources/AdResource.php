@@ -33,7 +33,7 @@ class AdResource extends JsonResource
             'id' => $ad->id,
             'link' => route('ads.show', $ad->id),
             'title' => $ad->title,
-            'type' => $ad->type,
+            'type' => $ad->type ? $this->getTypeKey($ad->type) : null,
             'image' => $this->getMainImage($ad),
             'department_code' => $this->getMainDepartmentCode($ad),
             'created_at' => $this->formatDateToIso($ad->created_at),
@@ -62,6 +62,26 @@ class AdResource extends JsonResource
         $typeData = $this->getTypeSpecificData($ad);
         if ($typeData) {
             $data[$this->getTypeKey($ad->type)] = $typeData;
+        }
+
+        // Remove null fields to reduce payload size
+        return $this->filterNullValues($data);
+    }
+
+    /**
+     * Recursively remove null values from array
+     *
+     * @param array $data
+     * @return array
+     */
+    protected function filterNullValues(array $data): array
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $data[$key] = $this->filterNullValues($value);
+            } elseif (is_null($value)) {
+                unset($data[$key]);
+            }
         }
 
         return $data;
@@ -122,7 +142,7 @@ class AdResource extends JsonResource
         return [
             'moderator' => $attribution->userModerator ? [
                 'id' => $attribution->userModerator->id,
-                'name' => $attribution->userModerator->first_name . ' ' . $attribution->userModerator->last_name,
+                'name' => trim($attribution->userModerator->first_name . ' ' . $attribution->userModerator->last_name),
                 'email' => $attribution->userModerator->email,
                 'is_third_party' => false,
             ] : null,
@@ -175,7 +195,7 @@ class AdResource extends JsonResource
             $cities[] = [
                 'id' => $city->id,
                 'name' => $city->name,
-                'code' => $city->code,
+                'code' => $city->insee_code,
                 'radius' => $city->pivot->radius ?? null,
             ];
         }

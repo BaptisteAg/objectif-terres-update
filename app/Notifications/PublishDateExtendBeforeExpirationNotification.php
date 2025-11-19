@@ -22,8 +22,8 @@ class PublishDateExtendBeforeExpirationNotification extends BasicNotification
                     Si vous souhaitez prolonger sa publication, cliquez sur le bouton ci-dessous.
                     Vous pouvez également la modifier si besoin." . $extraMsg,
             'action' => ["Prolonger votre annonce", route('ads.extend', ["id" => $ad->id])],
-            'additional_message' => "Nous avons besoin de savoir combien de personnes trouvent leur ferme, ou vendent leur ferme grâce à Objectif Terres, c’est pourquoi nous vous proposons de répondre à quelques questions.\n Merci pour votre coopération !",
-            'additional_action' => ["Répondre au questionnaire", $formUrl],
+            'additional_message' => "Vous pouvez dès à présent archiver ou supprimer votre annonce. Profitez-en pour répondre à notre enquête de succès pour nous permettre d'améliorer Objectif-Terres",
+            'additional_action' => ["Désactiver mon annonce et répondre au questionnaire", route('ads.list'), "error"],
             'salutation' => "Bonne chance dans vos projets !\nL’équipe Terre de Liens"
         ]);
     }
