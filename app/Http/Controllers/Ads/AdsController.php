@@ -254,31 +254,6 @@ class  AdsController extends BaseController
         return view('pages.ads.listUserAds', compact('ads'));
     }
 
-    public function survey(Request $request, Ad $ad, $action)
-    {
-        if (!$ad->canEdit()) {
-            abort(404);
-        }
-
-        $validatedData = $request->validate([
-            'thanks_to_platform' => 'string',
-            'remarks' => 'nullable|string',
-        ]);
-
-        $ad->update([
-            'survey_thanks_to_platform' => $validatedData['thanks_to_platform'] ?? null,
-            'survey_remarks' => $validatedData['remarks'] ?? null,
-        ]);
-
-        if ($action === 'delete') {
-            return $this->delete($ad);
-        } elseif ($action === 'archive') {
-            return $this->archive($ad);
-        }
-
-        return redirect()->route('user.index')->with('error', 'Action non reconnue.');
-    }
-
     /**
      * @param Ad $ad
      * @return \Illuminate\Http\RedirectResponse
