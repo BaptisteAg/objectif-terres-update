@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Nova\Actions\ReallocateModeratorAds;
 use App\Nova\Dashboards\Main;
 use App\Nova\Metrics\NewUsers;
+use App\Nova\Metrics\SurveyCount;
+use App\Nova\Metrics\SurveyResults;
 use App\Nova\Metrics\UsersPerDay;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -61,7 +63,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 	{
 		return [
 			(new NewUsers)->width('1/2'),
-			(new UsersPerDay)->width('1/2')
+			(new UsersPerDay)->width('1/2'),
+			(new SurveyCount)->width('1/3'),
+			(new SurveyResults)->width('2/3'),
 		];
 	}
 
