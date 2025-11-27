@@ -99,22 +99,6 @@
 
                     <div class="" style="float:right">
                         <div class="buttons are-medium">
-                            <script>
-                                function exportPage() {
-                                    console.log("ppl")
-
-                                    const button = document.getElementById("exportButton")
-                                    // Get all field data from the form
-                                    let urlParts = location.href.split("?")
-                                    let queryString = urlParts[1]
-
-                                    if(location.href.indexOf("recherche") !== -1) {
-                                        queryString = "search=1" + (queryString ? '&' : '') + queryString
-                                    }
-                                    window.open( "{{route('supervisor.export')}}?" + queryString)
-                                    document.getElementById("exportLoader").innerText = "Veuillez patienter un instant pour l'export.."
-                                }
-                            </script>
                             <a href="javascript:exportPage()" class="button is-light is-link" id="exportButton">
                             <span class="icon">
                                 <i class="fas fa-table"></i>
@@ -436,6 +420,18 @@
 
 @section('script')
     <script>
+        function exportPage() {
+            let urlParts = location.href.split("?")
+            let queryString = urlParts[1] || ''
+
+            if(location.href.indexOf("recherche") !== -1) {
+                queryString = "search=1" + (queryString ? '&' : '') + queryString
+            }
+
+            window.open("{{route('supervisor.export')}}" + (queryString ? '?' + queryString : ''))
+            document.getElementById("exportLoader").innerText = "Veuillez patienter un instant pour l'export.."
+        }
+
         let deleteButton = document.querySelector('#close-notification-supervisor');
         if (deleteButton != null) {
             deleteButton.addEventListener('click', function (e) {
