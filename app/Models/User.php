@@ -337,4 +337,39 @@ class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 	{
 		return $this->hasMany(UserPermission::class, 'user_id');
 	}
+
+	/**
+	 * Get all messages sent by this user
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function sentMessages()
+	{
+		return $this->hasMany(Message::class, 'sender_user_id');
+	}
+
+	/**
+	 * Get the minimum reCAPTCHA score from user's messages
+	 * Lower scores indicate more bot-like behavior
+	 * @return float|null
+	 */
+	public function getMinRecaptchaScoreAttribute(): ?float
+	{
+		return $this->sentMessages()
+			->whereNotNull('recaptcha_score')
+			->min('recaptcha_score');
+	}
+
+	/**
+	 * Scope to filter users likely to be bots (low reCAPTCHA scores)
+	 * @param \Illuminate\Database\Eloquent\Builder $query
+	 * @param float $threshold
+	 * @return \Illuminate\Database\Eloquent\Builder
+	 */
+	public function scopeLikelyBot($query, float $threshold = 0.5)
+	{
+		return $query->whereHas('sentMessages', function ($q) use ($threshold) {
+			$q->whereNotNull('recaptcha_score')
+			  ->where('recaptcha_score', '<', $threshold);
+		});
+	}
 }
