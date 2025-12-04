@@ -2,8 +2,8 @@
     <div v-if="!isThreadBlocked">
         <div v-if="activeThreadId" class="content">
             <div v-if="isThreadRelatedToUser || userRole >= 2">
-                <div class="notification is-warning is-light mb-4">
-                    <p class="is-size-7">
+                <div class="notification is-warning is-light" style="margin-bottom: 1.5rem;">
+                    <p class="is-size-7 mb-0">
                         <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
                         <strong>Attention aux arnaques !</strong> Ne partagez jamais vos coordonnees bancaires et mefiez-vous des demandes de paiement ou de transfert d'argent. En cas de doute, <a href="mailto:objectif-terres@terredeliens.org">contactez-nous</a>.
                     </p>
