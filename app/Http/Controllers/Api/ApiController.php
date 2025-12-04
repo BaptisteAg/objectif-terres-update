@@ -53,8 +53,7 @@ class ApiController extends Controller
      *         in="header",
      *         required=true,
      *         description="API Key for authentication",
-     *         @OA\Schema(type="string"),
-     *         example="sk_prod_Sf9xK2mN8pQ3vL7zY4wB6hJ1nD5gT0aE"
+     *         @OA\Schema(type="string")
      *     ),
      *     @OA\Parameter(
      *         name="types[]",
