@@ -28,7 +28,8 @@
         </div>
     </div>
 @else
-    {!! Form::open(['route' => 'threads.create', 'method'=>'post']) !!}
+    {!! Form::open(['route' => 'threads.create', 'method'=>'post', 'id' => 'form-ad-message-modal', 'onsubmit' => 'return submitWithRecaptcha(event, this)']) !!}
+    <input type="hidden" name="recaptcha_token" value="">
     <div class="modal" data-type="modal-message">
         <div class="modal-background" data-type="modal-message-background"></div>
         <div class="modal-content">
@@ -38,6 +39,12 @@
                 </div>
                 <div class="card-content">
                     <div class="container">
+                        <div class="notification is-warning is-light mb-4">
+                            <p class="is-size-7">
+                                <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
+                                <strong>Attention aux arnaques !</strong> Ne partagez jamais vos coordonnees bancaires et mefiez-vous des demandes de paiement ou de transfert d'argent. En cas de doute, <a href="mailto:objectif-terres@terredeliens.org">contactez-nous</a>.
+                            </p>
+                        </div>
                         <div class="field">
                             <label class="label">Votre message :</label>
                             <div class="field">

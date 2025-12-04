@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Threads;
 
+use App\Exceptions\SpamContentException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ThreadRequest;
 use App\Models\ResponseTemplate;
 use App\Models\Thread;
+use App\Services\RecaptchaService;
 use App\Services\Threads\ThreadService;
 use App\Services\Users\UserService;
 use Illuminate\Support\Collection;
@@ -21,18 +23,20 @@ class ThreadsController extends Controller
 	 */
 	protected $service;
 	protected $userService;
+	protected $recaptchaService;
 
 
 	/**
 	 * ThreadsController constructor.
 	 * @param ThreadService $service
 	 * @param UserService $userService
+	 * @param RecaptchaService $recaptchaService
 	 */
-	public function __construct(ThreadService $service, UserService $userService)
+	public function __construct(ThreadService $service, UserService $userService, RecaptchaService $recaptchaService)
 	{
 		$this->service = $service;
 		$this->userService = $userService;
-
+		$this->recaptchaService = $recaptchaService;
 	}
 
 	/**
@@ -42,10 +46,24 @@ class ThreadsController extends Controller
 	 */
 	public function create(ThreadRequest $request)
 	{
-		$this->service->create($request->validated());
-		return redirect()->back()->with('success',
-			"Votre message a bien été envoyé. Retrouvez tous vos messages dans la <a href='/mon-espace/messagerie'>messagerie</a>"
-		);
+		try {
+			// Get reCAPTCHA score (just for logging, no blocking)
+			$recaptchaScore = null;
+			if (auth()->user()->role < 1) {
+				$recaptchaResult = $this->recaptchaService->verify($request->input('recaptcha_token'));
+				$recaptchaScore = $recaptchaResult['score'] ?? null;
+			}
+
+			$data = $request->validated();
+			$data['recaptcha_score'] = $recaptchaScore;
+
+			$this->service->create($data);
+			return redirect()->back()->with('success',
+				"Votre message a bien été envoyé. Retrouvez tous vos messages dans la <a href='/mon-espace/messagerie'>messagerie</a>"
+			);
+		} catch (SpamContentException $e) {
+			return redirect()->back()->with('error', $e->getMessage());
+		}
 	}
 
 	/**

@@ -41,7 +41,7 @@ class Message extends Model implements HasPresenter
 	 * @var array
 	 */
 	protected $fillable = [
-		'sender_user_id', 'content', 'thread_id', 'created_at', 'updated_at'
+		'sender_user_id', 'content', 'thread_id', 'ip_address', 'recaptcha_score', 'created_at', 'updated_at'
 	];
 
 	/**
