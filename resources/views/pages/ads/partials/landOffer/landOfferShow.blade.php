@@ -124,7 +124,7 @@
         <h3 class="title is-4">Production secondaires et envisageables</h3>
         <b-taglist>
             @if($ad->landOfferAd->productionGenresSecondary->count() || $ad->landOfferAd->secondary_production_type_add)
-                @foreach($ad->landOfferAd->productionGenresSecondary->pluck('name') as $productionGenresSecondary)
+                @foreach($ad->landOfferAd->productionGenresSecondary->pluck('name')->unique() as $productionGenresSecondary)
                     <b-tag type="is-primary" rounded size="is-medium">
                         {{$productionGenresSecondary}}
                     </b-tag>
