@@ -12,9 +12,11 @@ namespace App\Http\Controllers\Api\Schemas;
  *     @OA\Property(property="id", type="integer", example=9938),
  *     @OA\Property(property="link", type="string", format="url", example="https://objectif-terres.org/annonces/9938"),
  *     @OA\Property(property="title", type="string", example="Ferme bio à transmettre"),
- *     @OA\Property(property="type", type="string", enum={"landOfferAd", "landSeekAd", "jobOfferAd", "jobSeekAd", "associateOfferAd", "associateSeekAd"}, example="landOfferAd"),
+ *     @OA\Property(property="type", type="string", enum={"land_offer", "land_seek", "job_offer", "job_seek", "associate_offer", "associate_seek"}, example="land_offer"),
  *     @OA\Property(property="image", type="string", format="url", nullable=true, example="https://objectif-terres.org/storage/documents/image.jpg"),
- *     @OA\Property(property="department_code", type="string", example="34"),
+ *     @OA\Property(property="department_code", type="string", example="34", description="Department code (2 characters, e.g., '34' or '2A')"),
+ *     @OA\Property(property="department_name", type="string", example="Hérault", description="Department name"),
+ *     @OA\Property(property="region_name", type="string", example="Occitanie", description="Region name"),
  *     @OA\Property(property="created_at", type="string", format="date-time", example="2025-09-25T16:50:59Z"),
  *     @OA\Property(property="updated_at", type="string", format="date-time", example="2025-09-25T17:08:33Z"),
  *     @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true),
@@ -85,7 +87,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *             type="object",
  *             @OA\Property(property="id", type="integer", example=1),
  *             @OA\Property(property="name", type="string", example="Montpellier"),
- *             @OA\Property(property="code", type="string", nullable=true, example="34172"),
+ *             @OA\Property(property="code", type="string", nullable=true, example="34172", description="INSEE code"),
  *             @OA\Property(property="radius", type="string", nullable=true, example="10")
  *         )
  *     )
@@ -95,7 +97,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *     schema="LandOffer",
  *     type="object",
  *     title="Land Offer",
- *     @OA\Property(property="surface", type="number", format="float", example=25.5),
+ *     @OA\Property(property="surface", type="number", format="float", example=25.5, description="Surface in hectares"),
  *     @OA\Property(property="altitude", type="number", format="float", nullable=true, example=150.0),
  *     @OA\Property(property="water_access", type="boolean", example=true),
  *     @OA\Property(property="water_access_description", type="string", nullable=true, example="Forage privé"),
@@ -121,7 +123,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *             type="object",
  *             @OA\Property(property="id", type="integer", example=1),
  *             @OA\Property(property="name", type="string", example="Vente"),
- *             @OA\Property(property="code", type="string", example="vente")
+ *             @OA\Property(property="code", type="string", example="vente", enum={"vente", "location", "test_agricole", "leg_ou_donation_envisagée"})
  *         )
  *     ),
  *     @OA\Property(property="about_land_transmission", type="string", nullable=true, example="Lorem ipsum"),
