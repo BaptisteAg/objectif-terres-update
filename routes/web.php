@@ -117,9 +117,9 @@ Route::prefix('mon-espace/annonces-favorites')->middleware('auth')->name('favori
 Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->namespace('Threads')->group(function () {
     Route::get('actualisation', 'ThreadsController@refreshUnreadMessages')->name('refreshUnreadMessages');
     Route::get('/', 'ThreadsController@index')->name('index');
-    Route::post('creer', 'ThreadsController@create')->name('create');
+    Route::post('creer', 'ThreadsController@create')->middleware('throttle.messages:1,1')->name('create');
     Route::get('{id}', 'MessagesController@show')->name('show');
-    Route::post('envoi', 'MessagesController@create')->name('send');
+    Route::post('envoi', 'MessagesController@create')->middleware('throttle.messages:1,1')->name('send');
     Route::post('upload', 'MessagesController@uploadDocuments')->name('upload');
     Route::get('delete/{id}', 'MessagesController@delete')->name('delete-message');
 //	Route::get('{type}/{filename}', 'MessagesController@show')->name('show');

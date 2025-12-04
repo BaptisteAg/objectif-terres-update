@@ -2,8 +2,18 @@
     <div v-if="!isThreadBlocked">
         <div v-if="activeThreadId" class="content">
             <div v-if="isThreadRelatedToUser">
+                <div class="notification is-warning is-light mb-4">
+                    <p class="is-size-7">
+                        <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
+                        <strong>Attention aux arnaques !</strong> Ne partagez jamais vos coordonnees bancaires et mefiez-vous des demandes de paiement ou de transfert d'argent. En cas de doute, <a href="mailto:objectif-terres@terredeliens.org">contactez-nous</a>.
+                    </p>
+                </div>
+                <div v-if="errorMessage" class="notification is-danger mb-4">
+                    <button class="delete" @click="errorMessage = ''"></button>
+                    {{ errorMessage }}
+                </div>
                 <form @submit="formSubmit"><label id="reply-input-label" for="reply-input"
-                                                  class=" label has-text-black"> Répondre</label>
+                                                  class=" label has-text-black"> Repondre</label>
                     <div class="field ">
                         <div v-bind:class="[isLoading ?'control is-expanded  has-icons-left is-loading ' : 'control is-expanded  has-icons-left']">
                             <input type="hidden" name="thread_id" :value="activeThreadId">
@@ -100,15 +110,32 @@
                 openDocumentUpload: false,
                 showResponseTemplates: this.userRole >= 1,
                 showLinkNewResponseTemplate: this.userRole >= 3,
+                errorMessage: '',
             }
         },
         mounted() {
         },
         methods: {
-            formSubmit(e) {
+            async getRecaptchaToken() {
+                // Get reCAPTCHA token if available (for non-staff users)
+                if (window.$recaptchaSiteKey && window.grecaptcha) {
+                    try {
+                        return await window.grecaptcha.execute(window.$recaptchaSiteKey, { action: 'send_message' });
+                    } catch (error) {
+                        console.warn('reCAPTCHA token generation failed:', error);
+                        return null;
+                    }
+                }
+                return null;
+            },
+            async formSubmit(e) {
                 e.preventDefault();
                 if (this.documents.length > 0 || this.content) {
                     this.isLoading = true;
+
+                    // Get reCAPTCHA token
+                    const recaptchaToken = await this.getRecaptchaToken();
+
                     if (this.documents.length > 0) {
                         axios.post('/mon-espace/messagerie/upload', {
                             files: this.documents,
@@ -126,13 +153,27 @@
                         axios.post('/mon-espace/messagerie/envoi', {
                             content: this.content,
                             thread_id: this.activeThreadId,
+                            recaptcha_token: recaptchaToken,
                         }).then(response => {
                             const message = response.data;
                             this.$emit('message-reply-success', message)
                             this.content = '';
                             this.documents = [];
                             this.isLoading = false;
+                            this.errorMessage = '';
                         }).catch(error => {
+                            this.isLoading = false;
+                            if (error.response) {
+                                if (error.response.status === 429) {
+                                    this.errorMessage = 'Vous devez attendre 1 minute avant d\'envoyer un nouveau message.';
+                                } else if (error.response.status === 422 && error.response.data && error.response.data.message) {
+                                    this.errorMessage = error.response.data.message;
+                                } else {
+                                    this.errorMessage = 'Une erreur est survenue lors de l\'envoi du message.';
+                                }
+                            } else {
+                                this.errorMessage = 'Une erreur est survenue lors de l\'envoi du message.';
+                            }
                             console.log(error)
                         })
                     }
