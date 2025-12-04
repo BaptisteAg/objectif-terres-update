@@ -255,7 +255,7 @@ class SalesforceService
 
             if ($conflictingUser) {
                 // Only archive local-only users (no Salesforce ID)
-                // For Salesforce users, this is a conflict that needs manual resolution
+                // For Salesforce users. This is a conflict that needs manual resolution
                 if ($conflictingUser->sf_id) {
                     $errorMsg = "Conflit d'adresse email détecté : l'email '{$email}' est déjà utilisé par un autre utilisateur Salesforce " .
                                "(ID local: {$conflictingUser->id}, SF ID: {$conflictingUser->sf_id}). " .
