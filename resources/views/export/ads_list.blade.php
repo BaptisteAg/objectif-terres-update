@@ -2,6 +2,7 @@
     <thead>
     <tr>
         <th colspan="18"><b>Données générales</b></th>
+        <th colspan="3"><b>Enquête de succès</b></th>
         <th colspan="16"><b>Détails offres foncières</b></th>
         <th colspan="7"><b>Détails recherche de foncier</b></th>
         <th colspan="4"><b>Détails offre d'emploi</b></th>
@@ -27,6 +28,9 @@
         <th>Prénom du modérateur</th>
         <th>Description de l'annonce</th>
         <th>Description du porteur de projet</th>
+        <th>Succès via OT</th>
+        <th>Remarques enquête</th>
+        <th>Date enquête</th>
         <th>Surface (en ha)</th>
         <th>Description Surface Agricole Utiles (SAU)</th>
         <th>Accès à l'eau</th>
@@ -95,6 +99,9 @@
                 <td>{{$ad->attributionAd->userModerator->first_name ?? ''}}</td>
                 <td>{{utf8_decode($ad->about_project_content) ?: ''}}</td>
                 <td>{{utf8_encode($ad->about_content) ?: ''}}</td>
+                <td>{{$ad->survey_success_via_platform ?? ''}}</td>
+                <td>{{$ad->survey_comments ?? ''}}</td>
+                <td>{{$ad->survey_submitted_at ?? ''}}</td>
                 <td>{{$ad->landOfferAd->surface?? '' }}</td>
                 <td>{{$ad->landOfferAd->sau_description?? '' }}</td>
                 <td>

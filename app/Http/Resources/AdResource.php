@@ -36,6 +36,8 @@ class AdResource extends JsonResource
             'type' => $ad->type ? $this->getTypeKey($ad->type) : null,
             'image' => $this->getMainImage($ad),
             'department_code' => $this->getMainDepartmentCode($ad),
+            'department_name' => $this->getMainDepartmentName($ad),
+            'region_name' => $this->getRegionName($ad),
             'created_at' => $this->formatDateToIso($ad->created_at),
             'updated_at' => $status === 'archived' || $status === 'deleted'
                 ? null
@@ -104,12 +106,53 @@ class AdResource extends JsonResource
     }
 
     /**
-     * Get the main department code
+     * Get the main department code (full code, e.g., "34" or "2A")
      */
     protected function getMainDepartmentCode($ad)
     {
         $mainDepartment = $ad->main_department;
         return $mainDepartment ? $mainDepartment->code : null;
+    }
+
+    /**
+     * Get the main department name
+     */
+    protected function getMainDepartmentName($ad)
+    {
+        $mainDepartment = $ad->main_department;
+        return $mainDepartment ? $mainDepartment->name : null;
+    }
+
+    /**
+     * Get the public department code (2 digits, e.g., "34" or "2A")
+     * This is the same as department_code but kept for clarity
+     */
+    protected function getPublicDepartmentCode($ad)
+    {
+        $mainDepartment = $ad->main_department;
+        if (!$mainDepartment) {
+            return null;
+        }
+        // Return the standard 2-character department code
+        return substr($mainDepartment->code, 0, 3); // Handles both "34" and "2A"/"2B"
+    }
+
+    /**
+     * Get the region name from the main department
+     */
+    protected function getRegionName($ad)
+    {
+        $mainDepartment = $ad->main_department;
+        if (!$mainDepartment) {
+            return null;
+        }
+
+        // Load region if not already loaded
+        if (!$mainDepartment->relationLoaded('region')) {
+            $mainDepartment->load('region');
+        }
+
+        return $mainDepartment->region ? $mainDepartment->region->name : null;
     }
 
     /**

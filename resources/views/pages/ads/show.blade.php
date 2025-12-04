@@ -14,7 +14,7 @@
 @endphp
 
 @section('main-content')
-    <section class="container pb-6">
+    <section class="container pb-6" id="ad-show-page">
 
         @if(!isset($isPreview) || !$isPreview)
             @auth
@@ -53,13 +53,25 @@
                                     href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ["id" => $ad->id]) }}"
                                     tag="a" icon-left="pencil" rounded>Modifier
                             </b-button>
-                            <b-button onclick="return confirm('Êtes vous sûr·e ?')" tag="a"
-                                      href="{{  route('ads.archive', [ $ad->id]) }}" icon-left="archive-arrow-down"
-                                      rounded>
-                                Archiver
-                            </b-button>
-                            <b-button onclick="return confirm('Êtes vous sûr·e ? Cette opération est irréversible.')"
-                                      tag="a" href="{{  route('ads.delete', [ $ad->id]) }}" icon-left="delete" rounded>
+                            @if(!$ad->isArchived())
+                                <b-button
+                                          @click="openSurveyModal('archive')"
+                                          icon-left="archive-arrow-down"
+                                          rounded>
+                                    Archiver
+                                </b-button>
+                            @else
+                                <b-button
+                                          href="{{route('ads.republish', $ad->id)}}"
+                                          tag="a"
+                                          icon-left="publish"
+                                          rounded>
+                                    Republier
+                                </b-button>
+                            @endif
+                            <b-button
+                                      @click="openSurveyModal('delete')"
+                                      icon-left="delete" rounded>
                                 Supprimer
                             </b-button>
                         </div>
@@ -119,6 +131,14 @@
             @include('pages.ads.partials.associateOffer.associateOfferAdShow')
         @endif
 
+        @if($ad->canEdit())
+            <survey-modal
+                v-if="surveyModalOpen"
+                :ad="ad"
+                :action="surveyAction"
+                @close="closeSurveyModal"
+            ></survey-modal>
+        @endif
     </section>
 
     @if(!isset($isPreview) || !$isPreview)
@@ -131,4 +151,22 @@
 @endsection
 
 @section('script')
+    @if($ad->canEdit())
+        <script>
+            // Initialize survey modal data for this page
+            window.app.surveyModalOpen = false;
+            window.app.surveyAction = null;
+            window.app.ad = @json($ad);
+
+            window.app.openSurveyModal = function(action) {
+                this.surveyAction = action;
+                this.surveyModalOpen = true;
+            };
+
+            window.app.closeSurveyModal = function() {
+                this.surveyModalOpen = false;
+                this.surveyAction = null;
+            };
+        </script>
+    @endif
 @endsection

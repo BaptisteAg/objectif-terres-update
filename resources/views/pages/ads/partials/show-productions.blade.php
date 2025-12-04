@@ -25,7 +25,7 @@
     <h3 class="title is-4">{{ $secondaryProductionLabel }}</h3>
     <b-taglist>
         @if($subAd->productionGenresSecondary->count())
-            @foreach($subAd->productionGenresSecondary->pluck('name') as $secondaryProductionGenre)
+            @foreach($subAd->productionGenresSecondary->pluck('name')->unique() as $secondaryProductionGenre)
                 <b-tag type="is-primary" rounded size="is-medium">
                     {{$secondaryProductionGenre}}
                 </b-tag>
