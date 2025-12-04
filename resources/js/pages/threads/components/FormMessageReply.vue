@@ -45,10 +45,13 @@
                                     v-show="$v.documents?.$error && !$v.documents.notCurrentlyUploading"> Vous devez
                                 attendre la fin du téléversement de vos documents pour envoyer votre message. </p></div>
                         </div>
-                        <div v-if='showResponseTemplates === false ' class="control ">
-                            <button class="button basic primary form-button button-send-message"><span
-                                    class="icon is-small"> <i class="fas fa-paper-plane"></i> </span>
-                                <span>Envoyer</span></button>
+                        <div v-if='showResponseTemplates === false' class="control content-send-message-button">
+                            <button class="button basic primary form-button button-send-message"
+                                    :class="{ 'is-loading': isLoading }"
+                                    :disabled="isLoading">
+                                <span class="icon is-small"><i class="fas fa-paper-plane"></i></span>
+                                <span>Envoyer</span>
+                            </button>
                         </div>
                     </div>
                     <div v-if="showResponseTemplates"><label class="label">Envoyer un message type</label>
@@ -75,10 +78,13 @@
                             </p>
                         </div>
                         <br>
-                        <p class="control  content-send-message-button ">
-                            <button class="button basic form-button primary button-send-message" :disabled="isLoading">
-                                <span class="icon is-small"> <i class="fas fa-paper-plane "></i> </span>
-                                <span>Envoyer</span></button>
+                        <p class="control content-send-message-button">
+                            <button class="button basic form-button primary button-send-message"
+                                    :class="{ 'is-loading': isLoading }"
+                                    :disabled="isLoading">
+                                <span class="icon is-small"><i class="fas fa-paper-plane"></i></span>
+                                <span>Envoyer</span>
+                            </button>
                         </p>
                     </div>
                 </form>
