@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
 
 class RecaptchaService
@@ -45,13 +45,16 @@ class RecaptchaService
         }
 
         try {
-            $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-                'secret' => $secretKey,
-                'response' => $token,
-                'remoteip' => request()->ip(),
+            $client = new Client();
+            $response = $client->post('https://www.google.com/recaptcha/api/siteverify', [
+                'form_params' => [
+                    'secret' => $secretKey,
+                    'response' => $token,
+                    'remoteip' => request()->ip(),
+                ],
             ]);
 
-            $result = $response->json();
+            $result = json_decode($response->getBody()->getContents(), true);
 
             if (!$result['success']) {
                 Log::warning('reCAPTCHA verification failed', [
