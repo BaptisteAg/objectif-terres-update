@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Routing\Middleware\ThrottleRequests;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 
 /**
  * Custom throttle middleware for messaging that exempts staff members.
@@ -32,29 +33,18 @@ class ThrottleMessagesMiddleware extends ThrottleRequests
     }
 
     /**
-     * Create a 'too many attempts' exception with a French message.
+     * Create a 'too many attempts' exception.
      *
-     * @param \Illuminate\Http\Request $request
      * @param string $key
      * @param int $maxAttempts
-     * @param callable|null $responseCallback
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Illuminate\Http\Exceptions\ThrottleRequestsException
      */
-    protected function buildException($request, $key, $maxAttempts, $responseCallback = null)
+    protected function buildException($key, $maxAttempts)
     {
         $retryAfter = $this->getTimeUntilNextRetry($key);
 
-        $exception = parent::buildException($request, $key, $maxAttempts, $responseCallback);
+        $message = 'Vous devez attendre 1 minute avant d\'envoyer un nouveau message.';
 
-        // Override the message for a more user-friendly French response
-        if ($request->expectsJson()) {
-            return response()->json([
-                'error' => 'rate_limit',
-                'message' => 'Vous devez attendre 1 minute avant d\'envoyer un nouveau message.',
-                'retry_after' => $retryAfter,
-            ], 429);
-        }
-
-        return $exception;
+        return new ThrottleRequestsException($message, null, [], $retryAfter);
     }
 }
