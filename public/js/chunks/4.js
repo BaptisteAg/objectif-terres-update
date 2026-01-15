@@ -1,1 +1,154 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[4],{161:function(e,t,i){"use strict";i.r(t);var n={data:function(){return{al:{itemsToShow:1,breakpoints:{768:{itemsToShow:5},1400:{itemsToShow:7}}},items:[{image:"/images/logo-partenaires/FADEAR-cmjn-01-01.png",title:"Les ADEAR",link:"https://www.agriculturepaysanne.org/",text:"Ce sont les associations de développement de l’emploi agricole et rural. Présentes dans une soixantaine de départements, elles ont mis en place un dispositif d’accompagnement des porteurs de projet qui souhaitent s’installer en agriculture ou transmettre. Elles soutiennent les valeurs de l’agriculture paysanne et accompagnent une grande diversité de projets. Plus d'informations"},{image:"/images/logo-partenaires/LOGO_RESEAU_CIVAM_FOND_TRANSPARENT.PNG",title:"Les CIVAM",link:"https://www.civam.org/",text:"Ce sont les Centres d’Initiatives pour Valoriser l’Agriculture et le Milieu rural. Ils ont pour mission de rassembler agriculteurs et ruraux d’un même territoire pour développer de nouvelles initiatives, se former, échanger, expérimenter et innover. Plus de 140 groupes existent sur l’ensemble du territoire. Plus d'informations en cliquant sur ce lien"},{image:"/images/logo-partenaires/logo_inpact_Plan%20de%20travail%201.png",title:"InPACT",link:"https://www.pole-inpact.fr/",text:"Initiatives pour une Agriculture citoyenne et territoriale est un regroupement de 10 réseaux associatifs agricoles partageant une même vision de l’agriculture. Avec des champs d’action et des approches de l’accompagnement variés, le réseau InPACT dont est membre Terre de Liens est un acteur central de l’accompagnement à l’installation et à la transmission. Des déclinaisons régionales ou plus locales d’InPACT associent parfois une diversité plus grande encore d’acteurs qui font des pas de côté en agriculture (GAB, association d’éducation populaire, couveuse d’activité, ...). Plus d'informations en cliquant sur ce lien"},{image:"/images/logo-partenaires/logo%20IA%20fond%20transparent.png",title:"Les AFOCG",link:"https://www.interafocg.org/",text:"Ce sont les Associations de Formation collective à la gestion. Elles ont pour mission de rendre leur adhérents autonome dans leur comptabilité et dans leur gestion, et de les accompagner dans les différentes étapes de développement de leur entreprise (création, évolution, etc.)."},{image:"/images/logo-partenaires/logo-fnab-new.png",title:"Les GAB",link:"https://www.fnab.org/",text:"Les groupements d’agriculture biologique sont présents au niveau départemental. Ils accueillent et accompagnent les porteurs de projet en agriculture biologique ou en conversion à la bio, organisent des formations et des temps d’échanges entre agriculteurs et consommateurs Plus d'informations"},{image:"/images/logo-partenaires/Logo%20Reneta%20-%20RVB.png",title:"Le RENETA",link:"https://www.reneta.fr/",text:"C’est le réseau national des espaces test agricoles, dispositifs permettant à des porteurs de projet de tester la viabilité et la vivabilité de leur projet agricole Plus d'informations"},{image:"/images/logo/logo_TdL_cartouche_blanc-rouge_500.png",title:"Terre de Liens",link:"https://terredeliens.org/",text:"Le réseau associatif Terre de Liens peut vous accueillir, vous orienter et vous accompagner sur le volet foncier de votre projet."}]}},methods:{openDialog:function(e){this.$buefy.dialog.alert({title:e.title,confirmText:"Fermer",message:e.text+'<br><br><div class="has-text-centered"><a href="'+e.link+'" target="_blank" class="button is-primary">En savoir plus</a></div>'})}}},s=(i(61),i(2)),r=Object(s.a)(n,(function(){var e=this,t=e._self._c;return t("b-carousel-list",e._b({attrs:{data:e.items,"arrow-hover":!1,"as-indicator":""},scopedSlots:e._u([{key:"item",fn:function(i){return[t("figure",{staticClass:"image is-48x48 is-clickable",on:{click:function(t){return e.openDialog(i)},touchend:function(t){return e.openDialog(i)}}},[t("img",{attrs:{src:i.image}})])]}}])},"b-carousel-list",e.al,!1))}),[],!1,null,null,null);t.default=r.exports},30:function(e,t,i){var n=i(62);"string"==typeof n&&(n=[[e.i,n,""]]);var s={hmr:!0,transform:void 0,insertInto:void 0};i(9)(n,s);n.locals&&(e.exports=n.locals)},61:function(e,t,i){"use strict";i(30)},62:function(e,t,i){(e.exports=i(8)(!1)).push([e.i,".carousel-slide, .carousel-slide figure {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n.carousel-slide figure.image {\n  background-color: white;\n  border-radius: 20px;\n  height: 160px;\n  width: 160px;\n}\n.carousel-slide img {\n  width: 70%;\n}\n.carousel-list.has-shadow {\n  box-shadow: none;\n}\n@media (max-width: 1024px) {\n.carousel-list {\n    width: 100vw;\n}\n}",""])}}]);
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[4],{
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AdsCarouselImages.vue?vue&type=script&lang=js":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AdsCarouselImages.vue?vue&type=script&lang=js ***!
+  \***************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    images: {
+      type: Array,
+      "default": function _default() {
+        return [];
+      }
+    }
+  },
+  methods: {
+    getImageUrl: function getImageUrl(imagePath) {
+      var baseUrl = 'https://objectif-terres.org';
+      var newBaseUrl = 'https://objectif-terres.kaffein.tech';
+      var newBaseUrlDev = 'https://objectif-terres.dvl.to';
+      if (window.location.hostname === 'objectif-terres.kaffein.tech') {
+        if (imagePath.startsWith(baseUrl)) {
+          return imagePath.replace(baseUrl, newBaseUrl);
+        }
+        if (!imagePath.startsWith('http')) {
+          return newBaseUrl + '/' + imagePath;
+        }
+      }
+      if (window.location.hostname === 'objectif-terres.dvl.to') {
+        if (imagePath.startsWith(baseUrl)) {
+          return imagePath.replace(baseUrl, newBaseUrlDev);
+        }
+        if (!imagePath.startsWith('http')) {
+          return newBaseUrlDev + '/' + imagePath;
+        }
+      }
+      return imagePath;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AdsCarouselImages.vue?vue&type=template&id=4e87c1ed":
+/*!*************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AdsCarouselImages.vue?vue&type=template&id=4e87c1ed ***!
+  \*************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("b-carousel", [_vm.images.length > 0 ? _vm._l(_vm.images, function (image, i) {
+    return _c("b-carousel-item", {
+      key: i
+    }, [_c("b-image", {
+      staticClass: "image is-3by2 vignette__image",
+      attrs: {
+        src: _vm.getImageUrl(image.url)
+      }
+    })], 1);
+  }) : _c("b-carousel-item", [_c("b-image", {
+    staticClass: "image is-3by2 vignette__image",
+    attrs: {
+      src: "https://images.unsplash.com/photo-1557234195-bd9f290f0e4d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+    }
+  })], 1)], 2);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/js/components/AdsCarouselImages.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/AdsCarouselImages.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AdsCarouselImages_vue_vue_type_template_id_4e87c1ed__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AdsCarouselImages.vue?vue&type=template&id=4e87c1ed */ "./resources/js/components/AdsCarouselImages.vue?vue&type=template&id=4e87c1ed");
+/* harmony import */ var _AdsCarouselImages_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AdsCarouselImages.vue?vue&type=script&lang=js */ "./resources/js/components/AdsCarouselImages.vue?vue&type=script&lang=js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AdsCarouselImages_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AdsCarouselImages_vue_vue_type_template_id_4e87c1ed__WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AdsCarouselImages_vue_vue_type_template_id_4e87c1ed__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/AdsCarouselImages.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/AdsCarouselImages.vue?vue&type=script&lang=js":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/AdsCarouselImages.vue?vue&type=script&lang=js ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AdsCarouselImages_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./AdsCarouselImages.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AdsCarouselImages.vue?vue&type=script&lang=js");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AdsCarouselImages_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/AdsCarouselImages.vue?vue&type=template&id=4e87c1ed":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/AdsCarouselImages.vue?vue&type=template&id=4e87c1ed ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_AdsCarouselImages_vue_vue_type_template_id_4e87c1ed__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../node_modules/vue-loader/lib??vue-loader-options!./AdsCarouselImages.vue?vue&type=template&id=4e87c1ed */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AdsCarouselImages.vue?vue&type=template&id=4e87c1ed");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_AdsCarouselImages_vue_vue_type_template_id_4e87c1ed__WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_AdsCarouselImages_vue_vue_type_template_id_4e87c1ed__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ })
+
+}]);

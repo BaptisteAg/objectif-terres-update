@@ -5,7 +5,7 @@
                 <div class="notification is-warning is-light" style="margin-bottom: 1.5rem !important;">
                     <p class="is-size-7 mb-0">
                         <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
-                        <strong>Attention aux arnaques !</strong> Ne partagez jamais vos coordonnees bancaires et mefiez-vous des demandes de paiement ou de transfert d'argent. En cas de doute, <a href="mailto:objectif-terres@terredeliens.org">contactez-nous</a>.
+                        <strong>Attention aux arnaques !</strong> Assurez-vous du sérieux de votre interlocuteur avant de passer sur un autre mode de communication (téléphone ou email). Ne partagez jamais vos coordonnées bancaires et méfiez-vous des demandes ou des offres de paiement ou de transfert d'argent. Pour rappel, le démarchage commercial est interdit. En cas de doute, <a href="mailto:objectif-terres@terredeliens.org">contactez-nous</a>.
                     </p>
                 </div>
                 <div v-if="errorMessage" class="notification is-danger mb-4">
