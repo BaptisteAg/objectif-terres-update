@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
+use App\Models\Document;
 use App\Models\LandOfferAd;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -164,5 +165,65 @@ class ApiTest extends TestCase
         $this->assertArrayHasKey('moderation', $foundAd);
         // When moderator is null, the key is filtered out by filterNullValues
         $this->assertArrayNotHasKey('moderator', $foundAd['moderation'], 'Moderator key should be absent when not assigned');
+    }
+
+    /**
+     * Test that image URLs are properly URL-encoded for special characters.
+     */
+    public function testImageUrlIsProperlyEncoded()
+    {
+        // Create an ad author
+        $author = factory(User::class)->create([
+            'role' => User::ROLE_PP,
+        ]);
+
+        // Create a land offer ad
+        $ad = factory(Ad::class)->disableEvents()->create([
+            'user_pp_id' => $author->id,
+            'is_draft' => false,
+        ]);
+
+        factory(LandOfferAd::class)->disableEvents()->create([
+            'ad_id' => $ad->id,
+        ]);
+
+        // Create attribution with approved status
+        AttributionAd::create([
+            'ad_id' => $ad->id,
+            'user_moderator_id' => null,
+            'ad_status_id' => AdStatus::APPROVE_ID,
+        ]);
+
+        // Create a document with special characters in the path (spaces, accents)
+        $document = Document::create([
+            'name' => "Capture d'écran vue aérienne.png",
+            'path' => "documents/ads/{$ad->id}/65bfdc53e58a6Capture d'écran vue aérienne.png",
+            'type' => 'image/png',
+            'size' => 123456,
+            'user_id' => $author->id,
+        ]);
+
+        // Attach document to ad
+        $ad->documents()->attach($document->id);
+
+        // Call the API
+        $response = $this->getJson('/api/v1/ads', [
+            'Ot-api-key' => 'test-api-key',
+        ]);
+
+        $response->assertStatus(200);
+
+        $ads = $response->json('data');
+        $foundAd = collect($ads)->firstWhere('id', $ad->id);
+
+        $this->assertNotNull($foundAd, 'Created ad not found in API response');
+        $this->assertArrayHasKey('image', $foundAd);
+        $this->assertNotNull($foundAd['image'], 'Image URL should not be null');
+
+        // Verify URL encoding: spaces should be %20, apostrophe should be %27, accented chars encoded
+        $imageUrl = $foundAd['image'];
+        $this->assertStringContainsString('%20', $imageUrl, 'Spaces should be URL-encoded as %20');
+        $this->assertStringNotContainsString(" d'écran", $imageUrl, 'Special characters should be encoded');
+        $this->assertStringContainsString('%27', $imageUrl, 'Apostrophe should be URL-encoded as %27');
     }
 }
