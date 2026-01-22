@@ -168,6 +168,70 @@ class ApiTest extends TestCase
     }
 
     /**
+     * Test that the author object contains first_name and last_name fields.
+     *
+     * The User model stores last name in 'name' field (labeled "Nom" in registration form)
+     * and first name in 'first_name' field (labeled "Prénom").
+     */
+    public function testAuthorHasFirstNameAndLastName()
+    {
+        // Create an ad author with specific name values
+        $author = factory(User::class)->create([
+            'first_name' => 'Marlène',
+            'name' => 'Pereira',
+            'email' => 'marlene.pereira@test.com',
+            'phone' => '0612345678',
+            'role' => User::ROLE_PP,
+        ]);
+
+        // Create a land offer ad
+        $ad = factory(Ad::class)->disableEvents()->create([
+            'user_pp_id' => $author->id,
+            'is_draft' => false,
+        ]);
+
+        factory(LandOfferAd::class)->disableEvents()->create([
+            'ad_id' => $ad->id,
+        ]);
+
+        // Create attribution with approved status
+        AttributionAd::create([
+            'ad_id' => $ad->id,
+            'ad_status_id' => AdStatus::APPROVE_ID,
+        ]);
+
+        // Call the API
+        $response = $this->getJson('/api/v1/ads', [
+            'Ot-api-key' => 'test-api-key',
+        ]);
+
+        $response->assertStatus(200);
+
+        // Find our ad in the response
+        $ads = $response->json('data');
+        $this->assertNotEmpty($ads, 'No ads returned from API');
+
+        $foundAd = collect($ads)->firstWhere('id', $ad->id);
+        $this->assertNotNull($foundAd, 'Created ad not found in API response');
+
+        // Assert author structure
+        $this->assertArrayHasKey('author', $foundAd);
+        $authorData = $foundAd['author'];
+        $this->assertNotNull($authorData, 'Author should not be null');
+
+        // Verify the structure has first_name and last_name
+        $this->assertArrayHasKey('first_name', $authorData, 'Author should have first_name field');
+        $this->assertArrayHasKey('last_name', $authorData, 'Author should have last_name field');
+
+        // Verify the values match what we set
+        $this->assertEquals('Marlène', $authorData['first_name']);
+        $this->assertEquals('Pereira', $authorData['last_name']);
+        $this->assertEquals($author->id, $authorData['id']);
+        $this->assertEquals('marlene.pereira@test.com', $authorData['email']);
+        $this->assertEquals('0612345678', $authorData['phone']);
+    }
+
+    /**
      * Test that image URLs are properly URL-encoded for special characters.
      */
     public function testImageUrlIsProperlyEncoded()
