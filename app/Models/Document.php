@@ -83,6 +83,8 @@ class Document extends Model
             $fromUrl = 'https://objectif-terres.org';
         }
 
-        return app('url')->assetFrom($fromUrl, $this->path);
+        $encodedPath = implode('/', array_map('rawurlencode', explode('/', $this->path)));
+
+        return app('url')->assetFrom($fromUrl, $encodedPath);
     }
 }
