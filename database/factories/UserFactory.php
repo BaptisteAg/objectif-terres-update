@@ -18,8 +18,10 @@ use Illuminate\Support\Str;
 */
 
 $factory->define(User::class, function () {
-	$city = City::inRandomOrder()->first();
 	$faker = Factory::create('fr_FR');
+	$city = City::inRandomOrder()->first();
+	$countryFrance = \App\Models\Country::find(75);
+
 	return [
         'name' => $faker->lastName,
 		'first_name'=>$faker->firstName,
@@ -30,11 +32,11 @@ $factory->define(User::class, function () {
 		'phone'=>$faker->phoneNumber,
 		'civility'=>$faker->numberBetween(1,3),
 		'profile'=>$faker->numberBetween(1,5),
-		'city'=>$city->name,
+		'city'=> $city ? $city->name : $faker->city,
 		'accept_communication'=>$faker->boolean(20),
 		'accept_share_contact_infos' =>$faker->boolean(20),
-		'zip_code_id'=> $city->id,
-		'country_id'=>75,
+		'zip_code_id'=> $city ? $city->id : null,
+		'country_id'=> $countryFrance ? $countryFrance->id : null,
         'remember_token' => Str::random(10),
     ];
 });

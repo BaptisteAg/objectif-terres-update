@@ -25,8 +25,8 @@ $factory->define(Ad::class, function () {
 
 	return [
         'user_pp_id' => User::where('role', '=', 0 )->inRandomOrder()->first(),
-		'about_content' => implode("", $faker->paragraphs()),
-		'about_project_content' => implode("", $faker->paragraphs()),
+		'about_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+		'about_project_content' => 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
 		'created_at' => $randomDateCreated,
 		'updated_at' => $randomDateUpdated,
     ];
