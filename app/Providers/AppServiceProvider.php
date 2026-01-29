@@ -20,6 +20,7 @@ use App\Observers\LandSeekAdObserver;
 use App\Observers\UserObserver;
 use App\Services\Documents\DocumentService;
 use App\Services\Documents\DocumentServiceInterface;
+use App\Services\Salesforce\DualStorageDriver;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Omniphx\Forrest\Providers\Laravel\LaravelCache;
@@ -66,7 +67,8 @@ class AppServiceProvider extends ServiceProvider
                     $storage = new LaravelSession(app('config'), app('request')->session());
                     break;
                 case 'cache':
-                    $storage = new LaravelCache(app('config'), app('cache')->store());
+                    // Use dual storage driver for cache to add file backup
+                    $storage = new DualStorageDriver();
                     break;
                 default:
                     $storage = new LaravelSession(app('config'), app('request')->session());
