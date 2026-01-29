@@ -19,10 +19,21 @@ class DualStorageDriver extends LaravelCache
 
     /**
      * Initialize the dual storage driver.
+     *
+     * @param \Illuminate\Contracts\Config\Repository $config
+     * @param \Illuminate\Contracts\Cache\Repository $cache
      */
-    public function __construct()
+    public function __construct($config = null, $cache = null)
     {
-        parent::__construct();
+        // If called from service provider binding, get dependencies from container
+        if ($config === null) {
+            $config = app('config');
+        }
+        if ($cache === null) {
+            $cache = app('cache')->store();
+        }
+
+        parent::__construct($config, $cache);
         $this->backupPath = storage_path('app/salesforce-tokens/');
     }
 
