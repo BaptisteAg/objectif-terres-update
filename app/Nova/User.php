@@ -136,7 +136,7 @@ class User extends Resource
 
 			Number::make('Score Bot Min', function () {
 				return $this->min_recaptcha_score;
-			})->sortable()
+			})
 			  ->help('Score reCAPTCHA minimum (0.0 = bot, 1.0 = humain)')
 			  ->displayUsing(function ($value) {
 				  if ($value === null) return '-';
