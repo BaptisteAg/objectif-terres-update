@@ -8,6 +8,12 @@ Objectif Terres is a Laravel 6.x application for the non-profit organization Ter
 
 **Important**: The internal CRM functionality for "Primo accueillants" (first-contact advisors) and "Projects" (support request management) has been deprecated and replaced by Salesforce. The remaining Salesforce integration focuses on SSO authentication, API usage, and ad synchronization.
 
+### Project Management
+
+**Teamwork Project**: https://ideagency.teamwork.com/app/projects/653749
+- Tasks, sprints, and project tracking are managed in Teamwork
+- Use Teamwork for feature planning and task coordination
+
 ## Development Environment
 
 This project runs in a Devilbox development environment with Docker Compose. The main stack includes:
@@ -88,6 +94,64 @@ docker compose exec php php /shared/httpd/objectif-terres/artisan [command]
 ### Remote Servers & Deployment
 
 See `REMOTE.md` (gitignored) for server credentials and deployment commands for staging/production.
+
+## Git Workflow
+
+This project uses a simplified git flow with three branches:
+
+### Branches
+
+| Branch | Purpose | Server |
+|--------|---------|--------|
+| `develop` | Main development branch | Local only |
+| `staging` | Pre-production testing | beta.objectif-terres.org |
+| `master` | Production | objectif-terres.org |
+
+### Typical Workflow
+
+1. **Development**: Work on `develop` branch locally
+2. **Testing**: Merge to `staging` and deploy to beta server for testing
+3. **Production**: Create PR `develop → master`, merge, then deploy to production
+
+### Quick Deploy to Staging
+```bash
+git checkout staging
+git merge develop
+git push origin staging
+ssh runcloud@54.36.52.79 "cd /home/runcloud/webapps/ObjectifTerrePreprod && ./upgrade.sh"
+git checkout develop
+```
+
+### Deploy to Production
+```bash
+# 1. Create PR on GitHub: develop → master (always write PR in French)
+gh pr create --base master --head develop --title "Release: description"
+
+# 2. After PR merged, deploy
+ssh runcloud@54.37.149.176 "cd /home/runcloud/webapps/ObjectifTerreProd && ./upgrade.sh"
+
+# 3. Run migrations if needed
+ssh runcloud@54.37.149.176 "cd /home/runcloud/webapps/ObjectifTerreProd && php artisan migrate"
+```
+
+### Important Notes
+
+- **Assets must be pre-compiled locally** before deploying (servers can't run `npm run production`)
+- **Always sync staging fixes back to develop** if hotfixes are made directly on staging:
+  ```bash
+  git checkout develop
+  git cherry-pick <commit-hash>
+  git push origin develop
+  ```
+- **Check branch states before deploying**:
+  ```bash
+  git log master..develop --oneline  # What would go to prod
+  git log develop..staging --oneline # Staging-only commits to sync back
+  ```
+- **Check server state**:
+  ```bash
+  ssh runcloud@54.37.149.176 "cd /home/runcloud/webapps/ObjectifTerreProd && git log -3 --oneline"
+  ```
 
 ### Database Management
 ```bash

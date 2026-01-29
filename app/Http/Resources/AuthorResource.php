@@ -33,7 +33,7 @@ class AuthorResource extends JsonResource
         $authorData = [
             'id' => $user->id,
             'first_name' => $user->first_name,
-            'last_name' => $user->last_name,
+            'last_name' => $user->name,
             'email' => $user->email,
             'phone' => $user->phone,
             'profile' => $this->getUserProfile($user),

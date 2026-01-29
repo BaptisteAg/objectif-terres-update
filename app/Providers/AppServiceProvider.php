@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Ad;
+use App\Models\AttributionAd;
 use App\Models\JobOfferAd;
 use App\Models\JobSeekAd;
 use App\Models\LandOfferAd;
@@ -10,6 +11,7 @@ use App\Models\LandSeekAd;
 use App\Models\LandSeekAdBuilding;
 use App\Models\User;
 use App\Observers\AdObserver;
+use App\Observers\AttributionAdObserver;
 use App\Observers\JobOfferAdObserver;
 use App\Observers\JobSeekAdObserver;
 use App\Observers\LandOfferAdObserver;
@@ -47,6 +49,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
     	Ad::observe(AdObserver::class);
+    	AttributionAd::observe(AttributionAdObserver::class);
     	LandSeekAd::observe(LandSeekAdObserver::class);
     	LandOfferAd::observe(LandOfferAdObserver::class);
     	JobSeekAd::observe(JobSeekAdObserver::class);

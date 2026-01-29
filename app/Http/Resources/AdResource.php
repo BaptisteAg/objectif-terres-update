@@ -185,7 +185,8 @@ class AdResource extends JsonResource
         return [
             'moderator' => $attribution->userModerator ? [
                 'id' => $attribution->userModerator->id,
-                'name' => trim($attribution->userModerator->first_name . ' ' . $attribution->userModerator->last_name),
+                'first_name' => $attribution->userModerator->first_name,
+                'last_name' => $attribution->userModerator->name,
                 'email' => $attribution->userModerator->email,
                 'is_third_party' => false,
             ] : null,
