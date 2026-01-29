@@ -32,7 +32,7 @@ class ReallocateAd extends Action
         $new_user_id = $fields->new_user_id;
         $old_user_ids = $users->pluck("id")->toArray();
 
-        $query = AttributionAd::where('user_moderator_id', $old_user_ids)
+        $query = AttributionAd::whereIn('user_moderator_id', $old_user_ids)
             ->where('ad_status_id', 2);
 
         // Get ad IDs before update for thread handling

@@ -22,7 +22,7 @@ $factory->define(LandOfferAd::class, function (Faker $faker) {
         'altitude' => $faker->randomNumber(3),
 		'surface'=> rand(0, 100),
 		'price'=>rand(1000, 100000),
-		'sau_description' => implode("\n", $faker->paragraphs()),
+		'sau_description' => 'Description de la surface agricole utile. Terres arables et prairies permanentes.',
 		'water_access' => rand(0,1),
        // 'is_call_for_application_community' => $faker->boolean,
         //'is_call_for_application_terre_de_liens' => $faker->boolean,

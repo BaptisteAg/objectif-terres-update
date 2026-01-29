@@ -1,6 +1,8 @@
 <?php namespace App\Services\Threads;
 
+use App\Exceptions\SpamContentException;
 use App\Models\Message;
+use App\Models\SpamFilter;
 use App\Models\ReadMessage;
 use App\Models\SupportStage;
 use App\Models\Thread;
@@ -190,9 +192,15 @@ class ThreadService
 	/**
 	 * @param array $data
 	 * @throws \Throwable
+	 * @throws SpamContentException
 	 */
 	public function create(array $data)
 	{
+		// Validate content for spam before creating thread
+		if (isset($data['content'])) {
+			$this->validateContentForSpam($data['content']);
+		}
+
 		$threadData = Arr::only($data, [
 			"ad_id",
 			"title"
@@ -256,6 +264,10 @@ class ThreadService
 			$messageData["sender_user_id"] = (isset($data['supervisor_id'])) ? $data['supervisor_id'] : auth()->id();
 			$messageData["thread_id"] = $thread->id;
 			$messageData["content"] = $this->convertContentToHTML($messageData["content"]);
+			// Pass reCAPTCHA score if available
+			if (isset($data['recaptcha_score'])) {
+				$messageData['recaptcha_score'] = $data['recaptcha_score'];
+			}
 			$message = $this->messagesRepository->create($messageData);
 			$notificationData = $this->getMessageNotificationAdData($thread);
 			foreach ($threadParticipants as $user_id) {
@@ -324,9 +336,15 @@ class ThreadService
 	 * @param array $data
 	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
 	 * @throws \Throwable
+	 * @throws SpamContentException
 	 */
 	public function createMessage(array $data)
 	{
+		// Validate content for spam before creating message
+		if (!empty($data['content'])) {
+			$this->validateContentForSpam($data['content']);
+		}
+
 		$data['content'] = $this->convertContentToHTML($data['content']);
 		$messageCreated = $this->messagesRepository->create($data);
 
@@ -490,6 +508,39 @@ class ThreadService
 			$this->createMessage(['content' => $data['content'], "thread_id" => $thread->id]);
 		} else {
 			$this->create($data);
+		}
+	}
+
+	/**
+	 * Validate message content for spam patterns and blacklisted emails.
+	 * Staff members (role >= 1) are exempt from this validation.
+	 *
+	 * @param string $content
+	 * @throws SpamContentException
+	 */
+	public function validateContentForSpam(string $content): void
+	{
+		// Staff members are exempt from spam validation
+		if (auth()->check() && auth()->user()->role >= 1) {
+			return;
+		}
+
+		$contentLower = mb_strtolower($content);
+
+		// Check for blacklisted emails from database
+		$blacklistedEmails = SpamFilter::getActiveEmails();
+		foreach ($blacklistedEmails as $email) {
+			if (stripos($content, $email) !== false) {
+				throw new SpamContentException('Votre message contient une adresse email non autorisée.');
+			}
+		}
+
+		// Check for spam patterns from database
+		$spamPatterns = SpamFilter::getActivePatterns();
+		foreach ($spamPatterns as $pattern) {
+			if (mb_stripos($contentLower, mb_strtolower($pattern)) !== false) {
+				throw new SpamContentException('Votre message contient du contenu non autorisé.');
+			}
 		}
 	}
 }

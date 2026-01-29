@@ -31,11 +31,12 @@
                             size="is-small"
                     >
                         <b-breadcrumb-item href="/">Page d’accueil</b-breadcrumb-item>
-{{--                        <b-breadcrumb-item class="breadcrumb__link"--}}
-{{--                                           href="{{route('researches.index',  ['offer_type' => $offerType, 'ad_category' => $adCategory])}}">--}}
-{{--                            <span>{{$ad->ad_type_full_name}}</span>--}}
-{{--                        </b-breadcrumb-item>--}}
-                        <b-breadcrumb-item class="breadcrumb__link" @click="goBack">{{$ad->ad_type_full_name}}</b-breadcrumb-item>
+                        {{--                        <b-breadcrumb-item class="breadcrumb__link"--}}
+                        {{--                                           href="{{route('researches.index',  ['offer_type' => $offerType, 'ad_category' => $adCategory])}}">--}}
+                        {{--                            <span>{{$ad->ad_type_full_name}}</span>--}}
+                        {{--                        </b-breadcrumb-item>--}}
+                        <b-breadcrumb-item class="breadcrumb__link"
+                                           @click="goBack">{{$ad->ad_type_full_name}}</b-breadcrumb-item>
                     </b-breadcrumb>
                 </div>
 
@@ -107,8 +108,8 @@
         @endif
 
         @if(config('app.env') === 'local')
-            <h1 class="title is-1 has-background-black has-text-white">Type : {{$ad->type}}</h1>
-            <h1 class="title is-1 has-background-black has-text-white">accept_share_contact_infos
+            <h1 class="title has-background-black has-text-white">Type : {{$ad->type}}</h1>
+            <h1 class="title has-background-black has-text-white">accept_share_contact_infos
                 : {{$ad->accept_share_contact_infos}}</h1>
         @endif
 

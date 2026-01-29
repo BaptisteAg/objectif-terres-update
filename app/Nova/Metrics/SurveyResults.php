@@ -21,7 +21,7 @@ class SurveyResults extends Partition
      */
     public function calculate(NovaRequest $request)
     {
-        $query = Ad::whereNotNull('survey_submitted_at');
+        $query = Ad::withTrashed()->whereNotNull('survey_submitted_at');
 
         // Check if there are any results to avoid empty partition error
         if ($query->count() === 0) {

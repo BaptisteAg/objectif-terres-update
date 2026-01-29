@@ -93,6 +93,40 @@ class SupervisorsController extends BaseController
             $ads = $this->adService->findAllNotAssignedProjectsByUserSupervisor($paginate);
         }
 
+        // Include soft-deleted ads with survey data in export
+        $adIds = $ads->pluck('id')->toArray();
+        $ads = \App\Models\Ad::withTrashed()
+            ->whereIn('id', $adIds)
+            ->orWhere(function ($query) {
+                $query->withTrashed()
+                    ->whereNotNull('survey_submitted_at')
+                    ->whereNotNull('deleted_at');
+            })
+            ->with([
+                'attributionAd',
+                'attributionAd.adStatus',
+                'attributionAd.userModerator',
+                'userPp' => fn($q) => $q->withTrashed(),
+                'userPp.zipCode',
+                'landSeekAd',
+                'landOfferAd',
+                'landOfferAd.productionGenres',
+                'landOfferAd.productionGenresSecondary',
+                'landOfferAd.bioCertifications',
+                'landOfferAd.offerGenres',
+                'jobOfferAd',
+                'jobOfferAd.jobOfferTypes',
+                'jobOfferAd.educationLevels',
+                'jobSeekAd',
+                'cities',
+                'cities.department',
+                'cities.department.region',
+                'departments',
+                'departments.region',
+                'regions',
+            ])
+            ->get();
+
         return (new SupervisorsExport($ads))->download(
             'export_tableau_de_bord_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx',
             \Maatwebsite\Excel\Excel::XLSX

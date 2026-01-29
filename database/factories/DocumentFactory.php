@@ -6,30 +6,32 @@ use App\Models\Document;
 use App\Models\User;
 use Faker\Generator as Faker;
 
-function get_mime_type($filename) {
-	$idx = explode( '.', $filename );
-	$count_explode = count($idx);
-	$idx = strtolower($idx[$count_explode-1]);
+if (!function_exists('get_mime_type')) {
+	function get_mime_type($filename) {
+		$idx = explode( '.', $filename );
+		$count_explode = count($idx);
+		$idx = strtolower($idx[$count_explode-1]);
 
-	$mimet = array(
-		// images
-		'png' => 'image/png',
-		'jpeg' => 'image/jpeg',
-		'jpg' => 'image/jpeg',
-		'gif' => 'image/gif',
+		$mimet = array(
+			// images
+			'png' => 'image/png',
+			'jpeg' => 'image/jpeg',
+			'jpg' => 'image/jpeg',
+			'gif' => 'image/gif',
 
-		// adobe
-		'pdf' => 'application/pdf',
+			// adobe
+			'pdf' => 'application/pdf',
 
-		// ms office
-		'doc' => 'application/msword',
-		'docx' => 'application/msword',
-	);
+			// ms office
+			'doc' => 'application/msword',
+			'docx' => 'application/msword',
+		);
 
-	if (isset( $mimet[$idx] )) {
-		return $mimet[$idx];
-	} else {
-		return 'application/octet-stream';
+		if (isset( $mimet[$idx] )) {
+			return $mimet[$idx];
+		} else {
+			return 'application/octet-stream';
+		}
 	}
 }
 

@@ -25,7 +25,6 @@ class ViewServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('pages.homepage', 'App\Http\Composers\ResearchComposer');
-        View::composer('baptiste.test', 'App\Http\Composers\ResearchComposer');
         View::composer('default', 'App\Http\Composers\MessagesNotificationHeaderComposer');
 		View::composer('layouts.header', 'App\Http\Composers\InfoBanner');
     }

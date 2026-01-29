@@ -93,7 +93,7 @@ class AttributionAd extends Resource
             Text::make('ID', 'ad.id')->sortable()->readonly(),
             BelongsTo::make('Annonce', 'ad', Ad::class)->readonly(),
             //BelongsTo::make('Modérateur', 'userModerator', UserModerator::class),
-            Select::make('Modérateur','user_moderator_id')->options($moderators),
+            Select::make('Modérateur','user_moderator_id')->options($moderators)->searchable(),
             Badge::make('Statut', 'ad_status_id')
                 ->map([
                     AdStatus::APPROVE_ID => "success",

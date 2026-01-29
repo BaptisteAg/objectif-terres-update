@@ -13,7 +13,7 @@ use App\Notifications\NewSupportRequestNotification;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 
 class  AdsController extends BaseController
@@ -108,7 +108,7 @@ class  AdsController extends BaseController
             }
 
             report($exception);
-            if(config('app.env') !== 'production') {
+            if (config('app.env') !== 'production') {
                 throw $exception;
             }
             return back()->withInput()->withErrors($exceptionMessage);
@@ -254,7 +254,6 @@ class  AdsController extends BaseController
         return view('pages.ads.listUserAds', compact('ads'));
     }
 
-
     /**
      * @param Ad $ad
      * @return \Illuminate\Http\RedirectResponse
@@ -267,7 +266,9 @@ class  AdsController extends BaseController
         }
         $this->adService->delete($ad);
         if (is_null($ad->project_id)) {
-            return redirect()->route('user.index')->with('success', 'Votre annonce a bien été supprimée');
+
+            return redirect()->route('user.index')
+                ->with('success', 'Votre annonce a bien été supprimée');
         }
 
         return redirect()->route('user.index')->with('success', 'Votre demande d\'accomapgnement a été supprimée avec succès');
@@ -285,10 +286,15 @@ class  AdsController extends BaseController
         }
         $this->adService->archive($ad);
         if (is_null($ad->project_id)) {
-            return back()->with('success', 'Votre annonce a bien été archivée');
+            $formUrl = Ad::SALESFORCE_FORM_BY_AD_TYPE[$ad->type] ?? '';
+
+            return back()
+                ->with('success', 'Votre annonce a bien été archivée')
+                ->with('display_survey', $formUrl);
         }
         return redirect()->route('user.index')->with('success', 'Votre demande d\'accomapgnement a été archivée avec succès');
     }
+
 
     /**
      * Republish an archived ad
@@ -390,7 +396,7 @@ class  AdsController extends BaseController
     /**
      * @throws \Throwable
      */
-    protected function store(AdRequest $request, $isDraft = 1) : Ad
+    protected function store(AdRequest $request, $isDraft = 1): Ad
     {
         $data = $request->validated();
         $data["is_draft"] = $isDraft;

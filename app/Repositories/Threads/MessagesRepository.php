@@ -129,6 +129,15 @@ class MessagesRepository extends AbstractRepository implements MessagesRepositor
 		} else {
 			$message->sender_user_id = auth()->user()->id;
 		}
+
+		// Add IP address
+		$message->ip_address = request()->ip();
+
+		// Add reCAPTCHA score if provided
+		if (isset($data['recaptcha_score'])) {
+			$message->recaptcha_score = $data['recaptcha_score'];
+		}
+
 		$message->save();
 
 		if (isset($data["documents_ids"]) && is_array($data["documents_ids"])) {

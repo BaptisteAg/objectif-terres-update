@@ -16,8 +16,15 @@
             @endif
         </div>
     @else
-        {!! Form::open(['route' => 'threads.create', 'method'=>'post']) !!}
+        <div class="notification is-warning is-light mb-4">
+            <p class="is-size-7">
+                <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
+                <strong>Attention aux arnaques !</strong> Assurez-vous du sérieux de votre interlocuteur avant de passer sur un autre mode de communication (téléphone ou email). Ne partagez jamais vos coordonnées bancaires et méfiez-vous des demandes ou des offres de paiement ou de transfert d'argent. Pour rappel, le démarchage commercial est interdit. En cas de doute, <a href="mailto:objectif-terres@terredeliens.org">contactez-nous</a>.
+            </p>
+        </div>
+        {!! Form::open(['route' => 'threads.create', 'method'=>'post', 'id' => 'form-new-thread-' . $ad->id, 'onsubmit' => 'return submitWithRecaptcha(event, this)']) !!}
         <input type="hidden" name="ad_id" value="{{$ad->id}}">
+        <input type="hidden" name="recaptcha_token" id="recaptcha_token_{{$ad->id}}" value="">
         <textarea id="textearea_message" required name="content" class="textarea is-medium"
                   placeholder="Votre message..."></textarea>
         @if(auth()->user()->role >= 1 )

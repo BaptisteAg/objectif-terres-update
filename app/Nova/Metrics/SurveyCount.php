@@ -21,7 +21,7 @@ class SurveyCount extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, Ad::query(), 'survey_submitted_at', 'survey_submitted_at');
+        return $this->count($request, Ad::withTrashed(), 'survey_submitted_at', 'survey_submitted_at');
     }
 
     /**

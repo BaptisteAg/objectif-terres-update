@@ -176,6 +176,10 @@ class Ad extends Model implements HasPresenter
     // in the related table
     public function getTypeAttribute(): ?string
     {
+        if ($this->trashed()) {
+            return null;
+        }
+
         if (isset($this->cached_type)) {
             return $this->cached_type;
         }
