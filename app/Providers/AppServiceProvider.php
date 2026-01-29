@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Ad;
+use App\Models\AttributionAd;
 use App\Models\JobOfferAd;
 use App\Models\JobSeekAd;
 use App\Models\LandOfferAd;
@@ -10,6 +11,7 @@ use App\Models\LandSeekAd;
 use App\Models\LandSeekAdBuilding;
 use App\Models\User;
 use App\Observers\AdObserver;
+use App\Observers\AttributionAdObserver;
 use App\Observers\JobOfferAdObserver;
 use App\Observers\JobSeekAdObserver;
 use App\Observers\LandOfferAdObserver;
@@ -18,6 +20,7 @@ use App\Observers\LandSeekAdObserver;
 use App\Observers\UserObserver;
 use App\Services\Documents\DocumentService;
 use App\Services\Documents\DocumentServiceInterface;
+use App\Services\Salesforce\DualStorageDriver;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Omniphx\Forrest\Providers\Laravel\LaravelCache;
@@ -47,6 +50,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
     	Ad::observe(AdObserver::class);
+    	AttributionAd::observe(AttributionAdObserver::class);
     	LandSeekAd::observe(LandSeekAdObserver::class);
     	LandOfferAd::observe(LandOfferAdObserver::class);
     	JobSeekAd::observe(JobSeekAdObserver::class);
@@ -63,7 +67,8 @@ class AppServiceProvider extends ServiceProvider
                     $storage = new LaravelSession(app('config'), app('request')->session());
                     break;
                 case 'cache':
-                    $storage = new LaravelCache(app('config'), app('cache')->store());
+                    // Use dual storage driver for cache to add file backup
+                    $storage = new DualStorageDriver();
                     break;
                 default:
                     $storage = new LaravelSession(app('config'), app('request')->session());

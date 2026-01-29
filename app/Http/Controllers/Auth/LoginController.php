@@ -56,8 +56,17 @@ class LoginController extends Controller
 
         $email = $request->get('email');
 
-        if($salesforceService->usernameExists($email, 'User')) {
-            return response()->json(['redirect' => '/connexion/sso']);
+        try {
+            if($salesforceService->usernameExists($email, 'User')) {
+                return response()->json(['redirect' => '/connexion/sso']);
+            }
+        } catch (\Exception $e) {
+            // If Salesforce authentication fails, log the error and fall back to local authentication
+            logger()->warning('Salesforce check failed during checkpoint', [
+                'email' => $email,
+                'error' => $e->getMessage()
+            ]);
+            // Fall through to local authentication check
         }
 
         if($userService->exists($email)) {
@@ -113,8 +122,21 @@ class LoginController extends Controller
     public function logout(Request $request, SalesforceService $salesforceService)
     {
         $user = auth()->user();
-        if($user && $salesforceService->usernameExists($user->email, 'User')) {
-            return redirect('/deconnexion/sso');
+
+        if($user) {
+            try {
+                if($salesforceService->usernameExists($user->email, 'User')) {
+                    return redirect('/deconnexion/sso');
+                }
+            } catch (\Exception $e) {
+                // If Salesforce authentication fails, log the error and proceed with local logout
+                logger()->warning('Salesforce check failed during logout', [
+                    'user_id' => $user->id,
+                    'email' => $user->email,
+                    'error' => $e->getMessage()
+                ]);
+                // Fall through to local logout
+            }
         }
 
         $this->guard()->logout();
