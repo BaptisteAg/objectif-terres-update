@@ -8,6 +8,12 @@ Objectif Terres is a Laravel 6.x application for the non-profit organization Ter
 
 **Important**: The internal CRM functionality for "Primo accueillants" (first-contact advisors) and "Projects" (support request management) has been deprecated and replaced by Salesforce. The remaining Salesforce integration focuses on SSO authentication, API usage, and ad synchronization.
 
+### Project Management
+
+**Teamwork Project**: https://ideagency.teamwork.com/app/projects/653749
+- Tasks, sprints, and project tracking are managed in Teamwork
+- Use Teamwork for feature planning and task coordination
+
 ## Development Environment
 
 This project runs in a Devilbox development environment with Docker Compose. The main stack includes:

@@ -60,7 +60,7 @@
             </button>
           </div>
           <button id="close-modal" class="modal-close is-large" aria-label="close"
-                  @click="handleClose" v-if="!isLoading"></button>
+                  @click="handleClose"></button>
         </footer>
       </div>
     </div>
