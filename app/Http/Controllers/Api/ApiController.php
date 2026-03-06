@@ -74,13 +74,13 @@ class ApiController extends Controller
      *     @OA\Parameter(
      *         name="updated_since",
      *         in="query",
-     *         description="Get ads updated after this date. MUST be in UTC timezone with ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ). Clients must convert their local times to UTC before making the request.",
+     *         description="Get ads updated after this date. Accepts YYYY-MM-DD or ISO 8601 (YYYY-MM-DDTHH:MM:SSZ).",
      *         required=false,
      *         @OA\Schema(
      *             type="string",
-     *             format="date-time"
+     *             format="date"
      *         ),
-     *         example="2025-09-25T00:00:00Z"
+     *         example="2025-09-25"
      *     ),
      *     @OA\Parameter(
      *         name="page",
@@ -101,8 +101,41 @@ class ApiController extends Controller
      *         @OA\Schema(
      *             type="integer",
      *             minimum=1,
-     *             maximum=100,
-     *             default=20
+     *             maximum=200,
+     *             default=50
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="status",
+     *         in="query",
+     *         description="Status filter shortcut: 'approved' (default), 'archived' (only archived), 'all' (all statuses)",
+     *         required=false,
+     *         @OA\Schema(type="string", enum={"all", "approved", "archived"}, default="approved")
+     *     ),
+     *     @OA\Parameter(
+     *         name="include_deleted",
+     *         in="query",
+     *         description="Include soft deleted ads. Default: false",
+     *         required=false,
+     *         @OA\Schema(type="boolean", default=false)
+     *     ),
+     *     @OA\Parameter(
+     *         name="include_archived",
+     *         in="query",
+     *         description="Include archived ads (>6 months old). Default: false",
+     *         required=false,
+     *         @OA\Schema(type="boolean", default=false)
+     *     ),
+     *     @OA\Parameter(
+     *         name="statuses[]",
+     *         in="query",
+     *         description="Filter by status IDs: 1=approved, 2=pending, 3=refused, 4=pending_moderation, 5=archived",
+     *         required=false,
+     *         style="form",
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="array",
+     *             @OA\Items(type="integer", enum={1,2,3,4,5})
      *         )
      *     ),
      *     @OA\Response(
@@ -165,7 +198,7 @@ class ApiController extends Controller
      */
     public function ads(AdIndexRequest $request): \Illuminate\Http\JsonResponse
     {
-        $cacheKey = 'api-ads-v2-' . md5(json_encode($request->all()));
+        $cacheKey = 'api-ads-v3-' . md5(json_encode($request->all()));
 
         // Clear cache in development
         if (config('app.env') !== 'production') {
@@ -213,11 +246,40 @@ class ApiController extends Controller
      */
     protected function buildAdsQuery($request)
     {
-        $adsQuery = Ad::query()
-            ->whereHas('attributionAd', function (Builder $query) {
+        $adsQuery = Ad::query();
+
+        // Include soft deleted ads if requested
+        if ($request->shouldIncludeDeleted()) {
+            $adsQuery->withTrashed();
+        }
+
+        // Apply status filters
+        $statusShortcut = $request->getStatusShortcut();
+        $requestedStatuses = $request->has('statuses') ? $request->getStatuses() : null;
+
+        if ($statusShortcut === 'all') {
+            // No status filter — return all statuses
+        } elseif ($statusShortcut === 'archived') {
+            $adsQuery->whereHas('attributionAd', function (Builder $query) {
+                $query->where('ad_status_id', AdStatus::ARCHIVED_ID);
+            });
+        } elseif ($request->shouldIncludeArchived()) {
+            // include_archived=true: approved + archived
+            $adsQuery->whereHas('attributionAd', function (Builder $query) {
+                $query->whereIn('ad_status_id', [AdStatus::APPROVE_ID, AdStatus::ARCHIVED_ID]);
+            });
+        } elseif ($requestedStatuses !== null) {
+            $adsQuery->whereHas('attributionAd', function (Builder $query) use ($requestedStatuses) {
+                $query->whereIn('ad_status_id', $requestedStatuses);
+            });
+        } else {
+            // Default: only approved ads (backward compatible)
+            $adsQuery->whereHas('attributionAd', function (Builder $query) {
                 $query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
-            })
-            ->where('is_draft', '=', 0);
+            });
+        }
+
+        $adsQuery->where('is_draft', '=', 0);
 
         // Eager load all necessary relationships
         $adsQuery->with([

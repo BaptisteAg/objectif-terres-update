@@ -78,6 +78,9 @@ class AdCollection extends ResourceCollection
             'updated_since' => $request->get('updated_since'),
             'types' => $request->get('types'),
             'region_code' => $request->get('region_code'),
+            'include_deleted' => $request->get('include_deleted'),
+            'include_archived' => $request->get('include_archived'),
+            'statuses' => $request->get('statuses'),
         ];
     }
 

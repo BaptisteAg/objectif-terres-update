@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api;
 
 use App\Models\Ad;
+use App\Models\AdStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -69,15 +70,24 @@ class AdIndexRequest extends FormRequest
             'types' => 'nullable|array',
             'types.*' => 'string|in:' . implode(',', $validTypes),
 
-            // Date filter - ISO 8601 format (UTC timezone)
-            'updated_since' => 'nullable|date_format:Y-m-d\TH:i:s\Z',
+            // Date filter - accepts YYYY-MM-DD or ISO 8601 (YYYY-MM-DDTHH:MM:SSZ)
+            'updated_since' => 'nullable|date',
 
             // Pagination
             'page' => 'nullable|integer|min:1',
-            'per_page' => 'nullable|integer|min:1|max:100',
+            'per_page' => 'nullable|integer|min:1|max:200',
+
+            // Status filter shortcut: all, approved, archived
+            'status' => 'nullable|string|in:all,approved,archived',
+
+            // Status filters (advanced)
+            'include_deleted' => 'nullable|in:true,false,1,0',
+            'include_archived' => 'nullable|in:true,false,1,0',
+            'statuses' => 'nullable|array',
+            'statuses.*' => 'integer|in:1,2,3,4,5',
 
             // Legacy parameters (to be removed)
-            'limit' => 'nullable|integer|min:1|max:100',
+            'limit' => 'nullable|integer|min:1|max:200',
             'type' => 'nullable|string|in:' . implode(',', $validTypes),
         ];
     }
@@ -92,12 +102,13 @@ class AdIndexRequest extends FormRequest
         return [
             'types.array' => 'The types parameter must be an array or comma-separated string.',
             'types.*.in' => 'Invalid ad type provided. Valid types are: ' . implode(', ', array_keys(self::TYPE_MAP)),
-            'updated_since.date_format' => 'The updated_since parameter must be in ISO 8601 UTC format (YYYY-MM-DDTHH:MM:SSZ). Clients must convert their local times to UTC.',
+            'updated_since.date' => 'The updated_since parameter must be a valid date (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SSZ).',
             'page.integer' => 'The page parameter must be a valid integer.',
             'page.min' => 'The page parameter must be at least 1.',
             'per_page.integer' => 'The per_page parameter must be a valid integer.',
             'per_page.min' => 'The per_page parameter must be at least 1.',
-            'per_page.max' => 'The per_page parameter cannot exceed 100.',
+            'per_page.max' => 'The per_page parameter cannot exceed 200.',
+            'status.in' => 'The status parameter must be one of: all, approved, archived.',
         ];
     }
 
@@ -186,7 +197,7 @@ class AdIndexRequest extends FormRequest
         }
 
         // Default value
-        return 20;
+        return 50;
     }
 
     /**
@@ -197,5 +208,53 @@ class AdIndexRequest extends FormRequest
     public function wantsPagination()
     {
         return $this->has('page') || $this->has('per_page');
+    }
+
+    /**
+     * Check if soft deleted ads should be included
+     *
+     * @return bool
+     */
+    public function shouldIncludeDeleted()
+    {
+        return filter_var($this->input('include_deleted', false), FILTER_VALIDATE_BOOLEAN);
+    }
+
+    /**
+     * Check if archived ads should be included
+     *
+     * @return bool
+     */
+    public function shouldIncludeArchived()
+    {
+        $status = $this->input('status');
+        if ($status === 'all' || $status === 'archived') {
+            return true;
+        }
+        return filter_var($this->input('include_archived', false), FILTER_VALIDATE_BOOLEAN);
+    }
+
+    /**
+     * Get the status shortcut value (all, approved, archived)
+     *
+     * @return string|null
+     */
+    public function getStatusShortcut()
+    {
+        return $this->input('status');
+    }
+
+    /**
+     * Get status IDs to filter by
+     *
+     * @return array
+     */
+    public function getStatuses()
+    {
+        $statuses = $this->input('statuses');
+        if (is_array($statuses) && count($statuses) > 0) {
+            return array_map('intval', $statuses);
+        }
+        return [AdStatus::APPROVE_ID];
     }
 }

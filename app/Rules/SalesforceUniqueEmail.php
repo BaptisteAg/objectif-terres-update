@@ -26,7 +26,14 @@ class SalesforceUniqueEmail implements Rule
      */
     public function passes($attribute, $email)
     {
-        return !$this->salesforceService->usernameExists($email, 'User');
+        try {
+            return !$this->salesforceService->usernameExists($email, 'User');
+        } catch (\Exception $e) {
+            logger()->error('SalesforceUniqueEmail: could not validate, skipping rule', [
+                'error' => $e->getMessage(),
+            ]);
+            return true;
+        }
     }
 
     /**
