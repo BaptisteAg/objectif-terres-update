@@ -164,11 +164,17 @@ class AdResource extends JsonResource
             return null;
         }
 
-        if (is_string($date)) {
-            $date = new \DateTime($date);
+        if ($date instanceof \Illuminate\Support\Carbon || $date instanceof \Carbon\Carbon) {
+            return $date->copy()->setTimezone('UTC')->format('Y-m-d\TH:i:s\Z');
         }
 
-        return $date->format('Y-m-d\TH:i:s\Z');
+        if (is_string($date)) {
+            return \Illuminate\Support\Carbon::parse($date)->setTimezone('UTC')->format('Y-m-d\TH:i:s\Z');
+        }
+
+        // DateTime instance
+        $carbon = \Illuminate\Support\Carbon::instance($date)->setTimezone('UTC');
+        return $carbon->format('Y-m-d\TH:i:s\Z');
     }
 
     /**

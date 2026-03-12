@@ -52,7 +52,6 @@ class AdCollection extends ResourceCollection
     {
         $meta = [
             'generated_at' => now()->toIso8601String(),
-            'cache_expires_at' => now()->addHour()->toIso8601String(),
         ];
 
         // Add total filtered count if paginated
@@ -77,10 +76,7 @@ class AdCollection extends ResourceCollection
         return [
             'updated_since' => $request->get('updated_since'),
             'types' => $request->get('types'),
-            'region_code' => $request->get('region_code'),
-            'include_deleted' => $request->get('include_deleted'),
-            'include_archived' => $request->get('include_archived'),
-            'statuses' => $request->get('statuses'),
+            'status' => $request->get('status'),
         ];
     }
 
