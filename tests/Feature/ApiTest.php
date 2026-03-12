@@ -24,6 +24,76 @@ class ApiTest extends TestCase
     }
 
     /**
+     * Helper to create a published ad (approved, published_on set, not archived, not deleted).
+     */
+    protected function createPublishedAd($author = null)
+    {
+        $author = $author ?? factory(User::class)->create(['role' => User::ROLE_PP]);
+
+        $ad = factory(Ad::class)->disableEvents()->create([
+            'user_pp_id' => $author->id,
+            'is_draft' => false,
+        ]);
+
+        factory(LandOfferAd::class)->disableEvents()->create(['ad_id' => $ad->id]);
+
+        AttributionAd::create([
+            'ad_id' => $ad->id,
+            'ad_status_id' => AdStatus::APPROVE_ID,
+            'published_on' => now(),
+        ]);
+
+        return $ad;
+    }
+
+    /**
+     * Helper to create an archived ad.
+     */
+    protected function createArchivedAd($author = null)
+    {
+        $author = $author ?? factory(User::class)->create(['role' => User::ROLE_PP]);
+
+        $ad = factory(Ad::class)->disableEvents()->create([
+            'user_pp_id' => $author->id,
+            'is_draft' => false,
+        ]);
+
+        factory(LandOfferAd::class)->disableEvents()->create(['ad_id' => $ad->id]);
+
+        AttributionAd::create([
+            'ad_id' => $ad->id,
+            'ad_status_id' => AdStatus::ARCHIVED_ID,
+        ]);
+
+        return $ad;
+    }
+
+    /**
+     * Helper to create a soft-deleted ad.
+     */
+    protected function createDeletedAd($author = null)
+    {
+        $author = $author ?? factory(User::class)->create(['role' => User::ROLE_PP]);
+
+        $ad = factory(Ad::class)->disableEvents()->create([
+            'user_pp_id' => $author->id,
+            'is_draft' => false,
+        ]);
+
+        factory(LandOfferAd::class)->disableEvents()->create(['ad_id' => $ad->id]);
+
+        AttributionAd::create([
+            'ad_id' => $ad->id,
+            'ad_status_id' => AdStatus::APPROVE_ID,
+            'published_on' => now(),
+        ]);
+
+        $ad->delete();
+
+        return $ad;
+    }
+
+    /**
      * Test that the API returns 401 without a valid API key.
      */
     public function testApiRequiresAuthentication()
@@ -49,7 +119,7 @@ class ApiTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data',
-            'meta' => ['generated_at', 'cache_expires_at', 'filters_applied'],
+            'meta' => ['generated_at', 'filters_applied'],
         ]);
     }
 
@@ -83,11 +153,12 @@ class ApiTest extends TestCase
             'ad_id' => $ad->id,
         ]);
 
-        // Create attribution with moderator and approved status
+        // Create attribution with moderator and approved+published status
         AttributionAd::create([
             'ad_id' => $ad->id,
             'user_moderator_id' => $moderator->id,
             'ad_status_id' => AdStatus::APPROVE_ID,
+            'published_on' => now(),
         ]);
 
         // Call the API
@@ -144,11 +215,12 @@ class ApiTest extends TestCase
             'ad_id' => $ad->id,
         ]);
 
-        // Create attribution without moderator but with approved status
+        // Create attribution without moderator but with approved+published status
         AttributionAd::create([
             'ad_id' => $ad->id,
             'user_moderator_id' => null,
             'ad_status_id' => AdStatus::APPROVE_ID,
+            'published_on' => now(),
         ]);
 
         // Call the API
@@ -184,21 +256,7 @@ class ApiTest extends TestCase
             'role' => User::ROLE_PP,
         ]);
 
-        // Create a land offer ad
-        $ad = factory(Ad::class)->disableEvents()->create([
-            'user_pp_id' => $author->id,
-            'is_draft' => false,
-        ]);
-
-        factory(LandOfferAd::class)->disableEvents()->create([
-            'ad_id' => $ad->id,
-        ]);
-
-        // Create attribution with approved status
-        AttributionAd::create([
-            'ad_id' => $ad->id,
-            'ad_status_id' => AdStatus::APPROVE_ID,
-        ]);
+        $ad = $this->createPublishedAd($author);
 
         // Call the API
         $response = $this->getJson('/api/v1/ads', [
@@ -241,22 +299,7 @@ class ApiTest extends TestCase
             'role' => User::ROLE_PP,
         ]);
 
-        // Create a land offer ad
-        $ad = factory(Ad::class)->disableEvents()->create([
-            'user_pp_id' => $author->id,
-            'is_draft' => false,
-        ]);
-
-        factory(LandOfferAd::class)->disableEvents()->create([
-            'ad_id' => $ad->id,
-        ]);
-
-        // Create attribution with approved status
-        AttributionAd::create([
-            'ad_id' => $ad->id,
-            'user_moderator_id' => null,
-            'ad_status_id' => AdStatus::APPROVE_ID,
-        ]);
+        $ad = $this->createPublishedAd($author);
 
         // Create a document with special characters in the path (spaces, accents)
         $document = Document::create([
@@ -292,85 +335,45 @@ class ApiTest extends TestCase
     }
 
     /**
-     * Test that soft deleted ads are excluded by default.
+     * Test that soft deleted ads are excluded by default (?status=published).
      */
     public function testSoftDeletedAdsExcludedByDefault()
     {
-        // Create an ad author
-        $author = factory(User::class)->create([
-            'role' => User::ROLE_PP,
-        ]);
+        $ad = $this->createDeletedAd();
 
-        // Create an approved ad
-        $ad = factory(Ad::class)->disableEvents()->create([
-            'user_pp_id' => $author->id,
-            'is_draft' => false,
-        ]);
-
-        factory(LandOfferAd::class)->disableEvents()->create([
-            'ad_id' => $ad->id,
-        ]);
-
-        AttributionAd::create([
-            'ad_id' => $ad->id,
-            'ad_status_id' => AdStatus::APPROVE_ID,
-        ]);
-
-        // Soft delete the ad
-        $ad->delete();
-
-        // Call the API without include_deleted flag
         $response = $this->getJson('/api/v1/ads', [
             'Ot-api-key' => 'test-api-key',
         ]);
 
         $response->assertStatus(200);
 
-        // Verify the deleted ad is NOT in the response
         $ads = $response->json('data');
         $foundAd = collect($ads)->firstWhere('id', $ad->id);
         $this->assertNull($foundAd, 'Soft deleted ad should not be returned by default');
     }
 
     /**
-     * Test that soft deleted ads are included when flag is set.
+     * Test that ?status=deleted returns only soft-deleted ads.
      */
-    public function testSoftDeletedAdsIncludedWithFlag()
+    public function testStatusDeletedReturnsOnlyDeletedAds()
     {
-        // Create an ad author
-        $author = factory(User::class)->create([
-            'role' => User::ROLE_PP,
-        ]);
+        $author = factory(User::class)->create(['role' => User::ROLE_PP]);
 
-        // Create an approved ad
-        $ad = factory(Ad::class)->disableEvents()->create([
-            'user_pp_id' => $author->id,
-            'is_draft' => false,
-        ]);
+        $publishedAd = $this->createPublishedAd($author);
+        $deletedAd = $this->createDeletedAd($author);
 
-        factory(LandOfferAd::class)->disableEvents()->create([
-            'ad_id' => $ad->id,
-        ]);
-
-        AttributionAd::create([
-            'ad_id' => $ad->id,
-            'ad_status_id' => AdStatus::APPROVE_ID,
-        ]);
-
-        // Soft delete the ad
-        $ad->delete();
-
-        // Call the API with include_deleted=true
-        $response = $this->getJson('/api/v1/ads?include_deleted=true', [
+        $response = $this->getJson('/api/v1/ads?status=deleted', [
             'Ot-api-key' => 'test-api-key',
         ]);
 
         $response->assertStatus(200);
 
-        // Verify the deleted ad IS in the response
         $ads = $response->json('data');
-        $foundAd = collect($ads)->firstWhere('id', $ad->id);
-        $this->assertNotNull($foundAd, 'Soft deleted ad should be returned with include_deleted=true');
+        $foundPublished = collect($ads)->firstWhere('id', $publishedAd->id);
+        $foundDeleted = collect($ads)->firstWhere('id', $deletedAd->id);
+
+        $this->assertNull($foundPublished, 'Published ad should NOT be returned with status=deleted');
+        $this->assertNotNull($foundDeleted, 'Soft deleted ad should be returned with status=deleted');
     }
 
     /**
@@ -378,242 +381,28 @@ class ApiTest extends TestCase
      */
     public function testArchivedAdsExcludedByDefault()
     {
-        // Create an ad author
-        $author = factory(User::class)->create([
-            'role' => User::ROLE_PP,
-        ]);
+        $ad = $this->createArchivedAd();
 
-        // Create an archived ad
-        $ad = factory(Ad::class)->disableEvents()->create([
-            'user_pp_id' => $author->id,
-            'is_draft' => false,
-        ]);
-
-        factory(LandOfferAd::class)->disableEvents()->create([
-            'ad_id' => $ad->id,
-        ]);
-
-        AttributionAd::create([
-            'ad_id' => $ad->id,
-            'ad_status_id' => AdStatus::ARCHIVED_ID,
-        ]);
-
-        // Call the API without include_archived flag
         $response = $this->getJson('/api/v1/ads', [
             'Ot-api-key' => 'test-api-key',
         ]);
 
         $response->assertStatus(200);
 
-        // Verify the archived ad is NOT in the response
         $ads = $response->json('data');
         $foundAd = collect($ads)->firstWhere('id', $ad->id);
         $this->assertNull($foundAd, 'Archived ad should not be returned by default');
     }
 
     /**
-     * Test that archived ads are included when flag is set.
-     */
-    public function testArchivedAdsIncludedWithFlag()
-    {
-        // Create an ad author
-        $author = factory(User::class)->create([
-            'role' => User::ROLE_PP,
-        ]);
-
-        // Create an archived ad
-        $ad = factory(Ad::class)->disableEvents()->create([
-            'user_pp_id' => $author->id,
-            'is_draft' => false,
-        ]);
-
-        factory(LandOfferAd::class)->disableEvents()->create([
-            'ad_id' => $ad->id,
-        ]);
-
-        AttributionAd::create([
-            'ad_id' => $ad->id,
-            'ad_status_id' => AdStatus::ARCHIVED_ID,
-        ]);
-
-        // Call the API with include_archived=true
-        $response = $this->getJson('/api/v1/ads?include_archived=true', [
-            'Ot-api-key' => 'test-api-key',
-        ]);
-
-        $response->assertStatus(200);
-
-        // Verify the archived ad IS in the response
-        $ads = $response->json('data');
-        $foundAd = collect($ads)->firstWhere('id', $ad->id);
-        $this->assertNotNull($foundAd, 'Archived ad should be returned with include_archived=true');
-    }
-
-    /**
-     * Test that statuses parameter filters ads correctly.
-     */
-    public function testStatusesParameterFiltering()
-    {
-        // Create an ad author
-        $author = factory(User::class)->create([
-            'role' => User::ROLE_PP,
-        ]);
-
-        // Create an approved ad
-        $approvedAd = factory(Ad::class)->disableEvents()->create([
-            'user_pp_id' => $author->id,
-            'is_draft' => false,
-        ]);
-
-        factory(LandOfferAd::class)->disableEvents()->create([
-            'ad_id' => $approvedAd->id,
-        ]);
-
-        AttributionAd::create([
-            'ad_id' => $approvedAd->id,
-            'ad_status_id' => AdStatus::APPROVE_ID,
-        ]);
-
-        // Create an archived ad
-        $archivedAd = factory(Ad::class)->disableEvents()->create([
-            'user_pp_id' => $author->id,
-            'is_draft' => false,
-        ]);
-
-        factory(LandOfferAd::class)->disableEvents()->create([
-            'ad_id' => $archivedAd->id,
-        ]);
-
-        AttributionAd::create([
-            'ad_id' => $archivedAd->id,
-            'ad_status_id' => AdStatus::ARCHIVED_ID,
-        ]);
-
-        // Call the API with statuses[]=1&statuses[]=5
-        $response = $this->getJson('/api/v1/ads?statuses[]=1&statuses[]=5', [
-            'Ot-api-key' => 'test-api-key',
-        ]);
-
-        $response->assertStatus(200);
-
-        // Verify both ads are in the response
-        $ads = $response->json('data');
-        $foundApproved = collect($ads)->firstWhere('id', $approvedAd->id);
-        $foundArchived = collect($ads)->firstWhere('id', $archivedAd->id);
-
-        $this->assertNotNull($foundApproved, 'Approved ad should be returned with statuses filter');
-        $this->assertNotNull($foundArchived, 'Archived ad should be returned with statuses filter');
-    }
-
-    /**
-     * Test that both include_deleted and include_archived flags work together.
-     */
-    public function testCombinedDeletedAndArchivedFlags()
-    {
-        // Create an ad author
-        $author = factory(User::class)->create([
-            'role' => User::ROLE_PP,
-        ]);
-
-        // Create an archived ad and soft delete it
-        $ad = factory(Ad::class)->disableEvents()->create([
-            'user_pp_id' => $author->id,
-            'is_draft' => false,
-        ]);
-
-        factory(LandOfferAd::class)->disableEvents()->create([
-            'ad_id' => $ad->id,
-        ]);
-
-        AttributionAd::create([
-            'ad_id' => $ad->id,
-            'ad_status_id' => AdStatus::ARCHIVED_ID,
-        ]);
-
-        // Soft delete the ad
-        $ad->delete();
-
-        // Call the API with both flags
-        $response = $this->getJson('/api/v1/ads?include_deleted=true&include_archived=true', [
-            'Ot-api-key' => 'test-api-key',
-        ]);
-
-        $response->assertStatus(200);
-
-        // Verify the deleted and archived ad IS in the response
-        $ads = $response->json('data');
-        $foundAd = collect($ads)->firstWhere('id', $ad->id);
-        $this->assertNotNull($foundAd, 'Deleted and archived ad should be returned with both flags');
-    }
-
-    /**
-     * Test ?status=all returns both approved and archived ads.
-     */
-    public function testStatusAllReturnsAllAds()
-    {
-        $author = factory(User::class)->create(['role' => User::ROLE_PP]);
-
-        // Create an approved ad
-        $approvedAd = factory(Ad::class)->disableEvents()->create([
-            'user_pp_id' => $author->id,
-            'is_draft' => false,
-        ]);
-        factory(LandOfferAd::class)->disableEvents()->create(['ad_id' => $approvedAd->id]);
-        AttributionAd::create([
-            'ad_id' => $approvedAd->id,
-            'ad_status_id' => AdStatus::APPROVE_ID,
-        ]);
-
-        // Create an archived ad
-        $archivedAd = factory(Ad::class)->disableEvents()->create([
-            'user_pp_id' => $author->id,
-            'is_draft' => false,
-        ]);
-        factory(LandOfferAd::class)->disableEvents()->create(['ad_id' => $archivedAd->id]);
-        AttributionAd::create([
-            'ad_id' => $archivedAd->id,
-            'ad_status_id' => AdStatus::ARCHIVED_ID,
-        ]);
-
-        $response = $this->getJson('/api/v1/ads?status=all', [
-            'Ot-api-key' => 'test-api-key',
-        ]);
-
-        $response->assertStatus(200);
-
-        $ads = $response->json('data');
-        $this->assertNotNull(collect($ads)->firstWhere('id', $approvedAd->id), 'Approved ad should be in status=all');
-        $this->assertNotNull(collect($ads)->firstWhere('id', $archivedAd->id), 'Archived ad should be in status=all');
-    }
-
-    /**
-     * Test ?status=archived returns only archived ads.
+     * Test that ?status=archived returns only archived ads.
      */
     public function testStatusArchivedReturnsOnlyArchived()
     {
         $author = factory(User::class)->create(['role' => User::ROLE_PP]);
 
-        // Create an approved ad
-        $approvedAd = factory(Ad::class)->disableEvents()->create([
-            'user_pp_id' => $author->id,
-            'is_draft' => false,
-        ]);
-        factory(LandOfferAd::class)->disableEvents()->create(['ad_id' => $approvedAd->id]);
-        AttributionAd::create([
-            'ad_id' => $approvedAd->id,
-            'ad_status_id' => AdStatus::APPROVE_ID,
-        ]);
-
-        // Create an archived ad
-        $archivedAd = factory(Ad::class)->disableEvents()->create([
-            'user_pp_id' => $author->id,
-            'is_draft' => false,
-        ]);
-        factory(LandOfferAd::class)->disableEvents()->create(['ad_id' => $archivedAd->id]);
-        AttributionAd::create([
-            'ad_id' => $archivedAd->id,
-            'ad_status_id' => AdStatus::ARCHIVED_ID,
-        ]);
+        $publishedAd = $this->createPublishedAd($author);
+        $archivedAd = $this->createArchivedAd($author);
 
         $response = $this->getJson('/api/v1/ads?status=archived', [
             'Ot-api-key' => 'test-api-key',
@@ -622,8 +411,67 @@ class ApiTest extends TestCase
         $response->assertStatus(200);
 
         $ads = $response->json('data');
-        $this->assertNull(collect($ads)->firstWhere('id', $approvedAd->id), 'Approved ad should NOT be in status=archived');
+        $this->assertNull(collect($ads)->firstWhere('id', $publishedAd->id), 'Published ad should NOT be in status=archived');
         $this->assertNotNull(collect($ads)->firstWhere('id', $archivedAd->id), 'Archived ad should be in status=archived');
+    }
+
+    /**
+     * Test that ?status=published,archived returns both published and archived ads.
+     */
+    public function testStatusPublishedArchivedReturnsBoth()
+    {
+        $author = factory(User::class)->create(['role' => User::ROLE_PP]);
+
+        $publishedAd = $this->createPublishedAd($author);
+        $archivedAd = $this->createArchivedAd($author);
+
+        $response = $this->getJson('/api/v1/ads?status=published,archived', [
+            'Ot-api-key' => 'test-api-key',
+        ]);
+
+        $response->assertStatus(200);
+
+        $ads = $response->json('data');
+        $this->assertNotNull(collect($ads)->firstWhere('id', $publishedAd->id), 'Published ad should be returned');
+        $this->assertNotNull(collect($ads)->firstWhere('id', $archivedAd->id), 'Archived ad should be returned');
+    }
+
+    /**
+     * Test that ?status=published,archived,deleted returns all three types.
+     */
+    public function testStatusAllThreeReturnEverything()
+    {
+        $author = factory(User::class)->create(['role' => User::ROLE_PP]);
+
+        $publishedAd = $this->createPublishedAd($author);
+        $archivedAd = $this->createArchivedAd($author);
+        $deletedAd = $this->createDeletedAd($author);
+
+        $response = $this->getJson('/api/v1/ads?status=published,archived,deleted', [
+            'Ot-api-key' => 'test-api-key',
+        ]);
+
+        $response->assertStatus(200);
+
+        $ads = $response->json('data');
+        $this->assertNotNull(collect($ads)->firstWhere('id', $publishedAd->id), 'Published ad should be returned');
+        $this->assertNotNull(collect($ads)->firstWhere('id', $archivedAd->id), 'Archived ad should be returned');
+        $this->assertNotNull(collect($ads)->firstWhere('id', $deletedAd->id), 'Deleted ad should be returned');
+    }
+
+    /**
+     * Test that an invalid status value returns 400.
+     */
+    public function testInvalidStatusReturns400()
+    {
+        $response = $this->getJson('/api/v1/ads?status=invalid', [
+            'Ot-api-key' => 'test-api-key',
+        ]);
+
+        $response->assertStatus(400);
+        $response->assertJson([
+            'error' => 'bad_request',
+        ]);
     }
 
     /**
@@ -631,8 +479,6 @@ class ApiTest extends TestCase
      */
     public function testUpdatedSinceAcceptsDateFormat()
     {
-        $author = factory(User::class)->create(['role' => User::ROLE_PP]);
-
         $response = $this->getJson('/api/v1/ads?updated_since=2025-01-01', [
             'Ot-api-key' => 'test-api-key',
         ]);

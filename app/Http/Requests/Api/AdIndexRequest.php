@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Api;
 
 use App\Models\Ad;
-use App\Models\AdStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -50,6 +49,13 @@ class AdIndexRequest extends FormRequest
                 'types' => array_filter(explode(',', $this->types))
             ]);
         }
+
+        // Handle comma-separated status parameter
+        if ($this->has('status') && is_string($this->status)) {
+            $this->merge([
+                'status' => array_filter(explode(',', $this->status))
+            ]);
+        }
     }
 
     /**
@@ -77,14 +83,9 @@ class AdIndexRequest extends FormRequest
             'page' => 'nullable|integer|min:1',
             'per_page' => 'nullable|integer|min:1|max:200',
 
-            // Status filter shortcut: all, approved, archived
-            'status' => 'nullable|string|in:all,approved,archived',
-
-            // Status filters (advanced)
-            'include_deleted' => 'nullable|in:true,false,1,0',
-            'include_archived' => 'nullable|in:true,false,1,0',
-            'statuses' => 'nullable|array',
-            'statuses.*' => 'integer|in:1,2,3,4,5',
+            // Status filter - accepts array or comma-separated string
+            'status' => 'nullable|array',
+            'status.*' => 'string|in:published,archived,deleted',
 
             // Legacy parameters (to be removed)
             'limit' => 'nullable|integer|min:1|max:200',
@@ -108,7 +109,7 @@ class AdIndexRequest extends FormRequest
             'per_page.integer' => 'The per_page parameter must be a valid integer.',
             'per_page.min' => 'The per_page parameter must be at least 1.',
             'per_page.max' => 'The per_page parameter cannot exceed 200.',
-            'status.in' => 'The status parameter must be one of: all, approved, archived.',
+            'status.*.in' => 'Invalid status value. Valid values are: published, archived, deleted.',
         ];
     }
 
@@ -211,50 +212,19 @@ class AdIndexRequest extends FormRequest
     }
 
     /**
-     * Check if soft deleted ads should be included
-     *
-     * @return bool
-     */
-    public function shouldIncludeDeleted()
-    {
-        return filter_var($this->input('include_deleted', false), FILTER_VALIDATE_BOOLEAN);
-    }
-
-    /**
-     * Check if archived ads should be included
-     *
-     * @return bool
-     */
-    public function shouldIncludeArchived()
-    {
-        $status = $this->input('status');
-        if ($status === 'all' || $status === 'archived') {
-            return true;
-        }
-        return filter_var($this->input('include_archived', false), FILTER_VALIDATE_BOOLEAN);
-    }
-
-    /**
-     * Get the status shortcut value (all, approved, archived)
-     *
-     * @return string|null
-     */
-    public function getStatusShortcut()
-    {
-        return $this->input('status');
-    }
-
-    /**
-     * Get status IDs to filter by
+     * Get the requested statuses from the status parameter.
+     * Defaults to ['published'] if not specified.
      *
      * @return array
      */
-    public function getStatuses()
+    public function getRequestedStatuses(): array
     {
-        $statuses = $this->input('statuses');
-        if (is_array($statuses) && count($statuses) > 0) {
-            return array_map('intval', $statuses);
+        $status = $this->input('status');
+
+        if (is_array($status) && count($status) > 0) {
+            return $status;
         }
-        return [AdStatus::APPROVE_ID];
+
+        return ['published'];
     }
 }

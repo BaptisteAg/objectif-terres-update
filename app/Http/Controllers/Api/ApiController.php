@@ -106,36 +106,19 @@ class ApiController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="status",
+     *         name="status[]",
      *         in="query",
-     *         description="Status filter shortcut: 'approved' (default), 'archived' (only archived), 'all' (all statuses)",
-     *         required=false,
-     *         @OA\Schema(type="string", enum={"all", "approved", "archived"}, default="approved")
-     *     ),
-     *     @OA\Parameter(
-     *         name="include_deleted",
-     *         in="query",
-     *         description="Include soft deleted ads. Default: false",
-     *         required=false,
-     *         @OA\Schema(type="boolean", default=false)
-     *     ),
-     *     @OA\Parameter(
-     *         name="include_archived",
-     *         in="query",
-     *         description="Include archived ads (>6 months old). Default: false",
-     *         required=false,
-     *         @OA\Schema(type="boolean", default=false)
-     *     ),
-     *     @OA\Parameter(
-     *         name="statuses[]",
-     *         in="query",
-     *         description="Filter by status IDs: 1=approved, 2=pending, 3=refused, 4=pending_moderation, 5=archived",
+     *         description="Filter by ad status. Accepts array format (?status[]=published&status[]=archived) or comma-separated string (?status=published,archived,deleted). Default: published",
      *         required=false,
      *         style="form",
      *         explode=true,
      *         @OA\Schema(
      *             type="array",
-     *             @OA\Items(type="integer", enum={1,2,3,4,5})
+     *             @OA\Items(
+     *                 type="string",
+     *                 enum={"published", "archived", "deleted"}
+     *             ),
+     *             default={"published"}
      *         )
      *     ),
      *     @OA\Response(
@@ -198,26 +181,17 @@ class ApiController extends Controller
      */
     public function ads(AdIndexRequest $request): \Illuminate\Http\JsonResponse
     {
-        $cacheKey = 'api-ads-v3-' . md5(json_encode($request->all()));
+        $query = $this->buildAdsQuery($request);
 
-        // Clear cache in development
-        if (config('app.env') !== 'production') {
-            cache()->forget($cacheKey);
+        // Apply pagination if requested
+        if ($request->wantsPagination()) {
+            $perPage = $request->getPerPage();
+            $data = $query->paginate($perPage);
+        } else {
+            // Default limit for non-paginated requests
+            $limit = $request->getPerPage();
+            $data = $query->limit($limit)->get();
         }
-
-        $data = cache()->remember($cacheKey, 3600, function () use ($request) {
-            $query = $this->buildAdsQuery($request);
-
-            // Apply pagination if requested
-            if ($request->wantsPagination()) {
-                $perPage = $request->getPerPage();
-                return $query->paginate($perPage);
-            } else {
-                // Default limit for non-paginated requests
-                $limit = $request->getPerPage();
-                return $query->limit($limit)->get();
-            }
-        });
 
         // Validate page number if paginated
         if ($data instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator) {
@@ -248,37 +222,50 @@ class ApiController extends Controller
     {
         $adsQuery = Ad::query();
 
-        // Include soft deleted ads if requested
-        if ($request->shouldIncludeDeleted()) {
+        $requestedStatuses = $request->getRequestedStatuses();
+
+        // If 'deleted' is requested, we need withTrashed to include soft-deleted ads
+        if (in_array('deleted', $requestedStatuses)) {
             $adsQuery->withTrashed();
         }
 
-        // Apply status filters
-        $statusShortcut = $request->getStatusShortcut();
-        $requestedStatuses = $request->has('statuses') ? $request->getStatuses() : null;
+        // Build OR-combined conditions per status
+        $adsQuery->where(function (Builder $query) use ($requestedStatuses) {
+            foreach ($requestedStatuses as $status) {
+                switch ($status) {
+                    case 'published':
+                        $query->orWhere(function (Builder $q) {
+                            $q->whereNull('deleted_at')
+                              ->whereHas('attributionAd', function (Builder $attrQ) {
+                                  $attrQ->where('ad_status_id', AdStatus::APPROVE_ID)
+                                        ->whereNotNull('published_on')
+                                        ->whereNull('archived_at');
+                              });
+                        });
+                        break;
 
-        if ($statusShortcut === 'all') {
-            // No status filter — return all statuses
-        } elseif ($statusShortcut === 'archived') {
-            $adsQuery->whereHas('attributionAd', function (Builder $query) {
-                $query->where('ad_status_id', AdStatus::ARCHIVED_ID);
-            });
-        } elseif ($request->shouldIncludeArchived()) {
-            // include_archived=true: approved + archived
-            $adsQuery->whereHas('attributionAd', function (Builder $query) {
-                $query->whereIn('ad_status_id', [AdStatus::APPROVE_ID, AdStatus::ARCHIVED_ID]);
-            });
-        } elseif ($requestedStatuses !== null) {
-            $adsQuery->whereHas('attributionAd', function (Builder $query) use ($requestedStatuses) {
-                $query->whereIn('ad_status_id', $requestedStatuses);
-            });
-        } else {
-            // Default: only approved ads (backward compatible)
-            $adsQuery->whereHas('attributionAd', function (Builder $query) {
-                $query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
-            });
-        }
+                    case 'archived':
+                        $query->orWhere(function (Builder $q) {
+                            $q->whereNull('deleted_at')
+                              ->whereHas('attributionAd', function (Builder $attrQ) {
+                                  $attrQ->where(function (Builder $archQ) {
+                                      $archQ->whereNotNull('archived_at')
+                                            ->orWhere('ad_status_id', AdStatus::ARCHIVED_ID);
+                                  });
+                              });
+                        });
+                        break;
 
+                    case 'deleted':
+                        $query->orWhere(function (Builder $q) {
+                            $q->whereNotNull('deleted_at');
+                        });
+                        break;
+                }
+            }
+        });
+
+        // Global filter: never return drafts
         $adsQuery->where('is_draft', '=', 0);
 
         // Eager load all necessary relationships
