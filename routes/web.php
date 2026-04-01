@@ -26,8 +26,12 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
     Route::middleware('auth')->get('request-publishing/{id}', 'AdsController@requestPublishing')->name('request-publishing');
     Route::middleware('auth')->get('mes-annonces', 'AdsController@list')->name('list');
     Route::get('{id}', 'AdsController@show')->name('show');
+
+    Route::middleware('auth')->post('survey/{ad}/{action}', 'AdsController@survey')->name('survey');
     Route::middleware('auth')->get('supprimer/{ad}', 'AdsController@delete')->name('delete');
     Route::middleware('auth')->get('archiver/{ad}', 'AdsController@archive')->name('archive');
+    Route::middleware('auth')->get('republier/{ad}', 'AdsController@republish')->name('republish');
+    Route::middleware('auth')->post('survey/{ad}/{action}', 'AdsController@survey')->name('survey');
     Route::middleware('auth')->get('etendre-expiration/{id}', 'AdsController@extendPublish')->name('extend');
 });
 
@@ -116,9 +120,9 @@ Route::prefix('mon-espace/annonces-favorites')->middleware('auth')->name('favori
 Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->namespace('Threads')->group(function () {
     Route::get('actualisation', 'ThreadsController@refreshUnreadMessages')->name('refreshUnreadMessages');
     Route::get('/', 'ThreadsController@index')->name('index');
-    Route::post('creer', 'ThreadsController@create')->name('create');
+    Route::post('creer', 'ThreadsController@create')->middleware('throttle.messages:1,1')->name('create');
     Route::get('{id}', 'MessagesController@show')->name('show');
-    Route::post('envoi', 'MessagesController@create')->name('send');
+    Route::post('envoi', 'MessagesController@create')->middleware('throttle.messages:1,1')->name('send');
     Route::post('upload', 'MessagesController@uploadDocuments')->name('upload');
     Route::get('delete/{id}', 'MessagesController@delete')->name('delete-message');
 //	Route::get('{type}/{filename}', 'MessagesController@show')->name('show');

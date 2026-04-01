@@ -3,169 +3,307 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\AdIndexRequest;
+use App\Http\Resources\AdCollection;
+use App\Http\Resources\AdResource;
 use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\Document;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Intervention\Image\ImageManagerStatic;
+use Illuminate\Support\Carbon;
 use OpenApi\Annotations as OA;
-use OpenApi\Annotations\Info;
 
 /**
- * @OA\Info(title="Objectif Terres API", version="1.0")
+ * @OA\Info(
+ *     title="Objectif Terres API",
+ *     version="2.0"
+ * )
+ *
+ * @OA\Server(
+ *     url=L5_SWAGGER_CONST_HOST,
+ *     description="API Server"
+ * )
+ *
+ * @OA\SecurityScheme(
+ *     securityScheme="apiKey",
+ *     type="apiKey",
+ *     in="header",
+ *     name="Ot-api-key",
+ *     description="API Key for authentication"
+ * )
  */
 class ApiController extends Controller
 {
+
     /**
-     * @OA\Get(
-     *     path="/api/v1/annonces",
-     *     @OA\Response(response="200", description="Annonces", @OA\JsonContent(type="array", @OA\Items(
-     *          @OA\Property(property="id", type="integer"),
-     *          @OA\Property(property="link", type="string"),
-     *          @OA\Property(property="title", type="string"),
-     *          @OA\Property(property="type", type="string"),
-     *          @OA\Property(property="type_label", type="string", enum={"Vente", "Recherche", "Offre d'emploi", "Recherche d'emploi", "Recherche Associé pour un ferme existante", "Recherche d'associé pour un projet d'installation"}),
-     *          @OA\Property(property="offer_types", type="string", nullable=true, default=null),
-     *          @OA\Property(property="image", type="string"),
-     *          @OA\Property(property="surface", type="string", nullable=true, default=null),
-     *          @OA\Property(property="region_name", type="string"),
-     *          @OA\Property(property="region_code", type="string"),
-     *          @OA\Property(property="department_name", type="string", nullable=true, default=null),
-     *          @OA\Property(property="department_code", type="string", nullable=true, default=null),
-     *          @OA\Property(property="created_at", type="integer"),
-     *          @OA\Property(property="updated_at", type="integer"),
-     *     ))),
-     *     @OA\Parameter(name="limit", in="query", description="Nombre d'annonces à retourner", required=false, @OA\Schema(type="integer", minimum=1, maximum=100, default="4")),
-     *     @OA\Parameter(name="type", in="query", description="Type d'annonce. Par défaut les annonces de type landOfferAd et landSeekAd sont retournées.", required=false, @OA\Schema(type="string", enum={"landOfferAd", "landSeekAd", "jobOfferAd", "jobSeekAd", "associateOfferAd", "associateSeekAd"})),
-     *     @OA\Parameter(name="region_code", in="query", description="Code INSEE de la région", required=false, @OA\Schema(type="string")),
-     *     security={{"api_key": {}}},
-     * )
-     * @OA\Tag(name="Lire des annonces. Les requêtes sont mises en cache pendant 1 heure."),
+     * Get ads with advanced filtering and pagination
      *
-     * @throws \Exception
+     * @OA\Get(
+     *     path="/api/v1/ads",
+     *     operationId="getAds",
+     *     tags={"Objectif Terres API"},
+     *     summary="Get ads",
+     *     description="Returns ads with pagination and filtering options.",
+     *     security={
+     *         {"apiKey": {}}
+     *     },
+     *     @OA\Parameter(
+     *         name="Ot-api-key",
+     *         in="header",
+     *         required=true,
+     *         description="API Key for authentication",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="types[]",
+     *         in="query",
+     *         description="Filter by ad types. Accepts array format (?types[]=land_offer&types[]=land_seek) or comma-separated string (?types=land_offer,land_seek)",
+     *         required=false,
+     *         style="form",
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="array",
+     *             @OA\Items(
+     *                 type="string",
+     *                 enum={"land_offer", "land_seek", "job_offer", "job_seek", "associate_offer", "associate_seek"}
+     *             )
+     *         ),
+     *         example={"land_offer", "land_seek"}
+     *     ),
+     *     @OA\Parameter(
+     *         name="updated_since",
+     *         in="query",
+     *         description="Get ads updated after this date. Accepts YYYY-MM-DD or ISO 8601 (YYYY-MM-DDTHH:MM:SSZ).",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="date"
+     *         ),
+     *         example="2025-09-25"
+     *     ),
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Page number for pagination",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer",
+     *             minimum=1,
+     *             default=1
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Number of items per page",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer",
+     *             minimum=1,
+     *             maximum=200,
+     *             default=50
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="status[]",
+     *         in="query",
+     *         description="Filter by ad status. Accepts array format (?status[]=published&status[]=archived) or comma-separated string (?status=published,archived,deleted). Default: published",
+     *         required=false,
+     *         style="form",
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="array",
+     *             @OA\Items(
+     *                 type="string",
+     *                 enum={"published", "archived", "deleted"}
+     *             ),
+     *             default={"published"}
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response with ads data",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/AdResource")
+     *             ),
+     *             @OA\Property(
+     *                 property="pagination",
+     *                 ref="#/components/schemas/Pagination"
+     *             ),
+     *             @OA\Property(
+     *                 property="meta",
+     *                 ref="#/components/schemas/Meta"
+     *             ),
+     *             @OA\Property(
+     *                 property="links",
+     *                 ref="#/components/schemas/Links"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request - Invalid parameters",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="bad_request"),
+     *             @OA\Property(property="message", type="string", example="Invalid date format for updated_since parameter"),
+     *             @OA\Property(
+     *                 property="details",
+     *                 type="object",
+     *                 @OA\Property(property="parameter", type="string", example="updated_since"),
+     *                 @OA\Property(property="expected_format", type="string", example="YYYY-MM-DDTHH:MM:SSZ"),
+     *                 @OA\Property(property="received", type="string", example="2025-07-18")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized - Invalid or missing API credentials",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="unauthorized"),
+     *             @OA\Property(property="message", type="string", example="Invalid or missing API key")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=429,
+     *         description="Too Many Requests - Rate limit exceeded",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="rate_limit_exceeded"),
+     *             @OA\Property(property="message", type="string", example="API rate limit exceeded. Please retry after 60 seconds."),
+     *             @OA\Property(property="retry_after", type="integer", example=60)
+     *         )
+     *     )
+     * )
      */
-    public function annonces(Request $request): \Illuminate\Http\JsonResponse
+    public function ads(AdIndexRequest $request): \Illuminate\Http\JsonResponse
     {
-        // Check bearer token
-        $token = $request->header('Ot-api-key');
-        if ($token !== config('app.api_token')) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+        $query = $this->buildAdsQuery($request);
+
+        // Apply pagination if requested
+        if ($request->wantsPagination()) {
+            $perPage = $request->getPerPage();
+            $data = $query->paginate($perPage);
+        } else {
+            // Default limit for non-paginated requests
+            $limit = $request->getPerPage();
+            $data = $query->limit($limit)->get();
         }
 
-        $request->validate([
-            'limit' => 'integer|min:1|max:100',
-            'type' => 'string|in:landOfferAd,landSeekAd,jobOfferAd,jobSeekAd,associateOfferAd,associateSeekAd',
-            'region_code' => 'string|exists:regions,code',
+        // Validate page number if paginated
+        if ($data instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator) {
+            $currentPage = $data->currentPage();
+            $lastPage = $data->lastPage();
+
+            if ($currentPage > $lastPage && $lastPage > 0) {
+                return response()->json([
+                    'error' => 'bad_request',
+                    'message' => "Page {$currentPage} does not exist. The last available page is {$lastPage}.",
+                    'details' => [
+                        'parameter' => 'page',
+                        'requested_page' => $currentPage,
+                        'last_page' => $lastPage,
+                    ],
+                ], 400);
+            }
+        }
+
+        // Return using the new resource collection
+        return response()->json(new AdCollection($data));
+    }
+
+    /**
+     * Build the query for retrieving ads
+     */
+    protected function buildAdsQuery($request)
+    {
+        $adsQuery = Ad::query();
+
+        $requestedStatuses = $request->getRequestedStatuses();
+
+        // If 'deleted' is requested, we need withTrashed to include soft-deleted ads
+        if (in_array('deleted', $requestedStatuses)) {
+            $adsQuery->withTrashed();
+        }
+
+        // Build OR-combined conditions per status
+        $adsQuery->where(function (Builder $query) use ($requestedStatuses) {
+            foreach ($requestedStatuses as $status) {
+                switch ($status) {
+                    case 'published':
+                        $query->orWhere(function (Builder $q) {
+                            $q->whereNull('deleted_at')
+                              ->whereHas('attributionAd', function (Builder $attrQ) {
+                                  $attrQ->where('ad_status_id', AdStatus::APPROVE_ID)
+                                        ->whereNotNull('published_on')
+                                        ->whereNull('archived_at');
+                              });
+                        });
+                        break;
+
+                    case 'archived':
+                        $query->orWhere(function (Builder $q) {
+                            $q->whereNull('deleted_at')
+                              ->whereHas('attributionAd', function (Builder $attrQ) {
+                                  $attrQ->where(function (Builder $archQ) {
+                                      $archQ->whereNotNull('archived_at')
+                                            ->orWhere('ad_status_id', AdStatus::ARCHIVED_ID);
+                                  });
+                              });
+                        });
+                        break;
+
+                    case 'deleted':
+                        $query->orWhere(function (Builder $q) {
+                            $q->whereNotNull('deleted_at');
+                        });
+                        break;
+                }
+            }
+        });
+
+        // Global filter: never return drafts
+        $adsQuery->where('is_draft', '=', 0);
+
+        // Eager load all necessary relationships
+        $adsQuery->with([
+            'documents',
+            'regions',
+            'departments',
+            'cities',
+            'attributionAd.adStatus',
+            'attributionAd.userModerator',
+            'userPp',
+            'thirdPartyAdUser',
+            'landOfferAd.offerGenres',
+            'landOfferAd.building',
+            'landOfferAd.house',
+            'landSeekAd.offerGenres',
+            'landSeekAd.installationType',
+            'jobOfferAd',
+            'jobSeekAd',
+            'associateOfferAd',
+            'associateSeekAd',
         ]);
 
-        if(config('app.env') === 'production'){
-            $this->middleware('throttle:60,1');
+        // Apply type filters
+        $types = $request->getTypes();
+        if ($types && count($types) > 0) {
+            $adsQuery->filterAdTypes($types);
         }
-        else {
-            cache()->forget('api-ads-' . md5(json_encode($request->all())));
+
+        // Apply date filter
+        if ($request->has('updated_since')) {
+            $date = Carbon::parse($request->get('updated_since'));
+            $adsQuery->where('updated_at', '>=', $date);
         }
 
-        return response()->json(cache()->remember('api-ads-' . md5(json_encode($request->all())), 3600, function () use ($request) {
-            $adsQuery = Ad::whereHas('attributionAd', function (Builder $query) {
-                    $query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
-                })
-                ->whereHas('documents', function (Builder $query) {
-                    $query->where('type', 'LIKE', 'image%');
-                })
-                ->where('is_draft', '=', 0)
-                ->with(['documents', 'regions', 'departments', 'cities', 'landOfferAd.offerGenres'])
-                ->limit($request->get('limit', 4))
-                ->orderBy('created_at', 'desc');
+        // Order by created_at
+        $adsQuery->orderBy('created_at', 'desc');
 
-            if($request->has('type') && in_array($request->get('type'), array_keys(Ad::AD_TYPES))){
-                $adsQuery->filterAdTypes([$request->get('type')]);
-            } else {
-                $adsQuery->where(function (Builder $query) {
-                    $query->whereHas('landOfferAd')->orWhereHas('landSeekAd');
-                });
-            }
-
-            if($request->has('region_code')) {
-                $adsQuery->filterRegions($request->get('region_code'));
-            }
-
-            return $adsQuery
-                ->get()
-                ->map(function (Ad $ad) {
-                    $firstImageDocument = $ad->documents->first(fn(Document $document) => str_starts_with($document->type, 'image'));
-
-                    $surface = null;
-                    if ($ad->type === 'landOfferAd') {
-                        $surface = $ad->landOfferAd->surface;
-                    } elseif ($ad->type === 'landSeekAd') {
-                        $min = $ad->landSeekAd->surface_range_min;
-                        $max = $ad->landSeekAd->surface_range_max;
-
-                        if ($min === $max) {
-                            $surface = $min;
-                        } else if ($max === 1000000) {
-                            if ($min === 0) {
-                                $surface = "∞";
-                            } else {
-                                $surface = 'Au moins ' . $min;
-                            }
-                        } else if ($min === 0) {
-                            $surface = 'Jusqu\'à ' . $max;
-                        } else {
-                            $surface = $min . ' - ' . $max;
-                        }
-                    }
-
-                    $category = match ($ad->type) {
-                        "landOfferAd" => "Offre de terres",
-                        "landSeekAd" => "Recherche de terres",
-                        "jobOfferAd" => "Offre d'emploi",
-                        "jobSeekAd" => "Recherche d'emploi",
-                        "associateOfferAd" => "Recherche Associé pour un ferme existante",
-                        "associateSeekAd" => "Recherche d'associé pour un projet d'installation",
-                    };
-                    $offerTypes = null;
-                    if ($ad->type === 'landOfferAd') {
-                        $offerTypes = $ad->landOfferAd->offerGenres->pluck('name')->join(', ');
-                    }
-
-                    $region = null;
-                    $foundDepartment = null;
-                    //dd(json_encode($ad->regions->all()), json_encode($ad->departments->all()), json_encode($ad->cities->all()));
-                    if ($ad->regions->count()) {
-                        $region = $ad->regions->first();
-                    }
-                    if ($ad->departments->count()) {
-                        $foundDepartment = $ad->departments->first();
-                        //dd($foundDepartment->toArray());
-                        if (!$region) {
-                            $region = $foundDepartment->region;
-                        }
-                    } elseif ($ad->cities->count()) {
-                        $foundDepartment = $ad->cities->first()?->department?->first();
-                        if (!$region) {
-                            $region = $foundDepartment?->region?->first();
-                        }
-                    }
-
-                    return [
-                        'id' => $ad->id,
-                        'link' => route('ads.show', $ad->id),
-                        'title' => $ad->title,
-                        'type' => $ad->type,
-                        'type_label' => $category,
-                        'offer_types' => $offerTypes,
-                        'image' => $firstImageDocument->url,
-                        'surface' => $surface,
-                        'region_code' => $region?->code,
-                        'region_name' => $region?->name,
-                        'department_name' => $foundDepartment?->name,
-                        'department_code' => $foundDepartment?->code,
-                        'created_at' => $ad->created_at->timestamp,
-                        'updated_at' => $ad->updated_at->timestamp,
-                    ];
-                });
-        }));
+        return $adsQuery;
     }
 }

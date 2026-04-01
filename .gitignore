@@ -1,11 +1,6 @@
 /node_modules
 /public/hot
 /public/storage
-/public/mix-manifest.json
-/public/js/app.js
-public/css/app.css
-public/js/chunks/
-public/js
 /storage
 /vendor
 .env
@@ -25,4 +20,4 @@ public/documents
 database/sql/terredelspip.zip
 database/sql/terredelspip.sql
 htdocs
-public/mix-manifest.json
+REMOTE.md

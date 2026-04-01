@@ -9,6 +9,19 @@ return [
         */
 
         'title' => 'OT API',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Server URL - Uses current environment URL
+        |--------------------------------------------------------------------------
+        */
+
+        'servers' => [
+            [
+                'url' => env('APP_URL', 'https://objectif-terres.loc'),
+                'description' => 'Current environment',
+            ],
+        ],
     ],
 
     'routes' => [
@@ -42,9 +55,9 @@ return [
         |--------------------------------------------------------------------------
          */
         'middleware' => [
-            'api' => [],
-            'asset' => [],
-            'docs' => [],
+            'api' => ['api.doc.auth'],     // Swagger UI - requires HTTP Basic Auth
+            'asset' => [],                 // CSS/JS assets remain public
+            'docs' => ['api.doc.auth'],    // API JSON/YAML - requires HTTP Basic Auth
             'oauth2_callback' => [],
         ],
     ],
@@ -129,12 +142,6 @@ return [
         |--------------------------------------------------------------------------
         */
 
-        'api_key' => [ // Unique name of security
-            'type' => 'apiKey', // The type of the security scheme. Valid values are "basic", "apiKey" or "oauth2".
-            'description' => 'A valid key is required to use the API.',
-            'name' => 'Ot-api-key', // The name of the header or query parameter to be used.
-            'in' => 'header', // The location of the API key. Valid values are "query" or "header".
-        ],
         /*'oauth2_security_example' => [ // Unique name of security
             'type' => 'oauth2', // The type of the security scheme. Valid values are "basic", "apiKey" or "oauth2".
             'description' => 'A short description for oauth2 security scheme.',
@@ -232,6 +239,6 @@ return [
     |--------------------------------------------------------------------------
      */
     'constants' => [
-        'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'),
+        'L5_SWAGGER_CONST_HOST' => env('APP_URL', 'https://objectif-terres.loc'),
     ],
 ];

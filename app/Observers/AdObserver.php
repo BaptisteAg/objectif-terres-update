@@ -27,7 +27,10 @@ class AdObserver
 
 	private $fieldToNotTrack = [
 		'user pp id',
-		'id'
+		'id',
+		'survey success via platform',
+		'survey comments',
+		'survey submitted at'
 	];
 
 
@@ -81,8 +84,14 @@ class AdObserver
 	public function updated(Ad $ad)
 	{
 		$this->track($ad, function ($value, $field) use ($ad) {
+			// Skip fields that should not be tracked
+			if (in_array($field, $this->fieldToNotTrack)) {
+				return null;
+			}
+
 			$fieldName = $this->fieldList[$field] ?? $field;
-			$valueName = $this->valueList[$value] ?? $value;
+			// Only use valueList for scalar values
+			$valueName = is_scalar($value) ? ($this->valueList[$value] ?? $value) : $value;
 
 			return [
 				'ad_id' => $ad->id,

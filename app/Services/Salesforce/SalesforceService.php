@@ -246,6 +246,50 @@ class SalesforceService
         // Sync Firstname / Name
         $localUser->first_name = $user["FirstName"];
         $localUser->name = $user["LastName"];
+
+        // Handle email conflicts: if another user has this email, we need to resolve it
+        if ($localUser->email !== $email) {
+            $conflictingUser = User::where('email', $email)
+                ->where('id', '!=', $localUser->id)
+                ->first();
+
+            if ($conflictingUser) {
+                // Only archive local-only users (no Salesforce ID)
+                // For Salesforce users. This is a conflict that needs manual resolution
+                if ($conflictingUser->sf_id) {
+                    $errorMsg = "Conflit d'adresse email détecté : l'email '{$email}' est déjà utilisé par un autre utilisateur Salesforce " .
+                               "(ID local: {$conflictingUser->id}, SF ID: {$conflictingUser->sf_id}). " .
+                               "Ce conflit nécessite une intervention manuelle de l'administrateur. " .
+                               "Veuillez contacter le support technique.";
+
+                    logger()->error('Salesforce SSO email conflict - both users have SF IDs', [
+                        'current_sf_id' => $sfId,
+                        'current_email' => $email,
+                        'current_local_id' => $localUser->id,
+                        'conflicting_user_id' => $conflictingUser->id,
+                        'conflicting_user_email' => $conflictingUser->email,
+                        'conflicting_user_sf_id' => $conflictingUser->sf_id,
+                    ]);
+
+                    throw new \Exception($errorMsg);
+                }
+
+                // Safe to archive: this is a local-only account
+                $archivedEmail = $conflictingUser->email . '.archived.' . time();
+                logger()->warning('Salesforce SSO email conflict resolved - archived local-only user', [
+                    'sf_user_id' => $sfId,
+                    'sf_user_email' => $email,
+                    'local_user_id' => $localUser->id,
+                    'conflicting_user_id' => $conflictingUser->id,
+                    'conflicting_user_email' => $conflictingUser->email,
+                    'archived_email' => $archivedEmail
+                ]);
+
+                $conflictingUser->email = $archivedEmail;
+                $conflictingUser->save();
+            }
+        }
+
         $localUser->email = $email;
 
         // Sync SF ID
@@ -276,7 +320,12 @@ class SalesforceService
             $localUser->departments()->sync($newDepartmentIds);
         } else if ($role > 0) {
             if (!isset($roleAndDepartments[1])) {
-                throw new \Exception("Nous n'avons pas pu lire votre territoire renseigné dans Salesforce. Veuillez contacter un administrateur.");
+                // More specific error message for data format issues
+                $errorMsg = "Erreur de configuration Salesforce : le format des données de votre compte est incorrect. " .
+                           "Veuillez transmettre ce message à l'administrateur Salesforce de Terre de Liens : " .
+                           "\"Role_Objectif_Terre__c = '{$user["Role_Objectif_Terre__c"]}' pour {$email} - " .
+                           "Le format attendu est 'role-departement' (ex: '2-84') mais '{$user["Role_Objectif_Terre__c"]}' a été trouvé.\"";
+                throw new \Exception($errorMsg);
             }
 
             $departments = explode('_', $roleAndDepartments[1]);

@@ -14,7 +14,7 @@
 @endphp
 
 @section('main-content')
-    <section class="container pb-6">
+    <section class="container pb-6" id="ad-show-page">
 
         @if(!isset($isPreview) || !$isPreview)
             @auth
@@ -31,11 +31,12 @@
                             size="is-small"
                     >
                         <b-breadcrumb-item href="/">Page d’accueil</b-breadcrumb-item>
-{{--                        <b-breadcrumb-item class="breadcrumb__link"--}}
-{{--                                           href="{{route('researches.index',  ['offer_type' => $offerType, 'ad_category' => $adCategory])}}">--}}
-{{--                            <span>{{$ad->ad_type_full_name}}</span>--}}
-{{--                        </b-breadcrumb-item>--}}
-                        <b-breadcrumb-item class="breadcrumb__link" @click="goBack">{{$ad->ad_type_full_name}}</b-breadcrumb-item>
+                        {{--                        <b-breadcrumb-item class="breadcrumb__link"--}}
+                        {{--                                           href="{{route('researches.index',  ['offer_type' => $offerType, 'ad_category' => $adCategory])}}">--}}
+                        {{--                            <span>{{$ad->ad_type_full_name}}</span>--}}
+                        {{--                        </b-breadcrumb-item>--}}
+                        <b-breadcrumb-item class="breadcrumb__link"
+                                           @click="goBack">{{$ad->ad_type_full_name}}</b-breadcrumb-item>
                     </b-breadcrumb>
                 </div>
 
@@ -53,13 +54,25 @@
                                     href="{{ $isSupportRequest ? route('support-request.edit') : route('ads.edit', ["id" => $ad->id]) }}"
                                     tag="a" icon-left="pencil" rounded>Modifier
                             </b-button>
-                            <b-button onclick="return confirm('Êtes vous sûr·e ?')" tag="a"
-                                      href="{{  route('ads.archive', [ $ad->id]) }}" icon-left="archive-arrow-down"
-                                      rounded>
-                                Archiver
-                            </b-button>
-                            <b-button onclick="return confirm('Êtes vous sûr·e ? Cette opération est irréversible.')"
-                                      tag="a" href="{{  route('ads.delete', [ $ad->id]) }}" icon-left="delete" rounded>
+                            @if(!$ad->isArchived())
+                                <b-button
+                                          @click="openSurveyModal('archive')"
+                                          icon-left="archive-arrow-down"
+                                          rounded>
+                                    Archiver
+                                </b-button>
+                            @else
+                                <b-button
+                                          href="{{route('ads.republish', $ad->id)}}"
+                                          tag="a"
+                                          icon-left="publish"
+                                          rounded>
+                                    Republier
+                                </b-button>
+                            @endif
+                            <b-button
+                                      @click="openSurveyModal('delete')"
+                                      icon-left="delete" rounded>
                                 Supprimer
                             </b-button>
                         </div>
@@ -95,8 +108,8 @@
         @endif
 
         @if(config('app.env') === 'local')
-            <h1 class="title is-1 has-background-black has-text-white">Type : {{$ad->type}}</h1>
-            <h1 class="title is-1 has-background-black has-text-white">accept_share_contact_infos
+            <h1 class="title has-background-black has-text-white">Type : {{$ad->type}}</h1>
+            <h1 class="title has-background-black has-text-white">accept_share_contact_infos
                 : {{$ad->accept_share_contact_infos}}</h1>
         @endif
 
@@ -119,6 +132,14 @@
             @include('pages.ads.partials.associateOffer.associateOfferAdShow')
         @endif
 
+        @if($ad->canEdit())
+            <survey-modal
+                v-if="surveyModalOpen"
+                :ad="ad"
+                :action="surveyAction"
+                @close="closeSurveyModal"
+            ></survey-modal>
+        @endif
     </section>
 
     @if(!isset($isPreview) || !$isPreview)
@@ -131,4 +152,22 @@
 @endsection
 
 @section('script')
+    @if($ad->canEdit())
+        <script>
+            // Initialize survey modal data for this page
+            window.app.surveyModalOpen = false;
+            window.app.surveyAction = null;
+            window.app.ad = @json($ad);
+
+            window.app.openSurveyModal = function(action) {
+                this.surveyAction = action;
+                this.surveyModalOpen = true;
+            };
+
+            window.app.closeSurveyModal = function() {
+                this.surveyModalOpen = false;
+                this.surveyAction = null;
+            };
+        </script>
+    @endif
 @endsection

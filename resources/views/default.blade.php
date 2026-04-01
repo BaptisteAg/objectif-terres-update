@@ -148,6 +148,37 @@
     <script data-jsd-embedded data-key="6cc7e1b1-ff31-49eb-93bf-0016d2cab165" data-base-url="https://jsd-widget.atlassian.com" src="https://jsd-widget.atlassian.com/assets/embed.js"></script>
 @endif
 
+@if(config('messaging.recaptcha.enabled') && config('messaging.recaptcha.site_key'))
+    <!-- reCAPTCHA v3 -->
+    <script src="https://www.google.com/recaptcha/api.js?render={{ config('messaging.recaptcha.site_key') }}"></script>
+    <script>
+        window.$recaptchaSiteKey = "{{ config('messaging.recaptcha.site_key') }}";
+
+        // Helper function for form submission with reCAPTCHA
+        function submitWithRecaptcha(event, form) {
+            event.preventDefault();
+            if (window.grecaptcha && window.$recaptchaSiteKey) {
+                grecaptcha.ready(function() {
+                    grecaptcha.execute(window.$recaptchaSiteKey, { action: 'send_message' }).then(function(token) {
+                        // Find the recaptcha_token input in the form
+                        var tokenInput = form.querySelector('input[name="recaptcha_token"]');
+                        if (tokenInput) {
+                            tokenInput.value = token;
+                        }
+                        form.submit();
+                    }).catch(function(error) {
+                        console.warn('reCAPTCHA error:', error);
+                        form.submit(); // Submit anyway if reCAPTCHA fails
+                    });
+                });
+            } else {
+                form.submit(); // Submit without reCAPTCHA if not available
+            }
+            return false;
+        }
+    </script>
+@endif
+
 @yield('script')
 
 </body>

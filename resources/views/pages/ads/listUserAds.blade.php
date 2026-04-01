@@ -3,7 +3,7 @@
 @section ('title', 'Consulter la liste de vos annonces')
 
 @section('main-content')
-    <section class="container mt-6">
+    <section class="container mt-6" id="user-ads-list">
         <h1 class="title mb-3 mx-3-mobile">Liste de mes annonces</h1>
         <p class="mb-6 mx-3-mobile">{{ count($ads) }} annonce{{ count($ads) > 1 ? 's' : '' }}
             créée{{ count($ads) > 1 ? 's' : '' }}</p>
@@ -125,8 +125,25 @@
                                   rounded>
                             Modifier
                         </b-button>
-                        <b-button onclick="return confirm('Êtes vous sûr·e ? Cette opération est irréversible.')"
-                                  tag="a" href="{{ route('ads.delete', ["ad" => $ad->id]) }}" icon-left="delete"
+                        @if(!$ad->isArchived())
+                            <b-button
+                                      @click="openSurveyModal({{$ad->id}}, 'archive')"
+                                      icon-left="archive-arrow-down"
+                                      rounded>
+                                Archiver
+                            </b-button>
+                        @else
+                            <b-button
+                                      href="{{route('ads.republish', $ad->id)}}"
+                                      tag="a"
+                                      icon-left="publish"
+                                      rounded>
+                                Republier
+                            </b-button>
+                        @endif
+                        <b-button
+                                  @click="openSurveyModal({{$ad->id}}, 'delete')"
+                                  icon-left="delete"
                                   rounded>
                             Supprimer
                         </b-button>
@@ -137,5 +154,34 @@
         <section class="section">
             <pagination :per-page="10" :records="500"></pagination>
         </section>
+
+        <survey-modal
+            v-if="surveyModalOpen"
+            :ad="selectedAd"
+            :action="surveyAction"
+            @close="closeSurveyModal"
+        ></survey-modal>
     </section>
+@endsection
+
+@section('script')
+    <script>
+        // Initialize survey modal data for this page
+        window.app.surveyModalOpen = false;
+        window.app.selectedAd = null;
+        window.app.surveyAction = null;
+        window.app.ads = @json($ads);
+
+        window.app.openSurveyModal = function(adId, action) {
+            this.selectedAd = this.ads.find(ad => ad.id === adId);
+            this.surveyAction = action;
+            this.surveyModalOpen = true;
+        };
+
+        window.app.closeSurveyModal = function() {
+            this.surveyModalOpen = false;
+            this.selectedAd = null;
+            this.surveyAction = null;
+        };
+    </script>
 @endsection

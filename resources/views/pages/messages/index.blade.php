@@ -123,16 +123,21 @@
         });
         let modal = document.querySelector('.modal');
         let html = document.querySelector('html');
-        modal.querySelector('.modal-background').addEventListener('click', function (e) {
-            e.preventDefault();
-            modal.classList.remove('is-active');
-            html.classList.remove('is-clipped');
-        });
-        modal.querySelector('#close-modal').addEventListener('click', function (e) {
-            e.preventDefault();
-            modal.classList.remove('is-active');
-            html.classList.remove('is-clipped');
-        });
+        if (modal) {
+            modal.querySelector('.modal-background').addEventListener('click', function (e) {
+                e.preventDefault();
+                modal.classList.remove('is-active');
+                html.classList.remove('is-clipped');
+            });
+            let closeBtn = modal.querySelector('#close-modal');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    modal.classList.remove('is-active');
+                    html.classList.remove('is-clipped');
+                });
+            }
+        }
 
     </script>
 @endsection

@@ -124,7 +124,7 @@
         <h3 class="title is-4">Production secondaires et envisageables</h3>
         <b-taglist>
             @if($ad->landOfferAd->productionGenresSecondary->count() || $ad->landOfferAd->secondary_production_type_add)
-                @foreach($ad->landOfferAd->productionGenresSecondary->pluck('name') as $productionGenresSecondary)
+                @foreach($ad->landOfferAd->productionGenresSecondary->pluck('name')->unique() as $productionGenresSecondary)
                     <b-tag type="is-primary" rounded size="is-medium">
                         {{$productionGenresSecondary}}
                     </b-tag>
@@ -215,7 +215,7 @@
         <div class="buttons mb-0">
             @include('pages.ads.partials.new-buttons-favorite-and-message')
         </div>
-        <a href="https://portail-terredeliens.force.com/rhizome/s/signaler-un-abus" target="_blank"
+        <a href="https://terredeliens.my.site.com/rhizome/s/signaler-un-abus" target="_blank"
            class="is-underlined is-hidden-touch">Signaler un abus</a>
     </div>
 </div>

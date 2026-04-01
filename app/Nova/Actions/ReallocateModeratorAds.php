@@ -4,6 +4,7 @@ namespace App\Nova\Actions;
 
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
+use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -72,11 +73,27 @@ class ReallocateModeratorAds extends Action
         }
 
         $new_moderator_id = $fields->new_moderator_id;
-        $query = AttributionAd::where('user_moderator_id', $moderators->pluck("id"))
+        $old_moderator_ids = $moderators->pluck("id")->toArray();
+
+        $query = AttributionAd::where('user_moderator_id', $old_moderator_ids)
             ->whereIn('ad_status_id', [AdStatus::PENDING_ID, AdStatus::PENDING_MODERATION_STATUS_ID, AdStatus::APPROVE_ID, AdStatus::REFUSE_ID]);
+
+        // Get ad IDs before update for thread handling
+        $adIds = $query->pluck('ad_id');
 
         $count = $query->count();
         $query->update(["user_moderator_id" => $new_moderator_id]);
+
+        // Update thread participants: add new moderator, remove old moderators
+        $threads = Thread::whereIn('ad_id', $adIds)->get();
+        foreach ($threads as $thread) {
+            // Add new moderator if not already present
+            if (!$thread->users()->where('users.id', $new_moderator_id)->exists()) {
+                $thread->users()->attach($new_moderator_id);
+            }
+            // Remove old moderators from thread
+            $thread->users()->detach($old_moderator_ids);
+        }
 
         return Action::message($count . ' annonces ont été réattribuées avec succès ! Attention, si le modérateur d\'origine n\'est pas supprimé, il peut être à nouveau choisi dans le processus d\'attribution automatique.');
     }

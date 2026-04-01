@@ -13,7 +13,7 @@ use App\Notifications\NewSupportRequestNotification;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 
 class  AdsController extends BaseController
@@ -108,7 +108,7 @@ class  AdsController extends BaseController
             }
 
             report($exception);
-            if(config('app.env') !== 'production') {
+            if (config('app.env') !== 'production') {
                 throw $exception;
             }
             return back()->withInput()->withErrors($exceptionMessage);
@@ -254,7 +254,6 @@ class  AdsController extends BaseController
         return view('pages.ads.listUserAds', compact('ads'));
     }
 
-
     /**
      * @param Ad $ad
      * @return \Illuminate\Http\RedirectResponse
@@ -267,7 +266,9 @@ class  AdsController extends BaseController
         }
         $this->adService->delete($ad);
         if (is_null($ad->project_id)) {
-            return redirect()->route('user.index')->with('success', 'Votre annonce a bien été supprimée');
+
+            return redirect()->route('user.index')
+                ->with('success', 'Votre annonce a bien été supprimée');
         }
 
         return redirect()->route('user.index')->with('success', 'Votre demande d\'accomapgnement a été supprimée avec succès');
@@ -285,9 +286,85 @@ class  AdsController extends BaseController
         }
         $this->adService->archive($ad);
         if (is_null($ad->project_id)) {
-            return back()->with('success', 'Votre annonce a bien été archivée');
+            $formUrl = Ad::SALESFORCE_FORM_BY_AD_TYPE[$ad->type] ?? '';
+
+            return back()
+                ->with('success', 'Votre annonce a bien été archivée')
+                ->with('display_survey', $formUrl);
         }
         return redirect()->route('user.index')->with('success', 'Votre demande d\'accomapgnement a été archivée avec succès');
+    }
+
+
+    /**
+     * Republish an archived ad
+     *
+     * @param Ad $ad
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function republish(Ad $ad)
+    {
+        if (!$ad->canEdit()) {
+            abort(404);
+        }
+
+        if (!$ad->isArchived()) {
+            return back()->with('error', 'Cette annonce n\'est pas archivée');
+        }
+
+        $this->adService->republish($ad);
+
+        return back()->with('success', 'Votre annonce a été republiée avec succès');
+    }
+
+    /**
+     * Handle survey submission before archive or delete
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param Ad $ad
+     * @param string $action
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function survey(\Illuminate\Http\Request $request, Ad $ad, string $action)
+    {
+        // Check if user can edit this ad
+        if (!$ad->canEdit()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        // Validate action
+        if (!in_array($action, ['archive', 'delete'])) {
+            return response()->json(['error' => 'Invalid action'], 400);
+        }
+
+        // Validate survey response
+        $request->validate([
+            'survey_success_via_platform' => 'required|in:oui,non',
+            'survey_comments' => 'nullable|string|max:5000'
+        ]);
+
+        // Store survey data
+        $ad->survey_success_via_platform = $request->input('survey_success_via_platform');
+        $ad->survey_comments = $request->input('survey_comments');
+        $ad->survey_submitted_at = now();
+        $ad->save();
+
+        // Execute the action (archive or delete)
+        if ($action === 'archive') {
+            $this->adService->archive($ad);
+            $message = 'Votre annonce a bien été archivée';
+        } else {
+            $this->adService->delete($ad);
+            $message = 'Votre annonce a bien été supprimée';
+        }
+
+        // Return success with redirect
+        return response()->json([
+            'success' => true,
+            'message' => $message,
+            'redirect' => route('ads.list')
+        ]);
     }
 
     /**
@@ -319,7 +396,7 @@ class  AdsController extends BaseController
     /**
      * @throws \Throwable
      */
-    protected function store(AdRequest $request, $isDraft = 1) : Ad
+    protected function store(AdRequest $request, $isDraft = 1): Ad
     {
         $data = $request->validated();
         $data["is_draft"] = $isDraft;

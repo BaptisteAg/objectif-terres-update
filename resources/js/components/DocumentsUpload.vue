@@ -27,7 +27,7 @@
             @vdropzone-removed-file="onRemoveUploadedDocument">
 
         <div class="dropzone-custom-content">
-            <div class="text_primary"><i class='fas fa-cloud'></i> Cliquez ici pour déposer des fichiers</div>
+            <div class="text_primary"><i class='fas fa-cloud'></i> Cliquez ici pour déposer vos photos et pièces jointes</div>
             <h3 class="dropzone-custom-title">Vous pouvez également glisser-déposer</h3>
         </div>
     </vue-dropzone>

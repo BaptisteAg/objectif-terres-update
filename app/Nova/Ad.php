@@ -8,11 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
@@ -62,6 +64,7 @@ class Ad extends Resource
     public static function indexQuery(NovaRequest $request, $query)
     {
         $query
+            ->withTrashed()
             ->select('*', 'ads.id as id')
             ->join('users as userPp', 'userPp.id', '=', 'ads.user_pp_id');
         return $query;
@@ -98,6 +101,39 @@ class Ad extends Resource
 
             HasOne::make('Modération', 'attributionAd', AttributionAd::class)
                 ->hideFromIndex(),
+
+            // Survey fields
+            Badge::make('Supprimée', 'deleted_at')
+                ->map([
+                    null => 'success',
+                    '*' => 'danger',
+                ])
+                ->labels([
+                    null => 'Non',
+                    '*' => 'Oui',
+                ])
+                ->resolveUsing(fn($value) => $value ? 'deleted' : null)
+                ->hideFromDetail(),
+
+            Select::make('Succès via OT', 'survey_success_via_platform')
+                ->options([
+                    'oui' => 'Oui',
+                    'non' => 'Non',
+                ])
+                ->displayUsingLabels()
+                ->nullable(),
+
+            Textarea::make('Remarques enquête', 'survey_comments')
+                ->hideFromIndex()
+                ->nullable(),
+
+            DateTime::make('Date enquête', 'survey_submitted_at')
+                ->hideFromIndex()
+                ->nullable(),
+
+            DateTime::make('Date suppression', 'deleted_at')
+                ->hideFromIndex()
+                ->nullable(),
         ];
     }
 

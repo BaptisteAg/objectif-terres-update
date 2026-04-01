@@ -551,6 +551,17 @@ class  AdService
     }
 
     /**
+     * Republish an archived ad
+     *
+     * @param Ad $ad
+     * @return void
+     */
+    public function republish(Ad $ad)
+    {
+        return $this->repository->republish($ad->id);
+    }
+
+    /**
      * Show all ads ads related to supervisor
      * @param bool $toPaginate
      * @return LengthAwarePaginator|Collection

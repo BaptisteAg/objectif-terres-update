@@ -141,7 +141,10 @@ class Ad extends Model implements HasPresenter
         'created_at',
         'origin',
         'department_id',
-        'third_party_ad_user_id'
+        'third_party_ad_user_id',
+        'survey_success_via_platform',
+        'survey_comments',
+        'survey_submitted_at'
     ];
 
     const AD_TYPES = [
@@ -173,6 +176,10 @@ class Ad extends Model implements HasPresenter
     // in the related table
     public function getTypeAttribute(): ?string
     {
+        if ($this->trashed()) {
+            return null;
+        }
+
         if (isset($this->cached_type)) {
             return $this->cached_type;
         }
@@ -199,7 +206,7 @@ class Ad extends Model implements HasPresenter
         $type = null;
 
         foreach (static::AD_TYPES as $key => $class) {
-            if ($result->{$key}) {
+            if ($result->{$key} ?? 0) {
                 $type = $key;
             }
         }
@@ -446,6 +453,12 @@ class Ad extends Model implements HasPresenter
                 ) || auth()->user()->role >= 4;
         }
         return false;
+    }
+
+    public function isArchived(): bool
+    {
+        return $this->attributionAd &&
+               $this->attributionAd->ad_status_id === AdStatus::ARCHIVED_ID;
     }
 
     public function thirdPartyAdUser(): BelongsTo

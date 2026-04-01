@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Nova\Actions\ReallocateModeratorAds;
+use App\Nova\Filters\LikelyBotFilter;
 use App\Nova\Filters\UserRoleFilter;
 use App\Rules\SalesforceUniqueEmail;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -132,6 +134,17 @@ class User extends Resource
 
 			Impersonate::make($this),
 
+			Number::make('Score Bot Min', function () {
+				return $this->min_recaptcha_score;
+			})
+			  ->help('Score reCAPTCHA minimum (0.0 = bot, 1.0 = humain)')
+			  ->displayUsing(function ($value) {
+				  if ($value === null) return '-';
+				  if ($value < 0.3) return '<span style="color: red; font-weight: bold;">' . $value . '</span>';
+				  if ($value < 0.5) return '<span style="color: orange;">' . $value . '</span>';
+				  return '<span style="color: green;">' . $value . '</span>';
+			  })->asHtml(),
+
 			Text::make('Profile', function () {
 				if (isset($this->profile)) {
 					return \App\Models\User::$profiles[$this->profile];
@@ -186,7 +199,10 @@ class User extends Resource
 	 */
 	public function filters(Request $request)
 	{
-		return [new UserRoleFilter()];
+		return [
+			new UserRoleFilter(),
+			new LikelyBotFilter(),
+		];
 	}
 
 	/**

@@ -230,6 +230,22 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         $ad->attributionAd->save();
     }
 
+    /**
+     * Republish an archived ad
+     *
+     * @param int $id
+     * @return void
+     */
+    public function republish(int $id)
+    {
+        /** @var Ad $ad */
+        $ad = Ad::find($id);
+        $ad->attributionAd->ad_status_id = AdStatus::APPROVE_ID;
+        $ad->attributionAd->published_on = Carbon::now();
+        $ad->attributionAd->archived_at = null;
+        $ad->attributionAd->save();
+    }
+
 
     /**
      * Find all ads and projects by user id
