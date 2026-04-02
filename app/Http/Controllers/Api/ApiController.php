@@ -44,7 +44,7 @@ class ApiController extends Controller
      *     operationId="getAds",
      *     tags={"Objectif Terres API"},
      *     summary="Get ads",
-     *     description="Returns ads with pagination and filtering options.",
+     *     description="Returns ads ordered by updated_at ascending, with pagination and filtering options.",
      *     security={
      *         {"apiKey": {}}
      *     },
@@ -276,7 +276,9 @@ class ApiController extends Controller
             'cities',
             'attributionAd.adStatus',
             'attributionAd.userModerator',
-            'userPp',
+            'userPp' => function ($query) {
+                $query->withTrashed();
+            },
             'thirdPartyAdUser',
             'landOfferAd.offerGenres',
             'landOfferAd.building',
@@ -302,7 +304,7 @@ class ApiController extends Controller
         }
 
         // Order by created_at
-        $adsQuery->orderBy('created_at', 'desc');
+        $adsQuery->orderBy('updated_at', 'asc');
 
         return $adsQuery;
     }
