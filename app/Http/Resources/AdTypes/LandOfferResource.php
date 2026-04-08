@@ -55,7 +55,7 @@ class LandOfferResource extends JsonResource
             'offer_types' => $this->getOfferTypes($landOffer),
 
             // About land transmission (from ad's about_project_content)
-            'about_land_transmission' => $landOffer->ad->about_project_content,
+            'about_land_transmission' => $landOffer->ad?->about_project_content,
 
             // Building information
             'building' => $this->getBuildingData($landOffer),

@@ -21,7 +21,7 @@ class AuthorResource extends JsonResource
 
         // Load relationships if not already loaded
         if (!$ad->relationLoaded('userPp')) {
-            $ad->load('userPp');
+            $ad->load(['userPp' => fn($q) => $q->withTrashed()]);
         }
 
         $user = $ad->userPp;
