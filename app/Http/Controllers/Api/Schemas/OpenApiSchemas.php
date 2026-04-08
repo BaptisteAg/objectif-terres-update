@@ -46,6 +46,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *     @OA\Property(property="phone", type="string", example="0612345678"),
  *     @OA\Property(property="profile", type="string", enum={"candidat_installation", "en_recherche", "proprietaire_vente_location", "autre"}, example="candidat_installation"),
  *     @OA\Property(property="on_behalf_of_third_party", type="boolean", example=false),
+ *     @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, description="Author deletion date (present if user was soft-deleted)"),
  *     @OA\Property(
  *         property="third_party",
  *         type="object",
@@ -71,7 +72,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *         @OA\Property(property="email", type="string", format="email", example="l.bouvrot@terredeliens.org"),
  *         @OA\Property(property="is_third_party", type="boolean", example=false)
  *     ),
- *     @OA\Property(property="status", type="string", enum={"approved", "pending", "rejected"}, example="approved"),
+ *     @OA\Property(property="status", type="string", enum={"approved", "pending", "refused"}, example="approved"),
  *     @OA\Property(property="archived_at", type="string", format="date-time", nullable=true),
  *     @OA\Property(property="attributed_at", type="string", format="date-time", example="2025-09-25T16:51:31Z")
  * )
@@ -235,7 +236,6 @@ namespace App\Http\Controllers\Api\Schemas;
  *     type="object",
  *     title="Meta",
  *     @OA\Property(property="generated_at", type="string", format="date-time", example="2025-09-26T12:30:00Z"),
- *     @OA\Property(property="cache_expires_at", type="string", format="date-time", example="2025-09-26T13:30:00Z"),
  *     @OA\Property(property="total_filtered", type="integer", example=150, description="Total number of filtered results"),
  *     @OA\Property(
  *         property="filters_applied",

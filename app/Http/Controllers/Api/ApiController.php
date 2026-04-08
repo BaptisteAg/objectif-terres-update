@@ -44,7 +44,7 @@ class ApiController extends Controller
      *     operationId="getAds",
      *     tags={"Objectif Terres API"},
      *     summary="Get ads",
-     *     description="Returns ads with pagination and filtering options.",
+     *     description="Returns ads ordered by updated_at ascending, with pagination and filtering options.",
      *     security={
      *         {"apiKey": {}}
      *     },
@@ -74,13 +74,13 @@ class ApiController extends Controller
      *     @OA\Parameter(
      *         name="updated_since",
      *         in="query",
-     *         description="Get ads updated after this date. MUST be in UTC timezone with ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ). Clients must convert their local times to UTC before making the request.",
+     *         description="Get ads updated after this date. Accepts YYYY-MM-DD or ISO 8601 (YYYY-MM-DDTHH:MM:SSZ).",
      *         required=false,
      *         @OA\Schema(
      *             type="string",
-     *             format="date-time"
+     *             format="date"
      *         ),
-     *         example="2025-09-25T00:00:00Z"
+     *         example="2025-09-25"
      *     ),
      *     @OA\Parameter(
      *         name="page",
@@ -101,8 +101,24 @@ class ApiController extends Controller
      *         @OA\Schema(
      *             type="integer",
      *             minimum=1,
-     *             maximum=100,
-     *             default=20
+     *             maximum=200,
+     *             default=50
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="status[]",
+     *         in="query",
+     *         description="Filter by ad status. Accepts array format (?status[]=published&status[]=archived) or comma-separated string (?status=published,archived,deleted). Default: published",
+     *         required=false,
+     *         style="form",
+     *         explode=true,
+     *         @OA\Schema(
+     *             type="array",
+     *             @OA\Items(
+     *                 type="string",
+     *                 enum={"published", "archived", "deleted"}
+     *             ),
+     *             default={"published"}
      *         )
      *     ),
      *     @OA\Response(
@@ -165,26 +181,17 @@ class ApiController extends Controller
      */
     public function ads(AdIndexRequest $request): \Illuminate\Http\JsonResponse
     {
-        $cacheKey = 'api-ads-v2-' . md5(json_encode($request->all()));
+        $query = $this->buildAdsQuery($request);
 
-        // Clear cache in development
-        if (config('app.env') !== 'production') {
-            cache()->forget($cacheKey);
+        // Apply pagination if requested
+        if ($request->wantsPagination()) {
+            $perPage = $request->getPerPage();
+            $data = $query->paginate($perPage);
+        } else {
+            // Default limit for non-paginated requests
+            $limit = $request->getPerPage();
+            $data = $query->limit($limit)->get();
         }
-
-        $data = cache()->remember($cacheKey, 3600, function () use ($request) {
-            $query = $this->buildAdsQuery($request);
-
-            // Apply pagination if requested
-            if ($request->wantsPagination()) {
-                $perPage = $request->getPerPage();
-                return $query->paginate($perPage);
-            } else {
-                // Default limit for non-paginated requests
-                $limit = $request->getPerPage();
-                return $query->limit($limit)->get();
-            }
-        });
 
         // Validate page number if paginated
         if ($data instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator) {
@@ -213,11 +220,53 @@ class ApiController extends Controller
      */
     protected function buildAdsQuery($request)
     {
-        $adsQuery = Ad::query()
-            ->whereHas('attributionAd', function (Builder $query) {
-                $query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
-            })
-            ->where('is_draft', '=', 0);
+        $adsQuery = Ad::query();
+
+        $requestedStatuses = $request->getRequestedStatuses();
+
+        // If 'deleted' is requested, we need withTrashed to include soft-deleted ads
+        if (in_array('deleted', $requestedStatuses)) {
+            $adsQuery->withTrashed();
+        }
+
+        // Build OR-combined conditions per status
+        $adsQuery->where(function (Builder $query) use ($requestedStatuses) {
+            foreach ($requestedStatuses as $status) {
+                switch ($status) {
+                    case 'published':
+                        $query->orWhere(function (Builder $q) {
+                            $q->whereNull('deleted_at')
+                              ->whereHas('attributionAd', function (Builder $attrQ) {
+                                  $attrQ->where('ad_status_id', AdStatus::APPROVE_ID)
+                                        ->whereNotNull('published_on')
+                                        ->whereNull('archived_at');
+                              });
+                        });
+                        break;
+
+                    case 'archived':
+                        $query->orWhere(function (Builder $q) {
+                            $q->whereNull('deleted_at')
+                              ->whereHas('attributionAd', function (Builder $attrQ) {
+                                  $attrQ->where(function (Builder $archQ) {
+                                      $archQ->whereNotNull('archived_at')
+                                            ->orWhere('ad_status_id', AdStatus::ARCHIVED_ID);
+                                  });
+                              });
+                        });
+                        break;
+
+                    case 'deleted':
+                        $query->orWhere(function (Builder $q) {
+                            $q->whereNotNull('deleted_at');
+                        });
+                        break;
+                }
+            }
+        });
+
+        // Global filter: never return drafts
+        $adsQuery->where('is_draft', '=', 0);
 
         // Eager load all necessary relationships
         $adsQuery->with([
@@ -227,7 +276,9 @@ class ApiController extends Controller
             'cities',
             'attributionAd.adStatus',
             'attributionAd.userModerator',
-            'userPp',
+            'userPp' => function ($query) {
+                $query->withTrashed();
+            },
             'thirdPartyAdUser',
             'landOfferAd.offerGenres',
             'landOfferAd.building',
@@ -253,7 +304,7 @@ class ApiController extends Controller
         }
 
         // Order by created_at
-        $adsQuery->orderBy('created_at', 'desc');
+        $adsQuery->orderBy('updated_at', 'asc');
 
         return $adsQuery;
     }
