@@ -46,6 +46,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *     @OA\Property(property="phone", type="string", example="0612345678"),
  *     @OA\Property(property="profile", type="string", enum={"candidat_installation", "en_recherche", "proprietaire_vente_location", "autre"}, example="candidat_installation"),
  *     @OA\Property(property="on_behalf_of_third_party", type="boolean", example=false),
+ *     @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, description="Author deletion date (present if user was soft-deleted)"),
  *     @OA\Property(
  *         property="third_party",
  *         type="object",
