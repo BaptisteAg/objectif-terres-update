@@ -38,6 +38,7 @@ class AuthorResource extends JsonResource
             'phone' => $user->phone,
             'profile' => $this->getUserProfile($user),
             'on_behalf_of_third_party' => $ad->third_party_ad_user_id !== null,
+            'deleted_at' => $user->deleted_at ? $user->deleted_at->copy()->setTimezone('UTC')->format('Y-m-d\TH:i:s\Z') : null,
         ];
 
         // Add third party information if exists
