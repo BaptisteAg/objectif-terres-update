@@ -210,16 +210,13 @@
                                 v-model="formInput.isSaleOfferEvaluation">Prix de vente en cours d'évaluation
                     </b-checkbox>
                     <input type="hidden" name="land_offer[is_sales_offer_evaluation]"
-                           :value="formInput.isSaleOfferEvaluation">
+                           :value="formInput.isSaleOfferEvaluation ? 1 : 0">
                 </div>
-                <div class="column field" v-if="isSaleOffer && !formInput.isSaleOfferEvaluation" ref="price">
-                    {!! Form::label('land_offer[price]', 'Prix de vente *', [
-                                        'class' => 'label',
-                                    ]); !!}
+                <div class="column field" v-if="isSaleOffer" ref="price">
+                    <label class="label" for="land_offer[price]">Prix de vente <span v-if="!formInput.isSaleOfferEvaluation">*</span></label>
                     {!! Form::text('land_offer[price]', null, [
                                                                 'class' => 'input',
                                                                 'v-model' => 'formInput.price',
-                                                                ':disabled'=>'formInput.isSaleOfferEvaluation || false',
                                                             ]) !!}
                     <template v-if="$v.formInput.price.$error">
                         <p class="help is-danger" v-if="$v.formInput.price.required">
