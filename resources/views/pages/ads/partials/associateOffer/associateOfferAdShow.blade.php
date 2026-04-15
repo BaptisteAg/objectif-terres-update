@@ -98,8 +98,20 @@
         <h3 class="title is-4">Description d'associé</h3>
         <p>{{ $ad->associateOfferAd->associate_description }}</p>
     </div>
+    @if($ad->associateOfferAd->experience_farming)
+        <div>
+            <h3 class="title is-4">Expérience souhaitée dans le milieu agricole</h3>
+            <p>{!! nl2br($ad->associateOfferAd->experience_farming ?? "") !!}</p>
+        </div>
+    @endif
+    @if($ad->associateOfferAd->educationLevels->count())
+        <div>
+            <h3 class="title is-4">Niveau de formation agricole souhaité</h3>
+            <p>{{ $ad->associateOfferAd->educationLevels->pluck('name')->implode(', ') }}</p>
+        </div>
+    @endif
     <div>
-        <h3 class="title is-4">Description de la transmission agricole</h3>
+        <h3 class="title is-4">Description de la ferme, du projet et des attentes de l'annonceur</h3>
         <p>{!! nl2br($ad->about_project_content ??"") !!}</p>
     </div>
     <div>

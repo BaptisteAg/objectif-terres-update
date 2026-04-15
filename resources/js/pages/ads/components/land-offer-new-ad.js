@@ -64,7 +64,7 @@ export default {
 
 				offerGenres: old.land_offer.offer_genres || [],
 				price: old.land_offer.price || '',
-				isSaleOfferEvaluation: old.land_offer.is_sales_offer_evaluation,
+				isSaleOfferEvaluation: !!old.land_offer.is_sales_offer_evaluation,
 				rentPrice: old.land_offer.rent_price || '',
 				testDescription: old.land_offer.test_description || '',
 				chartConfirmation: old.chart_confirmation || true,
