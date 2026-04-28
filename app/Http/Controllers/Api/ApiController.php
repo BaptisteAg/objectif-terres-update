@@ -239,7 +239,8 @@ class ApiController extends Controller
                               ->whereHas('attributionAd', function (Builder $attrQ) {
                                   $attrQ->where('ad_status_id', AdStatus::APPROVE_ID)
                                         ->whereNotNull('published_on')
-                                        ->whereNull('archived_at');
+                                        ->whereNull('archived_at')
+                                        ->whereRaw('attribution_ads.id = (SELECT MAX(id) FROM attribution_ads WHERE ad_id = ads.id)');
                               });
                         });
                         break;
@@ -251,7 +252,8 @@ class ApiController extends Controller
                                   $attrQ->where(function (Builder $archQ) {
                                       $archQ->whereNotNull('archived_at')
                                             ->orWhere('ad_status_id', AdStatus::ARCHIVED_ID);
-                                  });
+                                  })
+                                  ->whereRaw('attribution_ads.id = (SELECT MAX(id) FROM attribution_ads WHERE ad_id = ads.id)');
                               });
                         });
                         break;
