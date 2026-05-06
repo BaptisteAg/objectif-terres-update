@@ -128,7 +128,12 @@ export default {
 		'formInput.rentPrice': numberNormalizer('rentPrice'),
 		'formInput.offerGenres': function (value) {
 			this.choiceOfferGenres(value);
-		}
+		},
+		'formInput.isSaleOfferEvaluation': function (isEvaluation) {
+			if (isEvaluation) {
+				this.formInput.price = '';
+			}
+		},
 	},
 	validations() {
 		return {
