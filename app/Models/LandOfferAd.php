@@ -95,7 +95,7 @@ class LandOfferAd extends Model
 
 	public function ad()
 	{
-		return $this->belongsTo(Ad::class);
+		return $this->belongsTo(Ad::class)->withTrashed();
 	}
 
 	public function building()

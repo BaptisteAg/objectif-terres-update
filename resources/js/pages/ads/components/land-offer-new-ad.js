@@ -64,7 +64,7 @@ export default {
 
 				offerGenres: old.land_offer.offer_genres || [],
 				price: old.land_offer.price || '',
-				isSaleOfferEvaluation: old.land_offer.is_sales_offer_evaluation,
+				isSaleOfferEvaluation: !!old.land_offer.is_sales_offer_evaluation,
 				rentPrice: old.land_offer.rent_price || '',
 				testDescription: old.land_offer.test_description || '',
 				chartConfirmation: old.chart_confirmation || true,
@@ -128,7 +128,12 @@ export default {
 		'formInput.rentPrice': numberNormalizer('rentPrice'),
 		'formInput.offerGenres': function (value) {
 			this.choiceOfferGenres(value);
-		}
+		},
+		'formInput.isSaleOfferEvaluation': function (isEvaluation) {
+			if (isEvaluation) {
+				this.formInput.price = '';
+			}
+		},
 	},
 	validations() {
 		return {

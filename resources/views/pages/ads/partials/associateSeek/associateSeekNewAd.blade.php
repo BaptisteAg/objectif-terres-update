@@ -42,7 +42,9 @@
             </section>
 
             <section class="mb-6 field">
+                <input type="hidden" name="associate_seek[is_land_already_found]" value="0">
                 <b-checkbox name="associate_seek[is_land_already_found]"
+                            native-value="1"
                             v-model="formInput.isLandAlreadyFound"
                             class="is-size-6 has-text-weight-bold">
                     Cochez cette case si vous avez des pistes de fermes à reprendre
@@ -54,7 +56,7 @@
                 <text-area-counter
                         name="associate_seek[land_description]"
                         :max-length="1500"
-                        v-model="formInput.land_description">
+                        v-model="formInput.landDescription">
                 </text-area-counter>
             </section>
 
