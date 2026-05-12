@@ -90,8 +90,6 @@ class SalesforceService
         }
 
         $sfPayload = [
-            // Account global donné par Youssouf
-            "AccountId" => config('salesforce.contact_account_id'),
             "Email" => $data["email"],
             "LastName" => $data["name"],
             'FirstName' => $data["first_name"],
@@ -150,8 +148,6 @@ class SalesforceService
          * ]
          */
         $contact = $this->repository->create('Contact', [
-            // Account global donné par Youssouf
-            "AccountId" => "0012000000o2X3TAAU",
             "Email" => $data["email"],
             "LastName" => $data["lastName"],
             'FirstName' => $data["firstName"],
