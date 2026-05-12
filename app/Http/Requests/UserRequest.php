@@ -53,7 +53,7 @@ class UserRequest extends FormRequest
             'password' => ['confirmed', 'min:5'],
             'user_id' => ['integer'],
 
-            'accept_communication' => ['required', 'boolean'],
+            'accept_communication' => ['nullable', 'boolean'],
 
         ], $emailRule);
     }
