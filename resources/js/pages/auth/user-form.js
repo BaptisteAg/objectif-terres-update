@@ -12,8 +12,8 @@ Vue.component('user-form', {
 	},
 	data() {
 		return {
-			optionProfileSelected: this.oldValues.profile ? this.oldValues.profile : '',
-			otherProfile: this.oldValues.other_profile ? this.oldValues.other_profile : '',
+			optionProfileSelected: this.oldValues.profile ? String(this.oldValues.profile) : '',
+			otherProfile: this.oldValues.other_profile ? String(this.oldValues.other_profile) : '',
 			optionHasFormationSelected: this.oldValues.formation ? '1' : '',
 			formationSelected: this.oldValues.formation ? this.oldValues.formation : '',
 			citySelect: this.oldValues.citySelect ? JSON.parse(this.oldValues.citySelect) : [],
