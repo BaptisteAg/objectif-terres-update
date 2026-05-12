@@ -230,11 +230,17 @@ The application uses soft multi-tenancy:
 
 ### Salesforce Integration
 Salesforce integration handles external CRM functionality:
-- **SSO Authentication**: OAuth2 authentication via SAML for user login
+- **SSO Authentication**: SAML2 authentication for user login (config in `config/saml2/salesforce_idp_settings.php`, certs in `/certs/`)
+- **REST API**: Server-to-server via Forrest (`omniphx/forrest`) using OAuth 2.0 **Client Credentials** flow — headless, no browser handshake, no callback URL. The Connected App must have "Enable Client Credentials Flow" turned on with a run-as user assigned.
 - **Ad Synchronization**: Bi-directional sync of ads with Salesforce
-- **API Integration**: Custom API endpoints for data exchange
-- **Certificate-based Authentication**: Annual certificate renewal required
+- **Certificate-based Authentication**: Annual SAML certificate renewal required (SSO only — the REST API uses Client Credentials, no cert)
 - **DEPRECATED**: Internal project/support request management (now handled entirely in Salesforce)
+
+#### REST API env vars (per environment)
+- `SF_AUTHENTICATION=ClientCredentials`
+- `SF_CONSUMER_KEY` / `SF_CONSUMER_SECRET` — from the Connected App
+- `SF_LOGIN_URL` — the org's **My Domain URL** (e.g. `https://terredeliens--partcopy.sandbox.my.salesforce.com` for the partcopy sandbox). Client Credentials does **not** work against `login.salesforce.com` or `test.salesforce.com`.
+- `SF_SYNC_CONTACT_ACCOUNT_ID` — account ID used when syncing contacts
 
 ## Development Patterns
 
@@ -304,10 +310,11 @@ Salesforce integration handles external CRM functionality:
 - Complex queries often involve multiple geographic levels
 
 ### Salesforce Integration (Active Components)
-- Certificate files in `/certs/` directory
-- Annual certificate renewal process documented in README
+- SAML certificate files in `/certs/` directory (SSO only)
+- Annual SAML certificate renewal process documented in README
 - Ad synchronization endpoints and error handling
 - SSO authentication flow maintenance
+- REST API uses headless Client Credentials flow — no interactive setup required, just env vars
 
 ### Moderation Workflow (Still Active)
 - Ad status transitions through defined states
