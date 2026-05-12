@@ -98,7 +98,7 @@ class UsersController extends Controller
 	{
 		$data = $request->validated();
 
-        if(auth()->id() !== $data['user_id']){
+        if((int) auth()->id() !== (int) $data['user_id']){
             abort(Response::HTTP_FORBIDDEN);
         }
 
