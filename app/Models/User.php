@@ -143,6 +143,7 @@ class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 		'profile',
 		'civility',
 		'other_profile',
+		'sf_id',
 		'accept_share_contact_infos',
 		'role',
 		'is_blocked',
