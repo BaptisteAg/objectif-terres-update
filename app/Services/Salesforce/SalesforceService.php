@@ -61,13 +61,13 @@ class SalesforceService
             "Email" => $data["email"],
             "LastName" => $data["name"],
             'FirstName' => $data["first_name"],
-            "Phone" => $data["email"],
+            "Phone" => $data["phone"] ?? null,
             "MailingStreet" => $data["street"],
             "MailingPostalCode" => $city->zip_code,
             "MailingCity" => $city->name,
             "MailingCountry" => Country::findOrFail($data["country_id"])->name_fr_fr,
             "Profil_Objectif_Terres__c" => \App\Models\User::$profiles[$data["profile"]] ?? null,
-            "Recevoir_les_infos_de_TDL__c" => empty($user->accept_communication) ? 0 : 1,
+            "Recevoir_les_infos_de_TDL__c" => empty($data["accept_communication"]) ? 0 : 1,
         ];
     }
 
