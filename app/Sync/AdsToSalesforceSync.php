@@ -139,7 +139,6 @@ class AdsToSalesforceSync
                         $progressBar->setMessage("Creating Contact " . ($i + 1) . " / " . count($users) . " ( $user->email ) " . json_encode($values). "\n");
 
                         return $this->repository->create('Contact', array_merge($values,[
-                            "AccountId" => config('salesforce.contact_account_id'),
                             "LastName" => $user->name ?: 'Vide',
                             'FirstName' => $user->first_name ?: 'Vide',
                         ]));

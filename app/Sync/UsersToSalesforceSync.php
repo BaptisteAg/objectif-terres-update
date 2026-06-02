@@ -38,7 +38,6 @@ class UsersToSalesforceSync
                 "Recevoir_les_infos_de_TDL__c" => empty($user->accept_communication) ? 0 : 1,
                 "LastName" => $user->name ?: 'Vide',
                 'FirstName' => $user->first_name ?: 'Vide',
-                "AccountId" => config('salesforce.contact_account_id'),
             ]);
 
             $this->repository->upsert('Contact', 'OT_user_id__c', $values);

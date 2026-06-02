@@ -43,6 +43,10 @@ class LandOfferAdRepository extends AbstractRepository implements LandOfferAdRep
 
 	private function save(LandOfferAd $landOfferAd, array $data)
 	{
+		if (!empty($data['is_sales_offer_evaluation'])) {
+			$data['price'] = null;
+		}
+
 		$landOfferAd->fill($data);
 		$landOfferAd->save();
 

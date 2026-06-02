@@ -460,6 +460,46 @@ class ApiTest extends TestCase
     }
 
     /**
+     * Test that an ad re-submitted to moderation after being published+archived
+     * is NOT returned with status=published (default filter).
+     * Reproduces ticket about ads 516/7982 leaking pending_moderation/refused statuses.
+     */
+    public function testRepublishedAdIsNotReturnedAsPublished()
+    {
+        $author = factory(User::class)->create(['role' => User::ROLE_PP]);
+        $ad = factory(Ad::class)->disableEvents()->create([
+            'user_pp_id' => $author->id,
+            'is_draft' => false,
+        ]);
+        factory(LandOfferAd::class)->disableEvents()->create(['ad_id' => $ad->id]);
+
+        // History: published -> archived -> re-submitted to moderation
+        AttributionAd::create([
+            'ad_id' => $ad->id,
+            'ad_status_id' => AdStatus::APPROVE_ID,
+            'published_on' => now()->subDays(30),
+        ]);
+        AttributionAd::create([
+            'ad_id' => $ad->id,
+            'ad_status_id' => AdStatus::ARCHIVED_ID,
+            'archived_at' => now()->subDays(15),
+        ]);
+        AttributionAd::create([
+            'ad_id' => $ad->id,
+            'ad_status_id' => AdStatus::PENDING_MODERATION_STATUS_ID,
+        ]);
+
+        $response = $this->getJson('/api/v1/ads', [
+            'Ot-api-key' => 'test-api-key',
+        ]);
+        $response->assertStatus(200);
+
+        $ads = $response->json('data');
+        $found = collect($ads)->firstWhere('id', $ad->id);
+        $this->assertNull($found, 'Re-submitted ad must not appear with status=published');
+    }
+
+    /**
      * Test that an invalid status value returns 400.
      */
     public function testInvalidStatusReturns400()

@@ -60,6 +60,12 @@
             <p>{!! nl2br($ad->associateSeekAd->land_description ?? "Non précisée") !!}</p>
         </div>
     @endif
+    @if($ad->associateSeekAd->associate_description)
+        <div>
+            <h3 class="title is-4">Description du type d'associé.e.s recherché.e.s</h3>
+            <p>{!! nl2br($ad->associateSeekAd->associate_description ?? "") !!}</p>
+        </div>
+    @endif
     <div>
         <h3 class="title is-4">Description du projet</h3>
         <p>{!! nl2br($ad->about_project_content ??"") !!}</p>

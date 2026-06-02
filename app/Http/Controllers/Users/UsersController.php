@@ -104,12 +104,16 @@ class UsersController extends Controller
 
         $user = User::where('email', '=', $data['email'])->first();
 
-        if ($user !== null) {
+        if ($user !== null && $user->sf_id) {
             try {
                 $this->salesforceService->updateContact($user->sf_id, $this->salesforceService::getOTUserToSalesforceContactMapping($data));
             }
             catch (\Exception $e) {
-                // Do nothing
+                \Log::warning('SF updateContact failed on profile update', [
+                    'user_id' => $user->id,
+                    'sf_id' => $user->sf_id,
+                    'error' => $e->getMessage(),
+                ]);
             }
         }
 
