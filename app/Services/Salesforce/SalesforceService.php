@@ -217,7 +217,7 @@ class SalesforceService
         $this->repository->authenticate();
 
         /** @var User $localUser */
-        $user = $this->repository->find('User', $sfId, ['FirstName', 'LastName', 'ProfileId', 'Role_Objectif_Terre__c']);
+        $user = $this->repository->find('User', $sfId, ['FirstName', 'LastName', 'Role_Objectif_Terre__c']);
         if (!$user) {
             throw new \Exception("Nous n'avons pas pu vous identifier. Veuillez contacter un administrateur.");
         }
