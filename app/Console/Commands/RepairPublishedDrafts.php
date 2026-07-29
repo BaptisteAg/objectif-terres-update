@@ -67,8 +67,12 @@ class RepairPublishedDrafts extends Command
 
         foreach ($ads as $ad) {
             // Écriture sans événements Eloquent : AdObserver historise les modifications et exige
-            // un utilisateur authentifié, absent en CLI.
-            Ad::where('id', $ad->id)->update(['is_draft' => 0]);
+            // un utilisateur authentifié, absent en CLI. On rafraîchit updated_at à la main, l'API
+            // et la synchro Salesforce s'appuient dessus pour reprendre l'annonce.
+            Ad::where('id', $ad->id)->update([
+                'is_draft' => 0,
+                'updated_at' => Carbon::now(),
+            ]);
             $this->line("Annonce {$ad->id} remise en ligne.");
         }
 

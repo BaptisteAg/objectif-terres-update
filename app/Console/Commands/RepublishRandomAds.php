@@ -58,6 +58,11 @@ class RepublishRandomAds extends Command
                 if ($ad && $ad->is_draft) {
                     Ad::where('id', $ad->id)->update(['is_draft' => 0]);
                 }
+
+                // L'API expose ads.updated_at : on le rafraîchit à la republication pour que la
+                // synchro Salesforce reprenne l'annonce. Seuls les timestamps sont modifiés ici,
+                // l'observateur d'historique n'a donc rien à écrire.
+                $ad?->touch();
             });
     }
 }

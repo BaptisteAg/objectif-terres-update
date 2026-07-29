@@ -94,6 +94,8 @@ class UnpublishOldAds implements ShouldQueue
             $attributionAd->published_on = null;
             $attributionAd->archived_at = Carbon::now();
             $attributionAd->save();
+            // L'API expose ads.updated_at : on le rafraîchit à chaque transition de statut
+            $attributionAd->ad?->touch();
 
             echo "Unpublished : ".$attributionAd->ad->title . " - " . $attributionAd->ad->created_at . "\n";
             $progressBar->advance();
