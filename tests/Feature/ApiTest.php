@@ -544,4 +544,53 @@ class ApiTest extends TestCase
 
         $response->assertStatus(400);
     }
+
+    /**
+     * Régression ticket : après republication d'une annonce archivée, ads.updated_at
+     * doit refléter la date de republication (et non celle d'archivage). Sinon la
+     * synchronisation Salesforce, basée sur max(updated_at), ne reprend jamais l'annonce.
+     */
+    public function testRepublishedAdExposesRepublicationDateAsUpdatedAt()
+    {
+        /** @var \App\Repositories\Ads\AdRepository $repository */
+        $repository = app(\App\Repositories\Ads\AdRepository::class);
+
+        $archivedAt    = \Carbon\Carbon::parse('2026-02-21 07:58:04');
+        $republishedAt = \Carbon\Carbon::parse('2026-07-13 10:00:00');
+
+        $ad = $this->createPublishedAd();
+
+        // Archivage à T1 : le touch() doit poser ads.updated_at = date d'archivage
+        \Carbon\Carbon::setTestNow($archivedAt);
+        $repository->archive($ad->id);
+
+        $ad->refresh();
+        $this->assertTrue(
+            $ad->updated_at->equalTo($archivedAt),
+            "ads.updated_at devrait valoir la date d'archivage juste après l'archivage"
+        );
+
+        // Republication à T2 > T1 : ads.updated_at doit être rafraîchi
+        \Carbon\Carbon::setTestNow($republishedAt);
+        $repository->republish($ad->id);
+        \Carbon\Carbon::setTestNow();
+
+        $ad->refresh();
+        $this->assertTrue(
+            $ad->updated_at->equalTo($republishedAt),
+            "ads.updated_at devrait refléter la republication, pas l'archivage"
+        );
+
+        // L'API doit renvoyer l'annonce en 'published' avec la date de republication
+        $response = $this->getJson('/api/v1/ads?updated_since=2026-07-01&per_page=200', [
+            'Ot-api-key' => 'test-api-key',
+        ]);
+        $response->assertStatus(200);
+
+        $item = collect($response->json('data'))->firstWhere('id', $ad->id);
+        $this->assertNotNull($item, "L'annonce republiée doit apparaître dans GET /ads");
+        $this->assertSame('published', $item['status']);
+        $this->assertStringStartsWith('2026-07-13', $item['updated_at']);
+        $this->assertStringNotContainsString('2026-02-21', $item['updated_at']);
+    }
 }

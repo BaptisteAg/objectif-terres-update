@@ -46,7 +46,10 @@ class RepublishRandomAds extends Command
             ->each(function (AttributionAd $attributionAd) {
                 $attributionAd->ad_status_id = AdStatus::APPROVE_ID;
                 $attributionAd->published_on = now();
+                $attributionAd->archived_at = null;
                 $attributionAd->save();
+                // L'API expose ads.updated_at : on le rafraîchit à la republication pour que la synchro Salesforce reprenne l'annonce
+                $attributionAd->ad?->touch();
             });
     }
 }
