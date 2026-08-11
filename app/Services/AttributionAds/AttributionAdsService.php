@@ -269,6 +269,11 @@ class AttributionAdsService
 			$attributionAdsFiltered->whereIn('ad_status_id', $filters->input('ad_statuses'));
 		}
 
+		//Additional filters : only ads still online but modified by their author after publication
+		if ($filters->boolean('pending_update')) {
+			$attributionAdsFiltered->whereNotNull('pending_update_since');
+		}
+
 		//Filter ads based on their types if requested
 		if ($filters->has('ad_type')) {
 			$attributionAdsFiltered->filterAdTypes($filters->input('ad_type'), 'ad.');
@@ -387,6 +392,7 @@ class AttributionAdsService
 		$attributionAd->published_on = Carbon::now();
         $attributionAd->archived_at = null;
         $attributionAd->refusal_type_id = null;
+        $attributionAd->pending_update_since = null;
 
 		$attributionAd->ad->userPp?->notify(new AcceptedAdNotification($attributionAd));
 
@@ -411,6 +417,7 @@ class AttributionAdsService
 		$attributionAd = $this->repository->find($attributionAdId);
 		$pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_ID)->first();
 		$attributionAd->ad_status_id = $pendingStatus->id;
+		$attributionAd->pending_update_since = null;
 		$attributionAd->save();
 
 		$ad = $this->adRepository->find($attributionAd->ad->id);
@@ -441,6 +448,7 @@ class AttributionAdsService
 		$attributionAd->ad_status_id = $rejectStatus->id;
 		$attributionAd->refusal_type_id = $data['refusal_type_id'];
 		$attributionAd->refused_on = Carbon::now();
+		$attributionAd->pending_update_since = null;
 		$attributionAd->save();
 		$data = [
 			'message' => 'Votre annonce n\'a pas été acceptée par l\'équipe d\'Objectif Terres. Consulter votre messagerie pour plus d\'informations.',

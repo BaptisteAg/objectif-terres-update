@@ -216,6 +216,33 @@ class  AdService
     }
 
     /**
+     * Signale qu'une annonce en ligne a été modifiée par son auteur·e et doit être re-modérée.
+     *
+     * Contrairement à requestPublishing(), on ne touche ni à ad_status_id, ni à published_on,
+     * ni à is_draft : l'annonce reste visible pendant la re-modération. Seul le marqueur
+     * pending_update_since la fait remonter dans la file du modérateur.
+     */
+    public function flagPendingUpdate(Ad $ad): Ad
+    {
+        $attributionAd = $ad->attributionAd;
+
+        if (!$attributionAd || !$attributionAd->isOnline()) {
+            return $ad;
+        }
+
+        $attributionAd->pending_update_since = Carbon::now();
+        $attributionAd->save();
+
+        $ad->refresh();
+
+        if ($attributionAd->userModerator && auth()->check()) {
+            $attributionAd->userModerator->notify(new NewAdToModerateNotification($ad, auth()->user()));
+        }
+
+        return $ad;
+    }
+
+    /**
      * @param array $data
      * @throws \Exception
      * @throws Throwable

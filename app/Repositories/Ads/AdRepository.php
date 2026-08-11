@@ -244,6 +244,13 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         $ad->attributionAd->published_on = Carbon::now();
         $ad->attributionAd->archived_at = null;
         $ad->attributionAd->save();
+
+        // Sans cela une annonce archivée alors qu'elle était en brouillon resterait invisible
+        // malgré son statut « Validée » (cf. AdsController@show).
+        if ($ad->is_draft) {
+            $ad->is_draft = 0;
+            $ad->save();
+        }
     }
 
 

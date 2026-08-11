@@ -11,6 +11,7 @@
                     inline-template
                     :old-ad-type-selected="'{{$old['ad_type'] ?? ''}}'"
                     :is-support-request="{{empty($isSupportRequest)?'false':'true'}}"
+                    :is-published="{{empty($isPublished)?'false':'true'}}"
                     style="display:none"
                     :style="{display:loading ? 'none': 'block'}">
 

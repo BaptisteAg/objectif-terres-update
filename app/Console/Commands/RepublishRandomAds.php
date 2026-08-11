@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use Illuminate\Console\Command;
@@ -46,7 +47,17 @@ class RepublishRandomAds extends Command
             ->each(function (AttributionAd $attributionAd) {
                 $attributionAd->ad_status_id = AdStatus::APPROVE_ID;
                 $attributionAd->published_on = now();
+                $attributionAd->archived_at = null;
                 $attributionAd->save();
+
+                // Une annonce restée en brouillon serait republiée « Validée » tout en restant
+                // invisible du public (cf. AdsController@show). Écriture sans événements Eloquent :
+                // AdObserver historise les modifications et exige un utilisateur authentifié,
+                // absent en CLI.
+                $ad = $attributionAd->ad;
+                if ($ad && $ad->is_draft) {
+                    Ad::where('id', $ad->id)->update(['is_draft' => 0]);
+                }
             });
     }
 }

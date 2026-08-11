@@ -21,6 +21,9 @@ Vue.component('new-ad', {
     props: {
         oldAdTypeSelected: String,
         isSupportRequest: Boolean,
+        // Édition d'une annonce déjà en ligne : elle ne sera ni dépubliée ni republiée,
+        // seulement remise en file de modération.
+        isPublished: Boolean,
     },
     data() {
         return {
@@ -80,10 +83,19 @@ Vue.component('new-ad', {
                 this.enabledForm.setInputsBorderColor();
                 this.isSubmitting = false;
             } else {
+                // NB: `this.publishAction` n'a jamais été défini, cette confirmation-ci est donc
+                // inerte sur le parcours de création. On ne la réactive pas pour ne pas changer
+                // un comportement en place, mais on confirme l'édition d'une annonce en ligne,
+                // où l'effet sur la visibilité mérite d'être annoncé.
                 const text =
                     'Vous êtes sur le point de demander la publication de votre annonce. Elle sera traitée sous 7 jours par un modérateur.';
 
+                const onlineText =
+                    'Votre annonce reste en ligne : vos modifications seront visibles immédiatement, puis relues par un modérateur.';
+
                 if (this.formAction === this.publishAction && !confirm(text)) {
+                    this.isSubmitting = false;
+                } else if (this.isPublished && !confirm(onlineText)) {
                     this.isSubmitting = false;
                 } else {
                     this.isSubmitting = true;

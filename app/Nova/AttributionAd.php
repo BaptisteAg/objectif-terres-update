@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -104,6 +105,10 @@ class AttributionAd extends Resource
                     null => 'danger',
                 ])
                 ->labels(AdStatus::TOOLTIPS),
+            DateTime::make('Modifiée après publication', 'pending_update_since')
+                ->help("Annonce en ligne modifiée par son auteur·e et en attente de relecture.")
+                ->readonly()
+                ->sortable(),
         ];
     }
 
