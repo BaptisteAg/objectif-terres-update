@@ -24,6 +24,7 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $refused_on
+ * @property \Illuminate\Support\Carbon|null $pending_update_since
  * @property-read \App\Models\Ad $ad
  * @property-read \App\Models\AdStatus|null $adStatus
  * @property-read \App\Models\RefusalType|null $refusalType
@@ -89,8 +90,26 @@ class AttributionAd extends Model implements Decoratable
 		'short_description',
 		'archived_at',
 		'published_on',
-		'refused_on'
+		'refused_on',
+		'pending_update_since'
 	];
+
+	/**
+	 * @var array
+	 */
+	protected $dates = [
+		'pending_update_since'
+	];
+
+	/**
+	 * L'annonce est-elle en ligne (validée et publiée, non archivée) ?
+	 */
+	public function isOnline(): bool
+	{
+		return $this->ad_status_id === AdStatus::APPROVE_ID
+			&& !is_null($this->published_on)
+			&& is_null($this->archived_at);
+	}
 
 	const VALIDATION_MESSAGE = "Bonjour,\nVotre annonce vient d’être publiée. Sans intervention de votre part, elle sera en ligne pour 6 mois. Nous espérons qu’Objectif Terres vous permettra d’être contacté. \nCordialement,\nTerre de Liens";
 

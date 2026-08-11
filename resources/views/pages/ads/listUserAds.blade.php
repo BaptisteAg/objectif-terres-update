@@ -109,7 +109,9 @@
                     @endif
 
                     <div class="buttons has-addons is-right">
-                        @if($ad->is_draft === 0 && !isset($ad->attributionAd))
+                        {{-- Un brouillon doit toujours pouvoir être soumis, y compris s'il a déjà
+                             une attribution (annonce revenue en brouillon après modération). --}}
+                        @if($ad->is_draft === 1 || !isset($ad->attributionAd))
                             <b-button
                                     href="{{ route('ads.request-publishing', ["id" => $ad->id]) }}"
                                     tag="a" icon-left="check"

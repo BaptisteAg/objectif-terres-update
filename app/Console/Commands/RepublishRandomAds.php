@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use Illuminate\Console\Command;
@@ -48,8 +49,20 @@ class RepublishRandomAds extends Command
                 $attributionAd->published_on = now();
                 $attributionAd->archived_at = null;
                 $attributionAd->save();
-                // L'API expose ads.updated_at : on le rafraîchit à la republication pour que la synchro Salesforce reprenne l'annonce
-                $attributionAd->ad?->touch();
+
+                // Une annonce restée en brouillon serait republiée « Validée » tout en restant
+                // invisible du public (cf. AdsController@show). Écriture sans événements Eloquent :
+                // AdObserver historise les modifications et exige un utilisateur authentifié,
+                // absent en CLI.
+                $ad = $attributionAd->ad;
+                if ($ad && $ad->is_draft) {
+                    Ad::where('id', $ad->id)->update(['is_draft' => 0]);
+                }
+
+                // L'API expose ads.updated_at : on le rafraîchit à la republication pour que la
+                // synchro Salesforce reprenne l'annonce. Seuls les timestamps sont modifiés ici,
+                // l'observateur d'historique n'a donc rien à écrire.
+                $ad?->touch();
             });
     }
 }

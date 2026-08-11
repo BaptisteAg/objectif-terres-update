@@ -43,7 +43,9 @@
                 <div class="column">
                     @if($ad->canEdit())
                         <div class="buttons has-addons is-right">
-                            @if($ad->is_draft === 0 && !isset($ad->attributionAd))
+                            {{-- Un brouillon doit toujours pouvoir être soumis, y compris s'il a déjà
+                                 une attribution (annonce revenue en brouillon après modération). --}}
+                            @if($ad->is_draft === 1 || !isset($ad->attributionAd))
                                 <b-button
                                         href="{{ route('ads.request-publishing', ["id" => $ad->id]) }}"
                                         tag="a" icon-left="check"
@@ -95,15 +97,24 @@
 
         @if(isset($isPreview) && $isPreview)
             <b-message type="is-warning" has-icon>
-                <h3 class="title is-5">Prévisualisation de l'annonce</h3>
-                <p>Vous êtes en train de prévisualiser l'annonce publique qui apparaîtra sur Objectif Terres. Vous
-                    pouvez soumettre la publication ou revenir à l'édition</p>
-                <div class="buttons pt-4">
-                    <b-button rounded tag="a" href="{{route('ads.edit', ['id' => $ad->id])}}">Modifier</b-button>
-                    <b-button rounded type="is-success" tag="a"
-                              href="{{route('ads.request-publishing', ['id' => $ad->id])}}">Demander la publication
-                    </b-button>
-                </div>
+                @if($ad->attributionAd && $ad->attributionAd->isOnline())
+                    <h3 class="title is-5">Votre annonce est en ligne</h3>
+                    <p>Voici l'annonce telle qu'elle apparaît sur Objectif Terres. Vos dernières modifications sont
+                        déjà visibles et seront relues par un modérateur.</p>
+                    <div class="buttons pt-4">
+                        <b-button rounded tag="a" href="{{route('ads.edit', ['id' => $ad->id])}}">Modifier</b-button>
+                    </div>
+                @else
+                    <h3 class="title is-5">Prévisualisation de l'annonce</h3>
+                    <p>Vous êtes en train de prévisualiser l'annonce publique qui apparaîtra sur Objectif Terres. Vous
+                        pouvez soumettre la publication ou revenir à l'édition</p>
+                    <div class="buttons pt-4">
+                        <b-button rounded tag="a" href="{{route('ads.edit', ['id' => $ad->id])}}">Modifier</b-button>
+                        <b-button rounded type="is-success" tag="a"
+                                  href="{{route('ads.request-publishing', ['id' => $ad->id])}}">Demander la publication
+                        </b-button>
+                    </div>
+                @endif
             </b-message>
         @endif
 
