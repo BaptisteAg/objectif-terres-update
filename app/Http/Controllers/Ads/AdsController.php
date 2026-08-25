@@ -49,11 +49,11 @@ class  AdsController extends BaseController
     {
         $ad = $this->store($request, 0);
 
-        // Sur une annonce déjà en ligne, la prévisualisation n'a pas de sens : la page publique
-        // est le rendu réel, et les modifications sont déjà visibles.
+        // Une annonce en ligne modifiée repart en modération et n'est plus publique : on renvoie
+        // vers sa page (visible du seul propriétaire) avec le message adéquat, pas vers la preview.
         if ($this->updatedAnOnlineAd) {
             return redirect()->route('ads.show', ["id" => $ad->id])
-                ->with('success', 'Vos modifications sont en ligne. Elles seront revues par un modérateur.');
+                ->with('success', 'Vos modifications ont été soumises à modération. Votre annonce ne sera plus visible publiquement le temps de la re-validation.');
         }
 
         return redirect()->route('ads.preview', ["id" => $ad->id]);
@@ -107,13 +107,13 @@ class  AdsController extends BaseController
 
         $ad = $this->adService->find($id);
 
-        // Une annonce déjà en ligne ne repasse pas par le circuit de première publication,
-        // qui la dépublierait le temps de la re-modération.
+        // Une annonce déjà en ligne repart en modération (et n'est plus publique) sans passer par
+        // le circuit de première publication.
         if ($ad->attributionAd && $ad->attributionAd->isOnline()) {
             $this->adService->flagPendingUpdate($ad);
 
             return redirect()->route('ads.show', [$ad->id])
-                ->with('success', 'Vos modifications sont en ligne. Elles seront revues par un modérateur.');
+                ->with('success', 'Vos modifications ont été soumises à modération. Votre annonce ne sera plus visible publiquement le temps de la re-validation.');
         }
 
         /** @var $ad Ad $ad */
@@ -151,7 +151,7 @@ class  AdsController extends BaseController
 
             if ($this->updatedAnOnlineAd) {
                 return redirect()->route('ads.show', ["id" => $ad->id])
-                    ->with('success', 'Vos modifications sont en ligne. Elles seront revues par un modérateur.');
+                    ->with('success', 'Vos modifications ont été soumises à modération. Votre annonce ne sera plus visible publiquement le temps de la re-validation.');
             }
 
             return redirect()->route('ads.list', [$ad->id])->with('success', 'Votre annonce a bien été sauvegardée.');

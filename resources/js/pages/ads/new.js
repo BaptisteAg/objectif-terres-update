@@ -91,7 +91,7 @@ Vue.component('new-ad', {
                     'Vous êtes sur le point de demander la publication de votre annonce. Elle sera traitée sous 7 jours par un modérateur.';
 
                 const onlineText =
-                    'Votre annonce reste en ligne : vos modifications seront visibles immédiatement, puis relues par un modérateur.';
+                    'Vos modifications seront soumises à modération. Votre annonce ne sera plus visible publiquement tant qu’un modérateur ne l’a pas revalidée.';
 
                 if (this.formAction === this.publishAction && !confirm(text)) {
                     this.isSubmitting = false;

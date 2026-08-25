@@ -230,6 +230,11 @@ class  AdService
             return $ad;
         }
 
+        // Principe de précaution demandé par Terre de Liens : les modifications d'une annonce en
+        // ligne ne doivent PAS être visibles du public avant re-validation. On repasse donc
+        // l'annonce en « À modérer » — AdsController@show renvoie alors 404 à tout le monde sauf au
+        // propriétaire et au modérateur en charge — jusqu'à ce que le modérateur la revalide.
+        $attributionAd->ad_status_id = AdStatus::PENDING_MODERATION_STATUS_ID;
         $attributionAd->pending_update_since = Carbon::now();
         $attributionAd->save();
 

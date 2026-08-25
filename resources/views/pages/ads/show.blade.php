@@ -99,8 +99,8 @@
             <b-message type="is-warning" has-icon>
                 @if($ad->attributionAd && $ad->attributionAd->isOnline())
                     <h3 class="title is-5">Votre annonce est en ligne</h3>
-                    <p>Voici l'annonce telle qu'elle apparaît sur Objectif Terres. Vos dernières modifications sont
-                        déjà visibles et seront relues par un modérateur.</p>
+                    <p>Voici l'annonce telle qu'elle apparaît sur Objectif Terres. Si vous la modifiez, elle
+                        repassera en modération et ne sera plus visible publiquement jusqu'à sa revalidation.</p>
                     <div class="buttons pt-4">
                         <b-button rounded tag="a" href="{{route('ads.edit', ['id' => $ad->id])}}">Modifier</b-button>
                     </div>
