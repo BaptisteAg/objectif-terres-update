@@ -273,7 +273,7 @@
                                             </b-tooltip>
                                         @endif
                                         @if($attributionAd->pending_update_since)
-                                            <b-tooltip label="L'annonce est restée en ligne mais a été modifiée par son auteur·e le {{ $attributionAd->pending_update_since->format('d/m/Y') }} : elle doit être revue.">
+                                            <b-tooltip label="Annonce modifiée par son auteur·e le {{ $attributionAd->pending_update_since->format('d/m/Y') }} après publication : masquée du public jusqu'à re-validation.">
                                                 <span class="tag is-warning is-bottom">
                                                     Modifiée à revoir
                                                 </span>

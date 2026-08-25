@@ -18,14 +18,16 @@ use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 /**
- * Une annonce validée et publiée ne doit jamais être dépubliée par une modification de son auteur·e.
+ * Comportement de l'édition d'une annonce déjà en ligne (ticket Teamwork 36119239, annonce 10908).
  *
- * Historiquement, l'édition d'une annonce en ligne repassait is_draft à 1 (bouton « Enregistrer en
- * brouillon ») ou remettait le statut à « À modérer » (parcours « Demander la publication »).
- * Dans les deux cas AdsController@show renvoyait un 404 à tout le monde sauf au propriétaire et
- * aux modérateurs du territoire — c'est le bug du ticket Teamwork 36119239 (annonce 10908).
+ * Le bug d'origine : l'édition faisait disparaître l'annonce définitivement, sans recours pour
+ * l'annonceur (is_draft repassé à 1, ou statut « À modérer » sans retour possible).
+ *
+ * Le comportement voulu par Terre de Liens (principe de précaution) : modifier une annonce en ligne
+ * la renvoie en modération ET la masque du public jusqu'à re-validation ; la re-validation par le
+ * modérateur la remet en ligne. Un vrai brouillon jamais publié reste, lui, masqué et soumettable.
  */
-class OnlineAdStaysVisibleTest extends TestCase
+class OnlineAdEditModerationTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -64,12 +66,10 @@ class OnlineAdStaysVisibleTest extends TestCase
     }
 
     /**
-     * Chemin A : « Enregistrer en brouillon » sur une annonce en ligne ne doit plus la dépublier.
-     *
-     * C'est le scénario exact de l'annonce 10908 : l'annonceur modifie son annonce publiée et
-     * l'enregistre, ce qui la faisait basculer en brouillon donc en 404 pour tout le public.
+     * Édition d'une annonce en ligne : elle repart en modération ET disparaît du public
+     * (principe de précaution demandé par Terre de Liens), au lieu de rester visible.
      */
-    public function testSavingAsDraftAnOnlineAdKeepsItOnline(): void
+    public function testEditingAnOnlineAdSendsItBackToModerationAndHidesIt(): void
     {
         $ad = $this->createOnlineAd();
 
@@ -79,14 +79,18 @@ class OnlineAdStaysVisibleTest extends TestCase
 
         $ad->refresh();
 
-        $this->assertSame(0, (int)$ad->is_draft, "L'annonce ne doit pas repasser en brouillon.");
         $this->assertSame('Titre modifié', $ad->title);
-        $this->assertSame(AdStatus::APPROVE_ID, $ad->attributionAd->ad_status_id);
+        $this->assertSame(0, (int)$ad->is_draft, "L'annonce n'est pas un brouillon, mais en re-modération.");
+        $this->assertSame(
+            AdStatus::PENDING_MODERATION_STATUS_ID,
+            $ad->attributionAd->ad_status_id,
+            "L'annonce doit repasser en « À modérer »."
+        );
         $this->assertNotNull($ad->attributionAd->pending_update_since);
 
-        // Toujours visible du public pendant la re-modération.
+        // Masquée du public tant qu'elle n'est pas revalidée.
         auth()->logout();
-        $this->get('/annonces/' . $ad->id)->assertStatus(200);
+        $this->get('/annonces/' . $ad->id)->assertStatus(404);
     }
 
     /**
@@ -105,9 +109,10 @@ class OnlineAdStaysVisibleTest extends TestCase
     }
 
     /**
-     * Chemin B : demander la publication d'une annonce déjà en ligne ne doit pas la dépublier.
+     * Chemin B : « Demander la publication » sur une annonce en ligne la renvoie aussi en modération
+     * (et la masque), sans la dépublier définitivement ni la laisser visible.
      */
-    public function testRequestPublishingOnOnlineAdKeepsItOnline(): void
+    public function testRequestPublishingOnOnlineAdSendsItBackToModeration(): void
     {
         $ad = $this->createOnlineAd();
 
@@ -118,33 +123,39 @@ class OnlineAdStaysVisibleTest extends TestCase
         $ad->refresh();
 
         $this->assertSame(0, (int)$ad->is_draft);
-        $this->assertSame(AdStatus::APPROVE_ID, $ad->attributionAd->ad_status_id);
-        $this->assertNotNull($ad->attributionAd->published_on);
-        $this->assertNotNull(
-            $ad->attributionAd->pending_update_since,
-            "L'annonce doit être signalée au modérateur comme modifiée après publication."
-        );
+        $this->assertSame(AdStatus::PENDING_MODERATION_STATUS_ID, $ad->attributionAd->ad_status_id);
+        $this->assertNotNull($ad->attributionAd->pending_update_since);
+
+        auth()->logout();
+        $this->get('/annonces/' . $ad->id)->assertStatus(404);
     }
 
     /**
-     * Le marqueur est levé lorsque le modérateur valide à nouveau l'annonce.
+     * La re-validation par le modérateur remet l'annonce en ligne et lève le marqueur.
      */
-    public function testAcceptingAnAdClearsThePendingUpdateMarker(): void
+    public function testAcceptingBringsTheAdBackOnlineAndClearsMarker(): void
     {
         $ad = $this->createOnlineAd();
 
+        // L'annonceur modifie → l'annonce est masquée et en attente de modération.
+        $this->actingAs($ad->userPp)
+            ->post('/annonces/sauvegarder', $this->adFormPayload($ad, 'Titre modifié'));
+        $ad->refresh();
+        auth()->logout();
+        $this->get('/annonces/' . $ad->id)->assertStatus(404);   // masquée (anonyme)
+
+        // Le modérateur revalide (acteur authentifié requis par l'observateur d'historique).
         $this->actingAs($ad->userPp);
-
-        $ad->attributionAd->pending_update_since = Carbon::now();
-        $ad->attributionAd->save();
-
         app(AttributionAdsService::class)
             ->acceptAd(['attribution_ad_id' => $ad->attributionAd->id]);
 
         $ad->refresh();
-
-        $this->assertNull($ad->attributionAd->pending_update_since);
+        $this->assertSame(AdStatus::APPROVE_ID, $ad->attributionAd->ad_status_id);
         $this->assertSame(0, (int)$ad->is_draft);
+        $this->assertNull($ad->attributionAd->pending_update_since);
+
+        auth()->logout();
+        $this->get('/annonces/' . $ad->id)->assertStatus(200);   // de nouveau visible
     }
 
     /**
