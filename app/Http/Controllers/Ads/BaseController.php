@@ -87,6 +87,10 @@ abstract class BaseController extends Controller
 
         $vars = $this->getCreateFormVars();
 
+        // Le wizard sert aussi bien à créer qu'à modifier : sur une annonce en ligne, il ne doit
+        // plus proposer un vocabulaire de brouillon ni de première publication.
+        $vars["isPublished"] = (bool)($ad->attributionAd && $ad->attributionAd->isOnline());
+
         if(old('ad_type')) {
             return $vars;
         }
@@ -238,6 +242,8 @@ abstract class BaseController extends Controller
         //    $old["support_request_text"] = session('support-request.text');
         //}
 
+        $isPublished = false;
+
         return compact(
             'installationTypes',
             'surfaceRanges',
@@ -251,6 +257,7 @@ abstract class BaseController extends Controller
             'buildingTypes',
             'requirements',
             'isSupportRequest',
+            'isPublished',
             'old'
         );
     }

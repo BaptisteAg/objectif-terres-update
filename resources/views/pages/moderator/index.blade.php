@@ -272,9 +272,19 @@
                                                 </span>
                                             </b-tooltip>
                                         @endif
+                                        @if($attributionAd->pending_update_since)
+                                            <b-tooltip label="Annonce modifiée par son auteur·e le {{ $attributionAd->pending_update_since->format('d/m/Y') }} après publication : masquée du public jusqu'à re-validation.">
+                                                <span class="tag is-warning is-bottom">
+                                                    Modifiée à revoir
+                                                </span>
+                                            </b-tooltip>
+                                        @endif
                                     </td>
                                     <td><a href="{{route('ads.show', $attributionAd->ad->id)}}">
-                                            @if($attributionAd->adStatus && $attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID and $attributionAd->userModerator && $attributionAd->userModerator->id === auth()->id())
+                                            @if($attributionAd->pending_update_since)
+                                                <i class="fas fa-ruler"></i>
+                                                <span>Revoir l'annonce</span>
+                                            @elseif($attributionAd->adStatus && $attributionAd->adStatus->id === \App\Models\AdStatus::PENDING_MODERATION_STATUS_ID and $attributionAd->userModerator && $attributionAd->userModerator->id === auth()->id())
                                                 <i class="fas fa-ruler"></i>
                                                 <span>Modérer l'annonce</span>
                                             @else

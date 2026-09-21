@@ -32,6 +32,14 @@
                         </b-tooltip>
                     @endif
                 </div>
+                @if($ad->attributionAd?->pending_update_since)
+                    <b-message type="is-warning" class="mt-3">
+                        Cette annonce était en ligne et a été modifiée par son auteur·e
+                        le {{ $ad->attributionAd->pending_update_since->format('d/m/Y à H:i') }}.
+                        Elle n'est plus visible du public en attendant votre re-validation.
+                    </b-message>
+                @endif
+                @endif
                 <p>Consulter la <a href="/docs/OT_charte_oct2020.pdf">charte Objectif Terres</a> ainsi que la <a
                             href="/faq">FAQ</a> pour vous aider dans la modération de l’annonce.</p>
                 <div class="buttons mt-3">

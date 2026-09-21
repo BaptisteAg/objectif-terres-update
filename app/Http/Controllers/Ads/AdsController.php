@@ -14,11 +14,18 @@ use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 
 class  AdsController extends BaseController
 {
     public const PUBLISHED_AD_LIMIT_PER_USER = 50;
+
+    /**
+     * Vrai lorsque le dernier store() portait sur une annonce déjà en ligne.
+     * @var bool
+     */
+    protected $updatedAnOnlineAd = false;
 
     /**
      * Display the ad creation form
@@ -42,7 +49,12 @@ class  AdsController extends BaseController
     {
         $ad = $this->store($request, 0);
 
-        //return redirect()->back()->withInput()->withErrors("test back with error");
+        // Une annonce en ligne modifiée repart en modération et n'est plus publique : on renvoie
+        // vers sa page (visible du seul propriétaire) avec le message adéquat, pas vers la preview.
+        if ($this->updatedAnOnlineAd) {
+            return redirect()->route('ads.show', ["id" => $ad->id])
+                ->with('success', 'Vos modifications ont été soumises à modération. Votre annonce ne sera plus visible publiquement le temps de la re-validation.');
+        }
 
         return redirect()->route('ads.preview', ["id" => $ad->id]);
     }
@@ -95,6 +107,15 @@ class  AdsController extends BaseController
 
         $ad = $this->adService->find($id);
 
+        // Une annonce déjà en ligne repart en modération (et n'est plus publique) sans passer par
+        // le circuit de première publication.
+        if ($ad->attributionAd && $ad->attributionAd->isOnline()) {
+            $this->adService->flagPendingUpdate($ad);
+
+            return redirect()->route('ads.show', [$ad->id])
+                ->with('success', 'Vos modifications ont été soumises à modération. Votre annonce ne sera plus visible publiquement le temps de la re-validation.');
+        }
+
         /** @var $ad Ad $ad */
         try {
             $ad = $this->adService->requestPublishing($ad);
@@ -127,7 +148,17 @@ class  AdsController extends BaseController
     {
         try {
             $ad = $this->store($request, 1);
+
+            if ($this->updatedAnOnlineAd) {
+                return redirect()->route('ads.show', ["id" => $ad->id])
+                    ->with('success', 'Vos modifications ont été soumises à modération. Votre annonce ne sera plus visible publiquement le temps de la re-validation.');
+            }
+
             return redirect()->route('ads.list', [$ad->id])->with('success', 'Votre annonce a bien été sauvegardée.');
+        } catch (HttpException $exception) {
+            // Les abort() (403 sur une annonce qui n'appartient pas à l'utilisateur) doivent
+            // remonter tels quels, et non être transformés en message d'erreur générique.
+            throw $exception;
         } catch (\Exception $exception) {
             report($exception);
             return back()->withInput()->withErrors("[52] Désolé, une erreur s'est produite. Nous avons été informé du problème.");
@@ -401,11 +432,45 @@ class  AdsController extends BaseController
         $data = $request->validated();
         $data["is_draft"] = $isDraft;
 
-        if ($isDraft) {
+        $onlineAd = $this->findOnlineAdForUpdate($data["id"] ?? null);
+        $this->updatedAnOnlineAd = (bool)$onlineAd;
+
+        // Une annonce en ligne ne doit jamais être dépubliée par un simple enregistrement :
+        // elle reste visible et repasse en file de modération (cf. show() et flagPendingUpdate()).
+        if ($onlineAd) {
+            $data["is_draft"] = 0;
+        }
+
+        if ($data["is_draft"]) {
             $data['ad_status'] = AdStatus::PENDING_MODERATION_STATUS_ID;
         }
+
         $ad = $this->adService->store($data);
 
+        if ($onlineAd) {
+            $this->adService->flagPendingUpdate($ad);
+        }
+
         return $ad;
+    }
+
+    /**
+     * Retourne l'annonce ciblée par une mise à jour si elle est actuellement en ligne, sinon null.
+     *
+     * @param int|string|null $adId
+     */
+    protected function findOnlineAdForUpdate($adId): ?Ad
+    {
+        if (empty($adId)) {
+            return null;
+        }
+
+        $ad = $this->adService->find((int)$adId);
+
+        if (!$ad->canEdit()) {
+            abort(403);
+        }
+
+        return $ad->attributionAd && $ad->attributionAd->isOnline() ? $ad : null;
     }
 }

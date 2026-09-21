@@ -1,8 +1,9 @@
+@php($adIsPublished = $isPublished ?? false)
 <template slot="footer" slot-scope="props">
     <div class="wizard-footer-left">
         <wizard-button>
             <b-button size="is-medium" rounded type="is-warning" @mousedown="onSaveButtonClick"
-                      @click="onSaveButtonSubmit">Enregistrer en brouillon
+                      @click="onSaveButtonSubmit">{{ $adIsPublished ? 'Enregistrer les modifications' : 'Enregistrer en brouillon' }}
             </b-button>
         </wizard-button>
     </div>
@@ -26,7 +27,7 @@
                       @keyup.enter="props.nextTab"
                       size="is-medium"
                       class="ml-2" rounded type="is-danger">
-                    Visualiser mon annonce
+                    {{ $adIsPublished ? 'Enregistrer et voir mon annonce' : 'Visualiser mon annonce' }}
             </b-button>
         </wizard-button>
     </div>

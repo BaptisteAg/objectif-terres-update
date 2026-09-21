@@ -30,6 +30,13 @@ class Kernel extends ConsoleKernel
 	{
         $filePath = getcwd().'/laravel-scheduler.log';
 
+        // Surveillance des workers de file d'attente : uniquement là où les emails
+        // sont réellement mis en file (connexion redis). En 'sync' (preprod/local),
+        // il n'y a pas de worker à surveiller, on ne planifie donc rien.
+        if (config('queue.default') === 'redis') {
+            $schedule->command('queue:healthcheck')->everyFiveMinutes()->appendOutputTo($filePath);
+        }
+
         $schedule->command('app:sync-salesforce-ads '.date('Y-m-d', strtotime('-2 day')))->daily()->appendOutputTo($filePath);
 
         $schedule->command(DisableOldResearchAlerts::class)->daily()->appendOutputTo($filePath);
