@@ -39,7 +39,6 @@
                         Elle n'est plus visible du public en attendant votre re-validation.
                     </b-message>
                 @endif
-                @endif
                 <p>Consulter la <a href="/docs/OT_charte_oct2020.pdf">charte Objectif Terres</a> ainsi que la <a
                             href="/faq">FAQ</a> pour vous aider dans la modération de l’annonce.</p>
                 <div class="buttons mt-3">
