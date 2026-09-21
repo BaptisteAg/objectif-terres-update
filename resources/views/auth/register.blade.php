@@ -81,7 +81,7 @@
                                id="accept_communication"
                                value="1"
                                 {{old('accept_communication') === "1" ? "checked" : ''}}>
-                        J'accepte de recevoir les communications de Terre de Liens
+                        J'accepte de recevoir les actualités et les informations de Terre de Liens. Je peux modifier mes préférences de communication et mes options de suivi à tout moment.
                     </label>
                 </div>
 

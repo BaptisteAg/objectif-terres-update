@@ -131,7 +131,7 @@ var render = function render() {
       },
       expression: "accept"
     }
-  }, [_vm._v("J'accepte de recevoir les actualités et les informations de Terre de\n      Liens\n    ")])], 1), _vm._v(" "), _c("input", {
+  }, [_vm._v("J'accepte de recevoir les actualités et les informations de Terre de\n      Liens. Je peux modifier mes préférences de communication et mes options de suivi à tout moment.\n    ")])], 1), _vm._v(" "), _c("input", {
     attrs: {
       type: "hidden",
       name: "_token"

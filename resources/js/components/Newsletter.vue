@@ -21,7 +21,7 @@
 
     <b-field :message="invalidCheckbox ? 'Veuillez accepter' : null">
       <b-checkbox v-model="accept" size="is-small">J'accepte de recevoir les actualités et les informations de Terre de
-        Liens
+        Liens. Je peux modifier mes préférences de communication et mes options de suivi à tout moment.
       </b-checkbox>
     </b-field>
     <input type="hidden" name="_token" :value="csrf_token">

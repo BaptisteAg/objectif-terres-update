@@ -206,7 +206,7 @@
                     <label class="checkbox">
                         <input type="checkbox" name="accept_communication" id="accept_communication"
                                value="1" {{ $user->accept_communication ? 'checked' : '' }}>
-                        Recevoir les communications de Terre de Liens
+                        J'accepte de recevoir les actualités et les informations de Terre de Liens. Je peux modifier mes préférences de communication et mes options de suivi à tout moment.
                     </label>
                 </div>
 
