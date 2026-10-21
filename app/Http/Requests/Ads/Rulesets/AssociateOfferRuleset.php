@@ -19,6 +19,7 @@ class AssociateOfferRuleset implements RulesetInterface
             'associate_offer.has_buildings' => ['boolean', 'required'],
             'associate_offer.has_houses' => ['boolean', 'required'],
             'associate_offer.associate_description' => ['nullable', 'string', 'max:1500'],
+            'associate_offer.experience_farming' => ['nullable', 'string', 'max:1000'],
             'associate_offer.education_levels' => ['nullable', 'array'],
         ];
     }
