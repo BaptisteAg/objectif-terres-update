@@ -10,6 +10,6 @@ $factory->define(Land::class, function (Faker $faker) {
         'area' => $faker->numberBetween(0, 20000),
         'price' => $faker->numberBetween(0, 20000),
         'land_availability' => $faker->dateTime,
-        'land_transfer_deadline' => $faker->dateTime
+        'land_transfer_deadline' => $faker->dateTime,
     ];
 });

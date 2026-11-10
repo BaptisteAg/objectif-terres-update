@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $value
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|SurfaceRange newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SurfaceRange newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SurfaceRange query()
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|SurfaceRange whereLabel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SurfaceRange whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SurfaceRange whereValue($value)
+ *
  * @mixin \Eloquent
  */
 class SurfaceRange extends Model
@@ -28,7 +30,6 @@ class SurfaceRange extends Model
      * @var array
      */
     protected $fillable = [
-        'value', 'label'
+        'value', 'label',
     ];
-
 }

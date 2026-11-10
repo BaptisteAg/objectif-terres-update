@@ -15,7 +15,7 @@ class TestServiceProvider extends ServiceProvider
     public function boot()
     {
         Nova::routes()->withAuthenticationRoutes()
-                      ->withPasswordResetRoutes();
+            ->withPasswordResetRoutes();
     }
 
     /**

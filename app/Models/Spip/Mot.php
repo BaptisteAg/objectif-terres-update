@@ -2,7 +2,6 @@
 
 namespace App\Models\Spip;
 
-
 /**
  * App\Models\Spip\Mot
  *
@@ -19,6 +18,7 @@ namespace App\Models\Spip;
  * @property string $carte_mini
  * @property string $abr
  * @property string $carte_bas
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Mot newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Mot newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Mot query()
@@ -35,10 +35,12 @@ namespace App\Models\Spip;
  * @method static \Illuminate\Database\Eloquent\Builder|Mot whereTexte($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Mot whereTitre($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Mot whereType($value)
+ *
  * @mixin \Eloquent
  */
 class Mot extends SpipModel
 {
-    protected $table = "spip_mots";
-    protected $primaryKey = "id_mot";
+    protected $table = 'spip_mots';
+
+    protected $primaryKey = 'id_mot';
 }

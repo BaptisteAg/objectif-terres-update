@@ -12,13 +12,13 @@ class SurfaceRangeSeeder extends Seeder
     public function run()
     {
         \App\Models\SurfaceRange::insert([
-            ['value'=> 0, 'label' => '0ha', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['value'=> 5, 'label' => '5ha', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['value'=> 10, 'label' => '10ha', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['value'=> 20, 'label' => '20ha', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['value'=> 50, 'label' => '50ha', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['value'=> 100, 'label' => '100ha', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
-            ['value'=> 1000000, 'label' => '> 100ha', "created_at" =>  \Carbon\Carbon::now(), "updated_at" => \Carbon\Carbon::now()],
+            ['value' => 0, 'label' => '0ha', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()],
+            ['value' => 5, 'label' => '5ha', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()],
+            ['value' => 10, 'label' => '10ha', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()],
+            ['value' => 20, 'label' => '20ha', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()],
+            ['value' => 50, 'label' => '50ha', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()],
+            ['value' => 100, 'label' => '100ha', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()],
+            ['value' => 1000000, 'label' => '> 100ha', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()],
         ]);
     }
 }

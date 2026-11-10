@@ -7,7 +7,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class BooleanResourceTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -17,9 +17,9 @@ class BooleanResourceTest extends IntegrationTest
     public function test_can_create_boolean_resource_with_true_value()
     {
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/booleans', [
-                            'active' => true,
-                        ]);
+            ->postJson('/nova-api/booleans', [
+                'active' => true,
+            ]);
 
         $response->assertStatus(201);
 
@@ -27,7 +27,7 @@ class BooleanResourceTest extends IntegrationTest
         $this->assertEquals('Yes', $boolean->active);
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/booleans/1');
+            ->getJson('/nova-api/booleans/1');
 
         $response->assertStatus(200);
         $fields = $response->original['resource']['fields'];
@@ -37,9 +37,9 @@ class BooleanResourceTest extends IntegrationTest
     public function test_can_create_boolean_resource_with_false_value()
     {
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/booleans', [
-                            'active' => false,
-                        ]);
+            ->postJson('/nova-api/booleans', [
+                'active' => false,
+            ]);
 
         $response->assertStatus(201);
 

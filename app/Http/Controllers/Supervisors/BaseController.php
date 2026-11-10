@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Supervisors;
-
 
 use App\Models\BioCertification;
 use App\Models\JobOfferType;
@@ -18,26 +16,27 @@ use Illuminate\Support\Collection;
 
 abstract class BaseController
 {
-	protected $threadService;
-	protected $projectService;
-	protected $userService;
-	protected $adTypes;
-	protected $adTypesFaIcons;
-	protected $adService;
+    protected $threadService;
 
-	/**
-	 * BaseController constructor.
-	 * @param ProjectService $projectService
-	 * @param ThreadService $threadService
-	 * @param UserService $userService
-	 * @param AdService $adService
-	 */
-	public function __construct(ProjectService $projectService, ThreadService $threadService, UserService $userService, AdService $adService)
-	{
-		$this->projectService = $projectService;
-		$this->threadService = $threadService;
-		$this->userService = $userService;
-		$this->adService = $adService;
+    protected $projectService;
+
+    protected $userService;
+
+    protected $adTypes;
+
+    protected $adTypesFaIcons;
+
+    protected $adService;
+
+    /**
+     * BaseController constructor.
+     */
+    public function __construct(ProjectService $projectService, ThreadService $threadService, UserService $userService, AdService $adService)
+    {
+        $this->projectService = $projectService;
+        $this->threadService = $threadService;
+        $this->userService = $userService;
+        $this->adService = $adService;
         $this->adTypes = [
             ['name' => 'Offre foncière', 'value' => 'landOfferAd'],
             ['name' => 'Recherche foncière', 'value' => 'landSeekAd'],
@@ -47,74 +46,69 @@ abstract class BaseController
             ['name' => 'Associé pour projet d\'installation', 'value' => 'associateSeekAd'],
         ];
 
-        $this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access", "fa-user-tie", "fa-user-tie"];
-	}
+        $this->adTypesFaIcons = ['fa-home', 'fa-home', 'fa-universal-access', 'fa-universal-access', 'fa-user-tie', 'fa-user-tie'];
+    }
 
+    /**
+     * Get all vars for Supervisors dashboard
+     */
+    protected function getSupervisorDashboardVars(): array
+    {
+        $supportStages = SupportStage::all();
+        $supportStates = SupportState::all();
+        $projectStatuses = ProjectStatus::all();
+        $jobOfferTypes = JobOfferType::all();
+        $productionGenres = ProductionGenre::all();
+        $bioCertifications = BioCertification::all();
 
-	/**
-	 * Get all vars for Supervisors dashboard
-	 * @return array
-	 */
-	protected function getSupervisorDashboardVars(): array
-	{
-		$supportStages = SupportStage::all();
-		$supportStates = SupportState::all();
-		$projectStatuses = ProjectStatus::all();
-		$jobOfferTypes = JobOfferType::all();
-		$productionGenres = ProductionGenre::all();
-		$bioCertifications = BioCertification::all();
+        $numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
+        $adTypes = $this->adTypes;
+        $adTypesFaIcons = $this->adTypesFaIcons;
+        $firstContactSupportStage = SupportStage::where('id', '=', SupportStage::FIRST_CONTACT_ID)->first()->id;
+        $numberOfNotAssignProject = $this->projectService->countNumberOfProjectsBySupportStageForLoggedUser($firstContactSupportStage);
 
+        return compact(
+            'supportStages',
+            'supportStates',
+            'projectStatuses',
+            'jobOfferTypes',
+            'productionGenres',
+            'bioCertifications',
+            'numberOfUnreadMessages',
+            'adTypes',
+            'adTypesFaIcons',
+            'numberOfNotAssignProject'
+        );
+    }
 
-		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
-		$adTypes = $this->adTypes;
-		$adTypesFaIcons = $this->adTypesFaIcons;
-		$firstContactSupportStage = SupportStage::where("id", '=', SupportStage::FIRST_CONTACT_ID)->first()->id;
-		$numberOfNotAssignProject = $this->projectService->countNumberOfProjectsBySupportStageForLoggedUser($firstContactSupportStage);
+    /**
+     * Get all vars for supervisors report page
+     */
+    protected function getSupervisorReportVars(Collection $ads, Collection $projects): array
+    {
+        $numberOfAds = $ads->count();
+        $publishedAdsInEachDepartmentsByYears = $this->adService->groupAdsBySupervisorDepartments($ads);
+        $publishedAdsInEachRegionsByYears = $this->adService->groupAdsBySupervisorRegions($ads);
+        $numberOfAdsByAdStatus = $this->adService->countAdsByAdStatus($ads);
+        $validatedAdsInYearGroupByMonth = $this->adService->groupAllValidatedAdsInYearByMonth($ads);
 
-		return compact(
-			'supportStages',
-			'supportStates',
-			'projectStatuses',
-			'jobOfferTypes',
-			'productionGenres',
-			'bioCertifications',
-			'numberOfUnreadMessages',
-			'adTypes',
-			'adTypesFaIcons',
-			'numberOfNotAssignProject'
-		);
-	}
+        $numberOfProjects = $projects->count();
+        $projectsBySupportStages = $this->projectService->groupProjectsByStatus($projects, 'support_stage_id', true);
+        $projectsBySupportStates = $this->projectService->groupProjectsByStatus($projects, 'support_state_id', false);
+        $projectsByProjectStatus = $this->projectService->groupProjectsByStatus($projects, 'project_status_id', true);
+        $projectsInYearGroupByMonth = $this->projectService->groupAllProjectsInYearByMonth($projects);
 
-	/**
-	 * Get all vars for supervisors report page
-	 * @param Collection $ads
-	 * @param $projects
-	 * @return array
-	 */
-	protected function getSupervisorReportVars(Collection $ads, Collection $projects): array
-	{
-		$numberOfAds = $ads->count();
-		$publishedAdsInEachDepartmentsByYears = $this->adService->groupAdsBySupervisorDepartments($ads);
-		$publishedAdsInEachRegionsByYears = $this->adService->groupAdsBySupervisorRegions($ads);
-		$numberOfAdsByAdStatus = $this->adService->countAdsByAdStatus($ads);
-		$validatedAdsInYearGroupByMonth = $this->adService->groupAllValidatedAdsInYearByMonth($ads);
-
-		$numberOfProjects = $projects->count();
-		$projectsBySupportStages = $this->projectService->groupProjectsByStatus($projects, "support_stage_id", true);
-		$projectsBySupportStates = $this->projectService->groupProjectsByStatus($projects, "support_state_id", false);
-		$projectsByProjectStatus = $this->projectService->groupProjectsByStatus($projects, "project_status_id", true);
-		$projectsInYearGroupByMonth = $this->projectService->groupAllProjectsInYearByMonth($projects);
-		return compact(
-			'numberOfAds',
-			'publishedAdsInEachDepartmentsByYears',
-			'publishedAdsInEachRegionsByYears',
-			'numberOfAdsByAdStatus',
-			'validatedAdsInYearGroupByMonth',
-			'projectsBySupportStages',
-			'projectsBySupportStates',
-			'projectsByProjectStatus',
-			'numberOfProjects',
-			'projectsInYearGroupByMonth'
-		);
-	}
+        return compact(
+            'numberOfAds',
+            'publishedAdsInEachDepartmentsByYears',
+            'publishedAdsInEachRegionsByYears',
+            'numberOfAdsByAdStatus',
+            'validatedAdsInYearGroupByMonth',
+            'projectsBySupportStages',
+            'projectsBySupportStates',
+            'projectsByProjectStatus',
+            'numberOfProjects',
+            'projectsInYearGroupByMonth'
+        );
+    }
 }

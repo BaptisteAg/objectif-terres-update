@@ -24,8 +24,6 @@ class GlobalSearch
     /**
      * Create a new global search instance.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Support\Collection  $resources
      * @return void
      */
     public function __construct(NovaRequest $request, Collection $resources)

@@ -9,7 +9,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class FilterTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
     }
@@ -30,7 +30,8 @@ class FilterTest extends IntegrationTest
         $request = Request::create('/', 'GET');
 
         $request->setUserResolver(function () {
-            return new class {
+            return new class
+            {
                 public function can($ability, $arguments = [])
                 {
                     $_SERVER['__nova.ability'] = $ability;

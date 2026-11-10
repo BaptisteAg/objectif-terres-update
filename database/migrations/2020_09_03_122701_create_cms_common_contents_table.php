@@ -14,13 +14,13 @@ class CreateCmsCommonContentsTable extends Migration
     public function up()
     {
         Schema::create('cms_common_contents', function (Blueprint $table) {
-			$table->bigIncrements('id');
-			$table->text('name');
-			$table->text('description');
-			$table->text('slug');
-			$table->text('pages_name');
-			$table->text('content')->nullable();
-			$table->timestamps();
+            $table->bigIncrements('id');
+            $table->text('name');
+            $table->text('description');
+            $table->text('slug');
+            $table->text('pages_name');
+            $table->text('content')->nullable();
+            $table->timestamps();
         });
     }
 

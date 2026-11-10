@@ -13,7 +13,6 @@ class QueuedAction extends Action implements ShouldQueue
     /**
      * Perform the action on the given models.
      *
-     * @param  \Laravel\Nova\Fields\ActionFields  $fields
      * @param  \Illuminate\Database\Eloquent\Collection  $models
      * @return void
      */

@@ -20,14 +20,14 @@ class CreateAssociateOfferTable extends Migration
             $table->float('altitude')->nullable();
             $table->tinyInteger('water_access');
             $table->boolean('has_buildings');
-            $table->boolean ('has_houses');
+            $table->boolean('has_houses');
             $table->string('associate_description', 1500);
             $table->string('experience_farming', 1000);
             $table->boolean('is_activity_transmission');
 
             $table->unsignedInteger('ad_id');
 
-            $table->index(["ad_id"], 'fk_associate_offer_ads_1_idx');
+            $table->index(['ad_id'], 'fk_associate_offer_ads_1_idx');
 
             $table->timestamps();
 

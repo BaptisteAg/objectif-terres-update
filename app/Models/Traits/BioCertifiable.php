@@ -1,15 +1,11 @@
 <?php
 
-
 namespace App\Models\Traits;
-
 
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-
-Trait BioCertifiable
+trait BioCertifiable
 {
-
     /**
      * @return MorphToMany
      */

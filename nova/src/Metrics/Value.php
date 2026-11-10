@@ -166,8 +166,7 @@ abstract class Value extends RangedMetric
     /**
      * Calculate the previous quarter range.
      *
-     * @param string $timezone
-     *
+     * @param  string  $timezone
      * @return array
      */
     protected function previousQuarterRange($timezone)
@@ -222,7 +221,6 @@ abstract class Value extends RangedMetric
      * Calculate the previous quarter range.
      *
      * @param  string  $timezone
-     *
      * @return array
      */
     protected function currentQuarterRange($timezone)

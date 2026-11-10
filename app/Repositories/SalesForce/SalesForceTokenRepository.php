@@ -1,7 +1,7 @@
-<?php namespace App\Repositories\SalesForce;
+<?php
+
+namespace App\Repositories\SalesForce;
 
 use Omniphx\Forrest\Repositories\TokenRepository;
 
-class SalesForceTokenRepository extends TokenRepository
-{
-}
+class SalesForceTokenRepository extends TokenRepository {}

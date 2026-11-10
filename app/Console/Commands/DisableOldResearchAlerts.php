@@ -16,6 +16,7 @@ class DisableOldResearchAlerts extends Command implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private $researchService;
+
     /**
      * The name and signature of the console command.
      *

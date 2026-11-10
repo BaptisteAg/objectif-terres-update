@@ -17,8 +17,8 @@ class CreateCmsPagesTable extends Migration
             $table->bigIncrements('id');
             $table->text('page_name');
             $table->text('slug')->default(null);
-			$table->text('description');
-			$table->text('content')->nullable();
+            $table->text('description');
+            $table->text('content')->nullable();
             $table->timestamps();
         });
     }

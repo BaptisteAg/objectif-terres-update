@@ -10,7 +10,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class MorphableResourceCreationTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -22,12 +22,12 @@ class MorphableResourceCreationTest extends IntegrationTest
         $post = factory(Post::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/comments', [
-                            'commentable' => $post->id,
-                            'commentable_type' => 'posts',
-                            'author' => 1,
-                            'body' => 'Comment Body',
-                        ]);
+            ->postJson('/nova-api/comments', [
+                'commentable' => $post->id,
+                'commentable_type' => 'posts',
+                'author' => 1,
+                'body' => 'Comment Body',
+            ]);
 
         $response->assertStatus(201);
         $this->assertEquals(Comment::first()->commentable->title, $post->title);
@@ -43,12 +43,12 @@ class MorphableResourceCreationTest extends IntegrationTest
         $post = factory(Post::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/comments', [
-                            'commentable' => $post->id,
-                            'commentable_type' => 'posts',
-                            'author' => 1,
-                            'body' => 'Comment Body',
-                        ]);
+            ->postJson('/nova-api/comments', [
+                'commentable' => $post->id,
+                'commentable_type' => 'posts',
+                'author' => 1,
+                'body' => 'Comment Body',
+            ]);
 
         unset($_SERVER['nova.comment.authorizable']);
         unset($_SERVER['nova.comment.creatable']);
@@ -63,12 +63,12 @@ class MorphableResourceCreationTest extends IntegrationTest
         $post3 = factory(Post::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/comments', [
-                            'commentable' => $post3->id,
-                            'commentable_type' => 'posts',
-                            'author' => 1,
-                            'body' => 'Comment Body',
-                        ]);
+            ->postJson('/nova-api/comments', [
+                'commentable' => $post3->id,
+                'commentable_type' => 'posts',
+                'author' => 1,
+                'body' => 'Comment Body',
+            ]);
 
         $response->assertStatus(422);
         $this->assertFalse(isset($_SERVER['nova.post.relatablePosts']));
@@ -84,12 +84,12 @@ class MorphableResourceCreationTest extends IntegrationTest
         unset($_SERVER['nova.post.relatablePosts']);
 
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/comments', [
-                            'commentable' => $post3->id,
-                            'commentable_type' => 'posts',
-                            'author' => 1,
-                            'body' => 'Comment Body',
-                        ]);
+            ->postJson('/nova-api/comments', [
+                'commentable' => $post3->id,
+                'commentable_type' => 'posts',
+                'author' => 1,
+                'body' => 'Comment Body',
+            ]);
 
         unset($_SERVER['nova.comment.useCustomRelatablePosts']);
 
@@ -104,11 +104,11 @@ class MorphableResourceCreationTest extends IntegrationTest
         $post = factory(Post::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/comments', [
-                            'commentable' => 100,
-                            'commentable_type' => 'posts',
-                            'body' => 'Comment Body',
-                        ]);
+            ->postJson('/nova-api/comments', [
+                'commentable' => 100,
+                'commentable_type' => 'posts',
+                'body' => 'Comment Body',
+            ]);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['commentable']);
@@ -117,11 +117,11 @@ class MorphableResourceCreationTest extends IntegrationTest
     public function test_morphable_type_must_be_valid()
     {
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/comments', [
-                            'commentable' => 100,
-                            'commentable_type' => 'videos',
-                            'body' => 'Comment Body',
-                        ]);
+            ->postJson('/nova-api/comments', [
+                'commentable' => 100,
+                'commentable_type' => 'videos',
+                'body' => 'Comment Body',
+            ]);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['commentable_type']);

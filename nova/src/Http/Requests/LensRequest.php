@@ -86,7 +86,6 @@ class LensRequest extends NovaRequest
     /**
      * Map the given models to the appropriate resource for the request.
      *
-     * @param  \Illuminate\Support\Collection  $models
      * @return \Illuminate\Support\Collection
      */
     public function toResources(Collection $models)

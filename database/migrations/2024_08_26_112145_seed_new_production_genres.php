@@ -19,57 +19,57 @@ class SeedNewProductionGenres extends Migration
         });
 
         \App\Models\ProductionGenre::whereIn('name', [
-            "Autres petites cultures (PPAM, petits fruits)",
-            "Gros ruminants - Bovins (lait ou viande)",
-            "Petits ruminants - caprins ou ovins (lait ou viande)",
-            "Volailles (oeuf ou chair)"
+            'Autres petites cultures (PPAM, petits fruits)',
+            'Gros ruminants - Bovins (lait ou viande)',
+            'Petits ruminants - caprins ou ovins (lait ou viande)',
+            'Volailles (oeuf ou chair)',
         ])->update(['hidden' => true]);
 
         \App\Models\ProductionGenre::insert([
             [
-                "name" => "PPAM",
-                "created_at" =>  \Carbon\Carbon::now(),
-                "updated_at" => \Carbon\Carbon::now()
+                'name' => 'PPAM',
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ],
             [
-                "name" => "Petits fruits",
-                "created_at" =>  \Carbon\Carbon::now(),
-                "updated_at" => \Carbon\Carbon::now()
+                'name' => 'Petits fruits',
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ],
             [
-                "name" => "Bovin lait",
-                "created_at" =>  \Carbon\Carbon::now(),
-                "updated_at" => \Carbon\Carbon::now()
+                'name' => 'Bovin lait',
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ],
             [
-                "name" => "Bovin viande",
-                "created_at" =>  \Carbon\Carbon::now(),
-                "updated_at" => \Carbon\Carbon::now()
+                'name' => 'Bovin viande',
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ],
             [
-                "name" => "Caprins",
-                "created_at" =>  \Carbon\Carbon::now(),
-                "updated_at" => \Carbon\Carbon::now()
+                'name' => 'Caprins',
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ],
             [
-                "name" => "Ovins lait",
-                "created_at" =>  \Carbon\Carbon::now(),
-                "updated_at" => \Carbon\Carbon::now()
+                'name' => 'Ovins lait',
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ],
             [
-                "name" => "Ovins viande",
-                "created_at" =>  \Carbon\Carbon::now(),
-                "updated_at" => \Carbon\Carbon::now()
+                'name' => 'Ovins viande',
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ],
             [
-                "name" => "Volailles de chair",
-                "created_at" =>  \Carbon\Carbon::now(),
-                "updated_at" => \Carbon\Carbon::now()
+                'name' => 'Volailles de chair',
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ],
             [
-                "name" => "Volailles pondeuses",
-                "created_at" =>  \Carbon\Carbon::now(),
-                "updated_at" => \Carbon\Carbon::now()
+                'name' => 'Volailles pondeuses',
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ],
         ]);
     }
@@ -86,15 +86,15 @@ class SeedNewProductionGenres extends Migration
         });
 
         \App\Models\ProductionGenre::whereIn('name', [
-            "PPAM",
-            "Petits fruits",
-            "Bovin lait",
-            "Bovin viande",
-            "Caprins",
-            "Ovins lait",
-            "Ovins viande",
-            "Volailles de chair",
-            "Volailles pondeuses"
+            'PPAM',
+            'Petits fruits',
+            'Bovin lait',
+            'Bovin viande',
+            'Caprins',
+            'Ovins lait',
+            'Ovins viande',
+            'Volailles de chair',
+            'Volailles pondeuses',
         ])->delete();
     }
 }

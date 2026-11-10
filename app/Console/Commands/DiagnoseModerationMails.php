@@ -38,14 +38,15 @@ class DiagnoseModerationMails extends Command
 
             /** @var User|null $user */
             $user = User::withTrashed()->where('email', $email)->first();
-            if (!$user) {
+            if (! $user) {
                 $this->error('Utilisateur introuvable dans la base.');
+
                 continue;
             }
 
             // 1. État du compte
             $roleLabel = User::$roles[$user->role] ?? '?';
-            $this->line("Compte : id={$user->id} | rôle={$user->role} ({$roleLabel}) | SSO Salesforce=" . ($user->is_sf_user ? 'oui' : 'non'));
+            $this->line("Compte : id={$user->id} | rôle={$user->role} ({$roleLabel}) | SSO Salesforce=".($user->is_sf_user ? 'oui' : 'non'));
             if ($user->deleted_at) {
                 $this->error("⚠ COMPTE SUPPRIMÉ (soft delete) le {$user->deleted_at} → exclu de toute assignation.");
             }
@@ -64,12 +65,12 @@ class DiagnoseModerationMails extends Command
                     $this->comment('ℹ Compte SSO : les départements sont réécrits chaque nuit depuis Salesforce (champ Role_Objectif_Terre__c). Vérifier sa configuration côté Salesforce.');
                 }
             } else {
-                $this->line('Départements : ' . $departments->map(fn ($d) => "{$d->code} {$d->name}")->implode(', '));
+                $this->line('Départements : '.$departments->map(fn ($d) => "{$d->code} {$d->name}")->implode(', '));
             }
 
             // 3. Permission spéciale n°1 (capteur prioritaire)
             $hasPermission = DB::table('user_permissions')->where('user_id', $user->id)->where('permission', 1)->exists();
-            $this->line('Permission n°1 (priorité d\'attribution) : ' . ($hasPermission ? 'OUI' : 'non'));
+            $this->line('Permission n°1 (priorité d\'attribution) : '.($hasPermission ? 'OUI' : 'non'));
 
             // 4. Concurrence sur ses départements : qui capte quoi
             foreach ($departments as $d) {
@@ -77,8 +78,8 @@ class DiagnoseModerationMails extends Command
                     ->join('users', 'users.id', '=', 'user_permissions.user_id')
                     ->join('locationable_users', function ($j) use ($d) {
                         $j->on('locationable_users.user_id', '=', 'users.id')
-                          ->where('locationable_users.locationable_user_type', 'like', '%Department')
-                          ->where('locationable_users.locationable_user_id', '=', $d->id);
+                            ->where('locationable_users.locationable_user_type', 'like', '%Department')
+                            ->where('locationable_users.locationable_user_id', '=', $d->id);
                     })
                     ->where('user_permissions.permission', 1)
                     ->whereNull('users.deleted_at')
@@ -87,8 +88,8 @@ class DiagnoseModerationMails extends Command
                 $moderatorCount = DB::table('users')
                     ->join('locationable_users', function ($j) use ($d) {
                         $j->on('locationable_users.user_id', '=', 'users.id')
-                          ->where('locationable_users.locationable_user_type', 'like', '%Department')
-                          ->where('locationable_users.locationable_user_id', '=', $d->id);
+                            ->where('locationable_users.locationable_user_type', 'like', '%Department')
+                            ->where('locationable_users.locationable_user_id', '=', $d->id);
                     })
                     ->where('users.role', User::ROLE_MODERATOR)
                     ->whereNull('users.deleted_at')
@@ -96,7 +97,7 @@ class DiagnoseModerationMails extends Command
 
                 $captorsInfo = $captors->isEmpty() ? 'aucun' : $captors->implode(', ');
                 $this->line("  Dépt {$d->code} : porteurs de permission n°1 = [{$captorsInfo}] | modérateurs rôle 1 = {$moderatorCount}");
-                if (!$captors->isEmpty() && !$captors->contains($email)) {
+                if (! $captors->isEmpty() && ! $captors->contains($email)) {
                     $this->warn("  ⚠ Dépt {$d->code} : un AUTRE porteur de permission capte TOUTES les annonces — {$email} ne sera jamais tiré au sort.");
                 }
             }
@@ -109,7 +110,7 @@ class DiagnoseModerationMails extends Command
                 ->orderByDesc('created_at')
                 ->get(['created_at', 'data']);
 
-            $this->line("Notifications « à modérer » générées sur {$days} jours : " . $notifications->count());
+            $this->line("Notifications « à modérer » générées sur {$days} jours : ".$notifications->count());
             foreach ($notifications->take(5) as $n) {
                 $adId = json_decode($n->data)->ad_id ?? '?';
                 $this->line("  - {$n->created_at} | annonce n°{$adId}");
@@ -124,10 +125,10 @@ class DiagnoseModerationMails extends Command
         // 6. Santé globale de l'envoi
         $this->line('');
         $this->info('========== Santé globale de l\'envoi ==========');
-        $this->line('QUEUE_CONNECTION = ' . config('queue.default') . ' | MAIL driver = ' . config('mail.driver', config('mail.default')));
+        $this->line('QUEUE_CONNECTION = '.config('queue.default').' | MAIL driver = '.config('mail.driver', config('mail.default')));
         $failed = DB::table('failed_jobs')->where('failed_at', '>=', $since)->count();
         $lastFailed = DB::table('failed_jobs')->where('failed_at', '>=', $since)->max('failed_at');
-        $this->line("failed_jobs sur {$days} jours : {$failed}" . ($failed ? " (dernier : {$lastFailed})" : ''));
+        $this->line("failed_jobs sur {$days} jours : {$failed}".($failed ? " (dernier : {$lastFailed})" : ''));
         if ($failed > 0) {
             $this->warn('⚠ Des jobs de queue ont échoué : des notifications ont pu être générées en base sans que le mail parte.');
         }

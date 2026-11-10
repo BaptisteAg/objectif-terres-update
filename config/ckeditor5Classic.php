@@ -1,4 +1,5 @@
 <?php
+
 return [
 
     /*
@@ -48,14 +49,14 @@ return [
             'imageUpload',
             '-',
             'undo',
-            'redo'
+            'redo',
         ],
         'image' => [
             'toolbar' => [
                 'imageTextAlternative', '|',
                 'imageStyle:alignLeft',
                 'imageStyle:full',
-                'imageStyle:alignRight'
+                'imageStyle:alignRight',
             ],
             'styles' => [
                 // This option is equal to a situation where no style is applied.
@@ -64,17 +65,17 @@ return [
                 'alignLeft',
                 // This represents an image aligned to the right.
                 'alignRight',
-            ]
-        ],
-        'heading' => [
-            'options'=> [
-                [ 'model'=> 'paragraph', 'title'=> 'Paragraphe', 'class'=> 'ck-heading_paragraph'] ,
-                [ 'model'=> 'heading1', 'view'=> 'h1', 'title'=> 'Titre 1', 'class'=> 'ck-heading_heading1' ],
-                [ 'model'=> 'heading2', 'view'=> 'h2', 'title'=> 'Titre 2', 'class'=> 'ck-heading_heading2' ],
-                [ 'model'=> 'heading3', 'view'=> 'h3', 'title'=> 'Titre 3', 'class'=> 'ck-heading_heading3' ],
-                [ 'model'=> 'heading4', 'view'=> 'h4', 'title'=> 'Titre 4', 'class'=> 'ck-heading_heading4' ]
             ],
         ],
-    ]
+        'heading' => [
+            'options' => [
+                ['model' => 'paragraph', 'title' => 'Paragraphe', 'class' => 'ck-heading_paragraph'],
+                ['model' => 'heading1', 'view' => 'h1', 'title' => 'Titre 1', 'class' => 'ck-heading_heading1'],
+                ['model' => 'heading2', 'view' => 'h2', 'title' => 'Titre 2', 'class' => 'ck-heading_heading2'],
+                ['model' => 'heading3', 'view' => 'h3', 'title' => 'Titre 3', 'class' => 'ck-heading_heading3'],
+                ['model' => 'heading4', 'view' => 'h4', 'title' => 'Titre 4', 'class' => 'ck-heading_heading4'],
+            ],
+        ],
+    ],
 
 ];

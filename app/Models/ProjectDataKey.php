@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $ad_notes_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProjectDataValue[] $projectDataValues
  * @property-read int|null $project_data_values_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataKey newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataKey newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataKey query()
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataKey whereIsPublic($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataKey whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataKey whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class ProjectDataKey extends Model
@@ -34,7 +36,7 @@ class ProjectDataKey extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'is_public', 'immutable'
+        'name', 'is_public', 'immutable',
     ];
 
     /**
@@ -45,11 +47,11 @@ class ProjectDataKey extends Model
         return $this->hasMany(AdNote::class);
     }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function projectDataValues()
-	{
-		return $this->hasMany(ProjectDataValue::class);
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function projectDataValues()
+    {
+        return $this->hasMany(ProjectDataValue::class);
+    }
 }

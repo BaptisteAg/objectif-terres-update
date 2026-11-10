@@ -21,16 +21,15 @@ class UserRoleFilter extends Filter
     /**
      * Apply the filter to the given query.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply(Request $request, $query, $value)
     {
-        return $query->where(function (Builder $query) use($value) {
+        return $query->where(function (Builder $query) use ($value) {
             foreach ($value as $role => $checked) {
-                if($checked) {
+                if ($checked) {
                     $query->orWhere('role', $role);
                 }
             }
@@ -40,7 +39,6 @@ class UserRoleFilter extends Filter
     /**
      * Get the filter's available options.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function options(Request $request)

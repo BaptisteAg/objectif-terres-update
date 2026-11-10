@@ -1,14 +1,15 @@
-<?php namespace App\Http\Requests\Ads\Rulesets;
+<?php
+
+namespace App\Http\Requests\Ads\Rulesets;
 
 use App\Http\Requests\Ads\RulesetInterface;
 use App\Rules\HasProductionGenre;
-use App\Rules\HasZone;
 
 class JobOfferRuleset implements RulesetInterface
 {
     public function get(bool $isSupportRequest): array
     {
-        //dd(request()->all());
+        // dd(request()->all());
         return [
             'job_offer.production_genre' => [new HasProductionGenre],
             'job_offer.production_type_add' => ['nullable', 'string'],

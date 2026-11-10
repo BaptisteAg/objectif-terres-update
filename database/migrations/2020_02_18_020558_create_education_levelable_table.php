@@ -20,9 +20,9 @@ class CreateEducationLevelableTable extends Migration
             $table->string('education_levelable_type');
             $table->timestamps();
 
-            $table->index(["education_level_id"], 'fk_education_levelable_1_idx');
-            $table->index(["education_levelable_id"], 'ix_education_levelable_1');
-            $table->index(["education_levelable_type"], 'ix_education_levelable_2');
+            $table->index(['education_level_id'], 'fk_education_levelable_1_idx');
+            $table->index(['education_levelable_id'], 'ix_education_levelable_1');
+            $table->index(['education_levelable_type'], 'ix_education_levelable_2');
 
             $table->foreign('education_level_id', 'fk_education_levelable_1_idx')
                 ->references('id')->on('education_levels')

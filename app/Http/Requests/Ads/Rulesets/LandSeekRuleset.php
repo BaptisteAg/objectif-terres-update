@@ -1,8 +1,9 @@
-<?php namespace App\Http\Requests\Ads\Rulesets;
+<?php
+
+namespace App\Http\Requests\Ads\Rulesets;
 
 use App\Http\Requests\Ads\RulesetInterface;
 use App\Rules\HasProductionGenre;
-use App\Rules\HasZone;
 
 class LandSeekRuleset implements RulesetInterface
 {
@@ -10,7 +11,7 @@ class LandSeekRuleset implements RulesetInterface
     {
         $extraValidations = [];
 
-        if($isSupportRequest) {
+        if ($isSupportRequest) {
             $extraValidations = [
                 'land_seek.offer_genres' => ['nullable', 'array'],
                 'land_seek.experience_levels' => ['nullable', 'array'],
@@ -30,14 +31,14 @@ class LandSeekRuleset implements RulesetInterface
             'land_seek.experience_farming' => ['nullable', 'string', 'max:1500'],
             'land_seek.chart_confirmation' => ['required'],
             'land_seek.buildings' => ['required', 'array'],
-            //'land_seek.surface_range_min' => ['nullable', 'integer'],
-            //'land_seek.surface_range_max' => ['nullable', 'integer'],
-            //'land_seek.has_farm_buildings'       => ['boolean'],
-            //'land_seek.has_houses'               => ['boolean'],
-            //'land_seek.offer_genre_id'           => ['nullable', 'string'],
-            //'land_seek.price_range'              => ['nullable', 'array'],
-            //'land_seek.rent_min'                 => ['nullable', 'integer'],
-            //'land_seek.rent_max'                 => ['nullable', 'integer'],
+            // 'land_seek.surface_range_min' => ['nullable', 'integer'],
+            // 'land_seek.surface_range_max' => ['nullable', 'integer'],
+            // 'land_seek.has_farm_buildings'       => ['boolean'],
+            // 'land_seek.has_houses'               => ['boolean'],
+            // 'land_seek.offer_genre_id'           => ['nullable', 'string'],
+            // 'land_seek.price_range'              => ['nullable', 'array'],
+            // 'land_seek.rent_min'                 => ['nullable', 'integer'],
+            // 'land_seek.rent_max'                 => ['nullable', 'integer'],
         ], $extraValidations);
     }
 }

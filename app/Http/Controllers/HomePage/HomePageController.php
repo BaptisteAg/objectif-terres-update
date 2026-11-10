@@ -9,7 +9,6 @@ use App\Services\Ads\AdService;
 use App\Services\Rss\RssService;
 use Illuminate\Database\Eloquent\Builder;
 
-
 class HomePageController extends Controller
 {
     /**
@@ -25,7 +24,7 @@ class HomePageController extends Controller
 
     public function show(AdService $adService, RssService $rssService)
     {
-        if (!auth()->user() && config('app.is_coming_soon')) {
+        if (! auth()->user() && config('app.is_coming_soon')) {
             return view('pages.coming_soon');
         }
 
@@ -42,7 +41,7 @@ class HomePageController extends Controller
         $ads = $adsQuery->get();
         $adsPartner = $adsQuery->where('is_partner', 1)->get();
 
-        //$rssNews = $rssService->getTdlNews();
+        // $rssNews = $rssService->getTdlNews();
         return view('pages.homepage', compact('ads', 'adsPartner'));
     }
 }

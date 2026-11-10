@@ -13,14 +13,14 @@ class BuildingTypeSeeder extends Seeder
     {
         \App\Models\BuildingType::insert([
             [
-                "label" => "Maison d'habitation",
-                "created_at" =>  \Carbon\Carbon::now(),
-                "updated_at" => \Carbon\Carbon::now()
+                'label' => "Maison d'habitation",
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ],
             [
-                "label" => "Bâtiments agricoles",
-                "created_at" =>  \Carbon\Carbon::now(),
-                "updated_at" => \Carbon\Carbon::now()
+                'label' => 'Bâtiments agricoles',
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ],
         ]);
     }

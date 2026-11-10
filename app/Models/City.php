@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $researches_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|City newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|City newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|City query()
@@ -34,16 +35,18 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|City whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|City whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|City whereZipCode($value)
+ *
  * @mixin \Eloquent
  */
 class City extends Model
 {
     use Locationable;
+
     /**
      * @var array
      */
     protected $fillable = [
-        'id','department_code', 'insee_code', 'zip_code', 'name', 'slug', 'gps_lat', 'gps_lng'
+        'id', 'department_code', 'insee_code', 'zip_code', 'name', 'slug', 'gps_lat', 'gps_lng',
     ];
 
     /**

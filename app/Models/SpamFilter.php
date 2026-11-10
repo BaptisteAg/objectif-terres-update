@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 class SpamFilter extends Model
 {
     const TYPE_EMAIL = 'email';
+
     const TYPE_PATTERN = 'pattern';
 
     /**
@@ -63,8 +64,6 @@ class SpamFilter extends Model
 
     /**
      * Get all active blacklisted emails.
-     *
-     * @return array
      */
     public static function getActiveEmails(): array
     {
@@ -73,8 +72,6 @@ class SpamFilter extends Model
 
     /**
      * Get all active spam patterns.
-     *
-     * @return array
      */
     public static function getActivePatterns(): array
     {

@@ -21,23 +21,20 @@ class NotifyPublishDateExtendBeforeExpiration extends Command
      */
     protected $description = 'Send an alert to ad owners whose ads are going to expire soon and suggest to extend the expiration date';
 
-    /** @var NotifyPublishDateExtendBeforeExpirationJob  */
+    /** @var NotifyPublishDateExtendBeforeExpirationJob */
     protected $job;
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @param NotifyPublishDateExtendBeforeExpirationJob $job
-	 */
+    /**
+     * Create a new command instance.
+     */
     public function __construct(NotifyPublishDateExtendBeforeExpirationJob $job)
     {
-    	$this->job = $job;
+        $this->job = $job;
         parent::__construct();
     }
 
     /**
      * Execute the console command.
-     *
      */
     public function handle()
     {

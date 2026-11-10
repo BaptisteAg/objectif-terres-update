@@ -24,8 +24,7 @@ use stdClass;
 
 abstract class Lens implements ArrayAccess, JsonSerializable, UrlRoutable
 {
-    use
-        AuthorizedToSee,
+    use AuthorizedToSee,
         ConditionallyLoadsAttributes,
         DelegatesToResource,
         ProxiesCanSeeToGate,
@@ -50,7 +49,6 @@ abstract class Lens implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Execute the query for the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\LensRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return mixed
      */
@@ -59,7 +57,6 @@ abstract class Lens implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Get the fields displayed by the lens.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     abstract public function fields(Request $request);
@@ -98,7 +95,6 @@ abstract class Lens implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Get the actions available on the lens.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function actions(Request $request)
@@ -109,21 +105,19 @@ abstract class Lens implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Prepare the resource for JSON serialization.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function serializeForIndex(NovaRequest $request)
     {
         return $this->serializeWithId($this->resolveFields($request)
-                ->reject(function ($field) {
-                    return $field instanceof ListableField || ! $field->showOnIndex;
-                }));
+            ->reject(function ($field) {
+                return $field instanceof ListableField || ! $field->showOnIndex;
+            }));
     }
 
     /**
      * Resolve the given fields to their values.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Fields\FieldCollection
      */
     public function resolveFields(NovaRequest $request)
@@ -138,7 +132,6 @@ abstract class Lens implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Get the fields that are available for the given request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Fields\FieldCollection
      */
     public function availableFields(NovaRequest $request)
@@ -149,7 +142,6 @@ abstract class Lens implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Prepare the lens for JSON serialization using the given fields.
      *
-     * @param  \Laravel\Nova\Fields\FieldCollection  $fields
      * @return array
      */
     protected function serializeWithId(FieldCollection $fields)

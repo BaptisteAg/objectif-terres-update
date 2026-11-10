@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $has_documents
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Document[] $documents
  * @property-read int|null $documents_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|CmsCommonContent newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CmsCommonContent newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CmsCommonContent query()
@@ -31,24 +32,24 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|CmsCommonContent wherePagesName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CmsCommonContent whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CmsCommonContent whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class CmsCommonContent extends Model
 {
-	use Documentable;
-	/**
-	 * The table associated with the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'cms_common_contents';
+    use Documentable;
 
-	/**
-	 * @var array
-	 */
-	protected $fillable = [
-		'name', 'description',  'slug', 'pages_name', 'content', 'created_at', 'updated_at', "has_documents"
-	];
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'cms_common_contents';
 
-
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'description',  'slug', 'pages_name', 'content', 'created_at', 'updated_at', 'has_documents',
+    ];
 }

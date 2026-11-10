@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FileFieldControllerTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -29,9 +29,9 @@ class FileFieldControllerTest extends IntegrationTest
         Storage::fake();
 
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/files', [
-                            'avatar' => UploadedFile::fake()->image('avatar.png'),
-                        ]);
+            ->postJson('/nova-api/files', [
+                'avatar' => UploadedFile::fake()->image('avatar.png'),
+            ]);
 
         $response->assertStatus(201);
         Storage::disk()->assertExists('avatars/avatar.png');
@@ -60,7 +60,7 @@ class FileFieldControllerTest extends IntegrationTest
 
         $this->withExceptionHandling()
             ->postJson('/nova-api/files/'.$file->id, [
-                '_method'=>'PUT',
+                '_method' => 'PUT',
                 'avatar' => UploadedFile::fake()->image('avatar2.png'),
             ]);
 
@@ -99,7 +99,7 @@ class FileFieldControllerTest extends IntegrationTest
 
         $this->withExceptionHandling()
             ->postJson('/nova-api/files/'.$file->id, [
-                '_method'=>'PUT',
+                '_method' => 'PUT',
                 'avatar' => UploadedFile::fake()->image('avatar2.png'),
             ]);
 
@@ -117,9 +117,9 @@ class FileFieldControllerTest extends IntegrationTest
         Storage::fake();
 
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/files', [
-                            'avatar' => null,
-                        ]);
+            ->postJson('/nova-api/files', [
+                'avatar' => null,
+            ]);
 
         $response->assertStatus(422);
         Storage::disk()->assertMissing('avatars/avatar.png');
@@ -128,12 +128,12 @@ class FileFieldControllerTest extends IntegrationTest
     public function test_file_field_returns_proper_meta_data()
     {
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/files', [
-                            'avatar' => UploadedFile::fake()->image('avatar.png'),
-                        ]);
+            ->postJson('/nova-api/files', [
+                'avatar' => UploadedFile::fake()->image('avatar.png'),
+            ]);
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/files/'.File::first()->id);
+            ->getJson('/nova-api/files/'.File::first()->id);
 
         $response->assertStatus(200);
         $file = $response->original['resource']['fields'][1]->jsonSerialize();
@@ -144,12 +144,12 @@ class FileFieldControllerTest extends IntegrationTest
     public function test_file_can_be_downloaded()
     {
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/files', [
-                            'avatar' => UploadedFile::fake()->image('avatar.png'),
-                        ]);
+            ->postJson('/nova-api/files', [
+                'avatar' => UploadedFile::fake()->image('avatar.png'),
+            ]);
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/files/'.File::first()->id.'/download/avatar');
+            ->get('/nova-api/files/'.File::first()->id.'/download/avatar');
 
         $response->assertStatus(200);
         $this->assertInstanceOf(StreamedResponse::class, $response->baseResponse);
@@ -158,12 +158,12 @@ class FileFieldControllerTest extends IntegrationTest
     public function test_file_field_can_be_deleted()
     {
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/files', [
-                            'avatar' => UploadedFile::fake()->image('avatar.png'),
-                        ]);
+            ->postJson('/nova-api/files', [
+                'avatar' => UploadedFile::fake()->image('avatar.png'),
+            ]);
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/files/'.File::first()->id.'/field/avatar');
+            ->deleteJson('/nova-api/files/'.File::first()->id.'/field/avatar');
 
         $response->assertStatus(200);
         $this->assertCount(2, File::first()->actions);
@@ -180,19 +180,19 @@ class FileFieldControllerTest extends IntegrationTest
         $role = factory(Role::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/users/'.$user->id.'/attach/roles', [
-                            'roles' => $role->id,
-                            'admin' => 'Y',
-                            'photo' => $image = UploadedFile::fake()->image('avatar.png'),
-                            'viaRelationship' => 'roles',
-                        ]);
+            ->postJson('/nova-api/users/'.$user->id.'/attach/roles', [
+                'roles' => $role->id,
+                'admin' => 'Y',
+                'photo' => $image = UploadedFile::fake()->image('avatar.png'),
+                'viaRelationship' => 'roles',
+            ]);
 
         $response->assertStatus(200);
 
         Storage::disk('public')->assertExists($image->hashName());
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/users/'.$user->id.'/roles/'.$role->id.'/field/photo?viaRelationship=roles');
+            ->deleteJson('/nova-api/users/'.$user->id.'/roles/'.$role->id.'/field/photo?viaRelationship=roles');
 
         $response->assertStatus(200);
         Storage::disk('public')->assertMissing($image->hashName());
@@ -212,12 +212,12 @@ class FileFieldControllerTest extends IntegrationTest
         $role = factory(Role::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/users/'.$user->id.'/attach/roles', [
-                            'roles' => $role->id,
-                            'admin' => 'Y',
-                            'photo' => $image = UploadedFile::fake()->image('avatar.png'),
-                            'viaRelationship' => 'roles',
-                        ]);
+            ->postJson('/nova-api/users/'.$user->id.'/attach/roles', [
+                'roles' => $role->id,
+                'admin' => 'Y',
+                'photo' => $image = UploadedFile::fake()->image('avatar.png'),
+                'viaRelationship' => 'roles',
+            ]);
 
         $response->assertStatus(200);
 
@@ -228,7 +228,7 @@ class FileFieldControllerTest extends IntegrationTest
         Gate::policy(User::class, UserPolicy::class);
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/users/'.$user->id.'/roles/'.$role->id.'/field/photo?viaRelationship=roles');
+            ->deleteJson('/nova-api/users/'.$user->id.'/roles/'.$role->id.'/field/photo?viaRelationship=roles');
 
         unset($_SERVER['nova.user.authorizable']);
         unset($_SERVER['nova.user.attachRole']);
@@ -246,12 +246,12 @@ class FileFieldControllerTest extends IntegrationTest
         $_SERVER['__nova.fileDelete'] = 'some-value';
 
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/files', [
-                            'avatar' => UploadedFile::fake()->image('avatar.png'),
-                        ]);
+            ->postJson('/nova-api/files', [
+                'avatar' => UploadedFile::fake()->image('avatar.png'),
+            ]);
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/files/'.File::first()->id.'/field/avatar');
+            ->deleteJson('/nova-api/files/'.File::first()->id.'/field/avatar');
 
         $response->assertStatus(200);
         $this->assertEquals('some-value', File::first()->avatar);
@@ -262,12 +262,12 @@ class FileFieldControllerTest extends IntegrationTest
         $_SERVER['__nova.fileDelete'] = ['avatar' => 'test-avatar', 'name' => 'test-name'];
 
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/files', [
-                            'avatar' => UploadedFile::fake()->image('avatar.png'),
-                        ]);
+            ->postJson('/nova-api/files', [
+                'avatar' => UploadedFile::fake()->image('avatar.png'),
+            ]);
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/files/'.File::first()->id.'/field/avatar');
+            ->deleteJson('/nova-api/files/'.File::first()->id.'/field/avatar');
 
         $response->assertStatus(200);
         $this->assertEquals('test-avatar', File::first()->avatar);
@@ -278,22 +278,22 @@ class FileFieldControllerTest extends IntegrationTest
     {
         $_SERVER['nova.fileResource.imageField'] = function ($request) {
             return Image::make('Avatar')
-                    ->disk('local')
-                    ->path('avatars')
-                    ->storeAs(function ($request) {
-                        return 'avatar.png';
-                    })
-                    ->storeOriginalName('original_name')
-                    ->storeSize('size')
-                    ->prunable();
+                ->disk('local')
+                ->path('avatars')
+                ->storeAs(function ($request) {
+                    return 'avatar.png';
+                })
+                ->storeOriginalName('original_name')
+                ->storeSize('size')
+                ->prunable();
         };
 
         Storage::fake();
 
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/files', [
-                            'avatar' => UploadedFile::fake()->image('avatar.png'),
-                        ]);
+            ->postJson('/nova-api/files', [
+                'avatar' => UploadedFile::fake()->image('avatar.png'),
+            ]);
 
         unset($_SERVER['nova.fileResource.imageField']);
 
@@ -311,14 +311,14 @@ class FileFieldControllerTest extends IntegrationTest
         unset($_SERVER['__nova.fileDeleted']);
 
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/files', [
-                            'avatar' => UploadedFile::fake()->image('avatar.png'),
-                        ]);
+            ->postJson('/nova-api/files', [
+                'avatar' => UploadedFile::fake()->image('avatar.png'),
+            ]);
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/files', [
-                            'resources' => [File::first()->id],
-                        ]);
+            ->deleteJson('/nova-api/files', [
+                'resources' => [File::first()->id],
+            ]);
 
         $response->assertStatus(200);
         $this->assertEquals(0, File::count());
@@ -332,14 +332,14 @@ class FileFieldControllerTest extends IntegrationTest
         unset($_SERVER['__nova.fileDeleted']);
 
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/soft-deleting-files', [
-                            'avatar' => UploadedFile::fake()->image('avatar.png'),
-                        ]);
+            ->postJson('/nova-api/soft-deleting-files', [
+                'avatar' => UploadedFile::fake()->image('avatar.png'),
+            ]);
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/soft-deleting-files', [
-                            'resources' => [SoftDeletingFile::first()->id],
-                        ]);
+            ->deleteJson('/nova-api/soft-deleting-files', [
+                'resources' => [SoftDeletingFile::first()->id],
+            ]);
 
         $response->assertStatus(200);
         $this->assertEquals(0, SoftDeletingFile::count());
@@ -354,14 +354,14 @@ class FileFieldControllerTest extends IntegrationTest
         unset($_SERVER['__nova.fileDeleted']);
 
         $response = $this->withExceptionHandling()
-                        ->postJson('/nova-api/soft-deleting-files', [
-                            'avatar' => UploadedFile::fake()->image('avatar.png'),
-                        ]);
+            ->postJson('/nova-api/soft-deleting-files', [
+                'avatar' => UploadedFile::fake()->image('avatar.png'),
+            ]);
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/soft-deleting-files/force', [
-                            'resources' => [SoftDeletingFile::first()->id],
-                        ]);
+            ->deleteJson('/nova-api/soft-deleting-files/force', [
+                'resources' => [SoftDeletingFile::first()->id],
+            ]);
 
         $response->assertStatus(200);
         $this->assertEquals(0, SoftDeletingFile::withTrashed()->count());
@@ -395,17 +395,17 @@ class FileFieldControllerTest extends IntegrationTest
 
         $_SERVER['nova.fileResource.imageField'] = function ($request) {
             return Image::make('Avatar', 'avatar', 'public')
-                        ->store(function (Request $request, $model) {
-                            return function () use ($request, $model) {
-                                $model->avatar = $request->file('avatar')->store('avatars', 'public');
-                            };
-                        });
+                ->store(function (Request $request, $model) {
+                    return function () use ($request, $model) {
+                        $model->avatar = $request->file('avatar')->store('avatars', 'public');
+                    };
+                });
         };
 
         $response = $this->withExceptionHandling()
-             ->postJson('/nova-api/files', [
-                 'avatar' => UploadedFile::fake()->image('avatar.png'),
-             ]);
+            ->postJson('/nova-api/files', [
+                'avatar' => UploadedFile::fake()->image('avatar.png'),
+            ]);
 
         unset($_SERVER['nova.fileResource.imageField']);
 

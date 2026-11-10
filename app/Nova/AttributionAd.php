@@ -7,12 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
 class AttributionAd extends Resource
 {
@@ -33,13 +30,11 @@ class AttributionAd extends Resource
      */
     public static $model = 'App\Models\AttributionAd';
 
-    /**
-     * @return string
-     */
     public function title(): string
     {
-        $moderator = ' '. $this->userModerator ? ' - ' . $this->userModerator->name . ' ' . $this->userModerator->first_name : 'Aucun modérateur';
-        return '(' . $this->ad?->id . ')' . $this->ad?->title . $moderator;
+        $moderator = ' '.$this->userModerator ? ' - '.$this->userModerator->name.' '.$this->userModerator->first_name : 'Aucun modérateur';
+
+        return '('.$this->ad?->id.')'.$this->ad?->title.$moderator;
     }
 
     public static $with = ['ad', 'userModerator'];
@@ -58,7 +53,6 @@ class AttributionAd extends Resource
         'userModerator',
     ];
 
-
     public static function applySearch($query, $search)
     {
         return $query->orWhereHas('ad', function ($query) use ($search) {
@@ -71,12 +65,11 @@ class AttributionAd extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function fields(Request $request)
     {
-        $moderators = User::whereIn('role', [1,3,4])
+        $moderators = User::whereIn('role', [1, 3, 4])
             ->get()
             ->concat(
                 User::where('role', 2)
@@ -87,26 +80,26 @@ class AttributionAd extends Resource
             ->sortBy('name')
             ->keyBy('id')
             ->map(function (User $user) {
-                return $user->name . ' ' . $user->first_name . ' (' . $user->email . ')';
+                return $user->name.' '.$user->first_name.' ('.$user->email.')';
             });
 
         return [
             Text::make('ID', 'ad.id')->sortable()->readonly(),
             BelongsTo::make('Annonce', 'ad', Ad::class)->readonly(),
-            //BelongsTo::make('Modérateur', 'userModerator', UserModerator::class),
-            Select::make('Modérateur','user_moderator_id')->options($moderators),
+            // BelongsTo::make('Modérateur', 'userModerator', UserModerator::class),
+            Select::make('Modérateur', 'user_moderator_id')->options($moderators),
             Badge::make('Statut', 'ad_status_id')
                 ->map([
-                    AdStatus::APPROVE_ID => "success",
-                    AdStatus::PENDING_ID => "info",
-                    AdStatus::REFUSE_ID => "danger",
-                    AdStatus::PENDING_MODERATION_STATUS_ID => "info",
-                    AdStatus::ARCHIVED_ID => "warning",
+                    AdStatus::APPROVE_ID => 'success',
+                    AdStatus::PENDING_ID => 'info',
+                    AdStatus::REFUSE_ID => 'danger',
+                    AdStatus::PENDING_MODERATION_STATUS_ID => 'info',
+                    AdStatus::ARCHIVED_ID => 'warning',
                     null => 'danger',
                 ])
                 ->labels(AdStatus::TOOLTIPS),
             DateTime::make('Modifiée après publication', 'pending_update_since')
-                ->help("Annonce en ligne modifiée par son auteur·e et en attente de relecture.")
+                ->help('Annonce en ligne modifiée par son auteur·e et en attente de relecture.')
                 ->readonly()
                 ->sortable(),
         ];
@@ -115,7 +108,6 @@ class AttributionAd extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function cards(Request $request)
@@ -126,7 +118,6 @@ class AttributionAd extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function filters(Request $request)
@@ -137,7 +128,6 @@ class AttributionAd extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function lenses(Request $request)
@@ -148,7 +138,6 @@ class AttributionAd extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function actions(Request $request)

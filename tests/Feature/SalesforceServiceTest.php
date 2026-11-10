@@ -19,7 +19,7 @@ class SalesforceServiceTest extends TestCase
      *
      * @return void
      */
-    public function testSyncLocalUserResolvesEmailConflictsForLocalUsers()
+    public function test_sync_local_user_resolves_email_conflicts_for_local_users()
     {
         // Create a conflicting LOCAL-ONLY user (no sf_id) who already has the email we want
         $conflictingUser = User::create([
@@ -84,7 +84,7 @@ class SalesforceServiceTest extends TestCase
      *
      * @return void
      */
-    public function testSyncLocalUserWithoutEmailConflict()
+    public function test_sync_local_user_without_email_conflict()
     {
         // Create a user who will be logging in via Salesforce
         $sfUser = User::create([
@@ -126,7 +126,7 @@ class SalesforceServiceTest extends TestCase
      *
      * @return void
      */
-    public function testSyncLocalUserThrowsExceptionForSalesforceToSalesforceConflict()
+    public function test_sync_local_user_throws_exception_for_salesforce_to_salesforce_conflict()
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessageMatches("/Conflit d'adresse email/");
@@ -174,7 +174,7 @@ class SalesforceServiceTest extends TestCase
      *
      * @return void
      */
-    public function testSyncLocalUserArchivesLocalOnlyUserEmail()
+    public function test_sync_local_user_archives_local_only_user_email()
     {
         // Create a local-only user (no Salesforce ID)
         $localUser = User::create([

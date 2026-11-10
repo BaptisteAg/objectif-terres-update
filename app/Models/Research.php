@@ -51,6 +51,7 @@ use Illuminate\Notifications\Notifiable;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Region[] $regions
  * @property-read int|null $regions_count
  * @property-read \App\Models\User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Research newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Research newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Research query()
@@ -68,75 +69,80 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|Research whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Research whereUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Research whereUserId($value)
+ *
  * @mixin \Eloquent
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
  * @property-read int|null $production_genres_secondary_count
  */
 class Research extends Model
 {
-	use OfferableGenre;
-	use BioCertifiable;
-	use ProductionableGenre;
-	use Notifiable;
+    use BioCertifiable;
     use JobOfferTypable;
+    use Notifiable;
+    use OfferableGenre;
+    use ProductionableGenre;
 
-	protected $table = "researches";
+    protected $table = 'researches';
 
-	/**
-	 * @var array
-	 */
-	protected $fillable = [
-		'user_id', 'name', 'surface_min', 'surface_max', 'has_pics', 'has_house', 'price_min', 'price_max', 'ad_type', 'url', 'has_alert'
-	];
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'user_id', 'name', 'surface_min', 'surface_max', 'has_pics', 'has_house', 'price_min', 'price_max', 'ad_type', 'url', 'has_alert',
+    ];
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function user()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
     {
-		return $this->belongsTo(User::class);
-	}
+        return $this->belongsTo(User::class);
+    }
 
-	/**
-	 * @return belongsToMany
-	 */
-	public function adStatuses()
-	{
-		return $this->belongsToMany(AdStatus::class)->withTimestamps();
-	}
+    /**
+     * @return belongsToMany
+     */
+    public function adStatuses()
+    {
+        return $this->belongsToMany(AdStatus::class)->withTimestamps();
+    }
 
-	/**
-	 * @return belongsToMany
-	 */
-	public function projectStatuses()
-	{
-		return $this->belongsToMany(ProjectStatus::class)->withTimestamps();
-	}
+    /**
+     * @return belongsToMany
+     */
+    public function projectStatuses()
+    {
+        return $this->belongsToMany(ProjectStatus::class)->withTimestamps();
+    }
 
-	/**
-	 * Get all cities 'location' for the research
-	 * @return MorphToMany
-	 */
-	public function cities()
-	{
-		return $this->morphedbyMany(City::class, 'locationable_research', 'locationable_researches');
-	}
+    /**
+     * Get all cities 'location' for the research
+     *
+     * @return MorphToMany
+     */
+    public function cities()
+    {
+        return $this->morphedbyMany(City::class, 'locationable_research', 'locationable_researches');
+    }
 
-	/**
-	 * Get all cities 'location' for the research
-	 * @return MorphToMany
-	 */
-	public function departments()
-	{
-		return $this->morphedbyMany(Department::class, 'locationable_research', 'locationable_researches');
-	}
+    /**
+     * Get all cities 'location' for the research
+     *
+     * @return MorphToMany
+     */
+    public function departments()
+    {
+        return $this->morphedbyMany(Department::class, 'locationable_research', 'locationable_researches');
+    }
 
-	/**
-	 * Get all cities 'location' for the research
-	 * @return MorphToMany
-	 */
-	public function regions()
-	{
-		return $this->morphedbyMany(Region::class, 'locationable_research','locationable_researches');
-	}
+    /**
+     * Get all cities 'location' for the research
+     *
+     * @return MorphToMany
+     */
+    public function regions()
+    {
+        return $this->morphedbyMany(Region::class, 'locationable_research', 'locationable_researches');
+    }
 }

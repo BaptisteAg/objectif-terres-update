@@ -59,6 +59,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserPermission[] $userPermissions
  * @property-read int|null $user_permissions_count
  * @property-read \App\Models\City|null $zipCode
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|User filterAdsTerritoryLocations($territoriesCode)
  * @method static \Illuminate\Database\Eloquent\Builder|User filterLocations($relationshipName, $locationableIds)
  * @method static \Illuminate\Database\Eloquent\Builder|User filterRegions($regionCode)
@@ -94,7 +95,9 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereZipCodeId($value)
  * @method static \Illuminate\Database\Query\Builder|User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
+ *
  * @mixin \Eloquent
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AttributionAd[] $adsAdvisor
  * @property-read int|null $ads_advisor_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AttributionAd[] $adsModerator
@@ -104,273 +107,277 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property int|null $birthday
  * @property int|null $formation
  * @property int|null $fromwhere
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|User whereBirthday($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereFormation($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereFromwhere($value)
  */
 class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 {
-	use Notifiable;
-	use CanResetPassword;
-	use SoftDeletes;
-	use ScopeLocationFilterable;
+    use CanResetPassword;
+    use Notifiable;
+    use ScopeLocationFilterable;
+    use SoftDeletes;
 
     const ROLE_PP = 0;
+
     const ROLE_MODERATOR = 1;
+
     const ROLE_PRIMO_ACCUEILLANT = 2;
+
     const ROLE_RESPONSABLE_TERRITORIAL = 3;
+
     const ROLE_ADMIN = 4;
 
     /**
-	 * The attributes that are mass assignable.
-	 *
-	 * @var array
-	 */
-	protected $fillable = [
-		'name',
-		'email',
-		'password',
-		'first_name',
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'first_name',
         'birthday',
         'formation',
         'fromwhere',
-		'phone',
-		'street',
-		'city',
-		'zip_code_id',
-		'accept_communication',
-		'country_id',
-		'profile',
-		'civility',
-		'other_profile',
-		'sf_id',
-		'accept_share_contact_infos',
-		'role',
-		'is_blocked',
-		'deleted_at ',
-		'origin',
-        "formation"
+        'phone',
+        'street',
+        'city',
+        'zip_code_id',
+        'accept_communication',
+        'country_id',
+        'profile',
+        'civility',
+        'other_profile',
+        'sf_id',
+        'accept_share_contact_infos',
+        'role',
+        'is_blocked',
+        'deleted_at ',
+        'origin',
+        'formation',
 
-	];
-
-	/**
-	 * The attributes that should be hidden for arrays.
-	 *
-	 * @var array
-	 */
-	protected $hidden = [
-		'password', 'remember_token',
-	];
-
-
-	/**
-	 * The attributes that should be cast to native types.
-	 *
-	 * @var array
-	 */
-	protected $casts = [
-		'email_verified_at' => 'datetime',
-	];
-
-	static $civilities = [
-		1 => "Madame",
-		2 => "Monsieur",
-		3 => "Autre",
-	];
-
-	static $profiles = [
-		1 => "Candidat à l'installation",
-		2 => "Personne en recherche d’expérience ou de travail dans le domaine agricole",
-		3 => "Agriculteur qui souhaite consolider sa ferme",
-		4 => "Agriculteur qui souhaite transmettre sa ferme",
-		5 => "Propriétaire privé qui souhaite vendre ou louer sa ferme",
-		6 => "Propriétaire privé qui souhaite donner ou léguer sa ferme",
-		7 => "Autre",
-	];
-
-	static $roles = [
-		0 => "Porteur de projet",
-		1 => "Modérateur",
-		2 => "Primo-accueillant",
-		3 => "Responsable territorial",
-		4 => "Administrateur",
-	];
-
-    static $formations = [
-        1 => "Diplôme agricole niveau III (BEPA)",
-        2 => "Diplôme agricole niveau IV (BPREA, BAC,)",
-        3 => "Diplôme agricole niveau V (BTS, DUT) ",
-        4 => "Diplôme agricole niveau VI (licence)",
-        5 => "Diplôme agricole niveau VII ou plus (ingénieur, master2, véto, ...)",
     ];
 
-    static $fromwheres = [
-		0 => "Issu du monde agricole",
-		1 => "Non Issu du monde agricole",
-		2 => "Ne sait pas répondre à la question"
-	];
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function country()
-	{
-		return $this->belongsTo('App\Models\Country');
-	}
+    public static $civilities = [
+        1 => 'Madame',
+        2 => 'Monsieur',
+        3 => 'Autre',
+    ];
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function zipCode()
-	{
-		return $this->belongsTo('App\Models\City');
-	}
+    public static $profiles = [
+        1 => "Candidat à l'installation",
+        2 => 'Personne en recherche d’expérience ou de travail dans le domaine agricole',
+        3 => 'Agriculteur qui souhaite consolider sa ferme',
+        4 => 'Agriculteur qui souhaite transmettre sa ferme',
+        5 => 'Propriétaire privé qui souhaite vendre ou louer sa ferme',
+        6 => 'Propriétaire privé qui souhaite donner ou léguer sa ferme',
+        7 => 'Autre',
+    ];
 
-	/**
-	 * Send the password reset notification.
-	 *
-	 * @param string $token
-	 * @return void
-	 */
-	public function sendPasswordResetNotification($token)
-	{
-		$this->notify(new ResetPasswordNotification($token));
+    public static $roles = [
+        0 => 'Porteur de projet',
+        1 => 'Modérateur',
+        2 => 'Primo-accueillant',
+        3 => 'Responsable territorial',
+        4 => 'Administrateur',
+    ];
 
-	}
+    public static $formations = [
+        1 => 'Diplôme agricole niveau III (BEPA)',
+        2 => 'Diplôme agricole niveau IV (BPREA, BAC,)',
+        3 => 'Diplôme agricole niveau V (BTS, DUT) ',
+        4 => 'Diplôme agricole niveau VI (licence)',
+        5 => 'Diplôme agricole niveau VII ou plus (ingénieur, master2, véto, ...)',
+    ];
 
-	public function threads(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
-	{
-		return $this->belongsToMany(Thread::class, 'thread_users')->withTimestamps();
-	}
+    public static $fromwheres = [
+        0 => 'Issu du monde agricole',
+        1 => 'Non Issu du monde agricole',
+        2 => 'Ne sait pas répondre à la question',
+    ];
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function ads()
-	{
-		return $this->hasMany(Ad::class, 'user_pp_id', 'id')->whereNull('project_id');
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function country()
+    {
+        return $this->belongsTo('App\Models\Country');
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder
-	 */
-	public function supportRequests()
-	{
-		return $this->hasMany(Ad::class, 'user_pp_id', 'id')->whereNotNull('project_id');
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function zipCode()
+    {
+        return $this->belongsTo('App\Models\City');
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasOne|\Illuminate\Database\Query\Builder
-	 */
-	public function supportRequest()
-	{
-		return $this->hasOne(Ad::class, 'user_pp_id', 'id')->whereNotNull('project_id');
-	}
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function adsModerator()
-	{
-		return $this->hasMany(AttributionAd::class, "user_moderator_id", 'id');
-	}
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function adsSupervisor()
-	{
-		return $this->hasMany(AttributionAd::class, "user_supervisor_id", 'id');
-	}
+    public function threads(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Thread::class, 'thread_users')->withTimestamps();
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function adsAdvisor()
-	{
-		return $this->hasMany(AttributionAd::class, "user_advisor_id", 'id');
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function ads()
+    {
+        return $this->hasMany(Ad::class, 'user_pp_id', 'id')->whereNull('project_id');
+    }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder
+     */
+    public function supportRequests()
+    {
+        return $this->hasMany(Ad::class, 'user_pp_id', 'id')->whereNotNull('project_id');
+    }
 
-	/**
-	 * Get the presenter class.
-	 *
-	 * @return string
-	 */
-	public function getPresenterClass()
-	{
-		return UserPresenter::class;
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne|\Illuminate\Database\Query\Builder
+     */
+    public function supportRequest()
+    {
+        return $this->hasOne(Ad::class, 'user_pp_id', 'id')->whereNotNull('project_id');
+    }
 
-	/**
-	 * Get all cities 'location' for the user
-	 * @return MorphToMany
-	 */
-	public function cities()
-	{
-		return $this->morphedbyMany(City::class, 'locationable_user');
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function adsModerator()
+    {
+        return $this->hasMany(AttributionAd::class, 'user_moderator_id', 'id');
+    }
 
-	/**
-	 * Get all departments 'location' for the user
-	 * @return MorphToMany
-	 */
-	public function departments()
-	{
-		return $this->morphedbyMany(Department::class, 'locationable_user');
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function adsSupervisor()
+    {
+        return $this->hasMany(AttributionAd::class, 'user_supervisor_id', 'id');
+    }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function adsAdvisor()
+    {
+        return $this->hasMany(AttributionAd::class, 'user_advisor_id', 'id');
+    }
 
-	/**
-	 * Get all regions 'location' for the user
-	 * @return MorphToMany
-	 */
-	public function regions()
-	{
-		return $this->morphedbyMany(Region::class, 'locationable_user');
-	}
+    /**
+     * Get the presenter class.
+     *
+     * @return string
+     */
+    public function getPresenterClass()
+    {
+        return UserPresenter::class;
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function userPermissions()
-	{
-		return $this->hasMany(UserPermission::class, 'user_id');
-	}
+    /**
+     * Get all cities 'location' for the user
+     *
+     * @return MorphToMany
+     */
+    public function cities()
+    {
+        return $this->morphedbyMany(City::class, 'locationable_user');
+    }
 
-	/**
-	 * Get all messages sent by this user
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function sentMessages()
-	{
-		return $this->hasMany(Message::class, 'sender_user_id');
-	}
+    /**
+     * Get all departments 'location' for the user
+     *
+     * @return MorphToMany
+     */
+    public function departments()
+    {
+        return $this->morphedbyMany(Department::class, 'locationable_user');
+    }
 
-	/**
-	 * Get the minimum reCAPTCHA score from user's messages
-	 * Lower scores indicate more bot-like behavior
-	 * @return float|null
-	 */
-	public function getMinRecaptchaScoreAttribute(): ?float
-	{
-		return $this->sentMessages()
-			->whereNotNull('recaptcha_score')
-			->min('recaptcha_score');
-	}
+    /**
+     * Get all regions 'location' for the user
+     *
+     * @return MorphToMany
+     */
+    public function regions()
+    {
+        return $this->morphedbyMany(Region::class, 'locationable_user');
+    }
 
-	/**
-	 * Scope to filter users likely to be bots (low reCAPTCHA scores)
-	 * @param \Illuminate\Database\Eloquent\Builder $query
-	 * @param float $threshold
-	 * @return \Illuminate\Database\Eloquent\Builder
-	 */
-	public function scopeLikelyBot($query, float $threshold = 0.5)
-	{
-		return $query->whereHas('sentMessages', function ($q) use ($threshold) {
-			$q->whereNotNull('recaptcha_score')
-			  ->where('recaptcha_score', '<', $threshold);
-		});
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userPermissions()
+    {
+        return $this->hasMany(UserPermission::class, 'user_id');
+    }
+
+    /**
+     * Get all messages sent by this user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_user_id');
+    }
+
+    /**
+     * Get the minimum reCAPTCHA score from user's messages
+     * Lower scores indicate more bot-like behavior
+     */
+    public function getMinRecaptchaScoreAttribute(): ?float
+    {
+        return $this->sentMessages()
+            ->whereNotNull('recaptcha_score')
+            ->min('recaptcha_score');
+    }
+
+    /**
+     * Scope to filter users likely to be bots (low reCAPTCHA scores)
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeLikelyBot($query, float $threshold = 0.5)
+    {
+        return $query->whereHas('sentMessages', function ($q) use ($threshold) {
+            $q->whereNotNull('recaptcha_score')
+                ->where('recaptcha_score', '<', $threshold);
+        });
+    }
 }

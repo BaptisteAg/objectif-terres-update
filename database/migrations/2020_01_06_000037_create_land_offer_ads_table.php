@@ -1,19 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateLandOfferAdsTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $tableName = 'land_offer_ads';
 
     /**
      * Run the migrations.
+     *
      * @table land_offer_ads
      *
      * @return void
@@ -39,9 +41,9 @@ class CreateLandOfferAdsTable extends Migration
             $table->unsignedInteger('building_id')->nullable();
             $table->unsignedInteger('house_id')->nullable();
 
-            $table->index(["ad_id"], 'fk_land_offer_ads_1_idx');
-            $table->index(["house_id"], 'fk_land_offer_ads_3_idx');
-            $table->index(["building_id"], 'fk_land_offer_ads_2_idx');
+            $table->index(['ad_id'], 'fk_land_offer_ads_1_idx');
+            $table->index(['house_id'], 'fk_land_offer_ads_3_idx');
+            $table->index(['building_id'], 'fk_land_offer_ads_2_idx');
 
             $table->timestamps();
 
@@ -64,17 +66,17 @@ class CreateLandOfferAdsTable extends Migration
             $table->boolean('is_call_for_application_community')->nullable();
             $table->boolean('is_call_for_application_terre_de_liens')->nullable();
             $table->boolean('is_call_for_application_test_area')->nullable();
-            ////
+            // //
 
-            //$table->date('land_availability')->nullable();
-            //$table->date('land_transfer_deadline')->nullable();
-            //$table->boolean('confirm_price_fermage');
-            //$table->integer('land_price')->nullable();
-            //$table->integer('house_price')->nullable();
-            //$table->integer('building_price')->nullable();
-            //$table->unsignedInteger('land_id')->nullable();
+            // $table->date('land_availability')->nullable();
+            // $table->date('land_transfer_deadline')->nullable();
+            // $table->boolean('confirm_price_fermage');
+            // $table->integer('land_price')->nullable();
+            // $table->integer('house_price')->nullable();
+            // $table->integer('building_price')->nullable();
+            // $table->unsignedInteger('land_id')->nullable();
 
-            //$table->index(["land_id"], 'fk_land_offer_ads_4_idx');
+            // $table->index(["land_id"], 'fk_land_offer_ads_4_idx');
 
             /*
 
@@ -90,8 +92,8 @@ class CreateLandOfferAdsTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->tableName);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->tableName);
+    }
 }

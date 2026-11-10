@@ -88,10 +88,11 @@ class MergeDuplicateUsers extends Command
 
         if (empty($pairs)) {
             $this->error('No pairs to process. Use --all or --pair=sourceId:targetId');
+
             return 1;
         }
 
-        $this->info(($dryRun ? '[DRY-RUN] ' : '') . 'Processing ' . count($pairs) . ' merge pair(s)...');
+        $this->info(($dryRun ? '[DRY-RUN] ' : '').'Processing '.count($pairs).' merge pair(s)...');
         $this->line('');
 
         $results = ['success' => 0, 'failed' => 0, 'skipped' => 0];
@@ -158,31 +159,35 @@ class MergeDuplicateUsers extends Command
         $target = User::withTrashed()->find($targetId);
 
         // Validation
-        if (!$source) {
+        if (! $source) {
             $this->error("  Source user #{$sourceId} not found");
+
             return 'failed';
         }
 
-        if (!$target) {
+        if (! $target) {
             $this->error("  Target user #{$targetId} not found");
+
             return 'failed';
         }
 
         if ($source->trashed()) {
             $this->warn("  Source user #{$sourceId} already soft-deleted, skipping");
+
             return 'skipped';
         }
 
         if ($target->trashed()) {
             $this->error("  Target user #{$targetId} is soft-deleted, cannot merge into deleted user");
+
             return 'failed';
         }
 
         // Display user info
         $this->line("  Source: {$source->first_name} {$source->name} <{$source->email}>");
-        $this->line("          sf_id: " . ($source->sf_id ?? 'NULL'));
+        $this->line('          sf_id: '.($source->sf_id ?? 'NULL'));
         $this->line("  Target: {$target->first_name} {$target->name} <{$target->email}>");
-        $this->line("          sf_id: " . ($target->sf_id ?? 'NULL'));
+        $this->line('          sf_id: '.($target->sf_id ?? 'NULL'));
 
         // Check sf_id match (warning only, not blocking)
         if ($source->sf_id && $target->sf_id && $source->sf_id !== $target->sf_id) {
@@ -200,15 +205,16 @@ class MergeDuplicateUsers extends Command
                 $hasData = true;
             }
         }
-        if (!$hasData) {
+        if (! $hasData) {
             $this->line('    (no data to transfer)');
         }
 
         if ($dryRun) {
             $this->info('  [DRY-RUN] Would transfer data, set sf_id=NULL, and soft-delete source');
             if (isset(self::EMAIL_UPDATES[$targetId])) {
-                $this->info("  [DRY-RUN] Would update target email to: " . self::EMAIL_UPDATES[$targetId]);
+                $this->info('  [DRY-RUN] Would update target email to: '.self::EMAIL_UPDATES[$targetId]);
             }
+
             return 'success';
         }
 
@@ -250,10 +256,12 @@ class MergeDuplicateUsers extends Command
             });
 
             $this->info('  Merge completed successfully');
+
             return 'success';
 
         } catch (\Exception $e) {
-            $this->error("  Merge failed: " . $e->getMessage());
+            $this->error('  Merge failed: '.$e->getMessage());
+
             return 'failed';
         }
     }

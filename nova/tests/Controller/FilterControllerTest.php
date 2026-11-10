@@ -9,7 +9,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class FilterControllerTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -19,7 +19,7 @@ class FilterControllerTest extends IntegrationTest
     public function test_can_retrieve_filters_for_a_resource()
     {
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/filters');
+            ->get('/nova-api/users/filters');
 
         $response->assertStatus(200);
         $this->assertInstanceOf(IdFilter::class, $response->original[0]);
@@ -28,7 +28,7 @@ class FilterControllerTest extends IntegrationTest
     public function test_filter_configuration_options_can_be_set()
     {
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/filters');
+            ->get('/nova-api/users/filters');
 
         $this->assertInstanceOf(CreateDateFilter::class, $response->original[3]);
         $this->assertEquals(4, $response->original[3]->meta['firstDayOfWeek']);
@@ -42,7 +42,7 @@ class FilterControllerTest extends IntegrationTest
         $_SERVER['nova.dateFilter.canSee'] = false;
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/filters');
+            ->get('/nova-api/users/filters');
 
         unset($_SERVER['nova.idFilter.canSee']);
         unset($_SERVER['nova.customKeyFilter.canSee']);
@@ -56,7 +56,7 @@ class FilterControllerTest extends IntegrationTest
     public function test_empty_filter_list_returned_if_no_filters()
     {
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/addresses/filters');
+            ->get('/nova-api/addresses/filters');
 
         $response->assertStatus(200);
         $this->assertEmpty($response->original);
@@ -64,7 +64,7 @@ class FilterControllerTest extends IntegrationTest
 
     public function test_json_for_alternative_declaration()
     {
-        $filter = new AdditionalOptionsFilter();
+        $filter = new AdditionalOptionsFilter;
         $json = json_encode($filter);
         $expected = json_encode([
             'class' => AdditionalOptionsFilter::class,

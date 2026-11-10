@@ -13,39 +13,37 @@ use Illuminate\Queue\SerializesModels;
 
 class NotifyIncompleteAd implements ShouldQueue
 {
-	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-	private $adService;
-	private $threadService;
+    private $adService;
 
-	/**
-	 * Create a new job instance.
-	 *
-	 * @param AdService $adService
-	 * @param ThreadService $threadService
-	 */
-	public function __construct(AdService $adService, ThreadService $threadService)
-	{
-		$this->adService = $adService;
-		$this->threadService = $threadService;
-	}
+    private $threadService;
 
-	/**
-	 * Execute the job.
-	 *
-	 * @return void
-	 */
-	public function handle()
-	{
-		$ads = $this->adService->findAllAdsNotCompleteAndPublishedSince(Carbon::now()->subDays(10));
+    /**
+     * Create a new job instance.
+     */
+    public function __construct(AdService $adService, ThreadService $threadService)
+    {
+        $this->adService = $adService;
+        $this->threadService = $threadService;
+    }
 
-        logger("Notifying published but incomplete ads owners and suggesting editing... ".$ads->count()." found.");
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        $ads = $this->adService->findAllAdsNotCompleteAndPublishedSince(Carbon::now()->subDays(10));
+
+        logger('Notifying published but incomplete ads owners and suggesting editing... '.$ads->count().' found.');
 
         foreach ($ads as $ad) {
             $messageData = [
                 'ad_id' => $ad->id,
                 'supervisor_id' => $ad->attributionAd->user_supervisor_id,
-                'content' => 'Votre annonce est en ligne depuis 10 jours. Complétez les informations de votre annonce pour augmenter vos chances d\'avoir une réponse!'
+                'content' => 'Votre annonce est en ligne depuis 10 jours. Complétez les informations de votre annonce pour augmenter vos chances d\'avoir une réponse!',
             ];
             $threads = $this->threadService->findThreadAlreadyExist($ad->attributionAd->user_supervisor_id, $ad->id);
             if (count($threads)) {
@@ -55,17 +53,17 @@ class NotifyIncompleteAd implements ShouldQueue
                     try {
                         $this->threadService->createMessage($messageData);
                     } catch (\Throwable $e) {
-                        echo($e);
+                        echo $e;
                     }
                 }
             } else {
                 try {
                     $this->threadService->create($messageData);
                 } catch (\Throwable $e) {
-                    echo($e);
+                    echo $e;
                 }
             }
         }
 
-	}
+    }
 }

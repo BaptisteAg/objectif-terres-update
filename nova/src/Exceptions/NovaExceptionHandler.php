@@ -10,7 +10,6 @@ class NovaExceptionHandler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Exception  $e
      * @return mixed
      *
      * @throws \Exception

@@ -14,11 +14,7 @@ class DispatchAction
     /**
      * Dispatch the given action.
      *
-     * @param  \Laravel\Nova\Http\Requests\ActionRequest $request
-     * @param  \Laravel\Nova\Actions\Action $action
-     * @param  string $method
-     * @param  \Illuminate\Support\Collection $models
-     * @param  \Laravel\Nova\Fields\ActionFields $fields
+     * @param  string  $method
      * @return mixed
      */
     public static function forModels(
@@ -50,10 +46,7 @@ class DispatchAction
     /**
      * Dispatch the given action in the background.
      *
-     * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
-     * @param  \Laravel\Nova\Actions\Action  $action
      * @param  string  $method
-     * @param  \Illuminate\Support\Collection  $models
      * @return void
      */
     protected static function queueForModels(ActionRequest $request, Action $action, $method, Collection $models)

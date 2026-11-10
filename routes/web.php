@@ -11,8 +11,6 @@
 |
 */
 
-use Illuminate\Http\Request;
-
 Route::get('/', 'HomePage\HomePageController@show')->name('home');
 Route::get('/premiere-visite', 'HomePage\HomePageController@show')->name('site-tour');
 
@@ -33,7 +31,6 @@ Route::prefix('annonces')->name('ads.')->namespace('Ads')->group(function () {
     Route::middleware('auth')->post('survey/{ad}/{action}', 'AdsController@survey')->name('survey');
     Route::middleware('auth')->get('etendre-expiration/{id}', 'AdsController@extendPublish')->name('extend');
 });
-
 
 Route::prefix('accompagnement')->name('support-request.')->namespace('Ads')->group(function () {
     Route::middleware([])->get('demarrer', 'SupportRequestsController@start')->name('start');
@@ -73,18 +70,18 @@ Route::prefix('documents')->name('documents.')->namespace('Documents')->group(fu
     Route::get('{type}/{user_id}/{filename}', 'DocumentsController@show')->name('show');
 });
 
-//Route::get('/register', 'Salesforces\SalesForceAuthController@register');
+// Route::get('/register', 'Salesforces\SalesForceAuthController@register');
 
 Route::prefix('recherche')->name('researches.')->namespace('Researches')->group(function () {
     Route::get('/', 'ResearchesController@index')->name('index');
 
-//	Route::middleware('auth')->group(function () {
-//		Route::post('sauvegarde', 'ResearchesController@store')->name('store');
-//		Route::get('liste', 'ResearchesController@show')->name('show');
-//		Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
-//		Route::get('supprimer-alerte/{id}', 'ResearchesController@deleteAlert')->name('deleteAlert');
-//		Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
-//	});
+    //	Route::middleware('auth')->group(function () {
+    //		Route::post('sauvegarde', 'ResearchesController@store')->name('store');
+    //		Route::get('liste', 'ResearchesController@show')->name('show');
+    //		Route::post('supprimer', 'ResearchesController@destroy')->name('destroy');
+    //		Route::get('supprimer-alerte/{id}', 'ResearchesController@deleteAlert')->name('deleteAlert');
+    //		Route::get('notification', 'ResearchesController@notificationCreateAlert')->name('notification');
+    //	});
 
 });
 Route::prefix('mon-espace/recherches')->middleware('auth')->name('researches.')->namespace('Researches')->group(function () {
@@ -124,7 +121,7 @@ Route::prefix('mon-espace/messagerie')->middleware('auth')->name('threads.')->na
     Route::post('envoi', 'MessagesController@create')->middleware('throttle.messages:1,1')->name('send');
     Route::post('upload', 'MessagesController@uploadDocuments')->name('upload');
     Route::get('delete/{id}', 'MessagesController@delete')->name('delete-message');
-//	Route::get('{type}/{filename}', 'MessagesController@show')->name('show');
+    //	Route::get('{type}/{filename}', 'MessagesController@show')->name('show');
 
 });
 
@@ -210,7 +207,7 @@ Route::get('connexion', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('connexion', 'Auth\LoginController@login')->name('login');
 Route::post('connexion/checkpoint', 'Auth\LoginController@checkpoint')->name('checkpoint');
 Route::get('connexion/sso', 'Auth\SalesforceLoginController@salesforceLogin')->name('login.sso');
-//Route::post('login', 'Auth\SalesforceLoginController@login')->name('login');
+// Route::post('login', 'Auth\SalesforceLoginController@login')->name('login');
 Route::get('deconnexion/sso', 'Auth\SalesforceLoginController@salesforceLogout')->name('logout.sso');
 Route::get('deconnexion', 'Auth\LoginController@logout')->name('logout');
 Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
@@ -233,7 +230,6 @@ Route::post('newsletter', 'Newsletter\NewsletterController@create');
 
 Route::post('/info-banner/close', 'InfoBannerController@close')->name('info-banner.close');
 
-
 /*Route::get('test-alerts', function() {
 
     $errors = new \Illuminate\Support\ViewErrorBag();
@@ -254,6 +250,6 @@ Route::prefix('old_annonces')->name('ads.')->namespace('Ads')->group(function ()
     Route::get('{id}', 'AdsController@oldshow')->name('oldshow');
 });*/
 
-//Route::get('test', function () {
+// Route::get('test', function () {
 //    return view('baptiste.test');
-//})->name('baptiste');
+// })->name('baptiste');

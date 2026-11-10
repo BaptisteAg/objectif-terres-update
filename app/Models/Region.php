@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $researches_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Region newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Region newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Region query()
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Region whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Region whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Region whereSlug($value)
+ *
  * @mixin \Eloquent
  */
 class Region extends Model

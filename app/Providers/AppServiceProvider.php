@@ -8,14 +8,12 @@ use App\Models\JobOfferAd;
 use App\Models\JobSeekAd;
 use App\Models\LandOfferAd;
 use App\Models\LandSeekAd;
-use App\Models\LandSeekAdBuilding;
 use App\Models\User;
 use App\Observers\AdObserver;
 use App\Observers\AttributionAdObserver;
 use App\Observers\JobOfferAdObserver;
 use App\Observers\JobSeekAdObserver;
 use App\Observers\LandOfferAdObserver;
-use App\Observers\LandSeekAdBuildingObserver;
 use App\Observers\LandSeekAdObserver;
 use App\Observers\UserObserver;
 use App\Services\Documents\DocumentService;
@@ -23,7 +21,6 @@ use App\Services\Documents\DocumentServiceInterface;
 use App\Services\Salesforce\DualStorageDriver;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
-use Omniphx\Forrest\Providers\Laravel\LaravelCache;
 use Omniphx\Forrest\Providers\Laravel\LaravelEncryptor;
 use Omniphx\Forrest\Providers\Laravel\LaravelSession;
 use Omniphx\Forrest\Repositories\TokenRepository;
@@ -49,13 +46,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-    	Ad::observe(AdObserver::class);
-    	AttributionAd::observe(AttributionAdObserver::class);
-    	LandSeekAd::observe(LandSeekAdObserver::class);
-    	LandOfferAd::observe(LandOfferAdObserver::class);
-    	JobSeekAd::observe(JobSeekAdObserver::class);
-    	JobOfferAd::observe(JobOfferAdObserver::class);
-    	User::observe(UserObserver::class);
+        Ad::observe(AdObserver::class);
+        AttributionAd::observe(AttributionAdObserver::class);
+        LandSeekAd::observe(LandSeekAdObserver::class);
+        LandOfferAd::observe(LandOfferAdObserver::class);
+        JobSeekAd::observe(JobSeekAdObserver::class);
+        JobOfferAd::observe(JobOfferAdObserver::class);
+        User::observe(UserObserver::class);
         $this->app->bind(DocumentServiceInterface::class, DocumentService::class);
 
         $this->app->singleton('forrest_token', function ($app) {
@@ -68,7 +65,7 @@ class AppServiceProvider extends ServiceProvider
                     break;
                 case 'cache':
                     // Use dual storage driver for cache to add file backup
-                    $storage = new DualStorageDriver();
+                    $storage = new DualStorageDriver;
                     break;
                 default:
                     $storage = new LaravelSession(app('config'), app('request')->session());

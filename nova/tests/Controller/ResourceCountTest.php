@@ -9,7 +9,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class ResourceCountTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -23,7 +23,7 @@ class ResourceCountTest extends IntegrationTest
         factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users/count');
+            ->getJson('/nova-api/users/count');
 
         $response->assertStatus(200);
         $this->assertEquals(3, $response->original['count']);
@@ -36,7 +36,7 @@ class ResourceCountTest extends IntegrationTest
         $user3 = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users/count?search='.$user->email);
+            ->getJson('/nova-api/users/count?search='.$user->email);
 
         $response->assertStatus(200);
         $this->assertEquals(1, $response->original['count']);
@@ -56,7 +56,7 @@ class ResourceCountTest extends IntegrationTest
         ]));
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users/count?filters='.$filters);
+            ->getJson('/nova-api/users/count?filters='.$filters);
 
         $response->assertStatus(200);
         $this->assertEquals(1, $response->original['count']);
@@ -67,13 +67,13 @@ class ResourceCountTest extends IntegrationTest
         $roles = factory(Role::class, 2)->create();
 
         factory(User::class, 3)
-           ->create()
-           ->each(function ($user) use ($roles) {
-               $user->roles()->sync($roles);
-           });
+            ->create()
+            ->each(function ($user) use ($roles) {
+                $user->roles()->sync($roles);
+            });
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/grouped-users/count');
+            ->getJson('/nova-api/grouped-users/count');
 
         $response->assertStatus(200);
         $this->assertEquals(3, $response->original['count']);

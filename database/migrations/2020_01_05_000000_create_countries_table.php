@@ -6,11 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateCountriesTable extends Migration
 {
-	/**
-	 * Schema table name to migrate
-	 * @var string
-	 */
-	public $tableName = 'countries';
+    /**
+     * Schema table name to migrate
+     *
+     * @var string
+     */
+    public $tableName = 'countries';
+
     /**
      * Run the migrations.
      *
@@ -19,14 +21,14 @@ class CreateCountriesTable extends Migration
     public function up()
     {
         Schema::create($this->tableName, function (Blueprint $table) {
-			$table->engine = 'InnoDB';
+            $table->engine = 'InnoDB';
             $table->smallIncrements('id');
-			$table->integer('code');
-			$table->string('alpha2');
-			$table->string('alpha3');
-			$table->string('name_en_gb');
-			$table->string('name_fr_fr');
-			$table->integer('price');
+            $table->integer('code');
+            $table->string('alpha2');
+            $table->string('alpha3');
+            $table->string('name_en_gb');
+            $table->string('name_fr_fr');
+            $table->integer('price');
 
             $table->timestamps();
         });
@@ -39,6 +41,6 @@ class CreateCountriesTable extends Migration
      */
     public function down()
     {
-		Schema::dropIfExists($this->tableName);
+        Schema::dropIfExists($this->tableName);
     }
 }

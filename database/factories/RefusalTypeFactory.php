@@ -8,6 +8,6 @@ use Faker\Generator as Faker;
 $factory->define(RefusalType::class, function (Faker $faker) {
     return [
         'name' => $faker->word,
-        'content' => $faker->text(200)
+        'content' => $faker->text(200),
     ];
 });

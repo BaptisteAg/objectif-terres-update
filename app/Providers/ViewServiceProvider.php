@@ -26,6 +26,6 @@ class ViewServiceProvider extends ServiceProvider
     {
         View::composer('pages.homepage', 'App\Http\Composers\ResearchComposer');
         View::composer('default', 'App\Http\Composers\MessagesNotificationHeaderComposer');
-		View::composer('layouts.header', 'App\Http\Composers\InfoBanner');
+        View::composer('layouts.header', 'App\Http\Composers\InfoBanner');
     }
 }

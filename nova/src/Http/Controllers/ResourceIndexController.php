@@ -10,7 +10,6 @@ class ResourceIndexController extends Controller
     /**
      * List the resources for administration.
      *
-     * @param  \Laravel\Nova\Http\Requests\ResourceIndexRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function handle(ResourceIndexRequest $request)
@@ -33,7 +32,6 @@ class ResourceIndexController extends Controller
     /**
      * Get the paginator instance for the index request.
      *
-     * @param  \Laravel\Nova\Http\Requests\ResourceIndexRequest  $request
      * @param  string  $resource
      * @return \Illuminate\Pagination\Paginator
      */

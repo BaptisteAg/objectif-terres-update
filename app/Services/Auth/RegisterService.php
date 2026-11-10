@@ -1,4 +1,6 @@
-<?php namespace App\Services\Auth;
+<?php
+
+namespace App\Services\Auth;
 
 use App\Models\User;
 use App\Rules\SalesforceUniqueEmail;
@@ -11,19 +13,16 @@ use Illuminate\Support\Facades\Validator;
 
 class RegisterService
 {
-
     /** @var UserService */
     protected $userService;
+
     /**
      * @var SalesforceService
      */
     private $salesforceService;
 
-
     /**
      * Create a new controller instance.
-     *
-     * @param UserService $userService
      */
     public function __construct(UserService $userService, SalesforceService $salesforceService)
     {
@@ -34,28 +33,26 @@ class RegisterService
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param array $data
      * @throws \Throwable
      */
     public function create(array $data)
     {
-        //dd($data);
+        // dd($data);
 
-        if($data["city_id"] ?? $data["zip_code_id"]) {
+        if ($data['city_id'] ?? $data['zip_code_id']) {
             try {
                 $salesForceContact = $this->salesforceService->registerPP($data);
-                $data["sf_id"] = $salesForceContact["id"];
-            }
-            catch (\Exception $e) {
+                $data['sf_id'] = $salesForceContact['id'];
+            } catch (\Exception $e) {
 
             }
         }
 
         $user = $this->userService->create($data);
 
-        if(!empty($data["sf_id"])) {
-            $this->salesforceService->updateContact($data["sf_id"], [
-                "OT_user_id__c" => $user->id
+        if (! empty($data['sf_id'])) {
+            $this->salesforceService->updateContact($data['sf_id'], [
+                'OT_user_id__c' => $user->id,
             ]);
         }
 
@@ -65,7 +62,6 @@ class RegisterService
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     public function validator(array $data, $extraRules = [])
@@ -77,7 +73,7 @@ class RegisterService
                 'string', 'email',
                 'max:255',
                 'unique:users',
-                app(SalesforceUniqueEmail::class)
+                app(SalesforceUniqueEmail::class),
             ],
             'first_name' => ['required', 'string', 'max:255'],
             'phone' => ['nullable', 'string', 'max:30'],
@@ -90,7 +86,7 @@ class RegisterService
             'formation' => ['required_if:hasformation,1'],
             'fromwhere' => ['required_if:profile,1,2'],
         ], $extraRules), [
-            'city_id.required' => "Veuillez sélectionner un lieu dans la liste en saisissant les premiers caractères"
+            'city_id.required' => 'Veuillez sélectionner un lieu dans la liste en saisissant les premiers caractères',
         ]);
     }
 

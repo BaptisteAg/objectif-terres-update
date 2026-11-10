@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\ProjectDataKey $projectDataKey
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataValue newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataValue newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataValue query()
@@ -21,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataValue whereProjectDataKeyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataValue whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectDataValue whereValue($value)
+ *
  * @mixin \Eloquent
  */
 class ProjectDataValue extends Model
@@ -29,7 +31,7 @@ class ProjectDataValue extends Model
      * @var array
      */
     protected $fillable = [
-        'value'
+        'value',
     ];
 
     /**

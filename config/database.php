@@ -63,12 +63,12 @@ return [
         ],
 
         'mysql_spip' => [
-            'driver'    => env('DB_CONNECTION_SPIP', 'mysql'),
-            'host'      => env('DB_HOST_SPIP'),
-            'port'      => env('DB_PORT_SPIP'),
-            'database'  => env('DB_DATABASE_SPIP'),
-            'username'  => env('DB_USERNAME_SPIP'),
-            'password'  => env('DB_PASSWORD_SPIP'),
+            'driver' => env('DB_CONNECTION_SPIP', 'mysql'),
+            'host' => env('DB_HOST_SPIP'),
+            'port' => env('DB_PORT_SPIP'),
+            'database' => env('DB_DATABASE_SPIP'),
+            'username' => env('DB_USERNAME_SPIP'),
+            'password' => env('DB_PASSWORD_SPIP'),
             'charset' => 'utf8',
             'collation' => 'utf8_general_ci',
         ],

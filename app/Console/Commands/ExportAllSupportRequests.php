@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Exports\Advisors\AdvisorsExport;
 use App\Exports\ProjectExport;
 use App\Models\Ad;
 use Carbon\Carbon;
@@ -43,10 +42,10 @@ class ExportAllSupportRequests extends Command
     public function handle()
     {
         $i = 0;
-        //DB::listen(function ($query) use(&$i) {
+        // DB::listen(function ($query) use(&$i) {
         //    // send this to a log or whatever
         //    $backtrace = debug_backtrace();
-//
+        //
         //    print_r([
         //        "i" => $i++,
         //        "backtrace" => collect($backtrace)
@@ -59,7 +58,7 @@ class ExportAllSupportRequests extends Command
         //            ->toArray(),
         //        "query" => $query->sql,
         //    ]);
-        //});
+        // });
         $ads = Ad::query()
             ->whereIn('id', [7869, 7856])
             ->whereNotNull('project_id')
@@ -107,12 +106,12 @@ class ExportAllSupportRequests extends Command
                 'attributionAd.userAdvisor3',
                 'attributionAd.userAdvisor4',
                 'attributionAd.userSupervisor',
-                'supportRequestTerritoryId'
+                'supportRequestTerritoryId',
             ])
             ->withCount('adNotes')
             ->get();
 
         (new ProjectExport($ads))
-            ->store(storage_path('/exports/export_accompagnements_' . Carbon::now()->format('d_m_Y H-i-s') . '.xlsx'));
+            ->store(storage_path('/exports/export_accompagnements_'.Carbon::now()->format('d_m_Y H-i-s').'.xlsx'));
     }
 }

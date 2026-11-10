@@ -8,7 +8,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class CreationControllerTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

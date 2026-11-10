@@ -10,14 +10,13 @@ class PostsByUserPartition extends Partition
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function calculate(Request $request)
     {
         $query = (new Post)->addSelect('users.name')
-                        ->join('users', 'posts.user_id', '=', 'users.id')
-                        ->groupBy('users.name');
+            ->join('users', 'posts.user_id', '=', 'users.id')
+            ->groupBy('users.name');
 
         return $this->count($request, $query, 'users.name');
     }

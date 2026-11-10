@@ -1,4 +1,6 @@
-<?php namespace App\Http\Requests\Ads\Rulesets;
+<?php
+
+namespace App\Http\Requests\Ads\Rulesets;
 
 use App\Http\Requests\Ads\RulesetInterface;
 use App\Rules\HasProductionGenre;

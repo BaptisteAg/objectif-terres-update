@@ -37,9 +37,9 @@ class ClearCaches extends Command
      */
     public function handle()
     {
-		exec('php artisan view:clear');
-		exec('php artisan cache:clear');
-		exec('php artisan route:clear');
-		exec('php artisan config:clear');
+        exec('php artisan view:clear');
+        exec('php artisan cache:clear');
+        exec('php artisan route:clear');
+        exec('php artisan config:clear');
     }
 }

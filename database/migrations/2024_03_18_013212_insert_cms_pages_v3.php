@@ -19,17 +19,17 @@ class InsertCmsPagesV3 extends Migration
                 'description' => 'Plan du site',
                 'content' => 'Plan du site',
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ],
             // make a "qui-sommes-nous" page merged with existing ID 32 and 33 contents
             [
                 'page_name' => 'Qui sommes-nous',
                 'slug' => 'qui-sommes-nous',
                 'description' => 'Qui sommes-nous ?',
-                'content' => CmsPage::find(32)?->content .
+                'content' => CmsPage::find(32)?->content.
                     CmsPage::find(33)?->content,
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ],
         ];
 

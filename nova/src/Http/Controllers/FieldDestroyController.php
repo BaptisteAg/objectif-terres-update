@@ -13,7 +13,6 @@ class FieldDestroyController extends Controller
     /**
      * Delete the file at the given field.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function handle(NovaRequest $request)
@@ -23,10 +22,10 @@ class FieldDestroyController extends Controller
         $resource->authorizeToUpdate($request);
 
         $field = $resource->updateFields($request)
-                    ->whereInstanceOf(File::class)
-                    ->findFieldByAttribute($request->field, function () {
-                        abort(404);
-                    });
+            ->whereInstanceOf(File::class)
+            ->findFieldByAttribute($request->field, function () {
+                abort(404);
+            });
 
         DeleteField::forRequest(
             $request, $field, $resource->resource

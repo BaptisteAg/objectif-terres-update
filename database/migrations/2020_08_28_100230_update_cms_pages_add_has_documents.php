@@ -13,9 +13,9 @@ class UpdateCmsPagesAddHasDocuments extends Migration
      */
     public function up()
     {
-		Schema::table('cms_pages', function (Blueprint $table) {
-			$table->boolean('has_documents')->default('0')->nullable();
-		});
+        Schema::table('cms_pages', function (Blueprint $table) {
+            $table->boolean('has_documents')->default('0')->nullable();
+        });
     }
 
     /**
@@ -25,8 +25,8 @@ class UpdateCmsPagesAddHasDocuments extends Migration
      */
     public function down()
     {
-		Schema::table('cms_pages', function (Blueprint $table) {
-			$table->removeColumn('has_documents');
-		});
+        Schema::table('cms_pages', function (Blueprint $table) {
+            $table->removeColumn('has_documents');
+        });
     }
 }

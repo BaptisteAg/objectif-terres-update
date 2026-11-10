@@ -5,11 +5,11 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class ForceHttpsProtocol {
-
+class ForceHttpsProtocol
+{
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->secure()) {
+        if (! $request->secure()) {
             return redirect()->secure($request->getRequestUri());
         }
 

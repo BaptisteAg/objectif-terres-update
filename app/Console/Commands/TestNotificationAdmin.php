@@ -42,7 +42,7 @@ class TestNotificationAdmin extends Command
         $localUser = \App\Models\User::inRandomOrder()->first();
 
         Notification::route('mail', [
-            'zzgael@gmail.com' => config('mail.from.name')
+            'zzgael@gmail.com' => config('mail.from.name'),
         ])->notify(
             new \App\Notifications\SalesforceUserRoleChanged($localUser, 4)
         );

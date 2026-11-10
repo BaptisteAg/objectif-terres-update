@@ -1,19 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateProjectStatusResearchTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $tableName = 'project_status_research';
 
     /**
      * Run the migrations.
+     *
      * @table project_status_research
      *
      * @return void
@@ -25,9 +27,9 @@ class CreateProjectStatusResearchTable extends Migration
             $table->unsignedInteger('project_status_id');
             $table->unsignedInteger('research_id');
 
-            $table->index(["research_id"], 'fk_project_status_research_2_idx');
+            $table->index(['research_id'], 'fk_project_status_research_2_idx');
 
-            $table->index(["project_status_id"], 'fk_project_status_research_1_idx');
+            $table->index(['project_status_id'], 'fk_project_status_research_1_idx');
             $table->timestamps();
 
             $table->foreign('project_status_id', 'fk_project_status_research_1_idx')
@@ -35,10 +37,10 @@ class CreateProjectStatusResearchTable extends Migration
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
 
-			$table->foreign('research_id', 'fk_project_status_research_2_idx')
-				->references('id')->on('researches')
-				->onDelete('cascade')
-				->onUpdate('cascade');
+            $table->foreign('research_id', 'fk_project_status_research_2_idx')
+                ->references('id')->on('researches')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
         });
     }
@@ -48,8 +50,8 @@ class CreateProjectStatusResearchTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->tableName);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->tableName);
+    }
 }

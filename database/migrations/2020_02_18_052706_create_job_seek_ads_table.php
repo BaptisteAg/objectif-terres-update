@@ -8,12 +8,14 @@ class CreateJobSeekAdsTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $tableName = 'job_seek_ads';
 
     /**
      * Run the migrations.
+     *
      * @table job_ads
      *
      * @return void

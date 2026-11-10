@@ -8,7 +8,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class AssociatableControllerTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -20,7 +20,7 @@ class AssociatableControllerTest extends IntegrationTest
         $user = factory(User::class, 2)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/posts/associatable/user');
+            ->getJson('/nova-api/posts/associatable/user');
 
         $response->assertStatus(200);
 
@@ -44,7 +44,7 @@ class AssociatableControllerTest extends IntegrationTest
         $user = factory(User::class, 2)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/posts/associatable/user?search=2');
+            ->getJson('/nova-api/posts/associatable/user?search=2');
 
         $response->assertStatus(200);
 
@@ -67,7 +67,7 @@ class AssociatableControllerTest extends IntegrationTest
         $user = factory(User::class, 2)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/posts/associatable/user?current=2&first=true');
+            ->getJson('/nova-api/posts/associatable/user?current=2&first=true');
 
         $response->assertStatus(200);
 
@@ -90,7 +90,7 @@ class AssociatableControllerTest extends IntegrationTest
         $user2->delete();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/posts/associatable/user');
+            ->getJson('/nova-api/posts/associatable/user');
 
         $response->assertStatus(200);
 
@@ -112,7 +112,7 @@ class AssociatableControllerTest extends IntegrationTest
         $user2->delete();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/posts/associatable/user?withTrashed=true');
+            ->getJson('/nova-api/posts/associatable/user?withTrashed=true');
 
         $response->assertStatus(200);
 

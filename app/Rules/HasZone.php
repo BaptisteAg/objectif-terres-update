@@ -29,6 +29,6 @@ class HasZone implements Rule
      */
     public function message()
     {
-        return "Vous devez sélectionner au moins une zone géographique";
+        return 'Vous devez sélectionner au moins une zone géographique';
     }
 }

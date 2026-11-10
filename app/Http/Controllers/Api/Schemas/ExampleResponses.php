@@ -123,7 +123,6 @@ namespace App\Http\Controllers\Api\Schemas;
  *         }
  *     }
  * )
- *
  * @OA\Examples(
  *     example="unauthorizedExample",
  *     summary="Unauthorized Response",
@@ -132,7 +131,6 @@ namespace App\Http\Controllers\Api\Schemas;
  *         "message": "Invalid or missing API key"
  *     }
  * )
- *
  * @OA\Examples(
  *     example="badRequestExample",
  *     summary="Bad Request Response",
@@ -146,7 +144,6 @@ namespace App\Http\Controllers\Api\Schemas;
  *         }
  *     }
  * )
- *
  * @OA\Examples(
  *     example="rateLimitExample",
  *     summary="Rate Limit Response",

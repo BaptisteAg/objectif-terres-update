@@ -1,4 +1,6 @@
-<?php namespace App\Repositories\Ads;
+<?php
+
+namespace App\Repositories\Ads;
 
 use App\Models\JobOfferAd;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
@@ -18,7 +20,7 @@ class JobOfferAdRepository extends AbstractRepository
      */
     public function create(array $data): JobOfferAd
     {
-        $jobOfferAd = new JobOfferAd();
+        $jobOfferAd = new JobOfferAd;
 
         $this->save($jobOfferAd, $data);
 
@@ -30,7 +32,6 @@ class JobOfferAdRepository extends AbstractRepository
      *
      * @param JobOfferAd
      * @param array
-     * @return JobOfferAd
      */
     public function update($jobOfferAd, array $data): JobOfferAd
     {
@@ -44,15 +45,15 @@ class JobOfferAdRepository extends AbstractRepository
         $jobOfferAd->fill($data);
         $jobOfferAd->save();
 
-        $productionGenres = $data["production_genres"] ?? [];
+        $productionGenres = $data['production_genres'] ?? [];
         $jobOfferAd->productionGenres()->sync($productionGenres);
 
-        $productionGenresSecondary = $data["secondary_production_genres"] ?? [];
-        foreach($productionGenresSecondary as $productionGenreSecondary) {
+        $productionGenresSecondary = $data['secondary_production_genres'] ?? [];
+        foreach ($productionGenresSecondary as $productionGenreSecondary) {
             $jobOfferAd->productionGenresSecondary()->attach($productionGenreSecondary, ['type' => 'secondary']);
         }
 
-        $jobOfferAd->jobOfferTypes()->sync($data["offer_types"] ?? []);
-        $jobOfferAd->educationLevels()->sync($data["education_levels"] ?? []);
+        $jobOfferAd->jobOfferTypes()->sync($data['offer_types'] ?? []);
+        $jobOfferAd->educationLevels()->sync($data['education_levels'] ?? []);
     }
 }

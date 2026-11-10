@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
 class InsertCmsPagesCharte extends Migration
 {
@@ -15,11 +13,11 @@ class InsertCmsPagesCharte extends Migration
     {
         \App\Models\CmsPage::create([
             'page_name' => 'Charte Objectif Terres',
-            "description" => 'Charte Objectif Terres',
-            "slug" => "charte",
+            'description' => 'Charte Objectif Terres',
+            'slug' => 'charte',
             'created_at' => \Illuminate\Support\Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => \Illuminate\Support\Carbon::now()->format('Y-m-d H:i:s'),
-            'has_documents' => 0
+            'has_documents' => 0,
         ]);
     }
 

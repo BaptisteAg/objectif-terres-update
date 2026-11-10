@@ -15,13 +15,10 @@ class AssociateOfferAdRepository extends AbstractRepository
 
     /**
      * Creates an ad.
-     *
-     * @param array $data
-     * @return AssociateOfferAd
      */
     public function create(array $data): AssociateOfferAd
     {
-        $associateOfferAd = new AssociateOfferAd();
+        $associateOfferAd = new AssociateOfferAd;
 
         $this->save($associateOfferAd, $data);
 
@@ -31,8 +28,7 @@ class AssociateOfferAdRepository extends AbstractRepository
     /**
      * Update an ad.
      *
-     * @param AssociateOfferAd $associateOfferAd
-     * @param array $data
+     * @param  AssociateOfferAd  $associateOfferAd
      * @return LandSeekAd
      */
     public function update($associateOfferAd, array $data): AssociateOfferAd
@@ -47,17 +43,17 @@ class AssociateOfferAdRepository extends AbstractRepository
         $associateOfferAd->fill($data);
         $associateOfferAd->save();
 
-        $productionGenres = $data["production_genres"] ?? [];
+        $productionGenres = $data['production_genres'] ?? [];
         $associateOfferAd->productionGenres()->sync($productionGenres);
 
-        $productionGenresSecondary = $data["secondary_production_genres"] ?? [];
+        $productionGenresSecondary = $data['secondary_production_genres'] ?? [];
         $associateOfferAd->productionGenresSecondary()->detach();
-        foreach($productionGenresSecondary as $productionGenreSecondary) {
+        foreach ($productionGenresSecondary as $productionGenreSecondary) {
             $associateOfferAd->productionGenresSecondary()->attach($productionGenreSecondary, ['type' => 'secondary']);
         }
 
-        $associateOfferAd->bioCertifications()->sync($data["bio_certifications"] ?? []);
+        $associateOfferAd->bioCertifications()->sync($data['bio_certifications'] ?? []);
 
-        $associateOfferAd->educationLevels()->sync($data["education_levels"] ?? []);
+        $associateOfferAd->educationLevels()->sync($data['education_levels'] ?? []);
     }
 }

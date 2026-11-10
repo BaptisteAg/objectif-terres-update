@@ -9,6 +9,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *     title="Ad Resource",
  *     description="Complete ad data with all relationships",
  *     required={"id", "link", "title", "type", "status"},
+ *
  *     @OA\Property(property="id", type="integer", example=9938),
  *     @OA\Property(property="link", type="string", format="url", example="https://objectif-terres.org/annonces/9938"),
  *     @OA\Property(property="title", type="string", example="Ferme bio à transmettre"),
@@ -39,6 +40,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *     schema="Author",
  *     type="object",
  *     title="Author",
+ *
  *     @OA\Property(property="id", type="integer", example=456),
  *     @OA\Property(property="first_name", type="string", example="Jean"),
  *     @OA\Property(property="last_name", type="string", nullable=true, example="Dupont"),
@@ -63,6 +65,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *     schema="Moderation",
  *     type="object",
  *     title="Moderation",
+ *
  *     @OA\Property(
  *         property="moderator",
  *         type="object",
@@ -81,11 +84,14 @@ namespace App\Http\Controllers\Api\Schemas;
  *     schema="Locations",
  *     type="object",
  *     title="Locations",
+ *
  *     @OA\Property(
  *         property="cities",
  *         type="array",
+ *
  *         @OA\Items(
  *             type="object",
+ *
  *             @OA\Property(property="id", type="integer", example=1),
  *             @OA\Property(property="name", type="string", example="Montpellier"),
  *             @OA\Property(property="code", type="string", nullable=true, example="34172", description="INSEE code"),
@@ -98,6 +104,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *     schema="LandOffer",
  *     type="object",
  *     title="Land Offer",
+ *
  *     @OA\Property(property="surface", type="number", format="float", example=25.5, description="Surface in hectares"),
  *     @OA\Property(property="altitude", type="number", format="float", nullable=true, example=150.0),
  *     @OA\Property(property="water_access", type="boolean", example=true),
@@ -120,8 +127,10 @@ namespace App\Http\Controllers\Api\Schemas;
  *     @OA\Property(
  *         property="offer_types",
  *         type="array",
+ *
  *         @OA\Items(
  *             type="object",
+ *
  *             @OA\Property(property="id", type="integer", example=1),
  *             @OA\Property(property="name", type="string", example="Vente"),
  *             @OA\Property(property="code", type="string", example="vente", enum={"vente", "location", "test_agricole", "leg_ou_donation_envisagée"})
@@ -152,6 +161,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *     schema="LandSeek",
  *     type="object",
  *     title="Land Seek",
+ *
  *     @OA\Property(property="surface_range_min", type="number", format="float", example=10),
  *     @OA\Property(property="surface_range_max", type="number", format="float", example=50),
  *     @OA\Property(property="price_max", type="number", format="float", nullable=true, example=200000),
@@ -171,8 +181,10 @@ namespace App\Http\Controllers\Api\Schemas;
  *     @OA\Property(
  *         property="offer_types",
  *         type="array",
+ *
  *         @OA\Items(
  *             type="object",
+ *
  *             @OA\Property(property="id", type="integer"),
  *             @OA\Property(property="name", type="string"),
  *             @OA\Property(property="code", type="string")
@@ -184,6 +196,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *     schema="JobOffer",
  *     type="object",
  *     title="Job Offer",
+ *
  *     @OA\Property(property="job_description", type="string", example="Recherche ouvrier agricole"),
  *     @OA\Property(property="experience_farming", type="string", nullable=true, example="Expérience souhaitée"),
  *     @OA\Property(property="is_activity_transmission", type="boolean", example=false)
@@ -193,6 +206,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *     schema="JobSeek",
  *     type="object",
  *     title="Job Seek",
+ *
  *     @OA\Property(property="experience_farming", type="string", nullable=true, example="5 ans d'expérience en maraîchage")
  * )
  *
@@ -200,6 +214,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *     schema="AssociateOffer",
  *     type="object",
  *     title="Associate Offer",
+ *
  *     @OA\Property(property="surface", type="number", format="float", example=30.0),
  *     @OA\Property(property="altitude", type="number", format="float", nullable=true, example=200.0),
  *     @OA\Property(property="water_access", type="integer", example=1),
@@ -215,6 +230,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *     schema="AssociateSeek",
  *     type="object",
  *     title="Associate Seek",
+ *
  *     @OA\Property(property="is_land_already_found", type="boolean", example=false),
  *     @OA\Property(property="land_description", type="string", nullable=true, example="Recherche terrain adapté"),
  *     @OA\Property(property="associate_description", type="string", nullable=true, example="Recherche associé complémentaire"),
@@ -226,6 +242,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *     type="object",
  *     title="Pagination",
  *     description="Pagination information (only present when using page parameter)",
+ *
  *     @OA\Property(property="current_page", type="integer", example=1),
  *     @OA\Property(property="per_page", type="integer", example=20),
  *     @OA\Property(property="total", type="integer", example=150)
@@ -235,6 +252,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *     schema="Meta",
  *     type="object",
  *     title="Meta",
+ *
  *     @OA\Property(property="generated_at", type="string", format="date-time", example="2025-09-26T12:30:00Z"),
  *     @OA\Property(property="total_filtered", type="integer", example=150, description="Total number of filtered results"),
  *     @OA\Property(
@@ -245,8 +263,10 @@ namespace App\Http\Controllers\Api\Schemas;
  *             property="types",
  *             type="array",
  *             nullable=true,
+ *
  *             @OA\Items(type="string")
  *         ),
+ *
  *         @OA\Property(property="region_code", type="string", nullable=true)
  *     ),
  *     @OA\Property(property="current_page", type="integer", example=1, description="Only present with pagination"),
@@ -263,6 +283,7 @@ namespace App\Http\Controllers\Api\Schemas;
  *     type="object",
  *     title="Links",
  *     description="Pagination links (only present when using pagination)",
+ *
  *     @OA\Property(property="first", type="string", format="url", example="https://objectif-terres.org/api/v1/ads?page=1"),
  *     @OA\Property(property="last", type="string", format="url", example="https://objectif-terres.org/api/v1/ads?page=10"),
  *     @OA\Property(property="prev", type="string", format="url", nullable=true, example=null),

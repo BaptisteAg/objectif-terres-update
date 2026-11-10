@@ -14,7 +14,7 @@ class AttributionAdRefusedOn extends Migration
     public function up()
     {
         Schema::table('attribution_ads', function (Blueprint $table) {
-			$table->timestamp('refused_on')->nullable();
+            $table->timestamp('refused_on')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AttributionAdRefusedOn extends Migration
     public function down()
     {
         Schema::table('attribution_ads', function (Blueprint $table) {
-            $table->dropColumn("refused_on");
+            $table->dropColumn('refused_on');
         });
     }
 }

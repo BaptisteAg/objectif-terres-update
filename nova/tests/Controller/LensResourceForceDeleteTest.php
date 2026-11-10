@@ -13,7 +13,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class LensResourceForceDeleteTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -26,9 +26,9 @@ class LensResourceForceDeleteTest extends IntegrationTest
         $user2 = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/users/lens/user-lens/force', [
-                            'resources' => [$user->id, $user2->id],
-                        ]);
+            ->deleteJson('/nova-api/users/lens/user-lens/force', [
+                'resources' => [$user->id, $user2->id],
+            ]);
 
         $response->assertStatus(200);
 
@@ -44,9 +44,9 @@ class LensResourceForceDeleteTest extends IntegrationTest
         factory(User::class)->times(250)->create();
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/users/lens/user-lens/force', [
-                            'resources' => 'all',
-                        ]);
+            ->deleteJson('/nova-api/users/lens/user-lens/force', [
+                'resources' => 'all',
+            ]);
 
         $response->assertStatus(200);
 
@@ -70,9 +70,9 @@ class LensResourceForceDeleteTest extends IntegrationTest
         ]));
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/users/lens/user-lens/force?filters='.$filters, [
-                            'resources' => 'all',
-                        ]);
+            ->deleteJson('/nova-api/users/lens/user-lens/force?filters='.$filters, [
+                'resources' => 'all',
+            ]);
 
         $response->assertStatus(200);
 
@@ -93,9 +93,9 @@ class LensResourceForceDeleteTest extends IntegrationTest
         Gate::policy(User::class, UserPolicy::class);
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/users/lens/user-lens/force', [
-                            'resources' => [$user->id],
-                        ]);
+            ->deleteJson('/nova-api/users/lens/user-lens/force', [
+                'resources' => [$user->id],
+            ]);
 
         unset($_SERVER['nova.user.authorizable']);
         unset($_SERVER['nova.user.forceDeletable']);

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Traits\EducationLevelable;
 use App\Models\Traits\JobOfferTypable;
-use App\Models\Traits\OfferableGenre;
 use App\Models\Traits\ProductionableGenre;
 use Chelout\RelationshipEvents\Concerns\HasMorphToManyEvents;
 use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
@@ -23,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $education_levels_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\JobOfferType[] $jobOfferTypes
  * @property-read int|null $job_offer_types_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd query()
@@ -31,11 +31,15 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd whereExperienceFarming($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
+ *
  * @property string|null $secondary_production_type_add
  * @property string|null $production_type_add
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd whereProductionTypeAdd($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JobSeekAd whereSecondaryProductionTypeAdd($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenres
  * @property-read int|null $production_genres_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
@@ -45,11 +49,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class JobSeekAd extends Model
 {
-    use ProductionableGenre,
+    use EducationLevelable,
+        HasMorphToManyEvents,
+        HasRelationshipObservables,
         JobOfferTypable,
-		EducationLevelable,
-		HasMorphToManyEvents,
-		HasRelationshipObservables;
+        ProductionableGenre;
 
     /**
      * @var array
@@ -61,23 +65,21 @@ class JobSeekAd extends Model
         'production_type_add',
     ];
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function ad()
     {
         return $this->belongsTo(Ad::class);
     }
 
-	public static function boot()
-	{
-		parent::boot();
+    public static function boot()
+    {
+        parent::boot();
 
-		/**
-		 * Many To Many Polymorphic Relationship Events
-		 */
-
-		static::morphToManyAttaching(function ($relation, $parent, $ids, $attributes) {
-		});
-	}
+        /**
+         * Many To Many Polymorphic Relationship Events
+         */
+        static::morphToManyAttaching(function ($relation, $parent, $ids, $attributes) {});
+    }
 }

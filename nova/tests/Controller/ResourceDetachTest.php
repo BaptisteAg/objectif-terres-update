@@ -16,7 +16,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class ResourceDetachTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -35,9 +35,9 @@ class ResourceDetachTest extends IntegrationTest
         $user->roles()->attach($role3);
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/roles/detach?viaResource=users&viaResourceId=1&viaRelationship=roles', [
-                            'resources' => [$role->id, $role2->id],
-                        ]);
+            ->deleteJson('/nova-api/roles/detach?viaResource=users&viaResourceId=1&viaRelationship=roles', [
+                'resources' => [$role->id, $role2->id],
+            ]);
 
         $response->assertStatus(200);
 
@@ -60,9 +60,9 @@ class ResourceDetachTest extends IntegrationTest
         $user->roles()->attach($role3);
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/roles/detach?search=1&viaResource=users&viaResourceId=1&viaRelationship=roles', [
-                            'resources' => 'all',
-                        ]);
+            ->deleteJson('/nova-api/roles/detach?search=1&viaResource=users&viaResourceId=1&viaRelationship=roles', [
+                'resources' => 'all',
+            ]);
 
         $response->assertStatus(200);
 
@@ -92,9 +92,9 @@ class ResourceDetachTest extends IntegrationTest
         ]));
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/roles/detach?filters='.$filters.'&viaResource=users&viaResourceId=1&viaRelationship=roles', [
-                            'resources' => 'all',
-                        ]);
+            ->deleteJson('/nova-api/roles/detach?filters='.$filters.'&viaResource=users&viaResourceId=1&viaRelationship=roles', [
+                'resources' => 'all',
+            ]);
 
         $response->assertStatus(200);
 
@@ -122,9 +122,9 @@ class ResourceDetachTest extends IntegrationTest
         Gate::policy(User::class, UserPolicy::class);
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/roles/detach?viaResource=users&viaResourceId=1&viaRelationship=roles', [
-                            'resources' => [$role->id, $role2->id],
-                        ]);
+            ->deleteJson('/nova-api/roles/detach?viaResource=users&viaResourceId=1&viaRelationship=roles', [
+                'resources' => [$role->id, $role2->id],
+            ]);
 
         unset($_SERVER['nova.user.authorizable']);
         unset($_SERVER['nova.user.detachRole']);
@@ -150,9 +150,9 @@ class ResourceDetachTest extends IntegrationTest
         $user->roles()->attach($role2);
 
         $response = $this->withExceptionHandling()
-                        ->deleteJson('/nova-api/roles/detach?viaResource=users&viaResourceId=1&viaRelationship=roles', [
-                            'resources' => [$role->id],
-                        ]);
+            ->deleteJson('/nova-api/roles/detach?viaResource=users&viaResourceId=1&viaRelationship=roles', [
+                'resources' => [$role->id],
+            ]);
 
         $actionEvent = ActionEvent::first();
 

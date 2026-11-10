@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
@@ -41,11 +40,10 @@ class Ad extends Resource
 
     public function title()
     {
-        return $this->id." - ".$this->title . ' (' . $this->resource->userPp?->name . ' ' . $this->resource->userPp?->first_name .  ')';
+        return $this->id.' - '.$this->title.' ('.$this->resource->userPp?->name.' '.$this->resource->userPp?->first_name.')';
     }
 
     public static $with = ['attributionAd', 'userPp', 'userModerator'];
-
 
     /**
      * The columns that should be searched.
@@ -67,20 +65,20 @@ class Ad extends Resource
             ->withTrashed()
             ->select('*', 'ads.id as id')
             ->join('users as userPp', 'userPp.id', '=', 'ads.user_pp_id');
+
         return $query;
     }
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function fields(Request $request)
     {
         return [
             ID::make()->sortable(),
-            Text::make(__('Titre'), 'title')->resolveUsing(fn($title) => Str::words($title, 10)),
+            Text::make(__('Titre'), 'title')->resolveUsing(fn ($title) => Str::words($title, 10)),
             BelongsTo::make('Départment', 'department', Department::class)
                 ->searchable()
                 ->sortable(),
@@ -91,13 +89,13 @@ class Ad extends Resource
             Badge::make('Statut', 'attributionAd.ad_status_id')
                 ->map([
                     '' => 'danger',
-                    AdStatus::APPROVE_ID => "success",
-                    AdStatus::PENDING_ID => "info",
-                    AdStatus::REFUSE_ID => "danger",
-                    AdStatus::PENDING_MODERATION_STATUS_ID => "info",
-                    AdStatus::ARCHIVED_ID => "warning",
+                    AdStatus::APPROVE_ID => 'success',
+                    AdStatus::PENDING_ID => 'info',
+                    AdStatus::REFUSE_ID => 'danger',
+                    AdStatus::PENDING_MODERATION_STATUS_ID => 'info',
+                    AdStatus::ARCHIVED_ID => 'warning',
                 ])
-                ->labels(array_map(fn($tooltip) => Str::words($tooltip, 5), AdStatus::TOOLTIPS)),
+                ->labels(array_map(fn ($tooltip) => Str::words($tooltip, 5), AdStatus::TOOLTIPS)),
 
             HasOne::make('Modération', 'attributionAd', AttributionAd::class)
                 ->hideFromIndex(),
@@ -112,7 +110,7 @@ class Ad extends Resource
                     null => 'Non',
                     '*' => 'Oui',
                 ])
-                ->resolveUsing(fn($value) => $value ? 'deleted' : null)
+                ->resolveUsing(fn ($value) => $value ? 'deleted' : null)
                 ->hideFromDetail(),
 
             Select::make('Succès via OT', 'survey_success_via_platform')
@@ -140,7 +138,6 @@ class Ad extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function cards(Request $request)
@@ -151,18 +148,16 @@ class Ad extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function filters(Request $request)
     {
-        return [new DepartmentFilter()];
+        return [new DepartmentFilter];
     }
 
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function lenses(Request $request)
@@ -173,7 +168,6 @@ class Ad extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function actions(Request $request)

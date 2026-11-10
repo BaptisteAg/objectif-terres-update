@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $content
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ResponseTemplate newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ResponseTemplate newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ResponseTemplate query()
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|ResponseTemplate whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ResponseTemplate whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ResponseTemplate whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class ResponseTemplate extends Model
@@ -28,7 +30,6 @@ class ResponseTemplate extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'content'
+        'title', 'content',
     ];
-
 }

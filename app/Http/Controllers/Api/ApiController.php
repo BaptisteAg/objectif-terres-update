@@ -8,7 +8,6 @@ use App\Http\Resources\AdCollection;
 use App\Http\Resources\AdResource;
 use App\Models\Ad;
 use App\Models\AdStatus;
-use App\Models\Document;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -35,7 +34,6 @@ use OpenApi\Annotations as OA;
  */
 class ApiController extends Controller
 {
-
     /**
      * Get ads with advanced filtering and pagination
      *
@@ -48,13 +46,16 @@ class ApiController extends Controller
      *     security={
      *         {"apiKey": {}}
      *     },
+     *
      *     @OA\Parameter(
      *         name="Ot-api-key",
      *         in="header",
      *         required=true,
      *         description="API Key for authentication",
+     *
      *         @OA\Schema(type="string")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="types[]",
      *         in="query",
@@ -62,8 +63,10 @@ class ApiController extends Controller
      *         required=false,
      *         style="form",
      *         explode=true,
+     *
      *         @OA\Schema(
      *             type="array",
+     *
      *             @OA\Items(
      *                 type="string",
      *                 enum={"land_offer", "land_seek", "job_offer", "job_seek", "associate_offer", "associate_seek"}
@@ -71,33 +74,39 @@ class ApiController extends Controller
      *         ),
      *         example={"land_offer", "land_seek"}
      *     ),
+     *
      *     @OA\Parameter(
      *         name="updated_since",
      *         in="query",
      *         description="Get ads updated after this date. Accepts YYYY-MM-DD or ISO 8601 (YYYY-MM-DDTHH:MM:SSZ).",
      *         required=false,
+     *
      *         @OA\Schema(
      *             type="string",
      *             format="date"
      *         ),
      *         example="2025-09-25"
      *     ),
+     *
      *     @OA\Parameter(
      *         name="page",
      *         in="query",
      *         description="Page number for pagination",
      *         required=false,
+     *
      *         @OA\Schema(
      *             type="integer",
      *             minimum=1,
      *             default=1
      *         )
      *     ),
+     *
      *     @OA\Parameter(
      *         name="per_page",
      *         in="query",
      *         description="Number of items per page",
      *         required=false,
+     *
      *         @OA\Schema(
      *             type="integer",
      *             minimum=1,
@@ -105,6 +114,7 @@ class ApiController extends Controller
      *             default=50
      *         )
      *     ),
+     *
      *     @OA\Parameter(
      *         name="status[]",
      *         in="query",
@@ -112,8 +122,10 @@ class ApiController extends Controller
      *         required=false,
      *         style="form",
      *         explode=true,
+     *
      *         @OA\Schema(
      *             type="array",
+     *
      *             @OA\Items(
      *                 type="string",
      *                 enum={"published", "archived", "deleted"}
@@ -121,16 +133,21 @@ class ApiController extends Controller
      *             default={"published"}
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Successful response with ads data",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(
      *                 property="data",
      *                 type="array",
+     *
      *                 @OA\Items(ref="#/components/schemas/AdResource")
      *             ),
+     *
      *             @OA\Property(
      *                 property="pagination",
      *                 ref="#/components/schemas/Pagination"
@@ -145,10 +162,13 @@ class ApiController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=400,
      *         description="Bad Request - Invalid parameters",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="error", type="string", example="bad_request"),
      *             @OA\Property(property="message", type="string", example="Invalid date format for updated_since parameter"),
      *             @OA\Property(
@@ -160,18 +180,24 @@ class ApiController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         description="Unauthorized - Invalid or missing API credentials",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="error", type="string", example="unauthorized"),
      *             @OA\Property(property="message", type="string", example="Invalid or missing API key")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=429,
      *         description="Too Many Requests - Rate limit exceeded",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="error", type="string", example="rate_limit_exceeded"),
      *             @OA\Property(property="message", type="string", example="API rate limit exceeded. Please retry after 60 seconds."),
      *             @OA\Property(property="retry_after", type="integer", example=60)
@@ -236,25 +262,25 @@ class ApiController extends Controller
                     case 'published':
                         $query->orWhere(function (Builder $q) {
                             $q->whereNull('deleted_at')
-                              ->whereHas('attributionAd', function (Builder $attrQ) {
-                                  $attrQ->where('ad_status_id', AdStatus::APPROVE_ID)
+                                ->whereHas('attributionAd', function (Builder $attrQ) {
+                                    $attrQ->where('ad_status_id', AdStatus::APPROVE_ID)
                                         ->whereNotNull('published_on')
                                         ->whereNull('archived_at')
                                         ->whereRaw('attribution_ads.id = (SELECT MAX(id) FROM attribution_ads WHERE ad_id = ads.id)');
-                              });
+                                });
                         });
                         break;
 
                     case 'archived':
                         $query->orWhere(function (Builder $q) {
                             $q->whereNull('deleted_at')
-                              ->whereHas('attributionAd', function (Builder $attrQ) {
-                                  $attrQ->where(function (Builder $archQ) {
-                                      $archQ->whereNotNull('archived_at')
+                                ->whereHas('attributionAd', function (Builder $attrQ) {
+                                    $attrQ->where(function (Builder $archQ) {
+                                        $archQ->whereNotNull('archived_at')
                                             ->orWhere('ad_status_id', AdStatus::ARCHIVED_ID);
-                                  })
-                                  ->whereRaw('attribution_ads.id = (SELECT MAX(id) FROM attribution_ads WHERE ad_id = ads.id)');
-                              });
+                                    })
+                                        ->whereRaw('attribution_ads.id = (SELECT MAX(id) FROM attribution_ads WHERE ad_id = ads.id)');
+                                });
                         });
                         break;
 

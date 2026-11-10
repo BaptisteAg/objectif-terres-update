@@ -10,7 +10,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class LensMetricControllerTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -20,7 +20,7 @@ class LensMetricControllerTest extends IntegrationTest
     public function test_available_cards_can_be_retrieved()
     {
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/lens/user-lens/cards');
+            ->get('/nova-api/users/lens/user-lens/cards');
 
         $response->assertStatus(200);
         $this->assertEquals('value-metric', $response->original[0]->jsonSerialize()['component']);
@@ -32,7 +32,7 @@ class LensMetricControllerTest extends IntegrationTest
     public function test_available_metrics_can_be_retrieved()
     {
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/lens/user-lens/metrics');
+            ->get('/nova-api/users/lens/user-lens/metrics');
 
         $response->assertStatus(200);
         $this->assertEquals('value-metric', $response->original[0]->jsonSerialize()['component']);
@@ -46,7 +46,7 @@ class LensMetricControllerTest extends IntegrationTest
         $_SERVER['nova.authorize.forbidden-user-lens'] = false;
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/lens/user-lens/metrics');
+            ->get('/nova-api/users/lens/user-lens/metrics');
 
         unset($_SERVER['nova.authorize.forbidden-user-lens']);
 
@@ -58,7 +58,7 @@ class LensMetricControllerTest extends IntegrationTest
         $_SERVER['nova.totalUsers.canSee'] = false;
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/lens/user-lens/metrics');
+            ->get('/nova-api/users/lens/user-lens/metrics');
 
         unset($_SERVER['nova.totalUsers.canSee']);
 
@@ -72,7 +72,7 @@ class LensMetricControllerTest extends IntegrationTest
         factory(User::class, 2)->create();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/lens/user-lens/metrics/total-users');
+            ->get('/nova-api/users/lens/user-lens/metrics/total-users');
 
         $response->assertStatus(200);
         $this->assertEquals(2, $response->original['value']->value);
@@ -84,7 +84,7 @@ class LensMetricControllerTest extends IntegrationTest
         $_SERVER['nova.totalUsers.canSee'] = false;
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/lens/user-lens/metrics/total-users');
+            ->get('/nova-api/users/lens/user-lens/metrics/total-users');
 
         unset($_SERVER['nova.totalUsers.canSee']);
 
@@ -100,7 +100,7 @@ class LensMetricControllerTest extends IntegrationTest
         $user->save();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/lens/user-lens/metrics/user-growth?range=30');
+            ->get('/nova-api/users/lens/user-lens/metrics/user-growth?range=30');
 
         $response->assertStatus(200);
         $this->assertEquals(1, $response->original['value']->value);
@@ -118,7 +118,7 @@ class LensMetricControllerTest extends IntegrationTest
         $_SERVER['__nova.userGrowthColumn'] = 'updated_at';
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/lens/user-lens/metrics/user-growth?range=30');
+            ->get('/nova-api/users/lens/user-lens/metrics/user-growth?range=30');
 
         unset($_SERVER['__nova.userGrowthColumn']);
 
@@ -136,7 +136,7 @@ class LensMetricControllerTest extends IntegrationTest
         $user->save();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/lens/user-lens/metrics/user-growth?range=MTD');
+            ->get('/nova-api/users/lens/user-lens/metrics/user-growth?range=MTD');
 
         $response->assertStatus(200);
         $this->assertEquals(1, $response->original['value']->value);
@@ -156,7 +156,7 @@ class LensMetricControllerTest extends IntegrationTest
         $user->save();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/lens/user-lens/metrics/user-growth?range=QTD');
+            ->get('/nova-api/users/lens/user-lens/metrics/user-growth?range=QTD');
 
         $response->assertStatus(200);
         $this->assertEquals(1, $response->original['value']->value);
@@ -172,7 +172,7 @@ class LensMetricControllerTest extends IntegrationTest
         $user->save();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/lens/user-lens/metrics/user-growth?range=YTD');
+            ->get('/nova-api/users/lens/user-lens/metrics/user-growth?range=YTD');
 
         $response->assertStatus(200);
         $this->assertEquals(1, $response->original['value']->value);

@@ -20,7 +20,7 @@ class TestResearchSeeder extends Seeder
     {
         factory(Research::class, 10)->create()->each(function (Research $research) {
             $research->adStatuses()->save(AdStatus::inRandomOrder()->first());
-			$research->adStatuses()->save(AdStatus::inRandomOrder()->first());
+            $research->adStatuses()->save(AdStatus::inRandomOrder()->first());
             $research->projectStatuses()->save(ProjectStatus::inRandomOrder()->first());
             $research->offerGenres()->save(OfferGenre::inRandomOrder()->first());
             $research->bioCertifications()->save(BioCertification::inRandomOrder()->first())->make();

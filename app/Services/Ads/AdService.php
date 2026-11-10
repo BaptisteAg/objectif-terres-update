@@ -1,4 +1,6 @@
-<?php namespace App\Services\Ads;
+<?php
+
+namespace App\Services\Ads;
 
 use App\Exceptions\AttributionAdException;
 use App\Jobs\NotifySupportRequestAttribution;
@@ -9,10 +11,7 @@ use App\Models\CmsPage;
 use App\Models\Department;
 use App\Models\OfferGenre;
 use App\Models\ProjectDataKey;
-use App\Models\ProjectStatus;
 use App\Models\Region;
-use App\Models\SupportStage;
-use App\Models\SupportState;
 use App\Models\Territory;
 use App\Models\User;
 use App\Notifications\BasicNotification;
@@ -24,65 +23,70 @@ use App\Notifications\SupportRequestTerritoryNotification;
 use App\Repositories\AdNotes\AdNotesRepository;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\Ads\AssociateOfferAdRepository;
+use App\Repositories\Ads\AssociateSeekAdRepository;
 use App\Repositories\Ads\JobOfferAdRepository;
 use App\Repositories\Ads\JobSeekAdRepository;
 use App\Repositories\Ads\LandOfferAdRepository;
 use App\Repositories\Ads\LandSeekAdRepository;
-use App\Repositories\Ads\AssociateSeekAdRepository;
 use App\Repositories\Ads\ProductionGenreRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
 use App\Repositories\Projects\ProjectsRepository;
 use App\Services\Users\UserService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
-use DateTime;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\HtmlString;
 use Throwable;
 
 /**
  * Class AdService
- * @package App\Services\Ads
  */
-class  AdService
+class AdService
 {
     /**
      * @var AdRepository
      */
     protected $repository;
+
     /**
      * @var LandSeekAdRepository
      */
     protected $landSeekAdRepository;
+
     /**
      * @var LandOfferAdRepository
      */
     protected $landOfferAdRepository;
+
     /**
      * @var AssociateSeekAdRepository
      */
     protected $associateSeekAdRepository;
+
     /**
      * @var AssociateOfferAdRepository
      */
     protected $associateOfferAdRepository;
+
     /**
      * @var ProductionGenreRepository
      */
     protected $productionGenreRepository;
+
     /**
      * @var JobOfferAdRepository
      */
     protected $jobOfferAdRepository;
+
     /**
      * @var JobSeekAdRepository
      */
     protected $jobSeekAdRepository;
+
     /**
      * @var AttributionAdsRepository
      */
@@ -92,42 +96,33 @@ class  AdService
      * @var UserService
      */
     protected $userService;
+
     /**
      * @var ProjectsRepository
      */
     protected $projectRepository;
-    protected $adNotesRepository;
 
+    protected $adNotesRepository;
 
     /**
      * AdService constructor.
-     * @param AdRepository $repository
-     * @param AttributionAdsRepository $attributionAdsRepository
-     * @param LandSeekAdRepository $landSeekAdRepository
-     * @param LandOfferAdRepository $landOfferAdRepository
-     * @param AssociateSeekAdRepository $associateSeekAdRepository
-     * @param JobOfferAdRepository $jobOfferAdRepository
-     * @param JobSeekAdRepository $jobSeekAdRepository
-     * @param ProductionGenreRepository $productionGenreRepository
-     * @param ProjectsRepository $projectRepository
-     * @param UserService $userService
-     * @param NotifySupportRequestAttribution $notificationSupportRequestAttribution
+     *
+     * @param  NotifySupportRequestAttribution  $notificationSupportRequestAttribution
      */
     public function __construct(
-        AdRepository              $repository,
-        AttributionAdsRepository  $attributionAdsRepository,
-        LandSeekAdRepository      $landSeekAdRepository,
-        LandOfferAdRepository     $landOfferAdRepository,
+        AdRepository $repository,
+        AttributionAdsRepository $attributionAdsRepository,
+        LandSeekAdRepository $landSeekAdRepository,
+        LandOfferAdRepository $landOfferAdRepository,
         AssociateSeekAdRepository $associateSeekAdRepository,
         AssociateOfferAdRepository $associateOfferAdRepository,
-        JobOfferAdRepository      $jobOfferAdRepository,
-        JobSeekAdRepository       $jobSeekAdRepository,
+        JobOfferAdRepository $jobOfferAdRepository,
+        JobSeekAdRepository $jobSeekAdRepository,
         ProductionGenreRepository $productionGenreRepository,
-        ProjectsRepository        $projectRepository,
-        UserService               $userService,
-        AdNotesRepository         $adNotesRepository,
-    )
-    {
+        ProjectsRepository $projectRepository,
+        UserService $userService,
+        AdNotesRepository $adNotesRepository,
+    ) {
         $this->repository = $repository;
         $this->attributionAdsRepository = $attributionAdsRepository;
         $this->landSeekAdRepository = $landSeekAdRepository;
@@ -143,7 +138,6 @@ class  AdService
     }
 
     /**
-     * @param User $user
      * @return User|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|Ad|null
      */
     public function getUserSupportRequest(User $user)
@@ -152,19 +146,19 @@ class  AdService
     }
 
     /**
-     * @param array $data
-     * @param bool $isSupportRequest
+     * @param  array  $data
+     * @param  bool  $isSupportRequest
      * @return Ad
+     *
      * @throws \Throwable
      */
     public function requestPublishing(Ad $ad)
     {
         DB::beginTransaction();
 
-
         $attributionAdData = [];
 
-        //$adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
+        // $adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
         $adDepartmentCodes = [$ad->main_department->code];
         $availableModerators = $this->userService->findByRolesAndDepartments([1], $adDepartmentCodes);
         $availableSupervisors = $this->userService->findByRolesAndDepartments([3], $adDepartmentCodes);
@@ -175,21 +169,18 @@ class  AdService
         }
         // If ad was attributed before, we'll get the same moderator if available
         if ($ad->attributionAd && $ad->attributionAd->userModerator &&
-            $availableModerators->keyBy("id")->find($ad->attributionAd->user_moderator_id)) {
+            $availableModerators->keyBy('id')->find($ad->attributionAd->user_moderator_id)) {
             $moderator = $ad->attributionAd->userModerator;
         } else {
-            if (!empty($availableUserWithPermission)) {
+            if (! empty($availableUserWithPermission)) {
                 $moderator = $availableUserWithPermission;
-            }
-            else if ($availableModerators->count() >= 1) {
+            } elseif ($availableModerators->count() >= 1) {
                 /** @var User $moderator */
                 $moderator = $availableModerators->random();
-            }
-            else if($availableSupervisors->count() >= 1) {
+            } elseif ($availableSupervisors->count() >= 1) {
                 /** @var User $moderator */
                 $moderator = $availableSupervisors->random();
-            }
-            else {
+            } else {
                 /** @var User|null $moderator */
                 $moderator = User::find(18552); // objectif-terres@terredeliens.org
             }
@@ -199,7 +190,7 @@ class  AdService
 
         $attributionAdData['ad_id'] = $ad->id;
 
-        if ($ad->attributionAd && !in_array($ad->attributionAd->adStatus->id, [AdStatus::REFUSE_ID, AdStatus::ARCHIVED_ID])) {
+        if ($ad->attributionAd && ! in_array($ad->attributionAd->adStatus->id, [AdStatus::REFUSE_ID, AdStatus::ARCHIVED_ID])) {
             $this->attributionAdsRepository->update($ad->attributionAd->id, $attributionAdData);
         } else {
             $this->attributionAdsRepository->create($attributionAdData);
@@ -226,7 +217,7 @@ class  AdService
     {
         $attributionAd = $ad->attributionAd;
 
-        if (!$attributionAd || !$attributionAd->isOnline()) {
+        if (! $attributionAd || ! $attributionAd->isOnline()) {
             return $ad;
         }
 
@@ -248,7 +239,6 @@ class  AdService
     }
 
     /**
-     * @param array $data
      * @throws \Exception
      * @throws Throwable
      */
@@ -258,14 +248,14 @@ class  AdService
 
         $ad = $this->repository->createForUser($data, $userId);
 
-        if (!$data["is_draft"]) {
+        if (! $data['is_draft']) {
             $adDepartmentCodes = $this->getAdDepartmentCodesFromZones($ad);
 
             $availableModerators = $this->userService->findByRolesAndDepartments([1], $adDepartmentCodes);
             $availableUserWithPermission = $this->userService->findOneByUserPermissionAndDepartments(1, $adDepartmentCodes);
 
             if ($availableModerators->isEmpty() && empty($availableUserWithPermission)) {
-                throw new AttributionAdException("Aucun modérateur n'a été trouvé dans les départements " . implode(", ", $adDepartmentCodes));
+                throw new AttributionAdException("Aucun modérateur n'a été trouvé dans les départements ".implode(', ', $adDepartmentCodes));
             }
 
             // Modérateur
@@ -273,7 +263,7 @@ class  AdService
                 /** @var User $moderator */
                 $moderator = $availableModerators->random();
             } // Sinon utilisateur random avec permissions spéciales
-            else if (!empty($availableUserWithPermission)) {
+            elseif (! empty($availableUserWithPermission)) {
                 $moderator = $availableUserWithPermission;
             }
 
@@ -281,54 +271,48 @@ class  AdService
             $attributionAdData['ad_id'] = $ad->id;
             $attributionAdData['user_moderator_id'] = $moderator->id;
             $attributionAdData['ad_status_id'] = AdStatus::APPROVE_ID;
-            $attributionAdData['published_on'] = $data["created_at"];
+            $attributionAdData['published_on'] = $data['created_at'];
 
             $this->attributionAdsRepository->create($attributionAdData);
         }
 
-        if (isset($data[$data["ad_type"]])) {
-            $subAdData = $data[$data["ad_type"]];
-            $subAdData["ad_id"] = $ad->id;
-            $this->createSubAd($data["ad_type"], $subAdData);
+        if (isset($data[$data['ad_type']])) {
+            $subAdData = $data[$data['ad_type']];
+            $subAdData['ad_id'] = $ad->id;
+            $this->createSubAd($data['ad_type'], $subAdData);
         }
 
         DB::commit();
+
         return $ad;
     }
 
     /**
-     * @param Ad $ad
-     * @param array $data
+     * @param  Ad  $ad
      * @return Ad
+     *
      * @throws \Throwable
      */
     public function update($id, array $data)
     {
         $ad = $this->repository->update($id, $data);
 
-        $subAdData = $data[$data["ad_type"]];
-        $this->updateSubAd($ad, $data["ad_type"], $subAdData);
+        $subAdData = $data[$data['ad_type']];
+        $this->updateSubAd($ad, $data['ad_type'], $subAdData);
 
         return $ad;
     }
 
-
-    /**
-     * @param Ad $ad
-     */
     public function notifyAdvisorOfSupportRequestTerritoryChange(Ad $ad, User $advisor)
     {
         $advisor->notify(new BasicNotification([
             'subject' => "Le territoire d'une demande d'accompagnement a été modifié",
-            'message' => "La demande d'accompagnement ayant pour titre '" . $ad->title .
-                "' et pour porteur de projet " . $ad->userPp->first_name . " " . $ad->userPp->name . "
-                   			a été modifiée et ne vous est désormais plus attribuée."
+            'message' => "La demande d'accompagnement ayant pour titre '".$ad->title.
+                "' et pour porteur de projet ".$ad->userPp->first_name.' '.$ad->userPp->name.'
+                   			a été modifiée et ne vous est désormais plus attribuée.',
         ]));
     }
 
-    /**
-     * @param Ad $ad
-     */
     public function handleSupportRequestAttributionNotifications(Ad $ad)
     {
         if ($ad->attributionAd->userAdvisor) {
@@ -339,19 +323,18 @@ class  AdService
                 $supervisor->notify(new NewSupportRequestNotification($ad));
             }
         }
-        $supportRequestTerritoryModalityContent = CmsPage::where('slug', '=', 'etre-accompagne-text-du-territoire-numero-' . $ad->supportRequestTerritoryId->id)->first()->content;
+        $supportRequestTerritoryModalityContent = CmsPage::where('slug', '=', 'etre-accompagne-text-du-territoire-numero-'.$ad->supportRequestTerritoryId->id)->first()->content;
 
         $ad->userPp->notify(new SupportRequestTerritoryNotification([
-            'subject' => "Nous avons bien reçu votre demande d’accompagnement",
+            'subject' => 'Nous avons bien reçu votre demande d’accompagnement',
             'ad_title' => $ad->title,
             'supportRequest_name' => $ad->supportRequestTerritoryId->name,
             'supportRequest_content' => $supportRequestTerritoryModalityContent,
-            'action' => ["Voir mon projet", route('support-request.show')]
+            'action' => ['Voir mon projet', route('support-request.show')],
         ]));
     }
 
     /**
-     * @param Ad $ad
      * @return array
      */
     public function getAdDepartmentCodesFromSupportRequestTerritoryId(Ad $ad)
@@ -367,10 +350,6 @@ class  AdService
         return $departmentsCode;
     }
 
-    /**
-     * @param Ad $ad
-     * @return array
-     */
     public function getAdDepartmentCodesFromZones(Ad $ad): array
     {
         $departmentsCode = [];
@@ -378,7 +357,7 @@ class  AdService
         if (count($ad->cities)) {
             foreach ($ad->cities as $city) {
                 if ($city->department) {
-                    //dd($city);
+                    // dd($city);
                     $departmentsCode[] = $city->department->code;
                 }
             }
@@ -394,24 +373,21 @@ class  AdService
     }
 
     /**
-     * @param Ad $ad
-     * @param string $adType
-     * @param array $data
      * @return \App\Models\JobOfferAd|\App\Models\JobSeekAd|\App\Models\LandOfferAd|\App\Models\LandSeekAd
      */
     protected function updateSubAd(Ad $ad, string $adType, array $data)
     {
-        if ($adType === "land_seek") {
+        if ($adType === 'land_seek') {
             $subAd = $this->landSeekAdRepository->update($ad->landSeekAd, $data);
-        } else if ($adType === "land_offer") {
+        } elseif ($adType === 'land_offer') {
             $subAd = $this->landOfferAdRepository->update($ad->landOfferAd, $data);
-        } else if ($adType === "job_offer") {
+        } elseif ($adType === 'job_offer') {
             $subAd = $this->jobOfferAdRepository->update($ad->jobOfferAd, $data);
-        } else if ($adType === "job_seek") {
+        } elseif ($adType === 'job_seek') {
             $subAd = $this->jobSeekAdRepository->update($ad->jobSeekAd, $data);
-        } else if ($adType === "associate_seek") {
+        } elseif ($adType === 'associate_seek') {
             $subAd = $this->associateSeekAdRepository->update($ad->associateSeekAd, $data);
-        } else if ($adType === "associate_offer") {
+        } elseif ($adType === 'associate_offer') {
             $subAd = $this->associateOfferAdRepository->update($ad->associateOfferAd, $data);
         }
 
@@ -423,20 +399,20 @@ class  AdService
      */
     protected function createSubAd(string $adType, array $data): \App\Models\AssociateOfferAd|\App\Models\LandSeekAd|\App\Models\JobSeekAd|\App\Models\LandOfferAd|\App\Models\AssociateSeekAd|\App\Models\JobOfferAd
     {
-        if ($adType === "land_seek") {
+        if ($adType === 'land_seek') {
             $subAd = $this->landSeekAdRepository->create($data);
-        } else if ($adType === "land_offer") {
+        } elseif ($adType === 'land_offer') {
             $subAd = $this->landOfferAdRepository->create($data);
-        } else if ($adType === "job_offer") {
+        } elseif ($adType === 'job_offer') {
             $subAd = $this->jobOfferAdRepository->create($data);
-        } else if ($adType === "job_seek") {
+        } elseif ($adType === 'job_seek') {
             $subAd = $this->jobSeekAdRepository->create($data);
-        } else if ($adType === "associate_seek") {
+        } elseif ($adType === 'associate_seek') {
             $subAd = $this->associateSeekAdRepository->create($data);
-        } else if ($adType === "associate_offer") {
+        } elseif ($adType === 'associate_offer') {
             $subAd = $this->associateOfferAdRepository->create($data);
         } else {
-            throw new \Exception("Ad type not found");
+            throw new \Exception('Ad type not found');
         }
 
         return $subAd;
@@ -445,38 +421,38 @@ class  AdService
     /**
      * Create the ad without requesting to publish it
      *
-     * @param array $data
      * @return mixed
+     *
      * @throws \Throwable
      */
     public function store(array $data)
     {
-        $isUpdate = !empty($data["id"]);
+        $isUpdate = ! empty($data['id']);
 
         DB::beginTransaction();
 
         if ($isUpdate) {
-            $ad = $this->repository->update($data["id"], $data);
+            $ad = $this->repository->update($data['id'], $data);
         } else {
             $ad = $this->repository->create($data);
         }
 
-        $subAdData = $data[$data["ad_type"]];
-        $subAdData["ad_id"] = $ad->id;
+        $subAdData = $data[$data['ad_type']];
+        $subAdData['ad_id'] = $ad->id;
 
-        if (isset($subAdData["offer_genres"])) {
-            if (!in_array(OfferGenre::ID_VENTE, $subAdData["offer_genres"])) {
-                $subAdData["price"] = null;
+        if (isset($subAdData['offer_genres'])) {
+            if (! in_array(OfferGenre::ID_VENTE, $subAdData['offer_genres'])) {
+                $subAdData['price'] = null;
             }
-            if (!in_array(OfferGenre::ID_LOCATION, $subAdData["offer_genres"])) {
-                $subAdData["rent_price"] = null;
+            if (! in_array(OfferGenre::ID_LOCATION, $subAdData['offer_genres'])) {
+                $subAdData['rent_price'] = null;
             }
         }
 
         if ($isUpdate) {
-            $this->updateSubAd($ad, $data["ad_type"], $subAdData);
+            $this->updateSubAd($ad, $data['ad_type'], $subAdData);
         } else {
-            $this->createSubAd($data["ad_type"], $subAdData);
+            $this->createSubAd($data['ad_type'], $subAdData);
         }
 
         DB::commit();
@@ -492,19 +468,18 @@ class  AdService
      */
     public function getAdType(Ad $ad): string
     {
-        return match($ad->type) {
+        return match ($ad->type) {
             'landSeekAd' => 'land_seek',
             'landOfferAd' => 'land_offer',
             'jobOfferAd' => 'job_offer',
             'jobSeekAd' => 'job_seek',
             'associateSeekAd' => 'associate_seek',
             'associateOfferAd' => 'associate_offer',
-            default => throw new \Exception("Ad type not found on id " . $ad->id),
+            default => throw new \Exception('Ad type not found on id '.$ad->id),
         };
     }
 
     /**
-     * @param int $id
      * @return \App\Models\Ad
      */
     public function find(int $id)
@@ -526,8 +501,6 @@ class  AdService
 
     /**
      * Find all ads and projects created by to user
-     * @param $idUser
-     * @return Collection
      */
     public function findAllByUser($idUser, $conditions = []): Collection
     {
@@ -536,8 +509,6 @@ class  AdService
 
     /**
      * Find all ads created by user
-     * @param $idUser
-     * @return Collection
      */
     public function findAllAdsByUser($idUser): Collection
     {
@@ -563,8 +534,8 @@ class  AdService
     }
 
     /**
-     * @param Ad $ad
      * @return void
+     *
      * @throws \Exception
      */
     public function delete(Ad $ad)
@@ -573,8 +544,8 @@ class  AdService
     }
 
     /**
-     * @param Ad $ad
      * @return void
+     *
      * @throws \Exception
      */
     public function archive(Ad $ad)
@@ -585,7 +556,6 @@ class  AdService
     /**
      * Republish an archived ad
      *
-     * @param Ad $ad
      * @return void
      */
     public function republish(Ad $ad)
@@ -595,7 +565,7 @@ class  AdService
 
     /**
      * Show all ads ads related to supervisor
-     * @param bool $toPaginate
+     *
      * @return LengthAwarePaginator|Collection
      */
     public function findAllByUserSupervisor(bool $toPaginate)
@@ -603,12 +573,13 @@ class  AdService
         $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
         $supervisorLocationTerritoryIds = $this->userService->getCurrentUserTerritoryIds();
         $ads = $this->repository->allInTerritories($supervisorLocationTerritoryCodes, $supervisorLocationTerritoryIds, $toPaginate);
+
         return $ads;
     }
 
     /**
      * Show all projects with first contact support stage  related to supervisor
-     * @param bool $toPaginate
+     *
      * @return LengthAwarePaginator|Collection
      */
     public function findAllNotAssignedProjectsByUserSupervisor(bool $toPaginate)
@@ -616,11 +587,11 @@ class  AdService
         $supervisorLocationTerritoryIds = $this->userService->getCurrentUserTerritoryIds();
         $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
         $ads = $this->repository->allNotAssignedProjectsInTerritories($supervisorLocationTerritoryIds, $supervisorLocationTerritoryCodes, $toPaginate);
+
         return $ads;
     }
 
     /**
-     * @param array $dates
      * @return mixed
      */
     public function findAllByUserSupervisorBetweenDates(array $dates): Collection
@@ -628,6 +599,7 @@ class  AdService
         $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
         $supervisorLocationTerritoryIds = $this->userService->getCurrentUserTerritoryIds();
         $ads = $this->repository->findAllByUserTerritoriesAndDates($supervisorLocationTerritoryCodes, $supervisorLocationTerritoryIds, $dates);
+
         return $ads;
     }
 
@@ -638,11 +610,11 @@ class  AdService
     {
         $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
         $ads = $this->repository->allAdsInTerritories($supervisorLocationTerritoryCodes);
+
         return $ads;
     }
 
     /**
-     * @param int $id
      * @return \App\Models\Ad
      */
     public function findWithTrashedUser(int $id)
@@ -652,11 +624,6 @@ class  AdService
         return $ad;
     }
 
-
-    /**
-     * @param Collection $ads
-     * @return Collection
-     */
     public function groupAllValidatedAdsInYearByMonth(Collection $ads): Collection
     {
         $validatedAds = $ads->filter(function ($ad, $key) {
@@ -668,7 +635,7 @@ class  AdService
         });
         $validatedAdsByMonthInYear = [];
         $listOfMonthInYear = $this->getListOfMonthInYear();
-        if (!empty($validatedAds)) {
+        if (! empty($validatedAds)) {
             $validatedAdsInYear = $validatedAds->filter(function ($ad, $key) {
                 $date = Carbon::parse($ad->attributionAd->published_on);
                 if ($date->isBetween(Carbon::now()->startOfYear()->subYear(), Carbon::now()->endOfYear()->subYear())) {
@@ -677,15 +644,16 @@ class  AdService
             });
             $validatedAdsByMonthInYear = $validatedAdsInYear->mapToGroups(function ($ad, $key) {
                 $date = Carbon::parse($ad->attributionAd->published_on);
+
                 return [$date->localeMonth => $ad];
             });
         }
+
         return $listOfMonthInYear->merge($validatedAdsByMonthInYear);
     }
 
     /**
      * TODO refacto
-     * @return \Illuminate\Support\Collection
      */
     public function getListOfMonthInYear(): Collection
     {
@@ -694,22 +662,20 @@ class  AdService
         foreach ($period as $date) {
             $listOfMonth[$date->localeMonth] = collect();
         }
+
         return $listOfMonth;
     }
 
-    /**
-     * @return Collection
-     */
     public function findAllAdsAndProjectsGroupByUserPp(): Collection
     {
         $supervisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
         $supervisorLocationTerritoryRegionId = $this->userService->getCurrentUserTerritoryIds();
         $users = $this->repository->allInTerritories($supervisorLocationTerritoryCodes, $supervisorLocationTerritoryRegionId, false)->groupBy('user_pp_id');
+
         return $users;
     }
 
     /**
-     * @param Collection $ads
      * @return Collection
      */
     public function groupAdsBySupervisorDepartments(Collection $ads)
@@ -721,31 +687,31 @@ class  AdService
 
         return $adsPublishedByTerritories = $adsPublished->map(function ($item) use ($userDepartmentsNames) {
             $adsPerDepartment = $item->mapToGroups(function ($ad, $key) {
-                if (!empty($ad->departments)) {
+                if (! empty($ad->departments)) {
                     foreach ($ad->departments as $department) {
                         return [$department->name => $ad];
                     }
                 }
-                if (!empty($ad->cities)) {
+                if (! empty($ad->cities)) {
                     foreach ($ad->cities as $city) {
                         return [$city->department->name => $ad];
                     }
                 }
             });
+
             return $adsPerDepartment->union($userDepartmentsNames);
         });
 
     }
 
     /**
-     * @param Collection $ads
      * @return Collection
      */
     public function filterAdsByPublishedYear(Collection $ads)
     {
         $onlyAdsPublished = $ads->filter(function ($ad, $key) {
-            if (!empty($ad->attributionAd)) {
-                if (!is_null($ad->attributionAd->published_on)) {
+            if (! empty($ad->attributionAd)) {
+                if (! is_null($ad->attributionAd->published_on)) {
                     $date = Carbon::parse($ad->attributionAd->published_on);
                     if ($date->isBetween(Carbon::now()->startOfYear()->subYear(), Carbon::now()->endOfYear()->subYear())) {
                         return $ad;
@@ -756,14 +722,15 @@ class  AdService
                 }
             }
         });
+
         return $groupPublishedAdsByYears = $onlyAdsPublished->mapToGroups(function ($ad, $key) {
             $date = Carbon::parse($ad->attributionAd->published_on);
+
             return [$date->year => $ad];
         });
     }
 
     /**
-     * @param Collection $ads
      * @return Collection
      */
     public function groupAdsBySupervisorRegions(Collection $ads)
@@ -772,32 +739,30 @@ class  AdService
         $userRegionsNames = auth()->user()->regions->pluck('name')->flip()->map(function ($item) {
             return collect([]);
         });
+
         return $adsPublishedByTerritories = $adsPublished->map(function ($item) use ($userRegionsNames) {
             $adsPerRegion = $item->mapToGroups(function ($ad, $key) {
-                if (!empty($ad->regions)) {
+                if (! empty($ad->regions)) {
                     foreach ($ad->regions as $region) {
                         return [$region->name => $ad];
                     }
                 }
-                if (!empty($ad->departments)) {
+                if (! empty($ad->departments)) {
                     foreach ($ad->departments as $department) {
                         return [$department->region->name => $ad];
                     }
                 }
-                if (!empty($ad->cities)) {
+                if (! empty($ad->cities)) {
                     foreach ($ad->cities as $city) {
                         return [$city->department->region->name => $ad];
                     }
                 }
             });
+
             return $adsPerRegion->union($userRegionsNames);
         });
     }
 
-    /**
-     * @param Collection $ads
-     * @return array
-     */
     public function countAdsByAdStatus(Collection $ads): array
     {
         $numberOfAdsByAdStatus = [
@@ -806,7 +771,7 @@ class  AdService
             AdStatus::PENDING_MODERATION_STATUS_ID => 0,
         ];
         foreach ($ads as $ad) {
-            if (!is_null($ad->attributionAd)) {
+            if (! is_null($ad->attributionAd)) {
                 foreach ($numberOfAdsByAdStatus as $key => $value) {
                     if ($key === $ad->attributionAd->adStatus->id) {
                         $numberOfAdsByAdStatus[$key]++;
@@ -814,39 +779,34 @@ class  AdService
                 }
             }
         }
+
         return $numberOfAdsByAdStatus;
     }
 
     /**
      * Ad filters for supervisor dashboard
-     * @param Request $request
+     *
      * @return LengthAwarePaginator
      */
     public function showForSupervisor(Request $request)
     {
-        $toPaginate = $request->get('toPaginate') === "true" || $request->get('toPaginate') === null ? true : false;
+        $toPaginate = $request->get('toPaginate') === 'true' || $request->get('toPaginate') === null ? true : false;
         $ads = $this->filter($request, auth()->user()->role, $toPaginate);
 
         return $ads;
     }
 
     /**
-     * @param Request $filters
-     * @param int $roleUser
-     * @param bool $toPaginate
      * @return LengthAwarePaginator|Builder[]|Collection
      */
     public function filter(Request $filters, int $roleUser, bool $toPaginate)
     {
         $userTerritories = $this->userService->getCurrentUserTerritoryDepartments();
         $userTerritoryIds = $this->userService->getCurrentUserTerritoryIds();
+
         return $this->repository->filterAds($filters, $roleUser, $userTerritories, $userTerritoryIds, $toPaginate);
     }
 
-    /**
-     * @param Carbon $date
-     * @return Collection
-     */
     public function findAllAdsNotCompleteAndPublishedSince(Carbon $date): Collection
     {
         $adsPublishedSinceDays = $this->repository->findAllByPublishedOlderThan($date);
@@ -855,12 +815,12 @@ class  AdService
             if (is_null($ad['about_content']) || is_null($ad['about_project_content']) || isset($ad['documents'])) {
                 return [$ad['id'] => $ad];
             }
+
             return [];
         })->filter();
     }
 
     /**
-     * @param Carbon $date
      * @return Ad[]|Collection
      */
     public function findAllNotAttributedSince(Carbon $date): Collection
@@ -871,7 +831,6 @@ class  AdService
     }
 
     /**
-     * @param $selectedAdType
      * @return array
      */
     public function getPublishedAdsCountByRegionId($selectedAdType)
@@ -882,18 +841,17 @@ class  AdService
             $regionIds = $this->getAdRegionIds($ad);
 
             foreach ($regionIds as $regionId) {
-                if (!isset($adsCountByRegionId[$regionId])) {
+                if (! isset($adsCountByRegionId[$regionId])) {
                     $adsCountByRegionId[$regionId] = 0;
                 }
                 $adsCountByRegionId[$regionId]++;
             }
         }
+
         return $adsCountByRegionId;
     }
 
     /**
-     * @param $selectedAdType
-     * @param $regionId
      * @return array
      */
     public function getPublishedAdsCountByDepartmentId($selectedAdType, $regionId)
@@ -907,7 +865,7 @@ class  AdService
             $departmentIds = array_intersect($this->getAdDepartmentIds($ad), $regionDepartmentIds->toArray());
 
             foreach ($departmentIds as $departmentId) {
-                if (!isset($adsCountByDepartmentId[$departmentId])) {
+                if (! isset($adsCountByDepartmentId[$departmentId])) {
                     $adsCountByDepartmentId[$departmentId] = 0;
                 }
                 $adsCountByDepartmentId[$departmentId]++;
@@ -916,7 +874,6 @@ class  AdService
 
         return $adsCountByDepartmentId;
     }
-
 
     public function getAdRegions(Ad $ad)
     {
@@ -953,7 +910,6 @@ class  AdService
     }
 
     /**
-     * @param Ad $ad
      * @return array
      */
     public function getAdRegionIds(Ad $ad)
@@ -989,7 +945,6 @@ class  AdService
     }
 
     /**
-     * @param Ad $ad
      * @return array
      */
     public function getAdDepartmentIds(Ad $ad)
@@ -1022,7 +977,6 @@ class  AdService
     }
 
     /**
-     * @param Ad $ad
      * @return User[]|\Illuminate\Database\Eloquent\Collection|Collection
      */
     public function getAdSupervisors(Ad $ad)
@@ -1031,11 +985,11 @@ class  AdService
             return $this->userService->findByRolesAndTerritory([3], [$ad->support_request_territory_id]);
         }
         $departmentCodes = $this->getAdDepartmentCodesFromZones($ad);
+
         return $this->userService->findByRolesAndDepartments([3], $departmentCodes);
     }
 
     /**
-     * @param User $user
      * @return int
      */
     public function getUserPublishedAdsCount(User $user)
@@ -1048,7 +1002,6 @@ class  AdService
     }
 
     /**
-     * @param Carbon $date
      * @return Ad[]|\Illuminate\Database\Eloquent\Collection
      */
     public function findAdsPublishedAt(Carbon $date)
@@ -1057,7 +1010,6 @@ class  AdService
     }
 
     /**
-     * @param int $id
      * @return Ad[]|Builder[]|\Illuminate\Database\Eloquent\Collection
      */
     public function findAttributedAndNotDraftedByUserId(int $id)
@@ -1066,7 +1018,6 @@ class  AdService
     }
 
     /**
-     * @param int $id
      * @return Ad[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|Collection
      */
     public function findAdsAttributedAndNotDraftedByUserId(int $id)
@@ -1084,18 +1035,16 @@ class  AdService
     }
 
     /**
-     * @param int $adId
      * @return Builder[]|\Illuminate\Database\Eloquent\Collection
      */
     public function allPublicNotesWithProjectDatKeysByAdId(int $adId): Collection
     {
         $notes = $this->adNotesRepository->findAllNotesWithPublicProjectDatKeysByAdId($adId);
+
         return $notes;
     }
 
-
     /**
-     * @param Request $request
      * @throws Throwable
      */
     public function updateProjectDataKeysValues(Request $request)
@@ -1129,8 +1078,8 @@ class  AdService
         if (count($requestProjectDataKeyValues) > 0) {
             foreach ($requestProjectDataKeyValues as $key => $value) {
                 $data = Arr::only($request->input(), [
-                    "ad_id",
-                    "user_id"
+                    'ad_id',
+                    'user_id',
                 ]);
                 $data['value'] = $value;
                 $data['project_data_key_id'] = $key;
@@ -1139,12 +1088,9 @@ class  AdService
         }
     }
 
-
     /**
      * Get ads by date range.
      *
-     * @param string $from
-     * @param string $to
      * @return \Illuminate\Database\Eloquent\Collection|Ad[]
      */
     public function getAdsByDate(string $from, string $to): \Illuminate\Database\Eloquent\Collection|array

@@ -15,7 +15,7 @@ class UpdateMessagesForeignKeyAdsFix extends Migration
     {
         Schema::disableForeignKeyConstraints();
         Schema::table('messages', function (Blueprint $table) {
-            $table->dropForeign("messages_sender_user_id_foreign");
+            $table->dropForeign('messages_sender_user_id_foreign');
             $table->unsignedInteger('sender_user_id')->nullable()->change();
             $table->foreign('sender_user_id', 'messages_sender_user_id_foreign')
                 ->references('id')
@@ -33,7 +33,7 @@ class UpdateMessagesForeignKeyAdsFix extends Migration
     public function down()
     {
         Schema::table('messages', function (Blueprint $table) {
-            $table->dropForeign("messages_sender_user_id_foreign");
+            $table->dropForeign('messages_sender_user_id_foreign');
         });
     }
 }

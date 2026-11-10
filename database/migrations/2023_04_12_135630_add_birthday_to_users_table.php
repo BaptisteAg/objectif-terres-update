@@ -26,7 +26,7 @@ class AddBirthdayToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn("birthday");
+            $table->dropColumn('birthday');
         });
     }
 }

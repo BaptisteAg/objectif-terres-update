@@ -23,20 +23,17 @@ class NotifyDraftsUnpublishedAds extends Command
 
     protected $job;
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @param NotifyUnpublishedAds $job
-	 */
+    /**
+     * Create a new command instance.
+     */
     public function __construct(NotifyUnpublishedAds $job)
     {
-    	$this->job = $job;
+        $this->job = $job;
         parent::__construct();
     }
 
     /**
      * Execute the console command.
-     *
      */
     public function handle()
     {

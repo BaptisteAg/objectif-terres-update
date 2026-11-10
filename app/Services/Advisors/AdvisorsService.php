@@ -4,7 +4,6 @@ namespace App\Services\Advisors;
 
 use App\Models\Ad;
 use App\Models\AdNote;
-use App\Models\ProjectDataKey;
 use App\Models\Thread;
 use App\Models\User;
 use App\Notifications\BasicNotification;
@@ -19,248 +18,226 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Notifications\Notification;
-use Illuminate\Support\Arr;
 use Throwable;
-
 
 /**
  * Class AdvisorsService
- * @package App\Services\AttributionAds
  */
 class AdvisorsService
 {
-	protected $repository;
-	protected $userService;
-	protected $adService;
-	protected $threadService;
-	protected $threadRepository;
-	protected $projectRepository;
-	protected $adNotesRepository;
+    protected $repository;
 
-	/**
-	 * AdvisorsService constructor.
-	 * @param AdRepository $adRepository
-	 * @param UserService $userService
-	 * @param AdService $adService
-	 * @param ThreadsRepository $threadRepository
-	 * @param ThreadService $threadService
-	 * @param ProjectsRepository $projectsRepository
-	 * @param AdNotesRepository $adNotesRepository
-	 */
-	public function __construct(AdRepository $adRepository, UserService $userService, AdService $adService, ThreadsRepository $threadRepository, ThreadService $threadService, ProjectsRepository $projectsRepository, AdNotesRepository $adNotesRepository)
-	{
-		$this->repository = $adRepository;
-		$this->userService = $userService;
-		$this->adService = $adService;
-		$this->threadService = $threadService;
-		$this->threadRepository = $threadRepository;
-		$this->projectRepository = $projectsRepository;
-		$this->adNotesRepository = $adNotesRepository;
-	}
+    protected $userService;
 
-	/**
-	 * Show all ads ads related to advisors
-	 * @param bool $toPaginate
-	 * @return LengthAwarePaginator|Collection
-	 */
-	public function findAllByUserAdvisor(bool $toPaginate)
-	{
-		$advisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$advisorLocationTerritoryId = $this->userService->getCurrentUserTerritoryIds();
-		$ads = $this->repository->allInTerritories($advisorLocationTerritoryCodes, $advisorLocationTerritoryId, $toPaginate);
+    protected $adService;
 
-		return $ads;
-	}
+    protected $threadService;
 
-	/**
-	 * Show all ads that are supports related to advisors
-	 * @param bool $toPaginate
-	 * @return LengthAwarePaginator|Collection
-	 */
-	public function findAllSupportsByUserAdvisor(bool $toPaginate)
-	{
-		$advisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$advisorLocationTerritoryId = $this->userService->getCurrentUserTerritoryIds();
+    protected $threadRepository;
 
-		$ads = $this->repository->allProjectsInTerritories($advisorLocationTerritoryCodes, $advisorLocationTerritoryId, $toPaginate);
-		return $ads;
-	}
+    protected $projectRepository;
 
-	/**
-	 * @param Request $request
-	 * @return LengthAwarePaginator|Builder[]|Collection
-	 */
-	public function showForAdvisor(Request $request)
-	{
-		$toPaginate = $request->get('toPaginate') === "true" || $request->get('toPaginate') === null;
+    protected $adNotesRepository;
 
-		$ads = $this->adService->filter($request, auth()->user()->role, $toPaginate);
+    /**
+     * AdvisorsService constructor.
+     */
+    public function __construct(AdRepository $adRepository, UserService $userService, AdService $adService, ThreadsRepository $threadRepository, ThreadService $threadService, ProjectsRepository $projectsRepository, AdNotesRepository $adNotesRepository)
+    {
+        $this->repository = $adRepository;
+        $this->userService = $userService;
+        $this->adService = $adService;
+        $this->threadService = $threadService;
+        $this->threadRepository = $threadRepository;
+        $this->projectRepository = $projectsRepository;
+        $this->adNotesRepository = $adNotesRepository;
+    }
 
-		return $ads;
-	}
+    /**
+     * Show all ads ads related to advisors
+     *
+     * @return LengthAwarePaginator|Collection
+     */
+    public function findAllByUserAdvisor(bool $toPaginate)
+    {
+        $advisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
+        $advisorLocationTerritoryId = $this->userService->getCurrentUserTerritoryIds();
+        $ads = $this->repository->allInTerritories($advisorLocationTerritoryCodes, $advisorLocationTerritoryId, $toPaginate);
 
-	/**
-	 * @param array $data
-	 */
-	public function updateSupport(array $data)
-	{
-		$ad = Ad::find($data['ad_id']);
-		if (isset($data['support_stage'])) {
-			$ad->project->support_stage_id = $data['support_stage'];
+        return $ads;
+    }
 
-		} elseif (isset($data['support_state'])) {
-			$ad->project->support_state_id = $data['support_state'];
+    /**
+     * Show all ads that are supports related to advisors
+     *
+     * @return LengthAwarePaginator|Collection
+     */
+    public function findAllSupportsByUserAdvisor(bool $toPaginate)
+    {
+        $advisorLocationTerritoryCodes = $this->userService->getCurrentUserTerritoryDepartments();
+        $advisorLocationTerritoryId = $this->userService->getCurrentUserTerritoryIds();
 
-		} elseif (isset($data['project_status'])) {
-			$ad->project->project_status_id = $data['project_status'];
-		}
-		$ad->project->save();
-	}
+        $ads = $this->repository->allProjectsInTerritories($advisorLocationTerritoryCodes, $advisorLocationTerritoryId, $toPaginate);
 
-	/**
-	 * @param array $data
-	 * @return Thread
-	 */
-	public function findThreadAdvisorInChargeOfSupportRequest(array $data)
-	{
-		$thread = $this->threadRepository->findThreadByUserIdAndAdId($data['user_id'], $data['ad_id'])->first();
-		return $thread;
-	}
+        return $ads;
+    }
 
-	/**
-	 * @param int $supportStageId
-	 * @param int $supportStateId
-	 * @return mixed
-	 */
-	public function findAllBySupportStageAndSupportState(int $supportStageId, int $supportStateId)
-	{
-		$projects = $this->projectRepository->findAllByUserIdAndUserRoleAndSupportStageIdAndSupportStateId(auth()->user()->id, auth()->user()->role, $supportStageId, $supportStateId);
-		return $projects;
-	}
+    /**
+     * @return LengthAwarePaginator|Builder[]|Collection
+     */
+    public function showForAdvisor(Request $request)
+    {
+        $toPaginate = $request->get('toPaginate') === 'true' || $request->get('toPaginate') === null;
 
-	/**
-	 * @param Request $request
-	 */
-	public function createNote(Request $request)
-	{
-		try {
-			$this->adNotesRepository->create($request->all());
-		} catch (Throwable $e) {
-			dd($e);
-		}
+        $ads = $this->adService->filter($request, auth()->user()->role, $toPaginate);
 
-	}
+        return $ads;
+    }
 
-	/**
-	 * @param array $data
-	 * @return void
-	 */
-	public function editNote(array $data)
-	{
-		try {
-			$note = AdNote::findOrNew($data['ad_note_id']);
-			if ($note->value !== $data['value']) {
-				$note->update($data);
-				session(['success' => 'La note a bien été modifiée']);
-			} else {
-				session(['warning' => 'Le contenu de la note n\'a pas été modifié']);
-			}
-		} catch (\Exception $e) {
-			session(['warning' => 'Une erreur s\'est produite, veuillez réessayer']);
-		}
+    public function updateSupport(array $data)
+    {
+        $ad = Ad::find($data['ad_id']);
+        if (isset($data['support_stage'])) {
+            $ad->project->support_stage_id = $data['support_stage'];
 
-	}
+        } elseif (isset($data['support_state'])) {
+            $ad->project->support_state_id = $data['support_state'];
 
-	/**
-	 * @param Request $request
-	 * @throws \Exception
-	 */
-	public function deleteNote(Request $request)
-	{
-		$note = AdNote::find($request->input('ad_note_id'));
-		$note->delete();
-	}
+        } elseif (isset($data['project_status'])) {
+            $ad->project->project_status_id = $data['project_status'];
+        }
+        $ad->project->save();
+    }
 
+    /**
+     * @return Thread
+     */
+    public function findThreadAdvisorInChargeOfSupportRequest(array $data)
+    {
+        $thread = $this->threadRepository->findThreadByUserIdAndAdId($data['user_id'], $data['ad_id'])->first();
 
-	/**
-	 * @param array $data
-	 * @return Builder[]|Collection
-	 */
-	public function findNotesByProjectDataKey(array $data)
-	{
-		$notes = $this->adNotesRepository->findAllByProjectDataKeyAndAdId($data);
-		return $notes;
-	}
+        return $thread;
+    }
 
-	/**
-	 * @param int $adId
-	 * @return Builder[]|Collection
-	 */
-	public function allNotesWithProjectDatKeysByAdId(int $adId): Collection
-	{
-		$notes = $this->adNotesRepository->findAllNotesWithProjectDataKeysByAdId($adId);
-		return $notes;
-	}
+    /**
+     * @return mixed
+     */
+    public function findAllBySupportStageAndSupportState(int $supportStageId, int $supportStateId)
+    {
+        $projects = $this->projectRepository->findAllByUserIdAndUserRoleAndSupportStageIdAndSupportStateId(auth()->user()->id, auth()->user()->role, $supportStageId, $supportStateId);
 
-	/**
-	 * @param int $adId
-	 * @return Builder[]|Collection
-	 */
-	public function allNotesWithPublicProjectDatKeysByAdId(int $adId): Collection
-	{
-		$notes = $this->adNotesRepository->findAllNotesWithPublicProjectDatKeysByAdId($adId);
-		return $notes;
-	}
+        return $projects;
+    }
 
-	/**
-	 * @param array $data
-	 */
-	public function uploadDocument(array $data)
-	{
-		$ad = $this->repository->find($data['ad_id']);
-		if (isset($data["documents_ids"]) && is_array($data["documents_ids"])) {
-			foreach ($data["documents_ids"] as $documentId) {
-				$ad->documents()->attach($documentId);
-			}
-		}
-	}
+    public function createNote(Request $request)
+    {
+        try {
+            $this->adNotesRepository->create($request->all());
+        } catch (Throwable $e) {
+            dd($e);
+        }
 
+    }
 
-	public function handleSupportDashboardNotifications(Ad $ad)
-	{
-		if (!auth()->user()->unreadNotifications->isEmpty()) {
-			$notifications = auth()->user()->unreadNotifications;
-			foreach ($notifications as $notification) {
-				if (array_key_exists('ad_id', $notification->data) && $notification->data['ad_id'] === $ad->id) {
-					$notification->markAsRead();
-					$notification->delete();
-				}
-			}
-		}
-	}
+    /**
+     * @return void
+     */
+    public function editNote(array $data)
+    {
+        try {
+            $note = AdNote::findOrNew($data['ad_note_id']);
+            if ($note->value !== $data['value']) {
+                $note->update($data);
+                session(['success' => 'La note a bien été modifiée']);
+            } else {
+                session(['warning' => 'Le contenu de la note n\'a pas été modifié']);
+            }
+        } catch (\Exception $e) {
+            session(['warning' => 'Une erreur s\'est produite, veuillez réessayer']);
+        }
 
-	/**
-	 * @param int $UserId
-	 * @return \Illuminate\Http\RedirectResponse
-	 */
-	public function blockUser(int $UserId)
-	{
-		$userPp = User::find($UserId);
-		try {
-			$userPp->delete();
-			$userPp->notify(new BasicNotification([
-				'subject' => "Votre compte est suspendu temporairement",
-				'message' => "Votre compte Objectif Terres vient d’être suspendu puisque vous avez dépassé le cadre d’utilisation d’Objectif Terres.\n
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function deleteNote(Request $request)
+    {
+        $note = AdNote::find($request->input('ad_note_id'));
+        $note->delete();
+    }
+
+    /**
+     * @return Builder[]|Collection
+     */
+    public function findNotesByProjectDataKey(array $data)
+    {
+        $notes = $this->adNotesRepository->findAllByProjectDataKeyAndAdId($data);
+
+        return $notes;
+    }
+
+    /**
+     * @return Builder[]|Collection
+     */
+    public function allNotesWithProjectDatKeysByAdId(int $adId): Collection
+    {
+        $notes = $this->adNotesRepository->findAllNotesWithProjectDataKeysByAdId($adId);
+
+        return $notes;
+    }
+
+    /**
+     * @return Builder[]|Collection
+     */
+    public function allNotesWithPublicProjectDatKeysByAdId(int $adId): Collection
+    {
+        $notes = $this->adNotesRepository->findAllNotesWithPublicProjectDatKeysByAdId($adId);
+
+        return $notes;
+    }
+
+    public function uploadDocument(array $data)
+    {
+        $ad = $this->repository->find($data['ad_id']);
+        if (isset($data['documents_ids']) && is_array($data['documents_ids'])) {
+            foreach ($data['documents_ids'] as $documentId) {
+                $ad->documents()->attach($documentId);
+            }
+        }
+    }
+
+    public function handleSupportDashboardNotifications(Ad $ad)
+    {
+        if (! auth()->user()->unreadNotifications->isEmpty()) {
+            $notifications = auth()->user()->unreadNotifications;
+            foreach ($notifications as $notification) {
+                if (array_key_exists('ad_id', $notification->data) && $notification->data['ad_id'] === $ad->id) {
+                    $notification->markAsRead();
+                    $notification->delete();
+                }
+            }
+        }
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function blockUser(int $UserId)
+    {
+        $userPp = User::find($UserId);
+        try {
+            $userPp->delete();
+            $userPp->notify(new BasicNotification([
+                'subject' => 'Votre compte est suspendu temporairement',
+                'message' => "Votre compte Objectif Terres vient d’être suspendu puisque vous avez dépassé le cadre d’utilisation d’Objectif Terres.\n
                     Pour rappel, notre charte d’utilisation est disponible ici :\n",
-				'action' => ["Charte d'utilisation Objectif Terres", asset('docs/Charte_utilisation_d_Objectif_Terres-Validee_en_CIT_du_21_oct.pdf'),
-					'salutation' => "Merci de votre compréhension,"]
-			]));
-		} catch (\Exception $e) {
-			return back()->with('warning', 'Une erreur est survenue, veuillez réessayer ');
-		}
+                'action' => ["Charte d'utilisation Objectif Terres", asset('docs/Charte_utilisation_d_Objectif_Terres-Validee_en_CIT_du_21_oct.pdf'),
+                    'salutation' => 'Merci de votre compréhension,'],
+            ]));
+        } catch (\Exception $e) {
+            return back()->with('warning', 'Une erreur est survenue, veuillez réessayer ');
+        }
 
-	}
-
-
+    }
 }

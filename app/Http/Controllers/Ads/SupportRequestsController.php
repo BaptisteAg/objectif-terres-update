@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Ads;
 
-
 use App\Exceptions\AttributionAdException;
 use App\Http\Requests\Ads\AdRequest;
 use App\Models\Ad;
@@ -20,7 +19,9 @@ class SupportRequestsController extends BaseController
 
     /**
      * Display the ad edit form
+     *
      * @return \Illuminate\View\View
+     *
      * @throws \Exception
      */
     public function edit()
@@ -31,37 +32,38 @@ class SupportRequestsController extends BaseController
         $ad = $this->adService->find($user->supportRequest->id);
 
         $vars = $this->getEditFormVars($ad);
+
         return view('pages.ads.new', $vars);
     }
 
     protected function getEditFormVars(Ad $ad): array
     {
         $vars = array_merge(parent::getEditFormVars($ad), [
-            'isSupportRequest' => 1
+            'isSupportRequest' => 1,
         ]);
 
-        if (!is_null($ad->support_request_territory_id)) {
+        if (! is_null($ad->support_request_territory_id)) {
             $vars = array_merge($vars, [
                 'support_request_territory_id' => $ad->support_request_territory_id,
                 'territories' => Territory::all()->whereIn('id', Territory::$territoriesIdAllowToUseService),
-                'pageContent' => CmsPage::where('slug', 'like', "%etre-accompagne%")->get()->keyBy('slug')
+                'pageContent' => CmsPage::where('slug', 'like', '%etre-accompagne%')->get()->keyBy('slug'),
             ]);
-            $vars["old"]["support_request_territory_id"] = $ad->support_request_territory_id;
+            $vars['old']['support_request_territory_id'] = $ad->support_request_territory_id;
 
         }
 
         if ($ad->landOfferAd) {
             if ($ad->landOfferAd->building) {
-                $vars["old"]["land_offer"]["building"]["offer_genres"] = $ad->landOfferAd->building->offerGenres->pluck("id")->toArray();
+                $vars['old']['land_offer']['building']['offer_genres'] = $ad->landOfferAd->building->offerGenres->pluck('id')->toArray();
             }
             if ($ad->landOfferAd->house) {
-                $vars["old"]["land_offer"]["house"]["offer_genres"] = $ad->landOfferAd->house->offerGenres->pluck("id")->toArray();
+                $vars['old']['land_offer']['house']['offer_genres'] = $ad->landOfferAd->house->offerGenres->pluck('id')->toArray();
             }
         }
 
         if ($ad->landSeekAd) {
-            $vars["old"]["land_seek"]["offer_genres"] = $ad->landSeekAd->offerGenres->pluck("id")->toArray();
-            $vars["old"]["land_seek"]["education_levels"] = $ad->landSeekAd->educationLevels->pluck("id")->toArray();
+            $vars['old']['land_seek']['offer_genres'] = $ad->landSeekAd->offerGenres->pluck('id')->toArray();
+            $vars['old']['land_seek']['education_levels'] = $ad->landSeekAd->educationLevels->pluck('id')->toArray();
         }
 
         return $vars;
@@ -69,6 +71,7 @@ class SupportRequestsController extends BaseController
 
     /**
      * Display the ad creation form
+     *
      * @return \Illuminate\View\View
      */
     public function start()
@@ -78,15 +81,16 @@ class SupportRequestsController extends BaseController
 
         if ($user && $user->supportRequests()->count() >= self::SUPPORT_REQUESTS_LIMIT_PER_USER) {
             return back()->withErrors(
-                "Vous avez déjà rempli une demande d’accompagnement. Pour mettre à jour votre projet ou nous contacter, allez dans votre compte"
+                'Vous avez déjà rempli une demande d’accompagnement. Pour mettre à jour votre projet ou nous contacter, allez dans votre compte'
             );
         }
 
         $vars = array_merge($this->getCreateFormVars(), [
             'isSupportRequest' => 1,
             'territories' => Territory::all(),
-            'pageContent' => CmsPage::where('slug', 'like', "%etre-accompagne%")->get()->keyBy('slug')
+            'pageContent' => CmsPage::where('slug', 'like', '%etre-accompagne%')->get()->keyBy('slug'),
         ]);
+
         return view('pages.ads.support-request', $vars);
     }
 
@@ -97,7 +101,7 @@ class SupportRequestsController extends BaseController
     {
         session()->put([
             'support-request.text' => request('support_request_text'),
-            'support-request.territory_id' => request('support_request_territory_id')
+            'support-request.territory_id' => request('support_request_territory_id'),
         ]);
 
         return redirect()->route('support-request.create');
@@ -105,41 +109,43 @@ class SupportRequestsController extends BaseController
 
     /**
      * Display the ad creation form
+     *
      * @return \Illuminate\View\View
      */
     public function create()
     {
         $vars = array_merge($this->getCreateFormVars(), [
-            'isSupportRequest' => 1
+            'isSupportRequest' => 1,
         ]);
 
-        $vars["ads"] = auth()->user()->ads->filter(function (Ad $ad) {
-            return in_array($this->adService->getAdType($ad), ["land_seek", "land_offer"]);
+        $vars['ads'] = auth()->user()->ads->filter(function (Ad $ad) {
+            return in_array($this->adService->getAdType($ad), ['land_seek', 'land_offer']);
         });
 
         return view('pages.ads.new', $vars);
     }
 
     /**
-     *
      * @return \Illuminate\View\View
+     *
      * @throws \Exception
      */
     public function createFromAd(Ad $ad)
     {
         $vars = $this->getEditFormVars($ad);
 
-        if (empty($vars["old"]["support_request_text"])) {
-            $vars["old"]["support_request_text"] = session('support-request.text');
+        if (empty($vars['old']['support_request_text'])) {
+            $vars['old']['support_request_text'] = session('support-request.text');
         }
 
-        unset($vars["old"]["id"]);
+        unset($vars['old']['id']);
 
         return view('pages.ads.new', $vars);
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     *
      * @throws \Exception
      */
     public function show()
@@ -154,17 +160,18 @@ class SupportRequestsController extends BaseController
 
         $vars = $this->getShowVars($ad);
 
-        $vars["isSupportRequest"] = true;
+        $vars['isSupportRequest'] = true;
 
-        $vars["allProjectDataKeys"] = ProjectDataKey::with('projectDataValues')->where("is_public", 1)->get();
-        $vars["currentProjectKeyDataValues"] = $this->adService->allPublicNotesWithProjectDatKeysByAdId($ad->id);
+        $vars['allProjectDataKeys'] = ProjectDataKey::with('projectDataValues')->where('is_public', 1)->get();
+        $vars['currentProjectKeyDataValues'] = $this->adService->allPublicNotesWithProjectDatKeysByAdId($ad->id);
 
         return view('pages.ads.show', $vars);
     }
 
     /**
-     * @param \Illuminate\Support\Facades\Request $request
+     * @param  \Illuminate\Support\Facades\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     *
      * @throws \Throwable
      */
     public function save(AdRequest $request)
@@ -174,9 +181,9 @@ class SupportRequestsController extends BaseController
     }
 
     /**
-     * @param AdRequest $request
-     * @param int $isDraft
+     * @param  int  $isDraft
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     *
      * @throws Throwable
      */
     public function submitRequest(AdRequest $request, $isDraft = 0)
@@ -186,24 +193,24 @@ class SupportRequestsController extends BaseController
         /** @var $ad Ad $ad */
         try {
             if ($isDraft === 1) {
-                if (!empty($data["id"])) {
-                    $ad = $this->adService->update($data["id"], $data);
+                if (! empty($data['id'])) {
+                    $ad = $this->adService->update($data['id'], $data);
                     $success = "Votre demande d'accompagnement a bien été mise à jour et sauvegardée";
                 } else {
                     $ad = $this->adService->requestPublishing($data, true);
                     $success = "Votre demande d'accompagnement a été créée et sauvegardée";
                 }
-            } elseif (!empty($data["id"])) {
+            } elseif (! empty($data['id'])) {
                 // If this is an update, we'll skip the publishing/attribution part only if the territory doesn't change
-                $ad = $this->adService->update($data["id"], $data);
+                $ad = $this->adService->update($data['id'], $data);
                 if ($ad->wasChanged('support_request_territory_id') || $ad->wasChanged('is_draft')) {
                     $oldAdvisor = $this->attributionAdService->unsetAdvisor($ad);
-                    if($oldAdvisor) {
+                    if ($oldAdvisor) {
                         $this->adService->notifyAdvisorOfSupportRequestTerritoryChange($ad, $oldAdvisor);
                     }
                     $this->adService->handleSupportRequestAttributionNotifications($ad);
                 }
-                $success = "Votre demande a bien été mise à jour.";
+                $success = 'Votre demande a bien été mise à jour.';
             } else {
                 $ad = $this->adService->requestPublishing($data, true);
                 $success = 'Votre demande a bien été soumise. Vous recevrez une réponse très bientôt !';
@@ -224,13 +231,14 @@ class SupportRequestsController extends BaseController
             session()->forget('support-request');
         } catch (AttributionAdException $exception) {
             report($exception);
+
             return back()->withInput()->withErrors("[61] Désolé, l'opération n'a pas pu être effectuée. Nous en avons été informé et nous faisons le maximum pour résoudre le probleme rapidement. Veuillez réessayer un peu plus tard.");
-//			return back()->withInput()->withErrors($exception->getMessage());
+            //			return back()->withInput()->withErrors($exception->getMessage());
         } /** Probably an unexpected error */
-        catch
-        (\Exception $exception) {
+        catch (\Exception $exception) {
             report($exception);
             throw $exception;
+
             return back()->withInput()->withErrors(
                 "[62] Désolé, l'opération n'a pas pu être effectuée. Nous en avons été informé et nous faisons le maximum pour résoudre le probleme rapidement. Veuillez réessayer un peu plus tard.");
         }
@@ -240,18 +248,18 @@ class SupportRequestsController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return RedirectResponse
+     *
      * @throws Throwable
      */
     public function updateProjectDataKeysValues(Request $request)
     {
-        if (!$request->has('project_data_key')) {
+        if (! $request->has('project_data_key')) {
             return back()->with('warning', 'Une erreur est survenue, veuillez réessayer');
 
         }
         $this->adService->updateProjectDataKeysValues($request);
+
         return back()->with('success', 'Les indicateurs ont bien été modifié');
     }
 }
-

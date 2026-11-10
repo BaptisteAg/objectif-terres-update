@@ -7,9 +7,9 @@ use Tests\TestCase;
 
 class DocumentUrlEncodingTest extends TestCase
 {
-    public function testUrlEncodesSpacesInPath()
+    public function test_url_encodes_spaces_in_path()
     {
-        $document = new Document();
+        $document = new Document;
         $document->path = 'documents/ads/123/file with spaces.png';
 
         $url = $document->url;
@@ -18,9 +18,9 @@ class DocumentUrlEncodingTest extends TestCase
         $this->assertStringNotContainsString('file with spaces.png', $url);
     }
 
-    public function testUrlEncodesAccentedCharactersInPath()
+    public function test_url_encodes_accented_characters_in_path()
     {
-        $document = new Document();
+        $document = new Document;
         $document->path = 'documents/ads/123/Capture écran.png';
 
         $url = $document->url;
@@ -29,9 +29,9 @@ class DocumentUrlEncodingTest extends TestCase
         $this->assertStringNotContainsString('écran', $url);
     }
 
-    public function testUrlEncodesApostrophesInPath()
+    public function test_url_encodes_apostrophes_in_path()
     {
-        $document = new Document();
+        $document = new Document;
         $document->path = "documents/ads/123/Capture d'écran vue aérienne.png";
 
         $url = $document->url;
@@ -40,9 +40,9 @@ class DocumentUrlEncodingTest extends TestCase
         $this->assertStringContainsString('%20', $url); // spaces encoded
     }
 
-    public function testUrlPreservesDirectorySlashes()
+    public function test_url_preserves_directory_slashes()
     {
-        $document = new Document();
+        $document = new Document;
         $document->path = 'documents/ads/123/filename.png';
 
         $url = $document->url;
@@ -50,9 +50,9 @@ class DocumentUrlEncodingTest extends TestCase
         $this->assertStringContainsString('documents/ads/123/filename.png', $url);
     }
 
-    public function testUrlEncodingMatchesExpectedFormat()
+    public function test_url_encoding_matches_expected_format()
     {
-        $document = new Document();
+        $document = new Document;
         $document->path = "documents/ads/8743/65bfdc53e58a6Capture d'écran vue aérienne.png";
 
         $url = $document->url;

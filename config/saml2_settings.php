@@ -1,6 +1,6 @@
 <?php
 
-return $settings = array(
+return $settings = [
 
     /**
      * Array of IDP prefixes to be configured e.g. 'idpNames' => ['test1', 'test2', 'test3'],
@@ -67,5 +67,5 @@ return $settings = array(
      * a `$returnTo` argument), this value allows you to pass your own controller, and have
      * it used in the routes definition.
      */
-      'saml2_controller' => \App\Http\Controllers\Auth\SalesforceLoginController::class,
-);
+    'saml2_controller' => \App\Http\Controllers\Auth\SalesforceLoginController::class,
+];

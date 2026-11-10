@@ -38,27 +38,27 @@ class DatabaseCopy extends Command
      */
     public function handle()
     {
-        $dumpName = "databasecopy-".date("YmdHis");
+        $dumpName = 'databasecopy-'.date('YmdHis');
 
-        $dumpScript = "mysqldump ".
-            config("database-copy.dump-opts").
-            " -B ".
-            config("database-copy.remote.database.name").
-            " -h ".config("database-copy.remote.database.host").
-            " -u ".config("database-copy.remote.database.user").
-            " -P ".config("database-copy.remote.database.port").
-            " > /tmp/".$dumpName.".sql && ".
-            "cd /tmp/ && ".
-            "tar -czf ".$dumpName.".tar.gz ".$dumpName.".sql && ".
-            "rm ".$dumpName.".sql";
+        $dumpScript = 'mysqldump '.
+            config('database-copy.dump-opts').
+            ' -B '.
+            config('database-copy.remote.database.name').
+            ' -h '.config('database-copy.remote.database.host').
+            ' -u '.config('database-copy.remote.database.user').
+            ' -P '.config('database-copy.remote.database.port').
+            ' > /tmp/'.$dumpName.'.sql && '.
+            'cd /tmp/ && '.
+            'tar -czf '.$dumpName.'.tar.gz '.$dumpName.'.sql && '.
+            'rm '.$dumpName.'.sql';
 
         $process = new Process([
-            "ssh ".
-            config("database-copy.remote.ssh.user")."@".config("database-copy.remote.ssh.host").
-            " -i '".config("database-copy.remote.ssh.private_key")."'"
+            'ssh '.
+            config('database-copy.remote.ssh.user').'@'.config('database-copy.remote.ssh.host').
+            " -i '".config('database-copy.remote.ssh.private_key')."'",
         ]);
         $process->mustRun(function ($type, $buffer) {
-            if (Process::ERR === $type) {
+            if ($type === Process::ERR) {
                 echo 'ERR > '.$buffer;
             } else {
                 echo 'OUT > '.$buffer;

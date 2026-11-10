@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property-read ProductionGenre $parent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $researches
  * @property-read int|null $researches_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ProductionGenre newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductionGenre newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductionGenre query()
@@ -30,7 +31,9 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|ProductionGenre whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductionGenre whereParentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductionGenre whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $allAds
  * @property-read int|null $all_ads_count
  */
@@ -43,7 +46,7 @@ class ProductionGenre extends Model
      */
     protected $fillable = [
         'name',
-        'hidden'
+        'hidden',
     ];
 
     /**

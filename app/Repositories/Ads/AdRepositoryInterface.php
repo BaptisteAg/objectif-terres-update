@@ -1,4 +1,6 @@
-<?php namespace App\Repositories\Ads;
+<?php
+
+namespace App\Repositories\Ads;
 
 use App\Models\Ad;
 
@@ -18,13 +20,12 @@ interface AdRepositoryInterface
      */
     public function all($paginate = null);
 
-	/**
-	 * Gets all ads by id user.
-	 *
-	 * @param $id
-	 * @return Ad[]
-	 */
-	public function allByIdUser($id);
+    /**
+     * Gets all ads by id user.
+     *
+     * @return Ad[]
+     */
+    public function allByIdUser($id);
 
     /**
      * Deletes an ad.
@@ -48,5 +49,5 @@ interface AdRepositoryInterface
      * @param int
      * @param array
      */
-    public function create(array $data) : Ad;
+    public function create(array $data): Ad;
 }

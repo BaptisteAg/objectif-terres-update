@@ -11,7 +11,6 @@ class AttributionAdObserver
      * Handle the AttributionAd "updating" event.
      * When a moderator is changed, reassign threads accordingly.
      *
-     * @param  \App\Models\AttributionAd  $attributionAd
      * @return void
      */
     public function updating(AttributionAd $attributionAd)
@@ -26,7 +25,7 @@ class AttributionAdObserver
 
             foreach ($threads as $thread) {
                 // Add new moderator if not already present
-                if ($newModeratorId && !$thread->users()->where('users.id', $newModeratorId)->exists()) {
+                if ($newModeratorId && ! $thread->users()->where('users.id', $newModeratorId)->exists()) {
                     $thread->users()->attach($newModeratorId);
                 }
 

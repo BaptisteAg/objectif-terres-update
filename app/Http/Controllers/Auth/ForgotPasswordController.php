@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Notifications\ResetPasswordNotification;
 use App\Services\Salesforce\SalesforceService;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
@@ -24,11 +23,9 @@ class ForgotPasswordController extends Controller
 
     use SendsPasswordResetEmails;
 
-
     /**
      * Send a reset link to the given user.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function sendResetLinkEmail(Request $request, SalesforceService $salesforceService)
@@ -36,7 +33,7 @@ class ForgotPasswordController extends Controller
 
         $email = $request->get('email');
 
-        if($salesforceService->usernameExists($email, 'User')) {
+        if ($salesforceService->usernameExists($email, 'User')) {
             return redirect('https://terredeliens.my.site.com/objectifterres/s/login/ForgotPassword');
         }
 

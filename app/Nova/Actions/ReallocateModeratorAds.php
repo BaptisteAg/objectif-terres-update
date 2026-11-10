@@ -24,7 +24,7 @@ class ReallocateModeratorAds extends Action
 
     public function __construct()
     {
-        $this->availableModerators = User::whereIn('role', [1,3,4])
+        $this->availableModerators = User::whereIn('role', [1, 3, 4])
             ->get()
             ->concat(
                 User::where('role', 2)
@@ -35,31 +35,31 @@ class ReallocateModeratorAds extends Action
             ->sortBy('name')
             ->keyBy('id')
             ->map(function (User $user) {
-                return $user->name . ' ' . $user->first_name . ' (' . $user->email . ')';
+                return $user->name.' '.$user->first_name.' ('.$user->email.')';
             });
 
         $this
             ->showOnTableRow()
             ->confirmText('Êtes-vous sûr de vouloir réaffecter les annonces ce modérateur ?')
             ->confirmButtonText('Oui')
-            ->cancelButtonText("Non");
+            ->cancelButtonText('Non');
     }
 
     public function forUser(?User $user): self
     {
-        if (!$user || $user->role < 1) {
+        if (! $user || $user->role < 1) {
             return $this;
         }
         $static = clone $this;
         $static->availableModerators = (clone $static->availableModerators)->forget($user->id);
+
         return $static;
     }
 
     /**
      * Perform the action on the given models.
      *
-     * @param \Laravel\Nova\Fields\ActionFields $fields
-     * @param \Illuminate\Support\Collection $models
+     * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      */
     public function handle(ActionFields $fields, Collection $users)
@@ -68,12 +68,12 @@ class ReallocateModeratorAds extends Action
             return $user->role > 0;
         });
 
-        if (!$moderators->count()) {
+        if (! $moderators->count()) {
             return Action::danger('Veuillez sélectionner au moins un modérateur.');
         }
 
         $new_moderator_id = $fields->new_moderator_id;
-        $old_moderator_ids = $moderators->pluck("id")->toArray();
+        $old_moderator_ids = $moderators->pluck('id')->toArray();
 
         $query = AttributionAd::where('user_moderator_id', $old_moderator_ids)
             ->whereIn('ad_status_id', [AdStatus::PENDING_ID, AdStatus::PENDING_MODERATION_STATUS_ID, AdStatus::APPROVE_ID, AdStatus::REFUSE_ID]);
@@ -82,20 +82,20 @@ class ReallocateModeratorAds extends Action
         $adIds = $query->pluck('ad_id');
 
         $count = $query->count();
-        $query->update(["user_moderator_id" => $new_moderator_id]);
+        $query->update(['user_moderator_id' => $new_moderator_id]);
 
         // Update thread participants: add new moderator, remove old moderators
         $threads = Thread::whereIn('ad_id', $adIds)->get();
         foreach ($threads as $thread) {
             // Add new moderator if not already present
-            if (!$thread->users()->where('users.id', $new_moderator_id)->exists()) {
+            if (! $thread->users()->where('users.id', $new_moderator_id)->exists()) {
                 $thread->users()->attach($new_moderator_id);
             }
             // Remove old moderators from thread
             $thread->users()->detach($old_moderator_ids);
         }
 
-        return Action::message($count . ' annonces ont été réattribuées avec succès ! Attention, si le modérateur d\'origine n\'est pas supprimé, il peut être à nouveau choisi dans le processus d\'attribution automatique.');
+        return Action::message($count.' annonces ont été réattribuées avec succès ! Attention, si le modérateur d\'origine n\'est pas supprimé, il peut être à nouveau choisi dans le processus d\'attribution automatique.');
     }
 
     /**

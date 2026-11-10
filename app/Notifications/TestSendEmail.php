@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -41,10 +40,10 @@ class TestSendEmail extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->greeting('Bonjour ,')
-                    ->line('The introduction to the notification.')
-                    ->action('Attribuer la demande', url('/'))
-                    ->line('Thank you for using our application!');
+            ->greeting('Bonjour ,')
+            ->line('The introduction to the notification.')
+            ->action('Attribuer la demande', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     /**

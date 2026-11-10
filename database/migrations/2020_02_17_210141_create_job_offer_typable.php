@@ -20,9 +20,9 @@ class CreateJobOfferTypable extends Migration
             $table->unsignedInteger('job_offer_typable_id');
             $table->string('job_offer_typable_type')->comment('Cette colonne fait référence au namespace du modèle qui est reliée à un type d\'offre');
 
-            $table->index(["job_offer_type_id"], 'fk_job_offer_typable_1_idx');
-            $table->index(["job_offer_typable_id"], 'ix_job_offer_typable_1');
-            $table->index(["job_offer_typable_type"], 'ix_job_offer_typable_2');
+            $table->index(['job_offer_type_id'], 'fk_job_offer_typable_1_idx');
+            $table->index(['job_offer_typable_id'], 'ix_job_offer_typable_1');
+            $table->index(['job_offer_typable_type'], 'ix_job_offer_typable_2');
             $table->timestamps();
 
             $table->foreign('job_offer_type_id', 'fk_job_offer_typable_1_idx')

@@ -13,7 +13,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class MetricControllerTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -23,7 +23,7 @@ class MetricControllerTest extends IntegrationTest
     public function test_available_cards_can_be_retrieved()
     {
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/cards');
+            ->get('/nova-api/users/cards');
 
         $response->assertStatus(200);
         $this->assertEquals('value-metric', $response->original[0]->jsonSerialize()['component']);
@@ -35,7 +35,7 @@ class MetricControllerTest extends IntegrationTest
     public function test_available_metrics_can_be_retrieved()
     {
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/metrics');
+            ->get('/nova-api/users/metrics');
 
         $response->assertStatus(200);
         $this->assertEquals('value-metric', $response->original[0]->jsonSerialize()['component']);
@@ -47,7 +47,7 @@ class MetricControllerTest extends IntegrationTest
     public function test_available_metrics_cant_be_retrieved_if_not_authorized_to_view_resource()
     {
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/forbidden-users/metrics');
+            ->get('/nova-api/forbidden-users/metrics');
 
         $response->assertStatus(403);
     }
@@ -57,7 +57,7 @@ class MetricControllerTest extends IntegrationTest
         $_SERVER['nova.totalUsers.canSee'] = false;
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/metrics');
+            ->get('/nova-api/users/metrics');
 
         unset($_SERVER['nova.totalUsers.canSee']);
 
@@ -71,7 +71,7 @@ class MetricControllerTest extends IntegrationTest
         factory(User::class, 2)->create();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/metrics/total-users');
+            ->get('/nova-api/users/metrics/total-users');
 
         $response->assertStatus(200);
         $this->assertEquals(2, $response->original['value']->value);
@@ -83,7 +83,7 @@ class MetricControllerTest extends IntegrationTest
         $user = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/'.$user->id.'/metrics/customer-revenue');
+            ->get('/nova-api/users/'.$user->id.'/metrics/customer-revenue');
 
         $response->assertStatus(200);
         $this->assertEquals(100, $response->original['value']);
@@ -97,7 +97,7 @@ class MetricControllerTest extends IntegrationTest
         $_SERVER['nova.totalUsers.canSee'] = false;
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/metrics/total-users');
+            ->get('/nova-api/users/metrics/total-users');
 
         unset($_SERVER['nova.totalUsers.canSee']);
 
@@ -109,7 +109,7 @@ class MetricControllerTest extends IntegrationTest
         Nova::cards([new TotalUsers]);
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/cards');
+            ->get('/nova-api/cards');
 
         $response->assertStatus(200);
         $this->assertInstanceOf(Metric::class, $response->original[0]);
@@ -121,7 +121,7 @@ class MetricControllerTest extends IntegrationTest
         Nova::cards([new TotalUsers]);
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/metrics');
+            ->get('/nova-api/metrics');
 
         $response->assertStatus(200);
         $this->assertInstanceOf(Metric::class, $response->original[0]);
@@ -135,7 +135,7 @@ class MetricControllerTest extends IntegrationTest
         $user = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/metrics/total-users');
+            ->get('/nova-api/metrics/total-users');
 
         $response->assertStatus(200);
         $this->assertEquals(1, $response->original['value']->value);
@@ -150,7 +150,7 @@ class MetricControllerTest extends IntegrationTest
         $user->save();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/metrics/user-growth?range=30');
+            ->get('/nova-api/users/metrics/user-growth?range=30');
 
         $response->assertStatus(200);
         $this->assertEquals(1, $response->original['value']->value);
@@ -168,7 +168,7 @@ class MetricControllerTest extends IntegrationTest
         $_SERVER['__nova.userGrowthColumn'] = 'updated_at';
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/metrics/user-growth?range=30');
+            ->get('/nova-api/users/metrics/user-growth?range=30');
 
         unset($_SERVER['__nova.userGrowthColumn']);
 
@@ -194,7 +194,7 @@ class MetricControllerTest extends IntegrationTest
         $user->save();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/metrics/user-growth?range=TODAY');
+            ->get('/nova-api/users/metrics/user-growth?range=TODAY');
 
         $response->assertStatus(200);
         $this->assertEquals(2, $response->original['value']->value);
@@ -210,7 +210,7 @@ class MetricControllerTest extends IntegrationTest
         $user->save();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/metrics/user-growth?range=MTD');
+            ->get('/nova-api/users/metrics/user-growth?range=MTD');
 
         $response->assertStatus(200);
         $this->assertEquals(1, $response->original['value']->value);
@@ -230,7 +230,7 @@ class MetricControllerTest extends IntegrationTest
         $user->save();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/metrics/user-growth?range=QTD');
+            ->get('/nova-api/users/metrics/user-growth?range=QTD');
 
         $response->assertStatus(200);
         $this->assertEquals(1, $response->original['value']->value);
@@ -246,7 +246,7 @@ class MetricControllerTest extends IntegrationTest
         $user->save();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/metrics/user-growth?range=YTD');
+            ->get('/nova-api/users/metrics/user-growth?range=YTD');
 
         $response->assertStatus(200);
         $this->assertEquals(1, $response->original['value']->value);
@@ -262,7 +262,7 @@ class MetricControllerTest extends IntegrationTest
         $post->save();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/posts/metrics/post-word-count?range=30');
+            ->get('/nova-api/posts/metrics/post-word-count?range=30');
 
         $response->assertStatus(200);
         $this->assertEquals(100, $response->original['value']->value);
@@ -279,7 +279,7 @@ class MetricControllerTest extends IntegrationTest
         $post->save();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/posts/metrics/post-word-count?range=TODAY');
+            ->get('/nova-api/posts/metrics/post-word-count?range=TODAY');
 
         $response->assertStatus(200);
         $this->assertEquals(83, $response->original['value']->value);
@@ -296,7 +296,7 @@ class MetricControllerTest extends IntegrationTest
         $post->save();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/posts/metrics/post-word-count?range=MTD');
+            ->get('/nova-api/posts/metrics/post-word-count?range=MTD');
 
         $response->assertStatus(200);
         $this->assertEquals(100, $response->original['value']->value);
@@ -313,7 +313,7 @@ class MetricControllerTest extends IntegrationTest
         $post->save();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/posts/metrics/post-word-count?range=QTD');
+            ->get('/nova-api/posts/metrics/post-word-count?range=QTD');
 
         $response->assertStatus(200);
         $this->assertEquals(100, $response->original['value']->value);
@@ -330,7 +330,7 @@ class MetricControllerTest extends IntegrationTest
         $post->save();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/posts/metrics/post-word-count?range=YTD');
+            ->get('/nova-api/posts/metrics/post-word-count?range=YTD');
 
         $response->assertStatus(200);
         $this->assertEquals(100, $response->original['value']->value);

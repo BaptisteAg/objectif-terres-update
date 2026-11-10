@@ -1,19 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateJobOfferAdsTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $tableName = 'job_offer_ads';
 
     /**
      * Run the migrations.
+     *
      * @table job_ads
      *
      * @return void
@@ -36,8 +38,8 @@ class CreateJobOfferAdsTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            //$table->boolean('is_offer')->nullable();
-            //$table->boolean('is_beneficiary')->nullable();
+            // $table->boolean('is_offer')->nullable();
+            // $table->boolean('is_beneficiary')->nullable();
             /*$table->unsignedInteger('job_status_id')->nullable();
             $table->index(["job_status_id"], 'fk_job_ads_3_idx');
             $table->foreign('job_status_id', 'fk_job_ads_3_idx')
@@ -52,8 +54,8 @@ class CreateJobOfferAdsTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->tableName);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->tableName);
+    }
 }

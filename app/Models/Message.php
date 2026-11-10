@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Traits\Documentable;
 use App\Presenters\MessagePresenter;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use McCool\LaravelAutoPresenter\HasPresenter;
 
@@ -23,6 +22,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \App\Models\Thread $thread
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ReadMessage[] $unreadMessages
  * @property-read int|null $unread_messages_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Message newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Message query()
@@ -32,51 +32,51 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereSenderUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereThreadId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Message extends Model implements HasPresenter
 {
-	use Documentable;
-	/**
-	 * @var array
-	 */
-	protected $fillable = [
-		'sender_user_id', 'content', 'thread_id', 'ip_address', 'recaptcha_score', 'created_at', 'updated_at'
-	];
+    use Documentable;
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function senderUser()
-	{
-		return $this->belongsTo(User::class);
-	}
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'sender_user_id', 'content', 'thread_id', 'ip_address', 'recaptcha_score', 'created_at', 'updated_at',
+    ];
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function thread()
-	{
-		return $this->belongsTo(Thread::class);
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function senderUser()
+    {
+        return $this->belongsTo(User::class);
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function unreadMessages()
-	{
-		return $this->hasMany(ReadMessage::class);
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function thread()
+    {
+        return $this->belongsTo(Thread::class);
+    }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function unreadMessages()
+    {
+        return $this->hasMany(ReadMessage::class);
+    }
 
-	/**
-	 * Get the presenter class.
-	 *
-	 * @return string
-	 */
-	public function getPresenterClass()
-	{
-		return MessagePresenter::class;
-	}
+    /**
+     * Get the presenter class.
+     *
+     * @return string
+     */
+    public function getPresenterClass()
+    {
+        return MessagePresenter::class;
+    }
 }
-

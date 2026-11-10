@@ -30,7 +30,6 @@ abstract class Metric extends Card
     /**
      * Calculate the metric's value.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return mixed
      */
     public function resolve(NovaRequest $request)
@@ -57,7 +56,6 @@ abstract class Metric extends Card
     /**
      * Get the appropriate cache key for the metric.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return string
      */
     protected function getCacheKey(NovaRequest $request)
@@ -85,7 +83,7 @@ abstract class Metric extends Card
     /**
      * Determine for how many minutes the metric should be cached.
      *
-     * @return  \DateTimeInterface|\DateInterval|float|int
+     * @return \DateTimeInterface|\DateInterval|float|int
      */
     public function cacheFor()
     {

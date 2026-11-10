@@ -12,7 +12,6 @@ use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-
 /**
  * App\Models\LandSeekAd
  *
@@ -41,6 +40,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read int|null $production_genres_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresSecondary
  * @property-read int|null $production_genres_possible_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd query()
@@ -57,76 +57,77 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereSurfaceRangeMax($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereSurfaceRangeMin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
+ *
  * @property string|null $secondary_production_type_add
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereSecondaryProductionTypeAdd($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
  * @property-read int|null $production_genres_secondary_count
  * @property int|null $surface
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAd whereSurface($value)
  */
 class LandSeekAd extends Model
 {
-	use ProductionableGenre,
+    use EducationLevelable,
+        HasBelongsToEvents,
+        HasManyEvents,
+        HasMorphToManyEvents,
+        HasRelationshipObservables,
         OfferableGenre,
-		EducationLevelable,
-		HasMorphToManyEvents,
-		HasManyEvents,
-		HasBelongsToEvents,
-		HasRelationshipObservables;
+        ProductionableGenre;
 
-	/**
-	 * @return BelongsTo
-	 */
-	public function ad()
-	{
-		return $this->belongsTo(Ad::class, 'ad_id', 'id');
-	}
+    /**
+     * @return BelongsTo
+     */
+    public function ad()
+    {
+        return $this->belongsTo(Ad::class, 'ad_id', 'id');
+    }
 
-	/**
-	 * @var array
-	 */
-	protected $fillable = [
-		'ad_id',
-		'installation_type_id',
-		'offer_type_id',
-		'is_bio',
-		'production_type_add',
-		'experience_farming',
-		'land_description',
-		'surface',
-		'rent_max',
-		'price_max',
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'ad_id',
+        'installation_type_id',
+        'offer_type_id',
+        'is_bio',
+        'production_type_add',
+        'experience_farming',
+        'land_description',
+        'surface',
+        'rent_max',
+        'price_max',
         'secondary_production_type_add',
-	];
+    ];
 
-	/**
-	 * @return BelongsTo
-	 */
-	public function installationType()
-	{
-		return $this->belongsTo(InstallationType::class);
-	}
+    /**
+     * @return BelongsTo
+     */
+    public function installationType()
+    {
+        return $this->belongsTo(InstallationType::class);
+    }
 
-	public function buildings()
-	{
-		return $this->hasMany(LandSeekAdBuilding::class);
-	}
+    public function buildings()
+    {
+        return $this->hasMany(LandSeekAdBuilding::class);
+    }
 
-	public static function boot()
-	{
-		parent::boot();
+    public static function boot()
+    {
+        parent::boot();
 
-		static::belongsToAssociating(function ($relation, $related, $parent) {
-		});
+        static::belongsToAssociating(function ($relation, $related, $parent) {});
 
-		/**
-		 * Many To Many Polymorphic Relationship Events
-		 */
-		static::morphToManyAttaching(function ($relation, $parent, $ids, $attributes) {
+        /**
+         * Many To Many Polymorphic Relationship Events
+         */
+        static::morphToManyAttaching(function ($relation, $parent, $ids, $attributes) {});
 
-		});
-
-
-	}
+    }
 }

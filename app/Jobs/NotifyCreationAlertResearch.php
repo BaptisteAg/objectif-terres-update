@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-
 use App\Models\User;
 use App\Notifications\ResearchNotification;
 use App\Repositories\Users\UserRepository;
@@ -15,40 +14,37 @@ use Illuminate\Queue\SerializesModels;
 
 class NotifyCreationAlertResearch implements ShouldQueue
 {
-	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-	private $researchService;
-	private $userRepository;
+    private $researchService;
 
-	/**
-	 * Create a new job instance.
-	 *
-	 * @param ResearchService $researchService
-	 * @param UserRepository $userRepository
-	 */
-	public function __construct(ResearchService $researchService, UserRepository $userRepository)
-	{
-		$this->researchService = $researchService;
-		$this->userRepository = $userRepository;
-	}
+    private $userRepository;
 
-	/**
-	 * Execute the job.
-	 *
-	 * @param int $researchId
-	 * @return void
-	 */
-	public function handle(int $researchId)
-	{
-		$research = $this->researchService->find($researchId);
-		$research->update(['has_alert' => 1]);
-		$data = [
-			'url' => $research->url,
-			'subject' => 'Création d\'une alerte pour une recherche de projet',
-			'message'=> 'Une alerte a bien été créée pour une recherche'
-		];
-		/** @var User $userLogged */
-		$userLogged = $this->userRepository->find($research->user_id);
-		$userLogged->notify(new ResearchNotification($data));
-	}
+    /**
+     * Create a new job instance.
+     */
+    public function __construct(ResearchService $researchService, UserRepository $userRepository)
+    {
+        $this->researchService = $researchService;
+        $this->userRepository = $userRepository;
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle(int $researchId)
+    {
+        $research = $this->researchService->find($researchId);
+        $research->update(['has_alert' => 1]);
+        $data = [
+            'url' => $research->url,
+            'subject' => 'Création d\'une alerte pour une recherche de projet',
+            'message' => 'Une alerte a bien été créée pour une recherche',
+        ];
+        /** @var User $userLogged */
+        $userLogged = $this->userRepository->find($research->user_id);
+        $userLogged->notify(new ResearchNotification($data));
+    }
 }

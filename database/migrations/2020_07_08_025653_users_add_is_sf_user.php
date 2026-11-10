@@ -14,7 +14,7 @@ class UsersAddIsSfUser extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean("is_sf_user")->default(0);
+            $table->boolean('is_sf_user')->default(0);
         });
     }
 
@@ -26,7 +26,7 @@ class UsersAddIsSfUser extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn("is_sf_user");
+            $table->dropColumn('is_sf_user');
         });
     }
 }

@@ -11,7 +11,6 @@ use App\Services\Ads\AdService;
 use App\Services\Auth\RegisterService;
 use App\Services\Salesforce\SalesforceService;
 use App\Services\Spip\SpipService;
-use App\Services\Users\UserService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -31,18 +30,22 @@ class SpipMigrate extends Command
      * @var string
      */
     protected $description = 'Imports terredeliens.org users and ads';
+
     /**
      * @var SpipService
      */
     protected $spipService;
+
     /**
      * @var RegisterService
      */
     private $registerService;
+
     /**
      * @var AdService
      */
     protected $adService;
+
     /**
      * @var SalesforceService
      */
@@ -73,39 +76,41 @@ class SpipMigrate extends Command
     public function handle()
     {
         $stats = [
-            "adCount" => 0,
-            "adsWithoutLocation" => 0,
-            "adsWithoutUrl" => 0,
-            "adsWithoutAdType" => 0,
-            "adsWithoutDocument" => 0,
+            'adCount' => 0,
+            'adsWithoutLocation' => 0,
+            'adsWithoutUrl' => 0,
+            'adsWithoutAdType' => 0,
+            'adsWithoutDocument' => 0,
         ];
 
         // Checking ads with more than 1 attached user, which should not be imported
-        //$articles = $this->spipService->getAllAdsWithUsers();
-        //dd($articles->filter(function ($a) {return $a->auteurs->count() > 1;})->map(function ($a) {return $a->auteurs->pluck("email");}));
+        // $articles = $this->spipService->getAllAdsWithUsers();
+        // dd($articles->filter(function ($a) {return $a->auteurs->count() > 1;})->map(function ($a) {return $a->auteurs->pluck("email");}));
 
         $spipAdsByUser = $this->spipService->getAllUsersWithAds();
 
         $userCount = $spipAdsByUser->count();
         $adCount = $spipAdsByUser->pluck('articles')->flatten()->count();
 
-        echo("Found $userCount users and $adCount ads.\n");
+        echo "Found $userCount users and $adCount ads.\n";
 
         $importedUsers = [];
         $importedAds = [];
 
-        $stats["generated_passwords"] = 0;
-        $stats["salesforce_users"] = 0;
+        $stats['generated_passwords'] = 0;
+        $stats['salesforce_users'] = 0;
 
         /** @var Auteur[] $auteur */
-        foreach($spipAdsByUser as $auteur) {
+        foreach ($spipAdsByUser as $auteur) {
 
-            if($auteur->articles_count === 0) {
-                echo("User without ads, skipping : ".$auteur->email."\n");
+            if ($auteur->articles_count === 0) {
+                echo 'User without ads, skipping : '.$auteur->email."\n";
+
                 continue;
             }
-            if(empty($auteur->email)) {
-                echo("User without email, skipping : ".$auteur->cpnom. " " . $auteur->cnom."\n");
+            if (empty($auteur->email)) {
+                echo 'User without email, skipping : '.$auteur->cpnom.' '.$auteur->cnom."\n";
+
                 continue;
             }
 
@@ -113,64 +118,65 @@ class SpipMigrate extends Command
 
             $isSalesforceUser = $this->salesforceService->userNameExists($auteur->email, 'User');
 
-            if($isSalesforceUser) {
-                $stats["salesforce_users"]++;
+            if ($isSalesforceUser) {
+                $stats['salesforce_users']++;
             }
 
-            if($user) {
-                echo("User retrieved : ".$auteur->email."\n");
+            if ($user) {
+                echo 'User retrieved : '.$auteur->email."\n";
 
-                if(config('app.env') === "local") {
+                if (config('app.env') === 'local') {
                     $user->ads->each(function (Ad $ad) {
                         $ad->forceDelete();
                     });
                 }
-            }
-            else {
-                if($auteur->bio) {
-                    if(strpos($auteur->bio, "TRAITE ") !== false) {
-                        $auteur->bio = str_replace("TRAITE ", "", $auteur->bio);
+            } else {
+                if ($auteur->bio) {
+                    if (strpos($auteur->bio, 'TRAITE ') !== false) {
+                        $auteur->bio = str_replace('TRAITE ', '', $auteur->bio);
                     }
 
                     $auteur->bio = html_entity_decode($auteur->bio);
                     $auteur->save();
-                }
-                elseif(!$auteur->bio && !$isSalesforceUser) {
-                    echo("Generating password for user : ".$auteur->email."\n");
+                } elseif (! $auteur->bio && ! $isSalesforceUser) {
+                    echo 'Generating password for user : '.$auteur->email."\n";
                     $auteur->bio = Str::random(8);
                     $auteur->save();
-                    $stats["generated_passwords"]++;
+                    $stats['generated_passwords']++;
                 }
 
                 $user = $this->registerService->create(
                     $this->spipService->getLocalUserMapping($auteur)
                 );
 
-                print_r("User imported : ".$auteur->email."\n");
+                print_r('User imported : '.$auteur->email."\n");
             }
 
-            //dd($auteur->email, $auteur->bio, $auteur->id_auteur);
-            //dd($this->spipService->getLocalUserMapping($auteur));
+            // dd($auteur->email, $auteur->bio, $auteur->id_auteur);
+            // dd($this->spipService->getLocalUserMapping($auteur));
 
             $lastUserAd = null;
             $userAdCount = 0;
 
-            foreach($auteur->articles as $article) {
+            foreach ($auteur->articles as $article) {
                 $localAdMapping = $this->spipService->getLocalAdMapping($article, $user->id);
 
-                if(empty($localAdMapping["locationable"]["regions"]) || empty($localAdMapping["locationable"]["regions"][0])) {
-                    print_r("Ad without location (".$article->id_article."), skipping\n");
-                    $stats["adsWithoutLocation"]++;
+                if (empty($localAdMapping['locationable']['regions']) || empty($localAdMapping['locationable']['regions'][0])) {
+                    print_r('Ad without location ('.$article->id_article."), skipping\n");
+                    $stats['adsWithoutLocation']++;
+
                     continue;
                 }
-                if(empty($article->url)) {
-                    print_r("Ad without url (".$article->id_article."), skipping\n");
-                    $stats["adsWithoutUrl"]++;
+                if (empty($article->url)) {
+                    print_r('Ad without url ('.$article->id_article."), skipping\n");
+                    $stats['adsWithoutUrl']++;
+
                     continue;
                 }
-                if(!$this->spipService->hasAdType($article)) {
-                    print_r("Ad without ad type (".$article->id_article."), skipping\n");
-                    $stats["adsWithoutAdType"]++;
+                if (! $this->spipService->hasAdType($article)) {
+                    print_r('Ad without ad type ('.$article->id_article."), skipping\n");
+                    $stats['adsWithoutAdType']++;
+
                     continue;
                 }
 
@@ -179,48 +185,48 @@ class SpipMigrate extends Command
                     $user->id
                 );
 
-                print_r("Imported ad n°".$stats["adCount"]." : ".json_encode([
-                    "spip_id" => $article->id_article,
-                    "id" => $ad->id,
-                    "title" => $ad->title,
-                    "url" => $article->url ? $article->url->url : ''
+                print_r('Imported ad n°'.$stats['adCount'].' : '.json_encode([
+                    'spip_id' => $article->id_article,
+                    'id' => $ad->id,
+                    'title' => $ad->title,
+                    'url' => $article->url ? $article->url->url : '',
                 ])."\n");
 
                 $importedAds[] = [
-                    "title" => $ad->title,
-                    "ad_type" => $this->adService->getAdType($ad),
-                    "is_published" => $ad->is_draft ? "0" : "1",
-                    "pp_display_name" => $ad->userPp->first_name ?
+                    'title' => $ad->title,
+                    'ad_type' => $this->adService->getAdType($ad),
+                    'is_published' => $ad->is_draft ? '0' : '1',
+                    'pp_display_name' => $ad->userPp->first_name ?
                         ($ad->userPp->first_name.' '.$ad->userPp->name) :
                         $ad->userPp->email,
-                    "moderator" => $ad->is_draft ? "" : $ad->attributionAd->userModerator->email,
-                    "date" => $ad->created_at,
-                    "about_content" => $ad->about_content,
-                    "about_project_content" => $ad->about_project_content,
-                    "documents" => $ad->documents_count,
-                    "spip_id" => $article->id_article,
-                    "id" => $ad->id,
-                    "spip_url" => "https://terredeliens.org/".$article->url->url.".html",
-                    "url" => "https://www.objectif-terres.org/annonces/".$ad->id,
+                    'moderator' => $ad->is_draft ? '' : $ad->attributionAd->userModerator->email,
+                    'date' => $ad->created_at,
+                    'about_content' => $ad->about_content,
+                    'about_project_content' => $ad->about_project_content,
+                    'documents' => $ad->documents_count,
+                    'spip_id' => $article->id_article,
+                    'id' => $ad->id,
+                    'spip_url' => 'https://terredeliens.org/'.$article->url->url.'.html',
+                    'url' => 'https://www.objectif-terres.org/annonces/'.$ad->id,
                 ];
                 $lastUserAd = $ad;
-                $stats["adCount"]++;
+                $stats['adCount']++;
                 $userAdCount++;
-                if(!$ad->documents()->count()) {
-                    $stats["adsWithoutDocument"]++;
+                if (! $ad->documents()->count()) {
+                    $stats['adsWithoutDocument']++;
                 }
             }
 
             $importedUsers[] = [
-                "first_name" => $user->first_name,
-                "last_name" => $user->name,
-                "email" => $user->email,
-                "is_salesforce" => $isSalesforceUser,
-                "password" => $auteur->bio,
-                "ads_count" => $userAdCount,
-                "last_ad_is_published" => !$lastUserAd || $lastUserAd->is_draft ? '0' : '1',
-                "last_ad_title" => $lastUserAd ? $lastUserAd->title : '',
-                "last_ad_date" => $lastUserAd ? $lastUserAd->created_at : '',
+                'first_name' => $user->first_name,
+                'last_name' => $user->name,
+                'email' => $user->email,
+                'is_salesforce' => $isSalesforceUser,
+                'password' => $auteur->bio,
+                'ads_count' => $userAdCount,
+                'last_ad_is_published' => ! $lastUserAd || $lastUserAd->is_draft ? '0' : '1',
+                'last_ad_title' => $lastUserAd ? $lastUserAd->title : '',
+                'last_ad_date' => $lastUserAd ? $lastUserAd->created_at : '',
             ];
         }
 
@@ -232,8 +238,8 @@ class SpipMigrate extends Command
         \Excel::store(new UsersExport($importedUsers), 'spip_users.xlsx');
         \Excel::store(new AdsExport($importedAds), 'spip_ads.xlsx');
 
-        $ads = collect($importedAds)->splice(0,1);
-        $users = collect($importedUsers)->splice(0,1);
+        $ads = collect($importedAds)->splice(0, 1);
+        $users = collect($importedUsers)->splice(0, 1);
 
         /*$stats["land_seek"] = $ads->filter(function (Ad $ad) {
             return !empty($ad->landSeekAd);

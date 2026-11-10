@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read \App\Models\ProjectDataKey|null $projectDataKey
  * @property-read \App\Models\ProjectDataValue|null $projectDataValue
  * @property-read \App\Models\User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|AdNote newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AdNote newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AdNote query()
@@ -36,48 +37,49 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|AdNote whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AdNote whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AdNote whereValue($value)
+ *
  * @mixin \Eloquent
  */
 class AdNote extends Model
 {
-	use Documentable;
+    use Documentable;
 
-	/**
-	 * @var array
-	 */
-	protected $fillable = [
-		'ad_id', 'value', 'user_id', 'contact_name', 'project_data_key_id', 'project_data_value_id'
-	];
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'ad_id', 'value', 'user_id', 'contact_name', 'project_data_key_id', 'project_data_value_id',
+    ];
 
-	/**
-	 * @return BelongsTo
-	 */
-	public function ad()
-	{
-		return $this->belongsTo(Ad::class);
-	}
+    /**
+     * @return BelongsTo
+     */
+    public function ad()
+    {
+        return $this->belongsTo(Ad::class);
+    }
 
-	/**
-	 * @return BelongsTo
-	 */
-	public function user()
-	{
-		return $this->belongsTo(User::class);
-	}
+    /**
+     * @return BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
-	/**
-	 * @return BelongsTo
-	 */
-	public function projectDataKey()
-	{
-		return $this->belongsTo(ProjectDataKey::class);
-	}
+    /**
+     * @return BelongsTo
+     */
+    public function projectDataKey()
+    {
+        return $this->belongsTo(ProjectDataKey::class);
+    }
 
-	/**
-	 * @return BelongsTo
-	 */
-	public function projectDataValue()
-	{
-		return $this->belongsTo(ProjectDataValue::class);
-	}
+    /**
+     * @return BelongsTo
+     */
+    public function projectDataValue()
+    {
+        return $this->belongsTo(ProjectDataValue::class);
+    }
 }

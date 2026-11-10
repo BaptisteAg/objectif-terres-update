@@ -2,14 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\Ad;
 use App\Models\Department;
-use App\Models\JobOfferAd;
 use App\Models\User;
 use App\Services\Ads\AdService;
 use App\Services\Users\UserService;
 use Faker\Factory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class RequestAdPublishingTest extends TestCase
@@ -17,10 +14,9 @@ class RequestAdPublishingTest extends TestCase
     /**
      * A basic test example.
      *
-     * @return void
      * @throws \Throwable
      */
-    public function testRequestLandSeekAdPublishing(): void
+    public function test_request_land_seek_ad_publishing(): void
     {
         $faker = Factory::create();
         auth()->login(User::where('role', 0)->inRandomOrder()->first());
@@ -58,15 +54,15 @@ class RequestAdPublishingTest extends TestCase
         $possibleSupervisors = $userService->findByRolesAndDepartments([3], $adsBoundDepartments);
 
         dd([
-            "ad" => $ad->toArray(),
-            "moderator departments" => $moderator->departments->toArray(),
-            "bound departments" => $adsBoundDepartments,
-            "possible moderators" => $possibleModerators->toArray(),
-            "possible user with specific permission" => $possibleUserWithSpecificPermission ? $possibleUserWithSpecificPermission->toArray() : null,
-            "possible supervisors" => $possibleSupervisors->toArray(),
+            'ad' => $ad->toArray(),
+            'moderator departments' => $moderator->departments->toArray(),
+            'bound departments' => $adsBoundDepartments,
+            'possible moderators' => $possibleModerators->toArray(),
+            'possible user with specific permission' => $possibleUserWithSpecificPermission ? $possibleUserWithSpecificPermission->toArray() : null,
+            'possible supervisors' => $possibleSupervisors->toArray(),
         ]);
 
-        //$this->assert
+        // $this->assert
 
     }
 }

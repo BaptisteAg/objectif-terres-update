@@ -8,9 +8,6 @@ use App\Models\Traits\ProductionableGenre;
 use Chelout\RelationshipEvents\Concerns\HasMorphToManyEvents;
 use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
-
 
 /**
  * App\Models\LandOfferAd
@@ -50,6 +47,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property-read int|null $production_genres_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresSecondary
  * @property-read int|null $production_genres_possible_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|LandOfferAd newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LandOfferAd newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LandOfferAd query()
@@ -77,76 +75,78 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|LandOfferAd whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LandOfferAd whereWaterAccess($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LandOfferAd whereWaterAccessDescription($value)
+ *
  * @mixin \Eloquent
+ *
  * @property string|null $secondary_production_type_add
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|LandOfferAd whereSecondaryProductionTypeAdd($value)
+ *
  * @property int|null $is_sales_offer_evaluation
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresPossible
  * @property-read int|null $production_genres_secondary_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|LandOfferAd whereIsSalesOfferEvaluation($value)
  */
 class LandOfferAd extends Model
 {
-	use ProductionableGenre,
-        BioCertifiable,
-		OfferableGenre,
-		HasMorphToManyEvents,
-		HasRelationshipObservables;
+    use BioCertifiable,
+        HasMorphToManyEvents,
+        HasRelationshipObservables,
+        OfferableGenre,
+        ProductionableGenre;
 
-	public function ad()
-	{
-		return $this->belongsTo(Ad::class)->withTrashed();
-	}
+    public function ad()
+    {
+        return $this->belongsTo(Ad::class)->withTrashed();
+    }
 
-	public function building()
-	{
-		return $this->belongsTo(Building::class);
-	}
+    public function building()
+    {
+        return $this->belongsTo(Building::class);
+    }
 
-	public function house()
-	{
-		return $this->belongsTo(House::class);
-	}
+    public function house()
+    {
+        return $this->belongsTo(House::class);
+    }
 
-	public static function boot()
-	{
-		parent::boot();
+    public static function boot()
+    {
+        parent::boot();
 
-		/**
-		 * Many To Many Polymorphic Relationship Events
-		 */
+        /**
+         * Many To Many Polymorphic Relationship Events
+         */
+        static::morphToManyAttaching(function ($relation, $parent, $ids, $attributes) {});
+    }
 
-		static::morphToManyAttaching(function ($relation, $parent, $ids, $attributes) {
-		});
-	}
-
-
-	/**
-	 * @var array
-	 */
-	protected $fillable = [
-		'ad_id',
-		'surface',
-		'sau_description',
-		'accept_use_zip_code',
-		'water_access',
-		'water_access_description',
-		'altitude',
-		'has_buildings',
-		'has_houses',
-		'price',
-		'rent_price',
-		'test_description',
-		'building_id',
-		'house_id',
-		'production_type_add',
-		'production_type_wanted_add',
-		'is_beneficiary',
-		'is_activity_transfer',
-		'is_call_for_application_community',
-		'is_call_for_application_terre_de_liens',
-		'is_call_for_application_test_area',
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'ad_id',
+        'surface',
+        'sau_description',
+        'accept_use_zip_code',
+        'water_access',
+        'water_access_description',
+        'altitude',
+        'has_buildings',
+        'has_houses',
+        'price',
+        'rent_price',
+        'test_description',
+        'building_id',
+        'house_id',
+        'production_type_add',
+        'production_type_wanted_add',
+        'is_beneficiary',
+        'is_activity_transfer',
+        'is_call_for_application_community',
+        'is_call_for_application_terre_de_liens',
+        'is_call_for_application_test_area',
         'secondary_production_type_add',
-        'is_sales_offer_evaluation'
-	];
+        'is_sales_offer_evaluation',
+    ];
 }

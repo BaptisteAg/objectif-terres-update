@@ -1,19 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateBuildingsTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $tableName = 'buildings';
 
     /**
      * Run the migrations.
+     *
      * @table buildings
      *
      * @return void
@@ -25,7 +27,7 @@ class CreateBuildingsTable extends Migration
             $table->increments('id');
             $table->string('description', 1500)->nullable();
             $table->float('surface')->nullable();
-            //$table->integer('price')->nullable();
+            // $table->integer('price')->nullable();
             $table->timestamps();
         });
     }
@@ -35,8 +37,8 @@ class CreateBuildingsTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->tableName);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->tableName);
+    }
 }

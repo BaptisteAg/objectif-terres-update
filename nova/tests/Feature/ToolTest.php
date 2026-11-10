@@ -9,7 +9,7 @@ use Laravel\Nova\Tool;
 
 class ToolTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
     }
@@ -17,7 +17,8 @@ class ToolTest extends IntegrationTest
     public function test_authorization_callback_is_executed()
     {
         Nova::tools([
-            new class extends Tool {
+            new class extends Tool
+            {
                 public function authorize(Request $request)
                 {
                     return false;

@@ -21,23 +21,20 @@ class NotifyOverdueModeration extends Command
      */
     protected $description = 'Send an alert to moderator if a an ad isn\'t moderate for a week';
 
-    /** @var NotifyOverdueModerationJob  */
+    /** @var NotifyOverdueModerationJob */
     protected $job;
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @param NotifyOverdueModerationJob $job
-	 */
+    /**
+     * Create a new command instance.
+     */
     public function __construct(NotifyOverdueModerationJob $job)
     {
-    	$this->job = $job;
+        $this->job = $job;
         parent::__construct();
     }
 
     /**
      * Execute the console command.
-     *
      */
     public function handle()
     {

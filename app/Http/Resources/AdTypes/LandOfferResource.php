@@ -19,7 +19,7 @@ class LandOfferResource extends JsonResource
         $landOffer = $this->resource;
 
         // Load relationships if not already loaded
-        if (!$landOffer->relationLoaded('offerGenres')) {
+        if (! $landOffer->relationLoaded('offerGenres')) {
             $landOffer->load(['offerGenres', 'building', 'house']);
         }
 
@@ -110,7 +110,7 @@ class LandOfferResource extends JsonResource
      */
     protected function getBuildingData($landOffer)
     {
-        if (!$landOffer->building) {
+        if (! $landOffer->building) {
             return null;
         }
 
@@ -126,7 +126,7 @@ class LandOfferResource extends JsonResource
      */
     protected function getHouseData($landOffer)
     {
-        if (!$landOffer->house) {
+        if (! $landOffer->house) {
             return null;
         }
 

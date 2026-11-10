@@ -9,27 +9,24 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class SupervisorsExport implements WithMultipleSheets, ShouldQueue
+class SupervisorsExport implements ShouldQueue, WithMultipleSheets
 {
-	use Exportable;
+    use Exportable;
 
-	protected $ads;
+    protected $ads;
 
-	public function __construct(object $ads)
-	{
-		$this->ads = $ads;
-	}
+    public function __construct(object $ads)
+    {
+        $this->ads = $ads;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function sheets(): array
-	{
-		$sheets = [];
-		$sheets[] = new ProjectExport($this->ads);
-		$sheets[] = new PpExport($this->ads);
-		$sheets[] = new AdsExport($this->ads);
+    public function sheets(): array
+    {
+        $sheets = [];
+        $sheets[] = new ProjectExport($this->ads);
+        $sheets[] = new PpExport($this->ads);
+        $sheets[] = new AdsExport($this->ads);
 
-		return $sheets;
-	}
+        return $sheets;
+    }
 }

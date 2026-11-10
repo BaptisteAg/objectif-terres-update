@@ -38,7 +38,7 @@ class ResizeImages extends Command
      */
     public function handle()
     {
-        $files = Storage::allFiles("documents");
+        $files = Storage::allFiles('documents');
 
         $bar = $this->output->createProgressBar(count($files));
 
@@ -46,20 +46,19 @@ class ResizeImages extends Command
 
         foreach ($files as $fileName) {
 
-            try  {
+            try {
                 $image = \Image::make(storage_path('app/'.$fileName));
 
-                if($image->getWidth() > 1600 || $image->getHeight() > 1600) {
-                    $this->info("Resizing ".$fileName);
+                if ($image->getWidth() > 1600 || $image->getHeight() > 1600) {
+                    $this->info('Resizing '.$fileName);
                     $resizedImage = $image->resize(1600, 1600, function ($constraint) {
                         $constraint->aspectRatio();
                         $constraint->upsize();
                     })->save();
 
-                    $this->info("Old size : ".$this->readableBytes($image->filesize()).". New size : ".$this->readableBytes($resizedImage->filesize()));
+                    $this->info('Old size : '.$this->readableBytes($image->filesize()).'. New size : '.$this->readableBytes($resizedImage->filesize()));
                 }
-            }
-            catch(\Exception $e) {
+            } catch (\Exception $e) {
 
             }
 
@@ -67,7 +66,7 @@ class ResizeImages extends Command
         }
 
         $bar->finish();
-        $this->line("");
+        $this->line('');
     }
 
     /**
@@ -75,11 +74,12 @@ class ResizeImages extends Command
      *
      * @param {Int} num The number of bytes.
      */
-    private function readableBytes($bytes) {
+    private function readableBytes($bytes)
+    {
         $i = floor(log($bytes) / log(1024));
 
-        $sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+        $sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
-        return sprintf('%.02F', $bytes / pow(1024, $i)) * 1 . ' ' . $sizes[$i];
+        return sprintf('%.02F', $bytes / pow(1024, $i)) * 1 .' '.$sizes[$i];
     }
 }

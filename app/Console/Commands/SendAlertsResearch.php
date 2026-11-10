@@ -21,17 +21,14 @@ class SendAlertsResearch extends Command
      */
     protected $description = 'Send an alert to user when new ads related to his saved research is published';
 
+    protected $researchNotification;
 
-	protected $researchNotification;
-
-	/**
-	 * Create a new command instance.
-	 *
-	 * @param NotifyNewResultsResearch $researchNotification
-	 */
+    /**
+     * Create a new command instance.
+     */
     public function __construct(NotifyNewResultsResearch $researchNotification)
     {
-    	$this->researchNotification = $researchNotification;
+        $this->researchNotification = $researchNotification;
         parent::__construct();
     }
 
@@ -42,6 +39,6 @@ class SendAlertsResearch extends Command
      */
     public function handle()
     {
-		$this->researchNotification->handle();
+        $this->researchNotification->handle();
     }
 }

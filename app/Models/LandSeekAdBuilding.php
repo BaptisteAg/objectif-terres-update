@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Chelout\RelationshipEvents\Concerns\HasBelongsToEvents;
-use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -18,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\BuildingType $buildingType
  * @property-read \App\Models\LandSeekAd $landSeekAd
  * @property-read \App\Models\Requirement $requirement
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAdBuilding newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAdBuilding newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAdBuilding query()
@@ -27,15 +26,15 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAdBuilding whereLandSeekAdId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAdBuilding whereRequirementId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LandSeekAdBuilding whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class LandSeekAdBuilding extends Model
 {
-
     protected $fillable = [
-        "requirement_id",
-        "building_type_id",
-        "land_seek_ad_id"
+        'requirement_id',
+        'building_type_id',
+        'land_seek_ad_id',
     ];
 
     public function landSeekAd()
@@ -52,5 +51,4 @@ class LandSeekAdBuilding extends Model
     {
         return $this->belongsTo(Requirement::class);
     }
-
 }

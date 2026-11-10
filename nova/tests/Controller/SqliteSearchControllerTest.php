@@ -8,7 +8,7 @@ class SqliteSearchControllerTest extends IntegrationTest
 {
     use SearchControllerTests;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

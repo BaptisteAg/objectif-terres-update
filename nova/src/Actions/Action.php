@@ -17,8 +17,8 @@ use ReflectionClass;
 
 class Action implements JsonSerializable
 {
-    use Metable;
     use AuthorizedToSee;
+    use Metable;
     use ProxiesCanSeeToGate;
 
     /**
@@ -136,7 +136,6 @@ class Action implements JsonSerializable
     /**
      * Determine if the action is executable for the given request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return bool
      */
@@ -231,8 +230,8 @@ class Action implements JsonSerializable
     /**
      * Execute the action for the given request.
      *
-     * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
      * @return mixed
+     *
      * @throws MissingActionHandlerException
      */
     public function handleRequest(ActionRequest $request)
@@ -256,8 +255,8 @@ class Action implements JsonSerializable
                 }
 
                 return DispatchAction::forModels(
-                $request, $this, $method, $models, $fields
-            );
+                    $request, $this, $method, $models, $fields
+                );
             }
         );
 
@@ -271,9 +270,7 @@ class Action implements JsonSerializable
     /**
      * Handle chunk results.
      *
-     * @param  \Laravel\Nova\Fields\ActionFields  $fields
      * @param  array  $results
-     *
      * @return mixed
      */
     public function handleResult(ActionFields $fields, $results)
@@ -468,7 +465,6 @@ class Action implements JsonSerializable
     /**
      * Set the callback to be run to authorize running the action.
      *
-     * @param  \Closure  $callback
      * @return $this
      */
     public function canRun(Closure $callback)
@@ -581,7 +577,6 @@ class Action implements JsonSerializable
     /**
      * Set the text for the action's confirmation button.
      *
-     * @param $text
      * @return $this
      */
     public function confirmButtonText($text)
@@ -594,7 +589,6 @@ class Action implements JsonSerializable
     /**
      * Set the text for the action's cancel button.
      *
-     * @param $text
      * @return $this
      */
     public function cancelButtonText($text)
@@ -607,7 +601,6 @@ class Action implements JsonSerializable
     /**
      * Set the text for the action's confirmation message.
      *
-     * @param $text
      * @return $this
      */
     public function confirmText($text)
@@ -632,8 +625,7 @@ class Action implements JsonSerializable
             'destructive' => $this instanceof DestructiveAction,
             'name' => $this->name(),
             'uriKey' => $this->uriKey(),
-            'fields' => collect($this->fields())->each->resolve(new class {
-            })->all(),
+            'fields' => collect($this->fields())->each->resolve(new class {})->all(),
             'availableForEntireResource' => $this->availableForEntireResource,
             'showOnDetail' => $this->shownOnDetail(),
             'showOnIndex' => $this->shownOnIndex(),

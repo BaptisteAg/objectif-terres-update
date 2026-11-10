@@ -17,7 +17,8 @@ trait ProvidesActionFields
         return [
             Text::make('Test', 'test'),
 
-            new class('Callback', 'callback') extends Text {
+            new class('Callback', 'callback') extends Text
+            {
                 public function fill(NovaRequest $request, $model)
                 {
                     return function () {

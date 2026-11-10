@@ -1,19 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateAdsTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $tableName = 'ads';
 
     /**
      * Run the migrations.
+     *
      * @table ads
      *
      * @return void
@@ -32,15 +34,15 @@ class CreateAdsTable extends Migration
             $table->unsignedInteger('project_id')->nullable();
             $table->string('support_request_text', 3000)->nullable();
 
-            $table->index(["user_pp_id"], 'ix_ads_user_lead_id');
+            $table->index(['user_pp_id'], 'ix_ads_user_lead_id');
 
-            $table->index(["project_id"], 'fk_ads_2_idx');
+            $table->index(['project_id'], 'fk_ads_2_idx');
             $table->timestamps();
 
-			$table->foreign('user_pp_id','ix_ads_user_lead_id' )
-				->references('id')
-				->on('users')
-				->onDelete('cascade');
+            $table->foreign('user_pp_id', 'ix_ads_user_lead_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
 
             $table->foreign('project_id', 'fk_ads_2_idx')
                 ->references('id')->on('projects')
@@ -54,8 +56,8 @@ class CreateAdsTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->tableName);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->tableName);
+    }
 }

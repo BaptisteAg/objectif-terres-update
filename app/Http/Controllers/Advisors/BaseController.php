@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Advisors;
-
 
 use App\Http\Controllers\Controller;
 use App\Models\Ad;
@@ -21,86 +19,86 @@ use App\Services\Users\UserService;
 
 abstract class BaseController extends Controller
 {
-	protected $advisorsService;
-	protected $threadService;
-	protected $userService;
-	protected $adService;
-	protected $adTypes;
-	protected $adTypesFaIcons;
+    protected $advisorsService;
 
-	public function __construct(AdvisorsService $advisorsService, ThreadService $threadService, UserService $userService, AdService $adService)
-	{
-		$this->advisorsService = $advisorsService;
-		$this->threadService = $threadService;
-		$this->adService = $adService;
-		$this->userService = $userService;
-		$this->adTypes = [
-			['name' => 'Offre foncière', 'value' => 'landOfferAd'],
-			['name' => 'Recherche foncière', 'value' => 'landSeekAd'],
-			['name' => 'Offre d\'emploi', 'value' => 'jobOfferAd'],
-			['name' => 'Recherche d\'emploi', 'value' => 'jobSeekAd'],
+    protected $threadService;
+
+    protected $userService;
+
+    protected $adService;
+
+    protected $adTypes;
+
+    protected $adTypesFaIcons;
+
+    public function __construct(AdvisorsService $advisorsService, ThreadService $threadService, UserService $userService, AdService $adService)
+    {
+        $this->advisorsService = $advisorsService;
+        $this->threadService = $threadService;
+        $this->adService = $adService;
+        $this->userService = $userService;
+        $this->adTypes = [
+            ['name' => 'Offre foncière', 'value' => 'landOfferAd'],
+            ['name' => 'Recherche foncière', 'value' => 'landSeekAd'],
+            ['name' => 'Offre d\'emploi', 'value' => 'jobOfferAd'],
+            ['name' => 'Recherche d\'emploi', 'value' => 'jobSeekAd'],
             ['name' => 'Associé sur une ferme', 'value' => 'associateOfferAd'],
             ['name' => 'Associé pour projet d\'installation', 'value' => 'associateSeekAd'],
-		];
+        ];
 
-        $this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access", "fa-user-tie", "fa-user-tie"];
-	}
+        $this->adTypesFaIcons = ['fa-home', 'fa-home', 'fa-universal-access', 'fa-universal-access', 'fa-user-tie', 'fa-user-tie'];
+    }
 
-	/**
-	 * Return all the vars needed to display advisors dashboard
-	 * @return array
-	 */
-	protected function getAdvisorDashboardVars(): array
-	{
-		$supportStages = SupportStage::all();
-		$supportStates = SupportState::all();
-		$projectStatuses = ProjectStatus::all();
-		$jobOfferTypes = JobOfferType::all();
-		$productionGenres = ProductionGenre::all();
-		$bioCertifications = BioCertification::all();
-		$adTypes = $this->adTypes;
-		$adTypesFaIcons = $this->adTypesFaIcons;
-		$numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
-		$numberOfProjectToHandle = $this->advisorsService->findAllBySupportStageAndSupportState(SupportStage::FIRST_CONTACT_ID, SupportState::TO_HANDLE_ID)->count();
+    /**
+     * Return all the vars needed to display advisors dashboard
+     */
+    protected function getAdvisorDashboardVars(): array
+    {
+        $supportStages = SupportStage::all();
+        $supportStates = SupportState::all();
+        $projectStatuses = ProjectStatus::all();
+        $jobOfferTypes = JobOfferType::all();
+        $productionGenres = ProductionGenre::all();
+        $bioCertifications = BioCertification::all();
+        $adTypes = $this->adTypes;
+        $adTypesFaIcons = $this->adTypesFaIcons;
+        $numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
+        $numberOfProjectToHandle = $this->advisorsService->findAllBySupportStageAndSupportState(SupportStage::FIRST_CONTACT_ID, SupportState::TO_HANDLE_ID)->count();
 
-		return compact(
-			'supportStages',
-			'supportStates',
-			'projectStatuses',
-			'jobOfferTypes',
-			'productionGenres',
-			'bioCertifications',
-			'adTypes',
-			'adTypesFaIcons',
-			'numberOfUnreadMessages',
-			'numberOfProjectToHandle'
-		);
+        return compact(
+            'supportStages',
+            'supportStates',
+            'projectStatuses',
+            'jobOfferTypes',
+            'productionGenres',
+            'bioCertifications',
+            'adTypes',
+            'adTypesFaIcons',
+            'numberOfUnreadMessages',
+            'numberOfProjectToHandle'
+        );
 
-	}
+    }
 
-	/**
-	 * @param Ad $ad
-	 * @return array
-	 */
-	protected function getSupportDashboardVars(Ad $ad) : array
-	{
-		$supportStages = SupportStage::all();
-		$supportStates = SupportState::all();
-		$projectStatuses = ProjectStatus::all();
-		$allProjectDataKeys = ProjectDataKey::with('projectDataValues')->get();
-		$currentProjectKeyDataValues = $this->advisorsService->allNotesWithProjectDatKeysByAdId($ad->id);
-		$responseTemplates = ResponseTemplate::all();
-		$listUserAds = $this->adService->findAllAdsByUser($ad->user_pp_id);
+    protected function getSupportDashboardVars(Ad $ad): array
+    {
+        $supportStages = SupportStage::all();
+        $supportStates = SupportState::all();
+        $projectStatuses = ProjectStatus::all();
+        $allProjectDataKeys = ProjectDataKey::with('projectDataValues')->get();
+        $currentProjectKeyDataValues = $this->advisorsService->allNotesWithProjectDatKeysByAdId($ad->id);
+        $responseTemplates = ResponseTemplate::all();
+        $listUserAds = $this->adService->findAllAdsByUser($ad->user_pp_id);
 
-		return compact(
-			'supportStages',
-			'supportStates',
-			'projectStatuses',
-			'allProjectDataKeys',
-			'currentProjectKeyDataValues',
-			'responseTemplates',
-			'listUserAds'
-		);
+        return compact(
+            'supportStages',
+            'supportStates',
+            'projectStatuses',
+            'allProjectDataKeys',
+            'currentProjectKeyDataValues',
+            'responseTemplates',
+            'listUserAds'
+        );
 
-	}
+    }
 }

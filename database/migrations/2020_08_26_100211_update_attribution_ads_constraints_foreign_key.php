@@ -13,15 +13,15 @@ class UpdateAttributionAdsConstraintsForeignKey extends Migration
      */
     public function up()
     {
-		Schema::table('attribution_ads', function (Blueprint $table) {
-			$table->dropForeign('fk_attribution_ads_ads_1_idx');
+        Schema::table('attribution_ads', function (Blueprint $table) {
+            $table->dropForeign('fk_attribution_ads_ads_1_idx');
 
-			$table->foreign('ad_id', 'fk_attribution_ads_ads_1_idx')
-				->references('id')->on('ads')
-				->onDelete('cascade')
-				->onUpdate('cascade');
+            $table->foreign('ad_id', 'fk_attribution_ads_ads_1_idx')
+                ->references('id')->on('ads')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
-		});
+        });
     }
 
     /**
@@ -31,8 +31,8 @@ class UpdateAttributionAdsConstraintsForeignKey extends Migration
      */
     public function down()
     {
-		Schema::table('ads', function (Blueprint $table) {
-			$table->dropForeign('fk_attribution_ads_ads_1_idx');
-		});
+        Schema::table('ads', function (Blueprint $table) {
+            $table->dropForeign('fk_attribution_ads_ads_1_idx');
+        });
     }
 }

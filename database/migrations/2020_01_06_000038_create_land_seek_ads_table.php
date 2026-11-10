@@ -1,19 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateLandSeekAdsTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $tableName = 'land_seek_ads';
 
     /**
      * Run the migrations.
+     *
      * @table land_seek_ads
      *
      * @return void
@@ -31,13 +33,13 @@ class CreateLandSeekAdsTable extends Migration
             $table->string('production_type_add')->nullable();
             $table->text('land_description')->nullable();
             $table->text('experience_farming')->nullable();
-			$table->integer('surface_range_min')->nullable();
-			$table->integer('surface_range_max')->nullable();
-			$table->integer('price_max')->nullable();
-			$table->integer('rent_max')->nullable();
+            $table->integer('surface_range_min')->nullable();
+            $table->integer('surface_range_max')->nullable();
+            $table->integer('price_max')->nullable();
+            $table->integer('rent_max')->nullable();
 
-            $table->index(["installation_type_id"], 'fk_land_seek_ads_2_idx');
-            $table->index(["ad_id"], 'fk_land_seek_ads_1_idx');
+            $table->index(['installation_type_id'], 'fk_land_seek_ads_2_idx');
+            $table->index(['ad_id'], 'fk_land_seek_ads_1_idx');
 
             $table->foreign('ad_id', 'fk_land_seek_ads_1_idx')
                 ->references('id')->on('ads')
@@ -58,8 +60,8 @@ class CreateLandSeekAdsTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->tableName);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->tableName);
+    }
 }

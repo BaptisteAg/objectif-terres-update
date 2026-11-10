@@ -1,15 +1,11 @@
 <?php
 
-
 namespace App\Models\Traits;
-
 
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-
-Trait ProductionableGenre
+trait ProductionableGenre
 {
-
     /**
      * Get all production_genres
      *
@@ -32,9 +28,8 @@ Trait ProductionableGenre
 
     /**
      * Get all production_genres
-     *
      */
-    public function productionGenresSecondary() : morphToMany
+    public function productionGenresSecondary(): morphToMany
     {
         return $this->morphToMany('App\Models\ProductionGenre', 'productionable_genre')
             ->withPivot('type')

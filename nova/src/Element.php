@@ -7,8 +7,8 @@ use JsonSerializable;
 
 abstract class Element implements JsonSerializable
 {
-    use Metable;
     use AuthorizedToSee;
+    use Metable;
     use ProxiesCanSeeToGate;
 
     /**
@@ -49,7 +49,6 @@ abstract class Element implements JsonSerializable
     /**
      * Determine if the element should be displayed for the given request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
     public function authorize(Request $request)

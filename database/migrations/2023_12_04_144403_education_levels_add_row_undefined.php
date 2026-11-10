@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
 class EducationLevelsAddRowUndefined extends Migration
 {
@@ -16,7 +14,7 @@ class EducationLevelsAddRowUndefined extends Migration
         DB::table('education_levels')->insert([
             'name' => 'Non défini',
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
     }
 

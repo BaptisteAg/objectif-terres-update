@@ -60,9 +60,9 @@ class PivotFieldDestroyRequest extends NovaRequest
     {
         return once(function () {
             return $this->findModelOrFail()->{$this->viaRelationship}()
-                        ->withoutGlobalScopes()
-                        ->lockForUpdate()
-                        ->findOrFail($this->relatedResourceId);
+                ->withoutGlobalScopes()
+                ->lockForUpdate()
+                ->findOrFail($this->relatedResourceId);
         });
     }
 

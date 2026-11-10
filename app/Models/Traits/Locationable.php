@@ -1,14 +1,11 @@
 <?php
 
-
 namespace App\Models\Traits;
-
 
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait Locationable
 {
-
     /**
      * @return MorphToMany
      */
@@ -25,11 +22,11 @@ trait Locationable
         return $this->morphToMany('App\Models\Research', 'locationable_research');
     }
 
-	/**
-	 * @return MorphToMany
-	 */
-	public function users()
-	{
-		return $this->morphToMany('App\Models\User', 'locationable_user');
-	}
+    /**
+     * @return MorphToMany
+     */
+    public function users()
+    {
+        return $this->morphToMany('App\Models\User', 'locationable_user');
+    }
 }

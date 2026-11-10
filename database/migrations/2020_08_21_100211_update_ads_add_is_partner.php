@@ -13,9 +13,9 @@ class UpdateAdsAddIsPartner extends Migration
      */
     public function up()
     {
-		Schema::table('ads', function (Blueprint $table) {
-			$table->boolean('is_partner')->default(0);
-		});
+        Schema::table('ads', function (Blueprint $table) {
+            $table->boolean('is_partner')->default(0);
+        });
     }
 
     /**
@@ -25,8 +25,8 @@ class UpdateAdsAddIsPartner extends Migration
      */
     public function down()
     {
-		Schema::table('ads', function (Blueprint $table) {
-			$table->removeColumn('is_partner');
-		});
+        Schema::table('ads', function (Blueprint $table) {
+            $table->removeColumn('is_partner');
+        });
     }
 }

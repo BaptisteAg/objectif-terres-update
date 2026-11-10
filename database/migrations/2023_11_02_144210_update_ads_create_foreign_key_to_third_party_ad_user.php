@@ -18,7 +18,7 @@ class UpdateAdsCreateForeignKeyToThirdPartyAdUser extends Migration
             $table->foreign('third_party_ad_user_id')
                 ->references('id')
                 ->on('third_party_ad_users')
-                //null on delete
+                // null on delete
                 ->onDelete('set null');
         });
     }

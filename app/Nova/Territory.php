@@ -3,11 +3,8 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Territory extends Resource
 {
@@ -18,16 +15,15 @@ class Territory extends Resource
      */
     public static $model = 'App\\Models\\Territory';
 
+    public static function label()
+    {
+        return 'Territoires';
+    }
 
-	public static function label()
-	{
-		return 'Territoires';
-	}
-
-	public static function singularLabel()
-	{
-		return 'Territoire';
-	}
+    public static function singularLabel()
+    {
+        return 'Territoire';
+    }
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -35,8 +31,6 @@ class Territory extends Resource
      * @var string
      */
     public static $title = 'name';
-
-
 
     /**
      * The columns that should be searched.
@@ -47,40 +41,39 @@ class Territory extends Resource
         'name',
     ];
 
-	/**
-	 * Indicates if the resource should be displayed in the sidebar.
-	 *
-	 * @var bool
-	 */
-	public static $displayInNavigation = false;
+    /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = false;
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function fields(Request $request)
     {
         return [
             ID::make()->sortable(),
-			Text::make('Nom', 'name')->sortable(),
-			Text::make('Départments', function () {
-				if ($this->departments->count() > 0) {
-					$departmentsList = [];
-					foreach ($this->departments as $department){
-						$departmentsList[] = ' '.$department->name;
-					};
-					return $departmentsList;
-				}
-			}),
+            Text::make('Nom', 'name')->sortable(),
+            Text::make('Départments', function () {
+                if ($this->departments->count() > 0) {
+                    $departmentsList = [];
+                    foreach ($this->departments as $department) {
+                        $departmentsList[] = ' '.$department->name;
+                    }
+
+                    return $departmentsList;
+                }
+            }),
         ];
     }
 
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function cards(Request $request)
@@ -91,7 +84,6 @@ class Territory extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function filters(Request $request)
@@ -102,7 +94,6 @@ class Territory extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function lenses(Request $request)
@@ -113,7 +104,6 @@ class Territory extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function actions(Request $request)

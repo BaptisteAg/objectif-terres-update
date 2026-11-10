@@ -20,17 +20,17 @@ class UnpublishOldAds extends Command
      * @var string
      */
     protected $description = 'Unpublish old ads and send an email';
+
     /**
      * @var UnpublishAdsJob
      */
     private $unpublishOldAds;
 
-
     /**
-	 * Create a new command instance.
-	 *
-	 * @param UnpublishOldAds $unpublishOldAds
-	 */
+     * Create a new command instance.
+     *
+     * @param  UnpublishOldAds  $unpublishOldAds
+     */
     public function __construct(UnpublishAdsJob $unpublishOldAds)
     {
         parent::__construct();
@@ -45,6 +45,6 @@ class UnpublishOldAds extends Command
      */
     public function handle()
     {
-       $this->unpublishOldAds->handle();
+        $this->unpublishOldAds->handle();
     }
 }
