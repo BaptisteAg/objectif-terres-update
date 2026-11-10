@@ -1,6 +1,8 @@
-<?php namespace App\Http\Requests\Ads;
+<?php
+
+namespace App\Http\Requests\Ads;
 
 interface RulesetInterface
 {
-    public function get(bool $isSupportRequest) : array;
+    public function get(bool $isSupportRequest): array;
 }

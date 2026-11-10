@@ -12,7 +12,6 @@ class MorphableController extends Controller
     /**
      * List the available morphable resources for a given resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function index(NovaRequest $request)
@@ -20,9 +19,9 @@ class MorphableController extends Controller
         $relatedResource = Nova::resourceForKey($request->type);
 
         $field = $request->newResource()
-                        ->availableFields($request)
-                        ->whereInstanceOf(RelatableField::class)
-                        ->findFieldByAttribute($request->field);
+            ->availableFields($request)
+            ->whereInstanceOf(RelatableField::class)
+            ->findFieldByAttribute($request->field);
 
         $withTrashed = $this->shouldIncludeTrashed(
             $request, $relatedResource
@@ -30,11 +29,11 @@ class MorphableController extends Controller
 
         return [
             'resources' => $field->buildMorphableQuery($request, $relatedResource, $withTrashed)->get()
-                                ->mapInto($relatedResource)
-                                ->filter->authorizedToAdd($request, $request->model())
-                                ->map(function ($resource) use ($request, $field, $relatedResource) {
-                                    return $field->formatMorphableResource($request, $resource, $relatedResource);
-                                })->sortBy('display')->values(),
+                ->mapInto($relatedResource)
+                ->filter->authorizedToAdd($request, $request->model())
+                ->map(function ($resource) use ($request, $field, $relatedResource) {
+                    return $field->formatMorphableResource($request, $resource, $relatedResource);
+                })->sortBy('display')->values(),
             'withTrashed' => $withTrashed,
             'softDeletes' => $relatedResource::softDeletes(),
         ];
@@ -43,7 +42,6 @@ class MorphableController extends Controller
     /**
      * Determine if the query should include trashed models.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  string  $associatedResource
      * @return bool
      */

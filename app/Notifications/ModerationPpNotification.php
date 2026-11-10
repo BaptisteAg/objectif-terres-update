@@ -10,13 +10,12 @@ use Illuminate\Notifications\Notification;
 class ModerationPpNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+
     protected $data;
 
-	/**
-	 * Create a new notification instance.
-	 *
-	 * @param array $data
-	 */
+    /**
+     * Create a new notification instance.
+     */
     public function __construct(array $data)
     {
         $this->data = $data;
@@ -41,15 +40,15 @@ class ModerationPpNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-		return (new MailMessage)
-			->subject('Votre annonce a été modérée')
-			->greeting('Bonjour,')
-			->line( $this->data['message'])
-			->action( $this->data['action'], url($this->data['url']))
-			->line('A bientôt sur Objectif Terres !')
-			->salutation('Cordialement, L\'équipe d\'Objectif Terres')
-            //->cc("objectif-terres@terredeliens.org")
-            ->replyTo("objectif-terres@terredeliens.org");
+        return (new MailMessage)
+            ->subject('Votre annonce a été modérée')
+            ->greeting('Bonjour,')
+            ->line($this->data['message'])
+            ->action($this->data['action'], url($this->data['url']))
+            ->line('A bientôt sur Objectif Terres !')
+            ->salutation('Cordialement, L\'équipe d\'Objectif Terres')
+            // ->cc("objectif-terres@terredeliens.org")
+            ->replyTo('objectif-terres@terredeliens.org');
     }
 
     /**

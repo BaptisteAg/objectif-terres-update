@@ -13,7 +13,7 @@ class CreateThirdPartyAdUserTable extends Migration
      */
     public function up()
     {
-        //first_name (required), last_name (required), email (required), phone
+        // first_name (required), last_name (required), email (required), phone
         Schema::create('third_party_ad_users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('first_name');

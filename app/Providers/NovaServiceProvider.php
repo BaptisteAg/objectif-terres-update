@@ -3,99 +3,96 @@
 namespace App\Providers;
 
 use App\Nova\Actions\ReallocateModeratorAds;
-use App\Nova\Dashboards\Main;
 use App\Nova\Metrics\NewUsers;
 use App\Nova\Metrics\SurveyCount;
 use App\Nova\Metrics\SurveyResults;
 use App\Nova\Metrics\UsersPerDay;
 use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
-	/**
-	 * Bootstrap any application services.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		parent::boot();
-	}
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+    }
 
-	/**
-	 * Register the Nova routes.
-	 *
-	 * @return void
-	 */
-	protected function routes()
-	{
-		Nova::routes()
-			->withAuthenticationRoutes()
-			->withPasswordResetRoutes()
-			->register();
-	}
+    /**
+     * Register the Nova routes.
+     *
+     * @return void
+     */
+    protected function routes()
+    {
+        Nova::routes()
+            ->withAuthenticationRoutes()
+            ->withPasswordResetRoutes()
+            ->register();
+    }
 
-	/**
-	 * Register the Nova gate.
-	 *
-	 * This gate determines who can access Nova in non-local environments.
-	 *
-	 * @return void
-	 */
-	protected function gate()
-	{
-		Gate::define('viewNova', function ($user) {
-			return $user->role >= 4;
-		});
-	}
+    /**
+     * Register the Nova gate.
+     *
+     * This gate determines who can access Nova in non-local environments.
+     *
+     * @return void
+     */
+    protected function gate()
+    {
+        Gate::define('viewNova', function ($user) {
+            return $user->role >= 4;
+        });
+    }
 
-	/**
-	 * Get the cards that should be displayed on the default Nova dashboard.
-	 *
-	 * @return array
-	 */
-	protected function cards()
-	{
-		return [
-			(new NewUsers)->width('1/2'),
-			(new UsersPerDay)->width('1/2'),
-			(new SurveyCount)->width('1/3'),
-			(new SurveyResults)->width('2/3'),
-		];
-	}
+    /**
+     * Get the cards that should be displayed on the default Nova dashboard.
+     *
+     * @return array
+     */
+    protected function cards()
+    {
+        return [
+            (new NewUsers)->width('1/2'),
+            (new UsersPerDay)->width('1/2'),
+            (new SurveyCount)->width('1/3'),
+            (new SurveyResults)->width('2/3'),
+        ];
+    }
 
-	/**
-	 * Get the extra dashboards that should be displayed on the Nova dashboard.
-	 *
-	 * @return array
-	 */
-	protected function dashboards()
-	{
-		return [];
-	}
+    /**
+     * Get the extra dashboards that should be displayed on the Nova dashboard.
+     *
+     * @return array
+     */
+    protected function dashboards()
+    {
+        return [];
+    }
 
-	/**
-	 * Get the tools that should be listed in the Nova sidebar.
-	 *
-	 * @return array
-	 */
-	public function tools()
-	{
-		return [];
-	}
+    /**
+     * Get the tools that should be listed in the Nova sidebar.
+     *
+     * @return array
+     */
+    public function tools()
+    {
+        return [];
+    }
 
-	/**
-	 * Register any application services.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
         $this->app->singleton(ReallocateModeratorAds::class);
-	}
+    }
 }

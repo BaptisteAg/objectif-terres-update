@@ -14,7 +14,6 @@ class AttachedResourceUpdateController extends Controller
     /**
      * Update an attached resource pivot record.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function handle(NovaRequest $request)
@@ -47,7 +46,6 @@ class AttachedResourceUpdateController extends Controller
     /**
      * Validate the attachment request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $resource
      * @return void
@@ -69,7 +67,6 @@ class AttachedResourceUpdateController extends Controller
     /**
      * Find the pivot model for the operation.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return \Illuminate\Database\Eloquent\Model
      */
@@ -78,15 +75,14 @@ class AttachedResourceUpdateController extends Controller
         $pivot = $model->{$request->viaRelationship}()->getPivotAccessor();
 
         return $model->{$request->viaRelationship}()
-                    ->withoutGlobalScopes()
-                    ->lockForUpdate()
-                    ->findOrFail($request->relatedResourceId)->{$pivot};
+            ->withoutGlobalScopes()
+            ->lockForUpdate()
+            ->findOrFail($request->relatedResourceId)->{$pivot};
     }
 
     /**
      * Determine if the model has been updated since it was retrieved.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
      */

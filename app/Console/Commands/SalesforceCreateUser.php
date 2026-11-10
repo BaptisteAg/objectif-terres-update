@@ -3,11 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Services\Salesforce\SalesforceService;
-use Barryvdh\LaravelIdeHelper;
 use Faker\Factory;
 use Illuminate\Console\Command;
-use Illuminate\Database\Console\Migrations\FreshCommand;
-use Illuminate\Database\Console\Seeds\SeedCommand;
 
 class SalesforceCreateUser extends Command
 {
@@ -27,6 +24,7 @@ class SalesforceCreateUser extends Command
      * @var string
      */
     protected $description = 'Create a salesforce user for roles > 0.';
+
     /**
      * @var SalesforceService
      */
@@ -46,26 +44,25 @@ class SalesforceCreateUser extends Command
 
     /**
      * Execute the console command.
-     *
      */
     public function handle()
     {
         $faker = Factory::create();
 
-        $email =  $faker->email;
-        $password = "crif9bf1";
+        $email = $faker->email;
+        $password = 'crif9bf1';
         $firstName = $faker->firstName;
         $lastName = $faker->lastName;
         $role = 4;
-        $departments = ["69"];
+        $departments = ['69'];
 
-        if($this->option('email')) {
+        if ($this->option('email')) {
             $email = $this->option('email');
         }
-        if($this->option('password')) {
+        if ($this->option('password')) {
             $password = $this->option('password');
         }
-        if($this->option('role')) {
+        if ($this->option('role')) {
             $role = $this->option('role');
         }
 

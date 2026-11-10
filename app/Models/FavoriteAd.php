@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Presenters\AdPresenter;
 use Illuminate\Database\Eloquent\Model;
 use McCool\LaravelAutoPresenter\Decoratable;
-use McCool\LaravelAutoPresenter\HasPresenter;
 
 /**
  * App\Models\FavoriteAd
@@ -17,6 +16,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Ad $ad
  * @property-read \App\Models\User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|FavoriteAd newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|FavoriteAd newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|FavoriteAd query()
@@ -25,6 +25,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|FavoriteAd whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|FavoriteAd whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|FavoriteAd whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class FavoriteAd extends Model implements Decoratable
@@ -43,16 +44,17 @@ class FavoriteAd extends Model implements Decoratable
     {
         return $this->belongsTo(Ad::class);
     }
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function user()
-	{
-		return $this->belongsTo(User::class);
-	}
 
-	public function getPresenterClass()
-	{
-		return AdPresenter::class;
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function getPresenterClass()
+    {
+        return AdPresenter::class;
+    }
 }

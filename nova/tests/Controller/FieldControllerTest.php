@@ -12,7 +12,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class FieldControllerTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -22,7 +22,7 @@ class FieldControllerTest extends IntegrationTest
     public function test_can_retrieve_a_single_field()
     {
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/field/email');
+            ->get('/nova-api/users/field/email');
 
         $response->assertStatus(200);
         $this->assertInstanceOf(Text::class, $response->original);
@@ -32,7 +32,7 @@ class FieldControllerTest extends IntegrationTest
     public function test_404_returned_if_field_doesnt_exist()
     {
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/field/missing-field');
+            ->get('/nova-api/users/field/missing-field');
 
         $response->assertStatus(404);
     }
@@ -40,7 +40,7 @@ class FieldControllerTest extends IntegrationTest
     public function test_can_return_creation_fields()
     {
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/creation-fields');
+            ->get('/nova-api/users/creation-fields');
 
         $fields = collect($response->original['fields']);
 
@@ -61,7 +61,7 @@ class FieldControllerTest extends IntegrationTest
         Gate::policy(User::class, UserPolicy::class);
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/creation-fields');
+            ->get('/nova-api/users/creation-fields');
 
         unset($_SERVER['nova.user.authorizable']);
         unset($_SERVER['nova.user.creatable']);
@@ -74,8 +74,8 @@ class FieldControllerTest extends IntegrationTest
         $user = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/'.$user->id.'/update-fields')
-                        ->assertOk();
+            ->get('/nova-api/users/'.$user->id.'/update-fields')
+            ->assertOk();
 
         $fields = collect($response->original['fields']);
         $this->assertCount(0, $fields->where('attribute', 'id'));
@@ -96,7 +96,7 @@ class FieldControllerTest extends IntegrationTest
         $user = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/'.$user->id.'/update-fields');
+            ->get('/nova-api/users/'.$user->id.'/update-fields');
 
         unset($_SERVER['nova.user.authorizable']);
         unset($_SERVER['nova.user.updatable']);
@@ -107,7 +107,7 @@ class FieldControllerTest extends IntegrationTest
     public function test_can_return_creation_pivot_fields()
     {
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/creation-pivot-fields/roles');
+            ->get('/nova-api/users/creation-pivot-fields/roles');
 
         $fields = collect($response->original);
 
@@ -135,7 +135,7 @@ class FieldControllerTest extends IntegrationTest
         $user->roles()->attach($role);
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/'.$user->id.'/update-pivot-fields/roles/'.$role->id.'?viaRelationship=roles');
+            ->get('/nova-api/users/'.$user->id.'/update-pivot-fields/roles/'.$role->id.'?viaRelationship=roles');
 
         $fields = collect($response->original);
 

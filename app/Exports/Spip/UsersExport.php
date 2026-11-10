@@ -1,4 +1,6 @@
-<?php namespace App\Exports\Spip;
+<?php
+
+namespace App\Exports\Spip;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;

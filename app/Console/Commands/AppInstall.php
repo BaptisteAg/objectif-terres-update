@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Barryvdh\LaravelIdeHelper;
 use Illuminate\Console\Command;
 use Illuminate\Database\Console\Migrations\FreshCommand;
 use Illuminate\Database\Console\Seeds\SeedCommand;
@@ -39,21 +38,20 @@ class AppInstall extends Command
 
     /**
      * Execute the console command.
-     *
      */
     public function handle()
     {
-        if($this->option('composer')) {
+        if ($this->option('composer')) {
             exec('composer install');
         }
-        if($this->option('npm')) {
+        if ($this->option('npm')) {
             exec('npm install');
         }
 
         $this->call(FreshCommand::class);
         $this->call(SeedCommand::class);
 
-        if($this->option('spip')) {
+        if ($this->option('spip')) {
             $this->call(SpipMigrate::class);
         }
 

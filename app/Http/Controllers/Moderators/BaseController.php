@@ -16,11 +16,14 @@ use App\Services\Users\UserService;
 abstract class BaseController
 {
     protected $service;
-    protected $threadService;
-    protected $userService;
-    protected $adTypes;
-    protected $adTypesFaIcons;
 
+    protected $threadService;
+
+    protected $userService;
+
+    protected $adTypes;
+
+    protected $adTypesFaIcons;
 
     public function __construct(AttributionAdsService $attributionAdsService, ThreadService $threadService, UserService $userService)
     {
@@ -35,13 +38,11 @@ abstract class BaseController
             ['name' => 'Associé sur une ferme', 'value' => 'associateOfferAd'],
             ['name' => 'Associé pour projet d\'installation', 'value' => 'associateSeekAd'],
         ];
-        $this->adTypesFaIcons = ["fa-home", "fa-home", "fa-universal-access", "fa-universal-access", "fa-user-tie", "fa-user-tie"];
+        $this->adTypesFaIcons = ['fa-home', 'fa-home', 'fa-universal-access', 'fa-universal-access', 'fa-user-tie', 'fa-user-tie'];
     }
-
 
     /**
      * Get all vars for moderator dashboard
-     * @return array
      */
     protected function getModeratorDashboardVars(): array
     {
@@ -57,7 +58,6 @@ abstract class BaseController
         $numberOfUnreadMessages = $this->threadService->countAllUnreadMessagesInThreadsByLoggedUser();
         $numberOfAdsToModerate = $this->service->countAllAdsToModerateForLoggedModerator();
 
-
         return compact(
             'cities',
             'departments',
@@ -72,5 +72,4 @@ abstract class BaseController
             'bioCertifications'
         );
     }
-
 }

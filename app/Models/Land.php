@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\LandOfferAd|null $landOfferAds
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OfferGenre[] $offerGenres
  * @property-read int|null $offer_genres_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Land newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Land newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Land query()
@@ -28,16 +29,18 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Land whereLandTransferDeadline($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Land wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Land whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Land extends Model
 {
     use OfferableGenre;
+
     /**
      * @var array
      */
     protected $fillable = [
-        'area', 'price', 'land_availability', 'land_transfer_deadline'
+        'area', 'price', 'land_availability', 'land_transfer_deadline',
     ];
 
     /**
@@ -47,5 +50,4 @@ class Land extends Model
     {
         return $this->hasOne(LandOfferAd::class);
     }
-
 }

@@ -10,6 +10,7 @@ class CreateBuildingTypesTable extends Migration
 
     /**
      * Run the migrations.
+     *
      * @table surface_ranges
      *
      * @return void

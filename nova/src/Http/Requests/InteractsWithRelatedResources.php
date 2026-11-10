@@ -34,8 +34,8 @@ trait InteractsWithRelatedResources
             }
 
             return Nova::modelInstanceForKey($this->viaResource)
-                                ->newQueryWithoutScopes()
-                                ->find($this->viaResourceId);
+                ->newQueryWithoutScopes()
+                ->find($this->viaResourceId);
         });
     }
 

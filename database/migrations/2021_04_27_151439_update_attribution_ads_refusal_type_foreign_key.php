@@ -14,13 +14,13 @@ class UpdateAttributionAdsRefusalTypeForeignKey extends Migration
     public function up()
     {
         Schema::disableForeignKeyConstraints();
-		Schema::table('attribution_ads', function (Blueprint $table) {
-			$table->dropForeign("fk_attribution_ads_4_idx");
-			$table->foreign('refusal_type_id', "fk_attribution_ads_4_idx")
-				->references('id')
-				->on('response_templates')
-				->onDelete('SET NULL');
-		});
+        Schema::table('attribution_ads', function (Blueprint $table) {
+            $table->dropForeign('fk_attribution_ads_4_idx');
+            $table->foreign('refusal_type_id', 'fk_attribution_ads_4_idx')
+                ->references('id')
+                ->on('response_templates')
+                ->onDelete('SET NULL');
+        });
         Schema::enableForeignKeyConstraints();
     }
 
@@ -31,8 +31,8 @@ class UpdateAttributionAdsRefusalTypeForeignKey extends Migration
      */
     public function down()
     {
-		Schema::table('attribution_ads', function (Blueprint $table) {
-			$table->dropForeign("fk_attribution_ads_4_idx");
-		});
+        Schema::table('attribution_ads', function (Blueprint $table) {
+            $table->dropForeign('fk_attribution_ads_4_idx');
+        });
     }
 }

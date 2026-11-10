@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AttributionAd[] $attributionAds
  * @property-read int|null $attribution_ads_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|RefusalType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RefusalType newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RefusalType query()
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|RefusalType whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RefusalType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RefusalType whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class RefusalType extends Model
@@ -30,7 +32,7 @@ class RefusalType extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'content'
+        'name', 'content',
     ];
 
     /**

@@ -1,137 +1,136 @@
-<?php namespace App\Repositories\FavoriteAds;
+<?php
+
+namespace App\Repositories\FavoriteAds;
 
 use App\Models\Ad;
 use App\Models\FavoriteAd;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 /**
  * Class FavoriteAdRepository
- * @package App\Repositories\FavoriteAds
+ *
  * @property FavoriteAd $entity
  */
 class FavoriteAdRepository extends AbstractRepository implements FavoriteAdRepositoryInterface
 {
+    public function entity()
+    {
+        return FavoriteAd::class;
+    }
 
-	public function entity()
-	{
-		return FavoriteAd::class;
-	}
+    public function all($paginate = null)
+    {
+        return $this->entity
+            ->with($this->getEagerLoading())
+            ->orderByDesc('created_at')
+            ->get();
+    }
 
-	public function all($paginate = null)
-	{
-		return $this->entity
-			->with($this->getEagerLoading())
-			->orderByDesc('created_at')
-			->get();
-	}
+    /**
+     * Find a Favorite ad by its id.
+     *
+     * @return FavoriteAd
+     */
+    public function find($id)
+    {
 
-	/**
-	 * Find a Favorite ad by its id.
-	 * @param $id
-	 * @return FavoriteAd
-	 */
-	public function find($id)
-	{
+        $model = $this->entity
+            ->where(['id' => $id])
+            ->with('ad')
+            ->first();
 
-		$model = $this->entity
-			->where(["id" => $id])
-			->with('ad')
-			->first();
+        if (! $model) {
 
+            throw (new ModelNotFoundException)->setModel(
+                get_class($this->entity->getModel()),
+                $id
+            );
+        }
 
-		if (!$model) {
+        return $model;
+    }
 
-			throw (new ModelNotFoundException)->setModel(
-				get_class($this->entity->getModel()),
-				$id
-			);
-		}
-		return $model;
-	}
-
-	/**
-	 * Find a Favorite ad by the user id.
-	 * @param $id
-	 * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Collection
-	 */
-	public function findAllByUserId(int $id)
-	{
-		$model = $this->entity
-			->where("user_id", $id)
-			->whereHas('ad', function (Builder $query) {
-				$query->whereHas('userPp', function (Builder $builder) {
-					$builder->whereNull('deleted_at');
-				});
-			})
-			->with([
+    /**
+     * Find a Favorite ad by the user id.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Collection
+     */
+    public function findAllByUserId(int $id)
+    {
+        $model = $this->entity
+            ->where('user_id', $id)
+            ->whereHas('ad', function (Builder $query) {
+                $query->whereHas('userPp', function (Builder $builder) {
+                    $builder->whereNull('deleted_at');
+                });
+            })
+            ->with([
                 'ad',
                 'ad.project',
                 'ad.landSeekAd',
                 'ad.landOfferAd',
                 'ad.jobOfferAd',
                 'ad.jobSeekAd',
-			    'ad.documents',
+                'ad.documents',
             ])
-			->get();
+            ->get();
 
-		if (!$model) {
-			throw (new ModelNotFoundException)->setModel(
-				get_class($this->entity->getModel()),
-				$id
-			);
-		}
-		return $model;
-	}
+        if (! $model) {
+            throw (new ModelNotFoundException)->setModel(
+                get_class($this->entity->getModel()),
+                $id
+            );
+        }
 
-	/**
-	 * Gets favorite ad by the sf_id AND the ad_id
-	 * @param array
-	 * @return FavoriteAd
-	 */
-	public function findByUserAndAdId(array $data)
-	{
+        return $model;
+    }
 
-		$favoriteAd = $this->entity
-			->where("ad_id", $data['ad_id'])
-			->where("user_id", $data['user_id'])
-			->first();
+    /**
+     * Gets favorite ad by the sf_id AND the ad_id
+     *
+     * @param array
+     * @return FavoriteAd
+     */
+    public function findByUserAndAdId(array $data)
+    {
 
-		return $favoriteAd;
-	}
+        $favoriteAd = $this->entity
+            ->where('ad_id', $data['ad_id'])
+            ->where('user_id', $data['user_id'])
+            ->first();
 
-	/**
-	 * Creates an favorite ad.
-	 *
-	 * @param array
-	 * @return FavoriteAd
-	 * @throws \Throwable
-	 */
-	public function create(array $data): FavoriteAd
-	{
-		$favoriteAd = new FavoriteAd();
-		$favoriteAd->fill($data);
-		$favoriteAd->save();
+        return $favoriteAd;
+    }
 
+    /**
+     * Creates an favorite ad.
+     *
+     * @param array
+     *
+     * @throws \Throwable
+     */
+    public function create(array $data): FavoriteAd
+    {
+        $favoriteAd = new FavoriteAd;
+        $favoriteAd->fill($data);
+        $favoriteAd->save();
 
-		return $favoriteAd;
-	}
+        return $favoriteAd;
+    }
 
-	/**
-	 * Delete an favorite ad.
-	 *
-	 * @param FavoriteAd $favoriteAd
-	 * @return bool|null
-	 * @throws \Exception
-	 */
-	public function destroy(FavoriteAd $favoriteAd)
-	{
-		return $favoriteAd->delete();
+    /**
+     * Delete an favorite ad.
+     *
+     * @return bool|null
+     *
+     * @throws \Exception
+     */
+    public function destroy(FavoriteAd $favoriteAd)
+    {
+        return $favoriteAd->delete();
 
-	}
-
-
+    }
 }

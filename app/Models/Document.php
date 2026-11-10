@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use McCool\LaravelAutoPresenter\HasPresenter;
 
 /**
  * App\Models\Document
@@ -23,6 +22,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Research[] $ads
  * @property-read int|null $ads_count
  * @property-read \App\Models\User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Document newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document query()
@@ -34,6 +34,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class Document extends Model
@@ -42,7 +43,7 @@ class Document extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'path', 'type', 'size', 'user_id'
+        'name', 'path', 'type', 'size', 'user_id',
     ];
 
     protected $appends = ['url'];
@@ -67,10 +68,10 @@ class Document extends Model
         return $this->morphedByMany(AdNote::class, 'documentable');
     }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function user()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
@@ -79,7 +80,7 @@ class Document extends Model
     {
         $fromUrl = config('app.url');
 
-        if (!app('filesystem')->disk('public')->exists($this->path)) {
+        if (! app('filesystem')->disk('public')->exists($this->path)) {
             $fromUrl = 'https://objectif-terres.org';
         }
 

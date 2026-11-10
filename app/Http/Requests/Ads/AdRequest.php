@@ -31,16 +31,16 @@ class AdRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'ad_type' => "required",
+            'ad_type' => 'required',
 
             'ad_contact_type' => 'required|string',
-            'third_party.email'=> 'nullable|email',
-            'third_party.first_name'=> 'required_if:ad_contact_type,thirdParty|string',
-            'third_party.last_name'=> 'required_if:ad_contact_type,thirdParty|string',
-            'third_party.phone'=> 'nullable|string',
+            'third_party.email' => 'nullable|email',
+            'third_party.first_name' => 'required_if:ad_contact_type,thirdParty|string',
+            'third_party.last_name' => 'required_if:ad_contact_type,thirdParty|string',
+            'third_party.phone' => 'nullable|string',
 
-            'id' => ["nullable", "numeric"],
-            'department_id' => ["nullable", "numeric"],
+            'id' => ['nullable', 'numeric'],
+            'department_id' => ['nullable', 'numeric'],
 
             'land_seek' => ['nullable', 'array'],
             'land_offer' => ['nullable', 'array'],
@@ -72,7 +72,7 @@ class AdRequest extends FormRequest
 
         /** @var RulesetInterface $ruleset */
         $ruleset = app($rulesetsByAdType[$this->get('ad_type')]);
-        $rules = array_merge($rules, $ruleset->get($this->boolean("is_support_request")));
+        $rules = array_merge($rules, $ruleset->get($this->boolean('is_support_request')));
 
         return $rules;
     }

@@ -13,7 +13,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class LensResourceRestoreTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -29,9 +29,9 @@ class LensResourceRestoreTest extends IntegrationTest
         $user2->delete();
 
         $response = $this->withExceptionHandling()
-                        ->putJson('/nova-api/users/lens/user-lens/restore', [
-                            'resources' => [$user->id, $user2->id],
-                        ]);
+            ->putJson('/nova-api/users/lens/user-lens/restore', [
+                'resources' => [$user->id, $user2->id],
+            ]);
 
         $response->assertStatus(200);
 
@@ -54,9 +54,9 @@ class LensResourceRestoreTest extends IntegrationTest
         $user2->delete();
 
         $response = $this->withExceptionHandling()
-                        ->putJson('/nova-api/users/lens/user-lens/restore', [
-                            'resources' => 'all',
-                        ]);
+            ->putJson('/nova-api/users/lens/user-lens/restore', [
+                'resources' => 'all',
+            ]);
 
         $response->assertStatus(200);
 
@@ -85,9 +85,9 @@ class LensResourceRestoreTest extends IntegrationTest
         ]));
 
         $response = $this->withExceptionHandling()
-                        ->putJson('/nova-api/users/lens/user-lens/restore?filters='.$filters, [
-                            'resources' => 'all',
-                        ]);
+            ->putJson('/nova-api/users/lens/user-lens/restore?filters='.$filters, [
+                'resources' => 'all',
+            ]);
 
         $response->assertStatus(200);
 
@@ -115,9 +115,9 @@ class LensResourceRestoreTest extends IntegrationTest
         Gate::policy(User::class, UserPolicy::class);
 
         $response = $this->withExceptionHandling()
-                        ->putJson('/nova-api/users/lens/user-lens/restore', [
-                            'resources' => [$user->id],
-                        ]);
+            ->putJson('/nova-api/users/lens/user-lens/restore', [
+                'resources' => [$user->id],
+            ]);
 
         unset($_SERVER['nova.user.authorizable']);
         unset($_SERVER['nova.user.restorable']);

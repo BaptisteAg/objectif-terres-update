@@ -98,7 +98,8 @@ class AdCollection extends ResourceCollection
         // Build URLs with preserved parameters
         $buildUrl = function ($page) use ($queryParams) {
             $params = array_merge($queryParams, ['page' => $page]);
-            return url()->current() . '?' . http_build_query($params);
+
+            return url()->current().'?'.http_build_query($params);
         };
 
         $links = [

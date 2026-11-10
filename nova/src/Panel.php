@@ -125,7 +125,7 @@ class Panel extends MergeValue implements JsonSerializable
     /**
      * Set the number of initially visible fields.
      *
-     * @param int $limit
+     * @param  int  $limit
      * @return $this
      */
     public function limit($limit)

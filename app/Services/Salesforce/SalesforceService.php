@@ -1,30 +1,19 @@
-<?php namespace App\Services\Salesforce;
+<?php
+
+namespace App\Services\Salesforce;
 
 use App\Models\Ad;
-use App\Models\AdStatus;
-use App\Models\AssociateOfferAd;
-use App\Models\AssociateSeekAd;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Department;
-use App\Models\InstallationType;
-use App\Models\JobOfferAd;
-use App\Models\JobSeekAd;
-use App\Models\LandOfferAd;
-use App\Models\LandSeekAd;
-use App\Models\OfferGenre;
 use App\Models\User;
-use App\Repositories\Ads\AdRepository;
 use App\Repositories\SalesForce\SalesForceRepository;
 use App\Repositories\Users\UserRepository;
 use App\Sync\AdsToSalesforceSync;
-use Carbon\Carbon;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Str;
 use Omniphx\Forrest\Repositories\TokenRepository;
 
 class SalesforceService
@@ -33,10 +22,12 @@ class SalesforceService
      * @var SalesForceRepository
      */
     protected $repository;
+
     /**
      * @var UserRepository
      */
     protected $localUserRepository;
+
     /**
      * @var TokenRepository|null
      */
@@ -50,24 +41,24 @@ class SalesforceService
 
     public static function getOTUserToSalesforceContactMapping(array|User $data): array
     {
-        $city = City::findOrFail($data["city_id"] ?? $data["zip_code_id"]);
+        $city = City::findOrFail($data['city_id'] ?? $data['zip_code_id']);
 
-        if (empty($data["country_id"])) {
+        if (empty($data['country_id'])) {
             // France
-            $data["country_id"] = 75;
+            $data['country_id'] = 75;
         }
 
         return [
-            "Email" => $data["email"],
-            "LastName" => $data["name"],
-            'FirstName' => $data["first_name"],
-            "Phone" => $data["phone"] ?? null,
-            "MailingStreet" => $data["street"],
-            "MailingPostalCode" => $city->zip_code,
-            "MailingCity" => $city->name,
-            "MailingCountry" => Country::findOrFail($data["country_id"])->name_fr_fr,
-            "Profil_Objectif_Terres__c" => \App\Models\User::$profiles[$data["profile"]] ?? null,
-            "Recevoir_les_infos_de_TDL__c" => empty($data["accept_communication"]) ? 0 : 1,
+            'Email' => $data['email'],
+            'LastName' => $data['name'],
+            'FirstName' => $data['first_name'],
+            'Phone' => $data['phone'] ?? null,
+            'MailingStreet' => $data['street'],
+            'MailingPostalCode' => $city->zip_code,
+            'MailingCity' => $city->name,
+            'MailingCountry' => Country::findOrFail($data['country_id'])->name_fr_fr,
+            'Profil_Objectif_Terres__c' => \App\Models\User::$profiles[$data['profile']] ?? null,
+            'Recevoir_les_infos_de_TDL__c' => empty($data['accept_communication']) ? 0 : 1,
         ];
     }
 
@@ -75,40 +66,39 @@ class SalesforceService
      * Registers a basic user ( role : Porteur de projet )
      * in Salesforce.
      *
-     * @param $data
      * @return mixed
      */
     public function registerPP($data)
     {
         $this->repository->authenticate();
 
-        $city = City::findOrFail($data["city_id"] ?? $data["zip_code_id"]);
+        $city = City::findOrFail($data['city_id'] ?? $data['zip_code_id']);
 
-        if (empty($data["country_id"])) {
+        if (empty($data['country_id'])) {
             // France
-            $data["country_id"] = 75;
+            $data['country_id'] = 75;
         }
 
         $sfPayload = [
-            "Email" => $data["email"],
-            "LastName" => $data["name"],
-            'FirstName' => $data["first_name"],
-            "Phone" => $data["phone"],
-            "MailingStreet" => $data["street"],
-            "MailingPostalCode" => $city->zip_code,
-            "MailingCity" => $city->name,
-            "MailingCountry" => Country::findOrFail($data["country_id"])->name_fr_fr,
-            "LeadSource" => "Petites annonces",
-            "OT_Password__c" => Hash::make($data["password"]),
-            "role__c" => 'Annonceur Objectif Terres',
-            "Recevoir_les_infos_de_TDL__c" => empty($data["accept_communication"]) ? 0 : 1,
-            "Profil_Objectif_Terres__c" => \App\Models\User::$profiles[$data["profile"]] ?? null,
+            'Email' => $data['email'],
+            'LastName' => $data['name'],
+            'FirstName' => $data['first_name'],
+            'Phone' => $data['phone'],
+            'MailingStreet' => $data['street'],
+            'MailingPostalCode' => $city->zip_code,
+            'MailingCity' => $city->name,
+            'MailingCountry' => Country::findOrFail($data['country_id'])->name_fr_fr,
+            'LeadSource' => 'Petites annonces',
+            'OT_Password__c' => Hash::make($data['password']),
+            'role__c' => 'Annonceur Objectif Terres',
+            'Recevoir_les_infos_de_TDL__c' => empty($data['accept_communication']) ? 0 : 1,
+            'Profil_Objectif_Terres__c' => \App\Models\User::$profiles[$data['profile']] ?? null,
         ];
 
-        $contactsFound = $this->repository->findWhere('Contact', ["Email" => $data["email"]]);
+        $contactsFound = $this->repository->findWhere('Contact', ['Email' => $data['email']]);
 
         if (count($contactsFound)) {
-            $contactId = $contactsFound[0]["Id"];
+            $contactId = $contactsFound[0]['Id'];
             $contact = $this->repository->update('Contact', $contactId, $sfPayload);
         } else {
             /**
@@ -134,7 +124,6 @@ class SalesforceService
 
     /**
      * Used for testing only, it allows the remote creation of a user for roles > 0
-     * @param $data
      */
     public function createPortalUser($data)
     {
@@ -148,15 +137,15 @@ class SalesforceService
          * ]
          */
         $contact = $this->repository->create('Contact', [
-            "Email" => $data["email"],
-            "LastName" => $data["lastName"],
-            'FirstName' => $data["firstName"],
-            //"Phone" => $data["phone"],
-            //"MailingStreet" => $data["street"],
-            //"MailingPostalCode" => $city->zip_code,
-            //"MailingCity" => $city->name,
-            //"MailingCountry" => Country::findOrFail($data["country_id"])->name_fr_fr,
-            //"OT_Password__c" => Hash::make($data["password"])
+            'Email' => $data['email'],
+            'LastName' => $data['lastName'],
+            'FirstName' => $data['firstName'],
+            // "Phone" => $data["phone"],
+            // "MailingStreet" => $data["street"],
+            // "MailingPostalCode" => $city->zip_code,
+            // "MailingCity" => $city->name,
+            // "MailingCountry" => Country::findOrFail($data["country_id"])->name_fr_fr,
+            // "OT_Password__c" => Hash::make($data["password"])
         ]);
 
         /**
@@ -167,26 +156,26 @@ class SalesforceService
          * ]
          */
         $user = $this->repository->create('User', [
-            'Email' => $data["email"],
-            'Username' => $data["email"],
-            "Alias" => substr($data["firstName"], 0, 1) . substr($data["lastName"], 1, 7),
-            'FirstName' => $data["firstName"],
-            "LastName" => $data["lastName"],
-            //"Phone" => $data["phone"],
-            //"Street" =>$data["address"],
-            //"PostalCode" => $city->zip_code,
-            //"City" => $city->name,
-            //"Country" => Country::findOrFail($data["country_id"])->name_fr_fr,
-            "TimeZoneSidKey" => "Europe/Paris",
-            "LocaleSidKey" => "fr_FR",
-            "EmailEncodingKey" => "UTF-8",
+            'Email' => $data['email'],
+            'Username' => $data['email'],
+            'Alias' => substr($data['firstName'], 0, 1).substr($data['lastName'], 1, 7),
+            'FirstName' => $data['firstName'],
+            'LastName' => $data['lastName'],
+            // "Phone" => $data["phone"],
+            // "Street" =>$data["address"],
+            // "PostalCode" => $city->zip_code,
+            // "City" => $city->name,
+            // "Country" => Country::findOrFail($data["country_id"])->name_fr_fr,
+            'TimeZoneSidKey' => 'Europe/Paris',
+            'LocaleSidKey' => 'fr_FR',
+            'EmailEncodingKey' => 'UTF-8',
             // Customer community - membre
-            "ProfileId" => "00ew0000001V7RJ",
-            "LanguageLocaleKey" => "fr",
-            "ContactId" => $contact["id"],
-            "Role_Objectif_Terre__c" => $data["role"] . "-" . implode('_', $data["departments"])
+            'ProfileId' => '00ew0000001V7RJ',
+            'LanguageLocaleKey' => 'fr',
+            'ContactId' => $contact['id'],
+            'Role_Objectif_Terre__c' => $data['role'].'-'.implode('_', $data['departments']),
         ]);
-        $this->repository->updateUserPassword($user["id"], $data["password"]);
+        $this->repository->updateUserPassword($user['id'], $data['password']);
     }
 
     /**
@@ -194,8 +183,6 @@ class SalesforceService
      * Saml2 User from Salesforce; it then retrieve or create a corresponding
      * local user and updates its properties if a sync is needed
      *
-     * @param \Aacotroneo\Saml2\Saml2User $samlUser
-     * @return User
      * @throws \Throwable
      */
     public function getSyncedLocalUserFromSaml(\Aacotroneo\Saml2\Saml2User $samlUser): User
@@ -207,9 +194,6 @@ class SalesforceService
     }
 
     /**
-     * @param string $email
-     * @param string $sfId
-     * @return User
      * @throws \Throwable
      */
     public function syncLocalUser(string $email, string $sfId): User
@@ -218,30 +202,30 @@ class SalesforceService
 
         /** @var User $localUser */
         $user = $this->repository->find('User', $sfId, ['FirstName', 'LastName', 'Role_Objectif_Terre__c']);
-        if (!$user) {
+        if (! $user) {
             throw new \Exception("Nous n'avons pas pu vous identifier. Veuillez contacter un administrateur.");
         }
         $localUser = $this->localUserRepository->findWhere('sf_id', $sfId)->first();
 
-        if(!$localUser) {
+        if (! $localUser) {
             $localUser = $this->localUserRepository->findWhere('email', $email)->first();
         }
 
         // Reverse user creation : if no user has been found, then we'll create it on the fly
         // to allow every salesforce-only user to pass the registration form
-        if (!$localUser) {
+        if (! $localUser) {
             $localUser = $this->localUserRepository->create([
-                'first_name' => $user["FirstName"],
-                'name' => $user["LastName"],
-                'email' => $email
+                'first_name' => $user['FirstName'],
+                'name' => $user['LastName'],
+                'email' => $email,
             ]);
         }
 
         $localUser->deleted_at = null;
 
         // Sync Firstname / Name
-        $localUser->first_name = $user["FirstName"];
-        $localUser->name = $user["LastName"];
+        $localUser->first_name = $user['FirstName'];
+        $localUser->name = $user['LastName'];
 
         // Handle email conflicts: if another user has this email, we need to resolve it
         if ($localUser->email !== $email) {
@@ -253,10 +237,10 @@ class SalesforceService
                 // Only archive local-only users (no Salesforce ID)
                 // For Salesforce users. This is a conflict that needs manual resolution
                 if ($conflictingUser->sf_id) {
-                    $errorMsg = "Conflit d'adresse email détecté : l'email '{$email}' est déjà utilisé par un autre utilisateur Salesforce " .
-                               "(ID local: {$conflictingUser->id}, SF ID: {$conflictingUser->sf_id}). " .
-                               "Ce conflit nécessite une intervention manuelle de l'administrateur. " .
-                               "Veuillez contacter le support technique.";
+                    $errorMsg = "Conflit d'adresse email détecté : l'email '{$email}' est déjà utilisé par un autre utilisateur Salesforce ".
+                               "(ID local: {$conflictingUser->id}, SF ID: {$conflictingUser->sf_id}). ".
+                               "Ce conflit nécessite une intervention manuelle de l'administrateur. ".
+                               'Veuillez contacter le support technique.';
 
                     logger()->error('Salesforce SSO email conflict - both users have SF IDs', [
                         'current_sf_id' => $sfId,
@@ -271,14 +255,14 @@ class SalesforceService
                 }
 
                 // Safe to archive: this is a local-only account
-                $archivedEmail = $conflictingUser->email . '.archived.' . time();
+                $archivedEmail = $conflictingUser->email.'.archived.'.time();
                 logger()->warning('Salesforce SSO email conflict resolved - archived local-only user', [
                     'sf_user_id' => $sfId,
                     'sf_user_email' => $email,
                     'local_user_id' => $localUser->id,
                     'conflicting_user_id' => $conflictingUser->id,
                     'conflicting_user_email' => $conflictingUser->email,
-                    'archived_email' => $archivedEmail
+                    'archived_email' => $archivedEmail,
                 ]);
 
                 $conflictingUser->email = $archivedEmail;
@@ -292,16 +276,16 @@ class SalesforceService
         $localUser->sf_id = $sfId;
         $localUser->is_sf_user = true;
 
-        $roleAndDepartments = explode('-', $user["Role_Objectif_Terre__c"]);
-        $role = (int)$roleAndDepartments[0] ?: 0;
+        $roleAndDepartments = explode('-', $user['Role_Objectif_Terre__c']);
+        $role = (int) $roleAndDepartments[0] ?: 0;
 
         // Sync role
-        if ((int)$localUser->role !== $role) {
+        if ((int) $localUser->role !== $role) {
 
             $oldRole = $localUser->role;
 
             Notification::route('mail', [
-                'objectif-terres@terredeliens.org' => config('mail.from.name')
+                'objectif-terres@terredeliens.org' => config('mail.from.name'),
             ])->notify(
                 new \App\Notifications\SalesforceUserRoleChanged($localUser, $oldRole, $role)
             );
@@ -314,13 +298,13 @@ class SalesforceService
         if ($role === 4) {
             $newDepartmentIds = Department::all()->pluck('id');
             $localUser->departments()->sync($newDepartmentIds);
-        } else if ($role > 0) {
-            if (!isset($roleAndDepartments[1])) {
+        } elseif ($role > 0) {
+            if (! isset($roleAndDepartments[1])) {
                 // More specific error message for data format issues
-                $errorMsg = "Erreur de configuration Salesforce : le format des données de votre compte est incorrect. " .
-                           "Veuillez transmettre ce message à l'administrateur Salesforce de Terre de Liens : " .
-                           "\"Role_Objectif_Terre__c = '{$user["Role_Objectif_Terre__c"]}' pour {$email} - " .
-                           "Le format attendu est 'role-departement' (ex: '2-84') mais '{$user["Role_Objectif_Terre__c"]}' a été trouvé.\"";
+                $errorMsg = 'Erreur de configuration Salesforce : le format des données de votre compte est incorrect. '.
+                           "Veuillez transmettre ce message à l'administrateur Salesforce de Terre de Liens : ".
+                           "\"Role_Objectif_Terre__c = '{$user['Role_Objectif_Terre__c']}' pour {$email} - ".
+                           "Le format attendu est 'role-departement' (ex: '2-84') mais '{$user['Role_Objectif_Terre__c']}' a été trouvé.\"";
                 throw new \Exception($errorMsg);
             }
 
@@ -333,23 +317,18 @@ class SalesforceService
         return $localUser;
     }
 
-    /**
-     * @param string $email
-     * @return bool
-     */
     public function usernameExists(string $email, string $object): bool
     {
         $this->repository->authenticate();
 
-        return !!$this->repository->findWhere($object, [
-            'Username' => $email
+        return (bool) $this->repository->findWhere($object, [
+            'Username' => $email,
         ]);
     }
 
     /**
-     * @param Collection|array|Ad[] $ads
-     * @param callable|null $log
-     * @return void
+     * @param  Collection|array|Ad[]  $ads
+     * @param  callable|null  $log
      */
     public function upsertAds(Collection|array $ads, OutputStyle $output): void
     {

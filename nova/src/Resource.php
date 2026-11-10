@@ -21,13 +21,13 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
         ConditionallyLoadsAttributes,
         DelegatesToResource,
         FillsFields,
-        PerformsValidation,
         PerformsQueries,
+        PerformsValidation,
         ResolvesActions,
+        ResolvesCards,
         ResolvesFields,
         ResolvesFilters,
-        ResolvesLenses,
-        ResolvesCards;
+        ResolvesLenses;
 
     /**
      * The underlying model resource instance.
@@ -141,7 +141,6 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     abstract public function fields(Request $request);
@@ -169,7 +168,6 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Determine if this resource is available for navigation.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
     public static function availableForNavigation(Request $request)
@@ -206,7 +204,6 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Detetermine whether the global search links will take the user to the detail page.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
      *
      * @return string
      */
@@ -302,7 +299,6 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Get meta information about this resource for client side comsumption.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public static function additionalInformation(Request $request)
@@ -323,8 +319,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Indicates whether Nova should check for modifications between viewing and updating a resource.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return  bool
+     * @return bool
      */
     public static function trafficCop(Request $request)
     {
@@ -334,7 +329,6 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Filter and authorize the given values.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  array  $values
      * @return \Illuminate\Support\Collection
      */
@@ -348,7 +342,6 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Prepare the resource for JSON serialization.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Support\Collection  $fields
      * @return array
      */
@@ -370,7 +363,6 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Prepare the resource for JSON serialization.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function serializeForDetail(NovaRequest $request)
@@ -389,7 +381,6 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Determine if the resource may be updated, factoring in attachments.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return bool
      */
     protected function authorizedToUpdateForSerialization(NovaRequest $request)
@@ -406,7 +397,6 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Determine if the resource may be deleted, factoring in detachments.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return bool
      */
     protected function authorizedToDeleteForSerialization(NovaRequest $request)
@@ -446,7 +436,6 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Prepare the resource for JSON serialization using the given fields.
      *
-     * @param  \Illuminate\Support\Collection  $fields
      * @return array
      */
     protected function serializeWithId(Collection $fields)
@@ -460,7 +449,6 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Return the location to redirect the user after creation.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Laravel\Nova\Resource  $resource
      * @return string
      */
@@ -472,7 +460,6 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Return the location to redirect the user after update.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Laravel\Nova\Resource  $resource
      * @return string
      */
@@ -484,7 +471,6 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Return the location to redirect the user after deletion.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return string
      */
     public static function redirectAfterDelete(NovaRequest $request)

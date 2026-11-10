@@ -13,7 +13,7 @@ use Laravel\Nova\Trix\PendingAttachment;
 
 class TrixAttachmentControllerTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

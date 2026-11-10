@@ -1,19 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateReferentLocationablesTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $tableName = 'referent_locationables';
 
     /**
      * Run the migrations.
+     *
      * @table referent_locationables
      *
      * @return void
@@ -27,15 +29,14 @@ class CreateReferentLocationablesTable extends Migration
             $table->unsignedInteger('referent_locationable_id');
             $table->string('referent_locationable_type')->comment('cette colonne fait référence au table cities, departments, regions');
 
-            $table->index(["referent_locationable_id"], 'ix_referent_localisationable_1');
+            $table->index(['referent_locationable_id'], 'ix_referent_localisationable_1');
 
-            $table->index(["referent_locationable_type"], 'ix_referent_localisationable_2');
+            $table->index(['referent_locationable_type'], 'ix_referent_localisationable_2');
 
-
-			$table->foreign('user_id')
-				->references('id')
-				->on('users')
-				->onDelete('cascade');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -46,8 +47,8 @@ class CreateReferentLocationablesTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->tableName);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->tableName);
+    }
 }

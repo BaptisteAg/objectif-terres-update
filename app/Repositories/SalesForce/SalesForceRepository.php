@@ -1,7 +1,8 @@
-<?php namespace App\Repositories\SalesForce;
+<?php
+
+namespace App\Repositories\SalesForce;
 
 use Omniphx\Forrest\Authentications\UserPasswordSoap;
-use Omniphx\Forrest\Providers\Laravel\Facades\Forrest;
 use Omniphx\Forrest\Repositories\TokenRepository;
 
 class SalesForceRepository
@@ -17,16 +18,14 @@ class SalesForceRepository
     }
 
     /**
-     * @param $objectName
-     * @param $id
-     * @param string[] $select
+     * @param  string[]  $select
      * @return mixed
      */
-    public function find($objectName, $id, $select = ["Id"])
+    public function find($objectName, $id, $select = ['Id'])
     {
-        $entities = $this->findWhere($objectName, ["Id" => $id], $select);
+        $entities = $this->findWhere($objectName, ['Id' => $id], $select);
 
-        if(!count($entities)) {
+        if (! count($entities)) {
             return null;
         }
 
@@ -34,46 +33,40 @@ class SalesForceRepository
     }
 
     /**
-     * @param string $objectName
-     * @param array $where
-     * @param array $select
      * @return mixed
      */
-    public function findWhere(string $objectName, array $where, array $select = ["Id"])
+    public function findWhere(string $objectName, array $where, array $select = ['Id'])
     {
-        $query = "SELECT ".implode(',', $select)." FROM $objectName WHERE ";
+        $query = 'SELECT '.implode(',', $select)." FROM $objectName WHERE ";
         array_walk($where, function (&$value, $key) {
-            if(is_array($value)) {
-                $value = $key . " IN ('" . implode("','", $value) . "')";
-            }
-            else {
-                $value = $key . " = '" . $value . "'";
+            if (is_array($value)) {
+                $value = $key." IN ('".implode("','", $value)."')";
+            } else {
+                $value = $key." = '".$value."'";
             }
         });
         $query .= implode(' AND ', $where);
 
-        $result = $this->authenticated(fn() => $this->forrest->query($query));
+        $result = $this->authenticated(fn () => $this->forrest->query($query));
 
-        return $result["records"];
+        return $result['records'];
     }
 
-    public function findAll(string $objectName, array $select = ["Id"])
+    public function findAll(string $objectName, array $select = ['Id'])
     {
-        $query = "SELECT ".implode(',', $select)." FROM $objectName";
+        $query = 'SELECT '.implode(',', $select)." FROM $objectName";
 
-        $result = $this->authenticated(fn() => $this->forrest->query($query));
+        $result = $this->authenticated(fn () => $this->forrest->query($query));
 
-        return $result["records"];
+        return $result['records'];
     }
 
     /**
-     * @param $objectName
-     * @param array $params
-     * @param bool $sForceAutoAssign
+     * @param  bool  $sForceAutoAssign
      */
     public function create($objectName, array $params, $sForceAutoAssign = false)
     {
-        return $this->authenticated(fn() => $this->forrest->sobjects($objectName, [
+        return $this->authenticated(fn () => $this->forrest->sobjects($objectName, [
             'method' => 'post',
             'body' => $params,
             /*'headers' => [
@@ -85,61 +78,54 @@ class SalesForceRepository
     public function batchCreate($objectName, $rows)
     {
         return collect($rows)->chunk(200)->map(function ($chunk) use ($objectName) {
-            return $this->authenticated(fn() => $this->forrest->composite('batch', [
+            return $this->authenticated(fn () => $this->forrest->composite('batch', [
                 'allOrNone' => true,
-                'records' => $chunk->map(fn($row) => [
+                'records' => $chunk->map(fn ($row) => [
                     'method' => 'POST',
-                    'url' => '/services/data/v52.0/sobjects/' . $objectName . '/',
+                    'url' => '/services/data/v52.0/sobjects/'.$objectName.'/',
                     'referenceId' => $row['referenceId'],
-                    'body' => $row['body']
-                ])->toArray()
+                    'body' => $row['body'],
+                ])->toArray(),
             ]));
         });
     }
 
     /**
-     * @param $objectName
-     * @param $sfId
-     * @param array $params
+     * @param  $sfId
      */
     public function update($objectName, $id, array $params)
     {
-        return $this->authenticated(fn() => $this->forrest->sobjects($objectName. '/' . $id,[
+        return $this->authenticated(fn () => $this->forrest->sobjects($objectName.'/'.$id, [
             'method' => 'patch',
-            'body'   => $params
+            'body' => $params,
         ]));
     }
 
-    /**
-     * @param $userId
-     * @param $newPassword
-     */
     public function updateUserPassword($userId, $newPassword)
     {
-        $this->update('User', $userId . '/password', [
-            "NewPassword" => $newPassword
+        $this->update('User', $userId.'/password', [
+            'NewPassword' => $newPassword,
         ]);
     }
 
     /**
-     * @param $objectName
-     * @param $sfId
+     * @param  $sfId
      */
     public function delete($objectName, $id)
     {
-        return $this->forrest->sobjects($objectName. '/' . $id, [
-            'method' => 'delete'
+        return $this->forrest->sobjects($objectName.'/'.$id, [
+            'method' => 'delete',
         ]);
     }
 
     public function authenticate()
     {
-		/** @var TokenRepository $forrestToken */
+        /** @var TokenRepository $forrestToken */
         $forrestToken = app('forrest_token');
 
-		if(!$forrestToken->has()) {
-			$this->forrest->authenticate();
-		}
+        if (! $forrestToken->has()) {
+            $this->forrest->authenticate();
+        }
     }
 
     private function authenticated(\Closure $closure)

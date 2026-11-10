@@ -1,19 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateBioCertifiablesTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $tableName = 'bio_certifiables';
 
     /**
      * Run the migrations.
+     *
      * @table bio_certifiables
      *
      * @return void
@@ -27,13 +29,12 @@ class CreateBioCertifiablesTable extends Migration
             $table->unsignedInteger('bio_certifiable_id');
             $table->string('bio_certifiable_type')->comment('Cette colonne fait référence aux tables qui ont besoin d\'un type de certifactions bio : researches et land_offer_ads');
 
-            $table->index(["bio_certifiable_id"], 'ix_bio_certificationable_1');
+            $table->index(['bio_certifiable_id'], 'ix_bio_certificationable_1');
 
-            $table->index(["bio_certifiable_type"], 'ix_bio_certificationable_2');
+            $table->index(['bio_certifiable_type'], 'ix_bio_certificationable_2');
 
-            $table->index(["bio_certification_id"], 'fk_bio_certificationable_1_idx');
+            $table->index(['bio_certification_id'], 'fk_bio_certificationable_1_idx');
             $table->timestamps();
-
 
             $table->foreign('bio_certification_id', 'fk_bio_certificationable_1_idx')
                 ->references('id')->on('bio_certifications')
@@ -47,8 +48,8 @@ class CreateBioCertifiablesTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->tableName);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->tableName);
+    }
 }

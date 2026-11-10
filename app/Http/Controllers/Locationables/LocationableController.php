@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\Locationables;
 
 use App\Http\Controllers\Controller;
-use App\Models\Department;
-use App\Models\Region;
 use App\Services\Ads\AdService;
 use App\Services\Locations\LocationService;
-use Cache;
 use Illuminate\Http\Request;
 
 class LocationableController extends Controller
@@ -24,7 +21,7 @@ class LocationableController extends Controller
 
     public function locations(Request $request)
     {
-        if (!$request->get('q')) {
+        if (! $request->get('q')) {
             return response()->json(['error' => 'La requête est vide.']);
         }
 
@@ -33,7 +30,7 @@ class LocationableController extends Controller
 
     public function cities(Request $request)
     {
-        if (!$request->get('q')) {
+        if (! $request->get('q')) {
             return response()->json(['error' => 'La requête est vide.']);
         }
 
@@ -44,7 +41,7 @@ class LocationableController extends Controller
 
     public function departments(Request $request)
     {
-        if (!$request->get('q')) {
+        if (! $request->get('q')) {
             return response()->json(['error' => 'La requête est vide.']);
         }
 
@@ -55,7 +52,7 @@ class LocationableController extends Controller
 
     public function countries(Request $request)
     {
-        if (!$request->get('q')) {
+        if (! $request->get('q')) {
             return response()->json(['error' => 'La requête est vide.']);
         }
 
@@ -66,7 +63,7 @@ class LocationableController extends Controller
 
     public function citiesAndRegions(Request $request)
     {
-        if (!$request->get('q')) {
+        if (! $request->get('q')) {
             return response()->json(['error' => 'La requête est vide.']);
         }
 
@@ -77,7 +74,7 @@ class LocationableController extends Controller
 
     public function citiesAndDepartments(Request $request)
     {
-        if (!$request->get('q')) {
+        if (! $request->get('q')) {
             return response()->json(['error' => 'La requête est vide.']);
         }
 
@@ -88,7 +85,7 @@ class LocationableController extends Controller
 
     public function departmentsAndRegions(Request $request)
     {
-        if (!$request->get('q')) {
+        if (! $request->get('q')) {
             return response()->json(['error' => 'La requête est vide.']);
         }
 
@@ -100,25 +97,26 @@ class LocationableController extends Controller
     public function regionsPolygon(Request $request, AdService $adService)
     {
         if ($request->has('ad_category') && $request->has('offer_type')) {
-            $selectedAdType = $request->input('ad_category') . $request->input('offer_type');
+            $selectedAdType = $request->input('ad_category').$request->input('offer_type');
         } else {
             return response()->json([
-                'error' => 'Aucune catégorie d\'annonce séléctionnée'
+                'error' => 'Aucune catégorie d\'annonce séléctionnée',
             ]);
         }
+
         return response()->json($this->service->getRegionPolygons($selectedAdType));
     }
 
     public function departmentsPolygon(Request $request, AdService $adService)
     {
-        if (!$request->has('ad_category')) {
+        if (! $request->has('ad_category')) {
             return response()->json([
-                'error' => 'Aucune catégorie d\'annonce séléctionnée'
+                'error' => 'Aucune catégorie d\'annonce séléctionnée',
             ]);
         }
-        if (!$request->has('regions')) {
+        if (! $request->has('regions')) {
             return response()->json([
-                'error' => 'Aucune région séléctionnée'
+                'error' => 'Aucune région séléctionnée',
             ]);
         }
 
@@ -128,7 +126,7 @@ class LocationableController extends Controller
     public function adLocations(Request $request, AdService $adService)
     {
         $json = [];
-        foreach ($request->get("names") as $name) {
+        foreach ($request->get('names') as $name) {
 
             $json[] = $this->service->getLocationGeoPolygon($name, 'misc');
         }

@@ -8,7 +8,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class PartitionMetricControllerTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -24,7 +24,7 @@ class PartitionMetricControllerTest extends IntegrationTest
         $user->save();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/posts/metrics/posts-by-user');
+            ->get('/nova-api/posts/metrics/posts-by-user');
 
         $response->assertStatus(200);
         $this->assertEquals(['Taylor Otwell' => 2], $response->original['value']->value);
@@ -47,7 +47,7 @@ class PartitionMetricControllerTest extends IntegrationTest
         $post->save();
 
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/posts/metrics/word-count-by-user');
+            ->get('/nova-api/posts/metrics/word-count-by-user');
 
         $response->assertStatus(200);
         $this->assertEquals([$user->id => 150], $response->original['value']->value);

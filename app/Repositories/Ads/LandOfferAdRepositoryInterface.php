@@ -1,4 +1,6 @@
-<?php namespace App\Repositories\Ads;
+<?php
+
+namespace App\Repositories\Ads;
 
 use App\Models\LandOfferAd;
 

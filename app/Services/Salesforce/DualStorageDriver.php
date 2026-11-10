@@ -20,8 +20,8 @@ class DualStorageDriver extends LaravelCache
     /**
      * Initialize the dual storage driver.
      *
-     * @param \Illuminate\Contracts\Config\Repository $config
-     * @param \Illuminate\Contracts\Cache\Repository $cache
+     * @param  \Illuminate\Contracts\Config\Repository  $config
+     * @param  \Illuminate\Contracts\Cache\Repository  $cache
      */
     public function __construct($config = null, $cache = null)
     {
@@ -40,8 +40,8 @@ class DualStorageDriver extends LaravelCache
     /**
      * Store a value in both cache and file backup.
      *
-     * @param string $key
-     * @param mixed $value
+     * @param  string  $key
+     * @param  mixed  $value
      * @return mixed
      */
     public function put($key, $value)
@@ -58,7 +58,7 @@ class DualStorageDriver extends LaravelCache
     /**
      * Retrieve a value from cache, with automatic restoration from backup if missing.
      *
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     public function get($key)
@@ -67,14 +67,14 @@ class DualStorageDriver extends LaravelCache
         $value = parent::get($key);
 
         // If not in cache, try to restore from file backup
-        if (!$value) {
+        if (! $value) {
             $value = $this->restoreFromFile($key);
 
             if ($value) {
                 // Log the restoration for monitoring
                 logger()->info('Salesforce token restored from file backup', [
                     'key' => $key,
-                    'source' => 'file_backup'
+                    'source' => 'file_backup',
                 ]);
 
                 // Restore to cache for future requests
@@ -88,26 +88,26 @@ class DualStorageDriver extends LaravelCache
     /**
      * Backup a value to file system.
      *
-     * @param string $key
-     * @param mixed $value
+     * @param  string  $key
+     * @param  mixed  $value
      * @return void
      */
     private function backupToFile($key, $value)
     {
         try {
             // Create backup directory if it doesn't exist
-            if (!file_exists($this->backupPath)) {
+            if (! file_exists($this->backupPath)) {
                 mkdir($this->backupPath, 0755, true);
             }
 
             // Use MD5 hash of key as filename for security
-            $filename = $this->backupPath . md5($key) . '.json';
+            $filename = $this->backupPath.md5($key).'.json';
 
             // Store value with metadata
             $data = [
                 'key' => $key,
                 'value' => $value,
-                'stored_at' => now()->toIso8601String()
+                'stored_at' => now()->toIso8601String(),
             ];
 
             file_put_contents($filename, json_encode($data, JSON_PRETTY_PRINT));
@@ -115,13 +115,13 @@ class DualStorageDriver extends LaravelCache
             // Log successful backup
             logger()->debug('Salesforce token backed up to file', [
                 'key' => $key,
-                'file' => $filename
+                'file' => $filename,
             ]);
         } catch (\Exception $e) {
             // Log error but don't fail the request
             logger()->error('Failed to backup Salesforce token to file', [
                 'key' => $key,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -129,26 +129,27 @@ class DualStorageDriver extends LaravelCache
     /**
      * Restore a value from file backup.
      *
-     * @param string $key
+     * @param  string  $key
      * @return mixed|null
      */
     private function restoreFromFile($key)
     {
         try {
-            $filename = $this->backupPath . md5($key) . '.json';
+            $filename = $this->backupPath.md5($key).'.json';
 
-            if (!file_exists($filename)) {
+            if (! file_exists($filename)) {
                 return null;
             }
 
             $contents = file_get_contents($filename);
             $data = json_decode($contents, true);
 
-            if (!$data || !isset($data['value'])) {
+            if (! $data || ! isset($data['value'])) {
                 logger()->warning('Invalid backup file format', [
                     'key' => $key,
-                    'file' => $filename
+                    'file' => $filename,
                 ]);
+
                 return null;
             }
 
@@ -156,8 +157,9 @@ class DualStorageDriver extends LaravelCache
         } catch (\Exception $e) {
             logger()->error('Failed to restore Salesforce token from file', [
                 'key' => $key,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return null;
         }
     }

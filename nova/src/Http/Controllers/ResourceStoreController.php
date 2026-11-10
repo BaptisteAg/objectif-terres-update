@@ -12,7 +12,6 @@ class ResourceStoreController extends Controller
     /**
      * Create a new resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\CreateResourceRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function handle(CreateResourceRequest $request)
@@ -30,8 +29,8 @@ class ResourceStoreController extends Controller
 
             if ($request->viaRelationship()) {
                 $request->findParentModelOrFail()
-                        ->{$request->viaRelationship}()
-                        ->save($model);
+                    ->{$request->viaRelationship}()
+                    ->save($model);
             } else {
                 $model->save();
             }

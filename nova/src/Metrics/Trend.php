@@ -15,9 +15,13 @@ abstract class Trend extends RangedMetric
      * Trend metric unit constants.
      */
     const BY_MONTHS = 'month';
+
     const BY_WEEKS = 'week';
+
     const BY_DAYS = 'day';
+
     const BY_HOURS = 'hour';
+
     const BY_MINUTES = 'minute';
 
     /**
@@ -294,8 +298,8 @@ abstract class Trend extends RangedMetric
     /**
      * Return a value result showing a max aggregate over months.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Illuminate\Database\Eloquent\Builder|string $model
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
      * @param  string  $column
      * @param  string  $dateColumn
      * @return TrendResult
@@ -494,11 +498,11 @@ abstract class Trend extends RangedMetric
         $wrappedColumn = $query->getQuery()->getGrammar()->wrap($column);
 
         $results = $query
-                ->select(DB::raw("{$expression} as date_result, {$function}({$wrappedColumn}) as aggregate"))
-                ->whereBetween($dateColumn, [$startingDate, $endingDate])
-                ->groupBy(DB::raw($expression))
-                ->orderBy('date_result')
-                ->get();
+            ->select(DB::raw("{$expression} as date_result, {$function}({$wrappedColumn}) as aggregate"))
+            ->whereBetween($dateColumn, [$startingDate, $endingDate])
+            ->groupBy(DB::raw($expression))
+            ->orderBy('date_result')
+            ->get();
 
         $results = array_merge($possibleDateResults, $results->mapWithKeys(function ($result) use ($request, $unit) {
             return [$this->formatAggregateResultDate(
@@ -628,15 +632,13 @@ abstract class Trend extends RangedMetric
     /**
      * Get all of the possbile date results for the given units.
      *
-     * @param  \Cake\Chronos\Chronos  $startingDate
-     * @param  \Cake\Chronos\Chronos  $endingDate
      * @param  string  $unit
      * @param  mixed  $timezone
      * @param  bool  $twelveHourTime
      * @return array
      */
     protected function getAllPossibleDateResults(Chronos $startingDate, Chronos $endingDate,
-                                                 $unit, $timezone, $twelveHourTime)
+        $unit, $timezone, $twelveHourTime)
     {
         $nextDate = $startingDate;
 
@@ -677,7 +679,6 @@ abstract class Trend extends RangedMetric
     /**
      * Format the possible aggregate result date into a proper string.
      *
-     * @param  \Cake\Chronos\Chronos  $date
      * @param  string  $unit
      * @param  bool  $twelveHourTime
      * @return string

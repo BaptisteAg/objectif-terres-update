@@ -9,7 +9,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class LensActionControllerTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -33,10 +33,10 @@ class LensActionControllerTest extends IntegrationTest
         $user2 = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->post('/nova-api/users/lens/user-lens/action?action='.(new NoopAction)->uriKey(), [
-                            'resources' => implode(',', [$user->id, $user2->id]),
-                            'test' => 'Taylor Otwell',
-                        ]);
+            ->post('/nova-api/users/lens/user-lens/action?action='.(new NoopAction)->uriKey(), [
+                'resources' => implode(',', [$user->id, $user2->id]),
+                'test' => 'Taylor Otwell',
+            ]);
 
         $response->assertStatus(200);
         $this->assertEquals(['message' => 'Hello World'], $response->original);
@@ -48,10 +48,10 @@ class LensActionControllerTest extends IntegrationTest
         $user2 = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->post('/nova-api/users/lens/user-lens/action?action='.(new NoopAction)->uriKey(), [
-                            'resources' => 'all',
-                            'test' => 'Taylor Otwell',
-                        ]);
+            ->post('/nova-api/users/lens/user-lens/action?action='.(new NoopAction)->uriKey(), [
+                'resources' => 'all',
+                'test' => 'Taylor Otwell',
+            ]);
 
         $response->assertStatus(200);
         $this->assertEquals('Taylor Otwell', NoopAction::$appliedFields[0]->test);
@@ -65,9 +65,9 @@ class LensActionControllerTest extends IntegrationTest
         $user2 = factory(User::class)->create();
 
         $response = $this->withoutExceptionHandling()
-                        ->post('/nova-api/users/lens/paginating-user-lens/action?action='.(new NoopAction)->uriKey(), [
-                            'resources' => 'all',
-                        ]);
+            ->post('/nova-api/users/lens/paginating-user-lens/action?action='.(new NoopAction)->uriKey(), [
+                'resources' => 'all',
+            ]);
     }
 
     public function test_lens_actions_validation_rules_are_applied()

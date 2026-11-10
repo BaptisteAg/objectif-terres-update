@@ -1,8 +1,9 @@
-<?php namespace App\Http\Requests\Ads\Rulesets;
+<?php
+
+namespace App\Http\Requests\Ads\Rulesets;
 
 use App\Http\Requests\Ads\RulesetInterface;
 use App\Rules\HasProductionGenre;
-use App\Rules\HasZone;
 use Illuminate\Support\Facades\Request;
 
 class LandOfferRuleset implements RulesetInterface
@@ -32,27 +33,28 @@ class LandOfferRuleset implements RulesetInterface
             'land_offer.rent_price' => ['required_if:land_offer.offer_genres.*,2'],
             'land_offer.test_description' => ['required_if:land_offer.offer_genres.*,3'],
 
-            //'land_offer.is_beneficiary'                          => ['required', 'boolean'],
-            //'land_offer.house_offer_genre'                       => ['array'],
-            //'land_offer.is_call_for_application_community'       => ['boolean'],
-            //'land_offer.is_call_for_application_terre_de_liens'  => ['boolean'],
-            //'land_offer.is_call_for_application_test_area'       => ['boolean'],
-            //'land_offer.is_activity_transfer'                    => ['required', 'boolean'],
-            //'land_offer.land_availability'                       => ['nullable', 'date'],
-            //'land_offer.land_transfer_deadline'                  => ['nullable', 'date'],
-            //'land_offer.land_price'                              => ['nullable', 'integer'],
-            //'land_offer.house_price'                             => ['nullable', 'integer'],
-            //'land_offer.building_price'                          => ['nullable', 'integer'],
-            //'land_offer.confirm_price_fermage'                   => ['boolean'],
-            //'land_offer.building_number'                         => ['nullable', 'string'],
-            //'land_offer.building_surface'                        => ['nullable', 'string'],
-            //'land_offer.house_number'                            => ['nullable', 'string'],
-            //'land_offer.house_surface'                           => ['nullable', 'string'],
+            // 'land_offer.is_beneficiary'                          => ['required', 'boolean'],
+            // 'land_offer.house_offer_genre'                       => ['array'],
+            // 'land_offer.is_call_for_application_community'       => ['boolean'],
+            // 'land_offer.is_call_for_application_terre_de_liens'  => ['boolean'],
+            // 'land_offer.is_call_for_application_test_area'       => ['boolean'],
+            // 'land_offer.is_activity_transfer'                    => ['required', 'boolean'],
+            // 'land_offer.land_availability'                       => ['nullable', 'date'],
+            // 'land_offer.land_transfer_deadline'                  => ['nullable', 'date'],
+            // 'land_offer.land_price'                              => ['nullable', 'integer'],
+            // 'land_offer.house_price'                             => ['nullable', 'integer'],
+            // 'land_offer.building_price'                          => ['nullable', 'integer'],
+            // 'land_offer.confirm_price_fermage'                   => ['boolean'],
+            // 'land_offer.building_number'                         => ['nullable', 'string'],
+            // 'land_offer.building_surface'                        => ['nullable', 'string'],
+            // 'land_offer.house_number'                            => ['nullable', 'string'],
+            // 'land_offer.house_surface'                           => ['nullable', 'string'],
         ];
 
         if ($isSupportRequest) {
-            return array_merge($rules, ['land_offer.is_activity_transfer' => ['numeric', 'required'],]);
+            return array_merge($rules, ['land_offer.is_activity_transfer' => ['numeric', 'required']]);
         }
+
         return $rules;
     }
 
@@ -64,6 +66,7 @@ class LandOfferRuleset implements RulesetInterface
         } elseif (in_array(1, Request::input('land_offer.offer_genres'))) {
             $rules[] = 'required';
         }
+
         return $rules;
     }
 }

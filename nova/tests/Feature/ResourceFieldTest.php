@@ -12,7 +12,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class ResourceFieldTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
     }

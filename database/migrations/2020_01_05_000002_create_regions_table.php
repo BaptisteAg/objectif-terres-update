@@ -6,11 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateRegionsTable extends Migration
 {
-	/**
-	 * Schema table name to migrate
-	 * @var string
-	 */
-	public $tableName = 'regions';
+    /**
+     * Schema table name to migrate
+     *
+     * @var string
+     */
+    public $tableName = 'regions';
 
     /**
      * Run the migrations.
@@ -20,12 +21,12 @@ class CreateRegionsTable extends Migration
     public function up()
     {
         Schema::create($this->tableName, function (Blueprint $table) {
-			$table->engine = 'InnoDB';
-			$table->collation = 'utf8mb4_unicode_ci';
+            $table->engine = 'InnoDB';
+            $table->collation = 'utf8mb4_unicode_ci';
             $table->increments('id');
             $table->string('code')->unique();
-			$table->string('name');
-			$table->string('slug');
+            $table->string('name');
+            $table->string('slug');
             $table->timestamps();
         });
     }
@@ -37,6 +38,6 @@ class CreateRegionsTable extends Migration
      */
     public function down()
     {
-		Schema::dropIfExists($this->tableName);
+        Schema::dropIfExists($this->tableName);
     }
 }

@@ -9,9 +9,6 @@ class AdStatusCalculatorService
 {
     /**
      * Calculate the status of an ad for API response
-     *
-     * @param Ad $ad
-     * @return string
      */
     public function calculateStatus(Ad $ad): string
     {
@@ -37,6 +34,7 @@ class AdStatusCalculatorService
                         if ($attribution->published_on !== null) {
                             return 'published';
                         }
+
                         return 'approved';
 
                     case AdStatus::PENDING_ID:
@@ -65,9 +63,6 @@ class AdStatusCalculatorService
 
     /**
      * Check if an ad should be included in published results
-     *
-     * @param Ad $ad
-     * @return bool
      */
     public function isPublished(Ad $ad): bool
     {
@@ -76,9 +71,6 @@ class AdStatusCalculatorService
 
     /**
      * Check if an ad should be included in archived results
-     *
-     * @param Ad $ad
-     * @return bool
      */
     public function isArchived(Ad $ad): bool
     {
@@ -87,9 +79,6 @@ class AdStatusCalculatorService
 
     /**
      * Check if an ad should be included in deleted results
-     *
-     * @param Ad $ad
-     * @return bool
      */
     public function isDeleted(Ad $ad): bool
     {

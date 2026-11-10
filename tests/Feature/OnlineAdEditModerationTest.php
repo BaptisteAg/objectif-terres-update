@@ -47,29 +47,29 @@ class OnlineAdEditModerationTest extends TestCase
     /**
      * Une annonce en ligne est visible par un visiteur anonyme.
      */
-    public function testOnlineAdIsPubliclyVisible(): void
+    public function test_online_ad_is_publicly_visible(): void
     {
         $ad = $this->createOnlineAd();
 
-        $this->get('/annonces/' . $ad->id)->assertStatus(200);
+        $this->get('/annonces/'.$ad->id)->assertStatus(200);
     }
 
     /**
      * Reproduction du bug : une annonce validée et publiée mais marquée brouillon renvoie un 404.
      */
-    public function testPublishedAdMarkedAsDraftIsNotFound(): void
+    public function test_published_ad_marked_as_draft_is_not_found(): void
     {
         $ad = $this->createOnlineAd();
         $this->markAsDraft($ad);
 
-        $this->get('/annonces/' . $ad->id)->assertStatus(404);
+        $this->get('/annonces/'.$ad->id)->assertStatus(404);
     }
 
     /**
      * Édition d'une annonce en ligne : elle repart en modération ET disparaît du public
      * (principe de précaution demandé par Terre de Liens), au lieu de rester visible.
      */
-    public function testEditingAnOnlineAdSendsItBackToModerationAndHidesIt(): void
+    public function test_editing_an_online_ad_sends_it_back_to_moderation_and_hides_it(): void
     {
         $ad = $this->createOnlineAd();
 
@@ -80,7 +80,7 @@ class OnlineAdEditModerationTest extends TestCase
         $ad->refresh();
 
         $this->assertSame('Titre modifié', $ad->title);
-        $this->assertSame(0, (int)$ad->is_draft, "L'annonce n'est pas un brouillon, mais en re-modération.");
+        $this->assertSame(0, (int) $ad->is_draft, "L'annonce n'est pas un brouillon, mais en re-modération.");
         $this->assertSame(
             AdStatus::PENDING_MODERATION_STATUS_ID,
             $ad->attributionAd->ad_status_id,
@@ -90,13 +90,13 @@ class OnlineAdEditModerationTest extends TestCase
 
         // Masquée du public tant qu'elle n'est pas revalidée.
         auth()->logout();
-        $this->get('/annonces/' . $ad->id)->assertStatus(404);
+        $this->get('/annonces/'.$ad->id)->assertStatus(404);
     }
 
     /**
      * Un tiers ne peut pas modifier l'annonce d'un autre en postant son identifiant.
      */
-    public function testAnotherUserCannotUpdateSomeoneElsesAd(): void
+    public function test_another_user_cannot_update_someone_elses_ad(): void
     {
         $ad = $this->createOnlineAd();
         $intruder = $this->createUser(0);
@@ -112,28 +112,28 @@ class OnlineAdEditModerationTest extends TestCase
      * Chemin B : « Demander la publication » sur une annonce en ligne la renvoie aussi en modération
      * (et la masque), sans la dépublier définitivement ni la laisser visible.
      */
-    public function testRequestPublishingOnOnlineAdSendsItBackToModeration(): void
+    public function test_request_publishing_on_online_ad_sends_it_back_to_moderation(): void
     {
         $ad = $this->createOnlineAd();
 
         $this->actingAs($ad->userPp)
-            ->get('/annonces/request-publishing/' . $ad->id)
+            ->get('/annonces/request-publishing/'.$ad->id)
             ->assertRedirect(route('ads.show', [$ad->id]));
 
         $ad->refresh();
 
-        $this->assertSame(0, (int)$ad->is_draft);
+        $this->assertSame(0, (int) $ad->is_draft);
         $this->assertSame(AdStatus::PENDING_MODERATION_STATUS_ID, $ad->attributionAd->ad_status_id);
         $this->assertNotNull($ad->attributionAd->pending_update_since);
 
         auth()->logout();
-        $this->get('/annonces/' . $ad->id)->assertStatus(404);
+        $this->get('/annonces/'.$ad->id)->assertStatus(404);
     }
 
     /**
      * La re-validation par le modérateur remet l'annonce en ligne et lève le marqueur.
      */
-    public function testAcceptingBringsTheAdBackOnlineAndClearsMarker(): void
+    public function test_accepting_brings_the_ad_back_online_and_clears_marker(): void
     {
         $ad = $this->createOnlineAd();
 
@@ -142,7 +142,7 @@ class OnlineAdEditModerationTest extends TestCase
             ->post('/annonces/sauvegarder', $this->adFormPayload($ad, 'Titre modifié'));
         $ad->refresh();
         auth()->logout();
-        $this->get('/annonces/' . $ad->id)->assertStatus(404);   // masquée (anonyme)
+        $this->get('/annonces/'.$ad->id)->assertStatus(404);   // masquée (anonyme)
 
         // Le modérateur revalide (acteur authentifié requis par l'observateur d'historique).
         $this->actingAs($ad->userPp);
@@ -151,17 +151,17 @@ class OnlineAdEditModerationTest extends TestCase
 
         $ad->refresh();
         $this->assertSame(AdStatus::APPROVE_ID, $ad->attributionAd->ad_status_id);
-        $this->assertSame(0, (int)$ad->is_draft);
+        $this->assertSame(0, (int) $ad->is_draft);
         $this->assertNull($ad->attributionAd->pending_update_since);
 
         auth()->logout();
-        $this->get('/annonces/' . $ad->id)->assertStatus(200);   // de nouveau visible
+        $this->get('/annonces/'.$ad->id)->assertStatus(200);   // de nouveau visible
     }
 
     /**
      * Non-régression : un brouillon jamais publié reste invisible du public.
      */
-    public function testNeverPublishedDraftStaysHidden(): void
+    public function test_never_published_draft_stays_hidden(): void
     {
         $userPp = $this->createUser(0);
 
@@ -177,13 +177,13 @@ class OnlineAdEditModerationTest extends TestCase
 
         auth()->logout();
 
-        $this->get('/annonces/' . $ad->id)->assertStatus(404);
+        $this->get('/annonces/'.$ad->id)->assertStatus(404);
     }
 
     /**
      * La commande de réparation ne modifie rien en dry-run, puis remet l'annonce en ligne.
      */
-    public function testRepairCommandDryRunDoesNotChangeAnything(): void
+    public function test_repair_command_dry_run_does_not_change_anything(): void
     {
         $ad = $this->createOnlineAd();
         $this->markAsDraft($ad);
@@ -192,13 +192,13 @@ class OnlineAdEditModerationTest extends TestCase
             ->assertExitCode(0);
 
         $ad->refresh();
-        $this->assertSame(1, (int)$ad->is_draft);
+        $this->assertSame(1, (int) $ad->is_draft);
 
         $this->artisan('ads:repair-published-drafts')->assertExitCode(0);
 
         $ad->refresh();
-        $this->assertSame(0, (int)$ad->is_draft);
-        $this->get('/annonces/' . $ad->id)->assertStatus(200);
+        $this->assertSame(0, (int) $ad->is_draft);
+        $this->get('/annonces/'.$ad->id)->assertStatus(200);
     }
 
     /**
@@ -285,8 +285,8 @@ class OnlineAdEditModerationTest extends TestCase
     {
         return User::create([
             'name' => 'Test',
-            'first_name' => 'Role' . $role,
-            'email' => uniqid('user-', false) . '@example.test',
+            'first_name' => 'Role'.$role,
+            'email' => uniqid('user-', false).'@example.test',
             'password' => bcrypt('secret'),
             'role' => $role,
         ]);

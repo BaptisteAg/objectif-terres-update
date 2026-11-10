@@ -39,8 +39,8 @@ class Select extends Field
     {
         return $this->displayUsing(function ($value) {
             return collect($this->meta['options'])
-                    ->where('value', $value)
-                    ->first()['label'] ?? $value;
+                ->where('value', $value)
+                ->first()['label'] ?? $value;
         });
     }
 }

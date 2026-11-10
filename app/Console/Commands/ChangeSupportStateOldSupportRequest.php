@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Jobs\ChangeSupportStateOldSupportRequest as ChangeSupportStateOldSupportRequestJob;
+use Illuminate\Console\Command;
 
 class ChangeSupportStateOldSupportRequest extends Command
 {
@@ -23,11 +23,9 @@ class ChangeSupportStateOldSupportRequest extends Command
 
     private $changeSupportStateOldSupportRequest;
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @param ChangeSupportStateOldSupportRequestJob $changeSupportStateOldSupportRequest
-	 */
+    /**
+     * Create a new command instance.
+     */
     public function __construct(ChangeSupportStateOldSupportRequestJob $changeSupportStateOldSupportRequest)
     {
         parent::__construct();

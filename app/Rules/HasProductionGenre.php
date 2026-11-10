@@ -25,6 +25,6 @@ class HasProductionGenre implements Rule
      */
     public function message()
     {
-        return "Vous devez sélectionner au moins une production envisagée";
+        return 'Vous devez sélectionner au moins une production envisagée';
     }
 }

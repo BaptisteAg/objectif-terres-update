@@ -1,4 +1,6 @@
-<?php namespace App\Repositories\Ads;
+<?php
+
+namespace App\Repositories\Ads;
 
 use App\Models\Ad;
 use App\Models\AdStatus;
@@ -14,15 +16,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
 /**
  * Class AdRepository
- * @package App\Repositories\Ads
+ *
  * @property Ad $entity
  */
 class AdRepository extends AbstractRepository implements AdRepositoryInterface
@@ -43,7 +43,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     {
         $ad = $this->entity
             ->withTrashed()
-            ->where(["id" => $id])
+            ->where(['id' => $id])
             ->firstOrFail();
 
         if (auth()->user()) {
@@ -58,38 +58,37 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     }
 
     /**
-     * @param $id
      * @return Ad
      */
     public function findWithTrashedUser($id)
     {
         /** @var Ad $model */
         $model = $this->entity
-            ->where(["id" => $id])
+            ->where(['id' => $id])
             ->with($this->getDashboardsEagerLoading())
             ->first();
 
-        if (!$model) {
+        if (! $model) {
             throw (new ModelNotFoundException)->setModel(
                 get_class($this->entity->getModel()),
                 $id
             );
         }
+
         return $model;
     }
-
 
     /**
      * Creates an ad.
      *
      * @param int
      * @param array
-     * @return Ad
+     *
      * @throws \Throwable
      */
     public function create(array $data): Ad
     {
-        $ad = new Ad();
+        $ad = new Ad;
         $ad->user_pp_id = auth()->user()->id;
 
         $this->save($ad, $data);
@@ -102,12 +101,12 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
      *
      * @param int
      * @param array
-     * @return Ad
+     *
      * @throws \Throwable
      */
     public function createForUser(array $data, $userId): Ad
     {
-        $ad = new Ad();
+        $ad = new Ad;
         $ad->user_pp_id = $userId;
 
         $this->save($ad, $data);
@@ -118,30 +117,26 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     /**
      * Updates an ad.
      *
-     * @param Ad|int $ad
-     * @param array $data
-     * @return Ad
+     * @param  Ad|int  $ad
+     *
      * @throws \Throwable
      */
     public function update($ad, array $data): Ad
     {
 
-        if (!isset($data["accept_share_contact_infos"])) {
-            $data["accept_share_contact_infos"] = 0;
+        if (! isset($data['accept_share_contact_infos'])) {
+            $data['accept_share_contact_infos'] = 0;
         }
 
-        if (!is_a($ad, Ad::class)) {
+        if (! is_a($ad, Ad::class)) {
             $ad = $this->find($ad);
         }
 
         $this->save($ad, $data);
+
         return $ad;
     }
 
-    /**
-     * @param Ad $ad
-     * @param array $data
-     */
     private function save(Ad $ad, array $data): void
     {
         if (isset($data['ad_contact_type']) && $data['ad_contact_type'] === 'thirdParty') {
@@ -150,38 +145,36 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         }
 
         // If department is not set, we set it to the first city's department
-        if (empty($data["department_id"]) && !empty($data["locationable"]["cities"])) {
-            $cityId = $data["locationable"]["cities"][0];
+        if (empty($data['department_id']) && ! empty($data['locationable']['cities'])) {
+            $cityId = $data['locationable']['cities'][0];
             $city = City::find($cityId);
-            $data["department_id"] = $city->department->id;
+            $data['department_id'] = $city->department->id;
         }
-
 
         $ad->fill($data);
         $ad->save();
 
-
         // If department is set but there are no other locationable
-        if (isset($data["department_id"])) {
-            if (!isset($data["locationable"]["departments"])) {
-                if (!isset($data["locationable"])) {
-                    $data["locationable"] = [];
+        if (isset($data['department_id'])) {
+            if (! isset($data['locationable']['departments'])) {
+                if (! isset($data['locationable'])) {
+                    $data['locationable'] = [];
                 }
-                $data["locationable"]["departments"] = [];
+                $data['locationable']['departments'] = [];
             }
 
             // Push into first position of array
             // This is important because the first department is the main one
-            $data["locationable"]["departments"] = array_merge([$data["department_id"]], $data["locationable"]["departments"]);
+            $data['locationable']['departments'] = array_merge([$data['department_id']], $data['locationable']['departments']);
         }
 
-        foreach (["cities", "departments", "regions"] as $locationableType) {
-            $locationables = array_unique($data["locationable"][$locationableType] ?? []);
+        foreach (['cities', 'departments', 'regions'] as $locationableType) {
+            $locationables = array_unique($data['locationable'][$locationableType] ?? []);
 
             if (count($locationables)) {
                 $extraFields = [];
-                if (isset($data["locationable_radius"])) {
-                    $extraFields = ["radius" => $data["locationable_radius"]];
+                if (isset($data['locationable_radius'])) {
+                    $extraFields = ['radius' => $data['locationable_radius']];
                 }
                 /** @var MorphToMany $locationableEntityQuery */
                 $locationableEntityQuery = $ad->$locationableType();
@@ -190,12 +183,11 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             }
         }
 
-
-        if (!empty($data["documents_ids"]) && is_array($data["documents_ids"])) {
-            $ad->documents()->sync($data["documents_ids"]);
+        if (! empty($data['documents_ids']) && is_array($data['documents_ids'])) {
+            $ad->documents()->sync($data['documents_ids']);
         }
-        if (!array_key_exists('is_partner', $data) && !array_key_exists('documents_ids', $data)) {
-            //In case user remove document when editing his ad
+        if (! array_key_exists('is_partner', $data) && ! array_key_exists('documents_ids', $data)) {
+            // In case user remove document when editing his ad
             $ad->documents()->sync([]);
         }
 
@@ -206,6 +198,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
      * Delete an  ad.
      *
      * @param int
+     *
      * @throws \Exception
      */
     public function destroy(int $id)
@@ -218,6 +211,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
      * Delete an  ad.
      *
      * @param int
+     *
      * @throws \Exception
      */
     public function archive(int $id)
@@ -235,7 +229,6 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     /**
      * Republish an archived ad
      *
-     * @param int $id
      * @return void
      */
     public function republish(int $id)
@@ -257,17 +250,15 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         $ad->touch();
     }
 
-
     /**
      * Find all ads and projects by user id
-     * @param  $idUser
-     * @param array $conditions
-     * @return Collection
+     *
+     * @param  array  $conditions
      */
     public function allByIdUser($idUser, $conditions = []): Collection
     {
         $query = $this->entity
-            ->where(["user_pp_id" => $idUser])
+            ->where(['user_pp_id' => $idUser])
             ->with($this->getDashboardsEagerLoading())
             ->orderByDesc('id');
 
@@ -284,14 +275,12 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
 
     /**
      * Find all ads by user id
-     * @param  $idUser
-     * @return Collection
      */
     public function allAdsByIdUser($idUser): Collection
     {
         /** @var Collection $model */
         $models = $this->entity
-            ->where(["user_pp_id" => $idUser])
+            ->where(['user_pp_id' => $idUser])
             ->whereNull('project_id')
             ->with([
                 'attributionAd',
@@ -309,17 +298,14 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                 'documents',
                 'userPp' => function ($query) {
                     $query->withTrashed();
-                }
+                },
             ])
             ->orderByDesc('id')
             ->get();
+
         return $models;
     }
 
-    /**
-     * @param array $territoriesCode
-     * @return Collection
-     */
     public function allAdsInTerritories(array $territoriesCode): Collection
     {
         /** @var Collection $models */
@@ -342,19 +328,17 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                 'departments.region',
                 'regions',
                 'cities',
-                'cities.department'
-
+                'cities.department',
 
             ])
             ->get();
+
         return $models;
     }
 
     /**
      * Find all ads (simple ads or projects) in user (supervisor or advisor) territories
-     * @param array $territoriesCode
-     * @param array $territoriesIds
-     * @param bool $toPaginate
+     *
      * @return LengthAwarePaginator|Builder[]|Collection
      */
     public function allInTerritories(array $territoriesCode, array $territoriesIds, bool $toPaginate)
@@ -371,7 +355,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                     if (auth()->user()->role == 2) {
                         $query->whereNotNull('user_advisor_id');
                         $query->orWhere('user_advisor_id', '=', auth()->user()->id);
-                    } else if (auth()->user()->role >= 3) {
+                    } elseif (auth()->user()->role >= 3) {
                         $query->where('user_supervisor_id', '=', auth()->user()->id);
                     }
                 });
@@ -406,15 +390,13 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         } else {
             $ads = $models->get();
         }
+
         return $ads;
     }
 
-
     /**
      * Find all  projects in user (supervisor or advisor) territories
-     * @param array $userLocationTerritoryRegionsId
-     * @param array $territoriesCode
-     * @param bool $toPaginate
+     *
      * @return LengthAwarePaginator|Builder[]|Collection
      */
     public function allProjectsInTerritories(array $territoriesCode, array $userLocationTerritoryRegionsId, bool $toPaginate)
@@ -439,7 +421,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                                 ->orWhere('user_advisor_3_id', '=', auth()->user()->id)
                                 ->orWhere('user_advisor_4_id', '=', auth()->user()->id);
                         });
-                    } else if (auth()->user()->role >= 3) {
+                    } elseif (auth()->user()->role >= 3) {
                         $subQuery->where('user_supervisor_id', '=', auth()->user()->id);
                     }
                 });
@@ -484,20 +466,18 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             ->orderByDesc('a.created_at')
             ->with($this->getDashboardsEagerLoading());
 
-
         if ($toPaginate) {
             $ads = $models->paginate(15);
         } else {
             $ads = $models->get();
         }
+
         return $ads;
     }
 
     /**
      * Find all not assigned projects in user (supervisor or advisor) territories
-     * @param array $territoriesIds
-     * @param array $territoryCodes
-     * @param bool $toPaginate
+     *
      * @return LengthAwarePaginator|Builder[]|Collection
      */
     public function allNotAssignedProjectsInTerritories(array $territoriesIds, array $territoryCodes, bool $toPaginate)
@@ -515,7 +495,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                         $subQuery->whereNull('ad_status_id');
                         if (auth()->user()->role == 2) {
                             $subQuery->where('user_advisor_id', '=', auth()->user()->id);
-                        } else if (auth()->user()->role >= 3) {
+                        } elseif (auth()->user()->role >= 3) {
                             $subQuery->where('user_supervisor_id', '=', auth()->user()->id);
                         }
                     });
@@ -525,9 +505,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                 });
                 $builder->filterSupportRequestRegionId($territoriesIds, auth()->user()->role);
                 //	TODO delete if this method not necessary anymore
-                //previous system when column support_region_id_region did not exist
+                // previous system when column support_region_id_region did not exist
                 $builder->orWhere(function (Builder $query) use ($territoryCodes) {
-//					$query->whereNull('support_request_territory_id');
+                    //					$query->whereNull('support_request_territory_id');
                     $query->whereNotNull('project_id');
                     $query->where('is_draft', '=', 0);
                     $query->whereHas('attributionAd', function (Builder $subQuery) {
@@ -563,14 +543,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         } else {
             $ads = $models->get();
         }
+
         return $ads;
     }
 
-    /**
-     * @param array $territoriesCode
-     * @param int $adStatusId
-     * @return Collection
-     */
     public function allInTerritoriesByAdStatus(array $territoriesCode, int $adStatusId): Collection
     {
         /** @var Collection $models */
@@ -587,14 +563,14 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             })
             ->with('attributionAd')
             ->get();
+
         return $models;
     }
 
     /**
      * Get all ads (projects and ads) related to a supervisor or an advisor submitted between dates
-     * @param array $territoryCodes
-     * @param array $territoriesIds
-     * @param array|null $dates
+     *
+     * @param  array|null  $dates
      * @return Builder[]|Collection
      */
     public function findAllByUserTerritoriesAndDates(array $territoryCodes, array $territoriesIds, array $dates)
@@ -609,7 +585,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                 $builder->whereHas('attributionAd', function (Builder $subQuery) {
                     if (auth()->user()->role == 2) {
                         $subQuery->where('user_advisor_id', '=', auth()->user()->id);
-                    } else if (auth()->user()->role >= 3) {
+                    } elseif (auth()->user()->role >= 3) {
                         $subQuery->where('user_supervisor_id', '=', auth()->user()->id);
                     }
                 });
@@ -636,12 +612,12 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                     $subQuery->whereNull('deleted_at');
                 });
                 $query->whereHas('project', function (Builder $subQuery) use ($dates) {
-                    $subQuery->whereBetween('created_at', [$dates[0], $dates[1] . " 23:59:59"]);
+                    $subQuery->whereBetween('created_at', [$dates[0], $dates[1].' 23:59:59']);
                 });
                 $query->orWhere(function (Builder $subQuery) use ($dates) {
                     $subQuery->whereNull('project_id');
                     $subQuery->whereHas('attributionAd', function (Builder $q) use ($dates) {
-                        $q->whereBetween('created_at', [$dates[0], $dates[1] . " 23:59:59"]);
+                        $q->whereBetween('created_at', [$dates[0], $dates[1].' 23:59:59']);
                     });
                 });
             });
@@ -651,7 +627,6 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     }
 
     /**
-     * @param bool $toPaginate
      * @return Ad[]|LengthAwarePaginator|Builder[]|Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
      */
     public function findAllPublished(bool $toPaginate)
@@ -677,13 +652,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         if ($toPaginate === true) {
             return $ads->paginate(15);
         }
+
         return $ads->get();
     }
 
-    /**
-     * @param int $numberOfDays
-     * @return Collection
-     */
     public function findAllPublishedSinceDays(int $numberOfDays): Collection
     {
         return $this->entity
@@ -694,10 +666,6 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             ->get();
     }
 
-    /**
-     * @param $selectedAdType
-     * @return Collection
-     */
     public function findAllPublishedWithLocations($selectedAdType): Collection
     {
         /*return $this->entity
@@ -714,19 +682,14 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                 $query->whereNotNull('published_on');
                 $query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
             })
-            ->join('attribution_ads', "ads.id", '=', "attribution_ads.ad_id")
+            ->join('attribution_ads', 'ads.id', '=', 'attribution_ads.ad_id')
             ->select('ads.*')
             ->filterAdTypes([$selectedAdType])
             ->with($this->getLocationEagerLoading())
             ->get();
 
-
     }
 
-    /**
-     * @param $selectedAdType
-     * @return Collection
-     */
     public function findAllPublishedInRegionWithLocations($selectedAdType, $regionCode): Collection
     {
         $adsQuery = $this->entity
@@ -734,14 +697,14 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                 $query->whereNotNull('published_on');
                 $query->where('ad_status_id', '=', AdStatus::APPROVE_ID);
             })
-            ->join('attribution_ads', "ads.id", '=', "attribution_ads.ad_id")
+            ->join('attribution_ads', 'ads.id', '=', 'attribution_ads.ad_id')
             ->select('ads.*')
             ->with($this->getLocationEagerLoading());
 
-        if($regionCode) {
+        if ($regionCode) {
             $adsQuery->filterRegions($regionCode);
         }
-        if($selectedAdType !== "all") {
+        if ($selectedAdType !== 'all') {
             $adsQuery->filterAdTypes([$selectedAdType]);
         }
 
@@ -761,27 +724,22 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     }
 
     /**
-     * @param Request $filters
-     * @param int $roleUser
-     * @param array $userTerritories
-     * @param array $userTerritoriesRegionsId
-     * @param bool $toPaginate
      * @return Ad[]|LengthAwarePaginator|Builder[]|Collection
      */
     public function filterAds(Request $filters, int $roleUser, array $userTerritories, array $userTerritoriesRegionsId, bool $toPaginate)
     {
-        //START QUERY
-        $adsFiltred = (new Ad())->newQuery();
+        // START QUERY
+        $adsFiltred = (new Ad)->newQuery();
 
-        //Remove all trashed users
+        // Remove all trashed users
         $adsFiltred->whereHas('userPp', function (Builder $query) {
             $query->whereNull('deleted_at');
         });
-        //Remove all draft ads or support request
+        // Remove all draft ads or support request
         $adsFiltred->where('is_draft', '=', 0);
 
-        if (Route::currentRouteName() === "advisor.show" || Route::currentRouteName() === "advisor.export") {
-            //Remove all support request that are not attributed to anyone by the supervisor in advisors dashboard
+        if (Route::currentRouteName() === 'advisor.show' || Route::currentRouteName() === 'advisor.export') {
+            // Remove all support request that are not attributed to anyone by the supervisor in advisors dashboard
             $adsFiltred->where(function (Builder $query) {
                 $query->where(function (Builder $subQuery) {
                     $subQuery->whereNull('project_id');
@@ -801,9 +759,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             });
         }
 
-        //Additional filters  : filter by ads attributed to advisor
+        // Additional filters  : filter by ads attributed to advisor
         if ($filters->has('user_attribution')) {
-            if (!is_null($filters->input('user_attribution'))) {
+            if (! is_null($filters->input('user_attribution'))) {
                 $adsFiltred->whereHas('attributionAd', function (Builder $subQuery) {
                     $subQuery->where('user_advisor_id', '=', auth()->id())
                         ->orWhere('user_advisor_2_id', '=', auth()->id())
@@ -812,33 +770,33 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                 });
             }
         }
-        //Additional filters  : filter by surface range
+        // Additional filters  : filter by surface range
         if ($filters->has('surfaces_research_min')) {
-            if (!is_null($filters->input('surfaces_research_min'))) {
+            if (! is_null($filters->input('surfaces_research_min'))) {
                 $adsFiltred->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('surface_range_min', 'surface', '>=', $filters->input('surfaces_research_min'));
             }
         }
-        //Additional filters  : filter by surface range
+        // Additional filters  : filter by surface range
         if ($filters->has('surfaces_research_max')) {
-            if (!is_null($filters->input('surfaces_research_max'))) {
+            if (! is_null($filters->input('surfaces_research_max'))) {
                 $adsFiltred->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('surface_range_max', 'surface', '<=', $filters->input('surfaces_research_max'));
             }
         }
-        //Additional filters  : filter by min_price
+        // Additional filters  : filter by min_price
         if ($filters->has('price_min')) {
-            if (!is_null($filters->input('price_min'))) {
+            if (! is_null($filters->input('price_min'))) {
                 $adsFiltred->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('price_max', 'price', '>=', $filters->input('price_min'));
             }
         }
-        //Additional filters  : filter by max_price
+        // Additional filters  : filter by max_price
         if ($filters->has('price_max')) {
-            if (!is_null($filters->input('price_max'))) {
+            if (! is_null($filters->input('price_max'))) {
                 $adsFiltred->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('price_max', 'price', '<=', $filters->input('price_max'));
             }
         }
-        //Additional filters  : filter by production_genres
+        // Additional filters  : filter by production_genres
         if ($filters->has('production_genres')) {
-            if (!is_null($filters->input('production_genres'))) {
+            if (! is_null($filters->input('production_genres'))) {
                 $adsFiltred->where(function (Builder $query) use ($filters) {
                     $query->whereHas('landSeekAd.productionGenres', function (Builder $query) use ($filters) {
                         $query->whereIn('production_genres.id', $filters->input('production_genres'));
@@ -855,9 +813,9 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                 });
             }
         }
-        //Additional filters  : filter by bio_certification
+        // Additional filters  : filter by bio_certification
         if ($filters->has('bio_certifications')) {
-            if (!is_null($filters->input('bio_certifications'))) {
+            if (! is_null($filters->input('bio_certifications'))) {
                 $adsFiltred->where(function (Builder $query) use ($filters) {
                     $query->whereHas('landOfferAd.bioCertifications', function (Builder $query) use ($filters) {
                         $query->whereIn('bio_certifications.id', $filters->input('bio_certifications'));
@@ -866,15 +824,14 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             }
         }
 
-
-        //Filter result by types : display ads or projects or both
-        if ($filters->has('ads_show') && (!$filters->has('projects_show'))) {
+        // Filter result by types : display ads or projects or both
+        if ($filters->has('ads_show') && (! $filters->has('projects_show'))) {
             $adsFiltred->whereNull('project_id');
-        } elseif ($filters->has('projects_show') && (!$filters->has('ads_show'))) {
+        } elseif ($filters->has('projects_show') && (! $filters->has('ads_show'))) {
             $adsFiltred->whereNotNull('project_id');
         }
 
-        //Filter results by project attribution status
+        // Filter results by project attribution status
         if ($filters->has('project_attribution')) {
             $adsFiltred->whereNotNull('project_id');
             $adsFiltred->where(function (Builder $builder) use ($filters) {
@@ -894,10 +851,10 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             });
         }
 
-        //Filter projects based on their locations if requested
+        // Filter projects based on their locations if requested
         if ($filters->has('locations')) {
             $locations = $filters->input('locations');
-            //If one or more departments are selected, get all ads located in departments and cities in departments
+            // If one or more departments are selected, get all ads located in departments and cities in departments
             if (array_key_exists('departments', $locations)) {
                 $departmentsCode = Department::whereIn('id', $locations['departments'])->get('code')->toArray();
                 $adsFiltred->where(function (Builder $query) use ($locations, $departmentsCode) {
@@ -905,12 +862,12 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                     $query->filterSubLocations('cities', $departmentsCode, 'cities.department_code');
                 });
             }
-            //If one or more regions are selected, get all ads located in regions, all ads in departments inside regions and cities in departments
+            // If one or more regions are selected, get all ads located in regions, all ads in departments inside regions and cities in departments
             if (array_key_exists('regions', $locations)) {
                 $regionsCodes = Region::whereIn('id', $locations['regions'])->get('code')->toArray();
                 $departmentsCode = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
                 $adsFiltred->where(function (Builder $query) use ($locations, $regionsCodes, $departmentsCode) {
-//					$query->whereNull('support_request_territory_id');
+                    //					$query->whereNull('support_request_territory_id');
                     $query->filterLocations('regions', $locations['regions']);
                     $query->filterSubLocations('departments', $regionsCodes, 'departments.region_code');
                     $query->filterSubLocations('cities', $departmentsCode, 'cities.department_code');
@@ -918,61 +875,61 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             }
         }
 
-        //If a range of submitting date is selected, filter attribution ads based on creation date
-        if (!is_null($filters->input('date_from')) && !is_null($filters->input('date_to'))) {
-            $dateStartFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_from'))->format('Y-m-d');
-            $dateEndFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_to'))->format('Y-m-d');
+        // If a range of submitting date is selected, filter attribution ads based on creation date
+        if (! is_null($filters->input('date_from')) && ! is_null($filters->input('date_to'))) {
+            $dateStartFormatted = DateTime::createFromFormat('d/m/Y', (string) $filters->input('date_from'))->format('Y-m-d');
+            $dateEndFormatted = DateTime::createFromFormat('d/m/Y', (string) $filters->input('date_to'))->format('Y-m-d');
             $adsFiltred->where(function (Builder $query) use ($dateStartFormatted, $dateEndFormatted) {
                 $query->whereHas('attributionAd', function (Builder $subQuery) use ($dateStartFormatted, $dateEndFormatted) {
-                    $subQuery->whereBetween('created_at', [$dateStartFormatted, $dateEndFormatted . " 23:59:59"]);
+                    $subQuery->whereBetween('created_at', [$dateStartFormatted, $dateEndFormatted.' 23:59:59']);
                 });
             });
         }
 
-        //If one or many support stgaes are selected, filter  ads based on their support stages
+        // If one or many support stgaes are selected, filter  ads based on their support stages
         if ($filters->has('support_stages')) {
             $adsFiltred->whereHas('project', function (Builder $query) use ($filters) {
                 $query->whereIn('support_stage_id', $filters->input('support_stages'));
             });
         }
 
-        //If one or many support states are selected, filter  ads based on their support states
+        // If one or many support states are selected, filter  ads based on their support states
         if ($filters->has('support_states')) {
             $adsFiltred->whereHas('project', function (Builder $query) use ($filters) {
                 $query->whereIn('support_state_id', $filters->input('support_states'));
             });
         }
 
-        //If one or many project status are selected, filter  ads based on their project status
+        // If one or many project status are selected, filter  ads based on their project status
         if ($filters->has('project_statuses')) {
             $adsFiltred->whereHas('project', function (Builder $query) use ($filters) {
                 $query->whereIn('project_status_id', $filters->input('project_statuses'));
             });
         }
 
-        //Filter ads based on their types
+        // Filter ads based on their types
         if ($filters->has('ad_type')) {
             $adsFiltred->filterAdTypes($filters->input('ad_type'), '');
         }
 
-        //Filter ads by keywords
-        if (!is_null($filters->input('ad_keywords'))) {
+        // Filter ads by keywords
+        if (! is_null($filters->input('ad_keywords'))) {
             $adsFiltred->where(function (Builder $query) use ($filters) {
-                $query->where('title', 'like', '%' . $filters->input('ad_keywords') . '%');
-                $query->orWhere('about_content', 'like', '%' . $filters->input('ad_keywords') . '%');
-                $query->orWhere('about_project_content', 'like', '%' . $filters->input('ad_keywords') . '%');
+                $query->where('title', 'like', '%'.$filters->input('ad_keywords').'%');
+                $query->orWhere('about_content', 'like', '%'.$filters->input('ad_keywords').'%');
+                $query->orWhere('about_project_content', 'like', '%'.$filters->input('ad_keywords').'%');
                 $query->orWhere(function (Builder $subQuery) use ($filters) {
                     $subQuery->whereHas('landOfferAd', function (Builder $q) use ($filters) {
-                        $q->where('sau_description', 'like', '%' . $filters->input('ad_keywords') . '%');
-                        $q->orWhere('water_access_description', 'like', '%' . $filters->input('ad_keywords') . '%');
-                        $q->orWhere('test_description', 'like', '%' . $filters->input('ad_keywords') . '%');
+                        $q->where('sau_description', 'like', '%'.$filters->input('ad_keywords').'%');
+                        $q->orWhere('water_access_description', 'like', '%'.$filters->input('ad_keywords').'%');
+                        $q->orWhere('test_description', 'like', '%'.$filters->input('ad_keywords').'%');
                         $q->orWhere(function (Builder $q) use ($filters) {
                             $q->whereHas('building', function (Builder $r) use ($filters) {
-                                $r->where('description', 'like', '%' . $filters->input('ad_keywords') . '%');
+                                $r->where('description', 'like', '%'.$filters->input('ad_keywords').'%');
 
                             });
                             $q->orWhereHas('house', function (Builder $r) use ($filters) {
-                                $r->where('description', 'like', '%' . $filters->input('ad_keywords') . '%');
+                                $r->where('description', 'like', '%'.$filters->input('ad_keywords').'%');
                             });
                         });
 
@@ -980,29 +937,30 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
                 });
                 $query->orWhere(function (Builder $subQuery) use ($filters) {
                     $subQuery->whereHas('landSeekAd', function (Builder $q) use ($filters) {
-                        $q->where('experience_farming', 'like', '%' . $filters->input('ad_keywords') . '%');
-                        $q->orWhere('land_description', 'like', '%' . $filters->input('ad_keywords') . '%');
+                        $q->where('experience_farming', 'like', '%'.$filters->input('ad_keywords').'%');
+                        $q->orWhere('land_description', 'like', '%'.$filters->input('ad_keywords').'%');
                     });
                 });
 
             });
         }
 
-        //Filter ads based on the role of the logged user
+        // Filter ads based on the role of the logged user
         $adsFiltred->where(function (Builder $query) use ($userTerritories, $userTerritoriesRegionsId, $roleUser) {
-            $query->where(function (Builder $query) use ($userTerritoriesRegionsId, $roleUser) {
+            $query->where(function (Builder $query) use ($userTerritoriesRegionsId) {
                 $query->whereNotNull('support_request_territory_id');
                 $query->whereIn('support_request_territory_id', $userTerritoriesRegionsId);
             });
 
-            $query->orWhere(function (Builder $query) use ($userTerritories, $roleUser) {
+            $query->orWhere(function (Builder $query) use ($roleUser) {
                 $query->whereNotNull('project_id');
                 $query->whereHas('attributionAd', function (Builder $q) use ($roleUser) {
                     $q->where('user_moderator_id', '=', auth()->id());
                     if ($roleUser === 2) {
                         $q->orWhere('user_advisor_id', '=', auth()->id());
-                    } elseif ($roleUser >= 3)
+                    } elseif ($roleUser >= 3) {
                         $q->orWhere('user_supervisor_id', '=', auth()->id());
+                    }
                 });
             });
             $query->orWhere(function (Builder $query) use ($userTerritories) {
@@ -1021,23 +979,22 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             });
         });
 
-
         // Sort results
         if ($filters->has('order') && $filters->has('sort')) {
             if ($filters->input('sort') === 'date') {
                 $adsFiltred->join('attribution_ads as a', 'a.ad_id', '=', 'ads.id')
                     ->orderBy('a.created_at', $filters->input('order'));
-            } else if ($filters->input('sort') === 'title') {
+            } elseif ($filters->input('sort') === 'title') {
                 $adsFiltred
                     ->orderBy($filters->input('sort'), $filters->input('order'));
 
-            } else if ($filters->input('sort') === 'name') {
+            } elseif ($filters->input('sort') === 'name') {
                 $adsFiltred
                     ->select('ads.*')
                     ->join('users', 'users.id', '=', 'ads.user_pp_id')
                     ->orderBy('first_name', $filters->input('order'));
 
-            } else if ($filters->input('sort') === 'project_statuses.name') {
+            } elseif ($filters->input('sort') === 'project_statuses.name') {
                 $adsFiltred
                     ->select('ads.*')
                     ->leftJoin('projects as p1', 'p1.id', '=', 'ads.project_id')
@@ -1063,9 +1020,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
         }
     }
 
-
     /**
-     * @param Carbon $date
      * @return Ad[]|Collection
      */
     public function findAllByPublishedOlderThan(Carbon $date)
@@ -1076,7 +1031,6 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
     }
 
     /**
-     * @param Carbon $date
      * @return Ad[]|Collection
      */
     public function findAllNotAttributedSince(Carbon $date)
@@ -1155,7 +1109,7 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             'landSeekAd',
             'landOfferAd',
             'jobOfferAd',
-            'jobSeekAd'
+            'jobSeekAd',
         ], static::getLocationEagerLoading(), static::getAttributionEagerLoading(), static::getSubAdEagerLoading());
     }
 
@@ -1252,6 +1206,4 @@ class AdRepository extends AbstractRepository implements AdRepositoryInterface
             })
             ->get();
     }
-
-
 }

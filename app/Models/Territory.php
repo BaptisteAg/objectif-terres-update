@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Department;
 use App\Models\Traits\Locationable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $researches_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Territory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Territory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Territory query()
@@ -28,24 +28,22 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Territory whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Territory whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Territory whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Territory extends Model
 {
-	use Locationable;
+    use Locationable;
 
-	protected $fillable = ['name'];
+    protected $fillable = ['name'];
 
-	static $territoriesIdAllowToUseService  = [1, 3, 4, 12, 15, 16, 20, 21];
+    public static $territoriesIdAllowToUseService = [1, 3, 4, 12, 15, 16, 20, 21];
 
-
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function departments()
-	{
-		return $this->hasMany(Department::class, 'territory_id', 'id');
-	}
-
-
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function departments()
+    {
+        return $this->hasMany(Department::class, 'territory_id', 'id');
+    }
 }

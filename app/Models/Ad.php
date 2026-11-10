@@ -6,20 +6,17 @@ use App\Models\Scopes\ScopeAdTypesFilterable;
 use App\Models\Scopes\ScopeDataFilterable;
 use App\Models\Scopes\ScopeLocationFilterable;
 use App\Models\Traits\Documentable;
-use App\Models\Traits\ProductionableGenre;
 use App\Presenters\AdPresenter;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
 use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\hasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use McCool\LaravelAutoPresenter\HasPresenter;
-
 
 /**
  * App\Models\Ad
@@ -64,6 +61,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
  * @property-read int|null $threads_count
  * @property-read \App\Models\User $userPp
+ *
  * @method static Builder|Ad filterAdTypes($adTypesFilters, $relationTableName = '')
  * @method static Builder|Ad filterAdsTerritoryLocations($territoriesCode)
  * @method static Builder|Ad filterLocations($relationshipName, $locationableIds)
@@ -95,12 +93,16 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @method static Builder|Ad whereUserPpId($value)
  * @method static \Illuminate\Database\Query\Builder|Ad withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Ad withoutTrashed()
+ *
  * @mixin \Eloquent
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\History[] $history
  * @property-read int|null $history_count
  * @property int|null $department_id
  * @property-read \App\Models\FavoriteAd|null $currentUserFavoriteAd
+ *
  * @method static Builder|Ad whereDepartmentId($value)
+ *
  * @property int|null $third_party_ad_user_id
  * @property-read \App\Models\AssociateOfferAd|null $associateOfferAd²²
  * @property-read \App\Models\AssociateSeekAd|null $associateSeekAd
@@ -109,17 +111,18 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  * @property-read string|null $type
  * @property-read \App\Models\ThirdPartyAdUser|null $thirdPartyAdUser
  * @property-read \App\Models\User|null $userModerator
+ *
  * @method static Builder|Ad whereThirdPartyAdUserId($value)
  */
 class Ad extends Model implements HasPresenter
 {
     use Documentable,
+        HasMorphedByManyEvents,
+        HasRelationshipObservables,
         ScopeAdTypesFilterable,
         ScopeDataFilterable,
         ScopeLocationFilterable,
-        SoftDeletes,
-        HasMorphedByManyEvents,
-        HasRelationshipObservables;
+        SoftDeletes;
 
     private $cached_type = null;
 
@@ -144,7 +147,7 @@ class Ad extends Model implements HasPresenter
         'third_party_ad_user_id',
         'survey_success_via_platform',
         'survey_comments',
-        'survey_submitted_at'
+        'survey_submitted_at',
     ];
 
     const AD_TYPES = [
@@ -160,7 +163,7 @@ class Ad extends Model implements HasPresenter
         'landSeekAd' => 'https://terredeliens.my.site.com/objectifterres/survey/runtimeApp.app?invitationId=0KibD0000000l6z&surveyName=annonce_recherche_de_foncier&UUID=54bcd02b-92d1-4ead-aaad-44c18c1dcb87',
         'landOfferAd' => 'https://terredeliens.my.site.com/objectifterres/survey/runtimeApp.app?invitationId=0KibD0000000lAD&surveyName=annonce_offre_de_foncier&UUID=5ac6ea4f-7f6e-4a1e-8f2a-52072a7d1bf3',
         'associateOfferAd' => 'https://terredeliens.my.site.com/objectifterres/survey/runtimeApp.app?invitationId=0KibD0000000l29&surveyName=annonce_recherche_d_associ_s_pour_ferme_en_activit&UUID=d37f60a2-f5b4-48ae-8b54-9aa06a7e31c6',
-        'associateSeekAd' => 'https://terredeliens.my.site.com/objectifterres/survey/runtimeApp.app?invitationId=0KibD0000000l8b&surveyName=annonce_recherche_d_associ_pour_projet&UUID=fc0c6ab5-abc6-4b9b-a61c-a75aafb03883'
+        'associateSeekAd' => 'https://terredeliens.my.site.com/objectifterres/survey/runtimeApp.app?invitationId=0KibD0000000l8b&surveyName=annonce_recherche_d_associ_pour_projet&UUID=fc0c6ab5-abc6-4b9b-a61c-a75aafb03883',
     ];
 
     public function getSubAdAttribute(): LandSeekAd|LandOfferAd|JobOfferAd|JobSeekAd|AssociateSeekAd|AssociateOfferAd|null
@@ -183,6 +186,7 @@ class Ad extends Model implements HasPresenter
         foreach (static::AD_TYPES as $key => $class) {
             if ($this->relationLoaded($key) && $this->{$key} !== null) {
                 $this->cached_type = $key;
+
                 return $key;
             }
         }
@@ -194,7 +198,7 @@ class Ad extends Model implements HasPresenter
             $query->selectSub(function (\Illuminate\Database\Query\Builder $query) use ($table) {
                 $query->selectRaw('count(*)')
                     ->from($table)
-                    ->whereColumn($table . '.ad_id', 'ads.id');
+                    ->whereColumn($table.'.ad_id', 'ads.id');
             }, $key);
         }
 
@@ -225,7 +229,7 @@ class Ad extends Model implements HasPresenter
      */
     public function attributionAd()
     {
-        return $this->hasOne(AttributionAd::class)->orderByDesc("id");
+        return $this->hasOne(AttributionAd::class)->orderByDesc('id');
     }
 
     /**
@@ -305,17 +309,11 @@ class Ad extends Model implements HasPresenter
         return $this->hasOne(LandSeekAd::class);
     }
 
-    /**
-     * @return hasOne
-     */
     public function associateSeekAd(): hasOne
     {
         return $this->hasOne(AssociateSeekAd::class);
     }
 
-    /**
-     * @return hasOne
-     */
     public function associateOfferAd(): hasOne
     {
         return $this->hasOne(AssociateOfferAd::class);
@@ -366,16 +364,13 @@ class Ad extends Model implements HasPresenter
 
     public function getMainDepartmentAttribute(): ?Department
     {
-        if($this->department) {
+        if ($this->department) {
             return $this->department;
-        }
-        else if ($this->cities->count()) {
+        } elseif ($this->cities->count()) {
             return $this->cities->first()?->department;
-        }
-        else if ($this->departments->count()) {
+        } elseif ($this->departments->count()) {
             return $this->departments->first();
-        }
-        else if ($this->regions->count()) {
+        } elseif ($this->regions->count()) {
             return $this->regions->first()?->departments->first();
         }
 
@@ -384,6 +379,7 @@ class Ad extends Model implements HasPresenter
 
     /**
      * Get all cities 'location' for the ad
+     *
      * @return MorphToMany
      */
     public function regions()
@@ -393,6 +389,7 @@ class Ad extends Model implements HasPresenter
 
     /**
      * TODO delete this column and all occurrences
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function supportRequestIdRegion()
@@ -416,7 +413,6 @@ class Ad extends Model implements HasPresenter
         return $this->morphMany(History::class, 'ads');
     }
 
-
     /**
      * Get the presenter class.
      *
@@ -434,20 +430,18 @@ class Ad extends Model implements HasPresenter
         /**
          * Many To Many Polymorphic Relationship Events
          */
-
-        static::morphedByManyAttaching(function ($relation, $parent, $ids, $attributes) {
-        });
+        static::morphedByManyAttaching(function ($relation, $parent, $ids, $attributes) {});
     }
-
 
     public function canEdit()
     {
         if (auth()->check()) {
             return $this->user_pp_id === auth()->id() || (
-                    $this->attributionAd?->userModerator &&
-                    $this->attributionAd?->userModerator->id === auth()->id()
-                ) || auth()->user()->role >= 4;
+                $this->attributionAd?->userModerator &&
+                $this->attributionAd?->userModerator->id === auth()->id()
+            ) || auth()->user()->role >= 4;
         }
+
         return false;
     }
 

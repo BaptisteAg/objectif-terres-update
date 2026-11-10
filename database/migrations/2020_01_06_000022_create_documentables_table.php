@@ -1,19 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateDocumentablesTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $tableName = 'documentables';
 
     /**
      * Run the migrations.
+     *
      * @table documentables
      *
      * @return void
@@ -27,7 +29,7 @@ class CreateDocumentablesTable extends Migration
             $table->unsignedInteger('documentable_id');
             $table->string('documentable_type')->comment('tables référentes : ads et projects');
 
-            $table->index(["document_id"], 'fk_documentable_1');
+            $table->index(['document_id'], 'fk_documentable_1');
             $table->timestamps();
         });
     }
@@ -37,8 +39,8 @@ class CreateDocumentablesTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->tableName);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->tableName);
+    }
 }

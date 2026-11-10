@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $is_read
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ReadMessage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReadMessage newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReadMessage query()
@@ -22,13 +23,12 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static \Illuminate\Database\Eloquent\Builder|ReadMessage whereMessageId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReadMessage whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReadMessage whereUserId($value)
+ *
  * @mixin \Eloquent
  */
-
 class ReadMessage extends Pivot
 {
-	protected $table = 'read_messages';
+    protected $table = 'read_messages';
 
-	protected $fillable = ['user_id', 'message_id', 'is_read'];
-
+    protected $fillable = ['user_id', 'message_id', 'is_read'];
 }

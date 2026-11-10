@@ -23,7 +23,5 @@ class SetAssociateOfferExperience1000InsteadOf255 extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-    }
+    public function down() {}
 }

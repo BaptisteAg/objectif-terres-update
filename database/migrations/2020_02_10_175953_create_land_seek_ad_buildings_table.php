@@ -10,6 +10,7 @@ class CreateLandSeekAdBuildingsTable extends Migration
 
     /**
      * Run the migrations.
+     *
      * @table surface_ranges
      *
      * @return void
@@ -24,9 +25,9 @@ class CreateLandSeekAdBuildingsTable extends Migration
             $table->unsignedInteger('building_type_id');
             $table->unsignedInteger('requirement_id');
 
-            $table->index(["land_seek_ad_id"], 'fk_land_seek_ad_idx');
-            $table->index(["building_type_id"], 'fk_land_seek_ad_building_type_idx');
-            $table->index(["requirement_id"], 'fk_land_seek_ad_requirement_idx');
+            $table->index(['land_seek_ad_id'], 'fk_land_seek_ad_idx');
+            $table->index(['building_type_id'], 'fk_land_seek_ad_building_type_idx');
+            $table->index(['requirement_id'], 'fk_land_seek_ad_requirement_idx');
 
             $table->timestamps();
 

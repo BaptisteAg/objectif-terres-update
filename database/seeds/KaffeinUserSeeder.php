@@ -14,11 +14,11 @@ class KaffeinUserSeeder extends Seeder
     public function run()
     {
         User::create([
-            'email' => "admin@kaffein.agency",
+            'email' => 'admin@kaffein.agency',
             'password' => Hash::make('crif9bf1'),
             'first_name' => 'Kaffein',
             'name' => 'Agency',
-            'role' => 4
+            'role' => 4,
         ])->departments()->sync(Department::all());
     }
 }

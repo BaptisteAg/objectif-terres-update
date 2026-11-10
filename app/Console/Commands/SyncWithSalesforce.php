@@ -2,15 +2,16 @@
 
 namespace App\Console\Commands;
 
-use App\Sync\UsersToSalesforceSync;
-use App\Sync\AdsToSalesforceSync;
-use Illuminate\Console\Command;
 use App\Models\Ad;
 use App\Models\User;
+use App\Sync\AdsToSalesforceSync;
+use App\Sync\UsersToSalesforceSync;
+use Illuminate\Console\Command;
 
 class SyncWithSalesforce extends Command
 {
     protected $signature = 'sync:salesforce {--type=all} {--id=*}';
+
     protected $description = 'Synchronize users and ads with Salesforce';
 
     public function handle(UsersToSalesforceSync $userSync, AdsToSalesforceSync $adSync)
@@ -46,7 +47,7 @@ class SyncWithSalesforce extends Command
     {
         $this->info('Starting ad synchronization...');
 
-        if (!empty($ids)) {
+        if (! empty($ids)) {
             $ads = Ad::whereIn('id', $ids)->get();
         } else {
             $ads = Ad::where('updated_at', '>=', now()->subDay())->get();

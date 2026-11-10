@@ -8,7 +8,6 @@ use App\Models\AttributionAd;
 use App\Models\Department;
 use App\Models\Region;
 use App\Notifications\AcceptedAdNotification;
-use App\Notifications\BasicNotification;
 use App\Notifications\ModerationPpNotification;
 use App\Repositories\Ads\AdRepository;
 use App\Repositories\AttributionAds\AttributionAdsRepository;
@@ -23,48 +22,45 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
-
 /**
  * Class AttributionAdsService
- * @package App\Services\AttributionAds
  */
 class AttributionAdsService
 {
-	protected $repository;
-	protected $adRepository;
-	protected $locationService;
-	protected $userService;
-	protected $adService;
+    protected $repository;
 
-	/**
-	 * AttributionAdsService constructor.
-	 * @param AttributionAdsRepository $attributionAdsRepository
-	 * @param AdRepository $adRepository
-	 * @param LocationService $locationService
-	 * @param UserService $userService
-	 * @param AdService $adService
-	 */
-	public function __construct(AttributionAdsRepository $attributionAdsRepository, AdRepository $adRepository, LocationService $locationService, UserService $userService, AdService $adService)
-	{
-		$this->repository = $attributionAdsRepository;
-		$this->adRepository = $adRepository;
-		$this->locationService = $locationService;
-		$this->userService = $userService;
-		$this->adService = $adService;
-	}
+    protected $adRepository;
 
-	/**
-	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-	 */
-	public function findAllByUserModeratorTerritories()
-	{
-		$moderatorLocationTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		return $this->repository->findAllByModeratorIdAndTerritories($moderatorLocationTerritoriesCodes);
-	}
+    protected $locationService;
+
+    protected $userService;
+
+    protected $adService;
 
     /**
-     * @param int $adId
-     * @return bool
+     * AttributionAdsService constructor.
+     */
+    public function __construct(AttributionAdsRepository $attributionAdsRepository, AdRepository $adRepository, LocationService $locationService, UserService $userService, AdService $adService)
+    {
+        $this->repository = $attributionAdsRepository;
+        $this->adRepository = $adRepository;
+        $this->locationService = $locationService;
+        $this->userService = $userService;
+        $this->adService = $adService;
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function findAllByUserModeratorTerritories()
+    {
+        $moderatorLocationTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
+
+        return $this->repository->findAllByModeratorIdAndTerritories($moderatorLocationTerritoriesCodes);
+    }
+
+    /**
+     * @param  int  $adId
      */
     public function moderatorIsChargeOfAdModeration(Ad $ad): bool
     {
@@ -77,8 +73,6 @@ class AttributionAdsService
         $adTerritoriesCodes = $this->adService->getAdDepartmentCodesFromZones($ad);
         $intersectTerritoriesCodes = array_intersect($adTerritoriesCodes, $moderatorLocationTerritoriesCodes);
 
-
-
         if (count($intersectTerritoriesCodes) > 0) {
             $moderatorIsChargeOfAdModeration = true;
         }
@@ -86,450 +80,448 @@ class AttributionAdsService
         return $moderatorIsChargeOfAdModeration;
     }
 
-	/**
-	 * Find all attributions ads published since specific number of month
-	 * @param Carbon $date
-	 * @return AttributionAd[]|Collection
-	 */
-	public function findAllPublishedBefore(Carbon $date)
-	{
-		return $this->repository->findAllApprovedAndPublishedBefore($date);
-	}
+    /**
+     * Find all attributions ads published since specific number of month
+     *
+     * @return AttributionAd[]|Collection
+     */
+    public function findAllPublishedBefore(Carbon $date)
+    {
+        return $this->repository->findAllApprovedAndPublishedBefore($date);
+    }
 
-	/**
-	 * @return int
-	 */
-	public function countAllAdsToModerateForLoggedModerator()
-	{
-		$pendingModerationStatus = AdStatus::where('id', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
-		return $this->repository->findAllByUserIdAndStatusId($pendingModerationStatus->id, auth()->id())->count();
-	}
+    /**
+     * @return int
+     */
+    public function countAllAdsToModerateForLoggedModerator()
+    {
+        $pendingModerationStatus = AdStatus::where('id', '=', AdStatus::PENDING_MODERATION_STATUS_ID)->first();
 
+        return $this->repository->findAllByUserIdAndStatusId($pendingModerationStatus->id, auth()->id())->count();
+    }
 
-	/**
-	 * Attribution ads filters for moderators dashboard
-	 * @param Request $request
-	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-	 */
-	public function showForModerators(Request $filters)
-	{
-		$attributionAds = $this->filter($filters);
-		return $attributionAds;
-	}
+    /**
+     * Attribution ads filters for moderators dashboard
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function showForModerators(Request $filters)
+    {
+        $attributionAds = $this->filter($filters);
 
-	/**
-	 * @param Request $filters
-	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-	 */
-	public function filter(Request $filters)
-	{
-		$attributionAds = collect();
-		//START QUERY
-		$attributionAdsFiltered = (new AttributionAd)->newQuery()->select('attribution_ads.*');
+        return $attributionAds;
+    }
 
-		//Filter ads based on moderation attribution and moderator territories
-		$moderatorTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
-		$attributionAdsFiltered->where(function (Builder $query) use ($moderatorTerritoriesCodes) {
-			$query->where(function (Builder $subQuery) {
-				$subQuery->whereNotNull('ad_status_id');
-				$subQuery->where("user_moderator_id", '=', auth()->id());
-				$subQuery->whereHas('ad', function (Builder $q) {
-					$q->whereNull('project_id');
-					$q->whereHas('userPp', function (Builder $builder) {
-						$builder->whereNull('deleted_at');
-					});
-				});
-			});
-			$query->orWhere(function (Builder $subQuery) use ($moderatorTerritoriesCodes) {
-				$subQuery->whereNotNull('ad_status_id');
-				$subQuery->whereHas('ad', function (Builder $subQuery) use ($moderatorTerritoriesCodes) {
-					$subQuery->whereNull('project_id');
-					$subQuery->whereHas('userPp', function (Builder $q) {
-						$q->whereNull('deleted_at');
-					});
-					$subQuery->whereHas('departments', function (Builder $q) use ($moderatorTerritoriesCodes) {
-						$q->whereIn('code', $moderatorTerritoriesCodes);
-					});
-					$subQuery->orWhereHas('cities', function (Builder $q) use ($moderatorTerritoriesCodes) {
-						$q->whereIn('department_code', $moderatorTerritoriesCodes);
-					});
-					$subQuery->orWhereHas('regions', function (Builder $builder) use ($moderatorTerritoriesCodes) {
-						$builder->whereHas('departments', function (Builder $q) use ($moderatorTerritoriesCodes) {
-							$q->whereIn('code', $moderatorTerritoriesCodes);
-						});
-					});
-				});
-			});
-		});
+    /**
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function filter(Request $filters)
+    {
+        $attributionAds = collect();
+        // START QUERY
+        $attributionAdsFiltered = (new AttributionAd)->newQuery()->select('attribution_ads.*');
 
-		//Additional filters  : filter by ads attributed to moderator
-		if ($filters->has('user_attribution')) {
-			if (!is_null($filters->input('user_attribution'))) {
-				$attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
-			}
-		}
-		//Additional filters  : filter by surface range
-		if ($filters->has('surfaces_research')) {
-			if (!is_null($filters->input('surfaces_research')) && $filters->input('surfaces_research') > 0) {
-				$attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
-					$query->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('surface_range_max', 'surface', '<=', $filters->input('surfaces_research'));
-				});
-			}
-		}
-		//Additional filters  : filter by min_price
-		if ($filters->has('price_min')) {
-			if (!is_null($filters->input('price_min'))) {
-				$attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
-					$query->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('price_max', 'price', '>=', $filters->input('price_min'));
-				});
-			}
-		}
-		//Additional filters  : filter by max_price
-		if ($filters->has('price_max')) {
-			if (!is_null($filters->input('price_max'))) {
-				$attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
-					$query->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('price_max', 'price', '<=', $filters->input('price_max'));
-				});
-			}
-		}
-		//Additional filters  : filter by production_genres
-		if ($filters->has('production_genres')) {
-			if (!is_null($filters->input('production_genres'))) {
-				$attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
-					$query->where(function (Builder $query) use ($filters) {
-                        foreach(array_keys(Ad::AD_TYPES) as $adType){
+        // Filter ads based on moderation attribution and moderator territories
+        $moderatorTerritoriesCodes = $this->userService->getCurrentUserTerritoryDepartments();
+        $attributionAdsFiltered->where(function (Builder $query) use ($moderatorTerritoriesCodes) {
+            $query->where(function (Builder $subQuery) {
+                $subQuery->whereNotNull('ad_status_id');
+                $subQuery->where('user_moderator_id', '=', auth()->id());
+                $subQuery->whereHas('ad', function (Builder $q) {
+                    $q->whereNull('project_id');
+                    $q->whereHas('userPp', function (Builder $builder) {
+                        $builder->whereNull('deleted_at');
+                    });
+                });
+            });
+            $query->orWhere(function (Builder $subQuery) use ($moderatorTerritoriesCodes) {
+                $subQuery->whereNotNull('ad_status_id');
+                $subQuery->whereHas('ad', function (Builder $subQuery) use ($moderatorTerritoriesCodes) {
+                    $subQuery->whereNull('project_id');
+                    $subQuery->whereHas('userPp', function (Builder $q) {
+                        $q->whereNull('deleted_at');
+                    });
+                    $subQuery->whereHas('departments', function (Builder $q) use ($moderatorTerritoriesCodes) {
+                        $q->whereIn('code', $moderatorTerritoriesCodes);
+                    });
+                    $subQuery->orWhereHas('cities', function (Builder $q) use ($moderatorTerritoriesCodes) {
+                        $q->whereIn('department_code', $moderatorTerritoriesCodes);
+                    });
+                    $subQuery->orWhereHas('regions', function (Builder $builder) use ($moderatorTerritoriesCodes) {
+                        $builder->whereHas('departments', function (Builder $q) use ($moderatorTerritoriesCodes) {
+                            $q->whereIn('code', $moderatorTerritoriesCodes);
+                        });
+                    });
+                });
+            });
+        });
+
+        // Additional filters  : filter by ads attributed to moderator
+        if ($filters->has('user_attribution')) {
+            if (! is_null($filters->input('user_attribution'))) {
+                $attributionAdsFiltered->where('user_moderator_id', '=', auth()->id());
+            }
+        }
+        // Additional filters  : filter by surface range
+        if ($filters->has('surfaces_research')) {
+            if (! is_null($filters->input('surfaces_research')) && $filters->input('surfaces_research') > 0) {
+                $attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
+                    $query->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('surface_range_max', 'surface', '<=', $filters->input('surfaces_research'));
+                });
+            }
+        }
+        // Additional filters  : filter by min_price
+        if ($filters->has('price_min')) {
+            if (! is_null($filters->input('price_min'))) {
+                $attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
+                    $query->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('price_max', 'price', '>=', $filters->input('price_min'));
+                });
+            }
+        }
+        // Additional filters  : filter by max_price
+        if ($filters->has('price_max')) {
+            if (! is_null($filters->input('price_max'))) {
+                $attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
+                    $query->filterWhereHasLandSeekAdOrWhereHasLandOfferAd('price_max', 'price', '<=', $filters->input('price_max'));
+                });
+            }
+        }
+        // Additional filters  : filter by production_genres
+        if ($filters->has('production_genres')) {
+            if (! is_null($filters->input('production_genres'))) {
+                $attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
+                    $query->where(function (Builder $query) use ($filters) {
+                        foreach (array_keys(Ad::AD_TYPES) as $adType) {
                             $query->orWhereHas($adType.'.productionGenres', function (Builder $query) use ($filters) {
                                 $query->whereIn('production_genres.id', $filters->input('production_genres'));
                             })
-                            ->orWhereHas($adType.'.productionGenresSecondary', function (Builder $query) use ($filters) {
-                                $query->whereIn('production_genres.id', $filters->input('production_genres'));
-                            });
+                                ->orWhereHas($adType.'.productionGenresSecondary', function (Builder $query) use ($filters) {
+                                    $query->whereIn('production_genres.id', $filters->input('production_genres'));
+                                });
                         }
-					});
-				});
-			}
-		}
-		//Additional filters  : filter by bio_certification
-		if ($filters->has('bio_certifications')) {
-			if (!is_null($filters->input('bio_certifications'))) {
-				$attributionAdsFiltered->whereHas('ad', function (Builder $builder) use ($filters) {
-					$builder->where(function (Builder $query) use ($filters) {
-						$query->whereHas('landOfferAd.bioCertifications', function (Builder $query) use ($filters) {
-							$query->whereIn('bio_certifications.id', $filters->input('bio_certifications'));
-						});
-					});
-				});
-			}
-		}
+                    });
+                });
+            }
+        }
+        // Additional filters  : filter by bio_certification
+        if ($filters->has('bio_certifications')) {
+            if (! is_null($filters->input('bio_certifications'))) {
+                $attributionAdsFiltered->whereHas('ad', function (Builder $builder) use ($filters) {
+                    $builder->where(function (Builder $query) use ($filters) {
+                        $query->whereHas('landOfferAd.bioCertifications', function (Builder $query) use ($filters) {
+                            $query->whereIn('bio_certifications.id', $filters->input('bio_certifications'));
+                        });
+                    });
+                });
+            }
+        }
 
-		//Filter attribution ads based on their locations if requested
-		if ($filters->has('locations')) {
-			$locations = $filters->input('locations');
-//			TODO delete if research by cities is not necessary anymore
-//			if (array_key_exists('cities', $locations)) {
-//				if (!is_null($filters->input('radius_research'))) {
-//					$cityIds = $this->locationService->getCitiesInRadius($locations['cities'], $filters->input('radius_research'));
-//					$attributionAdsFiltered->filterLocations('ad.cities', $cityIds);
-//				} else {
-//					$attributionAdsFiltered->filterLocations('ad.cities', $locations['cities']);
-//				}
-			//If one or more departments are selected, get all ads located in departments and cities in departments
+        // Filter attribution ads based on their locations if requested
+        if ($filters->has('locations')) {
+            $locations = $filters->input('locations');
+            //			TODO delete if research by cities is not necessary anymore
+            //			if (array_key_exists('cities', $locations)) {
+            //				if (!is_null($filters->input('radius_research'))) {
+            //					$cityIds = $this->locationService->getCitiesInRadius($locations['cities'], $filters->input('radius_research'));
+            //					$attributionAdsFiltered->filterLocations('ad.cities', $cityIds);
+            //				} else {
+            //					$attributionAdsFiltered->filterLocations('ad.cities', $locations['cities']);
+            //				}
+            // If one or more departments are selected, get all ads located in departments and cities in departments
 
-			if (array_key_exists('departments', $locations)) {
-				$departmentsCode = Department::whereIn('id', $locations['departments'])->get('code')->toArray();
-				$attributionAdsFiltered->where(function (Builder $query) use ($locations, $departmentsCode) {
-					$query->filterLocations('ad.departments', $locations['departments']);
-					$query->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
-				});
+            if (array_key_exists('departments', $locations)) {
+                $departmentsCode = Department::whereIn('id', $locations['departments'])->get('code')->toArray();
+                $attributionAdsFiltered->where(function (Builder $query) use ($locations, $departmentsCode) {
+                    $query->filterLocations('ad.departments', $locations['departments']);
+                    $query->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+                });
 
-				//If one or more regions are selected, get all ads located in regions, all ads in departments inside regions and cities in departments
-			}
-			if (array_key_exists('regions', $locations)) {
-				$regionsCodes = Region::whereIn('id', $locations['regions'])->get('code')->toArray();
-				$departmentsCode = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
-				$attributionAdsFiltered->where(function (Builder $query) use ($locations, $regionsCodes, $departmentsCode) {
-					$query->filterLocations('ad.regions', $locations['regions']);
-					$query->filterSubLocations('ad.departments', $regionsCodes, 'departments.region_code');
-					$query->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
-				});
+                // If one or more regions are selected, get all ads located in regions, all ads in departments inside regions and cities in departments
+            }
+            if (array_key_exists('regions', $locations)) {
+                $regionsCodes = Region::whereIn('id', $locations['regions'])->get('code')->toArray();
+                $departmentsCode = Department::whereIn('region_code', $regionsCodes)->get('code')->toArray();
+                $attributionAdsFiltered->where(function (Builder $query) use ($locations, $regionsCodes, $departmentsCode) {
+                    $query->filterLocations('ad.regions', $locations['regions']);
+                    $query->filterSubLocations('ad.departments', $regionsCodes, 'departments.region_code');
+                    $query->filterSubLocations('ad.cities', $departmentsCode, 'cities.department_code');
+                });
 
-			}
-		}
+            }
+        }
 
-		//If a range of submitting date is selected, filter attribution ads based on creation date
-		if (!is_null($filters->input('date_from')) && !is_null($filters->input('date_to'))) {
-			$dateStartFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_from'))->format('Y-m-d');
-			$dateEndFormatted = DateTime::createFromFormat('d/m/Y', (string)$filters->input('date_to'))->format('Y-m-d');
+        // If a range of submitting date is selected, filter attribution ads based on creation date
+        if (! is_null($filters->input('date_from')) && ! is_null($filters->input('date_to'))) {
+            $dateStartFormatted = DateTime::createFromFormat('d/m/Y', (string) $filters->input('date_from'))->format('Y-m-d');
+            $dateEndFormatted = DateTime::createFromFormat('d/m/Y', (string) $filters->input('date_to'))->format('Y-m-d');
 
-			$attributionAdsFiltered->whereBetween('attribution_ads.updated_at', [$dateStartFormatted, $dateEndFormatted . " 23:59:59"]);
-		}
+            $attributionAdsFiltered->whereBetween('attribution_ads.updated_at', [$dateStartFormatted, $dateEndFormatted.' 23:59:59']);
+        }
 
-		//If one or many ad status are selected, filter attribution ads based on their status
-		if ($filters->has('ad_statuses')) {
-			$attributionAdsFiltered->whereIn('ad_status_id', $filters->input('ad_statuses'));
-		}
+        // If one or many ad status are selected, filter attribution ads based on their status
+        if ($filters->has('ad_statuses')) {
+            $attributionAdsFiltered->whereIn('ad_status_id', $filters->input('ad_statuses'));
+        }
 
-		//Additional filters : only ads still online but modified by their author after publication
-		if ($filters->boolean('pending_update')) {
-			$attributionAdsFiltered->whereNotNull('pending_update_since');
-		}
+        // Additional filters : only ads still online but modified by their author after publication
+        if ($filters->boolean('pending_update')) {
+            $attributionAdsFiltered->whereNotNull('pending_update_since');
+        }
 
-		//Filter ads based on their types if requested
-		if ($filters->has('ad_type')) {
-			$attributionAdsFiltered->filterAdTypes($filters->input('ad_type'), 'ad.');
-		}
+        // Filter ads based on their types if requested
+        if ($filters->has('ad_type')) {
+            $attributionAdsFiltered->filterAdTypes($filters->input('ad_type'), 'ad.');
+        }
 
-		//Filter attribution ads if research ads by keywords
-		if (!is_null($filters->input('ad_keywords'))) {
-			$attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
-				$query->where(function (Builder $query) use ($filters) {
-					$query->where('title', 'like', '%' . $filters->input('ad_keywords') . '%');
-					$query->orWhere('about_content', 'like', '%' . $filters->input('ad_keywords') . '%');
-					$query->orWhere('about_project_content', 'like', '%' . $filters->input('ad_keywords') . '%');
-					$query->orWhere(function (Builder $subQuery) use ($filters) {
-						$subQuery->whereHas('landOfferAd', function (Builder $q) use ($filters) {
-							$q->where('sau_description', 'like', '%' . $filters->input('ad_keywords') . '%');
-							$q->orWhere('water_access_description', 'like', '%' . $filters->input('ad_keywords') . '%');
-							$q->orWhere('test_description', 'like', '%' . $filters->input('ad_keywords') . '%');
-							$q->orWhere(function (Builder $q) use ($filters) {
-								$q->whereHas('building', function (Builder $r) use ($filters) {
-									$r->where('description', 'like', '%' . $filters->input('ad_keywords') . '%');
+        // Filter attribution ads if research ads by keywords
+        if (! is_null($filters->input('ad_keywords'))) {
+            $attributionAdsFiltered->whereHas('ad', function (Builder $query) use ($filters) {
+                $query->where(function (Builder $query) use ($filters) {
+                    $query->where('title', 'like', '%'.$filters->input('ad_keywords').'%');
+                    $query->orWhere('about_content', 'like', '%'.$filters->input('ad_keywords').'%');
+                    $query->orWhere('about_project_content', 'like', '%'.$filters->input('ad_keywords').'%');
+                    $query->orWhere(function (Builder $subQuery) use ($filters) {
+                        $subQuery->whereHas('landOfferAd', function (Builder $q) use ($filters) {
+                            $q->where('sau_description', 'like', '%'.$filters->input('ad_keywords').'%');
+                            $q->orWhere('water_access_description', 'like', '%'.$filters->input('ad_keywords').'%');
+                            $q->orWhere('test_description', 'like', '%'.$filters->input('ad_keywords').'%');
+                            $q->orWhere(function (Builder $q) use ($filters) {
+                                $q->whereHas('building', function (Builder $r) use ($filters) {
+                                    $r->where('description', 'like', '%'.$filters->input('ad_keywords').'%');
 
-								});
-								$q->orWhereHas('house', function (Builder $r) use ($filters) {
-									$r->where('description', 'like', '%' . $filters->input('ad_keywords') . '%');
-								});
-							});
+                                });
+                                $q->orWhereHas('house', function (Builder $r) use ($filters) {
+                                    $r->where('description', 'like', '%'.$filters->input('ad_keywords').'%');
+                                });
+                            });
 
-						});
-					});
-					$query->orWhere(function (Builder $subQuery) use ($filters) {
-						$subQuery->whereHas('landSeekAd', function (Builder $q) use ($filters) {
-							$q->where('experience_farming', 'like', '%' . $filters->input('ad_keywords') . '%');
-							$q->orWhere('land_description', 'like', '%' . $filters->input('ad_keywords') . '%');
-						});
-					});
-					$query->orWhere(function (Builder $subQuery) use ($filters) {
-						$subQuery->whereHas('userPp', function (Builder $builder) use ($filters) {
-							$builder->where('name', 'like', '%' . $filters->input('ad_keywords') . '%');
-							$builder->orWhere('first_name', 'like', '%' . $filters->input('ad_keywords') . '%');
-							$builder->orWhere('email', 'like', '%' . $filters->input('ad_keywords') . '%');
+                        });
+                    });
+                    $query->orWhere(function (Builder $subQuery) use ($filters) {
+                        $subQuery->whereHas('landSeekAd', function (Builder $q) use ($filters) {
+                            $q->where('experience_farming', 'like', '%'.$filters->input('ad_keywords').'%');
+                            $q->orWhere('land_description', 'like', '%'.$filters->input('ad_keywords').'%');
+                        });
+                    });
+                    $query->orWhere(function (Builder $subQuery) use ($filters) {
+                        $subQuery->whereHas('userPp', function (Builder $builder) use ($filters) {
+                            $builder->where('name', 'like', '%'.$filters->input('ad_keywords').'%');
+                            $builder->orWhere('first_name', 'like', '%'.$filters->input('ad_keywords').'%');
+                            $builder->orWhere('email', 'like', '%'.$filters->input('ad_keywords').'%');
 
-						});
-					});
+                        });
+                    });
 
-				});
-			});
-		}
+                });
+            });
+        }
 
         $attributionAdsFiltered
             ->join('ads', 'attribution_ads.id', '=', 'ads.id');
 
-		//Handling sort of research results
-		if ($filters->has('order') && $filters->has('sort')) {
-			if ($filters->input('sort') === 'title') {
-				$attributionAdsFiltered
-					->orderBy($filters->input('sort'), $filters->input('order'));
+        // Handling sort of research results
+        if ($filters->has('order') && $filters->has('sort')) {
+            if ($filters->input('sort') === 'title') {
+                $attributionAdsFiltered
+                    ->orderBy($filters->input('sort'), $filters->input('order'));
 
-			} else if ($filters->input('sort') === 'name') {
-				$attributionAdsFiltered
-					->select('attribution_ads.*')
-					->join('users', 'users.id', '=', 'ads.user_pp_id')
-					->orderBy('first_name', $filters->input('order'));
+            } elseif ($filters->input('sort') === 'name') {
+                $attributionAdsFiltered
+                    ->select('attribution_ads.*')
+                    ->join('users', 'users.id', '=', 'ads.user_pp_id')
+                    ->orderBy('first_name', $filters->input('order'));
 
-			} else if ($filters->input('sort') === 'ad_statuses.name') {
-				$attributionAdsFiltered
-					->join('ad_statuses', 'attribution_ads.ad_status_id', '=', 'ad_statuses.id')
-					->orderBy('name', $filters->input('order'));
-			} else if ($filters->input('sort') === 'project_statuses.name') {
-				$attributionAdsFiltered
-					->select('attribution_ads.*')
-					->leftJoin('projects as p1', 'p1.id', '=', 'ads.project_id')
-					->leftJoin('project_statuses', 'p1.project_status_id', 'project_statuses.id')
-					->orderBy('name', $filters->input('order'));
-			}
-            else if($filters->input('sort') === 'id'){
+            } elseif ($filters->input('sort') === 'ad_statuses.name') {
+                $attributionAdsFiltered
+                    ->join('ad_statuses', 'attribution_ads.ad_status_id', '=', 'ad_statuses.id')
+                    ->orderBy('name', $filters->input('order'));
+            } elseif ($filters->input('sort') === 'project_statuses.name') {
+                $attributionAdsFiltered
+                    ->select('attribution_ads.*')
+                    ->leftJoin('projects as p1', 'p1.id', '=', 'ads.project_id')
+                    ->leftJoin('project_statuses', 'p1.project_status_id', 'project_statuses.id')
+                    ->orderBy('name', $filters->input('order'));
+            } elseif ($filters->input('sort') === 'id') {
                 $attributionAdsFiltered
                     ->orderBy('ads.id', $filters->input('order'));
             }
-		}
+        }
 
         $attributionAdsFiltered->orderByDesc('updated_at');
 
-		$attributionAds = $attributionAdsFiltered
-			->with($this->getEagerLoading())
-			->paginate(15);
-		return $attributionAds;
-	}
+        $attributionAds = $attributionAdsFiltered
+            ->with($this->getEagerLoading())
+            ->paginate(15);
 
-	/**
-	 * @param Ad $ad
-	 * @throws Exception
-	 */
-	private function forgetAdPolygonCache(Ad $ad)
-	{
-		cache()->forget('regionspolygon.' . $this->adService->getAdType($ad));
-		foreach ($this->adService->getAdRegions($ad) as $region) {
-			cache()->forget('departmentspolygon.' . $region->id);
-		}
-	}
+        return $attributionAds;
+    }
 
+    /**
+     * @throws Exception
+     */
+    private function forgetAdPolygonCache(Ad $ad)
+    {
+        cache()->forget('regionspolygon.'.$this->adService->getAdType($ad));
+        foreach ($this->adService->getAdRegions($ad) as $region) {
+            cache()->forget('departmentspolygon.'.$region->id);
+        }
+    }
 
-	/**
-	 * @param array $data
-	 * @return AttributionAd
-	 * @throws Exception
-	 */
-	public function acceptAd(array $data)
-	{
-		/** @var AttributionAd $attributionAd */
-		$attributionAd = $this->repository->find($data['attribution_ad_id']);
+    /**
+     * @return AttributionAd
+     *
+     * @throws Exception
+     */
+    public function acceptAd(array $data)
+    {
+        /** @var AttributionAd $attributionAd */
+        $attributionAd = $this->repository->find($data['attribution_ad_id']);
 
-		$ad = $this->adRepository->find($attributionAd->ad->id);
-		$this->adService->updateAdPartnerStatus($ad, ['is_partner' => $data['is_partner'] ?? null]);
+        $ad = $this->adRepository->find($attributionAd->ad->id);
+        $this->adService->updateAdPartnerStatus($ad, ['is_partner' => $data['is_partner'] ?? null]);
 
-		$attributionAd->ad_status_id = AdStatus::APPROVE_ID;
-		$attributionAd->published_on = Carbon::now();
+        $attributionAd->ad_status_id = AdStatus::APPROVE_ID;
+        $attributionAd->published_on = Carbon::now();
         $attributionAd->archived_at = null;
         $attributionAd->refusal_type_id = null;
         $attributionAd->pending_update_since = null;
 
-		$attributionAd->ad->userPp?->notify(new AcceptedAdNotification($attributionAd));
+        $attributionAd->ad->userPp?->notify(new AcceptedAdNotification($attributionAd));
 
-		$attributionAd->save();
+        $attributionAd->save();
 
-		$ad = $this->adRepository->find($attributionAd->ad->id);
-		$ad->is_draft = 0;
-		$ad->save();
+        $ad = $this->adRepository->find($attributionAd->ad->id);
+        $ad->is_draft = 0;
+        $ad->save();
 
-		$this->forgetAdPolygonCache($ad);
+        $this->forgetAdPolygonCache($ad);
 
-		return $attributionAd;
-	}
-
-	/**
-	 * @param int $attributionAdId
-	 * @return mixed
-	 * @throws Exception
-	 */
-	public function modifyAd(int $attributionAdId)
-	{
-		$attributionAd = $this->repository->find($attributionAdId);
-		$pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_ID)->first();
-		$attributionAd->ad_status_id = $pendingStatus->id;
-		$attributionAd->pending_update_since = null;
-		$attributionAd->save();
-
-		$ad = $this->adRepository->find($attributionAd->ad->id);
-		$ad->is_draft = 1;
-		$ad->save();
-
-		$this->forgetAdPolygonCache($ad);
-
-		//TODO url is the link to the form form modifiy the ad
-		$data = [
-			'message' => 'Votre annonce nécessite quelques modifications pour être publiée ! Consulter votre messagerie pour plus d\'informations.',
-			'action' => 'Consulter votre messagerie',
-			'url' => '/mon-espace/messagerie',
-		];
-		$ad->userPp->notify(new ModerationPpNotification($data));
-		return $attributionAd;
-	}
-
-	/**
-	 * @param array $data
-	 * @return mixed
-	 * @throws Exception
-	 */
-	public function rejectAd(array $data)
-	{
-		$attributionAd = $this->repository->find($data['attribution_ad_id']);
-		$rejectStatus = AdStatus::where('id', '=', AdStatus::REFUSE_ID)->first();
-		$attributionAd->ad_status_id = $rejectStatus->id;
-		$attributionAd->refusal_type_id = $data['refusal_type_id'];
-		$attributionAd->refused_on = Carbon::now();
-		$attributionAd->pending_update_since = null;
-		$attributionAd->save();
-		$data = [
-			'message' => 'Votre annonce n\'a pas été acceptée par l\'équipe d\'Objectif Terres. Consulter votre messagerie pour plus d\'informations.',
-			'action' => 'Consulter votre messagerie',
-			'url' => '/mon-espace/messagerie',
-		];
-		$attributionAd->ad->userPp->notify(new ModerationPpNotification($data));
-		if ($attributionAd->ad->is_draft === 1) {
-			$ad = $this->adRepository->find($attributionAd->ad->id);
-			$ad->is_draft = 0;
-			$ad->save();
-
-			$this->forgetAdPolygonCache($ad);
-		}
-		return $attributionAd;
-
-	}
-
-	/**
-	 * @return \Illuminate\Support\Collection
-	 */
-	public function getListOfMonthInYear(): Collection
-	{
-		$period = CarbonPeriod::create(Carbon::now()->startOfYear(), '1 month', Carbon::now()->endOfYear());
-		$listOfMonth = collect();
-		foreach ($period as $date) {
-			$listOfMonth[$date->localeMonth] = collect();
-		}
-		return $listOfMonth;
-	}
-
+        return $attributionAd;
+    }
 
     /**
-     * @param Ad $ad
-     * @return \App\Models\User|null
+     * @return mixed
+     *
      * @throws Exception
      */
-	public function unsetAdvisor(Ad $ad)
-	{
-		if(isset($ad->attributionAd->user_advisor_id)){
-			$oldAdvisor = $ad->attributionAd->userAdvisor;
+    public function modifyAd(int $attributionAdId)
+    {
+        $attributionAd = $this->repository->find($attributionAdId);
+        $pendingStatus = AdStatus::where('id', '=', AdStatus::PENDING_ID)->first();
+        $attributionAd->ad_status_id = $pendingStatus->id;
+        $attributionAd->pending_update_since = null;
+        $attributionAd->save();
 
-			$ad->attributionAd->user_advisor_id = null;
-			$ad->attributionAd->save();
+        $ad = $this->adRepository->find($attributionAd->ad->id);
+        $ad->is_draft = 1;
+        $ad->save();
 
-			return $oldAdvisor;
-		}
+        $this->forgetAdPolygonCache($ad);
 
-		return null;
-	}
+        // TODO url is the link to the form form modifiy the ad
+        $data = [
+            'message' => 'Votre annonce nécessite quelques modifications pour être publiée ! Consulter votre messagerie pour plus d\'informations.',
+            'action' => 'Consulter votre messagerie',
+            'url' => '/mon-espace/messagerie',
+        ];
+        $ad->userPp->notify(new ModerationPpNotification($data));
 
-	/**
-	 * @return array
-	 */
-	private function getEagerLoading()
-	{
-		return [
+        return $attributionAd;
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws Exception
+     */
+    public function rejectAd(array $data)
+    {
+        $attributionAd = $this->repository->find($data['attribution_ad_id']);
+        $rejectStatus = AdStatus::where('id', '=', AdStatus::REFUSE_ID)->first();
+        $attributionAd->ad_status_id = $rejectStatus->id;
+        $attributionAd->refusal_type_id = $data['refusal_type_id'];
+        $attributionAd->refused_on = Carbon::now();
+        $attributionAd->pending_update_since = null;
+        $attributionAd->save();
+        $data = [
+            'message' => 'Votre annonce n\'a pas été acceptée par l\'équipe d\'Objectif Terres. Consulter votre messagerie pour plus d\'informations.',
+            'action' => 'Consulter votre messagerie',
+            'url' => '/mon-espace/messagerie',
+        ];
+        $attributionAd->ad->userPp->notify(new ModerationPpNotification($data));
+        if ($attributionAd->ad->is_draft === 1) {
+            $ad = $this->adRepository->find($attributionAd->ad->id);
+            $ad->is_draft = 0;
+            $ad->save();
+
+            $this->forgetAdPolygonCache($ad);
+        }
+
+        return $attributionAd;
+
+    }
+
+    public function getListOfMonthInYear(): Collection
+    {
+        $period = CarbonPeriod::create(Carbon::now()->startOfYear(), '1 month', Carbon::now()->endOfYear());
+        $listOfMonth = collect();
+        foreach ($period as $date) {
+            $listOfMonth[$date->localeMonth] = collect();
+        }
+
+        return $listOfMonth;
+    }
+
+    /**
+     * @return \App\Models\User|null
+     *
+     * @throws Exception
+     */
+    public function unsetAdvisor(Ad $ad)
+    {
+        if (isset($ad->attributionAd->user_advisor_id)) {
+            $oldAdvisor = $ad->attributionAd->userAdvisor;
+
+            $ad->attributionAd->user_advisor_id = null;
+            $ad->attributionAd->save();
+
+            return $oldAdvisor;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return array
+     */
+    private function getEagerLoading()
+    {
+        return [
             'userModerator',
-			'ad',
-			'ad.userPp',
-			'adStatus',
-			'ad.project.projectStatus',
+            'ad',
+            'ad.userPp',
+            'adStatus',
+            'ad.project.projectStatus',
 
-			'ad.cities',
+            'ad.cities',
             'ad.cities.department',
             'ad.cities.department.territory',
-			'ad.cities.department.region',
+            'ad.cities.department.region',
             'ad.department',
             'ad.department.territory',
-			'ad.departments',
+            'ad.departments',
             'ad.departments.territory',
-			'ad.departments.region',
-			'ad.regions',
-			'ad.regions.departments',
-			'ad.regions.departments.cities',
+            'ad.departments.region',
+            'ad.regions',
+            'ad.regions.departments',
+            'ad.regions.departments.cities',
 
-			'ad.landSeekAd',
+            'ad.landSeekAd',
             'ad.landSeekAd.productionGenres',
-			'ad.landOfferAd',
+            'ad.landOfferAd',
             'ad.landOfferAd.productionGenres',
-			'ad.jobOfferAd',
+            'ad.jobOfferAd',
             'ad.jobOfferAd.productionGenres',
             'ad.jobSeekAd',
             'ad.jobSeekAd.productionGenres',
@@ -537,6 +529,6 @@ class AttributionAdsService
             'ad.associateOfferAd.productionGenres',
             'ad.associateSeekAd',
             'ad.associateSeekAd.productionGenres',
-		];
-	}
+        ];
+    }
 }

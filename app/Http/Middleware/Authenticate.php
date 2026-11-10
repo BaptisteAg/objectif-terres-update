@@ -20,27 +20,27 @@ class Authenticate extends Middleware
             $urlBase = url()->to('/');
 
             // Set the previous url that we came from to redirect to after successful login but only if is internal
-            if(($intendedUrl != $urlBase . '/connexion') && (substr($intendedUrl, 0, strlen($urlBase)) === $urlBase)) {
+            if (($intendedUrl != $urlBase.'/connexion') && (substr($intendedUrl, 0, strlen($urlBase)) === $urlBase)) {
 
                 $isSupportRequest =
                     $request->route()->getName() === 'support-request.create' &&
-                    url()->previous()            === url()->route('support-request.start');
+                    url()->previous() === url()->route('support-request.start');
 
-                if($isSupportRequest) {
+                if ($isSupportRequest) {
                     session()->put('info',
-                        "Afin de traiter au mieux votre demande nous avons besoin d’en savoir plus sur votre projet. 
-                        Pour cela merci de vous connecter."
+                        'Afin de traiter au mieux votre demande nous avons besoin d’en savoir plus sur votre projet. 
+                        Pour cela merci de vous connecter.'
                     );
-                }
-                else {
+                } else {
                     session()->put('info',
-                        "Veuillez vous connecter pour accéder à cette page."
+                        'Veuillez vous connecter pour accéder à cette page.'
                     );
                 }
 
                 session()->put('url.intended', $intendedUrl);
                 session()->save();
             }
+
             return route('login');
         }
     }

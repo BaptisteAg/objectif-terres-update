@@ -96,7 +96,7 @@ class ApiTest extends TestCase
     /**
      * Test that the API returns 401 without a valid API key.
      */
-    public function testApiRequiresAuthentication()
+    public function test_api_requires_authentication()
     {
         $response = $this->getJson('/api/v1/ads');
 
@@ -110,7 +110,7 @@ class ApiTest extends TestCase
     /**
      * Test that the API returns 200 with a valid API key.
      */
-    public function testApiWithValidKey()
+    public function test_api_with_valid_key()
     {
         $response = $this->getJson('/api/v1/ads', [
             'Ot-api-key' => 'test-api-key',
@@ -126,7 +126,7 @@ class ApiTest extends TestCase
     /**
      * Test that the moderator object contains first_name and last_name fields instead of name.
      */
-    public function testModeratorHasFirstNameAndLastName()
+    public function test_moderator_has_first_name_and_last_name()
     {
         // Create a moderator user
         $moderator = factory(User::class)->create([
@@ -198,7 +198,7 @@ class ApiTest extends TestCase
     /**
      * Test that ads without moderator have null moderator in moderation object.
      */
-    public function testAdWithoutModeratorReturnsNullModerator()
+    public function test_ad_without_moderator_returns_null_moderator()
     {
         // Create an ad author
         $author = factory(User::class)->create([
@@ -245,7 +245,7 @@ class ApiTest extends TestCase
      * The User model stores last name in 'name' field (labeled "Nom" in registration form)
      * and first name in 'first_name' field (labeled "Prénom").
      */
-    public function testAuthorHasFirstNameAndLastName()
+    public function test_author_has_first_name_and_last_name()
     {
         // Create an ad author with specific name values
         $author = factory(User::class)->create([
@@ -292,7 +292,7 @@ class ApiTest extends TestCase
     /**
      * Test that image URLs are properly URL-encoded for special characters.
      */
-    public function testImageUrlIsProperlyEncoded()
+    public function test_image_url_is_properly_encoded()
     {
         // Create an ad author
         $author = factory(User::class)->create([
@@ -337,7 +337,7 @@ class ApiTest extends TestCase
     /**
      * Test that soft deleted ads are excluded by default (?status=published).
      */
-    public function testSoftDeletedAdsExcludedByDefault()
+    public function test_soft_deleted_ads_excluded_by_default()
     {
         $ad = $this->createDeletedAd();
 
@@ -355,7 +355,7 @@ class ApiTest extends TestCase
     /**
      * Test that ?status=deleted returns only soft-deleted ads.
      */
-    public function testStatusDeletedReturnsOnlyDeletedAds()
+    public function test_status_deleted_returns_only_deleted_ads()
     {
         $author = factory(User::class)->create(['role' => User::ROLE_PP]);
 
@@ -379,7 +379,7 @@ class ApiTest extends TestCase
     /**
      * Test that archived ads are excluded by default.
      */
-    public function testArchivedAdsExcludedByDefault()
+    public function test_archived_ads_excluded_by_default()
     {
         $ad = $this->createArchivedAd();
 
@@ -397,7 +397,7 @@ class ApiTest extends TestCase
     /**
      * Test that ?status=archived returns only archived ads.
      */
-    public function testStatusArchivedReturnsOnlyArchived()
+    public function test_status_archived_returns_only_archived()
     {
         $author = factory(User::class)->create(['role' => User::ROLE_PP]);
 
@@ -418,7 +418,7 @@ class ApiTest extends TestCase
     /**
      * Test that ?status=published,archived returns both published and archived ads.
      */
-    public function testStatusPublishedArchivedReturnsBoth()
+    public function test_status_published_archived_returns_both()
     {
         $author = factory(User::class)->create(['role' => User::ROLE_PP]);
 
@@ -439,7 +439,7 @@ class ApiTest extends TestCase
     /**
      * Test that ?status=published,archived,deleted returns all three types.
      */
-    public function testStatusAllThreeReturnEverything()
+    public function test_status_all_three_return_everything()
     {
         $author = factory(User::class)->create(['role' => User::ROLE_PP]);
 
@@ -464,7 +464,7 @@ class ApiTest extends TestCase
      * is NOT returned with status=published (default filter).
      * Reproduces ticket about ads 516/7982 leaking pending_moderation/refused statuses.
      */
-    public function testRepublishedAdIsNotReturnedAsPublished()
+    public function test_republished_ad_is_not_returned_as_published()
     {
         $author = factory(User::class)->create(['role' => User::ROLE_PP]);
         $ad = factory(Ad::class)->disableEvents()->create([
@@ -502,7 +502,7 @@ class ApiTest extends TestCase
     /**
      * Test that an invalid status value returns 400.
      */
-    public function testInvalidStatusReturns400()
+    public function test_invalid_status_returns400()
     {
         $response = $this->getJson('/api/v1/ads?status=invalid', [
             'Ot-api-key' => 'test-api-key',
@@ -517,7 +517,7 @@ class ApiTest extends TestCase
     /**
      * Test ?updated_since accepts YYYY-MM-DD format.
      */
-    public function testUpdatedSinceAcceptsDateFormat()
+    public function test_updated_since_accepts_date_format()
     {
         $response = $this->getJson('/api/v1/ads?updated_since=2025-01-01', [
             'Ot-api-key' => 'test-api-key',
@@ -529,7 +529,7 @@ class ApiTest extends TestCase
     /**
      * Test pagination with per_page up to 200.
      */
-    public function testPerPageMax200()
+    public function test_per_page_max200()
     {
         $response = $this->getJson('/api/v1/ads?per_page=200&page=1', [
             'Ot-api-key' => 'test-api-key',
@@ -550,12 +550,12 @@ class ApiTest extends TestCase
      * doit refléter la date de republication (et non celle d'archivage). Sinon la
      * synchronisation Salesforce, basée sur max(updated_at), ne reprend jamais l'annonce.
      */
-    public function testRepublishedAdExposesRepublicationDateAsUpdatedAt()
+    public function test_republished_ad_exposes_republication_date_as_updated_at()
     {
         /** @var \App\Repositories\Ads\AdRepository $repository */
         $repository = app(\App\Repositories\Ads\AdRepository::class);
 
-        $archivedAt    = \Carbon\Carbon::parse('2026-02-21 07:58:04');
+        $archivedAt = \Carbon\Carbon::parse('2026-02-21 07:58:04');
         $republishedAt = \Carbon\Carbon::parse('2026-07-13 10:00:00');
 
         $ad = $this->createPublishedAd();

@@ -1,18 +1,17 @@
-<?php namespace App\Services\Spip;
+<?php
+
+namespace App\Services\Spip;
 
 use App\Models\City;
 use App\Models\OfferGenre;
 use App\Models\Spip\Article;
 use App\Models\Spip\Auteur;
-use App\Models\Spip\Document;
-use App\Models\Spip\Mot;
 use App\Repositories\Users\UserRepository;
 use App\Services\Documents\DocumentService;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\File\File;
 
 class SpipService
@@ -21,10 +20,12 @@ class SpipService
      * @var DatabaseManager
      */
     protected $db;
+
     /**
      * @var UserRepository
      */
     private $localUserRepository;
+
     /**
      * @var DocumentService
      */
@@ -63,10 +64,10 @@ class SpipService
 
         $auteurs = Auteur::with(['articles', 'articles.mots', 'articles.url'])
             ->whereExists(function (Builder $query) {
-            $query->select(DB::raw(1))
-                ->from('spip_auteurs_liens')
-                ->whereRaw('spip_auteurs.id_auteur = spip_auteurs_liens.id_auteur')
-                ->where('objet', 'article');
+                $query->select(DB::raw(1))
+                    ->from('spip_auteurs_liens')
+                    ->whereRaw('spip_auteurs.id_auteur = spip_auteurs_liens.id_auteur')
+                    ->where('objet', 'article');
             })
             ->where('email', '<>', '')
             ->get();
@@ -83,17 +84,17 @@ class SpipService
 
     public function getLocalAdTypeMapping(Collection $mots)
     {
-        $motIds = $mots->pluck("id_mot", "id_mot");
+        $motIds = $mots->pluck('id_mot', 'id_mot');
 
         $adTypeMapping = [
-            4 => "land_offer",
-            5 => "land_seek",
-            207 => "job_offer",
-            210 => "job_seek",
+            4 => 'land_offer',
+            5 => 'land_seek',
+            207 => 'job_offer',
+            210 => 'job_seek',
         ];
 
-        foreach($motIds as $motId) {
-            if(isset($adTypeMapping[$motId])) {
+        foreach ($motIds as $motId) {
+            if (isset($adTypeMapping[$motId])) {
                 return $adTypeMapping[$motId];
             }
         }
@@ -101,9 +102,9 @@ class SpipService
 
     public function getLocalRegionMapping(Collection $mots)
     {
-        $motIds = $mots->pluck("id_mot", "id_mot");
+        $motIds = $mots->pluck('id_mot', 'id_mot');
 
-        //dd($motIds);
+        // dd($motIds);
 
         $regionMapping = [
             162 => 11,
@@ -127,7 +128,7 @@ class SpipService
             139 => 16,
         ];
 
-        foreach($motIds as $motId) {
+        foreach ($motIds as $motId) {
             if (isset($regionMapping[$motId])) {
                 return $regionMapping[$motId];
             }
@@ -136,16 +137,16 @@ class SpipService
 
     public function getLocalOfferGenresMapping(Collection $mots)
     {
-        $motIds = $mots->pluck("id_mot", "id_mot");
+        $motIds = $mots->pluck('id_mot', 'id_mot');
 
         $offerGenres = [];
 
         $offerGenresMapping = [
             6 => 2,
-            7 => 1
+            7 => 1,
         ];
 
-        foreach($motIds as $motId) {
+        foreach ($motIds as $motId) {
             if (isset($offerGenresMapping[$motId])) {
                 $offerGenres[] = $offerGenresMapping[$motId];
             }
@@ -158,9 +159,9 @@ class SpipService
     {
         $documentIds = [];
 
-        foreach($spipDocuments as $document) {
-            $filePath = str_replace("/", DIRECTORY_SEPARATOR, storage_path('app/spip/'.$document->fichier));
-            if(!is_file($filePath)) {
+        foreach ($spipDocuments as $document) {
+            $filePath = str_replace('/', DIRECTORY_SEPARATOR, storage_path('app/spip/'.$document->fichier));
+            if (! is_file($filePath)) {
                 continue;
             }
             $file = new File($filePath);
@@ -173,7 +174,7 @@ class SpipService
 
     public function hasAdType(Article $article)
     {
-        return !empty($this->getLocalAdTypeMapping($article->mots));
+        return ! empty($this->getLocalAdTypeMapping($article->mots));
     }
 
     public function getLocalAdMapping(Article $article, $userId)
@@ -186,12 +187,12 @@ class SpipService
             'title' => $article->titre,
             'about_content' => $article->surtitre,
             'about_project_content' => $article->texte,
-            'created_at' =>  $article->date,
+            'created_at' => $article->date,
             'updated_at' => $article->maj,
-            'is_draft' => $article->statut !== "publie" ? 1 : 0,
+            'is_draft' => $article->statut !== 'publie' ? 1 : 0,
             'ad_type' => $this->getLocalAdTypeMapping($article->mots),
             'locationable' => [
-                'regions' => [$this->getLocalRegionMapping($article->mots)]
+                'regions' => [$this->getLocalRegionMapping($article->mots)],
             ],
             'land_seek' => [
                 'offer_genres' => $offerGenres,
@@ -211,13 +212,11 @@ class SpipService
             'documents_ids' => $this->getLocalDocumentsMapping($article->documents, $userId),
             // Taken from the first ad found
             'accept_share_contact_infos' => $article->soustitre === 'oui' ? 1 : 0,
-            'origin' => "spip"
+            'origin' => 'spip',
         ];
     }
 
-
     /**
-     * @param Auteur $auteur
      * @throws \Throwable
      */
     public function getLocalUserMapping(Auteur $auteur)
@@ -233,7 +232,7 @@ class SpipService
             // bio contains the unencrypted password ( yes -_- )
             'password' => $auteur->bio,
 
-            'origin' => 'spip'
+            'origin' => 'spip',
         ];
     }
 
@@ -241,35 +240,33 @@ class SpipService
      * Find the city matching a provided zip code and the lowest word distance to
      * available cities
      *
-     * @param Auteur $auteur
      * @return City
      */
     public function findMatchingCityId(Auteur $auteur)
     {
-        $city =  City::where("zip_code", $auteur->cp)
+        $city = City::where('zip_code', $auteur->cp)
             ->get()
             ->sort(function (City $city) use ($auteur) {
                 return levenshtein(strtolower($auteur->ville), strtolower($city->name));
             })
             ->first();
 
-        if(!$city) {
-            $city =  City::where("name", 'LIKE',  trim(preg_replace('/cedex/i', '', $auteur->ville)))
+        if (! $city) {
+            $city = City::where('name', 'LIKE', trim(preg_replace('/cedex/i', '', $auteur->ville)))
                 ->get()
                 ->sort(function (City $city) use ($auteur) {
                     return levenshtein(strtolower($auteur->ville), strtolower($city->name));
                 })
                 ->first();
 
-            //dd($auteur->cp, $auteur->ville, $cities);
+            // dd($auteur->cp, $auteur->ville, $cities);
         }
 
-        if(!$city) {
-            //dd($auteur->cp, $auteur->ville);
+        if (! $city) {
+            // dd($auteur->cp, $auteur->ville);
             return null;
         }
 
         return $city->id;
     }
-
 }

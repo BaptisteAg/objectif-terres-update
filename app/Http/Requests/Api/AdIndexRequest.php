@@ -3,8 +3,8 @@
 namespace App\Http\Requests\Api;
 
 use App\Models\Ad;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class AdIndexRequest extends FormRequest
@@ -35,7 +35,7 @@ class AdIndexRequest extends FormRequest
         $validKeys = array_filter(config('app.api_keys', []));
 
         // Check if provided key is valid
-        return !empty($apiKey) && in_array($apiKey, $validKeys, true);
+        return ! empty($apiKey) && in_array($apiKey, $validKeys, true);
     }
 
     /**
@@ -46,14 +46,14 @@ class AdIndexRequest extends FormRequest
         // Handle comma-separated types parameter
         if ($this->has('types') && is_string($this->types)) {
             $this->merge([
-                'types' => array_filter(explode(',', $this->types))
+                'types' => array_filter(explode(',', $this->types)),
             ]);
         }
 
         // Handle comma-separated status parameter
         if ($this->has('status') && is_string($this->status)) {
             $this->merge([
-                'status' => array_filter(explode(',', $this->status))
+                'status' => array_filter(explode(',', $this->status)),
             ]);
         }
     }
@@ -74,7 +74,7 @@ class AdIndexRequest extends FormRequest
         return [
             // Types parameter - accepts array or comma-separated string
             'types' => 'nullable|array',
-            'types.*' => 'string|in:' . implode(',', $validTypes),
+            'types.*' => 'string|in:'.implode(',', $validTypes),
 
             // Date filter - accepts YYYY-MM-DD or ISO 8601 (YYYY-MM-DDTHH:MM:SSZ)
             'updated_since' => 'nullable|date',
@@ -89,7 +89,7 @@ class AdIndexRequest extends FormRequest
 
             // Legacy parameters (to be removed)
             'limit' => 'nullable|integer|min:1|max:200',
-            'type' => 'nullable|string|in:' . implode(',', $validTypes),
+            'type' => 'nullable|string|in:'.implode(',', $validTypes),
         ];
     }
 
@@ -102,7 +102,7 @@ class AdIndexRequest extends FormRequest
     {
         return [
             'types.array' => 'The types parameter must be an array or comma-separated string.',
-            'types.*.in' => 'Invalid ad type provided. Valid types are: ' . implode(', ', array_keys(self::TYPE_MAP)),
+            'types.*.in' => 'Invalid ad type provided. Valid types are: '.implode(', ', array_keys(self::TYPE_MAP)),
             'updated_since.date' => 'The updated_since parameter must be a valid date (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SSZ).',
             'page.integer' => 'The page parameter must be a valid integer.',
             'page.min' => 'The page parameter must be at least 1.',
@@ -116,7 +116,6 @@ class AdIndexRequest extends FormRequest
     /**
      * Handle a failed validation attempt.
      *
-     * @param  \Illuminate\Contracts\Validation\Validator  $validator
      * @return void
      *
      * @throws \Illuminate\Http\Exceptions\HttpResponseException
@@ -170,7 +169,7 @@ class AdIndexRequest extends FormRequest
             $types = [$this->input('type')];
         }
 
-        if (!$types) {
+        if (! $types) {
             return null;
         }
 
@@ -214,8 +213,6 @@ class AdIndexRequest extends FormRequest
     /**
      * Get the requested statuses from the status parameter.
      * Defaults to ['published'] if not specified.
-     *
-     * @return array
      */
     public function getRequestedStatuses(): array
     {

@@ -17,7 +17,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class ResourceIndexTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -31,7 +31,7 @@ class ResourceIndexTest extends IntegrationTest
         $user = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users');
+            ->getJson('/nova-api/users');
 
         $this->assertEquals('User Resources', $response->original['label']);
         $this->assertEquals($user->id, $response->original['resources'][0]['id']->value);
@@ -60,7 +60,7 @@ class ResourceIndexTest extends IntegrationTest
         Gate::policy(User::class, UserPolicy::class);
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users');
+            ->getJson('/nova-api/users');
 
         unset($_SERVER['nova.user.authorizable']);
         unset($_SERVER['nova.user.updatable']);
@@ -83,7 +83,7 @@ class ResourceIndexTest extends IntegrationTest
         $user = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users');
+            ->getJson('/nova-api/users');
 
         unset($_SERVER['nova.user.authorizable']);
         unset($_SERVER['nova.user.viewAnyable']);
@@ -98,7 +98,7 @@ class ResourceIndexTest extends IntegrationTest
         });
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users');
+            ->getJson('/nova-api/users');
 
         $response->assertStatus(403);
     }
@@ -111,7 +111,7 @@ class ResourceIndexTest extends IntegrationTest
         $deletedUser->delete();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users');
+            ->getJson('/nova-api/users');
 
         $this->assertEquals($user->id, $response->original['resources'][0]['id']->value);
 
@@ -128,14 +128,14 @@ class ResourceIndexTest extends IntegrationTest
 
         // User that has posts...
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/posts?viaResource=users&viaResourceId='.$user->id.'&viaRelationship=posts');
+            ->getJson('/nova-api/posts?viaResource=users&viaResourceId='.$user->id.'&viaRelationship=posts');
 
         $response->assertJsonCount(3, 'resources');
         $this->assertEquals(4, Post::count());
 
         // User that has no posts...
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/posts?viaResource=users&viaResourceId='.$user2->id.'&viaRelationship=posts');
+            ->getJson('/nova-api/posts?viaResource=users&viaResourceId='.$user2->id.'&viaRelationship=posts');
 
         $response->assertJsonCount(0, 'resources');
     }
@@ -154,7 +154,7 @@ class ResourceIndexTest extends IntegrationTest
         Gate::policy(User::class, UserPolicy::class);
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/roles?viaResource=users&viaResourceId='.$user->id.'&viaRelationship=roles');
+            ->getJson('/nova-api/roles?viaResource=users&viaResourceId='.$user->id.'&viaRelationship=roles');
 
         unset($_SERVER['nova.user.authorizable']);
         unset($_SERVER['nova.user.attachRole']);
@@ -181,7 +181,7 @@ class ResourceIndexTest extends IntegrationTest
         Gate::policy(User::class, UserPolicy::class);
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/roles?viaResource=users&viaResourceId='.$user->id.'&viaRelationship=roles&relationshipType=belongsToMany');
+            ->getJson('/nova-api/roles?viaResource=users&viaResourceId='.$user->id.'&viaRelationship=roles&relationshipType=belongsToMany');
 
         $this->assertEquals($user->id, $_SERVER['nova.user.detachRoleUser']->id);
         $this->assertEquals($role->id, $_SERVER['nova.user.detachRoleRole']->id);
@@ -204,7 +204,7 @@ class ResourceIndexTest extends IntegrationTest
         $user = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users?search='.$user->email);
+            ->getJson('/nova-api/users?search='.$user->email);
 
         $this->assertEquals($user->id, $response->original['resources'][0]['id']->value);
 
@@ -225,7 +225,7 @@ class ResourceIndexTest extends IntegrationTest
         ]));
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users?filters='.$filters);
+            ->getJson('/nova-api/users?filters='.$filters);
 
         $this->assertEquals(2, $response->original['resources'][0]['id']->value);
 
@@ -246,7 +246,7 @@ class ResourceIndexTest extends IntegrationTest
         ]));
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users?filters='.$filters);
+            ->getJson('/nova-api/users?filters='.$filters);
 
         $this->assertEquals(2, $response->original['resources'][0]['id']->value);
 
@@ -267,7 +267,7 @@ class ResourceIndexTest extends IntegrationTest
         ]));
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users?filters='.$filters);
+            ->getJson('/nova-api/users?filters='.$filters);
 
         $this->assertEquals(2, $response->original['resources'][0]['id']->value);
 
@@ -290,7 +290,7 @@ class ResourceIndexTest extends IntegrationTest
         ]));
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users?filters='.$filters);
+            ->getJson('/nova-api/users?filters='.$filters);
 
         unset($_SERVER['nova.idFilter.canSee']);
 
@@ -304,13 +304,13 @@ class ResourceIndexTest extends IntegrationTest
         $userC = factory(User::class)->create(['email' => 'c@c.com']);
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users?orderBy=email&orderByDirection=asc');
+            ->getJson('/nova-api/users?orderBy=email&orderByDirection=asc');
 
         $response->assertJsonCount(3, 'resources');
         $this->assertEquals($userA->id, $response->original['resources'][0]['id']->value);
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users?orderBy=email&orderByDirection=desc');
+            ->getJson('/nova-api/users?orderBy=email&orderByDirection=desc');
 
         $response->assertJsonCount(3, 'resources');
         $this->assertEquals($userC->id, $response->original['resources'][0]['id']->value);
@@ -323,7 +323,7 @@ class ResourceIndexTest extends IntegrationTest
         factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users?perPage=2');
+            ->getJson('/nova-api/users?perPage=2');
 
         $response->assertJsonCount(2, 'resources');
     }
@@ -336,7 +336,7 @@ class ResourceIndexTest extends IntegrationTest
         $deletedUser->delete();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users?trashed=with');
+            ->getJson('/nova-api/users?trashed=with');
 
         $this->assertEquals($deletedUser->id, $response->original['resources'][0]['id']->value);
 
@@ -351,7 +351,7 @@ class ResourceIndexTest extends IntegrationTest
         $deletedUser->delete();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users?trashed=only');
+            ->getJson('/nova-api/users?trashed=only');
 
         $this->assertEquals($deletedUser->id, $response->original['resources'][0]['id']->value);
 
@@ -361,14 +361,14 @@ class ResourceIndexTest extends IntegrationTest
     public function test_forbidden_resource_cant_be_accessed()
     {
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/forbidden-users');
+            ->getJson('/nova-api/forbidden-users');
 
         $response->assertStatus(403);
 
         $_SERVER['nova.authorize.forbidden-users'] = true;
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/forbidden-users');
+            ->getJson('/nova-api/forbidden-users');
 
         $response->assertStatus(200);
     }

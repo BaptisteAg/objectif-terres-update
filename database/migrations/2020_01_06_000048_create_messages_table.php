@@ -6,11 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateMessagesTable extends Migration
 {
-	/**
-	 * Schema table name to migrate
-	 * @var string
-	 */
-	public $tableName = 'messages';
+    /**
+     * Schema table name to migrate
+     *
+     * @var string
+     */
+    public $tableName = 'messages';
 
     /**
      * Run the migrations.
@@ -20,23 +21,23 @@ class CreateMessagesTable extends Migration
     public function up()
     {
         Schema::create($this->tableName, function (Blueprint $table) {
-			$table->engine = 'InnoDB';
-			$table->increments('id');
-			$table->text('content')->nullable();
-			$table->unsignedInteger('thread_id');
-			$table->unsignedInteger('sender_user_id');
+            $table->engine = 'InnoDB';
+            $table->increments('id');
+            $table->text('content')->nullable();
+            $table->unsignedInteger('thread_id');
+            $table->unsignedInteger('sender_user_id');
 
-			$table->timestamps();
+            $table->timestamps();
 
-			$table->foreign('sender_user_id')
-				->references('id')
-				->on('users')
-				->onDelete('restrict');
+            $table->foreign('sender_user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('restrict');
 
-			$table->foreign('thread_id')
-				->references('id')
-				->on('threads')
-				->onDelete('cascade');
+            $table->foreign('thread_id')
+                ->references('id')
+                ->on('threads')
+                ->onDelete('cascade');
 
         });
     }

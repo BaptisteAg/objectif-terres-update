@@ -31,6 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $production_genres_possible_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductionGenre[] $productionGenresSecondary
  * @property-read int|null $production_genres_secondary_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|AssociateSeekAd newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AssociateSeekAd newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AssociateSeekAd query()
@@ -42,15 +43,16 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|AssociateSeekAd whereIsLandAlreadyFound($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssociateSeekAd whereLandDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssociateSeekAd whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class AssociateSeekAd extends Model
 {
-    use ProductionableGenre,
-		EducationLevelable,
-        BioCertifiable,
-		HasMorphToManyEvents,
-		HasRelationshipObservables;
+    use BioCertifiable,
+        EducationLevelable,
+        HasMorphToManyEvents,
+        HasRelationshipObservables,
+        ProductionableGenre;
 
     /**
      * @var array
@@ -63,9 +65,9 @@ class AssociateSeekAd extends Model
         'experience_farming',
     ];
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function ad()
     {
         return $this->belongsTo(Ad::class);

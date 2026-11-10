@@ -12,72 +12,71 @@ use Illuminate\Http\Request;
 
 class ResponseTemplatesController extends Controller
 {
-	protected $repository;
-	protected $threadService;
+    protected $repository;
 
-	/**
-	 * ResponseTemplatesController constructor.
-	 * @param ResponseTemplatesRepository $responseTemplatesRepository
-	 * @param ThreadService $threadService
-	 */
-	public function __construct(ResponseTemplatesRepository $responseTemplatesRepository, ThreadService $threadService)
-	{
-		$this->repository = $responseTemplatesRepository;
-		$this->threadService = $threadService;
-	}
+    protected $threadService;
 
-	/**
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-	 */
-	public function index()
-	{
-		$responseTemplates = ResponseTemplate::orderBy('created_at',  'desc')->get();
+    /**
+     * ResponseTemplatesController constructor.
+     */
+    public function __construct(ResponseTemplatesRepository $responseTemplatesRepository, ThreadService $threadService)
+    {
+        $this->repository = $responseTemplatesRepository;
+        $this->threadService = $threadService;
+    }
 
-		return view('pages.responseTemplates.index', compact('responseTemplates'));
-	}
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function index()
+    {
+        $responseTemplates = ResponseTemplate::orderBy('created_at', 'desc')->get();
 
-	/**
-	 * @param Request $request
-	 * @return RedirectResponse
-	 */
-	public function create(ResponseTemplateRequest $request)
-	{
-		$data = $request->validated();
-		$data['content'] = $this->threadService->convertContentToHTML($data['content']);
-		$newResponseTemplate = $this->repository->create($request->validated());
-		if (empty($newResponseTemplate->getAttributes())) {
-			return back()->with('warning', 'Une erreur s\'est produite, veuillez réessayer');
-		} else {
-			return back()->with('success', 'La réponse a bien été créée');
-		}
-	}
+        return view('pages.responseTemplates.index', compact('responseTemplates'));
+    }
 
-	/**
-	 * @param ResponseTemplate $request
-	 */
-	public function edit(ResponseTemplateRequest $request)
-	{
-		if (!$request->has('response_template_id')) {
-			return back()->with('warning', 'Une erreur s\'est produite, veuillez réessayer');
-		}
-		$this->repository->edit($request->input('response_template_id'), $request->validated());
-		return back()->with('success', 'La réponse a bien été modifiée');
-	}
+    /**
+     * @param  Request  $request
+     * @return RedirectResponse
+     */
+    public function create(ResponseTemplateRequest $request)
+    {
+        $data = $request->validated();
+        $data['content'] = $this->threadService->convertContentToHTML($data['content']);
+        $newResponseTemplate = $this->repository->create($request->validated());
+        if (empty($newResponseTemplate->getAttributes())) {
+            return back()->with('warning', 'Une erreur s\'est produite, veuillez réessayer');
+        } else {
+            return back()->with('success', 'La réponse a bien été créée');
+        }
+    }
 
-	/**
-	 * @param Request $request
-	 * @return RedirectResponse
-	 * @throws \Exception
-	 */
-	public function delete(Request $request)
-	{
-		$responseTemplate = ResponseTemplate::find($request->input('response_template_id'));
-		if (!isset($responseTemplate)) {
-			return back()->with('warning', 'Une erreur s\'est produite, veuillez réessayer');
-		}
-		$responseTemplate->delete();
-		return back()->with('success', 'La réponse a bien été supprimée');
-	}
+    /**
+     * @param  ResponseTemplate  $request
+     */
+    public function edit(ResponseTemplateRequest $request)
+    {
+        if (! $request->has('response_template_id')) {
+            return back()->with('warning', 'Une erreur s\'est produite, veuillez réessayer');
+        }
+        $this->repository->edit($request->input('response_template_id'), $request->validated());
 
+        return back()->with('success', 'La réponse a bien été modifiée');
+    }
 
+    /**
+     * @return RedirectResponse
+     *
+     * @throws \Exception
+     */
+    public function delete(Request $request)
+    {
+        $responseTemplate = ResponseTemplate::find($request->input('response_template_id'));
+        if (! isset($responseTemplate)) {
+            return back()->with('warning', 'Une erreur s\'est produite, veuillez réessayer');
+        }
+        $responseTemplate->delete();
+
+        return back()->with('success', 'La réponse a bien été supprimée');
+    }
 }

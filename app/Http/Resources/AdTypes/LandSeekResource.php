@@ -19,7 +19,7 @@ class LandSeekResource extends JsonResource
         $landSeek = $this->resource;
 
         // Load relationships if not already loaded
-        if (!$landSeek->relationLoaded('offerGenres')) {
+        if (! $landSeek->relationLoaded('offerGenres')) {
             $landSeek->load(['offerGenres', 'installationType']);
         }
 
@@ -55,7 +55,7 @@ class LandSeekResource extends JsonResource
      */
     protected function getInstallationType($landSeek)
     {
-        if (!$landSeek->installationType) {
+        if (! $landSeek->installationType) {
             return null;
         }
 

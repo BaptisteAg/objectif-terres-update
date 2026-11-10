@@ -1,8 +1,8 @@
-<?php namespace App\Services\Users;
+<?php
 
-use App\Models\Ad;
+namespace App\Services\Users;
+
 use App\Models\City;
-use App\Models\Department;
 use App\Models\Region;
 use App\Models\Territory;
 use App\Models\User;
@@ -12,11 +12,9 @@ use Illuminate\Support\Facades\Hash;
 
 /**
  * Class UserService
- * @package App\Services\Users
  */
 class UserService
 {
-
     /**
      * @var UserRepository
      */
@@ -24,7 +22,6 @@ class UserService
 
     /**
      * UserService constructor.
-     * @param UserRepository $repository
      */
     public function __construct(UserRepository $repository)
     {
@@ -37,16 +34,14 @@ class UserService
     }
 
     /**
-     * @param array $data
-     * @return User
      * @throws \Throwable
      */
     public function create(array $data): User
     {
-        if (!isset($data['accept_communication'])) {
+        if (! isset($data['accept_communication'])) {
             $data['accept_communication'] = 0;
         }
-        if (!isset($data['accept_share_contact_infos'])) {
+        if (! isset($data['accept_share_contact_infos'])) {
             $data['accept_share_contact_infos'] = 0;
         }
 
@@ -63,7 +58,6 @@ class UserService
     }
 
     /**
-     * @param array $data
      * @return mixed
      */
     public function update(array $data)
@@ -73,11 +67,11 @@ class UserService
             $data['zip_code_id'] = $city->id;
             $data['city'] = $city->name;
         }
-        if (isset ($data['password'])) {
+        if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
 
-        if (!isset($data['formation']) || !$data['formation']) {
+        if (! isset($data['formation']) || ! $data['formation']) {
             $data['formation'] = null;
         }
 
@@ -87,11 +81,11 @@ class UserService
 
         try {
             $user->notify(new BasicNotification([
-                'subject' => "Modifications de vos informations personnelles",
+                'subject' => 'Modifications de vos informations personnelles',
                 'message' => "Vos informations personnelles viennent d’être modifiées.\n
                     Pour gérer vos informations personnelles :\n",
-                'action' => ["Vos informations personnelles", route('user.edit', ['user' => $user->id]),
-                    'salutation' => "A bientôt sur Objectif Terres !"]
+                'action' => ['Vos informations personnelles', route('user.edit', ['user' => $user->id]),
+                    'salutation' => 'A bientôt sur Objectif Terres !'],
             ]));
         } catch (\Exception $e) {
             return back()->with('warning', 'Une erreur est survenue, veuillez réessayer ');
@@ -101,7 +95,6 @@ class UserService
     }
 
     /**
-     * @param int $id
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
      */
     public function find(int $id)
@@ -116,7 +109,8 @@ class UserService
     {
         $users = $this->repository->findAllExceptPPAndLoggedUser();
         $users->map(function ($user, $key) {
-            $user['name'] = $user['first_name'] . ' ' . $user['name'];
+            $user['name'] = $user['first_name'].' '.$user['name'];
+
             return $user;
         });
 
@@ -132,7 +126,7 @@ class UserService
     }
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return User
      */
     public function findByEmail(string $email)
@@ -140,14 +134,11 @@ class UserService
         return $this->repository->findByEmail($email);
     }
 
-    /**
-     * @return array
-     */
     public function getCurrentUserTerritoryDepartments(): array
     {
         $supervisorLocationTerritoryCodes = [];
 
-        if (!auth()->id()) {
+        if (! auth()->id()) {
             return [];
         }
 
@@ -157,6 +148,7 @@ class UserService
         foreach ($user->departments as $department) {
             $supervisorLocationTerritoryCodes[] = $department->code;
         }
+
         return $supervisorLocationTerritoryCodes;
     }
 
@@ -170,13 +162,11 @@ class UserService
         foreach ($userDepartments->departments as $department) {
             array_push($userTerritoryIds, $department->territory->id);
         }
+
         return array_unique($userTerritoryIds);
     }
 
-
     /**
-     * @param int $roleId
-     * @param int $regionId
      * @return User|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
      */
     public function findRandomByRoleAndRegion(int $roleId, int $regionId)
@@ -190,8 +180,6 @@ class UserService
     }
 
     /**
-     * @param array $rolesId
-     * @param array $departmentCodes
      * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
      */
     public function findByRolesAndDepartments(array $rolesId, array $departmentCodes)
@@ -204,23 +192,20 @@ class UserService
 
     /**
      * TODO method to delete if not necessary anymore
-     * @param int $roleId
-     * @param array $regionsId
+     *
      * @return User|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
      */
     public function findByRoleAndRegions(int $roleId, array $regionsId)
     {
         $regionsCode = Region::whereIn('id', $regionsId)->get('code')->toArray();
+
         return User::filterSubLocations('departments', $regionsCode, 'departments.region_code')
             ->where('role', $roleId)
             ->orderBy('name')
             ->get();
     }
 
-
     /**
-     * @param array $roleIds
-     * @param array $territoryIds
      * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
      */
     public function findByRolesAndTerritory(array $roleIds, array $territoryIds)
@@ -232,8 +217,6 @@ class UserService
     }
 
     /**
-     * @param int $roleId
-     * @param array $territoryIds
      * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
      */
     public function findAllByRoleAndTerritory(int $roleId, array $territoryIds)
@@ -244,11 +227,9 @@ class UserService
             ->get();
     }
 
-
     /**
      * TODO find a prettier way to do the operation
-     * @param int $roleId
-     * @param $territoryIds
+     *
      * @return array
      */
     public function groupAllUsersByTerritory(int $roleId, array $territoryIds)
@@ -259,28 +240,24 @@ class UserService
             foreach ($users as $user) {
                 foreach ($user->departments as $department) {
                     if ($department->territory?->name == $territoryName) {
-                        if (!in_array($user, $usersGroupedByTerritoryNames[$territoryName])) {
+                        if (! in_array($user, $usersGroupedByTerritoryNames[$territoryName])) {
                             array_push($usersGroupedByTerritoryNames[$territoryName], $user);
                         }
                     }
                 }
             }
         }
+
         return $usersGroupedByTerritoryNames;
     }
 
-
-    /**
-     * @param int $permission
-     * @param array $departmentCodes
-     * @return User|null
-     */
     public function findOneByUserPermissionAndDepartments(int $permission, array $departmentCodes): ?User
     {
         $users = $this->repository->findAllByUserPermissionAndDepartments($permission, $departmentCodes);
-        if (!$users->isEmpty()) {
+        if (! $users->isEmpty()) {
             return $users->random();
         }
+
         return null;
     }
 }

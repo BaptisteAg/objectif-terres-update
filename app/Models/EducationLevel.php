@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\JobOfferAd[] $jobOfferAds
  * @property-read int|null $job_offer_ads_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|EducationLevel newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|EducationLevel newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|EducationLevel query()
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|EducationLevel whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EducationLevel whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EducationLevel whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class EducationLevel extends Model
@@ -30,7 +32,7 @@ class EducationLevel extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name',
     ];
 
     /**

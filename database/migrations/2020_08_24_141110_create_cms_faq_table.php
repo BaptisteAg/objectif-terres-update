@@ -15,9 +15,9 @@ class CreateCmsFaqTable extends Migration
     {
         Schema::create('cms_faq', function (Blueprint $table) {
             $table->bigIncrements('id');
-			$table->text('page_name');
-			$table->text('content_question');
-			$table->text('content_answer');
+            $table->text('page_name');
+            $table->text('content_question');
+            $table->text('content_answer');
             $table->timestamps();
         });
     }

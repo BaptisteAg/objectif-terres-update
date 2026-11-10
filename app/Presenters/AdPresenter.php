@@ -1,9 +1,10 @@
-<?php namespace App\Presenters;
+<?php
+
+namespace App\Presenters;
 
 use App\Models\Ad;
 use App\Models\City;
 use App\Models\Document;
-use App\Models\Region;
 use App\Models\User;
 use App\Nova\Department;
 use App\Services\Ads\AdService;
@@ -13,7 +14,7 @@ use McCool\LaravelAutoPresenter\BasePresenter;
 
 /**
  * Class AdPresenter
- * @package App\Presenters
+ *
  * @property Ad $wrappedObject
  */
 class AdPresenter extends BasePresenter
@@ -25,7 +26,6 @@ class AdPresenter extends BasePresenter
 
     /**
      * AdPresenter constructor.
-     * @param AdService $adService
      */
     public function __construct(AdService $adService)
     {
@@ -34,18 +34,18 @@ class AdPresenter extends BasePresenter
 
     public function isSupportRequest(): bool
     {
-        return !!$this->wrappedObject->project;
+        return (bool) $this->wrappedObject->project;
     }
 
     public function pp_display_name(): string
     {
         $user = $this->wrappedObject->userPp;
 
-        if (!$user->first_name || !$user->name) {
+        if (! $user->first_name || ! $user->name) {
             return $user->email;
         }
 
-        return $user->first_name . " " . $user->name;
+        return $user->first_name.' '.$user->name;
     }
 
     public function ad_type_full_name(): string
@@ -68,7 +68,7 @@ class AdPresenter extends BasePresenter
 
     public function submitDate()
     {
-        if (!$this->wrappedObject->attributionAd) {
+        if (! $this->wrappedObject->attributionAd) {
             return '';
         }
 
@@ -88,7 +88,7 @@ class AdPresenter extends BasePresenter
 
     public function published_on_diff()
     {
-        if (!$this->wrappedObject->attributionAd) {
+        if (! $this->wrappedObject->attributionAd) {
             return '';
         }
 
@@ -100,13 +100,13 @@ class AdPresenter extends BasePresenter
         return \Carbon\Carbon::parse($this->wrappedObject->updated_at)->format('d/m/Y');
     }
 
-
     public function locationable_radius()
     {
         $locationRadius = null;
-        if (!empty($this->wrappedObject->cities[0]->pivot->radius)) {
+        if (! empty($this->wrappedObject->cities[0]->pivot->radius)) {
             $locationRadius = $this->wrappedObject->cities[0]->pivot->radius;
         }
+
         return $locationRadius;
     }
 
@@ -115,11 +115,12 @@ class AdPresenter extends BasePresenter
         $regions = null;
         foreach ($this->wrappedObject->regions as $key => $attribute) {
             if ($key === 0) {
-                $regions = $regions . $attribute['name'];
+                $regions = $regions.$attribute['name'];
             } else {
-                $regions = $regions . ', ' . $attribute['name'];
+                $regions = $regions.', '.$attribute['name'];
             }
         }
+
         return $regions;
     }
 
@@ -129,21 +130,21 @@ class AdPresenter extends BasePresenter
 
         return $ad->secondary_departments
             ->map(function ($department) {
-                return $department->name . ' (' . $department->code . ')';
+                return $department->name.' ('.$department->code.')';
             });
     }
-
 
     public function citiesList()
     {
         $cities = null;
         foreach ($this->wrappedObject->cities as $key => $attribute) {
             if ($key === 0) {
-                $cities = $cities . $attribute['name'] . ' (' . $attribute['zip_code'] . ')';
+                $cities = $cities.$attribute['name'].' ('.$attribute['zip_code'].')';
             } else {
-                $cities = $cities . ', ' . $attribute['name'] . ' (' . $attribute['zip_code'] . ')';
+                $cities = $cities.', '.$attribute['name'].' ('.$attribute['zip_code'].')';
             }
         }
+
         return $cities;
     }
 
@@ -151,8 +152,9 @@ class AdPresenter extends BasePresenter
     {
         $cities = [];
         foreach ($this->wrappedObject->cities as $key => $attribute) {
-            $cities[] = $attribute['name'] . ' (' . $attribute['zip_code'] . ')';
+            $cities[] = $attribute['name'].' ('.$attribute['zip_code'].')';
         }
+
         return $cities;
     }
 
@@ -187,23 +189,25 @@ class AdPresenter extends BasePresenter
             $len = 3;
             foreach ($this->wrappedObject->$type->take(3) as $key => $attribute) {
                 if ($key === 0) {
-                    $locations = $locations . $attribute['name'];
+                    $locations = $locations.$attribute['name'];
                 } elseif ($i == $len - 1) {
-                    $locations = $locations . ', ' . $attribute['name'] . '...';
+                    $locations = $locations.', '.$attribute['name'].'...';
                 } else {
-                    $locations = $locations . ', ' . $attribute['name'];
+                    $locations = $locations.', '.$attribute['name'];
                 }
                 $i++;
             }
+
             return $locations;
         }
-        return call_user_func([$this, $type . 'List']);
+
+        return call_user_func([$this, $type.'List']);
     }
 
     public function zipCodesByCity()
     {
         return $this->wrappedObject->cities->mapToGroups(function (City $city, $key) {
-            return [$city['name'] => $city["zip_code"]];
+            return [$city['name'] => $city['zip_code']];
         });
     }
 
@@ -220,14 +224,14 @@ class AdPresenter extends BasePresenter
     public function images(): Collection|_IH_Document_C|array
     {
         return $this->wrappedObject->documents->filter(function ($document) {
-            return /*$this->isPpDocument($document) &&*/ $this->isImageDocument($document);
+            return /* $this->isPpDocument($document) && */ $this->isImageDocument($document);
         })->values();
     }
 
     public function nonImageDocuments()
     {
         return $this->wrappedObject->documents->filter(function ($document) {
-            return /*$this->isPpDocument($document) && */!$this->isImageDocument($document);
+            return /* $this->isPpDocument($document) && */ ! $this->isImageDocument($document);
         })->unique('id')->values();
     }
 
@@ -252,7 +256,7 @@ class AdPresenter extends BasePresenter
 
     public function published_on()
     {
-        if (!$this->wrappedObject->attributionAd) {
+        if (! $this->wrappedObject->attributionAd) {
             return '';
         }
 
@@ -266,7 +270,7 @@ class AdPresenter extends BasePresenter
 
     public function refused_on()
     {
-        if (!$this->wrappedObject->attributionAd) {
+        if (! $this->wrappedObject->attributionAd) {
             return '';
         }
 
@@ -279,19 +283,20 @@ class AdPresenter extends BasePresenter
         if ($this->wrappedObject->landOfferAd) {
             if (isset($this->wrappedObject->landOfferAd->water_access)) {
                 if ($this->wrappedObject->landOfferAd->water_access == 1) {
-                    if (!is_null($this->wrappedObject->landOfferAd->water_access_description)) {
+                    if (! is_null($this->wrappedObject->landOfferAd->water_access_description)) {
                         $waterAccess = $this->wrappedObject->landOfferAd->water_access_description;
                     } else {
-                        $waterAccess = "Oui";
+                        $waterAccess = 'Oui';
                     }
                 } elseif ($this->wrappedObject->landOfferAd->water_access == -1) {
-                    $waterAccess = "Je ne sais pas";
+                    $waterAccess = 'Je ne sais pas';
                 } else {
-                    $waterAccess = "Non";
+                    $waterAccess = 'Non';
                 }
             }
 
         }
+
         return $waterAccess;
     }
 
@@ -301,15 +306,15 @@ class AdPresenter extends BasePresenter
 
         if ($ad->landSeekAd) {
             if ($ad->landSeekAd->surface) {
-                return $ad->landSeekAd->surface . " ha";
+                return $ad->landSeekAd->surface.' ha';
             } else {
-                return "Surface non renseignée";
+                return 'Surface non renseignée';
             }
-        } else if ($ad->landOfferAd) {
+        } elseif ($ad->landOfferAd) {
             if ($ad->landOfferAd->surface) {
-                return $ad->landOfferAd->surface . " ha";
+                return $ad->landOfferAd->surface.' ha';
             } else {
-                return "Surface non renseignée";
+                return 'Surface non renseignée';
             }
         }
 
@@ -333,40 +338,30 @@ class AdPresenter extends BasePresenter
 
     /**
      * Get all departments codes related to the territories targeted by the ad
-     * @return array
      */
     public function adDepartmentsCodes(): array
     {
         return $this->adService->getAdDepartmentCodesFromZones($this->wrappedObject);
     }
 
-
-    /**
-     * @param array $userTerritoriesCodes
-     * @param array $userTerritoryId
-     * @return bool
-     */
     public function isAdInUserTerritories(array $userTerritoriesCodes, array $userTerritoryId): bool
     {
         $ad = $this->wrappedObject;
         if (isset($ad->support_request_territory_id)) {
             return in_array($ad->support_request_territory_id, $userTerritoryId);
         }
+
         return count(array_intersect($userTerritoriesCodes, $this->adDepartmentsCodes())) > 0;
     }
 
-    /**
-     * @param array $userTerritoryId
-     * @param array $userDepartmentsCode
-     * @return bool
-     */
     public function isProjectInUserTerritories(array $userTerritoryId, array $userDepartmentsCode): bool
     {
         $ad = $this->wrappedObject;
         if (isset($ad->support_request_territory_id)) {
             return in_array($ad->support_request_territory_id, $userTerritoryId);
         }
-        //TODO delete this system based on department code when system based on territory fully integrated, don't forget to attributes of all methods calls
+
+        // TODO delete this system based on department code when system based on territory fully integrated, don't forget to attributes of all methods calls
         return count(array_intersect($userDepartmentsCode, $this->adDepartmentsCodes())) > 0;
     }
 
@@ -384,18 +379,19 @@ class AdPresenter extends BasePresenter
 
             if ($min === $max) {
                 $surface = $min;
-            } else if ($max === 1000000) {
+            } elseif ($max === 1000000) {
                 if ($min === 0) {
-                    $surface = "∞";
+                    $surface = '∞';
                 } else {
-                    $surface = 'Au moins ' . $min;
+                    $surface = 'Au moins '.$min;
                 }
-            } else if ($min === 0) {
-                $surface = 'Jusqu\'à ' . $max;
+            } elseif ($min === 0) {
+                $surface = 'Jusqu\'à '.$max;
             } else {
-                $surface = $min . ' - ' . $max;
+                $surface = $min.' - '.$max;
             }
         }
+
         return $surface;
     }
 
@@ -403,10 +399,10 @@ class AdPresenter extends BasePresenter
     {
         $ad = $this->wrappedObject;
         $type = match ($ad->type) {
-            "landOfferAd" => "Vente",
-            "landSeekAd" => "Recherche",
-            "jobSeekAd" => "Recherche Emploi",
-            "jobOfferAd" => "Offre Emploi",
+            'landOfferAd' => 'Vente',
+            'landSeekAd' => 'Recherche',
+            'jobSeekAd' => 'Recherche Emploi',
+            'jobOfferAd' => 'Offre Emploi',
             'associateOfferAd' => 'Un associé sur une ferme',
             'associateSeekAd' => 'Un associé pour projet d\'installation',
         };
@@ -424,26 +420,26 @@ class AdPresenter extends BasePresenter
         $department = $ad->main_department;
         $region = $department?->region;
 
-        if (!$department) {
+        if (! $department) {
             if ($ad->cities->count()) {
                 $department = $ad->cities->first()->department;
                 $region = $department->region;
-            } else if ($ad->departments->count()) {
+            } elseif ($ad->departments->count()) {
                 $department = $ad->departments->first();
                 $region = $department->region;
-            } else if ($ad->regions->count()) {
+            } elseif ($ad->regions->count()) {
                 $region = $ad->regions->first();
                 $department = $region->departments->first();
             }
         }
 
-        return $department?->name . ' (' . $department?->code . ') • ' . $region?->name;
+        return $department?->name.' ('.$department?->code.') • '.$region?->name;
     }
 
     public function formatted_price(): string
     {
         $ad = $this->wrappedObject;
-        //$price =  'Prix non renseigné';
+        // $price =  'Prix non renseigné';
         $price = '';
 
         if ($ad->landOfferAd) {
@@ -451,13 +447,13 @@ class AdPresenter extends BasePresenter
                 $price = '';
 
                 if ($ad->landOfferAd->price) {
-                    $price .= number_format($ad->landOfferAd->price, 0, ",", " ") . ' €';
+                    $price .= number_format($ad->landOfferAd->price, 0, ',', ' ').' €';
                 }
                 if ($ad->landOfferAd->price && $ad->landOfferAd->rent_price) {
                     $price .= ' ou ';
                 }
                 if ($ad->landOfferAd->rent_price) {
-                    $price .= number_format($ad->landOfferAd->rent_price, 0, ",", " ") . ' € ' /*+ '/ an'*/;
+                    $price .= number_format($ad->landOfferAd->rent_price, 0, ',', ' ').' € ' /* + '/ an' */;
                 }
             }
         }
@@ -465,7 +461,7 @@ class AdPresenter extends BasePresenter
         return $price;
     }
 
-    //ads table have column third_party_ad_user_id which is the foreign key of table third_party_ad_users, create function to get the third party ad user
+    // ads table have column third_party_ad_user_id which is the foreign key of table third_party_ad_users, create function to get the third party ad user
     public function thirdPartyAdUser()
     {
         return $this->wrappedObject->thirdPartyAdUser;

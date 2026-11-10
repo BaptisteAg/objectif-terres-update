@@ -15,7 +15,7 @@ class CmsCommonContent extends Resource
      *
      * @var string
      */
-    public static $model = 'App\\Models\\CmsCommonContent';
+    public static $model = \App\Models\CmsCommonContent::class;
 
     /**
      * @return string
@@ -46,11 +46,10 @@ class CmsCommonContent extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'pages_name', 'description', 'content', 'name'
+        'id', 'pages_name', 'description', 'content', 'name',
     ];
 
     /**
-     * @param Request $request
      * @return bool
      */
     public static function authorizedToCreate(Request $request)
@@ -59,7 +58,6 @@ class CmsCommonContent extends Resource
     }
 
     /**
-     * @param Request $request
      * @return bool
      */
     public function authorizedToDelete(Request $request)
@@ -70,7 +68,6 @@ class CmsCommonContent extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function fields(Request $request)
@@ -80,12 +77,12 @@ class CmsCommonContent extends Resource
             Text::make('Nom de la section', 'name')->sortable()->readonly(true),
             Text::make('Description', 'description')->readonly(true),
             Text::make('Présence sur les pages', 'pages_name')->onlyOnDetail()->readonly(true),
-            MorphToMany::make('Documents', 'documents', 'App\Nova\Document'),
+            MorphToMany::make('Documents', 'documents', \App\Nova\Document::class),
             CKEditor5Classic::make('Content')->withFiles('public')->canSee(function ($request) {
                 return isset($this->has_documents) && $this->has_documents === 0;
             })
                 ->options([
-                    "toolbar" => [
+                    'toolbar' => [
                         'heading',
                         '|',
                         'bold',
@@ -102,7 +99,7 @@ class CmsCommonContent extends Resource
                         'insertTable',
                         'mediaEmbed',
                         'undo',
-                        'redo'
+                        'redo',
                     ],
                 ]),
         ];
@@ -111,7 +108,6 @@ class CmsCommonContent extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function cards(Request $request)
@@ -122,7 +118,6 @@ class CmsCommonContent extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function filters(Request $request)
@@ -133,7 +128,6 @@ class CmsCommonContent extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function lenses(Request $request)
@@ -144,7 +138,6 @@ class CmsCommonContent extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function actions(Request $request)

@@ -18,7 +18,6 @@ class DepartmentFilter extends Filter
     /**
      * Apply the filter to the given query.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder
@@ -26,14 +25,13 @@ class DepartmentFilter extends Filter
     public function apply(Request $request, $query, $value)
     {
         return $query->whereHas('departments', function ($query) use ($value) {
-                $query->where('departments.id', $value);
-            });
+            $query->where('departments.id', $value);
+        });
     }
 
     /**
      * Get the filter's available options.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function options(Request $request)

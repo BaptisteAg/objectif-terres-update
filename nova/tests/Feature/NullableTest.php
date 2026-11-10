@@ -12,7 +12,7 @@ class NullableTest extends IntegrationTest
     {
         $field = Text::make('Text')->nullable()->nullValues(['', 0]);
 
-        $model = new \stdClass();
+        $model = new \stdClass;
 
         $field->fill(NovaRequest::create('/?text='), $model);
 
@@ -33,7 +33,7 @@ class NullableTest extends IntegrationTest
             return $value == '0';
         });
 
-        $model = new \stdClass();
+        $model = new \stdClass;
 
         $field->fill(NovaRequest::create('/?text='), $model);
 

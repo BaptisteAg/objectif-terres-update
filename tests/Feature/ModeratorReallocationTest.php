@@ -21,7 +21,7 @@ class ModeratorReallocationTest extends TestCase
      *
      * @return void
      */
-    public function testModeratorChangeReassignsThreads()
+    public function test_moderator_change_reassigns_threads()
     {
         // Create a porteur de projet (role 0)
         $userPp = User::factory()->create(['role' => 0]);
@@ -87,7 +87,7 @@ class ModeratorReallocationTest extends TestCase
      *
      * @return void
      */
-    public function testModeratorRemovalFromThreads()
+    public function test_moderator_removal_from_threads()
     {
         // Create a porteur de projet (role 0)
         $userPp = User::factory()->create(['role' => 0]);
@@ -145,7 +145,7 @@ class ModeratorReallocationTest extends TestCase
      *
      * @return void
      */
-    public function testModeratorChangeAffectsAllThreads()
+    public function test_moderator_change_affects_all_threads()
     {
         // Create users
         $userPp = User::factory()->create(['role' => 0]);

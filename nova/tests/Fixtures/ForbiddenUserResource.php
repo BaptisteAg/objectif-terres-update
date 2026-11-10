@@ -17,7 +17,6 @@ class ForbiddenUserResource extends Resource
     /**
      * Determine if the resource should be displayed for the given request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
     public static function authorizedToViewAny(Request $request)
@@ -38,7 +37,6 @@ class ForbiddenUserResource extends Resource
     /**
      * Get the lenses available on the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function lenses(Request $request)
@@ -49,7 +47,6 @@ class ForbiddenUserResource extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function fields(Request $request)

@@ -9,7 +9,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class DashboardTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
     }
@@ -17,7 +17,8 @@ class DashboardTest extends IntegrationTest
     public function test_authorization_callback_is_executed()
     {
         Nova::dashboards([
-            new class extends Dashboard {
+            new class extends Dashboard
+            {
                 public function authorize(Request $request)
                 {
                     return false;

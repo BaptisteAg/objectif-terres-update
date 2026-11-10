@@ -42,7 +42,7 @@ class SyncSalesforceSsoUsersPermissions extends Command
         // Get all users using Salesforce SSO
         $salesforceUsers = User::where('is_sf_user', true)->get();
 
-        $this->info('Found ' . count($salesforceUsers) . ' users using Salesforce SSO');
+        $this->info('Found '.count($salesforceUsers).' users using Salesforce SSO');
 
         $this->info('Syncing users permissions...');
 
@@ -51,9 +51,9 @@ class SyncSalesforceSsoUsersPermissions extends Command
         foreach ($salesforceUsers as $salesforceUser) {
             try {
                 $this->salesforceService->syncLocalUser($salesforceUser->email, $salesforceUser->sf_id);
-                $this->info('Synced user permissions for ' . $salesforceUser->email);
+                $this->info('Synced user permissions for '.$salesforceUser->email);
             } catch (\Throwable $e) {
-                $this->error('Error syncing user permissions for ' . $salesforceUser->email . ' : ' . $e->getMessage());
+                $this->error('Error syncing user permissions for '.$salesforceUser->email.' : '.$e->getMessage());
             }
 
             $bar->advance();

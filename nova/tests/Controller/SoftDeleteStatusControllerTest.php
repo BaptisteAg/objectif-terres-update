@@ -6,7 +6,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class SoftDeleteStatusControllerTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -17,7 +17,7 @@ class SoftDeleteStatusControllerTest extends IntegrationTest
     {
         // With soft deletes...
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/users/soft-deletes');
+            ->get('/nova-api/users/soft-deletes');
 
         $response->assertStatus(200);
         $response->assertJson([
@@ -26,7 +26,7 @@ class SoftDeleteStatusControllerTest extends IntegrationTest
 
         // Without soft deletes...
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/posts/soft-deletes');
+            ->get('/nova-api/posts/soft-deletes');
 
         $response->assertStatus(200);
         $response->assertJson([

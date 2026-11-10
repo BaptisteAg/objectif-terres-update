@@ -18,7 +18,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class MetricTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
     }
@@ -32,7 +32,8 @@ class MetricTest extends IntegrationTest
 
     public function test_metric_calculation_using_user_timezone()
     {
-        $metric = new class extends Value {
+        $metric = new class extends Value
+        {
             public function calculate(NovaRequest $request)
             {
                 return $this->count($request, User::class);
@@ -60,7 +61,8 @@ class MetricTest extends IntegrationTest
             return 'UTC';
         });
 
-        $metric = new class extends Value {
+        $metric = new class extends Value
+        {
             public function calculate(NovaRequest $request)
             {
                 return $this->count($request, User::class);
@@ -97,13 +99,12 @@ class MetricTest extends IntegrationTest
         $post->published_at = Chronos::now()->subDay(1);
         $post->save();
 
-        $this->assertEquals([1, 1], array_values((new PostCountTrend())->countByDays(NovaRequest::create('/?range=2'), new PostWithCustomCreatedAt)->trend));
+        $this->assertEquals([1, 1], array_values((new PostCountTrend)->countByDays(NovaRequest::create('/?range=2'), new PostWithCustomCreatedAt)->trend));
     }
 
     public function test_trend_calculation_using_user_timezone()
     {
-        $metric = new class extends Trend {
-        };
+        $metric = new class extends Trend {};
 
         Chronos::setTestNow(Chronos::parse('Dec 14 2019', 'UTC'));
 
@@ -129,8 +130,7 @@ class MetricTest extends IntegrationTest
             return 'UTC';
         });
 
-        $metric = new class extends Trend {
-        };
+        $metric = new class extends Trend {};
 
         Chronos::setTestNow(Chronos::parse('Dec 14 2019', 'UTC'));
 

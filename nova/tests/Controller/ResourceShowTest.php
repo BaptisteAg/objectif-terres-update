@@ -15,14 +15,14 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class ResourceShowTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->authenticate();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -35,7 +35,7 @@ class ResourceShowTest extends IntegrationTest
         $user = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users/1');
+            ->getJson('/nova-api/users/1');
 
         $response->assertStatus(200);
 
@@ -55,7 +55,7 @@ class ResourceShowTest extends IntegrationTest
         ]);
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/posts/1');
+            ->getJson('/nova-api/posts/1');
 
         $response->assertStatus(200);
 
@@ -74,7 +74,7 @@ class ResourceShowTest extends IntegrationTest
         Gate::policy(User::class, UserPolicy::class);
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users/1');
+            ->getJson('/nova-api/users/1');
 
         unset($_SERVER['nova.user.authorizable']);
         unset($_SERVER['nova.user.updatable']);
@@ -90,7 +90,7 @@ class ResourceShowTest extends IntegrationTest
     public function test_throws_404_when_trying_to_show_resource_that_doesnt_exist()
     {
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users/1');
+            ->getJson('/nova-api/users/1');
 
         $response->assertStatus(404);
     }
@@ -105,7 +105,7 @@ class ResourceShowTest extends IntegrationTest
         $user = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users/1');
+            ->getJson('/nova-api/users/1');
 
         unset($_SERVER['nova.user.authorizable']);
         unset($_SERVER['nova.user.viewable']);
@@ -121,7 +121,7 @@ class ResourceShowTest extends IntegrationTest
         $user = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users/'.$user->id);
+            ->getJson('/nova-api/users/'.$user->id);
 
         $fields = $response->original['resource']['fields'];
         $this->assertNull(collect($fields)->where('attribute', 'roles')->first());
@@ -130,7 +130,7 @@ class ResourceShowTest extends IntegrationTest
         $_SERVER['nova.authorize.roles'] = true;
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users/'.$user->id);
+            ->getJson('/nova-api/users/'.$user->id);
 
         $fields = $response->original['resource']['fields'];
         $this->assertNotNull(collect($fields)->where('attribute', 'roles')->first());
@@ -141,7 +141,7 @@ class ResourceShowTest extends IntegrationTest
         $user = factory(User::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/panels/1');
+            ->getJson('/nova-api/panels/1');
 
         $response->assertStatus(200);
 
@@ -168,7 +168,7 @@ class ResourceShowTest extends IntegrationTest
         $role = factory(Role::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/roles/1');
+            ->getJson('/nova-api/roles/1');
 
         $response->assertStatus(200);
 
@@ -208,7 +208,7 @@ class ResourceShowTest extends IntegrationTest
         $boolean = Boolean::create();
 
         $response = $this->withExceptionHandling()
-                         ->getJson('/nova-api/booleans/'.$boolean->id);
+            ->getJson('/nova-api/booleans/'.$boolean->id);
 
         $response->assertStatus(200);
 

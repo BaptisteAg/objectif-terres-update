@@ -2,7 +2,6 @@
 
 namespace App\Models\Spip;
 
-
 /**
  * App\Models\Spip\Auteur
  *
@@ -41,6 +40,7 @@ namespace App\Models\Spip;
  * @property string $ctel
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Spip\Article[] $articles
  * @property-read int|null $articles_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Auteur newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Auteur newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Auteur query()
@@ -77,12 +77,14 @@ namespace App\Models\Spip;
  * @method static \Illuminate\Database\Eloquent\Builder|Auteur whereUrlSite($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Auteur whereVille($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Auteur whereWebmestre($value)
+ *
  * @mixin \Eloquent
  */
 class Auteur extends SpipModel
 {
-    protected $table = "spip_auteurs";
-    protected $primaryKey = "id_auteur";
+    protected $table = 'spip_auteurs';
+
+    protected $primaryKey = 'id_auteur';
 
     public $timestamps = false;
 

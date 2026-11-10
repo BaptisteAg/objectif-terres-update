@@ -12,26 +12,26 @@ return [
     'authentication' => env('SF_AUTHENTICATION', 'ClientCredentials'),
 
     'credentials' => [
-        'consumerKey'    => env('SF_CONSUMER_KEY'),
+        'consumerKey' => env('SF_CONSUMER_KEY'),
         'consumerSecret' => env('SF_CONSUMER_SECRET'),
-        'loginURL'       => env('SF_LOGIN_URL'),
+        'loginURL' => env('SF_LOGIN_URL'),
     ],
 
     'defaults' => [
-        'method'          => 'get',
-        'format'          => 'json',
-        'compression'     => false,
+        'method' => 'get',
+        'format' => 'json',
+        'compression' => false,
         'compressionType' => 'gzip',
     ],
 
     'storage' => [
-        'type'          => 'cache',
-        'path'          => 'forrest_',
-        'expire_in'     => 120,
+        'type' => 'cache',
+        'path' => 'forrest_',
+        'expire_in' => 120,
         'store_forever' => true,
     ],
 
-    'version'     => '',
+    'version' => '',
     'instanceURL' => '',
-    'language'    => 'en_US',
+    'language' => 'en_US',
 ];

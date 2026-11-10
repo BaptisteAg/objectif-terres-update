@@ -2,7 +2,6 @@
 
 namespace App\Models\Spip;
 
-
 /**
  * App\Models\Spip\Article
  *
@@ -83,6 +82,7 @@ namespace App\Models\Spip;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Spip\Mot[] $mots
  * @property-read int|null $mots_count
  * @property-read \App\Models\Spip\Url|null $url
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Article newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Article newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Article query()
@@ -156,12 +156,14 @@ namespace App\Models\Spip;
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereVille($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereVirtuel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereVisites($value)
+ *
  * @mixin \Eloquent
  */
 class Article extends SpipModel
 {
-    protected $table = "spip_articles";
-    protected $primaryKey = "id_article";
+    protected $table = 'spip_articles';
+
+    protected $primaryKey = 'id_article';
 
     public function auteurs()
     {

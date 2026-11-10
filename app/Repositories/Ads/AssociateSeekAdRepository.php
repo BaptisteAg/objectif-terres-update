@@ -3,7 +3,6 @@
 namespace App\Repositories\Ads;
 
 use App\Models\AssociateSeekAd;
-use App\Models\LandSeekAd;
 use Illuminate\Support\Arr;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
 
@@ -22,7 +21,7 @@ class AssociateSeekAdRepository extends AbstractRepository
      */
     public function create(array $data): AssociateSeekAd
     {
-        $associateSeekAd = new AssociateSeekAd();
+        $associateSeekAd = new AssociateSeekAd;
 
         $this->save($associateSeekAd, $data);
 
@@ -32,9 +31,7 @@ class AssociateSeekAdRepository extends AbstractRepository
     /**
      * Update an ad.
      *
-     * @param AssociateSeekAd $associateSeekAd
-     * @param array $data
-     * @return AssociateSeekAd
+     * @param  AssociateSeekAd  $associateSeekAd
      */
     public function update($associateSeekAd, array $data): AssociateSeekAd
     {
@@ -48,20 +45,22 @@ class AssociateSeekAdRepository extends AbstractRepository
         $associateSeekAd->fill($data);
         $associateSeekAd->save();
 
-        $productionGenres = $data["production_genres"] ?? [];
-        if(in_array('other', $productionGenres)) {
-            $productionGenres = Arr::where($productionGenres, function($productionGenre) {return $productionGenre !== 'other';});
+        $productionGenres = $data['production_genres'] ?? [];
+        if (in_array('other', $productionGenres)) {
+            $productionGenres = Arr::where($productionGenres, function ($productionGenre) {
+                return $productionGenre !== 'other';
+            });
         }
         $associateSeekAd->productionGenres()->sync($productionGenres);
 
-        $productionGenresSecondary = $data["secondary_production_genres"] ?? [];
+        $productionGenresSecondary = $data['secondary_production_genres'] ?? [];
         $associateSeekAd->productionGenresSecondary()->detach();
         foreach ($productionGenresSecondary as $productionGenreId) {
-            if($productionGenreId !== 'other') {
-                $associateSeekAd->productionGenresSecondary()->attach($productionGenreId, ["type" => "secondary"]);
+            if ($productionGenreId !== 'other') {
+                $associateSeekAd->productionGenresSecondary()->attach($productionGenreId, ['type' => 'secondary']);
             }
         }
 
-        $associateSeekAd->educationLevels()->sync($data["education_levels"] ?? []);
+        $associateSeekAd->educationLevels()->sync($data['education_levels'] ?? []);
     }
 }

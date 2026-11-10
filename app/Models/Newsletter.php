@@ -1,4 +1,6 @@
-<?php namespace App\Models;
+<?php
+
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Newsletter newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Newsletter newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Newsletter query()
@@ -16,11 +19,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Newsletter whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Newsletter whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Newsletter whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Newsletter extends Model
 {
-    protected $table = "newsletter";
+    protected $table = 'newsletter';
 
-    protected $fillable = ["email"];
+    protected $fillable = ['email'];
 }

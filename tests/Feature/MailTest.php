@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Ad;
-use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\User;
 use App\Notifications\AcceptedAdNotification;
@@ -12,26 +11,23 @@ use App\Notifications\OverdueModerationNotification;
 use App\Notifications\PendingModerationNotification;
 use App\Notifications\PublishDateExtendBeforeExpirationNotification;
 use App\Notifications\UnpublishedAdNotification;
-use App\Repositories\SalesForce\SalesForceRepository;
-use App\Repositories\Users\UserRepository;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class MailTest extends TestCase
 {
-    public function testAdminAlert()
+    public function test_admin_alert()
     {
         Notification::route('mail', [
-            config('mail.from.address') => config('mail.from.name')
+            config('mail.from.address') => config('mail.from.name'),
         ])->notify(
             new \App\Notifications\SalesforceUserRoleChanged(User::inRandomOrder()->first(), 3)
         );
     }
 
-    public function testOverdueModeration()
+    public function test_overdue_moderation()
     {
-        $notificationData['subject'] = "3 annonces sont en attente de modération depuis plus de 7 jours";
+        $notificationData['subject'] = '3 annonces sont en attente de modération depuis plus de 7 jours';
         User::inRandomOrder()->first()->notify(new OverdueModerationNotification($notificationData, collect([
             (object) ['id' => 1],
             (object) ['id' => 2],
@@ -39,7 +35,7 @@ class MailTest extends TestCase
         ])));
     }
 
-    public function testNewAdToModerate()
+    public function test_new_ad_to_moderate()
     {
         $ad = Ad::whereHas('attributionAd', function ($query) {
             $query->whereNull('ad_status_id');
@@ -51,20 +47,20 @@ class MailTest extends TestCase
             ));
     }
 
-    public function testPublishDateExtendBeforeExpiration()
+    public function test_publish_date_extend_before_expiration()
     {
         $ad = Ad::whereHas('attributionAd')->inRandomOrder()->first();
 
         $ad->userPp->notify(new PublishDateExtendBeforeExpirationNotification($ad));
     }
 
-    public function testPendingModeration()
+    public function test_pending_moderation()
     {
         $ad = Ad::whereHas('attributionAd')->inRandomOrder()->first();
         $ad->userPp->notify(new PendingModerationNotification($ad));
     }
 
-    public function testAcceptedAdModeration()
+    public function test_accepted_ad_moderation()
     {
         $attributionAd = AttributionAd::whereHas('ad')
             ->inRandomOrder()
@@ -72,7 +68,7 @@ class MailTest extends TestCase
         $attributionAd->ad->userPp->notify(new AcceptedAdNotification($attributionAd));
     }
 
-    public function testUnpublishedAd()
+    public function test_unpublished_ad()
     {
         $attributionAd = AttributionAd::whereHas('ad')
             ->inRandomOrder()

@@ -20,13 +20,13 @@ class AuthorResource extends JsonResource
         $ad = $this->resource;
 
         // Load relationships if not already loaded
-        if (!$ad->relationLoaded('userPp')) {
-            $ad->load(['userPp' => fn($q) => $q->withTrashed()]);
+        if (! $ad->relationLoaded('userPp')) {
+            $ad->load(['userPp' => fn ($q) => $q->withTrashed()]);
         }
 
         $user = $ad->userPp;
 
-        if (!$user) {
+        if (! $user) {
             return null;
         }
 
@@ -43,7 +43,7 @@ class AuthorResource extends JsonResource
 
         // Add third party information if exists
         if ($ad->third_party_ad_user_id) {
-            if (!$ad->relationLoaded('thirdPartyAdUser')) {
+            if (! $ad->relationLoaded('thirdPartyAdUser')) {
                 $ad->load('thirdPartyAdUser');
             }
 
@@ -63,9 +63,6 @@ class AuthorResource extends JsonResource
 
     /**
      * Recursively remove null values from array
-     *
-     * @param array $data
-     * @return array
      */
     protected function filterNullValues(array $data): array
     {
@@ -83,12 +80,12 @@ class AuthorResource extends JsonResource
     /**
      * Get the user profile in the specified format
      *
-     * @param User $user
+     * @param  User  $user
      * @return string|null
      */
     protected function getUserProfile($user)
     {
-        if (!$user->profile) {
+        if (! $user->profile) {
             return null;
         }
 

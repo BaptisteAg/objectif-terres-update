@@ -6,8 +6,9 @@ use Exception;
 use GlueDev\Laravel\Stackdriver\StackdriverExceptionHandler;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Throwable;
 
-class 	Handler extends ExceptionHandler
+class Handler extends ExceptionHandler
 {
     /**
      * A list of the exception types that are not reported.
@@ -31,11 +32,11 @@ class 	Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param \Exception $exception
      * @return void
-     * @throws Exception
+     *
+     * @throws \Throwable
      */
-    public function report(Exception $exception)
+    public function report(Throwable $exception)
     {
         StackdriverExceptionHandler::report($exception);
         parent::report($exception);
@@ -43,8 +44,8 @@ class 	Handler extends ExceptionHandler
 
     protected function renderHttpException(HttpExceptionInterface $e)
     {
-        if($e->getStatusCode() === 419) {
-            return back()->withInput()->withErrors("La page a expiré. Merci de réessayer.");
+        if ($e->getStatusCode() === 419) {
+            return back()->withInput()->withErrors('La page a expiré. Merci de réessayer.');
         }
 
         if (! view()->exists("errors.{$e->getStatusCode()}")) {

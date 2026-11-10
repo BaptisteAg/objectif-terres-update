@@ -46,14 +46,14 @@ class FixMissingAdsLocations extends Command
                 ->from('locationable_ads')
                 ->whereRaw('locationable_ads.ad_id = ads.id');
         })->get()->each(function (Ad $ad) use ($console) {
-            $console->info("Ad {$ad->id} {$ad->title} is missing locations " . json_encode([$ad->regions, $ad->departments, $ad->cities]));
+            $console->info("Ad {$ad->id} {$ad->title} is missing locations ".json_encode([$ad->regions, $ad->departments, $ad->cities]));
 
             $histories = History::whereAdId($ad->id)
-                ->whereIn('reference_table', ["departments", "cities"])
+                ->whereIn('reference_table', ['departments', 'cities'])
                 ->get();
 
             $histories->groupBy('reference_table')->each(function ($histories, $referenceTable) use ($ad, $console) {
-                $console->info("Attaching " . $referenceTable . " " . json_encode($histories->pluck('reference_id')->toArray()) . " to ad {$ad->id}");
+                $console->info('Attaching '.$referenceTable.' '.json_encode($histories->pluck('reference_id')->toArray())." to ad {$ad->id}");
                 $ad->{$referenceTable}()->attach($histories->pluck('reference_id')->unique()->toArray());
             });
         });

@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\Territory|null $territory
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Department newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Department newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Department query()
@@ -37,6 +38,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Department whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Department whereTerritoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Department whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Department extends Model
@@ -47,7 +49,7 @@ class Department extends Model
      * @var array
      */
     protected $fillable = [
-       'territory_id', 'region_code', 'code', 'name', 'slug', 'id'
+        'territory_id', 'region_code', 'code', 'name', 'slug', 'id',
     ];
 
     /**
@@ -57,6 +59,7 @@ class Department extends Model
     {
         return $this->belongsTo(Region::class, 'region_code', 'code');
     }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

@@ -13,16 +13,16 @@ class UpdateDepartmentsAddTerritoryForeignKey extends Migration
      */
     public function up()
     {
-		Schema::table('departments', function (Blueprint $table) {
-			$table->unsignedInteger('territory_id')->nullable();
-			$table->timestamps();
-			$table->index(["territory_id"], 'fk_territory_id_idx');
+        Schema::table('departments', function (Blueprint $table) {
+            $table->unsignedInteger('territory_id')->nullable();
+            $table->timestamps();
+            $table->index(['territory_id'], 'fk_territory_id_idx');
 
-			$table->foreign('territory_id', 'fk_territory_id_idx')
-				->references('id')->on('territories')
-				->onDelete('cascade')
-				->onUpdate('cascade');
-		});
+            $table->foreign('territory_id', 'fk_territory_id_idx')
+                ->references('id')->on('territories')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
     }
 
     /**
@@ -32,8 +32,8 @@ class UpdateDepartmentsAddTerritoryForeignKey extends Migration
      */
     public function down()
     {
-		Schema::table('departments', function (Blueprint $table) {
-			$table->removeColumn('territory_id');
-		});
+        Schema::table('departments', function (Blueprint $table) {
+            $table->removeColumn('territory_id');
+        });
     }
 }

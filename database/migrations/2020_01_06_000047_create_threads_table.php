@@ -6,14 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateThreadsTable extends Migration
 {
-	/**
-	 * Schema table name to migrate
-	 * @var string
-	 */
-	public $tableName = 'threads';
+    /**
+     * Schema table name to migrate
+     *
+     * @var string
+     */
+    public $tableName = 'threads';
 
-
-	/**
+    /**
      * Run the migrations.
      *
      * @return void
@@ -24,13 +24,13 @@ class CreateThreadsTable extends Migration
             $table->increments('id');
             $table->text('title')->nullable();
             $table->boolean('is_private')->default(1);
-			$table->unsignedInteger('ad_id')->nullable();
+            $table->unsignedInteger('ad_id')->nullable();
             $table->timestamps();
 
-			$table->foreign('ad_id')
-				->references('id')->on('ads')
-				->onDelete('cascade')
-				->onUpdate('cascade');
+            $table->foreign('ad_id')
+                ->references('id')->on('ads')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

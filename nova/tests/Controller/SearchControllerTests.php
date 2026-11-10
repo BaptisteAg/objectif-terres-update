@@ -13,7 +13,7 @@ trait SearchControllerTests
         $post = factory(Post::class)->create(['user_id' => $user->id]);
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/search?search=1');
+            ->getJson('/nova-api/search?search=1');
 
         $response->assertStatus(200);
 

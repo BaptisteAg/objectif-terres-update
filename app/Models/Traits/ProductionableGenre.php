@@ -1,15 +1,11 @@
 <?php
 
-
 namespace App\Models\Traits;
-
 
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-
-Trait ProductionableGenre
+trait ProductionableGenre
 {
-
     /**
      * Get all production_genres
      *
@@ -17,7 +13,7 @@ Trait ProductionableGenre
      */
     public function productionGenres()
     {
-        return $this->morphToMany('App\Models\ProductionGenre', 'productionable_genre')->withPivot('type')->wherePivot('type', 'actual');
+        return $this->morphToMany(\App\Models\ProductionGenre::class, 'productionable_genre')->withPivot('type')->wherePivot('type', 'actual');
     }
 
     /**
@@ -27,16 +23,15 @@ Trait ProductionableGenre
      */
     public function productionGenresPossible()
     {
-        return $this->morphToMany('App\Models\ProductionGenre', 'productionable_genre')->withPivot('type')->wherePivot('type', 'possible');
+        return $this->morphToMany(\App\Models\ProductionGenre::class, 'productionable_genre')->withPivot('type')->wherePivot('type', 'possible');
     }
 
     /**
      * Get all production_genres
-     *
      */
-    public function productionGenresSecondary() : morphToMany
+    public function productionGenresSecondary(): morphToMany
     {
-        return $this->morphToMany('App\Models\ProductionGenre', 'productionable_genre')
+        return $this->morphToMany(\App\Models\ProductionGenre::class, 'productionable_genre')
             ->withPivot('type')
             ->wherePivotIn('type', ['secondary', 'possible']);
     }

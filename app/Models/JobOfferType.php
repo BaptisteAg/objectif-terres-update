@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $researches_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\JobOfferAd[] $jobOfferAds
  * @property-read int|null $job_offer_ads_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|JobOfferType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|JobOfferType newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|JobOfferType query()
@@ -24,6 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|JobOfferType whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JobOfferType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JobOfferType whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class JobOfferType extends Model
@@ -32,7 +34,7 @@ class JobOfferType extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name',
     ];
 
     /**

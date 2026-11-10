@@ -10,13 +10,12 @@ class RecaptchaService
     /**
      * Verify a reCAPTCHA v3 token and return the result.
      *
-     * @param string|null $token
      * @return array ['success' => bool, 'score' => float|null, 'error' => string|null]
      */
     public function verify(?string $token): array
     {
         // If reCAPTCHA is disabled, return success
-        if (!config('messaging.recaptcha.enabled')) {
+        if (! config('messaging.recaptcha.enabled')) {
             return [
                 'success' => true,
                 'score' => null,
@@ -37,6 +36,7 @@ class RecaptchaService
 
         if (empty($secretKey)) {
             Log::warning('reCAPTCHA secret key not configured');
+
             return [
                 'success' => true, // Allow if not configured
                 'score' => null,
@@ -45,7 +45,7 @@ class RecaptchaService
         }
 
         try {
-            $client = new Client();
+            $client = new Client;
             $response = $client->post('https://www.google.com/recaptcha/api/siteverify', [
                 'form_params' => [
                     'secret' => $secretKey,
@@ -56,10 +56,11 @@ class RecaptchaService
 
             $result = json_decode($response->getBody()->getContents(), true);
 
-            if (!$result['success']) {
+            if (! $result['success']) {
                 Log::warning('reCAPTCHA verification failed', [
                     'error-codes' => $result['error-codes'] ?? [],
                 ]);
+
                 return [
                     'success' => false,
                     'score' => null,
@@ -76,6 +77,7 @@ class RecaptchaService
                     'min_score' => $minScore,
                     'ip' => request()->ip(),
                 ]);
+
                 return [
                     'success' => false,
                     'score' => $score,
@@ -92,6 +94,7 @@ class RecaptchaService
             Log::error('reCAPTCHA verification error', [
                 'message' => $e->getMessage(),
             ]);
+
             return [
                 'success' => true, // Allow on error to not block legitimate users
                 'score' => null,
@@ -102,20 +105,16 @@ class RecaptchaService
 
     /**
      * Check if reCAPTCHA is enabled.
-     *
-     * @return bool
      */
     public function isEnabled(): bool
     {
         return config('messaging.recaptcha.enabled', false)
-            && !empty(config('messaging.recaptcha.site_key'))
-            && !empty(config('messaging.recaptcha.secret_key'));
+            && ! empty(config('messaging.recaptcha.site_key'))
+            && ! empty(config('messaging.recaptcha.secret_key'));
     }
 
     /**
      * Get the site key for frontend.
-     *
-     * @return string|null
      */
     public function getSiteKey(): ?string
     {

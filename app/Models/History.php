@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $body
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|History newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|History newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|History query()
@@ -27,34 +28,33 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|History whereReferenceId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|History whereReferenceTable($value)
  * @method static \Illuminate\Database\Eloquent\Builder|History whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class History extends Model
 {
-	protected $table = 'histories';
+    protected $table = 'histories';
 
-	/**
-	 * @var array
-	 */
-	protected $fillable = [
-		'reference_table',
-		'reference_id',
-		'ad_id',
-		'actor_id',
-		'body',
-		'created_at',
-		'updated_at'
-	];
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'reference_table',
+        'reference_id',
+        'ad_id',
+        'actor_id',
+        'body',
+        'created_at',
+        'updated_at',
+    ];
 
+    public function getCreatedAtAttribute($date)
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('H:i d/m/Y');
+    }
 
-	public function getCreatedAtAttribute($date)
-	{
-		return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('H:i d/m/Y');
-	}
-
-	public function getUpdatedAtAttribute($date)
-	{
-		return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('H:i d/m/Y');
-	}
-
+    public function getUpdatedAtAttribute($date)
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('H:i d/m/Y');
+    }
 }

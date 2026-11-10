@@ -21,11 +21,11 @@ class AdResource extends JsonResource
         $ad = $this->resource;
 
         // Load relationships if not already loaded
-        if (!$ad->relationLoaded('attributionAd')) {
+        if (! $ad->relationLoaded('attributionAd')) {
             $ad->load(['attributionAd.adStatus', 'attributionAd.userModerator']);
         }
 
-        $statusCalculator = new AdStatusCalculatorService();
+        $statusCalculator = new AdStatusCalculatorService;
         $status = $statusCalculator->calculateStatus($ad);
 
         // Base structure
@@ -72,9 +72,6 @@ class AdResource extends JsonResource
 
     /**
      * Recursively remove null values from array
-     *
-     * @param array $data
-     * @return array
      */
     protected function filterNullValues(array $data): array
     {
@@ -94,7 +91,7 @@ class AdResource extends JsonResource
      */
     protected function getMainImage($ad)
     {
-        if (!$ad->relationLoaded('documents')) {
+        if (! $ad->relationLoaded('documents')) {
             $ad->load('documents');
         }
 
@@ -111,6 +108,7 @@ class AdResource extends JsonResource
     protected function getMainDepartmentCode($ad)
     {
         $mainDepartment = $ad->main_department;
+
         return $mainDepartment ? $mainDepartment->code : null;
     }
 
@@ -120,6 +118,7 @@ class AdResource extends JsonResource
     protected function getMainDepartmentName($ad)
     {
         $mainDepartment = $ad->main_department;
+
         return $mainDepartment ? $mainDepartment->name : null;
     }
 
@@ -130,9 +129,10 @@ class AdResource extends JsonResource
     protected function getPublicDepartmentCode($ad)
     {
         $mainDepartment = $ad->main_department;
-        if (!$mainDepartment) {
+        if (! $mainDepartment) {
             return null;
         }
+
         // Return the standard 2-character department code
         return substr($mainDepartment->code, 0, 3); // Handles both "34" and "2A"/"2B"
     }
@@ -143,12 +143,12 @@ class AdResource extends JsonResource
     protected function getRegionName($ad)
     {
         $mainDepartment = $ad->main_department;
-        if (!$mainDepartment) {
+        if (! $mainDepartment) {
             return null;
         }
 
         // Load region if not already loaded
-        if (!$mainDepartment->relationLoaded('region')) {
+        if (! $mainDepartment->relationLoaded('region')) {
             $mainDepartment->load('region');
         }
 
@@ -160,7 +160,7 @@ class AdResource extends JsonResource
      */
     protected function formatDateToIso($date)
     {
-        if (!$date) {
+        if (! $date) {
             return null;
         }
 
@@ -174,6 +174,7 @@ class AdResource extends JsonResource
 
         // DateTime instance
         $carbon = \Illuminate\Support\Carbon::instance($date)->setTimezone('UTC');
+
         return $carbon->format('Y-m-d\TH:i:s\Z');
     }
 
@@ -182,7 +183,7 @@ class AdResource extends JsonResource
      */
     protected function getModerationData($ad)
     {
-        if (!$ad->attributionAd) {
+        if (! $ad->attributionAd) {
             return null;
         }
 
@@ -235,7 +236,7 @@ class AdResource extends JsonResource
     protected function getLocationData($ad)
     {
         // Load location relationships if not loaded
-        if (!$ad->relationLoaded('cities')) {
+        if (! $ad->relationLoaded('cities')) {
             $ad->load(['cities', 'departments', 'regions']);
         }
 
@@ -260,17 +261,17 @@ class AdResource extends JsonResource
      */
     protected function getTypeSpecificData($ad)
     {
-        if (!$ad->type) {
+        if (! $ad->type) {
             return null;
         }
 
         $typeResourceMap = [
-            'landOfferAd' => 'App\Http\Resources\AdTypes\LandOfferResource',
-            'landSeekAd' => 'App\Http\Resources\AdTypes\LandSeekResource',
-            'jobOfferAd' => 'App\Http\Resources\AdTypes\JobOfferResource',
-            'jobSeekAd' => 'App\Http\Resources\AdTypes\JobSeekResource',
-            'associateOfferAd' => 'App\Http\Resources\AdTypes\AssociateOfferResource',
-            'associateSeekAd' => 'App\Http\Resources\AdTypes\AssociateSeekResource',
+            'landOfferAd' => \App\Http\Resources\AdTypes\LandOfferResource::class,
+            'landSeekAd' => \App\Http\Resources\AdTypes\LandSeekResource::class,
+            'jobOfferAd' => \App\Http\Resources\AdTypes\JobOfferResource::class,
+            'jobSeekAd' => \App\Http\Resources\AdTypes\JobSeekResource::class,
+            'associateOfferAd' => \App\Http\Resources\AdTypes\AssociateOfferResource::class,
+            'associateSeekAd' => \App\Http\Resources\AdTypes\AssociateSeekResource::class,
         ];
 
         if (isset($typeResourceMap[$ad->type])) {
@@ -292,6 +293,7 @@ class AdResource extends JsonResource
     {
         // Convert camelCase to snake_case
         $snakeCase = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $type));
+
         // Remove the 'Ad' suffix
         return str_replace('_ad', '', $snakeCase);
     }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Locationable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -17,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Country newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Country newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Country query()
@@ -29,15 +29,13 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Country whereNameFrFr($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Country wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Country whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Country extends Model
 {
-
-	/**a
-	 * @var array
-	 */
-	protected $fillable = ['code', 'alpha2', 'alpha3', 'name_en_gb', 'name_fr_fr'];
-
-
+    /**a
+     * @var array
+     */
+    protected $fillable = ['code', 'alpha2', 'alpha3', 'name_en_gb', 'name_fr_fr'];
 }

@@ -1,4 +1,6 @@
-<?php namespace App\Repositories\Ads;
+<?php
+
+namespace App\Repositories\Ads;
 
 use App\Models\JobSeekAd;
 use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
@@ -10,29 +12,27 @@ class JobSeekAdRepository extends AbstractRepository
         return JobSeekAd::class;
     }
 
-	/**
-	 * Creates an ad.
-	 *
-	 * @param int
-	 * @param array
-	 * @return JobSeekAd
-	 */
+    /**
+     * Creates an ad.
+     *
+     * @param int
+     * @param array
+     */
     public function create(array $data): JobSeekAd
     {
-        $jobSeekAd = new JobSeekAd();
+        $jobSeekAd = new JobSeekAd;
 
         $this->save($jobSeekAd, $data);
 
         return $jobSeekAd;
     }
 
-	/**
-	 * Updates an ad.
-	 *
-	 * @param JobSeekAd
-	 * @param array
-	 * @return JobSeekAd
-	 */
+    /**
+     * Updates an ad.
+     *
+     * @param JobSeekAd
+     * @param array
+     */
     public function update($jobSeekAd, array $data): JobSeekAd
     {
         $this->save($jobSeekAd, $data);
@@ -45,15 +45,15 @@ class JobSeekAdRepository extends AbstractRepository
         $jobSeekAd->fill($data);
         $jobSeekAd->save();
 
-        $productionGenres = $data["production_genres"] ?? [];
+        $productionGenres = $data['production_genres'] ?? [];
         $jobSeekAd->productionGenres()->sync($productionGenres);
 
-        $productionGenresSecondary = $data["secondary_production_genres"] ?? [];
-        foreach($productionGenresSecondary as $productionGenreSecondary) {
+        $productionGenresSecondary = $data['secondary_production_genres'] ?? [];
+        foreach ($productionGenresSecondary as $productionGenreSecondary) {
             $jobSeekAd->productionGenresSecondary()->attach($productionGenreSecondary, ['type' => 'secondary']);
         }
 
-        $jobSeekAd->jobOfferTypes()->sync($data["offer_types"] ?? []);
-        $jobSeekAd->educationLevels()->sync($data["education_levels"] ?? []);
+        $jobSeekAd->jobOfferTypes()->sync($data['offer_types'] ?? []);
+        $jobSeekAd->educationLevels()->sync($data['education_levels'] ?? []);
     }
 }

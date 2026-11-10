@@ -9,7 +9,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class AuthenticationTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
     }
@@ -17,12 +17,12 @@ class AuthenticationTest extends IntegrationTest
     public function test_access_is_denied_when_unauthenticated()
     {
         $response = $this->withExceptionHandling()
-                        ->get('/nova-api/scripts/nova-tool');
+            ->get('/nova-api/scripts/nova-tool');
 
         $response->assertStatus(302);
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/scripts/nova-tool');
+            ->getJson('/nova-api/scripts/nova-tool');
 
         $response->assertStatus(401);
     }
@@ -45,10 +45,10 @@ class AuthenticationTest extends IntegrationTest
         ]);
 
         $response = $this->withExceptionHandling()
-                        ->post('/nova/login', [
-                            'email' => 'taylor@laravel.com',
-                            'password' => 'password',
-                        ]);
+            ->post('/nova/login', [
+                'email' => 'taylor@laravel.com',
+                'password' => 'password',
+            ]);
 
         $response->assertStatus(302);
         $this->assertAuthenticated();

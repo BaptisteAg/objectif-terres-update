@@ -58,9 +58,9 @@ class Currency extends Number
         $this->currency = config('nova.currency', 'USD');
 
         $this->step('0.01')
-             ->displayUsing(function ($value) {
-                 return ! $this->isNullValue($value) ? $this->formatMoney($value) : null;
-             });
+            ->displayUsing(function ($value) {
+                return ! $this->isNullValue($value) ? $this->formatMoney($value) : null;
+            });
     }
 
     /**
@@ -69,7 +69,6 @@ class Currency extends Number
      * @param  mixed  $value
      * @param  null|string  $currency
      * @param  null|string  $locale
-     *
      * @return string
      */
     public function formatMoney($value, $currency = null, $locale = null)

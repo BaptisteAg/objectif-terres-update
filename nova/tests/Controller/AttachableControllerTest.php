@@ -9,7 +9,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class AttachableControllerTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -22,7 +22,7 @@ class AttachableControllerTest extends IntegrationTest
         $role = factory(Role::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users/'.$user->id.'/attachable/roles');
+            ->getJson('/nova-api/users/'.$user->id.'/attachable/roles');
 
         $response->assertStatus(200);
 
@@ -46,7 +46,7 @@ class AttachableControllerTest extends IntegrationTest
         $role2 = factory(Role::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users/'.$user->id.'/attachable/roles?search='.$role2->name);
+            ->getJson('/nova-api/users/'.$user->id.'/attachable/roles?search='.$role2->name);
 
         $response->assertStatus(200);
 
@@ -70,7 +70,7 @@ class AttachableControllerTest extends IntegrationTest
         $role2 = factory(Role::class)->create();
 
         $response = $this->withExceptionHandling()
-                        ->getJson('/nova-api/users/'.$user->id.'/attachable/roles?current='.$role2->id.'&first=true');
+            ->getJson('/nova-api/users/'.$user->id.'/attachable/roles?current='.$role2->id.'&first=true');
 
         $response->assertStatus(200);
 

@@ -16,31 +16,31 @@ class OfferGenreSeeder extends Seeder
         OfferGenre::insert([
             [
                 'name' => 'Vente',
-                "icon" => "fa-user",
-                "land_offer_label" => 'A la vente',
-                "land_seek_display" => 1,
-                "created_at" => Carbon::now(), "updated_at" => Carbon::now()
+                'icon' => 'fa-user',
+                'land_offer_label' => 'A la vente',
+                'land_seek_display' => 1,
+                'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
             ],
             [
                 'name' => 'Location',
-                "icon" => "fa-user-friends",
-                "land_offer_label" => 'En location',
-                "land_seek_display" => 1,
-                "created_at" => Carbon::now(), "updated_at" => Carbon::now()
+                'icon' => 'fa-user-friends',
+                'land_offer_label' => 'En location',
+                'land_seek_display' => 1,
+                'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
             ],
             [
                 'name' => 'Test Agricole',
-                "icon" => "fa-users",
-                "land_offer_label" => 'Pour du test agricole',
-                "land_seek_display" => 0,
-                "created_at" => Carbon::now(), "updated_at" => Carbon::now()
+                'icon' => 'fa-users',
+                'land_offer_label' => 'Pour du test agricole',
+                'land_seek_display' => 0,
+                'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
             ],
             [
-                'name' => "Leg ou donation envisagée",
-                "icon" => "fa-users",
-                "land_offer_label" => "J'envisage un leg ou une donation à Terre de Liens",
-                "land_seek_display" => 0,
-                "created_at" => Carbon::now(), "updated_at" => Carbon::now()
+                'name' => 'Leg ou donation envisagée',
+                'icon' => 'fa-users',
+                'land_offer_label' => "J'envisage un leg ou une donation à Terre de Liens",
+                'land_seek_display' => 0,
+                'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
             ],
         ]);
     }

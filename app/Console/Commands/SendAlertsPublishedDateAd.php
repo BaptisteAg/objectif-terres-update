@@ -21,29 +21,27 @@ class SendAlertsPublishedDateAd extends Command
      * @var string
      */
     protected $description = 'Send an email if the ad is published since 3 or 5 months';
-	protected $notify3MonthsPublishedAd;
-	protected $notify6MonthsPublishedAd;
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @param Notify3MonthsPublishedAd $notify3MonthsPublishedAd
-	 * @param Notify6MonthsPublishedAd $notify6MonthsPublishedAd
-	 */
+    protected $notify3MonthsPublishedAd;
+
+    protected $notify6MonthsPublishedAd;
+
+    /**
+     * Create a new command instance.
+     */
     public function __construct(Notify3MonthsPublishedAd $notify3MonthsPublishedAd, Notify6MonthsPublishedAd $notify6MonthsPublishedAd)
     {
-    	$this->notify3MonthsPublishedAd = $notify3MonthsPublishedAd;
-    	$this->notify6MonthsPublishedAd = $notify6MonthsPublishedAd;
+        $this->notify3MonthsPublishedAd = $notify3MonthsPublishedAd;
+        $this->notify6MonthsPublishedAd = $notify6MonthsPublishedAd;
         parent::__construct();
     }
 
     /**
      * Execute the console command.
-     *
      */
     public function handle()
     {
-       $this->notify3MonthsPublishedAd->handle();
-       $this->notify6MonthsPublishedAd->handle();
+        $this->notify3MonthsPublishedAd->handle();
+        $this->notify6MonthsPublishedAd->handle();
     }
 }

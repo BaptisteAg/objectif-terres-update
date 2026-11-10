@@ -1,4 +1,6 @@
-<?php namespace App\Repositories\Ads;
+<?php
+
+namespace App\Repositories\Ads;
 
 use App\Models\InstallationType;
 use App\Models\LandSeekAd;
@@ -20,20 +22,18 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
      */
     public function create(array $data): LandSeekAd
     {
-        $landSeekAd = new LandSeekAd();
+        $landSeekAd = new LandSeekAd;
 
         $this->save($landSeekAd, $data);
 
         return $landSeekAd;
     }
 
-	/**
-	 * Update an ad.
-	 *
-	 * @param LandSeekAd $landSeekAd
-	 * @param array $data
-	 * @return LandSeekAd
-	 */
+    /**
+     * Update an ad.
+     *
+     * @param  LandSeekAd  $landSeekAd
+     */
     public function update($landSeekAd, array $data): LandSeekAd
     {
         $this->save($landSeekAd, $data);
@@ -47,45 +47,48 @@ class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepos
 
         $landSeekAd->save();
 
-        $landSeekAd->offerGenres()->sync($data["offer_genres"] ?? []);
+        $landSeekAd->offerGenres()->sync($data['offer_genres'] ?? []);
 
-        $landSeekAd->educationLevels()->sync($data["education_levels"] ?? []);
+        $landSeekAd->educationLevels()->sync($data['education_levels'] ?? []);
 
-        $installationType = InstallationType::findOrFail($data["installation_type_id"]);
+        $installationType = InstallationType::findOrFail($data['installation_type_id']);
         $landSeekAd->installationType()->associate($installationType);
 
-        $productionGenres = $data["production_genres"] ?? [];
+        $productionGenres = $data['production_genres'] ?? [];
 
-        if(in_array('other', $productionGenres)) {
-            //$data["production_type_add"] = "";
-            $productionGenres = Arr::where($productionGenres, function($productionGenre) {return $productionGenre !== 'other';});
+        if (in_array('other', $productionGenres)) {
+            // $data["production_type_add"] = "";
+            $productionGenres = Arr::where($productionGenres, function ($productionGenre) {
+                return $productionGenre !== 'other';
+            });
         }
         $landSeekAd->productionGenres()->sync($productionGenres);
 
-        $productionGenresSecondary = $data["secondary_production_genres"] ?? [];
-        if(in_array('other', $productionGenresSecondary)) {
-            //$data["production_type_add"] = "";
-            $productionGenresSecondary = Arr::where($productionGenresSecondary, function($secondaryProductionGenre) {return $secondaryProductionGenre !== 'other';});
+        $productionGenresSecondary = $data['secondary_production_genres'] ?? [];
+        if (in_array('other', $productionGenresSecondary)) {
+            // $data["production_type_add"] = "";
+            $productionGenresSecondary = Arr::where($productionGenresSecondary, function ($secondaryProductionGenre) {
+                return $secondaryProductionGenre !== 'other';
+            });
         }
-        $productionGenresSecondary = $data["secondary_production_genres"] ?? [];
+        $productionGenresSecondary = $data['secondary_production_genres'] ?? [];
         $landSeekAd->productionGenresSecondary()->detach();
         foreach ($productionGenresSecondary as $productionGenreId) {
-            if($productionGenreId !== 'other') {
-                $landSeekAd->productionGenresSecondary()->attach($productionGenreId, ["type" => "secondary"]);
+            if ($productionGenreId !== 'other') {
+                $landSeekAd->productionGenresSecondary()->attach($productionGenreId, ['type' => 'secondary']);
             }
         }
 
-        //dd($landSeekAd, $data);
+        // dd($landSeekAd, $data);
 
         $landSeekAd->buildings()->delete();
-        foreach($data["buildings"] ?? [] as $buildingId => $requirementId) {
+        foreach ($data['buildings'] ?? [] as $buildingId => $requirementId) {
             $landSeekAd->buildings()->create([
-                "requirement_id" => $requirementId,
-                "building_type_id" => $buildingId,
-                "land_seek_ad_id" => $landSeekAd->id
+                'requirement_id' => $requirementId,
+                'building_type_id' => $buildingId,
+                'land_seek_ad_id' => $landSeekAd->id,
             ]);
         }
 
     }
-
 }

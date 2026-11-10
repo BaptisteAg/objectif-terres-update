@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\JobOfferAd[] $jobOfferAds
  * @property-read int|null $job_offer_ads_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|AgriculturalActivity newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AgriculturalActivity newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AgriculturalActivity query()
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|AgriculturalActivity whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AgriculturalActivity whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AgriculturalActivity whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class AgriculturalActivity extends Model
@@ -28,7 +30,7 @@ class AgriculturalActivity extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name',
     ];
 
     /**

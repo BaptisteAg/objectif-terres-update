@@ -13,15 +13,15 @@ class UpdateJobOfferAdsConstraintsForeignKey extends Migration
      */
     public function up()
     {
-		Schema::table('job_offer_ads', function (Blueprint $table) {
-			$table->dropForeign('fk_job_ads_1_idx');
+        Schema::table('job_offer_ads', function (Blueprint $table) {
+            $table->dropForeign('fk_job_ads_1_idx');
 
-			$table->foreign('ad_id', 'fk_job_ads_1_idx')
-				->references('id')->on('ads')
-				->onDelete('cascade')
-				->onUpdate('cascade');
+            $table->foreign('ad_id', 'fk_job_ads_1_idx')
+                ->references('id')->on('ads')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
-		});
+        });
     }
 
     /**
@@ -31,8 +31,8 @@ class UpdateJobOfferAdsConstraintsForeignKey extends Migration
      */
     public function down()
     {
-		Schema::table('job_offer_ads', function (Blueprint $table) {
-			$table->removeColumn('is_partner');
-		});
+        Schema::table('job_offer_ads', function (Blueprint $table) {
+            $table->removeColumn('is_partner');
+        });
     }
 }

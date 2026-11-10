@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\LandOfferAd|null $landOfferAd
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OfferGenre[] $offerGenres
  * @property-read int|null $offer_genres_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|House newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|House newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|House query()
@@ -24,6 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|House whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|House whereSurface($value)
  * @method static \Illuminate\Database\Eloquent\Builder|House whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class House extends Model
@@ -34,7 +36,7 @@ class House extends Model
      * @var array
      */
     protected $fillable = [
-        'description', 'surface'
+        'description', 'surface',
     ];
 
     /**
@@ -44,5 +46,4 @@ class House extends Model
     {
         return $this->hasOne(LandOfferAd::class);
     }
-
 }

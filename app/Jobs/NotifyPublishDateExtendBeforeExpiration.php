@@ -2,8 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Models\Ad;
-use App\Notifications\BasicNotification;
 use App\Notifications\PublishDateExtendBeforeExpirationNotification;
 use App\Services\Ads\AdService;
 use Carbon\Carbon;
@@ -19,11 +17,9 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
 
     private $adService;
 
-	/**
-	 * Create a new job instance.
-	 *
-	 * @param AdService $adService
-	 */
+    /**
+     * Create a new job instance.
+     */
     public function __construct(AdService $adService)
     {
         $this->adService = $adService;
@@ -36,27 +32,25 @@ class NotifyPublishDateExtendBeforeExpiration implements ShouldQueue
      */
     public function handle()
     {
-        if(config("app.is_scheduler_live_mode")) {
+        if (config('app.is_scheduler_live_mode')) {
             $date = Carbon::now()->subMonths(6)->addDays(7);
-        }
-        else {
+        } else {
             $date = Carbon::now()->subMinutes(30);
         }
-       $soonToExpireAds = $this->adService->findAdsPublishedAt($date);
+        $soonToExpireAds = $this->adService->findAdsPublishedAt($date);
 
-        logger("Suggesting soon to expire (".$date.") ads owner to extend the date... ".$soonToExpireAds->count()." found.");
+        logger('Suggesting soon to expire ('.$date.') ads owner to extend the date... '.$soonToExpireAds->count().' found.');
 
-        foreach($soonToExpireAds as $ad) {
+        foreach ($soonToExpireAds as $ad) {
 
             try {
-                logger("Sending email for ".$ad->title);
+                logger('Sending email for '.$ad->title);
                 $ad->userPp?->notify(new PublishDateExtendBeforeExpirationNotification($ad));
-                if(env('MAIL_HOST', false) === 'smtp.mailtrap.io'){
+                if (env('MAIL_HOST', false) === 'smtp.mailtrap.io') {
                     sleep(3);
-                    logger("Sleeping 3 seconds");
+                    logger('Sleeping 3 seconds');
                 }
-            }
-            catch (\Exception $e) {
+            } catch (\Exception $e) {
 
             }
         }

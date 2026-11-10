@@ -26,7 +26,7 @@ class AddFromwhereToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn("fromwhere");
+            $table->dropColumn('fromwhere');
         });
     }
 }

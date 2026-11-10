@@ -14,7 +14,7 @@ class UpdateAdsAddOrigin extends Migration
     public function up()
     {
         Schema::table('ads', function (Blueprint $table) {
-            $table->string("origin")->nullable();
+            $table->string('origin')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class UpdateAdsAddOrigin extends Migration
     public function down()
     {
         Schema::table('ads', function (Blueprint $table) {
-            $table->removeColumn("origin");
+            $table->removeColumn('origin');
         });
     }
 }

@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ad[] $ads
  * @property-read int|null $ads_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ThirdPartyAdUser newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ThirdPartyAdUser newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ThirdPartyAdUser query()
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|ThirdPartyAdUser whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ThirdPartyAdUser wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ThirdPartyAdUser whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class ThirdPartyAdUser extends Model
@@ -42,5 +44,4 @@ class ThirdPartyAdUser extends Model
     {
         return $this->hasMany(Ad::class);
     }
-
 }

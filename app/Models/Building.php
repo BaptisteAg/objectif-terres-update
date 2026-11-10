@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\hasOne;
  * @property-read \App\Models\LandOfferAd|null $landOfferAd
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OfferGenre[] $offerGenres
  * @property-read int|null $offer_genres_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Building newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Building newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Building query()
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\hasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|Building whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Building whereSurface($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Building whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Building extends Model
@@ -35,7 +37,7 @@ class Building extends Model
      * @var array
      */
     protected $fillable = [
-        'description', 'surface'
+        'description', 'surface',
     ];
 
     /**
@@ -45,6 +47,4 @@ class Building extends Model
     {
         return $this->hasOne(LandOfferAd::class);
     }
-
-
 }

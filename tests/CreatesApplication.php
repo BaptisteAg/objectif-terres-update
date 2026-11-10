@@ -42,7 +42,7 @@ trait CreatesApplication
         $testDbName = $app['config']->get('database.connections.mysql.database');
 
         // Only proceed if we're using a test database
-        if (!str_contains($testDbName, 'test')) {
+        if (! str_contains($testDbName, 'test')) {
             return;
         }
 
@@ -88,8 +88,8 @@ trait CreatesApplication
             }
 
             // Check if reference data needs to be seeded (check multiple tables)
-            $countriesCount = $app['db']->selectOne("SELECT COUNT(*) as cnt FROM countries")->cnt ?? 0;
-            $adStatusesCount = $app['db']->selectOne("SELECT COUNT(*) as cnt FROM ad_statuses")->cnt ?? 0;
+            $countriesCount = $app['db']->selectOne('SELECT COUNT(*) as cnt FROM countries')->cnt ?? 0;
+            $adStatusesCount = $app['db']->selectOne('SELECT COUNT(*) as cnt FROM ad_statuses')->cnt ?? 0;
             if ($countriesCount == 0 || $adStatusesCount == 0) {
                 $this->seedTestDatabase($app);
             }
@@ -115,7 +115,7 @@ trait CreatesApplication
         ];
 
         foreach ($sqlFiles as $file) {
-            $path = $basePath . '/' . $file;
+            $path = $basePath.'/'.$file;
             if (file_exists($path)) {
                 $db->unprepared(file_get_contents($path));
             }
@@ -129,11 +129,11 @@ trait CreatesApplication
 
         foreach ($seederClasses as $seederClass) {
             try {
-                $seeder = new $seederClass();
+                $seeder = new $seederClass;
                 $seeder->run();
             } catch (\Exception $e) {
                 // Log but continue - some seeders might fail due to existing data
-                error_log("Seeder {$seederClass} failed: " . $e->getMessage());
+                error_log("Seeder {$seederClass} failed: ".$e->getMessage());
             }
         }
     }

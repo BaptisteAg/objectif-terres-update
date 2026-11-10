@@ -26,6 +26,7 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * @property-read \App\Models\ProjectStatus|null $projectStatus
  * @property-read \App\Models\SupportStage|null $supportStage
  * @property-read \App\Models\SupportState|null $supportState
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Project filterAdTypes($adTypesFilters, $relationTableName = '')
  * @method static \Illuminate\Database\Eloquent\Builder|Project filterAdsTerritoryLocations($territoriesCode)
  * @method static \Illuminate\Database\Eloquent\Builder|Project filterLocations($relationshipName, $locationableIds)
@@ -44,16 +45,18 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereSupportStageId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereSupportStateId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Project extends Model implements Decoratable
 {
-	use ScopeLocationFilterable, ScopeAdTypesFilterable, ScopeDataFilterable, Documentable;
+    use Documentable, ScopeAdTypesFilterable, ScopeDataFilterable, ScopeLocationFilterable;
+
     /**
      * @var array
      */
     protected $fillable = [
-        'support_stage_id','support_state_id','project_status_id'
+        'support_stage_id', 'support_state_id', 'project_status_id',
     ];
 
     /**
@@ -87,13 +90,14 @@ class Project extends Model implements Decoratable
     {
         return $this->hasOne(Ad::class);
     }
-	/**
-	 * Get the presenter class.
-	 *
-	 * @return array
-	 */
-	public function getPresenterClass()
-	{
-		return[ AdPresenter::class, UserPresenter::class];
-	}
+
+    /**
+     * Get the presenter class.
+     *
+     * @return array
+     */
+    public function getPresenterClass()
+    {
+        return [AdPresenter::class, UserPresenter::class];
+    }
 }

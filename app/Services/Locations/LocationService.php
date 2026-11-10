@@ -1,6 +1,7 @@
-<?php namespace App\Services\Locations;
+<?php
 
-use App\Models\Ad;
+namespace App\Services\Locations;
+
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Department;
@@ -11,20 +12,15 @@ use Cache;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class LocationService
 {
-
-    public function __construct(private AdService $adService, private ResearchService $researchService)
-    {
-    }
+    public function __construct(private AdService $adService, private ResearchService $researchService) {}
 
     /**
-     * @param string $zipCode
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|City|null
      */
     public function findByZipCode(string $zipCode)
@@ -49,6 +45,7 @@ class LocationService
                 $geoPolygon->ads_count = $adsCountByRegionId[$region->id];
                 $data[] = $geoPolygon;
             }
+
             return $data;
         });
     }
@@ -62,17 +59,19 @@ class LocationService
             ->pluck('id');
 
         $adsCountByDepartmentId = [];
-        foreach($ads as $ad) {
+        foreach ($ads as $ad) {
             $adDepartmentIds = $ad->departments
                 ->push($ad->department)
-                ->concat($ad->cities->map(function ($city) {return $city->department;}))
+                ->concat($ad->cities->map(function ($city) {
+                    return $city->department;
+                }))
                 ->filter()
                 ->unique('id')
                 ->pluck('id');
 
-            foreach($departmentIds as $departmentId) {
+            foreach ($departmentIds as $departmentId) {
                 $adsCountByDepartmentId[$departmentId] = $adsCountByDepartmentId[$departmentId] ?? 0;
-                if($adDepartmentIds->contains($departmentId)) {
+                if ($adDepartmentIds->contains($departmentId)) {
                     $adsCountByDepartmentId[$departmentId]++;
                 }
             }
@@ -85,47 +84,46 @@ class LocationService
             $geoPolygon = $this->getLocationGeoPolygon($department->name, 'department');
             $geoPolygon->department_id = $department->id;
             $geoPolygon->ads_count = $adsCountByDepartmentId[$department->id] ?? 0;
+
             return $geoPolygon;
-        })->filter(fn($p) => $p->ads_count > 0)->values()->toArray();
+        })->filter(fn ($p) => $p->ads_count > 0)->values()->toArray();
     }
 
-    public function getLocationGeoPolygon(string $q, $type = "")
+    public function getLocationGeoPolygon(string $q, $type = '')
     {
         $cacheKey = 'geopolygon-'.$q;
 
-        if(!Cache::has($cacheKey)) {
-            Cache::remember($cacheKey, now()->addDays(365), function() use ($q, $type) {
-                $client = new Client();
-                $params = "country=france";
+        if (! Cache::has($cacheKey)) {
+            Cache::remember($cacheKey, now()->addDays(365), function () use ($q, $type) {
+                $client = new Client;
+                $params = 'country=france';
 
-                if($type === "region") {
-                    $params .="&state=".$q;
+                if ($type === 'region') {
+                    $params .= '&state='.$q;
                     $threshold = 0.15;
-                }
-                elseif($type === "department") {
-                    $params .="&county=".$q;
+                } elseif ($type === 'department') {
+                    $params .= '&county='.$q;
                     $threshold = 0.002;
-                }
-                elseif($type === "misc") {
-					$data = explode(";",$q);
-                    $params .="&city=".$data[0].(isset($data[1]) ? "&postalcode=".$data[1] : '');
+                } elseif ($type === 'misc') {
+                    $data = explode(';', $q);
+                    $params .= '&city='.$data[0].(isset($data[1]) ? '&postalcode='.$data[1] : '');
                     $threshold = 0.002;
-                }
-                else {
-                    $params .="&q=".$q;
+                } else {
+                    $params .= '&q='.$q;
                     $threshold = 0.2;
                 }
 
                 $locationsWithWrongResultsFromAPI = [
-					"country=france&county=Ain"
-				];
+                    'country=france&county=Ain',
+                ];
 
-				$res = $client->request('GET', 'https://nominatim.openstreetmap.org/search.php?'.$params.'&polygon_geojson=1&format=json&polygon_threshold='.$threshold);
+                $res = $client->request('GET', 'https://nominatim.openstreetmap.org/search.php?'.$params.'&polygon_geojson=1&format=json&polygon_threshold='.$threshold);
                 $results = json_decode($res->getBody());
-				if(in_array($params,$locationsWithWrongResultsFromAPI) && isset($results[1])){
-					return $results[1];
-				}
-				return $results[0];
+                if (in_array($params, $locationsWithWrongResultsFromAPI) && isset($results[1])) {
+                    return $results[1];
+                }
+
+                return $results[0];
             });
         }
 
@@ -139,7 +137,7 @@ class LocationService
 
         return array_merge(
             // Regions are not selectable since a certain version
-            //$this->searchRegions($q),
+            // $this->searchRegions($q),
             $this->searchDepartments($q),
             $cities
         );
@@ -161,45 +159,47 @@ class LocationService
         );
     }
 
-	public function searchDepartmentsAndRegions(string $q)
-	{
-		return array_merge(
-			$this->searchRegions($q),
-			$this->searchDepartments($q)
-		);
-	}
+    public function searchDepartmentsAndRegions(string $q)
+    {
+        return array_merge(
+            $this->searchRegions($q),
+            $this->searchDepartments($q)
+        );
+    }
 
     public function addCitiesRanges(&$cities)
     {
         $groupsCriterias = [
             [
-                "key" => "name",
-                "type" => "zipcodesrange"
+                'key' => 'name',
+                'type' => 'zipcodesrange',
             ],
             [
-                "key" => "zip_code",
-                "type" => "citiesrange"
-            ]
+                'key' => 'zip_code',
+                'type' => 'citiesrange',
+            ],
         ];
-        foreach($groupsCriterias as $criteria) {
+        foreach ($groupsCriterias as $criteria) {
             $groupedCities = [];
             foreach ($cities as $i => $city) {
-                if(isset($city["value"][$criteria["key"]])) {
-                    $keyBy = $city["value"][$criteria["key"]];
+                if (isset($city['value'][$criteria['key']])) {
+                    $keyBy = $city['value'][$criteria['key']];
                     $groupedCities[$keyBy] = $groupedCities[$keyBy] ?? [];
-                    $groupedCities[$keyBy][$i] = $city["value"];
+                    $groupedCities[$keyBy][$i] = $city['value'];
                 }
             }
-            foreach($groupedCities as $city => $group) {
-                if(count($group) > 1) {
+            foreach ($groupedCities as $city => $group) {
+                if (count($group) > 1) {
                     $position = array_key_first($group);
 
                     array_splice($cities, $position, 0, [[
-                        'label' => (string)$city,
+                        'label' => (string) $city,
                         'value' => [
-                            'ids' => array_map(function ($city) {return $city["id"];}, $group),
-                            'type' => $criteria["type"]
-                        ]
+                            'ids' => array_map(function ($city) {
+                                return $city['id'];
+                            }, $group),
+                            'type' => $criteria['type'],
+                        ],
                     ]]);
                 }
             }
@@ -212,7 +212,7 @@ class LocationService
             'cities',
             $q,
             City::with(['department'])->select(['id', 'name', 'zip_code']),
-            ["name", "zip_code"]
+            ['name', 'zip_code']
         );
 
         return $cities;
@@ -224,7 +224,7 @@ class LocationService
             'countries',
             $q,
             Country::select(['id', 'name_fr_fr']),
-            ["name_fr_fr"],
+            ['name_fr_fr'],
             'name_fr_fr'
         );
 
@@ -235,7 +235,8 @@ class LocationService
     {
         return function (City $city) {
             $detail = $city->zip_code ? $city->zip_code : $city->department?->name;
-            return $city->name . ($detail ? " (" . $detail . ")" : "");
+
+            return $city->name.($detail ? ' ('.$detail.')' : '');
         };
     }
 
@@ -245,14 +246,14 @@ class LocationService
             'departments',
             $q,
             Department::select(['id', 'name', 'code']),
-            ["name", "code"]
+            ['name', 'code']
         );
     }
 
     public function getDepartmentLabelRenderer()
     {
         return function ($department) {
-            return $department["name"] . " (" . $department["code"] . ")";
+            return $department['name'].' ('.$department['code'].')';
         };
     }
 
@@ -262,21 +263,21 @@ class LocationService
             'regions',
             $q,
             Region::select(['id', 'name']),
-            ["name"]
+            ['name']
         );
     }
 
     public function getRegionLabelRenderer()
     {
         return function ($region) {
-            return $region["name"];
+            return $region['name'];
         };
     }
 
     public function getCountryLabelRenderer()
     {
         return function ($country) {
-            return $country["name_fr_fr"];
+            return $country['name_fr_fr'];
         };
     }
 
@@ -284,10 +285,7 @@ class LocationService
      * Searches a model with the given query in the specified columns.
      * Orders results by relevance.
      *
-     * @param string $q
-     * @param array $columns
-     * @param \Closure|null $renderer
-     *
+     * @param  \Closure|null  $renderer
      * @return array
      */
     protected function search(string $type, string $q, $eloquentQuery, array $columns, string $nameColumn = 'name')
@@ -338,7 +336,7 @@ class LocationService
             $sortedResults = array_merge($sortedResults, $subResults);
         }*/
 
-        //dd($results);
+        // dd($results);
 
         return $results
             ->map($this->getResultRenderer($type))
@@ -348,29 +346,28 @@ class LocationService
 
     public function getResultRenderer($type): \Closure
     {
-        switch($type) {
-            case "cities" :
+        switch ($type) {
+            case 'cities':
                 $labelRenderer = $this->getCityLabelRenderer();
                 break;
-            case "departments" :
+            case 'departments':
                 $labelRenderer = $this->getDepartmentLabelRenderer();
                 break;
-            case "regions" :
+            case 'regions':
                 $labelRenderer = $this->getRegionLabelRenderer();
                 break;
-            case "countries" :
+            case 'countries':
                 $labelRenderer = $this->getCountryLabelRenderer();
                 break;
         }
 
         return static function ($result) use ($type, $labelRenderer) {
             return [
-                "label" => $labelRenderer($result),
-                "value" => array_merge($result->toArray(), [
-                    "type" => $type
+                'label' => $labelRenderer($result),
+                'value' => array_merge($result->toArray(), [
+                    'type' => $type,
                 ]),
             ];
         };
     }
-
 }

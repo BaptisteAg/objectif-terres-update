@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandSeekAd[] $landSeekAds
  * @property-read int|null $land_seek_ads_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|InstallationType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|InstallationType newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|InstallationType query()
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|InstallationType whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|InstallationType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|InstallationType whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class InstallationType extends Model
@@ -30,7 +32,7 @@ class InstallationType extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name',
     ];
 
     /**

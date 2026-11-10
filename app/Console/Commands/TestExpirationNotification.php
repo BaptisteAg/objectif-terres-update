@@ -32,7 +32,7 @@ class TestExpirationNotification extends Command
         $adId = $this->argument('ad_id');
 
         // If no ad ID provided, show list of recent ads
-        if (!$adId) {
+        if (! $adId) {
             $this->info('No ad ID provided. Showing recent ads:');
             $this->info('');
 
@@ -44,6 +44,7 @@ class TestExpirationNotification extends Command
 
             if ($ads->isEmpty()) {
                 $this->error('No ads found with attributions.');
+
                 return 1;
             }
 
@@ -68,18 +69,21 @@ class TestExpirationNotification extends Command
         // Load the ad
         $ad = Ad::with(['userPp', 'attributionAd'])->find($adId);
 
-        if (!$ad) {
+        if (! $ad) {
             $this->error("Ad with ID {$adId} not found.");
+
             return 1;
         }
 
-        if (!$ad->userPp) {
+        if (! $ad->userPp) {
             $this->error("Ad #{$adId} has no associated user.");
+
             return 1;
         }
 
-        if (!$ad->attributionAd) {
+        if (! $ad->attributionAd) {
             $this->error("Ad #{$adId} has no attribution. Cannot send notification.");
+
             return 1;
         }
 
@@ -89,14 +93,15 @@ class TestExpirationNotification extends Command
 
         if ($overrideEmail) {
             $recipient = \App\Models\User::where('email', $overrideEmail)->first();
-            if (!$recipient) {
+            if (! $recipient) {
                 $this->error("User with email {$overrideEmail} not found.");
+
                 return 1;
             }
         }
 
         // Display ad information
-        $this->info("Testing notification for:");
+        $this->info('Testing notification for:');
         $this->info("  Ad ID: {$ad->id}");
         $this->info("  Title: {$ad->title}");
         $this->info("  Type: {$ad->type}");
@@ -108,8 +113,9 @@ class TestExpirationNotification extends Command
         }
         $this->info('');
 
-        if (!$this->confirm('Send notification?', true)) {
+        if (! $this->confirm('Send notification?', true)) {
             $this->info('Cancelled.');
+
             return 0;
         }
 
@@ -121,7 +127,7 @@ class TestExpirationNotification extends Command
             $this->info("Check the email: {$recipient->email}");
 
             // Show notification details
-            $isTestMode = !config("app.is_scheduler_live_mode");
+            $isTestMode = ! config('app.is_scheduler_live_mode');
             if ($isTestMode) {
                 $this->warn('⚠ Running in TEST MODE - notification includes test message');
             }
@@ -130,6 +136,7 @@ class TestExpirationNotification extends Command
         } catch (\Exception $e) {
             $this->error('✗ Failed to send notification:');
             $this->error($e->getMessage());
+
             return 1;
         }
     }

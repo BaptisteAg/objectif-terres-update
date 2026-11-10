@@ -26,18 +26,19 @@ class RepairPublishedDrafts extends Command
     /**
      * @var string
      */
-    protected $description = "Remet en ligne les annonces validées et publiées restées en brouillon";
+    protected $description = 'Remet en ligne les annonces validées et publiées restées en brouillon';
 
     /**
      * @return int
      */
     public function handle()
     {
-        $months = (int)$this->option('months');
-        $dryRun = (bool)$this->option('dry-run');
+        $months = (int) $this->option('months');
+        $dryRun = (bool) $this->option('dry-run');
 
         if ($months < 1) {
             $this->error("L'option --months doit être un entier positif.");
+
             return 1;
         }
 
@@ -45,6 +46,7 @@ class RepairPublishedDrafts extends Command
 
         if ($ads->isEmpty()) {
             $this->info("Aucune annonce à réparer sur les {$months} derniers mois.");
+
             return 0;
         }
 
@@ -53,15 +55,16 @@ class RepairPublishedDrafts extends Command
             $ads->map(function (Ad $ad) {
                 return [
                     $ad->id,
-                    mb_strimwidth((string)$ad->title, 0, 50, '…'),
-                    (string)$ad->attributionAd->published_on,
-                    (string)$ad->updated_at,
+                    mb_strimwidth((string) $ad->title, 0, 50, '…'),
+                    (string) $ad->attributionAd->published_on,
+                    (string) $ad->updated_at,
                 ];
             })->toArray()
         );
 
         if ($dryRun) {
             $this->comment("[dry-run] {$ads->count()} annonce(s) seraient remises en ligne. Aucune modification effectuée.");
+
             return 0;
         }
 

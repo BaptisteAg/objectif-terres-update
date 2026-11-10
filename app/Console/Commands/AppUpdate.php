@@ -2,11 +2,7 @@
 
 namespace App\Console\Commands;
 
-use Barryvdh\LaravelIdeHelper;
 use Illuminate\Console\Command;
-use Illuminate\Database\Console\Migrations\FreshCommand;
-use Illuminate\Database\Console\Migrations\MigrateCommand;
-use Illuminate\Database\Console\Seeds\SeedCommand;
 
 class AppUpdate extends Command
 {
@@ -37,7 +33,6 @@ class AppUpdate extends Command
 
     /**
      * Execute the console command.
-     *
      */
     public function handle()
     {

@@ -46,7 +46,6 @@ class UserResource extends Resource
     /**
      * Determine if the user can add / associate models of the given type to the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Model|string  $model
      * @return bool
      */
@@ -58,8 +57,7 @@ class UserResource extends Resource
     /**
      * Indicates whether Nova should check for modifications between viewing and updating a resource.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return  bool
+     * @return bool
      */
     public static function trafficCop(Request $request)
     {
@@ -69,7 +67,6 @@ class UserResource extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function fields(Request $request)
@@ -79,12 +76,12 @@ class UserResource extends Resource
                 ID::make(),
 
                 Text::make('Name')
-                            ->creationRules('required', 'string', 'max:255')
-                            ->updateRules('required', 'string', 'max:255')
-                            ->rules(function () {
-                                return ($_SERVER['nova.user.fixedValuesOnUpdate'] ?? false) && $this->resource->email === 'taylor@laravel.com'
-                                    ? ['in:Taylor Otwell'] : [];
-                            }),
+                    ->creationRules('required', 'string', 'max:255')
+                    ->updateRules('required', 'string', 'max:255')
+                    ->rules(function () {
+                        return ($_SERVER['nova.user.fixedValuesOnUpdate'] ?? false) && $this->resource->email === 'taylor@laravel.com'
+                            ? ['in:Taylor Otwell'] : [];
+                    }),
             ]),
 
             Text::make('Email')
@@ -141,7 +138,8 @@ class UserResource extends Resource
                 return 'Computed';
             }),
 
-            Text::make('InvokableComputed', new class {
+            Text::make('InvokableComputed', new class
+            {
                 public function __invoke()
                 {
                     return 'Computed';
@@ -157,7 +155,7 @@ class UserResource extends Resource
             }),
 
             new ResourceToolElement('component-name'),
-            new MyResourceTool(),
+            new MyResourceTool,
 
             KeyValue::make('Meta'),
         ];
@@ -184,7 +182,6 @@ class UserResource extends Resource
     /**
      * Get the lenses available on the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function lenses(Request $request)
@@ -199,7 +196,6 @@ class UserResource extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function actions(Request $request)
@@ -245,7 +241,6 @@ class UserResource extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function filters(Request $request)
@@ -274,7 +269,6 @@ class UserResource extends Resource
      *
      * This query determines which instances of the model may be attached to other resources.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -286,7 +280,6 @@ class UserResource extends Resource
     /**
      * Build a "relatable" query for the given resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -304,7 +297,6 @@ class UserResource extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function cards(Request $request)

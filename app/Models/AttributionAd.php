@@ -31,6 +31,7 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * @property-read \App\Models\User|null $userAdvisor
  * @property-read \App\Models\User|null $userModerator
  * @property-read \App\Models\User|null $userSupervisor
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd filterAdTypes($adTypesFilters, $relationTableName = '')
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd filterAdsTerritoryLocations($territoriesCode)
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd filterLocations($relationshipName, $locationableIds)
@@ -55,74 +56,78 @@ use McCool\LaravelAutoPresenter\Decoratable;
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd whereUserAdvisorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd whereUserModeratorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd whereUserSupervisorId($value)
+ *
  * @mixin \Eloquent
+ *
  * @property int|null $user_advisor_2_id
  * @property int|null $user_advisor_3_id
  * @property int|null $user_advisor_4_id
  * @property-read \App\Models\User $userAdvisor2
  * @property-read \App\Models\User $userAdvisor3
  * @property-read \App\Models\User $userAdvisor4
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd whereUserAdvisor2Id($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd whereUserAdvisor3Id($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AttributionAd whereUserAdvisor4Id($value)
  */
 class AttributionAd extends Model implements Decoratable
 {
-	use ScopeLocationFilterable,
-		ScopeAdTypesFilterable,
-		ScopeDataFilterable;
+    use ScopeAdTypesFilterable,
+        ScopeDataFilterable,
+        ScopeLocationFilterable;
 
-	/**
-	 * @var array
-	 */
-	protected $fillable = [
-		'ad_status_id',
-		'ad_id',
-		'lead_type_id',
-		'refusal_type_id',
-		'user_advisor_id',
-		'user_advisor_2_id',
-		'user_advisor_3_id',
-		'user_advisor_4_id',
-		'user_moderator_id',
-		'user_supervisor_id',
-		'to_call_back',
-		'short_description',
-		'archived_at',
-		'published_on',
-		'refused_on',
-		'pending_update_since'
-	];
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'ad_status_id',
+        'ad_id',
+        'lead_type_id',
+        'refusal_type_id',
+        'user_advisor_id',
+        'user_advisor_2_id',
+        'user_advisor_3_id',
+        'user_advisor_4_id',
+        'user_moderator_id',
+        'user_supervisor_id',
+        'to_call_back',
+        'short_description',
+        'archived_at',
+        'published_on',
+        'refused_on',
+        'pending_update_since',
+    ];
 
-	/**
-	 * @var array
-	 */
-	protected $dates = [
-		'pending_update_since'
-	];
+    /**
+     * @var array
+     */
+    protected $dates = [
+        'pending_update_since',
+    ];
 
-	/**
-	 * L'annonce est-elle en ligne (validée et publiée, non archivée) ?
-	 */
-	public function isOnline(): bool
-	{
-		return $this->ad_status_id === AdStatus::APPROVE_ID
-			&& !is_null($this->published_on)
-			&& is_null($this->archived_at);
-	}
+    /**
+     * L'annonce est-elle en ligne (validée et publiée, non archivée) ?
+     */
+    public function isOnline(): bool
+    {
+        return $this->ad_status_id === AdStatus::APPROVE_ID
+            && ! is_null($this->published_on)
+            && is_null($this->archived_at);
+    }
 
-	const VALIDATION_MESSAGE = "Bonjour,\nVotre annonce vient d’être publiée. Sans intervention de votre part, elle sera en ligne pour 6 mois. Nous espérons qu’Objectif Terres vous permettra d’être contacté. \nCordialement,\nTerre de Liens";
+    const VALIDATION_MESSAGE = "Bonjour,\nVotre annonce vient d’être publiée. Sans intervention de votre part, elle sera en ligne pour 6 mois. Nous espérons qu’Objectif Terres vous permettra d’être contacté. \nCordialement,\nTerre de Liens";
 
     public function hasAttributedAdvisors()
     {
-        return (bool)count($this->getAdvisors());
+        return (bool) count($this->getAdvisors());
     }
+
     public function getAdvisors()
     {
         return array_values(array_filter($this->getAdvisorsUnfiltered()));
     }
 
-	public function getAdvisorsUnfiltered(): array
+    public function getAdvisorsUnfiltered(): array
     {
         return [$this->userAdvisor, $this->userAdvisor2, $this->userAdvisor3, $this->userAdvisor4];
     }
@@ -164,54 +169,54 @@ class AttributionAd extends Model implements Decoratable
         return auth()->id() === $this->user_advisor_id || auth()->id() === $this->user_advisor_2_id || auth()->id() === $this->user_advisor_3_id || auth()->id() === $this->user_advisor_4_id;
     }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function userModerator()
-	{
-//        dd('ghjhgjghjghj');
-		return $this->belongsTo(User::class, 'user_moderator_id');
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userModerator()
+    {
+        //        dd('ghjhgjghjghj');
+        return $this->belongsTo(User::class, 'user_moderator_id');
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function userSupervisor()
-	{
-		return $this->belongsTo(User::class, 'user_supervisor_id');
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userSupervisor()
+    {
+        return $this->belongsTo(User::class, 'user_supervisor_id');
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function adStatus()
-	{
-		return $this->belongsTo(AdStatus::class);
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function adStatus()
+    {
+        return $this->belongsTo(AdStatus::class);
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function refusalType()
-	{
-		return $this->belongsTo(ResponseTemplate::class);
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function refusalType()
+    {
+        return $this->belongsTo(ResponseTemplate::class);
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function ad()
-	{
-		return $this->belongsTo(Ad::class);
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function ad()
+    {
+        return $this->belongsTo(Ad::class);
+    }
 
-	/**
-	 * Get the presenter class.
-	 *
-	 * @return string
-	 */
-	public function getPresenterClass()
-	{
-		return AdPresenter::class;
-	}
+    /**
+     * Get the presenter class.
+     *
+     * @return string
+     */
+    public function getPresenterClass()
+    {
+        return AdPresenter::class;
+    }
 }

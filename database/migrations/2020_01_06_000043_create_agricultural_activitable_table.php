@@ -1,19 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateAgriculturalActivitableTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $tableName = 'agricultural_activitable';
 
     /**
      * Run the migrations.
+     *
      * @table agricultural_activity_job_ad
      *
      * @return void
@@ -27,9 +29,9 @@ class CreateAgriculturalActivitableTable extends Migration
             $table->unsignedInteger('agricultural_activatable_id');
             $table->string('agricultural_activatable_type')->comment('Cette colonne fait référence au namespace du modèle qui est reliée à un type d\'offre');
 
-            $table->index(["agricultural_activity_id"], 'fk_agricultural_activity_job_ad_1_idx');
-            $table->index(["agricultural_activatable_id"], 'ix_agricultural_activatable_1');
-            $table->index(["agricultural_activatable_type"], 'ix_agricultural_activatable_2');
+            $table->index(['agricultural_activity_id'], 'fk_agricultural_activity_job_ad_1_idx');
+            $table->index(['agricultural_activatable_id'], 'ix_agricultural_activatable_1');
+            $table->index(['agricultural_activatable_type'], 'ix_agricultural_activatable_2');
 
             $table->timestamps();
 
@@ -37,7 +39,6 @@ class CreateAgriculturalActivitableTable extends Migration
                 ->references('id')->on('agricultural_activities')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
-
 
         });
     }
@@ -47,8 +48,8 @@ class CreateAgriculturalActivitableTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->tableName);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->tableName);
+    }
 }

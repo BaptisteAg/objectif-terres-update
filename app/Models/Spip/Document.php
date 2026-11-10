@@ -2,7 +2,6 @@
 
 namespace App\Models\Spip;
 
-
 /**
  * App\Models\Spip\Document
  *
@@ -27,6 +26,7 @@ namespace App\Models\Spip;
  * @property string $maj
  * @property string $composition
  * @property int $composition_lock
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Document newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document query()
@@ -51,10 +51,12 @@ namespace App\Models\Spip;
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereStatut($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereTaille($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereTitre($value)
+ *
  * @mixin \Eloquent
  */
 class Document extends SpipModel
 {
-    protected $table = "spip_documents";
-    protected $primaryKey = "id_document";
+    protected $table = 'spip_documents';
+
+    protected $primaryKey = 'id_document';
 }

@@ -23,7 +23,7 @@ class CheckQueueWorkers extends Command
 {
     protected $signature = 'queue:healthcheck {--min=1 : Nombre minimal de workers queue:work attendus}';
 
-    protected $description = "Vérifie que des workers queue:work tournent et alerte par email sinon";
+    protected $description = 'Vérifie que des workers queue:work tournent et alerte par email sinon';
 
     /** Flag de throttle (Cache) pour ne pas spammer tant que la panne dure. */
     private const ALERT_KEY = 'queue_workers_down_alerted';
@@ -41,7 +41,7 @@ class CheckQueueWorkers extends Command
                 $this->notify(
                     "[Objectif Terres] File d'attente rétablie",
                     "Les workers queue:work sont de nouveau actifs ({$count} process).\n".
-                    "Les emails transactionnels repartent normalement."
+                    'Les emails transactionnels repartent normalement.'
                 );
             }
 
@@ -57,11 +57,11 @@ class CheckQueueWorkers extends Command
             $this->notify(
                 "[Objectif Terres] ⚠ Plus aucun worker de file d'attente",
                 "Aucun worker queue:work n'est actif en production ({$count} détecté(s), minimum {$min}).\n\n".
-                "Conséquence : les emails transactionnels (notifications ShouldQueue) ne partent plus ".
+                'Conséquence : les emails transactionnels (notifications ShouldQueue) ne partent plus '.
                 "et s'accumulent dans Redis.\n\n".
                 "Action corrective — relancer les workers :\n".
                 "  ssh ubuntu@54.37.149.176 \"sudo supervisorctl restart 'laravel:*'\"\n\n".
-                "— Envoyé automatiquement par la commande queue:healthcheck."
+                '— Envoyé automatiquement par la commande queue:healthcheck.'
             );
             Cache::put(self::ALERT_KEY, true, now()->addHours(6));
         }

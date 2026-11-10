@@ -33,9 +33,9 @@ trait QueriesResources
         }
 
         return forward_static_call([$this->viaResource(), 'newModel'])
-                        ->newQueryWithoutScopes()->findOrFail(
-                            $this->viaResourceId
-                        )->{$this->viaRelationship}();
+            ->newQueryWithoutScopes()->findOrFail(
+                $this->viaResourceId
+            )->{$this->viaRelationship}();
     }
 
     /**
@@ -50,9 +50,9 @@ trait QueriesResources
         }
 
         return forward_static_call([$this->viaResource(), 'newModel'])
-                    ->newQueryWithoutScopes()->findOrFail(
-                        $this->viaResourceId
-                    )->{$this->viaRelationship}()->withoutGlobalScopes();
+            ->newQueryWithoutScopes()->findOrFail(
+                $this->viaResourceId
+            )->{$this->viaRelationship}()->withoutGlobalScopes();
     }
 
     /**

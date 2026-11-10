@@ -29,7 +29,6 @@ class FileResource extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function fields(Request $request)
@@ -53,7 +52,7 @@ class FileResource extends Resource
                 return $_SERVER['__nova.fileDelete'] ?? null;
             })->prunable(),
 
-            $additionalField ?? new MissingValue(),
+            $additionalField ?? new MissingValue,
         ];
     }
 

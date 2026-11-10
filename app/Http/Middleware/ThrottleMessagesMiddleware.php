@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 
 /**
  * Custom throttle middleware for messaging that exempts staff members.
@@ -15,10 +15,9 @@ class ThrottleMessagesMiddleware extends ThrottleRequests
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure $next
-     * @param int $maxAttempts
-     * @param int $decayMinutes
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $maxAttempts
+     * @param  int  $decayMinutes
      * @return mixed
      */
     public function handle($request, Closure $next, $maxAttempts = 1, $decayMinutes = 1, $prefix = '')
@@ -35,8 +34,8 @@ class ThrottleMessagesMiddleware extends ThrottleRequests
     /**
      * Create a 'too many attempts' exception.
      *
-     * @param string $key
-     * @param int $maxAttempts
+     * @param  string  $key
+     * @param  int  $maxAttempts
      * @return \Illuminate\Http\Exceptions\ThrottleRequestsException
      */
     protected function buildException($key, $maxAttempts)

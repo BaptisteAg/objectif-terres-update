@@ -5,7 +5,6 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Region extends Resource
 {
@@ -14,7 +13,7 @@ class Region extends Resource
      *
      * @var string
      */
-    public static $model = 'App\\Models\\Region';
+    public static $model = \App\Models\Region::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -35,29 +34,26 @@ class Region extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function fields(Request $request)
     {
         return [
             ID::make()->sortable(),
-			Text::make('Name', 'name')
+            Text::make('Name', 'name'),
         ];
     }
 
-	/**
-	 * Indicates if the resource should be displayed in the sidebar.
-	 *
-	 * @var bool
-	 */
-	public static $displayInNavigation = false;
+    /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = false;
 
-
-	/**
+    /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function cards(Request $request)
@@ -68,7 +64,6 @@ class Region extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function filters(Request $request)
@@ -79,7 +74,6 @@ class Region extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function lenses(Request $request)
@@ -90,7 +84,6 @@ class Region extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function actions(Request $request)

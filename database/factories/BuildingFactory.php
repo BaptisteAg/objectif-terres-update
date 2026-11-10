@@ -9,6 +9,6 @@ $factory->define(Building::class, function (Faker $faker) {
     return [
         'number' => $faker->randomDigitNotNull,
         'surface' => $faker->randomFloat(2, 0, 500),
-        'price' => $faker->numberBetween(0, 1000)
+        'price' => $faker->numberBetween(0, 1000),
     ];
 });

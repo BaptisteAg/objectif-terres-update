@@ -14,7 +14,7 @@ class CreateLandOfferAdsPrice extends Migration
     public function up()
     {
         Schema::table('land_offer_ads', function (Blueprint $table) {
-			$table->double('price', 15, 2)->nullable();
+            $table->double('price', 15, 2)->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class CreateLandOfferAdsPrice extends Migration
      */
     public function down()
     {
-		Schema::table('land_offer_ads', function (Blueprint $table) {
-			$table->removeColumn('price');
-		});
+        Schema::table('land_offer_ads', function (Blueprint $table) {
+            $table->removeColumn('price');
+        });
     }
 }

@@ -27,7 +27,6 @@ class Relatable implements Rule
     /**
      * Create a new rule instance.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return void
      */
@@ -52,7 +51,7 @@ class Relatable implements Rule
             return false;
         }
 
-//        dd($this->relationshipIsFull($model, $attribute, $value));
+        //        dd($this->relationshipIsFull($model, $attribute, $value));
 
         if ($this->relationshipIsFull($model, $attribute, $value)) {
             return false;
@@ -76,9 +75,9 @@ class Relatable implements Rule
     protected function relationshipIsFull($model, $attribute, $value)
     {
         $inverseRelation = $this->request->newResource()
-                    ->resolveInverseFieldsForAttribute($this->request, $attribute)->first(function ($field) {
-                        return $field instanceof HasOne || $field instanceof MorphOne;
-                    });
+            ->resolveInverseFieldsForAttribute($this->request, $attribute)->first(function ($field) {
+                return $field instanceof HasOne || $field instanceof MorphOne;
+            });
 
         if ($inverseRelation && $this->request->resourceId) {
             $modelBeingUpdated = $this->request->findModelOrFail();

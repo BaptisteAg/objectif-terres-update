@@ -11,14 +11,14 @@ class NoopAction extends Action
     use ProvidesActionFields;
 
     public static $applied = [];
+
     public static $appliedFields = [];
+
     public static $appliedToComments = [];
 
     /**
      * Perform the action on the given models.
      *
-     * @param  \Laravel\Nova\Fields\ActionFields  $fields
-     * @param  \Illuminate\Support\Collection  $models
      * @return string|void
      */
     public function handle(ActionFields $fields, Collection $models)
@@ -32,8 +32,6 @@ class NoopAction extends Action
     /**
      * Perform the action on the given comment models.
      *
-     * @param  \Laravel\Nova\Fields\ActionFields  $fields
-     * @param  \Illuminate\Support\Collection  $models
      * @return string|void
      */
     public function handleForComments(ActionFields $fields, Collection $models)

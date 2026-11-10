@@ -10,7 +10,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class TrixTest extends IntegrationTest
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
     }
@@ -33,7 +33,7 @@ class TrixTest extends IntegrationTest
             }
         );
 
-        $model = new Post();
+        $model = new Post;
         $result = $field->fill(NovaRequest::create('/?trix_key=TRIX_DATA'), $model);
 
         $this->assertIsCallable($result);

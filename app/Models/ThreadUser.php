@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-
 /**
  * App\Models\ThreadUser
  *
@@ -13,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ThreadUser newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ThreadUser newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ThreadUser query()
@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static \Illuminate\Database\Eloquent\Builder|ThreadUser whereThreadId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ThreadUser whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ThreadUser whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class ThreadUser extends Pivot

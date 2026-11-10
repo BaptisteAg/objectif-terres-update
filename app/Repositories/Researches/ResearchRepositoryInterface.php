@@ -1,54 +1,53 @@
-<?php namespace App\Repositories\Researches;
+<?php
 
-use App\Models\Ad;
+namespace App\Repositories\Researches;
+
 use App\Models\Research;
 
 interface ResearchRepositoryInterface
 {
-	/**
-	 * Gets a research by its ID
-	 *
-	 * @param int
-	 */
-	public function find($id);
+    /**
+     * Gets a research by its ID
+     *
+     * @param int
+     */
+    public function find($id);
 
-	/**
-	 * Gets all researches.
-	 *
-	 * @return Research[]
-	 */
-	public function all($paginate = null);
+    /**
+     * Gets all researches.
+     *
+     * @return Research[]
+     */
+    public function all($paginate = null);
 
-	/**
-	 * Gets all researches by ID User.
-	 *
-	 * @return Research[]
-	 */
-	public function findAllByUser(int $id);
+    /**
+     * Gets all researches by ID User.
+     *
+     * @return Research[]
+     */
+    public function findAllByUser(int $id);
 
-	/**
-	 * Deletes a research.
-	 *
-	 * @param int
-	 */
-	public function delete($id);
+    /**
+     * Deletes a research.
+     *
+     * @param int
+     */
+    public function delete($id);
 
-	/**
-	 * Updates a research.
-	 *
-	 * @param int
-	 * @param array
-	 * @return Research
-	 */
-	public function update($id, array $properties);
+    /**
+     * Updates a research.
+     *
+     * @param int
+     * @param array
+     * @return Research
+     */
+    public function update($id, array $properties);
 
-	/**
-	 * Creates a research.
-	 *
-	 * @param int
-	 * @param array
-	 */
-
-	public function create(array $data) : Research;
-
+    /**
+     * Creates a research.
+     *
+     * @param int
+     * @param array
+     */
+    public function create(array $data): Research;
 }

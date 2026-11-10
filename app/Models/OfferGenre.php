@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * App\Models\OfferGenre
@@ -18,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LandOfferAd[] $landOfferAds
  * @property-read int|null $land_offer_ads_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|OfferGenre newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OfferGenre newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OfferGenre query()
@@ -28,20 +28,24 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|OfferGenre whereLandSeekDisplay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OfferGenre whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OfferGenre whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class OfferGenre extends Model
 {
     const ID_VENTE = 1;
+
     const ID_LOCATION = 2;
+
     const ID_TEST_AGRICOLE = 3;
+
     const ID_LEG_OU_DONATION = 4;
 
     /**
      * @var array
-     */  
+     */
     protected $fillable = [
-        'name'
+        'name',
     ];
 
     /**
