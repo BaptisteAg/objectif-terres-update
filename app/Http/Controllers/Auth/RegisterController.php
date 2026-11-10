@@ -95,7 +95,7 @@ class RegisterController extends Controller
                 Merci de confirmer votre email.",
             'action' => [
                 'Confirmer mon email',
-                app('App\Services\Auth\RegisterService')->getVerifyUrl($user),
+                app(\App\Services\Auth\RegisterService::class)->getVerifyUrl($user),
             ],
         ]));
 

@@ -16,7 +16,7 @@ class SpamFilter extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Models\SpamFilter';
+    public static $model = \App\Models\SpamFilter::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

@@ -11,6 +11,6 @@ trait EducationLevelable
      */
     public function educationLevels()
     {
-        return $this->morphToMany('App\Models\EducationLevel', 'education_levelable', 'education_levelable');
+        return $this->morphToMany(\App\Models\EducationLevel::class, 'education_levelable', 'education_levelable');
     }
 }

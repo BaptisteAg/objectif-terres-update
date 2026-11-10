@@ -266,12 +266,12 @@ class AdResource extends JsonResource
         }
 
         $typeResourceMap = [
-            'landOfferAd' => 'App\Http\Resources\AdTypes\LandOfferResource',
-            'landSeekAd' => 'App\Http\Resources\AdTypes\LandSeekResource',
-            'jobOfferAd' => 'App\Http\Resources\AdTypes\JobOfferResource',
-            'jobSeekAd' => 'App\Http\Resources\AdTypes\JobSeekResource',
-            'associateOfferAd' => 'App\Http\Resources\AdTypes\AssociateOfferResource',
-            'associateSeekAd' => 'App\Http\Resources\AdTypes\AssociateSeekResource',
+            'landOfferAd' => \App\Http\Resources\AdTypes\LandOfferResource::class,
+            'landSeekAd' => \App\Http\Resources\AdTypes\LandSeekResource::class,
+            'jobOfferAd' => \App\Http\Resources\AdTypes\JobOfferResource::class,
+            'jobSeekAd' => \App\Http\Resources\AdTypes\JobSeekResource::class,
+            'associateOfferAd' => \App\Http\Resources\AdTypes\AssociateOfferResource::class,
+            'associateSeekAd' => \App\Http\Resources\AdTypes\AssociateSeekResource::class,
         ];
 
         if (isset($typeResourceMap[$ad->type])) {

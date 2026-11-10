@@ -30,7 +30,7 @@ class CmsFaq extends Resource
      *
      * @var string
      */
-    public static $model = 'App\\Models\\CmsFaq';
+    public static $model = \App\Models\CmsFaq::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

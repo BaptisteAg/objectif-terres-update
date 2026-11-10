@@ -13,7 +13,7 @@ class Territory extends Resource
      *
      * @var string
      */
-    public static $model = 'App\\Models\\Territory';
+    public static $model = \App\Models\Territory::class;
 
     public static function label()
     {

@@ -31,7 +31,7 @@ class CmsPage extends Resource
      *
      * @var string
      */
-    public static $model = 'App\\Models\\CmsPage';
+    public static $model = \App\Models\CmsPage::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -77,7 +77,7 @@ class CmsPage extends Resource
             Text::make('Nom de la page', 'page_name')->sortable()->readonly(true),
             Text::make('Slug', 'slug')->sortable()->readonly(true),
             Text::make('Description', 'description')->readonly(true),
-            MorphToMany::make('Documents', 'documents', 'App\Nova\Document')->canSee(function ($request) {
+            MorphToMany::make('Documents', 'documents', \App\Nova\Document::class)->canSee(function ($request) {
                 return isset($this->has_documents) && $this->has_documents === 1;
             }),
             CKEditor5Classic::make('Content')->withFiles('public')->canSee(function ($request) {

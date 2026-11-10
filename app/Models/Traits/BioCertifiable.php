@@ -11,6 +11,6 @@ trait BioCertifiable
      */
     public function bioCertifications()
     {
-        return $this->morphToMany('App\Models\BioCertification', 'bio_certifiable');
+        return $this->morphToMany(\App\Models\BioCertification::class, 'bio_certifiable');
     }
 }

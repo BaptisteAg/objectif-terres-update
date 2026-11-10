@@ -222,7 +222,7 @@ class User extends Authenticatable implements HasPresenter, MustVerifyEmail
      */
     public function country()
     {
-        return $this->belongsTo('App\Models\Country');
+        return $this->belongsTo(\App\Models\Country::class);
     }
 
     /**
@@ -230,7 +230,7 @@ class User extends Authenticatable implements HasPresenter, MustVerifyEmail
      */
     public function zipCode()
     {
-        return $this->belongsTo('App\Models\City');
+        return $this->belongsTo(\App\Models\City::class);
     }
 
     /**

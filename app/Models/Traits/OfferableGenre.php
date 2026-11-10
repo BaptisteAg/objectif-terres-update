@@ -11,6 +11,6 @@ trait OfferableGenre
      */
     public function offerGenres()
     {
-        return $this->morphToMany('App\Models\OfferGenre', 'offerable_genre');
+        return $this->morphToMany(\App\Models\OfferGenre::class, 'offerable_genre');
     }
 }

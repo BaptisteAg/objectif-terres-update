@@ -11,7 +11,7 @@ trait Locationable
      */
     public function ads()
     {
-        return $this->morphToMany('App\Models\Ad', 'locationable_ad');
+        return $this->morphToMany(\App\Models\Ad::class, 'locationable_ad');
     }
 
     /**
@@ -19,7 +19,7 @@ trait Locationable
      */
     public function researches()
     {
-        return $this->morphToMany('App\Models\Research', 'locationable_research');
+        return $this->morphToMany(\App\Models\Research::class, 'locationable_research');
     }
 
     /**
@@ -27,6 +27,6 @@ trait Locationable
      */
     public function users()
     {
-        return $this->morphToMany('App\Models\User', 'locationable_user');
+        return $this->morphToMany(\App\Models\User::class, 'locationable_user');
     }
 }

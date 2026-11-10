@@ -28,7 +28,7 @@ class AttributionAd extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Models\AttributionAd';
+    public static $model = \App\Models\AttributionAd::class;
 
     public function title(): string
     {

@@ -13,7 +13,7 @@ class Department extends Resource
      *
      * @var string
      */
-    public static $model = 'App\\Models\\Department';
+    public static $model = \App\Models\Department::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

@@ -15,7 +15,7 @@ class Document extends Resource
      *
      * @var string
      */
-    public static $model = 'App\\Models\\Document';
+    public static $model = \App\Models\Document::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

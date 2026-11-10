@@ -15,7 +15,7 @@ class CmsCommonContent extends Resource
      *
      * @var string
      */
-    public static $model = 'App\\Models\\CmsCommonContent';
+    public static $model = \App\Models\CmsCommonContent::class;
 
     /**
      * @return string
@@ -77,7 +77,7 @@ class CmsCommonContent extends Resource
             Text::make('Nom de la section', 'name')->sortable()->readonly(true),
             Text::make('Description', 'description')->readonly(true),
             Text::make('Présence sur les pages', 'pages_name')->onlyOnDetail()->readonly(true),
-            MorphToMany::make('Documents', 'documents', 'App\Nova\Document'),
+            MorphToMany::make('Documents', 'documents', \App\Nova\Document::class),
             CKEditor5Classic::make('Content')->withFiles('public')->canSee(function ($request) {
                 return isset($this->has_documents) && $this->has_documents === 0;
             })

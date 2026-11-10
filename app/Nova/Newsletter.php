@@ -14,7 +14,7 @@ class Newsletter extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Models\Newsletter';
+    public static $model = \App\Models\Newsletter::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

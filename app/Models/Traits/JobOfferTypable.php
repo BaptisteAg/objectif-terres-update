@@ -11,6 +11,6 @@ trait JobOfferTypable
      */
     public function jobOfferTypes()
     {
-        return $this->morphToMany('App\Models\JobOfferType', 'job_offer_typable', 'job_offer_typable');
+        return $this->morphToMany(\App\Models\JobOfferType::class, 'job_offer_typable', 'job_offer_typable');
     }
 }

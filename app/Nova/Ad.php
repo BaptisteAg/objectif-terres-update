@@ -26,7 +26,7 @@ class Ad extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Models\Ad';
+    public static $model = \App\Models\Ad::class;
 
     public static function label()
     {

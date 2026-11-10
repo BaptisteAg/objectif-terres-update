@@ -37,7 +37,7 @@ class User extends Resource
      *
      * @var string
      */
-    public static $model = 'App\\Models\\User';
+    public static $model = \App\Models\User::class;
 
     public function title()
     {
@@ -169,11 +169,11 @@ class User extends Resource
                 })
                 ->hideFromIndex(),
 
-            MorphMany::make('Départements', 'departments', 'App\Nova\Department')->canSee(function ($request) {
+            MorphMany::make('Départements', 'departments', \App\Nova\Department::class)->canSee(function ($request) {
                 return isset($this->role) && $this->role >= 1;
             }),
 
-            HasMany::make('Permissions spéciales', 'userPermissions', 'App\Nova\UserPermission')->canSee(function ($request) {
+            HasMany::make('Permissions spéciales', 'userPermissions', \App\Nova\UserPermission::class)->canSee(function ($request) {
                 return isset($this->role) && $this->role >= 1;
             }),
 

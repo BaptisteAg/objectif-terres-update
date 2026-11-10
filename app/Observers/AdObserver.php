@@ -34,9 +34,9 @@ class AdObserver
     public function morphedByManyAttaching(string $relation, Ad $ad, array $ids, array $attributes)
     {
         $modelNames = [
-            'cities' => "App\Models\City",
-            'departments' => "App\Models\Department",
-            'regions' => "App\Models\Region",
+            'cities' => \App\Models\City::class,
+            'departments' => \App\Models\Department::class,
+            'regions' => \App\Models\Region::class,
         ];
         $readableModelName = [
             'cities' => 'ville',

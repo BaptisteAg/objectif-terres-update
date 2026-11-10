@@ -13,7 +13,7 @@ trait ProductionableGenre
      */
     public function productionGenres()
     {
-        return $this->morphToMany('App\Models\ProductionGenre', 'productionable_genre')->withPivot('type')->wherePivot('type', 'actual');
+        return $this->morphToMany(\App\Models\ProductionGenre::class, 'productionable_genre')->withPivot('type')->wherePivot('type', 'actual');
     }
 
     /**
@@ -23,7 +23,7 @@ trait ProductionableGenre
      */
     public function productionGenresPossible()
     {
-        return $this->morphToMany('App\Models\ProductionGenre', 'productionable_genre')->withPivot('type')->wherePivot('type', 'possible');
+        return $this->morphToMany(\App\Models\ProductionGenre::class, 'productionable_genre')->withPivot('type')->wherePivot('type', 'possible');
     }
 
     /**
@@ -31,7 +31,7 @@ trait ProductionableGenre
      */
     public function productionGenresSecondary(): morphToMany
     {
-        return $this->morphToMany('App\Models\ProductionGenre', 'productionable_genre')
+        return $this->morphToMany(\App\Models\ProductionGenre::class, 'productionable_genre')
             ->withPivot('type')
             ->wherePivotIn('type', ['secondary', 'possible']);
     }

@@ -11,6 +11,6 @@ trait Documentable
      */
     public function documents()
     {
-        return $this->morphToMany('App\Models\Document', 'documentable');
+        return $this->morphToMany(\App\Models\Document::class, 'documentable');
     }
 }

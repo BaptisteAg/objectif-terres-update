@@ -40,12 +40,12 @@ trait ObserverRelationsTrait
     {
         $ad = $model->ad;
         $modelNames = [
-            'productionGenres' => "App\Models\ProductionGenre",
-            'productionGenresSecondary' => "App\Models\ProductionGenre",
-            'offerGenres' => "App\Models\OfferGenre",
-            'educationLevels' => "App\Models\EducationLevel",
-            'bioCertifications' => "App\Models\BioCertification",
-            'jobOfferTypes' => "App\Models\JobOfferType",
+            'productionGenres' => \App\Models\ProductionGenre::class,
+            'productionGenresSecondary' => \App\Models\ProductionGenre::class,
+            'offerGenres' => \App\Models\OfferGenre::class,
+            'educationLevels' => \App\Models\EducationLevel::class,
+            'bioCertifications' => \App\Models\BioCertification::class,
+            'jobOfferTypes' => \App\Models\JobOfferType::class,
 
         ];
         $readableModelName = [

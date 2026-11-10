@@ -24,7 +24,7 @@ class UserPermission extends Resource
      *
      * @var string
      */
-    public static $model = 'App\\Models\\UserPermission';
+    public static $model = \App\Models\UserPermission::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
