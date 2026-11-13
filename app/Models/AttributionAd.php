@@ -101,8 +101,8 @@ class AttributionAd extends Model implements Decoratable
     /**
      * @var array
      */
-    protected $dates = [
-        'pending_update_since',
+    protected $casts = [
+        'pending_update_since' => 'datetime',
     ];
 
     /**
