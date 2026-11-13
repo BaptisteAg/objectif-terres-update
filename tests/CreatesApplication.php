@@ -2,6 +2,8 @@
 
 namespace Tests;
 
+use Database\Seeders\AdStatusSeeder;
+use Database\Seeders\TerritorySeeder;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\Artisan;
 use PDO;
@@ -123,8 +125,8 @@ trait CreatesApplication
 
         // Run essential seeders
         $seederClasses = [
-            \TerritorySeeder::class,
-            \AdStatusSeeder::class,
+            TerritorySeeder::class,
+            AdStatusSeeder::class,
         ];
 
         foreach ($seederClasses as $seederClass) {

@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use Database\Seeders\AdStatusSeeder;
+use Database\Seeders\BioCertificationSeeder;
+use Database\Seeders\OfferGenreSeeder;
 use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
@@ -37,9 +40,9 @@ class OnlineAdEditModerationTest extends TestCase
 
         // attribution_ads.ad_status_id est contraint par une clé étrangère sur ad_statuses ;
         // les référentiels suivants sont requis par la validation du formulaire d'annonce.
-        $this->seed(\AdStatusSeeder::class);
-        $this->seed(\BioCertificationSeeder::class);
-        $this->seed(\OfferGenreSeeder::class);
+        $this->seed(AdStatusSeeder::class);
+        $this->seed(BioCertificationSeeder::class);
+        $this->seed(OfferGenreSeeder::class);
 
         Notification::fake();
     }
