@@ -35,7 +35,7 @@ host-run -- ddev exec vendor/bin/phpunit
 | 1 | 7 | 8.0 | 3.30 | 6 vers 7, fait par le développeur précédent | terminé le 13/11/2026 |
 | 2 | 8 | 8.1 | 3.32 | 7 vers 8, à l'unité | terminé le 13/11/2026 |
 | 3 | 9 | 8.1 | 3.32 | Legacy Single, 6 mois | terminé le 13/11/2026 |
-| 4 | 9 | 8.1 | 3 vers 4 | aucun, travail manuel | à faire |
+| 4 | 9 | 8.1 | 3 vers 4 | aucun, travail manuel | terminé le 13/11/2026 |
 | 5 | 10 | 8.1 | 4 vers 5 | Legacy Single | à faire |
 | 6 | 11 | 8.2 | 5 | Legacy Single + HTML Converter | à faire |
 | 7 | 12 | 8.2 | 5 | Legacy Single | à faire |
@@ -186,13 +186,6 @@ Production : Node 18.17.1 et npm 9.8.1, compatibles avec Mix 6 et le `package-lo
 
 Laravel 9 exige PHP 8.1 en pratique : les versions de Symfony 6 compatibles avec PHP 8.0 ont toutes des alertes de sécurité. DDEV passe en PHP 8.1 sous Laravel 8, qui le supporte. Les deux suites de tests donnent le même résultat qu'en PHP 8.0. Une simulation du `composer update` de Laravel 9 sous PHP 8.1 passe avec toutes les dépendances actuelles, sans nouvelle exception.
 
-### Préparation de Nova 4
-
-- `digital-creative/clickable-table-row` : retiré avec Nova 4, qui rend les lignes cliquables nativement.
-- `kabbouchi/nova-impersonate` : passer en `^2.2` (Nova 4 et 5).
-- `numaxlab/nova-ckeditor5-classic` (abandonné) : remplacé par `mostafaznv/nova-ckeditor` (5.4 puis 6 pour Nova 4, 7 pour Nova 5 et Laravel 13), qui reste sur CKEditor 5. Le contenu actuel compte 32 fiches avec titres `h2` à `h6`, 1 tableau, 2 images et 1 citation, sans vidéo : le champ Trix de Nova (titre `h1` seul) réécrirait ces contenus à la première modification. `mostafaznv/nova-ckeditor` dépend de `larupload`, qui exige Laravel 9 : il ne s'installe qu'après le Shift 9.
-- Les vues Blade surchargées (`navigation`, `footer`, `logo`) ne s'appliquent plus avec Nova 4 (Inertia) : les reporter avec `Nova::mainMenu`, `Nova::footer` et `config('nova.brand.logo')`.
-
 ## Étape 3 : Laravel 9
 
 Shift : PR #2 (branche `shift-183910`), avec le Legacy Single acheté le 13/11/2026. Résultat : `laravel/framework` 9.52.23, `laravel/nova` 3.32.0, Flysystem 3.36, Symfony Mailer 6.4.
@@ -210,6 +203,36 @@ Points des commentaires Shift :
 - **`package.json`** : Shift a passé `axios` de `^0.19` à `^0.25` sans mettre à jour `package-lock.json`, ce qui faisait échouer `npm ci` (et donc `upgrade.sh`). Lock resynchronisé, fichiers recompilés, console Chrome identique sur les 8 pages de contrôle et mêmes 53 éléments de composants rendus sur `/connexion`.
 
 Tests : suite principale identique (36 réussis, 16 erreurs anciennes), tests de fumée verts, `migrate` et `optimize` passent.
+
+## Étape 4 : Nova 4
+
+Sous Laravel 9 : `laravel/nova` 4.35.11.
+
+- **Paquets Nova** : `kabbouchi/nova-impersonate` 2.2 (Nova 4 et 5) ; `digital-creative/clickable-table-row` retiré (lignes cliquables natives) ; `numaxlab/nova-ckeditor5-classic` (abandonné) remplacé par `mostafaznv/nova-ckeditor` 6.2, qui reste sur CKEditor 5. Trix était exclu : 32 contenus CMS ont des titres `h2` à `h6`, Trix ne connaît que `h1`.
+- **Éditeur** : `config/nova-ckeditor.php`, barre d'outils `toolbar-1` reprenant les boutons d'avant (titres, gras, italique, lien, listes, retraits, image, citation, tableau, média, annuler, rétablir), interface et contenu en français, titres de 1 à 6. Seule la médiathèque d'images est activée : modèle `App\Models\Image`, ressource `App\Nova\Resources\Image`, migration `create_images_table`, disque `public` comme l'ancien éditeur. Vidéo et audio désactivés, aucun contenu n'en utilise.
+- **Fidélité vérifiée** : les 6 pages CMS les plus riches (tableau, titres, images, citation, jusqu'à 16 325 caractères) chargées dans CKEditor puis relues par `getData()` : texte identique au caractère près, mêmes liens, mêmes images, même nombre de chaque balise (`tests/browser/ckeditor-fidelity.mjs`).
+- La tâche planifiée `PruneStaleAttachments` de l'ancien éditeur est retirée ; les tables `nova_ckeditor_attachments` et `nova_pending_ckeditor_attachments` et les images déjà publiées restent en place, les contenus y font référence.
+- **Configuration** : `config/nova.php` repart du modèle Nova 4 ; chemin `/ot-admin`, devise EUR, pagination simple ; `AdminMiddleware` placé dans `api_middleware` après `Authenticate`, comme sous Nova 3.
+- **Tableau de bord** : les 4 métriques passent de `NovaServiceProvider::cards()` à `App\Nova\Dashboards\Main`.
+- **Apparence** : les vues Blade surchargées de Nova 3 ne s'appliquent plus (Inertia). Liens « Listes des utilisateurs par territoire » et « Retour sur Objectif Terres » repris par `Nova::mainMenu` (section « Objectif Terres ») ; pied de page Terre de Liens par `Nova::footer` ; logo par `config('nova.brand.logo')` (`resources/img/nova-logo.svg`, qui affiche le PNG existant) ; favicon par `resources/views/vendor/nova/partials/meta.blade.php`, toujours lu par Nova 4.
+- **Signatures** : `fields`, `cards`, `filters`, `lenses`, `actions`, `apply` et `options` reçoivent `NovaRequest` (21 fichiers). Les deux actions avec `fields()` sans paramètre provoquaient une erreur fatale.
+- `App\Nova\User` redéfinissait son constructeur avec un argument obligatoire : Nova 4 instancie les ressources sans argument pour construire le menu, toutes les pages plantaient. Constructeur retiré (il n'appelait que le parent).
+- `Ad::survey_submitted_at` reçoit le cast `datetime` : le champ `DateTime` de Nova 4 refuse un attribut non converti, et 401 annonces ont cette date.
+- `authorizedToCreate` renvoie `false` pour `CmsFaq` : la page de création de FAQ répond 403, comme sous Nova 3.
+
+Tests : suite principale identique (36 réussis, 16 erreurs anciennes), tests de fumée verts, `optimize` passe. Dans Chrome, connecté en admin, sans aucune erreur JavaScript : tableau de bord (menu et pied de page présents), listes des annonces et des utilisateurs, fiche utilisateur (impersonation), fiche d'attribution, formulaires de page CMS, de FAQ et de contenu commun (CKEditor chargé), médiathèque d'images.
+
+### Contrôles dans le navigateur (`tests/browser`)
+
+Chrome est piloté depuis l'hôte par son protocole de débogage (Node 24, sans dépendance). Il faut d'abord une session admin locale, écrite dans `storage/logs` (ignoré par Git) :
+
+```bash
+host-run -- ddev exec 'php artisan tinker --execute="$u = App\Models\User::where(\"role\", 4)->whereNull(\"deleted_at\")->orderBy(\"id\")->first(); $s = app(\"session\")->driver(); $s->start(); $s->put(auth()->guard(\"web\")->getName(), $u->id); $s->save(); $v = Illuminate\Cookie\CookieValuePrefix::create(config(\"session.cookie\"), app(\"encrypter\")->getKey()).$s->getId(); file_put_contents(storage_path(\"logs/nova-session.json\"), json_encode([\"name\" => config(\"session.cookie\"), \"value\" => app(\"encrypter\")->encrypt($v, false), \"user\" => $u->id, \"cms\" => App\Models\CmsPage::where(\"has_documents\", 0)->value(\"id\")]));"'
+host-run -- node tests/browser/nova-check.mjs
+host-run -- node tests/browser/ckeditor-fidelity.mjs 90 93 85 68 57 34
+```
+
+Supprimer ensuite `storage/logs/nova-session.json`.
 
 ## Déploiement en production (RunCloud)
 
@@ -238,7 +261,7 @@ Déploiement actuel, `upgrade.sh` (versionné) : `php artisan down`, `git pull`,
 3. **Composer** : 2.0.7 est antérieur aux réglages `config.policy` utilisés ici. Mettre à jour Composer 2 (`composer self-update --2`) puis vérifier `composer install` à blanc sur la pré-production.
 4. **`.env`** : ajouter `MAIL_MAILER=smtp` ; retirer les variables `STACKDRIVER_*`.
 5. **Stackdriver** : supprimer `storage/objectif-terres-312202-8e27689d1380.json` et faire révoquer la clé Google.
-6. **Nova 4**, une fois fait : renseigner `NOVA_LICENSE_KEY` et l'URL de production dans le compte Nova.
+6. **Nova 4** : renseigner `NOVA_LICENSE_KEY` dans le `.env` et l'URL de production dans le compte Nova ; lancer `php artisan migrate` (tables de Nova 4 et `images`).
 7. Dossier `nova/` : retiré du dépôt, `git pull` le supprime ; vérifier qu'il ne reste pas de fichiers non suivis dedans.
 
 Ordre conseillé : pré-production d'abord (`beta.objectif-terres.org`), avec les deux suites de tests et une recette manuelle (connexion SSO Salesforce, envoi d'un e-mail, Nova, dépôt d'annonce), puis production.

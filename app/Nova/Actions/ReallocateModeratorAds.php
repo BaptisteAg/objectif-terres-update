@@ -2,6 +2,7 @@
 
 namespace App\Nova\Actions;
 
+use Laravel\Nova\Http\Requests\NovaRequest;
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
 use App\Models\Thread;
@@ -103,7 +104,7 @@ class ReallocateModeratorAds extends Action
      *
      * @return array
      */
-    public function fields()
+    public function fields(NovaRequest $request)
     {
         return [
             Select::make('Transférer les annonces à ', 'new_moderator_id')

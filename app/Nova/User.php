@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Http\Requests\NovaRequest;
 use App\Nova\Actions\ReallocateModeratorAds;
 use App\Nova\Filters\LikelyBotFilter;
 use App\Nova\Filters\UserRoleFilter;
@@ -60,17 +61,12 @@ class User extends Resource
      */
     public static $with = ['cities', 'regions', 'departments', 'zipCode'];
 
-    public function __construct($resource)
-    {
-        parent::__construct($resource);
-    }
-
     /**
      * Get the fields displayed by the resource.
      *
      * @return array
      */
-    public function fields(Request $request)
+    public function fields(NovaRequest $request)
     {
         return [
 
@@ -189,7 +185,7 @@ class User extends Resource
      *
      * @return array
      */
-    public function cards(Request $request)
+    public function cards(NovaRequest $request)
     {
         return [new Metrics\UsersPerDay, new Metrics\NewUsers];
     }
@@ -199,7 +195,7 @@ class User extends Resource
      *
      * @return array
      */
-    public function filters(Request $request)
+    public function filters(NovaRequest $request)
     {
         return [
             new UserRoleFilter,
@@ -212,7 +208,7 @@ class User extends Resource
      *
      * @return array
      */
-    public function lenses(Request $request)
+    public function lenses(NovaRequest $request)
     {
         return [];
     }
@@ -222,7 +218,7 @@ class User extends Resource
      *
      * @return array
      */
-    public function actions(Request $request)
+    public function actions(NovaRequest $request)
     {
         return [
             app(ReallocateModeratorAds::class)

@@ -2,8 +2,8 @@
 
 namespace App\Nova\Filters;
 
+use Laravel\Nova\Http\Requests\NovaRequest;
 use App\Models\Department;
-use Illuminate\Http\Request;
 use Laravel\Nova\Filters\Filter;
 
 class DepartmentFilter extends Filter
@@ -22,7 +22,7 @@ class DepartmentFilter extends Filter
      * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function apply(Request $request, $query, $value)
+    public function apply(NovaRequest $request, $query, $value)
     {
         return $query->whereHas('departments', function ($query) use ($value) {
             $query->where('departments.id', $value);
@@ -34,7 +34,7 @@ class DepartmentFilter extends Filter
      *
      * @return array
      */
-    public function options(Request $request)
+    public function options(NovaRequest $request)
     {
         return Department::all()->pluck('id', 'name');
     }

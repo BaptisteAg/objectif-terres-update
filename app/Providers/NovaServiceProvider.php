@@ -3,12 +3,14 @@
 namespace App\Providers;
 
 use App\Nova\Actions\ReallocateModeratorAds;
-use App\Nova\Metrics\NewUsers;
-use App\Nova\Metrics\SurveyCount;
-use App\Nova\Metrics\SurveyResults;
-use App\Nova\Metrics\UsersPerDay;
+use App\Nova\Dashboards\Main;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Menu\Menu;
+use Laravel\Nova\Menu\MenuItem;
+use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
@@ -22,6 +24,19 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Nova::mainMenu(function (Request $request, Menu $menu) {
+            return $menu->append([
+                MenuSection::make('Objectif Terres', [
+                    MenuItem::externalLink('Listes des utilisateurs par territoire', route('administrator.usersByTerritories')),
+                    MenuItem::externalLink('Retour sur Objectif Terres', route('home')),
+                ])->icon('external-link'),
+            ]);
+        });
+
+        Nova::footer(function () {
+            return Blade::render('<p class="mt-8 text-center text-xs text-80">{{ date(\'Y\') }} - Terre de Liens | All right reserved</p>');
+        });
     }
 
     /**
@@ -52,28 +67,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     }
 
     /**
-     * Get the cards that should be displayed on the default Nova dashboard.
-     *
-     * @return array
-     */
-    protected function cards()
-    {
-        return [
-            (new NewUsers)->width('1/2'),
-            (new UsersPerDay)->width('1/2'),
-            (new SurveyCount)->width('1/3'),
-            (new SurveyResults)->width('2/3'),
-        ];
-    }
-
-    /**
      * Get the extra dashboards that should be displayed on the Nova dashboard.
      *
      * @return array
      */
     protected function dashboards()
     {
-        return [];
+        return [
+            new Main,
+        ];
     }
 
     /**

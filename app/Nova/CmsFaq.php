@@ -2,10 +2,11 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use NumaxLab\NovaCKEditor5Classic\CKEditor5Classic;
+use Mostafaznv\NovaCkEditor\CkEditor;
 
 class CmsFaq extends Resource
 {
@@ -61,13 +62,13 @@ class CmsFaq extends Resource
      *
      * @return array
      */
-    public function fields(Request $request)
+    public function fields(NovaRequest $request)
     {
         return [
             ID::make()->sortable(),
             Text::make('Visible sur la page', 'page_name')->sortable()->readonly(true),
             Text::make('Question', 'content_question'),
-            CKEditor5Classic::make('Content', 'content_answer')->withMeta(['maxlength' => 5]),
+            CkEditor::make('Content', 'content_answer')->withMeta(['maxlength' => 5]),
         ];
     }
 
@@ -76,7 +77,7 @@ class CmsFaq extends Resource
      *
      * @return array
      */
-    public function cards(Request $request)
+    public function cards(NovaRequest $request)
     {
         return [];
     }
@@ -86,7 +87,7 @@ class CmsFaq extends Resource
      *
      * @return array
      */
-    public function filters(Request $request)
+    public function filters(NovaRequest $request)
     {
         return [];
     }
@@ -96,7 +97,7 @@ class CmsFaq extends Resource
      *
      * @return array
      */
-    public function lenses(Request $request)
+    public function lenses(NovaRequest $request)
     {
         return [];
     }
@@ -106,7 +107,7 @@ class CmsFaq extends Resource
      *
      * @return array
      */
-    public function actions(Request $request)
+    public function actions(NovaRequest $request)
     {
         return [];
     }

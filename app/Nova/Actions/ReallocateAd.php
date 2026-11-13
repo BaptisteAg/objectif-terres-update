@@ -2,6 +2,7 @@
 
 namespace App\Nova\Actions;
 
+use Laravel\Nova\Http\Requests\NovaRequest;
 use App\Models\AttributionAd;
 use App\Models\Thread;
 use App\Models\User;
@@ -56,7 +57,7 @@ class ReallocateAd extends Action
      *
      * @return array
      */
-    public function fields()
+    public function fields(NovaRequest $request)
     {
         $users = User::whereIn('role', [1, 3, 4])
             ->get()

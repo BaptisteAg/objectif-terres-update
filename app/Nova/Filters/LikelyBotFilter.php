@@ -2,7 +2,7 @@
 
 namespace App\Nova\Filters;
 
-use Illuminate\Http\Request;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Filters\Filter;
 
 class LikelyBotFilter extends Filter
@@ -23,7 +23,7 @@ class LikelyBotFilter extends Filter
      * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function apply(Request $request, $query, $value)
+    public function apply(NovaRequest $request, $query, $value)
     {
         if ($value === 'likely_bot') {
             return $query->likelyBot(0.3);
@@ -47,7 +47,7 @@ class LikelyBotFilter extends Filter
      *
      * @return array
      */
-    public function options(Request $request)
+    public function options(NovaRequest $request)
     {
         return [
             'Bot probable (score < 0.3)' => 'likely_bot',

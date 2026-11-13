@@ -152,6 +152,10 @@ class Ad extends Model implements HasPresenter
         'survey_submitted_at',
     ];
 
+    protected $casts = [
+        'survey_submitted_at' => 'datetime',
+    ];
+
     const AD_TYPES = [
         'jobOfferAd' => JobOfferAd::class,
         'jobSeekAd' => JobSeekAd::class,

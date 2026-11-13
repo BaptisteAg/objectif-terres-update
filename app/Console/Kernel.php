@@ -5,7 +5,6 @@ namespace App\Console;
 use App\Console\Commands\DisableOldResearchAlerts;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use NumaxLab\NovaCKEditor5Classic\Jobs\PruneStaleAttachments;
 
 class Kernel extends ConsoleKernel
 {
@@ -43,10 +42,6 @@ class Kernel extends ConsoleKernel
         // $schedule->command('app:notify-drafts-unpublished-ads')->weekly()->appendOutputTo($filePath);
         // $schedule->command('app:change-support-state-old-support-request')->daily()->appendOutputTo($filePath);
         // $schedule->command('app:notify-6-moths-old-support-request')->daily()->appendOutputTo($filePath);
-
-        $schedule->call(function () {
-            (new PruneStaleAttachments)();
-        })->daily()->appendOutputTo($filePath);
     }
 
     /**

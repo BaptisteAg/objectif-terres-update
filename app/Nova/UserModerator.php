@@ -3,7 +3,6 @@
 namespace App\Nova;
 
 use App\Nova\Actions\ReallocateModeratorAds;
-use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class UserModerator extends User
@@ -25,7 +24,7 @@ class UserModerator extends User
         return parent::indexQuery($request, $query)->whereIn('role', [1, 3, 4]);
     }
 
-    public function actions(Request $request)
+    public function actions(NovaRequest $request)
     {
         return [
             app(ReallocateModeratorAds::class)
