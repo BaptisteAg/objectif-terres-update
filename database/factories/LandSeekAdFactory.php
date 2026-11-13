@@ -1,13 +1,10 @@
 <?php
 
-
-
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\InstallationType;
-use App\Models\LandSeekAd;
 use App\Models\OfferGenre;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\FactoryBuilder;
 
 FactoryBuilder::macro('disableEvents', function () {

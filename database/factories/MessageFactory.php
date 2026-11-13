@@ -1,13 +1,10 @@
 <?php
 
-
-
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Message;
 use App\Models\Thread;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MessageFactory extends Factory
 {

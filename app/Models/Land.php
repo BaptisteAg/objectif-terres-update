@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Traits\OfferableGenre;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -36,7 +36,6 @@ use Illuminate\Database\Eloquent\Model;
 class Land extends Model
 {
     use HasFactory;
-
     use OfferableGenre;
 
     /**

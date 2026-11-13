@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Traits\BioCertifiable;
 use App\Models\Traits\JobOfferTypable;
 use App\Models\Traits\OfferableGenre;
 use App\Models\Traits\ProductionableGenre;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\belongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -78,9 +78,8 @@ use Illuminate\Notifications\Notifiable;
  */
 class Research extends Model
 {
-    use HasFactory;
-
     use BioCertifiable;
+    use HasFactory;
     use JobOfferTypable;
     use Notifiable;
     use OfferableGenre;

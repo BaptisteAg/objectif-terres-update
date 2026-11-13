@@ -2,9 +2,6 @@
 
 namespace Tests\Feature;
 
-use Database\Seeders\AdStatusSeeder;
-use Database\Seeders\BioCertificationSeeder;
-use Database\Seeders\OfferGenreSeeder;
 use App\Models\Ad;
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
@@ -16,6 +13,9 @@ use App\Models\ProductionGenre;
 use App\Models\User;
 use App\Services\AttributionAds\AttributionAdsService;
 use Carbon\Carbon;
+use Database\Seeders\AdStatusSeeder;
+use Database\Seeders\BioCertificationSeeder;
+use Database\Seeders\OfferGenreSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;

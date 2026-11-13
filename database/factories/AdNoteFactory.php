@@ -1,13 +1,10 @@
 <?php
 
-
-
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Ad;
-use App\Models\AdNote;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AdNoteFactory extends Factory
 {

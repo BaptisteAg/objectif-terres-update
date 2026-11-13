@@ -1,12 +1,9 @@
 <?php
 
-
-
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Document;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 if (! function_exists('get_mime_type')) {
     function get_mime_type($filename)

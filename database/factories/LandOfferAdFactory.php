@@ -1,14 +1,11 @@
 <?php
 
-
-
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Building;
 use App\Models\House;
 use App\Models\Land;
-use App\Models\LandOfferAd;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\FactoryBuilder;
 
 FactoryBuilder::macro('disableEvents', function () {

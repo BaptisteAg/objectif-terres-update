@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Traits\EducationLevelable;
 use App\Models\Traits\OfferableGenre;
 use App\Models\Traits\ProductionableGenre;
@@ -10,6 +9,7 @@ use Chelout\RelationshipEvents\Concerns\HasBelongsToEvents;
 use Chelout\RelationshipEvents\Concerns\HasManyEvents;
 use Chelout\RelationshipEvents\Concerns\HasMorphToManyEvents;
 use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -73,8 +73,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class LandSeekAd extends Model
 {
-    use HasFactory;
-
     use EducationLevelable,
         HasBelongsToEvents,
         HasManyEvents,
@@ -82,6 +80,7 @@ class LandSeekAd extends Model
         HasRelationshipObservables,
         OfferableGenre,
         ProductionableGenre;
+    use HasFactory;
 
     /**
      * @return BelongsTo
