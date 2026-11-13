@@ -13,7 +13,7 @@
         "php": "^8.0",
         "aacotroneo/laravel-saml2": "^2.1",
         "chelout/laravel-relationship-events": "^1.5",
-        "darkaonline/l5-swagger": "^7.0",
+        "darkaonline/l5-swagger": "^8.0",
         "digital-creative/clickable-table-row": "^0.2.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
@@ -22,7 +22,7 @@
         "intervention/image": "^2.7",
         "kabbouchi/nova-impersonate": "^1.3",
         "laravel/framework": "^7.29",
-        "laravel/nova": "*",
+        "laravel/nova": "^3.0",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^2.0",
         "laravelcollective/html": "^6.1",
@@ -30,7 +30,6 @@
         "mccool/laravel-auto-presenter": "^7.4",
         "numaxlab/nova-ckeditor5-classic": "^1.1",
         "omniphx/forrest": "^2.7",
-        "ozankurt/repoist": "^3.2",
         "predis/predis": "^1.1",
         "symfony/mailgun-mailer": "^6.0",
         "vedmant/laravel-feed-reader": "^1.4"
@@ -48,7 +47,42 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "policy": {
+            "advisories": {
+                "ignore": {
+                    "laravel/framework": {
+                        "constraint": "^7.0",
+                        "on-audit": false,
+                        "reason": "Montee de version transitoire, voir docs/montee-de-version.md"
+                    },
+                    "firebase/php-jwt": {
+                        "on-audit": false,
+                        "reason": "Montee de version transitoire, voir docs/montee-de-version.md"
+                    },
+                    "google/protobuf": {
+                        "on-audit": false,
+                        "reason": "Montee de version transitoire, voir docs/montee-de-version.md"
+                    },
+                    "league/commonmark": {
+                        "on-audit": false,
+                        "reason": "Montee de version transitoire, voir docs/montee-de-version.md"
+                    },
+                    "league/flysystem": {
+                        "on-audit": false,
+                        "reason": "Montee de version transitoire, voir docs/montee-de-version.md"
+                    },
+                    "guzzlehttp/psr7": {
+                        "on-audit": false,
+                        "reason": "Montee de version transitoire, voir docs/montee-de-version.md"
+                    },
+                    "grpc/grpc": {
+                        "on-audit": false,
+                        "reason": "Montee de version transitoire, voir docs/montee-de-version.md"
+                    }
+                }
+            }
+        }
     },
     "extra": {
         "laravel": {
@@ -85,8 +119,8 @@
     },
     "repositories": [
         {
-            "type": "path",
-            "url": "./nova"
+            "type": "composer",
+            "url": "https://nova.laravel.com"
         }
     ]
 }
