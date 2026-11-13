@@ -207,6 +207,7 @@ Points des commentaires Shift :
 - `$loop` et `LazyCollection` : aucune `LazyCollection` (`cursor()`, `lazy()`) dans l'application.
 - `public/index.php` et `app/Exceptions/Handler.php` : signalés par Shift car personnalisés ; ils sont déjà au format attendu.
 - Exception de sécurité : `laravel/framework` passe à `^9.0`.
+- **`package.json`** : Shift a passé `axios` de `^0.19` à `^0.25` sans mettre à jour `package-lock.json`, ce qui faisait échouer `npm ci` (et donc `upgrade.sh`). Lock resynchronisé, fichiers recompilés, console Chrome identique sur les 8 pages de contrôle et mêmes 53 éléments de composants rendus sur `/connexion`.
 
 Tests : suite principale identique (36 réussis, 16 erreurs anciennes), tests de fumée verts, `migrate` et `optimize` passent.
 
