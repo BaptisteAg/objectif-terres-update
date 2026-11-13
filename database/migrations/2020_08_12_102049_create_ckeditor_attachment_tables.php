@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCKEditorAttachmentTables extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -41,4 +41,4 @@ class CreateCKEditorAttachmentTables extends Migration
         Schema::drop('nova_pending_ckeditor_attachments');
         Schema::drop('nova_ckeditor_attachments');
     }
-}
+};

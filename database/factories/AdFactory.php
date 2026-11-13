@@ -2,15 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Ad;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AdFactory extends Factory
 {
-    protected $model = Ad::class;
-
     public function definition()
     {
         $randomDateCreated = Carbon::yesterday()->subtract(rand(0, 352).' days');

@@ -18,10 +18,10 @@ class LandSeekAdFactory extends Factory
         $surfaceMin = rand(0, 50);
 
         return [
-            'is_bio' => $this->faker->boolean,
+            'is_bio' => $this->faker->boolean(),
             'production_type_add' => $this->faker->text(60),
-            // 'has_farm_buildings' => $this->faker->boolean,
-            // 'has_houses' => $this->faker->boolean,
+            // 'has_farm_buildings' => $this->faker->boolean(),
+            // 'has_houses' => $this->faker->boolean(),
             // 'rent_min' => $this->faker->randomFloat(4),
             // 'rent_max' => $this->faker->randomFloat(4),
             // 'offer_genre_id' => OfferGenre::all()->random(),

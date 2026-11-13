@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class InsertCmsPagesCharte extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -30,4 +30,4 @@ class InsertCmsPagesCharte extends Migration
     {
         \App\Models\CmsPage::where('page_name', 'Charte Objectif Terres')->delete();
     }
-}
+};

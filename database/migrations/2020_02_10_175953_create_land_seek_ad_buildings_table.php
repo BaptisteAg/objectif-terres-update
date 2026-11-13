@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLandSeekAdBuildingsTable extends Migration
+return new class extends Migration
 {
     protected $tableName = 'land_seek_ad_buildings';
 
@@ -51,4 +51,4 @@ class CreateLandSeekAdBuildingsTable extends Migration
     {
         Schema::dropIfExists($this->tableName);
     }
-}
+};

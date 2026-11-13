@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateEducationLevelsChangeNames extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -47,4 +47,4 @@ class UpdateEducationLevelsChangeNames extends Migration
     {
         //
     }
-}
+};

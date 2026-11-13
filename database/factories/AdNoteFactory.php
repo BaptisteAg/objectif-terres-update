@@ -18,7 +18,7 @@ class AdNoteFactory extends Factory
         return [
             'value' => $this->faker->text(500),
             'user_id' => User::all()->random(),
-            'contact_name' => $this->faker->name,
+            'contact_name' => $this->faker->name(),
             'ad_id' => Ad::inRandomOrder()->first(),
         ];
     }

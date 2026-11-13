@@ -3,7 +3,7 @@
 use App\Models\CmsPage;
 use Illuminate\Database\Migrations\Migration;
 
-class InsertCmsPagesV3 extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -54,4 +54,4 @@ class InsertCmsPagesV3 extends Migration
     {
         //
     }
-}
+};

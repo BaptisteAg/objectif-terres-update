@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateAdsCreateForeignKeyToThirdPartyAdUser extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -35,4 +35,4 @@ class UpdateAdsCreateForeignKeyToThirdPartyAdUser extends Migration
             $table->dropColumn('third_party_ad_user_id');
         });
     }
-}
+};

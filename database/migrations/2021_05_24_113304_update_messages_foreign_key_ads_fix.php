@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateMessagesForeignKeyAdsFix extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -36,4 +36,4 @@ class UpdateMessagesForeignKeyAdsFix extends Migration
             $table->dropForeign('messages_sender_user_id_foreign');
         });
     }
-}
+};

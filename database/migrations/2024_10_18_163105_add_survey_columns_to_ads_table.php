@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSurveyColumnsToAdsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -23,4 +23,4 @@ class AddSurveyColumnsToAdsTable extends Migration
             $table->dropColumn(['survey_thanks_to_platform', 'survey_remarks']);
         });
     }
-}
+};

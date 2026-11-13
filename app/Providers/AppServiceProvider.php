@@ -20,11 +20,11 @@ use App\Services\Documents\DocumentService;
 use App\Services\Documents\DocumentServiceInterface;
 use App\Services\Salesforce\DualStorageDriver;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Omniphx\Forrest\Providers\Laravel\LaravelEncryptor;
 use Omniphx\Forrest\Providers\Laravel\LaravelSession;
 use Omniphx\Forrest\Repositories\TokenRepository;
-use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {

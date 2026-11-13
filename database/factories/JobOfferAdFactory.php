@@ -18,8 +18,8 @@ class JobOfferAdFactory extends Factory
 
             // 'education_level_id' => EducationLevel::all()->random(),
             // 'job_status_id' => JobStatus::all()->random(),
-            // 'is_beneficiary' => $this->faker->boolean,
-            // 'is_offer' => $this->faker->boolean,
+            // 'is_beneficiary' => $this->faker->boolean(),
+            // 'is_offer' => $this->faker->boolean(),
         ];
     }
 }
