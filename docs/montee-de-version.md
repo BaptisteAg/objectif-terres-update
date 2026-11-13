@@ -30,16 +30,18 @@ host-run -- ddev exec vendor/bin/phpunit
 
 ## Plan
 
-| Étape | Laravel | PHP min | Nova | Shift | Statut |
+| Étape | Laravel | PHP | Nova | Shift | Statut |
 |---|---|---|---|---|---|
-| 1 | 7 | 7.2.5 | 3 | 6 vers 7, fait par le développeur précédent | terminé le 13/11/2026 |
-| 2 | 8 | 7.3 | 3 | 7 vers 8, à l'unité | terminé le 13/11/2026 (front à reprendre) |
-| 3 | 8 | 7.3 | 3 vers 4 | aucun, travail manuel | à faire |
-| 4 | 9 | 8.0 | 4 | Legacy Single, 6 mois | à faire |
+| 1 | 7 | 8.0 | 3.30 | 6 vers 7, fait par le développeur précédent | terminé le 13/11/2026 |
+| 2 | 8 | 8.1 | 3.32 | 7 vers 8, à l'unité | terminé le 13/11/2026 |
+| 3 | 9 | 8.1 | 3.32 | Legacy Single, 6 mois | prêt à lancer |
+| 4 | 9 | 8.1 | 3 vers 4 | aucun, travail manuel | à faire |
 | 5 | 10 | 8.1 | 4 vers 5 | Legacy Single | à faire |
 | 6 | 11 | 8.2 | 5 | Legacy Single + HTML Converter | à faire |
 | 7 | 12 | 8.2 | 5 | Legacy Single | à faire |
 | 8 | 13 | 8.3 | 5 | Legacy Single | à faire |
+
+Nova 3.32 accepte Laravel 9 (`illuminate/support ^8.67|^9.0`) mais pas Laravel 10 : Nova 4 se fait donc sous Laravel 9, entre les Shifts 9 et 10, dans la fenêtre de 6 mois du Legacy Single.
 
 Règles : une étape n'est close qu'après `composer update`, tests et vérification manuelle. Shift ne lance jamais `composer update`. Aucun autre chantier (Vite, Vue 3, refactorisation) pendant la montée.
 
@@ -164,11 +166,39 @@ Points des commentaires Shift traités à la main :
 
 Tests : suite principale identique à Laravel 7 (36 réussis, 16 erreurs anciennes) ; tests de fumée verts.
 
-Non fait, à reprendre :
+Reste ouvert : le gestionnaire d'exceptions peut passer à la méthode unique `register()` de Laravel 8 (facultatif) ; `ModeratorReallocationTest` échoue toujours, parce que `LandOfferAdFactory` écrit une colonne `user_pp_id` absente de `land_offer_ads`.
 
-- **Front (Laravel Mix 6)** : Shift a passé `package.json` à Mix 6 et `webpack.mix.js` appelle maintenant `.vue()`, mais `npm install` échoue sur un conflit de dépendances (`ERESOLVE`), et `webpack` n'est pas installé. Les fichiers compilés suivis par Git (Mix 4) n'ont pas été touchés. Bloquant avant tout déploiement : `upgrade.sh` lance `npm ci`.
-- Gestionnaire d'exceptions : passage facultatif à la méthode unique `register()` de Laravel 8.
-- `ModeratorReallocationTest` échoue toujours, désormais parce que `LandOfferAdFactory` écrit une colonne `user_pp_id` qui n'existe pas dans `land_offer_ads`.
+### Front : Laravel Mix 6
+
+`npm ci` puis `npm run production` passent ; les fichiers compilés suivis par Git sont régénérés.
+
+- `sass-loader` 12, `resolve-url-loader` 5, `vue-loader` 15 : les versions de l'époque de Mix 4 faisaient remonter webpack 4.
+- `webpack` fixé en `~5.97.1` : Mix 6.0.49 importe `webpack/lib/SizeFormatHelpers`, retiré en 5.107, et `webpackbar` échoue sur `ProgressPlugin` en 5.106.
+- `window.Vue = require('vue').default` : webpack 5 résout l'export ES de Vue ; sans ce `.default`, aucun composant ne démarrait.
+- Quatre URL d'images Sass passent de `public/images/...` à `/images/...`, que `resolve-url-loader` 5 réécrivait par rapport au partiel.
+- Anciens fragments webpack 4 (`public/js/chunks/0.js` à `9.js`, `vendors~*.js`) supprimés : le nouveau `app.js` ne les référence plus.
+
+Vérification dans Chrome sans interface, sur 8 pages (accueil, recherche, connexion, inscription, fiche d'annonce, pages CMS) : mêmes erreurs de console qu'avec les fichiers Mix 4, et sur `/connexion` le DOM rendu est identique (33 blocs de style, 145 sélecteurs à portée de composant, 53 éléments de composants, même suite de 1 157 balises). Erreurs anciennes, présentes aussi en production : `bulmaCarousel is not defined` (`public/js/bulma-carousel.js` n'existe pas, 404 en production) et un `[object Object]` sur `/inscription`.
+
+Production : Node 18.17.1 et npm 9.8.1, compatibles avec Mix 6 et le `package-lock.json` (format 2).
+
+### PHP 8.1
+
+Laravel 9 exige PHP 8.1 en pratique : les versions de Symfony 6 compatibles avec PHP 8.0 ont toutes des alertes de sécurité. DDEV passe en PHP 8.1 sous Laravel 8, qui le supporte. Les deux suites de tests donnent le même résultat qu'en PHP 8.0. Une simulation du `composer update` de Laravel 9 sous PHP 8.1 passe avec toutes les dépendances actuelles, sans nouvelle exception.
+
+### Préparation de Nova 4
+
+- `digital-creative/clickable-table-row` : retiré avec Nova 4, qui rend les lignes cliquables nativement.
+- `kabbouchi/nova-impersonate` : passer en `^2.2` (Nova 4 et 5).
+- `numaxlab/nova-ckeditor5-classic` (abandonné) : remplacé par `mostafaznv/nova-ckeditor` (5.4 puis 6 pour Nova 4, 7 pour Nova 5 et Laravel 13), qui reste sur CKEditor 5. Le contenu actuel compte 32 fiches avec titres `h2` à `h6`, 1 tableau, 2 images et 1 citation, sans vidéo : le champ Trix de Nova (titre `h1` seul) réécrirait ces contenus à la première modification. `mostafaznv/nova-ckeditor` dépend de `larupload`, qui exige Laravel 9 : il ne s'installe qu'après le Shift 9.
+- Les vues Blade surchargées (`navigation`, `footer`, `logo`) ne s'appliquent plus avec Nova 4 (Inertia) : les reporter avec `Nova::mainMenu`, `Nova::footer` et `config('nova.brand.logo')`.
+
+## À faire au déploiement en production
+
+- Passer l'application en PHP 8.1 dans RunCloud (`php81rc` est installé).
+- `.env` : ajouter `MAIL_MAILER=smtp`, retirer les variables `STACKDRIVER_*`.
+- Supprimer `storage/objectif-terres-312202-8e27689d1380.json` et faire révoquer la clé Google.
+- Avec Nova 4 : renseigner `NOVA_LICENSE_KEY` et l'URL de production dans le compte Nova.
 
 ## Points ouverts
 
