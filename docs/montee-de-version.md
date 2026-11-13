@@ -36,7 +36,8 @@ host-run -- ddev exec vendor/bin/phpunit
 | 2 | 8 | 8.1 | 3.32 | 7 vers 8, à l'unité | terminé le 13/11/2026 |
 | 3 | 9 | 8.1 | 3.32 | Legacy Single, 6 mois | terminé le 13/11/2026 |
 | 4 | 9 | 8.1 | 3 vers 4 | aucun, travail manuel | terminé le 13/11/2026 |
-| 5 | 10 | 8.1 | 4 vers 5 | Legacy Single | à faire |
+| 5 | 10 | 8.1 | 4 | Legacy Single | prêt à lancer |
+| 5 bis | 10 | 8.1 | 4 vers 5 | aucun, travail manuel | à faire |
 | 6 | 11 | 8.2 | 5 | Legacy Single + HTML Converter | à faire |
 | 7 | 12 | 8.2 | 5 | Legacy Single | à faire |
 | 8 | 13 | 8.3 | 5 | Legacy Single | à faire |
@@ -233,6 +234,14 @@ host-run -- node tests/browser/ckeditor-fidelity.mjs 90 93 85 68 57 34
 ```
 
 Supprimer ensuite `storage/logs/nova-session.json`.
+
+## Préparation du Shift Laravel 10
+
+Simulation de la résolution Composer de Laravel 10 (copie temporaire de `composer.json`, `composer update --dry-run`) : elle passe (`laravel/framework` 10.50.4, Nova 4, `mostafaznv/nova-ckeditor` 6.2) sans nouvelle exception de sécurité, une fois levés ces blocages :
+
+- **`mccool/laravel-auto-presenter`** (abandonné, Laravel 9 au plus) : repris dans `app/Support/AutoPresenter` (licence MIT dans `LICENSE`, commentaires retirés), fournisseur `App\Support\AutoPresenter\AutoPresenterServiceProvider` déclaré dans `config/app.php`. Vérifié : HTML de 9 pages publiques identique avant et après (jetons CSRF neutralisés), `Ad` et `User` toujours décorés par `AdPresenter` et `UserPresenter`, suites de tests inchangées.
+- **`krlove/eloquent-model-generator`** (abandonné, outil de développement sans usage dans le code) : retiré.
+- À faire monter au moment du Shift, s'il ne le fait pas lui-même : `laravel/ui` en `^4.0` ; `chelout/laravel-relationship-events` en `^2.0`. Ce dernier suit Laravel : v3 pour 11, v4 pour 12, v5 pour 13.
 
 ## Déploiement en production (RunCloud)
 

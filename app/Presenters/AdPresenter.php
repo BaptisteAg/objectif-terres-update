@@ -10,7 +10,7 @@ use App\Nova\Department;
 use App\Services\Ads\AdService;
 use Illuminate\Database\Eloquent\Collection;
 use LaravelIdea\Helper\App\Models\_IH_Document_C;
-use McCool\LaravelAutoPresenter\BasePresenter;
+use App\Support\AutoPresenter\BasePresenter;
 
 /**
  * Class AdPresenter

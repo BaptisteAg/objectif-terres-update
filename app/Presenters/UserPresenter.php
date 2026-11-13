@@ -3,7 +3,7 @@
 namespace App\Presenters;
 
 use App\Models\User;
-use McCool\LaravelAutoPresenter\BasePresenter;
+use App\Support\AutoPresenter\BasePresenter;
 
 /**
  * Class UserPresenter

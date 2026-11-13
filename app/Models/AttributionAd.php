@@ -8,7 +8,7 @@ use App\Models\Scopes\ScopeLocationFilterable;
 use App\Presenters\AdPresenter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use McCool\LaravelAutoPresenter\Decoratable;
+use App\Support\AutoPresenter\Decoratable;
 
 /**
  * App\Models\AttributionAd

@@ -213,6 +213,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\NovaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Support\AutoPresenter\AutoPresenterServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
 

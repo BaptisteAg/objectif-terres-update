@@ -4,7 +4,7 @@ namespace App\Presenters;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use McCool\LaravelAutoPresenter\BasePresenter as OriginalBasePresenter;
+use App\Support\AutoPresenter\BasePresenter as OriginalBasePresenter;
 use Psy\VarDumper\Presenter;
 
 /**

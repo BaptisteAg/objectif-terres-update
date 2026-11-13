@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use McCool\LaravelAutoPresenter\HasPresenter;
+use App\Support\AutoPresenter\HasPresenter;
 
 /**
  * App\Models\User

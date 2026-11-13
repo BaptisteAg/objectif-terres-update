@@ -6,7 +6,7 @@ use App\Models\Traits\Documentable;
 use App\Presenters\MessagePresenter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use McCool\LaravelAutoPresenter\HasPresenter;
+use App\Support\AutoPresenter\HasPresenter;
 
 /**
  * App\Models\Message
