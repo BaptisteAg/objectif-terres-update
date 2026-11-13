@@ -70,6 +70,16 @@ Changements au-delà du Shift :
 
 À ajouter dans le `.env` de production au déploiement : `MAIL_MAILER=smtp`.
 
+### Commentaires de Shift sur la PR #1 (dépôt `collegue`)
+
+Les 14 commentaires ont été relus le 13/11/2026. Ceux qui demandaient une action :
+
+- **Expéditeur des e-mails perdu** : la remise à zéro de `config/mail.php` (commit Shift `8f09b234`) avait remplacé `'name' => 'Objectif Terres'` par `env('MAIL_FROM_NAME', 'Example')` et l'adresse par défaut par `hello@example.com`. La production ne définit pas `MAIL_FROM_NAME` : les e-mails seraient partis signés « Example ». Les valeurs de Laravel 6 sont rétablies comme valeurs par défaut.
+- **Cookie de session** : le commit Shift `ff0b7dc2` passait `same_site` de `null` à `'lax'`. Le retour du SSO Salesforce (`acs()`) est un POST venu d'un autre site : en `lax`, le cookie de session n'y est pas envoyé et `url.intended` est perdue, l'utilisateur atterrit sur l'accueil au lieu de la page demandée. `null` est rétabli ; le cookie a de nouveau les mêmes attributs qu'en production.
+- `getOriginal('user_moderator_id')` dans `AttributionAdObserver` : attribut sans cast, valeur inchangée.
+- Composants Symfony utilisés directement : `Process` reçoit déjà un tableau, rien à adapter pour Symfony 5.
+- Paquets abandonnés signalés : `digital-creative/clickable-table-row` et `numaxlab/nova-ckeditor5-classic` sont à remplacer avec Nova 4 ; `krlove/eloquent-model-generator` n'est qu'en développement.
+
 ### Exceptions de sécurité temporaires
 
 Composer bloque les versions ayant des alertes publiées. Les paquets ci-dessous n'ont aucune version saine compatible avec Laravel 7. Ils sont autorisés dans `config.policy.advisories.ignore` avec `on-audit: false` : `composer audit` continue de les signaler.
