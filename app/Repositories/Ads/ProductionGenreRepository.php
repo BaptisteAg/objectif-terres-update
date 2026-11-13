@@ -3,9 +3,9 @@
 namespace App\Repositories\Ads;
 
 use App\Models\ProductionGenre;
+use App\Repositories\Eloquent\AbstractRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use App\Repositories\Eloquent\AbstractRepository;
 
 /**
  * @property ProductionGenre $entity

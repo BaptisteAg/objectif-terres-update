@@ -28,7 +28,7 @@ abstract class AbstractRepository
     {
         $model = $this->entity->find($id);
 
-        if (!$model) {
+        if (! $model) {
             throw (new ModelNotFoundException)->setModel(
                 get_class($this->entity->getModel()),
                 $id
@@ -49,7 +49,7 @@ abstract class AbstractRepository
     {
         $model = $this->entity->where($column, $value)->first();
 
-        if (!$model) {
+        if (! $model) {
             throw (new ModelNotFoundException)->setModel(
                 get_class($this->entity->getModel())
             );
@@ -106,8 +106,8 @@ abstract class AbstractRepository
 
     protected function resolveEntity()
     {
-        if (!method_exists($this, 'entity')) {
-            throw new NoEntityDefined();
+        if (! method_exists($this, 'entity')) {
+            throw new NoEntityDefined;
         }
 
         return app($this->entity());

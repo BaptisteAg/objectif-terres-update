@@ -5,8 +5,8 @@ namespace App\Repositories\Ads;
 use App\Models\Building;
 use App\Models\House;
 use App\Models\LandOfferAd;
-use Illuminate\Support\Arr;
 use App\Repositories\Eloquent\AbstractRepository;
+use Illuminate\Support\Arr;
 
 class LandOfferAdRepository extends AbstractRepository implements LandOfferAdRepositoryInterface
 {

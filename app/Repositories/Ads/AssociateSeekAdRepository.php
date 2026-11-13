@@ -3,8 +3,8 @@
 namespace App\Repositories\Ads;
 
 use App\Models\AssociateSeekAd;
-use Illuminate\Support\Arr;
 use App\Repositories\Eloquent\AbstractRepository;
+use Illuminate\Support\Arr;
 
 class AssociateSeekAdRepository extends AbstractRepository
 {

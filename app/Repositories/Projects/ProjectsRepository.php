@@ -4,9 +4,9 @@ namespace App\Repositories\Projects;
 
 use App\Models\Ad;
 use App\Models\Project;
+use App\Repositories\Eloquent\AbstractRepository;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use App\Repositories\Eloquent\AbstractRepository;
 
 class ProjectsRepository extends AbstractRepository implements ProjectsRepositoryInterface
 {

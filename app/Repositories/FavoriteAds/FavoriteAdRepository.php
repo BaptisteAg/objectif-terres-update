@@ -5,9 +5,9 @@ namespace App\Repositories\FavoriteAds;
 use App\Models\Ad;
 use App\Models\FavoriteAd;
 use App\Models\User;
+use App\Repositories\Eloquent\AbstractRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Repositories\Eloquent\AbstractRepository;
 
 /**
  * Class FavoriteAdRepository
