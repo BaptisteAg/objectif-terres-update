@@ -67,8 +67,23 @@ Composer bloque les versions ayant des alertes publiées. Les paquets ci-dessous
 | Paquet | Raison |
 |---|---|
 | `laravel/framework` (^7.0) | version cible de l'étape |
-| `league/commonmark`, `league/flysystem`, `guzzlehttp/psr7` | dépendances de Laravel 7 |
-| `firebase/php-jwt`, `google/protobuf`, `grpc/grpc` | dépendances de `gluedev/laravel-stackdriver` |
+| `league/commonmark`, `league/flysystem` | dépendances de Laravel 7 |
+
+`firebase/php-jwt`, `google/protobuf`, `grpc/grpc` et `guzzlehttp/psr7` ont été retirés de la liste avec Stackdriver : `firebase/php-jwt`, requis par Forrest, est passé en 7.2.1, sans alerte.
+
+### Retrait de Stackdriver
+
+Décision du 13/11/2026 (Baptiste Ageron) : `gluedev/laravel-stackdriver` est retiré. Le paquet n'évolue plus depuis la 0.2.2, et ses bibliothèques Google (`google/gax`, `grpc/grpc`, `google/protobuf`) n'ont plus de version compatible à la fois avec PHP 8.0 et sans faille connue. Il aurait bloqué toutes les étapes suivantes.
+
+Ce qui disparaît : l'envoi des erreurs vers Google Cloud Error Reporting et des journaux vers Google Cloud Logging (projet `objectif-terres-312202`). Les erreurs restent journalisées par Laravel, canal `stack` (`daily` et `stdout`).
+
+Supprimés du code : `config/stackdriver.php`, l'appel `StackdriverExceptionHandler::report()` dans `app/Exceptions/Handler.php`, et 16 paquets Google et OpenCensus.
+
+À faire en production, au déploiement de cette version :
+
+- retirer les variables `STACKDRIVER_*` du `.env` ;
+- supprimer `storage/objectif-terres-312202-8e27689d1380.json`, la clé du compte de service Google (présente depuis avril 2022) ;
+- signaler au détenteur du projet Google Cloud qu'il peut révoquer cette clé, puis fermer le projet s'il ne sert plus.
 
 À chaque étape, retirer les exceptions devenues inutiles. Il ne doit plus en rester à Laravel 13.
 
@@ -85,7 +100,6 @@ La suite compte 52 tests. Sur la version Laravel 6 d'origine : 36 réussis, 16 e
 
 ## Points ouverts
 
-- **Stackdriver** : actif en production (`STACKDRIVER_ENABLED=true`, clé `storage/objectif-terres-312202-*.json` depuis 2022). Ses dépendances Google bloqueront les étapes suivantes. À trancher : quelqu'un consulte-t-il encore Google Cloud Error Reporting ?
 - **Seeders** : sur une base neuve, `TerritorySeeder` échoue (doublon sur `territories.id = 1`), une migration ayant déjà inséré des données.
 - **Données locales** : sans jeu de données réaliste, les pages et 9 tests ne peuvent pas être vérifiés.
 - **Traduction de Nova** : 346 textes sur 426 restent en anglais (325 sur 405 sous Nova 2).

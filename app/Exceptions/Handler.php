@@ -3,10 +3,8 @@
 namespace App\Exceptions;
 
 use Exception;
-use GlueDev\Laravel\Stackdriver\StackdriverExceptionHandler;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -28,19 +26,6 @@ class Handler extends ExceptionHandler
         'password',
         'password_confirmation',
     ];
-
-    /**
-     * Report or log an exception.
-     *
-     * @return void
-     *
-     * @throws \Throwable
-     */
-    public function report(Throwable $exception)
-    {
-        StackdriverExceptionHandler::report($exception);
-        parent::report($exception);
-    }
 
     protected function renderHttpException(HttpExceptionInterface $e)
     {
