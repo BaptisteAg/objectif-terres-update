@@ -193,12 +193,37 @@ Laravel 9 exige PHP 8.1 en pratique : les versions de Symfony 6 compatibles avec
 - `numaxlab/nova-ckeditor5-classic` (abandonné) : remplacé par `mostafaznv/nova-ckeditor` (5.4 puis 6 pour Nova 4, 7 pour Nova 5 et Laravel 13), qui reste sur CKEditor 5. Le contenu actuel compte 32 fiches avec titres `h2` à `h6`, 1 tableau, 2 images et 1 citation, sans vidéo : le champ Trix de Nova (titre `h1` seul) réécrirait ces contenus à la première modification. `mostafaznv/nova-ckeditor` dépend de `larupload`, qui exige Laravel 9 : il ne s'installe qu'après le Shift 9.
 - Les vues Blade surchargées (`navigation`, `footer`, `logo`) ne s'appliquent plus avec Nova 4 (Inertia) : les reporter avec `Nova::mainMenu`, `Nova::footer` et `config('nova.brand.logo')`.
 
-## À faire au déploiement en production
+## Déploiement en production (RunCloud)
 
-- Passer l'application en PHP 8.1 dans RunCloud (`php81rc` est installé).
-- `.env` : ajouter `MAIL_MAILER=smtp`, retirer les variables `STACKDRIVER_*`.
-- Supprimer `storage/objectif-terres-312202-8e27689d1380.json` et faire révoquer la clé Google.
-- Avec Nova 4 : renseigner `NOVA_LICENSE_KEY` et l'URL de production dans le compte Nova.
+### Serveurs
+
+| | Production | Pré-production |
+|---|---|---|
+| Machine | `objectifterreprod2`, Ubuntu 20.04, OVH | ? |
+| IP | 54.37.149.176 | 54.36.52.79 (SSH injoignable depuis la VM de travail le 13/11/2026) |
+| SSH | `runcloud@54.37.149.176` | `runcloud@54.36.52.79` |
+| Application | `/home/runcloud/webapps/ObjectifTerreProd` (aussi `ObjectifTerreProdBak` et `ObjectifTerreProdFix`) | `/home/runcloud/webapps/ObjectifTerrePreprod` |
+| Domaine | `objectif-terres.org`, `www.objectif-terres.org` | `beta.objectif-terres.org` |
+| Dépôt suivi | `https://github.com/terredeliens/objectif-terres.git`, branche `master` | |
+
+État relevé le 13/11/2026 sur la production : PHP 8.0.30 en ligne de commande (`/RunCloud/Packages/php80rc/bin/php`), PHP 8.1 à 8.5 installés (`/RunCloud/Packages/php81rc/bin/php`...), Composer 2.0.7, Node 18.17.1, npm 9.8.1, MariaDB 10.4.34, aucun `auth.json` Composer.
+
+Déploiement actuel, `upgrade.sh` (versionné) : `php artisan down`, `git pull`, `composer install`, `npm ci`, `php artisan app:update` (migrate, view:clear, optimize, queue:restart), `php artisan l5-swagger:generate`, `php artisan up`.
+
+### Bloquants à traiter avant le premier déploiement de cette montée
+
+1. **PHP 8.1 partout**, pas seulement pour l'application web :
+   - version PHP de l'application `ObjectifTerreProd` dans RunCloud (PHP-FPM) ;
+   - PHP en ligne de commande : `upgrade.sh`, `composer` et `php artisan` utilisent `php`, qui pointe sur `php80rc`. Changer le PHP CLI du serveur dans RunCloud, ou appeler `/RunCloud/Packages/php81rc/bin/php` ;
+   - **cron** du planificateur : `* * * * * /RunCloud/Packages/php80rc/bin/php .../artisan schedule:run` doit passer en `php81rc`.
+2. **Identifiants Nova pour Composer** : Nova ne vient plus du dossier `nova/` mais de `nova.laravel.com`. Sans identifiants, `composer install` échoue. Créer `~/.config/composer/auth.json` pour l'utilisateur `runcloud` (même format que l'`auth.json` local, jamais dans Git).
+3. **Composer** : 2.0.7 est antérieur aux réglages `config.policy` utilisés ici. Mettre à jour Composer 2 (`composer self-update --2`) puis vérifier `composer install` à blanc sur la pré-production.
+4. **`.env`** : ajouter `MAIL_MAILER=smtp` ; retirer les variables `STACKDRIVER_*`.
+5. **Stackdriver** : supprimer `storage/objectif-terres-312202-8e27689d1380.json` et faire révoquer la clé Google.
+6. **Nova 4**, une fois fait : renseigner `NOVA_LICENSE_KEY` et l'URL de production dans le compte Nova.
+7. Dossier `nova/` : retiré du dépôt, `git pull` le supprime ; vérifier qu'il ne reste pas de fichiers non suivis dedans.
+
+Ordre conseillé : pré-production d'abord (`beta.objectif-terres.org`), avec les deux suites de tests et une recette manuelle (connexion SSO Salesforce, envoi d'un e-mail, Nova, dépôt d'annonce), puis production.
 
 ## Points ouverts
 
