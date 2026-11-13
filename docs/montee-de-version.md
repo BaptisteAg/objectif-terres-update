@@ -60,6 +60,16 @@ Changements au-delà du Shift :
   - la route des documents est `docs/api-docs.json`, car le dossier `public/docs` (chartes PDF) masque la route `docs` par défaut côté nginx. L'URL de la spécification reste celle de la production ;
   - le JSON généré est identique à celui de la production, hors URL du serveur et section `tags` ajoutée par la version 8.
 
+### Contrôles du guide de montée Laravel 7
+
+- **Noms de routes en double** : Laravel 7 refuse de mettre en cache deux routes de même nom. `GET` et `POST /connexion` s'appelaient tous deux `login`, ce qui faisait échouer `php artisan optimize`, appelé par `app:update` pendant le déploiement. Le nom est retiré de la route `POST`. Les deux routes ont la même URL, donc `route('login')` ne change pas.
+- **Sérialisation des dates** : Laravel 7 sérialise les dates des modèles en ISO 8601 UTC dans `toArray()` et `toJson()`. Sans effet visible ici : l'API formate ses dates elle-même (`AdResource::formatDateToIso`), `History` renvoie des chaînes par ses accesseurs, et les composants Vue ne testent les autres dates que contre `null`. `serializeDate` n'est donc pas redéfini.
+- **E-mails** : `config/mail.php` lit `MAIL_MAILER`. La production n'a que `MAIL_DRIVER=smtp`, et la valeur par défaut reste `smtp`.
+- **Caches** : `config:cache`, `route:cache`, `view:cache` et `event:cache` passent.
+- Aucune balise `<x-…>` dans les vues, et CORS est configuré (`config/cors.php`, `HandleCors`).
+
+À ajouter dans le `.env` de production au déploiement : `MAIL_MAILER=smtp`.
+
 ### Exceptions de sécurité temporaires
 
 Composer bloque les versions ayant des alertes publiées. Les paquets ci-dessous n'ont aucune version saine compatible avec Laravel 7. Ils sont autorisés dans `config.policy.advisories.ignore` avec `on-audit: false` : `composer audit` continue de les signaler.
@@ -98,10 +108,21 @@ La suite compte 52 tests. Sur la version Laravel 6 d'origine : 36 réussis, 16 e
 | règle `role-departement` de Salesforce et envoi de mail | SalesforceServiceTest (3) |
 | appel réel à Salesforce sans URL configurée | ApiSalesforceTest |
 
+### Comparaison avec la production
+
+Base locale chargée le 13/11/2026 depuis la production (`mysqldump --single-transaction`, lecture seule) : 74 tables, 23 396 utilisateurs, 11 371 annonces, aucune migration en attente. Instantané DDEV `prod-2026-11-13`, restaurable par `host-run -- ddev snapshot restore prod-2026-11-13`. Ces données personnelles restent dans DDEV et ne vont jamais dans Git.
+
+Mêmes requêtes anonymes en local (Laravel 7) et en production (Laravel 6), sur les mêmes données :
+
+- 47 pages publiques sans paramètre : codes de réponse identiques, sauf `/rss/news` (500 en production, 200 en local) et `/locations/polygon/departments` (plus de 20 s en production) ;
+- 40 fiches d'annonces tirées au hasard : codes de réponse et titres identiques.
+
+Défaut ancien constaté des deux côtés : `/locations/polygon/france` renvoie 500, parce que l'API Nominatim répond 400 à la requête envoyée.
+
 ## Points ouverts
 
 - **Seeders** : sur une base neuve, `TerritorySeeder` échoue (doublon sur `territories.id = 1`), une migration ayant déjà inséré des données.
-- **Données locales** : sans jeu de données réaliste, les pages et 9 tests ne peuvent pas être vérifiés.
+- **Pages connectées et Nova** : pas encore vérifiées, la comparaison ci-dessus est anonyme.
 - **Traduction de Nova** : 346 textes sur 426 restent en anglais (325 sur 405 sous Nova 2).
 - **Secrets et données personnelles dans Git** : `.env.save`, `.env.nouvellesandbox`, clés privées de `certs/`, `database/sql/users_table.sql`, et deux dumps SQL de 2023 dans l'historique. À signaler à Terre de Liens.
 - **Commentaires de la PR Shift #1** (dépôt `collegue`) : non encore relus.
