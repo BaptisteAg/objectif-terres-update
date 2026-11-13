@@ -1,14 +1,21 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Models\AttributionAd;
 use Carbon\Carbon;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(AttributionAd::class, function (Faker $faker) {
-
-    return [
-        'created_at' => Carbon::now()->subDays(rand(0, 9)),
-    ];
-});
+class AttributionAdFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'created_at' => Carbon::now()->subDays(rand(0, 9)),
+        ];
+    }
+}

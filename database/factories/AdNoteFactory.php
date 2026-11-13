@@ -1,18 +1,25 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Models\Ad;
-use App\Models\AdNote;
 use App\Models\User;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(AdNote::class, function (Faker $faker) {
-
-    return [
-        'value' => $faker->text(500),
-        'user_id' => User::all()->random(),
-        'contact_name' => $faker->name,
-        'ad_id' => Ad::inRandomOrder()->first(),
-    ];
-});
+class AdNoteFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'value' => $this->faker->text(500),
+            'user_id' => User::all()->random(),
+            'contact_name' => $this->faker->name,
+            'ad_id' => Ad::inRandomOrder()->first(),
+        ];
+    }
+}

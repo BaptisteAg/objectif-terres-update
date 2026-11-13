@@ -1,10 +1,9 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Models\Document;
 use App\Models\User;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 if (! function_exists('get_mime_type')) {
     function get_mime_type($filename)
@@ -36,15 +35,24 @@ if (! function_exists('get_mime_type')) {
     }
 }
 
-$factory->define(Document::class, function (Faker $faker) {
-    $extensions = ['.png', '.gif', '.jpg', '.pdf'];
-    $fileName = $faker->word.$extensions[array_rand($extensions)];
+class DocumentFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $extensions = ['.png', '.gif', '.jpg', '.pdf'];
+        $fileName = $this->faker->word.$extensions[array_rand($extensions)];
 
-    return [
-        'name' => $fileName,
-        'path' => 'storage/'.$fileName,
-        'type' => get_mime_type($fileName),
-        'size' => rand(100, 2000) * 10000,
-        'user_id' => User::where('role', '=', '0')->get()->random()->id,
-    ];
-});
+        return [
+            'name' => $fileName,
+            'path' => 'storage/'.$fileName,
+            'type' => get_mime_type($fileName),
+            'size' => rand(100, 2000) * 10000,
+            'user_id' => User::where('role', '=', '0')->get()->random()->id,
+        ];
+    }
+}

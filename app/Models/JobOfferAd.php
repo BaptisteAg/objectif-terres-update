@@ -7,6 +7,7 @@ use App\Models\Traits\JobOfferTypable;
 use App\Models\Traits\ProductionableGenre;
 use Chelout\RelationshipEvents\Concerns\HasMorphToManyEvents;
 use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -60,6 +61,7 @@ class JobOfferAd extends Model
         HasRelationshipObservables,
         JobOfferTypable,
         ProductionableGenre;
+    use HasFactory;
 
     /**
      * @var array

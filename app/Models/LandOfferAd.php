@@ -7,6 +7,7 @@ use App\Models\Traits\OfferableGenre;
 use App\Models\Traits\ProductionableGenre;
 use Chelout\RelationshipEvents\Concerns\HasMorphToManyEvents;
 use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -95,6 +96,7 @@ class LandOfferAd extends Model
         HasRelationshipObservables,
         OfferableGenre,
         ProductionableGenre;
+    use HasFactory;
 
     public function ad()
     {

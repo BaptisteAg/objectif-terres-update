@@ -1,13 +1,21 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Models\ResponseTemplate;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(ResponseTemplate::class, function (Faker $faker) {
-    return [
-        'title' => $faker->word,
-        'content' => $faker->text(50),
-    ];
-});
+class ResponseTemplateFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'title' => $this->faker->word,
+            'content' => $this->faker->text(50),
+        ];
+    }
+}

@@ -8,6 +8,7 @@ use App\Models\Scopes\ScopeLocationFilterable;
 use App\Models\Traits\Documentable;
 use App\Presenters\AdPresenter;
 use App\Presenters\UserPresenter;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use McCool\LaravelAutoPresenter\Decoratable;
 
@@ -51,6 +52,7 @@ use McCool\LaravelAutoPresenter\Decoratable;
 class Project extends Model implements Decoratable
 {
     use Documentable, ScopeAdTypesFilterable, ScopeDataFilterable, ScopeLocationFilterable;
+    use HasFactory;
 
     /**
      * @var array

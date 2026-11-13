@@ -6,6 +6,7 @@ use App\Models\Scopes\ScopeAdTypesFilterable;
 use App\Models\Scopes\ScopeDataFilterable;
 use App\Models\Scopes\ScopeLocationFilterable;
 use App\Presenters\AdPresenter;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use McCool\LaravelAutoPresenter\Decoratable;
 
@@ -72,6 +73,7 @@ use McCool\LaravelAutoPresenter\Decoratable;
  */
 class AttributionAd extends Model implements Decoratable
 {
+    use HasFactory;
     use ScopeAdTypesFilterable,
         ScopeDataFilterable,
         ScopeLocationFilterable;
@@ -101,8 +103,8 @@ class AttributionAd extends Model implements Decoratable
     /**
      * @var array
      */
-    protected $dates = [
-        'pending_update_since',
+    protected $casts = [
+        'pending_update_since' => 'datetime',
     ];
 
     /**

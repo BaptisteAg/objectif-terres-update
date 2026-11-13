@@ -1,17 +1,25 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Models\Message;
 use App\Models\Thread;
 use App\Models\User;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Message::class, function (Faker $faker) {
-    return [
-        'content' => $faker->text(250),
-        'sender_user_id' => User::all()->random(),
-        'receiver_user_id' => User::all()->random(),
-        'thread_id' => Thread::all()->random(),
-    ];
-});
+class MessageFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'content' => $this->faker->text(250),
+            'sender_user_id' => User::all()->random(),
+            'receiver_user_id' => User::all()->random(),
+            'thread_id' => Thread::all()->random(),
+        ];
+    }
+}

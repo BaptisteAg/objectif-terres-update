@@ -33,7 +33,7 @@ host-run -- ddev exec vendor/bin/phpunit
 | Étape | Laravel | PHP min | Nova | Shift | Statut |
 |---|---|---|---|---|---|
 | 1 | 7 | 7.2.5 | 3 | 6 vers 7, fait par le développeur précédent | terminé le 13/11/2026 |
-| 2 | 8 | 7.3 | 3 | 7 vers 8, à l'unité | à faire |
+| 2 | 8 | 7.3 | 3 | 7 vers 8, à l'unité | terminé le 13/11/2026 (front à reprendre) |
 | 3 | 8 | 7.3 | 3 vers 4 | aucun, travail manuel | à faire |
 | 4 | 9 | 8.0 | 4 | Legacy Single, 6 mois | à faire |
 | 5 | 10 | 8.1 | 4 vers 5 | Legacy Single | à faire |
@@ -146,6 +146,29 @@ Défauts anciens trouvés par cette suite, présents aussi en production :
 
 - corrigés : fiche Nova d'une attribution sans modérateur (priorité d'opérateur dans `App\Nova\AttributionAd::title()`), page « Rapports et indicateurs » d'un responsable territorial (1 171 attributions ont un `ad_status_id` sans statut correspondant, `AdService` ligne 776) ;
 - non corrigés, exclus de la suite : `/accompagnement/modifier` plante si l'utilisateur n'a pas de demande d'accompagnement (fonction dépréciée) ; `/mon-espace/recherches/notification` et `/mon-espace/annonces-favorites/sauvegarde` sont des actions en GET qui plantent sans paramètre.
+
+## Étape 2 : Laravel 8
+
+Shift : PR #1 de `BaptisteAg/objectif-terres-update` (branche `shift-183907`). Résultat : `laravel/framework` 8.83.29, `laravel/nova` 3.32.0, `laravel/ui` 3.4.
+
+Points des commentaires Shift traités à la main :
+
+- `database/factories/AdFactory.php` et `UserFactory.php` n'avaient pas été convertis (erreur de syntaxe) : réécrits en classes, `HasFactory` ajouté à `Ad` et `User`.
+- La macro `disableEvents` de l'ancien `FactoryBuilder`, utilisée par `ApiTest`, est redéclarée sur `Illuminate\Database\Eloquent\Factories\Factory` dans `tests/TestCase.php`. Les blocs restés en tête de trois factories sont retirés.
+- `public/index.php` : version Laravel 8 (mode maintenance), `ini_set('soap.wsdl_cache_enabled', 0)` conservé.
+- `RedirectIfAuthenticated` : signature à plusieurs guards, redirection vers `/` conservée.
+- Pagination : `Paginator::useBootstrap()` garde le rendu actuel des 7 appels à `->links()`.
+- `retryAfter` dans `ThrottleMessagesMiddleware` : variable locale, sans rapport avec les jobs.
+- Migration `uuid` sur `failed_jobs` jouée, `phpunit.xml` migré pour PHPUnit 9, fichiers de Nova republiés.
+- Exceptions de sécurité : `league/commonmark` retiré ; restent `laravel/framework` (^8.0) et `league/flysystem` (1.x imposé par Laravel 8).
+
+Tests : suite principale identique à Laravel 7 (36 réussis, 16 erreurs anciennes) ; tests de fumée verts.
+
+Non fait, à reprendre :
+
+- **Front (Laravel Mix 6)** : Shift a passé `package.json` à Mix 6 et `webpack.mix.js` appelle maintenant `.vue()`, mais `npm install` échoue sur un conflit de dépendances (`ERESOLVE`), et `webpack` n'est pas installé. Les fichiers compilés suivis par Git (Mix 4) n'ont pas été touchés. Bloquant avant tout déploiement : `upgrade.sh` lance `npm ci`.
+- Gestionnaire d'exceptions : passage facultatif à la méthode unique `register()` de Laravel 8.
+- `ModeratorReallocationTest` échoue toujours, désormais parce que `LandOfferAdFactory` écrit une colonne `user_pp_id` qui n'existe pas dans `land_offer_ads`.
 
 ## Points ouverts
 

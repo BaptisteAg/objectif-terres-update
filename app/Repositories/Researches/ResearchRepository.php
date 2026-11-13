@@ -3,8 +3,8 @@
 namespace App\Repositories\Researches;
 
 use App\Models\Research;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Repositories\Eloquent\AbstractRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Class ResearchRepository

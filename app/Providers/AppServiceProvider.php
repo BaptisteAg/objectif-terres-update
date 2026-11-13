@@ -24,6 +24,7 @@ use Illuminate\Support\ServiceProvider;
 use Omniphx\Forrest\Providers\Laravel\LaravelEncryptor;
 use Omniphx\Forrest\Providers\Laravel\LaravelSession;
 use Omniphx\Forrest\Repositories\TokenRepository;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -46,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Paginator::useBootstrap();
         Ad::observe(AdObserver::class);
         AttributionAd::observe(AttributionAdObserver::class);
         LandSeekAd::observe(LandSeekAdObserver::class);

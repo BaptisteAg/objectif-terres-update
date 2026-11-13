@@ -7,6 +7,7 @@ use App\Notifications\ResetPasswordNotification;
 use App\Presenters\UserPresenter;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -115,6 +116,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
 class User extends Authenticatable implements HasPresenter, MustVerifyEmail
 {
     use CanResetPassword;
+    use HasFactory;
     use Notifiable;
     use ScopeLocationFilterable;
     use SoftDeletes;

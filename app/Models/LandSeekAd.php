@@ -9,6 +9,7 @@ use Chelout\RelationshipEvents\Concerns\HasBelongsToEvents;
 use Chelout\RelationshipEvents\Concerns\HasManyEvents;
 use Chelout\RelationshipEvents\Concerns\HasMorphToManyEvents;
 use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -79,6 +80,7 @@ class LandSeekAd extends Model
         HasRelationshipObservables,
         OfferableGenre,
         ProductionableGenre;
+    use HasFactory;
 
     /**
      * @return BelongsTo

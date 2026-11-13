@@ -1,15 +1,23 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Models\Land;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Land::class, function (Faker $faker) {
-    return [
-        'area' => $faker->numberBetween(0, 20000),
-        'price' => $faker->numberBetween(0, 20000),
-        'land_availability' => $faker->dateTime,
-        'land_transfer_deadline' => $faker->dateTime,
-    ];
-});
+class LandFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'area' => $this->faker->numberBetween(0, 20000),
+            'price' => $this->faker->numberBetween(0, 20000),
+            'land_availability' => $this->faker->dateTime,
+            'land_transfer_deadline' => $this->faker->dateTime,
+        ];
+    }
+}

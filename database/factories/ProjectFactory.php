@@ -1,15 +1,23 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Models\Project;
 use App\Models\SupportStage;
 use App\Models\SupportState;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Project::class, function (Faker $faker) {
-    return [
-        'support_stage_id' => SupportStage::FIRST_CONTACT_ID,
-        'support_state_id' => SupportState::TO_HANDLE_ID,
-    ];
-});
+class ProjectFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'support_stage_id' => SupportStage::FIRST_CONTACT_ID,
+            'support_state_id' => SupportState::TO_HANDLE_ID,
+        ];
+    }
+}

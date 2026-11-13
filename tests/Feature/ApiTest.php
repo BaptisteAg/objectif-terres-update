@@ -28,14 +28,14 @@ class ApiTest extends TestCase
      */
     protected function createPublishedAd($author = null)
     {
-        $author = $author ?? factory(User::class)->create(['role' => User::ROLE_PP]);
+        $author = $author ?? User::factory()->create(['role' => User::ROLE_PP]);
 
-        $ad = factory(Ad::class)->disableEvents()->create([
+        $ad = Ad::factory()->disableEvents()->create([
             'user_pp_id' => $author->id,
             'is_draft' => false,
         ]);
 
-        factory(LandOfferAd::class)->disableEvents()->create(['ad_id' => $ad->id]);
+        LandOfferAd::factory()->disableEvents()->create(['ad_id' => $ad->id]);
 
         AttributionAd::create([
             'ad_id' => $ad->id,
@@ -51,14 +51,14 @@ class ApiTest extends TestCase
      */
     protected function createArchivedAd($author = null)
     {
-        $author = $author ?? factory(User::class)->create(['role' => User::ROLE_PP]);
+        $author = $author ?? User::factory()->create(['role' => User::ROLE_PP]);
 
-        $ad = factory(Ad::class)->disableEvents()->create([
+        $ad = Ad::factory()->disableEvents()->create([
             'user_pp_id' => $author->id,
             'is_draft' => false,
         ]);
 
-        factory(LandOfferAd::class)->disableEvents()->create(['ad_id' => $ad->id]);
+        LandOfferAd::factory()->disableEvents()->create(['ad_id' => $ad->id]);
 
         AttributionAd::create([
             'ad_id' => $ad->id,
@@ -73,14 +73,14 @@ class ApiTest extends TestCase
      */
     protected function createDeletedAd($author = null)
     {
-        $author = $author ?? factory(User::class)->create(['role' => User::ROLE_PP]);
+        $author = $author ?? User::factory()->create(['role' => User::ROLE_PP]);
 
-        $ad = factory(Ad::class)->disableEvents()->create([
+        $ad = Ad::factory()->disableEvents()->create([
             'user_pp_id' => $author->id,
             'is_draft' => false,
         ]);
 
-        factory(LandOfferAd::class)->disableEvents()->create(['ad_id' => $ad->id]);
+        LandOfferAd::factory()->disableEvents()->create(['ad_id' => $ad->id]);
 
         AttributionAd::create([
             'ad_id' => $ad->id,
@@ -129,7 +129,7 @@ class ApiTest extends TestCase
     public function test_moderator_has_first_name_and_last_name()
     {
         // Create a moderator user
-        $moderator = factory(User::class)->create([
+        $moderator = User::factory()->create([
             'first_name' => 'Jean',
             'name' => 'Dupont',
             'email' => 'jean.dupont@test.com',
@@ -137,19 +137,19 @@ class ApiTest extends TestCase
         ]);
 
         // Create an ad author
-        $author = factory(User::class)->create([
+        $author = User::factory()->create([
             'first_name' => 'Marie',
             'name' => 'Martin',
             'role' => User::ROLE_PP,
         ]);
 
         // Create a land offer ad (disable events to avoid observer issues)
-        $ad = factory(Ad::class)->disableEvents()->create([
+        $ad = Ad::factory()->disableEvents()->create([
             'user_pp_id' => $author->id,
             'is_draft' => false,
         ]);
 
-        factory(LandOfferAd::class)->disableEvents()->create([
+        LandOfferAd::factory()->disableEvents()->create([
             'ad_id' => $ad->id,
         ]);
 
@@ -201,17 +201,17 @@ class ApiTest extends TestCase
     public function test_ad_without_moderator_returns_null_moderator()
     {
         // Create an ad author
-        $author = factory(User::class)->create([
+        $author = User::factory()->create([
             'role' => User::ROLE_PP,
         ]);
 
         // Create a land offer ad (disable events to avoid observer issues)
-        $ad = factory(Ad::class)->disableEvents()->create([
+        $ad = Ad::factory()->disableEvents()->create([
             'user_pp_id' => $author->id,
             'is_draft' => false,
         ]);
 
-        factory(LandOfferAd::class)->disableEvents()->create([
+        LandOfferAd::factory()->disableEvents()->create([
             'ad_id' => $ad->id,
         ]);
 
@@ -248,7 +248,7 @@ class ApiTest extends TestCase
     public function test_author_has_first_name_and_last_name()
     {
         // Create an ad author with specific name values
-        $author = factory(User::class)->create([
+        $author = User::factory()->create([
             'first_name' => 'Marlène',
             'name' => 'Pereira',
             'email' => 'marlene.pereira@test.com',
@@ -295,7 +295,7 @@ class ApiTest extends TestCase
     public function test_image_url_is_properly_encoded()
     {
         // Create an ad author
-        $author = factory(User::class)->create([
+        $author = User::factory()->create([
             'role' => User::ROLE_PP,
         ]);
 
@@ -357,7 +357,7 @@ class ApiTest extends TestCase
      */
     public function test_status_deleted_returns_only_deleted_ads()
     {
-        $author = factory(User::class)->create(['role' => User::ROLE_PP]);
+        $author = User::factory()->create(['role' => User::ROLE_PP]);
 
         $publishedAd = $this->createPublishedAd($author);
         $deletedAd = $this->createDeletedAd($author);
@@ -399,7 +399,7 @@ class ApiTest extends TestCase
      */
     public function test_status_archived_returns_only_archived()
     {
-        $author = factory(User::class)->create(['role' => User::ROLE_PP]);
+        $author = User::factory()->create(['role' => User::ROLE_PP]);
 
         $publishedAd = $this->createPublishedAd($author);
         $archivedAd = $this->createArchivedAd($author);
@@ -420,7 +420,7 @@ class ApiTest extends TestCase
      */
     public function test_status_published_archived_returns_both()
     {
-        $author = factory(User::class)->create(['role' => User::ROLE_PP]);
+        $author = User::factory()->create(['role' => User::ROLE_PP]);
 
         $publishedAd = $this->createPublishedAd($author);
         $archivedAd = $this->createArchivedAd($author);
@@ -441,7 +441,7 @@ class ApiTest extends TestCase
      */
     public function test_status_all_three_return_everything()
     {
-        $author = factory(User::class)->create(['role' => User::ROLE_PP]);
+        $author = User::factory()->create(['role' => User::ROLE_PP]);
 
         $publishedAd = $this->createPublishedAd($author);
         $archivedAd = $this->createArchivedAd($author);
@@ -466,12 +466,12 @@ class ApiTest extends TestCase
      */
     public function test_republished_ad_is_not_returned_as_published()
     {
-        $author = factory(User::class)->create(['role' => User::ROLE_PP]);
-        $ad = factory(Ad::class)->disableEvents()->create([
+        $author = User::factory()->create(['role' => User::ROLE_PP]);
+        $ad = Ad::factory()->disableEvents()->create([
             'user_pp_id' => $author->id,
             'is_draft' => false,
         ]);
-        factory(LandOfferAd::class)->disableEvents()->create(['ad_id' => $ad->id]);
+        LandOfferAd::factory()->disableEvents()->create(['ad_id' => $ad->id]);
 
         // History: published -> archived -> re-submitted to moderation
         AttributionAd::create([

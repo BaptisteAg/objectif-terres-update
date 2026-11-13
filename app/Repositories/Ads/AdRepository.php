@@ -9,6 +9,7 @@ use App\Models\City;
 use App\Models\Department;
 use App\Models\Region;
 use App\Models\ThirdPartyAdUser;
+use App\Repositories\Eloquent\AbstractRepository;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -18,7 +19,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Repositories\Eloquent\AbstractRepository;
 
 /**
  * Class AdRepository

@@ -1,22 +1,30 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Models\Research;
 use App\Models\User;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Research::class, function (Faker $faker) {
-    return [
-        'user_id' => User::all()->random(),
-        'name' => $faker->title,
-        'surface_min' => $faker->numberBetween(0, 50),
-        'surface_max' => $faker->numberBetween(50, 500),
-        'has_pics' => $faker->boolean,
-        'has_house' => $faker->boolean,
-        'price_min' => $faker->numberBetween(0, 50),
-        'price_max' => $faker->numberBetween(50, 500),
-        'ad_type' => 'landOfferAd',
+class ResearchFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'user_id' => User::all()->random(),
+            'name' => $this->faker->title,
+            'surface_min' => $this->faker->numberBetween(0, 50),
+            'surface_max' => $this->faker->numberBetween(50, 500),
+            'has_pics' => $this->faker->boolean,
+            'has_house' => $this->faker->boolean,
+            'price_min' => $this->faker->numberBetween(0, 50),
+            'price_max' => $this->faker->numberBetween(50, 500),
+            'ad_type' => 'landOfferAd',
 
-    ];
-});
+        ];
+    }
+}

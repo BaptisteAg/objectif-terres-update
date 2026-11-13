@@ -4,10 +4,10 @@ namespace App\Repositories\AttributionAds;
 
 use App\Models\AdStatus;
 use App\Models\AttributionAd;
+use App\Repositories\Eloquent\AbstractRepository;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Repositories\Eloquent\AbstractRepository;
 
 /**
  * Class AttributionAdsRepository
