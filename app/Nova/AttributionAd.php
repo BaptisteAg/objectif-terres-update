@@ -32,7 +32,7 @@ class AttributionAd extends Resource
 
     public function title(): string
     {
-        $moderator = ' '.$this->userModerator ? ' - '.$this->userModerator->name.' '.$this->userModerator->first_name : 'Aucun modérateur';
+        $moderator = $this->userModerator ? ' - '.$this->userModerator->name.' '.$this->userModerator->first_name : 'Aucun modérateur';
 
         return '('.$this->ad?->id.')'.$this->ad?->title.$moderator;
     }

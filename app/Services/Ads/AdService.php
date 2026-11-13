@@ -773,7 +773,7 @@ class AdService
         foreach ($ads as $ad) {
             if (! is_null($ad->attributionAd)) {
                 foreach ($numberOfAdsByAdStatus as $key => $value) {
-                    if ($key === $ad->attributionAd->adStatus->id) {
+                    if ($key === $ad->attributionAd->adStatus?->id) {
                         $numberOfAdsByAdStatus[$key]++;
                     }
                 }

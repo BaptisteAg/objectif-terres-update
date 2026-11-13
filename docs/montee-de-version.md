@@ -129,10 +129,27 @@ Mêmes requêtes anonymes en local (Laravel 7) et en production (Laravel 6), sur
 
 Défaut ancien constaté des deux côtés : `/locations/polygon/france` renvoie 500, parce que l'API Nominatim répond 400 à la requête envoyée.
 
+### Tests de fumée (`tests/Smoke`)
+
+À relancer à chaque étape, en plus de la suite habituelle :
+
+```bash
+host-run -- ddev exec vendor/bin/phpunit -c phpunit.smoke.xml
+```
+
+- Base `objectif_terres_smoke`, copie de la base locale chargée depuis la production. Chaque test tourne dans une transaction annulée ; e-mails et notifications sont neutralisés (`Mail::fake`, `Notification::fake`).
+- Parcourt toutes les routes GET sans paramètre en anonyme, puis avec un utilisateur réel de chaque rôle (porteur de projet, modérateur, responsable territorial, admin) ; 15 annonces en ligne ; dans Nova, la liste, les filtres, les actions, une fiche et le formulaire de chacune des 16 ressources.
+- Échoue sur toute erreur 500, et si plus de la moitié d'un lot ne répond pas en 2xx, pour ne jamais passer à vide.
+- Pour recréer la base : `host-run -- ddev exec -s db 'mysql -uroot -proot -e "DROP DATABASE IF EXISTS objectif_terres_smoke; CREATE DATABASE objectif_terres_smoke; GRANT ALL ON objectif_terres_smoke.* TO \"db\"@\"%\";" && mysqldump -uroot -proot --single-transaction db | mysql -uroot -proot objectif_terres_smoke'`.
+
+Défauts anciens trouvés par cette suite, présents aussi en production :
+
+- corrigés : fiche Nova d'une attribution sans modérateur (priorité d'opérateur dans `App\Nova\AttributionAd::title()`), page « Rapports et indicateurs » d'un responsable territorial (1 171 attributions ont un `ad_status_id` sans statut correspondant, `AdService` ligne 776) ;
+- non corrigés, exclus de la suite : `/accompagnement/modifier` plante si l'utilisateur n'a pas de demande d'accompagnement (fonction dépréciée) ; `/mon-espace/recherches/notification` et `/mon-espace/annonces-favorites/sauvegarde` sont des actions en GET qui plantent sans paramètre.
+
 ## Points ouverts
 
 - **Seeders** : sur une base neuve, `TerritorySeeder` échoue (doublon sur `territories.id = 1`), une migration ayant déjà inséré des données.
-- **Pages connectées et Nova** : pas encore vérifiées, la comparaison ci-dessus est anonyme.
 - **Traduction de Nova** : 346 textes sur 426 restent en anglais (325 sur 405 sous Nova 2).
 - **Secrets et données personnelles dans Git** : `.env.save`, `.env.nouvellesandbox`, clés privées de `certs/`, `database/sql/users_table.sql`, et deux dumps SQL de 2023 dans l'historique. À signaler à Terre de Liens.
 - **Commentaires de la PR Shift #1** (dépôt `collegue`) : non encore relus.
