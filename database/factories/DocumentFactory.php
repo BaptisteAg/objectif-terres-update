@@ -45,7 +45,7 @@ class DocumentFactory extends Factory
     public function definition()
     {
         $extensions = ['.png', '.gif', '.jpg', '.pdf'];
-        $fileName = $this->faker->word.$extensions[array_rand($extensions)];
+        $fileName = $this->faker->word().$extensions[array_rand($extensions)];
 
         return [
             'name' => $fileName,

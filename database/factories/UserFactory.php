@@ -20,16 +20,16 @@ class UserFactory extends Factory
         $countryFrance = Country::find(75);
 
         return [
-            'name' => $faker->lastName,
-            'first_name' => $faker->firstName,
-            'email' => $faker->unique()->safeEmail,
+            'name' => $faker->lastName(),
+            'first_name' => $faker->firstName(),
+            'email' => $faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            'street' => $faker->streetAddress,
-            'phone' => $faker->phoneNumber,
+            'street' => $faker->streetAddress(),
+            'phone' => $faker->phoneNumber(),
             'civility' => $faker->numberBetween(1, 3),
             'profile' => $faker->numberBetween(1, 5),
-            'city' => $city ? $city->name : $faker->city,
+            'city' => $city ? $city->name : $faker->city(),
             'accept_communication' => $faker->boolean(20),
             'accept_share_contact_infos' => $faker->boolean(20),
             'zip_code_id' => $city ? $city->id : null,

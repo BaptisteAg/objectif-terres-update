@@ -16,11 +16,11 @@ class ResearchFactory extends Factory
     {
         return [
             'user_id' => User::all()->random(),
-            'name' => $this->faker->title,
+            'name' => $this->faker->title(),
             'surface_min' => $this->faker->numberBetween(0, 50),
             'surface_max' => $this->faker->numberBetween(50, 500),
-            'has_pics' => $this->faker->boolean,
-            'has_house' => $this->faker->boolean,
+            'has_pics' => $this->faker->boolean(),
+            'has_house' => $this->faker->boolean(),
             'price_min' => $this->faker->numberBetween(0, 50),
             'price_max' => $this->faker->numberBetween(50, 500),
             'ad_type' => 'landOfferAd',

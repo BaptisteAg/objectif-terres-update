@@ -49,10 +49,10 @@ class SalesforceCreateUser extends Command
     {
         $faker = Factory::create();
 
-        $email = $faker->email;
+        $email = $faker->email();
         $password = 'crif9bf1';
-        $firstName = $faker->firstName;
-        $lastName = $faker->lastName;
+        $firstName = $faker->firstName();
+        $lastName = $faker->lastName();
         $role = 4;
         $departments = ['69'];
 

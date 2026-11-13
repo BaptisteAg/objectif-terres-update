@@ -14,7 +14,7 @@ class HouseFactory extends Factory
     public function definition()
     {
         return [
-            'number' => $this->faker->randomDigitNotNull,
+            'number' => $this->faker->randomDigitNotNull(),
             'surface' => $this->faker->numberBetween(0, 20000),
             'price' => $this->faker->numberBetween(0, 20000),
         ];

@@ -14,7 +14,7 @@ class ResponseTemplateFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->word,
+            'title' => $this->faker->word(),
             'content' => $this->faker->text(50),
         ];
     }

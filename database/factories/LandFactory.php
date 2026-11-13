@@ -16,8 +16,8 @@ class LandFactory extends Factory
         return [
             'area' => $this->faker->numberBetween(0, 20000),
             'price' => $this->faker->numberBetween(0, 20000),
-            'land_availability' => $this->faker->dateTime,
-            'land_transfer_deadline' => $this->faker->dateTime,
+            'land_availability' => $this->faker->dateTime(),
+            'land_transfer_deadline' => $this->faker->dateTime(),
         ];
     }
 }

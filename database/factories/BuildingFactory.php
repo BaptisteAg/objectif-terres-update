@@ -14,7 +14,7 @@ class BuildingFactory extends Factory
     public function definition()
     {
         return [
-            'number' => $this->faker->randomDigitNotNull,
+            'number' => $this->faker->randomDigitNotNull(),
             'surface' => $this->faker->randomFloat(2, 0, 500),
             'price' => $this->faker->numberBetween(0, 1000),
         ];
