@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPendingUpdateSinceToAttributionAdsTable extends Migration
+return new class extends Migration
 {
     /**
      * Marqueur "annonce modifiée après publication".
@@ -32,4 +32,4 @@ class AddPendingUpdateSinceToAttributionAdsTable extends Migration
             $table->dropColumn('pending_update_since');
         });
     }
-}
+};

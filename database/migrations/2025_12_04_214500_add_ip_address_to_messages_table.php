@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddIpAddressToMessagesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -34,4 +34,4 @@ class AddIpAddressToMessagesTable extends Migration
             $table->dropColumn(['ip_address', 'recaptcha_score']);
         });
     }
-}
+};

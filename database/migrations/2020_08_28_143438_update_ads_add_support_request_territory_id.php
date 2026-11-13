@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateAdsAddSupportRequestTerritoryId extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -34,4 +34,4 @@ class UpdateAdsAddSupportRequestTerritoryId extends Migration
             $table->dropColumn('support_request_territory_id');
         });
     }
-}
+};

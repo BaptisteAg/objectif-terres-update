@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductionableGenresTable extends Migration
+return new class extends Migration
 {
     /**
      * Schema table name to migrate
@@ -54,4 +54,4 @@ class CreateProductionableGenresTable extends Migration
     {
         Schema::dropIfExists($this->tableName);
     }
-}
+};

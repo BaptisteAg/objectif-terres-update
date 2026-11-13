@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAttributionAdsTable extends Migration
+return new class extends Migration
 {
     /**
      * Schema table name to migrate
@@ -89,4 +89,4 @@ class CreateAttributionAdsTable extends Migration
     {
         Schema::dropIfExists($this->tableName);
     }
-}
+};

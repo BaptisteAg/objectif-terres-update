@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateProductionableGenresTypeEnumAddSecondary extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -24,4 +24,4 @@ class UpdateProductionableGenresTypeEnumAddSecondary extends Migration
     {
         DB::statement("ALTER TABLE productionable_genres CHANGE type type ENUM('actual', 'possible') DEFAULT 'actual'");
     }
-}
+};

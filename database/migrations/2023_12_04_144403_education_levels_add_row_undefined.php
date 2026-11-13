@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class EducationLevelsAddRowUndefined extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -27,4 +27,4 @@ class EducationLevelsAddRowUndefined extends Migration
     {
         DB::table('education_levels')->where('name', 'Non défini')->delete();
     }
-}
+};

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateAttributionAdsForeignKeys extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -47,4 +47,4 @@ class UpdateAttributionAdsForeignKeys extends Migration
             $table->dropForeign('ix_attribution_ad_user_moderator_id');
         });
     }
-}
+};
