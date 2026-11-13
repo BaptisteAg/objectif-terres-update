@@ -6,13 +6,6 @@ use App\Models\Building;
 use App\Models\House;
 use App\Models\Land;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\FactoryBuilder;
-
-FactoryBuilder::macro('disableEvents', function () {
-    $this->class::flushEventListeners();
-
-    return $this;
-});
 
 class LandOfferAdFactory extends Factory
 {

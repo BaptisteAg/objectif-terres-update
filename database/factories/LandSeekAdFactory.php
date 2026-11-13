@@ -5,13 +5,6 @@ namespace Database\Factories;
 use App\Models\InstallationType;
 use App\Models\OfferGenre;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\FactoryBuilder;
-
-FactoryBuilder::macro('disableEvents', function () {
-    $this->class::flushEventListeners();
-
-    return $this;
-});
 
 class LandSeekAdFactory extends Factory
 {

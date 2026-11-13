@@ -9,6 +9,7 @@ use App\Models\Traits\Documentable;
 use App\Presenters\AdPresenter;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
 use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -117,6 +118,7 @@ use McCool\LaravelAutoPresenter\HasPresenter;
 class Ad extends Model implements HasPresenter
 {
     use Documentable,
+        HasFactory,
         HasMorphedByManyEvents,
         HasRelationshipObservables,
         ScopeAdTypesFilterable,
