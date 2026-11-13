@@ -4,7 +4,7 @@ namespace App\Repositories\Ads;
 
 use App\Models\AssociateOfferAd;
 use App\Models\LandSeekAd;
-use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
+use App\Repositories\Eloquent\AbstractRepository;
 
 class AssociateOfferAdRepository extends AbstractRepository
 {

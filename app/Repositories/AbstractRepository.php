@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-abstract class AbstractRepository extends \Kurt\Repoist\Repositories\Eloquent\AbstractRepository
+abstract class AbstractRepository extends Eloquent\AbstractRepository
 {
     public function updateMany(array $idsToUpdate, array $attributes)
     {

@@ -6,7 +6,7 @@ use App\Models\Ad;
 use App\Models\Project;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
+use App\Repositories\Eloquent\AbstractRepository;
 
 class ProjectsRepository extends AbstractRepository implements ProjectsRepositoryInterface
 {

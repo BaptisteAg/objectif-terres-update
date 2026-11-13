@@ -4,7 +4,7 @@ namespace App\Repositories\Ads;
 
 use App\Models\AssociateSeekAd;
 use Illuminate\Support\Arr;
-use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
+use App\Repositories\Eloquent\AbstractRepository;
 
 class AssociateSeekAdRepository extends AbstractRepository
 {

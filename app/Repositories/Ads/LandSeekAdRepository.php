@@ -5,7 +5,7 @@ namespace App\Repositories\Ads;
 use App\Models\InstallationType;
 use App\Models\LandSeekAd;
 use Illuminate\Support\Arr;
-use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
+use App\Repositories\Eloquent\AbstractRepository;
 
 class LandSeekAdRepository extends AbstractRepository implements LandSeekAdRepositoryInterface
 {

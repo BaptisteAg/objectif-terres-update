@@ -5,7 +5,7 @@ namespace App\Repositories\Ads;
 use App\Models\ProductionGenre;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
+use App\Repositories\Eloquent\AbstractRepository;
 
 /**
  * @property ProductionGenre $entity

@@ -6,7 +6,7 @@ use App\Models\Building;
 use App\Models\House;
 use App\Models\LandOfferAd;
 use Illuminate\Support\Arr;
-use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
+use App\Repositories\Eloquent\AbstractRepository;
 
 class LandOfferAdRepository extends AbstractRepository implements LandOfferAdRepositoryInterface
 {

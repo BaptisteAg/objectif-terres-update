@@ -3,7 +3,7 @@
 namespace App\Repositories\Documents;
 
 use App\Models\Document;
-use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
+use App\Repositories\Eloquent\AbstractRepository;
 
 /**
  * Class DocumentRepository

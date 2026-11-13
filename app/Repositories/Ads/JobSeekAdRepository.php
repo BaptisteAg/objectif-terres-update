@@ -3,7 +3,7 @@
 namespace App\Repositories\Ads;
 
 use App\Models\JobSeekAd;
-use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
+use App\Repositories\Eloquent\AbstractRepository;
 
 class JobSeekAdRepository extends AbstractRepository
 {

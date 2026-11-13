@@ -4,7 +4,7 @@ namespace App\Repositories\Researches;
 
 use App\Models\Research;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Kurt\Repoist\Repositories\Eloquent\AbstractRepository;
+use App\Repositories\Eloquent\AbstractRepository;
 
 /**
  * Class ResearchRepository
