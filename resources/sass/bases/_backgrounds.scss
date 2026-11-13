@@ -156,14 +156,14 @@ BACKGROUNDS
 /* ----- Backgrounds trame ----- */
 .bg-trame_champs_light {
   &:before {
-    background: url("public/images/trames/motif_champ_white.png") repeat;
+    background: url("/images/trames/motif_champ_white.png") repeat;
     opacity: 1;
   }
 }
 
 .bg-trame_champs_dark {
   &:before {
-    background: url("public/images/trames/motif_champ_black.png") repeat;
+    background: url("/images/trames/motif_champ_black.png") repeat;
     opacity: 0.15;
   }
 }

@@ -1,6 +1,6 @@
 //////////////
 // VUE
-window.Vue = require('vue');
+window.Vue = require('vue').default;
 
 import Vuelidate from 'vuelidate';
 
