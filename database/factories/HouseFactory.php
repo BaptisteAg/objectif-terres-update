@@ -1,14 +1,25 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\House;
-use Faker\Generator as Faker;
 
-$factory->define(House::class, function (Faker $faker) {
-    return [
-        'number' => $faker->randomDigitNotNull,
-        'surface' => $faker->numberBetween(0, 20000),
-        'price' => $faker->numberBetween(0, 20000),
-    ];
-});
+class HouseFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'number' => $this->faker->randomDigitNotNull,
+            'surface' => $this->faker->numberBetween(0, 20000),
+            'price' => $this->faker->numberBetween(0, 20000),
+        ];
+    }
+}

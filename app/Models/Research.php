@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Traits\BioCertifiable;
 use App\Models\Traits\JobOfferTypable;
 use App\Models\Traits\OfferableGenre;
@@ -77,6 +78,8 @@ use Illuminate\Notifications\Notifiable;
  */
 class Research extends Model
 {
+    use HasFactory;
+
     use BioCertifiable;
     use JobOfferTypable;
     use Notifiable;

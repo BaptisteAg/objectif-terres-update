@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Presenters\AdPresenter;
 use Illuminate\Database\Eloquent\Model;
 use McCool\LaravelAutoPresenter\Decoratable;
@@ -30,6 +31,8 @@ use McCool\LaravelAutoPresenter\Decoratable;
  */
 class FavoriteAd extends Model implements Decoratable
 {
+    use HasFactory;
+
     /**
      * @var array
      */

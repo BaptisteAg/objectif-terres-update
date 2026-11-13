@@ -12,6 +12,6 @@ class TestProjectStatusSeeder extends Seeder
      */
     public function run()
     {
-        factory(ProjectStatus::class, 10)->create();
+        ProjectStatus::factory()->count(10)->create();
     }
 }

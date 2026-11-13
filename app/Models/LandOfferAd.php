@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Traits\BioCertifiable;
 use App\Models\Traits\OfferableGenre;
 use App\Models\Traits\ProductionableGenre;
@@ -90,6 +91,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class LandOfferAd extends Model
 {
+    use HasFactory;
+
     use BioCertifiable,
         HasMorphToManyEvents,
         HasRelationshipObservables,

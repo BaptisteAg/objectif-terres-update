@@ -18,7 +18,7 @@ class TestResearchSeeder extends Seeder
      */
     public function run()
     {
-        factory(Research::class, 10)->create()->each(function (Research $research) {
+        Research::factory()->count(10)->create()->each(function (Research $research) {
             $research->adStatuses()->save(AdStatus::inRandomOrder()->first());
             $research->adStatuses()->save(AdStatus::inRandomOrder()->first());
             $research->projectStatuses()->save(ProjectStatus::inRandomOrder()->first());

@@ -1,12 +1,23 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\Models\CmsFaq;
-use Faker\Generator as Faker;
 
-$factory->define(CmsFaq::class, function (Faker $faker) {
-    return [
-        'content_question' => $faker->sentence($nbWords = 6, $variableNbWords = true).'?',
-        'content_answer' => $faker->paragraph($nbSentences = 3, $variableNbSentences = true),
-    ];
-});
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\CmsFaq;
+
+class CmsFaqFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'content_question' => $this->faker->sentence($nbWords = 6, $variableNbWords = true).'?',
+            'content_answer' => $this->faker->paragraph($nbSentences = 3, $variableNbSentences = true),
+        ];
+    }
+}

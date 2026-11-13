@@ -24,16 +24,16 @@ class DocumentsTest extends TestCase
 
     public function test()
     {
-        //        $document = factory(Document::class)->create();
-        //        $ad = factory(AdRequest::class)->create();
-        //        $adNote = factory(AdNote::class)->create();
+        //        $document = Document::factory()->create();
+        //        $ad = AdRequest::factory()->create();
+        //        $adNote = AdNote::factory()->create();
         //
         //        $ad->documents()->save($document);
         //
         //        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $document->documentable);
 
-        //        $productionGenre = factory(BioCertification::class)->create();
-        $research = factory(Research::class)->create();
+        //        $productionGenre = BioCertification::factory()->create();
+        $research = Research::factory()->create();
         //
         //        $research->bioCertifications()->save($productionGenre);
 

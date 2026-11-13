@@ -11,6 +11,6 @@ class TestResponseTypeSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\ResponseTemplate::class, 10)->create();
+        \App\Models\ResponseTemplate::factory()->count(10)->create();
     }
 }

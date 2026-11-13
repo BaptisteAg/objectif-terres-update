@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Scopes\ScopeAdTypesFilterable;
 use App\Models\Scopes\ScopeDataFilterable;
 use App\Models\Scopes\ScopeLocationFilterable;
@@ -72,6 +73,8 @@ use McCool\LaravelAutoPresenter\Decoratable;
  */
 class AttributionAd extends Model implements Decoratable
 {
+    use HasFactory;
+
     use ScopeAdTypesFilterable,
         ScopeDataFilterable,
         ScopeLocationFilterable;

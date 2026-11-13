@@ -12,6 +12,6 @@ class TestAgriculturalActivitiesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(AgriculturalActivity::class, 5)->create();
+        AgriculturalActivity::factory()->count(5)->create();
     }
 }

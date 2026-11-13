@@ -11,6 +11,6 @@ class TestProjectSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\Project::class, 5)->create();
+        \App\Models\Project::factory()->count(5)->create();
     }
 }

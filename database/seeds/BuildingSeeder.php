@@ -11,8 +11,8 @@ class BuildingSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\Building::class, 10)->create()->each(function (\App\Models\Building $building) {
-            $building->offerGenres()->save(factory(\App\Models\OfferGenre::class)->make());
+        \App\Models\Building::factory()->count(10)->create()->each(function (\App\Models\Building $building) {
+            $building->offerGenres()->save(\App\Models\OfferGenre::factory()->make());
         });
     }
 }

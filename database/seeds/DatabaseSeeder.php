@@ -88,10 +88,10 @@ class DatabaseSeeder extends Seeder
             for ($i = 0; $i < $fakeAdsByDepartmentAndTypeCount; $i++) {
                 foreach ($departments as $department) {
                     /** @var Ad[]|\Illuminate\Database\Eloquent\Collection $ads */
-                    $ads = factory(Ad::class, 3)->disableEvents()->create()->each(function (Ad $ad) use ($department) {
-                        $ad->adNotes()->save(factory(AdNote::class)->create());
-                        $ad->favoriteAds()->save(factory(FavoriteAd::class)->create());
-                        //					    $ad->documents()->save(factory(Document::class)->make());
+                    $ads = Ad::factory()->count(3)->disableEvents()->create()->each(function (Ad $ad) use ($department) {
+                        $ad->adNotes()->save(AdNote::factory()->create());
+                        $ad->favoriteAds()->save(FavoriteAd::factory()->create());
+                        //					    $ad->documents()->save(Document::factory()->make());
                         $ad->departments()->save($department);
                     });
 
@@ -111,7 +111,7 @@ class DatabaseSeeder extends Seeder
 
     private function createLandOfferAd(Ad $ad)
     {
-        $landOfferAd = factory(LandOfferAd::class)->disableEvents()->create();
+        $landOfferAd = LandOfferAd::factory()->disableEvents()->create();
 
         $cats = ['', 'Vend'];
         $types = ['ferme', 'pâture', 'terrain', 'location', 'terre', 'petite structure'];
@@ -136,7 +136,7 @@ class DatabaseSeeder extends Seeder
 
     private function createLandSeekAd(Ad $ad)
     {
-        $landSeekAd = factory(LandSeekAd::class)->disableEvents()->create();
+        $landSeekAd = LandSeekAd::factory()->disableEvents()->create();
 
         $cats = ['', 'Recherche', 'A la recherche de'];
         $types = ['ferme', 'pâture', 'terrain', 'location', 'terre', 'petite structure'];
@@ -161,14 +161,14 @@ class DatabaseSeeder extends Seeder
 
     private function createJobOfferAd(Ad $ad)
     {
-        $jobAd = factory(JobOfferAd::class)->disableEvents()->create();
+        $jobAd = JobOfferAd::factory()->disableEvents()->create();
 
         $cats = ['', 'Propose emploi', 'Recrutement', 'Urgent cherche', 'Opportunité'];
         $types = ['éleveur', 'producteur', 'agent agricole', 'agriculteur'];
         $pours = ['bio', 'laitier', 'élevage bovins', 'élevages poulets', 'réinstallation', 'installation collective'];
         $extra = ['', 'urgent', 'temps plein', 'CDI', 'CDD'];
 
-        // $jobAd->agriculturalActivity()->save(factory(AgriculturalActivity::class)->make());
+        // $jobAd->agriculturalActivity()->save(AgriculturalActivity::factory()->make());
         $jobAd->ad()->associate($ad);
         $jobAd->save();
 
@@ -185,7 +185,7 @@ class DatabaseSeeder extends Seeder
 
     private function createAttributionAd(Ad $ad, $isSupportRequest)
     {
-        $attributionAd = $ad->attributionAd()->save(factory(AttributionAd::class)->create([
+        $attributionAd = $ad->attributionAd()->save(AttributionAd::factory()->create([
             'ad_status_id' => $isSupportRequest ? null : collect([AdStatus::PENDING_MODERATION_STATUS_ID, AdStatus::APPROVE_ID])->random(),
         ]));
         // Support requests
@@ -193,7 +193,7 @@ class DatabaseSeeder extends Seeder
             $attributionAd->update([
                 'user_supervisor_id' => User::where('role', '=', '3')->inRandomOrder()->first()->id,
             ]);
-            $ad->project()->associate(factory(Project::class)->create());
+            $ad->project()->associate(Project::factory()->create());
             $ad->save();
         } // Ads
         else {
@@ -207,7 +207,7 @@ class DatabaseSeeder extends Seeder
     private function createCmsFaq()
     {
         foreach (CmsFaq::$page_name as $pageName) {
-            $cmsFaq = factory(CmsFaq::class, 4)->create()->each(function (CmsFaq $cmsFaq) use ($pageName) {
+            $cmsFaq = CmsFaq::factory()->count(4)->create()->each(function (CmsFaq $cmsFaq) use ($pageName) {
                 $cmsFaq->page_name = $pageName;
                 $cmsFaq->save();
             });

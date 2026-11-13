@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Traits\Documentable;
 use App\Presenters\MessagePresenter;
 use Illuminate\Database\Eloquent\Model;
@@ -37,6 +38,8 @@ use McCool\LaravelAutoPresenter\HasPresenter;
  */
 class Message extends Model implements HasPresenter
 {
+    use HasFactory;
+
     use Documentable;
 
     /**

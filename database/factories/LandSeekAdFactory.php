@@ -1,11 +1,13 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\InstallationType;
 use App\Models\LandSeekAd;
 use App\Models\OfferGenre;
-use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\FactoryBuilder;
 
 FactoryBuilder::macro('disableEvents', function () {
@@ -14,20 +16,29 @@ FactoryBuilder::macro('disableEvents', function () {
     return $this;
 });
 
-$factory->define(LandSeekAd::class, function (Faker $faker) {
-    $surfaceMin = rand(0, 50);
+class LandSeekAdFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $surfaceMin = rand(0, 50);
 
-    return [
-        'is_bio' => $faker->boolean,
-        'production_type_add' => $faker->text(60),
-        // 'has_farm_buildings' => $faker->boolean,
-        // 'has_houses' => $faker->boolean,
-        // 'rent_min' => $faker->randomFloat(4),
-        // 'rent_max' => $faker->randomFloat(4),
-        // 'offer_genre_id' => OfferGenre::all()->random(),
-        'experience_farming' => implode("\n", $faker->paragraphs()),
-        'surface_range_min' => $surfaceMin,
-        'surface_range_max' => $surfaceMin + rand(0, 50),
-        'installation_type_id' => InstallationType::inRandomOrder()->take(1)->first(),
-    ];
-});
+        return [
+            'is_bio' => $this->faker->boolean,
+            'production_type_add' => $this->faker->text(60),
+            // 'has_farm_buildings' => $this->faker->boolean,
+            // 'has_houses' => $this->faker->boolean,
+            // 'rent_min' => $this->faker->randomFloat(4),
+            // 'rent_max' => $this->faker->randomFloat(4),
+            // 'offer_genre_id' => OfferGenre::all()->random(),
+            'experience_farming' => implode("\n", $this->faker->paragraphs()),
+            'surface_range_min' => $surfaceMin,
+            'surface_range_max' => $surfaceMin + rand(0, 50),
+            'installation_type_id' => InstallationType::inRandomOrder()->take(1)->first(),
+        ];
+    }
+}

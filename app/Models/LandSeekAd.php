@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Traits\EducationLevelable;
 use App\Models\Traits\OfferableGenre;
 use App\Models\Traits\ProductionableGenre;
@@ -72,6 +73,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class LandSeekAd extends Model
 {
+    use HasFactory;
+
     use EducationLevelable,
         HasBelongsToEvents,
         HasManyEvents,

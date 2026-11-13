@@ -12,6 +12,6 @@ class RefusalTypeSeeder extends Seeder
      */
     public function run()
     {
-        factory(RefusalType::class, 10)->create();
+        RefusalType::factory()->count(10)->create();
     }
 }

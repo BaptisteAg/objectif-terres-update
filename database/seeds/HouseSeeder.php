@@ -11,8 +11,8 @@ class HouseSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\House::class, 10)->create()->each(function (\App\Models\House $house) {
-            $house->offerGenres()->save(factory(\App\Models\OfferGenre::class)->make());
+        \App\Models\House::factory()->count(10)->create()->each(function (\App\Models\House $house) {
+            $house->offerGenres()->save(\App\Models\OfferGenre::factory()->make());
         });
     }
 }

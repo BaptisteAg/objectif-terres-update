@@ -13,7 +13,7 @@ class TestUserSeeder extends Seeder
      */
     public function run()
     {
-        factory(User::class, 20)->create();
+        User::factory()->count(20)->create();
 
         User::create([
             'email' => 'test.ot.porteur.projet@gmail.com',

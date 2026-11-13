@@ -11,6 +11,6 @@ class AttributionSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\AttributionAd::class, 10)->create();
+        \App\Models\AttributionAd::factory()->count(10)->create();
     }
 }

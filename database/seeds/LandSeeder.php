@@ -11,8 +11,8 @@ class LandSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\Land::class, 10)->create()->each(function (\App\Models\Land $land) {
-            $land->offerGenres()->save(factory(\App\Models\OfferGenre::class)->make());
+        \App\Models\Land::factory()->count(10)->create()->each(function (\App\Models\Land $land) {
+            $land->offerGenres()->save(\App\Models\OfferGenre::factory()->make());
         });
     }
 }
