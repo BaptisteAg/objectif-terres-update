@@ -50,7 +50,7 @@
             "advisories": {
                 "ignore": {
                     "laravel/framework": {
-                        "constraint": "^8.0",
+                        "constraint": "^9.0",
                         "on-audit": false,
                         "reason": "Montee de version transitoire, voir docs/montee-de-version.md"
                     },

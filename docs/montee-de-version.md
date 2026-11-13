@@ -34,7 +34,7 @@ host-run -- ddev exec vendor/bin/phpunit
 |---|---|---|---|---|---|
 | 1 | 7 | 8.0 | 3.30 | 6 vers 7, fait par le développeur précédent | terminé le 13/11/2026 |
 | 2 | 8 | 8.1 | 3.32 | 7 vers 8, à l'unité | terminé le 13/11/2026 |
-| 3 | 9 | 8.1 | 3.32 | Legacy Single, 6 mois | prêt à lancer |
+| 3 | 9 | 8.1 | 3.32 | Legacy Single, 6 mois | terminé le 13/11/2026 |
 | 4 | 9 | 8.1 | 3 vers 4 | aucun, travail manuel | à faire |
 | 5 | 10 | 8.1 | 4 vers 5 | Legacy Single | à faire |
 | 6 | 11 | 8.2 | 5 | Legacy Single + HTML Converter | à faire |
@@ -192,6 +192,23 @@ Laravel 9 exige PHP 8.1 en pratique : les versions de Symfony 6 compatibles avec
 - `kabbouchi/nova-impersonate` : passer en `^2.2` (Nova 4 et 5).
 - `numaxlab/nova-ckeditor5-classic` (abandonné) : remplacé par `mostafaznv/nova-ckeditor` (5.4 puis 6 pour Nova 4, 7 pour Nova 5 et Laravel 13), qui reste sur CKEditor 5. Le contenu actuel compte 32 fiches avec titres `h2` à `h6`, 1 tableau, 2 images et 1 citation, sans vidéo : le champ Trix de Nova (titre `h1` seul) réécrirait ces contenus à la première modification. `mostafaznv/nova-ckeditor` dépend de `larupload`, qui exige Laravel 9 : il ne s'installe qu'après le Shift 9.
 - Les vues Blade surchargées (`navigation`, `footer`, `logo`) ne s'appliquent plus avec Nova 4 (Inertia) : les reporter avec `Nova::mainMenu`, `Nova::footer` et `config('nova.brand.logo')`.
+
+## Étape 3 : Laravel 9
+
+Shift : PR #2 (branche `shift-183910`), avec le Legacy Single acheté le 13/11/2026. Résultat : `laravel/framework` 9.52.23, `laravel/nova` 3.32.0, Flysystem 3.36, Symfony Mailer 6.4.
+
+Points des commentaires Shift :
+
+- **Expéditeur des e-mails perdu une seconde fois** par la remise à zéro de `config/mail.php` : « Objectif Terres » et `objectif-terres@terredeliens.org` rétablis. À vérifier après chaque Shift.
+- `config/session.php` : `same_site` est resté à `null`. Alias de façades : `Excel` conservé, `Form` et `Html` viennent de la découverte automatique.
+- Données validées des tableaux (`AdIndexRequest`, `ThreadRequest`) : les règles `types.*`, `status.*` et `receivers_user_message.*` couvrent tous les éléments, rien ne change.
+- Flysystem 3 : `ResizeImages` ne fait que lire (`Storage::allFiles`).
+- Symfony Mailer : aucun appel direct à SwiftMailer dans l'application.
+- `$loop` et `LazyCollection` : aucune `LazyCollection` (`cursor()`, `lazy()`) dans l'application.
+- `public/index.php` et `app/Exceptions/Handler.php` : signalés par Shift car personnalisés ; ils sont déjà au format attendu.
+- Exception de sécurité : `laravel/framework` passe à `^9.0`.
+
+Tests : suite principale identique (36 réussis, 16 erreurs anciennes), tests de fumée verts, `migrate` et `optimize` passent.
 
 ## Déploiement en production (RunCloud)
 
