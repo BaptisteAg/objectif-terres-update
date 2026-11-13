@@ -32,7 +32,7 @@ host-run -- ddev exec vendor/bin/phpunit
 
 | Étape | Laravel | PHP min | Nova | Shift | Statut |
 |---|---|---|---|---|---|
-| 1 | 7 | 7.2.5 | 3 | 6 vers 7, fait par le développeur précédent | dépendances installées et vérifiées, à valider |
+| 1 | 7 | 7.2.5 | 3 | 6 vers 7, fait par le développeur précédent | terminé le 13/11/2026 |
 | 2 | 8 | 7.3 | 3 | 7 vers 8, à l'unité | à faire |
 | 3 | 8 | 7.3 | 3 vers 4 | aucun, travail manuel | à faire |
 | 4 | 9 | 8.0 | 4 | Legacy Single, 6 mois | à faire |
