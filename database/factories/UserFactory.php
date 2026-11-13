@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\City;
 use App\Models\Country;
-use App\Models\User;
 use Faker\Factory as FakerFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
