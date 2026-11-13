@@ -15,7 +15,6 @@
         "chelout/laravel-relationship-events": "^1.5",
         "darkaonline/l5-swagger": "^8.0",
         "digital-creative/clickable-table-row": "^0.2.0",
-        "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3.1|^7.0.1",
         "intervention/image": "^2.7",
         "kabbouchi/nova-impersonate": "^1.3",
